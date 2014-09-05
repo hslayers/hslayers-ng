@@ -1,0 +1,24 @@
+angular.module('hs.map', [])
+    //This is used to share map object between components.
+    .service("OlMap", function(){
+       this.map = new ol.Map({
+	  target: 'map',
+	  view: new ol.View({
+	    center: ol.proj.transform([37.41, 8.82], 'EPSG:4326', 'EPSG:3857'),
+	    zoom: 4
+	  })
+	});
+    })
+    
+    .directive('map', function() {
+        return {
+            templateUrl: 'js/components/map/partials/map.html'
+        };
+    })
+
+.controller('Map', ['$scope', 'OlMap',
+    function($scope, OlMap) {
+	$scope.map = OlMap.map;
+	OlMap.map.setTarget("map");
+    }
+]);

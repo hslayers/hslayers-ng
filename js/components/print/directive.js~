@@ -1,0 +1,13 @@
+angular.module('hs.layermanager', [])
+    .directive('layerManager', function() {
+        return {
+            restrict: 'E',
+            templateUrl: 'js/components/layermanager/partials/layermanager.html'
+        };
+    })
+
+.controller('LayerManager', ['$scope',
+    function($scope) {
+
+    }
+]);

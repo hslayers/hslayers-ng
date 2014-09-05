@@ -1,0 +1,85 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+
+#accordion {
+  position: absolute;
+  left: 5px;
+  width: 400px;
+  z-index: 1000;
+  height: 50%;
+  top: 80px;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+.infopanel {
+  position: absolute;
+  left: 5px;
+  width: 400px;
+  max-height: 40%;
+  z-index: 1000;
+  bottom: 5px;
+  overflow-y: scroll;
+}
+
+.modal-backdrop{visibility:hidden}
+.toolbuttons {display: inline-block}
+.form-group {
+    margin-bottom: 5px;
+}
+hr {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+.layer-checked{
+    width: 20px;
+    height: 21px;
+    float:right;
+}
+.ol-zoomslider, .ol-zoom {
+    right: .5em;
+    left: auto;
+}
+
+.ol-zoomslider {width: 1.9675em}
+
+.ol-mouse-position {
+    bottom: 8px;
+    left: 170px;
+    position: absolute;
+    color: #fff;
+    top: auto;
+    right: auto;
+}

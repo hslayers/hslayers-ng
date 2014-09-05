@@ -1,0 +1,8 @@
+<div class="panel-heading">
+	<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOws">Ows</a></h4>
+</div>
+<div id="collapseOws" class="panel-collapse collapse out">
+	<div class="panel-body">
+		
+	</div>
+</div>
