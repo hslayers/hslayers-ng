@@ -6,6 +6,7 @@ angular.module('hs', [
     'hs.map',
     'hs.ows',
     'hs.query',
+    'hs.search',
     'hs.print',
     'hs.permalink'
 ]).controller('Main', ['$scope',

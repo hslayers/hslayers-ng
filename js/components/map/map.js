@@ -4,7 +4,7 @@ angular.module('hs.map', [])
         this.map = new ol.Map({
             target: 'map',
             view: new ol.View({
-                center: ol.proj.transform([37.41, 8.82], 'EPSG:4326', 'EPSG:3857'),
+                center: ol.proj.transform([17.474129,52.574000 ], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 4
             })
         });

@@ -1,0 +1,3 @@
+<div class="list-group" id="searchresults" style="display: block;">
+    <a ng-href='#'  ng-repeat="result in results | limitTo:10" class="list-group-item" ng-click="zoomTo(result.lng, result.lat)">{{result.name}}</a>
+</div>

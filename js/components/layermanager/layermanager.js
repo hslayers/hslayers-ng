@@ -29,9 +29,7 @@ angular.module('hs.layermanager', ['hs.map'])
         $scope.map.getLayers().on("add", $scope.layerAdded);
         $scope.map.getLayers().on("remove", $scope.layerRemoved);
         var lyr = new ol.layer.Tile({
-            source: new ol.source.MapQuest({
-                layer: 'sat'
-            }),
+            source: new ol.source.OSM(),
             title: "Base layer"
         });
         $scope.map.addLayer(lyr);

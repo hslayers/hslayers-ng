@@ -1,0 +1,12 @@
+angular.module('hs.query', [])
+    .directive('query', function() {
+        return {
+            templateUrl: 'js/components/query/partials/infopanel.html'
+        };
+    })
+
+.controller('Query', ['$scope',
+    function($scope) {
+
+    }
+]);

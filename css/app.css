@@ -36,7 +36,7 @@
   width: 400px;
   z-index: 1000;
   height: 50%;
-  top: 80px;
+  top: 5px;
 }
 
 #map {
@@ -82,4 +82,20 @@ hr {
     color: #fff;
     top: auto;
     right: auto;
+}
+
+#search_address {
+    position: absolute;
+    left: 409px;
+    top: 5px;
+    z-index: 1000;
+    width: 200px;
+}
+
+#searchresults {
+    position: absolute;
+    left: 409px;
+    top: 44px;
+    z-index: 1000;
+    min-width: 200px;
 }
