@@ -19,7 +19,7 @@
                                 <option ng-repeat="type in types">{{type}}</option>
                             </select>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-5" ng-show="type=='WMS'">
                             <button class="btn btn-primary" ng-click="connect()">Connect</button>
                         </div>
                     </div>

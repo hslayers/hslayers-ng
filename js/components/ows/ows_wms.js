@@ -4,7 +4,7 @@ angular.module('hs.ows.wms', [])
         function($http) {
             this.requestGetCapabilities = function(service_url) {
                 var url = window.escape(service_url + "?request=GetCapabilities&service=WMS");
-                $http.get("http://localhost/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.capabilitiesReceived);
+                $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.capabilitiesReceived);
             };
 
         }

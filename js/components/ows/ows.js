@@ -1,11 +1,12 @@
-angular.module('hs.ows', ['hs.map', 'hs.ows.wms'])
+angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.map'])
     .directive('ows', function() {
         return {
             templateUrl: 'js/components/ows/partials/ows.html'
         };
     })
-    .controller('Ows', ['$scope', 'OwsWmsCapabilities',
-        function($scope, OwsWmsCapabilities) {
+    .controller('Ows', ['$scope', 'OwsWmsCapabilities', 'OlMap', 
+        function($scope, OwsWmsCapabilities, OlMap) {
+            var map = OlMap.map;
             $scope.url = "http://erra.ccss.cz/geoserver/ows";
             $scope.types = ["WMS", "WFS", "WCS", "KML", "GeoRSS", "GML", "GeoJSON", "SOS"];
             $scope.type = "WMS";
@@ -15,7 +16,7 @@ angular.module('hs.ows', ['hs.map', 'hs.ows.wms'])
             $scope.connect = function() {
                 switch ($scope.type.toLowerCase()) {
                     case "kml":
-                        $scope._addNonOWSLayer();
+                        $scope.addKmlLayer($scope.url);
                         break;
                         /*case "gml":
                         case "geojson":
@@ -45,11 +46,13 @@ angular.module('hs.ows', ['hs.map', 'hs.ows.wms'])
                     case "wfs":
                         template = 'js/components/ows/partials/owswfs.html';
                         break;
+                    case "kml":
+                        template = 'js/components/ows/partials/owsnonwms.html';
+                        break;
                     default:
                         break;
                 }
                 return template;
             };
-
         }
     ]);
