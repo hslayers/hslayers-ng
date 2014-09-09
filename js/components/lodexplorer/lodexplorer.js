@@ -8,6 +8,7 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
 .controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService',
     function($scope, OlMap, $http, InfoPanelService) {
         var map = OlMap.map;
+        $scope.loading = false;
         $scope.sources = [{
             url: "http://eurostat.linked-statistics.org/data/nama_r_e2gdp.rdf",
             name: "Gross domestic product (GDP) at current market prices by NUTS 2 regions"
@@ -78,6 +79,7 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
             ].join("\n");
             if (console) console.log(sparql);
             var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on";
+            $scope.loading = true;
             $http.get(url).success($scope.classifsDownloaded);
         }
 
@@ -141,10 +143,12 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
                     });
             }
             $scope.groupings = groups;
+            $scope.loading = false;
         }
 
         $scope.display = function(j) {
             var filter = "";
+            $scope.loading = true;
             angular.forEach($scope.groupings, function(val, key) {
                 var value = "";
                 if (val.value) {
@@ -201,6 +205,7 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
                 feature.opacity = dic[feature.values_.nuts_id] ? (dic[feature.values_.nuts_id] - min) / (max - min) : 0;
             })
             lyr.dispatchChangeEvent();
+            $scope.loading = false;
         }
     }
 ]);
