@@ -1,0 +1,24 @@
+<div class="panel-heading">
+	<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseLodExplr">Eurostat explorer</a></h4>
+</div>
+<div id="collapseLodExplr" class="panel-collapse collapse ">
+	<div class="panel-body">
+		<div class="panel-body">
+                <form name="frmConnect" role="form" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="lod_source" class="col-sm-2 control-label">Dataset:</label>
+                        <select class="form-control" id="lod_source" class="col-sm-4" ng-model="source" ng-change="sourceChosen()">
+                            <option ng-repeat="source in sources" value="{{source.url}}">{{source.name}}</option>
+                        </select>
+                    </div>
+                            <div ng-repeat="group in groupings" class="form-group">
+                                {{group.name}}
+                                <select class="form-control" ng-model="group.value">
+                                     <option value=""></option>
+                                    <option ng-repeat="option in group.options" value="{{option.value}}">{{option.hr_name}}</option>
+                                </select>
+                            </div>
+                </form>
+                <button class="btn btn-primary" ng-click="display()">Display</button>
+	</div>
+</div>

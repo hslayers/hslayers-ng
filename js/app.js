@@ -8,7 +8,8 @@ angular.module('hs', [
     'hs.query',
     'hs.search',
     'hs.print',
-    'hs.permalink'
+    'hs.permalink',
+    'hs.lodexplorer'
 ]).controller('Main', ['$scope',
     function($scope) {
        console.log("Main called");

@@ -7,16 +7,29 @@ angular.module('hs.query', ['hs.map'])
         function($http) {
             this.request = function(url) {
                 var url = window.escape(url);
-                $http.get("http://localhost/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.featureInfoReceived);
+                $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.featureInfoReceived);
             };
 
         }
+    ]).service("InfoPanelService", ['$rootScope',
+        function($rootScope) {
+            var me = {
+                attributes:[],
+                setAttributes : function(j) {
+                    me.attributes = j; 
+                    $rootScope.$broadcast( 'infopanel.updated' );
+                }
+            };
+            
+            return me;
+        }
     ])
 
-.controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo',
-    function($scope, OlMap, WmsGetFeatureInfo) {
+.controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService',
+    function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService) {
         var map = OlMap.map;
         $scope.attributes = [];
+        $scope.myname = "shady";
         
         map.on('singleclick', function(evt) {
             map.getLayers().forEach(function(layer){queryLayer(layer, evt)});
@@ -56,5 +69,11 @@ angular.module('hs.query', ['hs.map'])
                 }
             }
         }
+        
+         $scope.$on( 'infopanel.updated', function( event ) {
+            $scope.attributes = InfoPanelService.attributes;
+            $scope.$apply();
+         });
+               
     }
 ]);
