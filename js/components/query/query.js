@@ -46,7 +46,7 @@ angular.module('hs.query', ['hs.map'])
                     'INFO_FORMAT': source.getParams().INFO_FORMAT
                 });
             if (url) {
-                console.log(url);
+                if(console) console.log(url);
                 WmsGetFeatureInfo.request(url);
             }   
         }

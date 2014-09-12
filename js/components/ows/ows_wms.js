@@ -28,7 +28,7 @@ angular.module('hs.ows.wms', [])
                     $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png", "image/gif", "image/jpeg"]);
                     $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
                 } catch (e) {
-                    console.log(e);
+                    if(console) console.log(e);
                     /* Ext.MessageBox.show({
                                 title: OpenLayers.i18n('WMS Capabilities parsing problem'),
                                 msg: OpenLayers.i18n('There was error while parsing Capabilities response from given URL')+":<br />\n"+ e,
@@ -68,7 +68,7 @@ angular.module('hs.ows.wms', [])
              * @name addLayer
              */
             var addLayer = function(layer, layerName, folder, imageFormat, queryFormat, singleTile, tileSize, crs) {
-                console.log(layer);
+                if(console) console.log(layer);
                 /*
             var layerCrs = (typeof(OlMap.map.projection) == typeof("") ? OlMap.map.projection.toUpperCase() : OlMap.map.projection.getCode().toUpperCase());
 
