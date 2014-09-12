@@ -61,6 +61,7 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
                     name: "Value",
                     value: e.element.get("data_value")
                 });
+            $("#collapseInfo").addClass("in");
             InfoPanelService.setAttributes(attributes);
         });
         map.addInteraction(selector);
