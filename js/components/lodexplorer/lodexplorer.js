@@ -25,6 +25,7 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
         $scope.groupings = [];
 
         var styleFunction = function(feature, resolution) {
+            if(Number.MIN_VALUE != feature.opacity) {
             return [new ol.style.Style({
                 fill: new ol.style.Fill({
                     color: [0x33, 0x99, 0xff, feature.opacity]
@@ -33,6 +34,16 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
                     color: '#3399FF'
                 })
             })]
+            } else {
+              return [new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: [0xbb, 0xbb, 0xbb, 0.9]
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#3399FF'
+                })
+            })]
+            }
         }
 
         var lyr = new ol.layer.Vector({
@@ -201,9 +212,9 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
                 max = val > max ? val : max;
                 min = val < min ? val : min;
             })
-            min -= (max - min) * 0.2;
+            //min -= (max - min) * 0.2;
             lyr.source_.forEachFeature(function(feature) {
-                feature.opacity = dic[feature.values_.nuts_id] ? (dic[feature.values_.nuts_id] - min) / (max - min) : 0;
+                feature.opacity = dic[feature.values_.nuts_id] ? (dic[feature.values_.nuts_id] - min) / (max - min) : Number.MIN_VALUE;
             })
             lyr.dispatchChangeEvent();
             $scope.loading = false;
