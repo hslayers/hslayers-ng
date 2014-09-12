@@ -20,15 +20,9 @@
     <div class="panel panel-default" layer-manager ng-controller="LayerManager"></div>
     <div class="panel panel-default" ows ng-controller="Ows"></div>
     <div class="panel panel-default" lod-explorer ng-controller="LodExplorer"></div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-	<h4 class="panel-title toolbuttons" printbutton></h4>
-	<h4 class="panel-title toolbuttons" permalinkbutton></h4>
-      </div>
-    </div>
+    <div class="panel panel-default" printdialog ng-controller="Print"></div>
   </div>
 
-  <div printdialog ng-controller="Print"></div>
   <div permalinkdialog ng-controller="Permalink"></div>
 
   <div class="panel infopanel" id="infopanel" infopanel ng-controller="Query">
