@@ -1,5 +1,5 @@
 angular.module('hs.permalink', [])
-    .directive('permalinkdialog', function() {
+   /* .directive('permalinkdialog', function() {
         return {
             templateUrl: 'js/components/permalink/partials/permalinkdialog.html'
         };
@@ -8,7 +8,7 @@ angular.module('hs.permalink', [])
         return {
             templateUrl: 'js/components/permalink/partials/permalinkbutton.html'
         };
-    })
+    })*/
 
 .controller('Permalink', ['$scope',
     function($scope) {

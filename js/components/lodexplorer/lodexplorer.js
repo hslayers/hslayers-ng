@@ -1,14 +1,29 @@
-angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
+var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
     .directive('lodExplorer', function() {
         return {
             templateUrl: 'js/components/lodexplorer/partials/lodexplorer.html'
         };
-    })
+    }).service("SparqlLogService", [
+        function() {
+            var me = {
+                logs:[]
+            };
+            return me;
+        }
+    ]).directive('sparqlLogDialog', function() {
+        return {
+            templateUrl: 'js/components/lodexplorer/partials/sparqllogdialog.html',
+        };
+    }).controller('SparqlLogDialog', ['$scope', 'SparqlLogService',
+    function($scope, SparqlLogService) {
+        $scope.sparql_log = SparqlLogService.logs;
+    }])
 
-.controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService',
-    function($scope, OlMap, $http, InfoPanelService) {
+.controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService', 'SparqlLogService',
+    function($scope, OlMap, $http, InfoPanelService, SparqlLogService) {
         var map = OlMap.map;
         $scope.loading = false;
+        $scope.sparql_log = [];
         $scope.sources = [{
             url: "http://eurostat.linked-statistics.org/data/nama_r_e2gdp.rdf",
             name: "Gross domestic product (GDP) at current market prices by NUTS 2 regions"
@@ -192,6 +207,8 @@ angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
                 "}"
             ].join("\n");
             if (console) console.log(sparql);
+            var d = new Date();
+            SparqlLogService.logs.unshift({date:d.toLocaleString(), query:sparql, date_val:d.valueOf()});
             var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on";
             $http.get(url).success(this.dataDownloaded);
         }
