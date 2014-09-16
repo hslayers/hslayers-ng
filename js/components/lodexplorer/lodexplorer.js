@@ -233,7 +233,7 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
             lyr.source_.forEachFeature(function(feature) {
                 feature.opacity = dic[feature.values_.nuts_id] ? (dic[feature.values_.nuts_id] - min) / (max - min) : Number.MIN_VALUE;
             })
-            lyr.dispatchChangeEvent();
+            lyr.changed();
             $scope.loading = false;
         }
     }

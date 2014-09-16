@@ -3,8 +3,8 @@ angular.module('hs.map', [])
     .service("OlMap", function() {
         this.map = new ol.Map({
             target: 'map',
-            view: new ol.View({
-                center: ol.proj.transform([17.474129,52.574000 ], 'EPSG:4326', 'EPSG:3857'),
+            view: new ol.View({                                   
+                center: ol.proj.transform([17.474129,52.574000 ], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 4
             })
         });
