@@ -71,9 +71,10 @@ hr {
 .ol-zoomslider, .ol-zoom {
     right: .5em;
     left: auto;
+    top: 40px;
 }
 
-.ol-zoomslider {width: 1.9675em}
+.ol-zoomslider {width: 1.9675em; top: 92px}
 
 .ol-mouse-position {
     bottom: 8px;
