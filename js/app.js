@@ -12,6 +12,6 @@ angular.module('hs', [
     'hs.lodexplorer'
 ]).controller('Main', ['$scope',
     function($scope) {
-       console.log("Main called");
+       if(console) console.log("Main called");
     }
 ]);;

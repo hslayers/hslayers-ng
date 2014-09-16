@@ -1,4 +1,4 @@
-angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.map'])
+angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.ows.wmsprioritized', 'hs.map'])
     .directive('ows', function() {
         return {
             templateUrl: 'js/components/ows/partials/ows.html'
@@ -8,7 +8,7 @@ angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.map'])
         function($scope, OwsWmsCapabilities, OlMap) {
             var map = OlMap.map;
             $scope.url = "http://erra.ccss.cz/geoserver/ows";
-            $scope.types = ["WMS", "WFS", "WCS", "KML", "GeoRSS", "GML", "GeoJSON", "SOS"];
+            $scope.types = ["WMS", "WFS", "WCS", "KML", "GeoRSS", "GML", "GeoJSON", "SOS", "WMS with priorities"];
             $scope.type = "WMS";
             $scope.image_formats = [];
             $scope.query_formats = [];
@@ -42,6 +42,9 @@ angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.map'])
                 switch ($scope.type.toLowerCase()) {
                     case "wms":
                         template = 'js/components/ows/partials/owswms.html';
+                        break;
+                    case "wms with priorities":
+                        template = 'js/components/ows/partials/owsprioritized.html';
                         break;
                     case "wfs":
                         template = 'js/components/ows/partials/owswfs.html';
