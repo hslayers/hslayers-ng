@@ -21,6 +21,7 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
 
 .controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService', 'SparqlLogService',
     function($scope, OlMap, $http, InfoPanelService, SparqlLogService) {
+        if(console) console.log("LodExplorer loaded");
         var map = OlMap.map;
         $scope.loading = false;
         $scope.sparql_log = [];
@@ -36,7 +37,14 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
         }, {
             url: "http://eurostat.linked-statistics.org/data/hlth_rs_prsrg.rdf",
             name: "Health personnel by NUTS 2 regions"
-        }]
+        }, {
+            url: "http://eurostat.linked-statistics.org/data/ef_kvftreg.rdf",
+            name: "Key variables: area, livestock (LSU), labour force and standard output (SO) by type of farming (2-digit)"
+        }
+          
+          
+          
+        ]
         $scope.groupings = [];
 
         var styleFunction = function(feature, resolution) {

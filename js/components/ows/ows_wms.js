@@ -232,6 +232,7 @@ angular.module('hs.ows.wms', [])
                         attributions: [new ol.Attribution({
                             html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
                         })],
+                        metadataURL: "", // TODO is provided by getFeatureInfo
                         params: {
                             LAYERS: layer.Name,
                             INFO_FORMAT: (layer.queryable ? queryFormat : undefined),

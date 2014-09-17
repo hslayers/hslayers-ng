@@ -16,6 +16,8 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
+  <div map ng-controller="Map" id="map"></div>
+  
   <div class="panel-group" id="accordion">
     <div class="panel panel-default" layer-manager ng-controller="LayerManager"></div>
     <div class="panel panel-default" ows ng-controller="Ows"></div>
@@ -33,7 +35,7 @@
   <div searchresults ng-controller="Search"></div>
 
   <div sparql-log-dialog  ng-controller="SparqlLogDialog"></div> 
-  <div map ng-controller="Map" id="map"><div>
+  
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>

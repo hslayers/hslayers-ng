@@ -1,7 +1,7 @@
 angular.module('hs.ows.wmsprioritized', [])
     .controller('OwsWmsPrioritized', ['$scope', 'OlMap', '$http',
         function($scope, OlMap, $http) {
-            $scope.amenities = [{title:"restaurant", priority:5}, {title:"club", priority:1},
+            $scope.amenities = [{title:"restaurant", priority:1}, {title:"club", priority:1},
               {title:"bar", priority:1},
               {title:"cafe", priority:1},
               {title:"bicycle_rental", priority:1},
