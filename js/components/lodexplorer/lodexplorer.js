@@ -82,6 +82,7 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar
         });
 
         selector.getFeatures().on('add', function(e) {
+            if(ToolbarService.mainpanel=='measure') return;
             var attributes = [{
                 name: "Nuts ID",
                 value: e.element.get("nuts_id")

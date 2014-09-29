@@ -10,7 +10,8 @@ angular.module('hs', [
     'hs.print',
     'hs.permalink',
     'hs.lodexplorer',
-    'hs.toolbar'
+    'hs.toolbar',
+    'hs.measure'
 ])
 
 .value('default_layers', [

@@ -21,9 +21,11 @@
     <div layer-manager ng-controller="LayerManager" ng-show="ToolbarService.mainpanel=='layermanager'"></div>
     <div ows ng-controller="Ows" ng-show="ToolbarService.mainpanel=='ows'"></div>
     <div lod-explorer ng-controller="LodExplorer" ng-show="ToolbarService.mainpanel=='lodexplorer'"></div>
+    <div measure ng-controller="Measure" ng-show="ToolbarService.mainpanel=='measure'"></div>
+    
     <div printdialog ng-controller="Print" ng-show="ToolbarService.mainpanel=='print'"></div>
  
-  <div permalinkdialog ng-controller="Permalink"></div>
+    <div permalinkdialog ng-controller="Permalink"></div>
 
   <div id="infopanel" infopanel ng-controller="Query"  ng-show="ToolbarService.mainpanel=='info'">
      
@@ -45,10 +47,10 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="js/components/map/map.js"></script> 
-<script src="js/components/toolbar/toolbar.js"></script>
+    <script src="js/components/toolbar/toolbar.js"></script>
     <script src="js/components/layermanager/layermanager.js"></script>
     <script src="js/components/query/query.js"></script>
-        <script src="js/components/lodexplorer/lodexplorer.js"></script>    
+    <script src="js/components/lodexplorer/lodexplorer.js"></script>    
     <script src="js/components/ows/ows.js"></script>
     <script src="js/components/ows/ows_wms.js"></script>
     <script src="js/components/ows/ows_wmsprioritized.js"></script>
@@ -56,6 +58,7 @@
     <script src="js/components/print/print.js"></script>
     <script src="js/components/permalink/permalink.js"></script>
     <script src="js/components/search/search.js"></script>
+    <script src="js/components/measure/measure.js"></script>
 
     <script src="js/app.js"></script>
 </body>

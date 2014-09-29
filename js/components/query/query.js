@@ -1,4 +1,4 @@
-angular.module('hs.query', ['hs.map'])
+angular.module('hs.query', ['hs.map', 'hs.toolbar'])
     .directive('infopanel', function() {
         return {
             templateUrl: 'js/components/query/partials/infopanel.html'
@@ -25,13 +25,14 @@ angular.module('hs.query', ['hs.map'])
         }
     ])
 
-.controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService',
-    function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService) {
+.controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'ToolbarService',
+    function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, ToolbarService) {
         var map = OlMap.map;
         $scope.attributes = [];
         $scope.myname = "shady";
         
         map.on('singleclick', function(evt) {
+            if(ToolbarService.mainpanel == 'measure') return;
             map.getLayers().forEach(function(layer){queryLayer(layer, evt)});
         });
                   

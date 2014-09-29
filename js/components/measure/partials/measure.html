@@ -1,0 +1,19 @@
+<div class="panel panel-default mainpanel">
+    <div class="panel-heading">Measure</div>
+    <div class="panel-body">
+          <div class="btn-group" style="margin-bottom:10px">
+            <label class="btn btn-default active">
+                <input type="radio" name="type" value="distance" ng-model='type' > Distance
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" name="type" value="area" ng-model='type'> Area
+            </label>
+        </div>
+        <button class="btn btn-default" style="float:right" ng-click="clearAll()">Clear</button>
+        <ul class="list-group">
+            <li ng-repeat="measurement in measurements" class="list-group-item">
+                {{measurement.size}}{{measurement.unit}}<span ng-if="measurement.type=='area'"><sup>2</sup></span>
+            </li>
+        </ul>
+    </div>
+</div>
