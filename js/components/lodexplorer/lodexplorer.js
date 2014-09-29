@@ -1,4 +1,4 @@
-var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
+var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar'])
     .directive('lodExplorer', function() {
         return {
             templateUrl: 'js/components/lodexplorer/partials/lodexplorer.html'
@@ -19,8 +19,8 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
         $scope.sparql_log = SparqlLogService.logs;
     }])
 
-.controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService', 'SparqlLogService',
-    function($scope, OlMap, $http, InfoPanelService, SparqlLogService) {
+.controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService', 'SparqlLogService', 'ToolbarService',
+    function($scope, OlMap, $http, InfoPanelService, SparqlLogService, ToolbarService) {
         var map = OlMap.map;
         $scope.loading = false;
         $scope.sparql_log = [];
@@ -87,7 +87,7 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query'])
                     name: "Value",
                     value: e.element.get("data_value")
                 });
-            $("#collapseInfo").addClass("in");
+            ToolbarService.setMainPanel("info");
             InfoPanelService.setAttributes(attributes);
         });
         map.addInteraction(selector);

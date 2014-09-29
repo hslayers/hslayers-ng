@@ -9,9 +9,11 @@ angular.module('hs', [
     'hs.search',
     'hs.print',
     'hs.permalink',
-    'hs.lodexplorer'
-]).controller('Main', ['$scope',
-    function($scope) {
+    'hs.lodexplorer',
+    'hs.toolbar'
+]).controller('Main', ['$scope', 'ToolbarService',
+    function($scope, ToolbarService) {
        console.log("Main called");
+       $scope.ToolbarService = ToolbarService;
     }
 ]);;

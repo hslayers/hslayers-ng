@@ -15,17 +15,16 @@
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
+    <div toolbar ng-controller="Toolbar"></div>
 
-  <div class="panel-group" id="accordion">
-    <div class="panel panel-default" layer-manager ng-controller="LayerManager"></div>
-    <div class="panel panel-default" ows ng-controller="Ows"></div>
-    <div class="panel panel-default" lod-explorer ng-controller="LodExplorer"></div>
-    <div class="panel panel-default" printdialog ng-controller="Print"></div>
-  </div>
+    <div layer-manager ng-controller="LayerManager" ng-show="ToolbarService.mainpanel=='layermanager'"></div>
+    <div ows ng-controller="Ows" ng-show="ToolbarService.mainpanel=='ows'"></div>
+    <div lod-explorer ng-controller="LodExplorer" ng-show="ToolbarService.mainpanel=='lodexplorer'"></div>
+    <div printdialog ng-controller="Print" ng-show="ToolbarService.mainpanel=='print'"></div>
 
   <div permalinkdialog ng-controller="Permalink"></div>
 
-  <div class="panel infopanel" id="infopanel" infopanel ng-controller="Query">
+  <div id="infopanel" infopanel ng-controller="Query"  ng-show="ToolbarService.mainpanel=='info'">
      
   </div>
 
@@ -45,16 +44,17 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="js/components/map/map.js"></script> 
+<script src="js/components/toolbar/toolbar.js"></script>
     <script src="js/components/layermanager/layermanager.js"></script>
     <script src="js/components/query/query.js"></script>
-    <script src="js/components/lodexplorer/lodexplorer.js"></script>    
+        <script src="js/components/lodexplorer/lodexplorer.js"></script>    
     <script src="js/components/ows/ows.js"></script>
     <script src="js/components/ows/ows_wms.js"></script>
     <script src="js/components/ows/ows_nonwms.js"></script>  
     <script src="js/components/print/print.js"></script>
     <script src="js/components/permalink/permalink.js"></script>
     <script src="js/components/search/search.js"></script>
-    
+
     <script src="js/app.js"></script>
 </body>
 </html>

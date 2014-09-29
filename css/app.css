@@ -30,28 +30,27 @@
 }
 
 
-#accordion {
+.mainpanel {
   position: absolute;
-  left: 5px;
+  left: 46px;
   width: 400px;
   z-index: 1000;
-  height: 50%;
+  top: 6px;
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
+#toolbar {
+  position: absolute;
+  left: 3px;
+  width: 42px;
+  z-index: 1000;
   top: 5px;
 }
 
 #map {
   height: 100%;
   width: 100%;
-}
-
-.infopanel {
-  position: absolute;
-  left: 5px;
-  width: 400px;
-  max-height: 40%;
-  z-index: 1000;
-  bottom: 5px;
-  overflow-y: scroll;
 }
 
 .modal-backdrop{visibility:hidden}
@@ -86,7 +85,7 @@ hr {
 
 #search_address {
     position: absolute;
-    left: 409px;
+    left: 50%;
     top: 5px;
     z-index: 1000;
     width: 200px;
@@ -99,3 +98,5 @@ hr {
     z-index: 1000;
     min-width: 200px;
 }
+
+#toolbar button {margin: 1px;}
