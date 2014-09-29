@@ -140,7 +140,9 @@ angular.module('hs.measure', ['hs.map', 'hs.toolbar'])
                 $(map.getViewport()).on('mousemove', mouseMoveHandler);
                 addInteraction();
             } else {
+                $(map.getViewport()).off('mousemove');
                 map.removeInteraction(draw);
+                map.removeLayer(vector);
             }
         });
         
