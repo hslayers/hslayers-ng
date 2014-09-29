@@ -1,0 +1,25 @@
+<div id="toolbar">
+    <button type="button" class="btn btn-default" title="Hide panel and toolbar" ng-click="ToolbarService.setMainPanel('')">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+    </button>
+
+    <button type="button" class="btn btn-default" title="Layer manager" ng-click="ToolbarService.setMainPanel('layermanager')">
+        <span class="glyphicon glyphicon-tasks"></span>
+    </button>
+
+    <button type="button" class="btn btn-default" title="Catalogue">
+        <span class="glyphicon glyphicon-cloud-download" ng-click="ToolbarService.setMainPanel('ows')"></span>
+    </button>
+
+    <button type="button" class="btn btn-default"  title="Query information and other" ng-click="ToolbarService.setMainPanel('info')">
+        <span class="glyphicon glyphicon-info-sign"></span>
+    </button>
+
+    <button type="button" class="btn btn-default"  title="Eurostat data explorer" ng-click="ToolbarService.setMainPanel('lodexplorer')">
+        <span class="glyphicon glyphicon-eye-open"></span>
+    </button>
+
+    <button type="button" class="btn btn-default" title="Print" ng-click="ToolbarService.setMainPanel('print')">
+        <span class="glyphicon glyphicon-print"></span>
+    </button>
+</div>

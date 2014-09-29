@@ -1,0 +1,19 @@
+<div class="panel-heading">
+	<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseLayerManager">Layer manager</a></h4>
+</div>
+<div id="collapseLayerManager" class="panel-collapse collapse in">
+	<div class="panel-body">
+		<p><input type="text" class="form-control" placeholder="Filter:" ng-model="query"></p>
+		<ul class="list-group">
+		      <a href="#" ng-repeat="layer in layers | filter:query" class="list-group-item">{{layer.title}}</a>
+		</ul>
+		<div class="btn-group" data-toggle="buttons">
+		  <label class="btn btn-default active">
+		    <input type="radio" name="options" id="option1" checked> Logical order
+		  </label>
+		  <label class="btn btn-default">
+		    <input type="radio" name="options" id="option2"> Physical order
+		  </label>
+		</div>
+	</div>
+</div>
