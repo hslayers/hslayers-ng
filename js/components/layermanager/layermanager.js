@@ -23,15 +23,13 @@ angular.module('hs.layermanager', ['hs.map'])
                 }
             }
         };
+        for(var lyr in OlMap.map.getLayers().array_){
+            $scope.layerAdded({element:OlMap.map.getLayers().array_[lyr]});
+        }
         $scope.changeLayerVisibility = function($event, layer){
                 layer.layer.setVisible($event.target.checked);
         }
         $scope.map.getLayers().on("add", $scope.layerAdded);
         $scope.map.getLayers().on("remove", $scope.layerRemoved);
-        var lyr = new ol.layer.Tile({
-            source: new ol.source.OSM(),
-            title: "Base layer"
-        });
-        $scope.map.addLayer(lyr);
     }
 ]);

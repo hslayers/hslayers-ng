@@ -16,12 +16,13 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
     <div toolbar ng-controller="Toolbar"></div>
+    <div map ng-controller="Map" id="map"></div>
 
     <div layer-manager ng-controller="LayerManager" ng-show="ToolbarService.mainpanel=='layermanager'"></div>
     <div ows ng-controller="Ows" ng-show="ToolbarService.mainpanel=='ows'"></div>
     <div lod-explorer ng-controller="LodExplorer" ng-show="ToolbarService.mainpanel=='lodexplorer'"></div>
     <div printdialog ng-controller="Print" ng-show="ToolbarService.mainpanel=='print'"></div>
-
+ 
   <div permalinkdialog ng-controller="Permalink"></div>
 
   <div id="infopanel" infopanel ng-controller="Query"  ng-show="ToolbarService.mainpanel=='info'">
@@ -32,7 +33,7 @@
   <div searchresults ng-controller="Search"></div>
 
   <div sparql-log-dialog  ng-controller="SparqlLogDialog"></div> 
-  <div map ng-controller="Map" id="map"><div>
+  
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
@@ -50,6 +51,7 @@
         <script src="js/components/lodexplorer/lodexplorer.js"></script>    
     <script src="js/components/ows/ows.js"></script>
     <script src="js/components/ows/ows_wms.js"></script>
+    <script src="js/components/ows/ows_wmsprioritized.js"></script>
     <script src="js/components/ows/ows_nonwms.js"></script>  
     <script src="js/components/print/print.js"></script>
     <script src="js/components/permalink/permalink.js"></script>

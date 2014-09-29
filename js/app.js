@@ -11,9 +11,14 @@ angular.module('hs', [
     'hs.permalink',
     'hs.lodexplorer',
     'hs.toolbar'
-]).controller('Main', ['$scope', 'ToolbarService',
+])
+
+.value('default_layers', [
+        new ol.layer.Tile({source: new ol.source.OSM(), title: "Base layer"})
+
+.controller('Main', ['$scope', 'ToolbarService',
     function($scope, ToolbarService) {
        console.log("Main called");
        $scope.ToolbarService = ToolbarService;
     }
-]);;
+]);

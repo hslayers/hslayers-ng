@@ -36,7 +36,14 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar
         }, {
             url: "http://eurostat.linked-statistics.org/data/hlth_rs_prsrg.rdf",
             name: "Health personnel by NUTS 2 regions"
-        }]
+        }, {
+            url: "http://eurostat.linked-statistics.org/data/ef_kvftreg.rdf",
+            name: "Key variables: area, livestock (LSU), labour force and standard output (SO) by type of farming (2-digit)"
+        }
+          
+          
+          
+        ]
         $scope.groupings = [];
 
         var styleFunction = function(feature, resolution) {
@@ -233,7 +240,7 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar
             lyr.source_.forEachFeature(function(feature) {
                 feature.opacity = dic[feature.values_.nuts_id] ? (dic[feature.values_.nuts_id] - min) / (max - min) : Number.MIN_VALUE;
             })
-            lyr.dispatchChangeEvent();
+            lyr.changed();
             $scope.loading = false;
         }
     }
