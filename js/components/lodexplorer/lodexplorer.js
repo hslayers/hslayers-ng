@@ -75,7 +75,6 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar
             }),
             style: styleFunction
         });
-        map.addLayer(lyr);
 
         var selector = new ol.interaction.Select({
             condition: ol.events.condition.click
@@ -98,7 +97,7 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar
             ToolbarService.setMainPanel("info");
             InfoPanelService.setAttributes(attributes);
         });
-        map.addInteraction(selector);
+        
 
 
         $scope.sourceChosen = function() {
@@ -244,6 +243,16 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar
             lyr.changed();
             $scope.loading = false;
         }
+        
+        $scope.$on( 'toolbar.mainpanel_changed', function( event ) {
+            if(ToolbarService.mainpanel=='lodexplorer'){
+                map.addLayer(lyr);
+                map.addInteraction(selector);
+            } else if(ToolbarService.mainpanel!='info'){
+                map.removeLayer(lyr);
+                map.removeInteraction(selector);
+            }
+        });
     }
 ]);
 
