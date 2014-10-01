@@ -33,15 +33,13 @@ angular.module('hs.query', ['hs.map', 'hs.toolbar'])
         $scope.groups = [];
         $scope.myname = "shady";
         
-        var pretyCoords = function(c){
-            return c[0].toFixed(7)+", "+c[1].toFixed(7);
-        }
-        
         map.on('singleclick', function(evt) {
             if(ToolbarService.mainpanel == 'measure') return;
             $scope.groups = [];
             $scope.attributes = [];
-            $scope.groups.push({name:"Coordinates", attributes:[{"name":"EPSG:4326", "value":pretyCoords(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'))}, {"name":"EPSG:3857", "value":pretyCoords(evt.coordinate)}]})
+            $scope.groups.push({name:"Coordinates", attributes:[
+                {"name":"EPSG:4326", "value":ol.coordinate.toStringHDMS(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'))}, 
+                {"name":"EPSG:3857", "value":ol.coordinate.createStringXY(7)(evt.coordinate)}]})
             map.getLayers().forEach(function(layer){queryLayer(layer, evt)});
         });
                   
