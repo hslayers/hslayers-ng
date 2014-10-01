@@ -15,6 +15,7 @@ angular.module('hs.query', ['hs.map', 'hs.toolbar'])
         function($rootScope) {
             var me = {
                 attributes:[],
+                groups: [],
                 setAttributes : function(j) {
                     me.attributes = j; 
                     $rootScope.$broadcast( 'infopanel.updated' );
@@ -29,10 +30,18 @@ angular.module('hs.query', ['hs.map', 'hs.toolbar'])
     function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, ToolbarService) {
         var map = OlMap.map;
         $scope.attributes = [];
+        $scope.groups = [];
         $scope.myname = "shady";
+        
+        var pretyCoords = function(c){
+            return c[0].toFixed(7)+", "+c[1].toFixed(7);
+        }
         
         map.on('singleclick', function(evt) {
             if(ToolbarService.mainpanel == 'measure') return;
+            $scope.groups = [];
+            $scope.attributes = [];
+            $scope.groups.push({name:"Coordinates", attributes:[{"name":"EPSG:4326", "value":pretyCoords(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'))}, {"name":"EPSG:3857", "value":pretyCoords(evt.coordinate)}]})
             map.getLayers().forEach(function(layer){queryLayer(layer, evt)});
         });
                   
@@ -64,15 +73,19 @@ angular.module('hs.query', ['hs.map', 'hs.toolbar'])
             for(var feature in json.FeatureCollection.featureMember){
                 if(feature == "__prefix") continue;
                 feature = json.FeatureCollection.featureMember[feature];
+                var group = {name:"Feature", attributes:[]};
+                
                 for(var attribute in feature){
                     if(feature[attribute].__text)
-                        $scope.attributes.push({"name":attribute, "value":feature[attribute].__text});
+                        group.attributes.push({"name":attribute, "value":feature[attribute].__text});
                 }
+                $scope.groups.push(group);
             }
         }
         
          $scope.$on( 'infopanel.updated', function( event ) {
             $scope.attributes = InfoPanelService.attributes;
+            $scope.groups = InfoPanelService.groups;
             $scope.$apply();
          });
                
