@@ -11,7 +11,8 @@ angular.module('hs', [
     'hs.permalink',
     'hs.lodexplorer',
     'hs.toolbar',
-    'hs.measure'
+    'hs.measure',
+    'hs.legend'
 ])
 
 .value('default_layers', [
