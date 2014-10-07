@@ -19,6 +19,7 @@
     <div map ng-controller="Map" id="map"></div>
 
     <div layer-manager ng-controller="LayerManager" ng-show="ToolbarService.mainpanel=='layermanager'"></div>
+    <div legend ng-controller="Legend" ng-show="ToolbarService.mainpanel=='legend'"></div>
     <div ows ng-controller="Ows" ng-show="ToolbarService.mainpanel=='ows'"></div>
     <div lod-explorer ng-controller="LodExplorer" ng-show="ToolbarService.mainpanel=='lodexplorer'"></div>
     <div measure ng-controller="Measure" ng-show="ToolbarService.mainpanel=='measure'"></div>
@@ -59,6 +60,7 @@
     <script src="js/components/permalink/permalink.js"></script>
     <script src="js/components/search/search.js"></script>
     <script src="js/components/measure/measure.js"></script>
+    <script src="js/components/legend/legend.js"></script>
 
     <script src="js/app.js"></script>
 </body>
