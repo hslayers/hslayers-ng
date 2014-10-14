@@ -1,7 +1,7 @@
 var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar'])
     .directive('lodExplorer', function() {
         return {
-            templateUrl: 'js/components/lodexplorer/partials/lodexplorer.html'
+            templateUrl: 'components/lodexplorer/partials/lodexplorer.html'
         };
     }).service("SparqlLogService", [
         function() {
@@ -12,7 +12,7 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar
         }
     ]).directive('sparqlLogDialog', function() {
         return {
-            templateUrl: 'js/components/lodexplorer/partials/sparqllogdialog.html',
+            templateUrl: 'components/lodexplorer/partials/sparqllogdialog.html',
         };
     }).controller('SparqlLogDialog', ['$scope', 'SparqlLogService',
     function($scope, SparqlLogService) {
@@ -71,7 +71,7 @@ var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar
         var lyr = new ol.layer.Vector({
             title: "Nuts regions",
             source: new ol.source.GeoJSON({
-                url: 'js/components/lodexplorer/nuts2.geojson'
+                url: 'components/lodexplorer/nuts2.geojson'
             }),
             style: styleFunction
         });

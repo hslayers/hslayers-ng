@@ -1,7 +1,7 @@
 angular.module('hs.legend', ['hs.map'])
     .directive('legend', function() {
         return {
-            templateUrl: 'js/components/legend/partials/legend.html'
+            templateUrl: 'components/legend/partials/legend.html'
         };
     })
 

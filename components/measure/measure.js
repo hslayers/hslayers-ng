@@ -1,7 +1,7 @@
 angular.module('hs.measure', ['hs.map', 'hs.toolbar'])
     .directive('measure', function() {
         return {
-            templateUrl: 'js/components/measure/partials/measure.html'
+            templateUrl: 'components/measure/partials/measure.html'
         };
     })
 

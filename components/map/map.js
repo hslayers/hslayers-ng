@@ -12,7 +12,7 @@ angular.module('hs.map', ['hs'])
 
 .directive('map', function() {
     return {
-        templateUrl: 'js/components/map/partials/map.html'
+        templateUrl: 'components/map/partials/map.html'
     };
 })
 

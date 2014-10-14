@@ -1,7 +1,7 @@
 angular.module('hs.print', [])
     .directive('printdialog', function() {
         return {
-            templateUrl: 'js/components/print/partials/printdialog.html'
+            templateUrl: 'components/print/partials/printdialog.html'
         };
     })
 

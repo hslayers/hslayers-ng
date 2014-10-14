@@ -1,12 +1,12 @@
 angular.module('hs.search', ['hs.map'])
     .directive('searchinput', function() {
         return {
-            templateUrl: 'js/components/search/partials/searchinput.html',
+            templateUrl: 'components/search/partials/searchinput.html',
             replace: true
         };
     }).directive('searchresults', function() {
         return {
-            templateUrl: 'js/components/search/partials/searchresults.html',
+            templateUrl: 'components/search/partials/searchresults.html',
             replace: true
         };
     }).service("SearchService", ['$http',

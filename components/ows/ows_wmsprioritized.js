@@ -23,12 +23,12 @@ angular.module('hs.ows.wmsprioritized', [])
               {title:"arts_centre", priority:1}
             ];
             $scope.add = function(){
-                $http.get("http://ha.isaf2014.info/wwwlibs/create_prio_mapfile.php?priorities="+window.escape(JSON.stringify($scope.amenities))).success(function(){
+                $http.get("/wwwlibs/create_prio_mapfile.php?priorities="+window.escape(JSON.stringify($scope.amenities))).success(function(){
                     if($scope.prio_layer) OlMap.map.removeLayer($scope.prio_layer);
                     $scope.prio_layer = new ol.layer.Tile({
                         title: "Weighted wms",
                         source: new ol.source.TileWMS({
-                            url: "http://ha.isaf2014.info/cgi-bin/mapserv?map=/data/www/wwwlibs/here.map",
+                            url: "/cgi-bin/mapserv?map=/data/www/wwwlibs/here.map",
                             params: {
                                 LAYERS: "osm_amenitypoint",
                                 INFO_FORMAT: undefined,

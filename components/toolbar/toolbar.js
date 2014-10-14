@@ -1,7 +1,7 @@
 angular.module('hs.toolbar', ['hs.map'])
     .directive('toolbar', function() {
         return {
-            templateUrl: 'js/components/toolbar/partials/toolbar.html'
+            templateUrl: 'components/toolbar/partials/toolbar.html'
         };
     }).service("ToolbarService", ['$rootScope',
         function($rootScope) {
