@@ -1,6 +1,7 @@
 angular.module('hs.ows.wmsprioritized', [])
     .controller('OwsWmsPrioritized', ['$scope', 'OlMap', '$http',
         function($scope, OlMap, $http) {
+            $scope.prio_layer = null;
             $scope.amenities = [{title:"restaurant", priority:1}, {title:"club", priority:1},
               {title:"bar", priority:1},
               {title:"cafe", priority:1},
@@ -23,19 +24,20 @@ angular.module('hs.ows.wmsprioritized', [])
             ];
             $scope.add = function(){
                 $http.get("http://ha.isaf2014.info/wwwlibs/create_prio_mapfile.php?priorities="+window.escape(JSON.stringify($scope.amenities))).success(function(){
-                var new_layer = new ol.layer.Tile({
-                    title: "Weighted wms",
-                    source: new ol.source.TileWMS({
-                        url: "http://ha.isaf2014.info/cgi-bin/mapserv?map=/data/www/wwwlibs/here.map",
-                        params: {
-                            LAYERS: "osm_amenitypoint",
-                            INFO_FORMAT: undefined,
-                        },
-                    })
-                });
+                    if($scope.prio_layer) OlMap.map.removeLayer($scope.prio_layer);
+                    $scope.prio_layer = new ol.layer.Tile({
+                        title: "Weighted wms",
+                        source: new ol.source.TileWMS({
+                            url: "http://ha.isaf2014.info/cgi-bin/mapserv?map=/data/www/wwwlibs/here.map",
+                            params: {
+                                LAYERS: "osm_amenitypoint",
+                                INFO_FORMAT: undefined,
+                                r: Math.random()
+                            },
+                        })
+                    });
 
-                OlMap.map.addLayer(new_layer);
-                  
+                    OlMap.map.addLayer($scope.prio_layer);
                 }
                 );
                                 
