@@ -3,8 +3,11 @@
     <div class="panel-body">
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
         <ul class="list-group">
-                <li ng-repeat="layer in layers | filter:query" class="list-group-item">{{layer.title}}
+                <li ng-repeat="layer in layers | filter:query" class="list-group-item">
+                <a href="#">{{layer.title}}</a>
+                <a href="#" class="layer-more"><i class="fa fa-arrow-circle-o-right"></i></a>
                 <input type="checkbox" class="form-control layer-checked" ng-checked="layer.layer.getVisible" ng-click="changeLayerVisibility($event, layer)" />
+                
                 </li>
         </ul>
 <!--

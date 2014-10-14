@@ -62,11 +62,21 @@ hr {
     margin-top: 0px;
     margin-bottom: 5px;
 }
-.layer-checked{
+.layer-checked, .layer-more{
     width: 20px;
     height: 21px;
     float:right;
+    font-size: 19pt;
 }
+
+.layer-more{
+    display: none;
+    margin-top: -3px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+    
+
 .ol-zoomslider, .ol-zoom {
     right: .5em;
     left: auto;
@@ -101,4 +111,4 @@ hr {
 }
 
 #toolbar button {margin: 1px;}
-.legend-toolbtn {width: 14px; height: 14px}
+#toolbar span, #toolbar i {width: 14px; height: 14px}
