@@ -12,57 +12,10 @@
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
-<body ng-controller="Main">
-  <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  <![endif]-->
-    <div toolbar ng-controller="Toolbar"></div>
-    <div map ng-controller="Map" id="map"></div>
-
-    <div layer-manager ng-controller="LayerManager" ng-show="ToolbarService.mainpanel=='layermanager'"></div>
-    <div legend ng-controller="Legend" ng-show="ToolbarService.mainpanel=='legend'"></div>
-    <div ows ng-controller="Ows" ng-show="ToolbarService.mainpanel=='ows'"></div>
-    <div lod-explorer ng-controller="LodExplorer" ng-show="ToolbarService.mainpanel=='lodexplorer'"></div>
-    <div measure ng-controller="Measure" ng-show="ToolbarService.mainpanel=='measure'"></div>
-    
-    <div printdialog ng-controller="Print" ng-show="ToolbarService.mainpanel=='print'"></div>
- 
-    <div permalinkdialog ng-controller="Permalink"></div>
-
-  <div id="infopanel" infopanel ng-controller="Query"  ng-show="ToolbarService.mainpanel=='info'">
-     
-  </div>
-
-  <div searchinput ng-controller="Search"></div>
-  <div searchresults ng-controller="Search"></div>
-
-  <div sparql-log-dialog  ng-controller="SparqlLogDialog"></div> 
-  
-
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-  -->
+<body >
+    <div hs ng-controller="Main" style="position: relative;"></div>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="lib/xml2json.min.js"></script>
-    <script src="http://ol3js.org/en/master/build/ol-debug.js" type="text/javascript"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="components/map/map.js"></script> 
-    <script src="components/toolbar/toolbar.js"></script>
-    <script src="components/layermanager/layermanager.js"></script>
-    <script src="components/query/query.js"></script>
-    <script src="components/lodexplorer/lodexplorer.js"></script>    
-    <script src="components/ows/ows.js"></script>
-    <script src="components/ows/ows_wms.js"></script>
-    <script src="components/ows/ows_wmsprioritized.js"></script>
-    <script src="components/ows/ows_nonwms.js"></script>  
-    <script src="components/print/print.js"></script>
-    <script src="components/permalink/permalink.js"></script>
-    <script src="components/search/search.js"></script>
-    <script src="components/measure/measure.js"></script>
-    <script src="components/legend/legend.js"></script>
-
-    <script src="app.js"></script>
+    <script src="lib/require.js"></script>    
+    <script src="hslayers.js"></script> 
 </body>
 </html>

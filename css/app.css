@@ -41,11 +41,10 @@
 }
 
 #toolbar {
-  position: absolute;
-  left: 3px;
-  width: 42px;
-  z-index: 1000;
-  top: 5px;
+    left: 3px;
+    width: 42px;
+    position: absolute;
+    top: 3px;
 }
 
 #map {
@@ -94,21 +93,20 @@ hr {
     right: auto;
 }
 
+.search-container {
+       
+    
+}
 #search_address {
+    width: 200px;
     position: absolute;
     left: 50%;
     top: 5px;
-    z-index: 1000;
-    width: 200px;
 }
 
 #searchresults {
-    position: absolute;
-    left: 409px;
-    top: 44px;
-    z-index: 1000;
     min-width: 200px;
 }
 
-#toolbar button {margin: 1px;}
+#toolbar button {margin: 1px; position: relative;}
 #toolbar span, #toolbar i {width: 14px; height: 14px}

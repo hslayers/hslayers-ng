@@ -1,26 +1,42 @@
 'use strict';
 
-angular.module('hs', [
-    'ngRoute',
-    'hs.layermanager',
-    'hs.map',
-    'hs.ows',
-    'hs.query',
-    'hs.search',
-    'hs.print',
-    'hs.permalink',
-    'hs.lodexplorer',
-    'hs.toolbar',
-    'hs.measure',
-    'hs.legend'
-])
+define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend'], 
 
-.value('default_layers', [
-        new ol.layer.Tile({source: new ol.source.OSM(), title: "Base layer"})])
+function (angular, toolbar, oj, layermanager) {
+    var module =  angular.module('hs', [
+            'hs.toolbar',
+            'hs.layermanager',
+            'hs.map',
+            'hs.ows',
+            'hs.query',
+            'hs.search',
+            'hs.print',
+            'hs.permalink',
+            'hs.lodexplorer',
+            'hs.measure',
+            'hs.legend'
+    ]);
+    
+    module.directive('hs', function() {
+        return {
+            templateUrl: 'hslayers.html'
+        };
+    });
 
-.controller('Main', ['$scope', 'ToolbarService',
-    function($scope, ToolbarService) {
-       console.log("Main called");
-       $scope.ToolbarService = ToolbarService;
-    }
-])
+    module.value('default_layers', [
+            new ol.layer.Tile({source: new ol.source.OSM(), title: "Base layer"})])
+
+    module.controller('Main', ['$scope', 'ToolbarService',
+        function($scope, ToolbarService) {
+            console.log("Main called");
+            $scope.ToolbarService = ToolbarService;
+        }
+    ]) ;
+    
+    return module;
+});
+
+
+
+  
+    
