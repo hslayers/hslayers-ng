@@ -1,4 +1,7 @@
-angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.ows.wmsprioritized', 'hs.map'])
+define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'], 
+       
+       function (angular) {
+           angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
     .directive('ows', function() {
         return {
             templateUrl: 'components/ows/partials/ows.html'
@@ -59,3 +62,4 @@ angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.ows.wmspr
             };
         }
     ]);
+       })

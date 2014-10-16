@@ -1,4 +1,7 @@
-angular.module('hs.ows.wms', [])
+define(['angular', 'xml2json'], 
+       
+       function (angular) {
+    angular.module('hs.ows.wms', [])
     //This is used to share map object between components.
     .service("OwsWmsCapabilities", ['$http',
         function($http) {
@@ -259,3 +262,4 @@ angular.module('hs.ows.wms', [])
             }
         }
     ]);
+       })

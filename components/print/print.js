@@ -1,3 +1,6 @@
+define(['angular'], 
+       
+       function (angular) {
 angular.module('hs.print', [])
     .directive('printdialog', function() {
         return {
@@ -24,3 +27,4 @@ angular.module('hs.print', [])
         }
     }
 ]);
+       })

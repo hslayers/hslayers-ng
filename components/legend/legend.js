@@ -1,4 +1,7 @@
-angular.module('hs.legend', ['hs.map'])
+define(['angular', 'map'], 
+       
+       function (angular) {
+        angular.module('hs.legend', ['hs.map'])
     .directive('legend', function() {
         return {
             templateUrl: 'components/legend/partials/legend.html'
@@ -37,3 +40,5 @@ angular.module('hs.legend', ['hs.map'])
         $scope.map.getLayers().on("remove", $scope.layerRemoved);
     }
 ]);
+
+       });

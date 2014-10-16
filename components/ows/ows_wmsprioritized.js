@@ -1,3 +1,6 @@
+define(['angular'], 
+       
+       function (angular) {
 angular.module('hs.ows.wmsprioritized', [])
     .controller('OwsWmsPrioritized', ['$scope', 'OlMap', '$http',
         function($scope, OlMap, $http) {
@@ -51,3 +54,4 @@ angular.module('hs.ows.wmsprioritized', [])
             }
         }
     ]);
+       })

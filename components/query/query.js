@@ -1,3 +1,6 @@
+define(['angular', 'map', 'toolbar'], 
+       
+       function (angular) {
 angular.module('hs.query', ['hs.map', 'hs.toolbar'])
     .directive('infopanel', function() {
         return {
@@ -89,3 +92,4 @@ angular.module('hs.query', ['hs.map', 'hs.toolbar'])
                
     }
 ]);
+       })

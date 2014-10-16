@@ -1,4 +1,7 @@
-angular.module('hs.ows.nonwms', [])
+define(['angular'], 
+       
+       function (angular) {
+    angular.module('hs.ows.nonwms', [])
     .controller('OwsNonWms', ['$scope', 'OlMap',
         function($scope, OlMap) {
             $scope.srs = 'EPSG:3857';
@@ -30,3 +33,4 @@ angular.module('hs.ows.nonwms', [])
 
         }
     ]);
+})

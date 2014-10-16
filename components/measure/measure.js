@@ -1,3 +1,6 @@
+define(['angular', 'map', 'toolbar'], 
+       
+       function (angular) {
 angular.module('hs.measure', ['hs.map', 'hs.toolbar'])
     .directive('measure', function() {
         return {
@@ -155,3 +158,4 @@ angular.module('hs.measure', ['hs.map', 'hs.toolbar'])
        
     }
 ]);
+       })

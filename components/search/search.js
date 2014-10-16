@@ -1,3 +1,6 @@
+define(['angular', 'map'], 
+       
+       function (angular) {
 angular.module('hs.search', ['hs.map'])
     .directive('searchinput', function() {
         return {
@@ -48,3 +51,4 @@ angular.module('hs.search', ['hs.map'])
         }
     }
 ]);
+       })

@@ -1,4 +1,7 @@
-angular.module('hs.permalink', [])
+define(['angular'], 
+       
+       function (angular) {
+      angular.module('hs.permalink', [])
    /* .directive('permalinkdialog', function() {
         return {
             templateUrl: 'js/components/permalink/partials/permalinkdialog.html'
@@ -15,3 +18,4 @@ angular.module('hs.permalink', [])
 
     }
 ]);
+       })
