@@ -30,6 +30,10 @@ define(['angular', 'map'], function (angular) {
             $scope.changeLayerVisibility = function($event, layer){
                     layer.layer.setVisible($event.target.checked);
             }
+            $scope.setCurrentLayer = function(layer){
+                $scope.currentlayer = layer;
+                if (console) console.log(layer);
+            }
             $scope.map.getLayers().on("add", $scope.layerAdded);
             $scope.map.getLayers().on("remove", $scope.layerRemoved);
         }

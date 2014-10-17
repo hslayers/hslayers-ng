@@ -235,12 +235,13 @@ define(['angular', 'xml2json'],
                         attributions: [new ol.Attribution({
                             html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
                         })],
-                        metadataURL: "", // TODO is provided by getFeatureInfo
                         params: {
                             LAYERS: layer.Name,
                             INFO_FORMAT: (layer.queryable ? queryFormat : undefined),
                         },
-                    })
+                    }),
+                    abstract: layer.Abstract,
+                    metadataURL: layer.MetadataURL[0].OnlineResource, 
                 });
 
                 OlMap.map.addLayer(new_layer);

@@ -4,10 +4,9 @@
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
         <ul class="list-group">
                 <li ng-repeat="layer in layers | filter:query" class="list-group-item">
-                <a href="#">{{layer.title}}</a>
-                <a href="#" class="layer-more"><i class="fa fa-arrow-circle-o-right"></i></a>
-                <input type="checkbox" class="form-control layer-checked" ng-checked="layer.layer.getVisible" ng-click="changeLayerVisibility($event, layer)" />
-                
+                    <a href="#" ng-click="setCurrentLayer(layer)">{{layer.title}}</a>
+                    <a href="#" class="layer-more"><i class="fa fa-arrow-circle-o-right"></i></a>
+                    <input type="checkbox" class="form-control layer-checked" ng-checked="layer.layer.getVisible" ng-click="changeLayerVisibility($event, layer)" />
                 </li>
         </ul>
 <!--
@@ -19,5 +18,30 @@
             <input type="radio" name="options" id="option2"> Physical order
             </label>
         </div> -->
+    </div>
+</div>
+
+<div class="panel panel-default layerpanel" ng-show="currentlayer">
+    <div class="panel-heading">
+        {{currentlayer.title}}
+        <button type="button" class="close" ng-click="currentlayer=null">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <form>
+        <div class="form-group">
+            <label>Opacity: </label>
+            <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="currentlayer.layer.values_.opacity" ng-change="currentlayer.layer.setOpacity(currentlayer.layer.values_.opacity)"/>
+ 
+        </div>
+        <div class="form-group" ng-show="currentlayer.layer.values_.abstract ? true : false">
+            <label>Abstract:</label>
+            <p>
+                {{currentlayer.layer.values_.abstract}}
+            </p>
+        </div>
+        </form>
     </div>
 </div>
