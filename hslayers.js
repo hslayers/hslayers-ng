@@ -19,6 +19,7 @@ require.config({
                lodexplorer: 'components/lodexplorer/lodexplorer', 
                measure: 'components/measure/measure', 
                legend: 'components/legend/legend',
+               app: 'app',
                xml2json:'lib/xml2json.min'
         },
         shim: {

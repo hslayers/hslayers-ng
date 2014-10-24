@@ -241,7 +241,8 @@ define(['angular', 'xml2json'],
                         },
                     }),
                     abstract: layer.Abstract,
-                    MetadataURL: layer.MetadataURL
+                    MetadataURL: layer.MetadataURL,
+                    BoundingBox: layer.BoundingBox
                 });
 
                 OlMap.map.addLayer(new_layer);

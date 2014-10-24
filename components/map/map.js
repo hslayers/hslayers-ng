@@ -1,15 +1,12 @@
-define(['angular', 'app'], function (angular) {
+define(['angular', 'app', 'permalink'], function (angular) {
     angular.module('hs.map', ['hs'])
         //This is used to share map object between components.
-        .service("OlMap", function() {
+        .service('OlMap', ['default_view', function(default_view) {
             this.map = new ol.Map({
                 target: 'map',
-                view: new ol.View({                                   
-                    center: ol.proj.transform([17.474129,52.574000 ], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-                    zoom: 4
-                })
+                view: default_view
             });
-        })
+        }])
 
     .directive('map', function() {
         return {
@@ -17,11 +14,17 @@ define(['angular', 'app'], function (angular) {
         };
     })
 
-    .controller('Map', ['$scope', 'OlMap', 'default_layers', 
-        function($scope, OlMap, default_layers) {
+    .controller('Map', ['$scope', 'OlMap', 'default_layers', 'default_view', 'BrowserUrlService', 
+        function($scope, OlMap, default_layers, default_view, bus) {
             if(console) console.log("Map loaded");
             for(var lyr in default_layers){
                 OlMap.map.addLayer(default_layers[lyr]);
+            }
+            if(bus.getParamValue('hs_x') && bus.getParamValue('hs_y') && bus.getParamValue('hs_z')){
+                var view = OlMap.map.getView();
+                var loc = location.search;
+                view.setCenter([parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc))]);
+                view.setZoom(parseInt(bus.getParamValue('hs_z', loc))); 
             }
             $scope.map = OlMap.map;
             OlMap.map.setTarget("map");
@@ -32,7 +35,6 @@ define(['angular', 'app'], function (angular) {
                 undefinedHTML: '&nbsp;'
             });
             OlMap.map.addControl(mousePositionControl);
-
         }
     ]);
 })
