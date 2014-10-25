@@ -22,6 +22,10 @@ angular.module('hs.query', ['hs.map', 'hs.toolbar'])
                 setAttributes : function(j) {
                     me.attributes = j; 
                     $rootScope.$broadcast( 'infopanel.updated' );
+                },
+                setGroups : function(j) {
+                    me.groups = j; 
+                    $rootScope.$broadcast( 'infopanel.updated' );
                 }
             };
             
@@ -71,6 +75,7 @@ angular.module('hs.query', ['hs.map', 'hs.toolbar'])
             
             var x2js = new X2JS();
             var json = x2js.xml_str2json( response );
+            var groups = [];
             for(var feature in json.FeatureCollection.featureMember){
                 if(feature == "__prefix") continue;
                 feature = json.FeatureCollection.featureMember[feature];
@@ -80,8 +85,9 @@ angular.module('hs.query', ['hs.map', 'hs.toolbar'])
                     if(feature[attribute].__text)
                         group.attributes.push({"name":attribute, "value":feature[attribute].__text});
                 }
-                $scope.groups.push(group);
+                groups.push(group);
             }
+            InfoPanelService.setGroups(groups);
         }
         
          $scope.$on( 'infopanel.updated', function( event ) {
