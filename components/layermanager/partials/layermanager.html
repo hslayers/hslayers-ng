@@ -43,7 +43,7 @@
             </p>
         </div>
         <div class="form-group" ng-show="currentlayer.layer.values_.MetadataURL ? true : false">
-            <b><a ng-repeat="metadata in currentlayer.layer.values_.MetadataURL" href="{{metadata.OnlineResource}}" title="Metadata">Metadata in {{metadata.type}}</a></b>
+            <b><a ng-repeat="metadata in currentlayer.layer.values_.MetadataURL" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">Metadata in {{metadata.type}}</a></b>
         </div>
         <button class="btn btn-default" ng-click="removeLayer(currentlayer.layer)">Remove layer</button>
         </form>
