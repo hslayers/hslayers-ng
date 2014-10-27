@@ -1,4 +1,4 @@
-define(['angular', 'map'], function (angular) {
+define(['angular', 'map'], function(angular) {
     angular.module('hs.layermanager', ['hs.map'])
         .directive('layerManager', function() {
             return {
@@ -24,17 +24,19 @@ define(['angular', 'map'], function (angular) {
                     }
                 }
             };
-            for(var lyr in OlMap.map.getLayers().array_){
-                $scope.layerAdded({element:OlMap.map.getLayers().array_[lyr]});
+            for (var lyr in OlMap.map.getLayers().array_) {
+                $scope.layerAdded({
+                    element: OlMap.map.getLayers().array_[lyr]
+                });
             }
-            $scope.changeLayerVisibility = function($event, layer){
-                    layer.layer.setVisible($event.target.checked);
+            $scope.changeLayerVisibility = function($event, layer) {
+                layer.layer.setVisible($event.target.checked);
             }
-            $scope.setCurrentLayer = function(layer){
+            $scope.setCurrentLayer = function(layer) {
                 $scope.currentlayer = layer;
                 if (console) console.log(layer);
             }
-            $scope.removeLayer = function(layer){
+            $scope.removeLayer = function(layer) {
                 $scope.map.removeLayer(layer);
             }
             $scope.map.getLayers().on("add", $scope.layerAdded);

@@ -74,12 +74,13 @@ define(['angular', 'map'],
                         var new_params_string = me.stringify(params);
                         history.pushState({}, "", window.location.pathname + '?' + new_params_string);
                     };
-                    me.getParamValue = function(param, loc){
-                        if(!loc) loc = location.search;
+                    me.getParamValue = function(param, loc) {
+                        if (!loc) loc = location.search;
                         var tmp = me.parse(loc);
-                        if(tmp[param]) return tmp[param]; else return null;
+                        if (tmp[param]) return tmp[param];
+                        else return null;
                     };
-                    OlMap.map.on('change:view', function(e){
+                    OlMap.map.on('change:view', function(e) {
                         OlMap.map.getView().on('change:center', me.update);
                         OlMap.map.getView().on('change:resolution', me.update);
                     });
@@ -90,7 +91,7 @@ define(['angular', 'map'],
             ])
             .controller('Permalink', ['$scope', 'BrowserUrlService',
                 function($scope, BrowserUrlService) {
-                   
+
                 }
             ]);
     })

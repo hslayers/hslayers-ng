@@ -1,78 +1,78 @@
-define(['angular', 'xml2json'], 
-       
-       function (angular) {
-    angular.module('hs.ows.wms', [])
-    //This is used to share map object between components.
-    .service("OwsWmsCapabilities", ['$http',
-        function($http) {
-            this.requestGetCapabilities = function(service_url) {
-                var url = window.escape(service_url + "?request=GetCapabilities&service=WMS");
-                $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.capabilitiesReceived);
-            };
+define(['angular', 'xml2json'],
 
-        }
-    ])
-    .controller('OwsWms', ['$scope', 'OlMap', 'OwsWmsCapabilities',
-        function($scope, OlMap, OwsWmsCapabilities) {
-            OwsWmsCapabilities.capabilitiesReceived = function(response) {
-                try {
-                    var parser = new ol.format.WMSCapabilities();
-                    $scope.capabilities = parser.read(response);
-                    var caps = $scope.capabilities;
-                    $scope.title = caps.Service.Title;
-                    $scope.description = addAnchors(caps.Service.Abstract);
-                    $scope.version = caps.Version;
-                    $scope.image_formats = caps.Capability.Request.GetMap.Format;
-                    $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
-                    $scope.exceptions = caps.Capability.Exception;
-                    $scope.srss = caps.Capability.Layer.CRS;
-                    $scope.services = caps.Capability.Layer;
-                    $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
-                    $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png", "image/gif", "image/jpeg"]);
-                    $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
-                } catch (e) {
-                    if(console) console.log(e);
-                    /* Ext.MessageBox.show({
-                                title: OpenLayers.i18n('WMS Capabilities parsing problem'),
-                                msg: OpenLayers.i18n('There was error while parsing Capabilities response from given URL')+":<br />\n"+ e,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR});
-                        throw "WMS Capabilities parsing problem";*/
+    function(angular) {
+        angular.module('hs.ows.wms', [])
+            //This is used to share map object between components.
+            .service("OwsWmsCapabilities", ['$http',
+                function($http) {
+                    this.requestGetCapabilities = function(service_url) {
+                        var url = window.escape(service_url + "?request=GetCapabilities&service=WMS");
+                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.capabilitiesReceived);
+                    };
+
                 }
-            }
+            ])
+            .controller('OwsWms', ['$scope', 'OlMap', 'OwsWmsCapabilities',
+                function($scope, OlMap, OwsWmsCapabilities) {
+                    OwsWmsCapabilities.capabilitiesReceived = function(response) {
+                        try {
+                            var parser = new ol.format.WMSCapabilities();
+                            $scope.capabilities = parser.read(response);
+                            var caps = $scope.capabilities;
+                            $scope.title = caps.Service.Title;
+                            $scope.description = addAnchors(caps.Service.Abstract);
+                            $scope.version = caps.Version;
+                            $scope.image_formats = caps.Capability.Request.GetMap.Format;
+                            $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
+                            $scope.exceptions = caps.Capability.Exception;
+                            $scope.srss = caps.Capability.Layer.CRS;
+                            $scope.services = caps.Capability.Layer;
+                            $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
+                            $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png", "image/gif", "image/jpeg"]);
+                            $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
+                        } catch (e) {
+                            if (console) console.log(e);
+                            /* Ext.MessageBox.show({
+                                        title: OpenLayers.i18n('WMS Capabilities parsing problem'),
+                                        msg: OpenLayers.i18n('There was error while parsing Capabilities response from given URL')+":<br />\n"+ e,
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR});
+                                throw "WMS Capabilities parsing problem";*/
+                        }
+                    }
 
-            $scope.addLayers = function(checked) {
-                angular.forEach($scope.services.Layer, function(value, key) {
-                    if (!checked || value.checked)
-                        addLayer(
-                            value,
-                            value.Title.replace(/\//g, "&#47;"),
-                            $scope.folder_name,
-                            $scope.image_format,
-                            $scope.query_format,
-                            $scope.single_tile,
-                            $scope.tile_size,
-                            $scope.srs
-                        );
-                })
-            };
+                    $scope.addLayers = function(checked) {
+                        angular.forEach($scope.services.Layer, function(value, key) {
+                            if (!checked || value.checked)
+                                addLayer(
+                                    value,
+                                    value.Title.replace(/\//g, "&#47;"),
+                                    $scope.folder_name,
+                                    $scope.image_format,
+                                    $scope.query_format,
+                                    $scope.single_tile,
+                                    $scope.tile_size,
+                                    $scope.srs
+                                );
+                        })
+                    };
 
-            /**
-             * add selected layer to map
-             * @param {Object} layer capabilities layer object
-             * @param {String} layerName layer name in the map
-             * @param {String} folder name
-             * @param {String} imageFormat
-             * @param {String} queryFormat
-             * @param {Boolean} singleTile
-             * @param {OpenLayers.Size} tileSize
-             * @param {OpenLayers.Projection} crs of the layer
-             * @function
-             * @name addLayer
-             */
-            var addLayer = function(layer, layerName, folder, imageFormat, queryFormat, singleTile, tileSize, crs) {
-                if(console) console.log(layer);
-                /*
+                    /**
+                     * add selected layer to map
+                     * @param {Object} layer capabilities layer object
+                     * @param {String} layerName layer name in the map
+                     * @param {String} folder name
+                     * @param {String} imageFormat
+                     * @param {String} queryFormat
+                     * @param {Boolean} singleTile
+                     * @param {OpenLayers.Size} tileSize
+                     * @param {OpenLayers.Projection} crs of the layer
+                     * @function
+                     * @name addLayer
+                     */
+                    var addLayer = function(layer, layerName, folder, imageFormat, queryFormat, singleTile, tileSize, crs) {
+                        if (console) console.log(layer);
+                        /*
             var layerCrs = (typeof(OlMap.map.projection) == typeof("") ? OlMap.map.projection.toUpperCase() : OlMap.map.projection.getCode().toUpperCase());
 
             var options = {
@@ -228,40 +228,40 @@ define(['angular', 'xml2json'],
       })],
       params: params,
     }); */
-                var new_layer = new ol.layer.Tile({
-                    title: layerName,
-                    source: new ol.source.TileWMS({
-                        url: $scope.getMapUrl,
-                        attributions: [new ol.Attribution({
-                            html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
-                        })],
-                        params: {
-                            LAYERS: layer.Name,
-                            INFO_FORMAT: (layer.queryable ? queryFormat : undefined),
-                        },
-                    }),
-                    abstract: layer.Abstract,
-                    MetadataURL: layer.MetadataURL,
-                    BoundingBox: layer.BoundingBox
-                });
+                        var new_layer = new ol.layer.Tile({
+                            title: layerName,
+                            source: new ol.source.TileWMS({
+                                url: $scope.getMapUrl,
+                                attributions: [new ol.Attribution({
+                                    html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
+                                })],
+                                params: {
+                                    LAYERS: layer.Name,
+                                    INFO_FORMAT: (layer.queryable ? queryFormat : undefined),
+                                },
+                            }),
+                            abstract: layer.Abstract,
+                            MetadataURL: layer.MetadataURL,
+                            BoundingBox: layer.BoundingBox
+                        });
 
-                OlMap.map.addLayer(new_layer);
-            }
+                        OlMap.map.addLayer(new_layer);
+                    }
 
-            var getPreferedFormat = function(formats, preferedFormats) {
-                for (i = 0; i < preferedFormats.length; i++) {
-                    if (formats.indexOf(preferedFormats[i]) > -1) {
-                        return (preferedFormats[i]);
+                    var getPreferedFormat = function(formats, preferedFormats) {
+                        for (i = 0; i < preferedFormats.length; i++) {
+                            if (formats.indexOf(preferedFormats[i]) > -1) {
+                                return (preferedFormats[i]);
+                            }
+                        }
+                        return formats[0];
+                    }
+
+                    var addAnchors = function(url) {
+                        if (!url) return null;
+                        var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                        return url.replace(exp, "<a href='$1'>$1</a>");
                     }
                 }
-                return formats[0];
-            }
-
-            var addAnchors = function(url) {
-                if (!url) return null;
-                var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                return url.replace(exp, "<a href='$1'>$1</a>");
-            }
-        }
-    ]);
-       })
+            ]);
+    })
