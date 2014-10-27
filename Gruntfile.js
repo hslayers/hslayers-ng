@@ -24,5 +24,6 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.registerTask('default', ['jsbeautifier']);
+    grunt.registerTask('git-pre-commit', ['jsbeautifier']);
 
 };
