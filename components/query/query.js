@@ -17,7 +17,9 @@ define(['angular', 'map', 'toolbar'],
             ]).service("InfoPanelService", ['$rootScope',
                 function($rootScope) {
                     var me = {
+                        //Used for tool specific info, such as lodexplorer region names and values
                         attributes: [],
+                        //Used for getfeatureinfo. There exists a seperate group for each feature which is found at the specific coordinates
                         groups: [],
                         setAttributes: function(j) {
                             me.attributes = j;
@@ -36,15 +38,13 @@ define(['angular', 'map', 'toolbar'],
         .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'ToolbarService',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, ToolbarService) {
                 var map = OlMap.map;
-                $scope.attributes = [];
-                $scope.groups = [];
                 $scope.myname = "shady";
+                $scope.InfoPanelService = InfoPanelService;
 
                 map.on('singleclick', function(evt) {
                     if (ToolbarService.mainpanel == 'measure') return;
-                    $scope.groups = [];
-                    $scope.attributes = [];
-                    $scope.groups.push({
+                    InfoPanelService.groups = [];
+                    InfoPanelService.groups.push({
                         name: "Coordinates",
                         attributes: [{
                             "name": "EPSG:4326",
@@ -84,7 +84,6 @@ define(['angular', 'map', 'toolbar'],
 
                     var x2js = new X2JS();
                     var json = x2js.xml_str2json(response);
-                    var groups = [];
                     for (var feature in json.FeatureCollection.featureMember) {
                         if (feature == "__prefix") continue;
                         feature = json.FeatureCollection.featureMember[feature];
@@ -100,15 +99,13 @@ define(['angular', 'map', 'toolbar'],
                                     "value": feature[attribute].__text
                                 });
                         }
-                        groups.push(group);
+                        InfoPanelService.groups.push(group);
                     }
-                    InfoPanelService.setGroups(groups);
+                    InfoPanelService.setGroups(InfoPanelService.groups);
                 }
 
                 $scope.$on('infopanel.updated', function(event) {
-                    $scope.attributes = InfoPanelService.attributes;
-                    $scope.groups = InfoPanelService.groups;
-                    $scope.$apply();
+                    if(!$scope.$$phase) $scope.$apply();
                 });
 
             }

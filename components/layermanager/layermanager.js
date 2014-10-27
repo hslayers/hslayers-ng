@@ -11,9 +11,12 @@ define(['angular', 'map'], function(angular) {
             $scope.map = OlMap.map;
             $scope.layers = [];
             $scope.layerAdded = function(e) {
-                var sub_layers = e.element.getSource().getParams().LAYERS.split(",");
-                for (var i = 0; i < sub_layers.length; i++) {
-                    sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                var sub_layers;
+                if(e.element.getSource().getParams){ // Legend only for wms layers with params
+                    sub_layers = e.element.getSource().getParams().LAYERS.split(",");
+                    for (var i = 0; i < sub_layers.length; i++) {
+                        sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                    }
                 }
                 $scope.layers.push({
                     title: e.element.get("title"),
