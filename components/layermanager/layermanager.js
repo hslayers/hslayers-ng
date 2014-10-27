@@ -11,9 +11,14 @@ define(['angular', 'map'], function(angular) {
             $scope.map = OlMap.map;
             $scope.layers = [];
             $scope.layerAdded = function(e) {
+                var sub_layers = e.element.getSource().getParams().LAYERS.split(",");
+                for (var i = 0; i < sub_layers.length; i++) {
+                    sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                }
                 $scope.layers.push({
-                    "title": e.element.get("title"),
-                    "layer": e.element
+                    title: e.element.get("title"),
+                    layer: e.element,
+                    sub_layers: sub_layers
                 });
             };
             $scope.layerRemoved = function(e) {
@@ -38,6 +43,10 @@ define(['angular', 'map'], function(angular) {
             }
             $scope.removeLayer = function(layer) {
                 $scope.map.removeLayer(layer);
+            }
+            $scope.zoomToLayer = function(layer) {
+                var extent =  ol.proj.transform(layer.get("BoundingBox")[0].extent, layer.get("BoundingBox")[0].crs, $scope.map.getView().getProjection()); 
+                $scope.map.getView().fitExtent(extent, $scope.map.getSize());
             }
             $scope.map.getLayers().on("add", $scope.layerAdded);
             $scope.map.getLayers().on("remove", $scope.layerRemoved);

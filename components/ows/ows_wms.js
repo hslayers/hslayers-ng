@@ -50,6 +50,7 @@ define(['angular', 'xml2json'],
 
                         var tmp = [];
                         $(service).each(function() {
+                            if(console) console.log("Load service", this);
                             $(this.Layer).each(function() {
                                 layer = this;
                                 var new_layer = new ol.layer.Tile({
@@ -59,10 +60,11 @@ define(['angular', 'xml2json'],
                                         attributions: [new ol.Attribution({
                                             html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
                                         })],
+                                        styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                                         params: {
                                             LAYERS: layer.Name,
-                                            INFO_FORMAT: (layer.queryable ? query_format : undefined),
-                                        },
+                                            INFO_FORMAT: (layer.queryable ? query_format : undefined)
+                                        }
                                     }),
                                     abstract: layer.Abstract,
                                     MetadataURL: layer.MetadataURL,
@@ -309,10 +311,11 @@ define(['angular', 'xml2json'],
                                 attributions: [new ol.Attribution({
                                     html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
                                 })],
+                                styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                                 params: {
                                     LAYERS: layer.Name,
-                                    INFO_FORMAT: (layer.queryable ? query_format : undefined),
-                                },
+                                    INFO_FORMAT: (layer.queryable ? query_format : undefined)
+                                }
                             }),
                             abstract: layer.Abstract,
                             MetadataURL: layer.MetadataURL,
