@@ -35,10 +35,11 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             zoom: 4
         }));
 
-        module.controller('Main', ['$scope', 'ToolbarService',
-            function($scope, ToolbarService) {
-                console.log("Main called");
+        module.controller('Main', ['$scope', 'ToolbarService', 'OwsWmsLayerProducer',
+            function($scope, ToolbarService, OwsWmsLayerProducer) {
+                if (console) console.log("Main called");
                 $scope.ToolbarService = ToolbarService;
+                OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows');
             }
         ]);
 

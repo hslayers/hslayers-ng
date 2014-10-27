@@ -1,20 +1,94 @@
 define(['angular', 'xml2json'],
-
     function(angular) {
+        var getPreferedFormat = function(formats, preferedFormats) {
+            for (i = 0; i < preferedFormats.length; i++) {
+                if (formats.indexOf(preferedFormats[i]) > -1) {
+                    return (preferedFormats[i]);
+                }
+            }
+            return formats[0];
+        }
+
+        var addAnchors = function(url) {
+            if (!url) return null;
+            var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+            return url.replace(exp, "<a href='$1'>$1</a>");
+        }
+
         angular.module('hs.ows.wms', [])
             //This is used to share map object between components.
             .service("OwsWmsCapabilities", ['$http',
                 function($http) {
-                    this.requestGetCapabilities = function(service_url) {
-                        var url = window.escape(service_url + "?request=GetCapabilities&service=WMS");
-                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.capabilitiesReceived);
+                    var callbacks = [];
+                    this.addHandler = function(f) {
+                        callbacks.push(f);
+                    }
+
+                    this.requestGetCapabilities = function(service_url, callback) {
+                        if (callback) {
+                            var url = window.escape(service_url + "?request=GetCapabilities&service=WMS");
+                            $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(callback);
+                        } else { // This block is used just to link together Ows and OwsWms controllers
+                            var url = window.escape(service_url + "?request=GetCapabilities&service=WMS");
+                            $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(function(resp) {
+                                $(callbacks).each(function() {
+                                    this(resp)
+                                })
+                            });
+                        }
                     };
+
+                    this.service2layers = function(capabilities_xml) {
+                        var parser = new ol.format.WMSCapabilities();
+                        var caps = parser.read(capabilities_xml);
+                        var service = caps.Capability.Layer;
+                        var srss = caps.Capability.Layer.CRS;
+                        var image_formats = caps.Capability.Request.GetMap.Format;
+                        var query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
+                        var image_format = getPreferedFormat(image_formats, ["image/png", "image/gif", "image/jpeg"]);
+                        var query_format = getPreferedFormat(query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
+
+                        var tmp = [];
+                        $(service).each(function() {
+                            $(this.Layer).each(function() {
+                                layer = this;
+                                var new_layer = new ol.layer.Tile({
+                                    title: layer.Title.replace(/\//g, "&#47;"),
+                                    source: new ol.source.TileWMS({
+                                        url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
+                                        attributions: [new ol.Attribution({
+                                            html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
+                                        })],
+                                        params: {
+                                            LAYERS: layer.Name,
+                                            INFO_FORMAT: (layer.queryable ? query_format : undefined),
+                                        },
+                                    }),
+                                    abstract: layer.Abstract,
+                                    MetadataURL: layer.MetadataURL,
+                                    BoundingBox: layer.BoundingBox
+                                });
+                                tmp.push(new_layer);
+                            })
+                        })
+                        return tmp;
+                    }
 
                 }
             ])
+            .service("OwsWmsLayerProducer", ['OlMap', 'OwsWmsCapabilities', function(OlMap, OwsWmsCapabilities) {
+                this.addService = function(url) {
+                    OwsWmsCapabilities.requestGetCapabilities(url, function(resp) {
+                        var ol_layers = OwsWmsCapabilities.service2layers(resp);
+                        $(ol_layers).each(function() {
+                            OlMap.map.addLayer(this);
+                        });
+                    })
+                }
+            }])
             .controller('OwsWms', ['$scope', 'OlMap', 'OwsWmsCapabilities',
                 function($scope, OlMap, OwsWmsCapabilities) {
-                    OwsWmsCapabilities.capabilitiesReceived = function(response) {
+                    OwsWmsCapabilities.addHandler(function(response) {
                         try {
                             var parser = new ol.format.WMSCapabilities();
                             $scope.capabilities = parser.read(response);
@@ -39,7 +113,7 @@ define(['angular', 'xml2json'],
                                         icon: Ext.MessageBox.ERROR});
                                 throw "WMS Capabilities parsing problem";*/
                         }
-                    }
+                    })
 
                     $scope.addLayers = function(checked) {
                         angular.forEach($scope.services.Layer, function(value, key) {
@@ -70,7 +144,7 @@ define(['angular', 'xml2json'],
                      * @function
                      * @name addLayer
                      */
-                    var addLayer = function(layer, layerName, folder, imageFormat, queryFormat, singleTile, tileSize, crs) {
+                    var addLayer = function(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
                         if (console) console.log(layer);
                         /*
             var layerCrs = (typeof(OlMap.map.projection) == typeof("") ? OlMap.map.projection.toUpperCase() : OlMap.map.projection.getCode().toUpperCase());
@@ -237,7 +311,7 @@ define(['angular', 'xml2json'],
                                 })],
                                 params: {
                                     LAYERS: layer.Name,
-                                    INFO_FORMAT: (layer.queryable ? queryFormat : undefined),
+                                    INFO_FORMAT: (layer.queryable ? query_format : undefined),
                                 },
                             }),
                             abstract: layer.Abstract,
@@ -248,20 +322,7 @@ define(['angular', 'xml2json'],
                         OlMap.map.addLayer(new_layer);
                     }
 
-                    var getPreferedFormat = function(formats, preferedFormats) {
-                        for (i = 0; i < preferedFormats.length; i++) {
-                            if (formats.indexOf(preferedFormats[i]) > -1) {
-                                return (preferedFormats[i]);
-                            }
-                        }
-                        return formats[0];
-                    }
 
-                    var addAnchors = function(url) {
-                        if (!url) return null;
-                        var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                        return url.replace(exp, "<a href='$1'>$1</a>");
-                    }
                 }
             ]);
     })
