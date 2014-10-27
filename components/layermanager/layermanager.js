@@ -45,7 +45,7 @@ define(['angular', 'map'], function(angular) {
                 $scope.map.removeLayer(layer);
             }
             $scope.zoomToLayer = function(layer) {
-                var extent =  ol.proj.transform(layer.get("BoundingBox")[0].extent, layer.get("BoundingBox")[0].crs, $scope.map.getView().getProjection()); 
+                var extent = ol.proj.transform(layer.get("BoundingBox")[0].extent, layer.get("BoundingBox")[0].crs, $scope.map.getView().getProjection());
                 $scope.map.getView().fitExtent(extent, $scope.map.getSize());
             }
             $scope.map.getLayers().on("add", $scope.layerAdded);

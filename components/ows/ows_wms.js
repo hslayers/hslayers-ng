@@ -50,7 +50,7 @@ define(['angular', 'xml2json'],
 
                         var tmp = [];
                         $(service).each(function() {
-                            if(console) console.log("Load service", this);
+                            if (console) console.log("Load service", this);
                             $(this.Layer).each(function() {
                                 layer = this;
                                 var new_layer = new ol.layer.Tile({
