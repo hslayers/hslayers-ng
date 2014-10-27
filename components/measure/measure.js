@@ -15,7 +15,7 @@ angular.module('hs.measure', ['hs.map', 'hs.toolbar'])
         $scope.current_measurement = {};
         $scope.type = 'distance';
         
-        var source = new ol.source.Vector();
+        var source = new ol.source.Vector({});
 
         var vector = new ol.layer.Vector({
             source: source,

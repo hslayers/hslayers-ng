@@ -4,11 +4,7 @@
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
         <ul class="list-group">
                 <li ng-repeat="layer in layers | filter:query" class="list-group-item" ng-show="layer.lyr.getVisible()">{{layer.title}}
-
-                <img ng-repeat="sublayer in layer.sub_layers" src="{{sublayer}}"  
-onerror=" this.parentNode.removeChild(this); "
-                            onload="if(this.height<6) { this.parentNode.removeChild(this); }" 
-/>
+                    <img ng-repeat="sublayer in layer.sub_layers" ng-src="{{sublayer}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
                 </li>
         </ul>
     </div>

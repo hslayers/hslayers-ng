@@ -7,7 +7,7 @@ require.config({
                toolbar: 'components/toolbar/toolbar',
                layermanager: 'components/layermanager/layermanager',
                map: 'components/map/map',
-               ol: 'http://ol3js.org/en/master/build/ol-debug',
+               ol: 'http://openlayers.org/en/v3.0.0/build/ol',
                ows: 'components/ows/ows', 
                'ows.wms': 'components/ows/ows_wms', 
                'ows.nonwms': 'components/ows/ows_nonwms', 
