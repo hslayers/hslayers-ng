@@ -18,10 +18,20 @@ define(['angular', 'map'],
                         for (var i = 0; i < sub_layers.length; i++) {
                             sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
                         }
+                        e.element.on('change:visible', function(e) {
+                            for (var i = 0; i < $scope.layers.length; i++) {
+                                if ($scope.layers[i].layer == e.target) {
+                                    $scope.layers[i].visible = e.target.getVisible();
+                                    break;
+                                }
+                            }
+                            if (!$scope.$$phase) $scope.$digest();
+                        })
                         $scope.layers.push({
                             title: e.element.get("title"),
                             lyr: e.element,
-                            sub_layers: sub_layers
+                            sub_layers: sub_layers,
+                            visible: e.element.getVisible()
                         });
                     }
                 };
@@ -33,9 +43,9 @@ define(['angular', 'map'],
                         }
                     }
                 };
-                for (var lyr in OlMap.map.getLayers().array_) {
+                for (var lyr in OlMap.map.getLayers().getArray()) {
                     $scope.layerAdded({
-                        element: OlMap.map.getLayers().array_[lyr]
+                        element: OlMap.map.getLayers().getArray()[lyr]
                     });
                 }
                 $scope.map.getLayers().on("add", $scope.layerAdded);
