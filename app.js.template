@@ -19,14 +19,25 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
 
         module.directive('hs', function() {
             return {
-                templateUrl: 'hslayers.html'
+                templateUrl: hsl_path+'hslayers.html'
             };
         });
+        
+        module.value('box_layers', [
+            {id:'armenia', 'img':'armenia.png', title:'Armenia', base_layer:true},
+            {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true},
+             {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true},
+              {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true},
+               {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true},
+               {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true}
+        ]);
 
         module.value('default_layers', [
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
-                title: "Base layer"
+                title: "Base layer",
+                box_id: 'osm',
+                base: true
             })
         ]);
 
@@ -39,7 +50,7 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             function($scope, ToolbarService, OwsWmsLayerProducer) {
                 if (console) console.log("Main called");
                 $scope.ToolbarService = ToolbarService;
-                OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows');
+                OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
             }
         ]);
 
