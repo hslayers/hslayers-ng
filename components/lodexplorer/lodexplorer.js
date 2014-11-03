@@ -76,7 +76,7 @@ define(['angular', 'map', 'query', 'toolbar'],
                 var lyr = new ol.layer.Vector({
                     title: "Nuts regions",
                     source: new ol.source.GeoJSON({
-                        url:  hsl_path + 'components/lodexplorer/nuts2.geojson'
+                        url: hsl_path + 'components/lodexplorer/nuts2.geojson'
                     }),
                     style: styleFunction
                 });
@@ -241,7 +241,7 @@ define(['angular', 'map', 'query', 'toolbar'],
                     }
                     lyr.getSource().forEachFeature(function(feature) {
                             val = dic[feature.get('nuts_id')]
-                            feature.set('data_value',  val);
+                            feature.set('data_value', val);
                             max = val > max ? val : max;
                             min = val < min ? val : min;
                         })

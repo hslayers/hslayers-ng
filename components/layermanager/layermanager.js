@@ -6,7 +6,7 @@ define(['angular', 'app', 'map'], function(angular) {
             };
         })
 
-    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', 
+    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers',
         function($scope, OlMap, box_layers) {
             $scope.map = OlMap.map;
             $scope.box_layers = box_layers;
@@ -20,7 +20,7 @@ define(['angular', 'app', 'map'], function(angular) {
                         sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
                     }
                 }
-                e.element.on('change:visible', function(e){
+                e.element.on('change:visible', function(e) {
                     for (var i = 0; i < $scope.layers.length; i++) {
                         if ($scope.layers[i].layer == e.target) {
                             $scope.layers[i].visible = e.target.getVisible();
@@ -65,14 +65,14 @@ define(['angular', 'app', 'map'], function(angular) {
             }
             $scope.map.getLayers().on("add", $scope.layerAdded);
             $scope.map.getLayers().on("remove", $scope.layerRemoved);
-            $scope.boxClicked = function(box){
-                if($scope.active_box) $scope.active_box.active = false; 
+            $scope.boxClicked = function(box) {
+                if ($scope.active_box) $scope.active_box.active = false;
                 $scope.active_box = box;
                 box.active = true;
                 for (var i = 0; i < $scope.layers.length; i++) {
                     var lyr = $scope.layers[i].layer;
-                    if(lyr.get('box_id') && lyr.get('box_id') == box.id){
-                        if(lyr.get('base')) {
+                    if (lyr.get('box_id') && lyr.get('box_id') == box.id) {
+                        if (lyr.get('base')) {
                             lyr.setVisible(true);
                         }
                         lyr.setVisible(true);
