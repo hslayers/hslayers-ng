@@ -1,12 +1,19 @@
 <div class="panel panel-default mainpanel">
     <div class="panel-heading">Layer manager</div>
     <div class="panel-body">
+        <div class="row nav nav-pills">
+            <div ng-repeat="box in box_layers"  class="col-xs-4 col-md-2 active" style="padding-right: 2px; padding-left: 2px;">
+                <a href="#" ng-class="{ 'thumbnail': true, 'alert-info': box.active}" title="{{box.title}}" ng-click="boxClicked(box)">
+                    <img ng-src="{{box.img}}" alt="{{box.title}}">
+                </a>
+            </div>
+        </div>
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
         <ul class="list-group">
                 <li ng-repeat="layer in layers | filter:query" class="list-group-item">
                     <a href="#" ng-click="setCurrentLayer(layer)">{{layer.title}}</a>
                     <a href="#" class="layer-more"><i class="fa fa-arrow-circle-o-right"></i></a>
-                    <input type="checkbox" class="form-control layer-checked" ng-checked="layer.layer.getVisible" ng-click="changeLayerVisibility($event, layer)" />
+                    <input type="checkbox" class="form-control layer-checked" ng-checked="layer.visible" ng-click="changeLayerVisibility($event, layer)" />
                 </li>
         </ul>
 <!--
