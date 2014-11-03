@@ -4,7 +4,7 @@ define(['angular', 'map'],
         angular.module('hs.legend', ['hs.map'])
             .directive('legend', function() {
                 return {
-                    templateUrl: 'components/legend/partials/legend.html'
+                    templateUrl: hsl_path + 'components/legend/partials/legend.html'
                 };
             })
 

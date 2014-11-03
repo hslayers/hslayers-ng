@@ -4,7 +4,7 @@ define(['angular', 'map', 'toolbar'],
         angular.module('hs.measure', ['hs.map', 'hs.toolbar'])
             .directive('measure', function() {
                 return {
-                    templateUrl: 'components/measure/partials/measure.html'
+                    templateUrl: hsl_path + 'components/measure/partials/measure.html'
                 };
             })
 

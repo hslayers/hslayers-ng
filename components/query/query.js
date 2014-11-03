@@ -4,7 +4,7 @@ define(['angular', 'map', 'toolbar'],
         angular.module('hs.query', ['hs.map', 'hs.toolbar'])
             .directive('infopanel', function() {
                 return {
-                    templateUrl: 'components/query/partials/infopanel.html'
+                    templateUrl: hsl_path + 'components/query/partials/infopanel.html'
                 };
             }).service("WmsGetFeatureInfo", ['$http',
                 function($http) {

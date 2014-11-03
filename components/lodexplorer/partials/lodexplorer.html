@@ -8,7 +8,7 @@
                         <option ng-repeat="source in sources" value="{{source.url}}">{{source.name}}</option>
                     </select>
                 </div>
-                        <img src="components/lodexplorer/ajax-loader.gif" ng-show="loading"/>
+                        <img src="{{ajax_loader}}" ng-show="loading"/>
                         <div ng-repeat="group in groupings" class="form-group">
                             {{group.name}}
                             <select class="form-control" ng-model="group.value">

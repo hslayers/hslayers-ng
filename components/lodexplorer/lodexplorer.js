@@ -4,7 +4,7 @@ define(['angular', 'map', 'query', 'toolbar'],
         var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar'])
             .directive('lodExplorer', function() {
                 return {
-                    templateUrl: 'components/lodexplorer/partials/lodexplorer.html'
+                    templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html'
                 };
             }).service("SparqlLogService", [
                 function() {
@@ -15,7 +15,7 @@ define(['angular', 'map', 'query', 'toolbar'],
                 }
             ]).directive('sparqlLogDialog', function() {
                 return {
-                    templateUrl: 'components/lodexplorer/partials/sparqllogdialog.html',
+                    templateUrl: hsl_path + 'components/lodexplorer/partials/sparqllogdialog.html',
                 };
             }).controller('SparqlLogDialog', ['$scope', 'SparqlLogService',
                 function($scope, SparqlLogService) {
@@ -26,6 +26,7 @@ define(['angular', 'map', 'query', 'toolbar'],
         .controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService', 'SparqlLogService', 'ToolbarService',
             function($scope, OlMap, $http, InfoPanelService, SparqlLogService, ToolbarService) {
                 var map = OlMap.map;
+                $scope.ajax_loader = hsl_path + 'components/lodexplorer/ajax-loader.gif';
                 $scope.loading = false;
                 $scope.sparql_log = [];
                 $scope.sources = [{
@@ -75,7 +76,7 @@ define(['angular', 'map', 'query', 'toolbar'],
                 var lyr = new ol.layer.Vector({
                     title: "Nuts regions",
                     source: new ol.source.GeoJSON({
-                        url: 'components/lodexplorer/nuts2.geojson'
+                        url:  hsl_path + 'components/lodexplorer/nuts2.geojson'
                     }),
                     style: styleFunction
                 });
@@ -238,17 +239,17 @@ define(['angular', 'map', 'query', 'toolbar'],
                         dic[j.results.bindings[i].code.value] = val;
 
                     }
-                    lyr.source_.forEachFeature(function(feature) {
-                            val = dic[feature.values_.nuts_id]
-                            feature.values_.data_value = val;
+                    lyr.getSource().forEachFeature(function(feature) {
+                            val = dic[feature.get('nuts_id')]
+                            feature.set('data_value',  val);
                             max = val > max ? val : max;
                             min = val < min ? val : min;
                         })
                         //min -= (max - min) * 0.2;
-                    lyr.source_.forEachFeature(function(feature) {
-                        feature.opacity = dic[feature.values_.nuts_id] ? (dic[feature.values_.nuts_id] - min) / (max - min) : Number.MIN_VALUE;
+                    lyr.getSource().forEachFeature(function(feature) {
+                        feature.opacity = dic[feature.get('nuts_id')] ? (dic[feature.get('nuts_id')] - min) / (max - min) : Number.MIN_VALUE;
                     })
-                    lyr.changed();
+                    lyr.dispatchChangeEvent();
                     $scope.loading = false;
                 }
 

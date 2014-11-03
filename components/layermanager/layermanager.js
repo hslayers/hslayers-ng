@@ -2,7 +2,7 @@ define(['angular', 'map'], function(angular) {
     angular.module('hs.layermanager', ['hs.map'])
         .directive('layerManager', function() {
             return {
-                templateUrl: 'components/layermanager/partials/layermanager.html'
+                templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
             };
         })
 

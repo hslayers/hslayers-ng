@@ -4,7 +4,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
         angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
             .directive('ows', function() {
                 return {
-                    templateUrl: 'components/ows/partials/ows.html'
+                    templateUrl: hsl_path + 'components/ows/partials/ows.html'
                 };
             })
             .controller('Ows', ['$scope', 'OwsWmsCapabilities', 'OlMap',
@@ -42,18 +42,19 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
 
                     $scope.templateByType = function() {
                         var template;
+                        var ows_path = hsl_path + 'components/ows/partials/';
                         switch ($scope.type.toLowerCase()) {
                             case "wms":
-                                template = 'components/ows/partials/owswms.html';
+                                template = ows_path +'owswms.html';
                                 break;
                             case "wms with priorities":
-                                template = 'components/ows/partials/owsprioritized.html';
+                                template = ows_path +'owsprioritized.html';
                                 break;
                             case "wfs":
-                                template = 'components/ows/partials/owswfs.html';
+                                template = ows_path +'owswfs.html';
                                 break;
                             case "kml":
-                                template = 'components/ows/partials/owsnonwms.html';
+                                template = ows_path +'owsnonwms.html';
                                 break;
                             default:
                                 break;

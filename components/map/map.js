@@ -10,7 +10,7 @@ define(['angular', 'app', 'permalink'], function(angular) {
 
     .directive('map', function() {
         return {
-            templateUrl: 'components/map/partials/map.html'
+            templateUrl: hsl_path + 'components/map/partials/map.html'
         };
     })
 

@@ -4,7 +4,7 @@ define(['angular'],
         angular.module('hs.print', [])
             .directive('printdialog', function() {
                 return {
-                    templateUrl: 'components/print/partials/printdialog.html'
+                    templateUrl: hsl_path + 'components/print/partials/printdialog.html'
                 };
             })
 
