@@ -105,7 +105,7 @@ define(['angular', 'map', 'toolbar'],
                 }
 
                 $scope.$on('infopanel.updated', function(event) {
-                    if (!$scope.$$phase) $scope.$apply();
+                    if (!$scope.$$phase) $scope.$digest();
                 });
 
             }

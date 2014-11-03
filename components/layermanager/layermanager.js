@@ -27,7 +27,7 @@ define(['angular', 'app', 'map'], function(angular) {
                             break;
                         }
                     }
-                    if (!$scope.$$phase) $scope.$apply();
+                    if (!$scope.$$phase) $scope.$digest();
                 })
                 $scope.layers.push({
                     title: e.element.get("title"),
@@ -44,9 +44,10 @@ define(['angular', 'app', 'map'], function(angular) {
                     }
                 }
             };
-            for (var lyr in OlMap.map.getLayers().array_) {
+            var a = OlMap.map.getLayers().getArray();
+            for (var lyr in a) {
                 $scope.layerAdded({
-                    element: OlMap.map.getLayers().array_[lyr]
+                    element: a[lyr]
                 });
             }
             $scope.changeLayerVisibility = function($event, layer) {
@@ -72,9 +73,9 @@ define(['angular', 'app', 'map'], function(angular) {
                 for (var i = 0; i < $scope.layers.length; i++) {
                     var lyr = $scope.layers[i].layer;
                     if (lyr.get('box_id') && lyr.get('box_id') == box.id) {
-                        if (lyr.get('base')) {
+                       /* if (lyr.get('base')) {
                             lyr.setVisible(true);
-                        }
+                        }*/
                         lyr.setVisible(true);
                     } else {
                         lyr.setVisible(false);
