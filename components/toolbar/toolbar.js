@@ -6,13 +6,25 @@ define(['angular', 'map'],
                 return {
                     templateUrl: hsl_path + 'components/toolbar/partials/toolbar.html'
                 };
-            }).service("ToolbarService", ['$rootScope',
-                function($rootScope) {
+            }).service("ToolbarService", ['$rootScope', '$controller',
+                function($rootScope, $controller) {
                     var me = {
                         mainpanel: "",
-                        setMainPanel: function(which) {
+                        setMainPanel: function(which, by_gui) {
+                            if (which == me.mainpanel && by_gui) which = "";
                             me.mainpanel = which;
                             $rootScope.$broadcast('toolbar.mainpanel_changed'); //Not used now, but could be useful
+                        },
+                        exists: function(controllerName) {
+                            if (typeof window[controllerName] == 'function') {
+                                return true;
+                            }
+                            try {
+                                $controller(controllerName);
+                                return true;
+                            } catch (error) {
+                                return !(error instanceof TypeError);
+                            }
                         }
                     };
 

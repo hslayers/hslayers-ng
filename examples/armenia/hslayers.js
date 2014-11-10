@@ -45,4 +45,5 @@ require([
     angular.element().ready(function() {
         angular.resumeBootstrap([app['name']]);
     });
+    
 });

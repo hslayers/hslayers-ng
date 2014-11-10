@@ -118,7 +118,7 @@ define(['angular', 'map', 'toolbar'],
                     var cloned = polygon.clone();
                     //cloned.transform('EPSG:3857', 'EPSG:4326');
                     var area = cloned.getArea();
-                                       
+
                     var output = {
                         size: area,
                         type: 'area',

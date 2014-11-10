@@ -47,6 +47,15 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             units: "m"
         }));
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
         module.controller('Main', ['$scope', 'ToolbarService', 'OwsWmsLayerProducer',
             function($scope, ToolbarService, OwsWmsLayerProducer) {
                 if (console) console.log("Main called");

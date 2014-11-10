@@ -73,9 +73,9 @@ define(['angular', 'app', 'map'], function(angular) {
                 for (var i = 0; i < $scope.layers.length; i++) {
                     var lyr = $scope.layers[i].layer;
                     if (lyr.get('box_id') && lyr.get('box_id') == box.id) {
-                       /* if (lyr.get('base')) {
-                            lyr.setVisible(true);
-                        }*/
+                        /* if (lyr.get('base')) {
+                             lyr.setVisible(true);
+                         }*/
                         lyr.setVisible(true);
                     } else {
                         lyr.setVisible(false);
