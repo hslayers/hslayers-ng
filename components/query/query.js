@@ -41,8 +41,27 @@ define(['angular', 'map', 'toolbar'],
                 $scope.myname = "shady";
                 $scope.InfoPanelService = InfoPanelService;
 
+                var point_clicked = new ol.geom.Point([0, 0]);
+                var lyr = null;
+
+                var drawClickedPoint = function(p) {
+                    if (lyr) map.getLayers().remove(lyr);
+                    lyr = new ol.layer.Vector({
+                        title: "Point clicked",
+                        source: new ol.source.Vector({
+                            features: [new ol.Feature({
+                                geometry: point_clicked
+                            })]
+                        }),
+                        show_in_manager: false
+                    });
+                    map.addLayer(lyr);
+                    point_clicked.setCoordinates(p, 'XY');
+                }
+
                 map.on('singleclick', function(evt) {
                     if (ToolbarService.mainpanel == 'measure') return;
+                    drawClickedPoint(evt.coordinate);
                     InfoPanelService.groups = [];
                     InfoPanelService.groups.push({
                         name: "Coordinates",

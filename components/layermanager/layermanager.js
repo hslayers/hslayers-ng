@@ -13,6 +13,7 @@ define(['angular', 'app', 'map'], function(angular) {
             $scope.layers = [];
             $scope.active_box = null;
             $scope.layerAdded = function(e) {
+                if (e.element.get('show_in_manager') != null && e.element.get('show_in_manager') == false) return;
                 var sub_layers;
                 if (e.element.getSource().getParams) { // Legend only for wms layers with params
                     sub_layers = e.element.getSource().getParams().LAYERS.split(",");
