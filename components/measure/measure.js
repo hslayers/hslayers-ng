@@ -58,7 +58,7 @@ define(['angular', 'map', 'toolbar'],
                             output = formatLength( /** @type {ol.geom.LineString} */ (geom));
                         }
                         $scope.measurements[$scope.current_measurement] = output;
-                        $scope.$apply();
+                        if (!$scope.$$phase) $scope.$digest();
                     }
                 };
 
@@ -115,7 +115,10 @@ define(['angular', 'map', 'toolbar'],
                  * @return {string}
                  */
                 var formatArea = function(polygon) {
-                    var area = polygon.getArea();
+                    var cloned = polygon.clone();
+                    //cloned.transform('EPSG:3857', 'EPSG:4326');
+                    var area = cloned.getArea();
+                                       
                     var output = {
                         size: area,
                         type: 'area',
