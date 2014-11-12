@@ -81,30 +81,6 @@ define(['angular', 'map', 'query', 'toolbar'],
                     style: styleFunction
                 });
 
-                var selector = new ol.interaction.Select({
-                    condition: ol.events.condition.click
-                });
-
-                selector.getFeatures().on('add', function(e) {
-                    if (ToolbarService.mainpanel == 'measure') return;
-                    var attributes = [{
-                        name: "Nuts ID",
-                        value: e.element.get("nuts_id")
-                    }, {
-                        name: "Name",
-                        value: e.element.get("name_original")
-                    }];
-                    if (e.element.get("data_value"))
-                        attributes.push({
-                            name: "Value",
-                            value: e.element.get("data_value")
-                        });
-                    ToolbarService.setMainPanel("info");
-                    InfoPanelService.setAttributes(attributes);
-                });
-
-
-
                 $scope.sourceChosen = function() {
                     var sparql = ["SELECT DISTINCT ?classif",
                         "FROM <" + $scope.source + ">",
@@ -256,10 +232,8 @@ define(['angular', 'map', 'query', 'toolbar'],
                 $scope.$on('toolbar.mainpanel_changed', function(event) {
                     if (ToolbarService.mainpanel == 'lodexplorer') {
                         map.addLayer(lyr);
-                        map.addInteraction(selector);
                     } else if (ToolbarService.mainpanel != 'info') {
                         map.removeLayer(lyr);
-                        map.removeInteraction(selector);
                     }
                 });
             }

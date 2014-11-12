@@ -44,7 +44,7 @@ define(['angular', 'map', 'toolbar'],
                 var point_clicked = new ol.geom.Point([0, 0]);
                 var lyr = null;
 
-                var drawClickedPoint = function(p) {
+                $scope.$on('layermanager.updated', function(event) {
                     if (lyr) map.getLayers().remove(lyr);
                     lyr = new ol.layer.Vector({
                         title: "Point clicked",
@@ -56,14 +56,32 @@ define(['angular', 'map', 'toolbar'],
                         show_in_manager: false
                     });
                     map.addLayer(lyr);
-                    point_clicked.setCoordinates(p, 'XY');
-                }
+                });
 
+                //For vector layers use this to get the selected features
+                var selector = new ol.interaction.Select({
+                    condition: ol.events.condition.click
+                });
+                selector.getFeatures().on('add', function(e) {
+                    if (ToolbarService.mainpanel == 'measure') return;
+                    var attributes = [];
+                    e.element.getKeys().forEach(function(key) {
+                        if (key=='gid' || key=='geometry') return;
+                        attributes.push({
+                            name: key,
+                            value: e.element.get(key)
+                        });
+                    })
+                    ToolbarService.setMainPanel("info");
+                    InfoPanelService.setAttributes(attributes);
+                })
+                map.addInteraction(selector);
+
+                //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
                     if (ToolbarService.mainpanel == 'measure') return;
-                    drawClickedPoint(evt.coordinate);
-                    InfoPanelService.groups = [];
-                    InfoPanelService.groups.push({
+                    point_clicked.setCoordinates(evt.coordinate, 'XY');
+                    InfoPanelService.setGroups([{
                         name: "Coordinates",
                         attributes: [{
                             "name": "EPSG:4326",
@@ -72,25 +90,26 @@ define(['angular', 'map', 'toolbar'],
                             "name": "EPSG:3857",
                             "value": ol.coordinate.createStringXY(7)(evt.coordinate)
                         }]
-                    })
+                    }]);
                     map.getLayers().forEach(function(layer) {
                         queryLayer(layer, evt)
                     });
                 });
 
                 var queryLayer = function(layer, evt) {
-                    if (!(layer instanceof ol.layer.Tile) ||
-                        !(layer.getSource() instanceof ol.source.TileWMS) ||
-                        !layer.getSource().getParams().INFO_FORMAT) return;
-                    var source = layer.getSource();
-                    var viewResolution = map.getView().getResolution();
-                    var url = source.getGetFeatureInfoUrl(
-                        evt.coordinate, viewResolution, source.getProjection() ? source.getProjection() : map.getView().getProjection(), {
-                            'INFO_FORMAT': source.getParams().INFO_FORMAT
-                        });
-                    if (url) {
-                        if (console) console.log(url);
-                        WmsGetFeatureInfo.request(url);
+                    if (layer instanceof ol.layer.Tile &&
+                        layer.getSource() instanceof ol.source.TileWMS &&
+                        layer.getSource().getParams().INFO_FORMAT) {
+                        var source = layer.getSource();
+                        var viewResolution = map.getView().getResolution();
+                        var url = source.getGetFeatureInfoUrl(
+                            evt.coordinate, viewResolution, source.getProjection() ? source.getProjection() : map.getView().getProjection(), {
+                                'INFO_FORMAT': source.getParams().INFO_FORMAT
+                            });
+                        if (url) {
+                            if (console) console.log(url);
+                            WmsGetFeatureInfo.request(url);
+                        }
                     }
                 }
 
@@ -103,6 +122,7 @@ define(['angular', 'map', 'toolbar'],
 
                     var x2js = new X2JS();
                     var json = x2js.xml_str2json(response);
+                    var something_updated = false;
                     for (var feature in json.FeatureCollection.featureMember) {
                         if (feature == "__prefix") continue;
                         feature = json.FeatureCollection.featureMember[feature];
@@ -112,18 +132,22 @@ define(['angular', 'map', 'toolbar'],
                         };
 
                         for (var attribute in feature) {
-                            if (feature[attribute].__text)
+                            if (feature[attribute].__text){
                                 group.attributes.push({
                                     "name": attribute,
                                     "value": feature[attribute].__text
                                 });
+                                something_updated = true;
+                            }
                         }
-                        InfoPanelService.groups.push(group);
+                        if (something_updated)
+                            InfoPanelService.groups.push(group);
                     }
-                    InfoPanelService.setGroups(InfoPanelService.groups);
+                    if(something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
                 }
 
                 $scope.$on('infopanel.updated', function(event) {
+                    if(console) console.log( new Date());
                     if (!$scope.$$phase) $scope.$digest();
                 });
 

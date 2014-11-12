@@ -6,8 +6,8 @@ define(['angular', 'app', 'map'], function(angular) {
             };
         })
 
-    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers',
-        function($scope, OlMap, box_layers) {
+    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', '$rootScope',
+        function($scope, OlMap, box_layers, $rootScope) {
             $scope.map = OlMap.map;
             $scope.box_layers = box_layers;
             $scope.layers = [];
@@ -36,6 +36,7 @@ define(['angular', 'app', 'map'], function(angular) {
                     sub_layers: sub_layers,
                     visible: e.element.getVisible()
                 });
+                $rootScope.$broadcast('layermanager.updated');
             };
             $scope.layerRemoved = function(e) {
                 for (var i = 0; i < $scope.layers.length; i++) {
@@ -44,6 +45,7 @@ define(['angular', 'app', 'map'], function(angular) {
                         break;
                     }
                 }
+                $rootScope.$broadcast('layermanager.updated');
             };
             var a = OlMap.map.getLayers().getArray();
             for (var lyr in a) {
