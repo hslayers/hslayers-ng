@@ -50,17 +50,32 @@ define(['angular', 'map', 'toolbar'],
                 var mouseMoveHandler = function(evt) {
                     if (sketch) {
                         var output;
-                        var geom = (sketch.getGeometry());
+                        var val = 0;
+                        for (var i = 0; i < sketch.length; i++) {
+                            var geom = sketch[i].getGeometry();
+                            if (geom instanceof ol.geom.Polygon) {
+                                val += geom.getArea();
+                            } else if (geom instanceof ol.geom.LineString) {
+                                val += geom.getLength();
+                            }
+                        }
                         if (geom instanceof ol.geom.Polygon) {
-                            output = formatArea( /** @type {ol.geom.Polygon} */ (geom));
-
+                            output = formatArea(val);
                         } else if (geom instanceof ol.geom.LineString) {
-                            output = formatLength( /** @type {ol.geom.LineString} */ (geom));
+                            output = formatLength(val);
                         }
                         $scope.measurements[$scope.current_measurement] = output;
                         if (!$scope.$$phase) $scope.$digest();
                     }
                 };
+
+                $scope.ctrl_pressed = false;
+                $(document).keyup(function(e) {
+                    if (e.which == 17) {
+                        $scope.ctrl_pressed = !$scope.ctrl_pressed;
+                        $scope.$digest();
+                    }
+                });
 
                 var draw; // global so we can remove it later
                 function addInteraction() {
@@ -75,16 +90,22 @@ define(['angular', 'map', 'toolbar'],
                         function(evt) {
                             $("#toolbar").fadeOut();
                             // set sketch
-                            sketch = evt.feature;
-                            $scope.measurements.push({
-                                size: 0,
-                                unit: ""
-                            });
+                            if ($scope.ctrl_pressed)
+                                sketch.push(evt.feature);
+                            else {
+                                sketch = [evt.feature];
+                                $scope.measurements.push({
+                                    size: 0,
+                                    unit: ""
+                                });
+                            }
                             $scope.current_measurement = $scope.measurements.length - 1;
                         }, this);
 
                     draw.on('drawend',
-                        function(evt) {$("#toolbar").fadeIn();}, this);
+                        function(evt) {
+                            $("#toolbar").fadeIn();
+                        }, this);
                 }
 
                 /**
@@ -93,7 +114,7 @@ define(['angular', 'map', 'toolbar'],
                  * @return {string}
                  */
                 var formatLength = function(line) {
-                    var length = Math.round(line.getLength() * 100) / 100;
+                    var length = Math.round(line * 100) / 100;
                     var output = {
                         size: length,
                         type: 'length',
@@ -115,11 +136,7 @@ define(['angular', 'map', 'toolbar'],
                  * @param {ol.geom.Polygon} polygon
                  * @return {string}
                  */
-                var formatArea = function(polygon) {
-                    var cloned = polygon.clone();
-                    //cloned.transform('EPSG:3857', 'EPSG:4326');
-                    var area = cloned.getArea();
-
+                var formatArea = function(area) {
                     var output = {
                         size: area,
                         type: 'area',
