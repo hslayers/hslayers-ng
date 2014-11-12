@@ -56,11 +56,15 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
         
         
         
-        module.controller('Main', ['$scope', 'ToolbarService', 'OwsWmsLayerProducer',
-            function($scope, ToolbarService, OwsWmsLayerProducer) {
+        module.controller('Main', ['$scope', 'ToolbarService', 'OwsWmsLayerProducer', 'InfoPanelService',
+            function($scope, ToolbarService, OwsWmsLayerProducer, InfoPanelService) {
                 if (console) console.log("Main called");
                 $scope.ToolbarService = ToolbarService;
                 OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
+                
+                $scope.$on('infopanel.updated', function(event) {
+                    if(console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
+                });
             }
         ]);
 
