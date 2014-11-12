@@ -24,12 +24,12 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
         });
         
         module.value('box_layers', [
-            {id:'armenia', 'img':'armenia.png', title:'Armenia', base_layer:true},
-            {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true},
-             {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true},
-              {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true},
-               {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true},
-               {id:'osm', 'img':'osm.png', title:'Open street map', base_layer:true}
+            {id:'armenia', 'img':'armenia.png', title:'Armenia'},
+            {id:'osm', 'img':'osm.png', title:'Open street map'},
+             {id:'osm', 'img':'osm.png', title:'Open street map'},
+              {id:'osm', 'img':'osm.png', title:'Open street map'},
+               {id:'osm', 'img':'osm.png', title:'Open street map'},
+               {id:'osm', 'img':'osm.png', title:'Open street map'}
         ]);
 
         module.value('default_layers', [

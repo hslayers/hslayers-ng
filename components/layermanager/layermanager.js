@@ -8,11 +8,11 @@ define(['angular', 'app', 'map'], function(angular) {
 
     .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', '$rootScope',
         function($scope, OlMap, box_layers, $rootScope) {
-            $scope.map = OlMap.map;
+            var map = OlMap.map;
             $scope.box_layers = box_layers;
             $scope.layers = [];
             $scope.active_box = null;
-            $scope.layerAdded = function(e) {
+            var layerAdded = function(e) {
                 if (e.element.get('show_in_manager') != null && e.element.get('show_in_manager') == false) return;
                 var sub_layers;
                 if (e.element.getSource().getParams) { // Legend only for wms layers with params
@@ -38,7 +38,7 @@ define(['angular', 'app', 'map'], function(angular) {
                 });
                 $rootScope.$broadcast('layermanager.updated');
             };
-            $scope.layerRemoved = function(e) {
+            var layerRemoved = function(e) {
                 for (var i = 0; i < $scope.layers.length; i++) {
                     if ($scope.layers[i].layer == e.element) {
                         $scope.layers.splice(i);
@@ -49,7 +49,7 @@ define(['angular', 'app', 'map'], function(angular) {
             };
             var a = OlMap.map.getLayers().getArray();
             for (var lyr in a) {
-                $scope.layerAdded({
+                layerAdded({
                     element: a[lyr]
                 });
             }
@@ -61,14 +61,14 @@ define(['angular', 'app', 'map'], function(angular) {
                 if (console) console.log(layer);
             }
             $scope.removeLayer = function(layer) {
-                $scope.map.removeLayer(layer);
+                map.removeLayer(layer);
             }
             $scope.zoomToLayer = function(layer) {
-                var extent = ol.proj.transform(layer.get("BoundingBox")[0].extent, layer.get("BoundingBox")[0].crs, $scope.map.getView().getProjection());
-                $scope.map.getView().fitExtent(extent, $scope.map.getSize());
+                var extent = ol.proj.transform(layer.get("BoundingBox")[0].extent, layer.get("BoundingBox")[0].crs, map.getView().getProjection());
+                map.getView().fitExtent(extent, map.getSize());
             }
-            $scope.map.getLayers().on("add", $scope.layerAdded);
-            $scope.map.getLayers().on("remove", $scope.layerRemoved);
+            map.getLayers().on("add", layerAdded);
+            map.getLayers().on("remove", layerRemoved);
             $scope.boxClicked = function(box) {
                 if ($scope.active_box) $scope.active_box.active = false;
                 $scope.active_box = box;

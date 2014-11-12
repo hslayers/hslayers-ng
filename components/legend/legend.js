@@ -10,7 +10,7 @@ define(['angular', 'map'],
 
         .controller('Legend', ['$scope', 'OlMap',
             function($scope, OlMap) {
-                $scope.map = OlMap.map;
+                var map = OlMap.map;
                 $scope.layers = [];
                 $scope.layerAdded = function(e) {
                     if (e.element.getSource() instanceof ol.source.TileWMS) {
@@ -48,8 +48,8 @@ define(['angular', 'map'],
                         element: OlMap.map.getLayers().getArray()[lyr]
                     });
                 }
-                $scope.map.getLayers().on("add", $scope.layerAdded);
-                $scope.map.getLayers().on("remove", $scope.layerRemoved);
+                map.getLayers().on("add", $scope.layerAdded);
+                map.getLayers().on("remove", $scope.layerRemoved);
             }
         ]);
 
