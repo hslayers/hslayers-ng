@@ -66,7 +66,7 @@ define(['angular', 'map', 'toolbar'],
                     if (ToolbarService.mainpanel == 'measure') return;
                     var attributes = [];
                     e.element.getKeys().forEach(function(key) {
-                        if (key=='gid' || key=='geometry') return;
+                        if (key == 'gid' || key == 'geometry') return;
                         attributes.push({
                             name: key,
                             value: e.element.get(key)
@@ -132,7 +132,7 @@ define(['angular', 'map', 'toolbar'],
                         };
 
                         for (var attribute in feature) {
-                            if (feature[attribute].__text){
+                            if (feature[attribute].__text) {
                                 group.attributes.push({
                                     "name": attribute,
                                     "value": feature[attribute].__text
@@ -143,11 +143,11 @@ define(['angular', 'map', 'toolbar'],
                         if (something_updated)
                             InfoPanelService.groups.push(group);
                     }
-                    if(something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
+                    if (something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
                 }
 
                 $scope.$on('infopanel.updated', function(event) {
-                    if(console) console.log( new Date());
+                    if (console) console.log(new Date());
                     if (!$scope.$$phase) $scope.$digest();
                 });
 
