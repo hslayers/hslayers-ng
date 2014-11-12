@@ -73,6 +73,7 @@ define(['angular', 'map', 'toolbar'],
 
                     draw.on('drawstart',
                         function(evt) {
+                            $("#toolbar").fadeOut();
                             // set sketch
                             sketch = evt.feature;
                             $scope.measurements.push({
@@ -83,7 +84,7 @@ define(['angular', 'map', 'toolbar'],
                         }, this);
 
                     draw.on('drawend',
-                        function(evt) {}, this);
+                        function(evt) {$("#toolbar").fadeIn();}, this);
                 }
 
                 /**
