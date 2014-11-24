@@ -53,13 +53,17 @@ define(['angular', 'xml2json'],
                             if (console) console.log("Load service", this);
                             $(this.Layer).each(function() {
                                 layer = this;
+                                var attributions = [];
+                                if(layer.Attribution){
+                                 attributions = [new ol.Attribution({
+                                            html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
+                                        })];   
+                                }
                                 var new_layer = new ol.layer.Tile({
                                     title: layer.Title.replace(/\//g, "&#47;"),
                                     source: new ol.source.TileWMS({
                                         url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
-                                        attributions: [new ol.Attribution({
-                                            html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
-                                        })],
+                                        attributions: attributions,
                                         styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                                         params: {
                                             LAYERS: layer.Name,
