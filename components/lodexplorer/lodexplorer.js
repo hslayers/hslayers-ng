@@ -224,7 +224,7 @@ define(['angular', 'map', 'query', 'toolbar'],
 
                 $scope.$on('toolbar.mainpanel_changed', function(event) {
                     if (ToolbarService.mainpanel == 'lodexplorer') {
-                        if(lyr==null){
+                        if (lyr == null) {
                             lyr = new ol.layer.Vector({
                                 title: "Nuts regions",
                                 source: new ol.source.GeoJSON({

@@ -54,10 +54,10 @@ define(['angular', 'xml2json'],
                             $(this.Layer).each(function() {
                                 layer = this;
                                 var attributions = [];
-                                if(layer.Attribution){
-                                 attributions = [new ol.Attribution({
-                                            html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
-                                        })];   
+                                if (layer.Attribution) {
+                                    attributions = [new ol.Attribution({
+                                        html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
+                                    })];
                                 }
                                 var new_layer = new ol.layer.Tile({
                                     title: layer.Title.replace(/\//g, "&#47;"),

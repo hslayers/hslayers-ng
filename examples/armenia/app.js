@@ -17,20 +17,47 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.legend'
         ]);
 
-        module.directive('hs', function() {
+        module.directive('hs', ['OlMap', function(OlMap) {
             return {
-                templateUrl: hsl_path+'hslayers.html'
+                templateUrl: hsl_path + 'hslayers.html',
+                link: function(scope, element) {
+                    $(window).resize(function() {
+                        element[0].style.height = window.innerHeight + "px";
+                        element[0].style.width = window.innerWidth + "px";
+                        $("#map").height(window.innerHeight);
+                        $("#map").width(window.innerWidth);
+                        OlMap.map.updateSize()
+                    });
+                    $(window).resize();
+                }
             };
-        });
-        
-        module.value('box_layers', [
-            {id:'armenia', 'img':'armenia.png', title:'Armenia'},
-            {id:'osm', 'img':'osm.png', title:'Open street map'},
-             {id:'osm', 'img':'osm.png', title:'Open street map'},
-              {id:'osm', 'img':'osm.png', title:'Open street map'},
-               {id:'osm', 'img':'osm.png', title:'Open street map'},
-               {id:'osm', 'img':'osm.png', title:'Open street map'}
-        ]);
+        }]);
+
+        module.value('box_layers', [{
+            id: 'armenia',
+            'img': 'armenia.png',
+            title: 'Armenia'
+        }, {
+            id: 'osm',
+            'img': 'osm.png',
+            title: 'Open street map'
+        }, {
+            id: 'osm',
+            'img': 'osm.png',
+            title: 'Open street map'
+        }, {
+            id: 'osm',
+            'img': 'osm.png',
+            title: 'Open street map'
+        }, {
+            id: 'osm',
+            'img': 'osm.png',
+            title: 'Open street map'
+        }, {
+            id: 'osm',
+            'img': 'osm.png',
+            title: 'Open street map'
+        }]);
 
         module.value('default_layers', [
             new ol.layer.Tile({
@@ -47,23 +74,17 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             units: "m"
         }));
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
         module.controller('Main', ['$scope', 'ToolbarService', 'OwsWmsLayerProducer', 'InfoPanelService',
             function($scope, ToolbarService, OwsWmsLayerProducer, InfoPanelService) {
                 if (console) console.log("Main called");
                 $scope.ToolbarService = ToolbarService;
                 OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
-                
+
                 $scope.$on('infopanel.updated', function(event) {
-                    if(console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
+                    if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
                 });
             }
         ]);

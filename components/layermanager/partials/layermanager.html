@@ -2,7 +2,7 @@
     <div class="panel-heading">Layer manager</div>
     <div class="panel-body">
         <div class="row nav nav-pills">
-            <div ng-repeat="box in box_layers"  class="col-xs-4 col-md-2 active" style="padding-right: 2px; padding-left: 2px;">
+            <div ng-repeat="box in box_layers"  class="col-xs-2 col-md-2 active" style="padding-right: 2px; padding-left: 2px;">
                 <a href="#" ng-class="{ 'thumbnail': true, 'alert-info': box.active}" title="{{box.title}}" ng-click="boxClicked(box)">
                     <img ng-src="{{box.img}}" alt="{{box.title}}">
                 </a>

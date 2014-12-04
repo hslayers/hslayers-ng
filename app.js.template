@@ -17,11 +17,21 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.legend'
         ]);
 
-        module.directive('hs', function() {
+        module.directive('hs', ['OlMap', function(OlMap) {
             return {
-                templateUrl: hsl_path+'hslayers.html'
+                templateUrl: hsl_path + 'hslayers.html',
+                link: function(scope, element) {
+                    $(window).resize(function() {
+                        element[0].style.height = window.innerHeight + "px";
+                        element[0].style.width = window.innerWidth + "px";
+                        $("#map").height(window.innerHeight);
+                        $("#map").width(window.innerWidth);
+                        OlMap.map.updateSize()
+                    });
+                    $(window).resize();
+                }
             };
-        });
+        }]);
         
         module.value('box_layers', [
             {id:'armenia', 'img':'armenia.png', title:'Armenia', base_layer:true},
