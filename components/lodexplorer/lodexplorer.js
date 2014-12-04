@@ -25,6 +25,7 @@ define(['angular', 'map', 'query', 'toolbar'],
 
         .controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService', 'SparqlLogService', 'ToolbarService',
             function($scope, OlMap, $http, InfoPanelService, SparqlLogService, ToolbarService) {
+                var lyr = null;
                 var map = OlMap.map;
                 $scope.ajax_loader = hsl_path + 'components/lodexplorer/ajax-loader.gif';
                 $scope.loading = false;
@@ -72,14 +73,6 @@ define(['angular', 'map', 'query', 'toolbar'],
                         })]
                     }
                 }
-
-                var lyr = new ol.layer.Vector({
-                    title: "Nuts regions",
-                    source: new ol.source.GeoJSON({
-                        url: hsl_path + 'components/lodexplorer/nuts2.geojson'
-                    }),
-                    style: styleFunction
-                });
 
                 $scope.sourceChosen = function() {
                     var sparql = ["SELECT DISTINCT ?classif",
@@ -231,6 +224,15 @@ define(['angular', 'map', 'query', 'toolbar'],
 
                 $scope.$on('toolbar.mainpanel_changed', function(event) {
                     if (ToolbarService.mainpanel == 'lodexplorer') {
+                        if(lyr==null){
+                            lyr = new ol.layer.Vector({
+                                title: "Nuts regions",
+                                source: new ol.source.GeoJSON({
+                                    url: hsl_path + 'components/lodexplorer/nuts2.geojson'
+                                }),
+                                style: styleFunction
+                            });
+                        }
                         map.addLayer(lyr);
                     } else if (ToolbarService.mainpanel != 'info') {
                         map.removeLayer(lyr);
