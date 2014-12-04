@@ -75,10 +75,10 @@ define(['angular', 'map', 'toolbar'],
                     ToolbarService.setMainPanel("info");
                     InfoPanelService.setAttributes(attributes);
                 })
-                //map.addInteraction(selector);
+                map.addInteraction(selector);
 
                 //For wms layers use this to get the features at mouse coordinates
-               /* map.on('singleclick', function(evt) {
+                map.on('singleclick', function(evt) {
                     if (ToolbarService.mainpanel == 'measure') return;
                     point_clicked.setCoordinates(evt.coordinate, 'XY');
                     InfoPanelService.setGroups([{
@@ -94,7 +94,7 @@ define(['angular', 'map', 'toolbar'],
                     map.getLayers().forEach(function(layer) {
                         queryLayer(layer, evt)
                     });
-                });*/
+                });
 
                 var queryLayer = function(layer, evt) {
                     if (layer instanceof ol.layer.Tile &&
