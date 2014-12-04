@@ -3,7 +3,7 @@
 define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend'],
 
     function(angular, toolbar, oj, layermanager) {
-        var module = angular.module('hs', [
+        var module = angular.module('hs', [ 
             'hs.toolbar',
             'hs.layermanager',
             'hs.map',
