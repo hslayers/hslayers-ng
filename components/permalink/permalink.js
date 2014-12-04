@@ -80,11 +80,15 @@ define(['angular', 'map'],
                         if (tmp[param]) return tmp[param];
                         else return null;
                     };
+                    var timer = null;
                     OlMap.map.on('change:view', function(e) {
                         OlMap.map.getView().on('change:center', me.update);
                         OlMap.map.getView().on('change:resolution', me.update);
                     });
-                    OlMap.map.getView().on('change:center', me.update);
+                    OlMap.map.getView().on('change:center', function(e){
+                            if(timer!=null) clearTimeout(timer);
+                            timer=setTimeout(function(){me.update(e)}, 500);
+                    });
                     OlMap.map.getView().on('change:resolution', me.update);
                     return me;
                 }
