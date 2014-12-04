@@ -80,6 +80,7 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
         module.controller('Main', ['$scope', 'ToolbarService', 'OwsWmsLayerProducer', 'InfoPanelService',
             function($scope, ToolbarService, OwsWmsLayerProducer, InfoPanelService) {
                 if (console) console.log("Main called");
+                $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.ToolbarService = ToolbarService;
                 OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
 
