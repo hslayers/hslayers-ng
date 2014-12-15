@@ -1,9 +1,12 @@
 <div class="panel panel-default mainpanel">
     <div class="panel-heading">Info</div>
     <div class="panel-body">
-        <table ng-repeat="group in InfoPanelService.groups | orderBy : name">
+        <table class="table table-compact" ng-repeat="group in InfoPanelService.groups | orderBy : name">
             <tr><th>{{group.name}}</th></tr>
-            <tr ng-repeat="attribute in group.attributes | orderBy : name"><td>{{attribute.name}}</td><td>{{attribute.value}}</td></tr>
+            <tr ng-repeat="attribute in group.attributes | orderBy : name">
+                <td infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}'></td>
+                <td infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}'></td>
+            </tr>
         </table>
         <table class="table table-striped">
             <tr ng-repeat="attribute in InfoPanelService.attributes | orderBy : name"><td>{{attribute.name}}</td><td>{{attribute.value}}</td></tr>

@@ -2,6 +2,29 @@ define(['angular', 'map', 'app'],
 
     function(angular) {
         var mod = angular.module('hs.panoramio', ['hs.map'])
+            .directive('panoramio', function() {
+                function link(scope, element, attrs) {
+                    if (attrs.value) {
+                        if (attrs.attribute == 'photo_file_url') {
+                            element.html('<img src="' + attrs.value + '"/>');
+                        } else {
+                            if (attrs.value.indexOf('http') == 0) {
+                                element.html('<a target="_blank" href="' + attrs.value + '">' + attrs.value + '</a>');
+                            } else {
+                                element.html(attrs.value);
+                            }
+                        }
+                    } else {
+                        if (attrs.attribute != 'photo_file_url') {
+                            element.html(attrs.attribute);
+                        }
+                    }
+                }
+
+                return {
+                    link: link
+                };
+            })
             .service("PanoramioPictures", ['OlMap', '$http', 'default_layers',
                 function(OlMap, $http, default_layers) {
                     var map = OlMap.map;
@@ -19,7 +42,24 @@ define(['angular', 'map', 'app'],
                         show_in_manager: true,
                         source: csrc,
                         style: function(feature, resolution) {
-                            return feature.get('features')[0].getStyle()
+                            var text = null;
+                            if (feature.get('features').length > 1) {
+                                text = new ol.style.Text({
+                                    text: feature.get('features').length.toString(),
+                                    fill: new ol.style.Fill({
+                                        color: '#fff'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#000'
+                                    })
+                                })
+                            }
+                            var style = [new ol.style.Style({
+                                image: feature.get('features')[0].getStyle()[0].getImage(),
+                                text: text
+
+                            })];
+                            return style;
                         }
                     });
 
@@ -43,20 +83,18 @@ define(['angular', 'map', 'app'],
                         for (var i = 0; i < panoramio.photos.length; i++) {
                             var p = panoramio.photos[i];
                             var attributes = {
-                                    geometry: new ol.geom.Point(ol.proj.transform([p.longitude, p.latitude], 'EPSG:4326', map.getView().getProjection())),
-                                    upload_date: p.upload_date,
-                                    owner_name: p.owner_name,
-                                    photo_id: p.photo_id,
-                                    longitude: p.longitude,
-                                    latitude: p.latitude,
-                                    pheight: p.height,
-                                    pwidth: p.width,
-                                    photo_title: p.photo_title,
-                                    owner_url: p.owner_url,
-                                    owner_id: p.owner_id,
-                                    photo_file_url: p.photo_file_url,
-                                    photo_url: p.photo_url,
-                                } //end attributes
+                                geometry: new ol.geom.Point(ol.proj.transform([p.longitude, p.latitude], 'EPSG:4326', map.getView().getProjection())),
+                                photo_file_url: p.photo_file_url,
+                                Uploaded: p.upload_date,
+                                Author: p.owner_name,
+                                'Lon, Lat': p.longitude.toFixed(4) + ' ' + p.latitude.toFixed(4),
+                                //pheight: p.height,
+                                //pwidth: p.width,
+                                Title: p.photo_title,
+                                'Owner': p.owner_url,
+                                Link: p.photo_url,
+                                hstemplate: 'panoramio'
+                            }
                             var feature = new ol.Feature(attributes);
                             feature.setStyle([new ol.style.Style({
                                 image: new ol.style.Icon({

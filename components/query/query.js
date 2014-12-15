@@ -6,7 +6,43 @@ define(['angular', 'map', 'toolbar'],
                 return {
                     templateUrl: hsl_path + 'components/query/partials/infopanel.html'
                 };
-            }).service("WmsGetFeatureInfo", ['$http',
+            })
+            .directive('infovalue', ['$compile', function($compile) {
+
+                function link(scope, element, attrs) {
+                    if (attrs.attribute == 'hstemplate') return;
+                    if (attrs.template) {
+                        var el = angular.element('<span ' + attrs.template + '></span>');
+                        el.attr({
+                            attribute: attrs.attribute,
+                            value: attrs.value
+                        });
+                        element.append(el);
+                        $compile(el)(scope);
+                    } else {
+                        if (attrs.value) {
+                            if (attrs.value.indexOf('http') == 0) {
+                                var el = angular.element('a');
+                                el.attr({
+                                    target: '_blank',
+                                    href: attrs.value
+                                });
+                                el.html(attrs.value);
+                                element.html(el);
+                            } else {
+                                element.html(attrs.value);
+                            }
+                        } else {
+                            element.html(attrs.attribute);
+                        }
+                    }
+                }
+
+                return {
+                    link: link
+                };
+            }])
+            .service("WmsGetFeatureInfo", ['$http',
                 function($http) {
                     this.request = function(url) {
                         var url = window.escape(url);
@@ -76,9 +112,12 @@ define(['angular', 'map', 'toolbar'],
                         if (key == 'gid' || key == 'geometry') return;
                         if (key == "features") {
                             for (var feature in e.element.get('features')) {
+                                var hstemplate = null;
+                                if (e.element.get('features')[feature].get('hstemplate')) hstemplate = e.element.get('features')[feature].get('hstemplate');
                                 var group = {
                                     name: "Feature",
-                                    attributes: []
+                                    attributes: [],
+                                    hstemplate: hstemplate
                                 };
                                 e.element.get('features')[feature].getKeys().forEach(function(key) {
                                     if (key == 'gid' || key == 'geometry') return;

@@ -15,7 +15,7 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.lodexplorer',
             'hs.measure',
             'hs.legend',
-            'hs.panoramio'
+            'hs.panoramio'       
         ]);
 
         module.directive('hs', ['OlMap', function(OlMap) {
