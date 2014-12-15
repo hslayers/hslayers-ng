@@ -15,8 +15,12 @@ define(['angular', 'map'],
             }).service("SearchService", ['$http',
                 function($http) {
                     this.request = function(query) {
-                        var url = window.escape("http://api.geonames.org/searchJSON?&username=raitis&q=" + query);
-                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.searchResultsReceived);
+                        var url = window.escape("http://api.geonames.org/searchJSON?&username=raitis&q=" + query); 
+                        $.ajax({
+                            url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                            cache: false,
+                            success: this.searchResultsReceived
+                        });
                     };
 
                 }

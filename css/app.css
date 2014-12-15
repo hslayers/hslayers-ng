@@ -104,8 +104,6 @@ hr {
 }
 
 .search-container {
-       
-    
 }
 #search_address {
     width: 200px;
@@ -115,6 +113,9 @@ hr {
 }
 
 #searchresults {
+    position: absolute;
+    left: 50%;
+    top: 45px; 
     min-width: 200px;
 }
 
