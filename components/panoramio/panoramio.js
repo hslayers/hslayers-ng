@@ -85,14 +85,14 @@ define(['angular', 'map', 'app'],
                             var attributes = {
                                 geometry: new ol.geom.Point(ol.proj.transform([p.longitude, p.latitude], 'EPSG:4326', map.getView().getProjection())),
                                 photo_file_url: p.photo_file_url,
+                                Title: p.photo_title,
                                 Uploaded: p.upload_date,
-                                Author: p.owner_name,
+                                Link: p.photo_url,
                                 'Lon, Lat': p.longitude.toFixed(4) + ' ' + p.latitude.toFixed(4),
                                 //pheight: p.height,
                                 //pwidth: p.width,
-                                Title: p.photo_title,
+                                Author: p.owner_name,
                                 'Owner': p.owner_url,
-                                Link: p.photo_url,
                                 hstemplate: 'panoramio'
                             }
                             var feature = new ol.Feature(attributes);
