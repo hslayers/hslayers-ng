@@ -1,15 +1,16 @@
 define(['angular', 'map', 'app'],
 
     function(angular) {
-        var mod = angular.module('hs.panoramio', ['hs.map'])
+        angular.module('hs.panoramio', ['hs.map'])
             .directive('panoramio', function() {
                 function link(scope, element, attrs) {
                     if (attrs.value) {
                         if (attrs.attribute == 'photo_file_url') {
-                            element.html('<img src="' + attrs.value + '"/>');
+                            element.html(angular.element('<img>').attr({src: attrs.value}));
                         } else {
                             if (attrs.value.indexOf('http') == 0) {
-                                element.html('<a target="_blank" href="' + attrs.value + '">' + attrs.value + '</a>');
+                                var el = angular.element('<a>').attr({target: '_blank', href: attrs.value}).html(attrs.value);
+                                element.html(el);
                             } else {
                                 element.html(attrs.value);
                             }
@@ -98,7 +99,8 @@ define(['angular', 'map', 'app'],
                             var feature = new ol.Feature(attributes);
                             feature.setStyle([new ol.style.Style({
                                 image: new ol.style.Icon({
-                                    src: feature.get('photo_file_url')
+                                    src: feature.get('photo_file_url'),
+                                    crossOrigin: 'anonymous'
                                 })
                             })])
 

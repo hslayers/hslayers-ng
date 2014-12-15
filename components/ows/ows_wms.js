@@ -68,7 +68,8 @@ define(['angular', 'xml2json'],
                                         params: {
                                             LAYERS: layer.Name,
                                             INFO_FORMAT: (layer.queryable ? query_format : undefined)
-                                        }
+                                        },
+                                        crossOrigin: null
                                     }),
                                     abstract: layer.Abstract,
                                     MetadataURL: layer.MetadataURL,
@@ -320,7 +321,8 @@ define(['angular', 'xml2json'],
                                 params: {
                                     LAYERS: layer.Name,
                                     INFO_FORMAT: (layer.queryable ? query_format : undefined)
-                                }
+                                },
+                                crossOrigin: 'anonymous'
                             }),
                             abstract: layer.Abstract,
                             MetadataURL: layer.MetadataURL,
