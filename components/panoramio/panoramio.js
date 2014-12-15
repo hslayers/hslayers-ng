@@ -41,34 +41,21 @@ define(['angular', 'map', 'app'],
                     this.featuresReceived = function(panoramio) {
                         var features = [];
                         for (var i = 0; i < panoramio.photos.length; i++) {
-                            var upload_date = panoramio.photos[i].upload_date;
-                            var owner_name = panoramio.photos[i].owner_name;
-                            var photo_id = panoramio.photos[i].photo_id;
-                            var longitude = panoramio.photos[i].longitude;
-                            var latitude = panoramio.photos[i].latitude;
-                            var pheight = panoramio.photos[i].height;
-                            var pwidth = panoramio.photos[i].width;
-                            var photo_title = panoramio.photos[i].photo_title;
-                            var owner_url = panoramio.photos[i].owner_url;
-                            var owner_id = panoramio.photos[i].owner_id;
-                            var photo_file_url = panoramio.photos[i].photo_file_url;
-                            var photo_url = panoramio.photos[i].photo_url;
-
+                            var p = panoramio.photos[i];
                             var attributes = {
-                                    geometry: new ol.geom.Point(ol.proj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857')),
-                                    'upload_date': upload_date,
-                                    'owner_name': owner_name,
-                                    'photo_id': photo_id,
-                                    'longitude': longitude,
-                                    'latitude': latitude,
-                                    'pheight': pheight,
-                                    'pwidth': pwidth,
-                                    'pheight': pheight,
-                                    'photo_title': photo_title,
-                                    'owner_url': owner_url,
-                                    'owner_id': owner_id,
-                                    'photo_file_url': photo_file_url,
-                                    'photo_url': photo_url,
+                                    geometry: new ol.geom.Point(ol.proj.transform([p.longitude, p.latitude], 'EPSG:4326', map.getView().getProjection())),
+                                    upload_date: p.upload_date,
+                                    owner_name: p.owner_name,
+                                    photo_id: p.photo_id,
+                                    longitude: p.longitude,
+                                    latitude: p.latitude,
+                                    pheight: p.height,
+                                    pwidth: p.width,
+                                    photo_title: p.photo_title,
+                                    owner_url: p.owner_url,
+                                    owner_id: p.owner_id,
+                                    photo_file_url: p.photo_file_url,
+                                    photo_url: p.photo_url,
                                 } //end attributes
                             var feature = new ol.Feature(attributes);
                             feature.setStyle([new ol.style.Style({
@@ -83,8 +70,9 @@ define(['angular', 'map', 'app'],
                         src.addFeatures(features);
                     }
                     this.update = function(url) {
-                        var b = ol.proj.transform(map.getView().calculateExtent(map.getSize()), 'EPSG:3857', 'EPSG:4326'); // bounds
-                        var url = window.escape('http://www.panoramio.com/map/get_panoramas.php?order=popularity&set=full&from=0&to=80&minx=' + b[0] + '&miny=' + b[1] + '&maxx=' + b[2] + '&maxy=' + b[3] + '&size=thumbnail');
+                        var b = ol.proj.transform(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
+                        var limit = Math.floor($(map.getViewport()).width()*$(map.getViewport()).height() / 22280 * 1.2);
+                        var url = window.escape('http://www.panoramio.com/map/get_panoramas.php?order=popularity&set=full&from=0&to='+limit+'&minx=' + b[0] + '&miny=' + b[1] + '&maxx=' + b[2] + '&maxy=' + b[3] + '&size=thumbnail');
                         $.ajax({
                             url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
                             cache: false,
