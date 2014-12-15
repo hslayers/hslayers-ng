@@ -21,7 +21,8 @@ require.config({
         measure: hsl_path+'components/measure/measure',
         legend: hsl_path+'components/legend/legend',
         app: hsl_path+'examples/armenia/app',
-        xml2json: hsl_path+'lib/xml2json.min'
+        xml2json: hsl_path+'lib/xml2json.min',
+        panoramio: hsl_path+'components/panoramio/panoramio',
     },
     shim: {
         'angular': {

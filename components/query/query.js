@@ -10,7 +10,11 @@ define(['angular', 'map', 'toolbar'],
                 function($http) {
                     this.request = function(url) {
                         var url = window.escape(url);
-                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(this.featureInfoReceived);
+                        $.ajax({
+                            url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                            cache: false,
+                            success: this.featureInfoReceived
+                        });
                     };
 
                 }
@@ -62,26 +66,48 @@ define(['angular', 'map', 'toolbar'],
                 var selector = new ol.interaction.Select({
                     condition: ol.events.condition.click
                 });
+                var vectors_selected = false;
                 selector.getFeatures().on('add', function(e) {
+                    InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
                     if (ToolbarService.mainpanel == 'measure') return;
                     var attributes = [];
+                    var groups_added = false;
                     e.element.getKeys().forEach(function(key) {
                         if (key == 'gid' || key == 'geometry') return;
-                        attributes.push({
-                            name: key,
-                            value: e.element.get(key)
-                        });
+                        if (key == "features") {
+                            for (var feature in e.element.get('features')) {
+                                var group = {
+                                    name: "Feature",
+                                    attributes: []
+                                };
+                                e.element.get('features')[feature].getKeys().forEach(function(key) {
+                                    if (key == 'gid' || key == 'geometry') return;
+                                    group.attributes.push({
+                                        name: key,
+                                        value: e.element.get('features')[feature].get(key)
+                                    });
+                                })
+                                groups_added = true;
+                                InfoPanelService.groups.push(group);
+                            }
+                        } else {
+                            attributes.push({
+                                name: key,
+                                value: e.element.get(key)
+                            })
+                        };
                     })
                     ToolbarService.setMainPanel("info");
                     InfoPanelService.setAttributes(attributes);
+                    if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
+                    vectors_selected = true;
                 })
                 map.addInteraction(selector);
 
-                //For wms layers use this to get the features at mouse coordinates
-                map.on('singleclick', function(evt) {
-                    if (ToolbarService.mainpanel == 'measure') return;
+                var showCoordinate = function(evt, clear) {
                     point_clicked.setCoordinates(evt.coordinate, 'XY');
-                    InfoPanelService.setGroups([{
+                    var groups = clear ? [] : InfoPanelService.groups;
+                    groups.push({
                         name: "Coordinates",
                         attributes: [{
                             "name": "EPSG:4326",
@@ -90,10 +116,18 @@ define(['angular', 'map', 'toolbar'],
                             "name": "EPSG:3857",
                             "value": ol.coordinate.createStringXY(7)(evt.coordinate)
                         }]
-                    }]);
+                    });
+                    InfoPanelService.setGroups(groups);
+                }
+
+                //For wms layers use this to get the features at mouse coordinates
+                map.on('singleclick', function(evt) {
+                    if (ToolbarService.mainpanel == 'measure') return;
+                    showCoordinate(evt, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
                     map.getLayers().forEach(function(layer) {
                         queryLayer(layer, evt)
                     });
+                    vectors_selected = false;
                 });
 
                 var queryLayer = function(layer, evt) {
@@ -123,26 +157,25 @@ define(['angular', 'map', 'toolbar'],
                     var x2js = new X2JS();
                     var json = x2js.xml_str2json(response);
                     var something_updated = false;
-                    for (var feature in json.FeatureCollection.featureMember) {
-                        if (feature == "__prefix") continue;
-                        feature = json.FeatureCollection.featureMember[feature];
+                    $("featureMember", response).each(function(){
+                        var feature = $(this)[0].firstChild;
                         var group = {
                             name: "Feature",
                             attributes: []
                         };
 
-                        for (var attribute in feature) {
-                            if (feature[attribute].__text) {
+                        for(var attribute in feature.children){
+                            if (feature.children[attribute].childElementCount==0) {
                                 group.attributes.push({
-                                    "name": attribute,
-                                    "value": feature[attribute].__text
+                                    "name": feature.children[attribute].localName,
+                                    "value": feature.children[attribute].innerHTML
                                 });
                                 something_updated = true;
                             }
                         }
                         if (something_updated)
                             InfoPanelService.groups.push(group);
-                    }
+                    })
                     if (something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
                 }
 

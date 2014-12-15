@@ -85,13 +85,17 @@ define(['angular', 'map'],
                         OlMap.map.getView().on('change:center', me.update);
                         OlMap.map.getView().on('change:resolution', me.update);
                     });
-                    OlMap.map.getView().on('change:center', function(e){
-                            if(timer!=null) clearTimeout(timer);
-                            timer=setTimeout(function(){me.update(e)}, 500);
+                    OlMap.map.getView().on('change:center', function(e) {
+                        if (timer != null) clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            me.update(e)
+                        }, 500);
                     });
-                    OlMap.map.getView().on('change:resolution', function(e){
-                            if(timer!=null) clearTimeout(timer);
-                            timer=setTimeout(function(){me.update(e)}, 500);
+                    OlMap.map.getView().on('change:resolution', function(e) {
+                        if (timer != null) clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            me.update(e)
+                        }, 500);
                     });
                     return me;
                 }
