@@ -154,18 +154,18 @@ define(['angular', 'map', 'toolbar'],
                      *  console.log(format.readFeatures(response, {}));
                      */
 
-//                    var x2js = new X2JS();
-//                  var json = x2js.xml_str2json(response);
+                    //                    var x2js = new X2JS();
+                    //                  var json = x2js.xml_str2json(response);
                     var something_updated = false;
-                    $("featureMember", response).each(function(){
+                    $("featureMember", response).each(function() {
                         var feature = $(this)[0].firstChild;
                         var group = {
                             name: "Feature",
                             attributes: []
                         };
 
-                        for(var attribute in feature.children){
-                            if (feature.children[attribute].childElementCount==0) {
+                        for (var attribute in feature.children) {
+                            if (feature.children[attribute].childElementCount == 0) {
                                 group.attributes.push({
                                     "name": feature.children[attribute].localName,
                                     "value": feature.children[attribute].innerHTML
