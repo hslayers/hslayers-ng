@@ -20,7 +20,7 @@ require.config({
         lodexplorer: hsl_path+'components/lodexplorer/lodexplorer',
         measure: hsl_path+'components/measure/measure',
         legend: hsl_path+'components/legend/legend',
-        app: hsl_path+'examples/armenia/app',
+        app: 'app',
         xml2json: hsl_path+'lib/xml2json.min',
         panoramio: hsl_path+'components/panoramio/panoramio'
     },
