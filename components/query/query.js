@@ -141,7 +141,7 @@ define(['angular', 'map', 'toolbar'],
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
                     vectors_selected = true;
                 })
-                //map.addInteraction(selector);
+                map.addInteraction(selector);
 
                 var showCoordinate = function(evt, clear) {
                     point_clicked.setCoordinates(evt.coordinate, 'XY');
@@ -161,7 +161,6 @@ define(['angular', 'map', 'toolbar'],
 
                 //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
-                    return;
                     if (ToolbarService.mainpanel == 'measure') return;
                     showCoordinate(evt, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
                     map.getLayers().forEach(function(layer) {

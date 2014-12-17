@@ -14,7 +14,7 @@ define(['angular', 'map'],
              })*/
             .service("BrowserUrlService", ['$rootScope', 'OlMap',
                 function($rootScope, OlMap) {
-                    var url_generation = false;
+                    var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
                     me.update = function(e) {
