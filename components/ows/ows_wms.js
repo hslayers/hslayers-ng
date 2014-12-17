@@ -45,7 +45,7 @@ define(['angular', 'xml2json'],
                         var srss = caps.Capability.Layer.CRS;
                         var image_formats = caps.Capability.Request.GetMap.Format;
                         var query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
-                        var image_format = getPreferedFormat(image_formats, ["image/png", "image/gif", "image/jpeg"]);
+                        var image_format = getPreferedFormat(image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
                         var query_format = getPreferedFormat(query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
 
                         var tmp = [];
@@ -67,7 +67,8 @@ define(['angular', 'xml2json'],
                                         styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                                         params: {
                                             LAYERS: layer.Name,
-                                            INFO_FORMAT: (layer.queryable ? query_format : undefined)
+                                            INFO_FORMAT: (layer.queryable ? query_format : undefined),
+                                            FORMAT:image_format
                                         },
                                         crossOrigin: null
                                     }),
@@ -110,7 +111,7 @@ define(['angular', 'xml2json'],
                             $scope.srss = caps.Capability.Layer.CRS;
                             $scope.services = caps.Capability.Layer;
                             $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
-                            $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png", "image/gif", "image/jpeg"]);
+                            $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
                             $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
                         } catch (e) {
                             if (console) console.log(e);

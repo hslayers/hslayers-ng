@@ -67,6 +67,21 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
                 box_id: 'osm',
                 base: true
             })
+            
+           , 
+           
+            new ol.layer.Tile({
+                                    title: "Swiss",
+                                    source: new ol.source.TileWMS({
+                                        url: 'http://wms.geo.admin.ch/',
+                                        params: {
+                                            LAYERS: 'ch.swisstopo.pixelkarte-farbe-pk1000.noscale',
+                                            INFO_FORMAT: undefined,
+                                            FORMAT:"image/png; mode=8bit"
+                                        },
+                                        crossOrigin: null
+                                    }),
+                                })
         ]);
 
         module.value('default_view', new ol.View({
@@ -83,7 +98,7 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.ToolbarService = ToolbarService;
-                //OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
+                OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
 
                 $scope.$on('infopanel.updated', function(event) {
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
