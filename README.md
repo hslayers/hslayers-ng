@@ -185,16 +185,6 @@ bower update
 
 This will find the latest versions that match the version ranges specified in the `bower.json` file.
 
-
-## Serving the Application Files
-
-While angular is client-side-only technology and it's possible to create angular webapps that
-don't require a backend server at all, we recommend serving the project files using a local
-webserver during development to avoid issues with security restrictions (sandbox) in browsers. The
-sandbox implementation varies between browsers, but quite often prevents things like cookies, xhr,
-etc to function properly when an html page is opened via `file://` scheme instead of `http://`.
-
-
 ## Contact
 
 raitisbe@gmail.com

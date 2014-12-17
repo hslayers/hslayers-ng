@@ -8,7 +8,7 @@ require.config({
         toolbar: hsl_path+'components/toolbar/toolbar',
         layermanager: hsl_path+'components/layermanager/layermanager',
         map: hsl_path+'components/map/map',
-        ol: 'http://openlayers.org/en/v3.0.0/build/ol',
+        ol: hsl_path+'lib/ol3/ol',
         ows: hsl_path+'components/ows/ows',
         'ows.wms': hsl_path+'components/ows/ows_wms',
         'ows.nonwms': hsl_path+'components/ows/ows_nonwms',

@@ -26,7 +26,7 @@ define(['angular', 'app', 'permalink'], function(angular) {
                 view.setCenter([parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc))]);
                 view.setZoom(parseInt(bus.getParamValue('hs_z', loc)));
             }
-            $scope.map = OlMap.map;
+            var map = OlMap.map;
             OlMap.map.setTarget("map");
             OlMap.map.addControl(new ol.control.ZoomSlider());
             OlMap.map.addControl(new ol.control.ScaleLine());

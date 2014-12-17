@@ -9,13 +9,13 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.map',
             'hs.ows',
             'hs.query',
-            'hs.search',
-            'hs.print',
-            'hs.permalink',
-            'hs.lodexplorer',
-            'hs.measure',
-            'hs.legend',
-            'hs.panoramio'       
+            'hs.search'
+            , 'hs.print'
+            ,'hs.permalink'
+            ,'hs.lodexplorer'
+            ,'hs.measure',
+            'hs.legend'
+            ,'hs.panoramio'       
         ]);
 
         module.directive('hs', ['OlMap', function(OlMap) {
@@ -83,7 +83,7 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.ToolbarService = ToolbarService;
-                OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
+                //OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
 
                 $scope.$on('infopanel.updated', function(event) {
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);

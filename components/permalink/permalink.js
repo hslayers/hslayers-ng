@@ -14,6 +14,7 @@ define(['angular', 'map'],
              })*/
             .service("BrowserUrlService", ['$rootScope', 'OlMap',
                 function($rootScope, OlMap) {
+                    var url_generation = false;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
                     me.update = function(e) {
@@ -80,23 +81,25 @@ define(['angular', 'map'],
                         if (tmp[param]) return tmp[param];
                         else return null;
                     };
-                    var timer = null;
-                    OlMap.map.on('change:view', function(e) {
-                        OlMap.map.getView().on('change:center', me.update);
-                        OlMap.map.getView().on('change:resolution', me.update);
-                    });
-                    OlMap.map.getView().on('change:center', function(e) {
-                        if (timer != null) clearTimeout(timer);
-                        timer = setTimeout(function() {
-                            me.update(e)
-                        }, 500);
-                    });
-                    OlMap.map.getView().on('change:resolution', function(e) {
-                        if (timer != null) clearTimeout(timer);
-                        timer = setTimeout(function() {
-                            me.update(e)
-                        }, 500);
-                    });
+                    if(url_generation){
+                        var timer = null;
+                        OlMap.map.on('change:view', function(e) {
+                            OlMap.map.getView().on('change:center', me.update);
+                            OlMap.map.getView().on('change:resolution', me.update);
+                        });
+                        OlMap.map.getView().on('change:center', function(e) {
+                            if (timer != null) clearTimeout(timer);
+                            timer = setTimeout(function() {
+                                me.update(e)
+                            }, 500);
+                        });
+                        OlMap.map.getView().on('change:resolution', function(e) {
+                            if (timer != null) clearTimeout(timer);
+                            timer = setTimeout(function() {
+                                me.update(e)
+                            }, 500);
+                        });
+                    }
                     return me;
                 }
             ])

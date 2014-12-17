@@ -13,7 +13,7 @@
 <div measure ng-controller="Measure"  ng-if="ToolbarService.exists('Measure')" ng-show="ToolbarService.mainpanel=='measure'"></div>
 <div printdialog ng-controller="Print"  ng-if="ToolbarService.exists('Print')" ng-show="ToolbarService.mainpanel=='print'"></div>
 <div permalinkdialog ng-controller="Permalink"></div>
-<div id="infopanel" infopanel ng-controller="Query"  ng-if="ToolbarService.exists('Print')" ng-show="ToolbarService.mainpanel=='info'"></div>
+<div id="infopanel" infopanel ng-controller="Query"  ng-if="ToolbarService.exists('Query')" ng-show="ToolbarService.mainpanel=='info'"></div>
 <div class="search-container" ng-controller="Search">
     <div searchinput></div>
     <div searchresults></div>
