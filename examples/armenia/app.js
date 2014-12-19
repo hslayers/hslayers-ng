@@ -18,18 +18,19 @@ define(['angular', 'toolbar', 'ol', 'layermanager', 'map', 'ows', 'query', 'sear
             ,'hs.panoramio'       
         ]);
 
-        module.directive('hs', ['OlMap', function(OlMap) {
+        module.directive('hs', ['OlMap', '$window', function(OlMap, $window) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    $(window).resize(function() {
-                        element[0].style.height = window.innerHeight + "px";
-                        element[0].style.width = window.innerWidth + "px";
-                        $("#map").height(window.innerHeight);
-                        $("#map").width(window.innerWidth);
+                    var w = angular.element($window);
+                    w.bind('resize', function () {
+                        element[0].style.height = w.height() + "px";
+                        element[0].style.width = w.width() + "px";
+                        $("#map").height(w.height());
+                        $("#map").width(w.width());
                         OlMap.map.updateSize()
                     });
-                    $(window).resize();
+                    w.resize();
                 }
             };
         }]);

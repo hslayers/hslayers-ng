@@ -83,21 +83,21 @@ define(['angular', 'map'],
                     };
                     if(url_generation){
                         var timer = null;
-                        OlMap.map.on('change:view', function(e) {
+                       /* OlMap.map.on('change:view', function(e) {
                             OlMap.map.getView().on('change:center', me.update);
                             OlMap.map.getView().on('change:resolution', me.update);
-                        });
+                        });*/
                         OlMap.map.getView().on('change:center', function(e) {
                             if (timer != null) clearTimeout(timer);
                             timer = setTimeout(function() {
                                 me.update(e)
-                            }, 500);
+                            }, 1000);
                         });
                         OlMap.map.getView().on('change:resolution', function(e) {
                             if (timer != null) clearTimeout(timer);
                             timer = setTimeout(function() {
                                 me.update(e)
-                            }, 500);
+                            }, 1000);
                         });
                     }
                     return me;

@@ -2,12 +2,21 @@ define(['angular', 'map'],
 
     function(angular) {
         angular.module('hs.search', ['hs.map'])
-            .directive('searchinput', function() {
+            .directive('searchinput', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchinput.html',
-                    replace: true
+                    replace: true,
+                    link: function(scope, element) {
+                        var w = angular.element($window);
+                        var positionControls = function(){
+                            element[0].style.left = parseInt((w.width() - $(element[0]).width())/2) + "px";
+                        }
+                        w.bind('resize', positionControls);
+                        positionControls();
+                    }
                 };
-            }).directive('searchresults', function() {
+                
+            }]).directive('searchresults', function() {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
                     replace: true
