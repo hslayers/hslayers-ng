@@ -16,12 +16,20 @@ define(['angular', 'map'],
                     }
                 };
 
-            }]).directive('searchresults', function() {
+            }]).directive('searchresults', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
-                    replace: true
+                    replace: true,
+                    link: function(scope, element) {
+                        var w = angular.element($window);
+                        var positionControls = function() {
+                            element[0].style.left = parseInt((w.width() - $(element[0]).width()) / 2) + "px";
+                        }
+                        w.bind('resize', positionControls);
+                        positionControls();
+                    }
                 };
-            }).service("SearchService", ['$http',
+            }]).service("SearchService", ['$http',
                 function($http) {
                     this.request = function(query) {
                         var url = window.escape("http://api.geonames.org/searchJSON?&username=raitis&q=" + query);
@@ -40,6 +48,7 @@ define(['angular', 'map'],
                 var map = OlMap.map;
                 $scope.query = "";
                 $scope.results = [];
+                $scope.clearvisible = false;
 
                 $scope.queryChanged = function() {
                     SearchService.request($scope.query);
@@ -51,9 +60,16 @@ define(['angular', 'map'],
                     map.getView().setZoom(10);
                     $("#searchresults").hide();
                 }
+                
+                $scope.clear = function(){
+                    $("#searchresults").hide();
+                    $scope.query = '';
+                    $scope.clearvisible = false;
+                }
 
                 SearchService.searchResultsReceived = function(response) {
                     $scope.results = response.geonames;
+                    $scope.clearvisible = true;
                     /*   
                        $search_list.show();
                        if (msg.contents.geonames.length > 0) {
