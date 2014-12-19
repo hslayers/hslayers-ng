@@ -68,7 +68,7 @@ define(['angular', 'xml2json'],
                                         params: {
                                             LAYERS: layer.Name,
                                             INFO_FORMAT: (layer.queryable ? query_format : undefined),
-                                            FORMAT:image_format
+                                            FORMAT: image_format
                                         },
                                         crossOrigin: null
                                     }),

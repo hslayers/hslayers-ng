@@ -8,14 +8,14 @@ define(['angular', 'map'],
                     replace: true,
                     link: function(scope, element) {
                         var w = angular.element($window);
-                        var positionControls = function(){
-                            element[0].style.left = parseInt((w.width() - $(element[0]).width())/2) + "px";
+                        var positionControls = function() {
+                            element[0].style.left = parseInt((w.width() - $(element[0]).width()) / 2) + "px";
                         }
                         w.bind('resize', positionControls);
                         positionControls();
                     }
                 };
-                
+
             }]).directive('searchresults', function() {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
@@ -24,7 +24,7 @@ define(['angular', 'map'],
             }).service("SearchService", ['$http',
                 function($http) {
                     this.request = function(query) {
-                        var url = window.escape("http://api.geonames.org/searchJSON?&username=raitis&q=" + query); 
+                        var url = window.escape("http://api.geonames.org/searchJSON?&username=raitis&q=" + query);
                         $.ajax({
                             url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
                             cache: false,

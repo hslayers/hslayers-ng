@@ -6,10 +6,15 @@ define(['angular', 'map', 'app'],
                 function link(scope, element, attrs) {
                     if (attrs.value) {
                         if (attrs.attribute == 'photo_file_url') {
-                            element.html(angular.element('<img>').attr({src: attrs.value}));
+                            element.html(angular.element('<img>').attr({
+                                src: attrs.value
+                            }));
                         } else {
                             if (attrs.value.indexOf('http') == 0) {
-                                var el = angular.element('<a>').attr({target: '_blank', href: attrs.value}).html(attrs.value);
+                                var el = angular.element('<a>').attr({
+                                    target: '_blank',
+                                    href: attrs.value
+                                }).html(attrs.value);
                                 element.html(el);
                             } else {
                                 element.html(attrs.value);
