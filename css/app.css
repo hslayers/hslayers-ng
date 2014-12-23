@@ -29,15 +29,18 @@
   padding: 0;
 }
 
+.mainpanel{
+  width: 100%;
+}
 
-.mainpanel {
+.panelspace {
   position: absolute;
   left: 46px;
-  width: 400px;
   z-index: 1000;
-  top: 6px;
-  max-height: 100%;
+  top: 5px;
+  max-height: 98%;
   overflow-y: auto;
+  padding: 0;
 }
 
 .layerpanel {
@@ -92,7 +95,7 @@ hr {
     top: 40px;
 }
 
-.ol-zoomslider {position: absolute; right:0.8em !important; height: 200px; width: 1.96em; top: 105px !important}
+.ol-zoomslider {position: absolute; right:0.5em !important; height: 200px; width: 1.96em; top: 105px !important}
 
 .ol-mouse-position {
     bottom: 8px;
