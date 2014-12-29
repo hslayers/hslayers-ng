@@ -92,10 +92,9 @@ hr {
 .ol-zoomslider, .ol-zoom {
     right: .5em;
     left: auto;
-    top: 40px;
 }
 
-.ol-zoomslider {position: absolute; right:0.5em !important; height: 200px; width: 1.96em; top: 105px !important}
+.ol-zoomslider {position: absolute; height: 200px; top: 105px !important}
 
 .ol-mouse-position {
     bottom: 8px;
