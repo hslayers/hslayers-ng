@@ -94,7 +94,7 @@ hr {
     left: auto;
 }
 
-.ol-zoomslider {position: absolute; height: 200px; top: 105px !important}
+.ol-zoomslider {position: absolute; height: 200px; width: 28px !important; top: 105px !important}
 
 .ol-mouse-position {
     bottom: 8px;
