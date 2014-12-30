@@ -115,7 +115,7 @@ define(['angular', 'ol', 'app', 'map'],
                         src.addFeatures(features);
                     }
                     this.update = function(url) {
-                        var b = ol.proj.transform(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
+                        var b = ol.proj.transformExtent(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
                         var limit = Math.floor($(map.getViewport()).width() * $(map.getViewport()).height() / 22280 * 1.2);
                         var url = window.escape('http://www.panoramio.com/map/get_panoramas.php?order=popularity&set=full&from=0&to=' + limit + '&minx=' + b[0] + '&miny=' + b[1] + '&maxx=' + b[2] + '&maxy=' + b[3] + '&size=thumbnail');
                         $.ajax({
