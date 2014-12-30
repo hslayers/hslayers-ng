@@ -40,17 +40,20 @@ define(['angular', 'ol'],
 
                 me.geolocation.on('change', function() {
                     if (!me.geolocation.getTracking()) return;
-                    var p = me.geolocation.getPosition();
-                    me.accuracy = me.geolocation.getAccuracy() + ' [m]';
+                   
+                    me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
                     me.altitude = me.geolocation.getAltitude() ? me.geolocation.getAltitude() + ' [m]' : '-';
                     me.altitudeAccuracy = me.geolocation.getAltitudeAccuracy() ? '+/- ' + me.geolocation.getAltitudeAccuracy() + ' [m]' : '';
                     me.heading = me.geolocation.getHeading() ? me.geolocation.getHeading() : null;
                     me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
-                    if (!positionFeature.getGeometry())
-                        positionFeature.setGeometry(new ol.geom.Point(p));
-                    else
-                        positionFeature.getGeometry().setCoordinates(p);
-                    OlMap.map.getView().setCenter(p);
+                    if(me.geolocation.getPosition()){
+                        var p = me.geolocation.getPosition();
+                        if (!positionFeature.getGeometry())
+                            positionFeature.setGeometry(new ol.geom.Point(p));
+                        else
+                            positionFeature.getGeometry().setCoordinates(p);
+                        OlMap.map.getView().setCenter(p);
+                    }
                     if(me.heading) OlMap.map.getView().setRotation(me.heading);
                     $rootScope.$broadcast('geolocation.updated');
                 });
