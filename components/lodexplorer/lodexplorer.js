@@ -1,6 +1,6 @@
-define(['angular', 'map', 'query', 'toolbar'],
+define(['angular', 'ol', 'map', 'query', 'toolbar'],
 
-    function(angular) {
+    function(angular, ol) {
         var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar'])
             .directive('lodExplorer', function() {
                 return {

@@ -94,6 +94,10 @@ hr {
     left: auto;
 }
 
+.ol-zoom{
+    top: 2.5em;
+}
+
 .ol-zoomslider {position: absolute; height: 200px; width: 28px !important; top: 105px !important}
 
 .ol-mouse-position {
@@ -122,3 +126,28 @@ hr {
 
 #toolbar button {margin: 1px; position: relative;}
 #toolbar span, #toolbar i {width: 14px; height: 14px}
+
+
+.locate:not(.ol-collapsed) {
+background: rgba(255,255,255,.8);
+}
+.locate, .ol-control button, .ol-has-tooltip [role=tooltip], .ol-scale-line-inner {
+font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+}
+.locate {
+text-align: right;
+top: 22.5em;
+right: .5em;
+max-width: calc(100% - 1.3em);
+}
+
+.locate ul{float:left}
+.locate button{float: right;}
+.locate.ol-collapsed ul, .locate:not(.ol-collapsed) button:hover [role=tooltip] {
+display: none;
+}
+
+.locate:not(.ol-collapsed){
+    width: 175px;
+}
+.locate ul{list-style: none}

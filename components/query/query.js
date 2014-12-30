@@ -1,6 +1,6 @@
-define(['angular', 'map', 'toolbar'],
+define(['angular', 'ol', 'map', 'toolbar'],
 
-    function(angular) {
+    function(angular, ol) {
         angular.module('hs.query', ['hs.map', 'hs.toolbar'])
             .directive('infopanel', function() {
                 return {
@@ -104,6 +104,7 @@ define(['angular', 'map', 'toolbar'],
                 });
                 var vectors_selected = false;
                 selector.getFeatures().on('add', function(e) {
+                    if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
                     if (ToolbarService.mainpanel == 'measure') return;
                     var attributes = [];
@@ -219,10 +220,10 @@ define(['angular', 'map', 'toolbar'],
                 }
 
                 $scope.$on('infopanel.updated', function(event) {
-                    if (console) console.log(new Date());
                     if (!$scope.$$phase) $scope.$digest();
                 });
 
             }
         ]);
+
     })

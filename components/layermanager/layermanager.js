@@ -1,4 +1,4 @@
-define(['angular', 'app', 'map'], function(angular) {
+define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
     angular.module('hs.layermanager', ['hs.map'])
         .directive('layerManager', function() {
             return {
@@ -47,12 +47,11 @@ define(['angular', 'app', 'map'], function(angular) {
                 }
                 $rootScope.$broadcast('layermanager.updated');
             };
-            var a = OlMap.map.getLayers().getArray();
-            for (var lyr in a) {
+            OlMap.map.getLayers().forEach(function(lyr) {
                 layerAdded({
-                    element: a[lyr]
+                    element: lyr
                 });
-            }
+            })
             $scope.changeLayerVisibility = function($event, layer) {
                 layer.layer.setVisible($event.target.checked);
             }

@@ -1,5 +1,5 @@
-define(['angular', 'xml2json'],
-    function(angular) {
+define(['angular', 'ol'],
+    function(angular, ol) {
         var getPreferedFormat = function(formats, preferedFormats) {
             for (i = 0; i < preferedFormats.length; i++) {
                 if (formats.indexOf(preferedFormats[i]) > -1) {

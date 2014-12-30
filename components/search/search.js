@@ -60,8 +60,8 @@ define(['angular', 'map'],
                     map.getView().setZoom(10);
                     $("#searchresults").hide();
                 }
-                
-                $scope.clear = function(){
+
+                $scope.clear = function() {
                     $("#searchresults").hide();
                     $scope.query = '';
                     $scope.clearvisible = false;

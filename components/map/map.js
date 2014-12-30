@@ -1,4 +1,4 @@
-define(['angular', 'app', 'permalink'], function(angular) {
+define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, ol) {
     angular.module('hs.map', ['hs'])
         //This is used to share map object between components.
         .service('OlMap', ['default_view', function(default_view) {

@@ -1,6 +1,6 @@
-define(['angular', 'map', 'toolbar'],
+define(['angular', 'ol', 'map', 'toolbar'],
 
-    function(angular) {
+    function(angular, ol) {
         angular.module('hs.measure', ['hs.map', 'hs.toolbar'])
             .directive('measure', function() {
                 return {

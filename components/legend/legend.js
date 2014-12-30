@@ -1,6 +1,6 @@
-define(['angular', 'map'],
+define(['angular', 'ol', 'map'],
 
-    function(angular) {
+    function(angular, ol) {
         angular.module('hs.legend', ['hs.map'])
             .directive('legend', function() {
                 return {
@@ -43,11 +43,11 @@ define(['angular', 'map'],
                         }
                     }
                 };
-                for (var lyr in OlMap.map.getLayers().getArray()) {
+                OlMap.map.getLayers().forEach(function(lyr) {
                     $scope.layerAdded({
-                        element: OlMap.map.getLayers().getArray()[lyr]
+                        element: lyr
                     });
-                }
+                })
                 map.getLayers().on("add", $scope.layerAdded);
                 map.getLayers().on("remove", $scope.layerRemoved);
             }

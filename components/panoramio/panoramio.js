@@ -1,7 +1,7 @@
-define(['angular', 'map', 'app'],
+define(['angular', 'ol', 'app', 'map'],
 
-    function(angular) {
-        angular.module('hs.panoramio', ['hs.map'])
+    function(angular, ol, app, map) {
+        angular.module('hs.panoramio', ['hs', 'hs.map'])
             .directive('panoramio', function() {
                 function link(scope, element, attrs) {
                     if (attrs.value) {

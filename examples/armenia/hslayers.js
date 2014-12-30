@@ -5,10 +5,10 @@ var hsl_path = '/hslayers-ng/';
 require.config({
     paths: {
         angular: hsl_path+'bower_components/angular/angular',
+        ol: hsl_path+'lib/ol3/ol',
         toolbar: hsl_path+'components/toolbar/toolbar',
         layermanager: hsl_path+'components/layermanager/layermanager',
         map: hsl_path+'components/map/map',
-        ol: hsl_path+'lib/ol3/ol',
         ows: hsl_path+'components/ows/ows',
         'ows.wms': hsl_path+'components/ows/ows_wms',
         'ows.nonwms': hsl_path+'components/ows/ows_nonwms',
@@ -18,6 +18,7 @@ require.config({
         print: hsl_path+'components/print/print',
         permalink: hsl_path+'components/permalink/permalink',
         lodexplorer: hsl_path+'components/lodexplorer/lodexplorer',
+        geolocation: hsl_path+'components/geolocation/geolocation',
         measure: hsl_path+'components/measure/measure',
         legend: hsl_path+'components/legend/legend',
         app: 'app',
