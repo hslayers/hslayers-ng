@@ -9,14 +9,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.map',
             'hs.ows',
             'hs.query',
-            'hs.search'
-            , 'hs.print'
-            ,'hs.permalink'
-            ,'hs.lodexplorer'
-            ,'hs.measure',
-            'hs.legend'
-            ,'hs.panoramio'
-            , 'hs.geolocation'
+            'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
+            'hs.legend', 'hs.panoramio', 'hs.geolocation'
         ]);
 
         module.directive('hs', ['OlMap', '$window', function(OlMap, $window) {
@@ -24,7 +18,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     var w = angular.element($window);
-                    w.bind('resize', function () {
+                    w.bind('resize', function() {
                         element[0].style.height = w.height() + "px";
                         element[0].style.width = w.width() + "px";
                         $("#map").height(w.height());
@@ -69,21 +63,21 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                 box_id: 'osm',
                 base: true
             })
-            
-           , 
-           
+
+            ,
+
             new ol.layer.Tile({
-                                    title: "Swiss",
-                                    source: new ol.source.TileWMS({
-                                        url: 'http://wms.geo.admin.ch/',
-                                        params: {
-                                            LAYERS: 'ch.swisstopo.pixelkarte-farbe-pk1000.noscale',
-                                            INFO_FORMAT: undefined,
-                                            FORMAT:"image/png; mode=8bit"
-                                        },
-                                        crossOrigin: null
-                                    }),
-                                })
+                title: "Swiss",
+                source: new ol.source.TileWMS({
+                    url: 'http://wms.geo.admin.ch/',
+                    params: {
+                        LAYERS: 'ch.swisstopo.pixelkarte-farbe-pk1000.noscale',
+                        INFO_FORMAT: undefined,
+                        FORMAT: "image/png; mode=8bit"
+                    },
+                    crossOrigin: null
+                }),
+            })
         ]);
 
         module.value('default_view', new ol.View({

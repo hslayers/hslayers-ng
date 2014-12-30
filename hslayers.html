@@ -6,7 +6,7 @@
 
 <div map ng-controller="Map" id="map"></div>
 <div toolbar ng-controller="Toolbar"></div>
-<div class="panelspace col-lg-3 col-md-4 col-xs-11 col-sm-4">
+<div class="panelspace col-lg-3 col-md-4 col-xs-11 col-sm-5">
     <div layer-manager ng-controller="LayerManager" ng-show="ToolbarService.mainpanel=='layermanager'"></div>
     <div legend ng-controller="Legend" ng-if="ToolbarService.exists('Legend')" ng-show="ToolbarService.mainpanel=='legend'"></div>
     <div ows ng-controller="Ows" ng-if="ToolbarService.exists('Ows')" ng-show="ToolbarService.mainpanel=='ows'"></div>
