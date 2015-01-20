@@ -1,5 +1,10 @@
 <div class="panel panel-default mainpanel">
-    <div class="panel-heading">Eurostat explorer</div>
+    <div class="panel-heading">Eurostat explorer
+         <button type="button" class="close" ng-click="ToolbarService.setMainPanel('')">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+        </button>
+    </div>
     <div class="panel-body">
             <form name="frmConnect" role="form" class="">
                 <div class="form-group">

@@ -1,5 +1,10 @@
 <div class="panel panel-default mainpanel">
-    <div class="panel-heading">Measure <span ng-show="ctrl_pressed">multiple shapes</span></div>
+    <div class="panel-heading">Measure <span ng-show="ctrl_pressed">multiple shapes</span> 
+        <button type="button" class="close" ng-click="ToolbarService.setMainPanel(''); clearAll()">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+        </button>
+    </div>
     <div class="panel-body">
           <div class="btn-group" style="margin-bottom:10px">
             <label class="btn btn-default">
