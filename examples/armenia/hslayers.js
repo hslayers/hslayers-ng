@@ -1,6 +1,6 @@
 'use strict';
 
-var hsl_path = '/hslayers-ng/';
+var hsl_path = '../../';
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
     paths: {

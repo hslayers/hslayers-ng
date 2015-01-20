@@ -55,8 +55,9 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             $scope.changeLayerVisibility = function($event, layer) {
                 layer.layer.setVisible($event.target.checked);
             }
-            $scope.setCurrentLayer = function(layer) {
+            $scope.setCurrentLayer = function(layer, index) {
                 $scope.currentlayer = layer;
+                $(".layerpanel").insertAfter($("#layer-" + index));
                 if (console) console.log(layer);
             }
             $scope.removeLayer = function(layer) {

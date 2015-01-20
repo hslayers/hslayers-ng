@@ -44,10 +44,7 @@
 }
 
 .layerpanel {
-  position: absolute;
-  left: 450px;
-  width: 300px;
-  z-index: 1000;
+  width: 100%;
   top: 6px;
   max-height: 400px;
   overflow-y: auto;
