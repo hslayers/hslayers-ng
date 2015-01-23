@@ -13,6 +13,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             $scope.box_layers = box_layers;
             $scope.layers = [];
             $scope.active_box = null;
+            var cur_layer_opacity = 1;
             var layerAdded = function(e) {
                 if (e.element.get('show_in_manager') != null && e.element.get('show_in_manager') == false) return;
                 var sub_layers;
@@ -59,6 +60,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             $scope.setCurrentLayer = function(layer, index) {
                 $scope.currentlayer = layer;
                 $(".layerpanel").insertAfter($("#layer-" + index));
+                $scope.cur_layer_opacity = layer.layer.getOpacity();
                 if (console) console.log(layer);
             }
             $scope.removeLayer = function(layer) {
