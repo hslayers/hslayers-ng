@@ -62,6 +62,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 $(".layerpanel").insertAfter($("#layer-" + index));
                 $scope.cur_layer_opacity = layer.layer.getOpacity();
                 if (console) console.log(layer);
+                return false;
             }
             $scope.removeLayer = function(layer) {
                 map.removeLayer(layer);

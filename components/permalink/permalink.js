@@ -22,6 +22,14 @@ define(['angular', 'map'],
                         me.push('hs_x', view.getCenter()[0]);
                         me.push('hs_y', view.getCenter()[1]);
                         me.push('hs_z', view.getZoom());
+                        var visible_layers = [];
+                        OlMap.map.getLayers().forEach(function(lyr) {
+                            if (lyr.get('show_in_manager') != null && lyr.get('show_in_manager') == false) return;
+                            if(lyr.getVisible()){
+                                visible_layers.push(lyr.get("title"));
+                            }
+                        });
+                        me.push('visible_layers', visible_layers.join(";"));
                         $rootScope.$broadcast('browserurl.updated');
                     };
                     me.parse = function(str) {
