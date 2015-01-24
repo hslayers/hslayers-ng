@@ -30,6 +30,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
             function($scope, OlMap, InfoPanelService, SparqlLogService, ToolbarService) {
                 var lyr = null;
                 var map = OlMap.map;
+                var magnitudeChart = dc.barChart("#dc-magnitude-chart");
+
                 $scope.ajax_loader = hsl_path + 'components/lodexplorer/ajax-loader.gif';
                 $scope.loading = false;
                 $scope.sparql_log = [];
@@ -56,13 +58,13 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                 $scope.groupings = [];
 
                 var styleFunction = function(feature, resolution) {
-                    if (Number.MIN_VALUE != feature.opacity) {
+                    if (Number.MIN_VALUE != feature.gradient_value) {
                         return [new ol.style.Style({
                             fill: new ol.style.Fill({
-                                color: rainbow(1, feature.opacity)
+                                color: rainbow(1, feature.gradient_value, feature.opacity ? feature.opacity : 0),
                             }),
                             stroke: new ol.style.Stroke({
-                                color: '#3399FF'
+                                color: 'rgba(100, 100, 100, 0.3)'
                             })
                         })]
                     } else {
@@ -71,29 +73,37 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                                 color: [0xbb, 0xbb, 0xbb, 0.9]
                             }),
                             stroke: new ol.style.Stroke({
-                                color: '#3399FF'
+                                color: 'rgba(100, 100, 100, 0.3)'
                             })
                         })]
                     }
                 }
-                
-               var rainbow = function (numOfSteps, step) {
+
+                var rainbow = function(numOfSteps, step, opacity) {
                     // based on http://stackoverflow.com/a/7419630
                     // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
                     // Adam Cole, 2011-Sept-14
                     // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
                     var r, g, b;
-                    var h = step / (numOfSteps*1.00000001);
+                    var h = step / (numOfSteps * 1.00000001);
                     var i = ~~(h * 4);
                     var f = h * 4 - i;
                     var q = 1 - f;
-                    switch(i % 4){
-                        case 2: r = f, g = 1, b = 0; break;
-                        case 0: r = 0, g = f, b = 1; break;
-                        case 3: r = 1, g = q, b = 0; break;
-                        case 1: r = 0, g = 1, b = q; break;
+                    switch (i % 4) {
+                        case 2:
+                            r = f, g = 1, b = 0;
+                            break;
+                        case 0:
+                            r = 0, g = f, b = 1;
+                            break;
+                        case 3:
+                            r = 1, g = q, b = 0;
+                            break;
+                        case 1:
+                            r = 0, g = 1, b = q;
+                            break;
                     }
-                    var c = "#" + ("00" + (~ ~(r * 235)).toString(16)).slice(-2) + ("00" + (~ ~(g * 235)).toString(16)).slice(-2) + ("00" + (~ ~(b * 235)).toString(16)).slice(-2);
+                    var c = "rgba(" + ~~(r * 235) +"," + ~~(g * 235) + "," + ~~(b * 235) +", " + opacity +")";
                     return (c);
                 }
 
@@ -239,32 +249,75 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                     var data = [];
                     for (var i = 0; i < j.results.bindings.length; i++) {
                         val = parseFloat(j.results.bindings[i].value.value);
-                        dic[j.results.bindings[i].code.value] = parseFloat(val);
                         var data_item = {};
+                        dic[j.results.bindings[i].code.value] = {
+                            value: parseFloat(val),
+                            record: data_item
+                        };
                         for (var property in j.results.bindings[i]) {
                             if (j.results.bindings[i].hasOwnProperty(property)) {
-                               data_item[property] = j.results.bindings[i][property].value;
+                                data_item[property] = j.results.bindings[i][property].value;
                             }
                         }
                         data.push(data_item);
                     }
-                    
+
                     var facts = crossfilter(data);
-                    var magValue = facts.dimension(function (d) {
-                        return d.value;       // group or filter by magnitude
+                    var magValue = facts.dimension(function(d) {
+                        return d.value; // group or filter by magnitude
                     });
-                    var magValueGroupCount = magValue.group().reduceCount(function(d) { return d.value; });
-                    
+
                     lyr.getSource().forEachFeature(function(feature) {
-                            val = dic[feature.get('nuts_id')]
+                        var dic_item = dic[feature.get('nuts_id')];
+                        if (dic_item) {
+                            val = dic_item.value;
+                            //This is stored to highlight features which are selected in crossfilter chart.
+                            dic_item.record.feature = feature;
                             feature.set('data_value', val);
+                            feature.opacity = 0.9;
                             max = val > max ? val : max;
                             min = val < min ? val : min;
-                        })
-                        //min -= (max - min) * 0.2;
-                    lyr.getSource().forEachFeature(function(feature) {
-                        feature.opacity = dic[feature.get('nuts_id')] ? (dic[feature.get('nuts_id')] - min) / (max - min) : Number.MIN_VALUE;
+                        }
                     })
+                    lyr.getSource().forEachFeature(function(feature) {
+                        feature.gradient_value = dic[feature.get('nuts_id')] ? (dic[feature.get('nuts_id')].value - min) / (max - min) : Number.MIN_VALUE;
+                    });
+
+                    var magValueGroupCount = magValue.group().reduceCount(function(d) {
+                        return d.value;
+
+                    });
+                    magnitudeChart.width($("#lod_data_panel").width()-15)
+                        .height(130)
+                        .margins({
+                            top: 3,
+                            right: 10,
+                            bottom: 20,
+                            left: 30
+                        })
+                        .dimension(magValue) // the values across the x axis
+                        .group(magValueGroupCount) // the values on the y axis
+                        .transitionDuration(500)
+                        .centerBar(true)
+                        .gap(56) // bar width Keep increasing to get right then back off.
+                        .x(d3.scale.linear().domain([min, max]))
+                        .elasticY(true).on("filtered", function(chart, filter) {
+                            var data_items = magValue.top(Infinity);
+                            lyr.getSource().forEachFeature(function(feature) {                     feature.opacity = 0.1;     });
+                            data_items.forEach(function(key) {
+                                if (key.feature) {
+                                    key.feature.opacity = 0.9;
+                                }
+                            });
+                            var features = lyr.getSource().getFeatures();
+                            for (var i = 0; i < features.length; ++i) {
+                                features[i].set('nuts_id', features[i].get('nuts_id'));
+                            }
+                        })
+                        .xAxis().tickFormat(function(v) {
+                            return v;
+                        });
+                    dc.renderAll();
                     $scope.loading = false;
                 }
 
@@ -285,9 +338,9 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                         map.removeLayer(lyr);
                     }
                 });
-                
-                $scope.closeDataPanel = function(){
-                        console.log("te");
+
+                $scope.closeDataPanel = function() {
+                    console.log("te");
                 }
             }
         ]);

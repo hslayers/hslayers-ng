@@ -15,16 +15,17 @@ define(['angular'],
                 element.on('mousedown', function(event) {
                     // Prevent default dragging of selected content
                     event.preventDefault();
-                    if(element.parent()[0]!=document.body){
+                    if (event.offsetY > 37) return;
+                    if (element.parent()[0] != document.body) {
                         var w = angular.element($window);
-                        element.css("width", element.width()+"px");
+                        element.css("width", element.width() + "px");
                         startY = event.screenY - y + w.height() - 197;
-                        startX = event.screenX - x -46;
+                        startX = event.screenX - x - 46;
                         element.appendTo($(document.body));
-                    } else {                
+                    } else {
                         startY = event.screenY - y;
-                        startX = event.screenX - x ;
-                    }                   
+                        startX = event.screenX - x;
+                    }
                     $document.on('mousemove', mousemove);
                     $document.on('mouseup', mouseup);
                 });
