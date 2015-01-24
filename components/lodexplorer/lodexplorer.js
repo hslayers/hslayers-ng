@@ -1,6 +1,6 @@
-define(['angular', 'ol', 'map', 'query', 'toolbar', 'drag'],
+define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
 
-    function(angular, ol) {
+    function(angular, ol, dc) {
         var module = angular.module('hs.lodexplorer', ['drag', 'hs.map', 'hs.query', 'hs.toolbar'])
             .directive('lodExplorer', function() {
                 return {
@@ -59,7 +59,7 @@ define(['angular', 'ol', 'map', 'query', 'toolbar', 'drag'],
                     if (Number.MIN_VALUE != feature.opacity) {
                         return [new ol.style.Style({
                             fill: new ol.style.Fill({
-                                color: [0x33, 0x99, 0xff, feature.opacity]
+                                color: rainbow(1, feature.opacity)
                             }),
                             stroke: new ol.style.Stroke({
                                 color: '#3399FF'
@@ -75,6 +75,26 @@ define(['angular', 'ol', 'map', 'query', 'toolbar', 'drag'],
                             })
                         })]
                     }
+                }
+                
+               var rainbow = function (numOfSteps, step) {
+                    // based on http://stackoverflow.com/a/7419630
+                    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
+                    // Adam Cole, 2011-Sept-14
+                    // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+                    var r, g, b;
+                    var h = step / (numOfSteps*1.00000001);
+                    var i = ~~(h * 4);
+                    var f = h * 4 - i;
+                    var q = 1 - f;
+                    switch(i % 4){
+                        case 2: r = f, g = 1, b = 0; break;
+                        case 0: r = 0, g = f, b = 1; break;
+                        case 3: r = 1, g = q, b = 0; break;
+                        case 1: r = 0, g = 1, b = q; break;
+                    }
+                    var c = "#" + ("00" + (~ ~(r * 235)).toString(16)).slice(-2) + ("00" + (~ ~(g * 235)).toString(16)).slice(-2) + ("00" + (~ ~(b * 235)).toString(16)).slice(-2);
+                    return (c);
                 }
 
                 $scope.sourceChosen = function() {
@@ -112,7 +132,7 @@ define(['angular', 'ol', 'map', 'query', 'toolbar', 'drag'],
                         from_list,
                         "WHERE {",
                         "?s a <http://purl.org/linked-data/cube#Observation>;",
-                        "    ?property ?value .",
+                        "?property ?value .",
                         "OPTIONAL{?value skos:prefLabel ?classificator}.",
                         "FILTER(?property != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ",
                         "    and ?property != <http://purl.org/linked-data/cube#dataSet> ",
@@ -161,6 +181,7 @@ define(['angular', 'ol', 'map', 'query', 'toolbar', 'drag'],
                     }
                     $scope.groupings = groups;
                     $scope.loading = false;
+                    if (!$scope.$$phase) $scope.$digest();
                 }
 
                 $scope.display = function(j) {
@@ -215,11 +236,25 @@ define(['angular', 'ol', 'map', 'query', 'toolbar', 'drag'],
                     var max = Number.MIN_VALUE;
                     var min = Number.MAX_VALUE;
                     var val;
+                    var data = [];
                     for (var i = 0; i < j.results.bindings.length; i++) {
                         val = parseFloat(j.results.bindings[i].value.value);
-                        dic[j.results.bindings[i].code.value] = val;
-
+                        dic[j.results.bindings[i].code.value] = parseFloat(val);
+                        var data_item = {};
+                        for (var property in j.results.bindings[i]) {
+                            if (j.results.bindings[i].hasOwnProperty(property)) {
+                               data_item[property] = j.results.bindings[i][property].value;
+                            }
+                        }
+                        data.push(data_item);
                     }
+                    
+                    var facts = crossfilter(data);
+                    var magValue = facts.dimension(function (d) {
+                        return d.value;       // group or filter by magnitude
+                    });
+                    var magValueGroupCount = magValue.group().reduceCount(function(d) { return d.value; });
+                    
                     lyr.getSource().forEachFeature(function(feature) {
                             val = dic[feature.get('nuts_id')]
                             feature.set('data_value', val);

@@ -24,12 +24,21 @@ require.config({
         app: 'app',
         xml2json: hsl_path+'lib/xml2json.min',
         panoramio: hsl_path+'components/panoramio/panoramio',
-        drag: hsl_path+'components/drag/drag'
+        drag: hsl_path+'components/drag/drag',
+        d3: hsl_path+'lib/d3.v3.min',
+        crossfilter: hsl_path+'lib/crossfilter.v1.min',
+        dc: 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc'
     },
     shim: {
         'angular': {
             'exports': 'angular'
         },
+        d3: {
+            exports: 'd3'
+        },
+        dc: {
+            deps: ['d3', 'crossfilter']
+        }
     },
     priority: [
         "angular"
