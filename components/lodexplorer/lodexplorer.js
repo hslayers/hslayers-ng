@@ -1,10 +1,13 @@
-define(['angular', 'ol', 'map', 'query', 'toolbar'],
+define(['angular', 'ol', 'map', 'query', 'toolbar', 'drag'],
 
     function(angular, ol) {
-        var module = angular.module('hs.lodexplorer', ['hs.map', 'hs.query', 'hs.toolbar'])
+        var module = angular.module('hs.lodexplorer', ['drag', 'hs.map', 'hs.query', 'hs.toolbar'])
             .directive('lodExplorer', function() {
                 return {
-                    templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html'
+                    templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html',
+                    link: function(scope, element) {
+
+                    }
                 };
             }).service("SparqlLogService", [
                 function() {
@@ -23,8 +26,8 @@ define(['angular', 'ol', 'map', 'query', 'toolbar'],
                 }
             ])
 
-        .controller('LodExplorer', ['$scope', 'OlMap', '$http', 'InfoPanelService', 'SparqlLogService', 'ToolbarService',
-            function($scope, OlMap, $http, InfoPanelService, SparqlLogService, ToolbarService) {
+        .controller('LodExplorer', ['$scope', 'OlMap', 'InfoPanelService', 'SparqlLogService', 'ToolbarService',
+            function($scope, OlMap, InfoPanelService, SparqlLogService, ToolbarService) {
                 var lyr = null;
                 var map = OlMap.map;
                 $scope.ajax_loader = hsl_path + 'components/lodexplorer/ajax-loader.gif';
@@ -88,7 +91,10 @@ define(['angular', 'ol', 'map', 'query', 'toolbar'],
                     if (console) console.log(sparql);
                     var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on";
                     $scope.loading = true;
-                    $http.get(url).success($scope.classifsDownloaded);
+                    $.ajax({
+                        url: url,
+                        success: $scope.classifsDownloaded
+                    });
                 }
 
                 $scope.classifsDownloaded = function(j) {
@@ -117,7 +123,10 @@ define(['angular', 'ol', 'map', 'query', 'toolbar'],
                     ].join("\n");
                     if (console) console.log(sparql);
                     var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on";
-                    $http.get(url).success($scope.propertiesDownloaded);
+                    $.ajax({
+                        url: url,
+                        success: $scope.propertiesDownloaded
+                    });
                 }
 
                 $scope.propertiesDownloaded = function(j) {
@@ -195,7 +204,10 @@ define(['angular', 'ol', 'map', 'query', 'toolbar'],
                         date_val: d.valueOf()
                     });
                     var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on";
-                    $http.get(url).success(this.dataDownloaded);
+                    $.ajax({
+                        url: url,
+                        success: $scope.dataDownloaded
+                    });
                 }
 
                 $scope.dataDownloaded = function(j) {
@@ -218,12 +230,12 @@ define(['angular', 'ol', 'map', 'query', 'toolbar'],
                     lyr.getSource().forEachFeature(function(feature) {
                         feature.opacity = dic[feature.get('nuts_id')] ? (dic[feature.get('nuts_id')] - min) / (max - min) : Number.MIN_VALUE;
                     })
-                    lyr.dispatchChangeEvent();
                     $scope.loading = false;
                 }
 
                 $scope.$on('toolbar.mainpanel_changed', function(event) {
                     if (ToolbarService.mainpanel == 'lodexplorer') {
+                        $scope.data_panel_visible = true;
                         if (lyr == null) {
                             lyr = new ol.layer.Vector({
                                 title: "Nuts regions",
@@ -238,6 +250,10 @@ define(['angular', 'ol', 'map', 'query', 'toolbar'],
                         map.removeLayer(lyr);
                     }
                 });
+                
+                $scope.closeDataPanel = function(){
+                        console.log("te");
+                }
             }
         ]);
 

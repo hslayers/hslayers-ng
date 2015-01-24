@@ -25,7 +25,7 @@ define(['angular', 'map'],
                         var visible_layers = [];
                         OlMap.map.getLayers().forEach(function(lyr) {
                             if (lyr.get('show_in_manager') != null && lyr.get('show_in_manager') == false) return;
-                            if(lyr.getVisible()){
+                            if (lyr.getVisible()) {
                                 visible_layers.push(lyr.get("title"));
                             }
                         });

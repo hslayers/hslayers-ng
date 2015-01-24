@@ -42,8 +42,8 @@ define(['angular', 'ol', 'map', 'toolbar'],
                     link: link
                 };
             }])
-            .service("WmsGetFeatureInfo", ['$http',
-                function($http) {
+            .service("WmsGetFeatureInfo", [
+                function() {
                     this.request = function(url) {
                         var url = window.escape(url);
                         $.ajax({
