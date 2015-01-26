@@ -153,4 +153,4 @@ display: none;
 }
 .locate ul{list-style: none}
 
-#lod_data_panel{width: 100%; height: 200px;}
+.filter_charts{height: 180px; width: 180px; display: inline-block;}

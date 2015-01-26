@@ -1,4 +1,4 @@
-<div class="panel panel-default mainpanel">
+<div class="panel panel-default mainpanel" id="lod_data_panel">
     <div class="panel-heading">Eurostat explorer
          <button type="button" class="close" ng-click="ToolbarService.setMainPanel('')">
             <span aria-hidden="true">×</span>
@@ -6,35 +6,19 @@
         </button>
     </div>
     <div class="panel-body">
-            <form name="frmConnect" role="form" class="">
+            <form>
                 <div class="form-group">
                     <label for="lod_source" class="col-sm-2 control-label">Dataset:</label>
-                    <select class="form-control" id="lod_source" class="col-sm-4" ng-model="source" ng-change="sourceChosen()">
+                    <select class="form-control col-sm-4" id="lod_source" ng-model="source" ng-change="sourceChosen()">
                         <option ng-repeat="source in sources" value="{{source.url}}">{{source.name}}</option>
                     </select>
                 </div>
-                        <img ng-src="{{ajax_loader}}" ng-show="loading"/>
-                        <div ng-repeat="group in groupings" class="form-group">
-                            {{group.name}}
-                            <select class="form-control" ng-model="group.value">
-                                <option value=""></option>
-                                <option ng-repeat="option in group.options" value="{{option.value}}">{{option.hr_name}}</option>
-                            </select>
-                        </div>
+                <img ng-src="{{ajax_loader}}" ng-show="loading"/>
+                <div class="filter_charts"  ng-repeat="group in groupings">{{group.name}}<div id='chart{{group.name}}'></div></div>
+<div  class="form-group" id='dc-magnitude-chart2'></div>                
+<div  class="form-group" id='dc-magnitude-chart'></div>
+                <!--<button class="btn" data-toggle="modal" data-target="#sparqlLogModal">Log</button>-->
             </form>
-            <button class="btn btn-primary" ng-click="display()">Display</button>
-            <button class="btn" data-toggle="modal" data-target="#sparqlLogModal">Log</button>
-    </div>
-</div>
-
-<div class="panel panel-default mainpanel" draggable ng-show="ToolbarService.mainpanel=='lodexplorer' && data_panel_visible" id="lod_data_panel">
-    <div class="panel-heading">Data
-         <button type="button" class="close" ng-click="closeDataPanel()">
-            <span aria-hidden="true">×</span>
-            <span class="sr-only">Close</span>
-        </button>
-    </div>
-    <div class="panel-body">
-           <div class='pie-graph span6' id='dc-magnitude-chart'>
+           
     </div>
 </div>
