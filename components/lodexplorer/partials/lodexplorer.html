@@ -8,16 +8,23 @@
     <div class="panel-body">
             <form>
                 <div class="form-group">
-                    <label for="lod_source" class="col-sm-2 control-label">Dataset:</label>
-                    <select class="form-control col-sm-4" id="lod_source" ng-model="source" ng-change="sourceChosen()">
+                    <label for="lod_source" class="control-label">Dataset:</label>
+                    <select class="form-control" id="lod_source" ng-model="source" ng-change="sourceChosen()">
                         <option ng-repeat="source in sources" value="{{source.url}}">{{source.name}}</option>
                     </select>
                 </div>
-                <img ng-src="{{ajax_loader}}" ng-show="loading"/>
-                <div class="filter_charts"  ng-repeat="group in groupings">{{group.name}}<div id='chart{{group.name}}'></div></div>
-<div  class="form-group" id='dc-magnitude-chart2'></div>                
-<div  class="form-group" id='dc-magnitude-chart'></div>
-                <!--<button class="btn" data-toggle="modal" data-target="#sparqlLogModal">Log</button>-->
+                <div class="form-group">
+                    <img ng-src="{{ajax_loader}}" ng-show="loading"/>
+                    <div class="filter_charts"  ng-repeat="group in groupings">
+                        Filter by {{group.name}}
+                        <div id='chart{{group.name}}'></div>
+                    </div>
+                    Filter by values
+                    <div  class="form-group" id='dc-magnitude-chart2'></div>                
+                    Histogram
+                    <div  class="form-group" id='dc-magnitude-chart'></div>
+                    <!--<button class="btn" data-toggle="modal" data-target="#sparqlLogModal">Log</button>-->
+                </div>
             </form>
            
     </div>

@@ -30,8 +30,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
             function($scope, OlMap, InfoPanelService, SparqlLogService, ToolbarService) {
                 var lyr = null;
                 var map = OlMap.map;
-                var magnitudeChart = dc.barChart("#dc-magnitude-chart");
-                var magnitudeChart2 = dc.barChart("#dc-magnitude-chart2");
+                var magnitudeChart = dc.barChart("#dc-magnitude-chart", "filtered");
+                var magnitudeChart2 = dc.barChart("#dc-magnitude-chart2", "filter");
                 var feature_map = {};
 
                 $scope.ajax_loader = hsl_path + 'components/lodexplorer/ajax-loader.gif';
@@ -43,10 +43,10 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                     }, {
                         url: "http://eurostat.linked-statistics.org/data/demo_r_frate2.rdf",
                         name: "Fertility rates by age - NUTS 2 regions"
-                    }, {
+                    }, /*{
                         url: "http://eurostat.linked-statistics.org/data/demo_r_mlifexp.rdf",
                         name: "Life expectancy at given exact age (ex) - NUTS 2 regions"
-                    }, {
+                    },*/ {
                         url: "http://eurostat.linked-statistics.org/data/hlth_rs_prsrg.rdf",
                         name: "Health personnel by NUTS 2 regions"
                     }, {
@@ -213,11 +213,13 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                         "FROM <http://www.w3.org/2004/02/skos/core>",
                         "FROM <http://eurostat.linked-statistics.org/dic/unit>",
                         "FROM <http://purl.org/linked-data/cube>",
+                        "FROM <http://ha.isaf2014.info/nuts_supported.rdf>",
                         from_list,
                         "WHERE {",
                         "?measurement a <http://purl.org/linked-data/cube#Observation>;",
                         "measure:obsValue ?value;",
                         "property:geo ?location.",
+                        "?location <http://ha.isaf2014.info/nuts_supported.rdf#supported> true.",
                         extra_column_selectors,
                         "?location skos:notation ?code.",
                         filter,
@@ -240,11 +242,14 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                 $scope.dataDownloaded = function(j) {
                     var max = Number.MIN_VALUE;
                     var min = Number.MAX_VALUE;
+                    var max_filtered = Number.MIN_VALUE;
+                    var min_filtered = Number.MAX_VALUE;
                     var val;
                     var data = [];
                     lyr.getSource().forEachFeature(function(feature) {
                         feature.gradient_value = Number.MIN_VALUE;
                         feature_map[feature.get('nuts_id')] = feature;
+                        //console.log("INSERT INTO <http://ha.isaf2014.info/nuts_supported> {<http://eurostat.linked-statistics.org/dic/geo#"+feature.get('nuts_id')+"> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  <http://www.w3.org/2004/02/skos/core#Concept> . };" );
                         feature.opacity = 0.9;
                     })
 
@@ -267,6 +272,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                             data.push(data_item);
                         }
                     }
+                    min_filtered = min;
+                    max_filtered = max;
 
                     var facts = crossfilter(data);
 
@@ -278,52 +285,95 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
 
                     var range = max - min;
                     var interval_size = range / 40.0;
+                    var interval_size_filtered = range / 40.0;
 
-                    var dataValue = facts.dimension(function(d) {
+                    var createIntervals = function(d) {
                         return ~~((d.value - min) / interval_size);
-                    });
+                    };
 
-                    var dataValueGroupCount = dataValue.group().reduceCount(function(d) {
-                        return ~~((d.value - min) / interval_size);
-                    });
+                    var createFilteredIntervals = function(d) {
+                        console.log("interval", ~~((d.value - min_filtered) / interval_size_filtered));
+                        return ~~((d.value - min_filtered) / interval_size_filtered);
+                    };
 
-                    var dataValue2 = facts.dimension(function(d) {
-                        return ~~((d.value - min) / interval_size);
-                    });
-
-                    var dataValueGroupCount2 = dataValue2.group().reduceCount(function(d) {
-                        return ~~((d.value - min) / interval_size);
-                    });
+                    var dataValue = facts.dimension(createFilteredIntervals);
+                    var dataValueGroupCount = dataValue.group().reduceCount(createFilteredIntervals);
+                    var dataValue2 = facts.dimension(createIntervals);
+                    var dataValueGroupCount2 = dataValue2.group().reduceCount(createIntervals);
 
                     var colorize_regions = function(chart, filter) {
                         var data_items = dataValue.top(Infinity);
-                        max = Number.MIN_VALUE;
-                        min = Number.MAX_VALUE;
+                        var max = Number.MIN_VALUE;
+                        var min = Number.MAX_VALUE;
 
-                        data_items.forEach(function(key) {
-                            var val = key.value;
-                            max = val > max ? val : max;
-                            min = val < min ? val : min;
-                        });
-                        range = max - min;
-                        interval_size = range / 40.0;
+                        if (filter) {
+                            max = min_filtered + filter[1] * interval_size_filtered;
+                            min = min_filtered + filter[0] * interval_size_filtered;
+                        } else {
+                            data_items.forEach(function(key) {
+                                var val = key.value;
+                                max = val > max ? val : max;
+                                min = val < min ? val : min;
+                            });
+                        }
+                        var range = max - min;
+                        var interval_size = range / 40.0;
 
                         lyr.getSource().forEachFeature(function(feature) {
-                            feature.opacity = 0.1;
+                            var val = feature.get('data_value');
+                            if (val < min || val > max)
+                                feature.opacity = 0.1;
                         });
                         data_items.forEach(function(key) {
-                            if (feature_map[key.code]) {
+                            if (feature_map[key.code] && key.value >= min && key.value <= max) {
                                 feature_map[key.code].opacity = 0.9;
                                 feature_map[key.code].gradient_value = (key.value - min) / (max - min);
                                 feature_map[key.code].set('data_value', key.value);
                             }
                         });
-                        var features = lyr.getSource().getFeatures();
-                        for (var i = 0; i < features.length; ++i) {
-                            //Just to redraw the feature
-                            features[i].set('nuts_id', features[i].get('nuts_id'));
+                    }
+
+                    var generateFilteredIntervals = function(chart, filter) {
+                        if (filter) {
+                            max_filtered = min + filter[1] * interval_size;
+                            min_filtered = min + filter[0] * interval_size;
+                            console.log("min", filter[0]);
+                            console.log(min_filtered);
+                            interval_size_filtered = (max_filtered - min_filtered) / 40.0;
+                            dc.events.trigger(function(){
+                                dataValue = facts.dimension(createFilteredIntervals);
+                                dataValueGroupCount = dataValue.group().reduceCount(createFilteredIntervals);
+                                magnitudeChart.dimension(dataValue)
+                                    .group(dataValueGroupCount).elasticY(true).on("filtered", colorize_regions).xAxis().tickFormat(function(v) {
+                                        return (min_filtered + v * interval_size_filtered).toFixed(2);
+                                    }, 500);
+                                dc.renderAll("filtered");
+                                colorize_regions(chart, null);
+                            });
+                            
                         }
                     }
+
+                    magnitudeChart2.width($("#lod_data_panel").width() - 25)
+                        .height(130)
+                        .margins({
+                            top: 3,
+                            right: 10,
+                            bottom: 20,
+                            left: 30
+                        })
+                        .dimension(dataValue2) // the values across the x axis
+                        .group(dataValueGroupCount2) // the values on the y axis
+                        .transitionDuration(500)
+                        .centerBar(true)
+                        .gap(50)
+                        .x(d3.scale.linear().domain([0, 40]))
+                        .xUnits(function() {
+                            return 10;
+                        }).on("filtered", generateFilteredIntervals)
+                        .elasticY(true).xAxis().tickFormat(function(v) {
+                            return (min + v * interval_size).toFixed(2);
+                        });
 
                     magnitudeChart.width($("#lod_data_panel").width() - 25)
                         .height(130)
@@ -343,30 +393,25 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                             return 10;
                         })
                         .elasticY(true).on("filtered", colorize_regions).xAxis().tickFormat(function(v) {
-                            return (v * interval_size).toFixed(2);
+                            return (min_filtered + v * interval_size_filtered).toFixed(2);
                         });
 
-                    magnitudeChart2.width($("#lod_data_panel").width() - 25)
-                        .height(130)
-                        .margins({
-                            top: 3,
-                            right: 10,
-                            bottom: 20,
-                            left: 30
-                        })
-                        .dimension(dataValue2) // the values across the x axis
-                        .group(dataValueGroupCount2) // the values on the y axis
-                        .transitionDuration(500)
-                        .centerBar(true)
-                        .gap(50)
-                        .x(d3.scale.linear().domain([0, 40]))
-                        .xUnits(function() {
-                            return 10;
-                        })
-                        .elasticY(true).xAxis().tickFormat(function(v) {
-                            return (v * interval_size).toFixed(2);
-                        });
+                    var pie_filters_changed = function(chart, filter) {
+                        var data_items = dataValue.top(Infinity);
+                        max = Number.MIN_VALUE;
+                        min = Number.MAX_VALUE;
 
+                        data_items.forEach(function(key) {
+                            var val = key.value;
+                            max = val > max ? val : max;
+                            min = val < min ? val : min;
+                        });
+                        range = max - min;
+                        interval_size = range / 40.0;
+                        dc.renderAll("filter");
+                        dc.renderAll("filtered");
+                        colorize_regions(chart, null);
+                    }
 
                     angular.forEach($scope.groupings, function(val, key) {
                         var colValue = facts.dimension(function(d) {
@@ -384,7 +429,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                                     .radius(80) // define pie radius
                                     .dimension(colValue) // set dimension
                                     .group(colValueGroupCount) // set group
-                                    .on("filtered", colorize_regions)
+                                    .on("filtered", pie_filters_changed)
                                 break;
                             default:
                                 if (colValue.group().size() == 1) {
@@ -398,15 +443,16 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                                     .radius(80) // define pie radius
                                     .dimension(colValue) // set dimension
                                     .group(colValueGroupCount) // set group
-                                    .on("filtered", colorize_regions)
+                                    .on("filtered", pie_filters_changed)
 
                         };
                     });
 
 
 
-
                     dc.renderAll();
+                    dc.renderAll("filter");
+                    dc.renderAll("filtered");
                     $scope.loading = false;
                 }
 
