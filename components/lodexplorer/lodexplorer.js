@@ -30,8 +30,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
             function($scope, OlMap, InfoPanelService, SparqlLogService, ToolbarService) {
                 var lyr = null;
                 var map = OlMap.map;
-                var magnitudeChart = dc.barChart("#dc-magnitude-chart", "filtered");
-                var magnitudeChart2 = dc.barChart("#dc-magnitude-chart2", "filter");
+                var interval_chart = dc.barChart("#dc-magnitude-chart", "filtered");
+                var range_chart = dc.barChart("#dc-magnitude-chart2", "filter");
                 var feature_map = {};
 
                 $scope.ajax_loader = hsl_path + 'components/lodexplorer/ajax-loader.gif';
@@ -43,10 +43,12 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                     }, {
                         url: "http://eurostat.linked-statistics.org/data/demo_r_frate2.rdf",
                         name: "Fertility rates by age - NUTS 2 regions"
-                    }, /*{
-                        url: "http://eurostat.linked-statistics.org/data/demo_r_mlifexp.rdf",
-                        name: "Life expectancy at given exact age (ex) - NUTS 2 regions"
-                    },*/ {
+                    },
+                    /*{
+                                            url: "http://eurostat.linked-statistics.org/data/demo_r_mlifexp.rdf",
+                                            name: "Life expectancy at given exact age (ex) - NUTS 2 regions"
+                                        },*/
+                    {
                         url: "http://eurostat.linked-statistics.org/data/hlth_rs_prsrg.rdf",
                         name: "Health personnel by NUTS 2 regions"
                     }, {
@@ -244,6 +246,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                     var min = Number.MAX_VALUE;
                     var max_filtered = Number.MIN_VALUE;
                     var min_filtered = Number.MAX_VALUE;
+                    var pies = [];
                     var val;
                     var data = [];
                     lyr.getSource().forEachFeature(function(feature) {
@@ -292,17 +295,24 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                     };
 
                     var createFilteredIntervals = function(d) {
-                        console.log("interval", ~~((d.value - min_filtered) / interval_size_filtered));
                         return ~~((d.value - min_filtered) / interval_size_filtered);
                     };
 
-                    var dataValue = facts.dimension(createFilteredIntervals);
-                    var dataValueGroupCount = dataValue.group().reduceCount(createFilteredIntervals);
-                    var dataValue2 = facts.dimension(createIntervals);
-                    var dataValueGroupCount2 = dataValue2.group().reduceCount(createIntervals);
+                    var base_dimension = facts.dimension(function(d) {
+                        return d.value
+                    });
+                    var base_dimension_counts = base_dimension.group().reduceCount(function(d) {
+                        return d.value
+                    });
+
+                    var interval_dimension = facts.dimension(createFilteredIntervals);
+                    var interval_dimension_counts = interval_dimension.group().reduceCount(createFilteredIntervals);
+
+                    var range_dimension = facts.dimension(createIntervals);
+                    var range_dimension_counts = range_dimension.group().reduceCount(createIntervals);
 
                     var colorize_regions = function(chart, filter) {
-                        var data_items = dataValue.top(Infinity);
+                        var data_items = interval_dimension.top(Infinity);
                         var max = Number.MIN_VALUE;
                         var min = Number.MAX_VALUE;
 
@@ -337,24 +347,21 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                         if (filter) {
                             max_filtered = min + filter[1] * interval_size;
                             min_filtered = min + filter[0] * interval_size;
-                            console.log("min", filter[0]);
-                            console.log(min_filtered);
                             interval_size_filtered = (max_filtered - min_filtered) / 40.0;
-                            dc.events.trigger(function(){
-                                dataValue = facts.dimension(createFilteredIntervals);
-                                dataValueGroupCount = dataValue.group().reduceCount(createFilteredIntervals);
-                                magnitudeChart.dimension(dataValue)
-                                    .group(dataValueGroupCount).elasticY(true).on("filtered", colorize_regions).xAxis().tickFormat(function(v) {
-                                        return (min_filtered + v * interval_size_filtered).toFixed(2);
-                                    }, 500);
-                                dc.renderAll("filtered");
+                            dc.events.trigger(function() {
+                                interval_chart.getChartStack().clear();
+                                interval_dimension = crossfilter(range_dimension.top(Infinity)).dimension(createFilteredIntervals);
+                                interval_dimension_counts = interval_dimension.group().reduceCount(createFilteredIntervals);
+                                interval_chart.dimension(interval_dimension)
+                                    .group(interval_dimension_counts);
+                                interval_chart.render();
                                 colorize_regions(chart, null);
                             });
-                            
+
                         }
                     }
 
-                    magnitudeChart2.width($("#lod_data_panel").width() - 25)
+                    range_chart.width($("#lod_data_panel").width() - 25)
                         .height(130)
                         .margins({
                             top: 3,
@@ -362,8 +369,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                             bottom: 20,
                             left: 30
                         })
-                        .dimension(dataValue2) // the values across the x axis
-                        .group(dataValueGroupCount2) // the values on the y axis
+                        .dimension(range_dimension) // the values across the x axis
+                        .group(range_dimension_counts) // the values on the y axis
                         .transitionDuration(500)
                         .centerBar(true)
                         .gap(50)
@@ -375,7 +382,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                             return (min + v * interval_size).toFixed(2);
                         });
 
-                    magnitudeChart.width($("#lod_data_panel").width() - 25)
+                    interval_chart.width($("#lod_data_panel").width() - 25)
                         .height(130)
                         .margins({
                             top: 3,
@@ -383,8 +390,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                             bottom: 20,
                             left: 30
                         })
-                        .dimension(dataValue) // the values across the x axis
-                        .group(dataValueGroupCount) // the values on the y axis
+                        .dimension(interval_dimension) // the values across the x axis
+                        .group(interval_dimension_counts) // the values on the y axis
                         .transitionDuration(500)
                         .centerBar(true)
                         .gap(50)
@@ -397,7 +404,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                         });
 
                     var pie_filters_changed = function(chart, filter) {
-                        var data_items = dataValue.top(Infinity);
+                        var data_items = base_dimension.top(Infinity);
                         max = Number.MIN_VALUE;
                         min = Number.MAX_VALUE;
 
@@ -408,8 +415,24 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                         });
                         range = max - min;
                         interval_size = range / 40.0;
-                        dc.renderAll("filter");
-                        dc.renderAll("filtered");
+                        range_chart.getChartStack().clear();
+                        range_dimension = crossfilter(base_dimension.top(Infinity)).dimension(createIntervals);
+                        range_dimension_counts = range_dimension.group().reduceCount(createIntervals);
+                        range_chart.dimension(range_dimension).group(range_dimension_counts);
+                        range_chart.filterAll();
+                        interval_chart.getChartStack().clear();
+                        min_filtered = min;
+                        max_filtered = max;
+                        interval_size_filtered = range / 40.0;
+                        interval_dimension = crossfilter(range_dimension.top(Infinity)).dimension(createFilteredIntervals);
+                        interval_dimension_counts = interval_dimension.group().reduceCount(createFilteredIntervals);
+                        interval_chart.dimension(interval_dimension)
+                            .group(interval_dimension_counts);
+                        interval_chart.render();
+                        range_chart.redraw();
+                        dc.events.trigger(function() {
+                            interval_chart.render();
+                        }, 600);
                         colorize_regions(chart, null);
                     }
 
@@ -420,16 +443,16 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                         var colValueGroupCount = colValue.group().reduceCount(function(d) {
                             return d[val.name] ? d[val.name] : "NaN";
                         });
-                        console.log("create chart", val.name);
                         switch (val.datatype) {
                             case "http://www.w3.org/2001/XMLSchema#date":
                                 var chart = dc.pieChart('#chart' + val.name);
-                                chart.width(160) // (optional) define chart width, :default = 200
-                                    .height(160) // (optional) define chart height, :default = 200
-                                    .radius(80) // define pie radius
+                                chart.width(160)
+                                    .height(160)
+                                    .radius(80)
                                     .dimension(colValue) // set dimension
                                     .group(colValueGroupCount) // set group
-                                    .on("filtered", pie_filters_changed)
+                                    .on("filtered", pie_filters_changed);
+                                pies.push(chart);
                                 break;
                             default:
                                 if (colValue.group().size() == 1) {
@@ -438,21 +461,20 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                                 }
                                 var colValueGroupCount = colValue.group();
                                 var chart = dc.pieChart('#chart' + val.name);
-                                chart.width(160) // (optional) define chart width, :default = 200
-                                    .height(160) // (optional) define chart height, :default = 200
-                                    .radius(80) // define pie radius
+                                chart.width(160)
+                                    .height(160)
+                                    .radius(80)
                                     .dimension(colValue) // set dimension
                                     .group(colValueGroupCount) // set group
-                                    .on("filtered", pie_filters_changed)
+                                    .on("filtered", pie_filters_changed);
+                                pies.push(chart);
 
                         };
                     });
 
-
-
                     dc.renderAll();
-                    dc.renderAll("filter");
-                    dc.renderAll("filtered");
+                    interval_chart.render();
+                    range_chart.render();
                     $scope.loading = false;
                 }
 
