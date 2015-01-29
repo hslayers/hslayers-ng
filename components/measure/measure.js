@@ -1,15 +1,15 @@
-define(['angular', 'ol', 'map', 'toolbar'],
+define(['angular', 'ol', 'map', 'core'],
 
     function(angular, ol) {
-        angular.module('hs.measure', ['hs.map', 'hs.toolbar'])
+        angular.module('hs.measure', ['hs.map', 'hs.core'])
             .directive('measure', function() {
                 return {
                     templateUrl: hsl_path + 'components/measure/partials/measure.html'
                 };
             })
 
-        .controller('Measure', ['$scope', 'OlMap', 'ToolbarService',
-            function($scope, OlMap, ToolbarService) {
+        .controller('Measure', ['$scope', 'OlMap', 'Core',
+            function($scope, OlMap, Core) {
                 var map = OlMap.map;
                 $scope.measurements = [];
                 $scope.current_measurement = {};
@@ -153,13 +153,13 @@ define(['angular', 'ol', 'map', 'toolbar'],
                 };
 
                 $scope.$watch('type', function() {
-                    if (ToolbarService.mainpanel != 'measure') return;
+                    if (Core.mainpanel != 'measure') return;
                     map.removeInteraction(draw);
                     addInteraction();
                 });
 
-                $scope.$on('toolbar.mainpanel_changed', function(event) {
-                    if (ToolbarService.mainpanel == 'measure') {
+                $scope.$on('core.mainpanel_changed', function(event) {
+                    if (Core.mainpanel == 'measure') {
                         map.addLayer(vector);
                         $(map.getViewport()).on('mousemove', mouseMoveHandler);
                         addInteraction();

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation', 'core'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -10,7 +10,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.ows',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
-            'hs.legend', 'hs.panoramio', 'hs.geolocation'
+            'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.core'
         ]);
 
         module.directive('hs', ['OlMap', '$window', function(OlMap, $window) {
@@ -89,11 +89,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
 
 
 
-        module.controller('Main', ['$scope', 'ToolbarService', 'OwsWmsLayerProducer', 'InfoPanelService',
-            function($scope, ToolbarService, OwsWmsLayerProducer, InfoPanelService) {
+        module.controller('Main', ['$scope', 'Core', 'OwsWmsLayerProducer', 'InfoPanelService',
+            function($scope, Core, OwsWmsLayerProducer, InfoPanelService) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
-                $scope.ToolbarService = ToolbarService;
+                $scope.Core = Core;
                 OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
 
                 $scope.$on('infopanel.updated', function(event) {

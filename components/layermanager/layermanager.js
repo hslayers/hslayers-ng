@@ -1,15 +1,14 @@
 define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
-    angular.module('hs.layermanager', ['hs.map', 'hs.toolbar'])
+    angular.module('hs.layermanager', ['hs.map'])
         .directive('layerManager', function() {
             return {
                 templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
             };
         })
 
-    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', '$rootScope', 'ToolbarService',
-        function($scope, OlMap, box_layers, $rootScope, ToolbarService) {
+    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', '$rootScope',
+        function($scope, OlMap, box_layers, $rootScope) {
             var map = OlMap.map;
-            $scope.ToolbarService = ToolbarService;
             $scope.box_layers = box_layers;
             $scope.layers = [];
             $scope.active_box = null;

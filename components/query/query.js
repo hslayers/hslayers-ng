@@ -1,7 +1,7 @@
-define(['angular', 'ol', 'map', 'toolbar'],
+define(['angular', 'ol', 'map', 'core'],
 
     function(angular, ol) {
-        angular.module('hs.query', ['hs.map', 'hs.toolbar'])
+        angular.module('hs.query', ['hs.map', 'hs.core'])
             .directive('infopanel', function() {
                 return {
                     templateUrl: hsl_path + 'components/query/partials/infopanel.html'
@@ -75,8 +75,8 @@ define(['angular', 'ol', 'map', 'toolbar'],
                 }
             ])
 
-        .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'ToolbarService',
-            function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, ToolbarService) {
+        .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core',
+            function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core) {
                 var map = OlMap.map;
                 $scope.myname = "shady";
                 $scope.InfoPanelService = InfoPanelService;
@@ -106,7 +106,7 @@ define(['angular', 'ol', 'map', 'toolbar'],
                 selector.getFeatures().on('add', function(e) {
                     if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
-                    if (ToolbarService.mainpanel == 'measure') return;
+                    if (Core.mainpanel == 'measure') return;
                     var attributes = [];
                     var groups_added = false;
                     e.element.getKeys().forEach(function(key) {
@@ -137,7 +137,7 @@ define(['angular', 'ol', 'map', 'toolbar'],
                             })
                         };
                     })
-                    ToolbarService.setMainPanel("info");
+                    Core.setMainPanel("info");
                     InfoPanelService.setAttributes(attributes);
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
                     vectors_selected = true;
@@ -162,7 +162,7 @@ define(['angular', 'ol', 'map', 'toolbar'],
 
                 //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
-                    if (ToolbarService.mainpanel == 'measure') return;
+                    if (Core.mainpanel == 'measure') return;
                     showCoordinate(evt, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
                     map.getLayers().forEach(function(layer) {
                         queryLayer(layer, evt)

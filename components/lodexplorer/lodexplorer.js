@@ -1,7 +1,7 @@
-define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
+define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
 
     function(angular, ol, dc) {
-        var module = angular.module('hs.lodexplorer', ['drag', 'hs.map', 'hs.query', 'hs.toolbar'])
+        var module = angular.module('hs.lodexplorer', ['drag', 'hs.map', 'hs.query', 'hs.core'])
             .directive('lodExplorer', function() {
                 return {
                     templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html',
@@ -26,8 +26,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                 }
             ])
 
-        .controller('LodExplorer', ['$scope', 'OlMap', 'InfoPanelService', 'SparqlLogService', 'ToolbarService',
-            function($scope, OlMap, InfoPanelService, SparqlLogService, ToolbarService) {
+        .controller('LodExplorer', ['$scope', 'OlMap', 'InfoPanelService', 'SparqlLogService', 'Core',
+            function($scope, OlMap, InfoPanelService, SparqlLogService, Core) {
                 var lyr = null;
                 var map = OlMap.map;
                 var interval_chart = dc.barChart("#dc-magnitude-chart", "filtered");
@@ -478,8 +478,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                     $scope.loading = false;
                 }
 
-                $scope.$on('toolbar.mainpanel_changed', function(event) {
-                    if (ToolbarService.mainpanel == 'lodexplorer') {
+                $scope.$on('core.mainpanel_changed', function(event) {
+                    if (Core.mainpanel == 'lodexplorer') {
                         $scope.data_panel_visible = true;
                         if (lyr == null) {
                             lyr = new ol.layer.Vector({
@@ -491,7 +491,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'toolbar', 'drag'],
                             });
                         }
                         map.addLayer(lyr);
-                    } else if (ToolbarService.mainpanel != 'info') {
+                    } else if (Core.mainpanel != 'info') {
                         map.removeLayer(lyr);
                         $scope.data_panel_visible = false;
                     }

@@ -1,29 +1,29 @@
 <div id="toolbar">
-    <button type="button" class="btn btn-default" title="Layer manager"  ng-if="ToolbarService.exists('LayerManager')" ng-click="ToolbarService.setMainPanel('layermanager', true)">
+    <button type="button" class="btn btn-default" title="Layer manager"  ng-if="Core.exists('LayerManager')" ng-click="setMainPanel('layermanager', true)">
         <span class="glyphicon glyphicon-tasks"></span>
     </button>
-    <button type="button" class="btn btn-default" title="Legend"  ng-if="ToolbarService.exists('Legend')" ng-click="ToolbarService.setMainPanel('legend', true)">
+    <button type="button" class="btn btn-default" title="Legend"  ng-if="Core.exists('Legend')" ng-click="setMainPanel('legend', true)">
         <span class="glyphicon legend-toolbtn">L</span>
     </button>
 
-    <button type="button" class="btn btn-default" title="Catalogue"  ng-if="ToolbarService.exists('Ows')" ng-click="ToolbarService.setMainPanel('ows', true)">
+    <button type="button" class="btn btn-default" title="Catalogue"  ng-if="Core.exists('Ows')" ng-click="setMainPanel('ows', true)">
         <span class="glyphicon glyphicon-cloud-download"></span>
     </button>
 
-    <button type="button" class="btn btn-default"  title="Query information and other"  ng-if="ToolbarService.exists('Query')" ng-click="ToolbarService.setMainPanel('info', true)">
+    <button type="button" class="btn btn-default"  title="Query information and other"  ng-if="Core.exists('Query')" ng-click="setMainPanel('info', true)">
         <i class="fa fa-question-circle"></i>
     </button>
 
-    <button type="button" class="btn btn-default"  title="Measure lines and polygon"  ng-if="ToolbarService.exists('Measure')" ng-click="ToolbarService.setMainPanel('measure', true)">
+    <button type="button" class="btn btn-default"  title="Measure lines and polygon"  ng-if="Core.exists('Measure')" ng-click="setMainPanel('measure', true)">
         <span class="glyphicon glyphicon-compressed"></span>
     </button>
 
 
-    <button type="button" class="btn btn-default"  title="Eurostat data explorer" ng-if="ToolbarService.exists('LodExplorer')" ng-click="ToolbarService.setMainPanel('lodexplorer', true)">
+    <button type="button" class="btn btn-default"  title="Eurostat data explorer" ng-if="Core.exists('LodExplorer')" ng-click="setMainPanel('lodexplorer', true)">
         <i class="fa fa-share-alt"></i>
     </button>
 
-    <button type="button" class="btn btn-default" title="Print"  ng-if="ToolbarService.exists('Print')" ng-click="ToolbarService.setMainPanel('print', true)">
+    <button type="button" class="btn btn-default" title="Print"  ng-if="Core.exists('Print')" ng-click="setMainPanel('print', true)">
         <i class="fa fa-print"></i>
     </button>
 </div>

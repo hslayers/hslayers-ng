@@ -1,9 +1,10 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
+            'hs.core',
             'hs.toolbar',
             'hs.layermanager',
             'hs.map',
@@ -29,7 +30,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
             };
         }]);
         
-         module.value('box_layers', []);
+        module.value('box_layers', []);
 
         module.value('default_layers', [
             new ol.layer.Tile({
@@ -46,14 +47,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
             units: "m"
         }));
 
-
-
-
-        module.controller('Main', ['$scope', 'ToolbarService', 'InfoPanelService',
-            function($scope, ToolbarService, OwsWmsLayerProducer, InfoPanelService) {
+        module.controller('Main', ['$scope', 'Core', 'InfoPanelService',
+            function($scope, Core, InfoPanelService) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
-                $scope.ToolbarService = ToolbarService;
+                $scope.Core = Core;
 
                 $scope.$on('infopanel.updated', function(event) {
                 });
