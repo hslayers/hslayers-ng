@@ -55,6 +55,25 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'sea
                 projection: 'EPSG:3857'
             });
         
+            var style = new ol.style.Style({
+                    image: new ol.style.Circle({
+                        fill: new ol.style.Fill({
+                            color: [242, 121, 0, 0.7]
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: [0xbb, 0x33, 0x33, 0.7]
+                        }),
+                        radius: 5
+                    }),
+                    fill: new ol.style.Fill({
+                        color: "rgba(139, 189, 214, 0.3)",
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#112211',
+                        width: 1
+                    })
+                })
+        
             var vectorSource2 = new ol.source.ServerVector({
                 format: new ol.format.GeoJSON(),
                 loader: function(extent, resolution, projection) {
@@ -88,46 +107,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'sea
             new ol.layer.Vector({
                 title: "NUTS polys",
                 source: vectorSource,
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: new ol.style.Fill({
-                            color: [242, 121, 0, 0.7]
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: [0xbb, 0x33, 0x33, 0.7]
-                        }),
-                        radius: 5
-                    }),
-                    fill: new ol.style.Fill({
-                        color: "#aabbcc",
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'green',
-                        width: 2
-                    })
-                })
+                style: style
             }),
             new ol.layer.Vector({
                 title: "NUTS points",
                 source: vectorSource2,
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: new ol.style.Fill({
-                            color: [242, 121, 0, 0.7]
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: [0xbb, 0x33, 0x33, 0.7]
-                        }),
-                        radius: 5
-                    }),
-                    fill: new ol.style.Fill({
-                        color: "#aabbcc",
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'green',
-                        width: 2
-                    })
-                })
+                style: style
             })
         ]);
 
