@@ -11,8 +11,8 @@ define(['angular', 'map', 'core'],
         .controller('Toolbar', ['$scope', 'OlMap', 'Core',
             function($scope, OlMap, Core) {
                 $scope.Core = Core;
-                $scope.setMainPanel = function (which){
-                       Core.setMainPanel(which, true);
+                $scope.setMainPanel = function(which) {
+                    Core.setMainPanel(which, true);
                 }
             }
         ]);

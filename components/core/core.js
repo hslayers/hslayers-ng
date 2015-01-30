@@ -2,7 +2,7 @@ define(['angular'],
 
     function(angular) {
         angular.module('hs.core', [])
-          .service("Core", ['$rootScope', '$controller',
+            .service("Core", ['$rootScope', '$controller',
                 function($rootScope, $controller) {
                     var me = {
                         mainpanel: "",
@@ -30,5 +30,5 @@ define(['angular'],
 
                     return me;
                 }
-            ]) 
+            ])
     })
