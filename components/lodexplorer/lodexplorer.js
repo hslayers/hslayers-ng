@@ -114,7 +114,6 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                 $scope.sourceChosen = function() {
                     var sparql = ["SELECT DISTINCT ?classif",
                         "FROM <" + $scope.source + ">",
-                        "FROM <http://purl.org/linked-data/cube>",
                         "WHERE {",
                         "?s a <http://purl.org/linked-data/cube#Observation>;",
                         "    ?property ?classif .",
@@ -124,7 +123,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         "}"
                     ].join("\n");
                     if (console) console.log(sparql);
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on";
+                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=10&debug=off";
                     $scope.loading = true;
                     $.ajax({
                         url: url,
@@ -152,7 +151,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         "}"
                     ].join("\n");
                     if (console) console.log(sparql);
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on";
+                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=10&debug=off";
                     $.ajax({
                         url: url,
                         success: $scope.propertiesDownloaded
@@ -214,7 +213,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         "FROM <" + $scope.source + ">",
                         "FROM <http://www.w3.org/2004/02/skos/core>",
                         "FROM <http://eurostat.linked-statistics.org/dic/unit>",
-                        "FROM <http://purl.org/linked-data/cube>",
+//                        "FROM <http://purl.org/linked-data/cube>",
                         "FROM <http://ha.isaf2014.info/nuts_supported.rdf>",
                         from_list,
                         "WHERE {",
@@ -234,7 +233,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         query: sparql,
                         date_val: d.valueOf()
                     });
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on";
+                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=5000&debug=off";
                     $.ajax({
                         url: url,
                         success: $scope.dataDownloaded
