@@ -123,7 +123,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         "}"
                     ].join("\n");
                     if (console) console.log(sparql);
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=10&debug=off";
+                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=2000&debug=off";
                     $scope.loading = true;
                     $.ajax({
                         url: url,
@@ -151,7 +151,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         "}"
                     ].join("\n");
                     if (console) console.log(sparql);
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=10&debug=off";
+                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=2000&debug=off";
                     $.ajax({
                         url: url,
                         success: $scope.propertiesDownloaded
