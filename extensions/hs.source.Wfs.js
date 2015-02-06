@@ -4,6 +4,7 @@ define(function(require) {
         var src = new ol.source.ServerVector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
+                        src.clear();
                 var p = options.url + (options.url.indexOf('?') > 0 ? '&' : '?') +
                     'service=WFS&TYPENAME=' + options.typename + '&request=GetFeature&' +
                     'version=1.0.0&' +
@@ -15,7 +16,6 @@ define(function(require) {
                         url: url
                     })
                     .done(function(response) {
-                        src.clear();
                         src.addFeatures(src.readFeatures(response));
                     });
             },
