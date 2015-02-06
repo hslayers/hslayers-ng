@@ -1,8 +1,8 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation'],
 
-    function(angular, ol, toolbar, layermanager) {
+    function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
             'hs.core',
             'hs.toolbar',
@@ -31,30 +31,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'sea
         }]);
         
         module.value('box_layers', []);
-
-        var vectorSource = new ol.source.ServerVector({
-                format: new ol.format.GeoJSON(),
-                loader: function(extent, resolution, projection) {
-                    var p = 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map&'+
-                        'service=WFS&TYPENAME=nuts2&request=GetFeature&'+
-                        'version=1.0.0&'+
-                        'SRSNAME=EPSG:3857&outputFormat=geojson&'+
-                        'bbox=' + extent.join(',') +',urn:ogc:def:crs:EPSG:6.3:3857';
-                    var url =  "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" +window.escape(p);
-
-                    $.ajax({
-                        url: url
-                    })
-                    .done(function(response) {
-                        vectorSource.addFeatures(vectorSource.readFeatures(response));
-                    });
-                },
-                 strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
-                    maxZoom: 19
-                })),
-                projection: 'EPSG:3857'
-            });
-        
+       
             var style = new ol.style.Style({
                     image: new ol.style.Circle({
                         fill: new ol.style.Fill({
@@ -74,29 +51,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'sea
                     })
                 })
         
-            var vectorSource2 = new ol.source.ServerVector({
-                format: new ol.format.GeoJSON(),
-                loader: function(extent, resolution, projection) {
-                    var p = 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map&'+
-                        'service=WFS&TYPENAME=nuts&request=GetFeature&'+
-                        'version=1.0.0&'+
-                        'SRSNAME=EPSG:3857&outputFormat=geojson&'+
-                        'bbox=' + extent.join(',') +',urn:ogc:def:crs:EPSG:6.3:3857';
-                    var url =  "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" +window.escape(p);
-
-                    $.ajax({
-                        url: url
-                    })
-                    .done(function(response) {
-                        vectorSource2.addFeatures(vectorSource2.readFeatures(response));
-                    });
-                },
-                 strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
-                    maxZoom: 19
-                })),
-                projection: 'EPSG:3857'
-            });
-
         module.value('default_layers', [            
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
@@ -106,12 +60,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'sea
             }),
             new ol.layer.Vector({
                 title: "NUTS polys",
-                source: vectorSource,
+                source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map', typename:'nuts2', projection:'EPSG:3857'}),
                 style: style
             }),
             new ol.layer.Vector({
                 title: "NUTS points",
-                source: vectorSource2,
+                source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map', typename:'nuts', projection:'EPSG:3857'}),
                 style: style
             })
         ]);
