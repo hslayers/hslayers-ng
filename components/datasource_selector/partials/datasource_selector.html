@@ -1,0 +1,24 @@
+<div class="panel panel-default mainpanel">
+    <div class="panel-heading">Datasources
+        <button type="button" class="close" ng-click="Core.hidePanels()">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.description"></p>
+            
+        <ul ng-repeat="ds in datasets" class="list-group">
+            <a href="#" class="list-group-item active">
+                <h4 class="list-group-item-heading">{{ds.title}}</h4>
+            </a>
+            <li ng-repeat="layer in ds.layers | filter:query" class="list-group-item">
+                <h4 class="list-group-item-heading">{{layer.title}}</h4>
+                {{layer.description}}
+                <a href="#" class="datasource_addlayer" ng-click="addToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+                  
