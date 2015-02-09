@@ -30,6 +30,7 @@ define(['angular', 'ol', 'map'],
                                     var obj = j[lyr];
                                     obj.path = lyr;
                                     $scope.datasets[ds].layers.push(obj);
+                                    if (!$scope.$$phase) $scope.$digest();
                                 }
                             }
                         }
@@ -38,13 +39,14 @@ define(['angular', 'ol', 'map'],
                 $scope.addToMap = function(ds, layer) {
                     if (ds.type == "datatank") {
                         if (layer.type == "shp") {
-                            var lyr = new ol.layer.Vector({
-                                title: layer.title || layer.description,
-                                source: new ol.source.KML({
+                            var src =  new ol.source.KML({
                                     url: ds.url + '/../../' + layer.path + '.kml',
                                     projection: ol.proj.get('EPSG:3857'),
                                     extractStyles: false                                    
-                                }),
+                                });
+                            var lyr = new ol.layer.Vector({
+                                title: layer.title || layer.description,
+                                source:src,
                                 style: new ol.style.Style({
                                     image: new ol.style.Icon({
                                         src: ds.url + '/../../js/images/marker-icon.png'
@@ -58,7 +60,15 @@ define(['angular', 'ol', 'map'],
                                     })
                                 })
                             });
+                            var listenerKey = src.on('change', function() {
+                            if (src.getState() == 'ready') {
+                                var extent = src.getExtent();
+                                src.unByKey(listenerKey);
+                                OlMap.map.getView().fitExtent(extent, map.getSize());
+                            }
+                            });
                             OlMap.map.addLayer(lyr);
+                           
                         }
                     }
                 }
