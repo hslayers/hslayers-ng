@@ -1,7 +1,7 @@
-define(['angular', 'map'],
+define(['angular', 'map', 'core'],
 
     function(angular) {
-        angular.module('hs.permalink', [])
+        angular.module('hs.permalink', ['hs.core', 'hs.map'])
             /* .directive('permalinkdialog', function() {
                  return {
                      templateUrl: 'js/components/permalink/partials/permalinkdialog.html'
@@ -12,8 +12,8 @@ define(['angular', 'map'],
                      templateUrl: 'js/components/permalink/partials/permalinkbutton.html'
                  };
              })*/
-            .service("BrowserUrlService", ['$rootScope', 'OlMap',
-                function($rootScope, OlMap) {
+            .service("BrowserUrlService", ['$rootScope', 'OlMap', 'Core',
+                function($rootScope, OlMap, Core) {
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
@@ -22,6 +22,7 @@ define(['angular', 'map'],
                         me.push('hs_x', view.getCenter()[0]);
                         me.push('hs_y', view.getCenter()[1]);
                         me.push('hs_z', view.getZoom());
+                        me.push('hs_panel', Core.mainpanel);
                         var visible_layers = [];
                         OlMap.map.getLayers().forEach(function(lyr) {
                             if (lyr.get('show_in_manager') != null && lyr.get('show_in_manager') == false) return;

@@ -1,4 +1,4 @@
-define(['angular', 'map', 'core'],
+define(['angular', 'map', 'core', 'permalink'],
 
     function(angular) {
         angular.module('hs.toolbar', ['hs.map', 'hs.core'])
@@ -8,12 +8,16 @@ define(['angular', 'map', 'core'],
                 };
             })
 
-        .controller('Toolbar', ['$scope', 'OlMap', 'Core',
-            function($scope, OlMap, Core) {
+        .controller('Toolbar', ['$scope', 'OlMap', 'Core', 'BrowserUrlService',
+            function($scope, OlMap, Core, bus) {
                 $scope.Core = Core;
                 $scope.setMainPanel = function(which) {
                     Core.setMainPanel(which, true);
                 }
+                if (bus.getParamValue('hs_panel')) {
+                    $scope.setMainPanel(bus.getParamValue('hs_panel'));
+                }
             }
+           
         ]);
     })
