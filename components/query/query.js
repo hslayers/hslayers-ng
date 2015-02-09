@@ -1,7 +1,7 @@
-define(['angular', 'ol', 'map', 'core'],
+define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
     function(angular, ol) {
-        angular.module('hs.query', ['hs.map', 'hs.core'])
+        angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
             .directive('infopanel', function() {
                 return {
                     templateUrl: hsl_path + 'components/query/partials/infopanel.html'
@@ -75,8 +75,8 @@ define(['angular', 'ol', 'map', 'core'],
                 }
             ])
 
-        .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core',
-            function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core) {
+        .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core', '$sce', 
+            function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
                 var map = OlMap.map;
                 $scope.myname = "shady";
                 $scope.InfoPanelService = InfoPanelService;
@@ -124,17 +124,18 @@ define(['angular', 'ol', 'map', 'core'],
                                     if (key == 'gid' || key == 'geometry') return;
                                     group.attributes.push({
                                         name: key,
-                                        value: e.element.get('features')[feature].get(key)
+                                        value: $sce.trustAsHtml(e.element.get('features')[feature].get(key))  
                                     });
                                 })
                                 groups_added = true;
                                 InfoPanelService.groups.push(group);
                             }
                         } else {
-                            attributes.push({
+                            var obj = {
                                 name: key,
-                                value: e.element.get(key)
-                            })
+                                value:  $sce.trustAsHtml(e.element.get(key))
+                            };
+                            attributes.push(obj)
                         };
                     })
                     Core.setMainPanel("info");

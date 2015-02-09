@@ -11,6 +11,7 @@
     <div layer-manager ng-controller="LayerManager" ng-show="Core.mainpanel=='layermanager'"></div>
     <div legend ng-controller="Legend" ng-if="Core.exists('Legend')" ng-show="Core.mainpanel=='legend'"></div>
     <div ows ng-controller="Ows" ng-if="Core.exists('Ows')" ng-show="Core.mainpanel=='ows'"></div>
+    <div datasource-selector ng-controller="DatasourceSelector" ng-if="Core.exists('DatasourceSelector')" ng-show="Core.mainpanel=='datasource_selector'"></div>
     <div lod-explorer ng-controller="LodExplorer" ng-if="Core.exists('LodExplorer')" ng-show="Core.mainpanel=='lodexplorer'"></div>
     <div measure ng-controller="Measure"  ng-if="Core.exists('Measure')" ng-show="Core.mainpanel=='measure'"></div>
     <div printdialog ng-controller="Print"  ng-if="Core.exists('Print')" ng-show="Core.mainpanel=='print'"></div>

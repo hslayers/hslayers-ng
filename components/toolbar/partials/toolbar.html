@@ -6,6 +6,10 @@
         <span class="glyphicon legend-toolbtn">L</span>
     </button>
 
+    <button type="button" class="btn btn-default" title="Datasource Selector"  ng-if="Core.exists('DatasourceSelector')" ng-click="setMainPanel('datasource_selector', true)">
+        <span class="glyphicon glyphicon-cloud-download"></span>
+    </button>
+
     <button type="button" class="btn btn-default" title="Catalogue"  ng-if="Core.exists('Ows')" ng-click="setMainPanel('ows', true)">
         <span class="glyphicon glyphicon-cloud-download"></span>
     </button>
