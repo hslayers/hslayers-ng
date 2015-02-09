@@ -61,7 +61,7 @@ define(['angular', 'ol', 'map'],
                                 })
                             });
                             var listenerKey = src.on('change', function() {
-                                if (src.getState() == 'ready') {
+                                if (src.getState() == 'ready'){
                                     var extent = src.getExtent();
                                     src.unByKey(listenerKey);
                                     OlMap.map.getView().fitExtent(extent, map.getSize());
