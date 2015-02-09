@@ -75,7 +75,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 }
             ])
 
-        .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core', '$sce', 
+        .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core', '$sce',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
                 var map = OlMap.map;
                 $scope.myname = "shady";
@@ -124,7 +124,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                     if (key == 'gid' || key == 'geometry') return;
                                     group.attributes.push({
                                         name: key,
-                                        value: $sce.trustAsHtml(e.element.get('features')[feature].get(key))  
+                                        value: $sce.trustAsHtml(e.element.get('features')[feature].get(key))
                                     });
                                 })
                                 groups_added = true;
@@ -133,7 +133,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         } else {
                             var obj = {
                                 name: key,
-                                value:  $sce.trustAsHtml(e.element.get(key))
+                                value: $sce.trustAsHtml(e.element.get(key))
                             };
                             attributes.push(obj)
                         };

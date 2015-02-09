@@ -18,6 +18,6 @@ define(['angular', 'map', 'core', 'permalink'],
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
                 }
             }
-           
+
         ]);
     })
