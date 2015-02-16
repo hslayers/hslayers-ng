@@ -25,6 +25,7 @@ define(['angular'],
                     win.print();
                     win.location.reload();
                 }
+                $scope.$emit('scope_loaded', "Print");
             }
         ]);
     })

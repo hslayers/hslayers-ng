@@ -29,7 +29,8 @@ require.config({
         crossfilter: hsl_path+'lib/crossfilter.v1.min',
         dc: 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc',
         core: hsl_path+'components/core/core',
-        'angular-sanitize': hsl_path+'bower_components/angular-sanitize/angular-sanitize'
+        'angular-sanitize': hsl_path+'bower_components/angular-sanitize/angular-sanitize',
+        api: hsl_path+'components/api/api'
     },
     shim: {
         'angular': {

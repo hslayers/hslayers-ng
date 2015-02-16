@@ -50,7 +50,7 @@ define(['angular', 'ol', 'map'],
                                 style: new ol.style.Style({
                                     image: new ol.style.Icon({
                                         src: ds.url + '/../../js/images/marker-icon.png',
-                                         offset: [0,16]
+                                        offset: [0, 16]
                                     }),
                                     fill: new ol.style.Fill({
                                         color: "rgba(139, 189, 214, 0.3)",
@@ -62,10 +62,10 @@ define(['angular', 'ol', 'map'],
                                 })
                             });
                             var listenerKey = src.on('change', function() {
-                                if (src.getState() == 'ready'){
+                                if (src.getState() == 'ready') {
                                     var extent = src.getExtent();
                                     src.unByKey(listenerKey);
-                                    if(!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
+                                    if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
                                         OlMap.map.getView().fitExtent(extent, map.getSize());
                                 }
                             });
@@ -74,6 +74,7 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
+                $scope.$emit('scope_loaded', "DatasourceSelector");
             }
         ]);
 

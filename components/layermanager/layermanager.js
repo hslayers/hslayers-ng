@@ -88,6 +88,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     }
                 }
             }
+            $scope.$emit('scope_loaded', "LayerManager");
         }
     ]);
 })

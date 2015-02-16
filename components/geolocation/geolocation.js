@@ -107,5 +107,6 @@ define(['angular', 'ol'],
                 $scope.altitudeAccuracy = Geolocation.altitudeAccuracy;
                 if (!$scope.$$phase) $scope.$digest();
             });
+            $scope.$emit('scope_loaded', "Geolocation");
         }]);
     })

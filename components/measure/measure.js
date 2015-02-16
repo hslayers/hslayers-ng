@@ -175,8 +175,7 @@ define(['angular', 'ol', 'map', 'core'],
                     source.clear();
                     sketch = null
                 }
-
-
+                $scope.$emit('scope_loaded', "Measure");
             }
         ]);
     })

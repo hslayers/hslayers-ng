@@ -78,7 +78,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core', '$sce',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
                 var map = OlMap.map;
-                $scope.myname = "shady";
                 $scope.InfoPanelService = InfoPanelService;
 
                 var point_clicked = new ol.geom.Point([0, 0]);
@@ -223,7 +222,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 $scope.$on('infopanel.updated', function(event) {
                     if (!$scope.$$phase) $scope.$digest();
                 });
-
+                $scope.$emit('scope_loaded', "Query");
             }
         ]);
 

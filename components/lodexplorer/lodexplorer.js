@@ -499,6 +499,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                 $scope.closeDataPanel = function() {
                     $scope.data_panel_visible = false;
                 }
+                $scope.$emit('scope_loaded', "LodExplorer");
             }
         ]);
 

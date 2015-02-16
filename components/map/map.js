@@ -35,6 +35,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 undefinedHTML: '&nbsp;'
             });
             OlMap.map.addControl(mousePositionControl);
+            $scope.$emit('scope_loaded', "Map");
         }
     ]);
 })

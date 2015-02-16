@@ -50,6 +50,7 @@ define(['angular', 'ol', 'map'],
                 })
                 map.getLayers().on("add", $scope.layerAdded);
                 map.getLayers().on("remove", $scope.layerRemoved);
+                $scope.$emit('scope_loaded', "Legend");
             }
         ]);
 

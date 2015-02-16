@@ -114,7 +114,7 @@ define(['angular', 'map', 'core'],
             ])
             .controller('Permalink', ['$scope', 'BrowserUrlService',
                 function($scope, BrowserUrlService) {
-
+                    $scope.$emit('scope_loaded', "Permalink");
                 }
             ]);
     })

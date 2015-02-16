@@ -78,6 +78,7 @@ define(['angular', 'map'],
                            switchAwayFromRegions();
                        }*/
                 }
+                $scope.$emit('scope_loaded', "Search");
             }
         ]);
     })
