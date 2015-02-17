@@ -16,25 +16,37 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
     .controller('Map', ['$scope', 'OlMap', 'default_layers', 'default_view', 'BrowserUrlService',
         function($scope, OlMap, default_layers, default_view, bus) {
-            if (console) console.log("Map loaded");
+            var map = OlMap.map;
+
+            $scope.moveToAndZoom = function(x, y, zoom) {
+                var view = OlMap.map.getView();
+                view.setCenter([x, y]);
+                view.setZoom(zoom);
+            }
+
+            $scope.getMap = function() {
+                return OlMap.map;
+            }
+
+            $scope.setTargetDiv = function(div_id) {
+                OlMap.map.setTarget(div_id);
+            }
+
             for (var lyr in default_layers) {
                 OlMap.map.addLayer(default_layers[lyr]);
             }
             if (bus.getParamValue('hs_x') && bus.getParamValue('hs_y') && bus.getParamValue('hs_z')) {
-                var view = OlMap.map.getView();
                 var loc = location.search;
-                view.setCenter([parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc))]);
-                view.setZoom(parseInt(bus.getParamValue('hs_z', loc)));
+                $scope.moveToAndZoom(parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc)), parseInt(bus.getParamValue('hs_z', loc)));
             }
-            var map = OlMap.map;
-            OlMap.map.setTarget("map");
-            OlMap.map.addControl(new ol.control.ZoomSlider());
-            OlMap.map.addControl(new ol.control.ScaleLine());
+            map.addControl(new ol.control.ZoomSlider());
+            map.addControl(new ol.control.ScaleLine());
             var mousePositionControl = new ol.control.MousePosition({
                 coordinateFormat: ol.coordinate.createStringXY(4),
                 undefinedHTML: '&nbsp;'
             });
-            OlMap.map.addControl(mousePositionControl);
+            $scope.setTargetDiv("map")
+            map.addControl(mousePositionControl);
             $scope.$emit('scope_loaded', "Map");
         }
     ]);

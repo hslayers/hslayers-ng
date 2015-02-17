@@ -78,29 +78,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core', '$sce',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
                 var map = OlMap.map;
-                $scope.InfoPanelService = InfoPanelService;
-
                 var point_clicked = new ol.geom.Point([0, 0]);
                 var lyr = null;
-
-                $scope.$on('layermanager.updated', function(event) {
-                    if (lyr) map.getLayers().remove(lyr);
-                    lyr = new ol.layer.Vector({
-                        title: "Point clicked",
-                        source: new ol.source.Vector({
-                            features: [new ol.Feature({
-                                geometry: point_clicked
-                            })]
-                        }),
-                        show_in_manager: false
-                    });
-                    map.addLayer(lyr);
-                });
 
                 //For vector layers use this to get the selected features
                 var selector = new ol.interaction.Select({
                     condition: ol.events.condition.click
                 });
+
                 var vectors_selected = false;
                 selector.getFeatures().on('add', function(e) {
                     if (e.element.getKeys().length == 1) e.target.remove(e.element);
@@ -142,50 +127,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
                     vectors_selected = true;
                 })
-                map.addInteraction(selector);
-
-                var showCoordinate = function(evt, clear) {
-                    point_clicked.setCoordinates(evt.coordinate, 'XY');
-                    var groups = clear ? [] : InfoPanelService.groups;
-                    groups.push({
-                        name: "Coordinates",
-                        attributes: [{
-                            "name": "EPSG:4326",
-                            "value": ol.coordinate.toStringHDMS(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'))
-                        }, {
-                            "name": "EPSG:3857",
-                            "value": ol.coordinate.createStringXY(7)(evt.coordinate)
-                        }]
-                    });
-                    InfoPanelService.setGroups(groups);
-                }
-
-                //For wms layers use this to get the features at mouse coordinates
-                map.on('singleclick', function(evt) {
-                    if (Core.mainpanel == 'measure') return;
-                    showCoordinate(evt, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
-                    map.getLayers().forEach(function(layer) {
-                        queryLayer(layer, evt)
-                    });
-                    vectors_selected = false;
-                });
-
-                var queryLayer = function(layer, evt) {
-                    if (layer instanceof ol.layer.Tile &&
-                        layer.getSource() instanceof ol.source.TileWMS &&
-                        layer.getSource().getParams().INFO_FORMAT) {
-                        var source = layer.getSource();
-                        var viewResolution = map.getView().getResolution();
-                        var url = source.getGetFeatureInfoUrl(
-                            evt.coordinate, viewResolution, source.getProjection() ? source.getProjection() : map.getView().getProjection(), {
-                                'INFO_FORMAT': source.getParams().INFO_FORMAT
-                            });
-                        if (url) {
-                            if (console) console.log(url);
-                            WmsGetFeatureInfo.request(url);
-                        }
-                    }
-                }
 
                 WmsGetFeatureInfo.featureInfoReceived = function(response) {
                     /* Maybe this will work in future OL versions
@@ -219,8 +160,84 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
                 }
 
+                $scope.InfoPanelService = InfoPanelService;
+
+                //Example: displayGroupWithAttributes({name: "My group", attributes: [{name:"foo", value:"bar"}]
+                $scope.displayGroupWithAttributes = function(group) {
+                    InfoPanelService.groups.push(group);
+                    if (!$scope.$$phase) $scope.$digest();
+                }
+
+                $scope.showCoordinate = function(coordinate, clear) {
+                    point_clicked.setCoordinates(coordinate, 'XY');
+                    var groups = clear ? [] : InfoPanelService.groups;
+                    groups.push({
+                        name: "Coordinates",
+                        attributes: [{
+                            "name": "EPSG:4326",
+                            "value": ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'))
+                        }, {
+                            "name": "EPSG:3857",
+                            "value": ol.coordinate.createStringXY(7)(coordinate)
+                        }]
+                    });
+                    InfoPanelService.setGroups(groups);
+                }
+
+                $scope.queryWmsLayer = function(layer, coordinate) {
+                    if (layer instanceof ol.layer.Tile &&
+                        layer.getSource() instanceof ol.source.TileWMS &&
+                        layer.getSource().getParams().INFO_FORMAT) {
+                        var source = layer.getSource();
+                        var viewResolution = map.getView().getResolution();
+                        var url = source.getGetFeatureInfoUrl(
+                            coordinate, viewResolution, source.getProjection() ? source.getProjection() : map.getView().getProjection(), {
+                                'INFO_FORMAT': source.getParams().INFO_FORMAT
+                            });
+                        if (url) {
+                            if (console) console.log(url);
+                            WmsGetFeatureInfo.request(url);
+                        }
+                    }
+                }
+
+                $scope.activateFeatureQueries = function() {
+                    map.addInteraction(selector);
+                }
+
+                $scope.clearInfoPanel = function() {
+                    InfoPanelService.attributes = [];
+                    InfoPanelService.setGroups([]);
+                }
+
+                $scope.activateFeatureQueries();
+
                 $scope.$on('infopanel.updated', function(event) {
                     if (!$scope.$$phase) $scope.$digest();
+                });
+
+                $scope.$on('layermanager.updated', function(event) {
+                    if (lyr) map.getLayers().remove(lyr);
+                    lyr = new ol.layer.Vector({
+                        title: "Point clicked",
+                        source: new ol.source.Vector({
+                            features: [new ol.Feature({
+                                geometry: point_clicked
+                            })]
+                        }),
+                        show_in_manager: false
+                    });
+                    map.addLayer(lyr);
+                });
+
+                //For wms layers use this to get the features at mouse coordinates
+                map.on('singleclick', function(evt) {
+                    if (Core.mainpanel == 'measure') return;
+                    $scope.showCoordinate(evt.coordinate, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
+                    map.getLayers().forEach(function(layer) {
+                        $scope.queryWmsLayer(layer, evt.coordinate)
+                    });
+                    vectors_selected = false;
                 });
                 $scope.$emit('scope_loaded', "Query");
             }

@@ -17,6 +17,7 @@ define(['angular', 'map', 'core'],
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
+                    me.current_url = "";
                     me.update = function(e) {
                         var view = OlMap.map.getView();
                         me.push('hs_x', view.getCenter()[0]);
@@ -82,7 +83,8 @@ define(['angular', 'map', 'core'],
                         var params = me.parse(location.search);
                         params[key] = new_value;
                         var new_params_string = me.stringify(params);
-                        history.pushState({}, "", window.location.pathname + '?' + new_params_string);
+                        me.current_url = window.location.pathname + '?' + new_params_string;
+                        history.pushState({}, "", me.current_url);
                     };
                     me.getParamValue = function(param, loc) {
                         if (!loc) loc = location.search;
@@ -114,6 +116,12 @@ define(['angular', 'map', 'core'],
             ])
             .controller('Permalink', ['$scope', 'BrowserUrlService',
                 function($scope, BrowserUrlService) {
+                    $scope.getCurrentUrl = function() {
+                        return window.location.origin + BrowserUrlService.current_url;
+                    }
+                    $scope.getEmbedCode = function() {
+                        return '<iframe src="' + window.location.origin + BrowserUrlService.current_url + '" width="1000" height="700"></iframe>';
+                    }
                     $scope.$emit('scope_loaded', "Permalink");
                 }
             ]);

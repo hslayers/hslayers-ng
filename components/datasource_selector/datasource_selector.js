@@ -11,32 +11,51 @@ define(['angular', 'ol', 'map'],
         .controller('DatasourceSelector', ['$scope', 'OlMap',
             function($scope, OlMap) {
                 var map = OlMap.map;
-                $scope.datasets = [{
-                    title: "Datatank",
-                    url: "http://ewi.mmlab.be/otn/api/info",
-                    type: "datatank",
-                    layers: [],
-                    lodaded: false
-                }];
-                for (var ds in $scope.datasets) {
-                    var url = window.escape($scope.datasets[ds].url);
-                    $.ajax({
-                        url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
-                        cache: false,
-                        dataType: "json",
-                        success: function(j) {
-                            for (var lyr in j) {
-                                if (j[lyr].keywords.indexOf("kml") > -1) {
-                                    var obj = j[lyr];
-                                    obj.path = lyr;
-                                    $scope.datasets[ds].layers.push(obj);
-                                    if (!$scope.$$phase) $scope.$digest();
+                var default_style = new ol.style.Style({
+                    image: new ol.style.Icon({
+                        src: 'http://ewi.mmlab.be/otn/api/info/../../js/images/marker-icon.png',
+                        offset: [0, 16]
+                    }),
+                    fill: new ol.style.Fill({
+                        color: "rgba(139, 189, 214, 0.3)",
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#112211',
+                        width: 1
+                    })
+                })
+
+                $scope.datasets = null;
+
+                $scope.loadDatasets = function(datasets) {
+                    $scope.datasets = datasets;
+                    for (var ds in $scope.datasets) {
+                        var url = window.escape($scope.datasets[ds].url);
+                        $.ajax({
+                            url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                            cache: false,
+                            dataType: "json",
+                            success: function(j) {
+                                $scope.datasets[ds].layers = [];
+                                $scope.datasets[ds].loaded = true;
+                                for (var lyr in j) {
+                                    if (j[lyr].keywords && j[lyr].keywords.indexOf("kml") > -1) {
+                                        var obj = j[lyr];
+                                        obj.path = lyr;
+                                        $scope.datasets[ds].layers.push(obj);
+                                    }
                                 }
+                                if (!$scope.$$phase) $scope.$digest();
                             }
-                        }
-                    });
+                        });
+                    }
                 }
-                $scope.addToMap = function(ds, layer) {
+
+                $scope.setDefaultFeatureStyle = function(style) {
+                    default_style = style;
+                }
+
+                $scope.addLayerToMap = function(ds, layer) {
                     if (ds.type == "datatank") {
                         if (layer.type == "shp") {
                             var src = new ol.source.KML({
@@ -47,19 +66,7 @@ define(['angular', 'ol', 'map'],
                             var lyr = new ol.layer.Vector({
                                 title: layer.title || layer.description,
                                 source: src,
-                                style: new ol.style.Style({
-                                    image: new ol.style.Icon({
-                                        src: ds.url + '/../../js/images/marker-icon.png',
-                                        offset: [0, 16]
-                                    }),
-                                    fill: new ol.style.Fill({
-                                        color: "rgba(139, 189, 214, 0.3)",
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: '#112211',
-                                        width: 1
-                                    })
-                                })
+                                style: default_style
                             });
                             var listenerKey = src.on('change', function() {
                                 if (src.getState() == 'ready') {
@@ -74,6 +81,12 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
+
+                $scope.loadDatasets([{
+                    title: "Datatank",
+                    url: "http://ewi.mmlab.be/otn/api/info",
+                    type: "datatank"
+                }]);
                 $scope.$emit('scope_loaded', "DatasourceSelector");
             }
         ]);

@@ -9,7 +9,7 @@
             <form>
                 <div class="form-group">
                     <label for="lod_source" class="control-label">Dataset:</label>
-                    <select class="form-control" id="lod_source" ng-model="source" ng-change="sourceChosen()">
+                    <select class="form-control" id="lod_source" ng-model="source" ng-change="chooseSource(source)">
                         <option ng-repeat="source in sources" value="{{source.url}}">{{source.name}}</option>
                     </select>
                 </div>

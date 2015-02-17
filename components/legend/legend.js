@@ -11,14 +11,19 @@ define(['angular', 'ol', 'map'],
         .controller('Legend', ['$scope', 'OlMap',
             function($scope, OlMap) {
                 var map = OlMap.map;
+                var layerAdded = function(e) {
+                    $scope.addLayerToLegends(e.element);
+                };
+
                 $scope.layers = [];
-                $scope.layerAdded = function(e) {
-                    if (e.element.getSource() instanceof ol.source.TileWMS) {
-                        var sub_layers = e.element.getSource().getParams().LAYERS.split(",");
+
+                $scope.addLayerToLegends = function(layer) {
+                    if (layer.getSource() instanceof ol.source.TileWMS) {
+                        var sub_layers = layer.getSource().getParams().LAYERS.split(",");
                         for (var i = 0; i < sub_layers.length; i++) {
-                            sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                            sub_layers[i] = $scope.getWmsLayerLegendUrl(layer.getSource().getUrls()[0], sub_layers[i]);
                         }
-                        e.element.on('change:visible', function(e) {
+                        layer.on('change:visible', function(e) {
                             for (var i = 0; i < $scope.layers.length; i++) {
                                 if ($scope.layers[i].layer == e.target) {
                                     $scope.layers[i].visible = e.target.getVisible();
@@ -28,28 +33,36 @@ define(['angular', 'ol', 'map'],
                             if (!$scope.$$phase) $scope.$digest();
                         })
                         $scope.layers.push({
-                            title: e.element.get("title"),
-                            lyr: e.element,
+                            title: layer.get("title"),
+                            lyr: layer,
                             sub_layers: sub_layers,
-                            visible: e.element.getVisible()
+                            visible: layer.getVisible()
                         });
                     }
-                };
-                $scope.layerRemoved = function(e) {
+                }
+
+                $scope.getWmsLayerLegendUrl = function(wms_url, layer_name) {
+                    return wms_url + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image/png";
+                }
+
+                $scope.removeLayerFromLegends = function(layer) {
                     for (var i = 0; i < $scope.layers.length; i++) {
-                        if ($scope.layers[i].layer == e.element) {
+                        if ($scope.layers[i].layer == layer) {
                             $scope.layers.splice(i);
                             break;
                         }
                     }
-                };
+                }
+
                 OlMap.map.getLayers().forEach(function(lyr) {
-                    $scope.layerAdded({
+                    layerAdded({
                         element: lyr
                     });
                 })
-                map.getLayers().on("add", $scope.layerAdded);
-                map.getLayers().on("remove", $scope.layerRemoved);
+                map.getLayers().on("add", layerAdded);
+                map.getLayers().on("remove", function(e) {
+                    $scope.removeLayerFromLegends(e.element);
+                });
                 $scope.$emit('scope_loaded', "Legend");
             }
         ]);

@@ -106,36 +106,35 @@ define(['angular', 'ol'],
             $scope.speed = null;
             $scope.alt = null;
             $scope.altitudeAccuracy = null;
-            
+
+            $scope.getGeolocationProvider = function() {
+                return Geolocation.geolocation;
+            }
+
+            $scope.gpsActive = function(set_to) {
+                if (arguments.length == 0)
+                    return Geolocation.geolocation.getTracking();
+                else
+                    Geolocation.geolocation.setTracking(set_to);
+            }
+
+            $scope.following = function(set_to) {
+                if (arguments.length == 0)
+                    return Geolocation.following;
+                else
+                    Geolocation.following = set_to;
+            }
+
+            $scope.setFeatureStyle = function(style) {
+                return Geolocation.style = style;
+            }
+
             $scope.$on('geolocation.updated', function(event) {
                 $scope.speed = Geolocation.speed;
                 $scope.alt = Geolocation.altitude;
                 $scope.altitudeAccuracy = Geolocation.altitudeAccuracy;
                 if (!$scope.$$phase) $scope.$digest();
             });
-            
-            $scope.getGeolocationProvider = function(){
-                return Geolocation.geolocation;
-            }
-            
-            $scope.gpsActive = function(set_to){
-                if(arguments.length == 0)
-                    return Geolocation.geolocation.getTracking();
-                else
-                    Geolocation.geolocation.setTracking(set_to);
-            }
-            
-            $scope.following = function(set_to){
-                if(arguments.length == 0) 
-                    return Geolocation.following;
-                else
-                    Geolocation.following = set_to;
-            }
-            
-            $scope.setFeatureStyle = function(style){
-                return Geolocation.style = style;
-            }
-            
             $scope.$emit('scope_loaded', "Geolocation");
         }]);
     })
