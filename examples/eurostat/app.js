@@ -17,15 +17,20 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'sea
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    var w = angular.element($window);
-                    w.bind('resize', function() {
-                        element[0].style.height = w.height() + "px";
-                        element[0].style.width = w.width() + "px";
-                        $("#map").height(w.height());
-                        $("#map").width(w.width());
-                        OlMap.map.updateSize()
-                    });
-                    w.resize();
+                	setTimeout(function(){
+	                    var w = angular.element($window);
+	                    w.bind('resize', function() {
+	                        element[0].style.height = w.height() + "px";
+	                        element[0].style.width = w.width() + "px";
+	                        $("#map").height(w.height());
+	                        $("#map").width(w.width());
+	                        OlMap.map.updateSize()
+
+	                    });
+	                    w.resize();
+	                    console.log("a");
+                	}, 500);
+                    
                 }
             };
         }]);
