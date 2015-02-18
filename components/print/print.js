@@ -10,11 +10,11 @@ define(['angular'],
 
         .controller('Print', ['$scope',
             function($scope) {
-                $scope.canvas_serialized = "";
-                $scope.print_visible = false;
+                $scope.title = "";
 
-                $scope.showPrint = function() {
-                    $scope.print_visible = !$scope.print_visible;
+                $scope.setTitle = function(title) {
+                    $scope.title = title;
+                    if (!$scope.$$phase) $scope.$digest();
                 }
 
                 $scope.print = function() {
@@ -25,6 +25,8 @@ define(['angular'],
                     win.print();
                     win.location.reload();
                 }
+
+                $scope.$emit('scope_loaded', "Print");
             }
         ]);
     })

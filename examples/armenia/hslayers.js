@@ -28,11 +28,15 @@ require.config({
         d3: hsl_path+'lib/d3.v3.min',
         crossfilter: hsl_path+'lib/crossfilter.v1.min',
         dc: 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc',
-        core: hsl_path+'components/core/core'
+        core: hsl_path+'components/core/core',
+        'angular-sanitize': hsl_path+'bower_components/angular-sanitize/angular-sanitize'
     },
     shim: {
         'angular': {
             'exports': 'angular'
+        },
+        'angular-sanitize': { 
+            deps: ['angular'],
         },
         d3: {
             exports: 'd3'

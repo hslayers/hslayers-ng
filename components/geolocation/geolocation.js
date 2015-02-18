@@ -20,6 +20,7 @@ define(['angular', 'ol'],
         .service('Geolocation', ['OlMap', '$rootScope',
             function(OlMap, $rootScope) {
                 var me = {
+                    following: false,
                     geolocation: null,
                     toggleFeatures: function(visible) {
                         if (visible) {
@@ -52,7 +53,8 @@ define(['angular', 'ol'],
                             positionFeature.setGeometry(new ol.geom.Point(p));
                         else
                             positionFeature.getGeometry().setCoordinates(p);
-                        OlMap.map.getView().setCenter(p);
+                        if (me.following)
+                            OlMap.map.getView().setCenter(p);
                     }
                     if (me.heading) OlMap.map.getView().setRotation(me.heading);
                     $rootScope.$broadcast('geolocation.updated');
@@ -65,7 +67,7 @@ define(['angular', 'ol'],
                     info.style.display = '';
                 });
 
-                var style = new ol.style.Style({
+                me.style = new ol.style.Style({
                     image: new ol.style.Circle({
                         fill: new ol.style.Fill({
                             color: [242, 121, 0, 0.7]
@@ -88,8 +90,8 @@ define(['angular', 'ol'],
 
                 var positionFeature = new ol.Feature();
 
-                accuracyFeature.setStyle(style);
-                positionFeature.setStyle(style);
+                accuracyFeature.setStyle(me.style);
+                positionFeature.setStyle(me.style);
 
 
                 var featuresOverlay = new ol.FeatureOverlay({
@@ -101,11 +103,38 @@ define(['angular', 'ol'],
                 return me;
             }
         ]).controller('Geolocation', ['$scope', 'Geolocation', function($scope, Geolocation) {
+            $scope.speed = null;
+            $scope.alt = null;
+            $scope.altitudeAccuracy = null;
+
+            $scope.getGeolocationProvider = function() {
+                return Geolocation.geolocation;
+            }
+
+            $scope.gpsActive = function(set_to) {
+                if (arguments.length == 0)
+                    return Geolocation.geolocation.getTracking();
+                else
+                    Geolocation.geolocation.setTracking(set_to);
+            }
+
+            $scope.following = function(set_to) {
+                if (arguments.length == 0)
+                    return Geolocation.following;
+                else
+                    Geolocation.following = set_to;
+            }
+
+            $scope.setFeatureStyle = function(style) {
+                return Geolocation.style = style;
+            }
+
             $scope.$on('geolocation.updated', function(event) {
                 $scope.speed = Geolocation.speed;
                 $scope.alt = Geolocation.altitude;
                 $scope.altitudeAccuracy = Geolocation.altitudeAccuracy;
                 if (!$scope.$$phase) $scope.$digest();
             });
+            $scope.$emit('scope_loaded', "Geolocation");
         }]);
     })

@@ -61,6 +61,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                         }
                         return template;
                     };
+                    $scope.$emit('scope_loaded', "Ows");
                 }
             ]);
     })

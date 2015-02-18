@@ -55,17 +55,20 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         url: "http://eurostat.linked-statistics.org/data/ef_kvftreg.rdf",
                         name: "Key variables: area, livestock (LSU), labour force and standard output (SO) by type of farming (2-digit)"
                     }
-
-
-
                 ]
+                
+                $scope.setSources = function(sources){
+                    $scope.sources = sources;
+                    if (!$scope.$$phase) $scope.$digest();
+                }
+                
                 $scope.groupings = [];
 
-                var styleFunction = function(feature, resolution) {
+                $scope.styleFunction = function(feature, resolution) {
                     if (Number.MIN_VALUE != feature.gradient_value) {
                         return [new ol.style.Style({
                             fill: new ol.style.Fill({
-                                color: rainbow(1, feature.gradient_value, feature.opacity ? feature.opacity : 0),
+                                color: $scope.rainbow(1, feature.gradient_value, feature.opacity ? feature.opacity : 0),
                             }),
                             stroke: new ol.style.Stroke({
                                 color: 'rgba(100, 100, 100, 0.3)'
@@ -82,8 +85,8 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         })]
                     }
                 }
-
-                var rainbow = function(numOfSteps, step, opacity) {
+                
+                $scope.rainbow = function(numOfSteps, step, opacity) {
                     // based on http://stackoverflow.com/a/7419630
                     // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
                     // Adam Cole, 2011-Sept-14
@@ -111,9 +114,9 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                     return (c);
                 }
 
-                $scope.sourceChosen = function() {
+                $scope.chooseSource = function(source) {
                     var sparql = ["SELECT DISTINCT ?classif",
-                        "FROM <" + $scope.source + ">",
+                        "FROM <" + source + ">",
                         "WHERE {",
                         "?s a <http://purl.org/linked-data/cube#Observation>;",
                         "    ?property ?classif .",
@@ -127,12 +130,12 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                     $scope.loading = true;
                     $.ajax({
                         url: url,
-                        success: $scope.classifsDownloaded
+                        success: classifsDownloaded
                     });
                 }
 
                 var from_list = "";
-                $scope.classifsDownloaded = function(j) {
+                var classifsDownloaded = function(j) {
                     var unique_classifs = {};
                     from_list = "";
                     for (var i = 0; i < j.results.bindings.length; i++) {
@@ -154,11 +157,11 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                     var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=2000&debug=off";
                     $.ajax({
                         url: url,
-                        success: $scope.propertiesDownloaded
+                        success: propertiesDownloaded
                     });
                 }
 
-                $scope.propertiesDownloaded = function(j) {
+                var propertiesDownloaded = function(j) {
                     var tmp = j.results.bindings;
                     var groups = {};
                     for (var i = 0; i < tmp.length; i++) {
@@ -174,10 +177,10 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                     $scope.groupings = groups;
                     $scope.loading = false;
                     if (!$scope.$$phase) $scope.$digest();
-                    $scope.display();
+                    display();
                 }
 
-                $scope.display = function(j) {
+                var display = function(j) {
                     var filter = "";
                     $scope.loading = true;
                     var extra_column_selectors = "";
@@ -236,11 +239,11 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                     var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=5000&debug=off";
                     $.ajax({
                         url: url,
-                        success: $scope.dataDownloaded
+                        success: dataDownloaded
                     });
                 }
 
-                $scope.dataDownloaded = function(j) {
+                var dataDownloaded = function(j) {
                     var max = Number.MIN_VALUE;
                     var min = Number.MAX_VALUE;
                     var max_filtered = Number.MIN_VALUE;
@@ -486,7 +489,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                                 source: new ol.source.GeoJSON({
                                     url: hsl_path + 'components/lodexplorer/nuts2.geojson'
                                 }),
-                                style: styleFunction
+                                style: $scope.styleFunction
                             });
                         }
                         map.addLayer(lyr);
@@ -499,6 +502,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                 $scope.closeDataPanel = function() {
                     $scope.data_panel_visible = false;
                 }
+                $scope.$emit('scope_loaded', "LodExplorer");
             }
         ]);
 

@@ -15,7 +15,7 @@
             <li ng-repeat="layer in ds.layers | filter:query" class="list-group-item">
                 <h4 class="list-group-item-heading">{{layer.title}}</h4>
                 {{layer.description}}
-                <a href="#" class="datasource_addlayer" ng-click="addToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
+                <a href="#" class="datasource_addlayer" ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
             </li>
         </ul>
     </div>
