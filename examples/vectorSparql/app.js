@@ -1,15 +1,15 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation'],
 
-    function(angular, ol, toolbar, layermanager, WfsSource) {
+    function(angular, ol, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
             'hs.core',
             'hs.toolbar',
             'hs.layermanager',
             'hs.map',
             'hs.query',
-            'hs.search', 'hs.print', 'hs.permalink',
+            'hs.search', 'hs.print', 'hs.permalink', 
             'hs.geolocation'
         ]);
 
@@ -59,13 +59,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 base: true
             }),
             new ol.layer.Vector({
-                title: "NUTS polys",
-                source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map', typename:'nuts2', projection:'EPSG:3857'}),
-                style: style
-            }),
-            new ol.layer.Vector({
                 title: "NUTS points",
-                source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map', typename:'nuts', projection:'EPSG:3857'}),
+                source: new SparqlJson({url:'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=SELECT+*+FROM+%3Chttp%3A%2F%2Fgis.zcu.cz%2Fpoi.rdf%3E+WHERE+%7B%3Fo+%3Fp+%3Fs%7D%0D%0AORDER+BY+%3Fo&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on', projection:'EPSG:3857'}),
                 style: style
             })
         ]);
