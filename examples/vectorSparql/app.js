@@ -24,24 +24,26 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'core', 'map',
         
         module.value('box_layers', []);
        
-            var style = new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: new ol.style.Fill({
-                            color: [242, 121, 0, 0.7]
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: [0xbb, 0x33, 0x33, 0.7]
-                        }),
-                        radius: 5
-                    }),
+        var style = function(feature, resolution) {
+            return [new ol.style.Style({
+                image: new ol.style.Circle({
                     fill: new ol.style.Fill({
-                        color: "rgba(139, 189, 214, 0.3)",
+                        color: feature.color
                     }),
                     stroke: new ol.style.Stroke({
-                        color: '#112211',
-                        width: 1
-                    })
+                        color: [0x33, 0x33, 0x33, 0.9]
+                    }),
+                    radius: 5
+                }),
+                fill: new ol.style.Fill({
+                    color: "rgba(139, 189, 214, 0.3)",
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#112211',
+                    width: 1
                 })
+            })]
+        }
         
         module.value('default_layers', [            
             new ol.layer.Tile({

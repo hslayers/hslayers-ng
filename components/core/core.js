@@ -29,8 +29,8 @@ define(['angular'],
                                 return !(error instanceof TypeError);
                             }
                         },
-                        fullscreenMap: function(element){
-                            setTimeout(function(){
+                        fullscreenMap: function(element) {
+                            setTimeout(function() {
                                 var w = angular.element($window);
                                 w.bind('resize', function() {
                                     $("html").css('overflow', 'hidden');

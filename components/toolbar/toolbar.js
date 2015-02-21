@@ -11,12 +11,12 @@ define(['angular', 'map', 'core', 'permalink'],
         .controller('Toolbar', ['$scope', 'OlMap', 'Core', 'BrowserUrlService',
             function($scope, OlMap, Core, bus) {
                 $scope.Core = Core;
-                
+
                 $scope.setMainPanel = function(which) {
                     Core.setMainPanel(which, true);
                     if (!$scope.$$phase) $scope.$digest();
                 }
-                
+
                 if (bus.getParamValue('hs_panel')) {
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
                 }

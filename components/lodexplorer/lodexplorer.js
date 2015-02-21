@@ -56,12 +56,12 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         name: "Key variables: area, livestock (LSU), labour force and standard output (SO) by type of farming (2-digit)"
                     }
                 ]
-                
-                $scope.setSources = function(sources){
+
+                $scope.setSources = function(sources) {
                     $scope.sources = sources;
                     if (!$scope.$$phase) $scope.$digest();
                 }
-                
+
                 $scope.groupings = [];
 
                 $scope.styleFunction = function(feature, resolution) {
@@ -85,7 +85,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         })]
                     }
                 }
-                
+
                 $scope.rainbow = function(numOfSteps, step, opacity) {
                     // based on http://stackoverflow.com/a/7419630
                     // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
