@@ -1,9 +1,9 @@
 define(['angular'],
 
     function(angular) {
-        angular.module('hs.core', [])
-            .service("Core", ['$rootScope', '$controller',
-                function($rootScope, $controller) {
+        angular.module('hs.core', ['hs.map'])
+            .service("Core", ['$rootScope', '$controller', '$window', 'OlMap',
+                function($rootScope, $controller, $window, OlMap) {
                     var me = {
                         scopes_registered: [],
                         mainpanel: "",
@@ -28,6 +28,21 @@ define(['angular'],
                             } catch (error) {
                                 return !(error instanceof TypeError);
                             }
+                        },
+                        fullscreenMap: function(element){
+                            setTimeout(function(){
+                                var w = angular.element($window);
+                                w.bind('resize', function() {
+                                    element[0].style.height = w.height() + "px";
+                                    element[0].style.width = w.width() + "px";
+                                    $("#map").height(w.height());
+                                    $("#map").width(w.width());
+                                    OlMap.map.updateSize()
+
+                                });
+                                w.resize();
+                                console.log("a");
+                            }, 500);
                         },
                         getAllScopes: function() {
                             var getScopes = function(root) {
