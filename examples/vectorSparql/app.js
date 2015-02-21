@@ -28,7 +28,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'core', 'map',
             return [new ol.style.Style({
                 image: new ol.style.Circle({
                     fill: new ol.style.Fill({
-                        color: feature.color
+                        color: feature.color ? feature.color : [242, 121, 0, 0.7] 
                     }),
                     stroke: new ol.style.Stroke({
                         color: [0x33, 0x33, 0x33, 0.9]

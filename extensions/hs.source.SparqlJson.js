@@ -72,7 +72,9 @@ src.loaded = true;
                             }
                         }
                         for(var i = 0; i< features.length; i++){
-                            features[i].color = rainbow(category_id, features[i].category_id, 0.7);
+                            if(features[i].category_id){
+                                features[i].color = rainbow(category_id, features[i].category_id, 0.7);
+                            }
                         }
                         src.addFeatures(features);
                     });
