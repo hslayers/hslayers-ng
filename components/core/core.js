@@ -33,15 +33,15 @@ define(['angular'],
                             setTimeout(function(){
                                 var w = angular.element($window);
                                 w.bind('resize', function() {
+                                    $("html").css('overflow', 'hidden');
                                     element[0].style.height = w.height() + "px";
                                     element[0].style.width = w.width() + "px";
                                     $("#map").height(w.height());
+                                    console.log(w.height());
                                     $("#map").width(w.width());
                                     OlMap.map.updateSize()
-
                                 });
                                 w.resize();
-                                console.log("a");
                             }, 500);
                         },
                         getAllScopes: function() {
