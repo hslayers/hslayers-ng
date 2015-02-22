@@ -13,19 +13,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.core'
         ]);
 
-        module.directive('hs', ['OlMap', '$window', function(OlMap, $window) {
+        module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    var w = angular.element($window);
-                    w.bind('resize', function() {
-                        element[0].style.height = w.height() + "px";
-                        element[0].style.width = w.width() + "px";
-                        $("#map").height(w.height());
-                        $("#map").width(w.width());
-                        OlMap.map.updateSize()
-                    });
-                    w.resize();
+                    Core.fullscreenMap(element);
                 }
             };
         }]);
