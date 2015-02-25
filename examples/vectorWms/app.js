@@ -59,6 +59,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 title: "NUTS points",
                 source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map', typename:'nuts', projection:'EPSG:3857'}),
                 style: style
+            }),
+            new ol.layer.Vector({
+                title: "Accidents",
+                source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/accidents_wfs.map', typename:'accidents', projection:'EPSG:3857'}),
+                style: style
             })
         ]);
 
