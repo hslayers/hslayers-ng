@@ -35,10 +35,28 @@ define(['angular', 'ol', 'map'],
                         $scope.layers.push({
                             title: layer.get("title"),
                             lyr: layer,
+                            type: 'wms',
                             sub_layers: sub_layers,
                             visible: layer.getVisible()
                         });
+                    } else if (layer.getSource().legend_categories) {
+                        layer.on('change:visible', function(e) {
+                            for (var i = 0; i < $scope.layers.length; i++) {
+                                if ($scope.layers[i].layer == e.target) {
+                                    $scope.layers[i].visible = e.target.getVisible();
+                                    break;
+                                }
+                            }
+                            if (!$scope.$$phase) $scope.$digest();
+                        })
+                        $scope.layers.push({
+                            title: layer.get("title"),
+                            lyr: layer,
+                            type: 'vector',
+                            visible: layer.getVisible()
+                        });
                     }
+
                 }
 
                 $scope.getWmsLayerLegendUrl = function(wms_url, layer_name) {

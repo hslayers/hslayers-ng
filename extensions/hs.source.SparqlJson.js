@@ -1,29 +1,30 @@
 define(function(require) {
     var ol = require('ol');
     return function(options) {
+        var category_map = {};
         var src = new ol.source.ServerVector({
-            format: new ol.format.GeoJSON(),    
+            format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
-                if(src.loaded) return;
-                        src.clear();
+                if (src.loaded) return;
+                src.clear();
                 var p = options.url;
-src.loaded = true;
+                src.loaded = true;
                 $.ajax({
-                       url: p
+                        url: p
                     })
                     .done(function(response) {
-                        
+
                         var objects = {};
-                        for(var i = 0; i<response.results.bindings.length;i++){
+                        for (var i = 0; i < response.results.bindings.length; i++) {
                             var b = response.results.bindings[i];
-                            if (typeof objects[b.o.value] === 'undefined'){
+                            if (typeof objects[b.o.value] === 'undefined') {
                                 objects[b.o.value] = {};
                             }
                             objects[b.o.value][b.p.value] = b.s.value;
                         }
                         var features = [];
-                        var i=0.0;
-                        var category_map = {};
+                        var i = 0.0;
+
                         var category_id = 0;
                         var rainbow = function(numOfSteps, step, opacity) {
                             // based on http://stackoverflow.com/a/7419630
@@ -52,27 +53,34 @@ src.loaded = true;
                             var c = "rgba(" + ~~(r * 235) + "," + ~~(g * 235) + "," + ~~(b * 235) + ", " + opacity + ")";
                             return (c);
                         }
-                        for(var key in objects){
+                        for (var key in objects) {
                             i++;
-                            if(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"]!="" && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"]!=""){
+                            if (objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] != "" && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] != "") {
                                 var x = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"]);
                                 var y = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"]);
-                                if(!isNaN(x) && !isNaN(y)){
-                                    objects[key].geometry = new ol.geom.Point(ol.proj.transform([x, y],'EPSG:4326', 'EPSG:3857'));
+                                if (!isNaN(x) && !isNaN(y)) {
+                                    objects[key].geometry = new ol.geom.Point(ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857'));
                                     var feature = new ol.Feature(objects[key]);
-                                    if(objects[key]["http://gis.zcu.cz/poi#category"]){
-                                        if(typeof category_map[objects[key]["http://gis.zcu.cz/poi#category"]] === 'undefined'){
-                                            category_map[objects[key]["http://gis.zcu.cz/poi#category"]] = category_id;
+                                    if (objects[key][options.category_field]) {
+                                        if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
+                                            category_map[objects[key][options.category_field]] = {
+                                                id: category_id,
+                                                name: objects[key][options.category_field]
+                                            };
                                             category_id++;
                                         }
-                                        feature.category_id = category_map[objects[key]["http://gis.zcu.cz/poi#category"]];
+                                        feature.category_id = category_map[objects[key][options.category_field]].id;
                                     }
                                     features.push(feature);
                                 }
                             }
                         }
-                        for(var i = 0; i< features.length; i++){
-                            if(features[i].category_id){
+                        for (var categ in category_map) {
+                            category_map[categ].color = rainbow(category_id, category_map[categ].id, 0.7);
+                        }
+                        src.legend_categories = category_map;
+                        for (var i = 0; i < features.length; i++) {
+                            if (features[i].category_id) {
                                 features[i].color = rainbow(category_id, features[i].category_id, 0.7);
                             }
                         }
@@ -82,6 +90,7 @@ src.loaded = true;
             strategy: ol.loadingstrategy.all,
             projection: options.projection
         });
+        src.legend_categories = category_map;
         return src;
     };
 });

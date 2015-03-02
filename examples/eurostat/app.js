@@ -18,11 +18,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'sea
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                	Core.fullscreenMap(element);
+                    Core.fullscreenMap(element);
                 }
             };
         }]);
-        
+
         module.value('box_layers', []);
 
         module.value('default_layers', [
@@ -46,8 +46,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'core', 'map', 'query', 'sea
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
-                $scope.$on('infopanel.updated', function(event) {
-                });
+                $scope.$on('infopanel.updated', function(event) {});
             }
         ]);
 

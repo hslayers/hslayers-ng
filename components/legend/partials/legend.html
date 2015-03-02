@@ -8,8 +8,11 @@
     <div class="panel-body">
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
         <ul class="list-group">
-                <li ng-repeat="layer in layers | filter:query" class="list-group-item" ng-show="layer.lyr.getVisible()">{{layer.title}}
+                <li ng-repeat="layer in layers | filter:query" class="list-group-item" ng-show="layer.type == 'wms' && layer.lyr.getVisible()">{{layer.title}}
                     <img ng-repeat="sublayer in layer.sub_layers" ng-src="{{sublayer}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
+                </li>
+                <li ng-repeat="layer in layers | filter:query" class="list-group-item" ng-show="layer.type == 'vector' && layer.lyr.getVisible()">{{layer.title}}
+                    <p ng-repeat="category in layer.lyr.getSource().legend_categories"><span style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}</p>
                 </li>
         </ul>
     </div>

@@ -21,29 +21,29 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 }
             };
         }]);
-        
+
         module.value('box_layers', []);
-       
-            var style = new ol.style.Style({
-                    image: new ol.style.Circle({
-                        fill: new ol.style.Fill({
-                            color: [242, 121, 0, 0.7]
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: [0xbb, 0x33, 0x33, 0.7]
-                        }),
-                        radius: 5
-                    }),
-                    fill: new ol.style.Fill({
-                        color: "rgba(139, 189, 214, 0.3)",
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#112211',
-                        width: 1
-                    })
-                })
-        
-        module.value('default_layers', [            
+
+        var style = new ol.style.Style({
+            image: new ol.style.Circle({
+                fill: new ol.style.Fill({
+                    color: [242, 121, 0, 0.7]
+                }),
+                stroke: new ol.style.Stroke({
+                    color: [0xbb, 0x33, 0x33, 0.7]
+                }),
+                radius: 5
+            }),
+            fill: new ol.style.Fill({
+                color: "rgba(139, 189, 214, 0.3)",
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#112211',
+                width: 1
+            })
+        })
+
+        module.value('default_layers', [
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
@@ -52,17 +52,29 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             }),
             new ol.layer.Vector({
                 title: "NUTS polys",
-                source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map', typename:'nuts2', projection:'EPSG:3857'}),
+                source: new WfsSource({
+                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map',
+                    typename: 'nuts2',
+                    projection: 'EPSG:3857'
+                }),
                 style: style
             }),
             new ol.layer.Vector({
                 title: "NUTS points",
-                source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map', typename:'nuts', projection:'EPSG:3857'}),
+                source: new WfsSource({
+                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map',
+                    typename: 'nuts',
+                    projection: 'EPSG:3857'
+                }),
                 style: style
             }),
             new ol.layer.Vector({
                 title: "Accidents",
-                source: new WfsSource({url:'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/accidents_wfs.map', typename:'accidents', projection:'EPSG:3857'}),
+                source: new WfsSource({
+                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/accidents_wfs.map',
+                    typename: 'accidents',
+                    projection: 'EPSG:3857'
+                }),
                 style: style
             })
         ]);
@@ -79,8 +91,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
-                $scope.$on('infopanel.updated', function(event) {
-                });
+                $scope.$on('infopanel.updated', function(event) {});
             }
         ]);
 

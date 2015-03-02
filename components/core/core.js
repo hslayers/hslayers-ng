@@ -37,7 +37,6 @@ define(['angular'],
                                     element[0].style.height = w.height() + "px";
                                     element[0].style.width = w.width() + "px";
                                     $("#map").height(w.height());
-                                    console.log(w.height());
                                     $("#map").width(w.width());
                                     OlMap.map.updateSize()
                                 });
