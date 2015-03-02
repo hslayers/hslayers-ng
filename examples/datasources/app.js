@@ -14,7 +14,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             'hs.datasource_selector'
         ]);
 
-        module.directive('hs', ['OlMap', '$window', function(OlMap, $window) {
+        module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
