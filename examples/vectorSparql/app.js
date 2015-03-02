@@ -53,7 +53,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'core', 'map',
                 base: true
             }),
             new ol.layer.Vector({
-                title: "NUTS points",
+                title: "Points of interest",
                 source: new SparqlJson({url:'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=SELECT+*+FROM+%3Chttp%3A%2F%2Fgis.zcu.cz%2Fpoi.rdf%3E+WHERE+%7B%3Fo+%3Fp+%3Fs%7D%0D%0AORDER+BY+%3Fo&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on', projection:'EPSG:3857'}),
                 style: style
             })
