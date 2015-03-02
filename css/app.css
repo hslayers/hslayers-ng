@@ -158,3 +158,5 @@ display: none;
 .locate ul{list-style: none}
 
 .filter_charts{height: 180px; width: 180px; display: inline-block;}
+div#infopanel.ng-scope .first-col{width:100px; overflow-x: auto;}
+div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
