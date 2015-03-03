@@ -157,6 +157,7 @@ display: none;
 }
 .locate ul{list-style: none}
 
-.filter_charts{height: 180px; width: 180px; display: inline-block;}
+.filter_charts{height: 220px;}
 div#infopanel.ng-scope .first-col{width:100px; overflow-x: auto;}
 div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
+.dc-chart g.row text {fill: black;}.

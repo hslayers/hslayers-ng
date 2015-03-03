@@ -363,7 +363,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         }
                     }
 
-                    range_chart.width($("#lod_data_panel").width() - 25)
+                    range_chart.width($("#lod_data_panel").width() - 35)
                         .height(130)
                         .margins({
                             top: 3,
@@ -384,7 +384,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                             return (min + v * interval_size).toFixed(2);
                         });
 
-                    interval_chart.width($("#lod_data_panel").width() - 25)
+                    interval_chart.width($("#lod_data_panel").width() - 35)
                         .height(130)
                         .margins({
                             top: 3,
@@ -447,10 +447,9 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         });
                         switch (val.datatype) {
                             case "http://www.w3.org/2001/XMLSchema#date":
-                                var chart = dc.pieChart('#chart' + val.name);
-                                chart.width(160)
-                                    .height(160)
-                                    .radius(80)
+                                var chart = dc.rowChart('#chart' + val.name);
+                                chart.width($("#lod_data_panel").width() - 35)
+                                    .height(colValueGroupCount.size() * 23 + 40).labelOffsetY(12)
                                     .dimension(colValue) // set dimension
                                     .group(colValueGroupCount) // set group
                                     .on("filtered", pie_filters_changed);
@@ -462,10 +461,9 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                                     return;
                                 }
                                 var colValueGroupCount = colValue.group();
-                                var chart = dc.pieChart('#chart' + val.name);
-                                chart.width(160)
-                                    .height(160)
-                                    .radius(80)
+                                var chart = dc.rowChart('#chart' + val.name);
+                                chart.width($("#lod_data_panel").width() - 35)
+                                    .height(colValueGroupCount.size() * 23 + 40).labelOffsetY(12)
                                     .dimension(colValue) // set dimension
                                     .group(colValueGroupCount) // set group
                                     .on("filtered", pie_filters_changed);
