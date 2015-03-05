@@ -236,7 +236,7 @@ define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
                         query: sparql,
                         date_val: d.valueOf()
                     });
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=5000&debug=off";
+                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=off";
                     $.ajax({
                         url: url,
                         success: dataDownloaded
