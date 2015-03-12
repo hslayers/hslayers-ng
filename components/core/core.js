@@ -1,9 +1,9 @@
 define(['angular'],
 
     function(angular) {
-        angular.module('hs.core', ['hs.map'])
-            .service("Core", ['$rootScope', '$controller', '$window', 'OlMap',
-                function($rootScope, $controller, $window, OlMap) {
+        angular.module('hs.core', ['hs.map', 'gettext'])
+            .service("Core", ['$rootScope', '$controller', '$window', 'OlMap', 'gettextCatalog', 
+                function($rootScope, $controller, $window, OlMap, gettextCatalog) {
                     var me = {
                         scopes_registered: [],
                         mainpanel: "",
@@ -30,7 +30,6 @@ define(['angular'],
                             }
                         },
                         fullscreenMap: function(element) {
-                            setTimeout(function() {
                                 var w = angular.element($window);
                                 w.bind('resize', function() {
                                     $("html").css('overflow', 'hidden');
@@ -38,10 +37,12 @@ define(['angular'],
                                     element[0].style.width = w.width() + "px";
                                     $("#map").height(w.height());
                                     $("#map").width(w.width());
-                                    OlMap.map.updateSize()
+                                    OlMap.map.updateSize();
                                 });
                                 w.resize();
-                            }, 500);
+                        },
+                        setLanguage: function(lang) {
+                            gettextCatalog.setCurrentLanguage(lang);
                         },
                         getAllScopes: function() {
                             var getScopes = function(root) {
@@ -67,6 +68,8 @@ define(['angular'],
                     };
 
                     return me;
-                }
-            ])
+                },
+
+            ]);
+
     })
