@@ -2,6 +2,20 @@ module.exports = function(grunt) {
 
     // Project configuration.
     grunt.initConfig({
+        nggettext_extract: {
+            pot: {
+              files: {
+                'po/template.pot': ['components/**/*.html']
+              }
+            }
+          },
+          nggettext_compile: {
+            all: {
+              files: {
+                'src/js/translations.js': ['po/*.pot']
+              }
+            },
+          },
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
             options: {
@@ -23,6 +37,7 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.loadNpmTasks('grunt-angular-gettext');
     grunt.registerTask('default', ['jsbeautifier']);
     grunt.registerTask('git-pre-commit', ['jsbeautifier']);
 

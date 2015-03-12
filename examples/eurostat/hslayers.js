@@ -30,7 +30,10 @@ require.config({
         dc: 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc',
         core: hsl_path + 'components/core/core',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
-        api: hsl_path + 'components/api/api'
+        api: hsl_path + 'components/api/api',
+        'angular-gettext': hsl_path+'bower_components/angular-gettext/dist/angular-gettext',
+        translations: hsl_path+'src/js/translations'
+
     },
     shim: {
         'angular': {
@@ -38,6 +41,12 @@ require.config({
         },
         'angular-sanitize': {
             deps: ['angular'],
+        },
+        'angular-gettext': { 
+            deps: ['angular'],
+        },
+        translations: { 
+            deps: ['angular-gettext'],
         },
         d3: {
             exports: 'd3'

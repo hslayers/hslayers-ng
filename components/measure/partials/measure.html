@@ -1,20 +1,20 @@
 <div class="panel panel-default mainpanel">
-    <div class="panel-heading">Measure <span ng-show="multiple_shape_mode">multiple shapes</span> 
+    <div class="panel-heading"><translate>Measure</translate> <span ng-show="multiple_shape_mode" translate>multiple shapes</span> 
         <button type="button" class="close" ng-click="Core.hidePanels(); clearAll()">
             <span aria-hidden="true">×</span>
-            <span class="sr-only">Close</span>
+            <span class="sr-only" translate>Close</span>
         </button>
     </div>
     <div class="panel-body">
           <div class="btn-group" style="margin-bottom:10px">
             <label class="btn btn-default">
-                <input type="radio" name="type" value="distance" ng-model='type' > Distance
+                <input type="radio" name="type" value="distance" ng-model='type' translate > Distance
             </label>
             <label class="btn btn-default">
-                <input type="radio" name="type" value="area" ng-model='type'> Area
+                <input type="radio" name="type" value="area" ng-model='type' translate> Area
             </label>
         </div>
-        <button class="btn btn-default" style="float:right" ng-click="clearAll()">Clear</button>
+        <button class="btn btn-default" style="float:right" ng-click="clearAll()" translate>Clear</button>
         <ul class="list-group">
             <li ng-repeat="measurement in measurements" class="list-group-item">
                 {{measurement.size}}{{measurement.unit}}<span ng-if="measurement.type=='area'"><sup>2</sup></span>

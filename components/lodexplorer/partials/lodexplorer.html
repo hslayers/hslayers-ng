@@ -1,14 +1,14 @@
 <div class="panel panel-default mainpanel" id="lod_data_panel">
-    <div class="panel-heading">Eurostat explorer
+    <div class="panel-heading" ><translate>Eurostat explorer</translate>
          <button type="button" class="close" ng-click="Core.hidePanels()">
             <span aria-hidden="true">×</span>
-            <span class="sr-only">Close</span>
+            <span class="sr-only" translate>Close</span>
         </button>
     </div>
     <div class="panel-body">
             <form>
                 <div class="form-group">
-                    <label for="lod_source" class="control-label">Dataset:</label>
+                    <label for="lod_source" class="control-label" translate>Dataset:</label>
                     <select class="form-control" id="lod_source" ng-model="source" ng-change="chooseSource(source)">
                         <option ng-repeat="source in sources" value="{{source.url}}">{{source.name}}</option>
                     </select>
@@ -19,9 +19,9 @@
                         Filter by {{group.name}}
                         <div id='chart{{group.name}}'></div>
                     </div>
-                    Filter by values
+                    <translate>Filter by values</translate>
                     <div  class="form-group" id='dc-magnitude-chart2'></div>                
-                    Histogram
+                    <translate>Histogram</translate>
                     <div  class="form-group" id='dc-magnitude-chart'></div>
                     <!--<button class="btn" data-toggle="modal" data-target="#sparqlLogModal">Log</button>-->
                 </div>
