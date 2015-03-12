@@ -25,6 +25,10 @@ define(['angular', 'ol', 'app', 'map', 'core'],
                         }
                         return tmp;
                     }
+                    me.gui.setLanguage = function(lang){
+                        Core.setLanguage(lang);
+                    }
+                    
                     me.getMap = function() {
                         return OlMap.map;
                     }
