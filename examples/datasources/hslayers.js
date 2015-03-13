@@ -34,7 +34,7 @@ require.config({
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         api: hsl_path + 'components/api/api',
         'angular-gettext': hsl_path+'bower_components/angular-gettext/dist/angular-gettext',
-        translations: hsl_path+'src/js/translations'
+        translations: hsl_path+'components/translations/js/translations'
     },
     shim: {
         'angular': {

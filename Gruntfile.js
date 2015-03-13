@@ -12,7 +12,7 @@ module.exports = function(grunt) {
           nggettext_compile: {
             all: {
               files: {
-                'src/js/translations.js': ['po/*.pot']
+                'components/translations/js/translations.js': ['po/*.pot']
               }
             },
           },
