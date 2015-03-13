@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation', 'core', 'api','angular-gettext','translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation', 'core', 'datasource_selector', 'api','angular-gettext','translations'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -10,7 +10,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.ows',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
-            'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.core','hs.api',
+            'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.core',
+            'hs.datasource_selector',
+            'hs.api',
             'gettext'
         ]);
 

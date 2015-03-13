@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api','angular-gettext','translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'angular-gettext','translations'],
 
     function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -11,7 +11,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
             'hs.geolocation',
-            'hs.api',
             'gettext'
         ]);
 
@@ -53,28 +52,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 base: true
             }),
             new ol.layer.Vector({
-                title: "NUTS polys",
-                source: new WfsSource({
-                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map',
-                    typename: 'nuts2',
-                    projection: 'EPSG:3857'
-                }),
-                style: style
-            }),
-            new ol.layer.Vector({
-                title: "NUTS points",
-                source: new WfsSource({
-                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map',
-                    typename: 'nuts',
-                    projection: 'EPSG:3857'
-                }),
-                style: style
-            }),
-            new ol.layer.Vector({
                 title: "Accidents",
                 source: new WfsSource({
-                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/accidents_wfs.map',
-                    typename: 'accidents',
+                    url: 'http://otn.bnhelp.cz/cgi-bin/mapserv?map=/data/www/otn.bnhelp.cz/maps/accidents_west_midlands.map',
+                    typename: 'wm_accidents',
                     projection: 'EPSG:3857'
                 }),
                 style: style

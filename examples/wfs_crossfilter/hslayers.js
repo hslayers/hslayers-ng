@@ -26,9 +26,8 @@ require.config({
         panoramio: hsl_path + 'components/panoramio/panoramio',
         drag: hsl_path + 'components/drag/drag',
         core: hsl_path + 'components/core/core',
-        SparqlJson: hsl_path + 'extensions/hs.source.SparqlJson',
+        WfsSource: hsl_path + 'extensions/hs.source.Wfs',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
-        api: hsl_path + 'components/api/api',
         'angular-gettext': hsl_path+'bower_components/angular-gettext/dist/angular-gettext',
         translations: hsl_path+'src/js/translations'
     },
@@ -39,12 +38,12 @@ require.config({
         'angular-sanitize': {
             deps: ['angular'],
         },
-        'angular-gettext': { 
+         'angular-gettext': { 
             deps: ['angular'],
         },
         translations: { 
             deps: ['angular-gettext'],
-        },
+        }
     },
     priority: [
         "angular"
