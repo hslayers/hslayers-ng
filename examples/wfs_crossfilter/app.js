@@ -33,7 +33,7 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
                         var total = facts.dimension( function(feature) { 
                             return feature.get(attr)
                         });
-                        var groupsByTotal = total.group( function(feature) { 
+                        var groupsByTotal = total.group().reduceCount( function(feature) { 
                             return feature.get(attr); 
                         });
                         tmp.push({dimension: total, grouping: groupsByTotal});
