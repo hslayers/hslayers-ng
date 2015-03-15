@@ -124,10 +124,6 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                setTimeout(function(){
-                    feature_crossfilter.makeCrossfilterDimensions(OlMap.map.getLayers().item(2).getSource(), ["http://gis.zcu.cz/poi#category_os"]);
-                }, 4000);
-                $scope.$on('infopanel.updated', function(event) {});
             }
         ]);
 
