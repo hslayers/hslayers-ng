@@ -25,13 +25,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
 
         module.service('hsService',[function(){
             return {
-                makeCrossfilterDimensions : function(source, attribute){
-                    var total = source.getFeatures().dimension( function(source) { 
-                        //return 
-                    });
-                    var groupsByTotal = total.group( function(source) { 
-                        return source.get(attribute); 
-                    });
+                makeCrossfilterDimensions : function(source, attributes){
+                    for (var attr in attributes) {
+                        var total = source.getFeatures().dimension( function(feature) { 
+                            return feature.get(attr)
+                        });
+                        var groupsByTotal = total.group( function(feature) { 
+                            return feature.get(attr); 
+                        });
+                    }
                     console.log('test');
                     // caur konsoli: var a = angular.element('*[ng-app]').injector().get('hsService');
                 }
