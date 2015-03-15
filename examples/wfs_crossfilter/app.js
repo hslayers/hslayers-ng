@@ -36,11 +36,9 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
                         var groupsByTotal = total.group().reduceCount( function(feature) { 
                             return feature.get(attr); 
                         });
-                        tmp.push(groupsByTotal);
+                        tmp.push({dimension: total, grouping: groupsByTotal});
                     }
-                    debugger;
                     return tmp;
-                    console.log('test');
                     // caur konsoli: var a = angular.element('*[ng-app]').injector().get('hsService');
                 }
             };
