@@ -2,7 +2,7 @@
 
 define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'angular-gettext','translations'],
 
-    function(angular, ol, toolbar, layermanager, WfsSource) {
+    function(angular, ol, toolbar, layermanager, SparqlJson, WfsSource) {
         var module = angular.module('hs', [
             'hs.core',
             'hs.toolbar',
@@ -23,7 +23,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', '
             };
         }]);
 
-        module.service('hsService',[function(){
+        module.service('feature_crossfilter',[function(){
             return {
                 makeCrossfilterDimensions : function(source, attribute){
                     var total = source.getFeatures().dimension( function(source) { 
@@ -113,12 +113,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', '
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService',
-            function($scope, Core, InfoPanelService) {
+        module.controller('Main', ['$scope', 'Core', 'InfoPanelService', 'OlMap', 'feature_crossfilter',
+            function($scope, Core, InfoPanelService, OlMap, feature_crossfilter) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-
+                setTimeout(function(){
+                    debugger;
+                    feature_crossfilter.makeCrossfilterDimensions(OlMap.map.getLayers().item(1), ["someattr"]);
+                }, 4000);
                 $scope.$on('infopanel.updated', function(event) {});
             }
         ]);
