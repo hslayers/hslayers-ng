@@ -31,7 +31,7 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
                     for (var attr_i in attributes) {
                         var attr = attributes[attr_i];    
                         var total = facts.dimension( function(feature) { 
-                            return feature.get(attr)
+                            return feature.get(attr);
                         });
                         var groupsByTotal = total.group().reduceCount( function(feature) { 
                             return feature.get(attr); 
