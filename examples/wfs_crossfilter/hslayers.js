@@ -26,6 +26,7 @@ require.config({
         panoramio: hsl_path + 'components/panoramio/panoramio',
         drag: hsl_path + 'components/drag/drag',
         core: hsl_path + 'components/core/core',
+        SparqlJson: hsl_path + 'extensions/hs.source.SparqlJson',
         WfsSource: hsl_path + 'extensions/hs.source.Wfs',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path+'bower_components/angular-gettext/dist/angular-gettext',

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'angular-gettext','translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'angular-gettext','translations'],
 
     function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -57,7 +57,28 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 color: '#112211',
                 width: 1
             })
-        })
+        });
+        
+        var style_sparql = function(feature, resolution) {
+            return [new ol.style.Style({
+                image: new ol.style.Circle({
+                    fill: new ol.style.Fill({
+                        color: feature.color ? feature.color : [242, 121, 0, 0.7]
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: [0x33, 0x33, 0x33, 0.9]
+                    }),
+                    radius: 5
+                }),
+                fill: new ol.style.Fill({
+                    color: "rgba(139, 189, 214, 0.3)",
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#112211',
+                    width: 1
+                })
+            })]
+        }
 
         module.value('default_layers', [
             new ol.layer.Tile({
@@ -74,6 +95,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                     projection: 'EPSG:3857'
                 }),
                 style: style
+            }),
+            new ol.layer.Vector({
+                title: "Points of interest",
+                source: new SparqlJson({
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=SELECT+*+FROM+%3Chttp%3A%2F%2Fgis.zcu.cz%2Fpoi.rdf%3E+WHERE+%7B%3Fo+%3Fp+%3Fs%7D%0D%0AORDER+BY+%3Fo&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    category_field: 'http://gis.zcu.cz/poi#category',
+                    projection: 'EPSG:3857'
+                }),
+                style: style_sparql
             })
         ]);
 
