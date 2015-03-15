@@ -27,15 +27,19 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
             return {
                 makeCrossfilterDimensions : function(source, attributes){
                     var facts = crossfilter(source.getFeatures());
-                    
-                    for (var attr in attributes) {
+                    var tmp = [];
+                    for (var attr_i in attributes) {
+                        var attr = attributes[attr_i];    
                         var total = facts.dimension( function(feature) { 
                             return feature.get(attr)
                         });
                         var groupsByTotal = total.group( function(feature) { 
                             return feature.get(attr); 
                         });
+                        tmp.push(groupsByTotal);
                     }
+                    debugger;
+                    return tmp;
                     console.log('test');
                     // caur konsoli: var a = angular.element('*[ng-app]').injector().get('hsService');
                 }
@@ -123,7 +127,7 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 setTimeout(function(){
-                    feature_crossfilter.makeCrossfilterDimensions(OlMap.map.getLayers().item(1).getSource(), ["http://gis.zcu.cz/poi#category_os"]);
+                    feature_crossfilter.makeCrossfilterDimensions(OlMap.map.getLayers().item(2).getSource(), ["http://gis.zcu.cz/poi#category_os"]);
                 }, 4000);
                 $scope.$on('infopanel.updated', function(event) {});
             }
