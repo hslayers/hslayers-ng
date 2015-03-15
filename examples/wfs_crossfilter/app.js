@@ -120,7 +120,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', '
                 $scope.Core = Core;
                 setTimeout(function(){
                     debugger;
-                    feature_crossfilter.makeCrossfilterDimensions(OlMap.map.getLayers().item(1), ["someattr"]);
+                    feature_crossfilter.makeCrossfilterDimensions(OlMap.map.getLayers().item(1).getSource(), ["someattr"]);
                 }, 4000);
                 $scope.$on('infopanel.updated', function(event) {});
             }
