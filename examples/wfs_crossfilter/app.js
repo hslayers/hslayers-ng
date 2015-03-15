@@ -1,8 +1,8 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'angular-gettext','translations'],
+define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'angular-gettext','translations'],
 
-    function(angular, ol, toolbar, layermanager, SparqlJson, WfsSource) {
+    function(angular, ol, dc, toolbar, layermanager, SparqlJson, WfsSource) {
         var module = angular.module('hs', [
             'hs.core',
             'hs.toolbar',
@@ -25,13 +25,17 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', '
 
         module.service('feature_crossfilter',[function(){
             return {
-                makeCrossfilterDimensions : function(source, attribute){
-                    var total = source.getFeatures().dimension( function(source) { 
-                        //return 
-                    });
-                    var groupsByTotal = total.group( function(source) { 
-                        return source.get(attribute); 
-                    });
+                makeCrossfilterDimensions : function(source, attributes){
+                    var facts = crossfilter(source.getFeatures());
+                    
+                    for (var attr in attributes) {
+                        var total = facts.dimension( function(feature) { 
+                            return feature.get(attr)
+                        });
+                        var groupsByTotal = total.group( function(feature) { 
+                            return feature.get(attr); 
+                        });
+                    }
                     console.log('test');
                     // caur konsoli: var a = angular.element('*[ng-app]').injector().get('hsService');
                 }

@@ -25,6 +25,9 @@ require.config({
         xml2json: hsl_path + 'lib/xml2json.min',
         panoramio: hsl_path + 'components/panoramio/panoramio',
         drag: hsl_path + 'components/drag/drag',
+        d3: hsl_path + 'lib/d3.v3.min',
+        crossfilter: hsl_path + 'lib/crossfilter.v1.min',
+        dc: 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc',
         core: hsl_path + 'components/core/core',
         SparqlJson: hsl_path + 'extensions/hs.source.SparqlJson',
         WfsSource: hsl_path + 'extensions/hs.source.Wfs',
@@ -44,6 +47,12 @@ require.config({
         },
         translations: { 
             deps: ['angular-gettext'],
+        },
+        d3: {
+            exports: 'd3'
+        },
+        dc: {
+            deps: ['d3', 'crossfilter']
         }
     },
     priority: [
