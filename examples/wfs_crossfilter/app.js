@@ -23,6 +23,21 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             };
         }]);
 
+        module.service('hsService',[function(){
+            return {
+                makeCrossfilterDimensions : function(source, attribute){
+                    var total = source.getFeatures().dimension( function(source) { 
+                        //return 
+                    });
+                    var groupsByTotal = total.group( function(source) { 
+                        return source.get(attribute); 
+                    });
+                    console.log('test');
+                    // caur konsoli: var a = angular.element('*[ng-app]').injector().get('hsService');
+                }
+            };
+        }]);
+
         module.value('box_layers', []);
 
         var style = new ol.style.Style({
