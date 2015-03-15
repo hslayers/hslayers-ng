@@ -33,7 +33,8 @@ require.config({
         WfsSource: hsl_path + 'extensions/hs.source.Wfs',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path+'bower_components/angular-gettext/dist/angular-gettext',
-        translations: hsl_path+'components/translations/js/translations'
+        translations: hsl_path+'components/translations/js/translations',
+        'feature-crossfilter': hsl_path + 'components/feature_crossfilter/f_crossfilter'
     },
     shim: {
         'angular': {
