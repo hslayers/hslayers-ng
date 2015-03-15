@@ -14,6 +14,10 @@
         <span class="glyphicon glyphicon-cloud-download"></span>
     </button>
 
+    <button type="button" class="btn btn-default"  title="Filter features"  ng-if="Core.exists('FeatureCrossfilter')" ng-click="setMainPanel('feature_crossfilter', true)">
+        <span class="fa fa-pie-chart"></span>
+    </button>
+
     <button type="button" class="btn btn-default"  title="Query information and other"  ng-if="Core.exists('Query')" ng-click="setMainPanel('info', true)">
         <i class="fa fa-question-circle"></i>
     </button>
