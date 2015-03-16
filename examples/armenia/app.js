@@ -51,7 +51,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
 
         module.value('default_layers', [
             new ol.layer.Tile({
-                source: new ol.source.OSM(),
+                source: new ol.source.MapQuest({layer: 'sat'}),
                 title: "Base layer",
                 box_id: 'osm',
                 base: true
