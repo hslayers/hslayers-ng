@@ -1,13 +1,13 @@
-angular.module('gettext').directive('translate', function (gettextCatalog, $parse, $animate, $compile, $window) {
+angular.module('gettext').directive('translate', function(gettextCatalog, $parse, $animate, $compile, $window) {
     // Trim polyfill for old browsers (instead of jQuery)
     // Based on AngularJS-v1.2.2 (angular.js#620)
-    var trim = (function () {
+    var trim = (function() {
         if (!String.prototype.trim) {
-            return function (value) {
+            return function(value) {
                 return (typeof value === 'string') ? value.replace(/^\s*/, '').replace(/\s*$/, '') : value;
             };
         }
-        return function (value) {
+        return function(value) {
             return (typeof value === 'string') ? value.trim() : value;
         };
     })();
@@ -41,7 +41,7 @@ angular.module('gettext').directive('translate', function (gettextCatalog, $pars
             }
 
             return {
-                post: function (scope, element, attrs) {
+                post: function(scope, element, attrs) {
                     var countFn = $parse(attrs.translateN);
                     var pluralScope = null;
 
@@ -53,7 +53,7 @@ angular.module('gettext').directive('translate', function (gettextCatalog, $pars
                             scope.$count = countFn(scope);
                             translated = gettextCatalog.getPlural(scope.$count, msgid, translatePlural, null, translateContext);
                         } else {
-                            translated = gettextCatalog.getString(msgid,  null, translateContext);
+                            translated = gettextCatalog.getString(msgid, null, translateContext);
                         }
 
                         // Swap in the translation

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'angular-gettext','translations', 'feature-crossfilter'],
+define(['angular', 'ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'angular-gettext', 'translations', 'feature-crossfilter'],
 
     function(angular, ol, dc, toolbar, layermanager, SparqlJson, WfsSource) {
         var module = angular.module('hs', [
@@ -19,27 +19,6 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullscreenMap(element);
-                }
-            };
-        }]);
-
-        module.service('feature_crossfilter',[function(){
-            return {
-                makeCrossfilterDimensions : function(source, attributes){
-                    var facts = crossfilter(source.getFeatures());
-                    var tmp = [];
-                    for (var attr_i in attributes) {
-                        var attr = attributes[attr_i];    
-                        var total = facts.dimension( function(feature) { 
-                            return feature.get(attr);
-                        });
-                        var groupsByTotal = total.group().reduceCount( function(feature) { 
-                            return feature.get(attr); 
-                        });
-                        tmp.push({dimension: total, grouping: groupsByTotal});
-                    }
-                    return tmp;
-                    // caur konsoli: var a = angular.element('*[ng-app]').injector().get('hsService');
                 }
             };
         }]);
@@ -64,7 +43,7 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
                 width: 1
             })
         });
-        
+
         var style_sparql = function(feature, resolution) {
             return [new ol.style.Style({
                 image: new ol.style.Circle({
@@ -112,6 +91,9 @@ define(['angular', 'ol','dc','toolbar', 'layermanager', 'SparqlJson', 'WfsSource
                 style: style_sparql
             })
         ]);
+        
+        module.value('crossfilterable_layers', [{layer_ix:2, attributes:["http://gis.zcu.cz/poi#category_osm"]}]);
+        
 
         module.value('default_view', new ol.View({
             center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator

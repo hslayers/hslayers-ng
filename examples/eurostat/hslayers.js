@@ -31,8 +31,8 @@ require.config({
         core: hsl_path + 'components/core/core',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         api: hsl_path + 'components/api/api',
-        'angular-gettext': hsl_path+'bower_components/angular-gettext/dist/angular-gettext',
-        translations: hsl_path+'components/translations/js/translations'
+        'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
+        translations: hsl_path + 'components/translations/js/translations'
 
     },
     shim: {
@@ -42,10 +42,10 @@ require.config({
         'angular-sanitize': {
             deps: ['angular'],
         },
-        'angular-gettext': { 
+        'angular-gettext': {
             deps: ['angular'],
         },
-        translations: { 
+        translations: {
             deps: ['angular-gettext'],
         },
         d3: {

@@ -49,7 +49,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 undefinedHTML: '&nbsp;'
             });
             $scope.setTargetDiv("map")
-            //map.addControl(mousePositionControl);
+                //map.addControl(mousePositionControl);
             $scope.$emit('scope_loaded', "Map");
         }
     ]);

@@ -33,8 +33,8 @@ require.config({
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         api: hsl_path + 'components/api/api',
-        'angular-gettext': hsl_path+'bower_components/angular-gettext/dist/angular-gettext',
-        translations: hsl_path+'components/translations/js/translations'
+        'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
+        translations: hsl_path + 'components/translations/js/translations'
     },
     shim: {
         'angular': {
@@ -43,10 +43,10 @@ require.config({
         'angular-sanitize': {
             deps: ['angular'],
         },
-        'angular-gettext': { 
+        'angular-gettext': {
             deps: ['angular'],
         },
-        translations: { 
+        translations: {
             deps: ['angular-gettext'],
         },
         d3: {

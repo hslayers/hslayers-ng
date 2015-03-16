@@ -1,4 +1,4 @@
-angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, $http, $cacheFactory, $interpolate, $rootScope) {
+angular.module('gettext').factory('gettextCatalog', function(gettextPlurals, $http, $cacheFactory, $interpolate, $rootScope) {
     var catalog;
     var noContext = '$$noContext';
 
@@ -9,7 +9,7 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, $h
     var test = '<span title="test" class="tested">test</span>';
     var isHTMLModified = (angular.element('<span>' + test + '</span>').html() !== test);
 
-    var prefixDebug = function (string) {
+    var prefixDebug = function(string) {
         if (catalog.debug && catalog.currentLanguage !== catalog.baseLanguage) {
             return catalog.debugPrefix + string;
         } else {
@@ -17,7 +17,7 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, $h
         }
     };
 
-    var addTranslatedMarkers = function (string) {
+    var addTranslatedMarkers = function(string) {
         if (catalog.showTranslatedMarkers) {
             return catalog.translatedMarkerPrefix + string + catalog.translatedMarkerSuffix;
         } else {
@@ -40,16 +40,16 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, $h
         currentLanguage: 'en',
         cache: $cacheFactory('strings'),
 
-        setCurrentLanguage: function (lang) {
+        setCurrentLanguage: function(lang) {
             this.currentLanguage = lang;
             broadcastUpdated();
         },
 
-        getCurrentLanguage: function () {
+        getCurrentLanguage: function() {
             return this.currentLanguage;
         },
 
-        setStrings: function (language, strings) {
+        setStrings: function(language, strings) {
             if (!this.strings[language]) {
                 this.strings[language] = {};
             }
@@ -80,20 +80,20 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, $h
             broadcastUpdated();
         },
 
-        getStringForm: function (string, n, context) {
+        getStringForm: function(string, n, context) {
             var stringTable = this.strings[this.currentLanguage] || {};
             var contexts = stringTable[string] || {};
             var plurals = contexts[context || noContext] || [];
             return plurals[n];
         },
 
-        getString: function (string, scope, context) {
+        getString: function(string, scope, context) {
             string = this.getStringForm(string, 0, context) || prefixDebug(string);
             string = scope ? $interpolate(string)(scope) : string;
             return addTranslatedMarkers(string);
         },
 
-        getPlural: function (n, string, stringPlural, scope, context) {
+        getPlural: function(n, string, stringPlural, scope, context) {
             var form = gettextPlurals(this.currentLanguage, n);
             string = this.getStringForm(string, form, context) || prefixDebug(n === 1 ? string : stringPlural);
             if (scope) {
@@ -103,12 +103,12 @@ angular.module('gettext').factory('gettextCatalog', function (gettextPlurals, $h
             return addTranslatedMarkers(string);
         },
 
-        loadRemote: function (url) {
+        loadRemote: function(url) {
             return $http({
                 method: 'GET',
                 url: url,
                 cache: catalog.cache
-            }).success(function (data) {
+            }).success(function(data) {
                 for (var lang in data) {
                     catalog.setStrings(lang, data[lang]);
                 }

@@ -7,9 +7,10 @@
     </div>
     <div class="panel-body">
         <div class="form-group">
+            <img ng-src="{{ajax_loader}}" ng-show="loading"/>
             <div class="filter_charts"  ng-repeat="group in groupings">
                 Filter by {{group.name}}
-                <div id='fc_chart{{group.name}}'></div>
+                <div id='fc_chart{{group.id}}'></div>
             </div>
         </div>
     </div>
