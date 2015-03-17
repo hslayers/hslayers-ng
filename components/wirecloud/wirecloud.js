@@ -13,11 +13,19 @@ define(['angular', 'app', 'map', 'ol'],
                         center = ol.proj.transform(center, view.getProjection(), 'EPSG:4326');
                         MashupPlatform.wiring.pushEvent("center_event", center[0] + ', ' + center[1]);
                     });
-                    MashupPlatform.wiring.registerCallback("map_info_slot", function(data) {
-                        console.log("map_info_slot", data)
+                    MashupPlatform.wiring.registerCallback("center_slot", function(data) {
+                        if(console) console.log("center_slot", data);
+                        view.setCenter([parseFloat(data.split(",")[0]), parseFloat(data.split(",")[1])]);
+                    });
+                    MashupPlatform.wiring.registerCallback("draw_extent_slot", function(data) {
+                        if(console) console.log("draw_extent_slot", data);
+                        var b = data.split(",");
+                        var extent = [parseFloat(b[0]), parseFloat(b[1]), parseFloat(b[2]), parseFloat(b[3])];
+                        extent = ol.proj.transform(extent, 'EPSG:4326', 'EPSG:3857');
+                        view.fitExtent(extent, OlMap.map.getSize());
                     });
                     MashupPlatform.wiring.registerCallback("location_info_slot", function(data) {
-                        console.log("location_info_slot", data)
+                        if(console) console.log("location_info_slot", data)
                     });
                 } else return;
             }

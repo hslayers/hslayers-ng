@@ -48,7 +48,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             if(feature.cashed_style) return feature.cashed_style;
             var sum_severity = {fatal:0, serious:0, slight:0};
             for (var i = 0; i < feature.get('features').length; i++) {
-                var year_data = feature.get('features')[i].get('year_2005');
+                var year_data = feature.get('features')[i].get('year_2013');
                 sum_severity.fatal+=year_data.structure.severity.fatal;
                 sum_severity.serious+=year_data.structure.severity.serious;
                 sum_severity.slight+=year_data.structure.severity.slight;
