@@ -54,10 +54,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 sum_severity.slight+=year_data.structure.severity.slight;
             }
             var total = sum_severity.fatal+sum_severity.serious+sum_severity.slight;
-            var size = Math.floor(40 + total / 100);
+            var size = Math.floor(60 + total / 400);
+            console.log(resolution);
             feature.cashed_style = [new ol.style.Style({
                 image: new ol.style.Icon({
-                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [sum_severity.fatal/total, sum_severity.serious/total, sum_severity.slight/total].join() + '&cht=p&chco=ce2402,e5d032,004FC2',
+                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [sum_severity.fatal/total, sum_severity.serious/total, sum_severity.slight/total].join() + '&cht=p&chco=ce2402cc,e5d032cc,004FC2cc',
                     crossOrigin: 'anonymous'
                 })
             })];
