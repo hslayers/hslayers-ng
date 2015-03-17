@@ -46,20 +46,18 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
         
         var accident_style = function(feature, resolution) {
             if(feature.cashed_style) return feature.cashed_style;
-            var max = -1;
-            var max_i;
+            var sum_severity = {fatal:0, serious:0, slight:0};
             for (var i = 0; i < feature.get('features').length; i++) {
                 var year_data = feature.get('features')[i].get('year_2005');
-                if (year_data.structure.severity.fatal + year_data.structure.severity.serious + year_data.structure.severity.slight > max) {
-                    max = year_data.structure.severity.fatal + year_data.structure.severity.serious + year_data.structure.severity.slight;
-                    max_i = i;
-                }
+                sum_severity.fatal+=year_data.structure.severity.fatal;
+                sum_severity.serious+=year_data.structure.severity.serious;
+                sum_severity.slight+=year_data.structure.severity.slight;
             }
-            var year_data = feature.get('features')[max_i].get('year_2005');
-            var size = 60;
+            var total = sum_severity.fatal+sum_severity.serious+sum_severity.slight;
+            var size = Math.floor(40 + total / 100);
             feature.cashed_style = [new ol.style.Style({
                 image: new ol.style.Icon({
-                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [year_data.structure.severity.fatal, year_data.structure.severity.serious, year_data.structure.severity.slight].join() + '&cht=p&chco=ce2402,e5d032,004FC2',
+                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [sum_severity.fatal/total, sum_severity.serious/total, sum_severity.slight/total].join() + '&cht=p&chco=ce2402,e5d032,004FC2',
                     crossOrigin: 'anonymous'
                 })
             })];
