@@ -54,7 +54,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 sum_severity.slight+=year_data.structure.severity.slight;
             }
             var total = sum_severity.fatal+sum_severity.serious+sum_severity.slight;
-            var size = Math.floor(60 + total / 400);
+            var size = Math.floor(60 + total / resolution);
             console.log(resolution);
             feature.cashed_style = [new ol.style.Style({
                 image: new ol.style.Icon({
