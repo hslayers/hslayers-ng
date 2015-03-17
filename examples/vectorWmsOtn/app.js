@@ -59,7 +59,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             var size = 60;
             feature.cashed_style = [new ol.style.Style({
                 image: new ol.style.Icon({
-                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [year_data.structure.severity.fatal, year_data.structure.severity.serious, year_data.structure.severity.slight].join() + '&cht=p&chco=ce2402,e5d032,8EBAFF',
+                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [year_data.structure.severity.fatal, year_data.structure.severity.serious, year_data.structure.severity.slight].join() + '&cht=p&chco=ce2402,e5d032,004FC2',
                     crossOrigin: 'anonymous'
                 })
             })];
