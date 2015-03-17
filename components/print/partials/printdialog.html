@@ -1,6 +1,6 @@
 <div class="panel panel-default mainpanel">
     <div class="panel-heading">
-           Print
+           <translate>Print</translate>
         <button type="button" class="close" ng-click="Core.hidePanels()">
             <span aria-hidden="true">×</span>
             <span class="sr-only">Close</span>
@@ -9,9 +9,9 @@
     <div class="panel-body">
             <div class="panel-body">
             <div class="form-group">
-                <label for="print-title" class="control-label">Title:</label>
+                <label for="print-title" class="control-label" translate>Titles</label>
                 <input  class="form-control" id = "print-title" ng-model="title" />
             </div>
-            <button type="button" class="btn btn-primary" ng-click="print()">Print</button>
+            <button type="button" class="btn btn-primary" ng-click="print()" translate>Print</button>
     </div>
 </div>

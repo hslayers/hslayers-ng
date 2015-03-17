@@ -10,7 +10,10 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
     .directive('map', function() {
         return {
-            templateUrl: hsl_path + 'components/map/partials/map.html'
+            templateUrl: hsl_path + 'components/map/partials/map.html',
+            link: function(scope, element) {
+                $(".ol-zoomslider", element).width(28).height(200);
+            }
         };
     })
 
@@ -46,7 +49,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 undefinedHTML: '&nbsp;'
             });
             $scope.setTargetDiv("map")
-            map.addControl(mousePositionControl);
+                //map.addControl(mousePositionControl);
             $scope.$emit('scope_loaded', "Map");
         }
     ]);

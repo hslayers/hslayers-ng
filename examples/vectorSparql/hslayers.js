@@ -27,7 +27,10 @@ require.config({
         drag: hsl_path + 'components/drag/drag',
         core: hsl_path + 'components/core/core',
         SparqlJson: hsl_path + 'extensions/hs.source.SparqlJson',
-        'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize'
+        'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
+        api: hsl_path + 'components/api/api',
+        'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
+        translations: hsl_path + 'components/translations/js/translations'
     },
     shim: {
         'angular': {
@@ -35,7 +38,13 @@ require.config({
         },
         'angular-sanitize': {
             deps: ['angular'],
-        }
+        },
+        'angular-gettext': {
+            deps: ['angular'],
+        },
+        translations: {
+            deps: ['angular-gettext'],
+        },
     },
     priority: [
         "angular"

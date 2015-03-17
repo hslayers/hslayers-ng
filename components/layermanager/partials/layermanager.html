@@ -1,8 +1,8 @@
 <div class="panel panel-default mainpanel">
-    <div class="panel-heading">Layer manager
+    <div class="panel-heading"><translate>Layer manager</translate>
         <button type="button" class="close" ng-click="Core.hidePanels()">
             <span aria-hidden="true">×</span>
-            <span class="sr-only">Close</span>
+            <span class="sr-only" translate>Close</span>
         </button>
     </div>
     <div class="panel-body">
@@ -38,38 +38,38 @@
         {{currentlayer.title}}
         <button type="button" class="close" ng-click="currentlayer=null">
             <span aria-hidden="true">×</span>
-            <span class="sr-only">Close</span>
+            <span class="sr-only" translate>Close</span>
         </button>
     </div>
     <div class="panel-body">
         <form>
         <!-- Opacity slider -->
         <div class="form-group">
-            <label>Opacity: </label>
+            <label translate>Opacity: </label>
             <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="cur_layer_opacity" ng-change="currentlayer.layer.setOpacity(cur_layer_opacity)"/>
  
         </div>
         <!-- Abstract -->
         <div class="form-group" ng-show="currentlayer.layer.get('abstract') ? true : false">
-            <label>Abstract:</label>
+            <label translate>Abstract:</label>
             <p>
                 {{currentlayer.layer.get('abstract')}}
             </p>
         </div>
         <!-- Metadata -->
         <div class="form-group" ng-show="currentlayer.layer.get('MetadataURL') ? true : false">
-            <b><a ng-repeat="metadata in currentlayer.layer.get('MetadataURL')" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">Metadata in {{metadata.type}}</a></b>
+            <b><a ng-repeat="metadata in currentlayer.layer.get('MetadataURL')" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata" ><translate>Metadata in</translate> {{metadata.type}}</a></b>
         </div>
         <!-- Legends -->
         <div class="form-group" ng-show="currentlayer.layer.get('abstract') ? true : false">
-            <label>Legend:</label>
+            <label translate>Legend:</label>
             <p>
                  <img ng-repeat="sublayer in currentlayer.sub_layers" ng-src="{{sublayer}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
             </p>
         </div>
         <!-- Footer -->
-        <button class="btn btn-default" ng-click="zoomToLayer(currentlayer.layer)">Zoom to</button>
-        <button class="btn btn-danger" ng-click="removeLayer(currentlayer.layer)">Remove layer</button>
+        <button class="btn btn-default" ng-click="zoomToLayer(currentlayer.layer)" translate>Zoom to</button>
+        <button class="btn btn-danger" ng-click="removeLayer(currentlayer.layer)" translate>Remove layer</button>
         </form>
     </div>
 </div>

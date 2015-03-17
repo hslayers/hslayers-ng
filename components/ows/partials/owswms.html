@@ -1,6 +1,6 @@
 <form class="form-horizontal" role="form" ng-controller="OwsWms">
     <div class="form-group">
-        <label class="col-sm-4 control-label">Image format</label>
+        <label class="col-sm-4 control-label" translate>Image format</label>
         <div class="col-sm-8">
             <select class="form-control" ng-model="image_format">
                 <option ng-repeat="i in image_formats">{{i}}</option>
@@ -9,7 +9,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-4 control-label">Query format</label>
+        <label class="col-sm-4 control-label" translate>Query format</label>
         <div class="col-sm-8">
             <select class="form-control" ng-model="query_format">
                 <option ng-repeat="i in query_formats">{{i}}</option>
@@ -27,21 +27,21 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-4 control-label">Use tiles</label>
+        <label class="col-sm-4 control-label" translate>Use tiles</label>
         <div class="col-sm-8">
             <input type="checkbox" class="form-control" ng-model="use_tiles"/>
         </div>      
     </div>
 
     <div class="form-group">
-        <label class="col-sm-4 control-label">Tile size</label>
+        <label class="col-sm-4 control-label" translate>Tile size</label>
         <div class="col-sm-8">
             <input class="form-control" ng-model="tile_size"/>
         </div>      
     </div>
 
     <div class="form-group">
-        <label class="col-sm-4 control-label">Folder name</label>
+        <label class="col-sm-4 control-label" translate>Folder name</label>
         <div class="col-sm-8">
             <input class="form-control" ng-model="folder_name"/>
         </div>      
@@ -53,6 +53,6 @@
         </a>
         <li ng-repeat="layer in services.Layer" class="list-group-item">{{layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="layer.checked" /></li>
     </ul>
-    <button class="btn btn-primary" ng-click="addLayers(false)">Add all</button>
-    <button class="btn btn-primary" ng-click="addLayers(true)">Add selected</button>
+    <button class="btn btn-primary" ng-click="addLayers(false)" translate>Add all</button>
+    <button class="btn btn-primary" ng-click="addLayers(true)" translate>Add selected</button>
 </form>
