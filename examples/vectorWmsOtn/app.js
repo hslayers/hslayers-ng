@@ -43,6 +43,38 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 width: 1
             })
         })
+        
+        var accident_style = function(feature, resolution) {
+            if(feature.cashed_style) return feature.cashed_style;
+            var max = -1;
+            var max_i;
+            for (var i = 0; i < feature.get('features').length; i++) {
+                var year_data = feature.get('features')[i].get('year_2005');
+                if (year_data.structure.severity.fatal + year_data.structure.severity.serious + year_data.structure.severity.slight > max) {
+                    max = year_data.structure.severity.fatal + year_data.structure.severity.serious + year_data.structure.severity.slight;
+                    max_i = i;
+                }
+            }
+            var year_data = feature.get('features')[max_i].get('year_2005');
+            var size = 60;
+            feature.cashed_style = [new ol.style.Style({
+                image: new ol.style.Icon({
+                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [year_data.structure.severity.fatal, year_data.structure.severity.serious, year_data.structure.severity.slight].join() + '&cht=p&chco=ce2402,e5d032,8EBAFF',
+                    crossOrigin: 'anonymous'
+                })
+            })];
+
+            return feature.cashed_style; 
+        }
+
+        var src = new ol.source.GeoJSON({
+            url: hsl_path + 'examples/vectorWmsOtn/shluky.geojson',
+            projection: 'EPSG:3857'
+        });
+        var csrc = new ol.source.Cluster({
+            distance: 150,
+            source: src
+        });
 
         module.value('default_layers', [
             new ol.layer.Tile({
@@ -59,6 +91,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                     projection: 'EPSG:3857'
                 }),
                 style: style
+            }),
+            new ol.layer.Vector({
+                title: "Accident statistics",
+                source: csrc,
+                style: accident_style
             })
         ]);
 

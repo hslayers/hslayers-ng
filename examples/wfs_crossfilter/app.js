@@ -63,7 +63,7 @@ define(['angular', 'ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSour
                     width: 1
                 })
             })]
-        }
+        }     
 
         module.value('default_layers', [
             new ol.layer.Tile({
@@ -91,9 +91,12 @@ define(['angular', 'ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSour
                 style: style_sparql
             })
         ]);
-        
-        module.value('crossfilterable_layers', [{layer_ix:2, attributes:["http://gis.zcu.cz/poi#category_osm"]}]);
-        
+
+        module.value('crossfilterable_layers', [{
+            layer_ix: 2,
+            attributes: ["http://gis.zcu.cz/poi#category_osm"]
+        }]);
+
 
         module.value('default_view', new ol.View({
             center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator

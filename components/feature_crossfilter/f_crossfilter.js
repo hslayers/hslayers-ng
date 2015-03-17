@@ -55,13 +55,13 @@ define(['angular', 'ol', 'dc', 'map'],
 
                     $scope.createConfiguredCharts = function() {
                         $scope.loading = true;
-                        for(var layer_i = 0; layer_i < crossfilterable_layers.length; layer_i++){
-                            if(OlMap.map.getLayers().item(crossfilterable_layers[layer_i].layer_ix).getSource().getFeatures().length == 0){
+                        for (var layer_i = 0; layer_i < crossfilterable_layers.length; layer_i++) {
+                            if (OlMap.map.getLayers().item(crossfilterable_layers[layer_i].layer_ix).getSource().getFeatures().length == 0) {
                                 setTimeout($scope.createConfiguredCharts, 1000);
                                 return;
                             }
                         }
-                        for(var layer_i = 0; layer_i < crossfilterable_layers.length; layer_i++){
+                        for (var layer_i = 0; layer_i < crossfilterable_layers.length; layer_i++) {
                             var lyr = OlMap.map.getLayers().item(crossfilterable_layers[layer_i].layer_ix);
                             var attributes = crossfilterable_layers[layer_i].attributes;
                             for (var attr_i = 0; attr_i < attributes.length; attr_i++) {
