@@ -5,7 +5,7 @@ var hsl_path = '../../';
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
-        ol: hsl_path + 'lib/ol3/ol',
+        ol: hsl_path + 'lib/ol3/ol-full',
         toolbar: hsl_path + 'components/toolbar/toolbar',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         map: hsl_path + 'components/map/map',
@@ -22,6 +22,7 @@ require.config({
         measure: hsl_path + 'components/measure/measure',
         legend: hsl_path + 'components/legend/legend',
         app: 'app',
+        d3: hsl_path + 'lib/d3.v3.min',
         xml2json: hsl_path + 'lib/xml2json.min',
         panoramio: hsl_path + 'components/panoramio/panoramio',
         drag: hsl_path + 'components/drag/drag',
@@ -30,20 +31,21 @@ require.config({
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         api: hsl_path + 'components/api/api',
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
+        year_selector: hsl_path + 'examples/vectorWmsOtn/year_selector/year_selector',
         translations: hsl_path + 'components/translations/js/translations'
     },
     shim: {
         'angular': {
-            'exports': 'angular'
+            exports: 'angular'
         },
         'angular-sanitize': {
-            deps: ['angular'],
+            deps: ['angular']
         },
         'angular-gettext': {
-            deps: ['angular'],
+            deps: ['angular']
         },
         translations: {
-            deps: ['angular-gettext'],
+            deps: ['angular-gettext']
         }
     },
     priority: [

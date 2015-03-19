@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'angular-gettext', 'translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'angular-gettext', 'translations', 'year_selector'],
 
     function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -11,14 +11,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
             'hs.geolocation',
-            'gettext'
+            'gettext', 'hs.widgets.year_selector'
         ]);
 
-        module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
+        module.directive('hs', ['OlMap', 'Core', '$compile', function(OlMap, Core, $compile) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullscreenMap(element);
+                    element.append($compile( '<div yearselector ng-controller="YearSelector"></div>' )( scope ));
                 }
             };
         }]);
@@ -44,28 +45,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             })
         })
         
-        var accident_style = function(feature, resolution) {
-            if(feature.cashed_style) return feature.cashed_style;
-            var sum_severity = {fatal:0, serious:0, slight:0};
-            for (var i = 0; i < feature.get('features').length; i++) {
-                var year_data = feature.get('features')[i].get('year_2013');
-                sum_severity.fatal+=year_data.structure.severity.fatal;
-                sum_severity.serious+=year_data.structure.severity.serious;
-                sum_severity.slight+=year_data.structure.severity.slight;
-            }
-            var total = sum_severity.fatal+sum_severity.serious+sum_severity.slight;
-            var size = Math.floor(50 + total / resolution * 3);
-            console.log(resolution);
-            feature.cashed_style = [new ol.style.Style({
-                image: new ol.style.Icon({
-                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [sum_severity.fatal/total, sum_severity.serious/total, sum_severity.slight/total].join() + '&cht=p&chco=ce2402cc,e5d032cc,099700cc',
-                    crossOrigin: 'anonymous'
-                })
-            })];
-
-            return feature.cashed_style; 
-        }
-
         var src = new ol.source.GeoJSON({
             url: hsl_path + 'examples/vectorWmsOtn/shluky.geojson',
             projection: 'EPSG:3857'
@@ -93,8 +72,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             }),
             new ol.layer.Vector({
                 title: "Accident statistics",
-                source: csrc,
-                style: accident_style
+                source: csrc
             })
         ]);
 
@@ -104,12 +82,18 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService',
-            function($scope, Core, InfoPanelService) {
+        module.controller('Main', ['$scope', '$compile', '$element',  'Core', 'InfoPanelService', 'OlMap', 'default_layers', 'year_selector_service',
+            function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers, year_selector_service) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-
+                
+                default_layers[2].setStyle(year_selector_service.style);
+                default_layers[2].getSource().on('removefeature', function(f){
+                    if(f.feature.overlay) {
+                      OlMap.map.removeOverlay(f.feature.overlay);
+                    }
+                });
                 $scope.$on('infopanel.updated', function(event) {});
             }
         ]);
