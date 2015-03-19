@@ -44,7 +44,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 width: 1
             })
         })
-        
+
         var src = new ol.source.GeoJSON({
             url: hsl_path + 'examples/vectorWmsOtn/shluky.geojson',
             projection: 'EPSG:3857'

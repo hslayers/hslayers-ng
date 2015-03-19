@@ -63,7 +63,7 @@ define(['angular', 'ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSour
                     width: 1
                 })
             })]
-        }     
+        }
 
         module.value('default_layers', [
             new ol.layer.Tile({
