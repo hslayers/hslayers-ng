@@ -43,27 +43,31 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 width: 1
             })
         })
-        
+
         var accident_style = function(feature, resolution) {
-            if(feature.cashed_style) return feature.cashed_style;
-            var sum_severity = {fatal:0, serious:0, slight:0};
+            if (feature.cashed_style) return feature.cashed_style;
+            var sum_severity = {
+                fatal: 0,
+                serious: 0,
+                slight: 0
+            };
             for (var i = 0; i < feature.get('features').length; i++) {
                 var year_data = feature.get('features')[i].get('year_2013');
-                sum_severity.fatal+=year_data.structure.severity.fatal;
-                sum_severity.serious+=year_data.structure.severity.serious;
-                sum_severity.slight+=year_data.structure.severity.slight;
+                sum_severity.fatal += year_data.structure.severity.fatal;
+                sum_severity.serious += year_data.structure.severity.serious;
+                sum_severity.slight += year_data.structure.severity.slight;
             }
-            var total = sum_severity.fatal+sum_severity.serious+sum_severity.slight;
+            var total = sum_severity.fatal + sum_severity.serious + sum_severity.slight;
             var size = Math.floor(50 + total / resolution * 3);
             console.log(resolution);
             feature.cashed_style = [new ol.style.Style({
                 image: new ol.style.Icon({
-                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [sum_severity.fatal/total, sum_severity.serious/total, sum_severity.slight/total].join() + '&cht=p&chco=ce2402cc,e5d032cc,099700cc',
+                    src: 'http://chart.apis.google.com/chart?chs=' + size + 'x' + size + '&chf=bg,s,ffffff00&chdlp=b&chd=t:' + [sum_severity.fatal / total, sum_severity.serious / total, sum_severity.slight / total].join() + '&cht=p&chco=ce2402cc,e5d032cc,099700cc',
                     crossOrigin: 'anonymous'
                 })
             })];
 
-            return feature.cashed_style; 
+            return feature.cashed_style;
         }
 
         var src = new ol.source.GeoJSON({
