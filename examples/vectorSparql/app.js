@@ -66,7 +66,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'core', 'map',
         ]);
 
         module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+            center: [1761463.994365168, 6483806.731580181], //Latitude longitude    to Spherical Mercator
             zoom: 14,
             units: "m"
         }));

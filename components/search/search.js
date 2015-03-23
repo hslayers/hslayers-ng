@@ -1,6 +1,6 @@
-define(['angular', 'map'],
+define(['angular', 'ol', 'map'],
 
-    function(angular) {
+    function(angular, ol) {
         angular.module('hs.search', ['hs.map'])
             .directive('searchinput', ['$window', function($window) {
                 return {
