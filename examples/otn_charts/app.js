@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'angular-gettext', 'translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'angular-gettext', 'translations', 'year_selector'],
 
     function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -11,7 +11,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
             'hs.geolocation',
-            'gettext'
+            'gettext', 'hs.widgets.year_selector'
         ]);
 
         module.directive('hs', ['OlMap', 'Core', '$compile', function(OlMap, Core, $compile) {
@@ -19,6 +19,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullscreenMap(element);
+                    element.append($compile( '<div yearselector ng-controller="YearSelector"></div>' )( scope ));
                 }
             };
         }]);
@@ -44,6 +45,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             })
         })
 
+        var src = new ol.source.GeoJSON({
+            url: hsl_path + 'examples/otn_charts/shluky.geojson',
+            projection: 'EPSG:3857'
+        });
+        var csrc = new ol.source.Cluster({
+            distance: 150,
+            source: src
+        });
+
         module.value('default_layers', [
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
@@ -51,17 +61,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 box_id: 'osm',
                 base: true
             }),
-            new ol.layer.Tile({
-                title: "Traffic accidents",
-                source: new ol.source.TileWMS({
-                    url: 'http://otn.bnhelp.cz/cgi-bin/mapserv?map=/data/www/otn.bnhelp.cz/maps/accidents/accidents_wms.map',
-                    params: {
-                        LAYERS: 'accidents',
-                        INFO_FORMAT: undefined,
-                        FORMAT: "image/png; mode=8bit"
-                    },
-                    crossOrigin: null
-                })
+            new ol.layer.Vector({
+                title: "Accident statistics",
+                source: csrc
             })
         ]);
 
@@ -71,11 +73,18 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', '$compile', '$element',  'Core', 'InfoPanelService', 'OlMap', 'default_layers',
-            function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers) {
+        module.controller('Main', ['$scope', '$compile', '$element',  'Core', 'InfoPanelService', 'OlMap', 'default_layers', 'year_selector_service',
+            function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers, year_selector_service) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+                
+                default_layers[1].setStyle(year_selector_service.style);
+                default_layers[1].getSource().on('removefeature', function(f){
+                    if(f.feature.overlay) {
+                      OlMap.map.removeOverlay(f.feature.overlay);
+                    }
+                });
                 $scope.$on('infopanel.updated', function(event) {});
             }
         ]);

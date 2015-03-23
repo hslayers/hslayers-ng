@@ -103,7 +103,7 @@ define(['angular', 'ol', 'map', 'd3'],
             }])
             .directive('yearselector', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/vectorWmsOtn/year_selector/partials/template.html',
+                    templateUrl: hsl_path + 'examples/otn_charts/year_selector/partials/template.html',
                     link: function(scope, element) {
                         var link = document.createElement("link");
                         link.type = "text/css";
