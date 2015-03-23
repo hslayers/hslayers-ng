@@ -51,9 +51,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 box_id: 'osm',
                 base: true
             }),
-            new ol.layer.Tile({
+            new ol.layer.Image({
                 title: "Traffic accidents",
-                source: new ol.source.TileWMS({
+                source: new ol.source.ImageWMS({
                     url: 'http://otn.bnhelp.cz/cgi-bin/mapserv?map=/data/www/otn.bnhelp.cz/maps/accidents/accidents_wms.map',
                     params: {
                         LAYERS: 'accidents',

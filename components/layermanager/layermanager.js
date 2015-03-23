@@ -17,7 +17,10 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 if (e.element.getSource().getParams) { // Legend only for wms layers with params
                     sub_layers = e.element.getSource().getParams().LAYERS.split(",");
                     for (var i = 0; i < sub_layers.length; i++) {
-                        sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                        if(e.element.getSource().getUrls) //Multi tile
+                            sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                        if(e.element.getSource().getUrl) //Single tile
+                            sub_layers[i] = e.element.getSource().getUrls + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
                     }
                 }
                 e.element.on('change:visible', function(e) {
