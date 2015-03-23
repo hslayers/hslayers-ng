@@ -2,18 +2,25 @@ define(function(require) {
     var ol = require('ol');
     return function(options) {
         var category_map = {};
+        var category_id = 0;
+        var occupied_xy = {};
         var src = new ol.source.ServerVector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
-                if (src.loaded) return;
-                src.clear();
+                //src.clear();
                 var p = options.url;
+                var first_pair = [extent[0], extent[1]]
+                var second_pair = [extent[2], extent[3]];
+                first_pair = ol.proj.transform(first_pair, 'EPSG:3857', 'EPSG:4326');
+                second_pair = ol.proj.transform(second_pair, 'EPSG:3857', 'EPSG:4326');
+                var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX('+extent[0]+' '+ extent[1]+', '+extent[2]+' '+ extent[3]+')"), bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat)))).';
+                p = p.replace("<extent>", s_extent);
                 src.loaded = true;
                 $.ajax({
                         url: p
                     })
                     .done(function(response) {
-
                         var objects = {};
                         for (var i = 0; i < response.results.bindings.length; i++) {
                             var b = response.results.bindings[i];
@@ -24,8 +31,6 @@ define(function(require) {
                         }
                         var features = [];
                         var i = 0.0;
-
-                        var category_id = 0;
                         var rainbow = function(numOfSteps, step, opacity) {
                             // based on http://stackoverflow.com/a/7419630
                             // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
@@ -59,7 +64,9 @@ define(function(require) {
                                 var x = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"]);
                                 var y = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"]);
                                 if (!isNaN(x) && !isNaN(y)) {
-                                    objects[key].geometry = new ol.geom.Point(ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857'));
+                                    var coord = ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857');
+                                    if (typeof occupied_xy[coord] !== 'undefined') continue;
+                                    objects[key].geometry = new ol.geom.Point(coord);
                                     var feature = new ol.Feature(objects[key]);
                                     if (objects[key][options.category_field]) {
                                         if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
@@ -71,6 +78,7 @@ define(function(require) {
                                         }
                                         feature.category_id = category_map[objects[key][options.category_field]].id;
                                     }
+                                    occupied_xy[coord] = true;
                                     features.push(feature);
                                 }
                             }
@@ -87,7 +95,7 @@ define(function(require) {
                         src.addFeatures(features);
                     });
             },
-            strategy: ol.loadingstrategy.all,
+            strategy: ol.loadingstrategy.bbox,
             projection: options.projection
         });
         src.legend_categories = category_map;

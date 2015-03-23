@@ -71,6 +71,10 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
+                
+                $scope.refresh = function() {
+                    if (!$scope.$$phase) $scope.$digest();
+                }
 
                 OlMap.map.getLayers().forEach(function(lyr) {
                     layerAdded({
