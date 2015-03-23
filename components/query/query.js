@@ -156,6 +156,39 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         }
                         if (something_updated)
                             InfoPanelService.groups.push(group);
+                    });
+                    $("msGMLOutput", response).each(function() {
+                        for (var layer_i in $(this)[0].children) {
+                            var layer = $(this)[0].children[layer_i];
+                            var layer_name = "";
+                            if (typeof layer.children == 'undefined') continue;
+                            for (var feature_i = 0; feature_i < layer.children.length; feature_i++) {
+                                var feature = layer.children[feature_i];
+                                if (feature.nodeName == "gml:name") {
+                                    layer_name = feature.innerHTML;
+                                } else {
+                                    var group = {
+                                        name: layer_name + " Feature",
+                                        attributes: []
+                                    };
+
+                                    for (var attribute in feature.children) {
+                                        if (feature.children[attribute].childElementCount == 0) {
+                                            group.attributes.push({
+                                                "name": feature.children[attribute].localName,
+                                                "value": feature.children[attribute].innerHTML
+                                            });
+                                            something_updated = true;
+                                        }
+                                    }
+                                    if (something_updated)
+                                        InfoPanelService.groups.push(group);
+                                }
+
+                            }
+                        }
+
+
                     })
                     if (something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
                 }
@@ -183,12 +216,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     });
                     InfoPanelService.setGroups(groups);
                 }
-                
-                var isLayerQueriable = function(layer){
-                    if(layer instanceof ol.layer.Tile &&
+
+                var isLayerQueriable = function(layer) {
+                    if (layer instanceof ol.layer.Tile &&
                         layer.getSource() instanceof ol.source.TileWMS &&
                         layer.getSource().getParams().INFO_FORMAT) return true;
-                    if(layer instanceof ol.layer.Image &&
+                    if (layer instanceof ol.layer.Image &&
                         layer.getSource() instanceof ol.source.ImageWMS &&
                         layer.getSource().getParams().INFO_FORMAT) return true;
                     return false;

@@ -19,7 +19,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullscreenMap(element);
-                    element.append($compile( '<div yearselector ng-controller="YearSelector"></div>' )( scope ));
+                    element.append($compile('<div yearselector ng-controller="YearSelector"></div>')(scope));
                 }
             };
         }]);
@@ -73,16 +73,16 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', '$compile', '$element',  'Core', 'InfoPanelService', 'OlMap', 'default_layers', 'year_selector_service',
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'InfoPanelService', 'OlMap', 'default_layers', 'year_selector_service',
             function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers, year_selector_service) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                
+
                 default_layers[1].setStyle(year_selector_service.style);
-                default_layers[1].getSource().on('removefeature', function(f){
-                    if(f.feature.overlay) {
-                      OlMap.map.removeOverlay(f.feature.overlay);
+                default_layers[1].getSource().on('removefeature', function(f) {
+                    if (f.feature.overlay) {
+                        OlMap.map.removeOverlay(f.feature.overlay);
                     }
                 });
                 $scope.$on('infopanel.updated', function(event) {});

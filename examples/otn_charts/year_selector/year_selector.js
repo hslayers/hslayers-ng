@@ -3,7 +3,9 @@ define(['angular', 'ol', 'map', 'd3'],
     function(angular, ol, map) {
         angular.module('hs.widgets.year_selector', ['hs.map'])
             .service('year_selector_service', ['OlMap', 'default_layers', function(OlMap, default_layers) {
-                var me = {year: 2013};
+                var me = {
+                    year: 2013
+                };
 
                 function createCircleOutOverlay(position, ratios, size, color) {
                     var elem = document.createElement('div');
@@ -71,7 +73,7 @@ define(['angular', 'ol', 'map', 'd3'],
                         slight: 0
                     };
                     for (var i = 0; i < feature.get('features').length; i++) {
-                        var year_data = feature.get('features')[i].get('year_'+me.year);
+                        var year_data = feature.get('features')[i].get('year_' + me.year);
                         sum_severity.fatal += year_data.structure.severity.fatal;
                         sum_severity.serious += year_data.structure.severity.serious;
                         sum_severity.slight += year_data.structure.severity.slight;
@@ -94,9 +96,11 @@ define(['angular', 'ol', 'map', 'd3'],
 
                     return feature.cashed_style;
                 };
-                
-                me.redraw = function(){
-                    default_layers[2].getSource().refresh({force: true}); 
+
+                me.redraw = function() {
+                    default_layers[2].getSource().refresh({
+                        force: true
+                    });
                 }
 
                 return me;
@@ -116,11 +120,11 @@ define(['angular', 'ol', 'map', 'd3'],
 
         .controller('YearSelector', ['$scope', 'OlMap', 'year_selector_service',
             function($scope, OlMap, year_selector_service) {
-              $scope.year = 2013;
-              $scope.yearChanged = function(year){
-                year_selector_service.year = $scope.year;
-                year_selector_service.redraw();
-              }
+                $scope.year = 2013;
+                $scope.yearChanged = function(year) {
+                    year_selector_service.year = $scope.year;
+                    year_selector_service.redraw();
+                }
             }
         ]);
 

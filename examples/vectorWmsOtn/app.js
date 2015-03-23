@@ -71,7 +71,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', '$compile', '$element',  'Core', 'InfoPanelService', 'OlMap', 'default_layers',
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'InfoPanelService', 'OlMap', 'default_layers',
             function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
