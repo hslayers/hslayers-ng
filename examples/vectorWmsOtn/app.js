@@ -57,7 +57,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                     url: 'http://otn.bnhelp.cz/cgi-bin/mapserv?map=/data/www/otn.bnhelp.cz/maps/accidents/accidents_wms.map',
                     params: {
                         LAYERS: 'accidents',
-                        INFO_FORMAT: undefined,
+                        INFO_FORMAT: "application/vnd.ogc.gml",
                         FORMAT: "image/png; mode=8bit"
                     },
                     crossOrigin: null

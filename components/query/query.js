@@ -183,11 +183,19 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     });
                     InfoPanelService.setGroups(groups);
                 }
+                
+                var isLayerQueriable = function(layer){
+                    if(layer instanceof ol.layer.Tile &&
+                        layer.getSource() instanceof ol.source.TileWMS &&
+                        layer.getSource().getParams().INFO_FORMAT) return true;
+                    if(layer instanceof ol.layer.Image &&
+                        layer.getSource() instanceof ol.source.ImageWMS &&
+                        layer.getSource().getParams().INFO_FORMAT) return true;
+                    return false;
+                }
 
                 $scope.queryWmsLayer = function(layer, coordinate) {
-                    if (layer instanceof ol.layer.Tile &&
-                        layer.getSource() instanceof ol.source.TileWMS &&
-                        layer.getSource().getParams().INFO_FORMAT) {
+                    if (isLayerQueriable(layer)) {
                         var source = layer.getSource();
                         var viewResolution = map.getView().getResolution();
                         var url = source.getGetFeatureInfoUrl(
