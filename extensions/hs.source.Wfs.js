@@ -18,9 +18,11 @@ define(function(require) {
 
                 $.ajax({
                         url: url,
-                        beforeSend: options.beforeSend
+                        beforeSend: options.beforeSend,
+                        dataType: 'text'
                     })
                     .done(function(response) {
+                        debugger;
                         src.addFeatures(src.readFeatures(response));
                     });
             },
