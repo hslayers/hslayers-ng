@@ -3,9 +3,10 @@ define(function(require) {
     return function(options) {
         if(typeof options.version == 'undefined') options.version = '1.0.0';
         if(typeof options.hsproxy == 'undefined') options.hsproxy = true;
+        if(typeof options.format == 'undefined') options.format = new ol.format.GeoJSON();
         if(typeof options.beforeSend == 'undefined') options.beforeSend = function (xhr) {};
         var src = new ol.source.ServerVector({
-            format: new ol.format.GeoJSON(),
+            format: options.format,
             loader: function(extent, resolution, projection) {
                 src.clear();
                 var p = options.url + (options.url.indexOf('?') > 0 ? '&' : '?') +
