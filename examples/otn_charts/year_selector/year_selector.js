@@ -98,9 +98,13 @@ define(['angular', 'ol', 'map', 'd3'],
                 };
 
                 me.redraw = function() {
-                    default_layers[2].getSource().refresh({
-                        force: true
-                    });
+                    default_layers[1].getSource().forEachFeature(function(feature){
+                        feature.cashed_style = null;
+                        if (feature.overlay) {
+                            OlMap.map.removeOverlay(feature.overlay);
+                        }
+                        feature.set('r', Math.random());
+                    })
                 }
 
                 return me;

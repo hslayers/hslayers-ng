@@ -91,6 +91,7 @@
         "ol.source.Vector#addFeatures",
         "ol.source.Vector#getFeatures",
         "ol.source.Vector#getFeaturesAtCoordinate",
+        "ol.source.Vector#forEachFeature",
         "ol.source.Vector#clear",
         "ol.source.ServerVector",
         "ol.source.ServerVector#addFeatures",
