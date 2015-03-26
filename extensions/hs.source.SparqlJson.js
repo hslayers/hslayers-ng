@@ -7,7 +7,6 @@ define(function(require) {
         var src = new ol.source.ServerVector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
-                console.log(resolution);
                 //src.clear();
                 var p = options.url;
                 var first_pair = [extent[0], extent[1]]
