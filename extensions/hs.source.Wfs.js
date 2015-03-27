@@ -22,7 +22,7 @@ define(function(require) {
                         dataType: 'text'
                     })
                     .done(function(response) {
-                        debugger;
+                        if(console) console.log(response);
                         src.addFeatures(src.readFeatures(response));
                     });
             },
