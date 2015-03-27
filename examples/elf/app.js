@@ -59,7 +59,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                     typename: 'AD:Address',
                     projection: 'EPSG:3857',
                     version: '2.0.0',
-                    format: new ol.format.GML3(),
+                    format: new ol.format.GML3({srsName:'EPSG:3857'}),
                     hsproxy: true,
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1")); 
