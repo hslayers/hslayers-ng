@@ -5,6 +5,11 @@ define(function(require) {
         if(typeof options.hsproxy == 'undefined') options.hsproxy = true;
         if(typeof options.format == 'undefined') options.format = new ol.format.GeoJSON();
         if(typeof options.beforeSend == 'undefined') options.beforeSend = function (xhr) {};
+        if(typeof options.parser == 'undefined') options.parser = function(response) {
+            if(console) console.log(response);
+            src.addFeatures(src.readFeatures(response));
+        }
+       
         var src = new ol.source.ServerVector({
             format: options.format,
             loader: function(extent, resolution, projection) {
@@ -18,13 +23,9 @@ define(function(require) {
 
                 $.ajax({
                         url: url,
-                        beforeSend: options.beforeSend,
-                        dataType: 'text'
+                        beforeSend: options.beforeSend
                     })
-                    .done(function(response) {
-                        if(console) console.log(response);
-                        src.addFeatures(src.readFeatures(response));
-                    });
+                    .done(function(response) {src.addFeatures(options.parser(response));  });
             },
             projection: options.projection
         });
