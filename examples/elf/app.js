@@ -65,14 +65,13 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                         xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1")); 
                     },
                     parser: function(response) {
-                        if(console) console.log(response);
                         var features = [];
+                        var gm = new ol.format.GML3();
+                        gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml"];
+                        gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];              
                         $("member", response).each(function(){
                             var attrs = {};
                             var geom_node = $("geometry", this).get(0);
-                            var gm = new ol.format.GML3();
-                            gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml"];
-                            gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];                           
                             attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
                             var feature = new ol.Feature(attrs);
                             features.push(feature);
