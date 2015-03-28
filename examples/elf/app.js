@@ -68,10 +68,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                         if(console) console.log(response);
                         var features = [];
                         $("member", response).each(function(){
-                            debugger;
                             var attrs = {};
                             var geom_node = $("geometry", this).get(0);
-                            attrs.geometry = ol.format.GMLBase.prototype.readGeometryElement(geom_node, [{}]);
+                            var gm = new ol.format.GML3();
+                            gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml"];
+                            gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];                           
+                            attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
                             var feature = new ol.Feature(attrs);
                             features.push(feature);
                         });
