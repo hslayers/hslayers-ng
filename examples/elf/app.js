@@ -71,7 +71,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                         gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];
                         $("member", response).each(function() {
                             var attrs = {};
-                            var geom_node = $("geometry", this).get(0);
+                            var geom_node = $("AD\\:geometry", this).get(0);
                             attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
                             var feature = new ol.Feature(attrs);
                             features.push(feature);
