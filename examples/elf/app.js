@@ -70,7 +70,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                         $("member", response).each(function(){
                             debugger;
                             var attrs = {};
-                            var geom_node = $("geometry", this).children()[0];
+                            var geom_node = $("geometry", this).get(0);
                             attrs.geometry = ol.format.GMLBase.prototype.readGeometryElement(geom_node, [{}]);
                             var feature = new ol.Feature(attrs);
                             features.push(feature);
