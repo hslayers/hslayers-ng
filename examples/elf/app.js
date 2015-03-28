@@ -61,15 +61,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                     version: '2.0.0',
                     format: new ol.format.WFS(),
                     hsproxy: true,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1")); 
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1"));
                     },
                     parser: function(response) {
                         var features = [];
                         var gm = new ol.format.GML3();
                         gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml"];
-                        gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];              
-                        $("member", response).each(function(){
+                        gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];
+                        $("member", response).each(function() {
                             var attrs = {};
                             var geom_node = $("geometry", this).get(0);
                             attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
