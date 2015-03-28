@@ -5,7 +5,7 @@ var hsl_path = '../../';
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
-        ol: hsl_path + 'lib/ol3/ol-full',
+        ol: hsl_path + 'lib/ol3/ol-debug',
         toolbar: hsl_path + 'components/toolbar/toolbar',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         map: hsl_path + 'components/map/map',
