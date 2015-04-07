@@ -7,12 +7,7 @@ define(['angular', 'ol', 'map'],
                     templateUrl: hsl_path + 'components/search/partials/searchinput.html',
                     replace: true,
                     link: function(scope, element) {
-                        var w = angular.element($window);
-                        var positionControls = function() {
-                            element[0].style.left = parseInt((w.width() - $(element[0]).width()) / 2) + "px";
-                        }
-                        w.bind('resize', positionControls);
-                        positionControls();
+                       
                     }
                 };
 
@@ -21,12 +16,7 @@ define(['angular', 'ol', 'map'],
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
                     replace: true,
                     link: function(scope, element) {
-                        var w = angular.element($window);
-                        var positionControls = function() {
-                            element[0].style.left = parseInt((w.width() - $(element[0]).width()) / 2) + "px";
-                        }
-                        w.bind('resize', positionControls);
-                        positionControls();
+                       
                     }
                 };
             }]).service("SearchService", ['$http',
@@ -58,11 +48,11 @@ define(['angular', 'ol', 'map'],
                 $scope.zoomTo = function(lat, lng) {
                     map.getView().setCenter(ol.proj.transform([parseFloat(lat), parseFloat(lng)], 'EPSG:4326', 'EPSG:3857'));
                     map.getView().setZoom(10);
-                    $("#searchresults").hide();
+                    $("#searchresults").html('');
                 }
 
                 $scope.clear = function() {
-                    $("#searchresults").hide();
+                    $("#searchresults").html('');
                     $scope.query = '';
                     $scope.clearvisible = false;
                 }

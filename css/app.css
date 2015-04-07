@@ -33,11 +33,17 @@
   width: 100%;
 }
 
+.gui-overlay{
+    z-index: 1000;
+    position: absolute;
+    left: 61px;
+    top: 5px;
+    max-height: 98%;
+    right: 61px;
+}
+
 .panelspace {
-  position: absolute;
-  left: 46px;
-  z-index: 1000;
-  top: 5px;
+ 
   max-height: 98%;
   overflow-y: auto;
   padding: 0;
@@ -117,14 +123,9 @@ hr {
 .search-container {
 }
 .search_address {
-    width: 200px;
-    position: absolute;
-    top: 5px;
 }
 
 #searchresults {
-    position: absolute;
-    left: 50%;
     top: 45px; 
     min-width: 200px;
 }

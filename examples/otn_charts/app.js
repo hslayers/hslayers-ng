@@ -19,7 +19,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullscreenMap(element);
-                    element.append($compile('<div yearselector ng-controller="YearSelector"></div>')(scope));
+                    $("#right-pane", element).append($compile('<div yearselector ng-controller="YearSelector"></div>')(scope));
                 }
             };
         }]);
