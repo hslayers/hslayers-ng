@@ -73,18 +73,10 @@ define(['angular', 'ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSour
                 base: true
             }),
             new ol.layer.Vector({
-                title: "Accidents",
-                source: new WfsSource({
-                    url: 'http://otn.bnhelp.cz/cgi-bin/mapserv?map=/data/www/otn.bnhelp.cz/maps/accidents_west_midlands.map',
-                    typename: 'wm_accidents',
-                    projection: 'EPSG:3857'
-                }),
-                style: style
-            }),
-            new ol.layer.Vector({
                 title: "Points of interest",
+                maxResolution: 155,
                 source: new SparqlJson({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=SELECT+*+FROM+%3Chttp%3A%2F%2Fgis.zcu.cz%2Fpoi.rdf%3E+WHERE+%7B%3Fo+%3Fp+%3Fs%7D%0D%0AORDER+BY+%3Fo&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=SELECT+%3Fo+%3Fp+%3Fs%0D%0AFROM+<http%3A%2F%2Fgis.zcu.cz%2Fpoi.rdf>%0D%0AWHERE+%0D%0A%09%7B%3Fo+<http%3A%2F%2Fwww.w3.org%2F2003%2F01%2Fgeo%2Fwgs84_pos%23lat>+%3Flat.+%3Fo+<http%3A%2F%2Fwww.w3.org%2F2003%2F01%2Fgeo%2Fwgs84_pos%23long>+%3Flon.+%0D%0A%09+<extent>%0D%0A%09%3Fo+%3Fp+%3Fs+%0D%0A%09%7D%0D%0AORDER+BY+%3Fo&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category',
                     projection: 'EPSG:3857'
                 }),
@@ -93,7 +85,7 @@ define(['angular', 'ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSour
         ]);
 
         module.value('crossfilterable_layers', [{
-            layer_ix: 2,
+            layer_ix: 1,
             attributes: ["http://gis.zcu.cz/poi#category_osm"]
         }]);
 

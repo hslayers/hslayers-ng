@@ -55,6 +55,7 @@ define(['angular', 'ol', 'dc', 'map'],
 
                     $scope.createConfiguredCharts = function() {
                         $scope.loading = true;
+                        for (var g in $scope.groupings) $scope.groupings[g].dirty = true;
                         for (var layer_i = 0; layer_i < crossfilterable_layers.length; layer_i++) {
                             if (OlMap.map.getLayers().item(crossfilterable_layers[layer_i].layer_ix).getSource().getFeatures().length == 0) {
                                 setTimeout($scope.createConfiguredCharts, 1000);
@@ -66,10 +67,20 @@ define(['angular', 'ol', 'dc', 'map'],
                             var attributes = crossfilterable_layers[layer_i].attributes;
                             for (var attr_i = 0; attr_i < attributes.length; attr_i++) {
                                 var attr = attributes[attr_i];
-                                $scope.groupings.push({
-                                    name: attr,
-                                    id: layer_i.toString() + attr.hashCode()
-                                });
+                                var found = false;
+                                for (var g in $scope.groupings) {
+                                    if ($scope.groupings[g].id == layer_i.toString() + attr.hashCode) {
+                                        $scope.groupings[g].dirty == false;
+                                        found = true;
+                                    }
+                                }
+                                if (!found) {
+                                    $scope.groupings.push({
+                                        name: attr,
+                                        id: layer_i.toString() + attr.hashCode(),
+                                        dirty: false
+                                    });
+                                }
                             }
                             if (!$scope.$$phase) $scope.$digest();
                             var dims = feature_crossfilter.makeCrossfilterDimensions(lyr.getSource(), attributes);
@@ -82,9 +93,13 @@ define(['angular', 'ol', 'dc', 'map'],
                                     .dimension(dims[attr_i].dimension) // set dimension
                                     .group(dims[attr_i].grouping) // set group
                                 pies.push(chart);
+                                chart.render();
                             }
                         }
-                        dc.renderAll();
+                        for (var i = $scope.groupings.length - 1; i > 0; i--) {
+                            if ($scope.groupings[g].dirty == true)
+                                $scope.groupings.splice(i, 1);
+                        }
                         $scope.loading = false;
                         if (!$scope.$$phase) $scope.$digest();
                     }
