@@ -88,7 +88,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                 var vectors_selected = false;
                 selector.getFeatures().on('add', function(e) {
-                    if (e.element.getKeys().length == 1) e.target.remove(e.element);
+                    //if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
                     if (Core.mainpanel == 'measure') return;
                     var attributes = [];
