@@ -84,21 +84,19 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             new ol.layer.Vector({
                 title: "Parcels",
                 source: new WfsSource({
-                    url: 'https://54.247.162.180/wss/service/CZ-CP/httpauth',
+                    url: 'http://services.cuzk.cz/wfs/inspire-cp-wfs.asp',
                     typename: 'CP:CadastralBoundary',
                     projection: 'EPSG:3857',
                     version: '2.0.0',
                     format: new ol.format.WFS(),
                     hsproxy: true,
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1"));
-                    },
                     parser: function(response) {
                         var features = [];
                         var gm = new ol.format.GML3();
                         gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml"];
                         gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];
-                        gm.SURFACE_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.SURFACE_PARSERS_["http://www.opengis.net/gml"];
+                        gm.CURVE_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.CURVE_PARSERS_["http://www.opengis.net/gml"];
+                        gm.SEGMENTS_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.SEGMENTS_PARSERS_["http://www.opengis.net/gml"];
                         $("member", response).each(function() {
                             var attrs = {};
                             var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);
