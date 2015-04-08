@@ -45,7 +45,7 @@
 }
 
 .panelspace {
- 
+  pointer-events: auto;
   max-height: 98%;
   overflow-y: auto;
   padding: 0;
@@ -123,6 +123,7 @@ hr {
 }
 
 .search-container {
+      pointer-events: auto;
 }
 .search_address {
 }
@@ -164,3 +165,6 @@ display: none;
 div#infopanel.ng-scope .first-col{width:100px; overflow-x: auto;}
 div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
 .dc-chart g.row text {fill: black;}.
+#right-pane{
+  pointer-events: auto;
+}
