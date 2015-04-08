@@ -44,6 +44,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 width: 1
             })
         })
+        
+        var gm = new ol.format.GML3();
+        for(var key in gm){
+            if(key.indexOf("_PARSERS")>0)
+                gm[key]["http://www.opengis.net/gml/3.2"] = gm[key]["http://www.opengis.net/gml"];
+        }
 
         module.value('default_layers', [
             new ol.layer.Tile({
@@ -54,6 +60,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             }),
             new ol.layer.Vector({
                 title: "Buildings",
+                maxResolution: 2.4,
                 source: new WfsSource({
                     url: 'https://54.247.162.180/wss/service/CZ-AD/httpauth',
                     typename: 'AD:Address',
@@ -66,9 +73,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                     },
                     parser: function(response) {
                         var features = [];
-                        var gm = new ol.format.GML3();
-                        gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml"];
-                        gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];
                         $("member", response).each(function() {
                             var attrs = {};
                             var geom_node = $("geometry", this).get(0) || $("AD\\:geometry", this).get(0);
@@ -83,20 +87,16 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             }),
             new ol.layer.Vector({
                 title: "Parcels",
+                maxResolution: 1.2,
                 source: new WfsSource({
                     url: 'http://services.cuzk.cz/wfs/inspire-cp-wfs.asp',
-                    typename: 'CP:CadastralBoundary',
+                    typename: 'CP:CadastralParcel',
                     projection: 'EPSG:3857',
                     version: '2.0.0',
                     format: new ol.format.WFS(),
                     hsproxy: true,
                     parser: function(response) {
-                        var features = [];
-                        var gm = new ol.format.GML3();
-                        gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_PARSERS_["http://www.opengis.net/gml"];
-                        gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.GEOMETRY_FLAT_COORDINATES_PARSERS_["http://www.opengis.net/gml"];
-                        gm.CURVE_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.CURVE_PARSERS_["http://www.opengis.net/gml"];
-                        gm.SEGMENTS_PARSERS_["http://www.opengis.net/gml/3.2"] = gm.SEGMENTS_PARSERS_["http://www.opengis.net/gml"];
+                        var features = [];                      
                         $("member", response).each(function() {
                             var attrs = {};
                             var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);
