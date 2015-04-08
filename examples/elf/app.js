@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'angular-gettext', 'translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'angular-gettext', 'translations', 'drag'],
 
     function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -12,7 +12,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             'hs.search', 'hs.print', 'hs.permalink',
             'hs.geolocation',
             'hs.api',
-            'gettext'
+            'gettext',
+            'hs.drag'
         ]);
 
         module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
@@ -44,15 +45,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 width: 1
             })
         })
-        
+
         var gm = new ol.format.GML3();
-        for(var key in gm){
-            if(key.indexOf("_PARSERS")>0)
+        for (var key in gm) {
+            if (key.indexOf("_PARSERS") > 0)
                 gm[key]["http://www.opengis.net/gml/3.2"] = gm[key]["http://www.opengis.net/gml"];
         }
-        
+
         var feature_parser = function(response) {
-            var features = [];                      
+            var features = [];
             $("member", response).each(function() {
                 var attrs = {};
                 var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);

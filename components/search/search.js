@@ -7,7 +7,7 @@ define(['angular', 'ol', 'map'],
                     templateUrl: hsl_path + 'components/search/partials/searchinput.html',
                     replace: true,
                     link: function(scope, element) {
-                       
+
                     }
                 };
 
@@ -16,7 +16,7 @@ define(['angular', 'ol', 'map'],
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
                     replace: true,
                     link: function(scope, element) {
-                       
+
                     }
                 };
             }]).service("SearchService", ['$http',

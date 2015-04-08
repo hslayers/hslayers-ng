@@ -14,7 +14,7 @@ define(function(require) {
             format: options.format,
             loader: function(extent, resolution, projection) {
                 src.clear();
-                if(console) console.log("resolution", resolution);
+                if (console) console.log("resolution", resolution);
                 var p = options.url + (options.url.indexOf('?') > 0 ? '&' : '?') +
                     'service=WFS&TYPENAME=' + options.typename + '&request=GetFeature&' +
                     'version=' + options.version + '&' +

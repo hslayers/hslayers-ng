@@ -10,16 +10,16 @@
 
 <div class="row gui-overlay">
     <div class="panelspace col-md-4">
-        <div layer-manager ng-controller="LayerManager" ng-show="Core.mainpanel=='layermanager'"></div>
-        <div legend ng-controller="Legend" ng-if="Core.exists('Legend')" ng-show="Core.mainpanel=='legend'"></div>
-        <div ows ng-controller="Ows" ng-if="Core.exists('Ows')" ng-show="Core.mainpanel=='ows'"></div>
-        <div datasource-selector ng-controller="DatasourceSelector" ng-if="Core.exists('DatasourceSelector')" ng-show="Core.mainpanel=='datasource_selector'"></div>
-        <div lod-explorer ng-controller="LodExplorer" ng-if="Core.exists('LodExplorer')" ng-show="Core.mainpanel=='lodexplorer'"></div>
-        <div feature-crossfilter ng-controller="FeatureCrossfilter"  ng-if="Core.exists('FeatureCrossfilter')" ng-show="Core.mainpanel=='feature_crossfilter'"></div>
-        <div measure ng-controller="Measure"  ng-if="Core.exists('Measure')" ng-show="Core.mainpanel=='measure'"></div>
-        <div printdialog ng-controller="Print"  ng-if="Core.exists('Print')" ng-show="Core.mainpanel=='print'"></div>
-        <div permalinkdialog ng-controller="Permalink"></div>
-        <div id="infopanel" infopanel ng-controller="Query"  ng-if="Core.exists('Query')" ng-show="Core.mainpanel=='info'"></div>
+        <div layer-manager draggable ng-controller="LayerManager" ng-show="Core.panelVisible('layermanager', this)"></div>
+        <div legend draggable ng-controller="Legend" ng-if="Core.exists('Legend')" ng-show="Core.panelVisible('legend', this)"></div>
+        <div ows draggable ng-controller="Ows" ng-if="Core.exists('Ows')" ng-show="Core.panelVisible('ows', this)"></div>
+        <div datasource-selector draggable ng-controller="DatasourceSelector" ng-if="Core.exists('DatasourceSelector')" ng-show="Core.panelVisible('datasource_selector', this)"></div>
+        <div lod-explorer draggable ng-controller="LodExplorer" ng-if="Core.exists('LodExplorer')" ng-show="Core.panelVisible('lodexplorer', this)"></div>
+        <div feature-crossfilter draggable ng-controller="FeatureCrossfilter"  ng-if="Core.exists('FeatureCrossfilter')" ng-show="Core.panelVisible('feature_crossfilter', this)"></div>
+        <div measure draggable ng-controller="Measure"  ng-if="Core.exists('Measure')" ng-show="Core.panelVisible('measure', this)"></div>
+        <div printdialog draggable ng-controller="Print"  ng-if="Core.exists('Print')" ng-show="Core.panelVisible('print', this)"></div>
+        <div permalinkdialog draggable ng-controller="Permalink"></div>
+        <div id="infopanel" infopanel draggable ng-controller="Query"  ng-if="Core.exists('Query')" ng-show="Core.panelVisible('info', this)"></div>
     </div>
     <div class="search-container col-md-3" ng-controller="Search">
         <div searchinput></div>

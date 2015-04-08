@@ -13,10 +13,26 @@ define(['angular'],
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed'); //Not used now, but could be useful
                         },
+                        panelVisible: function(which, scope) {
+                            if(typeof scope.panel_name == 'undefined') scope.panel_name = which;
+                            return me.mainpanel == which || scope.unpinned;
+                        },
                         hidePanels: function() {
                             me.mainpanel = '';
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed'); //Not used now, but could be useful
+                        },
+                        closePanel: function(which) {
+                            if (which.unpinned) {
+                                which.drag_panel.appendTo($(which.original_container));
+                                which.drag_panel.css({
+                                    top: 'auto',
+                                    left: 'auto',
+                                    position: 'relative'
+                                });
+                            }
+                            which.unpinned = false;
+                            if(which.panel_name == me.mainpanel) me.mainpanel = '';
                         },
                         exists: function(controllerName) {
                             if (typeof window[controllerName] == 'function') {

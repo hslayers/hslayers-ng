@@ -168,3 +168,20 @@ div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
 #right-pane{
   pointer-events: auto;
 }
+.unpin {
+  float: right;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2;
+}
+.unpin:hover{color:#000;text-decoration:none;cursor:pointer;filter:alpha(opacity=50);opacity:.5}
+button.unpin {
+  -webkit-appearance: none;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+}
