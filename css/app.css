@@ -40,6 +40,8 @@
     top: 5px;
     max-height: 98%;
     right: 61px;
+    pointer-events: none;
+    background: none !important;
 }
 
 .panelspace {
