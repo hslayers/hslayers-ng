@@ -50,6 +50,18 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             if(key.indexOf("_PARSERS")>0)
                 gm[key]["http://www.opengis.net/gml/3.2"] = gm[key]["http://www.opengis.net/gml"];
         }
+        
+        var feature_parser = function(response) {
+            var features = [];                      
+            $("member", response).each(function() {
+                var attrs = {};
+                var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);
+                attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
+                var feature = new ol.Feature(attrs);
+                features.push(feature);
+            });
+            return features;
+        }
 
         module.value('default_layers', [
             new ol.layer.Tile({
@@ -57,6 +69,20 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 title: "Base layer",
                 box_id: 'osm',
                 base: true
+            }),
+            new ol.layer.Vector({
+                title: "Parcels",
+                maxResolution: 1.2,
+                source: new WfsSource({
+                    url: 'http://services.cuzk.cz/wfs/inspire-cp-wfs.asp',
+                    typename: 'CP:CadastralParcel',
+                    projection: 'EPSG:3857',
+                    version: '2.0.0',
+                    format: new ol.format.WFS(),
+                    hsproxy: true,
+                    parser: feature_parser
+                }),
+                style: style
             }),
             new ol.layer.Vector({
                 title: "Buildings",
@@ -71,41 +97,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                     beforeSend: function(xhr) {
                         xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1"));
                     },
-                    parser: function(response) {
-                        var features = [];
-                        $("member", response).each(function() {
-                            var attrs = {};
-                            var geom_node = $("geometry", this).get(0) || $("AD\\:geometry", this).get(0);
-                            attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
-                            var feature = new ol.Feature(attrs);
-                            features.push(feature);
-                        });
-                        return features;
-                    }
-                }),
-                style: style
-            }),
-            new ol.layer.Vector({
-                title: "Parcels",
-                maxResolution: 1.2,
-                source: new WfsSource({
-                    url: 'http://services.cuzk.cz/wfs/inspire-cp-wfs.asp',
-                    typename: 'CP:CadastralParcel',
-                    projection: 'EPSG:3857',
-                    version: '2.0.0',
-                    format: new ol.format.WFS(),
-                    hsproxy: true,
-                    parser: function(response) {
-                        var features = [];                      
-                        $("member", response).each(function() {
-                            var attrs = {};
-                            var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);
-                            attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
-                            var feature = new ol.Feature(attrs);
-                            features.push(feature);
-                        });
-                        return features;
-                    }
+                    parser: feature_parser
                 }),
                 style: style
             })
