@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/example_list.css">
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+</head>
+
+<script type="text/javascript">
+
+  $( document ).ready(function() 
+  {
+    var links = {"armenia":"Description",
+                "datasources":"Description",
+                "elf":"Description", 
+                "eurostat":"Description",
+                "full":"Description",
+                "otn_charts":"Description",
+                "vectorSparql":"Description", 
+                "vectorWms":"Description",
+                "vectorWmsOtn":"This example shows traffic accidents", 
+                "wfs_crossfilter":"Description"
+              };
+
+    var exampleCount = Object.keys(links).length;
+    $( ".container h2").append("("+exampleCount+")");
+
+    for (var key in links)
+    {
+      $( "#examples" ).append('<div class="example">'+
+             '<a class="mainlink" href="'+key+'">'+
+                '<strong>'+key.charAt(0).toUpperCase() + key.substring(1)+'</strong><br>'+
+                '<small>('+key.toLowerCase()+'/index.html)</small>'+
+              '</a>'+
+              '<p></p><div>'+links[key]+'</div><p></p>'+ 
+          '</div>');
+    };
+  });
+
+</script>
+
+<body>
+
+  <div class="container">
+    <h2>HSLayers-NG examples</h2>
+  </div>
+
+	<div class="container-fluid">
+      <div id="examples"><div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
