@@ -1,7 +1,7 @@
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
-        ol: hsl_path + 'lib/ol3/ol-debug',
+        ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'lib/ol3/ol',
         drag: hsl_path + 'components/drag/drag',
         map: hsl_path + 'components/map/map',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
