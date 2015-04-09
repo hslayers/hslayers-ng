@@ -1,17 +1,15 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation', 'core', 'api', 'angular-gettext', 'translations'],
+define(['ol', 'toolbar', 'layermanager', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation', 'api'],
 
-    function(angular, ol, toolbar, layermanager) {
+    function(ol, toolbar, layermanager) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
-            'hs.map',
             'hs.ows',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
-            'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.core', 'hs.api',
-            'gettext'
+            'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.api'
         ]);
 
         module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
@@ -57,10 +55,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                 title: "Base layer",
                 box_id: 'osm',
                 base: true
-            })
-
-            ,
-
+            }),
             new ol.layer.Tile({
                 title: "Swiss",
                 source: new ol.source.TileWMS({
@@ -80,9 +75,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             zoom: 4,
             units: "m"
         }));
-
-
-
 
         module.controller('Main', ['$scope', 'Core', 'OwsWmsLayerProducer', 'InfoPanelService',
             function($scope, Core, OwsWmsLayerProducer, InfoPanelService) {

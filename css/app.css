@@ -38,7 +38,7 @@
     position: absolute;
     left: 61px;
     top: 5px;
-    max-height: 98%;
+    height: 98%;
     right: 61px;
     pointer-events: none;
     background: none !important;

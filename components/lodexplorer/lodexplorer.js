@@ -1,7 +1,7 @@
-define(['angular', 'ol', 'dc', 'map', 'query', 'core', 'drag'],
+define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
-    function(angular, ol, dc) {
-        var module = angular.module('hs.lodexplorer', ['drag', 'hs.map', 'hs.query', 'hs.core'])
+    function(ol, dc) {
+        var module = angular.module('hs.lodexplorer', ['hs.drag', 'hs.map', 'hs.query', 'hs.core'])
             .directive('lodExplorer', function() {
                 return {
                     templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html',
