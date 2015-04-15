@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'SparqlJson','query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend'],
+define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend'],
 
     function(ol, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
@@ -24,24 +24,33 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson','query', 'search', 'print'
         module.value('box_layers', []);
 
         var style = function(feature, resolution) {
+            var s = feature.get('http://gis.zcu.cz/poi#category_osm');
+            s = s.split(".")[1];
             return [new ol.style.Style({
-                image: new ol.style.Circle({
-                    fill: new ol.style.Fill({
-                        color: feature.color ? feature.color : [242, 121, 0, 0.7]
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: [0x33, 0x33, 0x33, 0.9]
-                    }),
-                    radius: 5
+                    image: new ol.style.Circle({
+                            fill: new ol.style.Fill({
+                                color: feature.color ? feature.color : [242, 121, 0, 0.7]
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: [0x33, 0x33, 0x33, 0.9]
+                            }),
+                            radius: 3
+                        }),
+                        fill: new ol.style.Fill({
+                            color: "rgba(139, 189, 214, 0.3)",
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: "rgba(139, 189, 214, 0.7)",
+                        })
                 }),
-                fill: new ol.style.Fill({
-                    color: "rgba(139, 189, 214, 0.3)",
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#112211',
-                    width: 1
+                new ol.style.Style({
+                    image: new ol.style.Icon({
+                        src: 'symbols/' + s + '.svg',
+                        crossOrigin: 'anonymous'
+                    })
                 })
-            })]
+                
+            ]
         }
 
         module.value('default_layers', [
