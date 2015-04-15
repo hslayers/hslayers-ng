@@ -49,4 +49,3 @@ require(['core'], function(app) {
         });
     });
 });
-

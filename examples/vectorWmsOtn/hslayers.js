@@ -38,5 +38,3 @@ require(['core'], function(app) {
         });
     });
 });
-
-

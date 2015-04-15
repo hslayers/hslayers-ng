@@ -27,7 +27,7 @@ require.config({
         core: hsl_path + 'components/core/core',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations'
-   },
+    },
     shim: {
         d3: {
             exports: 'd3'
@@ -48,4 +48,3 @@ require(['core'], function(app) {
         });
     });
 });
-

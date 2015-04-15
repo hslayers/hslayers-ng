@@ -51,4 +51,3 @@ require(['core'], function(app) {
         });
     });
 });
-

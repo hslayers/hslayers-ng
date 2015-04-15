@@ -48,4 +48,3 @@ require(['core'], function(app) {
         });
     });
 });
-

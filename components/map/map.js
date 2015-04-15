@@ -35,6 +35,17 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 OlMap.map.setTarget(div_id);
             }
 
+            $scope.findLayerByTitle = function(title) {
+                var layers = map.getlayers();
+                for (var lyr_x in layers) {
+                    if (layers[lyr_x].get('title') == title) return layers[lyr_x];
+                }
+            }
+
+            $scope.showFeaturesWithAttrHideRest = function(source, attribute, value, attr_to_change, invisible_value, visible_value) {
+
+            }
+
             for (var lyr in default_layers) {
                 OlMap.map.addLayer(default_layers[lyr]);
             }
