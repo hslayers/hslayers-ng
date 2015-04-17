@@ -28,20 +28,20 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print
             s = s.split(".")[1];
             return [new ol.style.Style({
                     image: new ol.style.Circle({
-                            fill: new ol.style.Fill({
-                                color: feature.color ? feature.color : [242, 121, 0, 0.7]
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: [0x33, 0x33, 0x33, 0.9]
-                            }),
-                            radius: 3
-                        }),
                         fill: new ol.style.Fill({
-                            color: "rgba(139, 189, 214, 0.3)",
+                            color: feature.color ? feature.color : [242, 121, 0, 0.7]
                         }),
                         stroke: new ol.style.Stroke({
-                            color: "rgba(139, 189, 214, 0.7)",
-                        })
+                            color: [0x33, 0x33, 0x33, 0.9]
+                        }),
+                        radius: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: "rgba(139, 189, 214, 0.3)",
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: "rgba(139, 189, 214, 0.7)",
+                    })
                 }),
                 new ol.style.Style({
                     image: new ol.style.Icon({
@@ -49,7 +49,7 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print
                         crossOrigin: 'anonymous'
                     })
                 })
-                
+
             ]
         }
 

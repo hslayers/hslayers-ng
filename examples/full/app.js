@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -13,7 +13,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.core',
             'hs.datasource_selector',
             'hs.api',
-            'gettext'
+            'gettext',
+            'hs.compositions'
         ]);
 
         module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
@@ -57,10 +58,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                 title: "Base layer",
                 box_id: 'osm',
                 base: true
-            })
-
-            ,
-
+            }),
             new ol.layer.Tile({
                 title: "Swiss",
                 source: new ol.source.TileWMS({
@@ -82,15 +80,13 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
         }));
 
 
-
-
-        module.controller('Main', ['$scope', 'Core', 'OwsWmsLayerProducer', 'InfoPanelService',
-            function($scope, Core, OwsWmsLayerProducer, InfoPanelService) {
+        module.controller('Main', ['$scope', 'Core', 'OwsWmsLayerProducer', 'InfoPanelService', 'composition_parser',
+            function($scope, Core, OwsWmsLayerProducer, InfoPanelService, composition_parser) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
-
+                composition_parser.load('http://dev.bnhelp.cz/statusmanager/index.php?request=load&permalink=eu_occupational_strucuture_2001');
                 $scope.$on('infopanel.updated', function(event) {
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
                 });

@@ -5,7 +5,8 @@ require.config({
         drag: hsl_path + 'components/drag/drag',
         map: hsl_path + 'components/map/map',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
-        'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext'
+        'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
+        compositions: hsl_path + 'components/compositions/compositions',
     },
     shim: {
         'angular': {
