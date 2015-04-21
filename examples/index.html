@@ -20,7 +20,8 @@
                 "geosparql":"Integration with Virtuoso SPARQL endpoint which contains points of interest linked open data in europe.", 
                 "wfs":"WFS 1.0 service demo",
                 "vectorWmsOtn":"Traffic accidents, clustered point data", 
-                "wfs_crossfilter":"Demonstration of dynamic feature filtering using Crossfilter and D3 libraries"
+                "wfs_crossfilter":"Demonstration of dynamic feature filtering using Crossfilter and D3 libraries",
+                "compositions":"Thematic maps and loading of map compositions"
               };
 
     var exampleCount = Object.keys(links).length;
@@ -31,7 +32,7 @@
       $( "#examples" ).append('<div class="example">'+
              '<a class="mainlink" href="'+key+'">'+
                 '<strong>'+key.charAt(0).toUpperCase() + key.substring(1)+'</strong><br>'+
-                '<small>('+key.toLowerCase()+'/index.html)</small>'+
+                '<small>('+key.toLowerCase()+'/)</small>'+
               '</a>'+
               '<p></p><div>'+links[key]+'</div><p></p>'+ 
           '</div>');

@@ -34,10 +34,10 @@ define(['angular', 'ol', 'map'],
                                     var layer_class = lyr_def.singleTile ? ol.layer.Image : ol.layer.Tile;
                                     var new_layer = new layer_class({
                                         title: lyr_def.title,
-                                        //maxResolution: lyr_def.maxResolution,
-                                        //minResolution: lyr_def.minResolution,
-                                        //minScale: lyr_def.minScale,
-                                        //maxScale: lyr_def.maxScale,
+                                        maxResolution: lyr_def.maxResolution,
+                                        minResolution: lyr_def.minResolution,
+                                        minScale: lyr_def.minScale,
+                                        maxScale: lyr_def.maxScale,
                                         show_in_manager: lyr_def.displayInLayerSwitcher,
                                         abstract: lyr_def.name,
                                         metadata: lyr_def.metadata,
@@ -50,7 +50,8 @@ define(['angular', 'ol', 'map'],
                                             params: lyr_def.params,
                                             crossOrigin: 'anonymous',
                                             projection: lyr_def.projection,
-                                            ratio: lyr_def.ratio
+                                            ratio: lyr_def.ratio,
+                                            crossOrigin: null
                                         })
                                     });
                                     layers.push(new_layer);
