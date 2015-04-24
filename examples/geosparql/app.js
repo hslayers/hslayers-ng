@@ -94,6 +94,13 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print
                     url: 'zemgale.geojson'
                 }),
                 style: route_style
+            }),
+            new ol.layer.Vector({
+                title: "Tour de LatEst",
+                source: new ol.source.GeoJSON({
+                    url: 'teourdelatest.geojson'
+                }),
+                style: route_style
             })
         ]);
 
