@@ -14,6 +14,7 @@
         <div legend draggable ng-controller="Legend" ng-if="Core.exists('Legend')" ng-show="Core.panelVisible('legend', this)"></div>
         <div ows draggable ng-controller="Ows" ng-if="Core.exists('Ows')" ng-show="Core.panelVisible('ows', this)"></div>
         <div datasource-selector draggable ng-controller="DatasourceSelector" ng-if="Core.exists('DatasourceSelector')" ng-show="Core.panelVisible('datasource_selector', this)"></div>
+        <div composition-browser draggable ng-controller="Compositions" ng-if="Core.exists('Compositions')" ng-show="Core.panelVisible('composition_browser', this)"></div>
         <div lod-explorer draggable ng-controller="LodExplorer" ng-if="Core.exists('LodExplorer')" ng-show="Core.panelVisible('lodexplorer', this)"></div>
         <div feature-crossfilter draggable ng-controller="FeatureCrossfilter"  ng-if="Core.exists('FeatureCrossfilter')" ng-show="Core.panelVisible('feature_crossfilter', this)"></div>
         <div measure draggable ng-controller="Measure"  ng-if="Core.exists('Measure')" ng-show="Core.panelVisible('measure', this)"></div>

@@ -10,6 +10,10 @@
         <span class="glyphicon glyphicon-cloud-download"></span>
     </button>
 
+    <button type="button" class="btn btn-default" title="Compositions"  ng-if="Core.exists('Compositions')" ng-click="setMainPanel('composition_browser', true)">
+        <span class="glyphicon glyphicon-cloud-download"></span>
+    </button>
+
     <button type="button" class="btn btn-default" title="Catalogue"  ng-if="Core.exists('Ows')" ng-click="setMainPanel('ows', true)">
         <span class="glyphicon glyphicon-cloud-download"></span>
     </button>

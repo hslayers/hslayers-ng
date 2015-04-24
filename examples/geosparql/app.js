@@ -25,6 +25,7 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print
 
         var style = function(feature, resolution) {
             var s = feature.get('http://gis.zcu.cz/poi#category_osm');
+            if(typeof s === 'undefined') return;
             s = s.split(".")[1];
             return [new ol.style.Style({
                     image: new ol.style.Circle({
@@ -52,6 +53,16 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print
 
             ]
         }
+        
+        var route_style =  function(feature, resolution) {
+            return [new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: "rgba(242, 78, 60, 0.9)",
+                        width: 2
+                    })
+                })
+            ]
+        }
 
         module.value('default_layers', [
             new ol.layer.Tile({
@@ -69,6 +80,20 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print
                     projection: 'EPSG:3857'
                 }),
                 style: style
+            }),
+            new ol.layer.Vector({
+                title: "Cycling routes Plzen",
+                source: new ol.source.GeoJSON({
+                    url: 'plzensky_kraj.geojson'
+                }),
+                style: route_style
+            }),
+            new ol.layer.Vector({
+                title: "Cycling routes Zemgale",
+                source: new ol.source.GeoJSON({
+                    url: 'zemgale.geojson'
+                }),
+                style: route_style
             })
         ]);
 
