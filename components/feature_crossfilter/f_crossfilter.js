@@ -1,3 +1,15 @@
+/*
+ * Module is used to filter certain features on vector layers based on attribute values.
+ * It also draws nice charts with bars proportionaly to usage of each value of a particular attribute.
+ * 
+ * must provide layers to be fillterable in app.js parametrs:         
+ *      module.value('crossfilterable_layers', [{
+            layer_ix: 1,
+            attributes: ["http://gis.zcu.cz/poi#category_osm"]
+        }]);
+ * 
+ * 
+ */
 define(['angular', 'ol', 'dc', 'map'],
 
     function(angular, ol, dc) {
@@ -53,6 +65,8 @@ define(['angular', 'ol', 'dc', 'map'],
                     $scope.loading = false;
                     $scope.groupings = [];
 
+
+
                     $scope.createConfiguredCharts = function() {
                         $scope.loading = true;
                         for (var g in $scope.groupings) $scope.groupings[g].dirty = true;
@@ -84,16 +98,33 @@ define(['angular', 'ol', 'dc', 'map'],
                             }
                             if (!$scope.$$phase) $scope.$digest();
                             var dims = feature_crossfilter.makeCrossfilterDimensions(lyr.getSource(), attributes);
+                            var filterFeatures = function(chart, filter) {
+                                var data_items = chart.dimension().top(Infinity);
+                                lyr.getSource().forEachFeature(function(feature) {
+                                    feature.set('visible', false);
+                                });
+                                for (var i = 0; i < data_items.length; i++) {
+                                    data_items[i].set('visible', true);
+                                }
+                            }
                             for (var attr_i = 0; attr_i < attributes.length; attr_i++) {
                                 var attr = attributes[attr_i];
                                 var pies = [];
-                                var chart = dc.rowChart('#fc_chart' + layer_i + attr.hashCode());
-                                chart.width($(".panelspace").width() - 35)
-                                    .height(dims[attr_i].grouping.size() * 23 + 40).labelOffsetY(12)
-                                    .dimension(dims[attr_i].dimension) // set dimension
-                                    .group(dims[attr_i].grouping) // set group
-                                pies.push(chart);
-                                chart.render();
+                                var createChart = function(id, attr_i) {
+                                    if ($(id).length > 0) {
+                                        var chart = dc.rowChart(id);
+                                        chart.width($(".panelspace").width() - 35)
+                                            .height(dims[attr_i].grouping.size() * 23 + 40).labelOffsetY(12)
+                                            .dimension(dims[attr_i].dimension) // set dimension
+                                            .group(dims[attr_i].grouping) // set group
+                                            .on("filtered", filterFeatures);
+                                        pies.push(chart);
+                                        chart.render();
+                                    } else {
+                                        setTimeout(createChart, 1000, id, attr_i);
+                                    }
+                                }
+                                createChart('#fc_chart' + layer_i + attr.hashCode(), attr_i);
                             }
                         }
                         for (var i = $scope.groupings.length - 1; i > 0; i--) {

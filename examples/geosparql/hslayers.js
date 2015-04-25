@@ -23,7 +23,19 @@ require.config({
         core: hsl_path + 'components/core/core',
         SparqlJson: hsl_path + 'extensions/hs.source.SparqlJson',
         api: hsl_path + 'components/api/api',
-        translations: hsl_path + 'components/translations/js/translations'
+        translations: hsl_path + 'components/translations/js/translations',
+        d3: hsl_path + 'lib/d3.v3.min',
+        crossfilter: hsl_path + 'lib/crossfilter.v1.min',
+        dc: 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc',
+        'feature-crossfilter': hsl_path + 'components/feature_crossfilter/f_crossfilter'
+    },
+    shim: {
+        d3: {
+            exports: 'd3'
+        },
+        dc: {
+            deps: ['d3', 'crossfilter']
+        }
     }
 });
 

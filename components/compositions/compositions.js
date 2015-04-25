@@ -15,14 +15,14 @@ define(['angular', 'ol', 'map'],
                     load: function(url) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
                         $.ajax({
-                            url: url
-                        })
-                        .done(function(response) {
-                           var layers = me.getLayerDefinitions(response); 
-                           for (var i = 0; i < layers.length; i++) {
-                            OlMap.map.addLayer(layers[i]);
-                           }
-                        })
+                                url: url
+                            })
+                            .done(function(response) {
+                                var layers = me.getLayerDefinitions(response);
+                                for (var i = 0; i < layers.length; i++) {
+                                    OlMap.map.addLayer(layers[i]);
+                                }
+                            })
                     },
                     getLayerDefinitions: function(j) {
                         var layers = [];

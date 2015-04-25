@@ -1,15 +1,16 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'feature-crossfilter', 'legend'],
 
-    function(ol, toolbar, layermanager, SparqlJson) {
+    function(ol, dc, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
             'hs.geolocation',
-            'hs.legend'
+            'hs.legend',
+            'hs.feature_crossfilter'
         ]);
 
         module.directive('hs', ['Core', function(Core) {
@@ -24,44 +25,47 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print
         module.value('box_layers', []);
 
         var style = function(feature, resolution) {
-            var s = feature.get('http://gis.zcu.cz/poi#category_osm');
-            if(typeof s === 'undefined') return;
-            s = s.split(".")[1];
-            return [new ol.style.Style({
-                    image: new ol.style.Circle({
+            if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
+                var s = feature.get('http://gis.zcu.cz/poi#category_osm');
+                if (typeof s === 'undefined') return;
+                s = s.split(".")[1];
+                return [new ol.style.Style({
+                        image: new ol.style.Circle({
+                            fill: new ol.style.Fill({
+                                color: feature.color ? feature.color : [242, 121, 0, 0.7]
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: [0x33, 0x33, 0x33, 0.9]
+                            }),
+                            radius: 3
+                        }),
                         fill: new ol.style.Fill({
-                            color: feature.color ? feature.color : [242, 121, 0, 0.7]
+                            color: "rgba(139, 189, 214, 0.3)",
                         }),
                         stroke: new ol.style.Stroke({
-                            color: [0x33, 0x33, 0x33, 0.9]
-                        }),
-                        radius: 3
+                            color: "rgba(139, 189, 214, 0.7)",
+                        })
                     }),
-                    fill: new ol.style.Fill({
-                        color: "rgba(139, 189, 214, 0.3)",
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: "rgba(139, 189, 214, 0.7)",
+                    new ol.style.Style({
+                        image: new ol.style.Icon({
+                            src: 'symbols/' + s + '.svg',
+                            crossOrigin: 'anonymous'
+                        })
                     })
-                }),
-                new ol.style.Style({
-                    image: new ol.style.Icon({
-                        src: 'symbols/' + s + '.svg',
-                        crossOrigin: 'anonymous'
-                    })
-                })
 
-            ]
+                ]
+            } else {
+                return [];
+            }
         }
-        
-        var route_style =  function(feature, resolution) {
+
+        var route_style = function(feature, resolution) {
             return [new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: "rgba(242, 78, 60, 0.9)",
-                        width: 2
-                    })
+                stroke: new ol.style.Stroke({
+                    color: "rgba(242, 78, 60, 0.9)",
+                    width: 2
                 })
-            ]
+            })]
         }
 
         module.value('default_layers', [
@@ -104,14 +108,20 @@ define(['ol', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print
             })
         ]);
 
+        module.value('crossfilterable_layers', [{
+            layer_ix: 1,
+            attributes: ["http://gis.zcu.cz/poi#category_osm"]
+        }]);
+
+
         module.value('default_view', new ol.View({
             center: [1761463.994365168, 6483806.731580181], //Latitude longitude    to Spherical Mercator
             zoom: 14,
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService',
-            function($scope, Core, InfoPanelService) {
+        module.controller('Main', ['$scope', 'Core', 'InfoPanelService', 'feature_crossfilter',
+            function($scope, Core, InfoPanelService, feature_crossfilter) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
