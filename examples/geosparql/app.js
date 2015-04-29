@@ -105,6 +105,18 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     url: 'teourdelatest.geojson'
                 }),
                 style: route_style
+            }),
+            new ol.layer.Image({
+                title: "Forest roads",
+                source: new ol.source.ImageWMS({
+                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/ovnis/sdi4aps_forest_roads.map',
+                    params: {
+                        LAYERS: 'forest_roads,haul_roads',
+                        INFO_FORMAT: "application/vnd.ogc.gml",
+                        FORMAT: "image/png; mode=8bit"
+                    },
+                    crossOrigin: null
+                })
             })
         ]);
 
