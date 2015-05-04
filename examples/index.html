@@ -11,17 +11,17 @@
 
   $( document ).ready(function() 
   {
-    var links = {"wms":"WMS layer demo",
-                "datasources":"Datatank integration and GetCapabilities request demo.",
-                "elf":"WFS 2.0 layers with Czech cadaster.", 
-                "eurostat":"Eurostat data visualization for NUTS2 regions.",
-                "full":"Multiple hslayers features combined in one example",
-                "otn_charts":"D3 chart overlay interactively demonstrating traffic accident statistics",
-                "geosparql":"Integration with Virtuoso SPARQL endpoint which contains points of interest linked open data in europe.", 
-                "wfs":"WFS 1.0 service demo",
-                "vectorWmsOtn":"Traffic accidents, clustered point data", 
-                "wfs_crossfilter":"Demonstration of dynamic feature filtering using Crossfilter and D3 libraries",
-                "compositions":"Thematic maps and loading of map compositions"
+    var links = {"wms":{name:"WMS layer demo", description: "WMS layer demo"},
+                "datasources":{name:"Data sources", description: "Datatank integration and GetCapabilities request demo."},
+                "elf":{name:"Cadaster", description: "WFS 2.0 layers with Czech cadaster."}, 
+                "eurostat":{name:"Eurostat", description: "Eurostat data visualization for NUTS2 regions."},
+                "full":{name:"Full functionality", description: "Multiple hslayers features combined in one example"},
+                "otn_charts":{name:"Traffic visualization using D3", description: "D3 chart overlay interactively demonstrating traffic accident statistics"},
+                "geosparql":{name:"Smart Tourist Data", description: "Integration with Virtuoso SPARQL endpoint which contains points of interest linked open data in europe + Panoramio images and Czech forest roads"}, 
+                "wfs":{name:"Traffic accidents using WFS", description: "WFS 1.0 service demo"},
+                "vectorWmsOtn":{name:"Traffic visualization using WMS", description: "Traffic accidents, clustered point data"}, 
+                "wfs_crossfilter":{name:"Feature crossfiltering", description: "Demonstration of dynamic feature filtering using Crossfilter and D3 libraries"},
+                "compositions":{name:"Thematic maps", description: "Thematic maps and loading of map compositions"}
               };
 
     var exampleCount = Object.keys(links).length;
@@ -31,10 +31,10 @@
     {
       $( "#examples" ).append('<div class="example">'+
              '<a class="mainlink" href="'+key+'">'+
-                '<strong>'+key.charAt(0).toUpperCase() + key.substring(1)+'</strong><br>'+
+                '<strong>'+links[key].name.charAt(0).toUpperCase() + links[key].name.substring(1)+'</strong><br>'+
                 '<small>('+key.toLowerCase()+'/)</small>'+
               '</a>'+
-              '<p></p><div>'+links[key]+'</div><p></p>'+ 
+              '<p></p><div>'+links[key].description+'</div><p></p>'+ 
           '</div>');
     };
   });
