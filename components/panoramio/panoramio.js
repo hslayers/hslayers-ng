@@ -82,6 +82,7 @@ define(['angular', 'ol', 'app', 'map'],
 
                     OlMap.map.getView().on('change:center', changed);
                     OlMap.map.getView().on('change:resolution', changed);
+                    changed();
 
 
                     this.featuresReceived = function(panoramio) {
