@@ -72,8 +72,27 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             }
 
             $scope.zoomToLayer = function(layer) {
-                var extent = ol.proj.transform(layer.get("BoundingBox")[0].extent, layer.get("BoundingBox")[0].crs, map.getView().getProjection());
-                map.getView().fitExtent(extent, map.getSize());
+                var extent = null;
+                debugger;
+                if(layer.get("BoundingBox")){
+                    b = layer.get("BoundingBox")[0].extent;
+                    var first_pair = [b[0], b[1]]
+                    var second_pair = [b[2], b[3]];
+                    first_pair = ol.proj.transform(first_pair, layer.get("BoundingBox")[0].crs, map.getView().getProjection());
+                    second_pair = ol.proj.transform(second_pair, layer.get("BoundingBox")[0].crs, map.getView().getProjection());
+                    var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                } else {
+                    extent = layer.getSource().getExtent();
+                }
+                if(extent!=null)
+                    map.getView().fitExtent(extent, map.getSize());
+            }
+            
+            $scope.layerIsZoomable = function(layer){
+                if(typeof layer == 'undefined') return false;
+                if(layer.get("BoundingBox")) return true;
+                if(layer.getSource().getExtent && layer.getSource().getExtent()) return true;
+                return false;
             }
 
             $scope.activateTheme = function(theme) {

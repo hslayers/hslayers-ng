@@ -108,6 +108,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             }),
             new ol.layer.Image({
                 title: "Forest roads",
+                BoundingBox: [{crs: "EPSG:3857", extent: [1405266, 6146786, 2073392, 6682239]}],
                 source: new ol.source.ImageWMS({
                     url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/ovnis/sdi4aps_forest_roads.map',
                     params: {

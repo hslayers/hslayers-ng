@@ -68,7 +68,7 @@
             </p>
         </div>
         <!-- Footer -->
-        <button class="btn btn-default" ng-click="zoomToLayer(currentlayer.layer)" translate>Zoom to</button>
+        <button class="btn btn-default" ng-click="zoomToLayer(currentlayer.layer)" ng-show="layerIsZoomable(currentlayer.layer)" translate>Zoom to</button>
         <button class="btn btn-danger" ng-click="removeLayer(currentlayer.layer)" translate>Remove layer</button>
         </form>
     </div>
