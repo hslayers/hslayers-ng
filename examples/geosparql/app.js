@@ -22,7 +22,20 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             };
         }]);
 
-        module.value('box_layers', []);
+        module.value('box_layers', [{
+                id: 'base',
+                'img': 'osm.png',
+                title: 'Base layer'
+            }, {
+                id: 'tourismus',
+                'img': 'bicycle-128.png',
+                title: 'Tourist info'
+            }, {
+                id: 'weather',
+                'img': 'partly_cloudy.png',
+                title: 'Weather'
+            }
+        ]);
 
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
@@ -71,12 +84,22 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
         module.value('default_layers', [
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
-                title: "Base layer",
-                box_id: 'osm',
-                base: true
+                title: "OpenStreetMap",
+                box_id: 'base',
+                base: true,
+                visible: false
+            }),
+            new ol.layer.Tile({
+                title: "OpenCycleMap",
+                box_id: 'base',
+                visible: true,
+                source: new ol.source.OSM({
+                    url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+                })
             }),
             new ol.layer.Vector({
                 title: "Points of interest",
+                box_id: 'tourismus',
                 maxResolution: 70,
                 source: new SparqlJson({
                     url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=SELECT+%3Fo+%3Fp+%3Fs%0D%0AFROM+<http%3A%2F%2Fgis.zcu.cz%2Fpoi.rdf>%0D%0AWHERE+%0D%0A%09%7B%3Fo+<http%3A%2F%2Fwww.w3.org%2F2003%2F01%2Fgeo%2Fwgs84_pos%23lat>+%3Flat.+%3Fo+<http%3A%2F%2Fwww.w3.org%2F2003%2F01%2Fgeo%2Fwgs84_pos%23long>+%3Flon.+%0D%0A%09+<extent>%0D%0A%09%3Fo+%3Fp+%3Fs+%0D%0A%09%7D%0D%0AORDER+BY+%3Fo&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
@@ -87,6 +110,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             }),
             new ol.layer.Tile({
                 title: "OpenWeatherMap cloud cover",
+                box_id: 'weather',
                 source: new ol.source.XYZ({
                     url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
                 }),
@@ -95,14 +119,25 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             }),
             new ol.layer.Tile({
                 title: "OpenWeatherMap precipitation",
+                box_id: 'weather',
                 source: new ol.source.XYZ({
                     url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
                 }),
                 visible: false,
                 opacity: 0.7
             }),
+            new ol.layer.Tile({
+                title: "OpenWeatherMap temperature",
+                box_id: 'weather',
+                source: new ol.source.XYZ({
+                    url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
+                }),
+                visible: false,
+                opacity: 0.7
+            }),
             new ol.layer.Vector({
                 title: "Cycling routes Plzen",
+                box_id: 'tourismus',
                 source: new ol.source.GeoJSON({
                     url: 'plzensky_kraj.geojson'
                 }),
@@ -110,6 +145,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             }),
             new ol.layer.Vector({
                 title: "Cycling routes Zemgale",
+                box_id: 'tourismus',
                 source: new ol.source.GeoJSON({
                     url: 'zemgale.geojson'
                 }),
@@ -117,6 +153,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             }),
             new ol.layer.Vector({
                 title: "Tour de LatEst",
+                box_id: 'tourismus',
                 source: new ol.source.GeoJSON({
                     url: 'teourdelatest.geojson'
                 }),
@@ -124,7 +161,11 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             }),
             new ol.layer.Image({
                 title: "Forest roads",
-                BoundingBox: [{crs: "EPSG:3857", extent: [1405266, 6146786, 2073392, 6682239]}],
+                box_id: 'tourismus',
+                BoundingBox: [{
+                    crs: "EPSG:3857",
+                    extent: [1405266, 6146786, 2073392, 6682239]
+                }],
                 source: new ol.source.ImageWMS({
                     url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/ovnis/sdi4aps_forest_roads.map',
                     params: {

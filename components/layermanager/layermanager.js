@@ -74,7 +74,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             $scope.zoomToLayer = function(layer) {
                 var extent = null;
                 debugger;
-                if(layer.get("BoundingBox")){
+                if (layer.get("BoundingBox")) {
                     b = layer.get("BoundingBox")[0].extent;
                     var first_pair = [b[0], b[1]]
                     var second_pair = [b[2], b[3]];
@@ -84,14 +84,14 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 } else {
                     extent = layer.getSource().getExtent();
                 }
-                if(extent!=null)
+                if (extent != null)
                     map.getView().fitExtent(extent, map.getSize());
             }
-            
-            $scope.layerIsZoomable = function(layer){
-                if(typeof layer == 'undefined') return false;
-                if(layer.get("BoundingBox")) return true;
-                if(layer.getSource().getExtent && layer.getSource().getExtent()) return true;
+
+            $scope.layerIsZoomable = function(layer) {
+                if (typeof layer == 'undefined') return false;
+                if (layer.get("BoundingBox")) return true;
+                if (layer.getSource().getExtent && layer.getSource().getExtent()) return true;
                 return false;
             }
 
@@ -101,7 +101,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 theme.active = true;
                 for (var i = 0; i < $scope.layers.length; i++) {
                     var lyr = $scope.layers[i].layer;
-                    if (lyr.get('box_id') && lyr.get('box_id') == theme.id) {
+                    if (lyr.get('box_id') && (lyr.get('box_id') == theme.id || lyr.get('box_id') == 'base')) {
                         /* if (lyr.get('base')) {
                              lyr.setVisible(true);
                          }*/
