@@ -179,7 +179,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
         ]);
 
         module.value('crossfilterable_layers', [{
-            layer_ix: 1,
+            layer_ix: 2,
             attributes: ["http://gis.zcu.cz/poi#category_osm"]
         }]);
 
