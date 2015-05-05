@@ -6,7 +6,7 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
                     link: function(scope, element) {
-
+                        
                     }
                 };
             })
@@ -33,6 +33,9 @@ define(['angular', 'ol', 'map'],
                                 case "HSLayers.Layer.WMS":
                                     var source_class = lyr_def.singleTile ? ol.source.ImageWMS : ol.source.TileWMS;
                                     var layer_class = lyr_def.singleTile ? ol.layer.Image : ol.layer.Tile;
+                                    var params = lyr_def.params;
+                                    delete params.REQUEST;
+                                    delete params.FORMAT;
                                     var new_layer = new layer_class({
                                         title: lyr_def.title,
                                         maxResolution: lyr_def.maxResolution,
@@ -48,7 +51,7 @@ define(['angular', 'ol', 'map'],
                                                 html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
                                             })] : undefined,
                                             styles: lyr_def.metadata.styles,
-                                            params: lyr_def.params,
+                                            params: params,
                                             crossOrigin: 'anonymous',
                                             projection: lyr_def.projection,
                                             ratio: lyr_def.ratio,

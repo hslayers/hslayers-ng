@@ -60,6 +60,7 @@ define(['angular', 'ol', 'map'],
                 SearchService.searchResultsReceived = function(response) {
                     $scope.results = response.geonames;
                     $scope.clearvisible = true;
+                    if (!$scope.$$phase) $scope.$digest();
                     /*   
                        $search_list.show();
                        if (msg.contents.geonames.length > 0) {
