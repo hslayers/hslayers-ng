@@ -26,6 +26,7 @@ define(['angular', 'ol', 'map'],
                     },
                     getLayerDefinitions: function(j) {
                         var layers = [];
+                        if(j.data) j = j.data;
                         for (var i = 0; i < j.layers.length; i++) {
                             var lyr_def = j.layers[i];
                             switch (lyr_def.className) {

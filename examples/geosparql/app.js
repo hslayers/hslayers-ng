@@ -223,7 +223,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                             $(element).popover('destroy');
                             var content = 'No weather info';
                             if (response.weather) {
-                                content = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button><p><b>' + response.name + '</b></p><img src="http://openweathermap.org/img/w/' + response.weather[0].icon + '.png" alt="' + response.weather[0].description + '"/>' + response.weather[0].description + '<br/>Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C<br/>Wind: ' + response.wind.speed + (response.wind.gust ? 'm/s Gust: ' + response.wind.gust + 'm/s' : '');
+                                content = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button><p><b>' + response.name + '</b></p><img src="http://openweathermap.org/img/w/' + response.weather[0].icon + '.png" alt="' + response.weather[0].description + '"/>' + response.weather[0].description + '<br/>Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C<br/>Wind: ' + response.wind.speed + 'm/s' + (response.wind.gust ? ' Gust: ' + response.wind.gust + 'm/s' : '');
                             }
                             $(element).popover({
                                 'placement': 'top',
