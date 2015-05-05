@@ -22,7 +22,7 @@ define(['angular', 'ol', 'map'],
             }]).service("SearchService", ['$http',
                 function($http) {
                     this.request = function(query) {
-                        var url = window.escape("http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query);
+                        var url = encodeURIComponent("http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query);
                         $.ajax({
                             url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
                             cache: false,
@@ -48,17 +48,18 @@ define(['angular', 'ol', 'map'],
                 $scope.zoomTo = function(lat, lng) {
                     map.getView().setCenter(ol.proj.transform([parseFloat(lat), parseFloat(lng)], 'EPSG:4326', 'EPSG:3857'));
                     map.getView().setZoom(10);
-                    $("#searchresults").html('');
+                    $scope.results = [];
                 }
 
                 $scope.clear = function() {
-                    $("#searchresults").html('');
+                    $scope.results = [];
                     $scope.query = '';
                     $scope.clearvisible = false;
                 }
 
                 SearchService.searchResultsReceived = function(response) {
                     $scope.results = response.geonames;
+                    $("#searchresults").show();
                     $scope.clearvisible = true;
                     if (!$scope.$$phase) $scope.$digest();
                     /*   
