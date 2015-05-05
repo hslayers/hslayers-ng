@@ -18,10 +18,14 @@ define(['angular', 'ol', 'map'],
                 $scope.layers = [];
 
                 $scope.addLayerToLegends = function(layer) {
-                    if (layer.getSource() instanceof ol.source.TileWMS) {
+                    if (layer.getSource() instanceof ol.source.TileWMS || layer.getSource() instanceof ol.source.ImageWMS) {
                         var sub_layers = layer.getSource().getParams().LAYERS.split(",");
                         for (var i = 0; i < sub_layers.length; i++) {
-                            sub_layers[i] = $scope.getWmsLayerLegendUrl(layer.getSource().getUrls()[0], sub_layers[i]);
+                            if (layer.getSource() instanceof ol.source.TileWMS){
+                                sub_layers[i] = $scope.getWmsLayerLegendUrl(layer.getSource().getUrls()[0], sub_layers[i]);
+                            } else if(layer.getSource() instanceof ol.source.ImageWMS){
+                                sub_layers[i] = $scope.getWmsLayerLegendUrl(layer.getSource().getUrl(), sub_layers[i]);
+                            }
                         }
                         layer.on('change:visible', function(e) {
                             for (var i = 0; i < $scope.layers.length; i++) {
