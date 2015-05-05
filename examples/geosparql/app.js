@@ -128,8 +128,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
 
 
         module.value('default_view', new ol.View({
-            center: [1761463.994365168, 6483806.731580181], //Latitude longitude    to Spherical Mercator
-            zoom: 14,
+            center: [681440.7168544558, 6374578.6315893615], //Latitude longitude    to Spherical Mercator
+            zoom: 15,
             units: "m"
         }));
 
