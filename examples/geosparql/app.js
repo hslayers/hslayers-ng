@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'feature-crossfilter', 'legend', 'panoramio'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'feature-crossfilter', 'legend', 'panoramio', 'bootstrap'],
 
     function(ol, dc, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
@@ -23,19 +23,18 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
         }]);
 
         module.value('box_layers', [{
-                id: 'base',
-                'img': 'osm.png',
-                title: 'Base layer'
-            }, {
-                id: 'tourismus',
-                'img': 'bicycle-128.png',
-                title: 'Tourist info'
-            }, {
-                id: 'weather',
-                'img': 'partly_cloudy.png',
-                title: 'Weather'
-            }
-        ]);
+            id: 'base',
+            'img': 'osm.png',
+            title: 'Base layer'
+        }, {
+            id: 'tourismus',
+            'img': 'bicycle-128.png',
+            title: 'Tourist info'
+        }, {
+            id: 'weather',
+            'img': 'partly_cloudy.png',
+            title: 'Weather'
+        }]);
 
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
@@ -190,13 +189,59 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService', 'feature_crossfilter',
-            function($scope, Core, InfoPanelService, feature_crossfilter) {
+        module.controller('Main', ['$scope', 'Core', 'OlMap', 'InfoPanelService', 'feature_crossfilter',
+            function($scope, Core, OlMap, InfoPanelService, feature_crossfilter) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
                 $scope.$on('infopanel.updated', function(event) {});
+
+                var pop_div = document.createElement('div');
+                document.getElementsByTagName('body')[0].appendChild(pop_div);
+                var popup = new ol.Overlay({
+                    element: pop_div
+                });
+                OlMap.map.addOverlay(popup);
+
+                $scope.$on('map_clicked', function(event, data) {
+                    var coordinate = data.coordinate;
+                    var lon_lat = ol.proj.transform(
+                        coordinate, 'EPSG:3857', 'EPSG:4326');
+                    var p = "http://api.openweathermap.org/data/2.5/weather?lat=" + lon_lat[1] + "&lon=" + lon_lat[0];
+                    var url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(p);
+
+                    $.ajax({
+                            url: url
+                        })
+                        .done(function(response) {
+                            console.log(response);
+                            var element = popup.getElement();
+                    
+                            var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+                                coordinate, 'EPSG:3857', 'EPSG:4326'));
+                            $(element).popover('destroy');
+                            var content = 'No weather info';
+                            if(response.weather){
+                                content = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button><p><b>'+response.name+'</b></p><img src="http://openweathermap.org/img/w/' + response.weather[0].icon +'.png" alt="'+response.weather[0].description+'"/>' + response.weather[0].description + '<br/>Temperature: ' + (response.main.temp - 273.15).toFixed(1) +' °C<br/>Wind: '+ response.wind.speed+(response.wind.gust ? 'm/s Gust: '+ response.wind.gust + 'm/s' : '');
+                            }
+                            $(element).popover({
+                                'placement': 'top',
+                                'animation': false,
+                                'html': true,
+                                'content': content
+                            });
+                            
+                            popup.setPosition(coordinate);
+                            $(element).popover('show');
+                            $('.close', element.nextElementSibling).click(function(){
+                                $(element).popover('hide')
+                            });
+                        });
+
+
+                    
+                });
             }
         ]);
 

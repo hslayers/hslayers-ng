@@ -278,6 +278,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     map.getLayers().forEach(function(layer) {
                         $scope.queryWmsLayer(layer, evt.coordinate)
                     });
+                    $scope.$emit('map_clicked', evt);
                     vectors_selected = false;
                 });
                 $scope.$emit('scope_loaded', "Query");

@@ -185,3 +185,6 @@ button.unpin {
   background: 0 0;
   border: 0;
 }
+.popover-content {
+min-width: 180px;
+}
