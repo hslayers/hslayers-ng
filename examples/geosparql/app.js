@@ -189,8 +189,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'OlMap', 'InfoPanelService', 'feature_crossfilter',
-            function($scope, Core, OlMap, InfoPanelService, feature_crossfilter) {
+        module.controller('Main', ['$scope', '$filter', 'Core', 'OlMap', 'InfoPanelService', 'feature_crossfilter',
+            function($scope, $filter, Core, OlMap, InfoPanelService, feature_crossfilter) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -223,7 +223,13 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                             $(element).popover('destroy');
                             var content = 'No weather info';
                             if (response.weather) {
-                                content = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button><p><b>' + response.name + '</b></p><img src="http://openweathermap.org/img/w/' + response.weather[0].icon + '.png" alt="' + response.weather[0].description + '"/>' + response.weather[0].description + '<br/>Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C<br/>Wind: ' + response.wind.speed + 'm/s' + (response.wind.gust ? ' Gust: ' + response.wind.gust + 'm/s' : '');
+                                var wind_row = 'Wind: ' + response.wind.speed + 'm/s' + (response.wind.gust ? ' Gust: ' + response.wind.gust + 'm/s' : '');
+                                var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
+                                var weather = response.weather[0];
+                                var cloud = '<img src="http://openweathermap.org/img/w/' + weather.icon + '.png" alt="' + weather.description + '"/>' + weather.description;
+                                var temp_row = 'Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C';
+                                var date_row = $filter('date')(new Date(response.dt * 1000), 'dd.MM.yyyy HH:mm');
+                                content = close_button + '<p><b>' + response.name + '</b><br/><small> at ' + date_row + '</small></p>' + cloud + '<br/>' + temp_row + '<br/>' + wind_row;
                             }
                             $(element).popover({
                                 'placement': 'top',

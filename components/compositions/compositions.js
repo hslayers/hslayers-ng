@@ -6,7 +6,7 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
                     link: function(scope, element) {
-                        
+
                     }
                 };
             })
@@ -26,7 +26,7 @@ define(['angular', 'ol', 'map'],
                     },
                     getLayerDefinitions: function(j) {
                         var layers = [];
-                        if(j.data) j = j.data;
+                        if (j.data) j = j.data;
                         for (var i = 0; i < j.layers.length; i++) {
                             var lyr_def = j.layers[i];
                             switch (lyr_def.className) {
