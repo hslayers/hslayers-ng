@@ -22,7 +22,7 @@ define(['angular', 'ol', 'map'],
             }]).service("SearchService", ['$http',
                 function($http) {
                     this.request = function(query) {
-                        var url = window.escape("http://api.geonames.org/searchJSON?&username=raitis&q=" + query);
+                        var url = window.escape("http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query);
                         $.ajax({
                             url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
                             cache: false,
