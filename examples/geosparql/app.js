@@ -85,6 +85,22 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 }),
                 style: style
             }),
+            new ol.layer.Tile({
+                title: "OpenWeatherMap cloud cover",
+                source: new ol.source.XYZ({
+                    url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
+                }),
+                visible: false,
+                opacity: 0.7
+            }),
+            new ol.layer.Tile({
+                title: "OpenWeatherMap precipitation",
+                source: new ol.source.XYZ({
+                    url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
+                }),
+                visible: false,
+                opacity: 0.7
+            }),
             new ol.layer.Vector({
                 title: "Cycling routes Plzen",
                 source: new ol.source.GeoJSON({
@@ -128,8 +144,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
 
 
         module.value('default_view', new ol.View({
-            center: [681440.7168544558, 6374578.6315893615], //Latitude longitude    to Spherical Mercator
-            zoom: 15,
+            center: [1490321.6967438285, 6400602.013496143], //Latitude longitude    to Spherical Mercator
+            zoom: 14,
             units: "m"
         }));
 

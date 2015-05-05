@@ -101,6 +101,7 @@
         "ol.source.ServerVector#readFeatures",
         "ol.source.ServerVector#getFeatures",
         "ol.source.ServerVector#getExtent",
+        "ol.source.XYZ",
         "ol.style.Circle",
         "ol.style.Fill",
         "ol.style.Icon",
