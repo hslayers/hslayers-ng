@@ -20,7 +20,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                         if (e.element.getSource().getUrls) //Multi tile
                             sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
                         if (e.element.getSource().getUrl) //Single tile
-                            sub_layers[i] = e.element.getSource().getUrls + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                            sub_layers[i] = e.element.getSource().getUrl() + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
                     }
                 }
                 e.element.on('change:visible', function(e) {
