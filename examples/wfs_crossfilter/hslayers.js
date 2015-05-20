@@ -23,7 +23,7 @@ require.config({
         panoramio: hsl_path + 'components/panoramio/panoramio',
         d3: hsl_path + 'lib/d3.v3.min',
         crossfilter: hsl_path + 'lib/crossfilter.v1.min',
-        dc: 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc',
+        dc: 'http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
         core: hsl_path + 'components/core/core',
         SparqlJson: hsl_path + 'extensions/hs.source.SparqlJson',
         WfsSource: hsl_path + 'extensions/hs.source.Wfs',
