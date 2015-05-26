@@ -158,6 +158,14 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 }),
                 style: route_style
             }),
+            new ol.layer.Vector({
+                title: "A1: the Vltava left-bank cycle route",
+                box_id: 'tourismus',
+                source: new ol.source.GeoJSON({
+                    url: 'prague.geojson'
+                }),
+                style: route_style
+            }),
             new ol.layer.Image({
                 title: "Forest roads",
                 box_id: 'tourismus',
