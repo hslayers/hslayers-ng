@@ -106,10 +106,17 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                 };
                                 e.element.get('features')[feature].getKeys().forEach(function(key) {
                                     if (key == 'gid' || key == 'geometry') return;
-                                    group.attributes.push({
-                                        name: key,
-                                        value: $sce.trustAsHtml(e.element.get('features')[feature].get(key))
-                                    });
+                                    if(typeof e.element.get('features')[feature].get(key) == "String"){
+                                        group.attributes.push({
+                                            name: key,
+                                            value: $sce.trustAsHtml(e.element.get('features')[feature].get(key))
+                                        });
+                                    } else {
+                                        group.attributes.push({
+                                            name: key,
+                                            value: e.element.get('features')[feature].get(key)
+                                        });
+                                    }
                                 })
                                 groups_added = true;
                                 InfoPanelService.groups.push(group);

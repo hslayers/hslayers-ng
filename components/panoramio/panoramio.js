@@ -17,7 +17,7 @@ define(['angular', 'ol', 'app', 'map'],
                                 }).html(attrs.value);
                                 element.html(el);
                             } else {
-                                element.html(attrs.value);
+                                element.html(attrs.value.toString());
                             }
                         }
                     } else {
@@ -60,10 +60,18 @@ define(['angular', 'ol', 'app', 'map'],
                                     })
                                 })
                             }
+                            var max_pop = 0;
+                            var max_pop_i = 0;
+                            for(var i=0; i<feature.get('features').length; i++){
+                                var pop = feature.get('features')[i].get('popularity');
+                                if (pop>max_pop){
+                                    max_pop = pop;
+                                    max_pop_i = i;
+                                }
+                            }
                             var style = [new ol.style.Style({
-                                image: feature.get('features')[0].getStyle()[0].getImage(),
+                                image: feature.get('features')[max_pop_i].getStyle()[0].getImage(),
                                 text: text
-
                             })];
                             return style;
                         }
@@ -100,6 +108,7 @@ define(['angular', 'ol', 'app', 'map'],
                                 //pwidth: p.width,
                                 Author: p.owner_name,
                                 'Owner': p.owner_url,
+                                popularity: i,
                                 hstemplate: 'panoramio'
                             }
                             var feature = new ol.Feature(attributes);
