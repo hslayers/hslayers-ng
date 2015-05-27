@@ -212,7 +212,9 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 });
                 OlMap.map.addOverlay(popup);
 
+                var show_location_weather = true;
                 $scope.$on('map_clicked', function(event, data) {
+                    if(!show_location_weather) return;
                     var coordinate = data.coordinate;
                     var lon_lat = ol.proj.transform(
                         coordinate, 'EPSG:3857', 'EPSG:4326');
@@ -249,7 +251,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                             popup.setPosition(coordinate);
                             $(element).popover('show');
                             $('.close', element.nextElementSibling).click(function() {
-                                $(element).popover('hide')
+                                $(element).popover('hide');
+                                show_location_weather = false;
                             });
                         });
 
