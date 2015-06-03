@@ -6,7 +6,7 @@
         </button>
     </div>
     <div class="panel-body">
-        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title" ng-change="queryChanged()"></p>
+        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()"></p>
         <ul class="list-group">
             <li ng-repeat="composition in compositions" class="list-group-item">
                 <a href="#" ng-click="loadComposition(composition.link)">{{composition.title}}</a>
@@ -14,13 +14,13 @@
             <nav>
                 <ul class="pagination">
                     <li>
-                    <a href="#" aria-label="Previous">
+                    <a href="#"  ng-click="loadCompositions(current_page - 1)" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                     </li>
-                    <li ng-repeat="page in pages"><a href="#">{{page}}</a></li>
+                    <li ng-repeat="page in pages"  ng-class="page == current_page ? 'active' : ''"><a href="#" ng-click="loadCompositions(page)">{{page}}</a></li>
                     <li>
-                    <a href="#" aria-label="Next">
+                    <a href="#"  ng-click="loadCompositions(current_page + 1)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                     </li>

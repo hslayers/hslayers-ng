@@ -77,9 +77,14 @@ define(['angular', 'ol', 'map'],
             .controller('Compositions', ['$scope', 'OlMap', 'Core', 'composition_parser',
                 function($scope, OlMap, Core, composition_parser) {
                     $scope.$emit('scope_loaded', "Compositions");
-                    $scope.queryChanged = function(){
-                        if(console) console.log($scope.query.title);
-                        var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication%20AND%20BBOX%3D%27-135.70312477249308%2C20.84649058320339%2C164.8828126856566%2C73.109630112712%27%20AND%20AnyText%20like%20%27*"+$scope.query.title+"*%27&lang=eng&session=save&sortBy=bbox&detail=summary&start=0&page=1&limit=25";
+                    $scope.page_size = 25;
+                    
+                    $scope.loadCompositions = function(page){
+                        if(typeof page === 'undefined') page = 1;
+                        $scope.current_page = page;
+                        $scope.first_composition_ix = (page-1)*$scope.page_size;
+                        var text_filter = $scope.query.title!='' ? encodeURIComponent(" AND AnyText like '*"+$scope.query.title+"*'") : '';
+                        var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication%20AND%20BBOX%3D%27-135.70312477249308%2C20.84649058320339%2C164.8828126856566%2C73.109630112712%27"+text_filter+"&lang=eng&session=save&sortBy=bbox&detail=summary&start="+$scope.first_composition_ix+"&page=1&limit=" + $scope.page_size;
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                         $.ajax({
                             url: url
@@ -87,9 +92,15 @@ define(['angular', 'ol', 'map'],
                         .done(function(response) {
                             if(console) console.log(response);
                             $scope.compositions = response.records;
+                            $scope.pages = [];
+                            if(response.matched>response.returned){
+                                for(var i=1; i <= Math.ceil(response.matched / $scope.page_size); i++)
+                                    $scope.pages.push(i);
+                            }
                             if (!$scope.$$phase) $scope.$digest();
                         })
                     }
+                    
                     $scope.loadComposition = composition_parser.load;
                 }
             ]);
