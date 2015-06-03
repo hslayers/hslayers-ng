@@ -6,11 +6,26 @@
         </button>
     </div>
     <div class="panel-body">
-        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
+        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title" ng-change="queryChanged()"></p>
         <ul class="list-group">
-            <li ng-repeat="composition in compositions | filter:query" class="list-group-item">
-                <a href="#" ng-click="loadComposition(composition)">{{composition.title}}</a>
+            <li ng-repeat="composition in compositions" class="list-group-item">
+                <a href="#" ng-click="loadComposition(composition.link)">{{composition.title}}</a>
             </li>
+            <nav>
+                <ul class="pagination">
+                    <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    </li>
+                    <li ng-repeat="page in pages"><a href="#">{{page}}</a></li>
+                    <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    </li>
+                </ul>
+            </nav>
         </ul>
     </div>
 </div>

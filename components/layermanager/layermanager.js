@@ -116,7 +116,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 layerAdded({
                     element: lyr
                 });
-            })
+            });
             map.getLayers().on("add", layerAdded);
             map.getLayers().on("remove", layerRemoved);
             $scope.$emit('scope_loaded', "LayerManager");
