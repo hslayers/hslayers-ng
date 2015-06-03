@@ -1,6 +1,7 @@
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
+        bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap',
         ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'lib/ol3/ol',
         drag: hsl_path + 'components/drag/drag',
         map: hsl_path + 'components/map/map',
@@ -27,7 +28,7 @@ require.config({
     ]
 });
 
-define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag'],
+define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'bootstrap'],
     function(angular) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag'])
             .service("Core", ['$rootScope', '$controller', '$window', 'OlMap', 'gettextCatalog',
