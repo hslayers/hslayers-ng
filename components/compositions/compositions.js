@@ -129,6 +129,7 @@ define(['angular', 'ol', 'map'],
                                         $scope.pages.push(i);
                                 }
                                 if (!$scope.$$phase) $scope.$digest();
+                                $('[data-toggle="tooltip"]').tooltip();
                             })
                     }
 

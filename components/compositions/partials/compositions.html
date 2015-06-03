@@ -19,10 +19,10 @@
         
         <ul style="margin-top: 4px" class="list-group">
             <li ng-repeat="composition in compositions" class="list-group-item">
-                <a href="#" ng-click="loadComposition(composition.link)">{{composition.title}}</a>
+                <a href="#" ng-click="loadComposition(composition.link)" data-toggle="tooltip" data-placement="top" ng-attr-title="{{composition.mdAbstract}}">{{composition.title}}</a>
             </li>
             <nav>
-                <ul class="pagination">
+                <ul class="pagination" ng-show="pages.length>0">
                     <li ng-class="current_page < 2 ? 'disabled' : ''">
                     <a href="#"  ng-click="loadCompositions(current_page - 1)" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
