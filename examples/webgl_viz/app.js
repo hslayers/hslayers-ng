@@ -10,7 +10,7 @@ define(['ol',
         'measure', 
         'geolocation', 
         'api', 
-        'glutils','wgl','manager','mapcontroller', 'chart_panel' ],
+        'glutils','wgl','manager','mapcontroller','dataloader','d3','dimension','heatmapdimension'],
 
     function(ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -18,18 +18,17 @@ define(['ol',
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
-            'hs.geolocation', 'hs.widgets.chart_panel']);
+            'hs.geolocation']);
 
         module.directive('hs', ['OlMap', 'Core', '$compile', 'webgl_viz', function(OlMap, Core, $compile, webgl_viz) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullscreenMap(element);
-                    $("#right-pane", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
-                    $("#right-pane", element).attr('class', 'col-md-5');
                     //webgl_viz.webgl_el = $compile('<canvas id="webglayer"></canvas>')(scope);
                     //element.append(webgl_viz.webgl_el);
                     webgl_viz.init();
+                    //$("#right-pane", element).append($compile('<div yearselector ng-controller="YearSelector"></div>')(scope));
                 }
             };
         }]);
@@ -37,6 +36,7 @@ define(['ol',
         module.service('webgl_viz', ['OlMap', function(OlMap) {
             var me = {
                 map: OlMap.map,
+                ol: ol,
                 init: function(){wgl(this);}
             };
 

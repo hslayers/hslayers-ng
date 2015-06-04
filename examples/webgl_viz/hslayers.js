@@ -1,7 +1,6 @@
 'use strict';
 
 var hsl_path = '../../';
-var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-gl-filter2/js/'; //http://localhost:9999/js/webglayer/js/
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
     paths: {
@@ -28,11 +27,14 @@ require.config({
         WfsSource: hsl_path + 'extensions/hs.source.Wfs',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
-        glutils:  jans_path + 'GLUtils' ,
-        manager:  jans_path + 'Manager' ,
-        mapcontroller: jans_path + 'MapController' ,
-        wgl: 'webglinit',
-        chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel'
+        dimension:'http://localhost:9999/js/webglayer/js/Dimension',
+        glutils:  'http://localhost:9999/js/webglayer/js/GLUtils' ,
+        manager:  'http://localhost:9999/js/webglayer/js/Manager' ,
+        mapcontroller: 'http://localhost:9999/js/webglayer/js/MapController' ,
+        heatmapdimension:'http://localhost:9999/js/webglayer/js/HeatMapDimension',
+        dataloader: 'DataLoader' ,
+        ol: hsl_path + 'lib/ol3/ol-full',
+        wgl: 'webglinit'
         
     },
 
