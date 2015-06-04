@@ -10,7 +10,9 @@ define(['ol',
         'measure', 
         'geolocation', 
         'api', 
-        'glutils','wgl','manager','mapcontroller', 'chart_panel' ],
+        'glutils','wgl','manager','mapcontroller','dataloader','d3','dimension',
+        'heatmapdimension','chart_panel', 'stackedbarchart','histogramdimension',
+        'floatrasterreader','histfilterrender','filter', 'multibrush'],
 
     function(ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -37,6 +39,7 @@ define(['ol',
         module.service('webgl_viz', ['OlMap', function(OlMap) {
             var me = {
                 map: OlMap.map,
+                ol: ol,
                 init: function(){wgl(this);}
             };
 
