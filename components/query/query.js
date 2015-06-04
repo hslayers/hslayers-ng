@@ -204,33 +204,45 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                     if (info_format.indexOf("html") > 0) {
                         if(response.length<=1) return;
-                        var pop_div = document.createElement('div');
-                        document.getElementsByTagName('body')[0].appendChild(pop_div);
-                        var popup = new ol.Overlay({
-                            element: pop_div
-                        });
-                        OlMap.map.addOverlay(popup);
-                        var element = popup.getElement();
-                        var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
-                        var content = close_button + '<iframe width=400 height=300 style="border:0"></iframe>';
-                        $(element).popover({
-                            'placement': 'top',
-                            'animation': false,
-                            'html': true,
-                            'content': content
-                        });
+                        createFeatureInfoPopupIfNeeded(coordinate);
 
+                        $(popup.getElement()).popover('show');
+                        
+                        var $iframe = $('.getfeatureinfo_popup').get()[0];
+                        $iframe.contentWindow.document.write(response);
+                        $iframe.width =  $iframe.contentWindow.document.body.scrollWidth + 20;
+                        $iframe.height = $iframe.contentWindow.document.body.scrollHeight + 20;  
+                        
+                        $('.close', popup.getElement().nextElementSibling).click(function() {
+                            $(popup.getElement()).popover('hide');
+                        }); 
                         popup.setPosition(coordinate);
-                        $(element).popover('show');
-                        
-                        $('iframe').get()[0].contentWindow.document.write(response);
-                        $('iframe').get()[0].width =  $('iframe').get()[0].contentWindow.document.body.offsetWidth;
-                        $('iframe').get()[0].height =  $('iframe').get()[0].contentWindow.document.body.offsetHeight;
-                        
-                        $('.close', element.nextElementSibling).click(function() {
-                            $(element).popover('hide');
-                        });
                     }
+                }
+                
+                var popup = null;
+                var createFeatureInfoPopupIfNeeded = function(coordinate){
+                    if($('.getfeatureinfo_popup').length>0) return;
+                    var pop_div = document.createElement('div');
+                    document.getElementsByTagName('body')[0].appendChild(pop_div);
+                    popup = new ol.Overlay({
+                        element: pop_div,
+                        offset: [-14, -140],
+                        positioning: 'bottom-center'
+                    });
+                    OlMap.map.addOverlay(popup);
+                    var element = popup.getElement();
+                    var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
+                    var content = close_button + '<iframe class="getfeatureinfo_popup" width=400 height=300 style="border:0"></iframe>';
+                    $(element).popover({
+                        'placement': 'top',
+                        'animation': false,
+                        'html': true,
+                        'content': content
+                    });
+                    $(element).popover('show');
+                    popup.setPosition(coordinate);
+                    
                 }
 
                 $scope.InfoPanelService = InfoPanelService;

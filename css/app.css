@@ -188,3 +188,4 @@ button.unpin {
 .popover-content {
 min-width: 230px;
 }
+.popover{max-width: 1000px; max-height: 1000px}
