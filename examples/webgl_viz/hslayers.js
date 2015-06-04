@@ -1,7 +1,10 @@
 'use strict';
 
 var hsl_path = '../../';
-var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-gl-filter2/js/'; //http://localhost:9999/js/webglayer/js/
+//var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-gl-filter2/js/'; //http://localhost:9999/js/webglayer/js/
+
+var jans_path = 'http://localhost:9999/js/webglayer/js/';
+
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
     paths: {
@@ -33,10 +36,17 @@ require.config({
         manager:  jans_path + 'Manager',
         mapcontroller: jans_path + 'MapController',
         heatmapdimension: jans_path + 'HeatMapDimension',
+        stackedbarchart: jans_path + 'StackedBarChart',
+        histogramdimension: jans_path + 'HistogramDimension',
+        floatrasterreader: jans_path + 'FloatRasterReader',
+        histfilterrender: jans_path + 'HistFilterRender',
+        multibrush: jans_path + 'd3.svg.multibrush',
+        filter: jans_path + 'Filter',
         dataloader: 'DataLoader',
         ol: hsl_path + 'lib/ol3/ol-full',
         wgl: 'webglinit',
-        chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel'
+        chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel',
+      
         
     },
 

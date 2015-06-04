@@ -10,7 +10,9 @@ define(['ol',
         'measure', 
         'geolocation', 
         'api', 
-        'glutils','wgl','manager','mapcontroller','dataloader','d3','dimension','heatmapdimension'],
+        'glutils','wgl','manager','mapcontroller','dataloader','d3','dimension',
+        'heatmapdimension','chart_panel', 'stackedbarchart','histogramdimension',
+        'floatrasterreader','histfilterrender','filter', 'multibrush'],
 
     function(ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [

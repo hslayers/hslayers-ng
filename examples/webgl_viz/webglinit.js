@@ -32,18 +32,17 @@ wgl = function(that){
 
 		/*init first attribute buffer*/
 
-		GLU.metadata = [];
-		GLU.metadata[0] = {max : 3, num_bins : 3, name: "attr1"};
-		GLU.metadata[1] = {max : 7, num_bins : 7, name: "attr2"};
-		GLU.metadata[2] = {max : 24, num_bins : 24, name: "attr3"};
-		GLU.metadata.max_bins =GLU.metadata[2].num_bins;
+		GLU.manager.metadata = [];
+		GLU.manager.metadata[0] = {max : 3, num_bins : 3, name: "attr1"};
+		GLU.manager.metadata[1] = {max : 7, num_bins : 7, name: "attr2"};
+		GLU.manager.metadata[2] = {max : 24, num_bins : 24, name: "attr3"};
+		GLU.manager.metadata.max_bins =GLU.manager.metadata[2].num_bins;
 
 		GLU.charts = [];
-		//GLU.charts[0] = new StackedBarChart(3, 0, "chart1", "accident servelity");
-		//GLU.charts[1] = new StackedBarChart(7, 1, "chart2", "accident servelity");
-		//GLU.charts[2] = new StackedBarChart(24, 2, "chart3", "accident servelity");
-	//charts[1] = new StackedBarChart(metadata[4].max, 0, "chart2", "weather condition");
-
+		GLU.charts[0] = new StackedBarChart(3, 0, "chart1", "accident servelity");
+		GLU.charts[1] = new StackedBarChart(7, 1, "chart2", "accident servelity");
+		GLU.charts[2] = new StackedBarChart(24, 2, "chart3", "accident servelity");
+	
 		initGLDimensions();
 		//util.createFilteringData(generateOneTriangle());
 
@@ -62,13 +61,10 @@ wgl = function(that){
 
 
 
+		GLU.dimHist = new HistogramDimension(GLU.manager, GLU.manager.metadata);
+		GLU.histFilterRender = new HistFilterRender(GLU.manager);
 
-		//GLU.dimHist = new HistogramDimension(manager, metadata);
-		//GLU.histFilterRender = new HistFilterRender(manager);
-
-		//GLU.allDataFilter = new Filter(manager, metadata);
-
-
+		GLU.allDataFilter = new Filter(GLU.manager, GLU.manager.metadata);
 		GLU.mcontroller.resize(GLU.manager.w, GLU.manager.h);
 
 		GLU.tlwgs = ol.proj.transform([-180, 90], 'EPSG:4326', 'EPSG:3857');
@@ -81,17 +77,17 @@ wgl = function(that){
 	}
 
 	function render(){
-		//allDataFilter.render();
-		//manager.filterTexture = allDataFilter.filterTexture;
+		GLU.allDataFilter.render();
+		GLU.manager.filterTexture = GLU.allDataFilter.filterTexture;
 
-	//	GLU.dimHist.render(manager.num_rec);
+		GLU.dimHist.render(GLU.manager.num_rec);
 		GLU.dimMap.render(GLU.manager.num_rec);
-		//var readout = dimHist.readPixels();
-		//if (typeof readout != 'undefined') {
-		//		for ( var i in charts) {
-		//			charts[i].update(readout[i]);
-		//		}
-		// }
+		var readout = GLU.dimHist.readPixels();
+		if (typeof readout != 'undefined') {
+				for ( var i in GLU.charts) {
+					GLU.charts[i].update(readout[i]);
+				}
+		 }
 		//var read = dimMap.readPixel();
 		//console.log(readout);
 
