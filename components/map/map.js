@@ -4,7 +4,38 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         .service('OlMap', ['default_view', function(default_view) {
             this.map = new ol.Map({
                 target: 'map',
+                interactions: [],
                 view: default_view
+            });
+            
+            var duration = 400;
+
+            this.interactions = {                
+                'DoubleClickZoom': new ol.interaction.DoubleClickZoom({
+                    duration: duration
+                }),
+                'KeyboardPan': new ol.interaction.KeyboardPan({
+                    pixelDelta: 256
+                }),
+                'KeyboardZoom': new ol.interaction.KeyboardZoom({
+                    duration: duration
+                }),
+                'MouseWheelZoom': new ol.interaction.MouseWheelZoom({
+                    duration: duration
+                }),
+                'PinchRotate': new ol.interaction.PinchRotate(),
+                'PinchZoom': new ol.interaction.PinchZoom({
+                    duration: duration
+                }),
+                'DragPan': new ol.interaction.DragPan({
+                    kinetic: new ol.Kinetic(-0.01, 0.1, 200)
+                }),
+                'DragZoom': new ol.interaction.DragZoom(),
+                'DragRotate': new ol.interaction.DragRotate(),
+            }
+            var me = this;
+            angular.forEach(this.interactions, function(value, key) {
+                me.map.addInteraction(value);
             });
         }])
 
@@ -20,7 +51,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
     .controller('Map', ['$scope', 'OlMap', 'default_layers', 'default_view', 'BrowserUrlService',
         function($scope, OlMap, default_layers, default_view, bus) {
             var map = OlMap.map;
-
+  
             $scope.moveToAndZoom = function(x, y, zoom) {
                 var view = OlMap.map.getView();
                 view.setCenter([x, y]);
