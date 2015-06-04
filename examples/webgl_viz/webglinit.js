@@ -39,16 +39,21 @@ wgl = function(that){
 		GLU.manager.metadata.max_bins =GLU.manager.metadata[2].num_bins;
 
 		GLU.charts = [];
-		GLU.charts[0] = new StackedBarChart(3, 0, "chart1", "accident servelity");
-		GLU.charts[1] = new StackedBarChart(7, 1, "chart2", "accident servelity");
-		GLU.charts[2] = new StackedBarChart(24, 2, "chart3", "accident servelity");
+		GLU.charts[0] = new StackedBarChart(3, 0, "chart1", "accident servelity", GLU.manager.metadata);
+		GLU.charts[1] = new StackedBarChart(7, 1, "chart2", "accident servelity", GLU.manager.metadata);
+		GLU.charts[2] = new StackedBarChart(24, 2, "chart3", "accident servelity",GLU.manager.metadata);
 	
 		initGLDimensions();
 		//util.createFilteringData(generateOneTriangle());
 
 
-		map.getView().on('change:center',onMove,100);
-		map.getView().on('change:resolution',onZoom,100);
+	  
+		map.getView().on('change:center',onMove,0);
+		map.getView().on('change:resolution',onZoom,0);
+		map.on('moveend',onMove,0);
+		
+		var inter = map.getInteractions();
+		inter.setPropertie();
 		//map.events.register("move", map, onMove);
 		//map.events.register("zoomstart", map, onZoom);
 	}
@@ -72,7 +77,8 @@ wgl = function(that){
 		GLU.tlwgs=[-20037508.34,20037508.34];
 
 		GLU.mcontroller.zoommove(map.zoom, getTopLeftTC(), render);
-		render();
+		GLU.render = render;
+		GLU.render();
 
 	}
 
@@ -95,10 +101,12 @@ wgl = function(that){
 	}
 
 	var getTopLeftTC = function() {
-
+		
+         
 		var s = Math.pow(2, map.getView().getZoom());
-		console.log(s);
+	//	console.log(s);
 		tlpixel = map.getPixelFromCoordinate(GLU.tlwgs);
+		console.log(tlpixel);
 		res = {
 			x : -tlpixel[0] / s,
 			y : -tlpixel[1] / s
@@ -108,8 +116,16 @@ wgl = function(that){
 
 
 	var onMove = function() {
-		GLU.mcontroller.zoommove(map.getView().getZoom(), getTopLeftTC(), render);
-		console.log(getTopLeftTC());
+		// var timer = null;
+		// if (timer != null) clearTimeout(timer);
+        // timer = setTimeout(function() {
+        	 GLU.mcontroller.zoommove(map.getView().getZoom(), getTopLeftTC(), render);
+     	//	console.log(getTopLeftTC());
+         //}, 1000);
+         
+         
+	
+		
 
 
 	}
@@ -121,7 +137,7 @@ wgl = function(that){
 		p.y=p.y ;
 		GLU.mcontroller.zoommove(map.getView().getZoom(),p, render);
 
-		console.log(p);
+		//console.log(p);
 		//svgc.transform(map.getZoom(), getTopLeftTC());
 	}
 }

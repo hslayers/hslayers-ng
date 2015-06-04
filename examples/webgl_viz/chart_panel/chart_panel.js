@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map', 'd3'],
                         var link = document.createElement("link");
                         link.type = "text/css";
                         link.rel = "stylesheet";
-                        link.href = hsl_path + 'lib/range_slider.css';
+                        link.href = hsl_path + 'examples/webgl_viz/chart_panel/partials/style.css';
                         document.getElementsByTagName("head")[0].appendChild(link);
                     }
                 };

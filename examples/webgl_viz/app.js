@@ -37,6 +37,10 @@ define(['ol',
         }]);
         
         module.service('webgl_viz', ['OlMap', function(OlMap) {
+        	OlMap.map.removeInteraction(OlMap.interactions.DragPan);
+            OlMap.interactions.DragPan = new ol.interaction.DragPan({kinetic: false});
+            OlMap.map.addInteraction(OlMap.interactions.DragPan);
+          
             var me = {
                 map: OlMap.map,
                 ol: ol,
