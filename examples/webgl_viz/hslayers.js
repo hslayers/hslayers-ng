@@ -49,6 +49,14 @@ require.config({
       
         
     },
+    shim: {
+        d3: {
+            exports: 'd3'
+        },
+        multibrush: {
+            deps: ['d3']
+        }
+    }
 
 });
 
@@ -56,6 +64,7 @@ require.config({
 window.name = "NG_DEFER_BOOTSTRAP!";
 
 require(['core'], function(app) {
+	
     require(['app'], function(app) {
         var $html = angular.element(document.getElementsByTagName('html')[0]);
         angular.element().ready(function() {

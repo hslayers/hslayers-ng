@@ -52,8 +52,7 @@ wgl = function(that){
 		map.getView().on('change:resolution',onZoom,0);
 		map.on('moveend',onMove,0);
 		
-		var inter = map.getInteractions();
-		inter.setPropertie();
+	
 		//map.events.register("move", map, onMove);
 		//map.events.register("zoomstart", map, onZoom);
 	}
