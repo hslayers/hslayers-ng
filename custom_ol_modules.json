@@ -19,6 +19,7 @@
         "ol.Map#getSize",
         "ol.Map#getView",
         "ol.Map#getViewport",
+        "ol.Map#getViewPortPxFromLonLat",
         "ol.Map#on",
         "ol.Map#removeInteraction",
         "ol.Map#removeOverlay",

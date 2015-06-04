@@ -44,12 +44,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
             }])
             .service("WmsGetFeatureInfo", [
                 function() {
-                    this.request = function(url) {
-                        var url = window.escape(url);
+                    this.request = function(url, info_format, coordinate) {
+                        var esc_url = window.escape(url);
+                        var me = this;
                         $.ajax({
-                            url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                            url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + esc_url,
                             cache: false,
-                            success: this.featureInfoReceived
+                            success: function(response) {
+                                me.featureInfoReceived(response, info_format, url, coordinate)
+                            }
                         });
                     };
 
@@ -106,7 +109,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                 };
                                 e.element.get('features')[feature].getKeys().forEach(function(key) {
                                     if (key == 'gid' || key == 'geometry') return;
-                                    if(typeof e.element.get('features')[feature].get(key) == "String"){
+                                    if (typeof e.element.get('features')[feature].get(key) == "String") {
                                         group.attributes.push({
                                             name: key,
                                             value: $sce.trustAsHtml(e.element.get('features')[feature].get(key))
@@ -135,7 +138,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     vectors_selected = true;
                 })
 
-                WmsGetFeatureInfo.featureInfoReceived = function(response) {
+                WmsGetFeatureInfo.featureInfoReceived = function(response, info_format, url, coordinate) {
                     /* Maybe this will work in future OL versions
                      *
                      * var format = new ol.format.GML();
@@ -145,59 +148,89 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     //                    var x2js = new X2JS();
                     //                  var json = x2js.xml_str2json(response);
                     var something_updated = false;
-                    $("featureMember", response).each(function() {
-                        var feature = $(this)[0].firstChild;
-                        var group = {
-                            name: "Feature",
-                            attributes: []
-                        };
+                    if (info_format.indexOf("xml") > 0) {
+                        $("featureMember", response).each(function() {
+                            var feature = $(this)[0].firstChild;
+                            var group = {
+                                name: "Feature",
+                                attributes: []
+                            };
 
-                        for (var attribute in feature.children) {
-                            if (feature.children[attribute].childElementCount == 0) {
-                                group.attributes.push({
-                                    "name": feature.children[attribute].localName,
-                                    "value": feature.children[attribute].innerHTML
-                                });
-                                something_updated = true;
-                            }
-                        }
-                        if (something_updated)
-                            InfoPanelService.groups.push(group);
-                    });
-                    $("msGMLOutput", response).each(function() {
-                        for (var layer_i in $(this)[0].children) {
-                            var layer = $(this)[0].children[layer_i];
-                            var layer_name = "";
-                            if (typeof layer.children == 'undefined') continue;
-                            for (var feature_i = 0; feature_i < layer.children.length; feature_i++) {
-                                var feature = layer.children[feature_i];
-                                if (feature.nodeName == "gml:name") {
-                                    layer_name = feature.innerHTML;
-                                } else {
-                                    var group = {
-                                        name: layer_name + " Feature",
-                                        attributes: []
-                                    };
-
-                                    for (var attribute in feature.children) {
-                                        if (feature.children[attribute].childElementCount == 0) {
-                                            group.attributes.push({
-                                                "name": feature.children[attribute].localName,
-                                                "value": feature.children[attribute].innerHTML
-                                            });
-                                            something_updated = true;
-                                        }
-                                    }
-                                    if (something_updated)
-                                        InfoPanelService.groups.push(group);
+                            for (var attribute in feature.children) {
+                                if (feature.children[attribute].childElementCount == 0) {
+                                    group.attributes.push({
+                                        "name": feature.children[attribute].localName,
+                                        "value": feature.children[attribute].innerHTML
+                                    });
+                                    something_updated = true;
                                 }
-
                             }
-                        }
+                            if (something_updated)
+                                InfoPanelService.groups.push(group);
+                        });
+                        $("msGMLOutput", response).each(function() {
+                            for (var layer_i in $(this)[0].children) {
+                                var layer = $(this)[0].children[layer_i];
+                                var layer_name = "";
+                                if (typeof layer.children == 'undefined') continue;
+                                for (var feature_i = 0; feature_i < layer.children.length; feature_i++) {
+                                    var feature = layer.children[feature_i];
+                                    if (feature.nodeName == "gml:name") {
+                                        layer_name = feature.innerHTML;
+                                    } else {
+                                        var group = {
+                                            name: layer_name + " Feature",
+                                            attributes: []
+                                        };
 
+                                        for (var attribute in feature.children) {
+                                            if (feature.children[attribute].childElementCount == 0) {
+                                                group.attributes.push({
+                                                    "name": feature.children[attribute].localName,
+                                                    "value": feature.children[attribute].innerHTML
+                                                });
+                                                something_updated = true;
+                                            }
+                                        }
+                                        if (something_updated)
+                                            InfoPanelService.groups.push(group);
+                                    }
 
-                    })
-                    if (something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
+                                }
+                            }
+                        })
+                        if (something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
+                    }
+
+                    if (info_format.indexOf("html") > 0) {
+                        if(response.length<=1) return;
+                        var pop_div = document.createElement('div');
+                        document.getElementsByTagName('body')[0].appendChild(pop_div);
+                        var popup = new ol.Overlay({
+                            element: pop_div
+                        });
+                        OlMap.map.addOverlay(popup);
+                        var element = popup.getElement();
+                        var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
+                        var content = close_button + '<iframe width=400 height=300 style="border:0"></iframe>';
+                        $(element).popover({
+                            'placement': 'top',
+                            'animation': false,
+                            'html': true,
+                            'content': content
+                        });
+
+                        popup.setPosition(coordinate);
+                        $(element).popover('show');
+                        
+                        $('iframe').get()[0].contentWindow.document.write(response);
+                        $('iframe').get()[0].width =  $('iframe').get()[0].contentWindow.document.body.offsetWidth;
+                        $('iframe').get()[0].height =  $('iframe').get()[0].contentWindow.document.body.offsetHeight;
+                        
+                        $('.close', element.nextElementSibling).click(function() {
+                            $(element).popover('hide');
+                        });
+                    }
                 }
 
                 $scope.InfoPanelService = InfoPanelService;
@@ -244,7 +277,9 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             });
                         if (url) {
                             if (console) console.log(url);
-                            WmsGetFeatureInfo.request(url);
+                            if (source.getParams().INFO_FORMAT.indexOf('xml') > 0 || source.getParams().INFO_FORMAT.indexOf('html') > 0) {
+                                WmsGetFeatureInfo.request(url, source.getParams().INFO_FORMAT, coordinate);
+                            }
                         }
                     }
                 }
