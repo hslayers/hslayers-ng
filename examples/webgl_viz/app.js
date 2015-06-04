@@ -18,17 +18,18 @@ define(['ol',
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
-            'hs.geolocation']);
+            'hs.geolocation', 'hs.widgets.chart_panel']);
 
         module.directive('hs', ['OlMap', 'Core', '$compile', 'webgl_viz', function(OlMap, Core, $compile, webgl_viz) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullscreenMap(element);
+                    $("#right-pane", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
+                    $("#right-pane", element).attr('class', 'col-md-5');
                     //webgl_viz.webgl_el = $compile('<canvas id="webglayer"></canvas>')(scope);
                     //element.append(webgl_viz.webgl_el);
                     webgl_viz.init();
-                    //$("#right-pane", element).append($compile('<div yearselector ng-controller="YearSelector"></div>')(scope));
                 }
             };
         }]);
