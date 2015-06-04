@@ -1,9 +1,9 @@
 'use strict';
 
 var hsl_path = '../../';
-//var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-gl-filter2/js/'; //http://localhost:9999/js/webglayer/js/
+var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-gl-filter2/js/'; //http://localhost:9999/js/webglayer/js/
 
-var jans_path = 'http://localhost:9999/js/webglayer/js/';
+//var jans_path = 'http://localhost:9999/js/webglayer/js/';
 
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
