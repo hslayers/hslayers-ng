@@ -8,24 +8,24 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 view: default_view
             });
             
-            var duration = 400;
+            this.duration = 400;
 
             this.interactions = {                
                 'DoubleClickZoom': new ol.interaction.DoubleClickZoom({
-                    duration: duration
+                    duration: this.duration
                 }),
                 'KeyboardPan': new ol.interaction.KeyboardPan({
                     pixelDelta: 256
                 }),
                 'KeyboardZoom': new ol.interaction.KeyboardZoom({
-                    duration: duration
+                    duration: this.duration
                 }),
                 'MouseWheelZoom': new ol.interaction.MouseWheelZoom({
-                    duration: duration
+                    duration: this.duration
                 }),
                 'PinchRotate': new ol.interaction.PinchRotate(),
                 'PinchZoom': new ol.interaction.PinchZoom({
-                    duration: duration
+                    duration: this.duration
                 }),
                 'DragPan': new ol.interaction.DragPan({
                     kinetic: new ol.Kinetic(-0.01, 0.1, 200)
