@@ -94,30 +94,41 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     //if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
                     if (Core.mainpanel == 'measure') return;
+                    $scope.$emit('infopanel.feature_selected', e.element);  
+                    if(e.element.get('hs_notqueryable')) return;                    
+                    getFeatureAttributes(e.element);
+                });
+                
+                selector.getFeatures().on('remove', function(e) {
+                    if (Core.mainpanel == 'measure') return;
+                    $scope.$emit('infopanel.feature_deselected', e.element);  
+                })
+                       
+                var getFeatureAttributes = function(feature){
                     var attributes = [];
                     var groups_added = false;
-                    e.element.getKeys().forEach(function(key) {
+                    feature.getKeys().forEach(function(key) {
                         if (key == 'gid' || key == 'geometry') return;
                         if (key == "features") {
-                            for (var feature in e.element.get('features')) {
+                            for (var feature in feature.get('sub_features')) {
                                 var hstemplate = null;
-                                if (e.element.get('features')[feature].get('hstemplate')) hstemplate = e.element.get('features')[feature].get('hstemplate');
+                                if (feature.get('sub_features')[sub_feature].get('hstemplate')) hstemplate = feature.get('sub_features')[sub_feature].get('hstemplate');
                                 var group = {
                                     name: "Feature",
                                     attributes: [],
                                     hstemplate: hstemplate
                                 };
-                                e.element.get('features')[feature].getKeys().forEach(function(key) {
+                                feature.get('sub_features')[sub_feature].getKeys().forEach(function(key) {
                                     if (key == 'gid' || key == 'geometry') return;
-                                    if (typeof e.element.get('features')[feature].get(key) == "String") {
+                                    if (typeof feature.get('sub_features')[sub_feature].get(key) == "String") {
                                         group.attributes.push({
                                             name: key,
-                                            value: $sce.trustAsHtml(e.element.get('features')[feature].get(key))
+                                            value: $sce.trustAsHtml(feature.get('sub_features')[sub_feature].get(key))
                                         });
                                     } else {
                                         group.attributes.push({
                                             name: key,
-                                            value: e.element.get('features')[feature].get(key)
+                                            value: feature.get('sub_features')[sub_feature].get(key)
                                         });
                                     }
                                 })
@@ -127,7 +138,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         } else {
                             var obj = {
                                 name: key,
-                                value: $sce.trustAsHtml(e.element.get(key))
+                                value: $sce.trustAsHtml(feature.get(key))
                             };
                             attributes.push(obj)
                         };
@@ -136,7 +147,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     InfoPanelService.setAttributes(attributes);
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
                     vectors_selected = true;
-                })
+                }
 
                 WmsGetFeatureInfo.featureInfoReceived = function(response, info_format, url, coordinate) {
                     /* Maybe this will work in future OL versions
