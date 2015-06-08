@@ -214,7 +214,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
 
                 var show_location_weather = true;
                 $scope.$on('map_clicked', function(event, data) {
-                    if(!show_location_weather) return;
+                    if (!show_location_weather) return;
                     var coordinate = data.coordinate;
                     var lon_lat = ol.proj.transform(
                         coordinate, 'EPSG:3857', 'EPSG:4326');

@@ -32,8 +32,8 @@ require.config({
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
         dimension: jans_path + '/Dimension',
-        glutils:  jans_path + 'GLUtils',
-        manager:  jans_path + 'Manager',
+        glutils: jans_path + 'GLUtils',
+        manager: jans_path + 'Manager',
         mapcontroller: jans_path + 'MapController',
         heatmapdimension: jans_path + 'HeatMapDimension',
         stackedbarchart: jans_path + 'StackedBarChart',
@@ -46,8 +46,8 @@ require.config({
         ol: hsl_path + 'lib/ol3/ol-full',
         wgl: 'webglinit',
         chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel',
-      
-        
+
+
     },
     shim: {
         d3: {
@@ -64,7 +64,7 @@ require.config({
 window.name = "NG_DEFER_BOOTSTRAP!";
 
 require(['core'], function(app) {
-	
+
     require(['app'], function(app) {
         var $html = angular.element(document.getElementsByTagName('html')[0]);
         angular.element().ready(function() {

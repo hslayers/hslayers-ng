@@ -7,10 +7,10 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 interactions: [],
                 view: default_view
             });
-            
+
             this.duration = 400;
 
-            this.interactions = {                
+            this.interactions = {
                 'DoubleClickZoom': new ol.interaction.DoubleClickZoom({
                     duration: this.duration
                 }),
@@ -51,7 +51,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
     .controller('Map', ['$scope', 'OlMap', 'default_layers', 'default_view', 'BrowserUrlService',
         function($scope, OlMap, default_layers, default_view, bus) {
             var map = OlMap.map;
-  
+
             $scope.moveToAndZoom = function(x, y, zoom) {
                 var view = OlMap.map.getView();
                 view.setCenter([x, y]);

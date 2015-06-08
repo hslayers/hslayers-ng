@@ -111,9 +111,9 @@ define(['angular', 'ol', 'map'],
                         var keyword_filter = "";
                         var selected = [];
                         angular.forEach($scope.keywords, function(value, key) {
-                            if(value) selected.push("subject='" + key + "'");
+                            if (value) selected.push("subject='" + key + "'");
                         });
-                        if(selected.length>0)
+                        if (selected.length > 0)
                             keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
                         var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication%20AND%20BBOX%3D%27-135.70312477249308%2C20.84649058320339%2C164.8828126856566%2C73.109630112712%27" + text_filter + keyword_filter + "&lang=eng&session=save&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
@@ -129,9 +129,9 @@ define(['angular', 'ol', 'map'],
                                     for (var i = 1; i <= Math.ceil(response.matched / $scope.page_size); i++)
                                         $scope.pages.push(i);
                                 }
-                                $(response.records).each(function(){
+                                $(response.records).each(function() {
                                     var attributes = {};
-                                     var b = this.bbox.split(" ");
+                                    var b = this.bbox.split(" ");
                                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
                                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
                                     first_pair = ol.proj.transform(first_pair, 'EPSG:4326', 'EPSG:3857');
@@ -144,7 +144,7 @@ define(['angular', 'ol', 'map'],
                                 $('[data-toggle="tooltip"]').tooltip();
                             })
                     }
-                    
+
                     var extent_layer = new ol.layer.Vector({
                         title: "Composition extents",
                         show_in_manager: false,
@@ -161,7 +161,7 @@ define(['angular', 'ol', 'map'],
                             })]
                         }
                     });
-                    
+
                     OlMap.map.addLayer(extent_layer);
 
                     $scope.loadComposition = composition_parser.load;

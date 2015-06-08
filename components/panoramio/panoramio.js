@@ -62,9 +62,9 @@ define(['angular', 'ol', 'app', 'map'],
                             }
                             var max_pop = 0;
                             var max_pop_i = 0;
-                            for(var i=0; i<feature.get('features').length; i++){
+                            for (var i = 0; i < feature.get('features').length; i++) {
                                 var pop = feature.get('features')[i].get('popularity');
-                                if (pop>max_pop){
+                                if (pop > max_pop) {
                                     max_pop = pop;
                                     max_pop_i = i;
                                 }

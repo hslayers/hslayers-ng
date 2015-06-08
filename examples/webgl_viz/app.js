@@ -1,18 +1,19 @@
 'use strict';
 
-define(['ol', 
-        'toolbar', 
-        'layermanager', 
-        'WfsSource', 'query', 
-        'search', 
-        'print', 
-        'permalink', 
-        'measure', 
-        'geolocation', 
-        'api', 
-        'glutils','wgl','manager','mapcontroller','dataloader','d3','dimension',
-        'heatmapdimension','chart_panel', 'stackedbarchart','histogramdimension',
-        'floatrasterreader','histfilterrender','filter', 'multibrush'],
+define(['ol',
+        'toolbar',
+        'layermanager',
+        'WfsSource', 'query',
+        'search',
+        'print',
+        'permalink',
+        'measure',
+        'geolocation',
+        'api',
+        'glutils', 'wgl', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
+        'heatmapdimension', 'chart_panel', 'stackedbarchart', 'histogramdimension',
+        'floatrasterreader', 'histfilterrender', 'filter', 'multibrush'
+    ],
 
     function(ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -20,7 +21,8 @@ define(['ol',
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
-            'hs.geolocation', 'hs.widgets.chart_panel']);
+            'hs.geolocation', 'hs.widgets.chart_panel'
+        ]);
 
         module.directive('hs', ['OlMap', 'Core', '$compile', 'webgl_viz', function(OlMap, Core, $compile, webgl_viz) {
             return {
@@ -35,16 +37,20 @@ define(['ol',
                 }
             };
         }]);
-        
+
         module.service('webgl_viz', ['OlMap', function(OlMap) {
-        	OlMap.map.removeInteraction(OlMap.interactions.DragPan);
-            OlMap.interactions.DragPan = new ol.interaction.DragPan({kinetic: false});
+            OlMap.map.removeInteraction(OlMap.interactions.DragPan);
+            OlMap.interactions.DragPan = new ol.interaction.DragPan({
+                kinetic: false
+            });
             OlMap.map.addInteraction(OlMap.interactions.DragPan);
-          
+
             var me = {
                 map: OlMap.map,
                 ol: ol,
-                init: function(){wgl(this);}
+                init: function() {
+                    wgl(this);
+                }
             };
 
             return me;
@@ -72,11 +78,11 @@ define(['ol',
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                
-                var map = OlMap.map;                
+
+                var map = OlMap.map;
                 $scope.$on('infopanel.updated', function(event) {});
-                  
-              
+
+
             }
         ]);
 

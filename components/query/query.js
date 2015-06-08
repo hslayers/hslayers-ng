@@ -203,26 +203,26 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     }
 
                     if (info_format.indexOf("html") > 0) {
-                        if(response.length<=1) return;
+                        if (response.length <= 1) return;
                         createFeatureInfoPopupIfNeeded(coordinate);
 
                         $(popup.getElement()).popover('show');
-                        
+
                         var $iframe = $('.getfeatureinfo_popup').get()[0];
                         $iframe.contentWindow.document.write(response);
-                        $iframe.width =  $iframe.contentWindow.document.body.scrollWidth + 20;
-                        $iframe.height = $iframe.contentWindow.document.body.scrollHeight + 20;  
-                        
+                        $iframe.width = $iframe.contentWindow.document.body.scrollWidth + 20;
+                        $iframe.height = $iframe.contentWindow.document.body.scrollHeight + 20;
+
                         $('.close', popup.getElement().nextElementSibling).click(function() {
                             $(popup.getElement()).popover('hide');
-                        }); 
+                        });
                         popup.setPosition(coordinate);
                     }
                 }
-                
+
                 var popup = null;
-                var createFeatureInfoPopupIfNeeded = function(coordinate){
-                    if($('.getfeatureinfo_popup').length>0) return;
+                var createFeatureInfoPopupIfNeeded = function(coordinate) {
+                    if ($('.getfeatureinfo_popup').length > 0) return;
                     var pop_div = document.createElement('div');
                     document.getElementsByTagName('body')[0].appendChild(pop_div);
                     popup = new ol.Overlay({
@@ -242,7 +242,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     });
                     $(element).popover('show');
                     popup.setPosition(coordinate);
-                    
+
                 }
 
                 $scope.InfoPanelService = InfoPanelService;
