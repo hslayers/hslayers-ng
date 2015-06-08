@@ -104,6 +104,7 @@ define(['angular', 'ol', 'map'],
                         if (typeof page === 'undefined') page = 1;
                         if ($scope.page_count == 0) $scope.page_count = 1;
                         if (page == 0 || page > $scope.page_count) return;
+                        extent_layer.getSource().clear();
                         $scope.current_page = page;
                         $scope.first_composition_ix = (page - 1) * $scope.page_size;
                         var text_filter = $scope.query && $scope.query.title != '' ? encodeURIComponent(" AND AnyText like '*" + $scope.query.title + "*'") : '';
@@ -128,10 +129,40 @@ define(['angular', 'ol', 'map'],
                                     for (var i = 1; i <= Math.ceil(response.matched / $scope.page_size); i++)
                                         $scope.pages.push(i);
                                 }
+                                $(response.records).each(function(){
+                                    var attributes = {};
+                                     var b = this.bbox.split(" ");
+                                    var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
+                                    var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
+                                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', 'EPSG:3857');
+                                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', 'EPSG:3857');
+                                    var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                                    attributes.geometry = ol.geom.Polygon.fromExtent(extent);
+                                    extent_layer.getSource().addFeatures([new ol.Feature(attributes)]);
+                                })
                                 if (!$scope.$$phase) $scope.$digest();
                                 $('[data-toggle="tooltip"]').tooltip();
                             })
                     }
+                    
+                    var extent_layer = new ol.layer.Vector({
+                        title: "Composition extents",
+                        show_in_manager: false,
+                        source: new ol.source.Vector(),
+                        style: function(feature, resolution) {
+                            return [new ol.style.Style({
+                                stroke: new ol.style.Stroke({
+                                    color: '#005CB6',
+                                    width: 1
+                                }),
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(0, 0, 255, 0.01)'
+                                })
+                            })]
+                        }
+                    });
+                    
+                    OlMap.map.addLayer(extent_layer);
 
                     $scope.loadComposition = composition_parser.load;
                     $scope.loadCompositions();
