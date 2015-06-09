@@ -78,7 +78,7 @@ define(['angular', 'ol', 'map'],
             .controller('Compositions', ['$scope', '$rootScope', 'OlMap', 'Core', 'composition_parser',
                 function($scope, $rootScope, OlMap, Core, composition_parser) {
                     $scope.$emit('scope_loaded', "Compositions");
-                    $scope.page_size = 25;
+                    $scope.page_size = 15;
                     $scope.page_count = 1000;
                     $scope.keywords = {
                         "Basemap": false,
@@ -130,7 +130,7 @@ define(['angular', 'ol', 'map'],
                                         $scope.pages.push(i);
                                 }
                                 $(response.records).each(function() {
-                                    var attributes = {record: this, hs_notqueryable: true};
+                                    var attributes = {record: this, hs_notqueryable: true, highlighted: false};
                                     var b = this.bbox.split(" ");
                                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
                                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
@@ -138,11 +138,17 @@ define(['angular', 'ol', 'map'],
                                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', 'EPSG:3857');
                                     var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                                     attributes.geometry = ol.geom.Polygon.fromExtent(extent);
-                                    extent_layer.getSource().addFeatures([new ol.Feature(attributes)]);
+                                    var new_feature = new ol.Feature(attributes);
+                                    this.feature = new_feature;
+                                    extent_layer.getSource().addFeatures([new_feature]);
                                 })
                                 if (!$scope.$$phase) $scope.$digest();
                                 $('[data-toggle="tooltip"]').tooltip();
                             })
+                    }
+                    
+                    $scope.highlightComposition = function(composition, state){
+                        composition.feature.set('highlighted', state)
                     }
                     
                     OlMap.map.on('pointermove', function(evt) {
@@ -173,7 +179,7 @@ define(['angular', 'ol', 'map'],
                             return [new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: '#005CB6',
-                                    width: 1
+                                    width: feature.get('highlighted') ? 4 : 1
                                 }),
                                 fill: new ol.style.Fill({
                                     color: 'rgba(0, 0, 255, 0.01)'
