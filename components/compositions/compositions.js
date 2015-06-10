@@ -130,7 +130,11 @@ define(['angular', 'ol', 'map'],
                                         $scope.pages.push(i);
                                 }
                                 $(response.records).each(function() {
-                                    var attributes = {record: this, hs_notqueryable: true, highlighted: false};
+                                    var attributes = {
+                                        record: this,
+                                        hs_notqueryable: true,
+                                        highlighted: false
+                                    };
                                     var b = this.bbox.split(" ");
                                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
                                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
@@ -146,31 +150,31 @@ define(['angular', 'ol', 'map'],
                                 $('[data-toggle="tooltip"]').tooltip();
                             })
                     }
-                    
-                    $scope.highlightComposition = function(composition, state){
+
+                    $scope.highlightComposition = function(composition, state) {
                         composition.feature.set('highlighted', state)
                     }
-                    
+
                     OlMap.map.on('pointermove', function(evt) {
                         var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                         var something_done = false;
-                        $(extent_layer.getSource().getFeatures()).each(function(){
-                            if(this.get("record").highlighted) {
+                        $(extent_layer.getSource().getFeatures()).each(function() {
+                            if (this.get("record").highlighted) {
                                 this.get("record").highlighted = false;
                                 something_done = true;
                             }
                         });
                         if (features.length) {
-                            $(features).each(function(){
-                                if(!this.get("record").highlighted) {
+                            $(features).each(function() {
+                                if (!this.get("record").highlighted) {
                                     this.get("record").highlighted = true;
                                     something_done = true;
                                 }
                             })
                         }
-                        if(something_done && !$scope.$$phase) $scope.$digest();
+                        if (something_done && !$scope.$$phase) $scope.$digest();
                     });
-                    
+
                     var extent_layer = new ol.layer.Vector({
                         title: "Composition extents",
                         show_in_manager: false,

@@ -94,17 +94,17 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     //if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
                     if (Core.mainpanel == 'measure') return;
-                    $scope.$emit('infopanel.feature_selected', e.element);  
-                    if(e.element.get('hs_notqueryable')) return;                    
+                    $scope.$emit('infopanel.feature_selected', e.element);
+                    if (e.element.get('hs_notqueryable')) return;
                     getFeatureAttributes(e.element);
                 });
-                
+
                 selector.getFeatures().on('remove', function(e) {
                     if (Core.mainpanel == 'measure') return;
-                    $scope.$emit('infopanel.feature_deselected', e.element);  
+                    $scope.$emit('infopanel.feature_deselected', e.element);
                 })
-                       
-                var getFeatureAttributes = function(feature){
+
+                var getFeatureAttributes = function(feature) {
                     var attributes = [];
                     var groups_added = false;
                     feature.getKeys().forEach(function(key) {

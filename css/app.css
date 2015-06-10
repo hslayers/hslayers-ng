@@ -82,12 +82,12 @@ hr {
 .layer-checked, .layer-more, .datasource_addlayer{
     width: 20px;
     height: 21px;
-    float:right;
+    float: right;
     font-size: 19pt;
 }
 
 .datasource_addlayer, .layer-more{
-    margin-top: -8px;
+    /*margin-top: -8px;*/
     margin-left: 4px;
     margin-right: 4px;
 }

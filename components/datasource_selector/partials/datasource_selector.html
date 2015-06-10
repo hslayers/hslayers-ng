@@ -6,16 +6,15 @@
         </button>
     </div>
     <div class="panel-body">
-        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.description"></p>
+        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
             
         <ul ng-repeat="ds in datasets" class="list-group">
             <a href="#" class="list-group-item active">
                 <h4 class="list-group-item-heading">{{ds.title}}</h4>
             </a>
             <li ng-repeat="layer in ds.layers | filter:query" class="list-group-item">
-                <h4 class="list-group-item-heading">{{layer.title}}</h4>
+                <h4 class="list-group-item-heading datasources_item">{{layer.title}}<a href="#" class="datasource_addlayer" ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a></h4>
                 {{layer.description}}
-                <a href="#" class="datasource_addlayer" ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
             </li>
         </ul>
     </div>

@@ -30,24 +30,49 @@ define(['angular', 'ol', 'map'],
                 $scope.loadDatasets = function(datasets) {
                     $scope.datasets = datasets;
                     for (var ds in $scope.datasets) {
-                        var url = window.escape($scope.datasets[ds].url);
-                        $.ajax({
-                            url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
-                            cache: false,
-                            dataType: "json",
-                            success: function(j) {
-                                $scope.datasets[ds].layers = [];
-                                $scope.datasets[ds].loaded = true;
-                                for (var lyr in j) {
-                                    if (j[lyr].keywords && j[lyr].keywords.indexOf("kml") > -1) {
-                                        var obj = j[lyr];
-                                        obj.path = lyr;
-                                        $scope.datasets[ds].layers.push(obj);
+                        switch ($scope.datasets[ds].type) {
+                            case "datatank":
+                                var url = encodeURIComponent($scope.datasets[ds].url);
+                                $.ajax({
+                                    url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                                    cache: false,
+                                    dataType: "json",
+                                    ds: ds,
+                                    success: function(j) {
+                                        $scope.datasets[this.ds].layers = [];
+                                        $scope.datasets[this.ds].loaded = true;
+                                        for (var lyr in j) {
+                                            if (j[lyr].keywords && j[lyr].keywords.indexOf("kml") > -1) {
+                                                var obj = j[lyr];
+                                                obj.path = lyr;
+                                                $scope.datasets[this.ds].layers.push(obj);
+                                            }
+                                        }
+                                        if (!$scope.$$phase) $scope.$digest();
                                     }
-                                }
-                                if (!$scope.$$phase) $scope.$digest();
-                            }
-                        });
+                                });
+                                break;
+                            case "micka":
+                                var url = encodeURIComponent($scope.datasets[ds].url + '?request=GetRecords&format=application/json&language=cze&query=AnyText%20like%20%27*geol*%27%20and%20BBOX%3D%2712.156%2044.5%2027.098%2053.149%27');
+                                $.ajax({
+                                    url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                                    cache: false,
+                                    dataType: "json",
+                                    ds: ds,
+                                    success: function(j) {
+                                        $scope.datasets[this.ds].layers = [];
+                                        $scope.datasets[this.ds].loaded = true;
+                                        for (var lyr in j.records) {
+                                            if (j.records[lyr]) {
+                                                var obj = j.records[lyr];
+                                                $scope.datasets[this.ds].layers.push(obj);
+                                            }
+                                        }
+                                        if (!$scope.$$phase) $scope.$digest();
+                                    }
+                                });
+                                break;
+                        }
                     }
                 }
 
@@ -86,6 +111,10 @@ define(['angular', 'ol', 'map'],
                     title: "Datatank",
                     url: "http://ewi.mmlab.be/otn/api/info",
                     type: "datatank"
+                }, {
+                    title: "Micka",
+                    url: "http://dev.bnhelp.cz/projects/metadata/trunk/csw/",
+                    type: "micka"
                 }]);
                 $scope.$emit('scope_loaded', "DatasourceSelector");
             }
