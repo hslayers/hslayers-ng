@@ -26,10 +26,10 @@ define(['angular', 'ol'],
 
                     this.requestGetCapabilities = function(service_url, callback) {
                         if (callback) {
-                            var url = window.escape(service_url + "?request=GetCapabilities&service=WMS");
+                            var url = window.escape(service_url + (service_url.indexOf('?')>0 ? '' : '?') + "request=GetCapabilities&service=WMS");
                             $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(callback);
                         } else { // This block is used just to link together Ows and OwsWms controllers
-                            var url = window.escape(service_url + "?request=GetCapabilities&service=WMS");
+                            var url = window.escape(service_url + (service_url.indexOf('?')>0 ? '' : '?') + "request=GetCapabilities&service=WMS");
                             $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(function(resp) {
                                 $(callbacks).each(function() {
                                     this(resp)
@@ -311,13 +311,17 @@ define(['angular', 'ol'],
       })],
       params: params,
     }); */
+                        var attributions = [];
+                        if(layer.Attribution){
+                            attributions = [new ol.Attribution({
+                                    html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
+                                })]
+                        }
                         var new_layer = new ol.layer.Tile({
                             title: layerName,
                             source: new ol.source.TileWMS({
                                 url: $scope.getMapUrl,
-                                attributions: [new ol.Attribution({
-                                    html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
-                                })],
+                                attributions: attributions,
                                 styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                                 params: {
                                     LAYERS: layer.Name,

@@ -8,8 +8,8 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-        .controller('DatasourceSelector', ['$scope', 'OlMap',
-            function($scope, OlMap) {
+        .controller('DatasourceSelector', ['$scope', 'OlMap', 'Core', 'OwsWmsCapabilities',
+            function($scope, OlMap, Core, OwsWmsCapabilities) {
                 var map = OlMap.map;
                 var default_style = new ol.style.Style({
                     image: new ol.style.Icon({
@@ -53,7 +53,7 @@ define(['angular', 'ol', 'map'],
                                 });
                                 break;
                             case "micka":
-                                var url = encodeURIComponent($scope.datasets[ds].url + '?request=GetRecords&format=application/json&language=cze&query=AnyText%20like%20%27*geol*%27%20and%20BBOX%3D%2712.156%2044.5%2027.098%2053.149%27');
+                                var url = encodeURIComponent($scope.datasets[ds].url + '?request=GetRecords&format=application/json&language='+$scope.datasets[ds].language+'&query=AnyText%20like%20%27*geol*%27%20and%20BBOX%3D%2712.156%2044.5%2027.098%2053.149%27');
                                 $.ajax({
                                     url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
                                     cache: false,
@@ -105,6 +105,12 @@ define(['angular', 'ol', 'map'],
 
                         }
                     }
+                    if (ds.type == "micka") {
+                        if(layer.trida == 'service' && (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS')){
+                            Core.setMainPanel('ows');
+                            hslayers_api.gui.Ows.setUrlAndConnect(layer.link);
+                        }
+                    }
                 }
 
                 $scope.loadDatasets([{
@@ -114,6 +120,7 @@ define(['angular', 'ol', 'map'],
                 }, {
                     title: "Micka",
                     url: "http://dev.bnhelp.cz/projects/metadata/trunk/csw/",
+                    language: 'cze',
                     type: "micka"
                 }]);
                 $scope.$emit('scope_loaded', "DatasourceSelector");

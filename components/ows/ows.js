@@ -16,6 +16,10 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                     $scope.image_formats = [];
                     $scope.query_formats = [];
                     $scope.tile_size = 512;
+                    $scope.setUrlAndConnect = function(url){
+                        $scope.url = url;
+                        $scope.connect();
+                    }
                     $scope.connect = function() {
                         switch ($scope.type.toLowerCase()) {
                             case "kml":
