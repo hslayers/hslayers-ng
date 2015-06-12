@@ -11,6 +11,22 @@ define(['angular', 'ol', 'map'],
         .controller('DatasourceSelector', ['$scope', 'OlMap', 'Core', 'OwsWmsCapabilities',
             function($scope, OlMap, Core, OwsWmsCapabilities) {
                 var map = OlMap.map;
+                var extent_layer = new ol.layer.Vector({
+                    title: "Datasources extents",
+                    show_in_manager: false,
+                    source: new ol.source.Vector(),
+                    style: function(feature, resolution) {
+                        return [new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: '#005CB6',
+                                width: feature.get('highlighted') ? 4 : 1
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0, 0, 255, 0.01)'
+                            })
+                        })]
+                    }
+                });
                 var default_style = new ol.style.Style({
                     image: new ol.style.Icon({
                         src: 'http://ewi.mmlab.be/otn/api/info/../../js/images/marker-icon.png',
@@ -29,6 +45,7 @@ define(['angular', 'ol', 'map'],
 
                 $scope.loadDatasets = function(datasets) {
                     $scope.datasets = datasets;
+                    extent_layer.getSource().clear();
                     for (var ds in $scope.datasets) {
                         switch ($scope.datasets[ds].type) {
                             case "datatank":
@@ -66,6 +83,7 @@ define(['angular', 'ol', 'map'],
                                             if (j.records[lyr]) {
                                                 var obj = j.records[lyr];
                                                 $scope.datasets[this.ds].layers.push(obj);
+                                                addExtentFeature(obj);
                                             }
                                         }
                                         if (!$scope.$$phase) $scope.$digest();
@@ -75,7 +93,45 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
-
+                
+                var addExtentFeature = function(record){
+                    var attributes = {
+                        record: record,
+                        hs_notqueryable: true,
+                        highlighted: false
+                    };
+                    var b = record.bbox.split(" ");
+                    var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
+                    var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
+                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', 'EPSG:3857');
+                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', 'EPSG:3857');
+                    var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                    attributes.geometry = ol.geom.Polygon.fromExtent(extent);
+                    var new_feature = new ol.Feature(attributes);
+                    record.feature = new_feature;
+                    extent_layer.getSource().addFeatures([new_feature]);
+                }
+                
+                OlMap.map.on('pointermove', function(evt) {
+                    var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
+                    var something_done = false;
+                    $(extent_layer.getSource().getFeatures()).each(function() {
+                        if (this.get("record").highlighted) {
+                            this.get("record").highlighted = false;
+                            something_done = true;
+                        }
+                    });
+                    if (features.length) {
+                        $(features).each(function() {
+                            if (!this.get("record").highlighted) {
+                                this.get("record").highlighted = true;
+                                something_done = true;
+                            }
+                        })
+                    }
+                    if (something_done && !$scope.$$phase) $scope.$digest();
+                });
+                                    
                 $scope.setDefaultFeatureStyle = function(style) {
                     default_style = style;
                 }
@@ -112,6 +168,13 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
+                
+                $scope.highlightComposition = function(composition, state) {
+                    if(typeof composition.feature !== 'undefined')
+                        composition.feature.set('highlighted', state)
+                }
+
+                OlMap.map.addLayer(extent_layer);
 
                 $scope.loadDatasets([{
                     title: "Datatank",
@@ -120,7 +183,7 @@ define(['angular', 'ol', 'map'],
                 }, {
                     title: "Micka",
                     url: "http://dev.bnhelp.cz/projects/metadata/trunk/csw/",
-                    language: 'cze',
+                    language: 'eng',
                     type: "micka"
                 }]);
                 $scope.$emit('scope_loaded', "DatasourceSelector");
