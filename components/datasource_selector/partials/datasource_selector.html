@@ -12,8 +12,10 @@
             <a href="#" class="list-group-item active">
                 <h4 class="list-group-item-heading">{{ds.title}}</h4>
             </a>
-            <li ng-repeat="layer in ds.layers | filter:query" class="list-group-item">
-                <h4 class="list-group-item-heading datasources_item">{{layer.title}}<a href="#" class="datasource_addlayer" ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a></h4>
+            <li ng-repeat="layer in ds.layers | filter:query" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
+                <h4 class="list-group-item-heading datasources_item">{{layer.trida}} {{layer.title}}
+                    <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
+                </h4>
                 {{layer.description}}
             </li>
         </ul>
