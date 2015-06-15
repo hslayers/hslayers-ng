@@ -26,10 +26,10 @@ define(['angular', 'ol'],
 
                     this.requestGetCapabilities = function(service_url, callback) {
                         if (callback) {
-                            var url = window.escape(service_url + (service_url.indexOf('?')>0 ? '' : '?') + "request=GetCapabilities&service=WMS");
+                            var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
                             $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(callback);
                         } else { // This block is used just to link together Ows and OwsWms controllers
-                            var url = window.escape(service_url + (service_url.indexOf('?')>0 ? '' : '?') + "request=GetCapabilities&service=WMS");
+                            var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
                             $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(function(resp) {
                                 $(callbacks).each(function() {
                                     this(resp)
@@ -109,6 +109,10 @@ define(['angular', 'ol'],
                             $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
                             $scope.exceptions = caps.Capability.Exception;
                             $scope.srss = caps.Capability.Layer.CRS;
+                            if (currentProjectionSupported())
+                                $scope.srs = OlMap.map.getView().getProjection().getCode();
+                            else
+                                $scope.srs = $scope.srss[0];
                             $scope.services = caps.Capability.Layer;
                             $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
                             $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
@@ -312,20 +316,21 @@ define(['angular', 'ol'],
       params: params,
     }); */
                         var attributions = [];
-                        if(layer.Attribution){
+                        if (layer.Attribution) {
                             attributions = [new ol.Attribution({
-                                    html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
-                                })]
+                                html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
+                            })]
                         }
                         var new_layer = new ol.layer.Tile({
                             title: layerName,
                             source: new ol.source.TileWMS({
-                                url: $scope.getMapUrl,
+                                url: getUrl(),
                                 attributions: attributions,
                                 styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                                 params: {
                                     LAYERS: layer.Name,
-                                    INFO_FORMAT: (layer.queryable ? query_format : undefined)
+                                    INFO_FORMAT: (layer.queryable ? query_format : undefined),
+                                    FROMCRS: $scope.srs
                                 },
                                 crossOrigin: 'anonymous'
                             }),
@@ -337,6 +342,18 @@ define(['angular', 'ol'],
                         OlMap.map.addLayer(new_layer);
                     }
 
+                    var getUrl = function() {
+                        if (currentProjectionSupported()) return $scope.getMapUrl;
+                        else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent($scope.getMapUrl) + '&owsService=WMS';
+                    }
+
+                    var currentProjectionSupported = function() {
+                        var found = false;
+                        angular.forEach($scope.srss, function(key, val) {
+                            if (OlMap.map.getView().getProjection().getCode() == val) found = true;
+                        })
+                        return found;
+                    }
 
                 }
             ]);
