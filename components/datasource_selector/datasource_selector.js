@@ -105,8 +105,10 @@ define(['angular', 'ol', 'map'],
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
                     first_pair = ol.proj.transform(first_pair, 'EPSG:4326', 'EPSG:3857');
                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', 'EPSG:3857');
+                    if(isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
                     var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                     attributes.geometry = ol.geom.Polygon.fromExtent(extent);
+                    console.log(first_pair, second_pair);
                     var new_feature = new ol.Feature(attributes);
                     record.feature = new_feature;
                     extent_layer.getSource().addFeatures([new_feature]);
@@ -182,7 +184,7 @@ define(['angular', 'ol', 'map'],
                     type: "datatank"
                 }, {
                     title: "Micka",
-                    url: "http://dev.bnhelp.cz/projects/metadata/trunk/csw/",
+                    url: "http://cat.ccss.cz/csw/",
                     language: 'eng',
                     type: "micka"
                 }]);

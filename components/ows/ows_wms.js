@@ -17,8 +17,8 @@ define(['angular', 'ol'],
 
         angular.module('hs.ows.wms', [])
             //This is used to share map object between components.
-            .service("OwsWmsCapabilities", ['$http',
-                function($http) {
+            .service("OwsWmsCapabilities", ['$http', 'OlMap',
+                function($http, OlMap) {
                     var callbacks = [];
                     this.addHandler = function(f) {
                         callbacks.push(f);
@@ -81,6 +81,19 @@ define(['angular', 'ol'],
                         })
                         return tmp;
                     }
+                    
+                    this.getUrl = function(url, use_proxy) {
+                        if (typeof use_proxy == 'undefined' || !use_proxy) return url;
+                        else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent(url) + '&owsService=WMS';
+                    }
+
+                    this.currentProjectionSupported = function(srss) {
+                        var found = false;
+                        angular.forEach(srss, function(key, val) {
+                            if (OlMap.map.getView().getProjection().getCode() == val) found = true;
+                        })
+                        return found;
+                    }
 
                 }
             ])
@@ -109,7 +122,7 @@ define(['angular', 'ol'],
                             $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
                             $scope.exceptions = caps.Capability.Exception;
                             $scope.srss = caps.Capability.Layer.CRS;
-                            if (currentProjectionSupported())
+                            if (OwsWmsCapabilities.currentProjectionSupported($scope.srss))
                                 $scope.srs = OlMap.map.getView().getProjection().getCode();
                             else
                                 $scope.srs = $scope.srss[0];
@@ -324,7 +337,7 @@ define(['angular', 'ol'],
                         var new_layer = new ol.layer.Tile({
                             title: layerName,
                             source: new ol.source.TileWMS({
-                                url: getUrl(),
+                                url: OwsWmsCapabilities.getUrl($scope.getMapUrl, !OwsWmsCapabilities.currentProjectionSupported($scope.srss)),
                                 attributions: attributions,
                                 styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                                 params: {
@@ -342,18 +355,7 @@ define(['angular', 'ol'],
                         OlMap.map.addLayer(new_layer);
                     }
 
-                    var getUrl = function() {
-                        if (currentProjectionSupported()) return $scope.getMapUrl;
-                        else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent($scope.getMapUrl) + '&owsService=WMS';
-                    }
 
-                    var currentProjectionSupported = function() {
-                        var found = false;
-                        angular.forEach($scope.srss, function(key, val) {
-                            if (OlMap.map.getView().getProjection().getCode() == val) found = true;
-                        })
-                        return found;
-                    }
 
                 }
             ]);
