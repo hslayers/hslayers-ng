@@ -81,7 +81,7 @@ define(['angular', 'ol'],
                         })
                         return tmp;
                     }
-                    
+
                     this.getUrl = function(url, use_proxy) {
                         if (typeof use_proxy == 'undefined' || !use_proxy) return url;
                         else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent(url) + '&owsService=WMS';

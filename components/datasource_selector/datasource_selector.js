@@ -10,6 +10,9 @@ define(['angular', 'ol', 'map'],
 
         .controller('DatasourceSelector', ['$scope', 'OlMap', 'Core', 'OwsWmsCapabilities',
             function($scope, OlMap, Core, OwsWmsCapabilities) {
+                $scope.query = {
+                    title: ''
+                };
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
                     title: "Datasources extents",
@@ -50,7 +53,8 @@ define(['angular', 'ol', 'map'],
                         switch ($scope.datasets[ds].type) {
                             case "datatank":
                                 var url = encodeURIComponent($scope.datasets[ds].url);
-                                $.ajax({
+                                if(typeof $scope.datasets[ds].ajax_req != 'undefined') $scope.datasets[ds].ajax_req.abort();
+                                $scope.datasets[ds].ajax_req = $.ajax({
                                     url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
                                     cache: false,
                                     dataType: "json",
@@ -70,8 +74,11 @@ define(['angular', 'ol', 'map'],
                                 });
                                 break;
                             case "micka":
-                                var url = encodeURIComponent($scope.datasets[ds].url + '?request=GetRecords&format=application/json&language=' + $scope.datasets[ds].language + '&query=AnyText%20like%20%27*geol*%27%20and%20BBOX%3D%2712.156%2044.5%2027.098%2053.149%27');
-                                $.ajax({
+                                var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
+                                var bbox = "and BBOX='"+b[0]+" "+b[1]+" "+b[2]+" "+b[3]+"'";
+                                var url = encodeURIComponent($scope.datasets[ds].url + '?request=GetRecords&format=application/json&language=' + $scope.datasets[ds].language + '&query=AnyText%20like%20%27*' + $scope.query.title + '*%27%20');
+                                if(typeof $scope.datasets[ds].ajax_req != 'undefined') $scope.datasets[ds].ajax_req.abort();
+                                $scope.datasets[ds].ajax_req = $.ajax({
                                     url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
                                     cache: false,
                                     dataType: "json",
@@ -93,27 +100,26 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
-                
-                var addExtentFeature = function(record){
+
+                var addExtentFeature = function(record) {
                     var attributes = {
                         record: record,
                         hs_notqueryable: true,
                         highlighted: false
                     };
                     var b = record.bbox.split(" ");
-                    var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
+                    var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
                     first_pair = ol.proj.transform(first_pair, 'EPSG:4326', 'EPSG:3857');
                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', 'EPSG:3857');
-                    if(isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
+                    if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
                     var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                     attributes.geometry = ol.geom.Polygon.fromExtent(extent);
-                    console.log(first_pair, second_pair);
                     var new_feature = new ol.Feature(attributes);
                     record.feature = new_feature;
                     extent_layer.getSource().addFeatures([new_feature]);
                 }
-                
+
                 OlMap.map.on('pointermove', function(evt) {
                     var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                     var something_done = false;
@@ -133,7 +139,7 @@ define(['angular', 'ol', 'map'],
                     }
                     if (something_done && !$scope.$$phase) $scope.$digest();
                 });
-                                    
+
                 $scope.setDefaultFeatureStyle = function(style) {
                     default_style = style;
                 }
@@ -164,21 +170,26 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                     if (ds.type == "micka") {
-                        if (layer.trida == 'service' && (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS')) {
-                            Core.setMainPanel('ows');
-                            hslayers_api.gui.Ows.setUrlAndConnect(layer.link);
+                        if (layer.trida == 'service') {
+                            if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS') {
+                                Core.setMainPanel('ows');
+                                hslayers_api.gui.Ows.setUrlAndConnect(layer.link);
+                            } else {
+                                alert('Service type "' + layer.serviceType + '" not supported.');
+                            }
+                        } else {
+                            alert('Datasource type "' + layer.trida + '" not supported.');
                         }
                     }
                 }
-                
+
                 $scope.highlightComposition = function(composition, state) {
-                    if(typeof composition.feature !== 'undefined')
+                    if (typeof composition.feature !== 'undefined')
                         composition.feature.set('highlighted', state)
                 }
 
                 OlMap.map.addLayer(extent_layer);
-
-                $scope.loadDatasets([{
+                $scope.datasources = [{
                     title: "Datatank",
                     url: "http://ewi.mmlab.be/otn/api/info",
                     type: "datatank"
@@ -187,7 +198,9 @@ define(['angular', 'ol', 'map'],
                     url: "http://cat.ccss.cz/csw/",
                     language: 'eng',
                     type: "micka"
-                }]);
+                }];
+                
+                $scope.loadDatasets($scope.datasources);
                 $scope.$emit('scope_loaded', "DatasourceSelector");
             }
         ]);
