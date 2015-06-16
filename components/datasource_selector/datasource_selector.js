@@ -13,6 +13,7 @@ define(['angular', 'ol', 'map'],
                 $scope.query = {
                     title: ''
                 };
+                $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
                     title: "Datasources extents",
@@ -50,55 +51,75 @@ define(['angular', 'ol', 'map'],
                     $scope.datasets = datasets;
                     extent_layer.getSource().clear();
                     for (var ds in $scope.datasets) {
-                        switch ($scope.datasets[ds].type) {
-                            case "datatank":
-                                var url = encodeURIComponent($scope.datasets[ds].url);
-                                if(typeof $scope.datasets[ds].ajax_req != 'undefined') $scope.datasets[ds].ajax_req.abort();
-                                $scope.datasets[ds].ajax_req = $.ajax({
-                                    url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
-                                    cache: false,
-                                    dataType: "json",
-                                    ds: ds,
-                                    success: function(j) {
-                                        $scope.datasets[this.ds].layers = [];
-                                        $scope.datasets[this.ds].loaded = true;
-                                        for (var lyr in j) {
-                                            if (j[lyr].keywords && j[lyr].keywords.indexOf("kml") > -1) {
-                                                var obj = j[lyr];
-                                                obj.path = lyr;
-                                                $scope.datasets[this.ds].layers.push(obj);
-                                            }
-                                        }
-                                        if (!$scope.$$phase) $scope.$digest();
-                                    }
-                                });
-                                break;
-                            case "micka":
-                                var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                                var bbox = "and BBOX='"+b[0]+" "+b[1]+" "+b[2]+" "+b[3]+"'";
-                                var url = encodeURIComponent($scope.datasets[ds].url + '?request=GetRecords&format=application/json&language=' + $scope.datasets[ds].language + '&query=AnyText%20like%20%27*' + $scope.query.title + '*%27%20');
-                                if(typeof $scope.datasets[ds].ajax_req != 'undefined') $scope.datasets[ds].ajax_req.abort();
-                                $scope.datasets[ds].ajax_req = $.ajax({
-                                    url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
-                                    cache: false,
-                                    dataType: "json",
-                                    ds: ds,
-                                    success: function(j) {
-                                        $scope.datasets[this.ds].layers = [];
-                                        $scope.datasets[this.ds].loaded = true;
-                                        for (var lyr in j.records) {
-                                            if (j.records[lyr]) {
-                                                var obj = j.records[lyr];
-                                                $scope.datasets[this.ds].layers.push(obj);
-                                                addExtentFeature(obj);
-                                            }
-                                        }
-                                        if (!$scope.$$phase) $scope.$digest();
-                                    }
-                                });
-                                break;
-                        }
+                        $scope.datasets[ds].start = 0;
+                        $scope.loadDataset($scope.datasets[ds]);
                     }
+                }
+
+                $scope.loadDataset = function(ds) {
+                    angular.forEach(ds.layers, function(val) {
+                        extent_layer.getSource().removeFeature(val.feature);
+                    })
+                    switch (ds.type) {
+                        case "datatank":
+                            var url = encodeURIComponent(ds.url);
+                            if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
+                            ds.ajax_req = $.ajax({
+                                url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                                cache: false,
+                                dataType: "json",
+                                success: function(j) {
+                                    ds.layers = [];
+                                    ds.loaded = true;
+                                    ds.matched = j.length;
+                                    for (var lyr in j) {
+                                        if (j[lyr].keywords && j[lyr].keywords.indexOf("kml") > -1) {
+                                            var obj = j[lyr];
+                                            obj.path = lyr;
+                                            ds.layers.push(obj);
+                                        }
+                                    }
+                                    ds.matched = ds.layers.length;
+                                    if (!$scope.$$phase) $scope.$digest();
+                                }
+                            });
+                            break;
+                        case "micka":
+                            var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
+                            var bbox = "and BBOX='" + b[0] + " " + b[1] + " " + b[2] + " " + b[3] + "'";
+                            var url = encodeURIComponent(ds.url + '?request=GetRecords&format=application/json&language=' + ds.language + '&query=AnyText%20like%20%27*' + $scope.query.title + '*%27%20&limit=10&start=' + ds.start);
+                            if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
+                            ds.ajax_req = $.ajax({
+                                url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                                cache: false,
+                                dataType: "json",
+                                success: function(j) {
+                                    ds.layers = [];
+                                    ds.loaded = true;
+                                    ds.matched = j.matched;
+                                    ds.next = j.next;
+                                    for (var lyr in j.records) {
+                                        if (j.records[lyr]) {
+                                            var obj = j.records[lyr];
+                                            ds.layers.push(obj);
+                                            addExtentFeature(obj);
+                                        }
+                                    }
+                                    if (!$scope.$$phase) $scope.$digest();
+                                }
+                            });
+                            break;
+                    }
+                }
+
+                $scope.getPreviousRecords = function(ds) {
+                    ds.start -= 10;
+                    $scope.loadDataset(ds);
+                }
+
+                $scope.getNextRecords = function(ds) {
+                    ds.start = ds.next;
+                    $scope.loadDataset(ds);
                 }
 
                 var addExtentFeature = function(record) {
@@ -199,7 +220,7 @@ define(['angular', 'ol', 'map'],
                     language: 'eng',
                     type: "micka"
                 }];
-                
+
                 $scope.loadDatasets($scope.datasources);
                 $scope.$emit('scope_loaded', "DatasourceSelector");
             }
