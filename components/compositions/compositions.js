@@ -90,7 +90,6 @@ define(['angular', 'ol', 'map'],
 
         .controller('Compositions', ['$scope', '$rootScope', 'OlMap', 'Core', 'composition_parser',
             function($scope, $rootScope, OlMap, Core, composition_parser) {
-                $scope.$emit('scope_loaded', "Compositions");
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.keywords = {
@@ -207,6 +206,7 @@ define(['angular', 'ol', 'map'],
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }
+                $scope.$emit('scope_loaded', "Compositions");
             }
         ]);
 

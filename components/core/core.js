@@ -117,7 +117,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                         },
                         openStatusCreator: function() {
                             me.panel_statuses.status_creator = true;
-                            $('#status-creator-dialog').modal('show');
+                            hslayers_api.gui.StatusCreator.open();
                         }
                     };
 

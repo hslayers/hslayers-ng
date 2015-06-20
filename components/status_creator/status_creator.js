@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map'],
                         abstract: $scope.abstract,
                         title: $scope.title,
                         keywords: $scope.keywords,
-                        extent: [$scope.extent1, $scope.extent2, $scope.extent3, $scope.extent4],
+                        extent: $scope.bbox,
                         user: {
                             address: $scope.address,
                             city: $scope.city,
@@ -88,7 +88,7 @@ define(['angular', 'ol', 'map'],
                 /**
                  * Converts map layer from Layer object to text in JSON notation.
                  *
-                 * Syntactic sugar for layer2json() & OpenLayers.Format.JSON.write()
+                 * Syntactic sugar for layer2json()
                  *
                  * @param {Object} layer Layer to be converted
                  * @param {Boolean} Whether to use pretty notation
@@ -97,7 +97,7 @@ define(['angular', 'ol', 'map'],
                  */
                 layer2string: function(layer, pretty, saveAll) {
                     var json = me.layer2json(layer, saveAll);
-                    var text = me.JSON.write(json, pretty);
+                    var text = JSON.stringify(json, pretty);
                     return text;
                 },
 
@@ -121,7 +121,7 @@ define(['angular', 'ol', 'map'],
                  * @returns {Object} JSON object representing the layer
                  */
                 layer2json: function(layer, saveAll) {
-                    var json = {};
+                    var json = {metadata:{}};
                     if (!layer instanceof ol.layer.Layer) {
                         return;
                     }
@@ -129,6 +129,8 @@ define(['angular', 'ol', 'map'],
                     // Check if the layer is foreigner 
                     if (layer.get('saveState')) {
                         saveAll = true; // If so, make sure we save all the attributes
+                    } else {
+                        return; //RB. Dont process not foreign layers
                     }
 
                     // Common stuff 
@@ -191,8 +193,8 @@ define(['angular', 'ol', 'map'],
 
         .controller('StatusCreator', ['$scope', '$rootScope', 'OlMap', 'Core', 'status_creator',
             function($scope, $rootScope, OlMap, Core, status_creator) {
-                $scope.$emit('scope_loaded', "StatusCreator");
-
+                $scope.layers = [];
+                
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
                     var pair1 = [b[0], b[1]]
@@ -203,11 +205,27 @@ define(['angular', 'ol', 'map'],
                     $scope.bbox = [pair1[0].toFixed(8), pair1[1].toFixed(8), pair2[0].toFixed(8), pair2[1].toFixed(8)];
                 }
 
-                $scope.download = function() {
-                    if (console) console.log(status_creator.map2json(OlMap.map, $scope, false));
+                $scope.next = function() {
+                    if($('a[href=#author]').parent().hasClass('active')){
+                        var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope, false)));
+                        $('#stc-download').remove();
+                        $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
+                    } else {
+                        $('.stc-tabs li:eq(1) a').tab('show');
+                    }
+                }
+                
+                $scope.open = function(){
+                    $scope.layers = [];
+                    $scope.getCurrentExtent();
+                    OlMap.map.getLayers().forEach(function(lyr) {
+                        $scope.layers.push({title: lyr.get('title'), checked: lyr.get('saveState')});
+                    });
+                    $('#status-creator-dialog').modal('show');
                 }
 
                 $scope.getCurrentExtent();
+                $scope.$emit('scope_loaded', "StatusCreator");
             }
         ]);
 
