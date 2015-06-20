@@ -14,7 +14,7 @@ define(['angular'],
                 });
                 scope.unpinned = false;
                 scope.drag_panel = element;
-                $(".panel-heading", element).append($('<button>').attr('type', 'button').addClass('unpin').click(function() {
+                $(".panel-heading", element).append($('<button>').attr('type', 'button').addClass('but-title-sm').click(function() {
                         scope.unpinned = true;
                         $(".panel-heading", element).css('cursor', 'move');
                     })

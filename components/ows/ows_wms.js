@@ -340,6 +340,7 @@ define(['angular', 'ol'],
                                 url: OwsWmsCapabilities.getUrl($scope.getMapUrl, !OwsWmsCapabilities.currentProjectionSupported($scope.srss)),
                                 attributions: attributions,
                                 styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
+                                saveState: true,
                                 params: {
                                     LAYERS: layer.Name,
                                     INFO_FORMAT: (layer.queryable ? query_format : undefined),

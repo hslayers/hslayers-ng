@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'translations', 'compositions'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -12,7 +12,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
             'hs.legend', 'hs.geolocation', 'hs.core',
             'hs.api',
             'gettext',
-            'hs.compositions'
+            'hs.compositions', 'hs.status_creator'
         ]);
 
         module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
@@ -28,7 +28,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
 
         module.value('default_layers', [
             new ol.layer.Tile({
-                source: new ol.source.OSM(),
+                source: new ol.source.OSM({wrapX:false}),
                 title: "Base layer",
                 box_id: 'osm',
                 base: true

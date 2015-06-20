@@ -8,6 +8,7 @@ require.config({
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
         compositions: hsl_path + 'components/compositions/compositions',
+        status_creator: hsl_path + 'components/status_creator/status_creator'
     },
     shim: {
         'angular': {
@@ -36,6 +37,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                     var me = {
                         scopes_registered: [],
                         mainpanel: "",
+                        panel_statuses: {},
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) which = "";
                             me.mainpanel = which;
@@ -44,6 +46,9 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                         },
                         panelVisible: function(which, scope) {
                             if (typeof scope.panel_name == 'undefined') scope.panel_name = which;
+                            if (typeof me.panel_statuses[which] !== 'undefined') {
+                                return me.panel_statuses[which];
+                            }
                             return me.mainpanel == which || scope.unpinned;
                         },
                         hidePanels: function() {
@@ -109,6 +114,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                                 return scopes;
                             }
                             return getScopes($rootScope);
+                        },
+                        openStatusCreator: function() {
+                            me.panel_statuses.status_creator = true;
+                            $('#status-creator-dialog').modal('show');
                         }
                     };
 

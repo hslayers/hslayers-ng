@@ -6,8 +6,9 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             };
         })
 
-    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', '$rootScope',
-        function($scope, OlMap, box_layers, $rootScope) {
+    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', '$rootScope', 'Core',
+        function($scope, OlMap, box_layers, $rootScope, Core) {
+            $scope.Core = Core;
             var map = OlMap.map;
             var cur_layer_opacity = 1;
 

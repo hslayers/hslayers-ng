@@ -168,7 +168,7 @@ div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
 #right-pane{
   pointer-events: auto;
 }
-.unpin {
+.but-title-sm {
   float: right;
   font-size: 14px;
   font-weight: 700;
@@ -178,8 +178,8 @@ div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
   filter: alpha(opacity=20);
   opacity: .2;
 }
-.unpin:hover{color:#000;text-decoration:none;cursor:pointer;filter:alpha(opacity=50);opacity:.5}
-button.unpin {
+.but-title-sm:hover{color:#000;text-decoration:none;cursor:pointer;filter:alpha(opacity=50);opacity:.5}
+button.but-title-sm {
   -webkit-appearance: none;
   cursor: pointer;
   background: 0 0;
