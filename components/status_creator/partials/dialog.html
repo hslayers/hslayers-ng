@@ -1,0 +1,57 @@
+<!-- Modal -->
+<div class="modal" id="status-creator-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate>Close</span></button>
+        <h4 class="modal-title" id="myModalLabel" translate>Save map state</h4>
+      </div>
+      <div class="modal-body" style="max-height:450px; overflow-y:scroll">
+        <form>
+            <div class="form-group">
+                <label for="stc-title" class="control-label" translate>Title:</label>
+                <input type="text" class="form-control" id="stc-title" ng-model="title">
+            </div>
+            <div class="form-group">
+                <label for="stc-abstract" class="control-label" translate>Abstract:</label>
+                <textarea class="form-control" id="stc-abstract" ng-model="abstract"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="stc-keywords" class="control-label" translate>Keywords:</label>
+                <input type="text" class="form-control" id="stc-keywords"  ng-model="keywords">
+            </div>
+        </form>   
+        <form class="form">
+                <label for="stc-extent1" class="control-label" translate>Extent:</label>
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <input type="text" class="form-control" id="stc-extent1" ng-model="bbox[0]">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <input type="text" class="form-control" id="stc-extent2" ng-model="bbox[1]">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <input type="text" class="form-control" id="stc-extent3" ng-model="bbox[2]">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <input type="text" class="form-control" id="stc-extent4" ng-model="bbox[3]">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" translate ng-click="drawExtent()" translate>Draw</button>
+                <button type="button" class="btn btn-default" translate ng-click="getCurrentExtent()" translate>Use current</button>
+        </form>
+        <label for="stc-layerlist" class="control-label" translate>Layers:</label>
+        <ul class="list-group" id="stc-layerlist">
+            <li ng-repeat="layer in layers | filter:query" id="layer-{{$index}}" class="list-group-item">
+                <a href="#">{{layer.title}}</a>
+                <input type="checkbox" class="form-control layer-checked" ng-checked="layer.checked" />
+            </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" translate ng-click="download()">Download</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
