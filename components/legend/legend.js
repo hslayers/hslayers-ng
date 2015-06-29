@@ -38,7 +38,7 @@ define(['angular', 'ol', 'map'],
                         })
                         $scope.layers.push({
                             title: layer.get("title"),
-                            lyr: layer,
+                            layer: layer,
                             type: 'wms',
                             sub_layers: sub_layers,
                             visible: layer.getVisible()
@@ -70,7 +70,7 @@ define(['angular', 'ol', 'map'],
                 $scope.removeLayerFromLegends = function(layer) {
                     for (var i = 0; i < $scope.layers.length; i++) {
                         if ($scope.layers[i].layer == layer) {
-                            $scope.layers.splice(i);
+                            $scope.layers.splice(i, 1);
                             break;
                         }
                     }
