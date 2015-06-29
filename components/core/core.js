@@ -42,10 +42,11 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                             if (which == me.mainpanel && by_gui) which = "";
                             me.mainpanel = which;
                             if (!$rootScope.$$phase) $rootScope.$digest();
-                            $rootScope.$broadcast('core.mainpanel_changed'); //Not used now, but could be useful
+                            $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         panelVisible: function(which, scope) {
-                            if (typeof scope.panel_name == 'undefined') scope.panel_name = which;
+                            if (typeof scope !== 'undefined')
+                                if (typeof scope.panel_name == 'undefined') scope.panel_name = which;
                             if (typeof me.panel_statuses[which] !== 'undefined') {
                                 return me.panel_statuses[which];
                             }
@@ -54,7 +55,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                         hidePanels: function() {
                             me.mainpanel = '';
                             if (!$rootScope.$$phase) $rootScope.$digest();
-                            $rootScope.$broadcast('core.mainpanel_changed'); //Not used now, but could be useful
+                            $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         closePanel: function(which) {
                             if (which.unpinned) {
@@ -67,6 +68,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                             }
                             which.unpinned = false;
                             if (which.panel_name == me.mainpanel) me.mainpanel = '';
+                            $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         exists: function(controllerName) {
                             if (typeof window[controllerName] == 'function') {

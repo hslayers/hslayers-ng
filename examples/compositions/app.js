@@ -28,7 +28,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
 
         module.value('default_layers', [
             new ol.layer.Tile({
-                source: new ol.source.OSM({wrapX:false}),
+                source: new ol.source.OSM({
+                    wrapX: false
+                }),
                 title: "Base layer",
                 box_id: 'osm',
                 base: true

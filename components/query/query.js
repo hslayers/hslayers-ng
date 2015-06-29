@@ -247,7 +247,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     var content = close_button + '<iframe class="getfeatureinfo_popup" width=400 height=300 style="border:0"></iframe>';
                     $(element).popover({
                         'placement': 'top',
-                        'animation': false,
+                        'animation': true,
                         'html': true,
                         'content': content
                     });

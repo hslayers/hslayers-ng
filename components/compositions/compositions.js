@@ -32,14 +32,14 @@ define(['angular', 'ol', 'map'],
                             Core.setMainPanel('layermanager');
                         })
                 },
-                parseExtent: function(b){
+                parseExtent: function(b) {
                     if (typeof b == 'string')
                         b = b.split(" ");
                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
                     first_pair = ol.proj.transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-                    return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];  
+                    return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                 },
                 jsonToLayers: function(j) {
                     var layers = [];
@@ -92,6 +92,7 @@ define(['angular', 'ol', 'map'],
             function($scope, $rootScope, OlMap, Core, composition_parser) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
+                $scope.panel_name = 'composition_browser';
                 $scope.keywords = {
                     "Basemap": false,
                     "Borders": false,
@@ -207,6 +208,9 @@ define(['angular', 'ol', 'map'],
                     $(".keywords-panel").slideToggle();
                 }
                 $scope.$emit('scope_loaded', "Compositions");
+                $scope.$on('core.mainpanel_changed', function(event) {
+                    extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
+                });
             }
         ]);
 

@@ -189,3 +189,4 @@ button.but-title-sm {
 min-width: 230px;
 }
 .popover{max-width: 1000px; max-height: 1000px}
+.list-group-item.active .datasource_addlayer{color: #fff}

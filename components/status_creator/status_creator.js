@@ -81,7 +81,7 @@ define(['angular', 'ol', 'map'],
                             json.push(l);
                         }
                     });
-                   
+
                     return json;
                 },
 
@@ -121,7 +121,9 @@ define(['angular', 'ol', 'map'],
                  * @returns {Object} JSON object representing the layer
                  */
                 layer2json: function(layer, saveAll) {
-                    var json = {metadata:{}};
+                    var json = {
+                        metadata: {}
+                    };
                     if (!layer instanceof ol.layer.Layer) {
                         return;
                     }
@@ -149,18 +151,23 @@ define(['angular', 'ol', 'map'],
                     if (saveAll) {
                         if (layer.getExtent()) {
                             var ex = layer.getExtent();
-                            json.maxExtent = {left:ex[0], bottom:ex[3], right: ex[2], top: ex[1]};
+                            json.maxExtent = {
+                                left: ex[0],
+                                bottom: ex[3],
+                                right: ex[2],
+                                top: ex[1]
+                            };
                         }
 
                         // HTTPRequest
                         if (layer instanceof ol.layer.Tile || layer instanceof ol.layer.Image) {
                             var src = layer.getSource();
-                            if (src instanceof ol.source.ImageWMS ||  src instanceof ol.source.TileWMS) {
+                            if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
                                 json.className = "HSLayers.Layer.WMS";
                                 json.wmsMinScale = layer.get('minScale');
                                 json.wmsMaxScale = layer.get('maxScale');
-                                json.maxResolution= layer.getMaxResolution();
-                                json.minResolution= layer.getMinResolution();
+                                json.maxResolution = layer.getMaxResolution();
+                                json.minResolution = layer.getMinResolution();
                                 json.url = src.getUrl();
                                 json.projection = src.getProjection().getCode().toLowerCase();
                                 json.params = src.getParams();
@@ -194,7 +201,7 @@ define(['angular', 'ol', 'map'],
         .controller('StatusCreator', ['$scope', '$rootScope', 'OlMap', 'Core', 'status_creator',
             function($scope, $rootScope, OlMap, Core, status_creator) {
                 $scope.layers = [];
-                
+
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
                     var pair1 = [b[0], b[1]]
@@ -206,7 +213,7 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.next = function() {
-                    if($('a[href=#author]').parent().hasClass('active')){
+                    if ($('a[href=#author]').parent().hasClass('active')) {
                         var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope, false)));
                         $('#stc-download').remove();
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
@@ -214,12 +221,15 @@ define(['angular', 'ol', 'map'],
                         $('.stc-tabs li:eq(1) a').tab('show');
                     }
                 }
-                
-                $scope.open = function(){
+
+                $scope.open = function() {
                     $scope.layers = [];
                     $scope.getCurrentExtent();
                     OlMap.map.getLayers().forEach(function(lyr) {
-                        $scope.layers.push({title: lyr.get('title'), checked: lyr.get('saveState')});
+                        $scope.layers.push({
+                            title: lyr.get('title'),
+                            checked: lyr.get('saveState')
+                        });
                     });
                     $('#status-creator-dialog').modal('show');
                 }

@@ -13,6 +13,7 @@ define(['angular', 'ol', 'map'],
                 $scope.query = {
                     title: ''
                 };
+                $scope.panel_name = 'datasource_selector';
                 $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
@@ -223,6 +224,9 @@ define(['angular', 'ol', 'map'],
 
                 $scope.loadDatasets($scope.datasources);
                 $scope.$emit('scope_loaded', "DatasourceSelector");
+                $scope.$on('core.mainpanel_changed', function(event) {
+                    extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
+                });
             }
         ]);
 
