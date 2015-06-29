@@ -43,10 +43,11 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             };
 
             var layerRemoved = function(e) {
+                $(".layermanager-list").prepend($('.layerpanel'));
+                $scope.currentlayer = null;
                 for (var i = 0; i < $scope.layers.length; i++) {
                     if ($scope.layers[i].layer == e.element) {
-                        $scope.layers.splice(i);
-                        break;
+                        $scope.layers.splice(i, 1);
                     }
                 }
                 $rootScope.$broadcast('layermanager.updated');
@@ -74,7 +75,6 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
 
             $scope.zoomToLayer = function(layer) {
                 var extent = null;
-                debugger;
                 if (layer.get("BoundingBox")) {
                     b = layer.get("BoundingBox")[0].extent;
                     var first_pair = [b[0], b[1]]

@@ -17,7 +17,7 @@
             </div>
         </div>
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
-        <ul class="list-group">
+        <ul class="list-group layermanager-list">
                 <li ng-repeat="layer in layers | filter:query" id="layer-{{$index}}" class="list-group-item">
                     <a href="#" ng-click="setCurrentLayer(layer, $index)">{{layer.title}}</a>
                     <a href="#" class="layer-more"><i class="fa fa-arrow-circle-o-right"></i></a>
