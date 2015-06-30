@@ -28,6 +28,10 @@
         <XHTML href="index.html"/>
     </Platform.Link>
 
+    <Platform.Preferences>
+        <Preference name="modules_to_load" type="text" description="" label="Modules to load" default="['hs.toolbar', 'hs.layermanager', 'hs.map', 'hs.ows', 'hs.query', 'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure', 'hs.legend', 'hs.geolocation', 'hs.core', 'hs.wirecloud', 'gettext']"/>
+    </Platform.Preferences>
+    
     <Platform.Rendering width="20" height="24"/>
 
 </Template>

@@ -3,7 +3,7 @@
 define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'geolocation', 'core', 'wirecloud', 'angular-gettext', 'translations'],
 
     function(angular, ol, toolbar, layermanager) {
-        var module = angular.module('hs', [
+        var modules_to_load = [
             'hs.toolbar',
             'hs.layermanager',
             'hs.map',
@@ -11,7 +11,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
             'hs.legend', 'hs.geolocation', 'hs.core', 'hs.wirecloud', 'gettext'
-        ]);
+        ];
+        
+        if (typeof MashupPlatform !== 'undefined')
+            modules_to_load = eval(MashupPlatform.prefs.get('modules_to_load'));
+        
+        var module = angular.module('hs', modules_to_load);
 
         module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
             return {
