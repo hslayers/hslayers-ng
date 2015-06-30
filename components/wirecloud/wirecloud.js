@@ -23,8 +23,8 @@ define(['angular', 'app', 'map', 'ol'],
                         var b = data.split(",");
                         var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
                         var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-                        first_pair = ol.proj.transform(first_pair, 'EPSG:4326', 'EPSG:3857');
-                        second_pair = ol.proj.transform(second_pair, 'EPSG:4326', 'EPSG:3857');
+                        first_pair = ol.proj.transform(first_pair, 'EPSG:4326', view.getProjection());
+                        second_pair = ol.proj.transform(second_pair, 'EPSG:4326', view.getProjection());
                         var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                         view.fitExtent(extent, OlMap.map.getSize());
                         extent_layer.getSource().clear();
