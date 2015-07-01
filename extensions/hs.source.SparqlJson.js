@@ -7,16 +7,17 @@ define(function(require) {
         var src = new ol.source.ServerVector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
-                //src.clear();
-                var p = options.url;
-                var first_pair = [extent[0], extent[1]]
+                if(typeof src.options.clear_on_move !== 'undefined' && src.options.clear_on_move) src.clear();
+                if(src.options.url=='') return;
+                var p = src.options.url;
+                var first_pair = [extent[0], extent[1]];
                 var second_pair = [extent[2], extent[3]];
                 first_pair = ol.proj.transform(first_pair, 'EPSG:3857', 'EPSG:4326');
                 second_pair = ol.proj.transform(second_pair, 'EPSG:3857', 'EPSG:4326');
                 var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                 var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extent[0] + ' ' + extent[1] + ', ' + extent[2] + ' ' + extent[3] + ')"), bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat)))).';
                 p = p.replace("<extent>", s_extent);
-                p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(p);
+                p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
                 src.loaded = true;
                 $.ajax({
                         url: p
@@ -99,6 +100,7 @@ define(function(require) {
             strategy: ol.loadingstrategy.bbox,
             projection: options.projection
         });
+        src.options = options;
         src.legend_categories = category_map;
         return src;
     };

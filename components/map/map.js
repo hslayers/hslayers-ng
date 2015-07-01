@@ -33,7 +33,17 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 'DragZoom': new ol.interaction.DragZoom(),
                 'DragRotate': new ol.interaction.DragRotate(),
             }
+            
             var me = this;
+            
+            this.findLayerByTitle = function(title) {
+                var layers = me.map.getLayers();
+                var tmp = null;
+                angular.forEach(layers, function(layer) {
+                     if (layer.get('title') == title) tmp = layer;
+                });
+                return tmp;
+            }
             angular.forEach(this.interactions, function(value, key) {
                 me.map.addInteraction(value);
             });
@@ -66,12 +76,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 OlMap.map.setTarget(div_id);
             }
 
-            $scope.findLayerByTitle = function(title) {
-                var layers = map.getlayers();
-                for (var lyr_x in layers) {
-                    if (layers[lyr_x].get('title') == title) return layers[lyr_x];
-                }
-            }
+            $scope.findLayerByTitle = OlMap.findLayerByTitle;
 
             $scope.showFeaturesWithAttrHideRest = function(source, attribute, value, attr_to_change, invisible_value, visible_value) {
 

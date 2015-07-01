@@ -106,6 +106,7 @@ define(['angular', 'ol', 'dc', 'map'],
                                 for (var i = 0; i < data_items.length; i++) {
                                     data_items[i].set('visible', true);
                                 }
+                                $scope.$emit('feature_crossfilter_filtered', filter);
                             }
                             for (var attr_i = 0; attr_i < attributes.length; attr_i++) {
                                 var attr = attributes[attr_i];

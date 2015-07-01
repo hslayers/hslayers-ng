@@ -101,12 +101,23 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 box_id: 'tourismus',
                 maxResolution: 70,
                 source: new SparqlJson({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=SELECT+%3Fo+%3Fp+%3Fs%0D%0AFROM+<http%3A%2F%2Fgis.zcu.cz%2Fpoi.rdf>%0D%0AWHERE+%0D%0A%09%7B%3Fo+<http%3A%2F%2Fwww.w3.org%2F2003%2F01%2Fgeo%2Fwgs84_pos%23lat>+%3Flat.+%3Fo+<http%3A%2F%2Fwww.w3.org%2F2003%2F01%2Fgeo%2Fwgs84_pos%23long>+%3Flon.+%0D%0A%09+<extent>%0D%0A%09%3Fo+%3Fp+%3Fs+%0D%0A%09%7D%0D%0AORDER+BY+%3Fo&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query='+encodeURIComponent('SELECT ?o ?p ?s FROM <http://gis.zcu.cz/poi.rdf> WHERE {?o <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat. ?o <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lon. ')+'<extent>'+encodeURIComponent('	?o ?p ?s } ORDER BY ?o')+'&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
                     projection: 'EPSG:3857'
                 }),
                 style: style
             }),
+            new ol.layer.Vector({
+                title: "Specific points of interest",
+                box_id: 'tourismus',
+                source: new SparqlJson({
+                    url: '',
+                    category_field: 'http://gis.zcu.cz/poi#category_osm',
+                    projection: 'EPSG:3857'
+                }),
+                style: style
+            }),
+            
             new ol.layer.Tile({
                 title: "OpenWeatherMap cloud cover",
                 box_id: 'weather',
@@ -257,6 +268,15 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                         });
 
                 });
+                $scope.$on('feature_crossfilter_filtered', function(event, data) {
+                    var lyr = OlMap.findLayerByTitle('Specific points of interest'); 
+                    var src = lyr.getSource();
+                    src.clear();
+                    if(data!=='')
+                        src.options.url = 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query='+encodeURIComponent('SELECT ?o ?p ?s FROM <http://gis.zcu.cz/poi.rdf> WHERE {?o <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat. ?o <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lon. ?o <http://gis.zcu.cz/poi#category_osm> ?filter_categ. FILTER (str(?filter_categ) = "' + data + '") ')+'<extent>'+encodeURIComponent('	?o ?p ?s } ORDER BY ?o')+'&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    else
+                        src.options.url = '';
+                })
             }
         ]);
 
