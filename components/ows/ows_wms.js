@@ -98,11 +98,11 @@ define(['angular', 'ol'],
                 }
             ])
             .service("OwsWmsLayerProducer", ['OlMap', 'OwsWmsCapabilities', function(OlMap, OwsWmsCapabilities) {
-                this.addService = function(url, box_id) {
+                this.addService = function(url, box) {
                     OwsWmsCapabilities.requestGetCapabilities(url, function(resp) {
                         var ol_layers = OwsWmsCapabilities.service2layers(resp);
                         $(ol_layers).each(function() {
-                            this.set('box_id', box_id);
+                            if(typeof box != 'undefined') box.get('layers').push(this);
                             OlMap.map.addLayer(this);
                         });
                     })

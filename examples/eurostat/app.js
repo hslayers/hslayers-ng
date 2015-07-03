@@ -27,7 +27,6 @@ define(['toolbar', 'layermanager', 'query', 'search', 'print', 'permalink', 'lod
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
-                box_id: 'osm',
                 base: true
             })
         ]);

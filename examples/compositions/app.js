@@ -32,7 +32,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
                     wrapX: false
                 }),
                 title: "Base layer",
-                box_id: 'osm',
                 base: true
             })
         ]);

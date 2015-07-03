@@ -48,7 +48,6 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
-                box_id: 'osm',
                 base: true
             })
         ]);

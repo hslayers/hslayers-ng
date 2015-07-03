@@ -97,20 +97,16 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             }
 
             $scope.activateTheme = function(theme) {
-                if ($scope.active_box) $scope.active_box.active = false;
+                if ($scope.active_box) $scope.active_box.set('active', false);
                 $scope.active_box = theme;
-                theme.active = true;
-                for (var i = 0; i < $scope.layers.length; i++) {
-                    var lyr = $scope.layers[i].layer;
-                    if (lyr.get('box_id') && (lyr.get('box_id') == theme.id || lyr.get('box_id') == 'base')) {
-                        /* if (lyr.get('base')) {
-                             lyr.setVisible(true);
-                         }*/
-                        lyr.setVisible(true);
-                    } else {
-                        lyr.setVisible(false);
-                    }
-                }
+                theme.set('active', true);
+                angular.forEach(box_layers, function(box) {
+                    box.setVisible(box == theme);
+                    angular.forEach(box.get('layers'), function(lyr) {
+                        if (lyr.get('base') == true) return;
+                        lyr.setVisible(box.getVisible());
+                    });
+                });
             }
 
             OlMap.map.getLayers().forEach(function(lyr) {

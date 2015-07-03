@@ -11,8 +11,8 @@
     <div class="panel-body">
         <div class="row nav nav-pills">
             <div ng-repeat="box in box_layers"  class="col-xs-2 col-md-2 active" style="padding-right: 2px; padding-left: 2px;">
-                <a href="#" ng-class="{ 'thumbnail': true, 'alert-info': box.active}" title="{{box.title}}" ng-click="activateTheme(box)">
-                    <img ng-src="{{box.img}}" alt="{{box.title}}">
+                <a href="#" ng-class="{ 'thumbnail': true, 'alert-info': box.get('active')}" title="{{box.get('title')}}" ng-click="activateTheme(box)">
+                    <img ng-src="{{box.get('img')}}" alt="{{box.get('title')}}">
                 </a>
             </div>
         </div>

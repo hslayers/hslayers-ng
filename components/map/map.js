@@ -33,14 +33,14 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 'DragZoom': new ol.interaction.DragZoom(),
                 'DragRotate': new ol.interaction.DragRotate(),
             }
-            
+
             var me = this;
-            
+
             this.findLayerByTitle = function(title) {
                 var layers = me.map.getLayers();
                 var tmp = null;
                 angular.forEach(layers, function(layer) {
-                     if (layer.get('title') == title) tmp = layer;
+                    if (layer.get('title') == title) tmp = layer;
                 });
                 return tmp;
             }
@@ -58,8 +58,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         };
     })
 
-    .controller('Map', ['$scope', 'OlMap', 'default_layers', 'default_view', 'BrowserUrlService',
-        function($scope, OlMap, default_layers, default_view, bus) {
+    .controller('Map', ['$scope', 'OlMap', 'default_layers', 'box_layers', 'default_view', 'BrowserUrlService',
+        function($scope, OlMap, default_layers, box_layers, default_view, bus) {
             var map = OlMap.map;
 
             $scope.moveToAndZoom = function(x, y, zoom) {
@@ -82,9 +82,14 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
             }
 
-            for (var lyr in default_layers) {
-                OlMap.map.addLayer(default_layers[lyr]);
-            }
+            angular.forEach(box_layers, function(box) {
+                angular.forEach(box.get('layers'), function(lyr) {
+                    OlMap.map.addLayer(lyr);
+                });
+            });
+            angular.forEach(default_layers, function(lyr) {
+                OlMap.map.addLayer(lyr);
+            });
             if (bus.getParamValue('hs_x') && bus.getParamValue('hs_y') && bus.getParamValue('hs_z')) {
                 var loc = location.search;
                 $scope.moveToAndZoom(parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc)), parseInt(bus.getParamValue('hs_z', loc)));

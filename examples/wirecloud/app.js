@@ -12,10 +12,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
             'hs.legend', 'hs.geolocation', 'hs.core', 'hs.wirecloud', 'gettext'
         ];
-        
+
         if (typeof MashupPlatform !== 'undefined')
             modules_to_load = eval(MashupPlatform.prefs.get('modules_to_load'));
-        
+
         var module = angular.module('hs', modules_to_load);
 
         module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
@@ -167,7 +167,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                 source: new ol.source.OSM(),
                 show_in_manager: true,
                 title: "Base layer",
-                box_id: 'osm',
                 base: true
             }),
             location_layer,

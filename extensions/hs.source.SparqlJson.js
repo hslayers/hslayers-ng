@@ -7,8 +7,8 @@ define(function(require) {
         var src = new ol.source.ServerVector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
-                if(typeof src.options.clear_on_move !== 'undefined' && src.options.clear_on_move) src.clear();
-                if(src.options.url=='') return;
+                if (typeof src.options.clear_on_move !== 'undefined' && src.options.clear_on_move) src.clear();
+                if (src.options.url == '') return;
                 var p = src.options.url;
                 var first_pair = [extent[0], extent[1]];
                 var second_pair = [extent[2], extent[3]];

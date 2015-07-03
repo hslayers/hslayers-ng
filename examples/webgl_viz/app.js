@@ -62,7 +62,6 @@ define(['ol',
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
-                box_id: 'osm',
                 base: true
             })
         ]);
