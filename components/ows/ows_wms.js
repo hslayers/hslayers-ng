@@ -102,7 +102,7 @@ define(['angular', 'ol'],
                     OwsWmsCapabilities.requestGetCapabilities(url, function(resp) {
                         var ol_layers = OwsWmsCapabilities.service2layers(resp);
                         $(ol_layers).each(function() {
-                            if(typeof box != 'undefined') box.get('layers').push(this);
+                            if (typeof box != 'undefined') box.get('layers').push(this);
                             OlMap.map.addLayer(this);
                         });
                     })

@@ -51,7 +51,7 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
                 base: true
             })
         ]);
-        
+
         module.value('project_name', 'erra/map');
 
         module.value('default_view', new ol.View({

@@ -205,7 +205,7 @@ define(['angular', 'ol', 'map'],
             function($scope, $rootScope, OlMap, Core, status_creator, project_name) {
                 $scope.layers = [];
                 $scope.id = '';
-                
+
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
                     var pair1 = [b[0], b[1]]
@@ -225,30 +225,34 @@ define(['angular', 'ol', 'map'],
                     } else {
                         $('.stc-tabs li:eq(1) a').tab('show');
                     }
-                }              
-                
+                }
+
                 var generateUuid = function() {
-                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});
+                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        var r = Math.random() * 16 | 0,
+                            v = c == 'x' ? r : r & 0x3 | 0x8;
+                        return v.toString(16);
+                    });
                 };
-                
+
                 $scope.save = function(save_as_new) {
-                    if(save_as_new || $scope.id=='') $scope.id = generateUuid();
+                    if (save_as_new || $scope.id == '') $scope.id = generateUuid();
                     $.ajax({
                         url: "/wwwlibs/statusmanager2/index.php",
                         cache: false,
                         dataType: "json",
                         data: {
-                            data:status_creator.map2json(OlMap.map, $scope, false),
+                            data: status_creator.map2json(OlMap.map, $scope, false),
                             permanent: true,
                             id: $scope.id,
                             project: project_name,
                             request: "save"
                         },
                         success: function(j) {
-                            if(j.saved !== false){
-                                if(console) console.log('OK');
+                            if (j.saved !== false) {
+                                if (console) console.log('OK');
                             } else {
-                                if(console) console.log('Failed');
+                                if (console) console.log('Failed');
                             }
                             if (!$scope.$$phase) $scope.$digest();
                         }

@@ -67,7 +67,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
-                  base: true
+                base: true
             }),
             new ol.layer.Vector({
                 title: "Points of interest",
