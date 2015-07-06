@@ -110,25 +110,25 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     feature.getKeys().forEach(function(key) {
                         if (key == 'gid' || key == 'geometry') return;
                         if (key == "features") {
-                            for (var feature in feature.get('sub_features')) {
+                            for (var sub_feature in feature.get('features')) {
                                 var hstemplate = null;
-                                if (feature.get('sub_features')[sub_feature].get('hstemplate')) hstemplate = feature.get('sub_features')[sub_feature].get('hstemplate');
+                                if (feature.get('features')[sub_feature].get('hstemplate')) hstemplate = feature.get('features')[sub_feature].get('hstemplate');
                                 var group = {
                                     name: "Feature",
                                     attributes: [],
                                     hstemplate: hstemplate
                                 };
-                                feature.get('sub_features')[sub_feature].getKeys().forEach(function(key) {
+                                feature.get('features')[sub_feature].getKeys().forEach(function(key) {
                                     if (key == 'gid' || key == 'geometry') return;
-                                    if (typeof feature.get('sub_features')[sub_feature].get(key) == "String") {
+                                    if (typeof feature.get('features')[sub_feature].get(key) == "String") {
                                         group.attributes.push({
                                             name: key,
-                                            value: $sce.trustAsHtml(feature.get('sub_features')[sub_feature].get(key))
+                                            value: $sce.trustAsHtml(feature.get('features')[sub_feature].get(key))
                                         });
                                     } else {
                                         group.attributes.push({
                                             name: key,
-                                            value: feature.get('sub_features')[sub_feature].get(key)
+                                            value: feature.get('features')[sub_feature].get(key)
                                         });
                                     }
                                 })

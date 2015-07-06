@@ -24,7 +24,7 @@ define(['angular', 'ol', 'map'],
                                     OlMap.map.removeLayer(lyr);
                                 }
                             });
-                            OlMap.map.getView().fitExtent(me.parseExtent(response.data.extent), OlMap.map.getSize());
+                            OlMap.map.getView().fitExtent(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
                             for (var i = 0; i < layers.length; i++) {
                                 OlMap.map.addLayer(layers[i]);

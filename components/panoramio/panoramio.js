@@ -110,8 +110,44 @@ define(['angular', 'ol', 'app', 'map'],
                                 'Owner': p.owner_url,
                                 popularity: i,
                                 hstemplate: 'panoramio'
-                            }
+                            };
+                            
                             var feature = new ol.Feature(attributes);
+                            var xhr = new XMLHttpRequest(),
+            blob,
+            fileReader = new FileReader();
+
+        xhr.open("GET", attributes.photo_file_url, true);
+        // Set the responseType to arraybuffer. "blob" is an option too, rendering BlobBuilder unnecessary, but the support for "blob" is not widespread enough yet
+        xhr.responseType = "arraybuffer";
+
+        xhr.addEventListener("load", function () {
+            if (xhr.status === 200) {
+                // Create a blob from the response
+                blob = new Blob([xhr.response], {type: "image/png"});
+
+                // onload needed since Google Chrome doesn't support addEventListener for FileReader
+                fileReader.onload = function (evt) {
+                    // Read out file contents as a Data URL
+                    var result = evt.target.result;
+                    // Set image src to Data URL
+                    //rhino.setAttribute("src", result);
+                    // Store Data URL in localStorage
+                    try {
+                        //localStorage.setItem("rhino", result);
+                    }
+                    catch (e) {
+                        console.log("Storage failed: " + e);
+                    }
+                };
+                // Load blob as Data URL
+                fileReader.readAsDataURL(blob);
+            }
+        }, false);
+        // Send XHR
+        xhr.send();
+            
+                            
                             feature.setStyle([new ol.style.Style({
                                 image: new ol.style.Icon({
                                     src: feature.get('photo_file_url'),
