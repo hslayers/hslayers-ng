@@ -12,58 +12,48 @@ define(['angular', 'ol', 'app', 'map'],
                                 }));
                                 var button = angular.element('<button>').attr({
                                     class: 'btn btn-default'
-                                }).css('float', 'right').html('save');
-                                button.click(function() {
+                                }).css('float', 'right');
+                                
+                                var save = function() {
                                     PanoramioPictures.source.forEachFeature(function(feature) {
                                         if (feature.get('photo_file_url') == attrs.value) {
-                                            var items = localStorage.getItem('saved_panoramio_features');
-                                            if (items == null) items = {};
-                                            else items = JSON.parse(items);
-                                            items[attrs.value] = {};
+                                            PanoramioPictures.saved_items[attrs.value] = {};
                                             feature.getKeys().forEach(function(key) {
-                                                if (key == 'gid' || key == 'geometry') return;
-                                                items[attrs.value][key] = feature.get(key);
-                                            })
-                                            localStorage.setItem('saved_panoramio_features', JSON.stringify(items));
-                                            var xhr = new XMLHttpRequest(),
-                                                blob,
-                                                fileReader = new FileReader();
-
-                                            xhr.open("GET", attrs.value, true);
-                                            // Set the responseType to arraybuffer. "blob" is an option too, rendering BlobBuilder unnecessary, but the support for "blob" is not widespread enough yet
-                                            xhr.responseType = "arraybuffer";
-
-                                            xhr.addEventListener("load", function() {
-                                                if (xhr.status === 200) {
-                                                    // Create a blob from the response
-                                                    blob = new Blob([xhr.response], {
-                                                        type: "image/png"
-                                                    });
-
-                                                    // onload needed since Google Chrome doesn't support addEventListener for FileReader
-                                                    fileReader.onload = function(evt) {
-                                                        // Read out file contents as a Data URL
-                                                        var result = evt.target.result;
-                                                        // Set image src to Data URL
-                                                        //rhino.setAttribute("src", result);
-                                                        // Store Data URL in localStorage
-                                                        try {
-                                                            localStorage.setItem("rhino", result);
-                                                        } catch (e) {
-                                                            console.log("Storage failed: " + e);
-                                                        }
-                                                    };
-                                                    // Load blob as Data URL
-                                                    fileReader.readAsDataURL(blob);
+                                                if (key == 'gid') return;
+                                                if(key == 'geometry'){
+                                                    var format = new ol.format.WKT();
+                                                    PanoramioPictures.saved_items[attrs.value][key]=format.writeFeature(feature);
+                                                    return;
                                                 }
-                                            }, false);
-                                            // Send XHR
-                                            xhr.send();
+                                                PanoramioPictures.saved_items[attrs.value][key] = feature.get(key);
+                                            });
+                                            feature.set('popularity', 100000);
+                                            localStorage.setItem('saved_panoramio_features', JSON.stringify(PanoramioPictures.saved_items));
+                                            PanoramioPictures.loadIntoLocalStorage(attrs.value);
+                                            button.html('Remove').off('click').on('click', remove);
                                         }
                                     })
 
-                                });
+                                }
+                                
+                                var remove = function() {
+                                    PanoramioPictures.source.forEachFeature(function(feature) {
+                                        if (feature.get('photo_file_url') == attrs.value) {
+                                            delete PanoramioPictures.saved_items[attrs.value];
+                                            localStorage.setItem('saved_panoramio_features', JSON.stringify(PanoramioPictures.saved_items));
+                                            localStorage.removeItem('saved_panoramio_image_'+attrs.value);
+                                            button.html('Save').off('click').on('click', save);
+                                        }
+                                    })
+                                }
+                                    
+                                if(typeof PanoramioPictures.saved_items[attrs.value] == 'undefined') {
+                                    button.html('Save').click(save);
+                                } else {
+                                    button.html('Remove').click(remove);
+                                }
                                 element.append(button);
+                                
                             } else {
                                 if (attrs.value.indexOf('http') == 0) {
                                     var el = angular.element('<a>').attr({
@@ -94,6 +84,16 @@ define(['angular', 'ol', 'app', 'map'],
                     var lyr = null;
                     var me = this;
                     var view = OlMap.map.getView();
+                    
+                    this.getSavedItems = function(){
+                        var saved_items = localStorage.getItem('saved_panoramio_features');
+                        if (saved_items == null) 
+                            return {};
+                        else 
+                            return JSON.parse(saved_items);
+                    }
+                    
+                    var saved_items = this.getSavedItems();
 
                     lyr = new ol.layer.Vector({
                         title: "Panoramio pictures",
@@ -125,6 +125,19 @@ define(['angular', 'ol', 'app', 'map'],
                                 image: feature.get('features')[max_pop_i].getStyle()[0].getImage(),
                                 text: text
                             })];
+                            if(max_pop==100000){
+                                    style.push(new ol.style.Style({
+                                        image: new ol.style.Circle({
+                                            fill: new ol.style.Fill({
+                                                color: [242, 20, 0, 0.9]
+                                            }),
+                                            stroke: new ol.style.Stroke({
+                                                color: [0x33, 0x33, 0x33, 0.9]
+                                            }),
+                                            radius: 10
+                                        })
+                                    }));
+                            }
                             return style;
                         }
                     });
@@ -144,6 +157,27 @@ define(['angular', 'ol', 'app', 'map'],
                     OlMap.map.getView().on('change:resolution', changed);
                     changed();
 
+                    var format = new ol.format.WKT();
+                    var loadLocalFeature = function(item, address){
+                        var feature = format.readFeature(item.geometry);
+                        angular.forEach(item, function(value, key){
+                            if(key!='geometry')
+                                feature.set(key, value);  
+                        })
+                        feature.set('popularity', 100000);
+                        feature.setStyle([new ol.style.Style({
+                            image: new ol.style.Icon({
+                                src: localStorage.getItem('saved_panoramio_image_'+item.photo_file_url)
+                            })
+                        })]);
+                        return feature;
+                    }
+                    
+                    var features = [];
+                    angular.forEach(saved_items, function(item, address){
+                        features.push(loadLocalFeature(item, address));
+                    });
+                    src.addFeatures(features);
 
                     this.featuresReceived = function(panoramio) {
                         var features = [];
@@ -175,9 +209,18 @@ define(['angular', 'ol', 'app', 'map'],
 
                             features.push(feature);
                         }
+                        //Load saved items from localStorage
+                        angular.forEach(saved_items, function(item, address){
+                            features.push(loadLocalFeature(item, address));
+                        });
                         src.clear();
                         src.addFeatures(features);
                     }
+                    
+                    this.getLocalStorageFeatures = function(){
+                        
+                    }
+                    
                     this.update = function(url) {
                         var b = ol.proj.transformExtent(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
                         var limit = Math.floor($(map.getViewport()).width() * $(map.getViewport()).height() / 22280 * 1.2);
@@ -188,8 +231,44 @@ define(['angular', 'ol', 'app', 'map'],
                             success: this.featuresReceived
                         });
                     };
+                    
+                    this.loadIntoLocalStorage = function(path){
+                        var xhr = new XMLHttpRequest(),
+                            blob,
+                            fileReader = new FileReader();
+
+                        xhr.open("GET", path , true);
+                        xhr.responseType = "arraybuffer";
+
+                        xhr.addEventListener("load", function() {
+                            if (xhr.status === 200) {
+                                // Create a blob from the response
+                                blob = new Blob([xhr.response], {
+                                    type: "image/png"
+                                });
+
+                                // onload needed since Google Chrome doesn't support addEventListener for FileReader
+                                fileReader.onload = function(evt) {
+                                    var result = evt.target.result;
+                                    // Set image src to Data URL
+                                    //rhino.setAttribute("src", result);
+                                    // Store Data URL in localStorage
+                                    try {
+                                        localStorage.setItem('saved_panoramio_image_'+path, result);
+                                    } catch (e) {
+                                        console.log("Storage failed: " + e);
+                                    }
+                                };
+                                // Load blob as Data URL
+                                fileReader.readAsDataURL(blob);
+                            }
+                        }, false);
+                        // Send XHR
+                        xhr.send();
+                    }
 
                     this.source = src;
+                    this.saved_items = saved_items;
                 }
             ])
 
