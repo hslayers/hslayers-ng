@@ -4,7 +4,10 @@ define(['angular', 'ol', 'map'],
         var module = angular.module('hs.status_creator', ['hs.map', 'hs.core'])
             .directive('statusCreator', function() {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/dialog.html'
+                    templateUrl: hsl_path + 'components/status_creator/partials/dialog.html',
+                    link: function(scope, element) {
+                        $('#stc-save, #stc-saveas').hide();
+                    }
                 };
             })
 
@@ -198,10 +201,11 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('StatusCreator', ['$scope', '$rootScope', 'OlMap', 'Core', 'status_creator',
-            function($scope, $rootScope, OlMap, Core, status_creator) {
+        .controller('StatusCreator', ['$scope', '$rootScope', 'OlMap', 'Core', 'status_creator', 'project_name',
+            function($scope, $rootScope, OlMap, Core, status_creator, project_name) {
                 $scope.layers = [];
-
+                $scope.id = '';
+                
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
                     var pair1 = [b[0], b[1]]
@@ -217,9 +221,38 @@ define(['angular', 'ol', 'map'],
                         var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope, false)));
                         $('#stc-download').remove();
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
+                        $('#stc-save, #stc-saveas').show();
                     } else {
                         $('.stc-tabs li:eq(1) a').tab('show');
                     }
+                }              
+                
+                var generateUuid = function() {
+                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});
+                };
+                
+                $scope.save = function(save_as_new) {
+                    if(save_as_new || $scope.id=='') $scope.id = generateUuid();
+                    $.ajax({
+                        url: "/wwwlibs/statusmanager2/index.php",
+                        cache: false,
+                        dataType: "json",
+                        data: {
+                            data:status_creator.map2json(OlMap.map, $scope, false),
+                            permanent: true,
+                            id: $scope.id,
+                            project: project_name,
+                            request: "save"
+                        },
+                        success: function(j) {
+                            if(j.saved !== false){
+                                if(console) console.log('OK');
+                            } else {
+                                if(console) console.log('Failed');
+                            }
+                            if (!$scope.$$phase) $scope.$digest();
+                        }
+                    })
                 }
 
                 $scope.open = function() {

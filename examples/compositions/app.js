@@ -42,6 +42,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
             units: "m"
         }));
 
+        module.value('project_name', 'myproject');
 
         module.controller('Main', ['$scope', 'Core', 'InfoPanelService', 'composition_parser',
             function($scope, Core, InfoPanelService, composition_parser) {
