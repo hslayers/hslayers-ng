@@ -127,14 +127,16 @@ define(['angular', 'ol', 'app', 'map'],
                             })];
                             if(max_pop==100000){
                                     style.push(new ol.style.Style({
-                                        image: new ol.style.Circle({
+                                        image: new ol.style.RegularShape({
                                             fill: new ol.style.Fill({
-                                                color: [242, 20, 0, 0.9]
+                                                color: [242, 242, 0, 0.7]
                                             }),
                                             stroke: new ol.style.Stroke({
-                                                color: [0x33, 0x33, 0x33, 0.9]
+                                                color: [0x77, 0x77, 0x00, 0.9]
                                             }),
-                                            radius: 10
+                                            radius1: 17,
+                                            radius2: 7,
+                                            points: 5
                                         })
                                     }));
                             }
