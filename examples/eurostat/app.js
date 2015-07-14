@@ -1,8 +1,8 @@
 'use strict';
 
-define(['toolbar', 'layermanager', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation', 'api'],
+define(['ol', 'toolbar', 'layermanager', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation', 'api'],
 
-    function(toolbar) {
+    function(ol, toolbar) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',

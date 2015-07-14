@@ -20,6 +20,7 @@ define(['angular', 'map', 'core', 'permalink'],
                 if (bus.getParamValue('hs_panel')) {
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
                 }
+                
                 $scope.$emit('scope_loaded', "Toolbar");
             }
 
