@@ -9,11 +9,11 @@
 <div hs.toolbar.directive ng-controller="hs.toolbar.controller"></div>
 
 <div class="row gui-overlay">
+    <div class="col-md-4" id="right-pane">
+    </div>
     <div class="search-container col-md-4" ng-controller="hs.search.controller">
         <div hs.search.directive_searchinput></div>
         <div hs.search.directive_searchresults></div>
-    </div>
-    <div class="col-md-4" id="right-pane">
     </div>
     <div class="panelspace col-md-4">
         <div hs.layermanager.directive          hs.draggable ng-controller="hs.layermanager.controller" ng-show="Core.panelVisible('layermanager', this)"></div>
