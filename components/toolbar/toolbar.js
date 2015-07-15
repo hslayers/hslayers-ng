@@ -1,3 +1,7 @@
+/**
+* @namespace hs.toolbar
+* @memberOf hs  
+*/ 
 define(['angular', 'map', 'core', 'permalink'],
 
     function(angular) {
@@ -20,7 +24,7 @@ define(['angular', 'map', 'core', 'permalink'],
                 if (bus.getParamValue('hs_panel')) {
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
                 }
-                
+
                 $scope.$emit('scope_loaded', "Toolbar");
             }
 

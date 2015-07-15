@@ -1,3 +1,7 @@
+/**
+* @namespace hs.geolocation
+* @memberOf hs  
+*/ 
 define(['angular', 'ol'],
 
     function(angular, ol) {

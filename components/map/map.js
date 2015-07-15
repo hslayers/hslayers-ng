@@ -1,6 +1,16 @@
+/**
+* @namespace hs.map
+* @memberOf hs    
+*/
 define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, ol) {
     angular.module('hs.map', ['hs'])
-        //This is used to share map object between components.
+       
+        /**
+        * @class OlMap
+        * @memberOf hs.map
+        * @param {ol.View} default_view - coordinates and zoom level to be used when the map is initialized
+        * @description Service for containing and initializing map object
+        */
         .service('OlMap', ['default_view', function(default_view) {
             this.map = new ol.Map({
                 target: 'map',
@@ -36,7 +46,15 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
             var me = this;
 
+            /**
+            * @function findLayerByTitle
+            * @memberOf hs.map.OlMap
+            * @param {string} title - title of the layer which was specified as a option when creating the layer
+            * @description Finds a layer by its title and returns the last one if multiple are found
+            */
             this.findLayerByTitle = function(title) {
+              
+
                 var layers = me.map.getLayers();
                 var tmp = null;
                 angular.forEach(layers, function(layer) {
@@ -44,6 +62,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 });
                 return tmp;
             }
+            
             angular.forEach(this.interactions, function(value, key) {
                 me.map.addInteraction(value);
             });

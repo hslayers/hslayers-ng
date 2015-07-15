@@ -1,3 +1,7 @@
+/**
+* @namespace hs.legend
+* @memberOf hs  
+*/ 
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
@@ -63,6 +67,11 @@ define(['angular', 'ol', 'map'],
 
                 }
 
+                /*
+                 * Generates URL for requesting the legend
+                 * @param {string} wms_url - WMS service url
+                 * @param {string} layer_name - Name of the sub-layer
+                 */
                 $scope.getWmsLayerLegendUrl = function(wms_url, layer_name) {
                     return wms_url + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image/png";
                 }

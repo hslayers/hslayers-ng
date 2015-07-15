@@ -1,3 +1,7 @@
+/**
+* @namespace hs.lodexplorer
+* @memberOf hs  
+*/ 
 define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
     function(ol, dc) {

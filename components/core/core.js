@@ -1,3 +1,11 @@
+/**
+* @namespace hs
+*/
+
+/**
+* @namespace hs.core
+* @memberOf hs  
+*/ 
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',

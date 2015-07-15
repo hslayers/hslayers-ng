@@ -1,8 +1,20 @@
+/**
+  * @namespace hs.panoramio
+  * @memberOf hs    
+  */
+
 define(['angular', 'ol', 'app', 'map'],
 
     function(angular, ol, app, map) {
         angular.module('hs.panoramio', ['hs', 'hs.map'])
-            .directive('panoramio', ['PanoramioPictures', function(PanoramioPictures) {
+            
+            /**
+            * @class hs.panoramio.directive
+            * @memberOf hs.panoramio
+            * @param {hs.panoramio.service} service
+            * @description Directive for formating the attribute table when clicking on a feature (thumbnail). Will be used by the 'query' module 
+            */
+            .directive('hs.panoramio.directive', ['hs.panoramio.service', function(service) {
                 return {
                     link: function(scope, element, attrs) {
                         if (attrs.value) {
@@ -13,47 +25,58 @@ define(['angular', 'ol', 'app', 'map'],
                                 var button = angular.element('<button>').attr({
                                     class: 'btn btn-default'
                                 }).css('float', 'right');
+
                                 
-                                var save = function() {
-                                    PanoramioPictures.source.forEachFeature(function(feature) {
+                                /**
+                                * @function save
+                                * @memberOf hs.panoramio.directive
+                                * @description A button click handler which stores the feature which attributes are formated using this directive to the localStorage (attributes and geometry) 
+                                */
+                                var save = function() {  
+                                    service.source.forEachFeature(function(feature) {
                                         if (feature.get('photo_file_url') == attrs.value) {
-                                            PanoramioPictures.saved_items[attrs.value] = {};
+                                            service.saved_items[attrs.value] = {};
                                             feature.getKeys().forEach(function(key) {
                                                 if (key == 'gid') return;
-                                                if(key == 'geometry'){
+                                                if (key == 'geometry') {
                                                     var format = new ol.format.WKT();
-                                                    PanoramioPictures.saved_items[attrs.value][key]=format.writeFeature(feature);
+                                                    service.saved_items[attrs.value][key] = format.writeFeature(feature);
                                                     return;
                                                 }
-                                                PanoramioPictures.saved_items[attrs.value][key] = feature.get(key);
+                                                service.saved_items[attrs.value][key] = feature.get(key);
                                             });
                                             feature.set('popularity', 100000);
-                                            localStorage.setItem('saved_panoramio_features', JSON.stringify(PanoramioPictures.saved_items));
-                                            PanoramioPictures.loadIntoLocalStorage(attrs.value);
+                                            localStorage.setItem('saved_panoramio_features', JSON.stringify(service.saved_items));
+                                            service.loadIntoLocalStorage(attrs.value);
                                             button.html('Remove').off('click').on('click', remove);
                                         }
                                     })
 
                                 }
-                                
+
+                                /**
+                                * @function remove
+                                * @memberOf hs.panoramio.directive
+                                * @description A button click handler which removes the feature which attributes are formated using this directive from the localStorage (attributes and geometry) 
+                                */
                                 var remove = function() {
-                                    PanoramioPictures.source.forEachFeature(function(feature) {
+                                    service.source.forEachFeature(function(feature) {
                                         if (feature.get('photo_file_url') == attrs.value) {
-                                            delete PanoramioPictures.saved_items[attrs.value];
-                                            localStorage.setItem('saved_panoramio_features', JSON.stringify(PanoramioPictures.saved_items));
-                                            localStorage.removeItem('saved_panoramio_image_'+attrs.value);
+                                            delete service.saved_items[attrs.value];
+                                            localStorage.setItem('saved_panoramio_features', JSON.stringify(service.saved_items));
+                                            localStorage.removeItem('saved_panoramio_image_' + attrs.value);
                                             button.html('Save').off('click').on('click', save);
                                         }
                                     })
                                 }
-                                    
-                                if(typeof PanoramioPictures.saved_items[attrs.value] == 'undefined') {
+
+                                if (typeof service.saved_items[attrs.value] == 'undefined') {
                                     button.html('Save').click(save);
                                 } else {
                                     button.html('Remove').click(remove);
                                 }
                                 element.append(button);
-                                
+
                             } else {
                                 if (attrs.value.indexOf('http') == 0) {
                                     var el = angular.element('<a>').attr({
@@ -73,8 +96,16 @@ define(['angular', 'ol', 'app', 'map'],
                     }
                 };
             }])
-            .service("PanoramioPictures", ['OlMap', '$http', 'default_layers',
-                function(OlMap, $http, default_layers) {
+            
+            /**
+            * @class hs.panoramio.service
+            * @memberOf hs.panoramio
+            * @param {hs.map.OlMap} OlMap - Service for containing map object
+            * @param {array} default_layers - Layer array to which the new panoramio layer will be added. It is later iterated and added to map.
+            * @description Service for querying and displaying panoramio pictures
+            */
+            .service("hs.panoramio.service", ['OlMap', 'default_layers',
+                function(OlMap, default_layers) {
                     var map = OlMap.map;
                     var src = new ol.source.Vector();
                     var csrc = new ol.source.Cluster({
@@ -84,15 +115,21 @@ define(['angular', 'ol', 'app', 'map'],
                     var lyr = null;
                     var me = this;
                     var view = OlMap.map.getView();
-                    
-                    this.getSavedItems = function(){
+
+                    /**
+                    * @function getSavedItems
+                    * @memberOf hs.panoramio.service
+                    * @description Reads the saved features from localStorage and parses that JSON. The functionality of saving is contained in {@link hs.panoramio.panoramio} directive
+                    * @returns {object}
+                    */
+                    this.getSavedItems = function() {
                         var saved_items = localStorage.getItem('saved_panoramio_features');
-                        if (saved_items == null) 
+                        if (saved_items == null)
                             return {};
-                        else 
+                        else
                             return JSON.parse(saved_items);
                     }
-                    
+
                     var saved_items = this.getSavedItems();
 
                     lyr = new ol.layer.Vector({
@@ -125,20 +162,20 @@ define(['angular', 'ol', 'app', 'map'],
                                 image: feature.get('features')[max_pop_i].getStyle()[0].getImage(),
                                 text: text
                             })];
-                            if(max_pop==100000){
-                                    style.push(new ol.style.Style({
-                                        image: new ol.style.RegularShape({
-                                            fill: new ol.style.Fill({
-                                                color: [242, 242, 0, 0.7]
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: [0x77, 0x77, 0x00, 0.9]
-                                            }),
-                                            radius1: 17,
-                                            radius2: 7,
-                                            points: 5
-                                        })
-                                    }));
+                            if (max_pop == 100000) {
+                                style.push(new ol.style.Style({
+                                    image: new ol.style.RegularShape({
+                                        fill: new ol.style.Fill({
+                                            color: [242, 242, 0, 0.7]
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: [0x77, 0x77, 0x00, 0.9]
+                                        }),
+                                        radius1: 17,
+                                        radius2: 7,
+                                        points: 5
+                                    })
+                                }));
                             }
                             return style;
                         }
@@ -160,27 +197,31 @@ define(['angular', 'ol', 'app', 'map'],
                     changed();
 
                     var format = new ol.format.WKT();
-                    var loadLocalFeature = function(item, address){
+                    var loadLocalFeature = function(item, address) {
                         var feature = format.readFeature(item.geometry);
-                        angular.forEach(item, function(value, key){
-                            if(key!='geometry')
-                                feature.set(key, value);  
+                        angular.forEach(item, function(value, key) {
+                            if (key != 'geometry')
+                                feature.set(key, value);
                         })
                         feature.set('popularity', 100000);
                         feature.setStyle([new ol.style.Style({
                             image: new ol.style.Icon({
-                                src: localStorage.getItem('saved_panoramio_image_'+item.photo_file_url)
+                                src: localStorage.getItem('saved_panoramio_image_' + item.photo_file_url)
                             })
                         })]);
                         return feature;
                     }
-                    
+
                     var features = [];
-                    angular.forEach(saved_items, function(item, address){
+                    angular.forEach(saved_items, function(item, address) {
                         features.push(loadLocalFeature(item, address));
                     });
                     src.addFeatures(features);
 
+                    /*
+                     * Ajax callback function executed after panoramio API callback
+                     * @param {object} panoramio - List of images, their coordinates and metadata  
+                     */
                     this.featuresReceived = function(panoramio) {
                         var features = [];
                         for (var i = 0; i < panoramio.photos.length; i++) {
@@ -197,7 +238,7 @@ define(['angular', 'ol', 'app', 'map'],
                                 Author: p.owner_name,
                                 'Owner': p.owner_url,
                                 popularity: i,
-                                hstemplate: 'panoramio'
+                                hstemplate: 'hs.panoramio.directive'
                             };
 
                             var feature = new ol.Feature(attributes);
@@ -212,17 +253,17 @@ define(['angular', 'ol', 'app', 'map'],
                             features.push(feature);
                         }
                         //Load saved items from localStorage
-                        angular.forEach(saved_items, function(item, address){
+                        angular.forEach(saved_items, function(item, address) {
                             features.push(loadLocalFeature(item, address));
                         });
                         src.clear();
                         src.addFeatures(features);
                     }
-                    
-                    this.getLocalStorageFeatures = function(){
-                        
+
+                    this.getLocalStorageFeatures = function() {
+
                     }
-                    
+
                     this.update = function(url) {
                         var b = ol.proj.transformExtent(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
                         var limit = Math.floor($(map.getViewport()).width() * $(map.getViewport()).height() / 22280 * 1.2);
@@ -233,13 +274,13 @@ define(['angular', 'ol', 'app', 'map'],
                             success: this.featuresReceived
                         });
                     };
-                    
-                    this.loadIntoLocalStorage = function(path){
+
+                    this.loadIntoLocalStorage = function(path) {
                         var xhr = new XMLHttpRequest(),
                             blob,
                             fileReader = new FileReader();
 
-                        xhr.open("GET", path , true);
+                        xhr.open("GET", path, true);
                         xhr.responseType = "arraybuffer";
 
                         xhr.addEventListener("load", function() {
@@ -256,7 +297,7 @@ define(['angular', 'ol', 'app', 'map'],
                                     //rhino.setAttribute("src", result);
                                     // Store Data URL in localStorage
                                     try {
-                                        localStorage.setItem('saved_panoramio_image_'+path, result);
+                                        localStorage.setItem('saved_panoramio_image_' + path, result);
                                     } catch (e) {
                                         console.log("Storage failed: " + e);
                                     }
@@ -274,7 +315,7 @@ define(['angular', 'ol', 'app', 'map'],
                 }
             ])
 
-        .run(function(PanoramioPictures) { // instance-injector
+        .run(['hs.panoramio.service', function(service) { // instance-injector
             //Gets executed after service is loaded
-        });
+        }]);
     })

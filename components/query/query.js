@@ -1,3 +1,7 @@
+/**
+* @namespace hs.query
+* @memberOf hs  
+*/ 
 define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
     function(angular, ol) {

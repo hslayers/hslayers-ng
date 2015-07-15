@@ -1,3 +1,8 @@
+/**
+* @namespace hs.compositions
+* @memberOf hs    
+*/
+
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {

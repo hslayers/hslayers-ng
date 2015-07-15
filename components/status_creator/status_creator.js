@@ -1,3 +1,7 @@
+/**
+* @namespace hs.status_creator
+* @memberOf hs  
+*/ 
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {

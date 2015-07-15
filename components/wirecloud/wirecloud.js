@@ -1,3 +1,7 @@
+/**
+* @namespace hs.wirecloud
+* @memberOf hs  
+*/ 
 define(['angular', 'app', 'map', 'ol'],
 
     function(angular, app, map, ol) {

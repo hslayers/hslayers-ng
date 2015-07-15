@@ -1,3 +1,7 @@
+/**
+* @namespace hs.layermanager
+* @memberOf hs  
+*/ 
 define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
     angular.module('hs.layermanager', ['hs.map'])
         .directive('layerManager', function() {

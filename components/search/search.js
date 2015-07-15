@@ -1,3 +1,7 @@
+/**
+* @namespace hs.search
+* @memberOf hs  
+*/ 
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {

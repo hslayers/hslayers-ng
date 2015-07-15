@@ -1,3 +1,8 @@
+/**
+* @namespace hs.feature_crossfilter
+* @memberOf hs  
+*/ 
+
 /*
  * Module is used to filter certain features on vector layers based on attribute values.
  * It also draws nice charts with bars proportionaly to usage of each value of a particular attribute.

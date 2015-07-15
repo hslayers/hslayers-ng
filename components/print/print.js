@@ -1,3 +1,7 @@
+/**
+* @namespace hs.print
+* @memberOf hs  
+*/ 
 define(['angular'],
 
     function(angular) {
