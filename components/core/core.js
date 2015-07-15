@@ -93,7 +93,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                                 return !(error instanceof TypeError);
                             }
                         },
-                        fullscreenMap: function(element, panel_position) {
+                        fullscreenMap: function(element, panel_side) {
                             var w = angular.element($window);
                             w.bind('resize', function() {
                                 $("html").css('overflow', 'hidden');
@@ -104,17 +104,20 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                                 OlMap.map.updateSize();
                             });
                             if(arguments.length>1){
-                                if(panel_position=='left'){
-                                    $('.panelspace', element).insertBefore($('.gui-overlay', element).children().get(0));
-                                    $('.panelspace', element).css({"margin-top": '44px'});
-                                    $('.gui-overlay', element).css({"margin-bottom": '44px'});
-                                }
-                                if(panel_position=='right'){
-                                    $('.panelspace', element).insertAfter($('.gui-overlay', element).children().get($('.gui-overlay', element).children().length-1));
-                                    $('#right-pane', element).insertBefore($('.gui-overlay', element).children().get(0));
-                                }
+                              me.setPanelSide(element, panel_side); 
                             }
                             w.resize();
+                        },
+                        setPanelSide: function(element, panel_side){
+                            if(panel_side=='left'){
+                                $('.panelspace', element).insertBefore($('.gui-overlay', element).children().get(0));
+                                $('.panelspace', element).css({"margin-top": '44px'});
+                                $('.gui-overlay', element).css({"margin-bottom": '44px'});
+                            }
+                            if(panel_side=='right'){
+                                $('.panelspace', element).insertAfter($('.gui-overlay', element).children().get($('.gui-overlay', element).children().length-1));
+                                $('#right-pane', element).insertBefore($('.gui-overlay', element).children().get(0));
+                            }
                         },
                         setLanguage: function(lang) {
                             gettextCatalog.setCurrentLanguage(lang);
