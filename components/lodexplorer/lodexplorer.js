@@ -13,14 +13,14 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
                     }
                 };
-            }).service("hs.lodexplorer.service_sparqllog", [
+            }).service("hs.lodexplorer.serviceSparqllog", [
                 function() {
                     var me = {
                         logs: []
                     };
                     return me;
                 }
-            ]).directive('hs.lodexplorer.directive_sparqllogdialog', function() {
+            ]).directive('hs.lodexplorer.directiveSparqllogdialog', function() {
                 return {
                     templateUrl: hsl_path + 'components/lodexplorer/partials/sparqllogdialog.html',
                 };

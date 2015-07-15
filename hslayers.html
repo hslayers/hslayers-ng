@@ -9,6 +9,12 @@
 <div hs.toolbar.directive ng-controller="hs.toolbar.controller"></div>
 
 <div class="row gui-overlay">
+    <div class="search-container col-md-4" ng-controller="hs.search.controller">
+        <div hs.search.directive_searchinput></div>
+        <div hs.search.directive_searchresults></div>
+    </div>
+    <div class="col-md-4" id="right-pane">
+    </div>
     <div class="panelspace col-md-4">
         <div hs.layermanager.directive          hs.draggable ng-controller="hs.layermanager.controller" ng-show="Core.panelVisible('layermanager', this)"></div>
         <div hs.legend.directive                hs.draggable ng-controller="hs.legend.controller" ng-if="Core.exists('hs.legend.controller')" ng-show="Core.panelVisible('legend', this)"></div>
@@ -21,12 +27,6 @@
         <div hs.print.directive                 hs.draggable ng-controller="hs.print.controller"  ng-if="Core.exists('hs.print.controller')" ng-show="Core.panelVisible('print', this)"></div>
         <div hs.permalink.directive_dialog      hs.draggable ng-controller="hs.permalink.controller"></div>
         <div hs.query.directive_infopanel       hs.draggable ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller')" ng-show="Core.panelVisible('info', this)"></div>
-    </div>
-    <div class="search-container col-md-3" ng-controller="hs.search.controller">
-        <div hs.search.directive_searchinput></div>
-        <div hs.search.directive_searchresults></div>
-    </div>
-    <div class="col-md-4" id="right-pane">
     </div>
 </div>
 <div hs.lod-explorer.directive_sparqllogdialog ng-controller="hs.lodexplorer.controller_sparqllogdialog"  ng-if="Core.exists('SparqlLogDialog')"></div> 

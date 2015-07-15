@@ -66,7 +66,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             angular.forEach(this.interactions, function(value, key) {
                 me.map.addInteraction(value);
             });
-            me.map.addControl(new ol.control.ZoomSlider());
+            //me.map.addControl(new ol.control.ZoomSlider());
             me.map.addControl(new ol.control.ScaleLine());
             var mousePositionControl = new ol.control.MousePosition({
                 coordinateFormat: ol.coordinate.createStringXY(4),

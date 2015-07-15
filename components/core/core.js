@@ -93,7 +93,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                                 return !(error instanceof TypeError);
                             }
                         },
-                        fullscreenMap: function(element) {
+                        fullscreenMap: function(element, panel_position) {
                             var w = angular.element($window);
                             w.bind('resize', function() {
                                 $("html").css('overflow', 'hidden');
@@ -103,6 +103,17 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                                 $("#map").width(w.width());
                                 OlMap.map.updateSize();
                             });
+                            if(arguments.length>1){
+                                if(panel_position=='left'){
+                                    $('.panelspace', element).insertBefore($('.gui-overlay', element).children().get(0));
+                                    $('.panelspace', element).css({"margin-top": '44px'});
+                                    $('.gui-overlay', element).css({"margin-bottom": '44px'});
+                                }
+                                if(panel_position=='right'){
+                                    $('.panelspace', element).insertAfter($('.gui-overlay', element).children().get($('.gui-overlay', element).children().length-1));
+                                    $('#right-pane', element).insertBefore($('.gui-overlay', element).children().get(0));
+                                }
+                            }
                             w.resize();
                         },
                         setLanguage: function(lang) {

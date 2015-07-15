@@ -6,7 +6,7 @@ define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         angular.module('hs.search', ['hs.map'])
-            .directive('hs.search.directive_searchinput', ['$window', function($window) {
+            .directive('hs.search.directiveSearchinput', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchinput.html',
                     replace: true,
@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map'],
                     }
                 };
 
-            }]).directive('hs.search.directive_searchresults', ['$window', function($window) {
+            }]).directive('hs.search.directiveSearchresults', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
                     replace: true,

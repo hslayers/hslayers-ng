@@ -36,17 +36,17 @@
 .gui-overlay{
     z-index: 1000;
     position: absolute;
-    left: 61px;
-    top: 5px;
-    height: 98%;
-    right: 61px;
+    left: 0px;
+    top: 0px;
+    bottom:0px;
+    right: 0px;
     pointer-events: none;
     background: none !important;
 }
 
 .panelspace {
   pointer-events: auto;
-  max-height: 98%;
+  max-height: 100%;
   overflow-y: auto;
   padding: 0;
 }
@@ -60,15 +60,15 @@
 
 #toolbar {
     left: 3px;
-    width: 42px;
     position: absolute;
     top: 3px;
 }
 
+/*
 #map {
   height: 100%;
   width: 100%;
-}
+}*/
 
 .modal-backdrop{visibility:hidden}
 .toolbuttons {display: inline-block}
@@ -190,3 +190,11 @@ min-width: 230px;
 }
 .popover{max-width: 1000px; max-height: 1000px}
 .list-group-item.active .datasource_addlayer{color: #fff}
+.panel-body {
+  padding: 3px;
+}
+.row {
+  margin-right: 0px; 
+  margin-left: 0px; 
+}
+.thumbnail{height:62px}

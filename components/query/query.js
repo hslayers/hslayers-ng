@@ -6,7 +6,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
     function(angular, ol) {
         angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
-            .directive('hs.query.directive_infopanel', function() {
+            .directive('hs.query.directiveInfopanel', function() {
                 return {
                     templateUrl: hsl_path + 'components/query/partials/infopanel.html'
                 };
