@@ -6,12 +6,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
     function(angular, ol) {
         angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
-            .directive('infopanel', function() {
+            .directive('hs.query.directive_infopanel', function() {
                 return {
                     templateUrl: hsl_path + 'components/query/partials/infopanel.html'
                 };
             })
-            .directive('infovalue', ['$compile', function($compile) {
+            .directive('hs.query.infovalue', ['$compile', function($compile) {
 
                 function link(scope, element, attrs) {
                     if (attrs.attribute == 'hstemplate') return;
@@ -46,7 +46,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     link: link
                 };
             }])
-            .service("WmsGetFeatureInfo", [
+            .service("hs.query.service_getwmsfeatureinfo", [
                 function() {
                     this.request = function(url, info_format, coordinate) {
                         var esc_url = window.escape(url);
@@ -61,7 +61,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     };
 
                 }
-            ]).service("InfoPanelService", ['$rootScope',
+            ]).service("hs.query.service_infopanel", ['$rootScope',
                 function($rootScope) {
                     var me = {
                         //Used for tool specific info, such as lodexplorer region names and values
@@ -82,7 +82,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 }
             ])
 
-        .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core', '$sce',
+        .controller('hs.query.controller', ['$scope', 'hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);

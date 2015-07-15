@@ -6,31 +6,31 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
     function(ol, dc) {
         var module = angular.module('hs.lodexplorer', ['hs.drag', 'hs.map', 'hs.query', 'hs.core'])
-            .directive('lodExplorer', function() {
+            .directive('hs.lodexplorer.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html',
                     link: function(scope, element) {
 
                     }
                 };
-            }).service("SparqlLogService", [
+            }).service("hs.lodexplorer.service_sparqllog", [
                 function() {
                     var me = {
                         logs: []
                     };
                     return me;
                 }
-            ]).directive('sparqlLogDialog', function() {
+            ]).directive('hs.lodexplorer.directive_sparqllogdialog', function() {
                 return {
                     templateUrl: hsl_path + 'components/lodexplorer/partials/sparqllogdialog.html',
                 };
-            }).controller('SparqlLogDialog', ['$scope', 'SparqlLogService',
+            }).controller('hs.lodexplorer.controller_sparqllogdialog', ['$scope', 'hs.lodexplorer.service_sparqllog',
                 function($scope, SparqlLogService) {
                     $scope.sparql_log = SparqlLogService.logs;
                 }
             ])
 
-        .controller('LodExplorer', ['$scope', 'OlMap', 'InfoPanelService', 'SparqlLogService', 'Core',
+        .controller('hs.lodexplorer.controller', ['$scope', 'hs.map.service', 'hs.query.service_infopanel', 'hs.lodexplorer.service_sparqllog', 'Core',
             function($scope, OlMap, InfoPanelService, SparqlLogService, Core) {
                 var lyr = null;
                 var map = OlMap.map;

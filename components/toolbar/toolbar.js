@@ -6,13 +6,13 @@ define(['angular', 'map', 'core', 'permalink'],
 
     function(angular) {
         angular.module('hs.toolbar', ['hs.map', 'hs.core'])
-            .directive('toolbar', function() {
+            .directive('hs.toolbar.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/toolbar/partials/toolbar.html'
                 };
             })
 
-        .controller('Toolbar', ['$scope', 'OlMap', 'Core', 'BrowserUrlService',
+        .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url',
             function($scope, OlMap, Core, bus) {
                 $scope.Core = Core;
 

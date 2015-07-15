@@ -6,7 +6,7 @@ define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         var module = angular.module('hs.status_creator', ['hs.map', 'hs.core'])
-            .directive('statusCreator', function() {
+            .directive('hs.status_creator.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog.html',
                     link: function(scope, element) {
@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-        .service('status_creator', ['OlMap', 'Core', function(OlMap, Core) {
+        .service('hs.status_creator.service', ['hs.map.service', 'Core', function(OlMap, Core) {
             var me = {
                 map2json: function(map, $scope, saveAll) {
                     var json = {
@@ -205,7 +205,7 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('StatusCreator', ['$scope', '$rootScope', 'OlMap', 'Core', 'status_creator', 'project_name',
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'project_name',
             function($scope, $rootScope, OlMap, Core, status_creator, project_name) {
                 $scope.layers = [];
                 $scope.id = '';

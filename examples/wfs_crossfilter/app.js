@@ -12,7 +12,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query
             'hs.feature_crossfilter'
         ]);
 
-        module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
+        module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -93,8 +93,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService', 'OlMap', 'feature_crossfilter',
-            function($scope, Core, InfoPanelService, OlMap, feature_crossfilter) {
+        module.controller('Main', ['$scope', 'Core', 'hs.map.service', 'feature_crossfilter',
+            function($scope, Core, OlMap, feature_crossfilter) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;

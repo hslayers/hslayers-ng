@@ -17,7 +17,7 @@ define(['angular', 'ol'],
 
         angular.module('hs.ows.wms', [])
             //This is used to share map object between components.
-            .service("OwsWmsCapabilities", ['$http', 'OlMap',
+            .service("OwsWmsCapabilities", ['$http', 'hs.map.service',
                 function($http, OlMap) {
                     var callbacks = [];
                     this.addHandler = function(f) {
@@ -97,7 +97,7 @@ define(['angular', 'ol'],
 
                 }
             ])
-            .service("OwsWmsLayerProducer", ['OlMap', 'OwsWmsCapabilities', function(OlMap, OwsWmsCapabilities) {
+            .service("OwsWmsLayerProducer", ['hs.map.service', 'OwsWmsCapabilities', function(OlMap, OwsWmsCapabilities) {
                 this.addService = function(url, box) {
                     OwsWmsCapabilities.requestGetCapabilities(url, function(resp) {
                         var ol_layers = OwsWmsCapabilities.service2layers(resp);
@@ -108,7 +108,7 @@ define(['angular', 'ol'],
                     })
                 }
             }])
-            .controller('OwsWms', ['$scope', 'OlMap', 'OwsWmsCapabilities',
+            .controller('OwsWms', ['$scope', 'hs.map.service', 'OwsWmsCapabilities',
                 function($scope, OlMap, OwsWmsCapabilities) {
                     OwsWmsCapabilities.addHandler(function(response) {
                         try {

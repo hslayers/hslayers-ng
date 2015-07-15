@@ -44,7 +44,7 @@ require.config({
 define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'bootstrap'],
     function(angular) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag'])
-            .service("Core", ['$rootScope', '$controller', '$window', 'OlMap', 'gettextCatalog',
+            .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog',
                 function($rootScope, $controller, $window, OlMap, gettextCatalog) {
                     var me = {
                         scopes_registered: [],

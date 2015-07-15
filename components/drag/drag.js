@@ -5,7 +5,7 @@
 define(['angular'],
     function(angular) {
         angular.module('hs.drag', []).
-        directive('draggable', ['$document', '$window', function($document, $window) {
+        directive('hs.draggable', ['$document', '$window', function($document, $window) {
             return function(scope, element, attr) {
                 var startX = 0,
                     startY = 0,

@@ -4,13 +4,24 @@
 */ 
 define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
     angular.module('hs.layermanager', ['hs.map'])
-        .directive('layerManager', function() {
+    
+        /**
+        * @class hs.layermanager.directive
+        * @memberOf hs.layermanager
+        * @description Directive for displaying layer manager panel
+        */
+        .directive('hs.layermanager.directive', function() {
             return {
                 templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
             };
         })
 
-    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', '$rootScope', 'Core',
+        /**
+        * @class hs.layermanager.controller
+        * @memberOf hs.layermanager
+        * @description Layer manager controller
+        */
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'box_layers', '$rootScope', 'Core',
         function($scope, OlMap, box_layers, $rootScope, Core) {
             $scope.Core = Core;
             var map = OlMap.map;

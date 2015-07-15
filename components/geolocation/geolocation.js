@@ -6,7 +6,7 @@ define(['angular', 'ol'],
 
     function(angular, ol) {
         angular.module('hs.geolocation', ['hs.map'])
-            .directive('geolocation', ['OlMap', 'Geolocation', function(OlMap, Geolocation) {
+            .directive('hs.geolocation.directive', ['hs.map.service', 'Geolocation', function(OlMap, Geolocation) {
                 return {
                     templateUrl: hsl_path + 'components/geolocation/partials/geolocation.html',
                     link: function link(scope, element, attrs) {
@@ -21,7 +21,7 @@ define(['angular', 'ol'],
                 };
             }])
 
-        .service('Geolocation', ['OlMap', '$rootScope',
+        .service('hs.geolocation.service', ['hs.map.service', '$rootScope',
             function(OlMap, $rootScope) {
                 var me = {
                     following: false,
@@ -106,37 +106,37 @@ define(['angular', 'ol'],
 
                 return me;
             }
-        ]).controller('Geolocation', ['$scope', 'Geolocation', function($scope, Geolocation) {
+        ]).controller('hs.heolocation.controller', ['$scope', 'hs.geolocation.service', function($scope, service) {
             $scope.speed = null;
             $scope.alt = null;
             $scope.altitudeAccuracy = null;
 
             $scope.getGeolocationProvider = function() {
-                return Geolocation.geolocation;
+                return service.geolocation;
             }
 
             $scope.gpsActive = function(set_to) {
                 if (arguments.length == 0)
-                    return Geolocation.geolocation.getTracking();
+                    return service.geolocation.getTracking();
                 else
-                    Geolocation.geolocation.setTracking(set_to);
+                    service.geolocation.setTracking(set_to);
             }
 
             $scope.following = function(set_to) {
                 if (arguments.length == 0)
-                    return Geolocation.following;
+                    return service.following;
                 else
-                    Geolocation.following = set_to;
+                    service.following = set_to;
             }
 
             $scope.setFeatureStyle = function(style) {
-                return Geolocation.style = style;
+                return service.style = style;
             }
 
             $scope.$on('geolocation.updated', function(event) {
-                $scope.speed = Geolocation.speed;
-                $scope.alt = Geolocation.altitude;
-                $scope.altitudeAccuracy = Geolocation.altitudeAccuracy;
+                $scope.speed = service.speed;
+                $scope.alt = service.altitude;
+                $scope.altitudeAccuracy = service.altitudeAccuracy;
                 if (!$scope.$$phase) $scope.$digest();
             });
             $scope.$emit('scope_loaded', "Geolocation");

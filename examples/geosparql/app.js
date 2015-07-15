@@ -196,7 +196,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', '$filter', 'Core', 'OlMap', 'InfoPanelService', 'feature_crossfilter',
+        module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', 'hs.feature_crossfilter.service',
             function($scope, $filter, Core, OlMap, InfoPanelService, feature_crossfilter) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
@@ -256,6 +256,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                         });
 
                 });
+                
                 $scope.$on('feature_crossfilter_filtered', function(event, data) {
                     var lyr = OlMap.findLayerByTitle('Specific points of interest');
                     var src = lyr.getSource();

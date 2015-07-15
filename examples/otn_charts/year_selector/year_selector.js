@@ -2,7 +2,7 @@ define(['angular', 'ol', 'map', 'd3'],
 
     function(angular, ol, map) {
         angular.module('hs.widgets.year_selector', ['hs.map'])
-            .service('year_selector_service', ['OlMap', 'default_layers', function(OlMap, default_layers) {
+            .service('year_selector_service', ['hs.map.service', 'default_layers', function(OlMap, default_layers) {
                 var me = {
                     year: 2013
                 };
@@ -122,7 +122,7 @@ define(['angular', 'ol', 'map', 'd3'],
                 };
             })
 
-        .controller('YearSelector', ['$scope', 'OlMap', 'year_selector_service',
+        .controller('YearSelector', ['$scope', 'hs.map.service', 'year_selector_service',
             function($scope, OlMap, year_selector_service) {
                 $scope.year = 2013;
                 $scope.yearChanged = function(year) {

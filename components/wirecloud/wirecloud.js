@@ -7,7 +7,7 @@ define(['angular', 'app', 'map', 'ol'],
     function(angular, app, map, ol) {
         angular.module('hs.wirecloud', ['hs', 'hs.map'])
 
-        .service("WireCloud", ['$rootScope', 'OlMap', 'wirecloud_data_consumer', 'default_layers',
+        .service("hs.wirecloud.service", ['$rootScope', 'hs.map.service', 'wirecloud_data_consumer', 'default_layers',
             function($rootScope, OlMap, wirecloud_data_consumer, default_layers) {
                 var view = OlMap.map.getView();
                 if (console) console.log('Wirecloud interface loaded');
@@ -43,7 +43,7 @@ define(['angular', 'app', 'map', 'ol'],
             }
         ])
 
-        .run(function(WireCloud) { // instance-injector
+        .run(['hs.wirecloud.service', function(WireCloud) { // instance-injector
             //Gets executed after service is loaded
-        });
+        }]);
     })

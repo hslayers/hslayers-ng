@@ -11,7 +11,7 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             'hs.geolocation'
         ]);
 
-        module.directive('hs', ['OlMap', 'Core', '$compile', function(OlMap, Core, $compile) {
+        module.directive('hs', ['hs.map.service', 'Core', '$compile', function(OlMap, Core, $compile) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -67,7 +67,7 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'InfoPanelService', 'OlMap', 'default_layers',
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.query.service_infopanel', 'hs.map.service', 'default_layers',
             function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file

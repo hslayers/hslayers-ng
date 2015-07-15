@@ -6,12 +6,12 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
     angular.module('hs.map', ['hs'])
        
         /**
-        * @class OlMap
+        * @class hs.map.service
         * @memberOf hs.map
         * @param {ol.View} default_view - coordinates and zoom level to be used when the map is initialized
         * @description Service for containing and initializing map object
         */
-        .service('OlMap', ['default_view', function(default_view) {
+        .service('hs.map.service', ['default_view', function(default_view) {
             this.map = new ol.Map({
                 target: 'map',
                 interactions: [],
@@ -66,9 +66,17 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             angular.forEach(this.interactions, function(value, key) {
                 me.map.addInteraction(value);
             });
+            me.map.addControl(new ol.control.ZoomSlider());
+            me.map.addControl(new ol.control.ScaleLine());
+            var mousePositionControl = new ol.control.MousePosition({
+                coordinateFormat: ol.coordinate.createStringXY(4),
+                undefinedHTML: '&nbsp;'
+            });
+            //map.addControl(mousePositionControl);
+            
         }])
 
-    .directive('map', function() {
+    .directive('hs.map.directive', function() {
         return {
             templateUrl: hsl_path + 'components/map/partials/map.html',
             link: function(scope, element) {
@@ -77,8 +85,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         };
     })
 
-    .controller('Map', ['$scope', 'OlMap', 'default_layers', 'box_layers', 'default_view', 'BrowserUrlService',
-        function($scope, OlMap, default_layers, box_layers, default_view, bus) {
+    .controller('hs.map.controller', ['$scope', 'hs.map.service', 'default_layers', 'box_layers', 'hs.permalink.service_url',
+        function($scope, OlMap, default_layers, box_layers, bus) {
             var map = OlMap.map;
 
             $scope.moveToAndZoom = function(x, y, zoom) {
@@ -100,7 +108,13 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             $scope.showFeaturesWithAttrHideRest = function(source, attribute, value, attr_to_change, invisible_value, visible_value) {
 
             }
-
+            
+            if (bus.getParamValue('hs_x') && bus.getParamValue('hs_y') && bus.getParamValue('hs_z')) {
+                var loc = location.search;
+                $scope.moveToAndZoom(parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc)), parseInt(bus.getParamValue('hs_z', loc)));
+            }
+            
+            
             angular.forEach(box_layers, function(box) {
                 angular.forEach(box.get('layers'), function(lyr) {
                     OlMap.map.addLayer(lyr);
@@ -109,18 +123,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             angular.forEach(default_layers, function(lyr) {
                 OlMap.map.addLayer(lyr);
             });
-            if (bus.getParamValue('hs_x') && bus.getParamValue('hs_y') && bus.getParamValue('hs_z')) {
-                var loc = location.search;
-                $scope.moveToAndZoom(parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc)), parseInt(bus.getParamValue('hs_z', loc)));
-            }
-            map.addControl(new ol.control.ZoomSlider());
-            map.addControl(new ol.control.ScaleLine());
-            var mousePositionControl = new ol.control.MousePosition({
-                coordinateFormat: ol.coordinate.createStringXY(4),
-                undefinedHTML: '&nbsp;'
-            });
-            $scope.setTargetDiv("map")
-                //map.addControl(mousePositionControl);
+            $scope.setTargetDiv("map");
+
             $scope.$emit('scope_loaded', "Map");
         }
     ]);

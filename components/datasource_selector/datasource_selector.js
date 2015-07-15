@@ -6,13 +6,13 @@ define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         angular.module('hs.datasource_selector', ['hs.map'])
-            .directive('datasourceSelector', function() {
+            .directive('hs.datasource_selector.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/datasource_selector/partials/datasource_selector.html'
                 };
             })
 
-        .controller('DatasourceSelector', ['$scope', 'OlMap', 'Core', 'OwsWmsCapabilities',
+        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', 'OwsWmsCapabilities',
             function($scope, OlMap, Core, OwsWmsCapabilities) {
                 $scope.query = {
                     title: ''

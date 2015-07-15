@@ -1,20 +1,15 @@
 /**
 * @namespace hs.feature_crossfilter
 * @memberOf hs  
-*/ 
-
-/*
- * Module is used to filter certain features on vector layers based on attribute values.
- * It also draws nice charts with bars proportionaly to usage of each value of a particular attribute.
- * 
- * must provide layers to be fillterable in app.js parametrs:         
- *      module.value('crossfilterable_layers', [{
-            layer_ix: 1,
-            attributes: ["http://gis.zcu.cz/poi#category_osm"]
-        }]);
- * 
- * 
- */
+* @desc Module is used to filter certain features on vector layers based on attribute values.
+* It also draws nice charts with bars proportionaly to usage of each value of a particular attribute.
+* 
+* must provide layers to be fillterable in app.js parametrs:         
+*      module.value('crossfilterable_layers', [{
+        layer_ix: 1,
+        attributes: ["http://gis.zcu.cz/poi#category_osm"]
+    }]); 
+*/
 define(['angular', 'ol', 'dc', 'map'],
 
     function(angular, ol, dc) {
@@ -30,7 +25,7 @@ define(['angular', 'ol', 'dc', 'map'],
         }
 
         var module = angular.module('hs.feature_crossfilter', ['hs.map', 'hs.core'])
-            .directive('featureCrossfilter', function() {
+            .directive('hs.feature_crossfilter.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/feature_crossfilter/partials/f_crossfilter.html',
                     link: function(scope, element) {
@@ -38,7 +33,7 @@ define(['angular', 'ol', 'dc', 'map'],
                     }
                 };
             })
-            .service('feature_crossfilter', [function() {
+            .service('hs.feature_crossfilter.service', [function() {
                 return {
                     makeCrossfilterDimensions: function(source, attributes) {
                         var facts = crossfilter(source.getFeatures());
@@ -62,15 +57,13 @@ define(['angular', 'ol', 'dc', 'map'],
                     }
                 };
             }])
-            .controller('FeatureCrossfilter', ['$scope', 'OlMap', 'Core', 'feature_crossfilter', 'crossfilterable_layers',
-                function($scope, OlMap, Core, feature_crossfilter, crossfilterable_layers) {
+            .controller('hs.feature_crossfilter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_crossfilter.service', 'crossfilterable_layers',
+                function($scope, OlMap, Core, service, crossfilterable_layers) {
                     var map = OlMap.map;
 
                     $scope.ajax_loader = hsl_path + 'components/feature_crossfilter/ajax-loader.gif';
                     $scope.loading = false;
                     $scope.groupings = [];
-
-
 
                     $scope.createConfiguredCharts = function() {
                         $scope.loading = true;
@@ -102,7 +95,7 @@ define(['angular', 'ol', 'dc', 'map'],
                                 }
                             }
                             if (!$scope.$$phase) $scope.$digest();
-                            var dims = feature_crossfilter.makeCrossfilterDimensions(lyr.getSource(), attributes);
+                            var dims = service.makeCrossfilterDimensions(lyr.getSource(), attributes);
                             var filterFeatures = function(chart, filter) {
                                 var data_items = chart.dimension().top(Infinity);
                                 lyr.getSource().forEachFeature(function(feature) {

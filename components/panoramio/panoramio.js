@@ -104,7 +104,7 @@ define(['angular', 'ol', 'app', 'map'],
             * @param {array} default_layers - Layer array to which the new panoramio layer will be added. It is later iterated and added to map.
             * @description Service for querying and displaying panoramio pictures
             */
-            .service("hs.panoramio.service", ['OlMap', 'default_layers',
+            .service("hs.panoramio.service", ['hs.map.service', 'default_layers',
                 function(OlMap, default_layers) {
                     var map = OlMap.map;
                     var src = new ol.source.Vector();
@@ -317,5 +317,6 @@ define(['angular', 'ol', 'app', 'map'],
 
         .run(['hs.panoramio.service', function(service) { // instance-injector
             //Gets executed after service is loaded
+            if(console) console.log('Panoramio loaded');
         }]);
     })

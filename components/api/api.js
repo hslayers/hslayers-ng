@@ -6,7 +6,7 @@ define(['angular', 'ol', 'app', 'map', 'core'],
 
     function(angular, ol, app, map) {
         angular.module('hs.api', ['hs', 'hs.map', 'hs.core'])
-            .service("Api", ['$rootScope', 'OlMap', '$controller', 'Core',
+            .service("Api", ['$rootScope', 'hs.map.service', '$controller', 'Core',
                 function($rootScope, OlMap, $controller, Core) {
                     var me = {};
                     me.gui = {};

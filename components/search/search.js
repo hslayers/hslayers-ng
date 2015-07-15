@@ -6,7 +6,7 @@ define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         angular.module('hs.search', ['hs.map'])
-            .directive('searchinput', ['$window', function($window) {
+            .directive('hs.search.directive_searchinput', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchinput.html',
                     replace: true,
@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map'],
                     }
                 };
 
-            }]).directive('searchresults', ['$window', function($window) {
+            }]).directive('hs.search.directive_searchresults', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
                     replace: true,
@@ -23,7 +23,7 @@ define(['angular', 'ol', 'map'],
 
                     }
                 };
-            }]).service("SearchService", ['$http',
+            }]).service("hs.search.service", ['$http',
                 function($http) {
                     this.request = function(query) {
                         var url = encodeURIComponent("http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query);
@@ -37,7 +37,7 @@ define(['angular', 'ol', 'map'],
                 }
             ])
 
-        .controller('Search', ['$scope', 'OlMap', 'SearchService',
+        .controller('hs.search.controller', ['$scope', 'hs.map.service', 'hs.search.service',
             function($scope, OlMap, SearchService) {
                 var map = OlMap.map;
                 $scope.query = "";

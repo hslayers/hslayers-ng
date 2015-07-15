@@ -6,13 +6,13 @@ define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         angular.module('hs.legend', ['hs.map'])
-            .directive('legend', function() {
+            .directive('hs.legend.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/legend/partials/legend.html'
                 };
             })
 
-        .controller('Legend', ['$scope', 'OlMap',
+        .controller('hs.legend.controller', ['$scope', 'hs.map.service',
             function($scope, OlMap) {
                 var map = OlMap.map;
                 var layerAdded = function(e) {

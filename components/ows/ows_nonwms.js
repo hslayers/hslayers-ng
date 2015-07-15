@@ -2,7 +2,7 @@ define(['angular'],
 
     function(angular) {
         angular.module('hs.ows.nonwms', [])
-            .controller('OwsNonWms', ['$scope', 'OlMap',
+            .controller('OwsNonWms', ['$scope', 'hs.map.service',
                 function($scope, OlMap) {
                     $scope.srs = 'EPSG:3857';
                     $scope.title = "";

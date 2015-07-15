@@ -15,7 +15,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
             'hs.compositions', 'hs.status_creator'
         ]);
 
-        module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
+        module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -44,7 +44,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
 
         module.value('project_name', 'myproject');
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService', 'composition_parser',
+        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser',
             function($scope, Core, InfoPanelService, composition_parser) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file

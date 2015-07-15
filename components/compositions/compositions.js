@@ -7,7 +7,7 @@ define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         var module = angular.module('hs.compositions', ['hs.map', 'hs.core'])
-            .directive('compositionBrowser', function() {
+            .directive('hs.compositions.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
                     link: function(scope, element) {
@@ -16,7 +16,7 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-        .service('composition_parser', ['OlMap', 'Core', function(OlMap, Core) {
+        .service('hs.compositions.service_parser', ['hs.map.service', 'Core', function(OlMap, Core) {
             var me = {
                 load: function(url) {
                     url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
@@ -93,7 +93,7 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('Compositions', ['$scope', '$rootScope', 'OlMap', 'Core', 'composition_parser',
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser',
             function($scope, $rootScope, OlMap, Core, composition_parser) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
