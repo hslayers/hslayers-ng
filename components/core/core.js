@@ -50,6 +50,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                         scopes_registered: [],
                         mainpanel: "",
                         panel_statuses: {},
+                        panel_side: 'right',
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) which = "";
                             me.mainpanel = which;
@@ -109,14 +110,23 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                             w.resize();
                         },
                         setPanelSide: function(element, panel_side){
+                            me.panel_side = panel_side;
                             if(panel_side=='left'){
                                 $('.panelspace', element).insertBefore($('.gui-overlay', element).children().get(0));
                                 $('.panelspace', element).css({"margin-top": '44px'});
                                 $('.gui-overlay', element).css({"margin-bottom": '44px'});
+                                $('.ol-zoomslider, .ol-zoom').css({
+                                    right: '.5em', 
+                                    left: 'auto' 
+                                });
                             }
                             if(panel_side=='right'){
                                 $('.panelspace', element).insertAfter($('.gui-overlay', element).children().get($('.gui-overlay', element).children().length-1));
                                 $('#right-pane', element).insertBefore($('.gui-overlay', element).children().get(0));
+                                $('.ol-zoomslider, .ol-zoom').css({
+                                    right: 'auto', 
+                                    left: 'auto' 
+                                });
                             }
                         },
                         setLanguage: function(lang) {

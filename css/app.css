@@ -123,7 +123,9 @@ hr {
 }
 
 .search-container {
-      pointer-events: auto;
+    pointer-events: auto;
+    margin-top: 40px;
+    margin-left: 15px;
 }
 .search_address {
 }

@@ -6,7 +6,7 @@ define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         var module = angular.module('hs.status_creator', ['hs.map', 'hs.core'])
-            .directive('hs.status_creator.directive', function() {
+            .directive('hs.statusCreator.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog.html',
                     link: function(scope, element) {

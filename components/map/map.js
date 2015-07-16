@@ -72,6 +72,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 coordinateFormat: ol.coordinate.createStringXY(4),
                 undefinedHTML: '&nbsp;'
             });
+
             //map.addControl(mousePositionControl);
             
         }])
@@ -85,8 +86,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         };
     })
 
-    .controller('hs.map.controller', ['$scope', 'hs.map.service', 'default_layers', 'box_layers', 'hs.permalink.service_url',
-        function($scope, OlMap, default_layers, box_layers, bus) {
+    .controller('hs.map.controller', ['$scope', 'hs.map.service', 'default_layers', 'box_layers', 'hs.permalink.service_url', 'Core', 
+        function($scope, OlMap, default_layers, box_layers, bus, Core) {
             var map = OlMap.map;
 
             $scope.moveToAndZoom = function(x, y, zoom) {
@@ -114,7 +115,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 $scope.moveToAndZoom(parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc)), parseInt(bus.getParamValue('hs_z', loc)));
             }
             
-            
             angular.forEach(box_layers, function(box) {
                 angular.forEach(box.get('layers'), function(lyr) {
                     OlMap.map.addLayer(lyr);
@@ -124,6 +124,18 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 OlMap.map.addLayer(lyr);
             });
             $scope.setTargetDiv("map");
+            if(Core.panel_side=='left'){
+                $('.ol-zoomslider, .ol-zoom').css({
+                    right: '.5em', 
+                    left: 'auto' 
+                });
+            }
+            if(Core.panel_side=='right'){
+                $('.ol-zoomslider, .ol-zoom').css({
+                    right: 'auto', 
+                    left: '.5em' 
+                });
+            }
 
             $scope.$emit('scope_loaded', "Map");
         }
