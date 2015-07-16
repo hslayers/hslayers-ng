@@ -6,7 +6,7 @@ define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         angular.module('hs.datasource_selector', ['hs.map'])
-            .directive('hs.datasource_selector.directive', function() {
+            .directive('hs.datasourceSelector.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/datasource_selector/partials/datasource_selector.html'
                 };

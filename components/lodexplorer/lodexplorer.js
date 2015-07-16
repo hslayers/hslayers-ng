@@ -13,7 +13,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
                     }
                 };
-            }).service("hs.lodexplorer.serviceSparqllog", [
+            }).service("hs.lodexplorer.service_sparqllog", [
                 function() {
                     var me = {
                         logs: []
@@ -140,6 +140,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
                 var from_list = "";
                 var classifsDownloaded = function(j) {
+                    $scope.classifs_loaded = true;
                     var unique_classifs = {};
                     from_list = "";
                     for (var i = 0; i < j.results.bindings.length; i++) {

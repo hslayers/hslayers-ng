@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation', 'datasource_selector', 'api', 'ows'],
+define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation', 'datasource_selector', 'api', 'ows', 'status_creator'],
 
     function(ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -10,6 +10,7 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer',
             'hs.geolocation',
             'hs.datasource_selector',
+            'hs.status_creator',
             'hs.api',
             'hs.ows'
         ]);

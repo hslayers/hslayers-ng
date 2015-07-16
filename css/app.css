@@ -123,7 +123,9 @@ hr {
 }
 
 .search-container {
-      pointer-events: auto;
+    pointer-events: auto;
+    margin-top: 40px;
+    margin-left: 15px;
 }
 .search_address {
 }
@@ -133,7 +135,7 @@ hr {
     min-width: 200px;
 }
 
-#toolbar button {margin: 1px; position: relative;}
+#toolbar button {margin: 0px; position: relative;}
 #toolbar span, #toolbar i {width: 14px; height: 14px}
 
 
@@ -161,7 +163,6 @@ display: none;
 }
 .locate ul{list-style: none}
 
-.filter_charts{height: 220px;}
 div#infopanel.ng-scope .first-col{width:100px; overflow-x: auto;}
 div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
 .dc-chart g.row text {fill: black;}.

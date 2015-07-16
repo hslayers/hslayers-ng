@@ -93,7 +93,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'hs.map.service', 'feature_crossfilter',
+        module.controller('Main', ['$scope', 'Core', 'hs.map.service', 'hs.feature_crossfilter.service',
             function($scope, Core, OlMap, feature_crossfilter) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
