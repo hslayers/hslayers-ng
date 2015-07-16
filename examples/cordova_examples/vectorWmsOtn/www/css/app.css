@@ -1,0 +1,200 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+.mainpanel{
+  width: 100%;
+}
+
+.gui-overlay{
+    z-index: 1000;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom:0px;
+    right: 0px;
+    pointer-events: none;
+    background: none !important;
+}
+
+.panelspace {
+  pointer-events: auto;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.layerpanel {
+  width: 100%;
+  top: 6px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#toolbar {
+    left: 3px;
+    position: absolute;
+    top: 3px;
+}
+
+/*
+#map {
+  height: 100%;
+  width: 100%;
+}*/
+
+.modal-backdrop{visibility:hidden}
+.toolbuttons {display: inline-block}
+.form-group {
+    margin-bottom: 5px;
+}
+hr {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+.layer-checked, .layer-more, .datasource_addlayer{
+    width: 20px;
+    height: 21px;
+    float: right;
+    font-size: 19pt;
+}
+
+.datasource_addlayer, .layer-more{
+    /*margin-top: -8px;*/
+    margin-left: 4px;
+    margin-right: 4px;
+}
+    
+
+.layer-more{
+    display: none;
+}
+    
+
+.ol-zoomslider, .ol-zoom {
+    right: .5em;
+    left: auto;
+}
+
+.ol-zoom{
+    top: 2.8em;
+}
+
+.ol-touch .ol-zoomslider {
+    display: none;
+
+}
+.ol-zoomslider {position: absolute; height: 200px; width: 28px !important; top: 105px !important}
+
+.ol-mouse-position {
+    bottom: 8px;
+    left: 170px;
+    position: absolute;
+    color: #fff;
+    top: auto;
+    right: auto;
+}
+
+.search-container {
+      pointer-events: auto;
+}
+.search_address {
+}
+
+#searchresults {
+    top: 45px; 
+    min-width: 200px;
+}
+
+#toolbar button {margin: 1px; position: relative;}
+#toolbar span, #toolbar i {width: 14px; height: 14px}
+
+
+.locate:not(.ol-collapsed) {
+background: rgba(255,255,255,.8);
+}
+.locate, .ol-control button, .ol-has-tooltip [role=tooltip], .ol-scale-line-inner {
+font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+}
+.locate {
+text-align: right;
+top: 22.5em;
+right: .5em;
+max-width: calc(100% - 1.3em);
+}
+
+.locate ul{float:left}
+.locate button{float: right;}
+.locate.ol-collapsed ul, .locate:not(.ol-collapsed) button:hover [role=tooltip] {
+display: none;
+}
+
+.locate:not(.ol-collapsed){
+    width: 175px;
+}
+.locate ul{list-style: none}
+
+.filter_charts{height: 220px;}
+div#infopanel.ng-scope .first-col{width:100px; overflow-x: auto;}
+div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
+.dc-chart g.row text {fill: black;}.
+#right-pane{
+  pointer-events: auto;
+}
+.but-title-sm {
+  float: right;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2;
+}
+.but-title-sm:hover{color:#000;text-decoration:none;cursor:pointer;filter:alpha(opacity=50);opacity:.5}
+button.but-title-sm {
+  -webkit-appearance: none;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+}
+.popover-content {
+min-width: 230px;
+}
+.popover{max-width: 1000px; max-height: 1000px}
+.list-group-item.active .datasource_addlayer{color: #fff}
+.panel-body {
+  padding: 3px;
+}
+.row {
+  margin-right: 0px; 
+  margin-left: 0px; 
+}
+.thumbnail{height:62px}
