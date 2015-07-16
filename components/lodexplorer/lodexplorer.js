@@ -13,7 +13,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
                     }
                 };
-            }).service("hs.lodexplorer.serviceSparqllog", [
+            }).service("hs.lodexplorer.service_sparqllog", [
                 function() {
                     var me = {
                         logs: []
