@@ -41,9 +41,9 @@ require.config({
     ]
 });
 
-define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'bootstrap'],
+define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'bootstrap', 'api'],
     function(angular) {
-        angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag'])
+        angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
             .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog',
                 function($rootScope, $controller, $window, OlMap, gettextCatalog) {
                     var me = {
@@ -156,6 +156,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                         openStatusCreator: function() {
                             me.panel_statuses.status_creator = true;
                             hslayers_api.gui.StatusCreator.open();
+                        },
+                        searchVisible: function(is){
+                            if (arguments.length>0){
+                                me.panel_statuses['search'] = is;
+                            }
+                            return me.panel_statuses['search']
                         }
                     };
 

@@ -15,6 +15,7 @@ define(['angular', 'map', 'core', 'permalink'],
         .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url',
             function($scope, OlMap, Core, bus) {
                 $scope.Core = Core;
+                var collapsed = false;
 
                 $scope.setMainPanel = function(which) {
                     Core.setMainPanel(which, true);
@@ -23,6 +24,13 @@ define(['angular', 'map', 'core', 'permalink'],
 
                 if (bus.getParamValue('hs_panel')) {
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
+                }
+                
+                $scope.collapsed = function(is){
+                    if (arguments.length>0){
+                        collapsed = is;
+                    }
+                    return collapsed;
                 }
 
                 $scope.$emit('scope_loaded', "Toolbar");
