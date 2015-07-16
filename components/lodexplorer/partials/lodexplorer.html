@@ -15,14 +15,37 @@
                 </div>
                 <div class="form-group">
                     <img ng-src="{{ajax_loader}}" ng-show="loading"/>
-                    <div class="filter_charts"  ng-repeat="group in groupings">
-                        Filter by {{group.name}}
-                        <div id='chart{{group.name}}'></div>
+                    <div ng-show="classifs_loaded">
+                        <small translate>Reduce the number of dimensions by clicking on categories in each of the charts. Otherwise you might be visualizing multiple units and years at once.</small>
+                        <div class="panel panel-default filter_charts" ng-repeat="group in groupings">
+                            <div class="panel-heading">Filter by {{group.name}}</div>
+                            <div class="panel-body">
+                                <div id='chart{{group.name}}'></div>
+                            </div>
+                        </div>
                     </div>
-                    <translate>Filter by values</translate>
-                    <div  class="form-group" id='dc-magnitude-chart2'></div>                
-                    <translate>Histogram</translate>
-                    <div  class="form-group" id='dc-magnitude-chart'></div>
+                    
+                    <div class="panel panel-default" ng-show="classifs_loaded">
+                        <div class="panel-heading" translate>Filter by value</div>
+                        <div class="panel-body">
+                                <div style="clear:both" >
+                                    <small translate>Filter the values which are in a speciffic interval by dragging on the chart below</small>
+                                </div>
+                                <div  class="form-group" id='dc-magnitude-chart2'></div>  
+                        </div>
+                    </div>
+                    
+                    <div class="panel panel-default" ng-show="classifs_loaded">
+                        <div class="panel-heading" translate>Color gradient limits</div>
+                        <div class="panel-body">
+                            <div style="clear:both" ng-show="classifs_loaded">
+                                <small translate>Select the color interval by dragging on the chart below. The regions on left side will be blue and red on the right side</small>
+                            </div>
+                            <div  class="form-group" id='dc-magnitude-chart'></div>
+                        </div>
+                    </div>
+                    
+                    
                     <!--<button class="btn" data-toggle="modal" data-target="#sparqlLogModal">Log</button>-->
                 </div>
             </form>
