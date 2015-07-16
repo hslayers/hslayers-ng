@@ -63,7 +63,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                             if (typeof me.panel_statuses[which] !== 'undefined') {
                                 return me.panel_statuses[which];
                             }
-                            return me.mainpanel == which || scope.unpinned;
+                            return me.mainpanel == which || (typeof scope !== 'undefined' && scope.unpinned);
                         },
                         hidePanels: function() {
                             me.mainpanel = '';

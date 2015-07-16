@@ -37,8 +37,8 @@ define(['angular', 'ol', 'map'],
                 }
             ])
 
-        .controller('hs.search.controller', ['$scope', 'hs.map.service', 'hs.search.service',
-            function($scope, OlMap, SearchService) {
+        .controller('hs.search.controller', ['$scope', 'hs.map.service', 'hs.search.service', '$log', 
+            function($scope, OlMap, SearchService, $log) {
                 var map = OlMap.map;
                 $scope.query = "";
                 $scope.results = [];
@@ -74,6 +74,14 @@ define(['angular', 'ol', 'map'],
                            switchAwayFromRegions();
                        }*/
                 }
+                
+                $scope.$watch('Core.panelVisible("search")', function(newValue, oldValue) {
+                    if (newValue !== oldValue && newValue) {
+                        setTimeout(function(){
+                            $('#search_address').focus();
+                        }, 500);
+                    }
+                });
                 $scope.$emit('scope_loaded', "Search");
             }
         ]);

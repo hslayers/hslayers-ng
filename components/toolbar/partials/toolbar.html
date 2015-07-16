@@ -3,7 +3,7 @@
         <i class="fa fa-bars"></i>
     </button>
     
-    <div style="display:inline-block; " ng-show="collapsed()">
+    <div style="display:inline-block; " ng-show="!collapsed()">
         <button type="button" class="btn btn-default" title="Layer manager"  ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager', true)">
             <span class="glyphicon glyphicon-tasks"></span>
         </button>
