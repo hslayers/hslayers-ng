@@ -11,10 +11,10 @@ define(['angular', 'ol'],
                     templateUrl: hsl_path + 'components/geolocation/partials/geolocation.html',
                     link: function link(scope, element, attrs) {
                         element.appendTo($(".ol-overlaycontainer-stopevent"));
-                        $('.locate button').click(function() {
+                        $('.locate .blocate').click(function() {
                             $('.locate').toggleClass('ol-collapsed');
-                            Geolocation.geolocation.setTracking(!Geolocation.geolocation.getTracking());
-                            Geolocation.toggleFeatures(Geolocation.geolocation.getTracking());
+                            Geolocation.geolocation.setTracking(true);
+                            Geolocation.toggleFeatures(true);
                         });
                         if(Core.panel_side=='left'){
                             $('.locate').css({
@@ -53,8 +53,8 @@ define(['angular', 'ol'],
                 });
                 //var track = new ol.dom.Input(document.getElementById('track'));
                 //track.bindTo('checked', geolocation, 'tracking');
-
-                me.geolocation.on('change', function() {
+                
+                me.changed_handler = function() {
                     if (!me.geolocation.getTracking()) return;
 
                     me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
@@ -73,7 +73,9 @@ define(['angular', 'ol'],
                     }
                     if (me.heading) OlMap.map.getView().setRotation(me.heading);
                     $rootScope.$broadcast('geolocation.updated');
-                });
+                }
+
+                me.geolocation.on('change', me.changed_handler);
 
                 // handle geolocation error.
                 me.geolocation.on('error', function(error) {
@@ -136,8 +138,10 @@ define(['angular', 'ol'],
             $scope.following = function(set_to) {
                 if (arguments.length == 0)
                     return service.following;
-                else
+                else {
                     service.following = set_to;
+                    service.changed_handler();
+                }
             }
 
             $scope.setFeatureStyle = function(style) {
