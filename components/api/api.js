@@ -1,7 +1,7 @@
 /**
-* @namespace hs.api
-* @memberOf hs    
-*/
+ * @namespace hs.api
+ * @memberOf hs
+ */
 define(['angular', 'ol', 'app', 'map', 'core'],
 
     function(angular, ol, app, map) {

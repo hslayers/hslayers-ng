@@ -17,7 +17,7 @@
  * specific language governing permissions and limitations
  * under the License.
  *
-*/
+ */
 
 module.exports = {
     id: 'android',
@@ -48,13 +48,13 @@ module.exports = {
         cordova.addDocumentEventHandler('searchbutton');
 
         function bindButtonChannel(buttonName) {
-            // generic button bind used for volumeup/volumedown buttons
-            var volumeButtonChannel = cordova.addDocumentEventHandler(buttonName + 'button');
-            volumeButtonChannel.onHasSubscribersChange = function() {
-                exec(null, null, APP_PLUGIN_NAME, "overrideButton", [buttonName, this.numHandlers == 1]);
-            };
-        }
-        // Inject a listener for the volume buttons on the document.
+                // generic button bind used for volumeup/volumedown buttons
+                var volumeButtonChannel = cordova.addDocumentEventHandler(buttonName + 'button');
+                volumeButtonChannel.onHasSubscribersChange = function() {
+                    exec(null, null, APP_PLUGIN_NAME, "overrideButton", [buttonName, this.numHandlers == 1]);
+                };
+            }
+            // Inject a listener for the volume buttons on the document.
         bindButtonChannel('volumeup');
         bindButtonChannel('volumedown');
 
@@ -71,16 +71,15 @@ function onMessageFromNative(msg) {
     var cordova = require('cordova');
     var action = msg.action;
 
-    switch (action)
-    {
+    switch (action) {
         // Button events
         case 'backbutton':
         case 'menubutton':
         case 'searchbutton':
-        // App life cycle events
+            // App life cycle events
         case 'pause':
         case 'resume':
-        // Volume events
+            // Volume events
         case 'volumedownbutton':
         case 'volumeupbutton':
             cordova.fireDocumentEvent(action);

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 /**
  * Implements the API of ExposedJsApi.java, but uses prompt() to communicate.
@@ -24,7 +24,7 @@
 
 module.exports = {
     exec: function(bridgeSecret, service, action, callbackId, argsJson) {
-        return prompt(argsJson, 'gap:'+JSON.stringify([bridgeSecret, service, action, callbackId]));
+        return prompt(argsJson, 'gap:' + JSON.stringify([bridgeSecret, service, action, callbackId]));
     },
     setNativeToJsBridgeMode: function(bridgeSecret, value) {
         prompt(value, 'gap_bridge_mode:' + bridgeSecret);

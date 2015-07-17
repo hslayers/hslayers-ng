@@ -1,7 +1,7 @@
 /**
-* @namespace hs.drag
-* @memberOf hs  
-*/ 
+ * @namespace hs.drag
+ * @memberOf hs
+ */
 define(['angular'],
     function(angular) {
         angular.module('hs.drag', []).

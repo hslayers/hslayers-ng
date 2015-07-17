@@ -1,26 +1,26 @@
 /**
-* @namespace hs.layermanager
-* @memberOf hs  
-*/ 
+ * @namespace hs.layermanager
+ * @memberOf hs
+ */
 define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
     angular.module('hs.layermanager', ['hs.map'])
-    
-        /**
-        * @class hs.layermanager.directive
-        * @memberOf hs.layermanager
-        * @description Directive for displaying layer manager panel
-        */
-        .directive('hs.layermanager.directive', function() {
-            return {
-                templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
-            };
-        })
 
-        /**
-        * @class hs.layermanager.controller
-        * @memberOf hs.layermanager
-        * @description Layer manager controller
-        */
+    /**
+     * @class hs.layermanager.directive
+     * @memberOf hs.layermanager
+     * @description Directive for displaying layer manager panel
+     */
+    .directive('hs.layermanager.directive', function() {
+        return {
+            templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
+        };
+    })
+
+    /**
+     * @class hs.layermanager.controller
+     * @memberOf hs.layermanager
+     * @description Layer manager controller
+     */
     .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'box_layers', '$rootScope', 'Core',
         function($scope, OlMap, box_layers, $rootScope, Core) {
             $scope.Core = Core;
