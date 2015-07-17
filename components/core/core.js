@@ -115,18 +115,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                                 $('.panelspace', element).insertBefore($('.gui-overlay', element).children().get(0));
                                 $('.panelspace', element).css({"margin-top": '44px'});
                                 $('.gui-overlay', element).css({"margin-bottom": '44px'});
-                                $('.ol-zoomslider, .ol-zoom').css({
-                                    right: '.5em', 
-                                    left: 'auto' 
-                                });
                             }
                             if(panel_side=='right'){
                                 $('.panelspace', element).insertAfter($('.gui-overlay', element).children().get($('.gui-overlay', element).children().length-1));
                                 $('#right-pane', element).insertBefore($('.gui-overlay', element).children().get(0));
-                                $('.ol-zoomslider, .ol-zoom').css({
-                                    right: 'auto', 
-                                    left: 'auto' 
-                                });
                             }
                         },
                         setLanguage: function(lang) {

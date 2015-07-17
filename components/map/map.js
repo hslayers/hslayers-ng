@@ -129,11 +129,18 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     right: '.5em', 
                     left: 'auto' 
                 });
+                
+                $('.locate').css({
+                    right: '.5em'
+                });
             }
             if(Core.panel_side=='right'){
                 $('.ol-zoomslider, .ol-zoom').css({
                     right: 'auto', 
                     left: '.5em' 
+                });
+                $('.locate').css({
+                    right: 'auto'
                 });
             }
 

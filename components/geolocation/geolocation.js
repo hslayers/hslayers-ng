@@ -6,7 +6,7 @@ define(['angular', 'ol'],
 
     function(angular, ol) {
         angular.module('hs.geolocation', ['hs.map'])
-            .directive('hs.geolocation.directive', ['hs.map.service', 'Geolocation', function(OlMap, Geolocation) {
+            .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', function(OlMap, Geolocation) {
                 return {
                     templateUrl: hsl_path + 'components/geolocation/partials/geolocation.html',
                     link: function link(scope, element, attrs) {
@@ -106,7 +106,7 @@ define(['angular', 'ol'],
 
                 return me;
             }
-        ]).controller('hs.heolocation.controller', ['$scope', 'hs.geolocation.service', function($scope, service) {
+        ]).controller('hs.geolocation.controller', ['$scope', 'hs.geolocation.service', function($scope, service) {
             $scope.speed = null;
             $scope.alt = null;
             $scope.altitudeAccuracy = null;
