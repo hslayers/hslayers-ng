@@ -123,7 +123,9 @@ hr {
 }
 
 .search-container {
-      pointer-events: auto;
+    pointer-events: auto;
+    margin-top: 40px;
+    padding-left: 15px;
 }
 .search_address {
 }
@@ -133,7 +135,7 @@ hr {
     min-width: 200px;
 }
 
-#toolbar button {margin: 1px; position: relative;}
+#toolbar button {margin: 0px; position: relative;}
 #toolbar span, #toolbar i {width: 14px; height: 14px}
 
 
@@ -145,7 +147,7 @@ font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
 }
 .locate {
 text-align: right;
-top: 22.5em;
+top: 7.5em;
 right: .5em;
 max-width: calc(100% - 1.3em);
 }
@@ -161,7 +163,6 @@ display: none;
 }
 .locate ul{list-style: none}
 
-.filter_charts{height: 220px;}
 div#infopanel.ng-scope .first-col{width:100px; overflow-x: auto;}
 div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
 .dc-chart g.row text {fill: black;}.
@@ -198,3 +199,5 @@ min-width: 230px;
   margin-left: 0px; 
 }
 .thumbnail{height:62px}
+.ol-attribution{ left: 0.2em; right: auto;}
+.ol-scale-line {  left: 31px;}

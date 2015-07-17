@@ -27,6 +27,9 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        function onDeviceReady() {
+          console.log("navigator.geolocation works well");
+        }
     },
     // deviceready Event Handler
     //

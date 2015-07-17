@@ -48,6 +48,11 @@ define(['angular', 'ol'],
                         }
                     }
                 };
+                try {
+                    me.geolocation = new navigator.geolocation({
+                        
+                    });
+                }
                 me.geolocation = new ol.Geolocation({
                     projection: OlMap.map.getView().getProjection()
                 });

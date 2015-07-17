@@ -48,9 +48,11 @@ require.config({
         app: 'js/app',
         panoramio: 'components/panoramio/panoramio',
         core: 'components/core/core',
+        SparqlJson: hsl_path + 'extensions/hs.source.SparqlJson',
         api: 'components/api/api',
         WfsSource: 'extensions/hs.source.Wfs',
-        translations: 'components/translations/js/translations'
+        translations: 'components/translations/js/translations',
+        'feature-crossfilter': hsl_path + 'components/feature_crossfilter/f_crossfilter'
     }
 });
 
