@@ -49,45 +49,62 @@ define(['angular', 'ol'],
                     }
                 };
                 try {
-                    me.geolocation = new navigator.geolocation({
-                        
-                    });
+                    var onSuccess = function(position) {
+                        me.accuracy = position.coords.accuracy ? position.coords.accuracy + ' [m]' : '';
+                        me.altitude = position.coords.altitude ? position.coords.altitude + ' [m]' : '-';
+                        me.heading = position.coords.heading ? position.coords.heading : null;
+                        me.speed = position.coords.speed ? position.coords.speed + ' [m/s]' : '-';
+                        var p = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', map.getView().getProjection())
+                    };
+                    
+                    me.geolocation = navigator.geolocation.getCurrentPosition(
+                        onSuccess,
+                        { timeout: 5000, enableHighAccuracy: true }
+                    );
+                    
+                    me.changed_handler = navigator.geolocation.watchPosition(
+                        onSuccess,
+                        { timeout: 5000, enableHighAccuracy: true }
+                    );
                 }
-                me.geolocation = new ol.Geolocation({
-                    projection: OlMap.map.getView().getProjection()
+                catch(err) {
+                    me.geolocation = new ol.Geolocation({
+                        projection: OlMap.map.getView().getProjection()
+
+                    me.changed_handler = function() {
+                        if (!me.geolocation.getTracking()) return;
+
+                        me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
+                        me.altitude = me.geolocation.getAltitude() ? me.geolocation.getAltitude() + ' [m]' : '-';
+                        me.altitudeAccuracy = me.geolocation.getAltitudeAccuracy() ? '+/- ' + me.geolocation.getAltitudeAccuracy() + ' [m]' : '';
+                        me.heading = me.geolocation.getHeading() ? me.geolocation.getHeading() : null;
+                        me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
+                        if (me.geolocation.getPosition()) {
+                            var p = me.geolocation.getPosition();
+                            if (!positionFeature.getGeometry())
+                                positionFeature.setGeometry(new ol.geom.Point(p));
+                            else
+                                positionFeature.getGeometry().setCoordinates(p);
+                            if (me.following)
+                                OlMap.map.getView().setCenter(p);
+                        }
+                        if (me.heading) OlMap.map.getView().setRotation(me.heading);
+                        $rootScope.$broadcast('geolocation.updated');
+                    }
+
+                    me.geolocation.on('change', me.changed_handler);
+
+                    // handle geolocation error.
+                    me.geolocation.on('error', function(error) {
+                        var info = document.getElementById('info');
+                        info.innerHTML = error.message;
+                        info.style.display = '';
+                    });
+                        
+                    }
                 });
                 //var track = new ol.dom.Input(document.getElementById('track'));
                 //track.bindTo('checked', geolocation, 'tracking');
-
-                me.changed_handler = function() {
-                    if (!me.geolocation.getTracking()) return;
-
-                    me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
-                    me.altitude = me.geolocation.getAltitude() ? me.geolocation.getAltitude() + ' [m]' : '-';
-                    me.altitudeAccuracy = me.geolocation.getAltitudeAccuracy() ? '+/- ' + me.geolocation.getAltitudeAccuracy() + ' [m]' : '';
-                    me.heading = me.geolocation.getHeading() ? me.geolocation.getHeading() : null;
-                    me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
-                    if (me.geolocation.getPosition()) {
-                        var p = me.geolocation.getPosition();
-                        if (!positionFeature.getGeometry())
-                            positionFeature.setGeometry(new ol.geom.Point(p));
-                        else
-                            positionFeature.getGeometry().setCoordinates(p);
-                        if (me.following)
-                            OlMap.map.getView().setCenter(p);
-                    }
-                    if (me.heading) OlMap.map.getView().setRotation(me.heading);
-                    $rootScope.$broadcast('geolocation.updated');
-                }
-
-                me.geolocation.on('change', me.changed_handler);
-
-                // handle geolocation error.
-                me.geolocation.on('error', function(error) {
-                    var info = document.getElementById('info');
-                    info.innerHTML = error.message;
-                    info.style.display = '';
-                });
 
                 me.style = new ol.style.Style({
                     image: new ol.style.Circle({
