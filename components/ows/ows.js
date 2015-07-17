@@ -1,7 +1,7 @@
 /**
- * @namespace hs.ows
- * @memberOf hs
- */
+* @namespace hs.ows
+* @memberOf hs  
+*/ 
 
 define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
 

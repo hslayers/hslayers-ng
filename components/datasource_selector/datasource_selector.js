@@ -1,7 +1,7 @@
 /**
- * @namespace hs.datasource_selector
- * @memberOf hs
- */
+* @namespace hs.datasource_selector
+* @memberOf hs  
+*/ 
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {

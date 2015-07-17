@@ -216,10 +216,10 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 $scope.$on('map_clicked', function(event, data) {
                     if (!show_location_weather) return;
                     var on_features = false;
-                    angular.forEach(data.frameState.skippedFeatureUids, function(k) {
-                        on_features = true;
+                    angular.forEach(data.frameState.skippedFeatureUids, function(k){
+                       on_features = true;
                     });
-                    if (on_features) return;
+                    if(on_features) return;
                     var coordinate = data.coordinate;
                     var lon_lat = ol.proj.transform(
                         coordinate, 'EPSG:3857', 'EPSG:4326');
@@ -262,7 +262,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                         });
 
                 });
-
+                
                 $scope.$on('feature_crossfilter_filtered', function(event, data) {
                     var lyr = OlMap.findLayerByTitle('Specific points of interest');
                     var src = lyr.getSource();

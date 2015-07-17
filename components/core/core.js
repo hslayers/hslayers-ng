@@ -1,11 +1,11 @@
 /**
- * @namespace hs
- */
+* @namespace hs
+*/
 
 /**
- * @namespace hs.core
- * @memberOf hs
- */
+* @namespace hs.core
+* @memberOf hs  
+*/ 
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
@@ -104,24 +104,20 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                                 $("#map").width(w.width());
                                 OlMap.map.updateSize();
                             });
-                            if (arguments.length > 1) {
-                                me.setPanelSide(element, panel_side);
+                            if(arguments.length>1){
+                              me.setPanelSide(element, panel_side); 
                             }
                             w.resize();
                         },
-                        setPanelSide: function(element, panel_side) {
+                        setPanelSide: function(element, panel_side){
                             me.panel_side = panel_side;
-                            if (panel_side == 'left') {
+                            if(panel_side=='left'){
                                 $('.panelspace', element).insertBefore($('.gui-overlay', element).children().get(0));
-                                $('.panelspace', element).css({
-                                    "margin-top": '44px'
-                                });
-                                $('.gui-overlay', element).css({
-                                    "margin-bottom": '44px'
-                                });
+                                $('.panelspace', element).css({"margin-top": '44px'});
+                                $('.gui-overlay', element).css({"margin-bottom": '44px'});
                             }
-                            if (panel_side == 'right') {
-                                $('.panelspace', element).insertAfter($('.gui-overlay', element).children().get($('.gui-overlay', element).children().length - 1));
+                            if(panel_side=='right'){
+                                $('.panelspace', element).insertAfter($('.gui-overlay', element).children().get($('.gui-overlay', element).children().length-1));
                                 $('#right-pane', element).insertBefore($('.gui-overlay', element).children().get(0));
                             }
                         },
@@ -153,8 +149,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'boot
                             me.panel_statuses.status_creator = true;
                             hslayers_api.gui.StatusCreator.open();
                         },
-                        searchVisible: function(is) {
-                            if (arguments.length > 0) {
+                        searchVisible: function(is){
+                            if (arguments.length>0){
                                 me.panel_statuses['search'] = is;
                             }
                             return me.panel_statuses['search']

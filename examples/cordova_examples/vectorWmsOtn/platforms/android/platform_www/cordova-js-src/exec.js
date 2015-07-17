@@ -17,7 +17,7 @@
  * specific language governing permissions and limitations
  * under the License.
  *
- */
+*/
 
 /**
  * Execute a cordova command.  It is up to the native side whether this action
@@ -57,7 +57,7 @@ var cordova = require('cordova'),
         // Requires Android 3.2.4 or above.
         PRIVATE_API: 3
     },
-    jsToNativeBridgeMode, // Set lazily.
+    jsToNativeBridgeMode,  // Set lazily.
     nativeToJsBridgeMode = nativeToJsModes.ONLINE_EVENT,
     pollEnabled = false,
     bridgeSecret = -1;
@@ -65,11 +65,7 @@ var cordova = require('cordova'),
 var messagesFromNative = [];
 var isProcessing = false;
 var resolvedPromise = typeof Promise == 'undefined' ? null : Promise.resolve();
-var nextTick = resolvedPromise ? function(fn) {
-    resolvedPromise.then(fn);
-} : function(fn) {
-    setTimeout(fn);
-};
+var nextTick = resolvedPromise ? function(fn) { resolvedPromise.then(fn); } : function(fn) { setTimeout(fn); };
 
 function androidExec(success, fail, service, action, args) {
     if (bridgeSecret < 0) {
@@ -96,10 +92,7 @@ function androidExec(success, fail, service, action, args) {
         argsJson = JSON.stringify(args);
 
     if (success || fail) {
-        cordova.callbacks[callbackId] = {
-            success: success,
-            fail: fail
-        };
+        cordova.callbacks[callbackId] = {success:success, fail:fail};
     }
 
     var msgs = nativeApiProvider.get().exec(bridgeSecret, service, action, callbackId, argsJson);
@@ -148,12 +141,12 @@ function pollingTimerFunc() {
 
 function hookOnlineApis() {
     function proxyEvent(e) {
-            cordova.fireWindowEvent(e.type);
-        }
-        // The network module takes care of firing online and offline events.
-        // It currently fires them only on document though, so we bridge them
-        // to window here (while first listening for exec()-releated online/offline
-        // events).
+        cordova.fireWindowEvent(e.type);
+    }
+    // The network module takes care of firing online and offline events.
+    // It currently fires them only on document though, so we bridge them
+    // to window here (while first listening for exec()-releated online/offline
+    // events).
     window.addEventListener('online', pollOnceFromOnlineEvent, false);
     window.addEventListener('offline', pollOnceFromOnlineEvent, false);
     cordova.addWindowEventHandler('online');

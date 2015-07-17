@@ -1,7 +1,7 @@
 /**
- * @namespace hs.measure
- * @memberOf hs
- */
+* @namespace hs.measure
+* @memberOf hs  
+*/ 
 define(['angular', 'ol', 'map', 'core'],
 
     function(angular, ol) {

@@ -1,7 +1,7 @@
 /**
- * @namespace hs.toolbar
- * @memberOf hs
- */
+* @namespace hs.toolbar
+* @memberOf hs  
+*/ 
 define(['angular', 'map', 'core', 'permalink'],
 
     function(angular) {
@@ -25,9 +25,9 @@ define(['angular', 'map', 'core', 'permalink'],
                 if (bus.getParamValue('hs_panel')) {
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
                 }
-
-                $scope.collapsed = function(is) {
-                    if (arguments.length > 0) {
+                
+                $scope.collapsed = function(is){
+                    if (arguments.length>0){
                         collapsed = is;
                     }
                     return collapsed;

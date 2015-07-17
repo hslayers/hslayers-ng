@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */
+*/
 
 /**
  * Exports the ExposedJsApi.java object if available, otherwise exports the PromptBasedNativeApi.
@@ -25,9 +25,7 @@ var nativeApi = this._cordovaNative || require('cordova/android/promptbasednativ
 var currentApi = nativeApi;
 
 module.exports = {
-    get: function() {
-        return currentApi;
-    },
+    get: function() { return currentApi; },
     setPreferPrompt: function(value) {
         currentApi = value ? require('cordova/android/promptbasednativeapi') : nativeApi;
     },
