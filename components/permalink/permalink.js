@@ -1,7 +1,7 @@
 /**
-* @namespace hs.permalink
-* @memberOf hs  
-*/ 
+ * @namespace hs.permalink
+ * @memberOf hs
+ */
 define(['angular', 'map', 'core'],
 
     function(angular) {
