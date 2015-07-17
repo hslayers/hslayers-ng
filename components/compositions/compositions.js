@@ -1,7 +1,7 @@
 /**
-* @namespace hs.compositions
-* @memberOf hs    
-*/
+ * @namespace hs.compositions
+ * @memberOf hs
+ */
 
 define(['angular', 'ol', 'map'],
 

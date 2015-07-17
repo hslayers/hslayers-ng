@@ -1,7 +1,7 @@
 /**
-* @namespace hs.legend
-* @memberOf hs  
-*/ 
+ * @namespace hs.legend
+ * @memberOf hs
+ */
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {

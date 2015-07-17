@@ -1,7 +1,7 @@
 /**
-* @namespace hs.search
-* @memberOf hs  
-*/ 
+ * @namespace hs.search
+ * @memberOf hs
+ */
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
@@ -37,7 +37,7 @@ define(['angular', 'ol', 'map'],
                 }
             ])
 
-        .controller('hs.search.controller', ['$scope', 'hs.map.service', 'hs.search.service', '$log', 
+        .controller('hs.search.controller', ['$scope', 'hs.map.service', 'hs.search.service', '$log',
             function($scope, OlMap, SearchService, $log) {
                 var map = OlMap.map;
                 $scope.query = "";
@@ -74,10 +74,10 @@ define(['angular', 'ol', 'map'],
                            switchAwayFromRegions();
                        }*/
                 }
-                
+
                 $scope.$watch('Core.panelVisible("search")', function(newValue, oldValue) {
                     if (newValue !== oldValue && newValue) {
-                        setTimeout(function(){
+                        setTimeout(function() {
                             $('#search_address').focus();
                         }, 500);
                     }

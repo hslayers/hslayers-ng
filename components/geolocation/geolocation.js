@@ -1,12 +1,12 @@
 /**
-* @namespace hs.geolocation
-* @memberOf hs  
-*/ 
+ * @namespace hs.geolocation
+ * @memberOf hs
+ */
 define(['angular', 'ol'],
 
     function(angular, ol) {
         angular.module('hs.geolocation', ['hs.map'])
-            .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core',  function(OlMap, Geolocation, Core) {
+            .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core', function(OlMap, Geolocation, Core) {
                 return {
                     templateUrl: hsl_path + 'components/geolocation/partials/geolocation.html',
                     link: function link(scope, element, attrs) {
@@ -16,12 +16,12 @@ define(['angular', 'ol'],
                             Geolocation.geolocation.setTracking(true);
                             Geolocation.toggleFeatures(true);
                         });
-                        if(Core.panel_side=='left'){
+                        if (Core.panel_side == 'left') {
                             $('.locate').css({
                                 right: '.5em'
                             });
                         }
-                        if(Core.panel_side=='right'){
+                        if (Core.panel_side == 'right') {
                             $('.locate').css({
                                 right: 'auto',
                                 left: '.2em'
@@ -58,7 +58,7 @@ define(['angular', 'ol'],
                 });
                 //var track = new ol.dom.Input(document.getElementById('track'));
                 //track.bindTo('checked', geolocation, 'tracking');
-                
+
                 me.changed_handler = function() {
                     if (!me.geolocation.getTracking()) return;
 
