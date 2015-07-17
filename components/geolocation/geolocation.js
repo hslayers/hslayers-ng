@@ -6,7 +6,7 @@ define(['angular', 'ol'],
 
     function(angular, ol) {
         angular.module('hs.geolocation', ['hs.map'])
-            .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', function(OlMap, Geolocation) {
+            .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core',  function(OlMap, Geolocation, Core) {
                 return {
                     templateUrl: hsl_path + 'components/geolocation/partials/geolocation.html',
                     link: function link(scope, element, attrs) {
@@ -16,6 +16,17 @@ define(['angular', 'ol'],
                             Geolocation.geolocation.setTracking(!Geolocation.geolocation.getTracking());
                             Geolocation.toggleFeatures(Geolocation.geolocation.getTracking());
                         });
+                        if(Core.panel_side=='left'){
+                            $('.locate').css({
+                                right: '.5em'
+                            });
+                        }
+                        if(Core.panel_side=='right'){
+                            $('.locate').css({
+                                right: 'auto',
+                                left: '.2em'
+                            });
+                        }
                     },
                     replace: true
                 };

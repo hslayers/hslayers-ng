@@ -77,14 +77,35 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             
         }])
 
-    .directive('hs.map.directive', function() {
+    .directive('hs.map.directive',['Core',  function(Core) {
         return {
             templateUrl: hsl_path + 'components/map/partials/map.html',
             link: function(scope, element) {
                 $(".ol-zoomslider", element).width(28).height(200);
+                if(Core.panel_side=='left'){
+                    $('.ol-zoomslider, .ol-zoom').css({
+                        right: '.5em', 
+                        left: 'auto' 
+                    });
+                    $('.ol-rotate').css({
+                        right: '.5em', 
+                        left: 'auto' 
+                    });
+                }
+                if(Core.panel_side=='right'){
+                    $('.ol-zoomslider, .ol-zoom').css({
+                        right: 'auto', 
+                        left: '.2em' 
+                    });
+                    $('.ol-rotate').css({
+                        right: 'auto', 
+                        left: '.2em',
+                        top: '9.5em'
+                    });
+                }
             }
         };
-    })
+    }])
 
     .controller('hs.map.controller', ['$scope', 'hs.map.service', 'default_layers', 'box_layers', 'hs.permalink.service_url', 'Core', 
         function($scope, OlMap, default_layers, box_layers, bus, Core) {
@@ -124,25 +145,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 OlMap.map.addLayer(lyr);
             });
             $scope.setTargetDiv("map");
-            if(Core.panel_side=='left'){
-                $('.ol-zoomslider, .ol-zoom').css({
-                    right: '.5em', 
-                    left: 'auto' 
-                });
-                
-                $('.locate').css({
-                    right: '.5em'
-                });
-            }
-            if(Core.panel_side=='right'){
-                $('.ol-zoomslider, .ol-zoom').css({
-                    right: 'auto', 
-                    left: '.5em' 
-                });
-                $('.locate').css({
-                    right: 'auto'
-                });
-            }
 
             $scope.$emit('scope_loaded', "Map");
         }

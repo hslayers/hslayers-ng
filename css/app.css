@@ -147,7 +147,7 @@ font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
 }
 .locate {
 text-align: right;
-top: 22.5em;
+top: 7.5em;
 right: .5em;
 max-width: calc(100% - 1.3em);
 }
@@ -199,3 +199,5 @@ min-width: 230px;
   margin-left: 0px; 
 }
 .thumbnail{height:62px}
+.ol-attribution{ left: 0.2em; right: auto;}
+.ol-scale-line {  left: 31px;}
