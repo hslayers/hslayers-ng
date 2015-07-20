@@ -49,27 +49,47 @@ define(['angular', 'ol'],
                     }
                 };
                 try {
-                    var onSuccess = function(position) {
+                    var me.changed_handler;
+                    
+                    var startGpsWatch = function () {
+                        if (navigator.geolocation) {
+                            confirm ("Okay, GPS is on.");
+                            me.changed_handler = navigator.geolocation.watchPosition (gpsOkCallback, gpsFailCallback, gpsOptions);
+                        }
+                    };
+                    
+                    var gpsOkCallback = function (position) {
                         me.accuracy = position.coords.accuracy ? position.coords.accuracy + ' [m]' : '';
                         me.altitude = position.coords.altitude ? position.coords.altitude + ' [m]' : '-';
                         me.heading = position.coords.heading ? position.coords.heading : null;
                         me.speed = position.coords.speed ? position.coords.speed + ' [m/s]' : '-';
-                        var p = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', map.getView().getProjection())
+                        var p = ol.proj.transform(/*[position.coords.longitude, position.coords.latitude]*/ [16.631, 49.223], 'EPSG:4326', map.getView().getProjection())
+                        if (!positionFeature.setGeometry())
+                            positionFeature.setGeometry(new ol.geom.Point(p));
+                        else positionFeature.getGeometry().setCoordinates(p);
+                        if (me.following)
+                            OlMap.map.getView().setCenter(p);
                     };
                     
-                    me.geolocation = navigator.geolocation.getCurrentPosition(
-                        onSuccess,
-                        { timeout: 5000, enableHighAccuracy: true }
-                    );
+                    var gpsFailCallback = function (e) {
+                        var msg = 'Error ' + e.code + ': ' + e.message;
+                        console.log(msg);
+                    };
                     
-                    me.changed_handler = navigator.geolocation.watchPosition(
-                        onSuccess,
-                        { timeout: 5000, enableHighAccuracy: true }
-                    );
+                    var gpsOptions = {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0
+                    };
+                    
+                    var me.geolocation = navigator.geolocation.getCurrentPosition (gpsOkCallback, gpsFailCallback, gpsOptions);
+                    
+                    startGpsWatch();
                 }
                 catch(err) {
                     me.geolocation = new ol.Geolocation({
                         projection: OlMap.map.getView().getProjection()
+                    });
 
                     me.changed_handler = function() {
                         if (!me.geolocation.getTracking()) return;
@@ -81,6 +101,7 @@ define(['angular', 'ol'],
                         me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
                         if (me.geolocation.getPosition()) {
                             var p = me.geolocation.getPosition();
+                            console.log(p);
                             if (!positionFeature.getGeometry())
                                 positionFeature.setGeometry(new ol.geom.Point(p));
                             else
@@ -100,9 +121,7 @@ define(['angular', 'ol'],
                         info.innerHTML = error.message;
                         info.style.display = '';
                     });
-                        
-                    }
-                });
+                };
                 //var track = new ol.dom.Input(document.getElementById('track'));
                 //track.bindTo('checked', geolocation, 'tracking');
 
