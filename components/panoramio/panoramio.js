@@ -206,7 +206,7 @@ define(['angular', 'ol', 'app', 'map'],
                 var features = [];
                 angular.forEach(saved_items, function(item, address) {
                     var feature = loadLocalFeature(item, address);
-                    if (feature) features.push();
+                    if (feature) features.push(feature);
                 });
                 src.addFeatures(features);
 
@@ -246,7 +246,8 @@ define(['angular', 'ol', 'app', 'map'],
                     }
                     //Load saved items from localStorage
                     angular.forEach(saved_items, function(item, address) {
-                        features.push(loadLocalFeature(item, address));
+                        var feature = loadLocalFeature(item, address);
+                        if (feature) features.push(feature);
                     });
                     src.clear();
                     src.addFeatures(features);

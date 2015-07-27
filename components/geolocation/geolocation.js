@@ -14,7 +14,7 @@ define(['angular', 'ol'],
                         $('.locate .blocate').click(function() {
                             $('.locate').toggleClass('ol-collapsed');
                             Geolocation.geolocation.setTracking(true);
-                            Geolocation.toggleFeatures(true);
+                            Geolocation.toggleFeatures(!$('.locate').hasClass('ol-collapsed'));
                         });
                         if (Core.panel_side == 'left') {
                             $('.locate').css({
