@@ -48,45 +48,44 @@ define(['angular', 'ol'],
                         }
                     }
                 };
-                
-                try {                  
-                    var startGpsWatch = function () {
+
+                try {
+                    var startGpsWatch = function() {
                         if (navigator.geolocation) {
-                            $log.debug ("Acquiring GPS");
-                            me.changed_handler = navigator.geolocation.watchPosition (gpsOkCallback, gpsFailCallback, gpsOptions);
+                            $log.debug("Acquiring GPS");
+                            me.changed_handler = navigator.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
                         }
                     };
-                    
-                    var gpsOkCallback = function (position) {
+
+                    var gpsOkCallback = function(position) {
                         me.accuracy = position.coords.accuracy ? position.coords.accuracy + ' [m]' : '';
                         me.altitude = position.coords.altitude ? position.coords.altitude + ' [m]' : '-';
                         me.heading = position.coords.heading ? position.coords.heading : null;
                         me.speed = position.coords.speed ? position.coords.speed + ' [m/s]' : '-';
-                        var p = ol.proj.transform(/*[position.coords.longitude, position.coords.latitude]*/ [16.631, 49.223], 'EPSG:4326', OlMap.map.getView().getProjection())
+                        var p = ol.proj.transform( /*[position.coords.longitude, position.coords.latitude]*/ [16.631, 49.223], 'EPSG:4326', OlMap.map.getView().getProjection())
                         if (!positionFeature.setGeometry())
                             positionFeature.setGeometry(new ol.geom.Point(p));
                         else positionFeature.getGeometry().setCoordinates(p);
                         if (me.following)
                             OlMap.map.getView().setCenter(p);
                     };
-                    
-                    var gpsFailCallback = function (e) {
+
+                    var gpsFailCallback = function(e) {
                         var msg = 'Error ' + e.code + ': ' + e.message;
                         $log.error(msg);
                     };
-                    
+
                     var gpsOptions = {
                         enableHighAccuracy: true,
                         timeout: 5000,
                         maximumAge: 0
                     };
-                    
-                    me.geolocation = navigator.geolocation.getCurrentPosition (gpsOkCallback, gpsFailCallback, gpsOptions);
+
+                    me.geolocation = navigator.geolocation.getCurrentPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
                     if (typeof me.geolocation == 'undefined') throw "Geolocation not initialized";
-                    
+
                     startGpsWatch();
-                }
-                catch(err) {
+                } catch (err) {
                     me.geolocation = new ol.Geolocation({
                         projection: OlMap.map.getView().getProjection()
                     });

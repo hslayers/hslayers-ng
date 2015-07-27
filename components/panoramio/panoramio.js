@@ -186,20 +186,19 @@ define(['angular', 'ol', 'app', 'map'],
                 var format = new ol.format.WKT();
                 var loadLocalFeature = function(item, address) {
                     try {
-                    var feature = format.readFeature(item.geometry);
-                    angular.forEach(item, function(value, key) {
-                        if (key != 'geometry')
-                            feature.set(key, value);
-                    })
-                    feature.set('popularity', 100000);
-                    feature.setStyle([new ol.style.Style({
-                        image: new ol.style.Icon({
-                            src: localStorage.getItem('saved_panoramio_image_' + item.photo_file_url)
+                        var feature = format.readFeature(item.geometry);
+                        angular.forEach(item, function(value, key) {
+                            if (key != 'geometry')
+                                feature.set(key, value);
                         })
-                    })]);
-                    return feature;
-                    } 
-                    catch(ex){
+                        feature.set('popularity', 100000);
+                        feature.setStyle([new ol.style.Style({
+                            image: new ol.style.Icon({
+                                src: localStorage.getItem('saved_panoramio_image_' + item.photo_file_url)
+                            })
+                        })]);
+                        return feature;
+                    } catch (ex) {
                         return null;
                     }
                 }
@@ -207,7 +206,7 @@ define(['angular', 'ol', 'app', 'map'],
                 var features = [];
                 angular.forEach(saved_items, function(item, address) {
                     var feature = loadLocalFeature(item, address);
-                    if(feature) features.push();
+                    if (feature) features.push();
                 });
                 src.addFeatures(features);
 
@@ -305,8 +304,8 @@ define(['angular', 'ol', 'app', 'map'],
 
                 this.source = src;
                 this.saved_items = saved_items;
-                
-                
+
+
                 var timer = null;
                 var changed = function(e) {
                     if (timer != null) clearTimeout(timer);
