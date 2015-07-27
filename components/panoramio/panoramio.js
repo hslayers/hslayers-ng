@@ -115,6 +115,8 @@ define(['angular', 'ol', 'app', 'map'],
                 var lyr = null;
                 var me = this;
                 var view = OlMap.map.getView();
+                var wkt_format = new ol.format.WKT();
+                var timer = null;
 
                 /**
                  * @function getSavedItems
@@ -129,64 +131,16 @@ define(['angular', 'ol', 'app', 'map'],
                     else
                         return JSON.parse(saved_items);
                 }
-
-                var saved_items = this.getSavedItems();
-
-                lyr = new ol.layer.Vector({
-                    title: "Panoramio pictures",
-                    show_in_manager: true,
-                    source: csrc,
-                    style: function(feature, resolution) {
-                        var text = null;
-                        if (feature.get('features').length > 1) {
-                            text = new ol.style.Text({
-                                text: feature.get('features').length.toString(),
-                                fill: new ol.style.Fill({
-                                    color: '#fff'
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#000'
-                                })
-                            })
-                        }
-                        var max_pop = 0;
-                        var max_pop_i = 0;
-                        for (var i = 0; i < feature.get('features').length; i++) {
-                            var pop = feature.get('features')[i].get('popularity');
-                            if (pop > max_pop) {
-                                max_pop = pop;
-                                max_pop_i = i;
-                            }
-                        }
-                        var style = [new ol.style.Style({
-                            image: feature.get('features')[max_pop_i].getStyle()[0].getImage(),
-                            text: text
-                        })];
-                        if (max_pop == 100000) {
-                            style.push(new ol.style.Style({
-                                image: new ol.style.RegularShape({
-                                    fill: new ol.style.Fill({
-                                        color: [242, 242, 0, 0.7]
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: [0x77, 0x77, 0x00, 0.9]
-                                    }),
-                                    radius1: 17,
-                                    radius2: 7,
-                                    points: 5
-                                })
-                            }));
-                        }
-                        return style;
-                    }
-                });
-
-                default_layers.push(lyr);
-
-                var format = new ol.format.WKT();
+               
+                /**
+                 * @function loadLocalFeature
+                 * @memberOf hs.panoramio.service
+                 * @description creates an openlayers feature from json object which was contained in localStorage
+                 * @returns {ol.Feature}
+                 */
                 var loadLocalFeature = function(item, address) {
                     try {
-                        var feature = format.readFeature(item.geometry);
+                        var feature = wkt_format.readFeature(item.geometry);
                         angular.forEach(item, function(value, key) {
                             if (key != 'geometry')
                                 feature.set(key, value);
@@ -203,15 +157,10 @@ define(['angular', 'ol', 'app', 'map'],
                     }
                 }
 
-                var features = [];
-                angular.forEach(saved_items, function(item, address) {
-                    var feature = loadLocalFeature(item, address);
-                    if (feature) features.push(feature);
-                });
-                src.addFeatures(features);
-
-                /*
-                 * Ajax callback function executed after panoramio API callback
+                 /**
+                 * @function featuresReceived
+                 * @memberOf hs.panoramio.service
+                 * @description Ajax callback function executed after panoramio API callback
                  * @param {object} panoramio - List of images, their coordinates and metadata
                  */
                 this.featuresReceived = function(panoramio) {
@@ -245,7 +194,7 @@ define(['angular', 'ol', 'app', 'map'],
                         features.push(feature);
                     }
                     //Load saved items from localStorage
-                    angular.forEach(saved_items, function(item, address) {
+                    angular.forEach(me.saved_items, function(item, address) {
                         var feature = loadLocalFeature(item, address);
                         if (feature) features.push(feature);
                     });
@@ -253,11 +202,12 @@ define(['angular', 'ol', 'app', 'map'],
                     src.addFeatures(features);
                 }
 
-                this.getLocalStorageFeatures = function() {
-
-                }
-
-                this.update = function(url) {
+                 /**
+                 * @function update
+                 * @memberOf hs.panoramio.service
+                 * @description Requests the most popular images for current extent from Panoramio API. The number of items returned depends on the screen size.
+                 */
+                this.update = function() {
                     var b = ol.proj.transformExtent(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
                     var limit = Math.floor($(map.getViewport()).width() * $(map.getViewport()).height() / 22280 * 1.2);
                     var url = window.escape('http://www.panoramio.com/map/get_panoramas.php?order=popularity&set=full&from=0&to=' + limit + '&minx=' + b[0] + '&miny=' + b[1] + '&maxx=' + b[2] + '&maxy=' + b[3] + '&size=thumbnail');
@@ -268,6 +218,12 @@ define(['angular', 'ol', 'app', 'map'],
                     });
                 };
 
+                 /**
+                 * @function loadIntoLocalStorage
+                 * @memberOf hs.panoramio.service
+                 * @description Loads, serializes and stores an image into localStorage
+                 * @param {object} path - URL of image
+                 */
                 this.loadIntoLocalStorage = function(path) {
                     var xhr = new XMLHttpRequest(),
                         blob,
@@ -302,22 +258,90 @@ define(['angular', 'ol', 'app', 'map'],
                     // Send XHR
                     xhr.send();
                 }
-
-                this.source = src;
-                this.saved_items = saved_items;
-
-
-                var timer = null;
+                
+                /**
+                 * @function changed
+                 * @memberOf hs.panoramio.service
+                 * @description Callback function for map events used to throtle down the requests being made to API
+                 * @param {object} path - URL of image
+                 */
                 var changed = function(e) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(function() {
                         me.update(e)
                     }, 500);
                 }
+                
+                /**
+                 * @function init
+                 * @memberOf hs.panoramio.service
+                 * @description Syntactic sugar for initialization
+                 */
+                this.init = function(){
+                    me.saved_items = me.getSavedItems();
+                    me.lyr = lyr = new ol.layer.Vector({
+                        title: "Panoramio pictures",
+                        show_in_manager: true,
+                        source: csrc,
+                        style: function(feature, resolution) {
+                            var text = null;
+                            if (feature.get('features').length > 1) {
+                                text = new ol.style.Text({
+                                    text: feature.get('features').length.toString(),
+                                    fill: new ol.style.Fill({
+                                        color: '#fff'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#000'
+                                    })
+                                })
+                            }
+                            var max_pop = 0;
+                            var max_pop_i = 0;
+                            for (var i = 0; i < feature.get('features').length; i++) {
+                                var pop = feature.get('features')[i].get('popularity');
+                                if (pop > max_pop) {
+                                    max_pop = pop;
+                                    max_pop_i = i;
+                                }
+                            }
+                            var style = [new ol.style.Style({
+                                image: feature.get('features')[max_pop_i].getStyle()[0].getImage(),
+                                text: text
+                            })];
+                            if (max_pop == 100000) {
+                                style.push(new ol.style.Style({
+                                    image: new ol.style.RegularShape({
+                                        fill: new ol.style.Fill({
+                                            color: [242, 242, 0, 0.7]
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: [0x77, 0x77, 0x00, 0.9]
+                                        }),
+                                        radius1: 17,
+                                        radius2: 7,
+                                        points: 5
+                                    })
+                                }));
+                            }
+                            return style;
+                        }
+                    });
 
-                OlMap.map.getView().on('change:center', changed);
-                OlMap.map.getView().on('change:resolution', changed);
-                changed();
+                    default_layers.push(lyr);
+                    var features = [];
+                    angular.forEach(me.saved_items, function(item, address) {
+                        var feature = loadLocalFeature(item, address);
+                        if (feature) features.push(feature);
+                    });
+                    src.addFeatures(features);
+                    me.source = src;
+                    OlMap.map.getView().on('change:center', changed);
+                    OlMap.map.getView().on('change:resolution', changed);
+                    changed();
+                }
+
+                this.init();
             }
         ])
 
