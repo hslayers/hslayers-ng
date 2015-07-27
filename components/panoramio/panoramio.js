@@ -131,7 +131,7 @@ define(['angular', 'ol', 'app', 'map'],
                     else
                         return JSON.parse(saved_items);
                 }
-               
+
                 /**
                  * @function loadLocalFeature
                  * @memberOf hs.panoramio.service
@@ -157,7 +157,7 @@ define(['angular', 'ol', 'app', 'map'],
                     }
                 }
 
-                 /**
+                /**
                  * @function featuresReceived
                  * @memberOf hs.panoramio.service
                  * @description Ajax callback function executed after panoramio API callback
@@ -202,7 +202,7 @@ define(['angular', 'ol', 'app', 'map'],
                     src.addFeatures(features);
                 }
 
-                 /**
+                /**
                  * @function update
                  * @memberOf hs.panoramio.service
                  * @description Requests the most popular images for current extent from Panoramio API. The number of items returned depends on the screen size.
@@ -218,7 +218,7 @@ define(['angular', 'ol', 'app', 'map'],
                     });
                 };
 
-                 /**
+                /**
                  * @function loadIntoLocalStorage
                  * @memberOf hs.panoramio.service
                  * @description Loads, serializes and stores an image into localStorage
@@ -258,7 +258,7 @@ define(['angular', 'ol', 'app', 'map'],
                     // Send XHR
                     xhr.send();
                 }
-                
+
                 /**
                  * @function changed
                  * @memberOf hs.panoramio.service
@@ -271,13 +271,13 @@ define(['angular', 'ol', 'app', 'map'],
                         me.update(e)
                     }, 500);
                 }
-                
+
                 /**
                  * @function init
                  * @memberOf hs.panoramio.service
                  * @description Syntactic sugar for initialization
                  */
-                this.init = function(){
+                this.init = function() {
                     me.saved_items = me.getSavedItems();
                     me.lyr = lyr = new ol.layer.Vector({
                         title: "Panoramio pictures",
