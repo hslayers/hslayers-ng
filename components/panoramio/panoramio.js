@@ -183,21 +183,9 @@ define(['angular', 'ol', 'app', 'map'],
 
                 default_layers.push(lyr);
 
-                var timer = null;
-
-                var changed = function(e) {
-                    if (timer != null) clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        me.update(e)
-                    }, 500);
-                }
-
-                OlMap.map.getView().on('change:center', changed);
-                OlMap.map.getView().on('change:resolution', changed);
-                changed();
-
                 var format = new ol.format.WKT();
                 var loadLocalFeature = function(item, address) {
+                    try {
                     var feature = format.readFeature(item.geometry);
                     angular.forEach(item, function(value, key) {
                         if (key != 'geometry')
@@ -210,11 +198,16 @@ define(['angular', 'ol', 'app', 'map'],
                         })
                     })]);
                     return feature;
+                    } 
+                    catch(ex){
+                        return null;
+                    }
                 }
 
                 var features = [];
                 angular.forEach(saved_items, function(item, address) {
-                    features.push(loadLocalFeature(item, address));
+                    var feature = loadLocalFeature(item, address);
+                    if(feature) features.push();
                 });
                 src.addFeatures(features);
 
@@ -312,6 +305,19 @@ define(['angular', 'ol', 'app', 'map'],
 
                 this.source = src;
                 this.saved_items = saved_items;
+                
+                
+                var timer = null;
+                var changed = function(e) {
+                    if (timer != null) clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        me.update(e)
+                    }, 500);
+                }
+
+                OlMap.map.getView().on('change:center', changed);
+                OlMap.map.getView().on('change:resolution', changed);
+                changed();
             }
         ])
 

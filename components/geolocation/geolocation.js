@@ -32,8 +32,8 @@ define(['angular', 'ol'],
                 };
             }])
 
-        .service('hs.geolocation.service', ['hs.map.service', '$rootScope',
-            function(OlMap, $rootScope) {
+        .service('hs.geolocation.service', ['hs.map.service', '$rootScope', '$log',
+            function(OlMap, $rootScope, $log) {
                 var me = {
                     following: false,
                     geolocation: null,
@@ -48,12 +48,11 @@ define(['angular', 'ol'],
                         }
                     }
                 };
-                try {
-                    var me.changed_handler;
-                    
+                
+                try {                  
                     var startGpsWatch = function () {
                         if (navigator.geolocation) {
-                            confirm ("Okay, GPS is on.");
+                            $log.debug ("Acquiring GPS");
                             me.changed_handler = navigator.geolocation.watchPosition (gpsOkCallback, gpsFailCallback, gpsOptions);
                         }
                     };
@@ -63,7 +62,7 @@ define(['angular', 'ol'],
                         me.altitude = position.coords.altitude ? position.coords.altitude + ' [m]' : '-';
                         me.heading = position.coords.heading ? position.coords.heading : null;
                         me.speed = position.coords.speed ? position.coords.speed + ' [m/s]' : '-';
-                        var p = ol.proj.transform(/*[position.coords.longitude, position.coords.latitude]*/ [16.631, 49.223], 'EPSG:4326', map.getView().getProjection())
+                        var p = ol.proj.transform(/*[position.coords.longitude, position.coords.latitude]*/ [16.631, 49.223], 'EPSG:4326', OlMap.map.getView().getProjection())
                         if (!positionFeature.setGeometry())
                             positionFeature.setGeometry(new ol.geom.Point(p));
                         else positionFeature.getGeometry().setCoordinates(p);
@@ -73,7 +72,7 @@ define(['angular', 'ol'],
                     
                     var gpsFailCallback = function (e) {
                         var msg = 'Error ' + e.code + ': ' + e.message;
-                        console.log(msg);
+                        $log.error(msg);
                     };
                     
                     var gpsOptions = {
@@ -82,7 +81,8 @@ define(['angular', 'ol'],
                         maximumAge: 0
                     };
                     
-                    var me.geolocation = navigator.geolocation.getCurrentPosition (gpsOkCallback, gpsFailCallback, gpsOptions);
+                    me.geolocation = navigator.geolocation.getCurrentPosition (gpsOkCallback, gpsFailCallback, gpsOptions);
+                    if (typeof me.geolocation == 'undefined') throw "Geolocation not initialized";
                     
                     startGpsWatch();
                 }
@@ -101,7 +101,7 @@ define(['angular', 'ol'],
                         me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
                         if (me.geolocation.getPosition()) {
                             var p = me.geolocation.getPosition();
-                            console.log(p);
+                            $log.info(p);
                             if (!positionFeature.getGeometry())
                                 positionFeature.setGeometry(new ol.geom.Point(p));
                             else
