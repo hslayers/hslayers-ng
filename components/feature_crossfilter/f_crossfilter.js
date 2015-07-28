@@ -34,7 +34,7 @@ define(['angular', 'ol', 'dc', 'map'],
                 };
             })
             .service('hs.feature_crossfilter.service', [function() {
-                return {
+                var me = {
                     makeCrossfilterDimensions: function(source, attributes) {
                         var facts = crossfilter(source.getFeatures());
                         var tmp = [];
@@ -56,6 +56,7 @@ define(['angular', 'ol', 'dc', 'map'],
                         // caur konsoli: var a = angular.element('*[ng-app]').injector().get('hsService');
                     }
                 };
+                return me;
             }])
             .controller('hs.feature_crossfilter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_crossfilter.service', 'crossfilterable_layers',
                 function($scope, OlMap, Core, service, crossfilterable_layers) {
@@ -95,6 +96,7 @@ define(['angular', 'ol', 'dc', 'map'],
                                 }
                             }
                             if (!$scope.$$phase) $scope.$digest();
+                            lyr.getSource().on('change', $scope.createConfiguredCharts);
                             var dims = service.makeCrossfilterDimensions(lyr.getSource(), attributes);
                             var filterFeatures = function(chart, filter) {
                                 var data_items = chart.dimension().top(Infinity);

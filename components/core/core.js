@@ -10,7 +10,7 @@ require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap',
-        ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'lib/ol3/ol-full',
+        ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'bower_components/ol3/build/ol',
         drag: hsl_path + 'components/drag/drag',
         map: hsl_path + 'components/map/map',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
