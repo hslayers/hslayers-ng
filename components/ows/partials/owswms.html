@@ -52,8 +52,8 @@
             <h4 class="list-group-item-heading">{{services.Title}}</h4>
         </a>
         <li ng-repeat="layer in services.Layer" class="list-group-item">
-            {{layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="layer.checked" ng-if="hasNestedLayers(layer)" />
-            <ul class="list-group">
+            {{layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" />
+            <ul class="list-group" ng-if="hasNestedLayers(layer)">
                 <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">{{sub_layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="sub_layer.checked" />
             
                 </li>

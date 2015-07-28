@@ -375,7 +375,7 @@ define(['angular', 'ol'],
 
 
                     $scope.hasNestedLayers = function(layer){
-                        return typeof layer.Layer == 'undefined'; 
+                        return typeof layer.Layer !== 'undefined'; 
                     } 
                 }
             ]);

@@ -199,7 +199,9 @@ define(['angular', 'ol', 'map'],
                         if (layer.trida == 'service') {
                             if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
                                 Core.setMainPanel('ows');
-                                hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(layer.link));
+                                var link = layer.link;
+                                link = link.split("?")[0];
+                                hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link));
                             } else {
                                 alert('Service type "' + layer.serviceType + '" not supported.');
                             }
