@@ -24,27 +24,33 @@ require.config({
         measure: hsl_path + 'components/measure/measure',
         legend: hsl_path + 'components/legend/legend',
         app: 'app',
+        d3: hsl_path + 'lib/d3.v3.min',
+        xml2json: hsl_path + 'lib/xml2json.min',
         panoramio: hsl_path + 'components/panoramio/panoramio',
         core: hsl_path + 'components/core/core',
         WfsSource: hsl_path + 'extensions/hs.source.Wfs',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
         dimension: jans_path + '/Dimension',
-        glutils: jans_path + 'GLUtils',
-        manager: jans_path + 'Manager',
+        glutils:  jans_path + 'GLUtils',
+        manager:  jans_path + 'Manager',
         mapcontroller: jans_path + 'MapController',
         heatmapdimension: jans_path + 'HeatMapDimension',
+        mapdimension: jans_path + 'MapDimension',
         stackedbarchart: jans_path + 'StackedBarChart',
         histogramdimension: jans_path + 'HistogramDimension',
         floatrasterreader: jans_path + 'FloatRasterReader',
+        floatreaderhistogram: jans_path + 'FloatReaderHistogram',
         histfilterrender: jans_path + 'HistFilterRender',
         multibrush: jans_path + 'd3.svg.multibrush',
+        WGL: jans_path + 'WGL',
         filter: jans_path + 'Filter',
         dataloader: 'DataLoader',
-        wgl: 'webglinit',
+        ol: hsl_path + 'lib/ol3/ol-full',
+        wglinit: 'webglinit',
         chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel',
-
-
+      
+        
     },
     shim: {
         d3: {
@@ -61,7 +67,7 @@ require.config({
 window.name = "NG_DEFER_BOOTSTRAP!";
 
 require(['core'], function(app) {
-
+	
     require(['app'], function(app) {
         var $html = angular.element(document.getElementsByTagName('html')[0]);
         angular.element().ready(function() {

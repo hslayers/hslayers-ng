@@ -1,19 +1,18 @@
 'use strict';
 
-define(['ol',
-        'toolbar',
-        'layermanager',
-        'WfsSource', 'query',
-        'search',
-        'print',
-        'permalink',
-        'measure',
-        'geolocation',
-        'api',
-        'glutils', 'wgl', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
-        'heatmapdimension', 'chart_panel', 'stackedbarchart', 'histogramdimension',
-        'floatrasterreader', 'histfilterrender', 'filter', 'multibrush'
-    ],
+define(['ol', 
+        'toolbar', 
+        'layermanager', 
+        'WfsSource', 'query', 
+        'search', 
+        'print', 
+        'permalink', 
+        'measure', 
+        'geolocation', 
+        'api', 
+        'glutils','WGL','wglinit','manager','mapcontroller','dataloader','d3','dimension',
+        'heatmapdimension','chart_panel', 'stackedbarchart','histogramdimension','mapdimension','floatreaderhistogram',
+        'floatrasterreader','histfilterrender','filter', 'multibrush'],
 
     function(ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -21,10 +20,9 @@ define(['ol',
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
-            'hs.geolocation', 'hs.widgets.chart_panel'
-        ]);
+            'hs.geolocation', 'hs.widgets.chart_panel']);
 
-        module.directive('hs', ['hs.map.service', 'Core', '$compile', 'webgl_viz', function(OlMap, Core, $compile, webgl_viz) {
+        module.directive('hs', ['OlMap', 'Core', '$compile', 'webgl_viz', function(OlMap, Core, $compile, webgl_viz) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -37,20 +35,16 @@ define(['ol',
                 }
             };
         }]);
-
-        module.service('webgl_viz', ['hs.map.service', function(OlMap) {
-            OlMap.map.removeInteraction(OlMap.interactions.DragPan);
-            OlMap.interactions.DragPan = new ol.interaction.DragPan({
-                kinetic: false
-            });
+        
+        module.service('webgl_viz', ['OlMap', function(OlMap) {
+        	OlMap.map.removeInteraction(OlMap.interactions.DragPan);
+            OlMap.interactions.DragPan = new ol.interaction.DragPan({kinetic: false});
             OlMap.map.addInteraction(OlMap.interactions.DragPan);
-
+          
             var me = {
                 map: OlMap.map,
                 ol: ol,
-                init: function() {
-                    wgl(this);
-                }
+                init: function(){wglinit(this);}
             };
 
             return me;
@@ -62,6 +56,7 @@ define(['ol',
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
+                box_id: 'osm',
                 base: true
             })
         ]);
@@ -72,16 +67,16 @@ define(['ol',
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'hs.map.service', 'default_layers', 'webgl_viz',
+        module.controller('Main', ['$scope', 'Core', 'OlMap', 'default_layers', 'webgl_viz',
             function($scope, Core, OlMap, default_layers, webgl_viz) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-
-                var map = OlMap.map;
+                
+                var map = OlMap.map;                
                 $scope.$on('infopanel.updated', function(event) {});
-
-
+                  
+              
             }
         ]);
 
