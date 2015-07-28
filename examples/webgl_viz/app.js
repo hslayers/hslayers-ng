@@ -10,8 +10,8 @@ define(['ol',
         'measure', 
         'geolocation', 
         'api', 
-        'glutils','wgl','manager','mapcontroller','dataloader','d3','dimension',
-        'heatmapdimension','chart_panel', 'stackedbarchart','histogramdimension',
+        'glutils','WGL','wglinit','manager','mapcontroller','dataloader','d3','dimension',
+        'heatmapdimension','chart_panel', 'stackedbarchart','histogramdimension','mapdimension','floatreaderhistogram',
         'floatrasterreader','histfilterrender','filter', 'multibrush'],
 
     function(ol, toolbar, layermanager, WfsSource) {
@@ -44,7 +44,7 @@ define(['ol',
             var me = {
                 map: OlMap.map,
                 ol: ol,
-                init: function(){wgl(this);}
+                init: function(){wglinit(this);}
             };
 
             return me;
