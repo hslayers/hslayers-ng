@@ -10,7 +10,7 @@ wglinit = function(that){
 
 	function visualize(data){
 
-		WGL = new WGL(data.num);		
+		WGL = new WGL(data.num,'');		
 
 	
 		WGL.addMapDimension(data.pts, 'map');
@@ -34,8 +34,10 @@ wglinit = function(that){
 		map.getView().on('change:resolution',onMove,0);
 		map.on('moveend',onMove,0);
 		
-		WGL.addCharts(charts);		
-		WGL.render();	
+		WGL.addCharts(charts);	
+		onMove();
+	
+		
 
 	}
 	
