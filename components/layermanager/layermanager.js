@@ -27,6 +27,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             var map = OlMap.map;
             var cur_layer_opacity = 1;
 
+            /**
+            * @function layerAdded
+            * @memberOf hs.layermanager.controller
+            * @description Callback function for layer adding
+            * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
+            */
             var layerAdded = function(e) {
                 if (e.element.get('show_in_manager') != null && e.element.get('show_in_manager') == false) return;
                 var sub_layers;
@@ -57,6 +63,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 $rootScope.$broadcast('layermanager.updated');
             };
 
+            /**
+            * @function layerRemoved
+            * @memberOf hs.layermanager.controller
+            * @description Callback function for layer removing
+            * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
+            */
             var layerRemoved = function(e) {
                 $(".layermanager-list").prepend($('.layerpanel'));
                 $scope.currentlayer = null;
@@ -72,10 +84,24 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             $scope.layers = [];
             $scope.active_box = null;
 
+            /**
+            * @function changeLayerVisibility
+            * @memberOf hs.layermanager.controller
+            * @description Callback function to set layers visibility
+            * @param {object} $event - Info about the event and checkbox being clicked on
+            * @param {object} layer - Wrapped ol.Layer 
+            */
             $scope.changeLayerVisibility = function($event, layer) {
                 layer.layer.setVisible($event.target.checked);
             }
 
+            /**
+            * @function setCurrentLayer
+            * @memberOf hs.layermanager.controller
+            * @description Opens detailed view for manipulating layer and viewing metadata
+            * @param {object} layer - Wrapped layer to edit or view
+            * @param {number} index - Used to position the detail panel after layers li element
+            */
             $scope.setCurrentLayer = function(layer, index) {
                 $scope.currentlayer = layer;
                 $(".layerpanel").insertAfter($("#layer-" + index));
@@ -84,10 +110,22 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 return false;
             }
 
+            /**
+            * @function removeLayer
+            * @memberOf hs.layermanager.controller
+            * @description Removes layer from map
+            * @param {object} layer 
+            */
             $scope.removeLayer = function(layer) {
                 map.removeLayer(layer);
             }
 
+            /**
+            * @function zoomToLayer
+            * @memberOf hs.layermanager.controller
+            * @description Tries to read the BoundingBox property of layer or getExtent() of its source and zooms to it
+            * @param {object} layer 
+            */
             $scope.zoomToLayer = function(layer) {
                 var extent = null;
                 if (layer.get("BoundingBox")) {
@@ -104,6 +142,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     map.getView().fitExtent(extent, map.getSize());
             }
 
+            /**
+            * @function layerIsZoomable
+            * @memberOf hs.layermanager.controller
+            * @description Determines if layer has BoundingBox defined as its metadata or is a Vector layer. Used for setting visibility of 'Zoom to ' button
+            * @param {object} layer 
+            */
             $scope.layerIsZoomable = function(layer) {
                 if (typeof layer == 'undefined') return false;
                 if (layer.get("BoundingBox")) return true;
@@ -111,6 +155,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 return false;
             }
 
+            /**
+            * @function activateTheme
+            * @memberOf hs.layermanager.controller
+            * @description Show a particular groups layers, hide allthe rest
+            * @param {ol.layer.Group} theme - Group layer to activate 
+            */
             $scope.activateTheme = function(theme) {
                 if ($scope.active_box) $scope.active_box.set('active', false);
                 $scope.active_box = theme;
