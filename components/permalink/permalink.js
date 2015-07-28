@@ -1,3 +1,7 @@
+/**
+ * @namespace hs.permalink
+ * @memberOf hs
+ */
 define(['angular', 'map', 'core'],
 
     function(angular) {
@@ -12,7 +16,7 @@ define(['angular', 'map', 'core'],
                      templateUrl: 'js/components/permalink/partials/permalinkbutton.html'
                  };
              })*/
-            .service("BrowserUrlService", ['$rootScope', 'OlMap', 'Core',
+            .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core',
                 function($rootScope, OlMap, Core) {
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
@@ -114,7 +118,7 @@ define(['angular', 'map', 'core'],
                     return me;
                 }
             ])
-            .controller('Permalink', ['$scope', 'BrowserUrlService',
+            .controller('hs.permalink.controller', ['$scope', 'hs.permalink.service_url',
                 function($scope, BrowserUrlService) {
                     $scope.getCurrentUrl = function() {
                         return window.location.origin + BrowserUrlService.current_url;

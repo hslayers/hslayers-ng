@@ -36,17 +36,17 @@
 .gui-overlay{
     z-index: 1000;
     position: absolute;
-    left: 61px;
-    top: 5px;
-    height: 98%;
-    right: 61px;
+    left: 0px;
+    top: 0px;
+    bottom:0px;
+    right: 0px;
     pointer-events: none;
     background: none !important;
 }
 
 .panelspace {
   pointer-events: auto;
-  max-height: 98%;
+  max-height: 100%;
   overflow-y: auto;
   padding: 0;
 }
@@ -60,15 +60,15 @@
 
 #toolbar {
     left: 3px;
-    width: 42px;
     position: absolute;
     top: 3px;
 }
 
+/*
 #map {
   height: 100%;
   width: 100%;
-}
+}*/
 
 .modal-backdrop{visibility:hidden}
 .toolbuttons {display: inline-block}
@@ -82,12 +82,12 @@ hr {
 .layer-checked, .layer-more, .datasource_addlayer{
     width: 20px;
     height: 21px;
-    float:right;
+    float: right;
     font-size: 19pt;
 }
 
 .datasource_addlayer, .layer-more{
-    margin-top: -8px;
+    /*margin-top: -8px;*/
     margin-left: 4px;
     margin-right: 4px;
 }
@@ -123,7 +123,9 @@ hr {
 }
 
 .search-container {
-      pointer-events: auto;
+    pointer-events: auto;
+    margin-top: 40px;
+    padding-left: 15px;
 }
 .search_address {
 }
@@ -133,7 +135,7 @@ hr {
     min-width: 200px;
 }
 
-#toolbar button {margin: 1px; position: relative;}
+#toolbar button {margin: 0px; position: relative;}
 #toolbar span, #toolbar i {width: 14px; height: 14px}
 
 
@@ -145,7 +147,7 @@ font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
 }
 .locate {
 text-align: right;
-top: 22.5em;
+top: 7.5em;
 right: .5em;
 max-width: calc(100% - 1.3em);
 }
@@ -161,14 +163,13 @@ display: none;
 }
 .locate ul{list-style: none}
 
-.filter_charts{height: 220px;}
 div#infopanel.ng-scope .first-col{width:100px; overflow-x: auto;}
 div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
 .dc-chart g.row text {fill: black;}.
 #right-pane{
   pointer-events: auto;
 }
-.unpin {
+.but-title-sm {
   float: right;
   font-size: 14px;
   font-weight: 700;
@@ -178,8 +179,8 @@ div#infopanel.ng-scope .second-col{width:100px; overflow-x: auto;}
   filter: alpha(opacity=20);
   opacity: .2;
 }
-.unpin:hover{color:#000;text-decoration:none;cursor:pointer;filter:alpha(opacity=50);opacity:.5}
-button.unpin {
+.but-title-sm:hover{color:#000;text-decoration:none;cursor:pointer;filter:alpha(opacity=50);opacity:.5}
+button.but-title-sm {
   -webkit-appearance: none;
   cursor: pointer;
   background: 0 0;
@@ -189,3 +190,14 @@ button.unpin {
 min-width: 230px;
 }
 .popover{max-width: 1000px; max-height: 1000px}
+.list-group-item.active .datasource_addlayer{color: #fff}
+.panel-body {
+  padding: 3px;
+}
+.row {
+  margin-right: 0px; 
+  margin-left: 0px; 
+}
+.thumbnail{height:62px}
+.ol-attribution{ left: 0.2em; right: auto;}
+.ol-scale-line {  left: 31px;}

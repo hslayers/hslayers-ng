@@ -1,14 +1,18 @@
+/**
+ * @namespace hs.measure
+ * @memberOf hs
+ */
 define(['angular', 'ol', 'map', 'core'],
 
     function(angular, ol) {
         angular.module('hs.measure', ['hs.map', 'hs.core'])
-            .directive('measure', function() {
+            .directive('hs.measure.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/measure/partials/measure.html'
                 };
             })
 
-        .controller('Measure', ['$scope', 'OlMap', 'Core',
+        .controller('hs.measure.controller', ['$scope', 'hs.map.service', 'Core',
             function($scope, OlMap, Core) {
                 var map = OlMap.map;
 

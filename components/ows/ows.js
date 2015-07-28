@@ -1,13 +1,18 @@
+/**
+ * @namespace hs.ows
+ * @memberOf hs
+ */
+
 define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
 
     function(angular) {
         angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
-            .directive('ows', function() {
+            .directive('hs.ows.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/ows.html'
                 };
             })
-            .controller('Ows', ['$scope', 'OwsWmsCapabilities', 'OlMap',
+            .controller('hs.ows.controller', ['$scope', 'OwsWmsCapabilities', 'hs.map.service',
                 function($scope, OwsWmsCapabilities, OlMap) {
                     var map = OlMap.map;
                     $scope.url = "http://erra.ccss.cz/geoserver/ows";
@@ -16,6 +21,10 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                     $scope.image_formats = [];
                     $scope.query_formats = [];
                     $scope.tile_size = 512;
+                    $scope.setUrlAndConnect = function(url) {
+                        $scope.url = url;
+                        $scope.connect();
+                    }
                     $scope.connect = function() {
                         switch ($scope.type.toLowerCase()) {
                             case "kml":

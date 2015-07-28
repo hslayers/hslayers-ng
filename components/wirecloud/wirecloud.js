@@ -1,9 +1,13 @@
+/**
+ * @namespace hs.wirecloud
+ * @memberOf hs
+ */
 define(['angular', 'app', 'map', 'ol'],
 
     function(angular, app, map, ol) {
         angular.module('hs.wirecloud', ['hs', 'hs.map'])
 
-        .service("WireCloud", ['$rootScope', 'OlMap', 'wirecloud_data_consumer', 'default_layers',
+        .service("hs.wirecloud.service", ['$rootScope', 'hs.map.service', 'wirecloud_data_consumer', 'default_layers',
             function($rootScope, OlMap, wirecloud_data_consumer, default_layers) {
                 var view = OlMap.map.getView();
                 if (console) console.log('Wirecloud interface loaded');
@@ -23,8 +27,8 @@ define(['angular', 'app', 'map', 'ol'],
                         var b = data.split(",");
                         var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
                         var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-                        first_pair = ol.proj.transform(first_pair, 'EPSG:4326', 'EPSG:3857');
-                        second_pair = ol.proj.transform(second_pair, 'EPSG:4326', 'EPSG:3857');
+                        first_pair = ol.proj.transform(first_pair, 'EPSG:4326', view.getProjection());
+                        second_pair = ol.proj.transform(second_pair, 'EPSG:4326', view.getProjection());
                         var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                         view.fitExtent(extent, OlMap.map.getSize());
                         extent_layer.getSource().clear();
@@ -39,7 +43,7 @@ define(['angular', 'app', 'map', 'ol'],
             }
         ])
 
-        .run(function(WireCloud) { // instance-injector
+        .run(['hs.wirecloud.service', function(WireCloud) { // instance-injector
             //Gets executed after service is loaded
-        });
+        }]);
     })

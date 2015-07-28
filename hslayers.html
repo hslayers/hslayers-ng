@@ -5,28 +5,31 @@
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <!--<script ng-src="{{hsl_path}}bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>-->
 
-<div map ng-controller="Map" id="map" style="z-index:990"></div>
-<div toolbar ng-controller="Toolbar"></div>
+<div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
+<div hs.toolbar.directive ng-controller="hs.toolbar.controller"></div>
 
 <div class="row gui-overlay">
-    <div class="panelspace col-md-4">
-        <div layer-manager draggable ng-controller="LayerManager" ng-show="Core.panelVisible('layermanager', this)"></div>
-        <div legend draggable ng-controller="Legend" ng-if="Core.exists('Legend')" ng-show="Core.panelVisible('legend', this)"></div>
-        <div ows draggable ng-controller="Ows" ng-if="Core.exists('Ows')" ng-show="Core.panelVisible('ows', this)"></div>
-        <div datasource-selector draggable ng-controller="DatasourceSelector" ng-if="Core.exists('DatasourceSelector')" ng-show="Core.panelVisible('datasource_selector', this)"></div>
-        <div composition-browser draggable ng-controller="Compositions" ng-if="Core.exists('Compositions')" ng-show="Core.panelVisible('composition_browser', this)"></div>
-        <div lod-explorer draggable ng-controller="LodExplorer" ng-if="Core.exists('LodExplorer')" ng-show="Core.panelVisible('lodexplorer', this)"></div>
-        <div feature-crossfilter draggable ng-controller="FeatureCrossfilter"  ng-if="Core.exists('FeatureCrossfilter')" ng-show="Core.panelVisible('feature_crossfilter', this)"></div>
-        <div measure draggable ng-controller="Measure"  ng-if="Core.exists('Measure')" ng-show="Core.panelVisible('measure', this)"></div>
-        <div printdialog draggable ng-controller="Print"  ng-if="Core.exists('Print')" ng-show="Core.panelVisible('print', this)"></div>
-        <div permalinkdialog draggable ng-controller="Permalink"></div>
-        <div id="infopanel" infopanel draggable ng-controller="Query"  ng-if="Core.exists('Query')" ng-show="Core.panelVisible('info', this)"></div>
-    </div>
-    <div class="search-container col-md-3" ng-controller="Search">
-        <div searchinput></div>
-        <div searchresults></div>
-    </div>
     <div class="col-md-4" id="right-pane">
     </div>
+    <div class="search-container col-md-4" ng-controller="hs.search.controller">
+        <div ng-show="Core.panelVisible('search', this)">
+            <div hs.search.directive_searchinput></div>
+            <div hs.search.directive_searchresults></div>
+        </div>
+    </div>
+    <div class="panelspace col-md-4">
+        <div hs.layermanager.directive          hs.draggable ng-controller="hs.layermanager.controller" ng-show="Core.panelVisible('layermanager', this)"></div>
+        <div hs.legend.directive                hs.draggable ng-controller="hs.legend.controller" ng-if="Core.exists('hs.legend.controller')" ng-show="Core.panelVisible('legend', this)"></div>
+        <div hs.ows.directive                   hs.draggable ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller')" ng-show="Core.panelVisible('ows', this)"></div>
+        <div hs.datasource_selector.directive   hs.draggable ng-controller="hs.datasource_selector.controller" ng-if="Core.exists('hs.datasource_selector.controller')" ng-show="Core.panelVisible('datasource_selector', this)"></div>
+        <div hs.compositions.directive          hs.draggable ng-controller="hs.compositions.controller" ng-if="Core.exists('hs.compositions.controller')" ng-show="Core.panelVisible('composition_browser', this)"></div>
+        <div hs.lodexplorer.directive           hs.draggable ng-controller="hs.lodexplorer.controller" ng-if="Core.exists('hs.lodexplorer.controller')" ng-show="Core.panelVisible('lodexplorer', this)"></div>
+        <div hs.feature_crossfilter.directive   hs.draggable ng-controller="hs.feature_crossfilter.controller"  ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-show="Core.panelVisible('feature_crossfilter', this)"></div>
+        <div hs.measure.directive               hs.draggable ng-controller="hs.measure.controller"  ng-if="Core.exists('hs.measure.controller')" ng-show="Core.panelVisible('measure', this)"></div>
+        <div hs.print.directive                 hs.draggable ng-controller="hs.print.controller"  ng-if="Core.exists('hs.print.controller')" ng-show="Core.panelVisible('print', this)"></div>
+        <div hs.permalink.directive_dialog      hs.draggable ng-controller="hs.permalink.controller"></div>
+        <div hs.query.directive_infopanel       hs.draggable ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller')" ng-show="Core.panelVisible('info', this)"></div>
+    </div>
 </div>
-<div sparql-log-dialog  ng-controller="SparqlLogDialog"  ng-if="Core.exists('SparqlLogDialog')"></div> 
+<div hs.lodexplorer.directive_sparqllogdialog ng-controller="hs.lodexplorer.controller_sparqllogdialog"  ng-if="Core.exists('SparqlLogDialog')"></div> 
+<div hs.status_creator.directive ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div>

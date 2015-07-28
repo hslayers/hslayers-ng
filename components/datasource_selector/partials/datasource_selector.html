@@ -6,16 +6,23 @@
         </button>
     </div>
     <div class="panel-body">
-        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.description"></p>
+        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title" ng-change="loadDatasets(datasources)"></p>
             
         <ul ng-repeat="ds in datasets" class="list-group">
             <a href="#" class="list-group-item active">
-                <h4 class="list-group-item-heading">{{ds.title}}</h4>
+                <h4 class="list-group-item-heading">{{ds.title}}<span ng-show='ds.matched>0 && ds.next>0'> results {{ds.start + 1}} - {{ds.next}}</span> <span ng-show='ds.matched>0'>({{ds.matched}} total)</span>
+                <div class="btn-group" role="group" aria-label="..." ng-show='ds.matched>0 && ds.next>0'>
+                    <button type="button" class="btn btn-default" ng-click='getPreviousRecords(ds)'>&laquo;</button>
+                    <button type="button" class="btn btn-default" ng-click='getNextRecords(ds)'>&raquo;</button>
+                </div>
+                </h4>
             </a>
-            <li ng-repeat="layer in ds.layers | filter:query" class="list-group-item">
-                <h4 class="list-group-item-heading">{{layer.title}}</h4>
+            <img ng-src="{{ajax_loader}}" ng-show="ds.ajax_req.readyState != 4"/>
+            <li ng-repeat="layer in ds.layers" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
+                <b class="list-group-item-heading datasources_item">{{layer.trida}} {{layer.title}}
+                    <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
+                </b>
                 {{layer.description}}
-                <a href="#" class="datasource_addlayer" ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
             </li>
         </ul>
     </div>

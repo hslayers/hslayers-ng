@@ -1,10 +1,11 @@
-<div class="locate ol-unselectable ol-control ol-collapsed" ng-controller="Geolocation">
+<div class="locate ol-unselectable ol-control ol-collapsed" ng-controller="hs.geolocation.controller">
 
 <ul>
 <li><translate>Speed</translate>: <span class='value'>{{speed}}</span></li>
 <li><translate>Altitude</translate>: <span class='value'>{{alt}} {{altitudeAccuracy}}</span></li>
+<li><button type="button" ng-class="'btn btn-default but-xs' + (following() ? ' active' : '')" ng-click="following(!following())" style="width: 4.375em; font: inherit;background-color: #e6e6e6;">Follow</button></li>
 </ul>
-<button class="ol-has-tooltip" type="button">   
+<button class="ol-has-tooltip blocate" type="button">   
     <i class="fa fa-location-arrow"></i>
 </button>
 </div>

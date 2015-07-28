@@ -1,24 +1,39 @@
+/**
+ * @namespace hs.geolocation
+ * @memberOf hs
+ */
 define(['angular', 'ol'],
 
     function(angular, ol) {
         angular.module('hs.geolocation', ['hs.map'])
-            .directive('geolocation', ['OlMap', 'Geolocation', function(OlMap, Geolocation) {
+            .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core', function(OlMap, Geolocation, Core) {
                 return {
                     templateUrl: hsl_path + 'components/geolocation/partials/geolocation.html',
                     link: function link(scope, element, attrs) {
                         element.appendTo($(".ol-overlaycontainer-stopevent"));
-                        $('.locate button').click(function() {
+                        $('.locate .blocate').click(function() {
                             $('.locate').toggleClass('ol-collapsed');
-                            Geolocation.geolocation.setTracking(!Geolocation.geolocation.getTracking());
-                            Geolocation.toggleFeatures(Geolocation.geolocation.getTracking());
+                            Geolocation.geolocation.setTracking(true);
+                            Geolocation.toggleFeatures(!$('.locate').hasClass('ol-collapsed'));
                         });
+                        if (Core.panel_side == 'left') {
+                            $('.locate').css({
+                                right: '.5em'
+                            });
+                        }
+                        if (Core.panel_side == 'right') {
+                            $('.locate').css({
+                                right: 'auto',
+                                left: '.2em'
+                            });
+                        }
                     },
                     replace: true
                 };
             }])
 
-        .service('Geolocation', ['OlMap', '$rootScope',
-            function(OlMap, $rootScope) {
+        .service('hs.geolocation.service', ['hs.map.service', '$rootScope', '$log',
+            function(OlMap, $rootScope, $log) {
                 var me = {
                     following: false,
                     geolocation: null,
@@ -33,13 +48,12 @@ define(['angular', 'ol'],
                         }
                     }
                 };
+            
                 me.geolocation = new ol.Geolocation({
                     projection: OlMap.map.getView().getProjection()
                 });
-                //var track = new ol.dom.Input(document.getElementById('track'));
-                //track.bindTo('checked', geolocation, 'tracking');
 
-                me.geolocation.on('change', function() {
+                me.changed_handler = function() {
                     if (!me.geolocation.getTracking()) return;
 
                     me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
@@ -49,6 +63,7 @@ define(['angular', 'ol'],
                     me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
                     if (me.geolocation.getPosition()) {
                         var p = me.geolocation.getPosition();
+                        $log.info(p);
                         if (!positionFeature.getGeometry())
                             positionFeature.setGeometry(new ol.geom.Point(p));
                         else
@@ -58,7 +73,9 @@ define(['angular', 'ol'],
                     }
                     if (me.heading) OlMap.map.getView().setRotation(me.heading);
                     $rootScope.$broadcast('geolocation.updated');
-                });
+                }
+
+                me.geolocation.on('change', me.changed_handler);
 
                 // handle geolocation error.
                 me.geolocation.on('error', function(error) {
@@ -66,6 +83,8 @@ define(['angular', 'ol'],
                     info.innerHTML = error.message;
                     info.style.display = '';
                 });
+                //var track = new ol.dom.Input(document.getElementById('track'));
+                //track.bindTo('checked', geolocation, 'tracking');
 
                 me.style = new ol.style.Style({
                     image: new ol.style.Circle({
@@ -102,37 +121,39 @@ define(['angular', 'ol'],
 
                 return me;
             }
-        ]).controller('Geolocation', ['$scope', 'Geolocation', function($scope, Geolocation) {
+        ]).controller('hs.geolocation.controller', ['$scope', 'hs.geolocation.service', function($scope, service) {
             $scope.speed = null;
             $scope.alt = null;
             $scope.altitudeAccuracy = null;
 
             $scope.getGeolocationProvider = function() {
-                return Geolocation.geolocation;
+                return service.geolocation;
             }
 
             $scope.gpsActive = function(set_to) {
                 if (arguments.length == 0)
-                    return Geolocation.geolocation.getTracking();
+                    return service.geolocation.getTracking();
                 else
-                    Geolocation.geolocation.setTracking(set_to);
+                    service.geolocation.setTracking(set_to);
             }
 
             $scope.following = function(set_to) {
                 if (arguments.length == 0)
-                    return Geolocation.following;
-                else
-                    Geolocation.following = set_to;
+                    return service.following;
+                else {
+                    service.following = set_to;
+                    service.changed_handler();
+                }
             }
 
             $scope.setFeatureStyle = function(style) {
-                return Geolocation.style = style;
+                return service.style = style;
             }
 
             $scope.$on('geolocation.updated', function(event) {
-                $scope.speed = Geolocation.speed;
-                $scope.alt = Geolocation.altitude;
-                $scope.altitudeAccuracy = Geolocation.altitudeAccuracy;
+                $scope.speed = service.speed;
+                $scope.alt = service.altitude;
+                $scope.altitudeAccuracy = service.altitudeAccuracy;
                 if (!$scope.$$phase) $scope.$digest();
             });
             $scope.$emit('scope_loaded', "Geolocation");

@@ -18,9 +18,7 @@
         </div>
         
         <ul style="margin-top: 4px" class="list-group">
-            <li ng-repeat="composition in compositions" class="list-group-item">
-                <a href="#" ng-click="loadComposition(composition.link)" data-toggle="tooltip" data-placement="top" ng-attr-title="{{composition.mdAbstract}}">{{composition.title}}</a>
-            </li>
+            <a ng-repeat="composition in compositions" href="#" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="loadComposition(composition.link)" ng-class="'list-group-item'+(composition.highlighted ? ' active' : '')" data-toggle="tooltip" data-placement="top" ng-attr-title="{{composition.mdAbstract}}">{{composition.title}}</a>
             <nav>
                 <ul class="pagination" ng-show="pages.length>0">
                     <li ng-class="current_page < 2 ? 'disabled' : ''">

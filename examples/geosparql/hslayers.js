@@ -19,15 +19,11 @@ require.config({
         measure: hsl_path + 'components/measure/measure',
         legend: hsl_path + 'components/legend/legend',
         app: 'app',
-        xml2json: hsl_path + 'lib/xml2json.min',
         panoramio: hsl_path + 'components/panoramio/panoramio',
         core: hsl_path + 'components/core/core',
         SparqlJson: hsl_path + 'extensions/hs.source.SparqlJson',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
-        d3: hsl_path + 'lib/d3.v3.min',
-        crossfilter: hsl_path + 'lib/crossfilter.v1.min',
-        dc: 'http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
         'feature-crossfilter': hsl_path + 'components/feature_crossfilter/f_crossfilter'
     },
     shim: {

@@ -1,7 +1,11 @@
+/**
+ * @namespace hs.drag
+ * @memberOf hs
+ */
 define(['angular'],
     function(angular) {
         angular.module('hs.drag', []).
-        directive('draggable', ['$document', '$window', function($document, $window) {
+        directive('hs.draggable', ['$document', '$window', function($document, $window) {
             return function(scope, element, attr) {
                 var startX = 0,
                     startY = 0,
@@ -14,7 +18,7 @@ define(['angular'],
                 });
                 scope.unpinned = false;
                 scope.drag_panel = element;
-                $(".panel-heading", element).append($('<button>').attr('type', 'button').addClass('unpin').click(function() {
+                $(".panel-heading:first", element).append($('<button>').attr('type', 'button').addClass('but-title-sm').click(function() {
                         scope.unpinned = true;
                         $(".panel-heading", element).css('cursor', 'move');
                     })

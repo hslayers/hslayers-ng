@@ -1,13 +1,17 @@
+/**
+ * @namespace hs.query
+ * @memberOf hs
+ */
 define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
     function(angular, ol) {
         angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
-            .directive('infopanel', function() {
+            .directive('hs.query.directiveInfopanel', function() {
                 return {
                     templateUrl: hsl_path + 'components/query/partials/infopanel.html'
                 };
             })
-            .directive('infovalue', ['$compile', function($compile) {
+            .directive('hs.query.infovalue', ['$compile', function($compile) {
 
                 function link(scope, element, attrs) {
                     if (attrs.attribute == 'hstemplate') return;
@@ -42,7 +46,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     link: link
                 };
             }])
-            .service("WmsGetFeatureInfo", [
+            .service("hs.query.service_getwmsfeatureinfo", [
                 function() {
                     this.request = function(url, info_format, coordinate) {
                         var esc_url = window.escape(url);
@@ -57,7 +61,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     };
 
                 }
-            ]).service("InfoPanelService", ['$rootScope',
+            ]).service("hs.query.service_infopanel", ['$rootScope',
                 function($rootScope) {
                     var me = {
                         //Used for tool specific info, such as lodexplorer region names and values
@@ -78,7 +82,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 }
             ])
 
-        .controller('Query', ['$scope', 'OlMap', 'WmsGetFeatureInfo', 'InfoPanelService', 'Core', '$sce',
+        .controller('hs.query.controller', ['$scope', 'hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);
@@ -94,30 +98,41 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     //if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
                     if (Core.mainpanel == 'measure') return;
+                    $scope.$emit('infopanel.feature_selected', e.element);
+                    if (e.element.get('hs_notqueryable')) return;
+                    getFeatureAttributes(e.element);
+                });
+
+                selector.getFeatures().on('remove', function(e) {
+                    if (Core.mainpanel == 'measure') return;
+                    $scope.$emit('infopanel.feature_deselected', e.element);
+                })
+
+                var getFeatureAttributes = function(feature) {
                     var attributes = [];
                     var groups_added = false;
-                    e.element.getKeys().forEach(function(key) {
+                    feature.getKeys().forEach(function(key) {
                         if (key == 'gid' || key == 'geometry') return;
                         if (key == "features") {
-                            for (var feature in e.element.get('features')) {
+                            for (var sub_feature in feature.get('features')) {
                                 var hstemplate = null;
-                                if (e.element.get('features')[feature].get('hstemplate')) hstemplate = e.element.get('features')[feature].get('hstemplate');
+                                if (feature.get('features')[sub_feature].get('hstemplate')) hstemplate = feature.get('features')[sub_feature].get('hstemplate');
                                 var group = {
                                     name: "Feature",
                                     attributes: [],
                                     hstemplate: hstemplate
                                 };
-                                e.element.get('features')[feature].getKeys().forEach(function(key) {
+                                feature.get('features')[sub_feature].getKeys().forEach(function(key) {
                                     if (key == 'gid' || key == 'geometry') return;
-                                    if (typeof e.element.get('features')[feature].get(key) == "String") {
+                                    if (typeof feature.get('features')[sub_feature].get(key) == "String") {
                                         group.attributes.push({
                                             name: key,
-                                            value: $sce.trustAsHtml(e.element.get('features')[feature].get(key))
+                                            value: $sce.trustAsHtml(feature.get('features')[sub_feature].get(key))
                                         });
                                     } else {
                                         group.attributes.push({
                                             name: key,
-                                            value: e.element.get('features')[feature].get(key)
+                                            value: feature.get('features')[sub_feature].get(key)
                                         });
                                     }
                                 })
@@ -127,7 +142,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         } else {
                             var obj = {
                                 name: key,
-                                value: $sce.trustAsHtml(e.element.get(key))
+                                value: $sce.trustAsHtml(feature.get(key))
                             };
                             attributes.push(obj)
                         };
@@ -136,7 +151,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     InfoPanelService.setAttributes(attributes);
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
                     vectors_selected = true;
-                })
+                }
 
                 WmsGetFeatureInfo.featureInfoReceived = function(response, info_format, url, coordinate) {
                     /* Maybe this will work in future OL versions
@@ -203,26 +218,26 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     }
 
                     if (info_format.indexOf("html") > 0) {
-                        if(response.length<=1) return;
+                        if (response.length <= 1) return;
                         createFeatureInfoPopupIfNeeded(coordinate);
 
                         $(popup.getElement()).popover('show');
-                        
+
                         var $iframe = $('.getfeatureinfo_popup').get()[0];
                         $iframe.contentWindow.document.write(response);
-                        $iframe.width =  $iframe.contentWindow.document.body.scrollWidth + 20;
-                        $iframe.height = $iframe.contentWindow.document.body.scrollHeight + 20;  
-                        
+                        $iframe.width = $iframe.contentWindow.document.body.scrollWidth + 20;
+                        $iframe.height = $iframe.contentWindow.document.body.scrollHeight + 20;
+
                         $('.close', popup.getElement().nextElementSibling).click(function() {
                             $(popup.getElement()).popover('hide');
-                        }); 
+                        });
                         popup.setPosition(coordinate);
                     }
                 }
-                
+
                 var popup = null;
-                var createFeatureInfoPopupIfNeeded = function(coordinate){
-                    if($('.getfeatureinfo_popup').length>0) return;
+                var createFeatureInfoPopupIfNeeded = function(coordinate) {
+                    if ($('.getfeatureinfo_popup').length > 0) return;
                     var pop_div = document.createElement('div');
                     document.getElementsByTagName('body')[0].appendChild(pop_div);
                     popup = new ol.Overlay({
@@ -236,13 +251,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     var content = close_button + '<iframe class="getfeatureinfo_popup" width=400 height=300 style="border:0"></iframe>';
                     $(element).popover({
                         'placement': 'top',
-                        'animation': false,
+                        'animation': true,
                         'html': true,
                         'content': content
                     });
                     $(element).popover('show');
                     popup.setPosition(coordinate);
-                    
+
                 }
 
                 $scope.InfoPanelService = InfoPanelService;

@@ -1,14 +1,18 @@
+/**
+ * @namespace hs.legend
+ * @memberOf hs
+ */
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         angular.module('hs.legend', ['hs.map'])
-            .directive('legend', function() {
+            .directive('hs.legend.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/legend/partials/legend.html'
                 };
             })
 
-        .controller('Legend', ['$scope', 'OlMap',
+        .controller('hs.legend.controller', ['$scope', 'hs.map.service',
             function($scope, OlMap) {
                 var map = OlMap.map;
                 var layerAdded = function(e) {
@@ -38,7 +42,7 @@ define(['angular', 'ol', 'map'],
                         })
                         $scope.layers.push({
                             title: layer.get("title"),
-                            lyr: layer,
+                            layer: layer,
                             type: 'wms',
                             sub_layers: sub_layers,
                             visible: layer.getVisible()
@@ -63,6 +67,11 @@ define(['angular', 'ol', 'map'],
 
                 }
 
+                /*
+                 * Generates URL for requesting the legend
+                 * @param {string} wms_url - WMS service url
+                 * @param {string} layer_name - Name of the sub-layer
+                 */
                 $scope.getWmsLayerLegendUrl = function(wms_url, layer_name) {
                     return wms_url + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image/png";
                 }
@@ -70,7 +79,7 @@ define(['angular', 'ol', 'map'],
                 $scope.removeLayerFromLegends = function(layer) {
                     for (var i = 0; i < $scope.layers.length; i++) {
                         if ($scope.layers[i].layer == layer) {
-                            $scope.layers.splice(i);
+                            $scope.layers.splice(i, 1);
                             break;
                         }
                     }

@@ -1,16 +1,38 @@
+/**
+ * @namespace hs.layermanager
+ * @memberOf hs
+ */
 define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
     angular.module('hs.layermanager', ['hs.map'])
-        .directive('layerManager', function() {
-            return {
-                templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
-            };
-        })
 
-    .controller('LayerManager', ['$scope', 'OlMap', 'box_layers', '$rootScope',
-        function($scope, OlMap, box_layers, $rootScope) {
+    /**
+     * @class hs.layermanager.directive
+     * @memberOf hs.layermanager
+     * @description Directive for displaying layer manager panel
+     */
+    .directive('hs.layermanager.directive', function() {
+        return {
+            templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
+        };
+    })
+
+    /**
+     * @class hs.layermanager.controller
+     * @memberOf hs.layermanager
+     * @description Layer manager controller
+     */
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'box_layers', '$rootScope', 'Core',
+        function($scope, OlMap, box_layers, $rootScope, Core) {
+            $scope.Core = Core;
             var map = OlMap.map;
             var cur_layer_opacity = 1;
 
+            /**
+            * @function layerAdded
+            * @memberOf hs.layermanager.controller
+            * @description Callback function for layer adding
+            * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
+            */
             var layerAdded = function(e) {
                 if (e.element.get('show_in_manager') != null && e.element.get('show_in_manager') == false) return;
                 var sub_layers;
@@ -41,11 +63,18 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 $rootScope.$broadcast('layermanager.updated');
             };
 
+            /**
+            * @function layerRemoved
+            * @memberOf hs.layermanager.controller
+            * @description Callback function for layer removing
+            * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
+            */
             var layerRemoved = function(e) {
+                $(".layermanager-list").prepend($('.layerpanel'));
+                $scope.currentlayer = null;
                 for (var i = 0; i < $scope.layers.length; i++) {
                     if ($scope.layers[i].layer == e.element) {
-                        $scope.layers.splice(i);
-                        break;
+                        $scope.layers.splice(i, 1);
                     }
                 }
                 $rootScope.$broadcast('layermanager.updated');
@@ -55,10 +84,24 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             $scope.layers = [];
             $scope.active_box = null;
 
+            /**
+            * @function changeLayerVisibility
+            * @memberOf hs.layermanager.controller
+            * @description Callback function to set layers visibility
+            * @param {object} $event - Info about the event and checkbox being clicked on
+            * @param {object} layer - Wrapped ol.Layer 
+            */
             $scope.changeLayerVisibility = function($event, layer) {
                 layer.layer.setVisible($event.target.checked);
             }
 
+            /**
+            * @function setCurrentLayer
+            * @memberOf hs.layermanager.controller
+            * @description Opens detailed view for manipulating layer and viewing metadata
+            * @param {object} layer - Wrapped layer to edit or view
+            * @param {number} index - Used to position the detail panel after layers li element
+            */
             $scope.setCurrentLayer = function(layer, index) {
                 $scope.currentlayer = layer;
                 $(".layerpanel").insertAfter($("#layer-" + index));
@@ -67,13 +110,24 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 return false;
             }
 
+            /**
+            * @function removeLayer
+            * @memberOf hs.layermanager.controller
+            * @description Removes layer from map
+            * @param {object} layer 
+            */
             $scope.removeLayer = function(layer) {
                 map.removeLayer(layer);
             }
 
+            /**
+            * @function zoomToLayer
+            * @memberOf hs.layermanager.controller
+            * @description Tries to read the BoundingBox property of layer or getExtent() of its source and zooms to it
+            * @param {object} layer 
+            */
             $scope.zoomToLayer = function(layer) {
                 var extent = null;
-                debugger;
                 if (layer.get("BoundingBox")) {
                     b = layer.get("BoundingBox")[0].extent;
                     var first_pair = [b[0], b[1]]
@@ -88,6 +142,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     map.getView().fitExtent(extent, map.getSize());
             }
 
+            /**
+            * @function layerIsZoomable
+            * @memberOf hs.layermanager.controller
+            * @description Determines if layer has BoundingBox defined as its metadata or is a Vector layer. Used for setting visibility of 'Zoom to ' button
+            * @param {object} layer 
+            */
             $scope.layerIsZoomable = function(layer) {
                 if (typeof layer == 'undefined') return false;
                 if (layer.get("BoundingBox")) return true;
@@ -95,21 +155,23 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 return false;
             }
 
+            /**
+            * @function activateTheme
+            * @memberOf hs.layermanager.controller
+            * @description Show a particular groups layers, hide allthe rest
+            * @param {ol.layer.Group} theme - Group layer to activate 
+            */
             $scope.activateTheme = function(theme) {
-                if ($scope.active_box) $scope.active_box.active = false;
+                if ($scope.active_box) $scope.active_box.set('active', false);
                 $scope.active_box = theme;
-                theme.active = true;
-                for (var i = 0; i < $scope.layers.length; i++) {
-                    var lyr = $scope.layers[i].layer;
-                    if (lyr.get('box_id') && (lyr.get('box_id') == theme.id || lyr.get('box_id') == 'base')) {
-                        /* if (lyr.get('base')) {
-                             lyr.setVisible(true);
-                         }*/
-                        lyr.setVisible(true);
-                    } else {
-                        lyr.setVisible(false);
-                    }
-                }
+                theme.set('active', true);
+                angular.forEach(box_layers, function(box) {
+                    box.setVisible(box == theme);
+                    angular.forEach(box.get('layers'), function(lyr) {
+                        if (lyr.get('base') == true) return;
+                        lyr.setVisible(box.getVisible());
+                    });
+                });
             }
 
             OlMap.map.getLayers().forEach(function(lyr) {

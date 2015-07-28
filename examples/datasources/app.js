@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation', 'datasource_selector', 'api'],
+define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation', 'datasource_selector', 'api', 'ows', 'status_creator'],
 
     function(ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -10,10 +10,12 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer',
             'hs.geolocation',
             'hs.datasource_selector',
-            'hs.api'
+            'hs.status_creator',
+            'hs.api',
+            'hs.ows'
         ]);
 
-        module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
+        module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -47,10 +49,11 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
-                box_id: 'osm',
                 base: true
             })
         ]);
+
+        module.value('project_name', 'erra/map');
 
         module.value('default_view', new ol.View({
             center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
@@ -58,7 +61,7 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService',
+        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel',
             function($scope, Core, InfoPanelService) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file

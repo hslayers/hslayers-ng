@@ -28,15 +28,25 @@ module.exports = function(grunt) {
         },
         "jsbeautifier": {
             "default": {
-                src: ["components/**/*.js", "hslayers.js", "app.js", "examples/**/*.js", "extensions/*.js"]
+                src: ["components/**/*.js", "hslayers.js", "app.js", "examples/**/*.js", "extensions/*.js", "!examples/cordova_examples/**/*.js"]
             },
             "git-pre-commit": {
                 src: ["components/**/*.js", "hslayers.js", "app.js"]
+            }
+        },
+        'jsdoc-ng' : {
+            dist : {
+                src: ['components/**/*.js', 'README.md' ],
+                dest: 'docs',
+                template : 'jsdoc-ng',
+                options: {
+                }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.loadNpmTasks('grunt-jsdoc-ng');
     grunt.loadNpmTasks('grunt-angular-gettext');
     grunt.registerTask('default', ['jsbeautifier']);
     grunt.registerTask('git-pre-commit', ['jsbeautifier']);

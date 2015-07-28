@@ -2,7 +2,7 @@ define(['angular'],
 
     function(angular) {
         angular.module('hs.ows.wmsprioritized', [])
-            .controller('OwsWmsPrioritized', ['$scope', 'OlMap', '$http',
+            .controller('OwsWmsPrioritized', ['$scope', 'hs.map.service', '$http',
                 function($scope, OlMap, $http) {
                     $scope.prio_layer = null;
                     $scope.amenities = [{

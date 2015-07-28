@@ -49,7 +49,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
-                box_id: 'osm',
                 base: true
             }),
             new ol.layer.Vector({

@@ -1,14 +1,18 @@
+/**
+ * @namespace hs.print
+ * @memberOf hs
+ */
 define(['angular'],
 
     function(angular) {
         angular.module('hs.print', [])
-            .directive('printdialog', function() {
+            .directive('hs.print.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/print/partials/printdialog.html'
                 };
             })
 
-        .controller('Print', ['$scope',
+        .controller('hs.print.controller', ['$scope',
             function($scope) {
                 $scope.title = "";
 

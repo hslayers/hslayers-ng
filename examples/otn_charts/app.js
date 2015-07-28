@@ -12,7 +12,7 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             'hs.widgets.year_selector'
         ]);
 
-        module.directive('hs', ['OlMap', 'Core', '$compile', function(OlMap, Core, $compile) {
+        module.directive('hs', ['hs.map.service', 'Core', '$compile', function(OlMap, Core, $compile) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -56,7 +56,6 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             new ol.layer.Tile({
                 source: new ol.source.OSM(),
                 title: "Base layer",
-                box_id: 'osm',
                 base: true
             }),
             new ol.layer.Vector({
@@ -71,8 +70,8 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'InfoPanelService', 'OlMap', 'default_layers', 'year_selector_service',
-            function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers, year_selector_service) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'default_layers', 'year_selector_service',
+            function($scope, $compile, $element, Core, OlMap, default_layers, year_selector_service) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;

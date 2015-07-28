@@ -1,8 +1,12 @@
+/**
+ * @namespace hs.search
+ * @memberOf hs
+ */
 define(['angular', 'ol', 'map'],
 
     function(angular, ol) {
         angular.module('hs.search', ['hs.map'])
-            .directive('searchinput', ['$window', function($window) {
+            .directive('hs.search.directiveSearchinput', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchinput.html',
                     replace: true,
@@ -11,7 +15,7 @@ define(['angular', 'ol', 'map'],
                     }
                 };
 
-            }]).directive('searchresults', ['$window', function($window) {
+            }]).directive('hs.search.directiveSearchresults', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
                     replace: true,
@@ -19,7 +23,7 @@ define(['angular', 'ol', 'map'],
 
                     }
                 };
-            }]).service("SearchService", ['$http',
+            }]).service("hs.search.service", ['$http',
                 function($http) {
                     this.request = function(query) {
                         var url = encodeURIComponent("http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query);
@@ -33,8 +37,8 @@ define(['angular', 'ol', 'map'],
                 }
             ])
 
-        .controller('Search', ['$scope', 'OlMap', 'SearchService',
-            function($scope, OlMap, SearchService) {
+        .controller('hs.search.controller', ['$scope', 'hs.map.service', 'hs.search.service', '$log',
+            function($scope, OlMap, SearchService, $log) {
                 var map = OlMap.map;
                 $scope.query = "";
                 $scope.results = [];
@@ -70,6 +74,14 @@ define(['angular', 'ol', 'map'],
                            switchAwayFromRegions();
                        }*/
                 }
+
+                $scope.$watch('Core.panelVisible("search")', function(newValue, oldValue) {
+                    if (newValue !== oldValue && newValue) {
+                        setTimeout(function() {
+                            $('#search_address').focus();
+                        }, 500);
+                    }
+                });
                 $scope.$emit('scope_loaded', "Search");
             }
         ]);
