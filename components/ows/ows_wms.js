@@ -121,11 +121,15 @@ define(['angular', 'ol'],
                             $scope.image_formats = caps.Capability.Request.GetMap.Format;
                             $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
                             $scope.exceptions = caps.Capability.Exception;
-                            $scope.srss = caps.Capability.Layer.CRS;
-                            if (OwsWmsCapabilities.currentProjectionSupported($scope.srss))
+                            if(typeof caps.Capability.Layer.CRS !== 'undefined'){
+                                $scope.srss = caps.Capability.Layer.CRS;
+                                if (OwsWmsCapabilities.currentProjectionSupported($scope.srss))
+                                    $scope.srs = OlMap.map.getView().getProjection().getCode();
+                                else
+                                    $scope.srs = $scope.srss[0];
+                            } else {
                                 $scope.srs = OlMap.map.getView().getProjection().getCode();
-                            else
-                                $scope.srs = $scope.srss[0];
+                            }
                             $scope.services = caps.Capability.Layer;
                             $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
                             $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
@@ -142,11 +146,11 @@ define(['angular', 'ol'],
                     })
 
                     $scope.addLayers = function(checked) {
-                        angular.forEach($scope.services.Layer, function(value, key) {
-                            if (!checked || value.checked)
+                        angular.forEach($scope.services.Layer, function(layer) {
+                            if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
                                 addLayer(
-                                    value,
-                                    value.Title.replace(/\//g, "&#47;"),
+                                    layer,
+                                    layer.Title.replace(/\//g, "&#47;"),
                                     $scope.folder_name,
                                     $scope.image_format,
                                     $scope.query_format,
@@ -154,6 +158,19 @@ define(['angular', 'ol'],
                                     $scope.tile_size,
                                     $scope.srs
                                 );
+                            angular.forEach(layer.Layer, function(sublayer) {
+                                if (!checked || sublayer.checked)
+                                    addLayer(
+                                        sublayer,
+                                        sublayer.Title.replace(/\//g, "&#47;"),
+                                        $scope.folder_name,
+                                        $scope.image_format,
+                                        $scope.query_format,
+                                        $scope.single_tile,
+                                        $scope.tile_size,
+                                        $scope.srs
+                                    );
+                            })
                         })
                     };
 
@@ -340,7 +357,6 @@ define(['angular', 'ol'],
                                 url: OwsWmsCapabilities.getUrl($scope.getMapUrl, !OwsWmsCapabilities.currentProjectionSupported($scope.srss)),
                                 attributions: attributions,
                                 styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
-                                saveState: true,
                                 params: {
                                     LAYERS: layer.Name,
                                     INFO_FORMAT: (layer.queryable ? query_format : undefined),
@@ -348,6 +364,7 @@ define(['angular', 'ol'],
                                 },
                                 crossOrigin: 'anonymous'
                             }),
+                            saveState: true,
                             abstract: layer.Abstract,
                             MetadataURL: layer.MetadataURL,
                             BoundingBox: layer.BoundingBox
@@ -357,7 +374,9 @@ define(['angular', 'ol'],
                     }
 
 
-
+                    $scope.hasNestedLayers = function(layer){
+                        return typeof layer.Layer == 'undefined'; 
+                    } 
                 }
             ]);
     })
