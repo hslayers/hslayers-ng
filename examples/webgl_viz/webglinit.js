@@ -45,27 +45,18 @@ wglinit = function(that){
 	
 
 	var onMove = function() {
-		var getTopLeftTC = function() {
-		
-         
-		var s = Math.pow(2, map.getView().getZoom());
-	//	console.log(s);
-		tlpixel = map.getPixelFromCoordinate( tlwgs);
-		console.log(tlpixel);
-		res = {
-			x : -tlpixel[0] / s,
-			y : -tlpixel[1] / s
+		var getTopLeftTC = function() {		        
+			var s = Math.pow(2, map.getView().getZoom());
+
+			tlpixel = map.getPixelFromCoordinate( tlwgs);
+			
+			res = {
+					x : -tlpixel[0] / s,
+					y : -tlpixel[1] / s
+			}
+			return res
 		}
-		return res
-	}
-
-		// var timer = null;
-		// if (timer != null) clearTimeout(timer);
-        // timer = setTimeout(function() {
-        	 WGL.mcontroller.zoommove(map.getView().getZoom(), getTopLeftTC());
-     	//	console.log(getTopLeftTC());
-         //}, 1000);
-
-
+		
+		WGL.mcontroller.zoommove(map.getView().getZoom(), getTopLeftTC());
 	}
 }
