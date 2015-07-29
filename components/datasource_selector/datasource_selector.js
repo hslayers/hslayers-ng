@@ -215,6 +215,10 @@ define(['angular', 'ol', 'map'],
                     if (typeof composition.feature !== 'undefined')
                         composition.feature.set('highlighted', state)
                 }
+                
+                $scope.clear = function(){
+                    $scope.query.title = "";
+                }
 
                 OlMap.map.addLayer(extent_layer);
                 $scope.datasources = [{
