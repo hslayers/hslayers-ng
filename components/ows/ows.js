@@ -26,6 +26,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                         $scope.connect();
                     }
                     $scope.connect = function() {
+                        $('.ows-capabilities').slideDown();
                         switch ($scope.type.toLowerCase()) {
                             case "kml":
                                 $scope.addKmlLayer($scope.url);
@@ -70,6 +71,12 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                         }
                         return template;
                     };
+                    
+                    $scope.clear = function(){
+                        $scope.url = '';
+                        $('.ows-capabilities').slideUp();
+                    }
+                    
                     $scope.$emit('scope_loaded', "Ows");
                 }
             ]);

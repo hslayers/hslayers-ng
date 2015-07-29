@@ -89,7 +89,7 @@ define(['angular', 'ol'],
 
                     this.currentProjectionSupported = function(srss) {
                         var found = false;
-                        angular.forEach(srss, function(key, val) {
+                        angular.forEach(srss, function(val) {
                             if (OlMap.map.getView().getProjection().getCode() == val) found = true;
                         })
                         return found;
@@ -117,7 +117,7 @@ define(['angular', 'ol'],
                             var caps = $scope.capabilities;
                             $scope.title = caps.Service.Title;
                             $scope.description = addAnchors(caps.Service.Abstract);
-                            $scope.version = caps.Version;
+                            $scope.version = caps.Version || caps.version;
                             $scope.image_formats = caps.Capability.Request.GetMap.Format;
                             $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
                             $scope.exceptions = caps.Capability.Exception;
@@ -360,9 +360,11 @@ define(['angular', 'ol'],
                                 params: {
                                     LAYERS: layer.Name,
                                     INFO_FORMAT: (layer.queryable ? query_format : undefined),
-                                    FROMCRS: $scope.srs
+                                    FORMAT: $scope.image_format,
+                                    FROMCRS: $scope.srs,
+                                    VERSION: $scope.version
                                 },
-                                crossOrigin: 'anonymous'
+                                crossOrigin: null
                             }),
                             saveState: true,
                             abstract: layer.Abstract,
