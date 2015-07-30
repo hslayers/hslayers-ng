@@ -114,6 +114,14 @@ define(['angular', 'map', 'core'],
                                 me.update(e)
                             }, 1000);
                         });
+                        OlMap.map.getLayers().on("add", function(e){
+                            e.element.on('change:visible', function(e) {
+                                if (timer != null) clearTimeout(timer);
+                                timer = setTimeout(function() {
+                                    me.update(e)
+                                }, 1000);
+                            })
+                        });
                     }
                     return me;
                 }

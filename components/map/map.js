@@ -108,44 +108,106 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
     }])
 
     .controller('hs.map.controller', ['$scope', 'hs.map.service', 'default_layers', 'box_layers', 'hs.permalink.service_url', 'Core',
-        function($scope, OlMap, default_layers, box_layers, bus, Core) {
+        function($scope, OlMap, default_layers, box_layers, permalink, Core) {
             var map = OlMap.map;
 
+            /**
+            * @function moveToAndZoom
+            * @memberOf hs.map.controller
+            * @param {number} x - 
+            * @param {number} y -
+            * @param {number} zoom -   
+            * @description Move map and zoom to specified coordiante/zoom level
+            */
             $scope.moveToAndZoom = function(x, y, zoom) {
                 var view = OlMap.map.getView();
                 view.setCenter([x, y]);
                 view.setZoom(zoom);
             }
 
+            /**
+            * @function getMap
+            * @memberOf hs.map.controller
+            * @description Gets OpenLayers map object
+            * @returns {ol.Map}
+            */
             $scope.getMap = function() {
                 return OlMap.map;
             }
 
+            /**
+            * @function setTargetDiv
+            * @memberOf hs.map.controller
+            * @description Sets div element of the map
+            * @param {string} div_id - ID pf the container element
+            * @returns {ol.Map}
+            */
             $scope.setTargetDiv = function(div_id) {
                 OlMap.map.setTarget(div_id);
             }
 
+            /**
+            * @function findLayerByTitle
+            * @memberOf hs.map.OlMap
+            * @param {string} title - title of the layer which was specified as a option when creating the layer
+            * @description Finds a layer by its title and returns the last one if multiple are found
+            * @link hs.map.OlMap.findLayerByTitle
+            */
             $scope.findLayerByTitle = OlMap.findLayerByTitle;
 
             $scope.showFeaturesWithAttrHideRest = function(source, attribute, value, attr_to_change, invisible_value, visible_value) {
 
             }
+            
+            /**
+            * @function init
+            * @memberOf hs.map.controller
+            * @description Syntactic sugar for initialization
+            */
+            $scope.init = function(){
+                var visible_layers = null;
+                if (permalink.getParamValue('visible_layers')) {
+                    visible_layers = permalink.getParamValue('visible_layers').split(';');
+                }
+                
+                /**
+                * @function isLayerVisibleInPermalink
+                * @memberOf hs.map.controller.init
+                * @param {ol.Layer} lyr - Layer for which to determine visibility
+                * @description Finds out if layer is set as visible in URL (permalink)
+                */
+                function isLayerVisibleInPermalink(lyr){
+                    if(visible_layers){
+                        var found = false;
+                        angular.forEach(visible_layers, function(vlyr) {
+                            if(vlyr == lyr.get('title')) found = true;
+                        })
+                        return found;
+                    }
+                    return lyr.getVisible();
+                }
 
-            if (bus.getParamValue('hs_x') && bus.getParamValue('hs_y') && bus.getParamValue('hs_z')) {
-                var loc = location.search;
-                $scope.moveToAndZoom(parseFloat(bus.getParamValue('hs_x', loc)), parseFloat(bus.getParamValue('hs_y', loc)), parseInt(bus.getParamValue('hs_z', loc)));
-            }
-
-            angular.forEach(box_layers, function(box) {
-                angular.forEach(box.get('layers'), function(lyr) {
+                if (permalink.getParamValue('hs_x') && permalink.getParamValue('hs_y') && permalink.getParamValue('hs_z')) {
+                    var loc = location.search;
+                    $scope.moveToAndZoom(parseFloat(permalink.getParamValue('hs_x', loc)), parseFloat(permalink.getParamValue('hs_y', loc)), parseInt(permalink.getParamValue('hs_z', loc)));
+                }
+                
+                angular.forEach(box_layers, function(box) {
+                    angular.forEach(box.get('layers'), function(lyr) {
+                        lyr.setVisible(isLayerVisibleInPermalink(lyr));
+                        OlMap.map.addLayer(lyr);
+                    });
+                });
+                
+                
+                angular.forEach(default_layers, function(lyr) {
+                    lyr.setVisible(isLayerVisibleInPermalink(lyr));
                     OlMap.map.addLayer(lyr);
                 });
-            });
-            angular.forEach(default_layers, function(lyr) {
-                OlMap.map.addLayer(lyr);
-            });
-            $scope.setTargetDiv("map");
-
+                $scope.setTargetDiv("map");
+            }
+            
+            $scope.init();
             $scope.$emit('scope_loaded', "Map");
         }
     ]);
