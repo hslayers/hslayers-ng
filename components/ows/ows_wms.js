@@ -108,8 +108,8 @@ define(['angular', 'ol'],
                     })
                 }
             }])
-            .controller('OwsWms', ['$scope', 'hs.map.service', 'OwsWmsCapabilities',
-                function($scope, OlMap, OwsWmsCapabilities) {
+            .controller('OwsWms', ['$scope', 'hs.map.service', 'OwsWmsCapabilities', 'Core',
+                function($scope, OlMap, OwsWmsCapabilities, Core) {
                     OwsWmsCapabilities.addHandler(function(response) {
                         try {
                             var parser = new ol.format.WMSCapabilities();
@@ -171,7 +171,8 @@ define(['angular', 'ol'],
                                         $scope.srs
                                     );
                             })
-                        })
+                        });
+                        Core.setMainPanel('layermanager');
                     };
 
                     /**
