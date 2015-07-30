@@ -175,8 +175,9 @@ define(['angular', 'ol', 'map'],
                                 json.wmsMaxScale = layer.get('maxScale');
                                 json.maxResolution = layer.getMaxResolution();
                                 json.minResolution = layer.getMinResolution();
-                                json.url = src.getUrl();
-                                json.projection = src.getProjection().getCode().toLowerCase();
+                                if(src.getUrl) json.url = src.getUrl();
+                                if(src.getUrls) json.url = src.getUrls()[0];
+                                if(src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
                                 json.params = src.getParams();
                                 json.ratio = src.get('ratio');
                                 json.displayInLayerSwitcher = layer.get('show_in_manager');
@@ -244,14 +245,15 @@ define(['angular', 'ol', 'map'],
                     $.ajax({
                         url: "/wwwlibs/statusmanager2/index.php",
                         cache: false,
+                        method: 'POST',
                         dataType: "json",
-                        data: {
+                        data: JSON.stringify({
                             data: status_creator.map2json(OlMap.map, $scope, false),
                             permanent: true,
                             id: $scope.id,
                             project: project_name,
                             request: "save"
-                        },
+                        }),
                         success: function(j) {
                             if (j.saved !== false) {
                                 if (console) console.log('OK');
