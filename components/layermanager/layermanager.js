@@ -60,7 +60,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     sub_layers: sub_layers,
                     visible: e.element.getVisible()
                 });
-                $rootScope.$broadcast('layermanager.updated');
+                $rootScope.$broadcast('layermanager.updated', e.element);
             };
 
             /**
@@ -77,7 +77,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                         $scope.layers.splice(i, 1);
                     }
                 }
-                $rootScope.$broadcast('layermanager.updated');
+                $rootScope.$broadcast('layermanager.updated', e.element);
             };
 
             $scope.box_layers = box_layers;

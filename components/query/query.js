@@ -163,7 +163,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     //                    var x2js = new X2JS();
                     //                  var json = x2js.xml_str2json(response);
                     var something_updated = false;
-                    if (info_format.indexOf("xml") > 0) {
+                    if (info_format.indexOf("xml") > 0 || info_format.indexOf("gml") > 0) {
                         $("featureMember", response).each(function() {
                             var feature = $(this)[0].firstChild;
                             var group = {
@@ -304,7 +304,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             });
                         if (url) {
                             if (console) console.log(url);
-                            if (source.getParams().INFO_FORMAT.indexOf('xml') > 0 || source.getParams().INFO_FORMAT.indexOf('html') > 0) {
+                            if (source.getParams().INFO_FORMAT.indexOf('xml') > 0 || source.getParams().INFO_FORMAT.indexOf('html') > 0 || source.getParams().INFO_FORMAT.indexOf('gml') > 0) {
                                 WmsGetFeatureInfo.request(url, source.getParams().INFO_FORMAT, coordinate);
                             }
                         }
@@ -325,8 +325,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 $scope.$on('infopanel.updated', function(event) {
                     if (!$scope.$$phase) $scope.$digest();
                 });
-
-                $scope.$on('layermanager.updated', function(event) {
+                
+                $scope.createCurrentPointLayer = function(){
                     if (lyr) map.getLayers().remove(lyr);
                     lyr = new ol.layer.Vector({
                         title: "Point clicked",
@@ -335,10 +335,17 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                 geometry: point_clicked
                             })]
                         }),
-                        show_in_manager: false
+                        show_in_manager: true
                     });
                     map.addLayer(lyr);
+                }
+
+                $scope.$on('layermanager.updated', function(event, data) {
+                    if(data==lyr) return; //Otherwise stack overflow
+                    $scope.createCurrentPointLayer();
                 });
+                
+                $scope.createCurrentPointLayer();
 
                 //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
