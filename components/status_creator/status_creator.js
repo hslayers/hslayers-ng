@@ -14,6 +14,14 @@ define(['angular', 'ol', 'map'],
                     }
                 };
             })
+            .directive('hs.statusCreator.resultDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/status_creator/partials/dialog_result.html',
+                    link: function(scope, element, attrs) {
+                        $('#status-creator-result-dialog').modal('show');
+                    }
+                };
+            })
 
         .service('hs.status_creator.service', ['hs.map.service', 'Core', function(OlMap, Core) {
             var me = {
@@ -206,8 +214,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'project_name',
-            function($scope, $rootScope, OlMap, Core, status_creator, project_name) {
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'project_name', '$compile',
+            function($scope, $rootScope, OlMap, Core, status_creator, project_name, $compile) {
                 $scope.layers = [];
                 $scope.id = '';
 
@@ -240,6 +248,17 @@ define(['angular', 'ol', 'map'],
                     });
                 };
 
+                $scope.showResultDialog = function(){
+                    if ($("#hs-dialog-area #status-creator-result-dialog").length == 0) {
+                        var el = angular.element('<div hs.status_creator.result_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
+                    } else {
+                        $('#status-creator-result-dialog').modal('show');
+                    }
+                    if (!$scope.$$phase) $scope.$digest();
+                }
+                
                 $scope.save = function(save_as_new) {
                     if (save_as_new || $scope.id == '') $scope.id = generateUuid();
                     $.ajax({
@@ -255,12 +274,11 @@ define(['angular', 'ol', 'map'],
                             request: "save"
                         }),
                         success: function(j) {
-                            if (j.saved !== false) {
-                                if (console) console.log('OK');
-                            } else {
-                                if (console) console.log('Failed');
-                            }
-                            if (!$scope.$$phase) $scope.$digest();
+                            $scope.success = j.saved !== false;
+                            $scope.showResultDialog();
+                        }, error: function(){
+                            $scope.success = false;
+                            $scope.showResultDialog()
                         }
                     })
                 }

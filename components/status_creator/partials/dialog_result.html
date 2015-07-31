@@ -1,0 +1,19 @@
+<div class="modal" id="status-creator-result-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" translate="">
+                   Saving to status manager
+                </h4>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+                    <div translate class="alert alert-success" ng-show="success">Successfuly saved to status manager</div>
+                    <div translate class="alert alert-danger" ng-show="success==false">Failed to save to status manager</div>
+            </div>
+            <div class="modal-footer" id="stc-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" translate>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
