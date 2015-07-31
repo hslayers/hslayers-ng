@@ -175,9 +175,9 @@ define(['angular', 'ol', 'map'],
                                 json.wmsMaxScale = layer.get('maxScale');
                                 json.maxResolution = layer.getMaxResolution();
                                 json.minResolution = layer.getMinResolution();
-                                if(src.getUrl) json.url = src.getUrl();
-                                if(src.getUrls) json.url = src.getUrls()[0];
-                                if(src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
+                                if (src.getUrl) json.url = src.getUrl();
+                                if (src.getUrls) json.url = src.getUrls()[0];
+                                if (src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
                                 json.params = src.getParams();
                                 json.ratio = src.get('ratio');
                                 json.displayInLayerSwitcher = layer.get('show_in_manager');

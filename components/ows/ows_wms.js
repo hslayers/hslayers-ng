@@ -16,8 +16,15 @@ define(['angular', 'ol'],
         }
 
         angular.module('hs.ows.wms', [])
-            //This is used to share map object between components.
-            .service("OwsWmsCapabilities", ['$http', 'hs.map.service',
+            .directive('hs.ows.wms.resampleDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
+                    link: function(scope, element, attrs) {
+                        $('#ows-wms-resample-dialog').modal('show');
+                    }
+                };
+            })
+            .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service',
                 function($http, OlMap) {
                     var callbacks = [];
                     this.addHandler = function(f) {
@@ -28,7 +35,7 @@ define(['angular', 'ol'],
                         if (callback) {
                             var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
                             $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(callback);
-                        } else { // This block is used just to link together Ows and OwsWms controllers
+                        } else {
                             var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
                             $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(function(resp) {
                                 $(callbacks).each(function() {
@@ -97,10 +104,10 @@ define(['angular', 'ol'],
 
                 }
             ])
-            .service("OwsWmsLayerProducer", ['hs.map.service', 'OwsWmsCapabilities', function(OlMap, OwsWmsCapabilities) {
+            .service("hs.ows.wms.service_layer_producer", ['hs.map.service', 'hs.ows.wms.service_capabilities', function(OlMap, srv_caps) {
                 this.addService = function(url, box) {
-                    OwsWmsCapabilities.requestGetCapabilities(url, function(resp) {
-                        var ol_layers = OwsWmsCapabilities.service2layers(resp);
+                    srv_caps.requestGetCapabilities(url, function(resp) {
+                        var ol_layers = srv_caps.service2layers(resp);
                         $(ol_layers).each(function() {
                             if (typeof box != 'undefined') box.get('layers').push(this);
                             OlMap.map.addLayer(this);
@@ -108,9 +115,9 @@ define(['angular', 'ol'],
                     })
                 }
             }])
-            .controller('OwsWms', ['$scope', 'hs.map.service', 'OwsWmsCapabilities', 'Core',
-                function($scope, OlMap, OwsWmsCapabilities, Core) {
-                    OwsWmsCapabilities.addHandler(function(response) {
+            .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope',
+                function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
+                    srv_caps.addHandler(function(response) {
                         try {
                             var parser = new ol.format.WMSCapabilities();
                             $scope.capabilities = parser.read(response);
@@ -121,9 +128,9 @@ define(['angular', 'ol'],
                             $scope.image_formats = caps.Capability.Request.GetMap.Format;
                             $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
                             $scope.exceptions = caps.Capability.Exception;
-                            if(typeof caps.Capability.Layer.CRS !== 'undefined'){
+                            if (typeof caps.Capability.Layer.CRS !== 'undefined') {
                                 $scope.srss = caps.Capability.Layer.CRS;
-                                if (OwsWmsCapabilities.currentProjectionSupported($scope.srss))
+                                if (srv_caps.currentProjectionSupported($scope.srss))
                                     $scope.srs = OlMap.map.getView().getProjection().getCode();
                                 else
                                     $scope.srs = $scope.srss[0];
@@ -145,6 +152,33 @@ define(['angular', 'ol'],
                         }
                     })
 
+                    /**
+                     * @function tryAddLayers
+                     * @memberOf hs.ows.wms.controller
+                     * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
+                     * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+                     */
+                    $scope.tryAddLayers = function(checked) {
+                        $scope.add_all = checked;
+                        if (!srv_caps.currentProjectionSupported($scope.srss)) {
+                            if ($("#hs-dialog-area #ows-wms-resample-dialog").length == 0) {
+                                var el = angular.element('<div hs.ows.wms.resample_dialog_directive></span>');
+                                $("#hs-dialog-area").append(el)
+                                $compile(el)($scope);
+                            } else {
+                                $('#ows-wms-resample-dialog').modal('show');
+                            }
+                        } else {
+                            $scope.addLayers(checked);
+                        }
+                    };
+
+                    /**
+                     * @function addLayers
+                     * @memberOf hs.ows.wms.controller
+                     * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
+                     * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+                     */
                     $scope.addLayers = function(checked) {
                         angular.forEach($scope.services.Layer, function(layer) {
                             if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
@@ -355,7 +389,7 @@ define(['angular', 'ol'],
                         var new_layer = new ol.layer.Tile({
                             title: layerName,
                             source: new ol.source.TileWMS({
-                                url: OwsWmsCapabilities.getUrl($scope.getMapUrl, !OwsWmsCapabilities.currentProjectionSupported($scope.srss)),
+                                url: srv_caps.getUrl($scope.getMapUrl, !srv_caps.currentProjectionSupported($scope.srss)),
                                 attributions: attributions,
                                 styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                                 params: {
@@ -377,9 +411,9 @@ define(['angular', 'ol'],
                     }
 
 
-                    $scope.hasNestedLayers = function(layer){
-                        return typeof layer.Layer !== 'undefined'; 
-                    } 
+                    $scope.hasNestedLayers = function(layer) {
+                        return typeof layer.Layer !== 'undefined';
+                    }
                 }
             ]);
     })

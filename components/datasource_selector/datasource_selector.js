@@ -12,8 +12,8 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', 'OwsWmsCapabilities',
-            function($scope, OlMap, Core, OwsWmsCapabilities) {
+        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core',
+            function($scope, OlMap, Core) {
                 $scope.query = {
                     title: ''
                 };
@@ -215,8 +215,8 @@ define(['angular', 'ol', 'map'],
                     if (typeof composition.feature !== 'undefined')
                         composition.feature.set('highlighted', state)
                 }
-                
-                $scope.clear = function(){
+
+                $scope.clear = function() {
                     $scope.query.title = "";
                 }
 

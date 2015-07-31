@@ -179,8 +179,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'OwsWmsLayerProducer', 'InfoPanelService', 'default_layers', 'wirecloud_data_consumer',
-            function($scope, Core, OwsWmsLayerProducer, InfoPanelService, default_layers, wirecloud_data_consumer) {
+        module.controller('Main', ['$scope', 'Core', 'InfoPanelService', 'default_layers', 'wirecloud_data_consumer',
+            function($scope, Core, InfoPanelService, default_layers, wirecloud_data_consumer) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;

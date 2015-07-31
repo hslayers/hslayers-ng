@@ -75,12 +75,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
         }));
 
 
-        module.controller('Main', ['$scope', 'Core', 'OwsWmsLayerProducer', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'box_layers',
-            function($scope, Core, OwsWmsLayerProducer, InfoPanelService, composition_parser, box_layers) {
+        module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'box_layers',
+            function($scope, Core, srv_producer, InfoPanelService, composition_parser, box_layers) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', box_layers[1]);
+                srv_producer.addService('http://erra.ccss.cz/geoserver/ows', box_layers[1]);
                 composition_parser.load('http://dev.bnhelp.cz/statusmanager/index.php?request=load&permalink=de_landuse');
                 $scope.$on('infopanel.updated', function(event) {
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);

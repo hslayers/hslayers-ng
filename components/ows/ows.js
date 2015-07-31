@@ -12,8 +12,8 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                     templateUrl: hsl_path + 'components/ows/partials/ows.html'
                 };
             })
-            .controller('hs.ows.controller', ['$scope', 'OwsWmsCapabilities', 'hs.map.service',
-                function($scope, OwsWmsCapabilities, OlMap) {
+            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service',
+                function($scope, srv_caps, OlMap) {
                     var map = OlMap.map;
                     $scope.url = "http://erra.ccss.cz/geoserver/ows";
                     $scope.types = ["WMS", "WFS", "WCS", "KML", "GeoRSS", "GML", "GeoJSON", "SOS", "WMS with priorities"];
@@ -45,7 +45,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                                         },{service:service, url:url,ows:this},true,service);
                                     break;*/
                             case "wms":
-                                OwsWmsCapabilities.requestGetCapabilities($scope.url);
+                                srv_caps.requestGetCapabilities($scope.url);
                                 break;
                         }
                     };
@@ -71,12 +71,12 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                         }
                         return template;
                     };
-                    
-                    $scope.clear = function(){
+
+                    $scope.clear = function() {
                         $scope.url = '';
                         $('.ows-capabilities').slideUp();
                     }
-                    
+
                     $scope.$emit('scope_loaded', "Ows");
                 }
             ]);

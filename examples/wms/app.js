@@ -69,12 +69,12 @@ define(['ol', 'toolbar', 'layermanager', 'ows', 'query', 'search', 'print', 'per
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'OwsWmsLayerProducer', 'hs.query.service_infopanel', 'box_layers',
-            function($scope, Core, OwsWmsLayerProducer, InfoPanelService, box_layers) {
+        module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.query.service_infopanel', 'box_layers',
+            function($scope, Core, srv_producer, InfoPanelService, box_layers) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', box_layers[1]);
+                srv_producer.addService('http://erra.ccss.cz/geoserver/ows', box_layers[1]);
 
                 $scope.$on('infopanel.updated', function(event) {
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);

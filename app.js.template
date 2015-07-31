@@ -81,12 +81,12 @@ define(['angular', 'toolbar', 'ol', 'core', 'layermanager', 'map', 'ows', 'query
             zoom: 4
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'OwsWmsLayerProducer',
-            function($scope, Core, OwsWmsLayerProducer) {
+        module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer',
+            function($scope, Core, srv_producer) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                OwsWmsLayerProducer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
+                srv_producer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
             }
         ]);
 
