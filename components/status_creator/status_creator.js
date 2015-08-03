@@ -248,7 +248,7 @@ define(['angular', 'ol', 'map'],
                     });
                 };
 
-                $scope.showResultDialog = function(){
+                $scope.showResultDialog = function() {
                     if ($("#hs-dialog-area #status-creator-result-dialog").length == 0) {
                         var el = angular.element('<div hs.status_creator.result_dialog_directive></span>');
                         $("#hs-dialog-area").append(el)
@@ -258,7 +258,7 @@ define(['angular', 'ol', 'map'],
                     }
                     if (!$scope.$$phase) $scope.$digest();
                 }
-                
+
                 $scope.save = function(save_as_new) {
                     if (save_as_new || $scope.id == '') $scope.id = generateUuid();
                     $.ajax({
@@ -276,7 +276,8 @@ define(['angular', 'ol', 'map'],
                         success: function(j) {
                             $scope.success = j.saved !== false;
                             $scope.showResultDialog();
-                        }, error: function(){
+                        },
+                        error: function() {
                             $scope.success = false;
                             $scope.showResultDialog()
                         }

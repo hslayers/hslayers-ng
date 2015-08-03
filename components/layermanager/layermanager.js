@@ -15,12 +15,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
         };
     })
-    
+
     /**
-    * @class hs.layermanager.removeAllDialogDirective
-    * @memberOf hs.ows.wms
-    * @description Directive for displaying warning dialog about resampling (proxying) wms service
-    */
+     * @class hs.layermanager.removeAllDialogDirective
+     * @memberOf hs.ows.wms
+     * @description Directive for displaying warning dialog about resampling (proxying) wms service
+     */
     .directive('hs.layermanager.removeAllDialogDirective', function() {
         return {
             templateUrl: hsl_path + 'components/layermanager/partials/dialog_removeall.html',
@@ -54,9 +54,9 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     sub_layers = e.element.getSource().getParams().LAYERS.split(",");
                     for (var i = 0; i < sub_layers.length; i++) {
                         if (e.element.getSource().getUrls) //Multi tile
-                            sub_layers[i] = e.element.getSource().getUrls()[0] + (e.element.getSource().getUrls()[0].indexOf('?') > 0 ? '' : '?')  + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image%2Fpng";
+                            sub_layers[i] = e.element.getSource().getUrls()[0] + (e.element.getSource().getUrls()[0].indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image%2Fpng";
                         if (e.element.getSource().getUrl) //Single tile
-                            sub_layers[i] = e.element.getSource().getUrl() + (e.element.getSource().getUrl().indexOf('?') > 0 ? '' : '?')  + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image%2Fpng";
+                            sub_layers[i] = e.element.getSource().getUrl() + (e.element.getSource().getUrl().indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image%2Fpng";
                     }
                 }
                 e.element.on('change:visible', function(e) {
@@ -168,14 +168,14 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 if (layer.getSource().getExtent && layer.getSource().getExtent()) return true;
                 return false;
             }
-            
+
             /**
              * @function removeAllLayers
              * @memberOf hs.layermanager.controller
-             * @description Removes all layers which don't have 'removable' attribute set to false 
+             * @description Removes all layers which don't have 'removable' attribute set to false
              */
-            $scope.removeAllLayers = function(confirmed){
-                if(typeof confirmed == 'undefined'){
+            $scope.removeAllLayers = function(confirmed) {
+                if (typeof confirmed == 'undefined') {
                     if ($("#hs-dialog-area #hs-remove-all-dialog").length == 0) {
                         var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></span>');
                         $("#hs-dialog-area").append(el)
@@ -187,12 +187,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 }
                 var to_be_removed = [];
                 OlMap.map.getLayers().forEach(function(lyr) {
-                    if(typeof lyr.get('removable') == 'undefined' || lyr.get('removable') == true)
+                    if (typeof lyr.get('removable') == 'undefined' || lyr.get('removable') == true)
                         to_be_removed.push(lyr);
                 });
-                while(to_be_removed.length>0){
-                   OlMap.map.removeLayer(to_be_removed.shift());
-                }               
+                while (to_be_removed.length > 0) {
+                    OlMap.map.removeLayer(to_be_removed.shift());
+                }
             }
 
             /**

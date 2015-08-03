@@ -325,8 +325,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 $scope.$on('infopanel.updated', function(event) {
                     if (!$scope.$$phase) $scope.$digest();
                 });
-                
-                $scope.createCurrentPointLayer = function(){
+
+                $scope.createCurrentPointLayer = function() {
                     if (lyr) map.getLayers().remove(lyr);
                     lyr = new ol.layer.Vector({
                         title: "Point clicked",
@@ -341,10 +341,10 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 }
 
                 $scope.$on('layermanager.updated', function(event, data) {
-                    if(data==lyr) return; //Otherwise stack overflow
+                    if (data == lyr) return; //Otherwise stack overflow
                     $scope.createCurrentPointLayer();
                 });
-                
+
                 $scope.createCurrentPointLayer();
 
                 //For wms layers use this to get the features at mouse coordinates

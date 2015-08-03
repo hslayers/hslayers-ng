@@ -21,10 +21,10 @@ define(['angular', 'ol'],
 
         angular.module('hs.ows.wms', [])
             /**
-            * @class hs.ows.wms.resampleDialogDirective
-            * @memberOf hs.ows.wms
-            * @description Directive for displaying warning dialog about resampling (proxying) wms service
-            */
+             * @class hs.ows.wms.resampleDialogDirective
+             * @memberOf hs.ows.wms
+             * @description Directive for displaying warning dialog about resampling (proxying) wms service
+             */
             .directive('hs.ows.wms.resampleDialogDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
@@ -33,186 +33,198 @@ define(['angular', 'ol'],
                     }
                 };
             })
-            
-            /**
-            * @class hs.ows.wms.service_capabilities
-            * @memberOf hs.ows.wms
-            * @description Service for GetCapabilities requests to Wms
-            */
-            .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service',
-                function($http, OlMap) {
-                    var callbacks = [];
-                    this.addHandler = function(f) {
-                        callbacks.push(f);
-                    }
 
-                    this.requestGetCapabilities = function(service_url, callback) {
-                        if (callback) {
-                            var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
-                            $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(callback);
-                        } else {
-                            var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
-                            $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(function(resp) {
-                                $(callbacks).each(function() {
-                                    this(resp)
-                                })
-                            });
-                        }
-                    };
+        /**
+         * @class hs.ows.wms.service_capabilities
+         * @memberOf hs.ows.wms
+         * @description Service for GetCapabilities requests to Wms
+         */
+        .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service',
+            function($http, OlMap) {
+                var callbacks = [];
+                this.addHandler = function(f) {
+                    callbacks.push(f);
+                }
 
-                    this.service2layers = function(capabilities_xml) {
-                        var parser = new ol.format.WMSCapabilities();
-                        var caps = parser.read(capabilities_xml);
-                        var service = caps.Capability.Layer;
-                        var srss = caps.Capability.Layer.CRS;
-                        var image_formats = caps.Capability.Request.GetMap.Format;
-                        var query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
-                        var image_format = getPreferedFormat(image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
-                        var query_format = getPreferedFormat(query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
-
-                        var tmp = [];
-                        $(service).each(function() {
-                            if (console) console.log("Load service", this);
-                            $(this.Layer).each(function() {
-                                layer = this;
-                                var attributions = [];
-                                if (layer.Attribution) {
-                                    attributions = [new ol.Attribution({
-                                        html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
-                                    })];
-                                }
-                                var new_layer = new ol.layer.Tile({
-                                    title: layer.Title.replace(/\//g, "&#47;"),
-                                    source: new ol.source.TileWMS({
-                                        url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
-                                        attributions: attributions,
-                                        styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
-                                        params: {
-                                            LAYERS: layer.Name,
-                                            INFO_FORMAT: (layer.queryable ? query_format : undefined),
-                                            FORMAT: image_format
-                                        },
-                                        crossOrigin: null
-                                    }),
-                                    abstract: layer.Abstract,
-                                    MetadataURL: layer.MetadataURL,
-                                    BoundingBox: layer.BoundingBox
-                                });
-                                tmp.push(new_layer);
+                this.requestGetCapabilities = function(service_url, callback) {
+                    if (callback) {
+                        var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
+                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(callback);
+                    } else {
+                        var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
+                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(function(resp) {
+                            $(callbacks).each(function() {
+                                this(resp)
                             })
-                        })
-                        return tmp;
-                    }
-
-                    this.getUrl = function(url, use_proxy) {
-                        if (typeof use_proxy == 'undefined' || !use_proxy) return url;
-                        else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent(url) + '&owsService=WMS';
-                    }
-
-                    this.currentProjectionSupported = function(srss) {
-                        var found = false;
-                        angular.forEach(srss, function(val) {
-                            if (OlMap.map.getView().getProjection().getCode() == val) found = true;
-                        })
-                        return found;
-                    }
-
-                }
-            ])
-            
-            /**
-            * @class hs.ows.wms.service_layer_producer
-            * @memberOf hs.ows.wms
-            * @description Service for querying what layers are available in a wms and adding them to map
-            */
-            .service("hs.ows.wms.service_layer_producer", ['hs.map.service', 'hs.ows.wms.service_capabilities', function(OlMap, srv_caps) {
-                this.addService = function(url, box) {
-                    srv_caps.requestGetCapabilities(url, function(resp) {
-                        var ol_layers = srv_caps.service2layers(resp);
-                        $(ol_layers).each(function() {
-                            if (typeof box != 'undefined') box.get('layers').push(this);
-                            OlMap.map.addLayer(this);
                         });
+                    }
+                };
+
+                this.service2layers = function(capabilities_xml) {
+                    var parser = new ol.format.WMSCapabilities();
+                    var caps = parser.read(capabilities_xml);
+                    var service = caps.Capability.Layer;
+                    var srss = caps.Capability.Layer.CRS;
+                    var image_formats = caps.Capability.Request.GetMap.Format;
+                    var query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
+                    var image_format = getPreferedFormat(image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
+                    var query_format = getPreferedFormat(query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
+
+                    var tmp = [];
+                    $(service).each(function() {
+                        if (console) console.log("Load service", this);
+                        $(this.Layer).each(function() {
+                            layer = this;
+                            var attributions = [];
+                            if (layer.Attribution) {
+                                attributions = [new ol.Attribution({
+                                    html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
+                                })];
+                            }
+                            var new_layer = new ol.layer.Tile({
+                                title: layer.Title.replace(/\//g, "&#47;"),
+                                source: new ol.source.TileWMS({
+                                    url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
+                                    attributions: attributions,
+                                    styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
+                                    params: {
+                                        LAYERS: layer.Name,
+                                        INFO_FORMAT: (layer.queryable ? query_format : undefined),
+                                        FORMAT: image_format
+                                    },
+                                    crossOrigin: null
+                                }),
+                                abstract: layer.Abstract,
+                                MetadataURL: layer.MetadataURL,
+                                BoundingBox: layer.BoundingBox
+                            });
+                            tmp.push(new_layer);
+                        })
                     })
+                    return tmp;
                 }
-            }])
-            
-             /**
-            * @class hs.ows.wms.controller
-            * @memberOf hs.ows.wms
-            * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
-            */
-            .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope',
-                function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
-                    $scope.use_resampling = false;
-                    srv_caps.addHandler(function(response) {
-                        try {
-                            var parser = new ol.format.WMSCapabilities();
-                            $scope.capabilities = parser.read(response);
-                            var caps = $scope.capabilities;
-                            $scope.title = caps.Service.Title;
-                            $scope.description = addAnchors(caps.Service.Abstract);
-                            $scope.version = caps.Version || caps.version;
-                            $scope.image_formats = caps.Capability.Request.GetMap.Format;
-                            $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
-                            $scope.exceptions = caps.Capability.Exception;
-                            if (typeof caps.Capability.Layer.CRS !== 'undefined') {
-                                $scope.srss = caps.Capability.Layer.CRS;
-                                if (srv_caps.currentProjectionSupported($scope.srss))
-                                    $scope.srs = OlMap.map.getView().getProjection().getCode();
-                                else
-                                    $scope.srs = $scope.srss[0];
-                            } else {
-                                $scope.srs = OlMap.map.getView().getProjection().getCode();
-                            }
-                            $scope.services = caps.Capability.Layer;
-                            $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
-                            $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
-                            $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
-                        } catch (e) {
-                            if (console) console.log(e);
-                            /* Ext.MessageBox.show({
-                                        title: OpenLayers.i18n('WMS Capabilities parsing problem'),
-                                        msg: OpenLayers.i18n('There was error while parsing Capabilities response from given URL')+":<br />\n"+ e,
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.ERROR});
-                                throw "WMS Capabilities parsing problem";*/
-                        }
+
+                this.getUrl = function(url, use_proxy) {
+                    if (typeof use_proxy == 'undefined' || !use_proxy) return url;
+                    else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent(url) + '&owsService=WMS';
+                }
+
+                this.currentProjectionSupported = function(srss) {
+                    var found = false;
+                    angular.forEach(srss, function(val) {
+                        if (OlMap.map.getView().getProjection().getCode() == val) found = true;
                     })
+                    return found;
+                }
 
-                    /**
-                     * @function tryAddLayers
-                     * @memberOf hs.ows.wms.controller
-                     * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
-                     * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
-                     */
-                    $scope.tryAddLayers = function(checked) {
-                        $scope.add_all = checked;
-                        if (!srv_caps.currentProjectionSupported($scope.srss) && $scope.use_resampling == false) {
-                            if ($("#hs-dialog-area #ows-wms-resample-dialog").length == 0) {
-                                var el = angular.element('<div hs.ows.wms.resample_dialog_directive></span>');
-                                $("#hs-dialog-area").append(el)
-                                $compile(el)($scope);
-                            } else {
-                                $('#ows-wms-resample-dialog').modal('show');
-                            }
+            }
+        ])
+
+        /**
+         * @class hs.ows.wms.service_layer_producer
+         * @memberOf hs.ows.wms
+         * @description Service for querying what layers are available in a wms and adding them to map
+         */
+        .service("hs.ows.wms.service_layer_producer", ['hs.map.service', 'hs.ows.wms.service_capabilities', function(OlMap, srv_caps) {
+            this.addService = function(url, box) {
+                srv_caps.requestGetCapabilities(url, function(resp) {
+                    var ol_layers = srv_caps.service2layers(resp);
+                    $(ol_layers).each(function() {
+                        if (typeof box != 'undefined') box.get('layers').push(this);
+                        OlMap.map.addLayer(this);
+                    });
+                })
+            }
+        }])
+
+        /**
+         * @class hs.ows.wms.controller
+         * @memberOf hs.ows.wms
+         * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
+         */
+        .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope',
+            function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
+                $scope.use_resampling = false;
+                srv_caps.addHandler(function(response) {
+                    try {
+                        var parser = new ol.format.WMSCapabilities();
+                        $scope.capabilities = parser.read(response);
+                        var caps = $scope.capabilities;
+                        $scope.title = caps.Service.Title;
+                        $scope.description = addAnchors(caps.Service.Abstract);
+                        $scope.version = caps.Version || caps.version;
+                        $scope.image_formats = caps.Capability.Request.GetMap.Format;
+                        $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
+                        $scope.exceptions = caps.Capability.Exception;
+                        if (typeof caps.Capability.Layer.CRS !== 'undefined') {
+                            $scope.srss = caps.Capability.Layer.CRS;
+                            if (srv_caps.currentProjectionSupported($scope.srss))
+                                $scope.srs = OlMap.map.getView().getProjection().getCode();
+                            else
+                                $scope.srs = $scope.srss[0];
                         } else {
-                            $scope.addLayers(checked);
+                            $scope.srs = OlMap.map.getView().getProjection().getCode();
                         }
-                    };
+                        $scope.services = caps.Capability.Layer;
+                        $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
+                        $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
+                        $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
+                    } catch (e) {
+                        if (console) console.log(e);
+                        /* Ext.MessageBox.show({
+                                    title: OpenLayers.i18n('WMS Capabilities parsing problem'),
+                                    msg: OpenLayers.i18n('There was error while parsing Capabilities response from given URL')+":<br />\n"+ e,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.ERROR});
+                            throw "WMS Capabilities parsing problem";*/
+                    }
+                })
 
-                    /**
-                     * @function addLayers
-                     * @memberOf hs.ows.wms.controller
-                     * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-                     * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
-                     */
-                    $scope.addLayers = function(checked) {
-                        angular.forEach($scope.services.Layer, function(layer) {
-                            if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
+                /**
+                 * @function tryAddLayers
+                 * @memberOf hs.ows.wms.controller
+                 * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
+                 * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+                 */
+                $scope.tryAddLayers = function(checked) {
+                    $scope.add_all = checked;
+                    if (!srv_caps.currentProjectionSupported($scope.srss) && $scope.use_resampling == false) {
+                        if ($("#hs-dialog-area #ows-wms-resample-dialog").length == 0) {
+                            var el = angular.element('<div hs.ows.wms.resample_dialog_directive></span>');
+                            $("#hs-dialog-area").append(el)
+                            $compile(el)($scope);
+                        } else {
+                            $('#ows-wms-resample-dialog').modal('show');
+                        }
+                    } else {
+                        $scope.addLayers(checked);
+                    }
+                };
+
+                /**
+                 * @function addLayers
+                 * @memberOf hs.ows.wms.controller
+                 * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
+                 * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+                 */
+                $scope.addLayers = function(checked) {
+                    angular.forEach($scope.services.Layer, function(layer) {
+                        if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
+                            addLayer(
+                                layer,
+                                layer.Title.replace(/\//g, "&#47;"),
+                                $scope.folder_name,
+                                $scope.image_format,
+                                $scope.query_format,
+                                $scope.single_tile,
+                                $scope.tile_size,
+                                $scope.srs
+                            );
+                        angular.forEach(layer.Layer, function(sublayer) {
+                            if (!checked || sublayer.checked)
                                 addLayer(
-                                    layer,
-                                    layer.Title.replace(/\//g, "&#47;"),
+                                    sublayer,
+                                    sublayer.Title.replace(/\//g, "&#47;"),
                                     $scope.folder_name,
                                     $scope.image_format,
                                     $scope.query_format,
@@ -220,39 +232,27 @@ define(['angular', 'ol'],
                                     $scope.tile_size,
                                     $scope.srs
                                 );
-                            angular.forEach(layer.Layer, function(sublayer) {
-                                if (!checked || sublayer.checked)
-                                    addLayer(
-                                        sublayer,
-                                        sublayer.Title.replace(/\//g, "&#47;"),
-                                        $scope.folder_name,
-                                        $scope.image_format,
-                                        $scope.query_format,
-                                        $scope.single_tile,
-                                        $scope.tile_size,
-                                        $scope.srs
-                                    );
-                            })
-                        });
-                        Core.setMainPanel('layermanager');
-                    };
+                        })
+                    });
+                    Core.setMainPanel('layermanager');
+                };
 
-                    /**
-                     * @function addLayer
-                     * @memberOf hs.ows.wms.controller
-                     * @param {Object} layer capabilities layer object
-                     * @param {String} layerName layer name in the map
-                     * @param {String} folder name
-                     * @param {String} imageFormat
-                     * @param {String} queryFormat
-                     * @param {Boolean} singleTile
-                     * @param {OpenLayers.Size} tileSize
-                     * @param {OpenLayers.Projection} crs of the layer
-                     * @description Add selected layer to map
-                     */
-                    var addLayer = function(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
-                        if (console) console.log(layer);
-                        /*
+                /**
+                 * @function addLayer
+                 * @memberOf hs.ows.wms.controller
+                 * @param {Object} layer capabilities layer object
+                 * @param {String} layerName layer name in the map
+                 * @param {String} folder name
+                 * @param {String} imageFormat
+                 * @param {String} queryFormat
+                 * @param {Boolean} singleTile
+                 * @param {OpenLayers.Size} tileSize
+                 * @param {OpenLayers.Projection} crs of the layer
+                 * @description Add selected layer to map
+                 */
+                var addLayer = function(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
+                    if (console) console.log(layer);
+                    /*
             var layerCrs = (typeof(OlMap.map.projection) == typeof("") ? OlMap.map.projection.toUpperCase() : OlMap.map.projection.getCode().toUpperCase());
 
             var options = {
@@ -408,41 +408,41 @@ define(['angular', 'ol'],
       })],
       params: params,
     }); */
-                        var attributions = [];
-                        if (layer.Attribution) {
-                            attributions = [new ol.Attribution({
-                                html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
-                            })]
-                        }
-                        var new_layer = new ol.layer.Tile({
-                            title: layerName,
-                            source: new ol.source.TileWMS({
-                                url: srv_caps.getUrl($scope.getMapUrl, !srv_caps.currentProjectionSupported($scope.srss)),
-                                attributions: attributions,
-                                styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
-                                params: {
-                                    LAYERS: layer.Name,
-                                    INFO_FORMAT: (layer.queryable ? query_format : undefined),
-                                    FORMAT: $scope.image_format,
-                                    FROMCRS: $scope.srs,
-                                    VERSION: $scope.version
-                                },
-                                crossOrigin: null
-                            }),
-                            saveState: true,
-                            removable: true,
-                            abstract: layer.Abstract,
-                            MetadataURL: layer.MetadataURL,
-                            BoundingBox: layer.BoundingBox
-                        });
-
-                        OlMap.map.addLayer(new_layer);
+                    var attributions = [];
+                    if (layer.Attribution) {
+                        attributions = [new ol.Attribution({
+                            html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
+                        })]
                     }
+                    var new_layer = new ol.layer.Tile({
+                        title: layerName,
+                        source: new ol.source.TileWMS({
+                            url: srv_caps.getUrl($scope.getMapUrl, !srv_caps.currentProjectionSupported($scope.srss)),
+                            attributions: attributions,
+                            styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
+                            params: {
+                                LAYERS: layer.Name,
+                                INFO_FORMAT: (layer.queryable ? query_format : undefined),
+                                FORMAT: $scope.image_format,
+                                FROMCRS: $scope.srs,
+                                VERSION: $scope.version
+                            },
+                            crossOrigin: null
+                        }),
+                        saveState: true,
+                        removable: true,
+                        abstract: layer.Abstract,
+                        MetadataURL: layer.MetadataURL,
+                        BoundingBox: layer.BoundingBox
+                    });
 
-
-                    $scope.hasNestedLayers = function(layer) {
-                        return typeof layer.Layer !== 'undefined';
-                    }
+                    OlMap.map.addLayer(new_layer);
                 }
-            ]);
+
+
+                $scope.hasNestedLayers = function(layer) {
+                    return typeof layer.Layer !== 'undefined';
+                }
+            }
+        ]);
     })
