@@ -54,9 +54,9 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     sub_layers = e.element.getSource().getParams().LAYERS.split(",");
                     for (var i = 0; i < sub_layers.length; i++) {
                         if (e.element.getSource().getUrls) //Multi tile
-                            sub_layers[i] = e.element.getSource().getUrls()[0] + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                            sub_layers[i] = e.element.getSource().getUrls()[0] + (e.element.getSource().getUrls()[0].indexOf('?') > 0 ? '' : '?')  + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image%2Fpng";
                         if (e.element.getSource().getUrl) //Single tile
-                            sub_layers[i] = e.element.getSource().getUrl() + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image/png";
+                            sub_layers[i] = e.element.getSource().getUrl() + (e.element.getSource().getUrl().indexOf('?') > 0 ? '' : '?')  + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image%2Fpng";
                     }
                 }
                 e.element.on('change:visible', function(e) {

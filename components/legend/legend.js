@@ -73,7 +73,7 @@ define(['angular', 'ol', 'map'],
                  * @param {string} layer_name - Name of the sub-layer
                  */
                 $scope.getWmsLayerLegendUrl = function(wms_url, layer_name) {
-                    return wms_url + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image/png";
+                    return wms_url + (wms_url.indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image%2Fpng";
                 }
 
                 $scope.removeLayerFromLegends = function(layer) {
