@@ -335,7 +335,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                 geometry: point_clicked
                             })]
                         }),
-                        show_in_manager: true
+                        show_in_manager: false
                     });
                     map.addLayer(lyr);
                 }

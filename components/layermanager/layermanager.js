@@ -15,14 +15,28 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
         };
     })
+    
+    /**
+    * @class hs.layermanager.removeAllDialogDirective
+    * @memberOf hs.ows.wms
+    * @description Directive for displaying warning dialog about resampling (proxying) wms service
+    */
+    .directive('hs.layermanager.removeAllDialogDirective', function() {
+        return {
+            templateUrl: hsl_path + 'components/layermanager/partials/dialog_removeall.html',
+            link: function(scope, element, attrs) {
+                $('#hs-remove-all-dialog').modal('show');
+            }
+        };
+    })
 
     /**
      * @class hs.layermanager.controller
      * @memberOf hs.layermanager
      * @description Layer manager controller
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'box_layers', '$rootScope', 'Core',
-        function($scope, OlMap, box_layers, $rootScope, Core) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'box_layers', '$rootScope', 'Core', '$compile',
+        function($scope, OlMap, box_layers, $rootScope, Core, $compile) {
             $scope.Core = Core;
             var map = OlMap.map;
             var cur_layer_opacity = 1;
@@ -153,6 +167,32 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 if (layer.get("BoundingBox")) return true;
                 if (layer.getSource().getExtent && layer.getSource().getExtent()) return true;
                 return false;
+            }
+            
+            /**
+             * @function removeAllLayers
+             * @memberOf hs.layermanager.controller
+             * @description Removes all layers which don't have 'removable' attribute set to false 
+             */
+            $scope.removeAllLayers = function(confirmed){
+                if(typeof confirmed == 'undefined'){
+                    if ($("#hs-dialog-area #hs-remove-all-dialog").length == 0) {
+                        var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
+                    } else {
+                        $('#hs-remove-all-dialog').modal('show');
+                    }
+                    return;
+                }
+                var to_be_removed = [];
+                OlMap.map.getLayers().forEach(function(lyr) {
+                    if(typeof lyr.get('removable') == 'undefined' || lyr.get('removable') == true)
+                        to_be_removed.push(lyr);
+                });
+                while(to_be_removed.length>0){
+                   OlMap.map.removeLayer(to_be_removed.shift());
+                }               
             }
 
             /**

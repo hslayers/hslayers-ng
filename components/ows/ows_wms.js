@@ -430,6 +430,7 @@ define(['angular', 'ol'],
                                 crossOrigin: null
                             }),
                             saveState: true,
+                            removable: true,
                             abstract: layer.Abstract,
                             MetadataURL: layer.MetadataURL,
                             BoundingBox: layer.BoundingBox

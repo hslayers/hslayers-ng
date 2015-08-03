@@ -35,7 +35,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                         source: new ol.source.OSM(),
                         title: "OpenStreetMap",
                         base: true,
-                        visible: true
+                        visible: true,
+                        removable: false
                     }),
                     new ol.layer.Tile({
                         title: "OpenCycleMap",
