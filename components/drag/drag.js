@@ -18,6 +18,7 @@ define(['angular'],
                 });
                 scope.unpinned = false;
                 scope.drag_panel = element;
+                var orig_left, orig_top;
                 $(".panel-heading:first", element).append($('<button>').attr('type', 'button').addClass('but-title-sm').click(function() {
                         scope.unpinned = true;
                         $(".panel-heading", element).css('cursor', 'move');
@@ -29,29 +30,28 @@ define(['angular'],
                     // Prevent default dragging of selected content
                     event.preventDefault();
                     if (event.offsetY > 37) return;
+                    orig_left = element.offset().left;
+                    orig_top = element.offset().top;
+                    startY = event.pageY;
+                    startX = event.pageX;
                     if (element.parent()[0] != document.body) {
                         var w = angular.element($window);
                         element.css("width", element.width() + "px");
-                        startY = event.pageY - 4;
-                        startX = event.pageX - 47;
                         scope.original_container = element.parent()[0];
                         element.appendTo($(document.body));
                         element.css({
-                            top: 5 + 'px',
-                            left: 46 + 'px',
+                            top: orig_top + 'px',
+                            left: orig_left + 'px',
                             position: 'absolute'
                         });
-                    } else {
-                        startY = event.pageY - y;
-                        startX = event.pageX - x;
                     }
                     $document.on('mousemove', mousemove);
                     $document.on('mouseup', mouseup);
                 });
 
                 function mousemove(event) {
-                    y = event.pageY - startY;
-                    x = event.pageX - startX;
+                    y = orig_top + event.pageY - startY;
+                    x = orig_left + event.pageX - startX;
                     element.css({
                         top: y + 'px',
                         left: x + 'px'
