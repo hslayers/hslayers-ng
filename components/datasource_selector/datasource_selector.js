@@ -192,7 +192,7 @@ define(['angular', 'ol', 'map'],
                                 }
                             });
                             OlMap.map.addLayer(lyr);
-
+                            Core.setMainPanel('layermanager');
                         }
                     }
                     if (ds.type == "micka") {

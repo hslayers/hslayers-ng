@@ -117,6 +117,7 @@ define(['angular', 'ol'],
             }])
             .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope',
                 function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
+                    $scope.use_resampling = false;
                     srv_caps.addHandler(function(response) {
                         try {
                             var parser = new ol.format.WMSCapabilities();
@@ -160,7 +161,7 @@ define(['angular', 'ol'],
                      */
                     $scope.tryAddLayers = function(checked) {
                         $scope.add_all = checked;
-                        if (!srv_caps.currentProjectionSupported($scope.srss)) {
+                        if (!srv_caps.currentProjectionSupported($scope.srss) && $scope.use_resampling == false) {
                             if ($("#hs-dialog-area #ows-wms-resample-dialog").length == 0) {
                                 var el = angular.element('<div hs.ows.wms.resample_dialog_directive></span>');
                                 $("#hs-dialog-area").append(el)
