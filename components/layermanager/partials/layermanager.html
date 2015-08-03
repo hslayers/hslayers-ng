@@ -64,7 +64,7 @@
             <b><a ng-repeat="metadata in currentlayer.layer.get('MetadataURL')" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata" ><translate>Metadata in</translate> {{metadata.type}}</a></b>
         </div>
         <!-- Legends -->
-        <div class="form-group" ng-show="currentlayer.layer.get('abstract') ? true : false">
+        <div class="form-group">
             <label translate>Legend:</label>
             <p>
                  <img ng-repeat="sublayer in currentlayer.sub_layers" ng-src="{{sublayer}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />

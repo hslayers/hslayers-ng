@@ -1,3 +1,7 @@
+/**
+ * @namespace hs.ows.wms
+ * @memberOf hs.ows
+ */
 define(['angular', 'ol'],
     function(angular, ol) {
         var getPreferedFormat = function(formats, preferedFormats) {
@@ -16,6 +20,11 @@ define(['angular', 'ol'],
         }
 
         angular.module('hs.ows.wms', [])
+            /**
+            * @class hs.ows.wms.resampleDialogDirective
+            * @memberOf hs.ows.wms
+            * @description Directive for displaying warning dialog about resampling (proxying) wms service
+            */
             .directive('hs.ows.wms.resampleDialogDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
@@ -24,6 +33,12 @@ define(['angular', 'ol'],
                     }
                 };
             })
+            
+            /**
+            * @class hs.ows.wms.service_capabilities
+            * @memberOf hs.ows.wms
+            * @description Service for GetCapabilities requests to Wms
+            */
             .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service',
                 function($http, OlMap) {
                     var callbacks = [];
@@ -104,6 +119,12 @@ define(['angular', 'ol'],
 
                 }
             ])
+            
+            /**
+            * @class hs.ows.wms.service_layer_producer
+            * @memberOf hs.ows.wms
+            * @description Service for querying what layers are available in a wms and adding them to map
+            */
             .service("hs.ows.wms.service_layer_producer", ['hs.map.service', 'hs.ows.wms.service_capabilities', function(OlMap, srv_caps) {
                 this.addService = function(url, box) {
                     srv_caps.requestGetCapabilities(url, function(resp) {
@@ -115,6 +136,12 @@ define(['angular', 'ol'],
                     })
                 }
             }])
+            
+             /**
+            * @class hs.ows.wms.controller
+            * @memberOf hs.ows.wms
+            * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
+            */
             .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope',
                 function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
                     $scope.use_resampling = false;
@@ -211,7 +238,8 @@ define(['angular', 'ol'],
                     };
 
                     /**
-                     * add selected layer to map
+                     * @function addLayer
+                     * @memberOf hs.ows.wms.controller
                      * @param {Object} layer capabilities layer object
                      * @param {String} layerName layer name in the map
                      * @param {String} folder name
@@ -220,8 +248,7 @@ define(['angular', 'ol'],
                      * @param {Boolean} singleTile
                      * @param {OpenLayers.Size} tileSize
                      * @param {OpenLayers.Projection} crs of the layer
-                     * @function
-                     * @name addLayer
+                     * @description Add selected layer to map
                      */
                     var addLayer = function(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
                         if (console) console.log(layer);
