@@ -54,8 +54,12 @@
         <li ng-repeat="layer in services.Layer" class="list-group-item">
             {{layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" />
             <ul class="list-group" ng-if="hasNestedLayers(layer)">
-                <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">{{sub_layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="sub_layer.checked" />
-            
+                <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">{{sub_layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="sub_layer.checked" ng-if="!hasNestedLayers(sub_layer)" />
+                    <ul class="list-group" ng-if="hasNestedLayers(sub_layer)">
+                        <li ng-repeat="sub_layer2 in sub_layer.Layer" class="list-group-item">{{sub_layer2.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="sub_layer2.checked" />
+                    
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </li>

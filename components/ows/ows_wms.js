@@ -208,7 +208,7 @@ define(['angular', 'ol'],
                  * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
                  */
                 $scope.addLayers = function(checked) {
-                    angular.forEach($scope.services.Layer, function(layer) {
+                    var recurse = function(layer){
                         if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
                             addLayer(
                                 layer,
@@ -220,19 +220,13 @@ define(['angular', 'ol'],
                                 $scope.tile_size,
                                 $scope.srs
                             );
+                        
                         angular.forEach(layer.Layer, function(sublayer) {
-                            if (!checked || sublayer.checked)
-                                addLayer(
-                                    sublayer,
-                                    sublayer.Title.replace(/\//g, "&#47;"),
-                                    $scope.folder_name,
-                                    $scope.image_format,
-                                    $scope.query_format,
-                                    $scope.single_tile,
-                                    $scope.tile_size,
-                                    $scope.srs
-                                );
+                            recurse(sublayer)
                         })
+                    }
+                    angular.forEach($scope.services.Layer, function(layer) {
+                        recurse(layer)
                     });
                     Core.setMainPanel('layermanager');
                 };
