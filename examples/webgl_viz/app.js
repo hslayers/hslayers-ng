@@ -12,7 +12,7 @@ define(['ol',
         'api',
         'glutils', 'WGL', 'wglinit', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
         'heatmapdimension', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
-        'floatrasterreader', 'histfilterrender', 'filter', 'multibrush'
+        'floatrasterreader', 'linearfilter', 'filter', 'multibrush'
     ],
 
     function(ol, toolbar, layermanager, WfsSource) {
@@ -24,7 +24,7 @@ define(['ol',
             'hs.geolocation', 'hs.widgets.chart_panel'
         ]);
 
-        module.directive('hs', ['OlMap', 'Core', '$compile', 'webgl_viz', function(OlMap, Core, $compile, webgl_viz) {
+        module.directive('hs', ['hs.map.service', 'Core', '$compile', 'webgl_viz', function(OlMap, Core, $compile, webgl_viz) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -38,7 +38,7 @@ define(['ol',
             };
         }]);
 
-        module.service('webgl_viz', ['OlMap', function(OlMap) {
+        module.service('webgl_viz', ['hs.map.service',  function(OlMap) {
             OlMap.map.removeInteraction(OlMap.interactions.DragPan);
             OlMap.interactions.DragPan = new ol.interaction.DragPan({
                 kinetic: false
@@ -73,7 +73,7 @@ define(['ol',
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'OlMap', 'default_layers', 'webgl_viz',
+        module.controller('Main', ['$scope', 'Core', 'hs.map.service',  'default_layers', 'webgl_viz',
             function($scope, Core, OlMap, default_layers, webgl_viz) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
