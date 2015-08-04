@@ -2,7 +2,7 @@ define(['angular', 'ol', 'map', 'd3'],
 
     function(angular, ol, map) {
         angular.module('hs.widgets.chart_panel', ['hs.map'])
-            .service('chart_panel_service', ['OlMap', function(OlMap) {
+            .service('chart_panel_service', ['hs.map.service', function(OlMap) {
                 var me = {};
 
                 return me;
@@ -20,7 +20,7 @@ define(['angular', 'ol', 'map', 'd3'],
                 };
             })
 
-        .controller('ChartPanel', ['$scope', 'OlMap', 'chart_panel_service',
+        .controller('ChartPanel', ['$scope', 'hs.map.service', 'chart_panel_service',
             function($scope, OlMap, chart_panel_service) {
 
             }
