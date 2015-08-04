@@ -25,9 +25,11 @@ function DataLoader(visualize) {
                 pts[j++] = parseFloat(val.y);
 
                 //index[i] = rasterer.calc(i);	
-                dayes[i] = (new Date(val.timestamp * 1000)).getDay();
-
-                hours[i] = (new Date(val.timestamp * 1000)).getHours();
+                var d =  (new Date(val.timestamp*1000));																				
+				//index[i] = rasterer.calc(i);	
+				dayes[i] = d.getDay();
+				
+				hours[i] = d.getHours() + d.getMinutes()/60;	
                 sev[i] = val.accident_severity;
 
             });
