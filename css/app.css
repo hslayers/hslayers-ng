@@ -200,5 +200,5 @@ min-width: 230px;
   margin-left: 0px; 
 }
 .thumbnail{height:62px}
-.ol-attribution{ left: 0.2em; right: auto;}
-.ol-scale-line {  left: 31px;}
+.ol-attribution{ left: 0.2em; right: auto; bottom: 2.4em}
+.ol-scale-line {  left: 4px;}
