@@ -63,7 +63,7 @@ define(['angular', 'ol', 'map'],
         .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile',
             function($scope, OlMap, Core, $compile) {
                 $scope.query = {
-                    title: 'Pasport'
+                    title: ''
                 };
                 $scope.panel_name = 'datasource_selector';
                 $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
