@@ -1,0 +1,6 @@
+<span ng-if='!isIteratable(obj)'>{{obj}}</span>
+<dl ng-repeat="(key, value) in obj track by $index" ng-if='isIteratable(obj)'>
+    <dt>{{key}} </dt>
+    <dd hs.datasource_selector.object_directive></dd>
+</dl>
+         
