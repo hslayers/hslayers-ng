@@ -30,7 +30,7 @@ define(['ol',
                 link: function(scope, element) {
                     Core.fullscreenMap(element, 'right');
                     $("#right-pane", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
-                    $("#right-pane", element).attr('class', 'col-md-5').css({'padding-top': "40px", 'padding-left': '33px'});
+                    $("#right-pane", element).css({'width': '560px', 'padding-top': "40px", 'padding-left': '33px'});
                     $(".search-container").removeClass('col-md-4').addClass('col-md-3');
                     //webgl_viz.webgl_el = $compile('<canvas id="webglayer"></canvas>')(scope);
                     //element.append(webgl_viz.webgl_el);
