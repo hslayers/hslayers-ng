@@ -25,15 +25,17 @@ define(['angular', 'ol', 'map'],
                 };
             }]).service("hs.search.service", ['$http',
                 function($http) {
+                    this.xhr = null;
                     this.request = function(query) {
                         var url = encodeURIComponent("http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query);
-                        $.ajax({
+                        if(me.xhr!==null) me.xhr.abort();
+                        me.xhr = $.ajax({
                             url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
                             cache: false,
-                            success: this.searchResultsReceived
+                            success: function(r){me.searchResultsReceived(r); me.xhr = null}
                         });
                     };
-
+                    var me = this;
                 }
             ])
 
@@ -43,15 +45,21 @@ define(['angular', 'ol', 'map'],
                 $scope.query = "";
                 $scope.results = [];
                 $scope.clearvisible = false;
+                
 
                 $scope.queryChanged = function() {
                     SearchService.request($scope.query);
                     $("#searchresults").show();
                 }
 
-                $scope.zoomTo = function(lat, lng) {
-                    map.getView().setCenter(ol.proj.transform([parseFloat(lat), parseFloat(lng)], 'EPSG:4326', 'EPSG:3857'));
-                    map.getView().setZoom(10);
+                $scope.zoomTo = function(result) {
+                    $scope.fcode_zoom_map = {'PPLA':12, 'PPL':15, 'PPLC':10, "ADM1":9, 'FRM': 15, 'PPLF': 13, 'LCTY':13, 'RSTN':15, "PPLA3":9, 'AIRP':13, 'AIRF':13, 'HTL':17, 'STM':14, 'LK':13};
+                    map.getView().setCenter(ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection()));
+                    if(typeof $scope.fcode_zoom_map[result.fcode] !== 'undefined'){
+                        map.getView().setZoom($scope.fcode_zoom_map[result.fcode]);
+                    } else {
+                        map.getView().setZoom(10);
+                    }
                     $scope.results = [];
                 }
 
