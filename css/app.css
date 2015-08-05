@@ -202,3 +202,7 @@ min-width: 230px;
 .thumbnail{height:62px}
 .ol-attribution{ left: 0.2em; right: auto; bottom: 2.4em}
 .ol-scale-line {  left: 4px;}
+
+#datasource_selector-metadata-dialog dd {
+    padding-left: 10px;
+}

@@ -30,7 +30,11 @@ define(['ol',
                 link: function(scope, element) {
                     Core.fullscreenMap(element, 'right');
                     $("#right-pane", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
-                    $("#right-pane", element).css({'width': '560px', 'padding-top': "40px", 'padding-left': '33px'});
+                    $("#right-pane", element).css({
+                        'width': '560px',
+                        'padding-top': "40px",
+                        'padding-left': '33px'
+                    });
                     $(".search-container").removeClass('col-md-4').addClass('col-md-3');
                     //webgl_viz.webgl_el = $compile('<canvas id="webglayer"></canvas>')(scope);
                     //element.append(webgl_viz.webgl_el);
@@ -39,7 +43,7 @@ define(['ol',
             };
         }]);
 
-        module.service('webgl_viz', ['hs.map.service',  function(OlMap) {
+        module.service('webgl_viz', ['hs.map.service', function(OlMap) {
             OlMap.map.removeInteraction(OlMap.interactions.DragPan);
             OlMap.interactions.DragPan = new ol.interaction.DragPan({
                 kinetic: false
@@ -74,7 +78,7 @@ define(['ol',
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'hs.map.service',  'default_layers', 'webgl_viz',
+        module.controller('Main', ['$scope', 'Core', 'hs.map.service', 'default_layers', 'webgl_viz',
             function($scope, Core, OlMap, default_layers, webgl_viz) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file

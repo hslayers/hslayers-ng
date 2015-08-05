@@ -12,13 +12,62 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core',
-            function($scope, OlMap, Core) {
+        /**
+         * @class hs.datasource_selector.metadataDialogDirective
+         * @memberOf hs.datasource_selector
+         * @description Directive for displaying metadata about data source
+         */
+        .directive('hs.datasourceSelector.metadataDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_metadata.html',
+                link: function(scope, element, attrs) {
+                    $('#datasource_selector-metadata-dialog').modal('show');
+                }
+            };
+        })
+
+        /**
+         * @class hs.datasource_selector.objectDirective
+         * @memberOf hs.datasource_selector
+         * @description Directive for displaying metadata about data source
+         */
+        .directive('hs.datasourceSelector.objectDirective', ['$compile', function($compile) {
+            return {
+                templateUrl: hsl_path + 'components/datasource_selector/partials/object.html',
+                compile: function compile(element) {
+                    var contents = element.contents().remove();
+                    var contentsLinker;
+
+                    return function(scope, iElement) {
+                        scope.isIteratable = function(obj) {
+                            return typeof obj == 'object'
+                        };
+
+                        if (scope.value == null) {
+                            scope.obj = "-";
+                        } else {
+                            scope.obj = scope.value;
+                        }
+                        if (angular.isUndefined(contentsLinker)) {
+                            contentsLinker = $compile(contents);
+                        }
+
+                        contentsLinker(scope, function(clonedElement) {
+                            iElement.append(clonedElement);
+                        });
+                    };
+                }
+            };
+        }])
+
+        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile',
+            function($scope, OlMap, Core, $compile) {
                 $scope.query = {
-                    title: ''
+                    title: 'Pasport'
                 };
                 $scope.panel_name = 'datasource_selector';
                 $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
+                $scope.selected_layer = null;
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
                     title: "Datasources extents",
@@ -168,6 +217,16 @@ define(['angular', 'ol', 'map'],
 
                 $scope.setDefaultFeatureStyle = function(style) {
                     default_style = style;
+                }
+
+                $scope.showMetadata = function(ds, layer) {
+                    $scope.selected_layer = layer;
+                    $scope.selected_ds = ds;
+                    if (!$scope.$$phase) $scope.$digest();
+                    $("#hs-dialog-area #datasource_selector-metadata-dialog").remove();
+                    var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
                 }
 
                 $scope.addLayerToMap = function(ds, layer) {

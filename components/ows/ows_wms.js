@@ -208,7 +208,7 @@ define(['angular', 'ol'],
                  * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
                  */
                 $scope.addLayers = function(checked) {
-                    var recurse = function(layer){
+                    var recurse = function(layer) {
                         if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
                             addLayer(
                                 layer,
@@ -220,7 +220,7 @@ define(['angular', 'ol'],
                                 $scope.tile_size,
                                 $scope.srs
                             );
-                        
+
                         angular.forEach(layer.Layer, function(sublayer) {
                             recurse(sublayer)
                         })
