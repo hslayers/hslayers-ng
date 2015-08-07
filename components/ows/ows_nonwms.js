@@ -8,7 +8,11 @@ define(['angular'],
                     $scope.title = "";
 
                     $scope.addKmlLayer = function(url) {
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                        } else {
+                            url = url;
+                        }
                         var lyr = new ol.layer.Vector({
                             title: $scope.title,
                             source: new ol.source.KML({
@@ -20,7 +24,11 @@ define(['angular'],
                     }
 
                     $scope.addGeoJsonLayer = function(url) {
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                        } else {
+                            url = url;
+                        }
                         var lyr = new ol.layer.Vector({
                             title: $scope.title,
                             source: new ol.source.GeoJson({

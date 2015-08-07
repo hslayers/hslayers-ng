@@ -19,7 +19,11 @@ define(['angular', 'ol', 'map'],
         .service('hs.compositions.service_parser', ['hs.map.service', 'Core', function(OlMap, Core) {
             var me = {
                 load: function(url) {
-                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                    } else {
+                        url = url;
+                    }
                     $.ajax({
                             url: url
                         })
@@ -134,7 +138,11 @@ define(['angular', 'ol', 'map'],
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
                     var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication%20AND%20BBOX%3D%27-135.70312477249308%2C20.84649058320339%2C164.8828126856566%2C73.109630112712%27" + text_filter + keyword_filter + "&lang=eng&session=save&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
-                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                    } else {
+                        url = url;
+                    }
                     $.ajax({
                             url: url
                         })

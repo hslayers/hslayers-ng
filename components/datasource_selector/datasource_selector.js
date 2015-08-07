@@ -116,10 +116,15 @@ define(['angular', 'ol', 'map'],
                     })
                     switch (ds.type) {
                         case "datatank":
-                            var url = encodeURIComponent(ds.url);
+                            var url = '';
+                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
+                            } else {
+                                url = ds.url;
+                            }
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
-                                url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                                url: url,
                                 cache: false,
                                 dataType: "json",
                                 success: function(j) {
@@ -141,10 +146,15 @@ define(['angular', 'ol', 'map'],
                         case "micka":
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
                             var bbox = "and BBOX='" + b[0] + " " + b[1] + " " + b[2] + " " + b[3] + "'";
-                            var url = encodeURIComponent(ds.url + '?request=GetRecords&format=application/json&language=' + ds.language + '&query=AnyText%20like%20%27*' + $scope.query.title + '*%27%20&limit=10&start=' + ds.start);
+                            var url = '';
+                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url + '?request=GetRecords&format=application/json&language=' + ds.language + '&query=AnyText%20like%20%27*' + $scope.query.title + '*%27%20&limit=10&start=' + ds.start);
+                            } else {
+                                url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language + '&query=AnyText%20like%20%27*' + $scope.query.title + '*%27%20&limit=10&start=' + ds.start;
+                            }
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
-                                url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url,
+                                url: url,
                                 cache: false,
                                 dataType: "json",
                                 success: function(j) {
