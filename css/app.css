@@ -206,3 +206,6 @@ min-width: 230px;
 #datasource_selector-metadata-dialog dd {
     padding-left: 10px;
 }
+.list-group-item.active a {
+    color: #fff;
+}
