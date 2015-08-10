@@ -223,8 +223,12 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     var coordinate = data.coordinate;
                     var lon_lat = ol.proj.transform(
                         coordinate, 'EPSG:3857', 'EPSG:4326');
-                    var p = "http://api.openweathermap.org/data/2.5/weather?lat=" + lon_lat[1] + "&lon=" + lon_lat[0];
-                    var url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(p);
+                    var url = '';
+                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape("http://api.openweathermap.org/data/2.5/weather?lat=" + lon_lat[1] + "&lon=" + lon_lat[0]);
+                    } else {
+                        url = "http://api.openweathermap.org/data/2.5/weather?lat=" + lon_lat[1] + "&lon=" + lon_lat[0];
+                    }
 
                     $.ajax({
                             url: url

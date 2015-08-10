@@ -48,11 +48,21 @@ define(['angular', 'ol'],
 
                 this.requestGetCapabilities = function(service_url, callback) {
                     if (callback) {
-                        var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
-                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(callback);
+                        var url = '';
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
+                        } else {
+                            url = service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS";
+                        }
+                        $http.get(url).success(callback);
                     } else {
-                        var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
-                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(function(resp) {
+                        var url = '';
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
+                        } else {
+                            url = service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS";
+                        }
+                        $http.get(url).success(function(resp) {
                             $(callbacks).each(function() {
                                 this(resp)
                             })

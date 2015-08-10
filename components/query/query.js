@@ -49,10 +49,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
             .service("hs.query.service_getwmsfeatureinfo", [
                 function() {
                     this.request = function(url, info_format, coordinate) {
-                        var esc_url = window.escape(url);
+                        var req_url = '';
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            req_url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                        } else {
+                            req_url = url;
+                        }
                         var me = this;
                         $.ajax({
-                            url: "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + esc_url,
+                            url: req_url,
                             cache: false,
                             success: function(response) {
                                 me.featureInfoReceived(response, info_format, url, coordinate)
