@@ -160,7 +160,9 @@ define(['angular', 'ol'],
                             $scope.srss = caps.Capability.Layer.CRS;
                             if (srv_caps.currentProjectionSupported($scope.srss))
                                 $scope.srs = OlMap.map.getView().getProjection().getCode();
-                            else
+                            else if ($scope.srss.indexOf('EPSG:4326')>-1) {
+                                $scope.srs = 'EPSG:4326';
+                            } else
                                 $scope.srs = $scope.srss[0];
                         } else {
                             $scope.srs = OlMap.map.getView().getProjection().getCode();
