@@ -18,7 +18,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
 
         var module = angular.module('hs', modules_to_load);
 
-        module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
+        module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -179,7 +179,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             units: "m"
         }));
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService', 'default_layers', 'wirecloud_data_consumer',
+        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'default_layers', 'wirecloud_data_consumer',
             function($scope, Core, InfoPanelService, default_layers, wirecloud_data_consumer) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file

@@ -20,7 +20,9 @@ require.config({
         xml2json: requirejs.s.contexts._.config.paths.xml2json || hsl_path + 'bower_components/xml2json/xml2json.min',
         d3: requirejs.s.contexts._.config.paths.d3 || hsl_path + 'bower_components/d3/d3.min',
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'bower_components/crossfilter/crossfilter.min',
-        dc: requirejs.s.contexts._.config.paths.dc || 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc'
+        dc: requirejs.s.contexts._.config.paths.dc || 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc',
+        api: requirejs.s.contexts._.config.paths.api ||hsl_path + 'components/api/api',
+        translations: requirejs.s.contexts._.config.paths.translations ||hsl_path + 'components/translations/js/translations'
     },
     shim: {
         'angular': {
