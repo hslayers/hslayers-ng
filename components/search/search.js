@@ -2,7 +2,7 @@
  * @namespace hs.search
  * @memberOf hs
  */
-define(['angular', 'ol', 'map'],
+define(['angular', 'ol', 'map', 'permalink'],
 
     function(angular, ol) {
         angular.module('hs.search', ['hs.map'])
@@ -44,14 +44,22 @@ define(['angular', 'ol', 'map'],
                 }
             ])
 
-        .controller('hs.search.controller', ['$scope', 'hs.map.service', 'hs.search.service', '$log',
-            function($scope, OlMap, SearchService, $log) {
+        .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 
+            function($scope, Core, OlMap, SearchService, $log, permalink) {
                 var map = OlMap.map;
-                $scope.query = "";
-                $scope.results = [];
-                $scope.clearvisible = false;
                 
-
+                
+                $scope.init = function(){
+                    $scope.query = "";
+                    $scope.results = [];
+                    $scope.clearvisible = false;
+                    if (permalink.getParamValue('search')) {
+                        $scope.query = permalink.getParamValue('search');
+                        Core.searchVisible(true);
+                        $scope.queryChanged();
+                    }
+                }
+                
                 $scope.queryChanged = function() {
                     SearchService.request($scope.query);
                     $("#searchresults").show();
@@ -87,6 +95,8 @@ define(['angular', 'ol', 'map'],
                            switchAwayFromRegions();
                        }*/
                 }
+                
+                $scope.init();
 
                 $scope.$watch('Core.panelVisible("search")', function(newValue, oldValue) {
                     if (newValue !== oldValue && newValue) {
