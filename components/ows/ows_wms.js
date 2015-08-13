@@ -33,6 +33,14 @@ define(['angular', 'ol'],
                     }
                 };
             })
+            .directive('hs.ows.wms.capabilitiesErrorDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
+                    link: function(scope, element, attrs) {
+                        $('#ows-wms-capabilities-error').modal('show');
+                    }
+                };
+            })
 
         /**
          * @class hs.ows.wms.service_capabilities
@@ -183,12 +191,12 @@ define(['angular', 'ol'],
                         $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
                     } catch (e) {
                         if (console) console.log(e);
-                        /* Ext.MessageBox.show({
-                                    title: OpenLayers.i18n('WMS Capabilities parsing problem'),
-                                    msg: OpenLayers.i18n('There was error while parsing Capabilities response from given URL')+":<br />\n"+ e,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR});
-                            throw "WMS Capabilities parsing problem";*/
+                        $scope.error = e.toString();
+                        $("#hs-dialog-area #ows-wms-capabilities-error").remove();
+                        var el = angular.element('<div hs.ows.wms.capabilities_error_directive></span>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
+                        //throw "WMS Capabilities parsing problem";
                     }
                 })
 
