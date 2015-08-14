@@ -142,10 +142,10 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
              */
             $scope.zoomToLayer = function(layer) {
                 var extent = null;
-                 if (layer.get("BoundingBox")) {
+                if (layer.get("BoundingBox")) {
                     var bbox = layer.get("BoundingBox");
-                    for(var ix =0; ix<bbox.length;ix++){
-                        if(typeof ol.proj.get(bbox[ix].crs) !=='undefined'){
+                    for (var ix = 0; ix < bbox.length; ix++) {
+                        if (typeof ol.proj.get(bbox[ix].crs) !== 'undefined') {
                             b = bbox[ix].extent;
                             var first_pair = [b[0], b[1]]
                             var second_pair = [b[2], b[3]];

@@ -206,7 +206,7 @@ define(['angular', 'ol', 'app', 'map'],
                  * @function update
                  * @memberOf hs.panoramio.service
                  * @description Requests the most popular images for current extent from Panoramio API. The number of items returned depends on the screen size.
-                 */               
+                 */
                 this.update = function() {
                     var b = ol.proj.transformExtent(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
                     var limit = Math.floor($(map.getViewport()).width() * $(map.getViewport()).height() / 22280 * 1.2);

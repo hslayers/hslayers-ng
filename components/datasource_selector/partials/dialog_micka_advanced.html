@@ -1,0 +1,69 @@
+<div class="modal" id="ds-advanced-micka" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" translate="">
+                   Extended search parameters for Micka
+                </h4>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+                <form>
+                    <div class="form-group">
+                        <label ng-attr-for="ds-adv-text" class="control-label" translate>Fulltext:</label> 
+                        <input type="text" id="ds-adv-text" class="form-control" ng-model="query[text_field]">
+                    </div>
+                    <div>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="text_field" value="AnyText"> All
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="text_field" value="title"> Title
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="text_field" value="abstract"> Abstract
+                        </label>
+                    </div>
+                     <div class="form-group">
+                        <label ng-attr-for="ds-adv-keywords" class="control-label" translate>Keywords:</label> 
+                        <input type="text" id="ds-adv-keywords" class="form-control" ng-model="query.keywords">
+                    </div>
+                    <div class="form-group">
+                        <label ng-attr-for="ds-type" class="control-label" translate>Type:</label> 
+                        <select class="form-control" ng-attr-id="ds-type" ng-model="query.type">
+                            <option value=""></option>
+                            <option  value="data" translate>Data</option>
+                            <option value="service">Service</option>
+                            <option value="application">Application</option>
+                            <option value="featureCatalogue">Feature catalogue</option>
+                        </select>
+                    </div>
+                                                           
+                    <div class="form-group">
+                        <label ng-attr-for="ds-application-type" class="control-label" translate>Application type:</label> 
+                        <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.type">
+                            <option value=""></option>
+                            <option  value="data" translate>Data</option>
+                            <option value="service">Service</option>
+                            <option value="application">Application</option>
+                            <option value="featureCatalogue">Feature catalogue</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label ng-attr-for="ds-sortby" class="control-label" translate>Order by:</label> 
+                        <select class="form-control" ng-attr-id="ds-sortby" ng-model="query.sortby">
+                            <option value="title" translate>Title</option>
+                            <option value="date">Date stamp</option>
+                            <option value="bbox">Extent similarity</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" id="ds-footer">
+                <button type="button" class="btn btn-primary" translate ng-click="search(selected_ds)" data-dismiss="modal">Search</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+            </div>
+        </div>
+    </div>
+</div>

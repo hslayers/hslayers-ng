@@ -18,7 +18,7 @@ define(function(require) {
                 var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                 var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extent[0] + ' ' + extent[1] + ', ' + extent[2] + ' ' + extent[3] + ')"), bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat)))).';
                 p = p.replace("<extent>", s_extent);
-                if(options.hsproxy)
+                if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
                 src.loaded = true;
                 $.ajax({

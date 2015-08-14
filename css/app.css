@@ -209,3 +209,4 @@ min-width: 230px;
 .list-group-item.active a {
     color: #fff;
 }
+.btn .close {font-size:20px}

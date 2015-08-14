@@ -27,6 +27,20 @@ define(['angular', 'ol', 'map'],
         })
 
         /**
+         * @class hs.datasource_selector.advancedMickaDialogDirective
+         * @memberOf hs.datasource_selector
+         * @description Directive for displaying extended search parameters for Micka catalogue service
+         */
+        .directive('hs.datasourceSelector.advancedMickaDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_advanced.html',
+                link: function(scope, element, attrs) {
+                    $('#ds-advanced-micka').modal('show');
+                }
+            };
+        })
+
+        /**
          * @class hs.datasource_selector.objectDirective
          * @memberOf hs.datasource_selector
          * @description Directive for displaying metadata about data source
@@ -65,6 +79,7 @@ define(['angular', 'ol', 'map'],
                 $scope.query = {
                     title: ''
                 };
+                $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
                 $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
                 $scope.selected_layer = null;
@@ -108,6 +123,12 @@ define(['angular', 'ol', 'map'],
                         $scope.datasets[ds].start = 0;
                         $scope.loadDataset($scope.datasets[ds]);
                     }
+                }
+
+                $scope.openMickaAdvancedSearch = function() {
+                    var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></span>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
                 }
 
                 $scope.loadDataset = function(ds) {
