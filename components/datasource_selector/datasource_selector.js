@@ -77,7 +77,7 @@ define(['angular', 'ol', 'map'],
         .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile',
             function($scope, OlMap, Core, $compile) {
                 $scope.query = {
-                    title: ''
+                    text_filter: ''
                 };
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
@@ -132,9 +132,6 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.loadDataset = function(ds) {
-                    angular.forEach(ds.layers, function(val) {
-                        extent_layer.getSource().removeFeature(val.feature);
-                    })
                     switch (ds.type) {
                         case "datatank":
                             var url = '';
@@ -167,11 +164,14 @@ define(['angular', 'ol', 'map'],
                         case "micka":
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
                             var bbox = "and BBOX='" + b[0] + " " + b[1] + " " + b[2] + " " + b[3] + "'";
-                            var url = '';
+                            var ue = encodeURIComponent;
+                            var query = $scope.text_field + ue(" like '*" + $scope.query.text_filter + "*'") + param2Query('type') + param2Query('ServiceType');
+                            var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language + 
+                                '&query=' + query + 
+                                (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby!='' ? '&sortby=' + $scope.query.sortby : '') + 
+                                '&limit=10&start=' + ds.start;
                             if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url + '?request=GetRecords&format=application/json&language=' + ds.language + '&query=AnyText%20like%20%27*' + $scope.query.title + '*%27%20&limit=10&start=' + ds.start);
-                            } else {
-                                url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language + '&query=AnyText%20like%20%27*' + $scope.query.title + '*%27%20&limit=10&start=' + ds.start;
+                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
                             }
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
@@ -179,6 +179,12 @@ define(['angular', 'ol', 'map'],
                                 cache: false,
                                 dataType: "json",
                                 success: function(j) {
+                                    angular.forEach(ds.layers, function(val) {
+                                        try {
+                                        if(typeof val.feature !== 'undefined' && val.feature!=null)
+                                            extent_layer.getSource().removeFeature(val.feature);
+                                        } catch (ex){}
+                                    })
                                     ds.layers = [];
                                     ds.loaded = true;
                                     ds.matched = j.matched;
@@ -196,6 +202,13 @@ define(['angular', 'ol', 'map'],
                             break;
                     }
                 }
+                
+                var param2Query = function(which){
+                    if(typeof $scope.query[which] != 'undefined')
+                        return ($scope.query[which] != '' ? encodeURIComponent(" and "+which+"='" + $scope.query[which] + "'"): '')
+                    else return '';
+                }
+                
 
                 $scope.getPreviousRecords = function(ds) {
                     ds.start -= 10;
@@ -307,7 +320,7 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.clear = function() {
-                    $scope.query.title = "";
+                    $scope.query.text_filter = "";
                 }
 
                 OlMap.map.addLayer(extent_layer);

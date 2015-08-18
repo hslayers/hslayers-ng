@@ -11,7 +11,7 @@
                 <form>
                     <div class="form-group">
                         <label ng-attr-for="ds-adv-text" class="control-label" translate>Fulltext:</label> 
-                        <input type="text" id="ds-adv-text" class="form-control" ng-model="query[text_field]">
+                        <input type="text" id="ds-adv-text" class="form-control" ng-model="query.text_filter">
                     </div>
                     <div>
                         <label class="radio-inline">
@@ -32,21 +32,20 @@
                         <label ng-attr-for="ds-type" class="control-label" translate>Type:</label> 
                         <select class="form-control" ng-attr-id="ds-type" ng-model="query.type">
                             <option value=""></option>
-                            <option  value="data" translate>Data</option>
+                            <option value="data" translate>Data</option>
                             <option value="service">Service</option>
                             <option value="application">Application</option>
                             <option value="featureCatalogue">Feature catalogue</option>
                         </select>
                     </div>
                                                            
-                    <div class="form-group">
+                    <div class="form-group" ng-show="query.type=='application'">
                         <label ng-attr-for="ds-application-type" class="control-label" translate>Application type:</label> 
-                        <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.type">
+                        <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.ServiceType">
                             <option value=""></option>
-                            <option  value="data" translate>Data</option>
-                            <option value="service">Service</option>
-                            <option value="application">Application</option>
-                            <option value="featureCatalogue">Feature catalogue</option>
+                            <option value="Georeport" translate>Georeport</option>
+                            <option value="Map">Map application</option>
+                            <option value="NonMap">Non map application</option>
                         </select>
                     </div>
                     
@@ -61,7 +60,7 @@
                 </form>
             </div>
             <div class="modal-footer" id="ds-footer">
-                <button type="button" class="btn btn-primary" translate ng-click="search(selected_ds)" data-dismiss="modal">Search</button>
+                <button type="button" class="btn btn-primary" translate ng-click="loadDatasets(datasources)" data-dismiss="modal">Search</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
             </div>
         </div>
