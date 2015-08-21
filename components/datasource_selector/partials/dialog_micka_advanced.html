@@ -30,7 +30,7 @@
                     </div>
                     <div class="form-group">
                         <label ng-attr-for="ds-type" class="control-label" translate>Type:</label> 
-                        <select class="form-control" ng-attr-id="ds-type" ng-model="query.type">
+                        <select class="form-control" ng-attr-id="ds-type" ng-model="query.type" ng-change='advancedMickaTypeChanged()'>
                             <option value=""></option>
                             <option value="data" translate>Data</option>
                             <option value="service">Service</option>
@@ -39,13 +39,35 @@
                         </select>
                     </div>
                                                            
-                    <div class="form-group" ng-show="query.type=='application'">
-                        <label ng-attr-for="ds-application-type" class="control-label" translate>Application type:</label> 
-                        <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.ServiceType">
-                            <option value=""></option>
-                            <option value="Georeport" translate>Georeport</option>
-                            <option value="Map">Map application</option>
-                            <option value="NonMap">Non map application</option>
+                    <div class="form-group" ng-show="query.type=='application' || query.type=='service'">
+                        <label ng-attr-for="ds-application-type" class="control-label" translate>
+                            <span ng-show="query.type=='application'">Application type:</span>
+                            <span ng-show="query.type=='service'">Service type:</span>
+                        </label> 
+                        <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.ServiceType">  
+                            <option ng-repeat="type in micka_ds.level2_types" ng-attr-value="{{type.value}}">{{type.name}}</option>
+                        </select>
+                    </div>
+                    
+                     <div class="form-group" ng-show="query.type=='data'">
+                        <label ng-attr-for="ds-application-type" class="control-label" translate>
+                            <span>Topic category:</span>
+                        </label> 
+                        <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.TopicCategory">  
+                            <option ng-repeat="type in micka_ds.code_lists.topicCategory" ng-attr-value="{{type.value}}">{{type.name}}</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" ng-show="query.type=='data'">
+                        <label ng-attr-for="ds-type" class="control-label" translate>Scale 1:</label> 
+                        <select class="form-control" ng-attr-id="ds-type" ng-model="query.Denominator">
+                            <option value="2000">2000</option>
+                            <option value="2500">2500</option>
+                            <option value="2880">2880</option>
+                            <option value="5000">5000</option>
+                            <option value="6000">6000</option>
+                            <option value="10000">10000</option>
+                            <option value="100000">100000</option>
                         </select>
                     </div>
                     

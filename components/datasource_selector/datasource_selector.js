@@ -124,11 +124,70 @@ define(['angular', 'ol', 'map'],
                         $scope.loadDataset($scope.datasets[ds]);
                     }
                 }
+                
+                $scope.fillCodesets = function(datasets) {
+                    for (var ds in datasets) {
+                        $scope.fillCodeset($scope.datasets[ds]);
+                    }
+                }
+                
+                $scope.fillCodeset = function(ds) {
+                    switch (ds.type) {
+                        case "datatank":
+                            
+                            break;
+                        case "micka":
+                            var url = ds.code_list_url;
+                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                            }
+                            if(typeof ds.code_lists =='undefined'){
+                                ds.code_lists ={serviceType:[], applicationType:[], dataType:[], topicCategory:[]}
+                            }
+                            ds.ajax_req = $.ajax({
+                                url: url,
+                                cache: false,
+                                success: function(j) {
+                                    $("map serviceType value", j).each(function(){
+                                        ds.code_lists.serviceType.push({value:$(this).attr('name'), name:$(this).html()});
+                                    })
+                                    $("map applicationType value", j).each(function(){
+                                        ds.code_lists.applicationType.push({value:$(this).attr('name'), name:$(this).html()});
+                                    })
+                                    $("map applicationType value", j).each(function(){
+                                        ds.code_lists.applicationType.push({value:$(this).attr('name'), name:$(this).html()});
+                                    })
+                                    $("map topicCategory value", j).each(function(){
+                                        ds.code_lists.topicCategory.push({value:$(this).attr('name'), name:$(this).html()});
+                                    })
+                                }
+                            });
+                            break;
+                    }
+                }
+                
+                $scope.advancedMickaTypeChanged = function(){
+                    switch($scope.query.type){
+                        case "service":
+                            $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.serviceType;
+                            break;
+                        case "application":
+                            $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.applicationType;
+                            break;
+                    }
+                }
 
                 $scope.openMickaAdvancedSearch = function() {
                     var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></span>');
                     $("#hs-dialog-area").append(el)
                     $compile(el)($scope);
+                    if(typeof $scope.micka_ds == 'undefined'){
+                        for (var ds in $scope.datasets) {
+                            if($scope.datasets[ds].type=='micka') {
+                                $scope.micka_ds = $scope.datasets[ds];
+                            }
+                        }
+                    }
                 }
 
                 $scope.loadDataset = function(ds) {
@@ -165,7 +224,7 @@ define(['angular', 'ol', 'map'],
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
                             var bbox = "and BBOX='" + b[0] + " " + b[1] + " " + b[2] + " " + b[3] + "'";
                             var ue = encodeURIComponent;
-                            var query = $scope.text_field + ue(" like '*" + $scope.query.text_filter + "*'") + param2Query('type') + param2Query('ServiceType');
+                            var query = $scope.text_field + ue(" like '*" + $scope.query.text_filter + "*'") + param2Query('type') + param2Query('ServiceType') + param2Query('topicCategory') + param2Query('Denominator');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language + 
                                 '&query=' + query + 
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby!='' ? '&sortby=' + $scope.query.sortby : '') + 
@@ -203,10 +262,14 @@ define(['angular', 'ol', 'map'],
                     }
                 }
                 
-                var param2Query = function(which){
-                    if(typeof $scope.query[which] != 'undefined')
+                function param2Query(which){
+                    if(typeof $scope.query[which] != 'undefined') {
+                        if(which=='type' && $scope.query[which]=='data'){
+                            //Special case for type 'data' because it can contain many things
+                            return encodeURIComponent(" and (type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
+                        }
                         return ($scope.query[which] != '' ? encodeURIComponent(" and "+which+"='" + $scope.query[which] + "'"): '')
-                    else return '';
+                    } else return '';
                 }
                 
 
@@ -220,7 +283,7 @@ define(['angular', 'ol', 'map'],
                     $scope.loadDataset(ds);
                 }
 
-                var addExtentFeature = function(record) {
+                function addExtentFeature(record) {
                     var attributes = {
                         record: record,
                         hs_notqueryable: true,
@@ -332,10 +395,12 @@ define(['angular', 'ol', 'map'],
                     title: "Micka",
                     url: "http://cat.ccss.cz/csw/",
                     language: 'eng',
-                    type: "micka"
+                    type: "micka",
+                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
                 }];
 
                 $scope.loadDatasets($scope.datasources);
+                $scope.fillCodesets($scope.datasources);
                 $scope.$emit('scope_loaded', "DatasourceSelector");
                 $scope.$on('core.mainpanel_changed', function(event) {
                     extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
