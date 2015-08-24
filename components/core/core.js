@@ -43,7 +43,7 @@ require.config({
     ]
 });
 
-define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'bootstrap', 'api'],
+define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'],
     function(angular) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
             .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog',
