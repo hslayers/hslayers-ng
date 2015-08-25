@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'feature-crossfilter'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'bootstrap', 'feature-crossfilter'],
 
     function(ol, dc, toolbar, layermanager, SparqlJson, WfsSource) {
         var module = angular.module('hs', [

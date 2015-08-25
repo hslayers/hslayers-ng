@@ -12,7 +12,7 @@ define(['ol',
         'api',
         'glutils', 'WGL', 'wglinit', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
         'heatmapdimension', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
-        'floatrasterreader', 'linearfilter', 'filter', 'multibrush'
+        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush'
     ],
 
     function(ol, toolbar, layermanager, WfsSource) {
