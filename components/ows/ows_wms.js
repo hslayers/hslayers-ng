@@ -58,7 +58,7 @@ define(['angular', 'ol'],
                     if (callback) {
                         var url = '';
                         if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '&' : '?') + "request=GetCapabilities&service=WMS");
                         } else {
                             url = service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS";
                         }
@@ -66,7 +66,7 @@ define(['angular', 'ol'],
                     } else {
                         var url = '';
                         if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '&' : '?') + "request=GetCapabilities&service=WMS");
                         } else {
                             url = service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS";
                         }
