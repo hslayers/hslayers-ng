@@ -288,7 +288,17 @@ define(['angular', 'ol', 'map'],
                         return ($scope.query[which] != '' ? encodeURIComponent(" and " + which + "='" + $scope.query[which] + "'") : '')
                     } else return '';
                 }
-
+                
+                $scope.zoomTo = function(bbox){
+                    var b = bbox.split(" ");
+                    var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
+                    var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
+                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
+                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
+                    if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
+                    var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                    OlMap.map.getView().fitExtent(extent, OlMap.map.getSize());
+                }
 
                 $scope.getPreviousRecords = function(ds) {
                     ds.start -= 10;
@@ -309,8 +319,8 @@ define(['angular', 'ol', 'map'],
                     var b = record.bbox.split(" ");
                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', 'EPSG:3857');
-                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', 'EPSG:3857');
+                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
+                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
                     if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
                     var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                     attributes.geometry = ol.geom.Polygon.fromExtent(extent);

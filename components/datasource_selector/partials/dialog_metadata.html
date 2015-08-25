@@ -11,6 +11,7 @@
                 <dl ng-repeat="(key, value) in selected_layer" ng-if="key!='feature'">
                     <dt>{{key}} </dt>
                     <dd hs.datasource_selector.object_directive></dd>
+                    <button ng-if="key=='bbox'" ng-click="zoomTo(value)" class='btn btn-default' translate>Zoom to</button>
                 </dl>
             </div>
             <div class="modal-footer" id="stc-footer">
