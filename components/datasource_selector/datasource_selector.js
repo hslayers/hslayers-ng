@@ -288,8 +288,8 @@ define(['angular', 'ol', 'map'],
                         return ($scope.query[which] != '' ? encodeURIComponent(" and " + which + "='" + $scope.query[which] + "'") : '')
                     } else return '';
                 }
-                
-                $scope.zoomTo = function(bbox){
+
+                $scope.zoomTo = function(bbox) {
                     var b = bbox.split(" ");
                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
