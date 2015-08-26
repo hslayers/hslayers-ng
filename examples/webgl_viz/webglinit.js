@@ -16,6 +16,7 @@ wglinit = function(that) {
 
         WGL.addMapDimension(data.pts, 'map');
 
+      //  WGL.addHeatMapDimension(data.pts, 'map');
     	//var sev   = {data: data.sev,  domain: ['1','2','3'] ,  name: 'sev'  };		
 		//var road_surf = {data: data.road_surf, domain:['1','2','3','4','5'], name: 'road_surface'};
 		var dayes = {data: data.dayes,  min:0, max: 7, num_bins: 7,  name: 'dayes'};		
@@ -43,11 +44,9 @@ wglinit = function(that) {
 	
 		WGL.addCharts(charts);
 		
-		WGL.render();
+		//WGL.render();
 		onMove();
 		WGL.render();	
-
-
 
     }
 
