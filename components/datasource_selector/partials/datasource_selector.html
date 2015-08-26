@@ -9,6 +9,7 @@
          <div class="input-group col-lg-8 col-sm-12 col-xs-12" style="margin-bottom: 4px">
             <input type="text" class="form-control" placeholder="Filter:" ng-model="query.title" ng-change="loadDatasets(datasources)">
             <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click='openMickaAdvancedSearch()'>More</button>
                 <button type="button" class="btn btn-default" ng-click="clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
             </span>
         </div>
@@ -24,10 +25,12 @@
             </a>
             <img ng-src="{{ajax_loader}}" ng-show="ds.ajax_req.readyState != 4"/>
             <li ng-repeat="layer in ds.layers" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
-                <b class="list-group-item-heading datasources_item">{{layer.trida}} {{layer.title}}
+                <b class="list-group-item-heading datasources_item">
+                    <a href="#" ng-click="showMetadata(ds, layer)">{{layer.trida}} {{layer.title}}</a>
                     <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
                 </b>
                 {{layer.description}}
+                <p style="clear:both"></p>
             </li>
         </ul>
     </div>

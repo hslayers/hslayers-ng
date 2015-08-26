@@ -33,6 +33,14 @@ define(['angular', 'ol'],
                     }
                 };
             })
+            .directive('hs.ows.wms.capabilitiesErrorDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
+                    link: function(scope, element, attrs) {
+                        $('#ows-wms-capabilities-error').modal('show');
+                    }
+                };
+            })
 
         /**
          * @class hs.ows.wms.service_capabilities
@@ -48,11 +56,21 @@ define(['angular', 'ol'],
 
                 this.requestGetCapabilities = function(service_url, callback) {
                     if (callback) {
-                        var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
-                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(callback);
+                        var url = '';
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '&' : '?') + "request=GetCapabilities&service=WMS");
+                        } else {
+                            url = service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS";
+                        }
+                        $http.get(url).success(callback);
                     } else {
-                        var url = window.escape(service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS");
-                        $http.get("/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + url).success(function(resp) {
+                        var url = '';
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '&' : '?') + "request=GetCapabilities&service=WMS");
+                        } else {
+                            url = service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS";
+                        }
+                        $http.get(url).success(function(resp) {
                             $(callbacks).each(function() {
                                 this(resp)
                             })
@@ -160,7 +178,9 @@ define(['angular', 'ol'],
                             $scope.srss = caps.Capability.Layer.CRS;
                             if (srv_caps.currentProjectionSupported($scope.srss))
                                 $scope.srs = OlMap.map.getView().getProjection().getCode();
-                            else
+                            else if ($scope.srss.indexOf('EPSG:4326') > -1) {
+                                $scope.srs = 'EPSG:4326';
+                            } else
                                 $scope.srs = $scope.srss[0];
                         } else {
                             $scope.srs = OlMap.map.getView().getProjection().getCode();
@@ -171,12 +191,12 @@ define(['angular', 'ol'],
                         $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
                     } catch (e) {
                         if (console) console.log(e);
-                        /* Ext.MessageBox.show({
-                                    title: OpenLayers.i18n('WMS Capabilities parsing problem'),
-                                    msg: OpenLayers.i18n('There was error while parsing Capabilities response from given URL')+":<br />\n"+ e,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR});
-                            throw "WMS Capabilities parsing problem";*/
+                        $scope.error = e.toString();
+                        $("#hs-dialog-area #ows-wms-capabilities-error").remove();
+                        var el = angular.element('<div hs.ows.wms.capabilities_error_directive></span>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
+                        //throw "WMS Capabilities parsing problem";
                     }
                 })
 
@@ -208,7 +228,7 @@ define(['angular', 'ol'],
                  * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
                  */
                 $scope.addLayers = function(checked) {
-                    var recurse = function(layer){
+                    var recurse = function(layer) {
                         if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
                             addLayer(
                                 layer,
@@ -220,7 +240,7 @@ define(['angular', 'ol'],
                                 $scope.tile_size,
                                 $scope.srs
                             );
-                        
+
                         angular.forEach(layer.Layer, function(sublayer) {
                             recurse(sublayer)
                         })

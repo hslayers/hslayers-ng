@@ -1,0 +1,90 @@
+<div class="modal" id="ds-advanced-micka" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" translate="">
+                   Extended search parameters for Micka
+                </h4>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+                <form>
+                    <div class="form-group">
+                        <label ng-attr-for="ds-adv-text" class="control-label" translate>Fulltext:</label> 
+                        <input type="text" id="ds-adv-text" class="form-control" ng-model="query.text_filter">
+                    </div>
+                    <div>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="text_field" value="AnyText"> All
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="text_field" value="title"> Title
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="text_field" value="abstract"> Abstract
+                        </label>
+                    </div>
+                     <div class="form-group">
+                        <label ng-attr-for="ds-adv-keywords" class="control-label" translate>Keywords:</label> 
+                        <input type="text" id="ds-adv-keywords" class="form-control" ng-model="query.keywords">
+                    </div>
+                    <div class="form-group">
+                        <label ng-attr-for="ds-type" class="control-label" translate>Type:</label> 
+                        <select class="form-control" ng-attr-id="ds-type" ng-model="query.type" ng-change='advancedMickaTypeChanged()'>
+                            <option value=""></option>
+                            <option value="data" translate>Data</option>
+                            <option value="service">Service</option>
+                            <option value="application">Application</option>
+                            <option value="featureCatalogue">Feature catalogue</option>
+                        </select>
+                    </div>
+                                                           
+                    <div class="form-group" ng-show="query.type=='application' || query.type=='service'">
+                        <label ng-attr-for="ds-application-type" class="control-label" translate>
+                            <span ng-show="query.type=='application'">Application type:</span>
+                            <span ng-show="query.type=='service'">Service type:</span>
+                        </label> 
+                        <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.ServiceType">  
+                            <option ng-repeat="type in micka_ds.level2_types" ng-attr-value="{{type.value}}">{{type.name}}</option>
+                        </select>
+                    </div>
+                    
+                     <div class="form-group" ng-show="query.type=='data'">
+                        <label ng-attr-for="ds-application-type" class="control-label" translate>
+                            <span>Topic category:</span>
+                        </label> 
+                        <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.TopicCategory">  
+                            <option ng-repeat="type in micka_ds.code_lists.topicCategory" ng-attr-value="{{type.value}}">{{type.name}}</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" ng-show="query.type=='data'">
+                        <label ng-attr-for="ds-type" class="control-label" translate>Scale 1:</label> 
+                        <select class="form-control" ng-attr-id="ds-type" ng-model="query.Denominator">
+                            <option value="2000">2000</option>
+                            <option value="2500">2500</option>
+                            <option value="2880">2880</option>
+                            <option value="5000">5000</option>
+                            <option value="6000">6000</option>
+                            <option value="10000">10000</option>
+                            <option value="100000">100000</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label ng-attr-for="ds-sortby" class="control-label" translate>Order by:</label> 
+                        <select class="form-control" ng-attr-id="ds-sortby" ng-model="query.sortby">
+                            <option value="title" translate>Title</option>
+                            <option value="date">Date stamp</option>
+                            <option value="bbox">Extent similarity</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" id="ds-footer">
+                <button type="button" class="btn btn-primary" translate ng-click="loadDatasets(datasources)" data-dismiss="modal">Search</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+            </div>
+        </div>
+    </div>
+</div>

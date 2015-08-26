@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'feature-crossfilter', 'legend', 'panoramio', 'bootstrap', 'api'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'feature-crossfilter', 'legend', 'bootstrap', 'panoramio', 'bootstrap', 'api'],
 
     function(ol, dc, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
@@ -58,6 +58,47 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             }
         }
 
+
+        var sparql_layers = [];
+        angular.forEach(['amenity.arts_centre',
+            'amenity.atm',
+            'amenity.bank',
+            'amenity.bicycle_rental',
+            'amenity.cafe',
+            'amenity.car_wash',
+            'amenity.dentist',
+            'amenity.fast_food',
+            'amenity.fountain',
+            'amenity.library',
+            'amenity.parking',
+            'amenity.place_of_worship',
+            'amenity.pub',
+            'amenity.restaurant',
+            'amenity.waste_basket',
+            'building.hotel',
+            'highway.bus_stop',
+            'historic.archaeological_site',
+            'historic.memorial',
+            'shop.supermarket',
+            'tourism.artwork',
+            'tourism.camp_site',
+            'tourism.information',
+            'tourism.viewpoint',
+            'tourism.zoo'
+        ], function(value) {
+            var new_lyr = new ol.layer.Vector({
+                title: "POI " + value,
+                source: new SparqlJson({
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://gis.zcu.cz/poi.rdf> WHERE {?o <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat. ?o <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lon. ?o <http://gis.zcu.cz/poi#category_osm> ?filter_categ. FILTER (str(?filter_categ) = "' + value + '")') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    category_field: 'http://gis.zcu.cz/poi#category_osm',
+                    projection: 'EPSG:3857'
+                }),
+                style: style,
+                visible: false
+            });
+            sparql_layers.push(new_lyr);
+        })
+
         module.value('box_layers', [new ol.layer.Group({
             'img': 'osm.png',
             title: 'Base layer',
@@ -80,26 +121,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
         }), new ol.layer.Group({
             'img': 'bicycle-128.png',
             title: 'Tourist info',
-            layers: [
+            layers: sparql_layers.concat([
                 new ol.layer.Vector({
-                    title: "Points of interest",
-                    maxResolution: 70,
-                    source: new SparqlJson({
-                        url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://gis.zcu.cz/poi.rdf> WHERE {?o <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat. ?o <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lon. ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                        category_field: 'http://gis.zcu.cz/poi#category_osm',
-                        projection: 'EPSG:3857'
-                    }),
-                    style: style
-                }),
-                new ol.layer.Vector({
-                    title: "Specific points of interest",
-                    source: new SparqlJson({
-                        url: '',
-                        category_field: 'http://gis.zcu.cz/poi#category_osm',
-                        projection: 'EPSG:3857'
-                    }),
-                    style: style
-                }), new ol.layer.Vector({
                     title: "Cycling routes Plzen",
                     source: new ol.source.GeoJSON({
                         url: 'plzensky_kraj.geojson'
@@ -143,7 +166,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                         crossOrigin: null
                     })
                 })
-            ]
+            ])
         }), new ol.layer.Group({
             'img': 'partly_cloudy.png',
             title: 'Weather',
@@ -223,8 +246,12 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     var coordinate = data.coordinate;
                     var lon_lat = ol.proj.transform(
                         coordinate, 'EPSG:3857', 'EPSG:4326');
-                    var p = "http://api.openweathermap.org/data/2.5/weather?lat=" + lon_lat[1] + "&lon=" + lon_lat[0];
-                    var url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(p);
+                    var url = '';
+                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape("http://api.openweathermap.org/data/2.5/weather?lat=" + lon_lat[1] + "&lon=" + lon_lat[0]);
+                    } else {
+                        url = "http://api.openweathermap.org/data/2.5/weather?lat=" + lon_lat[1] + "&lon=" + lon_lat[0];
+                    }
 
                     $.ajax({
                             url: url

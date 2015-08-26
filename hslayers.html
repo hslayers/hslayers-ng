@@ -1,12 +1,12 @@
 <link rel="stylesheet" ng-href="{{hsl_path}}bower_components/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" ng-href="{{hsl_path}}lib/ol3/ol.css" type="text/css">  
+<link rel="stylesheet" ng-href="{{hsl_path}}bower_components/ol3/css/ol.css" type="text/css">  
 <link href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.css" rel="stylesheet">
 <link rel="stylesheet" ng-href="{{hsl_path}}css/app.css"/>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <!--<script ng-src="{{hsl_path}}bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>-->
 
 <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
-<div hs.toolbar.directive ng-controller="hs.toolbar.controller"></div>
+<div hs.toolbar.directive ng-controller="hs.toolbar.controller" ng-if="Core.exists('hs.toolbar.controller')"></div>
 
 <div class="row gui-overlay">
     <div class="col-md-4" id="right-pane">

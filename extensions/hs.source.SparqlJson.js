@@ -8,6 +8,7 @@ define(function(require) {
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
                 if (typeof src.options.clear_on_move !== 'undefined' && src.options.clear_on_move) src.clear();
+                if (typeof options.hsproxy == 'undefined') options.hsproxy = false;
                 if (src.options.url == '') return;
                 var p = src.options.url;
                 var first_pair = [extent[0], extent[1]];
@@ -17,7 +18,8 @@ define(function(require) {
                 var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                 var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extent[0] + ' ' + extent[1] + ', ' + extent[2] + ' ' + extent[3] + ')"), bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat)))).';
                 p = p.replace("<extent>", s_extent);
-                p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
+                if (options.hsproxy)
+                    p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
                 src.loaded = true;
                 $.ajax({
                         url: p
