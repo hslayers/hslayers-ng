@@ -62,6 +62,7 @@ define(['angular', 'ol', 'map'],
                         } else {
                             scope.obj = scope.value;
                         }
+                        
                         if (angular.isUndefined(contentsLinker)) {
                             contentsLinker = $compile(contents);
                         }

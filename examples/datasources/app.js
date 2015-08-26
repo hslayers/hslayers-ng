@@ -50,7 +50,8 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
                 source: new ol.source.OSM(),
                 title: "Base layer",
                 base: true,
-                removable: false
+                removable: false,
+                path: 'Folder/Subfolder/Sub2'
             })
         ]);
 

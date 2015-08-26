@@ -428,7 +428,7 @@ define(['angular', 'ol'],
                             html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
                         })]
                     }
-                    var new_layer = new ol.layer.Tile({
+                      var new_layer = new ol.layer.Tile({
                         title: layerName,
                         source: new ol.source.TileWMS({
                             url: srv_caps.getUrl($scope.getMapUrl, !srv_caps.currentProjectionSupported($scope.srss)),
@@ -447,7 +447,8 @@ define(['angular', 'ol'],
                         removable: true,
                         abstract: layer.Abstract,
                         MetadataURL: layer.MetadataURL,
-                        BoundingBox: layer.BoundingBox
+                        BoundingBox: layer.BoundingBox,
+                        path: $scope.path
                     });
 
                     OlMap.map.addLayer(new_layer);

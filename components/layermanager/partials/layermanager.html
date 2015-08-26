@@ -20,13 +20,14 @@
             </div>
         </div>
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
-        <ul class="list-group layermanager-list">
-                <li ng-repeat="layer in layers | filter:query" id="layer-{{$index}}" class="list-group-item">
-                    <a href="#" ng-click="setCurrentLayer(layer, $index)">{{layer.title}}</a>
-                    <a href="#" class="layer-more"><i class="fa fa-arrow-circle-o-right"></i></a>
-                    <input type="checkbox" class="form-control layer-checked" ng-checked="layer.visible" ng-click="changeLayerVisibility($event, layer)" />
-                </li>
+        <ul  class="list-group hs-layermanager-layerlist" ng-repeat="value in folders.sub_folders track by $index">
+            <li class="list-group-item active">
+                <span>{{value.name}}</span>
+            </li>
+            <li hs.layermanager.folder_directive ng-show='value.sub_folders.length>0'></li>
+            <li hs.layermanager.layerlist_directive></li>
         </ul>
+        <div hs.layermanager.layerlist_directive></div>
 <!--
         <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-default active">

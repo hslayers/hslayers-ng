@@ -94,7 +94,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     projection: 'EPSG:3857'
                 }),
                 style: style,
-                visible: false
+                visible: false,
+                path: 'Points of interest'
             });
             sparql_layers.push(new_lyr);
         })
@@ -107,7 +108,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     source: new ol.source.OSM(),
                     title: "OpenStreetMap",
                     base: true,
-                    visible: false
+                    visible: false,
+                    path: 'Roads'
                 }),
                 new ol.layer.Tile({
                     title: "OpenCycleMap",
@@ -115,7 +117,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     base: true,
                     source: new ol.source.OSM({
                         url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                    })
+                    }),
+                    path: 'Roads'
                 })
             ],
         }), new ol.layer.Group({
@@ -127,28 +130,32 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     source: new ol.source.GeoJSON({
                         url: 'plzensky_kraj.geojson'
                     }),
-                    style: route_style
+                    style: route_style,
+                    path: 'Roads/Additional Cycling routes'
                 }),
                 new ol.layer.Vector({
                     title: "Cycling routes Zemgale",
                     source: new ol.source.GeoJSON({
                         url: 'zemgale.geojson'
                     }),
-                    style: route_style
+                    style: route_style,
+                    path: 'Roads/Additional Cycling routes'
                 }),
                 new ol.layer.Vector({
                     title: "Tour de LatEst",
                     source: new ol.source.GeoJSON({
                         url: 'teourdelatest.geojson'
                     }),
-                    style: route_style
+                    style: route_style,
+                    path: 'Roads/Additional Cycling routes'
                 }),
                 new ol.layer.Vector({
                     title: "A1: the Vltava left-bank cycle route",
                     source: new ol.source.GeoJSON({
                         url: 'prague.geojson'
                     }),
-                    style: route_style
+                    style: route_style,
+                    path: 'Roads/Additional Cycling routes'
                 }),
                 new ol.layer.Image({
                     title: "Forest roads",
@@ -164,7 +171,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                             FORMAT: "image/png; mode=8bit"
                         },
                         crossOrigin: null
-                    })
+                    }),
+                    path: 'Roads'
                 })
             ])
         }), new ol.layer.Group({
@@ -176,7 +184,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                         url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
                     }),
                     visible: false,
-                    opacity: 0.7
+                    opacity: 0.7,
+                    path: 'Weather info'
                 }),
                 new ol.layer.Tile({
                     title: "OpenWeatherMap precipitation",
@@ -184,7 +193,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                         url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
                     }),
                     visible: false,
-                    opacity: 0.7
+                    opacity: 0.7,
+                    path: 'Weather info'
                 }),
                 new ol.layer.Tile({
                     title: "OpenWeatherMap temperature",
@@ -192,7 +202,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                         url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
                     }),
                     visible: false,
-                    opacity: 0.7
+                    opacity: 0.7,
+                    path: 'Weather info'
                 })
             ]
         })]);
