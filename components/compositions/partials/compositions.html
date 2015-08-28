@@ -7,6 +7,7 @@
     </div>
     <div class="panel-body">
         <input type="text" class="form-control" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()">
+        &nbsp;<input type="checkbox" ng-model="filter_by_extent" ng-change='loadCompositions()'><span translate>Filter by map extent</span>
         <button type="button" ng-click="toggleKeywords()" class="btn btn-default btn-xs">Keywords<span class="caret"></span></button>
         <div class="keywords-panel">
             <div style="width: 45%; display:inline-block" class="checkbox" ng-repeat="(keyword, enabled) in keywords">

@@ -13,6 +13,8 @@
                 <button type="button" class="btn btn-default" ng-click="clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
             </span>
         </div>
+        
+        &nbsp;<input type="checkbox" ng-model="filter_by_extent" ng-change='loadDatasets(datasources)'><span translate>Filter by map extent</span>
             
         <ul ng-repeat="ds in datasets" class="list-group">
             <a href="#" class="list-group-item active">

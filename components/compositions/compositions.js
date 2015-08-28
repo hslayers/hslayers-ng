@@ -121,7 +121,9 @@ define(['angular', 'ol', 'map'],
                     "Planning": false,
                     "ComplexInformation": false
                 };
+                $scope.filter_by_extent = true;
 
+                var ajax_req = null;
                 $scope.loadCompositions = function(page) {
                     if (typeof page === 'undefined') page = 1;
                     if ($scope.page_count == 0) $scope.page_count = 1;
@@ -137,17 +139,20 @@ define(['angular', 'ol', 'map'],
                     });
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
-                    var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication%20AND%20BBOX%3D%27-135.70312477249308%2C20.84649058320339%2C164.8828126856566%2C73.109630112712%27" + text_filter + keyword_filter + "&lang=eng&session=save&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
+                    var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b[0] + "," + b[1] + "," + b[2] + "," + b[3] + "'") : '') ;
+                    var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&session=save&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                     } else {
                         url = url;
                     }
-                    $.ajax({
+                    if (ajax_req != null) ajax_req.abort();
+                    ajax_req = $.ajax({
                             url: url
                         })
                         .done(function(response) {
-                            if (console) console.log(response);
+                            ajax_req = null;
                             $scope.compositions = response.records;
                             $scope.pages = [];
                             $scope.page_count = Math.ceil(response.matched / $scope.page_size);
@@ -215,6 +220,20 @@ define(['angular', 'ol', 'map'],
 
                 OlMap.map.addLayer(extent_layer);
 
+                var timer;
+                OlMap.map.getView().on('change:center', function(e) {
+                    if (timer != null) clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        $scope.loadCompositions();
+                    }, 500);
+                });
+                OlMap.map.getView().on('change:resolution', function(e) {
+                    if (timer != null) clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        $scope.loadCompositions();
+                    }, 500);
+                });
+                    
                 $scope.loadComposition = composition_parser.load;
                 $scope.loadCompositions();
                 $scope.toggleKeywords = function() {
