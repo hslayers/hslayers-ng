@@ -78,7 +78,8 @@ define(['angular', 'ol', 'map'],
         .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile',
             function($scope, OlMap, Core, $compile) {
                 $scope.query = {
-                    text_filter: ''
+                    text_filter: '',
+                    title: ''
                 };
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
@@ -242,7 +243,8 @@ define(['angular', 'ol', 'map'],
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
                             var bbox = "and BBOX='" + b[0] + " " + b[1] + " " + b[2] + " " + b[3] + "'";
                             var ue = encodeURIComponent;
-                            var query = $scope.text_field + ue(" like '*" + $scope.query.text_filter + "*'") + param2Query('type') + param2Query('ServiceType') + param2Query('topicCategory') + param2Query('Denominator');
+                            var text = typeof $scope.query.text_filter=='undefined' || $scope.query.text_filter=='' ? $scope.query.title: $scope.query.text_filter;
+                            var query = $scope.text_field + ue(" like '*" +  text + "*'") + param2Query('type') + param2Query('ServiceType') + param2Query('topicCategory') + param2Query('Denominator');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '') +
@@ -264,13 +266,17 @@ define(['angular', 'ol', 'map'],
                                     })
                                     ds.layers = [];
                                     ds.loaded = true;
-                                    ds.matched = j.matched;
-                                    ds.next = j.next;
-                                    for (var lyr in j.records) {
-                                        if (j.records[lyr]) {
-                                            var obj = j.records[lyr];
-                                            ds.layers.push(obj);
-                                            addExtentFeature(obj);
+                                    if(j==null){
+                                        ds.matched==0;
+                                    } else {
+                                        ds.matched = j.matched;
+                                        ds.next = j.next;
+                                        for (var lyr in j.records) {
+                                            if (j.records[lyr]) {
+                                                var obj = j.records[lyr];
+                                                ds.layers.push(obj);
+                                                addExtentFeature(obj);
+                                            }
                                         }
                                     }
                                     if (!$scope.$$phase) $scope.$digest();
@@ -308,6 +314,7 @@ define(['angular', 'ol', 'map'],
 
                 $scope.getNextRecords = function(ds) {
                     ds.start = ds.next;
+                    ds.next += 10;
                     $scope.loadDataset(ds);
                 }
 
