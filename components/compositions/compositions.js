@@ -140,7 +140,7 @@ define(['angular', 'ol', 'map'],
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
                     var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b[0] + "," + b[1] + "," + b[2] + "," + b[3] + "'") : '') ;
+                    var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join() + "'") : '');
                     var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&session=save&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
@@ -224,16 +224,16 @@ define(['angular', 'ol', 'map'],
                 OlMap.map.getView().on('change:center', function(e) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(function() {
-                        $scope.loadCompositions();
+                        if($scope.filter_by_extent) $scope.loadCompositions();
                     }, 500);
                 });
                 OlMap.map.getView().on('change:resolution', function(e) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(function() {
-                        $scope.loadCompositions();
+                        if($scope.filter_by_extent) $scope.loadCompositions();
                     }, 500);
                 });
-                    
+
                 $scope.loadComposition = composition_parser.load;
                 $scope.loadCompositions();
                 $scope.toggleKeywords = function() {

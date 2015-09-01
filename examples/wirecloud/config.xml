@@ -30,6 +30,10 @@
 
     <Platform.Preferences>
         <Preference name="modules_to_load" type="text" description="" label="Modules to load" default="['hs.toolbar', 'hs.layermanager', 'hs.map', 'hs.ows', 'hs.query', 'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure', 'hs.legend', 'hs.geolocation', 'hs.core', 'hs.wirecloud', 'gettext']"/>
+        <Preference name="coordinates_attr_name" type="text" description="" label="Name of coordinates attribute" default="location"/>
+        <Preference name="measurements_attr_names" type="text" description="" label="Names of measurement attributes" default="temperature,humidity"/>
+        <Preference name="timestamp_attr_name" type="text" description="" label="Name of timestamp attribute" default="timestamp"/>
+        <Preference name="id_attr_name" type="text" description="" label="Name of id attribute" default="id"/>
     </Platform.Preferences>
     
     <Platform.Rendering width="20" height="24"/>

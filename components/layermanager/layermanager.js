@@ -15,8 +15,8 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
         };
     })
-    
-    .directive('hs.layermanager.layerlistDirective',  ['$compile',function($compile) {
+
+    .directive('hs.layermanager.layerlistDirective', ['$compile', function($compile) {
         return {
             templateUrl: hsl_path + 'components/layermanager/partials/layerlist.html',
             compile: function compile(element) {
@@ -24,20 +24,20 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 var contentsLinker;
 
                 return function(scope, iElement) {
-                    scope.layerBelongsToFolder = function(layer, obj){
-                        return layer.layer.get('path') == obj.hsl_path || ((typeof layer.layer.get('path') =='undefined' || layer.layer.get('path')=='') && obj.hsl_path=='');
+                    scope.layerBelongsToFolder = function(layer, obj) {
+                        return layer.layer.get('path') == obj.hsl_path || ((typeof layer.layer.get('path') == 'undefined' || layer.layer.get('path') == '') && obj.hsl_path == '');
                     }
-                    
+
                     if (scope.value == null) {
                         scope.obj = scope.folders;
                     } else {
                         scope.obj = scope.value;
                     }
-                    
+
                     if (angular.isUndefined(contentsLinker)) {
                         contentsLinker = $compile(contents);
                     }
-                    
+
                     contentsLinker(scope, function(clonedElement) {
                         iElement.append(clonedElement);
                     });
@@ -59,12 +59,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             }
         };
     })
-    
+
     /**
-    * @class hs.layermanager.folderDirective
-    * @memberOf hs.layermanager
-    * @description Directive for displaying folder. Used recursively
-    */
+     * @class hs.layermanager.folderDirective
+     * @memberOf hs.layermanager
+     * @description Directive for displaying folder. Used recursively
+     */
     .directive('hs.layermanager.folderDirective', ['$compile', function($compile) {
         return {
             templateUrl: hsl_path + 'components/layermanager/partials/folder.html',
@@ -73,20 +73,20 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 var contentsLinker;
 
                 return function(scope, iElement) {
-                    scope.folderVisible = function(obj){
-                        return obj.sub_folders.length>0;
+                    scope.folderVisible = function(obj) {
+                        return obj.sub_folders.length > 0;
                     }
-                    
+
                     if (scope.value == null) {
                         scope.obj = "-";
                     } else {
                         scope.obj = scope.value;
                     }
-                    
+
                     if (angular.isUndefined(contentsLinker)) {
                         contentsLinker = $compile(contents);
                     }
-                    
+
                     contentsLinker(scope, function(clonedElement) {
                         iElement.append(clonedElement);
                     });
@@ -103,7 +103,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
     .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'box_layers', '$rootScope', 'Core', '$compile',
         function($scope, OlMap, box_layers, $rootScope, Core, $compile) {
             $scope.Core = Core;
-            $scope.folders = {hsl_path:'', layers:[], sub_folders:[], indent:0};
+            $scope.folders = {
+                hsl_path: '',
+                layers: [],
+                sub_folders: [],
+                indent: 0
+            };
             var map = OlMap.map;
             var cur_layer_opacity = 1;
 
@@ -143,7 +148,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 });
                 $rootScope.$broadcast('layermanager.updated', e.element);
             };
-                       
+
             /**
              * @function populateFolders
              * @memberOf hs.layermanager.controller
@@ -151,18 +156,24 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
              * @param {ol.Layer} lyr - Layer
              */
             function populateFolders(lyr) {
-                if(typeof lyr.get('path') !== 'undefined' && lyr.get('path') !== 'undefined'){
+                if (typeof lyr.get('path') !== 'undefined' && lyr.get('path') !== 'undefined') {
                     var path = lyr.get('path');
                     var parts = path.split('/');
                     var curfolder = $scope.folders;
-                    for(var i=0; i<parts.length; i++){
+                    for (var i = 0; i < parts.length; i++) {
                         var found = null;
-                        angular.forEach(curfolder.sub_folders, function(folder){
-                            if(folder.name == parts[i])
+                        angular.forEach(curfolder.sub_folders, function(folder) {
+                            if (folder.name == parts[i])
                                 found = folder;
                         })
-                        if(found == null){
-                            var new_folder = {sub_folders:[], indent:i, layers: [], name: parts[i], hsl_path:curfolder.hsl_path + (curfolder.hsl_path!='' ? '/' : '') + parts[i]};
+                        if (found == null) {
+                            var new_folder = {
+                                sub_folders: [],
+                                indent: i,
+                                layers: [],
+                                name: parts[i],
+                                hsl_path: curfolder.hsl_path + (curfolder.hsl_path != '' ? '/' : '') + parts[i]
+                            };
                             curfolder.sub_folders.push(new_folder);
                             curfolder = new_folder;
                         } else {

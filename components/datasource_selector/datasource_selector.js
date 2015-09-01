@@ -62,7 +62,7 @@ define(['angular', 'ol', 'map'],
                         } else {
                             scope.obj = scope.value;
                         }
-                        
+
                         if (angular.isUndefined(contentsLinker)) {
                             contentsLinker = $compile(contents);
                         }
@@ -79,14 +79,15 @@ define(['angular', 'ol', 'map'],
             function($scope, OlMap, Core, $compile) {
                 $scope.query = {
                     text_filter: '',
-                    title: ''
+                    title: '',
+                    type: 'service'
                 };
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
                 $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
                 $scope.selected_layer = null;
                 $scope.filter_by_extent = true;
-                
+
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
                     title: "Datasources extents",
@@ -153,7 +154,7 @@ define(['angular', 'ol', 'map'],
                                     topicCategory: []
                                 }
                             }
-                            ds.ajax_req = $.ajax({
+                            ds.ajax_req_codelists = $.ajax({
                                 url: url,
                                 cache: false,
                                 success: function(j) {
@@ -181,6 +182,7 @@ define(['angular', 'ol', 'map'],
                                             name: $(this).html()
                                         });
                                     })
+                                    $scope.advancedMickaTypeChanged();
                                 }
                             });
                             break;
@@ -188,6 +190,8 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.advancedMickaTypeChanged = function() {
+                    if(typeof $scope.micka_ds =='undefined') return;
+                    if(typeof $scope.micka_ds.code_lists =='undefined') return;
                     switch ($scope.query.type) {
                         case "service":
                             $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.serviceType;
@@ -243,10 +247,10 @@ define(['angular', 'ol', 'map'],
                             break;
                         case "micka":
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                            var bbox = "and BBOX='" + b[0] + "," + b[1] + "," + b[2] + "," + b[3] + "'";
+                            var bbox = $scope.filter_by_extent ? "and BBOX='" + b.join(' ') + "'" : ''; 
                             var ue = encodeURIComponent;
-                            var text = typeof $scope.query.text_filter=='undefined' || $scope.query.text_filter=='' ? $scope.query.title: $scope.query.text_filter;
-                            var query = $scope.text_field + ue(" like '*" +  text + "*' "+bbox) + param2Query('type') + param2Query('ServiceType') + param2Query('topicCategory') + param2Query('Denominator');
+                            var text = typeof $scope.query.text_filter == 'undefined' || $scope.query.text_filter == '' ? $scope.query.title : $scope.query.text_filter;
+                            var query = $scope.text_field + ue(" like '*" + text + "*' " + bbox) + param2Query('type') + param2Query('ServiceType') + param2Query('topicCategory') + param2Query('Denominator');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '') +
@@ -268,8 +272,8 @@ define(['angular', 'ol', 'map'],
                                     })
                                     ds.layers = [];
                                     ds.loaded = true;
-                                    if(j==null){
-                                        ds.matched==0;
+                                    if (j == null) {
+                                        ds.matched == 0;
                                     } else {
                                         ds.matched = j.matched;
                                         ds.next = j.next;
@@ -284,6 +288,7 @@ define(['angular', 'ol', 'map'],
                                     if (!$scope.$$phase) $scope.$digest();
                                 }
                             });
+                            if (!$scope.$$phase) $scope.$digest();
                             break;
                     }
                 }
@@ -422,6 +427,20 @@ define(['angular', 'ol', 'map'],
                 $scope.clear = function() {
                     $scope.query.text_filter = "";
                 }
+                
+                var timer;
+                OlMap.map.getView().on('change:center', function(e) {
+                    if (timer != null) clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        if($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                    }, 500);
+                });
+                OlMap.map.getView().on('change:resolution', function(e) {
+                    if (timer != null) clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        if($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                    }, 500);
+                });
 
                 OlMap.map.addLayer(extent_layer);
                 $scope.datasources = [{
@@ -430,7 +449,7 @@ define(['angular', 'ol', 'map'],
                     type: "datatank"
                 }, {
                     title: "Micka",
-                    url: "http://cat.ccss.cz/csw/",
+                    url: "http://cat.ccss.cz/new/csw/",
                     language: 'eng',
                     type: "micka",
                     code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
