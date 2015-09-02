@@ -35,6 +35,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
                 base: true
             })
         ]);
+        
+        module.value('compositions_catalogue_url', 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php');
 
         module.value('default_view', new ol.View({
             center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator

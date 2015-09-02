@@ -195,7 +195,7 @@ min-width: 230px;
 .panel-body {
   padding: 3px;
 }
-.row {
+div.row {
   margin-right: 0px; 
   margin-left: 0px; 
 }

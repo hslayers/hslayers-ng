@@ -97,7 +97,7 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser',
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'compositions_catalogue_url',
             function($scope, $rootScope, OlMap, Core, composition_parser) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
@@ -141,7 +141,7 @@ define(['angular', 'ol', 'map'],
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
                     var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join() + "'") : '');
-                    var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&session=save&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var url = compositions_catalogue_url + "?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&session=save&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                     } else {
