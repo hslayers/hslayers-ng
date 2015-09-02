@@ -98,7 +98,7 @@ define(['angular', 'ol', 'map'],
         }])
 
         .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'compositions_catalogue_url',
-            function($scope, $rootScope, OlMap, Core, composition_parser) {
+            function($scope, $rootScope, OlMap, Core, composition_parser, compositions_catalogue_url) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
