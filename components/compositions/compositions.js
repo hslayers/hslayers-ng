@@ -224,13 +224,13 @@ define(['angular', 'ol', 'map'],
                 OlMap.map.getView().on('change:center', function(e) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(function() {
-                        if($scope.filter_by_extent) $scope.loadCompositions();
+                        if ($scope.filter_by_extent) $scope.loadCompositions();
                     }, 500);
                 });
                 OlMap.map.getView().on('change:resolution', function(e) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(function() {
-                        if($scope.filter_by_extent) $scope.loadCompositions();
+                        if ($scope.filter_by_extent) $scope.loadCompositions();
                     }, 500);
                 });
 

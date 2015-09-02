@@ -190,8 +190,8 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.advancedMickaTypeChanged = function() {
-                    if(typeof $scope.micka_ds =='undefined') return;
-                    if(typeof $scope.micka_ds.code_lists =='undefined') return;
+                    if (typeof $scope.micka_ds == 'undefined') return;
+                    if (typeof $scope.micka_ds.code_lists == 'undefined') return;
                     switch ($scope.query.type) {
                         case "service":
                             $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.serviceType;
@@ -247,10 +247,19 @@ define(['angular', 'ol', 'map'],
                             break;
                         case "micka":
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                            var bbox = $scope.filter_by_extent ? "and BBOX='" + b.join(' ') + "'" : ''; 
+                            var bbox = $scope.filter_by_extent ? "BBOX='" + b.join(' ') + "'" : '';
                             var ue = encodeURIComponent;
                             var text = typeof $scope.query.text_filter == 'undefined' || $scope.query.text_filter == '' ? $scope.query.title : $scope.query.text_filter;
-                            var query = $scope.text_field + ue(" like '*" + text + "*' " + bbox) + param2Query('type') + param2Query('ServiceType') + param2Query('topicCategory') + param2Query('Denominator');
+                            var query = [
+                                (text != '' ? $scope.text_field + ue(" like '*" + text + "*' ") : ''),
+                                ue(bbox),
+                                param2Query('type'),
+                                param2Query('ServiceType'),
+                                param2Query('topicCategory'),
+                                param2Query('Denominator')
+                            ].filter(function(n) {
+                                return n != ''
+                            }).join(' and ');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '') +
@@ -297,9 +306,9 @@ define(['angular', 'ol', 'map'],
                     if (typeof $scope.query[which] != 'undefined') {
                         if (which == 'type' && $scope.query[which] == 'data') {
                             //Special case for type 'data' because it can contain many things
-                            return encodeURIComponent(" and (type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
+                            return encodeURIComponent("(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
                         }
-                        return ($scope.query[which] != '' ? encodeURIComponent(" and " + which + "='" + $scope.query[which] + "'") : '')
+                        return ($scope.query[which] != '' ? encodeURIComponent(which + "='" + $scope.query[which] + "'") : '')
                     } else return '';
                 }
 
@@ -427,18 +436,18 @@ define(['angular', 'ol', 'map'],
                 $scope.clear = function() {
                     $scope.query.text_filter = "";
                 }
-                
+
                 var timer;
                 OlMap.map.getView().on('change:center', function(e) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(function() {
-                        if($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                        if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
                     }, 500);
                 });
                 OlMap.map.getView().on('change:resolution', function(e) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(function() {
-                        if($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                        if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
                     }, 500);
                 });
 
