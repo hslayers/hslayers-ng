@@ -253,7 +253,7 @@ define(['angular', 'ol', 'map'],
                             var query = [
                                 (text != '' ? $scope.text_field + ue(" like '*" + text + "*' ") : ''),
                                 ue(bbox),
-                                param2Query('type'),
+                                //param2Query('type'),
                                 param2Query('ServiceType'),
                                 param2Query('topicCategory'),
                                 param2Query('Denominator')
@@ -262,7 +262,7 @@ define(['angular', 'ol', 'map'],
                             }).join(' and ');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
-                                (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '') +
+                                (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby: '&sortby=bbox') +
                                 '&limit=10&start=' + ds.start;
                             if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                 url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
