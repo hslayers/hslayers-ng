@@ -452,11 +452,11 @@ define(['angular', 'ol', 'map'],
                 });
 
                 OlMap.map.addLayer(extent_layer);
-                $scope.datasources = [{
+                $scope.datasources = [/*{
                     title: "Datatank",
                     url: "http://ewi.mmlab.be/otn/api/info",
                     type: "datatank"
-                }, {
+                },*/ {
                     title: "Micka",
                     url: "http://cat.ccss.cz/csw/",
                     language: 'eng',
