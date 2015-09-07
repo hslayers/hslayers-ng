@@ -40,7 +40,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
         var species = {
             '"DB"@cs': 'dub letní, dub zimní, dub slavonský, dub pýřitý, dub bahenní, dub cer, ostatní duby',
             '"SM"@cs': 'smrk ztepilý',
-            '"SMX"@cs': 'smrk pichlavý, smrk černý, smrk sivý, smrk omorika, smrk Engelmannův, ostatní smrky',
+            '"SMX"@cs': 'smrk: pichlavý, černý, sivý, omorika, Engelmannův, ostatní smrky',
             '"JD"@cs': 'jedle bělokorá',
             '"JDO"@cs': 'jedle obrovská',
             '"BO"@cs': 'borovice lesní, borovice černá, borovice banksovka, borovice vejmutovka, borovice limba, borovice pokroucená, borovice ostatní',
