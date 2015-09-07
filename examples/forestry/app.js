@@ -65,7 +65,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
 
         module.value('default_view', new ol.View({
             center: [1490321.6967438285, 6400602.013496143], //Latitude longitude    to Spherical Mercator
-            zoom: 14,
+            zoom: 8,
             units: "m"
         }));
 
