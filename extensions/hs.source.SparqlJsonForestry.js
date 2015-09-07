@@ -14,6 +14,22 @@ define(function(require) {
                 if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
                 src.loaded = true;
+                
+                function getPrecision(scinum) {
+                    var arr = new Array();
+                    // Get the exponent after 'e', make it absolute.  
+                    arr = scinum.split('e');
+                    var exponent = Math.abs(arr[1]);
+
+                    // Add to it the number of digits between the '.' and the 'e'
+                    // to give our required precision.
+                    var precision = new Number(exponent);
+                    arr = arr[0].split('.');
+                    precision += arr[1].length;
+
+                    return precision;
+                }
+                
                 $.ajax({
                         url: p
                     })
@@ -21,16 +37,31 @@ define(function(require) {
                         var objects = {};
                         var min = Number.MAX_VALUE;
                         var max = Number.MIN_VALUE;
+                        
                         for (var i = 0; i < response.results.bindings.length; i++) {
                             var b = response.results.bindings[i];
                             if (typeof objects[b.o.value] === 'undefined') {
                                 objects[b.o.value] = {};
                             }
+                            if(b.s.datatype && b.s.datatype=='http://www.w3.org/2001/XMLSchema#double'){
+                                s = b.s.value;
+                                // Handle exponential numbers.
+                                if (s.match(/^[-+]?[1-9]\.[0-9]+e[-]?[1-9][0-9]*$/)) {
+                                    s = (+s).toFixed(getPrecision(s));
+                                }                               
+                                objects[b.o.value][b.p.value] = s;
+                            } else {
+                                objects[b.o.value][b.p.value] = b.s.value;
+                            }
+                            /*
                             objects[b.o.value].geom = b.geom.value;
                             objects[b.o.value].value = b.value.value;
                             objects[b.o.value].nut = b.nut.value;
-                            if (min > parseFloat(b.value.value)) min = parseFloat(b.value.value);
-                            if (max < parseFloat(b.value.value)) max = parseFloat(b.value.value);
+                            */
+                            if(b.p.value=='http://www.w3.org/1999/02/22-rdf-syntax-ns#value'){
+                                if (min > parseFloat(b.s.value)) min = parseFloat(objects[b.o.value][b.p.value]);
+                                if (max < parseFloat(b.s.value)) max = parseFloat(objects[b.o.value][b.p.value]);
+                            }
                         }
                         var features = [];
                         var i = 0.0;
@@ -61,26 +92,29 @@ define(function(require) {
                             var c = "rgba(" + ~~(r * 235) + "," + ~~(g * 235) + "," + ~~(b * 235) + ", " + opacity + ")";
                             return (c);
                         }
-                        var step = (max-min)/10.0;
-                        for (var c = 0; c <= 10; c++) {
+                        var step = (max-min)/7.0;
+                        for (var c = 0; c <= 7; c++) {
                             var l_bound = parseFloat((min + c*step));
                             var u_bound = parseFloat(min + (c+1.0)*step);
                             
                             category_map[c] = {
                                 name:  l_bound.toFixed(2)+ " - " + u_bound.toFixed(2)  ,
-                                color: rainbow(10, c, 0.7)
+                                color: rainbow(7, c, 0.7)
                             };
                         }
 
                         for (var key in objects) {
                             i++;
-                            var format = new ol.format.WKT();
-                            var feature = format.readFeature(objects[key].geom);
-                            feature.set('Value', objects[key].value);
-                            feature.set('Nuts region', objects[key].nut);
-                            feature.color = rainbow(10, parseInt((objects[key].value - min) / ((max - min) / 10)), 0.7);
-                            feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
-                            features.push(feature);
+                            if(objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry']){
+                                var format = new ol.format.WKT();
+                                var g_feature = format.readFeature(objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry']);
+                                objects[key].geometry = g_feature.getGeometry();
+                                objects[key].geometry.transform('EPSG:4326', 'EPSG:3857');
+                                delete objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry'];
+                                var feature = new ol.Feature(objects[key]);
+                                feature.color = rainbow(7, parseInt((objects[key]['http://www.w3.org/1999/02/22-rdf-syntax-ns#value'] - min) / ((max - min) / 7)), 0.7);
+                                features.push(feature);
+                            }
                         }
                         src.addFeatures(features);
                     });
