@@ -67,7 +67,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 }),
                 type: 'vector',
                 style: style,
-                visible: true,
+                visible: false,
                 path: 'Species area'
             }));
         });
@@ -89,7 +89,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 }),
                 type: 'vector',
                 style: style,
-                visible: true,
+                visible: false,
                 path: 'Lying dead timber'
             }));
         });
@@ -115,7 +115,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                         }),
                         type: 'vector',
                         style: style,
-                        visible: true,
+                        visible: false,
                         path: title
                     }));
             });
@@ -133,7 +133,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 }),
                 type: 'vector',
                 style: style,
-                visible: true,
+                visible: false
             })
         }
 
@@ -188,7 +188,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
 
 
         module.value('default_view', new ol.View({
-            center: [1490321.6967438285, 6400602.013496143], //Latitude longitude    to Spherical Mercator
+            center: [1797667.4092597375, 6429205.069843884], //Latitude longitude    to Spherical Mercator
             zoom: 8,
             units: "m"
         }));
