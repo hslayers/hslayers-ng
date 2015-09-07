@@ -35,7 +35,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
                 base: true
             })
         ]);
-        
+
         module.value('compositions_catalogue_url', 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php');
 
         module.value('default_view', new ol.View({

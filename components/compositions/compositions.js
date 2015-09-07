@@ -90,7 +90,7 @@ define(['angular', 'ol', 'map'],
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':
-                                if(lyr.protocol && lyr.protocol.format.className == 'OpenLayers.Format.KML'){
+                                if (lyr.protocol && lyr.protocol.format.className == 'OpenLayers.Format.KML') {
                                     var url = lyr.protocol.optoions.url;
                                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
@@ -158,7 +158,7 @@ define(['angular', 'ol', 'map'],
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
                     var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    var bbox_delimiter = compositions_catalogue_url.indexOf('cswClientRun.php')>0? ',':' ';
+                    var bbox_delimiter = compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
                     var url = compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {

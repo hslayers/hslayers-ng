@@ -262,7 +262,7 @@ define(['angular', 'ol', 'map'],
                             }).join(' and ');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
-                                (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby: '&sortby=bbox') +
+                                (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
                                 '&limit=10&start=' + ds.start;
                             if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                 url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
@@ -452,17 +452,20 @@ define(['angular', 'ol', 'map'],
                 });
 
                 OlMap.map.addLayer(extent_layer);
-                $scope.datasources = [/*{
-                    title: "Datatank",
-                    url: "http://ewi.mmlab.be/otn/api/info",
-                    type: "datatank"
-                },*/ {
-                    title: "Micka",
-                    url: "http://cat.ccss.cz/csw/",
-                    language: 'eng',
-                    type: "micka",
-                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
-                }];
+                $scope.datasources = [
+                    /*{
+                                        title: "Datatank",
+                                        url: "http://ewi.mmlab.be/otn/api/info",
+                                        type: "datatank"
+                                    },*/
+                    {
+                        title: "Micka",
+                        url: "http://cat.ccss.cz/csw/",
+                        language: 'eng',
+                        type: "micka",
+                        code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                    }
+                ];
 
                 $scope.loadDatasets($scope.datasources);
                 $scope.fillCodesets($scope.datasources);
