@@ -14,7 +14,7 @@ define(function(require) {
                 if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
                 src.loaded = true;
-                
+
                 function getPrecision(scinum) {
                     var arr = new Array();
                     // Get the exponent after 'e', make it absolute.  
@@ -29,7 +29,7 @@ define(function(require) {
 
                     return precision;
                 }
-                
+
                 $.ajax({
                         url: p
                     })
@@ -37,19 +37,14 @@ define(function(require) {
                         var objects = {};
                         var min = Number.MAX_VALUE;
                         var max = Number.MIN_VALUE;
-                        
+
                         for (var i = 0; i < response.results.bindings.length; i++) {
                             var b = response.results.bindings[i];
                             if (typeof objects[b.o.value] === 'undefined') {
                                 objects[b.o.value] = {};
                             }
-                            if(b.s.datatype && b.s.datatype=='http://www.w3.org/2001/XMLSchema#double'){
-                                s = b.s.value;
-                                // Handle exponential numbers.
-                                if (s.match(/^[-+]?[1-9]\.[0-9]+e[-]?[1-9][0-9]*$/)) {
-                                    s = (+s).toFixed(getPrecision(s));
-                                }                               
-                                objects[b.o.value][b.p.value] = s;
+                            if (b.s.datatype && b.s.datatype == 'http://www.w3.org/2001/XMLSchema#double') {
+                                objects[b.o.value][b.p.value] = parseFloat(b.s.value).toFixed(2);
                             } else {
                                 objects[b.o.value][b.p.value] = b.s.value;
                             }
@@ -58,7 +53,7 @@ define(function(require) {
                             objects[b.o.value].value = b.value.value;
                             objects[b.o.value].nut = b.nut.value;
                             */
-                            if(b.p.value=='http://www.w3.org/1999/02/22-rdf-syntax-ns#value'){
+                            if (b.p.value == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value') {
                                 if (min > parseFloat(b.s.value)) min = parseFloat(objects[b.o.value][b.p.value]);
                                 if (max < parseFloat(b.s.value)) max = parseFloat(objects[b.o.value][b.p.value]);
                             }
@@ -92,20 +87,20 @@ define(function(require) {
                             var c = "rgba(" + ~~(r * 235) + "," + ~~(g * 235) + "," + ~~(b * 235) + ", " + opacity + ")";
                             return (c);
                         }
-                        var step = (max-min)/7.0;
+                        var step = (max - min) / 7.0;
                         for (var c = 0; c <= 7; c++) {
-                            var l_bound = parseFloat((min + c*step));
-                            var u_bound = parseFloat(min + (c+1.0)*step);
-                            
+                            var l_bound = parseFloat((min + c * step));
+                            var u_bound = parseFloat(min + (c + 1.0) * step);
+
                             category_map[c] = {
-                                name:  l_bound.toFixed(2)+ " - " + u_bound.toFixed(2)  ,
+                                name: l_bound.toFixed(2) + " - " + u_bound.toFixed(2),
                                 color: rainbow(7, c, 0.7)
                             };
                         }
 
                         for (var key in objects) {
                             i++;
-                            if(objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry']){
+                            if (objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry']) {
                                 var format = new ol.format.WKT();
                                 var g_feature = format.readFeature(objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry']);
                                 objects[key].geometry = g_feature.getGeometry();

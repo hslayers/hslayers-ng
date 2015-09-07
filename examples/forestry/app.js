@@ -37,31 +37,31 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
             }
         }
 
-        var species ={
-            '"DB"@cs':	'dub letní, dub zimní, dub slavonský, dub pýřitý, dub bahenní, dub cer, ostatní duby',  
-            '"SM"@cs':	'smrk ztepilý',  
-            '"SMX"@cs':	'smrk pichlavý, smrk černý, smrk sivý, smrk omorika, smrk Engelmannův, ostatní smrky',  
-            '"JD"@cs':	'jedle bělokorá',  
-            '"JDO"@cs':	'jedle obrovská',  
-            '"BO"@cs':	'borovice lesní, borovice černá, borovice banksovka, borovice vejmutovka, borovice limba, borovice pokroucená, borovice ostatní',  
-            '"KOS"@cs':	'kosodřevina, borovice blatka',  
-            '"MD"@cs':	'modřín evropský, ostatní modříny',  
-            '"DG"@cs':	'douglaska tisolistá',  
-            '"JX"@cs':	'ostatní jehličnany',  
-            '"DBC"@cs':	'dub červený',  
-            '"BK"@cs':	'buk lesní',  
-            '"HB"@cs':	'habr obecný',  
-            '"JS"@cs':	'jasan ztepilý, jasan americký, jasan úzkolistý',  
-            '"J_SUM"@cs':	'Jehličnany – všechny druhy jehličnatých dřevin.',  
-            '"L_SUM"@cs':	'Listnáče – všechny druhy listnatých dřevin.',  
-            '"všechny kategorie"@cs':	'Výstup není tříděn dle atributových domén.',  
+        var species = {
+            '"DB"@cs': 'dub letní, dub zimní, dub slavonský, dub pýřitý, dub bahenní, dub cer, ostatní duby',
+            '"SM"@cs': 'smrk ztepilý',
+            '"SMX"@cs': 'smrk pichlavý, smrk černý, smrk sivý, smrk omorika, smrk Engelmannův, ostatní smrky',
+            '"JD"@cs': 'jedle bělokorá',
+            '"JDO"@cs': 'jedle obrovská',
+            '"BO"@cs': 'borovice lesní, borovice černá, borovice banksovka, borovice vejmutovka, borovice limba, borovice pokroucená, borovice ostatní',
+            '"KOS"@cs': 'kosodřevina, borovice blatka',
+            '"MD"@cs': 'modřín evropský, ostatní modříny',
+            '"DG"@cs': 'douglaska tisolistá',
+            '"JX"@cs': 'ostatní jehličnany',
+            '"DBC"@cs': 'dub červený',
+            '"BK"@cs': 'buk lesní',
+            '"HB"@cs': 'habr obecný',
+            '"JS"@cs': 'jasan ztepilý, jasan americký, jasan úzkolistý',
+            '"J_SUM"@cs': 'Jehličnany – všechny druhy jehličnatých dřevin.',
+            '"L_SUM"@cs': 'Listnáče – všechny druhy listnatých dřevin.',
+            '"všechny kategorie"@cs': 'Výstup není tříděn dle atributových domén.'
         }
-        var specie_lyrs=[];
-        angular.forEach(species, function(value, key){
+        var specie_lyrs = [];
+        angular.forEach(species, function(value, key) {
             specie_lyrs.push(new ol.layer.Vector({
                 title: value,
                 source: new SparqlJsonForestry({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/species_area/species_area.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#species_area>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> '+key+'. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> '+key+'. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/species_area/species_area.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#species_area>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
                     projection: 'EPSG:3857'
                 }),
@@ -71,49 +71,118 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 path: 'Species area'
             }));
         });
-        
+
+        var zakoni = {
+            '"kategorie lesů zvláštního určení"@cs': 'Kategorie lesa dle zákona – lesy zvláštního určení.',
+            '"kategorie lesů hospodářských"@cs': 'Kategorie lesa dle zákona – lesy hospodářské.',
+            '"kategorie lesů ochranných"@cs': 'Kategorie lesa dle zákona – lesy ochranné.'
+        }
+
+        var zakoni_lyrs = [];
+        angular.forEach(zakoni, function(value, key) {
+            zakoni_lyrs.push(new ol.layer.Vector({
+                title: value,
+                source: new SparqlJsonForestry({
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/lying_dead_timber/lying_dead_timber.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#lying_dead_timber>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    category_field: 'http://gis.zcu.cz/poi#category_osm',
+                    projection: 'EPSG:3857'
+                }),
+                type: 'vector',
+                style: style,
+                visible: true,
+                path: 'Lying dead timber'
+            }));
+        });
+
+        var silvicultural = {
+            '"tvar lesa nehodnocen"@cs': 'Tvar lesa nehodnocen.',
+            '"les vysoký"@cs': 'Vysoký les je charakterizován původem výhradně generativním (síje, sadba, přirozené zmlazení).',
+            '"les nízký"@cs': 'Les nízký vzniká systematicky se opakující vegetativní obnovou pařezovými nebo kořenovými výmladky. ',
+            '"les střední"@cs': 'Les střední je kombinací lesa vysokého a nízkého - je tvořen spodní výmladkovou etáží doplněnou etáží z generativně založených jedinců.'
+        }
+
+
+        function create1DimensionLayers(domains, title, url, obj) {
+            var lyrs = [];
+            angular.forEach(domains, function(value, key) {
+                lyrs.push(
+                    new ol.layer.Vector({
+                        title: value,
+                        source: new SparqlJsonForestry({
+                            url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#' + obj + '>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                            category_field: 'http://gis.zcu.cz/poi#category_osm',
+                            projection: 'EPSG:3857'
+                        }),
+                        type: 'vector',
+                        style: style,
+                        visible: true,
+                        path: title
+                    }));
+            });
+            return lyrs;
+        }
+
+
+        function createOneDimensionLayer(title, url, obj) {
+            return new ol.layer.Vector({
+                title: title,
+                source: new SparqlJsonForestry({
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#' + obj + '>. ?o ?p ?s. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    category_field: 'http://gis.zcu.cz/poi#category_osm',
+                    projection: 'EPSG:3857'
+                }),
+                type: 'vector',
+                style: style,
+                visible: true,
+            })
+        }
+
+
         module.value('box_layers', [new ol.layer.Group({
             title: '',
             layers: [new ol.layer.Tile({
-                source: new ol.source.OSM({
-                    wrapX: false
+                    source: new ol.source.OSM({
+                        wrapX: false
+                    }),
+                    title: "Base layer",
+                    base: true
                 }),
-                title: "Base layer",
-                base: true
-            }), new ol.layer.Vector({
-                title: 'Forest cover',
-                source: new SparqlJsonForestry({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/forest_cover/forest_cover.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#forest_cover>. ?o ?p ?s. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    category_field: 'http://gis.zcu.cz/poi#category_osm',
-                    projection: 'EPSG:3857'
-                }),
-                type: 'vector',
-                style: style,
-                visible: true,
-            }), new ol.layer.Vector({
-                title: 'Average growing stock per hectare',
-                source: new SparqlJsonForestry({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#average_growing_stock_per_hectare>. ?o ?p ?s. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    category_field: 'http://gis.zcu.cz/poi#category_osm',
-                    projection: 'EPSG:3857'
-                }),
-                type: 'vector',
-                style: style,
-                visible: true,
-            }), new ol.layer.Vector({
-                title: 'Total forest area',
-                source: new SparqlJsonForestry({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#total_forest_area>. ?o ?p ?s. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    category_field: 'http://gis.zcu.cz/poi#category_osm',
-                    projection: 'EPSG:3857'
-                }),
-                type: 'vector',
-                style: style,
-                visible: true,
-            })].concat(specie_lyrs)
+                createOneDimensionLayer('Forest cover', 'http://nil.uhul.cz/lod/forest_cover/forest_cover.rdf', 'forest_cover'),
+                createOneDimensionLayer('Average growing stock per hectare', 'http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf', 'average_growing_stock_per_hectare'),
+                createOneDimensionLayer('Total forest area', 'http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf', 'total_forest_area'),
+                createOneDimensionLayer('Total growing stock', 'http://nil.uhul.cz/lod/total_growing_stock/total_growing_stock.rdf', 'total_growing_stock')
+            ].concat(specie_lyrs).concat(zakoni_lyrs).concat(create1DimensionLayers(silvicultural, 'Silvicultural system', 'http://nil.uhul.cz/lod/silvicultural_system/silvicultural_system.rdf', 'silvicultural_system'))
+            .concat(create1DimensionLayers({
+                '"les nízký"@cs': 'Les nízký vzniká systematicky se opakující vegetativní obnovou pařezovými nebo kořenovými výmladky. ',
+                '"tvar lesa nehodnocen"@cs': 'Tvar lesa nehodnocen.',
+                '"les vysoký"@cs': 'Vysoký les je charakterizován původem výhradně generativním (síje, sadba, přirozené zmlazení).',
+                '"les střední"@cs': 'Les střední je kombinací lesa vysokého a nízkého - je tvořen spodní výmladkovou etáží doplněnou etáží z generativně založených jedinců.'
+            }, 'Stand richness', 'http://nil.uhul.cz/lod/stand_richness/stand_richness.rdf', 'stand_richness'))
+            
+            .concat(create1DimensionLayers({
+                '"věkový stupeň 15"@cs': 'Věkový stupeň 15 – věk 141 až 150 let',
+                '"věkový stupeň 1"@cs': 'Věkový stupeň 1 – věk 1 až 10 let',
+                '"věkový stupeň 2"@cs': 'Věkový stupeň 2 – věk 11 až 20 let',
+                '"věkový stupeň 3"@cs': 'Věkový stupeň 3 – věk 21 až 30 let',
+                '"věkový stupeň 4"@cs': 'Věkový stupeň 4 – věk 31 až 40 let',
+                '"věkový stupeň 5"@cs': 'Věkový stupeň 5 – věk 41 až 50 let',
+                '"věkový stupeň 6"@cs': 'Věkový stupeň 6 – věk 51 až 60 let',
+                '"věkový stupeň 7"@cs': 'Věkový stupeň 7 – věk 61 až 70 let',
+                '"věkový stupeň 8"@cs': 'Věkový stupeň 8 – věk 71 až 80 let',
+                '"věkový stupeň 9"@cs': 'Věkový stupeň 9 – věk 81 až 90 let',
+                '"věkový stupeň 10"@cs': 'Věkový stupeň 10 – věk 91 až 100 let',
+                '"věkový stupeň 11"@cs': 'Věkový stupeň 11 – věk 101 až 110 let',
+                '"věkový stupeň 12"@cs': 'Věkový stupeň 12 – věk 111 až 120 let',
+                '"věkový stupeň 13"@cs': 'Věkový stupeň 13 – věk 121 až 130 let',
+                '"věkový stupeň 14"@cs': 'Věkový stupeň 14 – věk 131 až 140 let',
+                '"věkový stupeň 16"@cs': 'Věkový stupeň 16 – věk 151 až 160 let',
+                '"věkový stupeň 17"@cs': 'Věkový stupeň 17+ – věk 161 a více let'
+            }, 'Vegetation tiers', 'http://nil.uhul.cz/lod/vegetation_tiers/vegetation_tiers.rdf', 'vegetation_tiers'))
         })]);
-        
-        
+
+
+
+
 
         module.value('default_layers', []);
 
