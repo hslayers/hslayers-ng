@@ -61,8 +61,17 @@ define(function(require) {
                         var features = [];
                         var i = 0.0;
                         var green = function(numOfSteps, step, opacity) {
-                            var c = "rgba(76, 137, 101, " + (step / numOfSteps) + ")";
-                            return (c);
+                            
+var a = [
+'228, 251, 203',
+'198, 229, 171',
+'168, 208, 140',
+'139, 187, 109',
+'109, 165, 77',
+'79, 144, 46',
+'50, 123, 15']
+
+                            return 'rgba('+a[step]+', 0.7)';
                         }
                         var step = (max - min) / 7.0;
                         for (var c = 0; c <= 7; c++) {
