@@ -71,7 +71,7 @@ define(function(require) {
 
                             category_map[c] = {
                                 name: l_bound.toFixed(2) + " - " + u_bound.toFixed(2),
-                                color: green(7, c, 0.7)
+                                color: green(7, c, 1)
                             };
                         }
 
@@ -84,7 +84,7 @@ define(function(require) {
                                 objects[key].geometry.transform('EPSG:4326', 'EPSG:3857');
                                 delete objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry'];
                                 var feature = new ol.Feature(objects[key]);
-                                feature.color = green(7, parseInt((objects[key]['http://www.w3.org/1999/02/22-rdf-syntax-ns#value'] - min) / ((max - min) / 7)), 0.7);
+                                feature.color = green(7, parseInt((objects[key]['http://www.w3.org/1999/02/22-rdf-syntax-ns#value'] - min) / ((max - min) / 7)), 1);
                                 features.push(feature);
                             }
                         }
