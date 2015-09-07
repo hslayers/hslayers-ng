@@ -60,31 +60,8 @@ define(function(require) {
                         }
                         var features = [];
                         var i = 0.0;
-                        var rainbow = function(numOfSteps, step, opacity) {
-                            // based on http://stackoverflow.com/a/7419630
-                            // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
-                            // Adam Cole, 2011-Sept-14
-                            // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
-                            var r, g, b;
-                            var h = step / (numOfSteps * 1.00000001);
-                            var i = ~~(h * 4);
-                            var f = h * 4 - i;
-                            var q = 1 - f;
-                            switch (i % 4) {
-                                case 2:
-                                    r = f, g = 1, b = 0;
-                                    break;
-                                case 0:
-                                    r = 0, g = f, b = 1;
-                                    break;
-                                case 3:
-                                    r = 1, g = q, b = 0;
-                                    break;
-                                case 1:
-                                    r = 0, g = 1, b = q;
-                                    break;
-                            }
-                            var c = "rgba(" + ~~(r * 235) + "," + ~~(g * 235) + "," + ~~(b * 235) + ", " + opacity + ")";
+                        var green = function(numOfSteps, step, opacity) {
+                            var c = "rgba(76, 137, 101, " + (step / numOfSteps) + ")";
                             return (c);
                         }
                         var step = (max - min) / 7.0;
@@ -94,7 +71,7 @@ define(function(require) {
 
                             category_map[c] = {
                                 name: l_bound.toFixed(2) + " - " + u_bound.toFixed(2),
-                                color: rainbow(7, c, 0.7)
+                                color: green(7, c, 0.7)
                             };
                         }
 
@@ -107,7 +84,7 @@ define(function(require) {
                                 objects[key].geometry.transform('EPSG:4326', 'EPSG:3857');
                                 delete objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry'];
                                 var feature = new ol.Feature(objects[key]);
-                                feature.color = rainbow(7, parseInt((objects[key]['http://www.w3.org/1999/02/22-rdf-syntax-ns#value'] - min) / ((max - min) / 7)), 0.7);
+                                feature.color = green(7, parseInt((objects[key]['http://www.w3.org/1999/02/22-rdf-syntax-ns#value'] - min) / ((max - min) / 7)), 0.7);
                                 features.push(feature);
                             }
                         }
