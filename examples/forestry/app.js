@@ -3,6 +3,25 @@
 define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'bootstrap', 'api'],
 
     function(ol, dc, toolbar, layermanager, SparqlJsonForestry) {
+        proj4.defs('EPSG:5514', '+title=S-JTSK Krovak +proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813975277778 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +units=m +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 no_defs <>');
+        var jtsk = ol.proj.get('EPSG:5514');
+        var jtskExtent = [-925000.000000000000, -1444353.535999999800, -400646.464000000040, -920000.000000000000];
+        //var jtskExtent = [-905000.000000000000, -1228000.000000000000, -430000.000000000000, -934000.000000000000];
+        jtsk.setExtent(jtskExtent);
+        var jtskSize = ol.extent.getWidth(jtskExtent) / 256;
+        var jtskResolutions = new Array(14);
+        var jtskMatrixIds = new Array(14);
+        for (var z = 0; z < 14; ++z) {
+              jtskResolutions[z] = jtskSize / Math.pow(2, z);
+              jtskMatrixIds[z] = z;
+        }
+
+        var tileGrid =   new ol.tilegrid.WMTS({
+            origin: ol.extent.getTopLeft(jtskExtent),
+            resolutions: jtskResolutions,
+            matrixIds: jtskMatrixIds
+        });
+        
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -63,7 +82,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 source: new SparqlJsonForestry({
                     url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/species_area/species_area.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#species_area>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
-                    projection: 'EPSG:3857'
+                    projection: 'EPSG:5514'
                 }),
                 type: 'vector',
                 style: style,
@@ -85,7 +104,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 source: new SparqlJsonForestry({
                     url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/lying_dead_timber/lying_dead_timber.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#lying_dead_timber>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
-                    projection: 'EPSG:3857'
+                    projection: 'EPSG:5514'
                 }),
                 type: 'vector',
                 style: style,
@@ -111,7 +130,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                         source: new SparqlJsonForestry({
                             url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#' + obj + '>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                             category_field: 'http://gis.zcu.cz/poi#category_osm',
-                            projection: 'EPSG:3857'
+                            projection: 'EPSG:5514'
                         }),
                         type: 'vector',
                         style: style,
@@ -129,7 +148,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 source: new SparqlJsonForestry({
                     url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#' + obj + '>. ?o ?p ?s. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
-                    projection: 'EPSG:3857'
+                    projection: 'EPSG:5514'
                 }),
                 type: 'vector',
                 style: style,
@@ -140,13 +159,38 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
 
         module.value('box_layers', [new ol.layer.Group({
             title: '',
-            layers: [new ol.layer.Tile({
-                        source: new ol.source.OSM({
-                            wrapX: false
-                        }),
-                        title: "Base layer",
-                        base: true
+            layers: [
+                new ol.layer.Tile({
+                    title: "BaseMap",
+                    source: new ol.source.WMTS({
+                        extent: jtskExtent,
+                        format: "image/jpeg",
+                        layer: "zm",
+                        matrixSet: "jtsk:epsg:5514",
+                        projection: jtsk,
+                        style: 'inspire_common:DEFAULT',
+                        tileGrid: tileGrid,
+                        url: "http://geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx",
+                        version: "1.0.0"
                     }),
+                    visible: true
+                }),
+
+                new ol.layer.Tile({
+                    title: "Ortofoto",
+                    source: new ol.source.WMTS({
+                        extent: jtskExtent,
+                        format: "image/jpeg",
+                        layer: "orto",
+                        matrixSet: "jtsk:epsg:5514",
+                        projection: jtsk,
+                        style: 'inspire_common:DEFAULT',
+                        tileGrid: tileGrid,
+                        url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
+                        version: "1.0.0"
+                    }),
+                    visible: true
+                }),
                     createOneDimensionLayer('Forest cover', 'http://nil.uhul.cz/lod/forest_cover/forest_cover.rdf', 'forest_cover'),
                     createOneDimensionLayer('Average growing stock per hectare', 'http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf', 'average_growing_stock_per_hectare'),
                     createOneDimensionLayer('Total forest area', 'http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf', 'total_forest_area'),
@@ -188,10 +232,11 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
 
 
         module.value('default_view', new ol.View({
-            center: [1797667.4092597375, 6429205.069843884], //Latitude longitude    to Spherical Mercator
-            zoom: 8,
-            units: "m"
-        }));
+        center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
+        zoom: 2,
+        projection: jtsk,
+        units: "m"
+    }));
 
         module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel',
             function($scope, $filter, Core, OlMap, InfoPanelService) {
