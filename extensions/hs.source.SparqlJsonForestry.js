@@ -90,7 +90,7 @@ var a = [
                                 var format = new ol.format.WKT();
                                 var g_feature = format.readFeature(objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry']);
                                 objects[key].geometry = g_feature.getGeometry();
-                                objects[key].geometry.transform('EPSG:4326', 'EPSG:3857');
+                                objects[key].geometry.transform('EPSG:4326', options.projection);
                                 delete objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry'];
                                 var feature = new ol.Feature(objects[key]);
                                 feature.color = green(7, parseInt((objects[key]['http://www.w3.org/1999/02/22-rdf-syntax-ns#value'] - min) / ((max - min) / 7)), 1);
