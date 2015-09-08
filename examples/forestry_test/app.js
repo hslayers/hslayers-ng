@@ -4,7 +4,7 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
 
     function(ol, dc, toolbar, proj4, layermanager, SparqlJsonForestry) {
         proj4.defs('EPSG:5514', '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=589,76,480,0,0,0,0 +units=m +no_defs');             
-        console.log(ol.proj.get('EPSG:3857'));
+        console.log(ol.proj.get('EPSG:5514'));
 
         var module = angular.module('hs', [
             'hs.toolbar',
