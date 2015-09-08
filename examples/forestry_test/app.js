@@ -4,6 +4,13 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
 
     function(ol, dc, toolbar, proj4, layermanager, SparqlJsonForestry) {
         proj4.defs('EPSG:5514', '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=589,76,480,0,0,0,0 +units=m +no_defs');             
+        ol.proj.addProjection(new ol.proj.Projection({
+            code: 'EPSG:5514',
+            // The extent is used to determine zoom level 0. Recommended values for a
+            // projection's validity extent can be found at http://epsg.io/.
+            extent: [-951499.37, -1276279.09,-159365.31, -983013.08],
+            units: 'm'
+        }));
         console.log(ol.proj.get('EPSG:5514'));
 
         var module = angular.module('hs', [
@@ -143,7 +150,19 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
 
         module.value('box_layers', [new ol.layer.Group({
             title: '',
-            layers: [
+            layers: [new ol.layer.Tile({
+                        title: "Ortofoto",
+                        source: new ol.source.TileWMS({
+                            url: 'http://geoportal.cuzk.cz/WMS_ORTOFOTO_PUB/service.svc/get',
+                            params: {
+                                LAYERS: 'GR_ORTFOTORGB',
+                                INFO_FORMAT: 'text/plain',
+                                FORMAT: "image/png"
+                            },
+                            crossOrigin: null
+                        }),
+                        visible: true
+                    }),
                     createOneDimensionLayer('Forest cover', 'http://nil.uhul.cz/lod/forest_cover/forest_cover.rdf', 'forest_cover'),
                     createOneDimensionLayer('Average growing stock per hectare', 'http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf', 'average_growing_stock_per_hectare'),
                     createOneDimensionLayer('Total forest area', 'http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf', 'total_forest_area'),

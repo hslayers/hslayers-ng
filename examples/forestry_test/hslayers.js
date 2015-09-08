@@ -19,7 +19,7 @@ require.config({
         measure: hsl_path + 'components/measure/measure',
         legend: hsl_path + 'components/legend/legend',
         app: 'app',
-        ol: hsl_path + 'bower_components/ol3/build/ol-debug',
+        ol: hsl_path + 'bower_components/ol3/build/ol',
         panoramio: hsl_path + 'components/panoramio/panoramio',
         core: hsl_path + 'components/core/core',
         SparqlJsonForestry: hsl_path + 'extensions/hs.source.SparqlJsonForestry',

@@ -42,7 +42,7 @@ define(['angular', 'ol', 'map'],
                         })
                         $scope.layers.push({
                             title: layer.get("title"),
-                            layer: layer,
+                            lyr: layer,
                             type: 'wms',
                             sub_layers: sub_layers,
                             visible: layer.getVisible()
