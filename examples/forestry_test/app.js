@@ -3,7 +3,7 @@
 define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'bootstrap', 'api'],
 
     function(ol, dc, toolbar, proj4, layermanager, SparqlJsonForestry) {
-        proj4.defs('EPSG:5514', '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=589,76,480,0,0,0,0 +units=m +no_defs');             
+        proj4.defs('EPSG:5514', '+title=S-JTSK Krovak +proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813975277778 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +units=m +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 no_defs <>');             
         ol.proj.addProjection(new ol.proj.Projection({
             code: 'EPSG:5514',
             // The extent is used to determine zoom level 0. Recommended values for a
@@ -148,7 +148,21 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
 
         module.value('box_layers', [new ol.layer.Group({
             title: '',
-            layers: [new ol.layer.Tile({
+            layers: [
+            new ol.layer.Tile({
+                        title: "Forests",
+                        source: new ol.source.TileWMS({
+                            url: 'http://gis.bnhelp.cz/cgi-bin/crtopo',
+                            params: {
+                                LAYERS: 'les_detail',
+                                INFO_FORMAT: undefined,
+                                FORMAT: "image/png"
+                            },
+                            crossOrigin: null
+                        }),
+                    }),
+            
+            new ol.layer.Tile({
                         title: "Ortofoto",
                         source: new ol.source.WMTS({
                             url: 'http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx',
