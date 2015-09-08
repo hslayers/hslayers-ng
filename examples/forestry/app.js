@@ -141,25 +141,25 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
         module.value('box_layers', [new ol.layer.Group({
             title: '',
             layers: [new ol.layer.Tile({
-                    source: new ol.source.OSM({
-                        wrapX: false
+                        source: new ol.source.OSM({
+                            wrapX: false
+                        }),
+                        title: "Base layer",
+                        base: true
                     }),
-                    title: "Base layer",
-                    base: true
-                }),
-                createOneDimensionLayer('Forest cover', 'http://nil.uhul.cz/lod/forest_cover/forest_cover.rdf', 'forest_cover'),
-                createOneDimensionLayer('Average growing stock per hectare', 'http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf', 'average_growing_stock_per_hectare'),
-                createOneDimensionLayer('Total forest area', 'http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf', 'total_forest_area'),
-                createOneDimensionLayer('Total growing stock', 'http://nil.uhul.cz/lod/total_growing_stock/total_growing_stock.rdf', 'total_growing_stock')
-            ].concat(specie_lyrs).concat(zakoni_lyrs).concat(create1DimensionLayers(silvicultural, 'Silvicultural system', 'http://nil.uhul.cz/lod/silvicultural_system/silvicultural_system.rdf', 'silvicultural_system'))
-            .concat(create1DimensionLayers({
-                '"les nízký"@cs': 'Les nízký vzniká systematicky se opakující vegetativní obnovou pařezovými nebo kořenovými výmladky. ',
-                '"tvar lesa nehodnocen"@cs': 'Tvar lesa nehodnocen.',
-                '"les vysoký"@cs': 'Vysoký les je charakterizován původem výhradně generativním (síje, sadba, přirozené zmlazení).',
-                '"les střední"@cs': 'Les střední je kombinací lesa vysokého a nízkého - je tvořen spodní výmladkovou etáží doplněnou etáží z generativně založených jedinců.'
-            }, 'Stand richness', 'http://nil.uhul.cz/lod/stand_richness/stand_richness.rdf', 'stand_richness'))
-            
-            .concat(create1DimensionLayers({
+                    createOneDimensionLayer('Forest cover', 'http://nil.uhul.cz/lod/forest_cover/forest_cover.rdf', 'forest_cover'),
+                    createOneDimensionLayer('Average growing stock per hectare', 'http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf', 'average_growing_stock_per_hectare'),
+                    createOneDimensionLayer('Total forest area', 'http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf', 'total_forest_area'),
+                    createOneDimensionLayer('Total growing stock', 'http://nil.uhul.cz/lod/total_growing_stock/total_growing_stock.rdf', 'total_growing_stock')
+                ].concat(specie_lyrs).concat(zakoni_lyrs).concat(create1DimensionLayers(silvicultural, 'Silvicultural system', 'http://nil.uhul.cz/lod/silvicultural_system/silvicultural_system.rdf', 'silvicultural_system'))
+                .concat(create1DimensionLayers({
+                    '"les nízký"@cs': 'Les nízký vzniká systematicky se opakující vegetativní obnovou pařezovými nebo kořenovými výmladky. ',
+                    '"tvar lesa nehodnocen"@cs': 'Tvar lesa nehodnocen.',
+                    '"les vysoký"@cs': 'Vysoký les je charakterizován původem výhradně generativním (síje, sadba, přirozené zmlazení).',
+                    '"les střední"@cs': 'Les střední je kombinací lesa vysokého a nízkého - je tvořen spodní výmladkovou etáží doplněnou etáží z generativně založených jedinců.'
+                }, 'Stand richness', 'http://nil.uhul.cz/lod/stand_richness/stand_richness.rdf', 'stand_richness'))
+
+                .concat(create1DimensionLayers({
                 '"věkový stupeň 15"@cs': 'Věkový stupeň 15 – věk 141 až 150 let',
                 '"věkový stupeň 1"@cs': 'Věkový stupeň 1 – věk 1 až 10 let',
                 '"věkový stupeň 2"@cs': 'Věkový stupeň 2 – věk 11 až 20 let',

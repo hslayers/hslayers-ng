@@ -328,10 +328,10 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     });
                 });
             }
-            
-            $scope.hasBoxLayers = function(){
-                for(vari=0;i< box_layers.length; i++){
-                    if(box_layers[i].img) return true;
+
+            $scope.hasBoxLayers = function() {
+                for (vari = 0; i < box_layers.length; i++) {
+                    if (box_layers[i].img) return true;
                 }
                 return false;
             }
