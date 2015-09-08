@@ -229,8 +229,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
 
 
         module.value('default_view', new ol.View({
-           center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
-            zoom: 4,
+            center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
+            zoom: 2,
             projection: jtsk,
             units: "m"
         }));
