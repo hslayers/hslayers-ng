@@ -11,8 +11,6 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
             extent: [-951499.37, -1276279.09,-159365.31, -983013.08],
             units: 'm'
         }));
-        console.log(ol.proj.get('EPSG:5514'));
-
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -152,13 +150,13 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
             title: '',
             layers: [new ol.layer.Tile({
                         title: "Ortofoto",
-                        source: new ol.source.TileWMS({
-                            url: 'http://geoportal.cuzk.cz/WMS_ORTOFOTO_PUB/service.svc/get',
-                            params: {
-                                LAYERS: 'GR_ORTFOTORGB',
-                                INFO_FORMAT: 'text/plain',
-                                FORMAT: "image/png"
-                            },
+                        source: new ol.source.WMTS({
+                            url: 'http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx',
+                            layer: 'orto',
+                            extent: [-925000,-1444353.5,-400646.5,-920000],
+                            format: "image/png",
+                            matrixSet: 'jtsk:epsg:5514',
+                            projection: 'EPSG:5514',
                             crossOrigin: null
                         }),
                         visible: true
