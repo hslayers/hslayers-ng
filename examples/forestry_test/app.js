@@ -1,16 +1,27 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'bootstrap', 'api'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'bootstrap', 'api'],
 
-    function(ol, dc, toolbar, proj4, layermanager, SparqlJsonForestry) {
+    function(ol, dc, toolbar, layermanager, SparqlJsonForestry) {
         proj4.defs('EPSG:5514', '+title=S-JTSK Krovak +proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813975277778 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +units=m +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 no_defs <>');             
-        ol.proj.addProjection(new ol.proj.Projection({
-            code: 'EPSG:5514',
-            // The extent is used to determine zoom level 0. Recommended values for a
-            // projection's validity extent can be found at http://epsg.io/.
-            extent: [-951499.37, -1276279.09,-159365.31, -983013.08],
-            units: 'm'
-        }));
+        var jtsk = ol.proj.get('EPSG:5514');
+        var jtskExtent = [-925000.000000000000, -1444353.535999999800, -400646.464000000040, -920000.000000000000];
+        //var jtskExtent = [-905000.000000000000, -1228000.000000000000, -430000.000000000000, -934000.000000000000];
+        jtsk.setExtent(jtskExtent);
+        var jtskSize = ol.extent.getWidth(jtskExtent) / 256;
+        var jtskResolutions = new Array(14);
+        var jtskMatrixIds = new Array(14);
+        for (var z = 0; z < 14; ++z) {
+              jtskResolutions[z] = jtskSize / Math.pow(2, z);
+              jtskMatrixIds[z] = z;
+        }
+
+        var tileGrid =   new ol.tilegrid.WMTS({
+            origin: ol.extent.getTopLeft(jtskExtent),
+            resolutions: jtskResolutions,
+            matrixIds: jtskMatrixIds
+        });
+
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -154,7 +165,7 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
                         source: new ol.source.TileWMS({
                             url: 'http://gis.bnhelp.cz/cgi-bin/crtopo',
                             params: {
-                                LAYERS: 'les_detail',
+                                LAYERS: 'kraje',
                                 INFO_FORMAT: undefined,
                                 FORMAT: "image/png"
                             },
@@ -165,13 +176,15 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
             new ol.layer.Tile({
                         title: "Ortofoto",
                         source: new ol.source.WMTS({
-                            url: 'http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx',
-                            layer: 'orto',
-                            extent: [-925000,-1444353.5,-400646.5,-920000],
-                            format: "image/png",
-                            matrixSet: 'jtsk:epsg:5514',
-                            projection: 'EPSG:5514',
-                            crossOrigin: null
+                            extent: jtskExtent,
+                            format: "image/jpeg",
+                            layer: "orto",
+                            matrixSet: "jtsk:epsg:5514",
+                            projection: jtsk,
+                            style: 'inspire_common:DEFAULT',
+                            tileGrid: tileGrid,
+                            url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
+                            version: "1.0.0"
                         }),
                         visible: true
                     }),
@@ -216,10 +229,9 @@ define(['ol', 'dc', 'toolbar', 'proj4', 'layermanager', 'SparqlJsonForestry', 'q
 
 
         module.value('default_view', new ol.View({
-            center: ol.proj.transform(
-                [1797667.4092597375, 6429205.069843884], 'EPSG:3857', 'EPSG:5514'), //Latitude longitude    to Spherical Mercator
-            zoom: 8,
-            projection: 'EPSG:5514',
+           center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
+            zoom: 4,
+            projection: jtsk,
             units: "m"
         }));
 
