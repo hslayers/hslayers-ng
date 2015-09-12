@@ -25,7 +25,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
 
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
-                var s = feature.get('http://gis.zcu.cz/poi#category_osm');
+                var s = feature.get('http://www.openvoc.eu/poi#categoryOSM');
                 if (typeof s === 'undefined') return;
                 s = s.split(".")[1];
                 return [new ol.style.Style({
@@ -89,8 +89,9 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             var new_lyr = new ol.layer.Vector({
                 title: "POI " + value,
                 source: new SparqlJson({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://gis.zcu.cz/poi.rdf> WHERE {?o <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat. ?o <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lon. ?o <http://gis.zcu.cz/poi#category_osm> ?filter_categ. FILTER (str(?filter_categ) = "' + value + '")') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    category_field: 'http://gis.zcu.cz/poi#category_osm',
+                    geom_attribute: 'bif:st_geomfromtext(UCASE(?geom))',
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    category_field: 'http://www.openvoc.eu/poi#categoryOSM',
                     projection: 'EPSG:3857'
                 }),
                 style: style,
@@ -305,9 +306,10 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     var lyr = OlMap.findLayerByTitle('Specific points of interest');
                     var src = lyr.getSource();
                     src.clear();
-                    if (data !== '')
-                        src.options.url = 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://gis.zcu.cz/poi.rdf> WHERE {?o <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat. ?o <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lon. ?o <http://gis.zcu.cz/poi#category_osm> ?filter_categ. FILTER (str(?filter_categ) = "' + data + '") ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
-                    else
+                    if (data !== '') {
+                        src.options.geom_attribute = 'bif:st_geomfromtext(UCASE(?geom))';
+                        src.options.url = 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + data + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    } else
                         src.options.url = '';
                 })
             }
