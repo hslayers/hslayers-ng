@@ -93,6 +93,9 @@ define(function(require) {
                                 objects[key].geometry = g_feature.getGeometry();
                                 objects[key].geometry.transform('EPSG:4326', options.projection);
                                 delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
+                                var coord = objects[key].geometry.getCoordinates();
+                                
+                                if (typeof occupied_xy[coord] !== 'undefined') continue;
                                 var feature = new ol.Feature(objects[key]);
                                 if (objects[key][options.category_field]) {
                                     if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
@@ -104,6 +107,7 @@ define(function(require) {
                                     }
                                     feature.category_id = category_map[objects[key][options.category_field]].id;
                                 }
+                                occupied_xy[coord] = true;
                                 features.push(feature);                               
                             }
                         }
