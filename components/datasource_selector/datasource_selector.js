@@ -40,6 +40,22 @@ define(['angular', 'ol', 'map'],
             };
         })
 
+        
+        /**
+         * @class hs.datasource_selector.suggestionsDialogDirective
+         * @memberOf hs.datasource_selector
+         * @description Directive for displaying suggestions for search parameters for Micka catalogue service
+         */
+        .directive('hs.datasourceSelector.suggestionsDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
+                link: function(scope, element, attrs) {
+                    $('#ds-suggestions-micka').modal('show');
+                    $('#ds-sug-filter')[0].focus();
+                }
+            };
+        })
+        
         /**
          * @class hs.datasource_selector.objectDirective
          * @memberOf hs.datasource_selector
@@ -135,7 +151,7 @@ define(['angular', 'ol', 'map'],
                         $scope.fillCodeset($scope.datasets[ds]);
                     }
                 }
-
+                
                 $scope.fillCodeset = function(ds) {
                     switch (ds.type) {
                         case "datatank":
@@ -203,9 +219,13 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.openMickaAdvancedSearch = function() {
-                    var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></span>');
-                    $("#hs-dialog-area").append(el)
-                    $compile(el)($scope);
+                    if($('#ds-advanced-micka').length == 0){
+                        var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el);
+                        $compile(el)($scope);
+                    } else {
+                        $('#ds-advanced-micka').modal('show');
+                    }
                     if (typeof $scope.micka_ds == 'undefined') {
                         for (var ds in $scope.datasets) {
                             if ($scope.datasets[ds].type == 'micka') {
@@ -213,6 +233,42 @@ define(['angular', 'ol', 'map'],
                             }
                         }
                     }
+                }
+                
+                var input_4_suggestions;
+                $scope.showSuggestions = function(input) {
+                    input_4_suggestions = input;
+                    if($('#ds-suggestions-micka').length == 0){
+                        var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el);
+                        $compile(el)($scope);
+                    } else {
+                        $('#ds-suggestions-micka').modal('show');
+                    }
+                    $('#ds-sug-filter').focus();
+                }
+                
+                $scope.suggestions = [];
+                $scope.suggestionFilterChanged = function(){
+                    if (typeof $scope.suggestion_ajax != 'undefined') $scope.suggestion_ajax.abort();
+                    var url = $scope.micka_ds.url+'../util/suggest.php?&type=keyword&query=' + $scope.suggestion_filter;
+                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                    }
+                    $scope.suggestion_ajax = $.ajax({
+                        url: url,
+                        cache: false,
+                        dataType: "json",
+                        success: function(j) {
+                            $scope.suggestions = j.records;
+                            delete $scope.suggestion_ajax;
+                            if (!$scope.$$phase) $scope.$digest();
+                        }
+                    });
+                }
+                
+                $scope.addSuggestion = function(text){
+                    $scope.query[input_4_suggestions] = text;
                 }
 
                 $scope.loadDataset = function(ds) {
@@ -256,7 +312,8 @@ define(['angular', 'ol', 'map'],
                                 //param2Query('type'),
                                 param2Query('ServiceType'),
                                 param2Query('topicCategory'),
-                                param2Query('Denominator')
+                                param2Query('Denominator'),
+                                param2Query('OrganisationName')
                             ].filter(function(n) {
                                 return n != ''
                             }).join(' and ');

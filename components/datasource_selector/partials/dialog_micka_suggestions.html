@@ -1,0 +1,33 @@
+<div class="modal" id="ds-suggestions-micka" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" translate>
+                    Suggestions
+                </h4>
+            </div>
+            <div class="modal-body" style="max-height:525px; overflow-y:auto">
+                <form>
+                    <div class="form-group">
+                        <label ng-attr-for="ds-sug-filter" class="control-label" translate>Filter:</label> 
+                        <input type="text" id="ds-sug-filter" class="form-control" ng-change="suggestionFilterChanged()" ng-model="suggestion_filter">
+                    </div>
+                </form>
+                <ul ng-repeat="ds in datasets" class="list-group">
+                    <img ng-src="{{ajax_loader}}" ng-show="suggestion_ajax && suggestion_ajax.readyState != 4"/>
+                    <li ng-show='suggestions.length == 0' class='list-group-item' translate>No results</li>
+                    <li ng-repeat="suggestion in suggestions | limitTo:10" ng-class="'list-group-item'">
+                        <b class="list-group-item-heading">
+                            <a href="#" ng-click="addSuggestion(suggestion.value)" data-dismiss="modal">{{suggestion.value}} ({{suggestion.count}})</a>
+                        </b>
+                        <p style="clear:both; margin: 0px;"></p>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer" id="ds-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
