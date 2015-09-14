@@ -12,16 +12,16 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
         var jtskResolutions = new Array(14);
         var jtskMatrixIds = new Array(14);
         for (var z = 0; z < 14; ++z) {
-              jtskResolutions[z] = jtskSize / Math.pow(2, z);
-              jtskMatrixIds[z] = z;
+            jtskResolutions[z] = jtskSize / Math.pow(2, z);
+            jtskMatrixIds[z] = z;
         }
 
-        var tileGrid =   new ol.tilegrid.WMTS({
+        var tileGrid = new ol.tilegrid.WMTS({
             origin: ol.extent.getTopLeft(jtskExtent),
             resolutions: jtskResolutions,
             matrixIds: jtskMatrixIds
         });
-        
+
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -160,37 +160,37 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
         module.value('box_layers', [new ol.layer.Group({
             title: '',
             layers: [
-                new ol.layer.Tile({
-                    title: "BaseMap",
-                    source: new ol.source.WMTS({
-                        extent: jtskExtent,
-                        format: "image/jpeg",
-                        layer: "zm",
-                        matrixSet: "jtsk:epsg:5514",
-                        projection: jtsk,
-                        style: 'inspire_common:DEFAULT',
-                        tileGrid: tileGrid,
-                        url: "http://geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx",
-                        version: "1.0.0"
+                    new ol.layer.Tile({
+                        title: "BaseMap",
+                        source: new ol.source.WMTS({
+                            extent: jtskExtent,
+                            format: "image/jpeg",
+                            layer: "zm",
+                            matrixSet: "jtsk:epsg:5514",
+                            projection: jtsk,
+                            style: 'inspire_common:DEFAULT',
+                            tileGrid: tileGrid,
+                            url: "http://geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx",
+                            version: "1.0.0"
+                        }),
+                        visible: true
                     }),
-                    visible: true
-                }),
 
-                new ol.layer.Tile({
-                    title: "Ortofoto",
-                    source: new ol.source.WMTS({
-                        extent: jtskExtent,
-                        format: "image/jpeg",
-                        layer: "orto",
-                        matrixSet: "jtsk:epsg:5514",
-                        projection: jtsk,
-                        style: 'inspire_common:DEFAULT',
-                        tileGrid: tileGrid,
-                        url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
-                        version: "1.0.0"
+                    new ol.layer.Tile({
+                        title: "Ortofoto",
+                        source: new ol.source.WMTS({
+                            extent: jtskExtent,
+                            format: "image/jpeg",
+                            layer: "orto",
+                            matrixSet: "jtsk:epsg:5514",
+                            projection: jtsk,
+                            style: 'inspire_common:DEFAULT',
+                            tileGrid: tileGrid,
+                            url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
+                            version: "1.0.0"
+                        }),
+                        visible: true
                     }),
-                    visible: true
-                }),
                     createOneDimensionLayer('Forest cover', 'http://nil.uhul.cz/lod/forest_cover/forest_cover.rdf', 'forest_cover'),
                     createOneDimensionLayer('Average growing stock per hectare', 'http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf', 'average_growing_stock_per_hectare'),
                     createOneDimensionLayer('Total forest area', 'http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf', 'total_forest_area'),
@@ -232,11 +232,11 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
 
 
         module.value('default_view', new ol.View({
-        center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
-        zoom: 2,
-        projection: jtsk,
-        units: "m"
-    }));
+            center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
+            zoom: 2,
+            projection: jtsk,
+            units: "m"
+        }));
 
         module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel',
             function($scope, $filter, Core, OlMap, InfoPanelService) {

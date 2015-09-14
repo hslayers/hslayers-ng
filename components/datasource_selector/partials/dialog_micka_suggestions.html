@@ -19,7 +19,12 @@
                     <li ng-show='suggestions.length == 0' class='list-group-item' translate>No results</li>
                     <li ng-repeat="suggestion in suggestions | limitTo:10" ng-class="'list-group-item'">
                         <b class="list-group-item-heading">
-                            <a href="#" ng-click="addSuggestion(suggestion.value)" data-dismiss="modal">{{suggestion.value}} ({{suggestion.count}})</a>
+                            <a 
+                            href="#" 
+                            ng-click="addSuggestion(suggestion[suggestion_config.field])" 
+                            data-dismiss="modal">
+                                {{suggestion[suggestion_config.field]}} <span ng-show="{{suggestion.count !== undefined}}">({{suggestion.count}})</span>
+                            </a>
                         </b>
                         <p style="clear:both; margin: 0px;"></p>
                     </li>

@@ -17,7 +17,7 @@ define(function(require) {
                 first_pair = ol.proj.transform(first_pair, 'EPSG:3857', 'EPSG:4326');
                 second_pair = ol.proj.transform(second_pair, 'EPSG:3857', 'EPSG:4326');
                 var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extent[0] + ' ' + extent[1] + ', ' + extent[2] + ' ' + extent[3] + ')"), '+options.geom_attribute+')).';
+                var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extent[0] + ' ' + extent[1] + ', ' + extent[2] + ' ' + extent[3] + ')"), ' + options.geom_attribute + ')).';
                 p = p.replace("<extent>", s_extent);
                 if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
@@ -94,7 +94,7 @@ define(function(require) {
                                 objects[key].geometry.transform('EPSG:4326', options.projection);
                                 delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
                                 var coord = objects[key].geometry.getCoordinates();
-                                
+
                                 if (typeof occupied_xy[coord] !== 'undefined') continue;
                                 var feature = new ol.Feature(objects[key]);
                                 if (objects[key][options.category_field]) {
@@ -108,7 +108,7 @@ define(function(require) {
                                     feature.category_id = category_map[objects[key][options.category_field]].id;
                                 }
                                 occupied_xy[coord] = true;
-                                features.push(feature);                               
+                                features.push(feature);
                             }
                         }
                         for (var categ in category_map) {

@@ -29,7 +29,7 @@
                         <div class="input-group">
                             <input type="text" id="ds-adv-keywords" class="form-control" ng-model="query.keywords">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="showSuggestions('keywords')">...</button>
+                                <button class="btn btn-default" type="button" ng-click="showSuggestions('keywords', 'keyword', 'value')">...</button>
                             </span>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                         <div class="input-group">
                             <input type="text" id="ds-adv-organization" class="form-control" ng-model="query.OrganisationName">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="showSuggestions('OrganisationName')">...</button>
+                                <button class="btn btn-default" type="button" ng-click="showSuggestions('OrganisationName', 'org', 'name')">...</button>
                             </span>
                         </div>
                     </div>

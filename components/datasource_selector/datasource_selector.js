@@ -40,7 +40,7 @@ define(['angular', 'ol', 'map'],
             };
         })
 
-        
+
         /**
          * @class hs.datasource_selector.suggestionsDialogDirective
          * @memberOf hs.datasource_selector
@@ -51,11 +51,13 @@ define(['angular', 'ol', 'map'],
                 templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
                 link: function(scope, element, attrs) {
                     $('#ds-suggestions-micka').modal('show');
-                    $('#ds-sug-filter')[0].focus();
+                    scope.suggestion_filter=scope.query[scope.suggestion_config.input];
+                    $('#ds-sug-filter').focus();
+                    scope.suggestionFilterChanged();
                 }
             };
         })
-        
+
         /**
          * @class hs.datasource_selector.objectDirective
          * @memberOf hs.datasource_selector
@@ -151,7 +153,7 @@ define(['angular', 'ol', 'map'],
                         $scope.fillCodeset($scope.datasets[ds]);
                     }
                 }
-                
+
                 $scope.fillCodeset = function(ds) {
                     switch (ds.type) {
                         case "datatank":
@@ -219,7 +221,7 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.openMickaAdvancedSearch = function() {
-                    if($('#ds-advanced-micka').length == 0){
+                    if ($('#ds-advanced-micka').length == 0) {
                         var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></span>');
                         $("#hs-dialog-area").append(el);
                         $compile(el)($scope);
@@ -234,24 +236,32 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
+
+                $scope.suggestion_config = {};
                 
-                var input_4_suggestions;
-                $scope.showSuggestions = function(input) {
-                    input_4_suggestions = input;
-                    if($('#ds-suggestions-micka').length == 0){
+                $scope.showSuggestions = function(input, param, field) {
+                    $scope.suggestion_config = {
+                        input: input,
+                        param: param,
+                        field: field
+                    };
+                    if ($('#ds-suggestions-micka').length == 0) {
                         var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
                         $("#hs-dialog-area").append(el);
                         $compile(el)($scope);
                     } else {
                         $('#ds-suggestions-micka').modal('show');
+                        $('#ds-sug-filter').val($scope.query[input]).focus();
+                        $scope.suggestionFilterChanged();
                     }
-                    $('#ds-sug-filter').focus();
+                    
                 }
-                
+
                 $scope.suggestions = [];
-                $scope.suggestionFilterChanged = function(){
+
+                $scope.suggestionFilterChanged = function() {
                     if (typeof $scope.suggestion_ajax != 'undefined') $scope.suggestion_ajax.abort();
-                    var url = $scope.micka_ds.url+'../util/suggest.php?&type=keyword&query=' + $scope.suggestion_filter;
+                    var url = $scope.micka_ds.url + '../util/suggest.php?&type=' + $scope.suggestion_config.param + '&query=' + $scope.suggestion_filter;
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                     }
@@ -266,9 +276,9 @@ define(['angular', 'ol', 'map'],
                         }
                     });
                 }
-                
-                $scope.addSuggestion = function(text){
-                    $scope.query[input_4_suggestions] = text;
+
+                $scope.addSuggestion = function(text) {
+                    $scope.query[$scope.suggestion_config.input] = text;
                 }
 
                 $scope.loadDataset = function(ds) {
@@ -410,26 +420,6 @@ define(['angular', 'ol', 'map'],
                     extent_layer.getSource().addFeatures([new_feature]);
                 }
 
-                OlMap.map.on('pointermove', function(evt) {
-                    var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
-                    var something_done = false;
-                    $(extent_layer.getSource().getFeatures()).each(function() {
-                        if (this.get("record").highlighted) {
-                            this.get("record").highlighted = false;
-                            something_done = true;
-                        }
-                    });
-                    if (features.length) {
-                        $(features).each(function() {
-                            if (!this.get("record").highlighted) {
-                                this.get("record").highlighted = true;
-                                something_done = true;
-                            }
-                        })
-                    }
-                    if (something_done && !$scope.$$phase) $scope.$digest();
-                });
-
                 $scope.setDefaultFeatureStyle = function(style) {
                     default_style = style;
                 }
@@ -494,21 +484,6 @@ define(['angular', 'ol', 'map'],
                     $scope.query.text_filter = "";
                 }
 
-                var timer;
-                OlMap.map.getView().on('change:center', function(e) {
-                    if (timer != null) clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
-                    }, 500);
-                });
-                OlMap.map.getView().on('change:resolution', function(e) {
-                    if (timer != null) clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
-                    }, 500);
-                });
-
-                OlMap.map.addLayer(extent_layer);
                 $scope.datasources = [
                     /*{
                                         title: "Datatank",
@@ -524,12 +499,50 @@ define(['angular', 'ol', 'map'],
                     }
                 ];
 
-                $scope.loadDatasets($scope.datasources);
-                $scope.fillCodesets($scope.datasources);
-                $scope.$emit('scope_loaded', "DatasourceSelector");
-                $scope.$on('core.mainpanel_changed', function(event) {
-                    extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
-                });
+                $scope.init = function() {
+                    OlMap.map.on('pointermove', function(evt) {
+                        var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
+                        var something_done = false;
+                        $(extent_layer.getSource().getFeatures()).each(function() {
+                            if (this.get("record").highlighted) {
+                                this.get("record").highlighted = false;
+                                something_done = true;
+                            }
+                        });
+                        if (features.length) {
+                            $(features).each(function() {
+                                if (!this.get("record").highlighted) {
+                                    this.get("record").highlighted = true;
+                                    something_done = true;
+                                }
+                            })
+                        }
+                        if (something_done && !$scope.$$phase) $scope.$digest();
+                    });
+                    var timer;
+                    OlMap.map.getView().on('change:center', function(e) {
+                        if (timer != null) clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                        }, 500);
+                    });
+                    OlMap.map.getView().on('change:resolution', function(e) {
+                        if (timer != null) clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                        }, 500);
+                    });
+
+                    OlMap.map.addLayer(extent_layer);
+                    $scope.loadDatasets($scope.datasources);
+                    $scope.fillCodesets($scope.datasources);
+                    $scope.$emit('scope_loaded', "DatasourceSelector");
+                    $scope.$on('core.mainpanel_changed', function(event) {
+                        extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
+                    });
+                }
+
+                $scope.init();
             }
         ]);
 
