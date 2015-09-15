@@ -29,11 +29,14 @@ define(['angular', 'ol', 'map'],
                             url: url
                         })
                         .done(function(response) {
+                            var to_be_removed = [];
                             OlMap.map.getLayers().forEach(function(lyr) {
                                 if (lyr.get('from_composition')) {
-                                    OlMap.map.removeLayer(lyr);
-                                }
+                                    to_be_removed.push(lyr);
                             });
+                            while (to_be_removed.length > 0) {
+                                OlMap.map.removeLayer(to_be_removed.shift());
+                            }
                             OlMap.map.getView().fitExtent(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
                             for (var i = 0; i < layers.length; i++) {
