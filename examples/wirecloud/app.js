@@ -120,7 +120,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             var coords = data[coordinates_attr_name].split(','); //Supposed ccordinates are lon, lat seperated by comma
             attributes.geometry = new ol.geom.Point(ol.proj.transform([parseFloat(coords[1]), parseFloat(coords[0])], projection, 'EPSG:3857'));
             for (var attr_i = 0; attr_i < measurements_attr_names.length; attr_i++) {
-                var t = parseFloat(data.[measurements_attr_names[attr_i]]);
+                var t = parseFloat(data[measurements_attr_names[attr_i]]);
                 attributes[measurements_attr_names[attr_i]] = t.toFixed(2);
             }
 
@@ -191,14 +191,14 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             if (console) console.log(data);
             if (typeof data.type !== 'undefined') {
                 switch (data.type) {
-                    case "Unit":
+                    /*case "Unit":
                         processUnit(data);
                         break;
                     case "Tag":
                         processTag(data);
-                        break;
+                        break;*/
                     default:
-                        process_object(data);
+                        processObject(data);
                 }
             } else {
                 process_object(data);

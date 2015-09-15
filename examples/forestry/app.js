@@ -130,7 +130,9 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                         source: new SparqlJsonForestry({
                             url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#' + obj + '>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                             category_field: 'http://gis.zcu.cz/poi#category_osm',
-                            projection: 'EPSG:5514'
+                            projection: 'EPSG:5514',
+                            geometry_attr: 'http://www.opengis.net/ont/geosparql#hasGeometry',
+                            value_attr: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value'
                         }),
                         type: 'vector',
                         style: style,
@@ -142,13 +144,15 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
         }
 
 
-        function createOneDimensionLayer(title, url, obj) {
+        function createOneDimensionLayer(title, url, obj, dataset_url, geometry_attr, value_attr) {
             return new ol.layer.Vector({
                 title: title,
                 source: new SparqlJsonForestry({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#' + obj + '>. ?o ?p ?s. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> FROM <http://nil.uhul.cz/smod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <'+geometry_attr+'> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <'+geometry_attr+'> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
-                    projection: 'EPSG:5514'
+                    projection: 'EPSG:5514',
+                    geometry_attr: geometry_attr,
+                    value_attr: value_attr
                 }),
                 type: 'vector',
                 style: style,
@@ -191,10 +195,15 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                         }),
                         visible: true
                     }),
-                    createOneDimensionLayer('Forest cover', 'http://nil.uhul.cz/lod/forest_cover/forest_cover.rdf', 'forest_cover'),
-                    createOneDimensionLayer('Average growing stock per hectare', 'http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf', 'average_growing_stock_per_hectare'),
-                    createOneDimensionLayer('Total forest area', 'http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf', 'total_forest_area'),
-                    createOneDimensionLayer('Total growing stock', 'http://nil.uhul.cz/lod/total_growing_stock/total_growing_stock.rdf', 'total_growing_stock')
+                    createOneDimensionLayer('Forest cover', 'http://nil.uhul.cz/lod/nfi/forest_cover/FC2001-2004.ttl', 'ObForestCover', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#percentArea'),
+                    createOneDimensionLayer('Average growing stock per hectare', 'http://nil.uhul.cz/lod/average_growing_stock_per_hectare/average_growing_stock_per_hectare.rdf', 'average_growing_stock_per_hectare', 'http://nil.uhul.cz/lod/nfi#', 'http://www.opengis.net/ont/geosparql#hasGeometry', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value'),
+                    createOneDimensionLayer('Total forest area', 'http://nil.uhul.cz/lod/total_forest_area/total_forest_area.rdf', 'total_forest_area', 'http://nil.uhul.cz/lod/nfi#', 'http://www.opengis.net/ont/geosparql#hasGeometry', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value'),
+                    createOneDimensionLayer('Total growing stock', 'http://nil.uhul.cz/lod/total_growing_stock/total_growing_stock.rdf', 'total_growing_stock', 'http://nil.uhul.cz/lod/nfi#', 'http://www.opengis.net/ont/geosparql#hasGeometry', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value'),
+                                                       
+                                                       
+                                                       
+                    createOneDimensionLayer('SK Average growing stock per hectare', 'http://nil.uhul.cz/smod/niml/average_growing_stock/AGS2005-2006.rdf', 'ObAvGrowingStockPerHa', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetrePerHa'),
+                    createOneDimensionLayer('SK Forest cover', 'http://nil.uhul.cz/smod/niml/forest_cover/FC2005-2006.rdf', 'ObForestCover', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#percentArea'),                                   
                 ].concat(specie_lyrs).concat(zakoni_lyrs).concat(create1DimensionLayers(silvicultural, 'Silvicultural system', 'http://nil.uhul.cz/lod/silvicultural_system/silvicultural_system.rdf', 'silvicultural_system'))
                 .concat(create1DimensionLayers({
                     '"les nízký"@cs': 'Les nízký vzniká systematicky se opakující vegetativní obnovou pařezovými nebo kořenovými výmladky. ',
@@ -225,6 +234,23 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
         })]);
 
 
+        /*
+         * 
+         * SELECT ?o ?p ?s
+FROM <http://nil.uhul.cz/smod/niml/average_growing_stock/AGS2005-2006.rdf> 
+FROM <http://nil.uhul.cz/smod/ns/nuts.rdf> 
+
+WHERE {{
+?o a <http://nil.uhul.cz/lod/ns/nfi#ObAvGrowingStockPerHa>. 
+?o ?p ?s. 
+?o <http://nil.uhul.cz/lod/ns/nfi#refArea> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} 
+
+
+UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. 
+FILTER(?p = <http://nil.uhul.cz/lod/ns/nfi#refArea> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) }
+
+}
+         */
 
 
 
