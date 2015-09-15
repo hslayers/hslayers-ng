@@ -31,7 +31,7 @@ define(['angular', 'ol', 'map'],
                         .done(function(response) {
                             var to_be_removed = [];
                             OlMap.map.getLayers().forEach(function(lyr) {
-                                if (lyr.get('from_composition')) {
+                                if (lyr.get('from_composition'))
                                     to_be_removed.push(lyr);
                             });
                             while (to_be_removed.length > 0) {
