@@ -168,16 +168,14 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
             layers: [
                     new ol.layer.Tile({
                         title: "BaseMap",
-                        source: new ol.source.WMTS({
-                            extent: jtskExtent,
-                            format: "image/jpeg",
-                            layer: "zm",
-                            matrixSet: "jtsk:epsg:5514",
-                            projection: jtsk,
-                            style: 'inspire_common:DEFAULT',
-                            tileGrid: tileGrid,
-                            url: "http://geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx",
-                            version: "1.0.0"
+                        source: new ol.source.TileWMS({
+                            url: "http://geoportal.gov.cz/arcgis/services/CENIA/cenia_rt_automapy/MapServer/WMSServer",
+                            params: {
+                                LAYERS: '3',
+                                INFO_FORMAT: 'application/vnd.ogc.wms_xml',
+                                FORMAT: "image/png"
+                            },
+                            crossOrigin: null
                         }),
                         visible: true
                     }),
@@ -195,7 +193,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                             url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
                             version: "1.0.0"
                         }),
-                        visible: true
+                        visible: false
                     }),
                     //Czech flat data                                   
                     createOneDimensionLayer('CZ Forest cover', 'http://nil.uhul.cz/lod/nfi/forest_cover/FC2001-2004.ttl', 'ObForestCover', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#percentArea'),
@@ -262,7 +260,8 @@ FILTER(?p = <http://nil.uhul.cz/lod/ns/nfi#refArea> && ?nut != <http://nil.uhul.
 
         module.value('default_view', new ol.View({
             center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
-            zoom: 2,
+            zoom: 1,
+            maxZoom: 3,
             projection: jtsk,
             units: "m"
         }));
