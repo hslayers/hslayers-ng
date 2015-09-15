@@ -20,8 +20,6 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             };
         }]);
 
-        module.value('box_layers', []);
-
         var style = new ol.style.Style({
             image: new ol.style.Circle({
                 fill: new ol.style.Fill({
@@ -39,33 +37,34 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
                 color: '#112211',
                 width: 1
             })
-        })
+        });
 
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                title: "Base layer",
-                base: true
-            }),
-            new ol.layer.Image({
-                title: "Traffic accidents",
-                source: new ol.source.ImageWMS({
-                    url: 'http://otn.bnhelp.cz/cgi-bin/mapserv?map=/data/www/otn.bnhelp.cz/maps/accidents/accidents_wms.map',
-                    params: {
-                        LAYERS: 'accidents',
-                        INFO_FORMAT: "application/vnd.ogc.gml",
-                        FORMAT: "image/png; mode=8bit"
-                    },
-                    crossOrigin: null
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Base layer",
+                    base: true
+                }),
+                new ol.layer.Image({
+                    title: "Traffic accidents",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://otn.bnhelp.cz/cgi-bin/mapserv?map=/data/www/otn.bnhelp.cz/maps/accidents/accidents_wms.map',
+                        params: {
+                            LAYERS: 'accidents',
+                            INFO_FORMAT: "application/vnd.ogc.gml",
+                            FORMAT: "image/png; mode=8bit"
+                        },
+                        crossOrigin: null
+                    })
                 })
+            ],
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
             })
-        ]);
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4,
-            units: "m"
-        }));
+        });
 
         module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.query.service_infopanel', 'hs.map.service', 'default_layers',
             function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers) {

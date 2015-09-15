@@ -214,8 +214,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'project_name', '$compile',
-            function($scope, $rootScope, OlMap, Core, status_creator, project_name, $compile) {
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile',
+            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile) {
                 $scope.layers = [];
                 $scope.id = '';
 
@@ -270,7 +270,7 @@ define(['angular', 'ol', 'map'],
                             data: status_creator.map2json(OlMap.map, $scope, false),
                             permanent: true,
                             id: $scope.id,
-                            project: project_name,
+                            project: config.project_name,
                             request: "save"
                         }),
                         success: function(j) {

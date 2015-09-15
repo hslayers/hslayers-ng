@@ -58,9 +58,10 @@ define(['angular', 'ol', 'dc', 'map'],
                 };
                 return me;
             }])
-            .controller('hs.feature_crossfilter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_crossfilter.service', 'crossfilterable_layers',
-                function($scope, OlMap, Core, service, crossfilterable_layers) {
+            .controller('hs.feature_crossfilter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_crossfilter.service', 'config',
+                function($scope, OlMap, Core, service, config) {
                     var map = OlMap.map;
+                    var crossfilterable_layers = config.crossfilterable_layers;
 
                     $scope.ajax_loader = hsl_path + 'components/feature_crossfilter/ajax-loader.gif';
                     $scope.loading = false;

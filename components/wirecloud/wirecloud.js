@@ -7,12 +7,12 @@ define(['angular', 'app', 'map', 'ol'],
     function(angular, app, map, ol) {
         angular.module('hs.wirecloud', ['hs', 'hs.map'])
 
-        .service("hs.wirecloud.service", ['$rootScope', 'hs.map.service', 'wirecloud_data_consumer', 'default_layers',
-            function($rootScope, OlMap, wirecloud_data_consumer, default_layers) {
+        .service("hs.wirecloud.service", ['$rootScope', 'hs.map.service', 'config',
+            function($rootScope, OlMap, config, default_layers) {
                 var view = OlMap.map.getView();
                 if (console) console.log('Wirecloud interface loaded');
-                if (typeof MashupPlatform !== 'undefined') {
-                    var extent_layer = default_layers[2];
+                if (typeof MashupPlatform !== 'undefined' && angular.isDefined(config.default_layers)) {
+                    var extent_layer = config.default_layers[2];
                     $rootScope.$on('browserurl.updated', function(event) {
                         var center = view.getCenter();
                         center = ol.proj.transform(center, view.getProjection(), 'EPSG:4326');

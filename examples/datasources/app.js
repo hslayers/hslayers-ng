@@ -24,8 +24,6 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             };
         }]);
 
-        module.value('box_layers', []);
-
         var style = new ol.style.Style({
             image: new ol.style.Circle({
                 fill: new ol.style.Fill({
@@ -45,23 +43,22 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             })
         })
 
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                title: "Base layer",
-                base: true,
-                removable: false,
-                path: 'Folder/Subfolder/Sub2'
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Base layer",
+                    base: true,
+                    removable: false
+                })
+            ],
+            project_name: 'erra/map',
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
             })
-        ]);
-
-        module.value('project_name', 'erra/map');
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4,
-            units: "m"
-        }));
+        });
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel',
             function($scope, Core, InfoPanelService) {

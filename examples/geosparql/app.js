@@ -99,115 +99,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 path: 'Points of interest'
             });
             sparql_layers.push(new_lyr);
-        })
-
-        module.value('box_layers', [new ol.layer.Group({
-            'img': 'osm.png',
-            title: 'Base layer',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM(),
-                    title: "OpenStreetMap",
-                    base: true,
-                    visible: false,
-                    path: 'Roads'
-                }),
-                new ol.layer.Tile({
-                    title: "OpenCycleMap",
-                    visible: true,
-                    base: true,
-                    source: new ol.source.OSM({
-                        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                    }),
-                    path: 'Roads'
-                })
-            ],
-        }), new ol.layer.Group({
-            'img': 'bicycle-128.png',
-            title: 'Tourist info',
-            layers: sparql_layers.concat([
-                new ol.layer.Vector({
-                    title: "Cycling routes Plzen",
-                    source: new ol.source.GeoJSON({
-                        url: 'plzensky_kraj.geojson'
-                    }),
-                    style: route_style,
-                    path: 'Roads/Additional Cycling routes'
-                }),
-                new ol.layer.Vector({
-                    title: "Cycling routes Zemgale",
-                    source: new ol.source.GeoJSON({
-                        url: 'zemgale.geojson'
-                    }),
-                    style: route_style,
-                    path: 'Roads/Additional Cycling routes'
-                }),
-                new ol.layer.Vector({
-                    title: "Tour de LatEst",
-                    source: new ol.source.GeoJSON({
-                        url: 'teourdelatest.geojson'
-                    }),
-                    style: route_style,
-                    path: 'Roads/Additional Cycling routes'
-                }),
-                new ol.layer.Vector({
-                    title: "A1: the Vltava left-bank cycle route",
-                    source: new ol.source.GeoJSON({
-                        url: 'prague.geojson'
-                    }),
-                    style: route_style,
-                    path: 'Roads/Additional Cycling routes'
-                }),
-                new ol.layer.Image({
-                    title: "Forest roads",
-                    BoundingBox: [{
-                        crs: "EPSG:3857",
-                        extent: [1405266, 6146786, 2073392, 6682239]
-                    }],
-                    source: new ol.source.ImageWMS({
-                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/ovnis/sdi4aps_forest_roads.map',
-                        params: {
-                            LAYERS: 'forest_roads,haul_roads',
-                            INFO_FORMAT: "application/vnd.ogc.gml",
-                            FORMAT: "image/png; mode=8bit"
-                        },
-                        crossOrigin: null
-                    }),
-                    path: 'Roads'
-                })
-            ])
-        }), new ol.layer.Group({
-            'img': 'partly_cloudy.png',
-            title: 'Weather',
-            layers: [new ol.layer.Tile({
-                    title: "OpenWeatherMap cloud cover",
-                    source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
-                    }),
-                    visible: false,
-                    opacity: 0.7,
-                    path: 'Weather info'
-                }),
-                new ol.layer.Tile({
-                    title: "OpenWeatherMap precipitation",
-                    source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
-                    }),
-                    visible: false,
-                    opacity: 0.7,
-                    path: 'Weather info'
-                }),
-                new ol.layer.Tile({
-                    title: "OpenWeatherMap temperature",
-                    source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
-                    }),
-                    visible: false,
-                    opacity: 0.7,
-                    path: 'Weather info'
-                })
-            ]
-        })]);
+        });
 
         var route_style = function(feature, resolution) {
             return [new ol.style.Style({
@@ -216,21 +108,126 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     width: 2
                 })
             })]
-        }
+        };
 
-        module.value('default_layers', []);
-
-        module.value('crossfilterable_layers', [{
-            layer_ix: 2,
-            attributes: ["http://gis.zcu.cz/poi#category_osm"]
-        }]);
-
-
-        module.value('default_view', new ol.View({
-            center: [1490321.6967438285, 6400602.013496143], //Latitude longitude    to Spherical Mercator
-            zoom: 14,
-            units: "m"
-        }));
+        module.value('config', {
+            box_layers: [new ol.layer.Group({
+                'img': 'osm.png',
+                title: 'Base layer',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM(),
+                        title: "OpenStreetMap",
+                        base: true,
+                        visible: false,
+                        path: 'Roads'
+                    }),
+                    new ol.layer.Tile({
+                        title: "OpenCycleMap",
+                        visible: true,
+                        base: true,
+                        source: new ol.source.OSM({
+                            url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+                        }),
+                        path: 'Roads'
+                    })
+                ],
+            }), new ol.layer.Group({
+                'img': 'bicycle-128.png',
+                title: 'Tourist info',
+                layers: sparql_layers.concat([
+                    new ol.layer.Vector({
+                        title: "Cycling routes Plzen",
+                        source: new ol.source.GeoJSON({
+                            url: 'plzensky_kraj.geojson'
+                        }),
+                        style: route_style,
+                        path: 'Roads/Additional Cycling routes'
+                    }),
+                    new ol.layer.Vector({
+                        title: "Cycling routes Zemgale",
+                        source: new ol.source.GeoJSON({
+                            url: 'zemgale.geojson'
+                        }),
+                        style: route_style,
+                        path: 'Roads/Additional Cycling routes'
+                    }),
+                    new ol.layer.Vector({
+                        title: "Tour de LatEst",
+                        source: new ol.source.GeoJSON({
+                            url: 'teourdelatest.geojson'
+                        }),
+                        style: route_style,
+                        path: 'Roads/Additional Cycling routes'
+                    }),
+                    new ol.layer.Vector({
+                        title: "A1: the Vltava left-bank cycle route",
+                        source: new ol.source.GeoJSON({
+                            url: 'prague.geojson'
+                        }),
+                        style: route_style,
+                        path: 'Roads/Additional Cycling routes'
+                    }),
+                    new ol.layer.Image({
+                        title: "Forest roads",
+                        BoundingBox: [{
+                            crs: "EPSG:3857",
+                            extent: [1405266, 6146786, 2073392, 6682239]
+                        }],
+                        source: new ol.source.ImageWMS({
+                            url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/ovnis/sdi4aps_forest_roads.map',
+                            params: {
+                                LAYERS: 'forest_roads,haul_roads',
+                                INFO_FORMAT: "application/vnd.ogc.gml",
+                                FORMAT: "image/png; mode=8bit"
+                            },
+                            crossOrigin: null
+                        }),
+                        path: 'Roads'
+                    })
+                ])
+            }), new ol.layer.Group({
+                'img': 'partly_cloudy.png',
+                title: 'Weather',
+                layers: [new ol.layer.Tile({
+                        title: "OpenWeatherMap cloud cover",
+                        source: new ol.source.XYZ({
+                            url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
+                        }),
+                        visible: false,
+                        opacity: 0.7,
+                        path: 'Weather info'
+                    }),
+                    new ol.layer.Tile({
+                        title: "OpenWeatherMap precipitation",
+                        source: new ol.source.XYZ({
+                            url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
+                        }),
+                        visible: false,
+                        opacity: 0.7,
+                        path: 'Weather info'
+                    }),
+                    new ol.layer.Tile({
+                        title: "OpenWeatherMap temperature",
+                        source: new ol.source.XYZ({
+                            url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
+                        }),
+                        visible: false,
+                        opacity: 0.7,
+                        path: 'Weather info'
+                    })
+                ]
+            })],
+            crossfilterable_layers: [{
+                layer_ix: 2,
+                attributes: ["http://gis.zcu.cz/poi#category_osm"]
+            }],
+            default_view: new ol.View({
+                center: [1490321.6967438285, 6400602.013496143], //Latitude longitude    to Spherical Mercator
+                zoom: 14,
+                units: "m"
+            })
+        });
 
         module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', 'hs.feature_crossfilter.service',
             function($scope, $filter, Core, OlMap, InfoPanelService, feature_crossfilter) {

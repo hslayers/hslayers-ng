@@ -100,8 +100,8 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
      * @memberOf hs.layermanager
      * @description Layer manager controller
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'box_layers', '$rootScope', 'Core', '$compile',
-        function($scope, OlMap, box_layers, $rootScope, Core, $compile) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile',
+        function($scope, OlMap, config, $rootScope, Core, $compile) {
             $scope.Core = Core;
             $scope.folders = {
                 hsl_path: '',
@@ -203,7 +203,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 $rootScope.$broadcast('layermanager.updated', e.element);
             };
 
-            $scope.box_layers = box_layers;
+            $scope.box_layers = config.box_layers;
             $scope.layers = [];
             $scope.active_box = null;
 
@@ -321,7 +321,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 if ($scope.active_box) $scope.active_box.set('active', false);
                 $scope.active_box = theme;
                 theme.set('active', true);
-                angular.forEach(box_layers, function(box) {
+                angular.forEach($scope.box_layers, function(box) {
                     box.setVisible(box == theme);
                     angular.forEach(box.get('layers'), function(lyr) {
                         if (lyr.get('base') == true) return;
@@ -331,8 +331,8 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             }
 
             $scope.hasBoxLayers = function() {
-                for (vari = 0; i < box_layers.length; i++) {
-                    if (box_layers[i].img) return true;
+                for (vari = 0; i < $scope.box_layers.length; i++) {
+                    if ($scope.box_layers[i].img) return true;
                 }
                 return false;
             }

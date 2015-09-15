@@ -148,9 +148,9 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
             return new ol.layer.Vector({
                 title: title,
                 source: new SparqlJsonForestry({
-			//XXX
+                    //XXX
                     //url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> FROM <http://nil.uhul.cz/smod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <'+geometry_attr+'> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <'+geometry_attr+'> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <'+geometry_attr+'> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <'+geometry_attr+'> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <' + geometry_attr + '> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <' + geometry_attr + '> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
                     projection: 'EPSG:5514',
                     geometry_attr: geometry_attr,
@@ -162,109 +162,85 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
             })
         }
 
-
-        module.value('box_layers', [new ol.layer.Group({
-            title: '',
-            layers: [
-                    new ol.layer.Tile({
-                        title: "BaseMap",
-                        source: new ol.source.TileWMS({
-                            url: "http://geoportal.gov.cz/arcgis/services/CENIA/cenia_rt_automapy/MapServer/WMSServer",
-                            params: {
-                                LAYERS: '3',
-                                INFO_FORMAT: 'application/vnd.ogc.wms_xml',
-                                FORMAT: "image/png"
-                            },
-                            crossOrigin: null
+        module.value('config', {
+            box_layers: [new ol.layer.Group({
+                title: '',
+                layers: [
+                        new ol.layer.Tile({
+                            title: "BaseMap",
+                            source: new ol.source.TileWMS({
+                                url: "http://geoportal.gov.cz/arcgis/services/CENIA/cenia_rt_automapy/MapServer/WMSServer",
+                                params: {
+                                    LAYERS: '3',
+                                    INFO_FORMAT: 'application/vnd.ogc.wms_xml',
+                                    FORMAT: "image/png"
+                                },
+                                crossOrigin: null
+                            }),
+                            visible: true
                         }),
-                        visible: true
-                    }),
 
-                    new ol.layer.Tile({
-                        title: "Ortofoto",
-                        source: new ol.source.WMTS({
-                            extent: jtskExtent,
-                            format: "image/jpeg",
-                            layer: "orto",
-                            matrixSet: "jtsk:epsg:5514",
-                            projection: jtsk,
-                            style: 'inspire_common:DEFAULT',
-                            tileGrid: tileGrid,
-                            url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
-                            version: "1.0.0"
+                        new ol.layer.Tile({
+                            title: "Ortofoto",
+                            source: new ol.source.WMTS({
+                                extent: jtskExtent,
+                                format: "image/jpeg",
+                                layer: "orto",
+                                matrixSet: "jtsk:epsg:5514",
+                                projection: jtsk,
+                                style: 'inspire_common:DEFAULT',
+                                tileGrid: tileGrid,
+                                url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
+                                version: "1.0.0"
+                            }),
+                            visible: false
                         }),
-                        visible: false
-                    }),
-                    //Czech flat data                                   
-                    createOneDimensionLayer('CZ Forest cover', 'http://nil.uhul.cz/lod/nfi/forest_cover/FC2001-2004.ttl', 'ObForestCover', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#percentArea'),
-                    createOneDimensionLayer('CZ Average growing stock per hectare', 'http://nil.uhul.cz/lod/nfi/average_growing_stock/AGS2001-2004.rdf', 'ObAvGrowingStockPerHa', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetrePerHa'),
-                    createOneDimensionLayer('CZ Total forest area', 'http://nil.uhul.cz/lod/nfi/total_forest_area/TFA2001-2004.rdf', 'ObTotalForestArea', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://www.w3.org/2015/03/inspire/smod#areaHa'),
-                    createOneDimensionLayer('CZ Total growing stock', 'http://nil.uhul.cz/lod/nfi/total_growing_stock/GS2001-2004.rdf', 'ObGrowingStock', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetres'),
-                    //Slovakian flat data                                   
-                    createOneDimensionLayer('SK Forest cover', 'http://nil.uhul.cz/smod/niml/forest_cover/FC2005-2006.rdf', 'ObForestCover', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#percentArea'),                                   
-                    createOneDimensionLayer('SK Average growing stock per hectare', 'http://nil.uhul.cz/smod/niml/average_growing_stock/AGS2005-2006.rdf', 'ObAvGrowingStockPerHa', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetrePerHa'),
-                    createOneDimensionLayer('SK Total forest area', 'http://nil.uhul.cz/smod/niml/total_forest_area/TFA2005-2006.rdf', 'ObTotalForestArea', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://www.w3.org/2015/03/inspire/smod#areaHa'),
-                    createOneDimensionLayer('SK Total growing stock', 'http://nil.uhul.cz/smod/niml/total_growing_stock/GS2005-2006.rdf', 'ObGrowingStock', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetres'),
-                ].concat(specie_lyrs).concat(zakoni_lyrs).concat(create1DimensionLayers(silvicultural, 'Silvicultural system', 'http://nil.uhul.cz/lod/silvicultural_system/silvicultural_system.rdf', 'silvicultural_system'))
-                .concat(create1DimensionLayers({
-                    '"les nízký"@cs': 'Les nízký vzniká systematicky se opakující vegetativní obnovou pařezovými nebo kořenovými výmladky. ',
-                    '"tvar lesa nehodnocen"@cs': 'Tvar lesa nehodnocen.',
-                    '"les vysoký"@cs': 'Vysoký les je charakterizován původem výhradně generativním (síje, sadba, přirozené zmlazení).',
-                    '"les střední"@cs': 'Les střední je kombinací lesa vysokého a nízkého - je tvořen spodní výmladkovou etáží doplněnou etáží z generativně založených jedinců.'
-                }, 'Stand richness', 'http://nil.uhul.cz/lod/stand_richness/stand_richness.rdf', 'stand_richness'))
+                        //Czech flat data                                   
+                        createOneDimensionLayer('CZ Forest cover', 'http://nil.uhul.cz/lod/nfi/forest_cover/FC2001-2004.ttl', 'ObForestCover', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#percentArea'),
+                        createOneDimensionLayer('CZ Average growing stock per hectare', 'http://nil.uhul.cz/lod/nfi/average_growing_stock/AGS2001-2004.rdf', 'ObAvGrowingStockPerHa', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetrePerHa'),
+                        createOneDimensionLayer('CZ Total forest area', 'http://nil.uhul.cz/lod/nfi/total_forest_area/TFA2001-2004.rdf', 'ObTotalForestArea', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://www.w3.org/2015/03/inspire/smod#areaHa'),
+                        createOneDimensionLayer('CZ Total growing stock', 'http://nil.uhul.cz/lod/nfi/total_growing_stock/GS2001-2004.rdf', 'ObGrowingStock', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetres'),
+                        //Slovakian flat data                                   
+                        createOneDimensionLayer('SK Forest cover', 'http://nil.uhul.cz/smod/niml/forest_cover/FC2005-2006.rdf', 'ObForestCover', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#percentArea'),
+                        createOneDimensionLayer('SK Average growing stock per hectare', 'http://nil.uhul.cz/smod/niml/average_growing_stock/AGS2005-2006.rdf', 'ObAvGrowingStockPerHa', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetrePerHa'),
+                        createOneDimensionLayer('SK Total forest area', 'http://nil.uhul.cz/smod/niml/total_forest_area/TFA2005-2006.rdf', 'ObTotalForestArea', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://www.w3.org/2015/03/inspire/smod#areaHa'),
+                        createOneDimensionLayer('SK Total growing stock', 'http://nil.uhul.cz/smod/niml/total_growing_stock/GS2005-2006.rdf', 'ObGrowingStock', 'http://nil.uhul.cz/lod/ns/nfi#', 'http://nil.uhul.cz/lod/ns/nfi#refArea', 'http://nil.uhul.cz/lod/ns/nfi#cubicMetres'),
+                    ].concat(specie_lyrs).concat(zakoni_lyrs).concat(create1DimensionLayers(silvicultural, 'Silvicultural system', 'http://nil.uhul.cz/lod/silvicultural_system/silvicultural_system.rdf', 'silvicultural_system'))
+                    .concat(create1DimensionLayers({
+                        '"les nízký"@cs': 'Les nízký vzniká systematicky se opakující vegetativní obnovou pařezovými nebo kořenovými výmladky. ',
+                        '"tvar lesa nehodnocen"@cs': 'Tvar lesa nehodnocen.',
+                        '"les vysoký"@cs': 'Vysoký les je charakterizován původem výhradně generativním (síje, sadba, přirozené zmlazení).',
+                        '"les střední"@cs': 'Les střední je kombinací lesa vysokého a nízkého - je tvořen spodní výmladkovou etáží doplněnou etáží z generativně založených jedinců.'
+                    }, 'Stand richness', 'http://nil.uhul.cz/lod/stand_richness/stand_richness.rdf', 'stand_richness'))
 
-                .concat(create1DimensionLayers({
-                '"věkový stupeň 15"@cs': 'Věkový stupeň 15 – věk 141 až 150 let',
-                '"věkový stupeň 1"@cs': 'Věkový stupeň 1 – věk 1 až 10 let',
-                '"věkový stupeň 2"@cs': 'Věkový stupeň 2 – věk 11 až 20 let',
-                '"věkový stupeň 3"@cs': 'Věkový stupeň 3 – věk 21 až 30 let',
-                '"věkový stupeň 4"@cs': 'Věkový stupeň 4 – věk 31 až 40 let',
-                '"věkový stupeň 5"@cs': 'Věkový stupeň 5 – věk 41 až 50 let',
-                '"věkový stupeň 6"@cs': 'Věkový stupeň 6 – věk 51 až 60 let',
-                '"věkový stupeň 7"@cs': 'Věkový stupeň 7 – věk 61 až 70 let',
-                '"věkový stupeň 8"@cs': 'Věkový stupeň 8 – věk 71 až 80 let',
-                '"věkový stupeň 9"@cs': 'Věkový stupeň 9 – věk 81 až 90 let',
-                '"věkový stupeň 10"@cs': 'Věkový stupeň 10 – věk 91 až 100 let',
-                '"věkový stupeň 11"@cs': 'Věkový stupeň 11 – věk 101 až 110 let',
-                '"věkový stupeň 12"@cs': 'Věkový stupeň 12 – věk 111 až 120 let',
-                '"věkový stupeň 13"@cs': 'Věkový stupeň 13 – věk 121 až 130 let',
-                '"věkový stupeň 14"@cs': 'Věkový stupeň 14 – věk 131 až 140 let',
-                '"věkový stupeň 16"@cs': 'Věkový stupeň 16 – věk 151 až 160 let',
-                '"věkový stupeň 17"@cs': 'Věkový stupeň 17+ – věk 161 a více let'
-            }, 'Vegetation tiers', 'http://nil.uhul.cz/lod/vegetation_tiers/vegetation_tiers.rdf', 'vegetation_tiers'))
-        })]);
-
-
-        /*
-         * 
-         * SELECT ?o ?p ?s
-FROM <http://nil.uhul.cz/smod/niml/average_growing_stock/AGS2005-2006.rdf> 
-FROM <http://nil.uhul.cz/smod/ns/nuts.rdf> 
-
-WHERE {{
-?o a <http://nil.uhul.cz/lod/ns/nfi#ObAvGrowingStockPerHa>. 
-?o ?p ?s. 
-?o <http://nil.uhul.cz/lod/ns/nfi#refArea> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} 
-
-
-UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. 
-FILTER(?p = <http://nil.uhul.cz/lod/ns/nfi#refArea> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) }
-
-}
-         */
-
-
-
-        module.value('default_layers', []);
-
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
-            zoom: 1,
-            maxZoom: 3,
-            projection: jtsk,
-            units: "m"
-        }));
+                    .concat(create1DimensionLayers({
+                    '"věkový stupeň 15"@cs': 'Věkový stupeň 15 – věk 141 až 150 let',
+                    '"věkový stupeň 1"@cs': 'Věkový stupeň 1 – věk 1 až 10 let',
+                    '"věkový stupeň 2"@cs': 'Věkový stupeň 2 – věk 11 až 20 let',
+                    '"věkový stupeň 3"@cs': 'Věkový stupeň 3 – věk 21 až 30 let',
+                    '"věkový stupeň 4"@cs': 'Věkový stupeň 4 – věk 31 až 40 let',
+                    '"věkový stupeň 5"@cs': 'Věkový stupeň 5 – věk 41 až 50 let',
+                    '"věkový stupeň 6"@cs': 'Věkový stupeň 6 – věk 51 až 60 let',
+                    '"věkový stupeň 7"@cs': 'Věkový stupeň 7 – věk 61 až 70 let',
+                    '"věkový stupeň 8"@cs': 'Věkový stupeň 8 – věk 71 až 80 let',
+                    '"věkový stupeň 9"@cs': 'Věkový stupeň 9 – věk 81 až 90 let',
+                    '"věkový stupeň 10"@cs': 'Věkový stupeň 10 – věk 91 až 100 let',
+                    '"věkový stupeň 11"@cs': 'Věkový stupeň 11 – věk 101 až 110 let',
+                    '"věkový stupeň 12"@cs': 'Věkový stupeň 12 – věk 111 až 120 let',
+                    '"věkový stupeň 13"@cs': 'Věkový stupeň 13 – věk 121 až 130 let',
+                    '"věkový stupeň 14"@cs': 'Věkový stupeň 14 – věk 131 až 140 let',
+                    '"věkový stupeň 16"@cs': 'Věkový stupeň 16 – věk 151 až 160 let',
+                    '"věkový stupeň 17"@cs': 'Věkový stupeň 17+ – věk 161 a více let'
+                }, 'Vegetation tiers', 'http://nil.uhul.cz/lod/vegetation_tiers/vegetation_tiers.rdf', 'vegetation_tiers'))
+            })],
+            default_view: new ol.View({
+                center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
+                zoom: 1,
+                maxZoom: 3,
+                projection: jtsk,
+                units: "m"
+            })
+        });
 
         module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel',
             function($scope, $filter, Core, OlMap, InfoPanelService) {

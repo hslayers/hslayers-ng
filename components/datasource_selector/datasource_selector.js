@@ -51,7 +51,7 @@ define(['angular', 'ol', 'map'],
                 templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
                 link: function(scope, element, attrs) {
                     $('#ds-suggestions-micka').modal('show');
-                    scope.suggestion_filter=scope.query[scope.suggestion_config.input];
+                    scope.suggestion_filter = scope.query[scope.suggestion_config.input];
                     $('#ds-sug-filter').focus();
                     scope.suggestionFilterChanged();
                 }
@@ -238,7 +238,7 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.suggestion_config = {};
-                
+
                 $scope.showSuggestions = function(input, param, field) {
                     $scope.suggestion_config = {
                         input: input,
@@ -254,7 +254,7 @@ define(['angular', 'ol', 'map'],
                         $('#ds-sug-filter').val($scope.query[input]).focus();
                         $scope.suggestionFilterChanged();
                     }
-                    
+
                 }
 
                 $scope.suggestions = [];

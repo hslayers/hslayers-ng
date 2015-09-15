@@ -93,7 +93,7 @@ define(['angular', 'ol', 'map'],
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':
-                                if(lyr_def.protocol && lyr_def.protocol.format.className == 'OpenLayers.Format.KML'){
+                                if (lyr_def.protocol && lyr_def.protocol.format.className == 'OpenLayers.Format.KML') {
                                     var url = lyr_def.protocol.options.url;
                                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
