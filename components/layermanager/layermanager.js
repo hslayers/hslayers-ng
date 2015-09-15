@@ -16,9 +16,39 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
         };
     })
 
+    .directive('hs.layermanager.layerlistDirective', ['$compile', function($compile) {
+        return {
+            templateUrl: hsl_path + 'components/layermanager/partials/layerlist.html',
+            compile: function compile(element) {
+                var contents = element.contents().remove();
+                var contentsLinker;
+
+                return function(scope, iElement) {
+                    scope.layerBelongsToFolder = function(layer, obj) {
+                        return layer.layer.get('path') == obj.hsl_path || ((typeof layer.layer.get('path') == 'undefined' || layer.layer.get('path') == '') && obj.hsl_path == '');
+                    }
+
+                    if (scope.value == null) {
+                        scope.obj = scope.folders;
+                    } else {
+                        scope.obj = scope.value;
+                    }
+
+                    if (angular.isUndefined(contentsLinker)) {
+                        contentsLinker = $compile(contents);
+                    }
+
+                    contentsLinker(scope, function(clonedElement) {
+                        iElement.append(clonedElement);
+                    });
+                };
+            }
+        };
+    }])
+
     /**
      * @class hs.layermanager.removeAllDialogDirective
-     * @memberOf hs.ows.wms
+     * @memberOf hs.layermanager
      * @description Directive for displaying warning dialog about resampling (proxying) wms service
      */
     .directive('hs.layermanager.removeAllDialogDirective', function() {
@@ -31,6 +61,41 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
     })
 
     /**
+     * @class hs.layermanager.folderDirective
+     * @memberOf hs.layermanager
+     * @description Directive for displaying folder. Used recursively
+     */
+    .directive('hs.layermanager.folderDirective', ['$compile', function($compile) {
+        return {
+            templateUrl: hsl_path + 'components/layermanager/partials/folder.html',
+            compile: function compile(element) {
+                var contents = element.contents().remove();
+                var contentsLinker;
+
+                return function(scope, iElement) {
+                    scope.folderVisible = function(obj) {
+                        return obj.sub_folders.length > 0;
+                    }
+
+                    if (scope.value == null) {
+                        scope.obj = "-";
+                    } else {
+                        scope.obj = scope.value;
+                    }
+
+                    if (angular.isUndefined(contentsLinker)) {
+                        contentsLinker = $compile(contents);
+                    }
+
+                    contentsLinker(scope, function(clonedElement) {
+                        iElement.append(clonedElement);
+                    });
+                };
+            }
+        };
+    }])
+
+    /**
      * @class hs.layermanager.controller
      * @memberOf hs.layermanager
      * @description Layer manager controller
@@ -38,6 +103,12 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
     .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'box_layers', '$rootScope', 'Core', '$compile',
         function($scope, OlMap, box_layers, $rootScope, Core, $compile) {
             $scope.Core = Core;
+            $scope.folders = {
+                hsl_path: '',
+                layers: [],
+                sub_folders: [],
+                indent: 0
+            };
             var map = OlMap.map;
             var cur_layer_opacity = 1;
 
@@ -47,7 +118,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
              * @description Callback function for layer adding
              * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
              */
-            var layerAdded = function(e) {
+            function layerAdded(e) {
                 if (e.element.get('show_in_manager') != null && e.element.get('show_in_manager') == false) return;
                 var sub_layers;
                 if (e.element.getSource().getParams) { // Legend only for wms layers with params
@@ -68,6 +139,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     }
                     if (!$scope.$$phase) $scope.$digest();
                 })
+                populateFolders(e.element);
                 $scope.layers.push({
                     title: e.element.get("title"),
                     layer: e.element,
@@ -78,12 +150,49 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             };
 
             /**
+             * @function populateFolders
+             * @memberOf hs.layermanager.controller
+             * @description Take path property of layer and add it to layer managers folder structure
+             * @param {ol.Layer} lyr - Layer
+             */
+            function populateFolders(lyr) {
+                if (typeof lyr.get('path') !== 'undefined' && lyr.get('path') !== 'undefined') {
+                    var path = lyr.get('path');
+                    var parts = path.split('/');
+                    var curfolder = $scope.folders;
+                    for (var i = 0; i < parts.length; i++) {
+                        var found = null;
+                        angular.forEach(curfolder.sub_folders, function(folder) {
+                            if (folder.name == parts[i])
+                                found = folder;
+                        })
+                        if (found == null) {
+                            var new_folder = {
+                                sub_folders: [],
+                                indent: i,
+                                layers: [],
+                                name: parts[i],
+                                hsl_path: curfolder.hsl_path + (curfolder.hsl_path != '' ? '/' : '') + parts[i]
+                            };
+                            curfolder.sub_folders.push(new_folder);
+                            curfolder = new_folder;
+                        } else {
+                            curfolder = found;
+                        }
+                    }
+                    curfolder.layers.push(lyr);
+                } else {
+                    $scope.folders.layers.push(lyr);
+                }
+            }
+
+            /**
              * @function layerRemoved
              * @memberOf hs.layermanager.controller
              * @description Callback function for layer removing
              * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
              */
-            var layerRemoved = function(e) {
+            function layerRemoved(e) {
                 $(".layermanager-list").prepend($('.layerpanel'));
                 $scope.currentlayer = null;
                 for (var i = 0; i < $scope.layers.length; i++) {
@@ -193,8 +302,9 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 }
                 var to_be_removed = [];
                 OlMap.map.getLayers().forEach(function(lyr) {
-                    if (typeof lyr.get('removable') == 'undefined' || lyr.get('removable') == true)
-                        to_be_removed.push(lyr);
+                    if (angular.isUndefined(lyr.get('removable')) || lyr.get('removable') == true)
+                        if (angular.isUndefined(lyr.get('base')) || lyr.get('base') == false)
+                            to_be_removed.push(lyr);
                 });
                 while (to_be_removed.length > 0) {
                     OlMap.map.removeLayer(to_be_removed.shift());
@@ -218,6 +328,13 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                         lyr.setVisible(box.getVisible());
                     });
                 });
+            }
+
+            $scope.hasBoxLayers = function() {
+                for (vari = 0; i < box_layers.length; i++) {
+                    if (box_layers[i].img) return true;
+                }
+                return false;
             }
 
             OlMap.map.getLayers().forEach(function(lyr) {

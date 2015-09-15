@@ -447,7 +447,8 @@ define(['angular', 'ol'],
                         removable: true,
                         abstract: layer.Abstract,
                         MetadataURL: layer.MetadataURL,
-                        BoundingBox: layer.BoundingBox
+                        BoundingBox: layer.BoundingBox,
+                        path: $scope.path
                     });
 
                     OlMap.map.addLayer(new_layer);

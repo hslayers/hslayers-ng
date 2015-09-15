@@ -1,0 +1,9 @@
+<div class="list-group-item" ng-if="obj.layers.length>0">
+    <ul class="list-group layermanager-list" >
+        <li ng-repeat="layer in layers | filter:query track by $index" id="layer-{{$index}}" class="list-group-item" ng-if="layerBelongsToFolder(layer, obj)">
+            <a href="#" ng-click="setCurrentLayer(layer, $index)">{{layer.title}}</a>
+            <a href="#" class="layer-more"><i class="fa fa-arrow-circle-o-right"></i></a>
+            <input type="checkbox" class="form-control layer-checked" ng-checked="layer.visible" ng-click="changeLayerVisibility($event, layer)" />
+        </li>
+    </ul>
+</div>

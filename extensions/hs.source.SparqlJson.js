@@ -9,6 +9,7 @@ define(function(require) {
             loader: function(extent, resolution, projection) {
                 if (typeof src.options.clear_on_move !== 'undefined' && src.options.clear_on_move) src.clear();
                 if (typeof options.hsproxy == 'undefined') options.hsproxy = false;
+                if (typeof options.geom_attribute == 'undefined') options.geom_attribute = 'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
                 if (src.options.url == '') return;
                 var p = src.options.url;
                 var first_pair = [extent[0], extent[1]];
@@ -16,7 +17,7 @@ define(function(require) {
                 first_pair = ol.proj.transform(first_pair, 'EPSG:3857', 'EPSG:4326');
                 second_pair = ol.proj.transform(second_pair, 'EPSG:3857', 'EPSG:4326');
                 var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extent[0] + ' ' + extent[1] + ', ' + extent[2] + ' ' + extent[3] + ')"), bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat)))).';
+                var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extent[0] + ' ' + extent[1] + ', ' + extent[2] + ' ' + extent[3] + ')"), ' + options.geom_attribute + ')).';
                 p = p.replace("<extent>", s_extent);
                 if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
@@ -62,9 +63,10 @@ define(function(require) {
                             var c = "rgba(" + ~~(r * 235) + "," + ~~(g * 235) + "," + ~~(b * 235) + ", " + opacity + ")";
                             return (c);
                         }
+                        var format = new ol.format.WKT();
                         for (var key in objects) {
                             i++;
-                            if (objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] != "" && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] != "") {
+                            if (objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] != "" && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] != "") {
                                 var x = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"]);
                                 var y = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"]);
                                 if (!isNaN(x) && !isNaN(y)) {
@@ -85,6 +87,28 @@ define(function(require) {
                                     occupied_xy[coord] = true;
                                     features.push(feature);
                                 }
+                            }
+                            if (objects[key]["http://www.opengis.net/ont/geosparql#asWKT"]) {
+                                var g_feature = format.readFeature(objects[key]['http://www.opengis.net/ont/geosparql#asWKT'].toUpperCase());
+                                objects[key].geometry = g_feature.getGeometry();
+                                objects[key].geometry.transform('EPSG:4326', options.projection);
+                                delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
+                                var coord = objects[key].geometry.getCoordinates();
+
+                                if (typeof occupied_xy[coord] !== 'undefined') continue;
+                                var feature = new ol.Feature(objects[key]);
+                                if (objects[key][options.category_field]) {
+                                    if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
+                                        category_map[objects[key][options.category_field]] = {
+                                            id: category_id,
+                                            name: objects[key][options.category_field]
+                                        };
+                                        category_id++;
+                                    }
+                                    feature.category_id = category_map[objects[key][options.category_field]].id;
+                                }
+                                occupied_xy[coord] = true;
+                                features.push(feature);
                             }
                         }
                         for (var categ in category_map) {

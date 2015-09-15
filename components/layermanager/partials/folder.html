@@ -1,0 +1,7 @@
+<ul class="list-group" ng-repeat="value in obj.sub_folders track by $index" >
+    <a href="#" class="list-group-item list-group-item-warning">
+        <span ng-style="{'padding-left':value.indent*15}">{{ value.name }}</span>
+    </a>
+    <li hs.layermanager.folder_directive ng-show='folderVisible(value)'></li>
+    <li hs.layermanager.layerlist_directive></li>
+</ul>

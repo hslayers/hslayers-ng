@@ -26,9 +26,23 @@
                     </div>
                      <div class="form-group">
                         <label ng-attr-for="ds-adv-keywords" class="control-label" translate>Keywords:</label> 
-                        <input type="text" id="ds-adv-keywords" class="form-control" ng-model="query.keywords">
+                        <div class="input-group">
+                            <input type="text" id="ds-adv-keywords" class="form-control" ng-model="query.keywords">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="showSuggestions('keywords', 'keyword', 'value')">...</button>
+                            </span>
+                        </div>
                     </div>
-                    <div class="form-group">
+                     <div class="form-group">
+                        <label ng-attr-for="ds-adv-organization" class="control-label" translate>Organization name:</label>
+                        <div class="input-group">
+                            <input type="text" id="ds-adv-organization" class="form-control" ng-model="query.OrganisationName">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="showSuggestions('OrganisationName', 'org', 'name')">...</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show='false'>
                         <label ng-attr-for="ds-type" class="control-label" translate>Type:</label> 
                         <select class="form-control" ng-attr-id="ds-type" ng-model="query.type" ng-change='advancedMickaTypeChanged()'>
                             <option value=""></option>
@@ -38,7 +52,7 @@
                             <option value="featureCatalogue">Feature catalogue</option>
                         </select>
                     </div>
-                                                           
+                    <!--                                    
                     <div class="form-group" ng-show="query.type=='application' || query.type=='service'">
                         <label ng-attr-for="ds-application-type" class="control-label" translate>
                             <span ng-show="query.type=='application'">Application type:</span>
@@ -48,6 +62,7 @@
                             <option ng-repeat="type in micka_ds.level2_types" ng-attr-value="{{type.value}}">{{type.name}}</option>
                         </select>
                     </div>
+                    -->
                     
                      <div class="form-group" ng-show="query.type=='data'">
                         <label ng-attr-for="ds-application-type" class="control-label" translate>

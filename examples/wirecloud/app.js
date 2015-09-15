@@ -13,8 +13,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.legend', 'hs.geolocation', 'hs.core', 'hs.wirecloud', 'gettext'
         ];
 
-        if (typeof MashupPlatform !== 'undefined')
+        if (typeof MashupPlatform !== 'undefined') {
             modules_to_load = eval(MashupPlatform.prefs.get('modules_to_load'));
+        }
 
         var module = angular.module('hs', modules_to_load);
 
@@ -35,7 +36,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             style: function(feature, resolution) {
                 return [new ol.style.Style({
                     text: new ol.style.Text({
-                        text: feature.get('max_temp'),
+                        text: feature.get('temperature'),
                         offsetY: -10,
                         offsetX: 5,
                         fill: new ol.style.Fill({
@@ -74,7 +75,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
 
         var location_feature_ids = {};
 
-        var rainbow = function(numOfSteps, step, opacity) {
+        function rainbow(numOfSteps, step, opacity) {
             // based on http://stackoverflow.com/a/7419630
             // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
             // Adam Cole, 2011-Sept-14
@@ -102,7 +103,46 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             return (c);
         }
 
-        var processUnit = function(data) {
+
+        function processObject(data) {
+            //Get settings from configuration
+            var id_attr_name = MashupPlatform.prefs.get('id_attr_name');
+            var coordinates_attr_name = MashupPlatform.prefs.get('coordinates_attr_name');
+            var measurements_attr_names = MashupPlatform.prefs.get('measurements_attr_names').split(',');
+            var timestamp_attr_name = MashupPlatform.prefs.get('timestamp_attr_name');
+
+            //Read attributes
+            var attributes = {
+                id: data[id_attr_name],
+                timestamp: data[timestamp_attr_name]
+            };
+            var projection = 'EPSG:4326';
+            var coords = data[coordinates_attr_name].split(','); //Supposed ccordinates are lon, lat seperated by comma
+            attributes.geometry = new ol.geom.Point(ol.proj.transform([parseFloat(coords[1]), parseFloat(coords[0])], projection, 'EPSG:3857'));
+            for (var attr_i = 0; attr_i < measurements_attr_names.length; attr_i++) {
+                var t = parseFloat(data.[measurements_attr_names[attr_i]]);
+                attributes[measurements_attr_names[attr_i]] = t.toFixed(2);
+            }
+
+            //Create feature if necessary. Set the attribute values for the feature 
+            var feature = null;
+            if (location_feature_ids[data[id_attr_name]]) {
+                feature = location_feature_ids[data[id_attr_name]];
+                feature.setGeometry(attributes.geometry);
+                for (var atr in attributes) {
+                    feature.set(atr, attributes[atr]);
+                }
+            } else {
+                feature = new ol.Feature(attributes);
+                location_layer.getSource().addFeatures([feature]);
+                location_feature_ids[data[id_attr_name]] = feature;
+            }
+
+            //Compute color
+            //feature.color = rainbow(30, Math.min(Math.max(max_temp, -15), 15) + 15, 0.7);
+        }
+
+        function processUnit(data) {
             var attributes = {
                 id: data.id
             };
@@ -130,7 +170,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             }
         }
 
-        var processTag = function(data) {
+        function processTag(data) {
             if (location_feature_ids[data.unit]) {
                 location_feature_ids[data.unit].tags[data.id] = data;
                 var max_temp = -273.15;
@@ -149,15 +189,20 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
         module.value('wirecloud_data_consumer', function(data) {
             data = angular.fromJson(data);
             if (console) console.log(data);
-            switch (data.type) {
-                case "Unit":
-                    processUnit(data);
-                    break;
-                case "Tag":
-                    processTag(data);
-                    break;
+            if (typeof data.type !== 'undefined') {
+                switch (data.type) {
+                    case "Unit":
+                        processUnit(data);
+                        break;
+                    case "Tag":
+                        processTag(data);
+                        break;
+                    default:
+                        process_object(data);
+                }
+            } else {
+                process_object(data);
             }
-
         });
 
 

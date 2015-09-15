@@ -42,7 +42,7 @@ define(['angular', 'ol', 'map'],
                         })
                         $scope.layers.push({
                             title: layer.get("title"),
-                            layer: layer,
+                            lyr: layer,
                             type: 'wms',
                             sub_layers: sub_layers,
                             visible: layer.getVisible()
@@ -87,6 +87,13 @@ define(['angular', 'ol', 'map'],
 
                 $scope.refresh = function() {
                     if (!$scope.$$phase) $scope.$digest();
+                }
+
+                $scope.hasLegend = function(layer, type) {
+                    if (layer.type == type && layer.lyr.getVisible()) return true;
+                    if (layer.type == type && layer.lyr.getVisible()) return true;
+                    return false;
+
                 }
 
                 OlMap.map.getLayers().forEach(function(lyr) {

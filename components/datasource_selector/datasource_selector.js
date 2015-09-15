@@ -40,6 +40,24 @@ define(['angular', 'ol', 'map'],
             };
         })
 
+
+        /**
+         * @class hs.datasource_selector.suggestionsDialogDirective
+         * @memberOf hs.datasource_selector
+         * @description Directive for displaying suggestions for search parameters for Micka catalogue service
+         */
+        .directive('hs.datasourceSelector.suggestionsDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
+                link: function(scope, element, attrs) {
+                    $('#ds-suggestions-micka').modal('show');
+                    scope.suggestion_filter=scope.query[scope.suggestion_config.input];
+                    $('#ds-sug-filter').focus();
+                    scope.suggestionFilterChanged();
+                }
+            };
+        })
+
         /**
          * @class hs.datasource_selector.objectDirective
          * @memberOf hs.datasource_selector
@@ -62,6 +80,7 @@ define(['angular', 'ol', 'map'],
                         } else {
                             scope.obj = scope.value;
                         }
+
                         if (angular.isUndefined(contentsLinker)) {
                             contentsLinker = $compile(contents);
                         }
@@ -77,12 +96,16 @@ define(['angular', 'ol', 'map'],
         .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile',
             function($scope, OlMap, Core, $compile) {
                 $scope.query = {
-                    text_filter: ''
+                    text_filter: '',
+                    title: '',
+                    type: 'service'
                 };
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
                 $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
                 $scope.selected_layer = null;
+                $scope.filter_by_extent = true;
+
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
                     title: "Datasources extents",
@@ -149,7 +172,7 @@ define(['angular', 'ol', 'map'],
                                     topicCategory: []
                                 }
                             }
-                            ds.ajax_req = $.ajax({
+                            ds.ajax_req_codelists = $.ajax({
                                 url: url,
                                 cache: false,
                                 success: function(j) {
@@ -177,6 +200,7 @@ define(['angular', 'ol', 'map'],
                                             name: $(this).html()
                                         });
                                     })
+                                    $scope.advancedMickaTypeChanged();
                                 }
                             });
                             break;
@@ -184,6 +208,8 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.advancedMickaTypeChanged = function() {
+                    if (typeof $scope.micka_ds == 'undefined') return;
+                    if (typeof $scope.micka_ds.code_lists == 'undefined') return;
                     switch ($scope.query.type) {
                         case "service":
                             $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.serviceType;
@@ -195,9 +221,13 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.openMickaAdvancedSearch = function() {
-                    var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></span>');
-                    $("#hs-dialog-area").append(el)
-                    $compile(el)($scope);
+                    if ($('#ds-advanced-micka').length == 0) {
+                        var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el);
+                        $compile(el)($scope);
+                    } else {
+                        $('#ds-advanced-micka').modal('show');
+                    }
                     if (typeof $scope.micka_ds == 'undefined') {
                         for (var ds in $scope.datasets) {
                             if ($scope.datasets[ds].type == 'micka') {
@@ -205,6 +235,50 @@ define(['angular', 'ol', 'map'],
                             }
                         }
                     }
+                }
+
+                $scope.suggestion_config = {};
+                
+                $scope.showSuggestions = function(input, param, field) {
+                    $scope.suggestion_config = {
+                        input: input,
+                        param: param,
+                        field: field
+                    };
+                    if ($('#ds-suggestions-micka').length == 0) {
+                        var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el);
+                        $compile(el)($scope);
+                    } else {
+                        $('#ds-suggestions-micka').modal('show');
+                        $('#ds-sug-filter').val($scope.query[input]).focus();
+                        $scope.suggestionFilterChanged();
+                    }
+                    
+                }
+
+                $scope.suggestions = [];
+
+                $scope.suggestionFilterChanged = function() {
+                    if (typeof $scope.suggestion_ajax != 'undefined') $scope.suggestion_ajax.abort();
+                    var url = $scope.micka_ds.url + '../util/suggest.php?&type=' + $scope.suggestion_config.param + '&query=' + $scope.suggestion_filter;
+                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                    }
+                    $scope.suggestion_ajax = $.ajax({
+                        url: url,
+                        cache: false,
+                        dataType: "json",
+                        success: function(j) {
+                            $scope.suggestions = j.records;
+                            delete $scope.suggestion_ajax;
+                            if (!$scope.$$phase) $scope.$digest();
+                        }
+                    });
+                }
+
+                $scope.addSuggestion = function(text) {
+                    $scope.query[$scope.suggestion_config.input] = text;
                 }
 
                 $scope.loadDataset = function(ds) {
@@ -239,12 +313,23 @@ define(['angular', 'ol', 'map'],
                             break;
                         case "micka":
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                            var bbox = "and BBOX='" + b[0] + " " + b[1] + " " + b[2] + " " + b[3] + "'";
+                            var bbox = $scope.filter_by_extent ? "BBOX='" + b.join(' ') + "'" : '';
                             var ue = encodeURIComponent;
-                            var query = $scope.text_field + ue(" like '*" + $scope.query.text_filter + "*'") + param2Query('type') + param2Query('ServiceType') + param2Query('topicCategory') + param2Query('Denominator');
+                            var text = typeof $scope.query.text_filter == 'undefined' || $scope.query.text_filter == '' ? $scope.query.title : $scope.query.text_filter;
+                            var query = [
+                                (text != '' ? $scope.text_field + ue(" like '*" + text + "*' ") : ''),
+                                ue(bbox),
+                                //param2Query('type'),
+                                param2Query('ServiceType'),
+                                param2Query('topicCategory'),
+                                param2Query('Denominator'),
+                                param2Query('OrganisationName')
+                            ].filter(function(n) {
+                                return n != ''
+                            }).join(' and ');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
-                                (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '') +
+                                (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
                                 '&limit=10&start=' + ds.start;
                             if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                 url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
@@ -263,18 +348,23 @@ define(['angular', 'ol', 'map'],
                                     })
                                     ds.layers = [];
                                     ds.loaded = true;
-                                    ds.matched = j.matched;
-                                    ds.next = j.next;
-                                    for (var lyr in j.records) {
-                                        if (j.records[lyr]) {
-                                            var obj = j.records[lyr];
-                                            ds.layers.push(obj);
-                                            addExtentFeature(obj);
+                                    if (j == null) {
+                                        ds.matched == 0;
+                                    } else {
+                                        ds.matched = j.matched;
+                                        ds.next = j.next;
+                                        for (var lyr in j.records) {
+                                            if (j.records[lyr]) {
+                                                var obj = j.records[lyr];
+                                                ds.layers.push(obj);
+                                                addExtentFeature(obj);
+                                            }
                                         }
                                     }
                                     if (!$scope.$$phase) $scope.$digest();
                                 }
                             });
+                            if (!$scope.$$phase) $scope.$digest();
                             break;
                     }
                 }
@@ -283,9 +373,9 @@ define(['angular', 'ol', 'map'],
                     if (typeof $scope.query[which] != 'undefined') {
                         if (which == 'type' && $scope.query[which] == 'data') {
                             //Special case for type 'data' because it can contain many things
-                            return encodeURIComponent(" and (type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
+                            return encodeURIComponent("(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
                         }
-                        return ($scope.query[which] != '' ? encodeURIComponent(" and " + which + "='" + $scope.query[which] + "'") : '')
+                        return ($scope.query[which] != '' ? encodeURIComponent(which + "='" + $scope.query[which] + "'") : '')
                     } else return '';
                 }
 
@@ -307,6 +397,7 @@ define(['angular', 'ol', 'map'],
 
                 $scope.getNextRecords = function(ds) {
                     ds.start = ds.next;
+                    ds.next += 10;
                     $scope.loadDataset(ds);
                 }
 
@@ -328,26 +419,6 @@ define(['angular', 'ol', 'map'],
                     record.feature = new_feature;
                     extent_layer.getSource().addFeatures([new_feature]);
                 }
-
-                OlMap.map.on('pointermove', function(evt) {
-                    var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
-                    var something_done = false;
-                    $(extent_layer.getSource().getFeatures()).each(function() {
-                        if (this.get("record").highlighted) {
-                            this.get("record").highlighted = false;
-                            something_done = true;
-                        }
-                    });
-                    if (features.length) {
-                        $(features).each(function() {
-                            if (!this.get("record").highlighted) {
-                                this.get("record").highlighted = true;
-                                something_done = true;
-                            }
-                        })
-                    }
-                    if (something_done && !$scope.$$phase) $scope.$digest();
-                });
 
                 $scope.setDefaultFeatureStyle = function(style) {
                     default_style = style;
@@ -413,25 +484,65 @@ define(['angular', 'ol', 'map'],
                     $scope.query.text_filter = "";
                 }
 
-                OlMap.map.addLayer(extent_layer);
-                $scope.datasources = [{
-                    title: "Datatank",
-                    url: "http://ewi.mmlab.be/otn/api/info",
-                    type: "datatank"
-                }, {
-                    title: "Micka",
-                    url: "http://cat.ccss.cz/csw/",
-                    language: 'eng',
-                    type: "micka",
-                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
-                }];
+                $scope.datasources = [
+                    /*{
+                                        title: "Datatank",
+                                        url: "http://ewi.mmlab.be/otn/api/info",
+                                        type: "datatank"
+                                    },*/
+                    {
+                        title: "Micka",
+                        url: "http://cat.ccss.cz/csw/",
+                        language: 'eng',
+                        type: "micka",
+                        code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                    }
+                ];
 
-                $scope.loadDatasets($scope.datasources);
-                $scope.fillCodesets($scope.datasources);
-                $scope.$emit('scope_loaded', "DatasourceSelector");
-                $scope.$on('core.mainpanel_changed', function(event) {
-                    extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
-                });
+                $scope.init = function() {
+                    OlMap.map.on('pointermove', function(evt) {
+                        var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
+                        var something_done = false;
+                        $(extent_layer.getSource().getFeatures()).each(function() {
+                            if (this.get("record").highlighted) {
+                                this.get("record").highlighted = false;
+                                something_done = true;
+                            }
+                        });
+                        if (features.length) {
+                            $(features).each(function() {
+                                if (!this.get("record").highlighted) {
+                                    this.get("record").highlighted = true;
+                                    something_done = true;
+                                }
+                            })
+                        }
+                        if (something_done && !$scope.$$phase) $scope.$digest();
+                    });
+                    var timer;
+                    OlMap.map.getView().on('change:center', function(e) {
+                        if (timer != null) clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                        }, 500);
+                    });
+                    OlMap.map.getView().on('change:resolution', function(e) {
+                        if (timer != null) clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                        }, 500);
+                    });
+
+                    OlMap.map.addLayer(extent_layer);
+                    $scope.loadDatasets($scope.datasources);
+                    $scope.fillCodesets($scope.datasources);
+                    $scope.$emit('scope_loaded', "DatasourceSelector");
+                    $scope.$on('core.mainpanel_changed', function(event) {
+                        extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
+                    });
+                }
+
+                $scope.init();
             }
         ]);
 

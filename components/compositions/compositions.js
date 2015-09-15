@@ -19,6 +19,7 @@ define(['angular', 'ol', 'map'],
         .service('hs.compositions.service_parser', ['hs.map.service', 'Core', function(OlMap, Core) {
             var me = {
                 load: function(url) {
+                    url = url.replace('&amp;', '&');
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
                     } else {
@@ -88,6 +89,23 @@ define(['angular', 'ol', 'map'],
                                 });
                                 layers.push(new_layer);
                                 break;
+                            case 'OpenLayers.Layer.Vector':
+                                if (lyr.protocol && lyr.protocol.format.className == 'OpenLayers.Format.KML') {
+                                    var url = lyr.protocol.optoions.url;
+                                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                                    }
+                                    var src = new ol.source.KML({
+                                        projection: ol.proj.get(lyr.projection),
+                                        url: url,
+                                        extractStyles: true
+                                    })
+                                    var lyr = new ol.layer.Vector({
+                                        title: lyr.title,
+                                        source: src
+                                    });
+                                }
+                                break;
                         }
 
                     }
@@ -97,8 +115,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser',
-            function($scope, $rootScope, OlMap, Core, composition_parser) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'compositions_catalogue_url',
+            function($scope, $rootScope, OlMap, Core, composition_parser, compositions_catalogue_url) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -121,7 +139,9 @@ define(['angular', 'ol', 'map'],
                     "Planning": false,
                     "ComplexInformation": false
                 };
+                $scope.filter_by_extent = true;
 
+                var ajax_req = null;
                 $scope.loadCompositions = function(page) {
                     if (typeof page === 'undefined') page = 1;
                     if ($scope.page_count == 0) $scope.page_count = 1;
@@ -137,17 +157,21 @@ define(['angular', 'ol', 'map'],
                     });
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
-                    var url = "http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php?_dc=1433255684347&serviceURL=&project=&serviceName=p4b&format=json&standard=&query=type%3Dapplication%20AND%20BBOX%3D%27-135.70312477249308%2C20.84649058320339%2C164.8828126856566%2C73.109630112712%27" + text_filter + keyword_filter + "&lang=eng&session=save&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
+                    var bbox_delimiter = compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
+                    var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
+                    var url = compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                     } else {
                         url = url;
                     }
-                    $.ajax({
+                    if (ajax_req != null) ajax_req.abort();
+                    ajax_req = $.ajax({
                             url: url
                         })
                         .done(function(response) {
-                            if (console) console.log(response);
+                            ajax_req = null;
                             $scope.compositions = response.records;
                             $scope.pages = [];
                             $scope.page_count = Math.ceil(response.matched / $scope.page_size);
@@ -214,6 +238,20 @@ define(['angular', 'ol', 'map'],
                 });
 
                 OlMap.map.addLayer(extent_layer);
+
+                var timer;
+                OlMap.map.getView().on('change:center', function(e) {
+                    if (timer != null) clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        if ($scope.filter_by_extent) $scope.loadCompositions();
+                    }, 500);
+                });
+                OlMap.map.getView().on('change:resolution', function(e) {
+                    if (timer != null) clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        if ($scope.filter_by_extent) $scope.loadCompositions();
+                    }, 500);
+                });
 
                 $scope.loadComposition = composition_parser.load;
                 $scope.loadCompositions();
