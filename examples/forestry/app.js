@@ -152,9 +152,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
             return new ol.layer.Vector({
                 title: title,
                 source: new SparqlJsonForestry({
-                    //XXX
-                    //url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> FROM <http://nil.uhul.cz/smod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <'+geometry_attr+'> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <'+geometry_attr+'> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <' + geometry_attr + '> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <' + geometry_attr + '> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <'+geometry_attr+'> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <'+geometry_attr+'> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
                     projection: 'EPSG:5514',
                     geometry_attr: geometry_attr,
