@@ -192,7 +192,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                             $scope.moveToAndZoom(parseFloat(permalink.getParamValue('hs_x', loc)), parseFloat(permalink.getParamValue('hs_y', loc)), parseInt(permalink.getParamValue('hs_z', loc)));
                         }
 
-                        if (angular.isDefined(config.box_layers) {
+                        if (angular.isDefined(config.box_layers)) {
                                 angular.forEach(config.box_layers, function(box) {
                                     angular.forEach(box.get('layers'), function(lyr) {
                                         lyr.setVisible(isLayerVisibleInPermalink(lyr));
@@ -201,7 +201,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                                 });
                             }
 
-                            if (angular.isDefined(config.default_layers) {
+                            if (angular.isDefined(config.default_layers)) {
                                     angular.forEach(config.default_layers, function(lyr) {
                                         lyr.setVisible(isLayerVisibleInPermalink(lyr));
                                         OlMap.map.addLayer(lyr);
