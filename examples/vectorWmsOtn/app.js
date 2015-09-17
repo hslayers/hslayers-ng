@@ -66,8 +66,8 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             })
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.query.service_infopanel', 'hs.map.service', 'default_layers',
-            function($scope, $compile, $element, Core, InfoPanelService, OlMap, default_layers) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.query.service_infopanel', 'hs.map.service',
+            function($scope, $compile, $element, Core, InfoPanelService, OlMap) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
