@@ -50,26 +50,78 @@ define(['angular', 'ol'],
         .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service',
             function($http, OlMap) {
                 var callbacks = [];
+                var me = this;
+                
                 this.addHandler = function(f) {
                     callbacks.push(f);
                 }
+                
+                this.getParamsFromUrl = function(str) {
+                    if (typeof str !== 'string') {
+                        return {};
+                    }
+
+                    if(str.indexOf('?')>-1) 
+                        str = str.substring(str.indexOf("?") + 1);
+                    else
+                        return {};
+                    
+                    return str.trim().split('&').reduce(function(ret, param) {
+                        var parts = param.replace(/\+/g, ' ').split('=');
+                        var key = parts[0];
+                        var val = parts[1];
+
+                        key = decodeURIComponent(key);
+                        // missing `=` should be `null`:
+                        // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+                        val = val === undefined ? null : decodeURIComponent(val);
+
+                        if (!ret.hasOwnProperty(key)) {
+                            ret[key] = val;
+                        } else if (Array.isArray(ret[key])) {
+                            ret[key].push(val);
+                        } else {
+                            ret[key] = [ret[key], val];
+                        }
+
+                        return ret;
+                    }, {});
+                };
+                
+                this.getPathFromUrl = function(str) {
+                    if(str.indexOf('?')>-1) 
+                        return str.substring(0, str.indexOf("?"));
+                    else
+                        return str;
+                };
+                
+                this.params2String = function(obj) {
+                    return obj ? Object.keys(obj).map(function(key) {
+                        var val = obj[key];
+
+                        if (Array.isArray(val)) {
+                            return val.map(function(val2) {
+                                return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
+                            }).join('&');
+                        }
+
+                        return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+                    }).join('&') : '';
+                };
 
                 this.requestGetCapabilities = function(service_url, callback) {
+                    service_url = service_url.replace('&amp;', '&');
+                    var params = me.getParamsFromUrl(service_url);
+                    var path =  this.getPathFromUrl(service_url);
+                    params.request = 'GetCapabilities';
+                    params.service = 'WMS';
+                    var url = [path, me.params2String(params)].join('?');
+                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                    }
                     if (callback) {
-                        var url = '';
-                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '&' : '?') + "request=GetCapabilities&service=WMS");
-                        } else {
-                            url = service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS";
-                        }
                         $http.get(url).success(callback);
                     } else {
-                        var url = '';
-                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(service_url + (service_url.indexOf('?') > 0 ? '&' : '?') + "request=GetCapabilities&service=WMS");
-                        } else {
-                            url = service_url + (service_url.indexOf('?') > 0 ? '' : '?') + "request=GetCapabilities&service=WMS";
-                        }
                         $http.get(url).success(function(resp) {
                             $(callbacks).each(function() {
                                 this(resp)
