@@ -113,8 +113,10 @@ define(['angular', 'ol'],
                     service_url = service_url.replace('&amp;', '&');
                     var params = me.getParamsFromUrl(service_url);
                     var path =  this.getPathFromUrl(service_url);
-                    params.request = 'GetCapabilities';
-                    params.service = 'WMS';
+                    if(angular.isUndefined(params.request) && angular.isUndefined(params.REQUEST)) params.request = 'GetCapabilities'; else
+                        if(angular.isDefined(params.request)) params.request = 'GetCapabilities'; else
+                        if(angular.isDefined(params.REQUEST)) params.REQUEST = 'GetCapabilities';
+                    if(angular.isUndefined(params.service) && angular.isUndefined(params.SERVICE)) params.service = 'WMS';
                     var url = [path, me.params2String(params)].join('?');
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
