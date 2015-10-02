@@ -184,7 +184,7 @@ define(['angular', 'ol'],
                 this.currentProjectionSupported = function(srss) {
                     var found = false;
                     angular.forEach(srss, function(val) {
-                        if (OlMap.map.getView().getProjection().getCode() == val) found = true;
+                        if (OlMap.map.getView().getProjection().getCode().toUpperCase() == val.toUpperCase()) found = true;
                     })
                     return found;
                 }
@@ -231,7 +231,7 @@ define(['angular', 'ol'],
                         if (typeof caps.Capability.Layer.CRS !== 'undefined') {
                             $scope.srss = caps.Capability.Layer.CRS;
                             if (srv_caps.currentProjectionSupported($scope.srss))
-                                $scope.srs = OlMap.map.getView().getProjection().getCode();
+                                $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode())>-1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
                             else if ($scope.srss.indexOf('EPSG:4326') > -1) {
                                 $scope.srs = 'EPSG:4326';
                             } else
