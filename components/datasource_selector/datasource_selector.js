@@ -326,7 +326,7 @@ define(['angular', 'ol', 'map'],
                                 param2Query('OrganisationName')
                             ].filter(function(n) {
                                 return n != ''
-                            }).join(' and ');
+                            }).join('%20AND%20');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
@@ -376,7 +376,13 @@ define(['angular', 'ol', 'map'],
                             return encodeURIComponent("(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
                         }
                         return ($scope.query[which] != '' ? encodeURIComponent(which + "='" + $scope.query[which] + "'") : '')
-                    } else return '';
+                    } else {
+                        if (which == 'ServiceType') {
+                            return encodeURIComponent("(ServiceType=view OR ServiceType=WMS OR Protocol like '*KML*')");
+                        } else {
+                            return '';
+                        }
+                    }
                 }
 
                 $scope.zoomTo = function(bbox) {
