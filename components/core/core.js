@@ -9,7 +9,7 @@
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
-        ngcookies: hsl_path + 'bower_components/angular-cookies/angular-cookies.min',
+        ngcookies: hsl_path + 'bower_components/angular-cookies/angular-cookies',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap',
         ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'bower_components/ol3/build/ol',
         drag: hsl_path + 'components/drag/drag',
