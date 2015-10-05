@@ -302,7 +302,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     if (jsessionid) {
                         $.ajax({
                             url: "/g4i-portlet/service/sso/validate/" + jsessionid,
-                            success: setUserDetails
+                            success: $scope.setUserDetails
                         });
                     }
                 };
