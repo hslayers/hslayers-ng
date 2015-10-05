@@ -5,7 +5,7 @@
 define(['angular', 'ol', 'map', 'ngcookies'],
 
     function(angular, ol) {
-        var module = angular.module('hs.status_creator', ['hs.map', 'hs.core'])
+        var module = angular.module('hs.status_creator', ['hs.map', 'hs.core', 'ngCookies'])
             .directive('hs.statusCreator.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog.html',
