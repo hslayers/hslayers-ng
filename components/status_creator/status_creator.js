@@ -214,8 +214,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile',
-            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile) {
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
+            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
                 $scope.layers = [];
                 $scope.id = '';
 
@@ -294,7 +294,37 @@ define(['angular', 'ol', 'map'],
                         });
                     });
                     $('#status-creator-dialog').modal('show');
+                    $scope.loadUserDetails();
                 }
+
+                $scope.loadUserDetails = function() {
+                    var jsessionid = $cookies.get("JSESSIONID");
+                    if (jsessionid) {
+                        $.ajax({
+                            url: "/g4i-portlet/service/sso/validate/" + jsessionid,
+                            success: setUserDetails
+                        });
+                    }
+                };
+
+                $scope.setUserDetails = function(user) {
+                    if (user && user.resultCode == "0") {
+                        // set the values
+                        if (user.userInfo) {
+                            $scope.email = user.userInfo.email;
+                            $scope.phone = user.userInfo.phone;
+                            $scope.name = user.userInfo.firstName + " " + user.userInfo.lastName;
+                        }
+                        if (user.userInfo && user.userInfo.org) {
+                            $scope.address = user.userInfo.org.street;
+                            $scope.country = user.userInfo.org.state;
+                            $scope.postalcode = user.userInfo.org.zip;
+                            $scope.city = user.userInfo.org.city;
+                            $scope.organization = user.userInfo.org.name;
+                        }
+                    }
+                };
+              
 
                 $scope.getCurrentExtent();
                 $scope.$emit('scope_loaded', "StatusCreator");

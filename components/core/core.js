@@ -162,12 +162,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             return me.panel_statuses['search']
                         },
-                     isAuthorized: function(){
-                        if(angular.isDefined(window.getLRUser) && window.getLRUser()!='guest'){
-                            return true;
+                        isAuthorized: function() {
+                            if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
+                                return true;
+                            }
+                            return false;
                         }
-                        return false;
-                     }
                     };
 
                     return me;

@@ -51,21 +51,21 @@ define(['angular', 'ol'],
             function($http, OlMap) {
                 var callbacks = [];
                 var me = this;
-                
+
                 this.addHandler = function(f) {
                     callbacks.push(f);
                 }
-                
+
                 this.getParamsFromUrl = function(str) {
                     if (typeof str !== 'string') {
                         return {};
                     }
 
-                    if(str.indexOf('?')>-1) 
+                    if (str.indexOf('?') > -1)
                         str = str.substring(str.indexOf("?") + 1);
                     else
                         return {};
-                    
+
                     return str.trim().split('&').reduce(function(ret, param) {
                         var parts = param.replace(/\+/g, ' ').split('=');
                         var key = parts[0];
@@ -87,14 +87,14 @@ define(['angular', 'ol'],
                         return ret;
                     }, {});
                 };
-                
+
                 this.getPathFromUrl = function(str) {
-                    if(str.indexOf('?')>-1) 
+                    if (str.indexOf('?') > -1)
                         return str.substring(0, str.indexOf("?"));
                     else
                         return str;
                 };
-                
+
                 this.params2String = function(obj) {
                     return obj ? Object.keys(obj).map(function(key) {
                         var val = obj[key];
@@ -112,11 +112,13 @@ define(['angular', 'ol'],
                 this.requestGetCapabilities = function(service_url, callback) {
                     service_url = service_url.replace('&amp;', '&');
                     var params = me.getParamsFromUrl(service_url);
-                    var path =  this.getPathFromUrl(service_url);
-                    if(angular.isUndefined(params.request) && angular.isUndefined(params.REQUEST)) params.request = 'GetCapabilities'; else
-                        if(angular.isDefined(params.request)) params.request = 'GetCapabilities'; else
-                        if(angular.isDefined(params.REQUEST)) params.REQUEST = 'GetCapabilities';
-                    if(angular.isUndefined(params.service) && angular.isUndefined(params.SERVICE)) params.service = 'WMS';
+                    var path = this.getPathFromUrl(service_url);
+                    if (angular.isUndefined(params.request) && angular.isUndefined(params.REQUEST)) params.request = 'GetCapabilities';
+                    else
+                    if (angular.isDefined(params.request)) params.request = 'GetCapabilities';
+                    else
+                    if (angular.isDefined(params.REQUEST)) params.REQUEST = 'GetCapabilities';
+                    if (angular.isUndefined(params.service) && angular.isUndefined(params.SERVICE)) params.service = 'WMS';
                     var url = [path, me.params2String(params)].join('?');
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
@@ -231,7 +233,7 @@ define(['angular', 'ol'],
                         if (typeof caps.Capability.Layer.CRS !== 'undefined') {
                             $scope.srss = caps.Capability.Layer.CRS;
                             if (srv_caps.currentProjectionSupported($scope.srss))
-                                $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode())>-1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
+                                $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode()) > -1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
                             else if ($scope.srss.indexOf('EPSG:4326') > -1) {
                                 $scope.srs = 'EPSG:4326';
                             } else

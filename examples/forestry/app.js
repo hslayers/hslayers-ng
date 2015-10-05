@@ -83,8 +83,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                     url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/species_area/species_area.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#species_area>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
                     projection: 'EPSG:5514',
-		    geometry_attr: 'http://www.opengis.net/ont/geosparql#hasGeometry',
-		    value_attr: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value'
+                    geometry_attr: 'http://www.opengis.net/ont/geosparql#hasGeometry',
+                    value_attr: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value'
                 }),
                 type: 'vector',
                 style: style,
@@ -107,8 +107,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                     url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://nil.uhul.cz/lod/lying_dead_timber/lying_dead_timber.rdf> FROM <http://nil.uhul.cz/lod/geo/nuts/nuts.rdf> WHERE {{ ?o a <http://nil.uhul.cz/lod/nfi#lying_dead_timber>. ?o ?p ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. ?o <http://www.opengis.net/ont/geosparql#hasGeometry> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. ?o <http://nil.uhul.cz/lod/nfi#adomain> ' + key + '. FILTER(?p = <http://www.opengis.net/ont/geosparql#hasGeometry> && ?nut != <http://nil.uhul.cz/lod/geo/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
                     projection: 'EPSG:5514',
-		    geometry_attr: 'http://www.opengis.net/ont/geosparql#hasGeometry',
-		    value_attr: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value'
+                    geometry_attr: 'http://www.opengis.net/ont/geosparql#hasGeometry',
+                    value_attr: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value'
                 }),
                 type: 'vector',
                 style: style,
@@ -152,7 +152,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
             return new ol.layer.Vector({
                 title: title,
                 source: new SparqlJsonForestry({
-                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <'+geometry_attr+'> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <'+geometry_attr+'> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <' + url + '> FROM <http://nil.uhul.cz/lod/ns/nuts.rdf> WHERE {{ ?o a <' + dataset_url + obj + '>. ?o ?p ?s. ?o <' + geometry_attr + '> ?nut. FILTER(?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>)} UNION { ?o ?p ?nut. ?nut <http://www.opengis.net/ont/geosparql#asWKT> ?s. FILTER(?p = <' + geometry_attr + '> && ?nut != <http://nil.uhul.cz/lod/ns/nuts#CZ0>) } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://gis.zcu.cz/poi#category_osm',
                     projection: 'EPSG:5514',
                     geometry_attr: geometry_attr,
