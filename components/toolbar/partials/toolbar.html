@@ -47,5 +47,9 @@
         <button type="button" class="btn btn-default"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
             <span class="fa fa-search"></span>
         </button>
+        
+        <button type="button" class="btn btn-default" title="Save composition" ng-if="Core.exists('hs.status_creator.controller') && Core.isAuthorized()" ng-click="Core.openStatusCreator()">
+            <span class="glyphicon glyphicon glyphicon-save"></span>          
+        </button>
     </div>
 </div>

@@ -161,7 +161,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 me.panel_statuses['search'] = is;
                             }
                             return me.panel_statuses['search']
+                        },
+                     isAuthorized: function(){
+                        if(angular.isDefined(window.getLRUser) && window.getLRUser()!='guest'){
+                            return true;
                         }
+                        return false;
+                     }
                     };
 
                     return me;
