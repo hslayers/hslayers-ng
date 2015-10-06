@@ -1,52 +1,52 @@
 <script id="filter_vShader" type="x-shader/x-vertex">
   	  attribute vec4 wPoint;
-      attribute float attr1;
-    //  attribute float attr2;
-     // attribute float attr3;
-     // attribute float hours;
+      attribute float attr1;   
       attribute vec2 index;
+
          
-      uniform float attr_row;
-         
-      uniform float hasFilter;   
+      uniform float filterid;
+      
+      /*flag for spatial filter*/
+      uniform float isspatial;      
       uniform mat4 mapMatrix;
-      uniform mat4 rasterMatrix;
+ 
    
       uniform sampler2D histFilter;
-      uniform sampler2D mapFilter;
+      uniform sampler2D indexText;
       
       
       varying vec4 col;
       
       void main() {	
-  			
+  		bool fil[4];
 		vec4 p =  mapMatrix * wPoint;
-  		
-  		   	     	
+  		   	     
+  		 vec4 thatval = texture2D(indexText , vec2((index[0] +1.)/2. , (index[1]+1.)/2.));    
+  		float val =  thatval[0];	
 		 // if data are in the map window 
-		if (-1. <= p[0] && p[0]<=1. && -1. <= p[1] && p[1]<=1.){
-			vec4 rp = rasterMatrix * p;
-			
-			
-  			//vec4 fdata = texture2D(mapFilter, vec2(rp[0],rp[1]));
-  			  			
-  			 
-  			vec4 at1 = texture2D(histFilter, vec2(attr1, 0.5));
-  		//	vec4 at2 = texture2D(histFilter, vec2((attr2), 0.15+0.33));
-  		//	vec4 at3 = texture2D(histFilter, vec2((attr3), 0.15+0.33*2.));
-  		//	vec4 hoursData = texture2D(histFilter, vec2((hours+1.)/2., 0.666));
-		
-			// if data are selected
-  			//if ( at1[0] > 0. && at2[0] > 0. && at3[0]>0.){  // && add other filters speed>-1.
-  			if ( at1[0] > 0. ){
-  				col = vec4(1./256., 0., 0., 0.);
-  			} else {  	  		   
-  		    	col = vec4(0., 1./256., 0., 0.); 	  		  
+		//if (-1. <= p[0] && p[0]<=1. && -1. <= p[1] && p[1]<=1.){
+		vec4 at1;
+			if (isspatial == 0.0) {
+				/*consider one row fitler*/
+  				at1   = texture2D(histFilter, vec2(attr1, 0.5));
+  			} else {
+  				/*consider map filter*/
+  				at1   = texture2D(histFilter, vec2((p[0]+1.)/2., (p[1]+1.)/2.));
   			}
-  		} else {
-  			//data are out of the window
-  			col = vec4(0., 0. , 1./256., 0.);
-  		}
+  			  		  		
+  			
+			// if data are selected  			
+  			if ( at1[0] > 0. ){ //|| thatval[0] > 0.){ //&&  polyb[0] > 0.){  				  			
+  				col = vec4( val + pow(2.,(filterid))/256., 0., 0., thatval[3]);
+  			} else {  	
+  				// data are not selected  		   
+  		    	col = vec4(val , 0., 0., thatval[3]); 	  		  
+  			}
+  			
+  		//} else {
+  		//	//data are out of the window
+  		//	col = vec4(0. , 0. , 1./256., 0.);
+  		//}
   	
 		gl_PointSize = 	1.;
 		gl_Position = vec4(index[0], index[1], 0., 1.);

@@ -11,8 +11,8 @@ define(['ol',
         'geolocation',
         'api',
         'glutils', 'WGL', 'wglinit', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
-        'heatmapdimension', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
-        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush'
+        'heatmapdimension','heatmaprenderer', 'heatmaplegend', 'maxcalculator', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
+        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush','extentfilter','mappolyfilter'
     ],
 
     function(ol, toolbar, layermanager, WfsSource) {
