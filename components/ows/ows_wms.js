@@ -230,17 +230,22 @@ define(['angular', 'ol'],
                         $scope.image_formats = caps.Capability.Request.GetMap.Format;
                         $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
                         $scope.exceptions = caps.Capability.Exception;
-                        if (typeof caps.Capability.Layer.CRS !== 'undefined') {
+                        $scope.srss = [];
+                        if (angular.isDefined(caps.Capability.Layer.CRS)) {
                             $scope.srss = caps.Capability.Layer.CRS;
-                            if (srv_caps.currentProjectionSupported($scope.srss))
-                                $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode()) > -1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
-                            else if ($scope.srss.indexOf('EPSG:4326') > -1) {
-                                $scope.srs = 'EPSG:4326';
-                            } else
-                                $scope.srs = $scope.srss[0];
                         } else {
-                            $scope.srs = OlMap.map.getView().getProjection().getCode();
+                            $("Capability>Layer>SRS", response).each(function(){
+                                $scope.srss.push(this.innerHTML);
+                            });
                         }
+                        
+                        if (srv_caps.currentProjectionSupported($scope.srss))
+                            $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode()) > -1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
+                        else if ($scope.srss.indexOf('EPSG:4326') > -1) {
+                            $scope.srs = 'EPSG:4326';
+                        } else
+                            $scope.srs = $scope.srss[0];
+
                         $scope.services = caps.Capability.Layer;
                         $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
                         $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
