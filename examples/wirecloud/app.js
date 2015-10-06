@@ -28,7 +28,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             };
         }]);
 
-        module.value('box_layers', []);
         var location_layer = new ol.layer.Vector({
             title: "Locations",
             show_in_manager: true,
@@ -117,10 +116,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                 timestamp: data[timestamp_attr_name]
             };
             var projection = 'EPSG:4326';
+            if (angular.isUndefined(data[coordinates_attr_name])) return;
             var coords = data[coordinates_attr_name].split(','); //Supposed ccordinates are lon, lat seperated by comma
             attributes.geometry = new ol.geom.Point(ol.proj.transform([parseFloat(coords[1]), parseFloat(coords[0])], projection, 'EPSG:3857'));
             for (var attr_i = 0; attr_i < measurements_attr_names.length; attr_i++) {
-                var t = parseFloat(data.[measurements_attr_names[attr_i]]);
+                var t = parseFloat(data[measurements_attr_names[attr_i]]);
                 attributes[measurements_attr_names[attr_i]] = t.toFixed(2);
             }
 
@@ -186,46 +186,43 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             }
         }
 
-        module.value('wirecloud_data_consumer', function(data) {
-            data = angular.fromJson(data);
-            if (console) console.log(data);
-            if (typeof data.type !== 'undefined') {
-                switch (data.type) {
-                    case "Unit":
-                        processUnit(data);
-                        break;
-                    case "Tag":
-                        processTag(data);
-                        break;
-                    default:
-                        process_object(data);
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    show_in_manager: true,
+                    title: "Base layer",
+                    base: true
+                }),
+                location_layer,
+                extent_layer
+            ],
+            wirecloud_data_consumer: function(data) {
+                data = angular.fromJson(data);
+                if (console) console.log(data);
+                if (typeof data.type !== 'undefined') {
+                    switch (data.type) {
+                        /*case "Unit":
+                            processUnit(data);
+                            break;
+                        case "Tag":
+                            processTag(data);
+                            break;*/
+                        default: processObject(data);
+                    }
+                } else {
+                    process_object(data);
                 }
-            } else {
-                process_object(data);
-            }
+            },
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
+            })
         });
 
-
-
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                show_in_manager: true,
-                title: "Base layer",
-                base: true
-            }),
-            location_layer,
-            extent_layer
-        ]);
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4,
-            units: "m"
-        }));
-
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'default_layers', 'wirecloud_data_consumer',
-            function($scope, Core, InfoPanelService, default_layers, wirecloud_data_consumer) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'config',
+            function($scope, Core, InfoPanelService, config) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -235,11 +232,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                 });
 
                 if (typeof MashupPlatform !== 'undefined')
-                    MashupPlatform.wiring.registerCallback("data_received_slot", wirecloud_data_consumer);
+                    MashupPlatform.wiring.registerCallback("data_received_slot", config.wirecloud_data_consumer);
 
                 //This is needed because data can arrive before hslayers is loaded, so we store it in tmp and process later.
                 for (var i = 0; i < tmp_data_received.length; i++) {
-                    wirecloud_data_consumer(tmp_data_received[i]);
+                    config.wirecloud_data_consumer(tmp_data_received[i]);
                 }
 
             }

@@ -2,10 +2,10 @@
  * @namespace hs.status_creator
  * @memberOf hs
  */
-define(['angular', 'ol', 'map'],
+define(['angular', 'ol', 'map', 'ngcookies'],
 
     function(angular, ol) {
-        var module = angular.module('hs.status_creator', ['hs.map', 'hs.core'])
+        var module = angular.module('hs.status_creator', ['hs.map', 'hs.core', 'ngCookies'])
             .directive('hs.statusCreator.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog.html',
@@ -214,8 +214,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'project_name', '$compile',
-            function($scope, $rootScope, OlMap, Core, status_creator, project_name, $compile) {
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
+            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
                 $scope.layers = [];
                 $scope.id = '';
 
@@ -270,7 +270,7 @@ define(['angular', 'ol', 'map'],
                             data: status_creator.map2json(OlMap.map, $scope, false),
                             permanent: true,
                             id: $scope.id,
-                            project: project_name,
+                            project: config.project_name,
                             request: "save"
                         }),
                         success: function(j) {
@@ -294,7 +294,37 @@ define(['angular', 'ol', 'map'],
                         });
                     });
                     $('#status-creator-dialog').modal('show');
+                    $scope.loadUserDetails();
                 }
+
+                $scope.loadUserDetails = function() {
+                    var jsessionid = $cookies.get("JSESSIONID");
+                    if (jsessionid) {
+                        $.ajax({
+                            url: "/g4i-portlet/service/sso/validate/" + jsessionid,
+                            success: $scope.setUserDetails
+                        });
+                    }
+                };
+
+                $scope.setUserDetails = function(user) {
+                    if (user && user.resultCode == "0") {
+                        // set the values
+                        if (user.userInfo) {
+                            $scope.email = user.userInfo.email;
+                            $scope.phone = user.userInfo.phone;
+                            $scope.name = user.userInfo.firstName + " " + user.userInfo.lastName;
+                        }
+                        if (user.userInfo && user.userInfo.org) {
+                            $scope.address = user.userInfo.org.street;
+                            $scope.country = user.userInfo.org.state;
+                            $scope.postalcode = user.userInfo.org.zip;
+                            $scope.city = user.userInfo.org.city;
+                            $scope.organization = user.userInfo.org.name;
+                        }
+                    }
+                };
+              
 
                 $scope.getCurrentExtent();
                 $scope.$emit('scope_loaded', "StatusCreator");

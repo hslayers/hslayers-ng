@@ -53,7 +53,7 @@ define(function(require) {
                             objects[b.o.value].value = b.value.value;
                             objects[b.o.value].nut = b.nut.value;
                             */
-                            if (b.p.value == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value') {
+                            if (b.p.value == options.value_attr) {
                                 if (min > parseFloat(b.s.value)) min = parseFloat(objects[b.o.value][b.p.value]);
                                 if (max < parseFloat(b.s.value)) max = parseFloat(objects[b.o.value][b.p.value]);
                             }
@@ -87,14 +87,14 @@ define(function(require) {
 
                         for (var key in objects) {
                             i++;
-                            if (objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry']) {
+                            if (objects[key][options.geometry_attr]) {
                                 var format = new ol.format.WKT();
-                                var g_feature = format.readFeature(objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry']);
+                                var g_feature = format.readFeature(objects[key][options.geometry_attr]);
                                 objects[key].geometry = g_feature.getGeometry();
                                 objects[key].geometry.transform('EPSG:4326', options.projection);
-                                delete objects[key]['http://www.opengis.net/ont/geosparql#hasGeometry'];
+                                delete objects[key][options.geometry_attr];
                                 var feature = new ol.Feature(objects[key]);
-                                feature.color = green(7, parseInt((objects[key]['http://www.w3.org/1999/02/22-rdf-syntax-ns#value'] - min) / ((max - min) / 7)), 1);
+                                feature.color = green(7, parseInt((objects[key][options.value_attr] - min) / ((max - min) / 7)), 1);
                                 features.push(feature);
                             }
                         }

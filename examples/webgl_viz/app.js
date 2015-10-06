@@ -59,27 +59,26 @@ define(['ol',
             };
 
             return me;
-        }])
+        }]);
 
-        module.value('box_layers', []);
-
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                title: "Base layer",
-                box_id: 'osm',
-                base: true
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Base layer",
+                    box_id: 'osm',
+                    base: true
+                })
+            ],
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
             })
-        ]);
+        });
 
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4,
-            units: "m"
-        }));
-
-        module.controller('Main', ['$scope', 'Core', 'hs.map.service', 'default_layers', 'webgl_viz',
-            function($scope, Core, OlMap, default_layers, webgl_viz) {
+        module.controller('Main', ['$scope', 'Core', 'hs.map.service', 'webgl_viz',
+            function($scope, Core, OlMap, webgl_viz) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;

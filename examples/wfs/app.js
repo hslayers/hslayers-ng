@@ -24,8 +24,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             };
         }]);
 
-        module.value('box_layers', []);
-
         var style = new ol.style.Style({
             image: new ol.style.Circle({
                 fill: new ol.style.Fill({
@@ -43,48 +41,49 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
                 color: '#112211',
                 width: 1
             })
-        })
+        });
 
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                title: "Base layer",
-                base: true
-            }),
-            new ol.layer.Vector({
-                title: "NUTS polys",
-                source: new WfsSource({
-                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map',
-                    typename: 'nuts2',
-                    projection: 'EPSG:3857'
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Base layer",
+                    base: true
                 }),
-                style: style
-            }),
-            new ol.layer.Vector({
-                title: "NUTS points",
-                source: new WfsSource({
-                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map',
-                    typename: 'nuts',
-                    projection: 'EPSG:3857'
+                new ol.layer.Vector({
+                    title: "NUTS polys",
+                    source: new WfsSource({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map',
+                        typename: 'nuts2',
+                        projection: 'EPSG:3857'
+                    }),
+                    style: style
                 }),
-                style: style
-            }),
-            new ol.layer.Vector({
-                title: "Accidents",
-                source: new WfsSource({
-                    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/accidents_wfs.map',
-                    typename: 'accidents',
-                    projection: 'EPSG:3857'
+                new ol.layer.Vector({
+                    title: "NUTS points",
+                    source: new WfsSource({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/nuts_2010_p_wfs.map',
+                        typename: 'nuts',
+                        projection: 'EPSG:3857'
+                    }),
+                    style: style
                 }),
-                style: style
+                new ol.layer.Vector({
+                    title: "Accidents",
+                    source: new WfsSource({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/accidents_wfs.map',
+                        typename: 'accidents',
+                        projection: 'EPSG:3857'
+                    }),
+                    style: style
+                })
+            ],
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
             })
-        ]);
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4,
-            units: "m"
-        }));
+        });
 
         module.controller('Main', ['$scope', 'Core', 'InfoPanelService',
             function($scope, Core, InfoPanelService) {

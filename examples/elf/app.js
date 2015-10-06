@@ -21,7 +21,6 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             };
         }]);
 
-        module.value('box_layers', []);
 
         var style = new ol.style.Style({
             image: new ol.style.Circle({
@@ -60,50 +59,51 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             return features;
         }
 
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                title: "Base layer",
-                base: true
-            }),
-            new ol.layer.Vector({
-                title: "Parcels",
-                maxResolution: 1.2,
-                source: new WfsSource({
-                    url: 'http://services.cuzk.cz/wfs/inspire-cp-wfs.asp',
-                    typename: 'CP:CadastralParcel',
-                    projection: 'EPSG:3857',
-                    version: '2.0.0',
-                    format: new ol.format.WFS(),
-                    hsproxy: true,
-                    parser: feature_parser
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Base layer",
+                    base: true
                 }),
-                style: style
-            }),
-            new ol.layer.Vector({
-                title: "Buildings",
-                maxResolution: 2.4,
-                source: new WfsSource({
-                    url: 'https://54.247.162.180/wss/service/CZ-AD/httpauth',
-                    typename: 'AD:Address',
-                    projection: 'EPSG:3857',
-                    version: '2.0.0',
-                    format: new ol.format.WFS(),
-                    hsproxy: true,
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1"));
-                    },
-                    parser: feature_parser
+                new ol.layer.Vector({
+                    title: "Parcels",
+                    maxResolution: 1.2,
+                    source: new WfsSource({
+                        url: 'http://services.cuzk.cz/wfs/inspire-cp-wfs.asp',
+                        typename: 'CP:CadastralParcel',
+                        projection: 'EPSG:3857',
+                        version: '2.0.0',
+                        format: new ol.format.WFS(),
+                        hsproxy: true,
+                        parser: feature_parser
+                    }),
+                    style: style
                 }),
-                style: style
+                new ol.layer.Vector({
+                    title: "Buildings",
+                    maxResolution: 2.4,
+                    source: new WfsSource({
+                        url: 'https://54.247.162.180/wss/service/CZ-AD/httpauth',
+                        typename: 'AD:Address',
+                        projection: 'EPSG:3857',
+                        version: '2.0.0',
+                        format: new ol.format.WFS(),
+                        hsproxy: true,
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1"));
+                        },
+                        parser: feature_parser
+                    }),
+                    style: style
+                })
+            ],
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
             })
-        ]);
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4,
-            units: "m"
-        }));
+        });
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel',
             function($scope, Core, InfoPanelService) {

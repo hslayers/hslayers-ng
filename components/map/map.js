@@ -8,14 +8,14 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
     /**
      * @class hs.map.service
      * @memberOf hs.map
-     * @param {ol.View} default_view - coordinates and zoom level to be used when the map is initialized
+     * @param {object} config - Application configuration
      * @description Service for containing and initializing map object
      */
-    .service('hs.map.service', ['default_view', function(default_view) {
+    .service('hs.map.service', ['config', function(config) {
         this.map = new ol.Map({
             target: 'map',
             interactions: [],
-            view: default_view
+            view: config.default_view
         });
 
         this.duration = 400;
@@ -107,8 +107,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         };
     }])
 
-    .controller('hs.map.controller', ['$scope', 'hs.map.service', 'default_layers', 'box_layers', 'hs.permalink.service_url', 'Core',
-        function($scope, OlMap, default_layers, box_layers, permalink, Core) {
+    .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.service_url', 'Core',
+        function($scope, OlMap, config, permalink, Core) {
             var map = OlMap.map;
 
             /**
@@ -192,18 +192,21 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     $scope.moveToAndZoom(parseFloat(permalink.getParamValue('hs_x', loc)), parseFloat(permalink.getParamValue('hs_y', loc)), parseInt(permalink.getParamValue('hs_z', loc)));
                 }
 
-                angular.forEach(box_layers, function(box) {
-                    angular.forEach(box.get('layers'), function(lyr) {
+                if (angular.isDefined(config.box_layers)) {
+                    angular.forEach(config.box_layers, function(box) {
+                        angular.forEach(box.get('layers'), function(lyr) {
+                            lyr.setVisible(isLayerVisibleInPermalink(lyr));
+                            OlMap.map.addLayer(lyr);
+                        });
+                    });
+                }
+
+                if (angular.isDefined(config.default_layers)) {
+                    angular.forEach(config.default_layers, function(lyr) {
                         lyr.setVisible(isLayerVisibleInPermalink(lyr));
                         OlMap.map.addLayer(lyr);
                     });
-                });
-
-
-                angular.forEach(default_layers, function(lyr) {
-                    lyr.setVisible(isLayerVisibleInPermalink(lyr));
-                    OlMap.map.addLayer(lyr);
-                });
+                }
                 $scope.setTargetDiv("map");
             }
 

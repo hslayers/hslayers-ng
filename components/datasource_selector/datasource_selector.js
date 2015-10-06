@@ -51,7 +51,7 @@ define(['angular', 'ol', 'map'],
                 templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
                 link: function(scope, element, attrs) {
                     $('#ds-suggestions-micka').modal('show');
-                    scope.suggestion_filter=scope.query[scope.suggestion_config.input];
+                    scope.suggestion_filter = scope.query[scope.suggestion_config.input];
                     $('#ds-sug-filter').focus();
                     scope.suggestionFilterChanged();
                 }
@@ -238,7 +238,7 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.suggestion_config = {};
-                
+
                 $scope.showSuggestions = function(input, param, field) {
                     $scope.suggestion_config = {
                         input: input,
@@ -254,7 +254,7 @@ define(['angular', 'ol', 'map'],
                         $('#ds-sug-filter').val($scope.query[input]).focus();
                         $scope.suggestionFilterChanged();
                     }
-                    
+
                 }
 
                 $scope.suggestions = [];
@@ -326,7 +326,7 @@ define(['angular', 'ol', 'map'],
                                 param2Query('OrganisationName')
                             ].filter(function(n) {
                                 return n != ''
-                            }).join(' and ');
+                            }).join('%20AND%20');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
@@ -376,7 +376,13 @@ define(['angular', 'ol', 'map'],
                             return encodeURIComponent("(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
                         }
                         return ($scope.query[which] != '' ? encodeURIComponent(which + "='" + $scope.query[which] + "'") : '')
-                    } else return '';
+                    } else {
+                        if (which == 'ServiceType') {
+                            return encodeURIComponent("(ServiceType=view OR ServiceType=WMS OR Protocol like '*KML*')");
+                        } else {
+                            return '';
+                        }
+                    }
                 }
 
                 $scope.zoomTo = function(bbox) {
@@ -464,7 +470,6 @@ define(['angular', 'ol', 'map'],
                             if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
                                 Core.setMainPanel('ows');
                                 var link = layer.link;
-                                link = link.split("?")[0];
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link));
                             } else {
                                 alert('Service type "' + layer.serviceType + '" not supported.');

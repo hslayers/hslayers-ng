@@ -9,6 +9,7 @@
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
+        ngcookies: hsl_path + 'bower_components/angular-cookies/angular-cookies',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap',
         ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'bower_components/ol3/build/ol',
         drag: hsl_path + 'components/drag/drag',
@@ -161,6 +162,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 me.panel_statuses['search'] = is;
                             }
                             return me.panel_statuses['search']
+                        },
+                        isAuthorized: function() {
+                            if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
+                                return true;
+                            }
+                            return false;
                         }
                     };
 

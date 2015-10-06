@@ -29,11 +29,14 @@ define(['angular', 'ol', 'map'],
                             url: url
                         })
                         .done(function(response) {
+                            var to_be_removed = [];
                             OlMap.map.getLayers().forEach(function(lyr) {
-                                if (lyr.get('from_composition')) {
-                                    OlMap.map.removeLayer(lyr);
-                                }
+                                if (lyr.get('from_composition'))
+                                    to_be_removed.push(lyr);
                             });
+                            while (to_be_removed.length > 0) {
+                                OlMap.map.removeLayer(to_be_removed.shift());
+                            }
                             OlMap.map.getView().fitExtent(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
                             for (var i = 0; i < layers.length; i++) {
@@ -90,20 +93,22 @@ define(['angular', 'ol', 'map'],
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':
-                                if (lyr.protocol && lyr.protocol.format.className == 'OpenLayers.Format.KML') {
-                                    var url = lyr.protocol.optoions.url;
+                                if (lyr_def.protocol && lyr_def.protocol.format.className == 'OpenLayers.Format.KML') {
+                                    var url = lyr_def.protocol.options.url;
                                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                                     }
                                     var src = new ol.source.KML({
-                                        projection: ol.proj.get(lyr.projection),
+                                        projection: ol.proj.get(lyr_def.projection),
                                         url: url,
                                         extractStyles: true
                                     })
                                     var lyr = new ol.layer.Vector({
-                                        title: lyr.title,
-                                        source: src
+                                        from_composition: true,
+                                        source: src,
+                                        title: lyr_def.title
                                     });
+                                    layers.push(lyr);
                                 }
                                 break;
                         }
@@ -115,8 +120,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'compositions_catalogue_url',
-            function($scope, $rootScope, OlMap, Core, composition_parser, compositions_catalogue_url) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config',
+            function($scope, $rootScope, OlMap, Core, composition_parser, config) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -158,9 +163,9 @@ define(['angular', 'ol', 'map'],
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
                     var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    var bbox_delimiter = compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
+                    var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                    var url = compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var url = config.compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                     } else {
