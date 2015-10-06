@@ -3,6 +3,12 @@ wglinit = function(that) {
     var map = that.map;
     var ol = that.ol;
 
+    map.on('change:size', function() {
+    	WGL.mcontroller.manager.updateMapSize();
+ 		WGL.mcontroller.resize();	 		
+ 		onMove(); 	
+    });
+
     var data = new DataLoader(visualize);
     data.loadPosData("bermingham_acc.json");
 
