@@ -14,6 +14,7 @@ require.config({
         ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'bower_components/ol3/build/ol',
         drag: hsl_path + 'components/drag/drag',
         map: hsl_path + 'components/map/map',
+        styles: hsl_path + 'components/styles/styles',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
         compositions: hsl_path + 'components/compositions/compositions',
@@ -34,6 +35,9 @@ require.config({
             deps: ['angular'],
         },
         'angular-gettext': {
+            deps: ['angular'],
+        },
+        ngcookies: {
             deps: ['angular'],
         },
         translations: {
