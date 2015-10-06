@@ -1,7 +1,8 @@
 'use strict';
 
 var hsl_path = '../../';
-var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-gl-filter2/js/'; //http://localhost:9999/js/webglayer/js/
+var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-snapshot/js/'; //http://localhost:9999/js/webglayer/js/
+//  var jans_path = 'http://localhost:9999/js/webglayer/js/'
 
 //var jans_path = 'http://localhost:9999/js/webglayer/js/';
 
@@ -40,7 +41,12 @@ require.config({
         histogramdimension: jans_path + 'HistDimension',
         floatrasterreader: jans_path + 'FloatRasterReader',
         floatreaderhistogram: jans_path + 'FloatReaderHistogram',
+        heatmaprenderer: jans_path + 'HeatMapRenderer',
+        heatmaplegend: jans_path + 'HeatMapLegend',
+        maxcalculator: jans_path + 'MaxCalculator',
         linearfilter: jans_path + 'LinearFilter',
+        extentfilter: jans_path + 'ExtentFilter',
+        mappolyfilter: jans_path + 'MapPolyFilter',
         multibrush: jans_path + 'd3.svg.multibrush',
         WGL: jans_path + 'WGL',
         filter: jans_path + 'Filter',
