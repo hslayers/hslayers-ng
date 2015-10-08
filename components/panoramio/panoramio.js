@@ -288,6 +288,7 @@ define(['angular', 'ol', 'app', 'map'],
                         title: "Panoramio pictures",
                         show_in_manager: true,
                         source: csrc,
+                        visible: false,
                         style: function(feature, resolution) {
                             var text = null;
                             if (feature.get('features').length > 1) {
