@@ -3,7 +3,7 @@
  * @memberOf hs
  */
 
-define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
+define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permalink'],
 
     function(angular) {
         angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
@@ -12,8 +12,8 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                     templateUrl: hsl_path + 'components/ows/partials/ows.html'
                 };
             })
-            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service',
-                function($scope, srv_caps, OlMap) {
+            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core',
+                function($scope, srv_caps, OlMap, permalink,Core) {
                     var map = OlMap.map;
                     $scope.url = "http://erra.ccss.cz/geoserver/ows";
                     $scope.types = ["WMS", "WFS", "WCS", "KML", "GeoRSS", "GML", "GeoJSON", "SOS", "WMS with priorities"];
@@ -76,6 +76,13 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized'],
                         $scope.url = '';
                         $('.ows-capabilities').slideUp();
                     }
+                    
+                    if (permalink.getParamValue('wms_to_connect')) {
+                        var wms = permalink.getParamValue('wms_to_connect');
+                        Core.setMainPanel('ows');
+                        $scope.setUrlAndConnect(wms);
+                    }
+
 
                     $scope.$emit('scope_loaded', "Ows");
                 }
