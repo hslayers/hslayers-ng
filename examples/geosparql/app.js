@@ -29,25 +29,10 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 var s = feature.get('http://www.openvoc.eu/poi#categoryOSM');
                 if (typeof s === 'undefined') return;
                 s = s.split(".")[1];
-                return [new ol.style.Style({
-                        image: new ol.style.Circle({
-                            fill: new ol.style.Fill({
-                                color: feature.color ? feature.color : [242, 121, 0, 0.7]
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: [0x33, 0x33, 0x33, 0.9]
-                            }),
-                            radius: 3
-                        }),
-                        fill: new ol.style.Fill({
-                            color: "rgba(139, 189, 214, 0.3)",
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: "rgba(139, 189, 214, 0.7)",
-                        })
-                    }),
+                return [
                     new ol.style.Style({
                         image: new ol.style.Icon({
+                            anchor: [0.5, 1],
                             src: 'symbols/' + s + '.svg',
                             crossOrigin: 'anonymous'
                         })
@@ -87,20 +72,74 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             'tourism.viewpoint',
             'tourism.zoo'
         ], function(value) {
+                var value2;
+                switch(value){
+                case 'amenity.arts_centre' : value2 = "Arts Center";
+                break;
+                case 'amenity.atm' : value2 = "ATM";
+                break;
+                case 'amenity.bank' : value2 = "Bank";
+                break;
+                case 'amenity.bicycle_rental' : value2 = "Bicycle Rental";
+                break;
+                case 'amenity.cafe' : value2 = "Cafe";
+                break;
+                case 'amenity.car_wash' : value2 = "Car Wash";
+                break;
+                case 'amenity.dentist' : value2 = "Dentist";
+                break;
+                case 'amenity.fast_food' : value2 = "Fast Food";
+                break;
+                case 'amenity.fountain' : value2 = "Fountain";
+                break;
+                case 'amenity.library' : value2 = "Library";
+                break;
+                case 'amenity.parking' : value2 = "Parking";
+                break;
+                case 'amenity.place_of_worship' : value2 = "Place of Worship";
+                break;
+                case 'amenity.pub' : value2 = "Pub";
+                break;
+                case 'amenity.restaurant' : value2 = "Restaurant";
+                break;
+                case 'amenity.waste_basket' : value2 = "Waste Basket";
+                break;
+                case 'building.hotel' : value2 = "Hotel";
+                break;
+                case 'highway.bus_stop' : value2 = "Bus Stop";
+                break;
+                case 'historic.archaeological_site' : value2 = "Archaeological Site";
+                break;
+                case 'historic.memorial' : value2 = "Memorial";
+                break;
+                case 'shop.supermarket' : value2 = "Supermarket";
+                break;
+                case 'tourism.artwork' : value2 = "Artwork";
+                break;
+                case 'tourism.camp_site' : value2 = "Camp Site";
+                break;
+                case 'tourism.information' : value2 = "Information";
+                break;
+                case 'tourism.viewpoint' : value2 = "Viewpoint";
+                break;
+                case 'tourism.zoo' : value2 = "Zoo";
+                break;
+                };
             var new_lyr = new ol.layer.Vector({
-                title: "POI " + value,
+                title: " " + value2,
                 source: new SparqlJson({
                     geom_attribute: 'bif:st_geomfromtext(UCASE(?geom))',
                     url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://www.openvoc.eu/poi#categoryOSM',
                     projection: 'EPSG:3857'
+                    //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
                 }),
                 style: style,
                 visible: false,
                 path: 'Points of interest'
             });
             sparql_layers.push(new_lyr);
-        });
+        })
 
         var route_style = function(feature, resolution) {
             return [new ol.style.Style({
@@ -116,23 +155,41 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 'img': 'osm.png',
                 title: 'Base layer',
                 layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM(),
-                        title: "OpenStreetMap",
-                        base: true,
-                        visible: false,
-                        path: 'Roads'
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "OpenStreetMap",
+                    base: true,
+                    visible: false,
+                    path: 'Roads'
+                }),
+                new ol.layer.Tile({
+                    title: "OpenCycleMap",
+                    visible: true,
+                    base: true,
+                    source: new ol.source.OSM({
+                        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
                     }),
-                    new ol.layer.Tile({
-                        title: "OpenCycleMap",
-                        visible: true,
-                        base: true,
-                        source: new ol.source.OSM({
-                            url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                        }),
-                        path: 'Roads'
-                    })
-                ],
+                    path: 'Roads'
+                }),
+                new ol.layer.Tile({
+                    title: "MTBMap",
+                    visible: false,
+                    base: true,
+                    source: new ol.source.XYZ({
+                        url: 'http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png'
+                    }),
+                    path: 'Roads'
+                }),
+                new ol.layer.Tile({
+                    title: "OwnTiles",
+                    visible: false,
+                    base: true,
+                    source: new ol.source.XYZ({
+                        url: 'http://ct37.sdi4apps.eu/map/{z}/{x}/{y}.png'
+                    }),
+                    path: 'Roads'
+                })
+            ],
             }), new ol.layer.Group({
                 'img': 'bicycle-128.png',
                 title: 'Tourist info',
