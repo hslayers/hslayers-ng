@@ -15,10 +15,19 @@ define(['angular', 'ol', 'map'],
                     }
                 };
             })
+            .directive('hs.compositions.overwriteDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html',
+                    link: function(scope, element, attrs) {
+                        $('#composition-overwrite-dialog').modal('show');
+                    }
+                };
+            })
 
         .service('hs.compositions.service_parser', ['hs.map.service', 'Core', function(OlMap, Core) {
             var me = {
-                load: function(url) {
+                composition_loaded: null,
+                load: function(url, overwrite) {
                     url = url.replace('&amp;', '&');
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
@@ -29,13 +38,16 @@ define(['angular', 'ol', 'map'],
                             url: url
                         })
                         .done(function(response) {
-                            var to_be_removed = [];
-                            OlMap.map.getLayers().forEach(function(lyr) {
-                                if (lyr.get('from_composition'))
-                                    to_be_removed.push(lyr);
-                            });
-                            while (to_be_removed.length > 0) {
-                                OlMap.map.removeLayer(to_be_removed.shift());
+                            me.composition_loaded = url;
+                            if (angular.isUndefined(overwrite) || overwrite == true) {
+                                var to_be_removed = [];
+                                OlMap.map.getLayers().forEach(function(lyr) {
+                                    if (lyr.get('from_composition'))
+                                        to_be_removed.push(lyr);
+                                });
+                                while (to_be_removed.length > 0) {
+                                    OlMap.map.removeLayer(to_be_removed.shift());
+                                }
                             }
                             OlMap.map.getView().fitExtent(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
@@ -120,8 +132,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url',
-            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile',
+            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink, $compile) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -258,7 +270,29 @@ define(['angular', 'ol', 'map'],
                     }, 500);
                 });
 
-                $scope.loadComposition = composition_parser.load;
+                $scope.loadComposition = function(url) {
+                    if (composition_parser.composition_loaded != null) {
+                        $scope.composition_to_be_loaded = url;
+                        if ($("#hs-dialog-area #composition-overwrite-dialog").length == 0) {
+                            var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
+                            $("#hs-dialog-area").append(el);
+                            $compile(el)($scope);
+                        } else {
+                            $('#composition-overwrite-dialog').modal('show');
+                        }
+                    } else {
+                        composition_parser.load(url);
+                    }
+                }
+
+                $scope.overwrite = function() {
+                    composition_parser.load($scope.composition_to_be_loaded, true);
+                }
+
+                $scope.add = function() {
+                    composition_parser.load($scope.composition_to_be_loaded, false);
+                }
+
                 $scope.loadCompositions();
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
