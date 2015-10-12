@@ -120,8 +120,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config',
-            function($scope, $rootScope, OlMap, Core, composition_parser, config) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url',
+            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -263,6 +263,13 @@ define(['angular', 'ol', 'map'],
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }
+                if (permalink.getParamValue('composition')) {
+                    var id = permalink.getParamValue('composition');
+                    if (id.indexOf('http') == -1 && id.indexOf('statusmanager2') == -1)
+                        id = '/wwwlibs/statusmanager2/index.php?request=load&id=' + id;
+                    composition_parser.load(id);
+                }
+
                 $scope.$emit('scope_loaded', "Compositions");
                 $scope.$on('core.mainpanel_changed', function(event) {
                     extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
