@@ -143,6 +143,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 $scope.layers.push({
                     title: e.element.get("title"),
                     layer: e.element,
+                    grayed: $scope.isLayerInResolutionInterval(e.element),
                     sub_layers: sub_layers,
                     visible: e.element.getVisible()
                 });
@@ -336,11 +337,25 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 }
                 return false;
             }
+            $scope.isLayerInResolutionInterval = function(lyr){
+                var cur_res = OlMap.map.getView().getResolution();
+                return lyr.getMinResolution()>=cur_res && cur_res<=lyr.getMaxResolution();
+            }
 
             OlMap.map.getLayers().forEach(function(lyr) {
                 layerAdded({
                     element: lyr
                 });
+            });
+            var timer;
+            OlMap.map.getView().on('change:resolution', function(e) {
+                if (timer != null) clearTimeout(timer);
+                timer = setTimeout(function() {
+                    for (var i = 0; i < $scope.layers.length; i++) {
+                        $scope.layers[i].grayed = $scope.isLayerInResolutionInterval($scope.layers[i].layer);
+                    }
+                    if (!$scope.$$phase) $scope.$digest();
+                }, 500);
             });
             map.getLayers().on("add", layerAdded);
             map.getLayers().on("remove", layerRemoved);
