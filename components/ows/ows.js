@@ -13,7 +13,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                 };
             })
             .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core',
-                function($scope, srv_caps, OlMap, permalink,Core) {
+                function($scope, srv_caps, OlMap, permalink, Core) {
                     var map = OlMap.map;
                     $scope.url = "http://erra.ccss.cz/geoserver/ows";
                     $scope.types = ["WMS", "WFS", "WCS", "KML", "GeoRSS", "GML", "GeoJSON", "SOS", "WMS with priorities"];
@@ -76,7 +76,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         $scope.url = '';
                         $('.ows-capabilities').slideUp();
                     }
-                    
+
                     if (permalink.getParamValue('wms_to_connect')) {
                         var wms = permalink.getParamValue('wms_to_connect');
                         Core.setMainPanel('ows');

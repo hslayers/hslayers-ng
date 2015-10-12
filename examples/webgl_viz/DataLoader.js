@@ -32,7 +32,7 @@ function DataLoader(visualize) {
                 days[i] = d.getDay();
 
                 hours[i] = d.getHours() + d.getMinutes() / 60;
-                date[i] = Math.round(d.getTime()/(1000*60*60));
+                date[i] = Math.round(d.getTime() / (1000 * 60 * 60));
                 dateminmax = getMinMax(date[i], dateminmax)
 
                 sev[i] = val.accident_severity;
@@ -53,14 +53,18 @@ function DataLoader(visualize) {
         });
     }
 
-    function getMinMax(val, minmax){
-        if (typeof(minmax)=='undefined'){
+    function getMinMax(val, minmax) {
+        if (typeof(minmax) == 'undefined') {
             minmax = [];
             minmax.min = Number.MAX_VALUE;
             minmax.max = Number.MIN_VALUE;
         }
-        if (val < minmax.min) {minmax.min = val};
-        if (val > minmax.max) {minmax.max = val};
+        if (val < minmax.min) {
+            minmax.min = val
+        };
+        if (val > minmax.max) {
+            minmax.max = val
+        };
         return minmax;
 
     }

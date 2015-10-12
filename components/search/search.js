@@ -119,7 +119,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                            switchAwayFromRegions();
                        }*/
                 }
-                
+
                 $scope.createCurrentPointLayer = function() {
                     if ($scope.search_results_layer) map.getLayers().remove($scope.search_results_layer);
                     $scope.search_results_layer = new ol.layer.Vector({

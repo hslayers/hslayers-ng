@@ -11,8 +11,8 @@ define(['ol',
         'geolocation',
         'api',
         'glutils', 'WGL', 'wglinit', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
-        'heatmapdimension','heatmaprenderer', 'heatmaplegend', 'maxcalculator', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
-        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush','extentfilter','mappolyfilter'
+        'heatmapdimension', 'heatmaprenderer', 'heatmaplegend', 'maxcalculator', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
+        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush', 'extentfilter', 'mappolyfilter'
     ],
 
     function(ol, toolbar, layermanager, WfsSource) {
@@ -71,7 +71,7 @@ define(['ol',
                 })
             ],
             default_view: new ol.View({
-                center: ol.proj.transform([-1.9,52.5], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                center: ol.proj.transform([-1.9, 52.5], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 11,
                 units: "m"
             })

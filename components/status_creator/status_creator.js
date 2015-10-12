@@ -324,7 +324,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     }
                 };
-              
+
 
                 $scope.getCurrentExtent();
                 $scope.$emit('scope_loaded', "StatusCreator");
