@@ -12,8 +12,8 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                     templateUrl: hsl_path + 'components/ows/partials/ows.html'
                 };
             })
-            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core',
-                function($scope, srv_caps, OlMap, permalink, Core) {
+            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service',
+                function($scope, srv_caps, OlMap, permalink, Core, nonwmsservice) {
                     var map = OlMap.map;
                     $scope.url = "http://erra.ccss.cz/geoserver/ows";
                     $scope.types = ["WMS", "WFS", "WCS", "KML", "GeoRSS", "GML", "GeoJSON", "SOS", "WMS with priorities"];
@@ -28,22 +28,18 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                     $scope.connect = function() {
                         $('.ows-capabilities').slideDown();
                         switch ($scope.type.toLowerCase()) {
-                            case "kml":
-                                $scope.addKmlLayer($scope.url);
-                                break;
-                                /*case "gml":
-                                case "geojson":
-                                case "georss":
-                                    // Prompt for user data and process the result using a callback:
-                                    Ext.Msg.prompt(
-                                        OpenLayers.i18n('Name'),
-                                        OpenLayers.i18n('Please layer name: '),
-                                        function(btn, text){
-                                            if (btn == 'ok'){
-                                                this.ows._addNonOWSLayer(this.url,this.service,text);
-                                            }
-                                        },{service:service, url:url,ows:this},true,service);
-                                    break;*/
+                            /* case "gml":
+                             case "georss":
+                                 // Prompt for user data and process the result using a callback:
+                                 Ext.Msg.prompt(
+                                     OpenLayers.i18n('Name'),
+                                     OpenLayers.i18n('Please layer name: '),
+                                     function(btn, text){
+                                         if (btn == 'ok'){
+                                             this.ows._addNonOWSLayer(this.url,this.service,text);
+                                         }
+                                     },{service:service, url:url,ows:this},true,service);
+                                 break;*/
                             case "wms":
                                 srv_caps.requestGetCapabilities($scope.url);
                                 break;
@@ -64,6 +60,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                                 template = ows_path + 'owswfs.html';
                                 break;
                             case "kml":
+                            case "geojson":
                                 template = ows_path + 'owsnonwms.html';
                                 break;
                             default:
@@ -83,6 +80,15 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         $scope.setUrlAndConnect(wms);
                     }
 
+                    if (permalink.getParamValue('geojson_to_connect')) {
+                        var url = permalink.getParamValue('geojson_to_connect');
+                        nonwmsservice.add('geojson', url, 'Geojson layer', false, map.getView().getProjection().getCode().toUpperCase());
+                    }
+
+                    if (permalink.getParamValue('kml_to_connect')) {
+                        var url = permalink.getParamValue('kml_to_connect');
+                        nonwmsservice.add('kml', url, 'KML layer', true, map.getView().getProjection().getCode().toUpperCase());
+                    }
 
                     $scope.$emit('scope_loaded', "Ows");
                 }

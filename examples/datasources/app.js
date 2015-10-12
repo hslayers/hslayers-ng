@@ -60,8 +60,8 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel',
-            function($scope, Core, InfoPanelService) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.map.service',
+            function($scope, Core, InfoPanelService, OlMap) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;

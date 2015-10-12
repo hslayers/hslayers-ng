@@ -1,48 +1,62 @@
-define(['angular', 'ol'],
+define(['angular', 'ol', 'styles'],
 
     function(angular, ol) {
         angular.module('hs.ows.nonwms', [])
-            .controller('hs.ows.nonwms.controller', ['$scope', 'hs.map.service',
-                function($scope, OlMap) {
-                    $scope.srs = 'EPSG:3857';
-                    $scope.title = "";
-                    $scope.extract_styles = false;
 
-                    $scope.addKmlLayer = function(url) {
-                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
-                        }
-                        var src = new ol.source.KML({
-                            projection: ol.proj.get($scope.srs),
-                            url: url,
-                            extractStyles: $scope.extract_styles
-                        })
-                        var lyr = new ol.layer.Vector({
-                            title: $scope.title,
-                            source: src
-                        });
-                        OlMap.map.addLayer(lyr);
-                        src.on('change', function() {
-                            //console.log(src.getFeatures());
-                        })
+        .service('hs.ows.nonwms.service', ['hs.map.service', 'hs.styles.service',
+            function(OlMap, styles) {
+                me = this;
+
+                me.add = function(type, url, title, extract_styles, srs) {
+                    if (typeof use_proxy === 'undefined' || use_proxy === true)
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+
+                    var format;
+                    switch (type.toLowerCase()) {
+                        case "kml":
+                            format = new ol.format.KML();
+                            break;
+                        case "geojson":
+                            format = new ol.format.GeoJSON();
+                            break;
                     }
 
-                    $scope.addGeoJsonLayer = function(url) {
-                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
-                        } else {
-                            url = url;
-                        }
-                        var lyr = new ol.layer.Vector({
-                            title: $scope.title,
-                            source: new ol.source.GeoJson({
-                                projection: ol.proj.get($scope.srs),
-                                url: url
-                            })
-                        });
-                        OlMap.map.addLayer(lyr);
-                    }
+                    var src = new ol.source.ServerVector({
+                        format: format,
+                        projection: ol.proj.get(srs),
+                        extractStyles: extract_styles,
+                        loader: function(extent, resolution, projection) {
+                            $.ajax({
+                                url: url,
+                                success: function(data) {
+                                    src.addFeatures(src.readFeatures(data));
+                                }
+                            });
+                        },
+                        strategy: ol.loadingstrategy.all
+                    });
+
+                    var lyr = new ol.layer.Vector({
+                        title: title,
+                        source: src
+                    });
+
+                    OlMap.map.addLayer(lyr);
 
                 }
-            ]);
+            }
+        ])
+
+        .controller('hs.ows.nonwms.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.ows.nonwms.service',
+            function($scope, OlMap, styles, service) {
+                $scope.srs = 'EPSG:3857';
+                $scope.title = "";
+                $scope.extract_styles = false;
+
+                $scope.add = function() {
+                    service.add($scope.type, $scope.url, $scope.title, $scope.extract_styles, $scope.srs);
+
+                }
+            }
+        ]);
     })
