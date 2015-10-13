@@ -312,10 +312,11 @@ define(['angular', 'ol', 'map'],
                             });
                             break;
                         case "micka":
+                            var advanced_search_visible = $('#ds-advanced-micka').is(':visible');
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
                             var bbox = $scope.filter_by_extent ? "BBOX='" + b.join(' ') + "'" : '';
                             var ue = encodeURIComponent;
-                            var text = typeof $scope.query.text_filter == 'undefined' || $scope.query.text_filter == '' ? $scope.query.title : $scope.query.text_filter;
+                            var text = angular.isUndefined($scope.query.text_filter) || !advanced_search_visible ? $scope.query.title : $scope.query.text_filter;
                             var query = [
                                 (text != '' ? $scope.text_field + ue(" like '*" + text + "*' ") : ''),
                                 ue(bbox),
