@@ -50,7 +50,9 @@ define(['angular', 'ol', 'map'],
                                     OlMap.map.removeLayer(to_be_removed.shift());
                                 }
                             }
-                            $('.composition-info').html($('<a href="#">').html($('<h3>').html(response.data.title)).click(function(){$('.composition-abstract').toggle()}));
+                            $('.composition-info').html($('<a href="#">').html($('<h3>').html(response.data.title)).click(function() {
+                                $('.composition-abstract').toggle()
+                            }));
                             $('.composition-info').append($('<div>').html(response.data.abstract).addClass('well composition-abstract'));
                             OlMap.map.getView().fitExtent(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);

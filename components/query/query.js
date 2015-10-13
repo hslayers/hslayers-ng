@@ -145,8 +145,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                 InfoPanelService.groups.push(group);
                             }
                         } else {
-                             var obj
-                            if((typeof feature.get(key)).toLowerCase()=="string"){ 
+                            var obj
+                            if ((typeof feature.get(key)).toLowerCase() == "string") {
                                 obj = {
                                     name: key,
                                     value: $sce.trustAsHtml(feature.get(key))

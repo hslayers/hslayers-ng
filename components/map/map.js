@@ -42,7 +42,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             }),
             'DragZoom': new ol.interaction.DragZoom(),
             'DragRotate': new ol.interaction.DragRotate(),
-             'dragAndDropInteraction': new ol.interaction.DragAndDrop({
+            'dragAndDropInteraction': new ol.interaction.DragAndDrop({
                 formatConstructors: [
                     ol.format.GPX,
                     ol.format.GeoJSON,
@@ -50,7 +50,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     ol.format.KML,
                     ol.format.TopoJSON
                 ]
-                })
+            })
         }
 
         var me = this;
@@ -81,12 +81,12 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             coordinateFormat: ol.coordinate.createStringXY(4),
             undefinedHTML: '&nbsp;'
         });
-        
+
         me.interactions.dragAndDropInteraction.on('addfeatures', function(event) {
             var vectorSource = new ol.source.Vector({
                 features: event.features,
                 projection: event.projection,
-                extractStyles:true
+                extractStyles: true
             });
             me.map.addLayer(new ol.layer.Vector({
                 title: 'User vector data',

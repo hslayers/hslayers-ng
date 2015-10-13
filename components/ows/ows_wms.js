@@ -260,8 +260,8 @@ define(['angular', 'ol'],
                         //throw "WMS Capabilities parsing problem";
                     }
                 });
-                
-                $scope.srsChanged = function(){
+
+                $scope.srsChanged = function() {
                     $scope.resample_warning = !srv_caps.currentProjectionSupported($scope.srss);
                 }
 
@@ -274,7 +274,7 @@ define(['angular', 'ol'],
                 $scope.tryAddLayers = function(checked) {
                     $scope.add_all = checked;
                     $scope.addLayers(checked);
-                    return;//http://redmine.ccss.cz/issues/5224
+                    return; //http://redmine.ccss.cz/issues/5224
                     if (!srv_caps.currentProjectionSupported($scope.srss) && $scope.use_resampling == false) {
                         if ($("#hs-dialog-area #ows-wms-resample-dialog").length == 0) {
                             var el = angular.element('<div hs.ows.wms.resample_dialog_directive></span>');

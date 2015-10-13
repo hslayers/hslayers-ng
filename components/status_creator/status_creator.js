@@ -324,12 +324,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     }
                 };
-                
+
                 $scope.$on('compositions.composition_loaded', function(event, data) {
-                    if(console) console.log('compositions.composition_loaded', data);
+                    if (console) console.log('compositions.composition_loaded', data);
                     $scope.id = data.id;
                     $scope.abstract = data.abstract;
-                    $scope.title  = data.title;
+                    $scope.title = data.title;
                     $scope.keywords = data.keywords;
                 });
 
