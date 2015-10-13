@@ -25,7 +25,7 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-        .service('hs.compositions.service_parser', ['hs.map.service', 'Core', function(OlMap, Core) {
+        .service('hs.compositions.service_parser', ['hs.map.service', 'Core', '$rootScope', function(OlMap, Core, $rootScope) {
             var me = {
                 composition_loaded: null,
                 load: function(url, overwrite) {
@@ -58,6 +58,7 @@ define(['angular', 'ol', 'map'],
                                 OlMap.map.addLayer(layers[i]);
                             }
                             Core.setMainPanel('layermanager');
+                            $rootScope.$broadcast('compositions.composition_loaded', response);
                         })
                 },
                 parseExtent: function(b) {
