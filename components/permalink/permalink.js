@@ -36,6 +36,7 @@ define(['angular', 'map', 'core'],
                             }
                         });
                         me.push('visible_layers', visible_layers.join(";"));
+                        history.pushState({}, "", me.current_url);
                         $rootScope.$broadcast('browserurl.updated');
                     };
                     me.parse = function(str) {
@@ -88,7 +89,6 @@ define(['angular', 'map', 'core'],
                         params[key] = new_value;
                         var new_params_string = me.stringify(params);
                         me.current_url = window.location.pathname + '?' + new_params_string;
-                        history.pushState({}, "", me.current_url);
                     };
                     me.getParamValue = function(param, loc) {
                         if (!loc) loc = location.search;
