@@ -129,7 +129,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                 };
                                 feature.get('features')[sub_feature].getKeys().forEach(function(key) {
                                     if (key == 'gid' || key == 'geometry') return;
-                                    if (typeof feature.get('features')[sub_feature].get(key) == "String") {
+                                    if ((typeof feature.get('features')[sub_feature].get(key)).toLowerCase() == "string") {
                                         group.attributes.push({
                                             name: key,
                                             value: $sce.trustAsHtml(feature.get('features')[sub_feature].get(key))
@@ -145,10 +145,18 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                 InfoPanelService.groups.push(group);
                             }
                         } else {
-                            var obj = {
-                                name: key,
-                                value: $sce.trustAsHtml(feature.get(key))
-                            };
+                             var obj
+                            if((typeof feature.get(key)).toLowerCase()=="string"){ 
+                                obj = {
+                                    name: key,
+                                    value: $sce.trustAsHtml(feature.get(key))
+                                };
+                            } else {
+                                obj = {
+                                    name: key,
+                                    value: feature.get(key)
+                                };
+                            }
                             attributes.push(obj)
                         };
                     })
