@@ -1,0 +1,17 @@
+<div class="panel panel-default mainpanel">
+    <div class="panel-heading"><translate>Save map state</translate>
+        <button type="button" class="close" ng-click="Core.closePanel(this)">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only" translate>Close</span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <div hs.status_creator.directive_form></div>
+        <div class="modal-footer" id="stc-footer">
+            <button type="button" class="btn btn-default" id="stc-next" translate="" ng-click="next()">Next</button> 
+            <button type="button" class="btn btn-primary" id="stc-save" translate="" ng-click="save(false)">Save</button>
+            <button type="button" class="btn btn-primary" id="stc-saveas" translate="" ng-click="save(true)">Save as</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" translate="">Close</button>
+        </div>
+    </div>
+</div>
