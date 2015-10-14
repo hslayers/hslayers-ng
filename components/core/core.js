@@ -66,12 +66,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         panelVisible: function(which, scope) {
-                            if (typeof scope !== 'undefined')
-                                if (typeof scope.panel_name == 'undefined') scope.panel_name = which;
-                            if (typeof me.panel_statuses[which] !== 'undefined') {
+                            if (angular.isDefined(scope))
+                                if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
+                            if (angular.isDefined(me.panel_statuses[which])) {
                                 return me.panel_statuses[which];
                             }
-                            return me.mainpanel == which || (typeof scope !== 'undefined' && scope.unpinned);
+                            return me.mainpanel == which || (angular.isDefined(scope) && scope.unpinned);
                         },
                         hidePanels: function() {
                             me.mainpanel = '';
@@ -158,7 +158,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             return getScopes($rootScope);
                         },
                         openStatusCreator: function() {
-                            me.panel_statuses.status_creator = true;
+                            //me.panel_statuses.status_creator = true;
                             hslayers_api.gui.StatusCreator.open();
                         },
                         searchVisible: function(is) {

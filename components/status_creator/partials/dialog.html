@@ -1,103 +1,21 @@
-        <div class="modal" id="status-creator-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel" translate="">
-                            Save map state
-                        </h4>
-                    </div>
-                    <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs stc-tabs" role="tablist">
-                                <li role="presentation" class="active">
-                                    <a href="#context" aria-controls="context" role="tab" data-toggle="tab">Context</a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="#author" aria-controls="author" role="tab" data-toggle="tab">Author</a>
-                                </li>
-                            </ul><!-- Tab panes -->
-                            <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="context">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="stc-title" class="control-label" translate="">Title:</label> <input type="text" class="form-control" id="stc-title" ng-model="title" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="stc-abstract" class="control-label" translate="">Abstract:</label> 
-                                            <textarea class="form-control" id="stc-abstract" ng-model="abstract">
-</textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="stc-keywords" class="control-label" translate="">Keywords:</label> <input type="text" class="form-control" id="stc-keywords" ng-model="keywords" />
-                                        </div>
-                                    </form>
-                                    <form class="form">
-                                        <label for="stc-extent1" class="control-label" translate="">Extent:</label>
-                                        <div class="row">
-                                            <div class="form-group col-sm-3">
-                                                <input type="text" class="form-control" id="stc-extent1" ng-model="bbox[0]" />
-                                            </div>
-                                            <div class="form-group col-sm-3">
-                                                <input type="text" class="form-control" id="stc-extent2" ng-model="bbox[1]" />
-                                            </div>
-                                            <div class="form-group col-sm-3">
-                                                <input type="text" class="form-control" id="stc-extent3" ng-model="bbox[2]" />
-                                            </div>
-                                            <div class="form-group col-sm-3">
-                                                <input type="text" class="form-control" id="stc-extent4" ng-model="bbox[3]" />
-                                            </div>
-                                        </div><button type="button" class="btn btn-default" ng-click="drawExtent()" translate="">Draw</button> <button type="button" class="btn btn-default" ng-click="getCurrentExtent()" translate="">Use current</button>
-                                    </form><label for="stc-layerlist" class="control-label" translate="">Layers:</label>
-                                    <ul class="list-group" id="stc-layerlist">
-                                        <li ng-repeat="layer in layers | filter:query" id="layer-{{$index}}" class="list-group-item">
-                                            <a href="#">{{layer.title}}</a> <input type="checkbox" class="form-control layer-checked" ng-checked="layer.checked" />
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="author">
-                                    <div class="form-group">
-                                        <label for="stc-name" class="control-label" translate="">Person:</label> <input type="text" class="form-control" id="stc-name" ng-model="name" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-organization" class="control-label" translate="">Organization:</label> <input type="text" class="form-control" id="stc-organization" ng-model="organization" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-position" class="control-label" translate="">Position:</label> <input type="text" class="form-control" id="stc-position" ng-model="position" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-address" class="control-label" translate="">Address:</label> <input type="text" class="form-control" id="stc-address" ng-model="address" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-city" class="control-label" translate="">City:</label> <input type="text" class="form-control" id="stc-city" ng-model="city" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-state" class="control-label" translate="">State:</label> <input type="text" class="form-control" id="stc-state" ng-model="state" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-postalcode" class="control-label" translate="">Postal code:</label> <input type="text" class="form-control" id="stc-postalcode" ng-model="postalcode" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-country" class="control-label" translate="">Country:</label> <input type="text" class="form-control" id="stc-country" ng-model="country" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-phone" class="control-label" translate="">Phone:</label> <input type="text" class="form-control" id="stc-phone" ng-model="phone" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-email" class="control-label" translate="">E-mail:</label> <input type="text" class="form-control" id="stc-email" ng-model="email" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="stc-url" class="control-label" translate="">WWW:</label> <input type="text" class="form-control" id="stc-url" ng-model="url" />
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                    <div class="modal-footer" id="stc-footer">
-                        <button type="button" class="btn btn-default" id="stc-next" translate="" ng-click="next()">Next</button> 
-                        <button type="button" class="btn btn-primary" id="stc-save" translate="" ng-click="save(false)">Save</button>
-                        <button type="button" class="btn btn-primary" id="stc-saveas" translate="" ng-click="save(true)">Save as</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" translate="">Close</button>
-                    </div>
-                </div>
+<div class="modal" id="status-creator-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" translate="">
+                    Save map state
+                </h4>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+                    <div hs.status_creator.directive_form></div>
+            </div>
+            <div class="modal-footer" id="stc-footer">
+                <button type="button" class="btn btn-default" id="stc-next" translate="" ng-click="next()">Next</button> 
+                <button type="button" class="btn btn-primary" id="stc-save" translate="" ng-click="save(false)">Save</button>
+                <button type="button" class="btn btn-primary" id="stc-saveas" translate="" ng-click="save(true)">Save as</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" translate="">Close</button>
             </div>
         </div>
+    </div>
+</div>

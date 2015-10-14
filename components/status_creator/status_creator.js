@@ -14,6 +14,22 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 };
             })
+            .directive('hs.statusCreator.directiveForm', function() {
+                return {
+                    templateUrl: hsl_path + 'components/status_creator/partials/form.html',
+                    link: function(scope, element) {
+                        
+                    }
+                };
+            })
+            .directive('hs.statusCreator.directivePanel', function() {
+                return {
+                    templateUrl: hsl_path + 'components/status_creator/partials/panel.html',
+                    link: function(scope, element) {
+                        
+                    }
+                };
+            })
             .directive('hs.statusCreator.resultDialogDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog_result.html',
@@ -218,6 +234,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
                 $scope.layers = [];
                 $scope.id = '';
+                $scope.panel_name = 'status_creator';
 
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
@@ -293,7 +310,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             checked: lyr.get('saveState')
                         });
                     });
-                    $('#status-creator-dialog').modal('show');
+                    Core.setMainPanel('status_creator', true);
+                    //$('#status-creator-dialog').modal('show');
                     $scope.loadUserDetails();
                 }
 
