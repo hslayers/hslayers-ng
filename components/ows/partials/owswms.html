@@ -20,7 +20,7 @@
     <div class="form-group">
         <label class="col-sm-4 control-label">SRS</label>
         <div class="col-sm-8">
-            <p class="alert alert-danger" ng-show="resample_warning" translate>Map projection and layer projection do not match! Resampling will be needed.</p>
+            <p class="alert alert-danger" ng-show="resample_warning" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
             <select class="form-control" ng-model="srs" ng-change="srsChanged()">
                 <option ng-repeat="i in srss">{{i}}</option>
             </select>
