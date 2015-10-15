@@ -488,6 +488,7 @@ define(['angular', 'ol', 'map'],
 
                 $scope.clear = function() {
                     $scope.query.text_filter = "";
+                    $scope.query.title = "";
                 }
 
                 $scope.datasources = [
