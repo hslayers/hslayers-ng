@@ -245,7 +245,8 @@ define(['angular', 'ol'],
                             $scope.srs = 'EPSG:4326';
                         } else
                             $scope.srs = $scope.srss[0];
-
+                        $scope.srsChanged();
+                        
                         $scope.services = caps.Capability.Layer;
                         $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
                         $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
