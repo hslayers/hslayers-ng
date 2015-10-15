@@ -228,13 +228,14 @@ define(['angular', 'ol', 'map'],
                     } else {
                         $('#ds-advanced-micka').modal('show');
                     }
-                    if (typeof $scope.micka_ds == 'undefined') {
+                    if (angular.isUndefined($scope.micka_ds)) {
                         for (var ds in $scope.datasets) {
                             if ($scope.datasets[ds].type == 'micka') {
                                 $scope.micka_ds = $scope.datasets[ds];
                             }
                         }
                     }
+                    if($scope.query.title!='') $scope.query.text_filter = $scope.query.title;
                 }
 
                 $scope.suggestion_config = {};
