@@ -85,11 +85,11 @@ define(['angular', 'map', 'core'],
                         }).join('&') : '';
                     };
                     me.push = function(key, new_value) {
-                        var params = me.parse(location.search);
-                        params[key] = new_value;
-                        var new_params_string = me.stringify(params);
+                        me.params[key] = new_value;
+                        var new_params_string = me.stringify(me.params);
                         me.current_url = window.location.pathname + '?' + new_params_string;
                     };
+                    me.params = me.parse(location.search);
                     me.getParamValue = function(param, loc) {
                         if (!loc) loc = location.search;
                         var tmp = me.parse(loc);

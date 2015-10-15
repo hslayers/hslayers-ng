@@ -60,6 +60,14 @@
                 {{currentlayer.layer.get('abstract')}}
             </p>
         </div>
+        <!-- Scale -->
+        <div class="form-group" ng-show="isScaleVisible(currentlayer.layer)">
+            <label translate>Scale:</label>
+            <p>
+            <span translate>from</span> 1:{{currentlayer.layer.getMinResolution()}}
+                <span translate> to </span> 1:{{currentlayer.layer.getMaxResolution()}}
+            </p>
+        </div>
         <!-- Metadata -->
         <div class="form-group" ng-show="currentlayer.layer.get('MetadataURL') ? true : false">
             <b><a ng-repeat="metadata in currentlayer.layer.get('MetadataURL')" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata" ><translate>Metadata in</translate> {{metadata.type}}</a></b>
