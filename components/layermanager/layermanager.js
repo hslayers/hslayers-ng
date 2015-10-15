@@ -341,7 +341,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 var cur_res = OlMap.map.getView().getResolution();
                 return lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution();
             }
-            $scope.isScaleVisible = function(layer){
+            $scope.isScaleVisible = function(layer) {
                 if (typeof layer == 'undefined') return false;
                 return angular.isDefined(layer.getMinResolution());
             }

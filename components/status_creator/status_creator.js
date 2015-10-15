@@ -18,7 +18,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/form.html',
                     link: function(scope, element) {
-                        
+
                     }
                 };
             })
@@ -26,7 +26,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/panel.html',
                     link: function(scope, element) {
-                        
+
                     }
                 };
             })

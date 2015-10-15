@@ -235,7 +235,7 @@ define(['angular', 'ol', 'map'],
                             }
                         }
                     }
-                    if($scope.query.title!='') $scope.query.text_filter = $scope.query.title;
+                    if ($scope.query.title != '') $scope.query.text_filter = $scope.query.title;
                 }
 
                 $scope.suggestion_config = {};

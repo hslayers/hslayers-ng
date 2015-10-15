@@ -238,7 +238,7 @@ define(['angular', 'ol'],
                                 $scope.srss.push(this.innerHTML);
                             });
                         }
-                        if($scope.srss.indexOf('CRS:84')>-1) $scope.srss.splice($scope.srss.indexOf('CRS:84'), 1);
+                        if ($scope.srss.indexOf('CRS:84') > -1) $scope.srss.splice($scope.srss.indexOf('CRS:84'), 1);
 
                         if (srv_caps.currentProjectionSupported($scope.srss))
                             $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode()) > -1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
@@ -247,7 +247,7 @@ define(['angular', 'ol'],
                         } else
                             $scope.srs = $scope.srss[0];
                         $scope.srsChanged();
-                        
+
                         $scope.services = caps.Capability.Layer;
                         $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
                         $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
