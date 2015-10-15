@@ -238,6 +238,7 @@ define(['angular', 'ol'],
                                 $scope.srss.push(this.innerHTML);
                             });
                         }
+                        if($scope.srss.indexOf('CRS:84')>-1) $scope.srss.splice($scope.srss.indexOf('CRS:84'), 1);
 
                         if (srv_caps.currentProjectionSupported($scope.srss))
                             $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode()) > -1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
