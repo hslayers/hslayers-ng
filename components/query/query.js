@@ -227,7 +227,10 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                                 }
                             }
                         })
-                        if (something_updated) InfoPanelService.setGroups(InfoPanelService.groups);
+                        if (something_updated){
+                            InfoPanelService.setGroups(InfoPanelService.groups);
+                            Core.setMainPanel("info");
+                        }
                     }
 
                     if (info_format.indexOf("html") > 0) {
