@@ -24,27 +24,24 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
             };
         }]);
 
-        module.value('box_layers', []);
-
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM({
-                    wrapX: false
-                }),
-                title: "Base layer",
-                base: true
-            })
-        ]);
-
-        module.value('compositions_catalogue_url', 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php');
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 5,
-            units: "m"
-        }));
-
-        module.value('project_name', 'myproject');
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM({
+                        wrapX: false
+                    }),
+                    title: "Base layer",
+                    base: true
+                })
+            ],
+            project_name: 'hslayers',
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 5,
+                units: "m"
+            }),
+            compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php'
+        });
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser',
             function($scope, Core, InfoPanelService, composition_parser) {

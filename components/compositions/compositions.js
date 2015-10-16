@@ -11,14 +11,24 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
                     link: function(scope, element) {
-
+                        $('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
+                        $('.mid-pane').css('margin-top', '0px');
+                    }
+                };
+            })
+            .directive('hs.compositions.overwriteDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html',
+                    link: function(scope, element, attrs) {
+                        $('#composition-overwrite-dialog').modal('show');
                     }
                 };
             })
 
-        .service('hs.compositions.service_parser', ['hs.map.service', 'Core', function(OlMap, Core) {
+        .service('hs.compositions.service_parser', ['hs.map.service', 'Core', '$rootScope', function(OlMap, Core, $rootScope) {
             var me = {
-                load: function(url) {
+                composition_loaded: null,
+                load: function(url, overwrite) {
                     url = url.replace('&amp;', '&');
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
@@ -29,20 +39,28 @@ define(['angular', 'ol', 'map'],
                             url: url
                         })
                         .done(function(response) {
-                            var to_be_removed = [];
-                            OlMap.map.getLayers().forEach(function(lyr) {
-                                if (lyr.get('from_composition'))
-                                    to_be_removed.push(lyr);
-                            });
-                            while (to_be_removed.length > 0) {
-                                OlMap.map.removeLayer(to_be_removed.shift());
+                            me.composition_loaded = url;
+                            if (angular.isUndefined(overwrite) || overwrite == true) {
+                                var to_be_removed = [];
+                                OlMap.map.getLayers().forEach(function(lyr) {
+                                    if (lyr.get('from_composition'))
+                                        to_be_removed.push(lyr);
+                                });
+                                while (to_be_removed.length > 0) {
+                                    OlMap.map.removeLayer(to_be_removed.shift());
+                                }
                             }
+                            $('.composition-info').html($('<a href="#">').html($('<h3>').html(response.data.title)).click(function() {
+                                $('.composition-abstract').toggle()
+                            }));
+                            $('.composition-info').append($('<div>').html(response.data.abstract).addClass('well composition-abstract'));
                             OlMap.map.getView().fitExtent(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
                             for (var i = 0; i < layers.length; i++) {
                                 OlMap.map.addLayer(layers[i]);
                             }
                             Core.setMainPanel('layermanager');
+                            $rootScope.$broadcast('compositions.composition_loaded', response);
                         })
                 },
                 parseExtent: function(b) {
@@ -93,7 +111,7 @@ define(['angular', 'ol', 'map'],
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':
-                                if(lyr_def.protocol && lyr_def.protocol.format.className == 'OpenLayers.Format.KML'){
+                                if (lyr_def.protocol && lyr_def.protocol.format.className == 'OpenLayers.Format.KML') {
                                     var url = lyr_def.protocol.options.url;
                                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
@@ -120,8 +138,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'compositions_catalogue_url',
-            function($scope, $rootScope, OlMap, Core, composition_parser, compositions_catalogue_url) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile',
+            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink, $compile) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -163,9 +181,9 @@ define(['angular', 'ol', 'map'],
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
                     var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    var bbox_delimiter = compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
+                    var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                    var url = compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var url = config.compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                     } else {
@@ -258,11 +276,40 @@ define(['angular', 'ol', 'map'],
                     }, 500);
                 });
 
-                $scope.loadComposition = composition_parser.load;
+                $scope.loadComposition = function(url) {
+                    if (composition_parser.composition_loaded != null) {
+                        $scope.composition_to_be_loaded = url;
+                        if ($("#hs-dialog-area #composition-overwrite-dialog").length == 0) {
+                            var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
+                            $("#hs-dialog-area").append(el);
+                            $compile(el)($scope);
+                        } else {
+                            $('#composition-overwrite-dialog').modal('show');
+                        }
+                    } else {
+                        composition_parser.load(url);
+                    }
+                }
+
+                $scope.overwrite = function() {
+                    composition_parser.load($scope.composition_to_be_loaded, true);
+                }
+
+                $scope.add = function() {
+                    composition_parser.load($scope.composition_to_be_loaded, false);
+                }
+
                 $scope.loadCompositions();
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }
+                if (permalink.getParamValue('composition')) {
+                    var id = permalink.getParamValue('composition');
+                    if (id.indexOf('http') == -1 && id.indexOf('statusmanager2') == -1)
+                        id = '/wwwlibs/statusmanager2/index.php?request=load&id=' + id;
+                    composition_parser.load(id);
+                }
+
                 $scope.$emit('scope_loaded', "Compositions");
                 $scope.$on('core.mainpanel_changed', function(event) {
                     extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));

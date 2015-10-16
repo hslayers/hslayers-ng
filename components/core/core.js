@@ -9,10 +9,12 @@
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
+        ngcookies: hsl_path + 'bower_components/angular-cookies/angular-cookies',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap',
         ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'bower_components/ol3/build/ol',
         drag: hsl_path + 'components/drag/drag',
         map: hsl_path + 'components/map/map',
+        styles: hsl_path + 'components/styles/styles',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
         compositions: hsl_path + 'components/compositions/compositions',
@@ -33,6 +35,9 @@ require.config({
             deps: ['angular'],
         },
         'angular-gettext': {
+            deps: ['angular'],
+        },
+        ngcookies: {
             deps: ['angular'],
         },
         translations: {
@@ -61,12 +66,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         panelVisible: function(which, scope) {
-                            if (typeof scope !== 'undefined')
-                                if (typeof scope.panel_name == 'undefined') scope.panel_name = which;
-                            if (typeof me.panel_statuses[which] !== 'undefined') {
+                            if (angular.isDefined(scope))
+                                if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
+                            if (angular.isDefined(me.panel_statuses[which])) {
                                 return me.panel_statuses[which];
                             }
-                            return me.mainpanel == which || (typeof scope !== 'undefined' && scope.unpinned);
+                            return me.mainpanel == which || (angular.isDefined(scope) && scope.unpinned);
                         },
                         hidePanels: function() {
                             me.mainpanel = '';
@@ -153,7 +158,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             return getScopes($rootScope);
                         },
                         openStatusCreator: function() {
-                            me.panel_statuses.status_creator = true;
+                            //me.panel_statuses.status_creator = true;
                             hslayers_api.gui.StatusCreator.open();
                         },
                         searchVisible: function(is) {
@@ -161,6 +166,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 me.panel_statuses['search'] = is;
                             }
                             return me.panel_statuses['search']
+                        },
+                        isAuthorized: function() {
+                            if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
+                                return true;
+                            }
+                            return false;
                         }
                     };
 

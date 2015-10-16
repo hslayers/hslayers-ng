@@ -101,11 +101,11 @@ define(['angular', 'ol', 'app', 'map'],
          * @class hs.panoramio.service
          * @memberOf hs.panoramio
          * @param {hs.map.OlMap} OlMap - Service for containing map object
-         * @param {array} default_layers - Layer array to which the new panoramio layer will be added. It is later iterated and added to map.
+         * @param {object} config - Configuration with default layers to which the new panoramio layer will be added. It is later iterated and added to map.
          * @description Service for querying and displaying panoramio pictures
          */
-        .service("hs.panoramio.service", ['hs.map.service', 'default_layers',
-            function(OlMap, default_layers) {
+        .service("hs.panoramio.service", ['hs.map.service', 'config',
+            function(OlMap, config) {
                 var map = OlMap.map;
                 var src = new ol.source.Vector();
                 var csrc = new ol.source.Cluster({
@@ -288,6 +288,7 @@ define(['angular', 'ol', 'app', 'map'],
                         title: "Panoramio pictures",
                         show_in_manager: true,
                         source: csrc,
+                        visible: false,
                         style: function(feature, resolution) {
                             var text = null;
                             if (feature.get('features').length > 1) {
@@ -333,7 +334,9 @@ define(['angular', 'ol', 'app', 'map'],
                         }
                     });
 
-                    default_layers.push(lyr);
+                    if (angular.isUndefined(config.default_layers))
+                        config.default_layers = [];
+                    config.default_layers.push(lyr);
                     var features = [];
                     angular.forEach(me.saved_items, function(item, address) {
                         var feature = loadLocalFeature(item, address);

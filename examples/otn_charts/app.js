@@ -22,8 +22,6 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             };
         }]);
 
-        module.value('box_layers', []);
-
         var style = new ol.style.Style({
             image: new ol.style.Circle({
                 fill: new ol.style.Fill({
@@ -52,23 +50,25 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             source: src
         });
 
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                title: "Base layer",
-                base: true
-            }),
-            new ol.layer.Vector({
-                title: "Accident statistics",
-                source: csrc
-            })
-        ]);
 
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4,
-            units: "m"
-        }));
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Base layer",
+                    base: true
+                }),
+                new ol.layer.Vector({
+                    title: "Accident statistics",
+                    source: csrc
+                })
+            ],
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
+            })
+        });
 
         module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'default_layers', 'year_selector_service',
             function($scope, $compile, $element, Core, OlMap, default_layers, year_selector_service) {

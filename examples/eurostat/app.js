@@ -21,21 +21,20 @@ define(['ol', 'toolbar', 'layermanager', 'query', 'search', 'print', 'permalink'
             };
         }]);
 
-        module.value('box_layers', []);
-
-        module.value('default_layers', [
-            new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                title: "Base layer",
-                base: true
+        module.value('config', {
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Base layer",
+                    base: true
+                })
+            ],
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
             })
-        ]);
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4,
-            units: "m"
-        }));
+        });
 
         module.controller('Main', ['$scope', 'Core',
             function($scope, Core) {

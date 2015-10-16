@@ -32,14 +32,14 @@
 	
 
   		if (fdata[0] > 0.) {
-  			float val = fdata[1]/(max/3.);
+  			float val = fdata[1]/(max/2.);
   			col = vec4(val, 1.-val , 0., 0.0+val*2.);//vec4(1.,0.,0.,0.);
   		
   			
   		}	else {
   			col = vec4(0.,0.,0.,0.);
   		}
-  			
+  		
 	
 		gl_FragColor = col;//fdata;//vec4(1.,0.,0.,1.);
 		

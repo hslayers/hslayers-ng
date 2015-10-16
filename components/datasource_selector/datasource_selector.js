@@ -51,7 +51,7 @@ define(['angular', 'ol', 'map'],
                 templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
                 link: function(scope, element, attrs) {
                     $('#ds-suggestions-micka').modal('show');
-                    scope.suggestion_filter=scope.query[scope.suggestion_config.input];
+                    scope.suggestion_filter = scope.query[scope.suggestion_config.input];
                     $('#ds-sug-filter').focus();
                     scope.suggestionFilterChanged();
                 }
@@ -228,17 +228,18 @@ define(['angular', 'ol', 'map'],
                     } else {
                         $('#ds-advanced-micka').modal('show');
                     }
-                    if (typeof $scope.micka_ds == 'undefined') {
+                    if (angular.isUndefined($scope.micka_ds)) {
                         for (var ds in $scope.datasets) {
                             if ($scope.datasets[ds].type == 'micka') {
                                 $scope.micka_ds = $scope.datasets[ds];
                             }
                         }
                     }
+                    if ($scope.query.title != '') $scope.query.text_filter = $scope.query.title;
                 }
 
                 $scope.suggestion_config = {};
-                
+
                 $scope.showSuggestions = function(input, param, field) {
                     $scope.suggestion_config = {
                         input: input,
@@ -254,7 +255,7 @@ define(['angular', 'ol', 'map'],
                         $('#ds-sug-filter').val($scope.query[input]).focus();
                         $scope.suggestionFilterChanged();
                     }
-                    
+
                 }
 
                 $scope.suggestions = [];
@@ -312,10 +313,11 @@ define(['angular', 'ol', 'map'],
                             });
                             break;
                         case "micka":
+                            var advanced_search_visible = $('#ds-advanced-micka').is(':visible');
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
                             var bbox = $scope.filter_by_extent ? "BBOX='" + b.join(' ') + "'" : '';
                             var ue = encodeURIComponent;
-                            var text = typeof $scope.query.text_filter == 'undefined' || $scope.query.text_filter == '' ? $scope.query.title : $scope.query.text_filter;
+                            var text = angular.isUndefined($scope.query.text_filter) || !advanced_search_visible ? $scope.query.title : $scope.query.text_filter;
                             var query = [
                                 (text != '' ? $scope.text_field + ue(" like '*" + text + "*' ") : ''),
                                 ue(bbox),
@@ -326,7 +328,7 @@ define(['angular', 'ol', 'map'],
                                 param2Query('OrganisationName')
                             ].filter(function(n) {
                                 return n != ''
-                            }).join(' and ');
+                            }).join('%20AND%20');
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
@@ -376,7 +378,13 @@ define(['angular', 'ol', 'map'],
                             return encodeURIComponent("(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
                         }
                         return ($scope.query[which] != '' ? encodeURIComponent(which + "='" + $scope.query[which] + "'") : '')
-                    } else return '';
+                    } else {
+                        if (which == 'ServiceType') {
+                            return encodeURIComponent("(ServiceType=view OR ServiceType=WMS OR Protocol like '*KML*')");
+                        } else {
+                            return '';
+                        }
+                    }
                 }
 
                 $scope.zoomTo = function(bbox) {
@@ -464,7 +472,6 @@ define(['angular', 'ol', 'map'],
                             if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
                                 Core.setMainPanel('ows');
                                 var link = layer.link;
-                                link = link.split("?")[0];
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link));
                             } else {
                                 alert('Service type "' + layer.serviceType + '" not supported.');
@@ -482,6 +489,7 @@ define(['angular', 'ol', 'map'],
 
                 $scope.clear = function() {
                     $scope.query.text_filter = "";
+                    $scope.query.title = "";
                 }
 
                 $scope.datasources = [

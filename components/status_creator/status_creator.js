@@ -2,15 +2,31 @@
  * @namespace hs.status_creator
  * @memberOf hs
  */
-define(['angular', 'ol', 'map'],
+define(['angular', 'ol', 'map', 'ngcookies'],
 
     function(angular, ol) {
-        var module = angular.module('hs.status_creator', ['hs.map', 'hs.core'])
+        var module = angular.module('hs.status_creator', ['hs.map', 'hs.core', 'ngCookies'])
             .directive('hs.statusCreator.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog.html',
                     link: function(scope, element) {
                         $('#stc-save, #stc-saveas').hide();
+                    }
+                };
+            })
+            .directive('hs.statusCreator.directiveForm', function() {
+                return {
+                    templateUrl: hsl_path + 'components/status_creator/partials/form.html',
+                    link: function(scope, element) {
+
+                    }
+                };
+            })
+            .directive('hs.statusCreator.directivePanel', function() {
+                return {
+                    templateUrl: hsl_path + 'components/status_creator/partials/panel.html',
+                    link: function(scope, element) {
+
                     }
                 };
             })
@@ -214,10 +230,11 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'project_name', '$compile',
-            function($scope, $rootScope, OlMap, Core, status_creator, project_name, $compile) {
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
+            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
                 $scope.layers = [];
                 $scope.id = '';
+                $scope.panel_name = 'status_creator';
 
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
@@ -270,7 +287,7 @@ define(['angular', 'ol', 'map'],
                             data: status_creator.map2json(OlMap.map, $scope, false),
                             permanent: true,
                             id: $scope.id,
-                            project: project_name,
+                            project: config.project_name,
                             request: "save"
                         }),
                         success: function(j) {
@@ -293,8 +310,47 @@ define(['angular', 'ol', 'map'],
                             checked: lyr.get('saveState')
                         });
                     });
-                    $('#status-creator-dialog').modal('show');
+                    Core.setMainPanel('status_creator', true);
+                    //$('#status-creator-dialog').modal('show');
+                    $scope.loadUserDetails();
                 }
+
+                $scope.loadUserDetails = function() {
+                    var jsessionid = $cookies.get("JSESSIONID");
+                    if (jsessionid) {
+                        $.ajax({
+                            url: "/g4i-portlet/service/sso/validate/" + jsessionid,
+                            success: $scope.setUserDetails
+                        });
+                    }
+                };
+
+                $scope.setUserDetails = function(user) {
+                    if (user && user.resultCode == "0") {
+                        // set the values
+                        if (user.userInfo) {
+                            $scope.email = user.userInfo.email;
+                            $scope.phone = user.userInfo.phone;
+                            $scope.name = user.userInfo.firstName + " " + user.userInfo.lastName;
+                        }
+                        if (user.userInfo && user.userInfo.org) {
+                            $scope.address = user.userInfo.org.street;
+                            $scope.country = user.userInfo.org.state;
+                            $scope.postalcode = user.userInfo.org.zip;
+                            $scope.city = user.userInfo.org.city;
+                            $scope.organization = user.userInfo.org.name;
+                        }
+                    }
+                };
+
+                $scope.$on('compositions.composition_loaded', function(event, data) {
+                    if (console) console.log('compositions.composition_loaded', data);
+                    $scope.id = data.id;
+                    $scope.abstract = data.abstract;
+                    $scope.title = data.title;
+                    $scope.keywords = data.keywords;
+                });
+
 
                 $scope.getCurrentExtent();
                 $scope.$emit('scope_loaded', "StatusCreator");

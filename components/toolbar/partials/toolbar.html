@@ -36,9 +36,10 @@
             <span class="fa fa-pie-chart"></span>
         </button>
 
+        <!--
         <button type="button" class="btn btn-default"  title="Query information and other"  ng-if="Core.exists('hs.query.controller')" ng-click="setMainPanel('info', true)">
             <i class="fa fa-question-circle"></i>
-        </button>
+        </button>-->
 
         <button type="button" class="btn btn-default"  title="Measure lines and polygon"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
             <span class="glyphicon glyphicon-compressed"></span>
@@ -58,6 +59,10 @@
         
         <button type="button" class="btn btn-default btn-mobile ol-has-tooltip blocate" title="Geolocation" ng-if="Core.exists('hs.geolocation.controller')">
             <span class="fa fa-location-arrow"></span>
+        </button>
+
+        <button type="button" class="btn btn-default" title="Save composition" ng-if="Core.exists('hs.status_creator.controller') && Core.isAuthorized()" ng-click="Core.openStatusCreator()">
+            <i class="fa fa-floppy-o"></i>
         </button>
     </div>
 </div>

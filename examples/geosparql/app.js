@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'feature-crossfilter', 'legend', 'bootstrap', 'panoramio', 'bootstrap', 'api'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'panoramio', 'bootstrap', 'api'],
 
     function(ol, dc, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
@@ -11,7 +11,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             'hs.geolocation',
             'hs.legend',
             'hs.api',
-            'hs.feature_crossfilter', 'hs.panoramio'
+            /*'hs.feature_crossfilter', */
+            'hs.panoramio'
         ]);
 
         module.directive('hs', ['Core', function(Core) {
@@ -28,25 +29,10 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 var s = feature.get('http://www.openvoc.eu/poi#categoryOSM');
                 if (typeof s === 'undefined') return;
                 s = s.split(".")[1];
-                return [new ol.style.Style({
-                        image: new ol.style.Circle({
-                            fill: new ol.style.Fill({
-                                color: feature.color ? feature.color : [242, 121, 0, 0.7]
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: [0x33, 0x33, 0x33, 0.9]
-                            }),
-                            radius: 3
-                        }),
-                        fill: new ol.style.Fill({
-                            color: "rgba(139, 189, 214, 0.3)",
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: "rgba(139, 189, 214, 0.7)",
-                        })
-                    }),
+                return [
                     new ol.style.Style({
                         image: new ol.style.Icon({
+                            anchor: [0.5, 1],
                             src: 'symbols/' + s + '.svg',
                             crossOrigin: 'anonymous'
                         })
@@ -86,13 +72,92 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             'tourism.viewpoint',
             'tourism.zoo'
         ], function(value) {
+            var value2;
+            switch (value) {
+                case 'amenity.arts_centre':
+                    value2 = "Arts Center";
+                    break;
+                case 'amenity.atm':
+                    value2 = "ATM";
+                    break;
+                case 'amenity.bank':
+                    value2 = "Bank";
+                    break;
+                case 'amenity.bicycle_rental':
+                    value2 = "Bicycle Rental";
+                    break;
+                case 'amenity.cafe':
+                    value2 = "Cafe";
+                    break;
+                case 'amenity.car_wash':
+                    value2 = "Car Wash";
+                    break;
+                case 'amenity.dentist':
+                    value2 = "Dentist";
+                    break;
+                case 'amenity.fast_food':
+                    value2 = "Fast Food";
+                    break;
+                case 'amenity.fountain':
+                    value2 = "Fountain";
+                    break;
+                case 'amenity.library':
+                    value2 = "Library";
+                    break;
+                case 'amenity.parking':
+                    value2 = "Parking";
+                    break;
+                case 'amenity.place_of_worship':
+                    value2 = "Place of Worship";
+                    break;
+                case 'amenity.pub':
+                    value2 = "Pub";
+                    break;
+                case 'amenity.restaurant':
+                    value2 = "Restaurant";
+                    break;
+                case 'amenity.waste_basket':
+                    value2 = "Waste Basket";
+                    break;
+                case 'building.hotel':
+                    value2 = "Hotel";
+                    break;
+                case 'highway.bus_stop':
+                    value2 = "Bus Stop";
+                    break;
+                case 'historic.archaeological_site':
+                    value2 = "Archaeological Site";
+                    break;
+                case 'historic.memorial':
+                    value2 = "Memorial";
+                    break;
+                case 'shop.supermarket':
+                    value2 = "Supermarket";
+                    break;
+                case 'tourism.artwork':
+                    value2 = "Artwork";
+                    break;
+                case 'tourism.camp_site':
+                    value2 = "Camp Site";
+                    break;
+                case 'tourism.information':
+                    value2 = "Information";
+                    break;
+                case 'tourism.viewpoint':
+                    value2 = "Viewpoint";
+                    break;
+                case 'tourism.zoo':
+                    value2 = "Zoo";
+                    break;
+            };
             var new_lyr = new ol.layer.Vector({
-                title: "POI " + value,
+                title: " " + value2,
                 source: new SparqlJson({
                     geom_attribute: 'bif:st_geomfromtext(UCASE(?geom))',
                     url: 'http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://www.openvoc.eu/poi#categoryOSM',
                     projection: 'EPSG:3857'
+                        //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
                 }),
                 style: style,
                 visible: false,
@@ -101,114 +166,6 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             sparql_layers.push(new_lyr);
         })
 
-        module.value('box_layers', [new ol.layer.Group({
-            'img': 'osm.png',
-            title: 'Base layer',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM(),
-                    title: "OpenStreetMap",
-                    base: true,
-                    visible: false,
-                    path: 'Roads'
-                }),
-                new ol.layer.Tile({
-                    title: "OpenCycleMap",
-                    visible: true,
-                    base: true,
-                    source: new ol.source.OSM({
-                        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                    }),
-                    path: 'Roads'
-                })
-            ],
-        }), new ol.layer.Group({
-            'img': 'bicycle-128.png',
-            title: 'Tourist info',
-            layers: sparql_layers.concat([
-                new ol.layer.Vector({
-                    title: "Cycling routes Plzen",
-                    source: new ol.source.GeoJSON({
-                        url: 'plzensky_kraj.geojson'
-                    }),
-                    style: route_style,
-                    path: 'Roads/Additional Cycling routes'
-                }),
-                new ol.layer.Vector({
-                    title: "Cycling routes Zemgale",
-                    source: new ol.source.GeoJSON({
-                        url: 'zemgale.geojson'
-                    }),
-                    style: route_style,
-                    path: 'Roads/Additional Cycling routes'
-                }),
-                new ol.layer.Vector({
-                    title: "Tour de LatEst",
-                    source: new ol.source.GeoJSON({
-                        url: 'teourdelatest.geojson'
-                    }),
-                    style: route_style,
-                    path: 'Roads/Additional Cycling routes'
-                }),
-                new ol.layer.Vector({
-                    title: "A1: the Vltava left-bank cycle route",
-                    source: new ol.source.GeoJSON({
-                        url: 'prague.geojson'
-                    }),
-                    style: route_style,
-                    path: 'Roads/Additional Cycling routes'
-                }),
-                new ol.layer.Image({
-                    title: "Forest roads",
-                    BoundingBox: [{
-                        crs: "EPSG:3857",
-                        extent: [1405266, 6146786, 2073392, 6682239]
-                    }],
-                    source: new ol.source.ImageWMS({
-                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/ovnis/sdi4aps_forest_roads.map',
-                        params: {
-                            LAYERS: 'forest_roads,haul_roads',
-                            INFO_FORMAT: "application/vnd.ogc.gml",
-                            FORMAT: "image/png; mode=8bit"
-                        },
-                        crossOrigin: null
-                    }),
-                    path: 'Roads'
-                })
-            ])
-        }), new ol.layer.Group({
-            'img': 'partly_cloudy.png',
-            title: 'Weather',
-            layers: [new ol.layer.Tile({
-                    title: "OpenWeatherMap cloud cover",
-                    source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
-                    }),
-                    visible: false,
-                    opacity: 0.7,
-                    path: 'Weather info'
-                }),
-                new ol.layer.Tile({
-                    title: "OpenWeatherMap precipitation",
-                    source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
-                    }),
-                    visible: false,
-                    opacity: 0.7,
-                    path: 'Weather info'
-                }),
-                new ol.layer.Tile({
-                    title: "OpenWeatherMap temperature",
-                    source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
-                    }),
-                    visible: false,
-                    opacity: 0.7,
-                    path: 'Weather info'
-                })
-            ]
-        })]);
-
         var route_style = function(feature, resolution) {
             return [new ol.style.Style({
                 stroke: new ol.style.Stroke({
@@ -216,24 +173,147 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     width: 2
                 })
             })]
-        }
+        };
 
-        module.value('default_layers', []);
+        module.value('config', {
+            box_layers: [new ol.layer.Group({
+                'img': 'osm.png',
+                title: 'Base layer',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM(),
+                        title: "OpenStreetMap",
+                        base: true,
+                        visible: false,
+                        path: 'Roads'
+                    }),
+                    new ol.layer.Tile({
+                        title: "OpenCycleMap",
+                        visible: true,
+                        base: true,
+                        source: new ol.source.OSM({
+                            url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+                        }),
+                        path: 'Roads'
+                    }),
+                    new ol.layer.Tile({
+                        title: "MTBMap",
+                        visible: false,
+                        base: true,
+                        source: new ol.source.XYZ({
+                            url: 'http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png'
+                        }),
+                        path: 'Roads'
+                    }),
+                    new ol.layer.Tile({
+                        title: "OwnTiles",
+                        visible: false,
+                        base: true,
+                        source: new ol.source.XYZ({
+                            url: 'http://ct37.sdi4apps.eu/map/{z}/{x}/{y}.png'
+                        }),
+                        path: 'Roads'
+                    })
+                ],
+            }), new ol.layer.Group({
+                'img': 'bicycle-128.png',
+                title: 'Tourist info',
+                layers: sparql_layers.concat([
+                    new ol.layer.Vector({
+                        title: "Cycling routes Plzen",
+                        source: new ol.source.GeoJSON({
+                            url: 'plzensky_kraj.geojson'
+                        }),
+                        style: route_style,
+                        path: 'Roads/Additional Cycling routes'
+                    }),
+                    new ol.layer.Vector({
+                        title: "Cycling routes Zemgale",
+                        source: new ol.source.GeoJSON({
+                            url: 'zemgale.geojson'
+                        }),
+                        style: route_style,
+                        path: 'Roads/Additional Cycling routes'
+                    }),
+                    new ol.layer.Vector({
+                        title: "Tour de LatEst",
+                        source: new ol.source.GeoJSON({
+                            url: 'teourdelatest.geojson'
+                        }),
+                        style: route_style,
+                        path: 'Roads/Additional Cycling routes'
+                    }),
+                    new ol.layer.Vector({
+                        title: "A1: the Vltava left-bank cycle route",
+                        source: new ol.source.GeoJSON({
+                            url: 'prague.geojson'
+                        }),
+                        style: route_style,
+                        path: 'Roads/Additional Cycling routes'
+                    }),
+                    new ol.layer.Image({
+                        title: "Forest roads",
+                        BoundingBox: [{
+                            crs: "EPSG:3857",
+                            extent: [1405266, 6146786, 2073392, 6682239]
+                        }],
+                        source: new ol.source.ImageWMS({
+                            url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/ovnis/sdi4aps_forest_roads.map',
+                            params: {
+                                LAYERS: 'forest_roads,haul_roads',
+                                INFO_FORMAT: "application/vnd.ogc.gml",
+                                FORMAT: "image/png; mode=8bit"
+                            },
+                            crossOrigin: null
+                        }),
+                        path: 'Roads'
+                    })
+                ])
+            }), new ol.layer.Group({
+                'img': 'partly_cloudy.png',
+                title: 'Weather',
+                layers: [new ol.layer.Tile({
+                        title: "OpenWeatherMap cloud cover",
+                        source: new ol.source.XYZ({
+                            url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
+                        }),
+                        visible: false,
+                        opacity: 0.7,
+                        path: 'Weather info'
+                    }),
+                    new ol.layer.Tile({
+                        title: "OpenWeatherMap precipitation",
+                        source: new ol.source.XYZ({
+                            url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
+                        }),
+                        visible: false,
+                        opacity: 0.7,
+                        path: 'Weather info'
+                    }),
+                    new ol.layer.Tile({
+                        title: "OpenWeatherMap temperature",
+                        source: new ol.source.XYZ({
+                            url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
+                        }),
+                        visible: false,
+                        opacity: 0.7,
+                        path: 'Weather info'
+                    })
+                ]
+            })],
+            crossfilterable_layers: [{
+                layer_ix: 2,
+                attributes: ["http://gis.zcu.cz/poi#category_osm"]
+            }],
+            default_view: new ol.View({
+                center: [1490321.6967438285, 6400602.013496143], //Latitude longitude    to Spherical Mercator
+                zoom: 14,
+                units: "m"
+            })
+        });
 
-        module.value('crossfilterable_layers', [{
-            layer_ix: 2,
-            attributes: ["http://gis.zcu.cz/poi#category_osm"]
-        }]);
-
-
-        module.value('default_view', new ol.View({
-            center: [1490321.6967438285, 6400602.013496143], //Latitude longitude    to Spherical Mercator
-            zoom: 14,
-            units: "m"
-        }));
-
-        module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', 'hs.feature_crossfilter.service',
-            function($scope, $filter, Core, OlMap, InfoPanelService, feature_crossfilter) {
+        module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel',
+            function($scope, $filter, Core, OlMap, InfoPanelService) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;

@@ -2,10 +2,10 @@
  * @namespace hs.search
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'permalink'],
+define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
     function(angular, ol) {
-        angular.module('hs.search', ['hs.map'])
+        angular.module('hs.search', ['hs.map', 'hs.styles'])
             .directive('hs.search.directiveSearchinput', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchinput.html',
@@ -47,10 +47,11 @@ define(['angular', 'ol', 'map', 'permalink'],
                 }
             ])
 
-        .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url',
-            function($scope, Core, OlMap, SearchService, $log, permalink) {
+        .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service',
+            function($scope, Core, OlMap, SearchService, $log, permalink, styles) {
                 var map = OlMap.map;
-
+                var point_clicked = new ol.geom.Point([0, 0]);
+                $scope.search_results_layer = null;
 
                 $scope.init = function() {
                     $scope.query = "";
@@ -85,7 +86,10 @@ define(['angular', 'ol', 'map', 'permalink'],
                         'STM': 14,
                         'LK': 13
                     };
-                    map.getView().setCenter(ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection()));
+                    $scope.createCurrentPointLayer();
+                    coordinate = ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection());
+                    point_clicked.setCoordinates(coordinate, 'XY');
+                    map.getView().setCenter(coordinate);
                     if (typeof $scope.fcode_zoom_map[result.fcode] !== 'undefined') {
                         map.getView().setZoom($scope.fcode_zoom_map[result.fcode]);
                     } else {
@@ -98,6 +102,8 @@ define(['angular', 'ol', 'map', 'permalink'],
                     $scope.results = [];
                     $scope.query = '';
                     $scope.clearvisible = false;
+                    if ($scope.search_results_layer) map.getLayers().remove($scope.search_results_layer);
+                    $scope.search_results_layer = null;
                 }
 
                 SearchService.searchResultsReceived = function(response) {
@@ -112,6 +118,21 @@ define(['angular', 'ol', 'map', 'permalink'],
                            map.setCenter(bounds.transform(projWGS84, map.getProjectionObject()), 13);
                            switchAwayFromRegions();
                        }*/
+                }
+
+                $scope.createCurrentPointLayer = function() {
+                    if ($scope.search_results_layer) map.getLayers().remove($scope.search_results_layer);
+                    $scope.search_results_layer = new ol.layer.Vector({
+                        title: "Search results",
+                        source: new ol.source.Vector({
+                            features: [new ol.Feature({
+                                geometry: point_clicked
+                            })]
+                        }),
+                        style: styles.pin_white_blue,
+                        show_in_manager: false
+                    });
+                    map.addLayer($scope.search_results_layer);
                 }
 
                 $scope.init();

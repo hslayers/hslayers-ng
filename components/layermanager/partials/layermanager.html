@@ -4,9 +4,6 @@
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
-        <button type="button" class="but-title-sm" ng-if="Core.exists('hs.status_creator.controller')" ng-click="Core.openStatusCreator()">
-            <span class="glyphicon glyphicon glyphicon-save" aria-hidden="true"></span>          
-        </button>
         <button type="button" class="but-title-sm"  ng-click="removeAllLayers()">
             <i class="fa fa-trash"></i>      
         </button>
@@ -61,6 +58,14 @@
             <label translate>Abstract:</label>
             <p>
                 {{currentlayer.layer.get('abstract')}}
+            </p>
+        </div>
+        <!-- Scale -->
+        <div class="form-group" ng-show="isScaleVisible(currentlayer.layer)">
+            <label translate>Scale:</label>
+            <p>
+            <span translate>from</span> 1:{{currentlayer.layer.getMinResolution()}}
+                <span translate> to </span> 1:{{currentlayer.layer.getMaxResolution()}}
             </p>
         </div>
         <!-- Metadata -->
