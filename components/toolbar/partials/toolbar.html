@@ -1,10 +1,18 @@
-<div id="toolbar">
+<!--<div class="locate-mobile ol-unselectable ol-control ol-collapsed" ng-controller="hs.geolocation.controller">
+    <ul>
+    <li><translate>Speed</translate>: <span class='value'>{{speed}}</span></li>
+    <li><translate>Altitude</translate>: <span class='value'>{{alt}} {{altitudeAccuracy}}</span></li>
+    <li><button type="button" ng-class="'btn btn-default but-xs' + (following() ? ' active' : '')" ng-click="following(!following())" style="width: 4.375em; font: inherit;background-color: #e6e6e6;">Follow</button></li>
+    </ul>
+</div>-->
+
+<div id="toolbar" ng-class="isMobile()">
     <button type="button" class="btn btn-default" title="Show/hide toolbar" ng-click="collapsed(!collapsed())">
         <i class="fa fa-bars"></i>
     </button>
     
-    <div style="display:inline-block; " ng-show="!collapsed()">
-        <button type="button" class="btn btn-default" title="Layer manager"  ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager', true)">
+    <div class="toolbar-buttons" ng-show="!collapsed()">
+        <button type="button" class="btn btn-default btn-mobile" title="Layer manager"  ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager', true)">
             <span class="glyphicon glyphicon-tasks"></span>
         </button>
         
@@ -16,7 +24,7 @@
             <span class="glyphicon glyphicon-cloud-download"></span>
         </button>
 
-        <button type="button" class="btn btn-default" title="Compositions"  ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser', true)">
+        <button type="button" class="btn btn-default btn-mobile" title="Compositions"  ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser', true)">
             <span class="glyphicon glyphicon-cloud-download"></span>
         </button>
 
@@ -44,8 +52,12 @@
             <i class="fa fa-print"></i>
         </button>
         
-        <button type="button" class="btn btn-default"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
+        <button type="button" class="btn btn-default btn-mobile"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
             <span class="fa fa-search"></span>
+        </button>
+        
+        <button type="button" class="btn btn-default btn-mobile ol-has-tooltip blocate" title="Geolocation" ng-if="Core.exists('hs.geolocation.controller')">
+            <span class="fa fa-location-arrow"></span>
         </button>
     </div>
 </div>

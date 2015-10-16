@@ -211,3 +211,7 @@ div.row {
     color: #fff;
 }
 .btn .close {font-size:20px}
+
+.toolbar-buttons {
+    display: inline-block;
+}

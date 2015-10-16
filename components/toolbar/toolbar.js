@@ -12,8 +12,8 @@ define(['angular', 'map', 'core', 'permalink'],
                 };
             })
 
-        .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url',
-            function($scope, OlMap, Core, bus) {
+        .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window',
+            function($scope, OlMap, Core, bus, $window) {
                 $scope.Core = Core;
                 var collapsed = false;
 
@@ -31,6 +31,15 @@ define(['angular', 'map', 'core', 'permalink'],
                         collapsed = is;
                     }
                     return collapsed;
+                }
+
+                $scope.isMobile = function() {
+                    if ($(document).width() < 800) {
+                        return "mobile";
+                    }
+                    else {
+                        return "";
+                    }
                 }
 
                 $scope.$emit('scope_loaded', "Toolbar");
