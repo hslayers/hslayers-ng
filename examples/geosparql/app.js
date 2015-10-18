@@ -309,7 +309,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 center: [1490321.6967438285, 6400602.013496143], //Latitude longitude    to Spherical Mercator
                 zoom: 14,
                 units: "m"
-            })
+            }),
+            infopanel_template: hsl_path + 'examples/geosparql/infopanel.html'
         });
 
         module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel',

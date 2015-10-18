@@ -1,0 +1,22 @@
+<div class="panel panel-default mainpanel">
+    <div class="panel-heading"><translate>Info</translate>
+        <button type="button" class="close" ng-click="Core.closePanel(this)">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only" translate>Close</span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <table class="table table-compact" ng-repeat="group in InfoPanelService.groups | orderBy : name">
+            <tr><th>{{group.name}}</th></tr>
+            <tr ng-repeat="attribute in group.attributes | orderBy : name">
+                <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' class="first-col" class="first-col"></td>
+                <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col"></td>
+            </tr>
+        </table>
+        <table class="table table-striped" style="table-layout:fixed">
+            <tr ng-repeat="attribute in InfoPanelService.attributes | orderBy : name"><td class="first-col">{{attribute.name}}</td><td class="second-col" ng-bind-html="attribute.value"></td></tr>
+        <!--  <tr><td>EPSG:900913</td><td>2560935 6409590</td></tr>
+            <tr><td>GPS</td><td>49°47'15.7"N 23°00'19"E</td></tr>-->
+        </table>
+    </div>
+</div>

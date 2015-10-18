@@ -6,11 +6,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
     function(angular, ol) {
         angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
-            .directive('hs.query.directiveInfopanel', function() {
+            .directive('hs.query.directiveInfopanel', ['config', function(config) {
+                debugger;
                 return {
-                    templateUrl: hsl_path + 'components/query/partials/infopanel.html'
+                    templateUrl: config.infopanel_template || hsl_path + 'components/query/partials/infopanel.html'
                 };
-            })
+            }])
             .directive('hs.query.infovalue', ['$compile', function($compile) {
 
                 function link(scope, element, attrs) {
