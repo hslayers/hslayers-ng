@@ -219,6 +219,7 @@ define(['angular', 'ol'],
         .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope',
             function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
                 $scope.use_resampling = false;
+                $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
                 srv_caps.addHandler(function(response) {
                     try {
                         var parser = new ol.format.WMSCapabilities();
