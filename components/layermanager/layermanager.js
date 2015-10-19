@@ -25,7 +25,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
 
                 return function(scope, iElement) {
                     scope.layerBelongsToFolder = function(layer, obj) {
-                        return layer.layer.get('path') == obj.hsl_path || ((typeof layer.layer.get('path') == 'undefined' || layer.layer.get('path') == '') && obj.hsl_path == '');
+                        return layer.layer.get('path') == obj.hsl_path || ((angular.isUndefined(layer.layer.get('path')) || layer.layer.get('path') == '') && obj.hsl_path == '');
                     }
 
                     if (scope.value == null) {
@@ -157,7 +157,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
              * @param {ol.Layer} lyr - Layer
              */
             function populateFolders(lyr) {
-                if (typeof lyr.get('path') !== 'undefined' && lyr.get('path') !== 'undefined') {
+                if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
                     var path = lyr.get('path');
                     var parts = path.split('/');
                     var curfolder = $scope.folders;
