@@ -255,12 +255,13 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 if (layer.get("BoundingBox")) {
                     var bbox = layer.get("BoundingBox");
                     for (var ix = 0; ix < bbox.length; ix++) {
-                        if (typeof ol.proj.get(bbox[ix].crs) !== 'undefined') {
+                        if (angular.isDefined(ol.proj.get(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
+                            var crs =  bbox[ix].crs || layer.getSource().getParams().FROMCRS;
                             b = bbox[ix].extent;
                             var first_pair = [b[0], b[1]]
                             var second_pair = [b[2], b[3]];
-                            first_pair = ol.proj.transform(first_pair, bbox[ix].crs, map.getView().getProjection().getCode());
-                            second_pair = ol.proj.transform(second_pair, bbox[ix].crs, map.getView().getProjection());
+                            first_pair = ol.proj.transform(first_pair, crs, map.getView().getProjection());
+                            second_pair = ol.proj.transform(second_pair, crs, map.getView().getProjection());
                             extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                             break;
                         }
