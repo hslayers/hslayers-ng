@@ -5,8 +5,9 @@
 define(['angular'],
     function(angular) {
         angular.module('hs.drag', []).
-        directive('hs.draggable', ['$document', '$window', function($document, $window) {
+        directive('hs.draggable', ['$document', '$window', 'config', function($document, $window, config) {
             return function(scope, element, attr) {
+                if(angular.isUndefined(config.draggable_windows) || config.draggable_windows==false) return;
                 var startX = 0,
                     startY = 0,
                     x = 0,
