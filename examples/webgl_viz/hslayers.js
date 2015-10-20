@@ -53,6 +53,7 @@ require.config({
         dataloader: 'DataLoader',
         ol: hsl_path + 'lib/ol3/ol-full',
         wglinit: 'webglinit',
+        mapConf: 'webgConf',
         chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel',
 
 

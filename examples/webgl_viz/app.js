@@ -10,7 +10,7 @@ define(['ol',
         'measure',
         'geolocation',
         'api',
-        'glutils', 'WGL', 'wglinit', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
+        'glutils', 'WGL', 'wglinit', 'mapconf', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
         'heatmapdimension', 'heatmaprenderer', 'heatmaplegend', 'maxcalculator', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
         'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush', 'extentfilter', 'mappolyfilter'
     ],
