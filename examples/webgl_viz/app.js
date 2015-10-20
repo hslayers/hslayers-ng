@@ -10,7 +10,7 @@ define(['ol',
         'measure',
         'geolocation',
         'api',
-        'glutils', 'WGL', 'wglinit', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
+        'glutils', 'WGL', 'wglinit', 'mapconf', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
         'heatmapdimension', 'heatmaprenderer', 'heatmaplegend', 'maxcalculator', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
         'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush', 'extentfilter', 'mappolyfilter'
     ],
@@ -63,16 +63,16 @@ define(['ol',
 
         module.value('config', {
             default_layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM(),
-                    title: "Base layer",
-                    box_id: 'osm',
-                    base: true
-                })
+                    new ol.layer.Tile({
+                         source: new ol.source.XYZ({
+                                 url: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                                 attributions: [new ol.Attribution({ html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'] })]
+                                 })
+                         })
             ],
             default_view: new ol.View({
                 center: ol.proj.transform([-1.9, 52.5], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-                zoom: 11,
+                zoom: 4,
                 units: "m"
             })
         });

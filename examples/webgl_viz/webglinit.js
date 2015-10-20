@@ -1,8 +1,8 @@
 wglinit = function(that) {
     var map = that.map;
     var ol = that.ol;
-
-
+    mapConf(that.map, that.ol);
+    
     var data = new DataLoader(visualize);
     data.loadPosData("birmingham_acc.json");
     var tlwgs = [-20037508.34, 20037508.34];
