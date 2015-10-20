@@ -542,10 +542,16 @@ define(['angular', 'ol', 'map'],
                     });
 
                     OlMap.map.addLayer(extent_layer);
-                    $scope.loadDatasets($scope.datasources);
-                    $scope.fillCodesets($scope.datasources);
+                    if(angular.isUndefined($scope.datasources[0].loaded) && Core.panelVisible($scope.panel_name, $scope)) {
+                        $scope.loadDatasets($scope.datasources);
+                        $scope.fillCodesets($scope.datasources);
+                    }
                     $scope.$emit('scope_loaded', "DatasourceSelector");
                     $scope.$on('core.mainpanel_changed', function(event) {
+                        if(angular.isUndefined($scope.datasources[0].loaded) && Core.panelVisible($scope.panel_name, $scope)) {
+                            $scope.loadDatasets($scope.datasources);
+                            $scope.fillCodesets($scope.datasources);
+                        }
                         extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
                     });
                 }
