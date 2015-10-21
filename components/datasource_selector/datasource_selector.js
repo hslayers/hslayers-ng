@@ -490,6 +490,9 @@ define(['angular', 'ol', 'map'],
                 $scope.clear = function() {
                     $scope.query.text_filter = "";
                     $scope.query.title = "";
+                    $scope.query.keywords = "";
+                    $scope.query.OrganisationName = "";
+                    $scope.query.sortby = "";
                 }
 
                 $scope.datasources = [
