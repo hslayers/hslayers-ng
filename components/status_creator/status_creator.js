@@ -293,6 +293,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         success: function(j) {
                             $scope.success = j.saved !== false;
                             $scope.showResultDialog();
+                            Core.setMainPanel('layermanager', true);
+                            $('.composition-info').html($('<a href="#">').html($('<h3>').html($scope.title)).click(function() {
+                                $('.composition-abstract').toggle();
+                            }));
+                            $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));
                         },
                         error: function() {
                             $scope.success = false;
