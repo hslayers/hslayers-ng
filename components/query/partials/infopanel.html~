@@ -1,7 +1,0 @@
-<div class="panel-heading"><a data-toggle="collapse" data-parent="#infopanel" href="#collapseInfo">Info</a></div>
-<div id="collapseInfo" class="panel-body panel-collapse collapse in">
-  <table class="table -striped">
-    <tr><td>EPSG:900913</td><td>2560935 6409590</td></tr>
-    <tr><td>GPS</td><td>49°47'15.7"N 23°00'19"E</td></tr>
-  </table>
-</div>
