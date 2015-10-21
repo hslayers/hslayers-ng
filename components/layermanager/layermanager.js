@@ -312,6 +312,17 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     OlMap.map.removeLayer(to_be_removed.shift());
                 }
             }
+            
+            $scope.isLayerQueryable = function(layer_container) {
+                var layer = layer_container.layer;
+                if (layer instanceof ol.layer.Tile &&
+                    layer.getSource() instanceof ol.source.TileWMS &&
+                    layer.getSource().getParams().INFO_FORMAT) return true;
+                if (layer instanceof ol.layer.Image &&
+                    layer.getSource() instanceof ol.source.ImageWMS &&
+                    layer.getSource().getParams().INFO_FORMAT) return true;
+                return false;
+            }
 
             /**
              * @function activateTheme
