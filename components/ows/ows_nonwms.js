@@ -47,15 +47,15 @@ define(['angular', 'ol', 'styles'],
             }
         ])
 
-        .controller('hs.ows.nonwms.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.ows.nonwms.service',
-            function($scope, OlMap, styles, service) {
+        .controller('hs.ows.nonwms.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.ows.nonwms.service', 'Core',
+            function($scope, OlMap, styles, service, Core) {
                 $scope.srs = 'EPSG:3857';
                 $scope.title = "";
                 $scope.extract_styles = false;
 
                 $scope.add = function() {
                     service.add($scope.type, $scope.url, $scope.title, $scope.extract_styles, $scope.srs);
-
+                    Core.setMainPanel('layermanager');
                 }
             }
         ]);
