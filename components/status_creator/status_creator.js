@@ -260,7 +260,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
                         $('#stc-save, #stc-saveas').show();
                     } else {
-                        $('.stc-tabs li:eq(1) a').tab('show');
+                        if ($('a[href=#context]').parent().hasClass('active')) 
+                            $('.stc-tabs li:eq(1) a').tab('show');
+                        else
+                            if ($('a[href=#access]').parent().hasClass('active'))
+                                $('.stc-tabs li:eq(2) a').tab('show');
                     }
                 }
 
