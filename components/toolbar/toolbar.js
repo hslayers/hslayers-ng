@@ -36,8 +36,7 @@ define(['angular', 'map', 'core', 'permalink'],
                 $scope.isMobile = function() {
                     if ($(document).width() < 800) {
                         return "mobile";
-                    }
-                    else {
+                    } else {
                         return "";
                     }
                 }

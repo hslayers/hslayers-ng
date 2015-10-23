@@ -43,9 +43,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             var me = {
                 map2json: function(map, $scope, saveAll) {
                     var groups = {};
-                    angular.forEach($scope.groups, function(g){
-                        if(g.r || g.w){
-                            groups[g.roleName] = (g.r ? 'r': '')+(g.w ? 'w': '');
+                    angular.forEach($scope.groups, function(g) {
+                        if (g.r || g.w) {
+                            groups[g.roleName] = (g.r ? 'r' : '') + (g.w ? 'w' : '');
                         }
                     });
                     var json = {
@@ -327,26 +327,33 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     //$('#status-creator-dialog').modal('show');
                     $scope.loadUserDetails();
                 }
-                
-                $scope.fillGroups = function(){
+
+                $scope.fillGroups = function() {
                     $scope.groups = [];
                     $.ajax({
                         url: '/wwwlibs/statusmanager2/index.php',
                         cache: false,
                         method: 'GET',
                         dataType: 'json',
-                        data: {request: 'getGroups'},
+                        data: {
+                            request: 'getGroups'
+                        },
                         success: function(j) {
-                            if(j.success){
+                            if (j.success) {
                                 $scope.groups = j.result;
-                                angular.forEach($scope.groups, function(g){
-                                   g.w = false;
-                                   g.r=false;
+                                angular.forEach($scope.groups, function(g) {
+                                    g.w = false;
+                                    g.r = false;
                                 });
                             }
                         }
                     });
-                    $scope.groups.unshift({hrName:'Public', roleName:'guest', w:false, r:false});
+                    $scope.groups.unshift({
+                        hrName: 'Public',
+                        roleName: 'guest',
+                        w: false,
+                        r: false
+                    });
                 }
 
                 $scope.loadUserDetails = function() {
