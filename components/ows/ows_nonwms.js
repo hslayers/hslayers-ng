@@ -11,6 +11,15 @@ define(['angular', 'ol', 'styles'],
                     if (typeof use_proxy === 'undefined' || use_proxy === true)
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
 
+                    
+                    /*var proxied = window.XMLHttpRequest.prototype.open;
+                    window.XMLHttpRequest.prototype.open = function() {
+                        console.log( arguments );
+                        if(arguments[1].indexOf('hsproxy.cgi')==-1)
+                            arguments[1]= '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + window.escape(arguments[1]);
+                        return proxied.apply(this, [].slice.call(arguments));
+                    };*/
+        
                     var format;
                     switch (type.toLowerCase()) {
                         case "kml":

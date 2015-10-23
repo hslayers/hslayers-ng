@@ -168,6 +168,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             return me.panel_statuses['search']
                         },
                         isAuthorized: function() {
+                            return true;
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
                             }
