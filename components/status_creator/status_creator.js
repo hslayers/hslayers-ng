@@ -338,6 +338,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         url: '/wwwlibs/statusmanager2/index.php',
                         cache: false,
                         method: 'GET',
+                        async: false,
                         dataType: 'json',
                         data: {
                             request: 'getGroups'
