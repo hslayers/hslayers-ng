@@ -349,7 +349,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     });
                     $scope.groups.unshift({
-                        hrName: 'Public',
+                        roleTitle: 'Public',
                         roleName: 'guest',
                         w: false,
                         r: false

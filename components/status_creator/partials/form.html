@@ -53,7 +53,7 @@
                                      <table class="table table-condensed" id="stc-access">
                                         <tr><th></th><th>Read</th><th>Write</th></tr>
                                         <tr ng-repeat="g in groups">
-                                            <td>{{g.hrName || g.roleName}}:</td><td><input type="checkbox" class="form-control" ng-model="g.r" /></td><td><input type="checkbox" class="form-control" ng-model="g.w" /></td>
+                                            <td>{{g.roleTitle || g.roleName}}:</td><td><input type="checkbox" class="form-control" ng-model="g.r" /></td><td><input type="checkbox" class="form-control" ng-model="g.w" /></td>
                                         </tr>
                                     </table>
                                 </div>
