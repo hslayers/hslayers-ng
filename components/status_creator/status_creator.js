@@ -260,11 +260,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
                         $('#stc-save, #stc-saveas').show();
                     } else {
-                        if ($('a[href=#context]').parent().hasClass('active')) 
+                        if ($('a[href=#context]').parent().hasClass('active'))
                             $('.stc-tabs li:eq(1) a').tab('show');
                         else
-                            if ($('a[href=#access]').parent().hasClass('active'))
-                                $('.stc-tabs li:eq(2) a').tab('show');
+                        if ($('a[href=#access]').parent().hasClass('active'))
+                            $('.stc-tabs li:eq(2) a').tab('show');
                     }
                 }
 
@@ -359,11 +359,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         w: false,
                         r: false
                     });
-                     if(angular.isDefined($scope.current_composition)){
+                    if (angular.isDefined($scope.current_composition)) {
                         angular.forEach($scope.groups, function(g) {
-                            if(typeof $scope.current_composition.groups[g.roleName]!='undefined'){
-                                g.w = $scope.current_composition.groups[g.roleName].indexOf('w')>-1;
-                                g.r = $scope.current_composition.groups[g.roleName].indexOf('r')>-1;
+                            if (typeof $scope.current_composition.groups[g.roleName] != 'undefined') {
+                                g.w = $scope.current_composition.groups[g.roleName].indexOf('w') > -1;
+                                g.r = $scope.current_composition.groups[g.roleName].indexOf('r') > -1;
                             }
                         });
                     }

@@ -73,10 +73,10 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         $scope.url = '';
                         $('.ows-capabilities').slideUp();
                     }
-                    
-                    function zoomToVectorLayer(lyr){
+
+                    function zoomToVectorLayer(lyr) {
                         Core.setMainPanel('layermanager');
-                        lyr.getSource().on('change', function(){ //Event needed because features are loaded asynchronously
+                        lyr.getSource().on('change', function() { //Event needed because features are loaded asynchronously
                             var extent = lyr.getSource().getExtent();
                             if (extent != null) map.getView().fitExtent(extent, map.getSize());
                         });
@@ -99,8 +99,8 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         var lyr = nonwmsservice.add('kml', url, 'KML layer', true, map.getView().getProjection().getCode().toUpperCase());
                         zoomToVectorLayer(lyr);
                     }
-                    
-                    
+
+
 
                     $scope.$emit('scope_loaded', "Ows");
                 }

@@ -9,7 +9,7 @@ define(['angular', 'ol', 'styles'],
 
                 me.add = function(type, url, title, extract_styles, srs) {
                     //if (typeof use_proxy === 'undefined' || use_proxy === true)
-                        //url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                    //url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
 
 
                     /*var proxied = window.XMLHttpRequest.prototype.open;
