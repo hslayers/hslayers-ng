@@ -359,6 +359,14 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         w: false,
                         r: false
                     });
+                     if(angular.isDefined($scope.current_composition)){
+                        angular.forEach($scope.groups, function(g) {
+                            if(typeof $scope.current_composition.groups[g.roleName]!='undefined'){
+                                g.w = $scope.current_composition.groups[g.roleName].indexOf('w')>-1;
+                                g.r = $scope.current_composition.groups[g.roleName].indexOf('r')>-1;
+                            }
+                        });
+                    }
                 }
 
                 $scope.loadUserDetails = function() {
@@ -392,9 +400,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 $scope.$on('compositions.composition_loaded', function(event, data) {
                     if (console) console.log('compositions.composition_loaded', data);
                     $scope.id = data.id;
-                    $scope.abstract = data.abstract;
-                    $scope.title = data.title;
-                    $scope.keywords = data.keywords;
+                    $scope.abstract = data.data.abstract;
+                    $scope.title = data.data.title;
+                    $scope.keywords = data.data.keywords;
+                    $scope.current_composition = data.data;
                 });
 
 
