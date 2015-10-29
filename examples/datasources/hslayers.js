@@ -4,7 +4,7 @@ var hsl_path = '../../';
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
     paths: {
-        toolbar: hsl_path + 'components/toolbar/toolbar',
+        sidebar: hsl_path + 'components/sidebar/sidebar',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
         //ol: hsl_path + 'lib/ol3/ol-debug',
