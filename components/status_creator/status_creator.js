@@ -42,6 +42,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
         .service('hs.status_creator.service', ['hs.map.service', 'Core', function(OlMap, Core) {
             var me = {
                 map2json: function(map, $scope, saveAll) {
+                    var groups = {};
+                    angular.forEach($scope.groups, function(g) {
+                        if (g.r || g.w) {
+                            groups[g.roleName] = (g.r ? 'r' : '') + (g.w ? 'w' : '');
+                        }
+                    });
                     var json = {
                         abstract: $scope.abstract,
                         title: $scope.title,
@@ -59,7 +65,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             postalcode: $scope.postalcode,
                             state: $scope.state,
                             url: $scope.url
-                        }
+                        },
+                        groups: groups
                     };
 
                     // Map properties
@@ -253,7 +260,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
                         $('#stc-save, #stc-saveas').show();
                     } else {
-                        $('.stc-tabs li:eq(1) a').tab('show');
+                        if ($('a[href=#context]').parent().hasClass('active'))
+                            $('.stc-tabs li:eq(1) a').tab('show');
+                        else
+                        if ($('a[href=#access]').parent().hasClass('active'))
+                            $('.stc-tabs li:eq(2) a').tab('show');
                     }
                 }
 
@@ -293,6 +304,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         success: function(j) {
                             $scope.success = j.saved !== false;
                             $scope.showResultDialog();
+                            Core.setMainPanel('layermanager', true);
+                            $('.composition-info').html($('<a href="#">').html($('<h3>').html($scope.title)).click(function() {
+                                $('.composition-abstract').toggle();
+                            }));
+                            $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));
                         },
                         error: function() {
                             $scope.success = false;
@@ -310,9 +326,47 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             checked: lyr.get('saveState')
                         });
                     });
+                    $scope.fillGroups();
                     Core.setMainPanel('status_creator', true);
                     //$('#status-creator-dialog').modal('show');
                     $scope.loadUserDetails();
+                }
+
+                $scope.fillGroups = function() {
+                    $scope.groups = [];
+                    $.ajax({
+                        url: '/wwwlibs/statusmanager2/index.php',
+                        cache: false,
+                        method: 'GET',
+                        async: false,
+                        dataType: 'json',
+                        data: {
+                            request: 'getGroups'
+                        },
+                        success: function(j) {
+                            if (j.success) {
+                                $scope.groups = j.result;
+                                angular.forEach($scope.groups, function(g) {
+                                    g.w = false;
+                                    g.r = false;
+                                });
+                            }
+                        }
+                    });
+                    $scope.groups.unshift({
+                        roleTitle: 'Public',
+                        roleName: 'guest',
+                        w: false,
+                        r: false
+                    });
+                    if (angular.isDefined($scope.current_composition)) {
+                        angular.forEach($scope.groups, function(g) {
+                            if (typeof $scope.current_composition.groups[g.roleName] != 'undefined') {
+                                g.w = $scope.current_composition.groups[g.roleName].indexOf('w') > -1;
+                                g.r = $scope.current_composition.groups[g.roleName].indexOf('r') > -1;
+                            }
+                        });
+                    }
                 }
 
                 $scope.loadUserDetails = function() {
@@ -346,9 +400,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 $scope.$on('compositions.composition_loaded', function(event, data) {
                     if (console) console.log('compositions.composition_loaded', data);
                     $scope.id = data.id;
-                    $scope.abstract = data.abstract;
-                    $scope.title = data.title;
-                    $scope.keywords = data.keywords;
+                    $scope.abstract = data.data.abstract;
+                    $scope.title = data.data.title;
+                    $scope.keywords = data.data.keywords;
+                    $scope.current_composition = data.data;
                 });
 
 

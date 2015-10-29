@@ -4,6 +4,9 @@
                                 <li role="presentation" class="active">
                                     <a href="#context" aria-controls="context" role="tab" data-toggle="tab">Context</a>
                                 </li>
+                                 <li role="presentation">
+                                    <a href="#access" aria-controls="access" role="tab" data-toggle="tab">Access</a>
+                                </li>
                                 <li role="presentation">
                                     <a href="#author" aria-controls="author" role="tab" data-toggle="tab">Author</a>
                                 </li>
@@ -45,6 +48,14 @@
                                             <a href="#">{{layer.title}}</a> <input type="checkbox" class="form-control layer-checked" ng-checked="layer.checked" />
                                         </li>
                                     </ul>
+                                </div>
+                                 <div role="tabpanel" class="tab-pane" id="access">
+                                     <table class="table table-condensed" id="stc-access">
+                                        <tr><th></th><th>Read</th><th>Write</th></tr>
+                                        <tr ng-repeat="g in groups">
+                                            <td>{{g.roleTitle || g.roleName}}:</td><td><input type="checkbox" class="form-control" ng-model="g.r" /></td><td><input type="checkbox" class="form-control" ng-model="g.w" /></td>
+                                        </tr>
+                                    </table>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="author">
                                     <div class="form-group">

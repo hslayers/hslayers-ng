@@ -21,7 +21,7 @@
         </button>
 
         <button type="button" class="btn btn-default" title="Datasource Selector"  ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="setMainPanel('datasource_selector', true)">
-            <span class="glyphicon glyphicon-cloud-download"></span>
+            <span class="fa fa-database"></span>
         </button>
 
         <button type="button" class="btn btn-default btn-mobile" title="Compositions"  ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser', true)">
@@ -61,7 +61,7 @@
             <span class="fa fa-location-arrow"></span>
         </button>
 
-        <button type="button" class="btn btn-default" title="Save composition" ng-if="Core.exists('hs.status_creator.controller') && Core.isAuthorized()" ng-click="Core.openStatusCreator()">
+        <button type="button" class="btn btn-default" title="Save composition" ng-if="Core.exists('hs.status_creator.controller')" ng-click="Core.openStatusCreator()">
             <i class="fa fa-floppy-o"></i>
         </button>
     </div>

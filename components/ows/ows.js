@@ -74,6 +74,14 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         $('.ows-capabilities').slideUp();
                     }
 
+                    function zoomToVectorLayer(lyr) {
+                        Core.setMainPanel('layermanager');
+                        lyr.getSource().on('change', function() { //Event needed because features are loaded asynchronously
+                            var extent = lyr.getSource().getExtent();
+                            if (extent != null) map.getView().fitExtent(extent, map.getSize());
+                        });
+                    }
+
                     if (permalink.getParamValue('wms_to_connect')) {
                         var wms = permalink.getParamValue('wms_to_connect');
                         Core.setMainPanel('ows');
@@ -82,13 +90,17 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
 
                     if (permalink.getParamValue('geojson_to_connect')) {
                         var url = permalink.getParamValue('geojson_to_connect');
-                        nonwmsservice.add('geojson', url, 'Geojson layer', false, map.getView().getProjection().getCode().toUpperCase());
+                        var lyr = nonwmsservice.add('geojson', url, 'Geojson layer', false, map.getView().getProjection().getCode().toUpperCase());
+                        zoomToVectorLayer(lyr);
                     }
 
                     if (permalink.getParamValue('kml_to_connect')) {
                         var url = permalink.getParamValue('kml_to_connect');
-                        nonwmsservice.add('kml', url, 'KML layer', true, map.getView().getProjection().getCode().toUpperCase());
+                        var lyr = nonwmsservice.add('kml', url, 'KML layer', true, map.getView().getProjection().getCode().toUpperCase());
+                        zoomToVectorLayer(lyr);
                     }
+
+
 
                     $scope.$emit('scope_loaded', "Ows");
                 }

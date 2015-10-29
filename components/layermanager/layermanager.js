@@ -25,7 +25,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
 
                 return function(scope, iElement) {
                     scope.layerBelongsToFolder = function(layer, obj) {
-                        return layer.layer.get('path') == obj.hsl_path || ((typeof layer.layer.get('path') == 'undefined' || layer.layer.get('path') == '') && obj.hsl_path == '');
+                        return layer.layer.get('path') == obj.hsl_path || ((angular.isUndefined(layer.layer.get('path')) || layer.layer.get('path') == '') && obj.hsl_path == '');
                     }
 
                     if (scope.value == null) {
@@ -157,7 +157,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
              * @param {ol.Layer} lyr - Layer
              */
             function populateFolders(lyr) {
-                if (typeof lyr.get('path') !== 'undefined' && lyr.get('path') !== 'undefined') {
+                if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
                     var path = lyr.get('path');
                     var parts = path.split('/');
                     var curfolder = $scope.folders;
@@ -256,7 +256,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     var bbox = layer.get("BoundingBox");
                     for (var ix = 0; ix < bbox.length; ix++) {
                         if (angular.isDefined(ol.proj.get(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
-                            var crs =  bbox[ix].crs || layer.getSource().getParams().FROMCRS;
+                            var crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
                             b = bbox[ix].extent;
                             var first_pair = [b[0], b[1]]
                             var second_pair = [b[2], b[3]];
@@ -311,6 +311,17 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                 while (to_be_removed.length > 0) {
                     OlMap.map.removeLayer(to_be_removed.shift());
                 }
+            }
+
+            $scope.isLayerQueryable = function(layer_container) {
+                var layer = layer_container.layer;
+                if (layer instanceof ol.layer.Tile &&
+                    (layer.getSource() instanceof ol.source.TileWMS) &&
+                    layer.getSource().getParams().INFO_FORMAT) return true;
+                if (layer instanceof ol.layer.Image &&
+                    layer.getSource() instanceof ol.source.ImageWMS &&
+                    layer.getSource().getParams().INFO_FORMAT) return true;
+                return false;
             }
 
             /**
