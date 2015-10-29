@@ -9,7 +9,7 @@ wglinit = function(that) {
 
     function visualize(data) {
 
-        WGL = new WGL(data, '');
+        WGL = new WGL(data.num, '', 'map');
 
         map.on('change:size', function() {
             WGL.mcontroller.manager.updateMapSize();
@@ -18,9 +18,10 @@ wglinit = function(that) {
         });
         var charts = [];
 
-        WGL.addMapDimension(data.pts, 'map');
         WGL.addHeatMapDimension(data.pts, 'heatmap');
-        WGL.addPolyBrushFilter('map', 'polybrush');
+		WGL.addMapDimension(data.pts, 'themap');
+		WGL.addPolyBrushFilter('themap','polybrush');
+		
 
         WGL.addExtentFilter();
 
