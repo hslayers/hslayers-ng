@@ -53,9 +53,29 @@ function mapConf(map, ol) {
         });
 
         draw.on("drawstart", function(e) {
-            e.feature.on('change', function(ff) {
-                console.log(ff)
-            });
+            e.feature.on('change', function(ff){
+                var res = [];
+                var features = ff.target.getGeometry().getCoordinates();
+                //for (var i = 0; i < features.length; i++) {
+                	for (var j =0; j < features[0].length; j++){
+				     var pp = transform(features[0][j]);
+				     res.push(pp);
+			     }   
+			     //console.log("feature num "+features.length);
+	
+			    try {
+			    	var polygons = [];
+			    	var polid = 0;
+				var ts = new poly2tri.SweepContext(res);
+				ts.triangulate();
+				polygons[polid++] = trianglesToArray(ts.getTriangles());		
+				polygons.length =  Object.keys(polygons).length;
+				WGL.filterDim('themap',polygons);
+				} catch (e) {
+					console.log(e);
+				}
+
+            },  draw);
         });
 
         map.addInteraction(draw);
@@ -66,5 +86,47 @@ function mapConf(map, ol) {
     addInteraction();
 
 
+   
+	function transform(p) {
+		var tl = getTopLeftTC();
+	
+		var v = map.getPixelFromCoordinate(p);
+		var  prop =  map.getProperties()
+		// var v = map.getViewPortPxFromLonLat( new OpenLayers.LonLat(90,0));
+		var v0 = toLevel0(v, tl, prop.view.getZoom());
+		return v0;
 
+	}
+	function toLevel0(pt, tl, zoom) {
+		var p =[];
+		ts = 256;
+		scale = Math.pow(2, zoom);
+		p.x = pt[0]/ scale + tl.x;
+		p.y = pt[1] / scale + tl.y;
+		return p;
+	}
+	 var tlwgs = [-20037508.34, 20037508.34];
+
+	 function getTopLeftTC() {
+		 
+        var s = Math.pow(2, map.getView().getZoom());
+        tlpixel = map.getPixelFromCoordinate(tlwgs);
+        res = {
+            x: -tlpixel[0] / s,
+            y: -tlpixel[1] / s
+        }
+        return res
+    }
+
+    function trianglesToArray(trig) {
+		var points = [];
+		for ( var i in trig) {
+			for ( var j in trig[i].points_) {		
+				points.push(trig[i].points_[j].x);
+				points.push(trig[i].points_[j].y);
+			}
+		}
+	return points;
+
+}
 }

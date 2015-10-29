@@ -1,7 +1,8 @@
 <script id="heathist_vShader" type="x-shader/x-vertex">
 	
-	 attribute vec4 wPoint;  
-     attribute vec2 index;
+	
+    attribute vec2 index;
+    attribute vec4 wPoint;  
       	
 	uniform mat4 mapMatrix;
 	uniform mat4 rasterMatrix;

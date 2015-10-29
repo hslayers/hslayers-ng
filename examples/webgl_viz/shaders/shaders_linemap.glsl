@@ -23,7 +23,7 @@
   		if (fdata[0]>=1./256. && drawselect>0.5){
   			col = vec4(attr ,1.-attr,0.,0.8);  		
   			p =  mapMatrix * wPoint;  	
-  		} else if (fdata[0] <1./256. && drawselect<0.5) {
+  		} else if (fdata[0] < 1./256. && drawselect<0.5) {
   			col = vec4(attr ,1.-attr,0.,0.5);  		
   			p =  mapMatrix * wPoint; 
   		

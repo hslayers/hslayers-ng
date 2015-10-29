@@ -61,15 +61,17 @@ wglinit = function(that) {
     }
 
     var onMove = function() {
-        var getTopLeftTC = function() {
-            var s = Math.pow(2, map.getView().getZoom());
-            tlpixel = map.getPixelFromCoordinate(tlwgs);
-            res = {
-                x: -tlpixel[0] / s,
-                y: -tlpixel[1] / s
-            }
-            return res
-        }
+       
         WGL.mcontroller.zoommove(map.getView().getZoom(), getTopLeftTC(), WGL.filterByExt);
+    }
+    
+    var getTopLeftTC = function() {
+        var s = Math.pow(2, map.getView().getZoom());
+        tlpixel = map.getPixelFromCoordinate(tlwgs);
+        res = {
+            x: -tlpixel[0] / s,
+            y: -tlpixel[1] / s
+        }
+        return res
     }
 }

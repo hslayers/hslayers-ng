@@ -1,7 +1,7 @@
 <script id="map_vShader" type="x-shader/x-vertex">
       attribute vec4 wPoint;  
       attribute vec2 index;
-      
+     
       uniform mat4 mapMatrix;
       uniform mat4 rasterMatrix;
       uniform float zoom;
@@ -14,12 +14,11 @@
       varying vec4 col;
       void main() {
 		
-		float c = 0.;
-		if (zoom > 10.) {
-			c = zoom / 7.;
+		float p_size = 1.;
+		if (zoom > 14.) {
+			p_size = zoom / 8.+1.;
 			}
-  	  	
-  		float p_size =  c ;
+  	  	  		
   	    	   
   		vec4 p =  mapMatrix * wPoint;
   		//float n_speed = (speed+1.)/2.;
@@ -29,7 +28,7 @@
   		
   		// if data are selected  
   		if (fdata[0]>= ( (pow(2.,numfilters)-1.) / 256.)  && numfilters != 0. &&   drawselect>0.5 ){
-  			p_size = p_size;
+  			
   			col = vec4(255. /255., 140./255., 0., 0.8); 
   			gl_Position = p;    	
 			gl_PointSize = p_size;
@@ -42,12 +41,11 @@
   		   //p_size = 4.;
   		  // col = vec4(0.0,0.,0.,0.75);
   		  	gl_Position = p;    	
-			gl_PointSize =  p_size;//p_size;
+			gl_PointSize =  p_size;
   		} else {
   			gl_Position = vec4(-2.,-2.,0.,0.);    	
 			gl_PointSize = 0.;
   		}
-  		  		  						 	
       }
     </script>
     

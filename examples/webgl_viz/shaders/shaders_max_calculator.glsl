@@ -29,19 +29,7 @@
 	 	float y =  (var_texCoord[1] +1.)/2.;
 	 	
   		vec4 fdata = texture2D(heatmap_raster, vec2(x, y));
-  		vec4 col;
-  		 
-	
-
-  		if (fdata[0] > 0.) {
-  			col = vec4(fdata[1],0.,0.,0.5);//vec4(1.,0.,0.,0.);
   		
-  			
-  		}	else {
-  			col = vec4(0.,0.,0.,0.);
-  		}
-  		col = vec4(1.,0.,0.,0.);	
-	
 	//	gl_FragColor = col;//fdata;//vec4(1.,0.,0.,1.);
 		gl_FragColor = fdata; //col;
       }
