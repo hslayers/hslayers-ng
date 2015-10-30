@@ -242,6 +242,7 @@ div.row {
 .toolbar-buttons {
     display: inline-block;
 }
+<<<<<<< Updated upstream
 /******SIDEBAR****************/
 
 @media only screen and (min-width: 561px) {
@@ -411,3 +412,9 @@ ul.sidebar-list .sidebar-item .menu-icon {
     color: #fff;
     text-decoration: none
 }
+=======
+
+#toolbar .button-mobile-only {
+    display: none;
+}
+>>>>>>> Stashed changes
