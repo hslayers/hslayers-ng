@@ -13,6 +13,7 @@ define(['angular', 'ol', 'map'],
                     link: function(scope, element) {
                         $('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
                         $('.mid-pane').css('margin-top', '0px');
+                        $(".keywords-panel").hide();
                     }
                 };
             })
