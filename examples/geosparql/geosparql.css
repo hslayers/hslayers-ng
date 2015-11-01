@@ -1,0 +1,84 @@
+
+.title{
+  margin-left: 30px;
+  margin-top: 25px;
+  margin-bottom: 20px;
+  color: #97BE0D;
+  font-size: 16px;
+}
+.closeArea{
+  position: absolute;
+  margin-left: 370px;
+  margin-top: -40px;
+  cursor: Pointer;
+}
+.closeImg{
+  width: 20px;
+  height: 20px;
+  background: url(img/close.png) no-repeat;
+  transition: 1s;
+}
+.closeImg:hover{
+  background: url(img/close2.png) no-repeat;
+  transition: 1s;
+}
+.featureName{
+  margin-left: 50px;
+  font-size: 16px;
+  color: #88B8E6;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 1px rgb(214,214,214);
+}
+.featureInfo{
+   color: #D84F5F;
+}
+.italic{
+  font-style: italic;
+}
+.list{
+  list-style-image: url(img/list.png);
+  margin-left: 30px;
+}
+.developersTitle{
+  margin-left: 50px;
+  color: #193340;
+  padding-bottom: 5px;
+}
+.hideButton{
+  margin-left: 50px;
+  cursor: Pointer;
+}
+.showButton{
+  cursor: Pointer;
+  margin-left: 7px;
+}
+.hideButton:focus ~ .developersInfo {
+  visibility: hidden;
+}
+.showButton:focus ~ .developersInfo {
+  display: block;
+  visibility: visible;
+}
+.developersInfo{
+  width: 370px;
+  display: none;
+  margin-left: 50px;
+  margin-bottom: 30px;
+  margin-top: 20px;
+  word-break: break-all;
+}
+.developersInfo:hover{
+  display: block;
+  visibility: visible;
+}
+.attributeName{
+  color: #193340;
+  //font-weight: bold;
+  word-break: break-all;
+  font-size: 14px;
+}
+.attributeValue{
+  word-break: break-all;
+  font-style: italic;
+  color: rgb(255,102,0);
+}

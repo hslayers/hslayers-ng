@@ -1,22 +1,57 @@
-<div class="panel panel-default mainpanel">
-    <div class="panel-heading"><translate>Info</translate>
-        <button type="button" class="close" ng-click="Core.closePanel(this)">
-            <span aria-hidden="true">×</span>
-            <span class="sr-only" translate>Close</span>
-        </button>
-    </div>
-    <div class="panel-body">
-        <table class="table table-compact" ng-repeat="group in InfoPanelService.groups | orderBy : name">
-            <tr><th>{{group.name}}</th></tr>
-            <tr ng-repeat="attribute in group.attributes | orderBy : name">
-                <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' class="first-col" class="first-col"></td>
-                <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col"></td>
-            </tr>
+
+
+
+      <div class="panel panel-default mainpanel">
+        <!-- Title -->
+        <table class="title">
+         <tr>
+          <th><translate>Information</translate> &nbsp;<i class="icon-comment"></i></th>
+         </tr>
         </table>
-        <table class="table table-striped" style="table-layout:fixed">
-            <tr ng-repeat="attribute in InfoPanelService.attributes | orderBy : name"><td class="first-col">{{attribute.name}}</td><td class="second-col" ng-bind-html="attribute.value"></td></tr>
-        <!--  <tr><td>EPSG:900913</td><td>2560935 6409590</td></tr>
-            <tr><td>GPS</td><td>49°47'15.7"N 23°00'19"E</td></tr>-->
-        </table>
-    </div>
-</div>
+        <div class="closeArea" ng-click="Core.closePanel(this)">
+          <div aria-hidden="true" class="closeImg"></div>
+          <span class="sr-only" translate>Close</span>
+        </div>
+        <!-- Feature Name -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | orderBy : name"  ng-show="$first">
+          <span class="second-col featureName" ng-bind-html="attribute.value"></span>
+        </div><br>
+        <!-- Category -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | orderBy : name"  ng-show="$last" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Category: </span>
+            <span class="second-col italic" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Coordinates -->
+        <div class="featureInfo">
+          <span ng-repeat="group in InfoPanelService.groups | orderBy : name">
+           <ul class="list">
+            <li>
+             <span ng-repeat="attribute in group.attributes | orderBy : name"  ng-show="$first">
+             <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col italic"></span><br>
+             </span>
+            </li>
+           </ul>
+          </span><br>
+        </div>
+        <!-- For developers -->
+        <div class="developersTitle">For developers:</div>
+          <span class="hideButton" tabindex="0">Hide <img src="img/hide.png" alt="Show more info"></span>
+          <span class="showButton" tabindex="0">Show <img src="img/show.png" alt="Show more info"></span>
+          <br><br>
+          <p class="developersInfo">
+           <span ng-repeat="group in InfoPanelService.groups | orderBy : name">
+           <span ng-repeat="attribute in group.attributes | orderBy : name">
+           <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}'  class="first-col attributeName"></span><br>
+           <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col attributeValue"></span><br>
+           </span></span>
+           <br>
+           <span ng-repeat="attribute in InfoPanelService.attributes | orderBy : name">
+           <span class="first-col attributeName">{{attribute.name}}</span><br>
+           <span class="second-col attributeValue" ng-bind-html="attribute.value"></span><br>
+           </span>
+          </p>
+      </div>
