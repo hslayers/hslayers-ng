@@ -38,13 +38,15 @@ define(['angular', 'ol'],
                     following: false,
                     geolocation: null,
                     toggleFeatures: function(visible) {
+                        var src = me.position_layer.getSource();
                         if (visible) {
-                            featuresOverlay.addFeature(accuracyFeature);
-                            featuresOverlay.addFeature(positionFeature);
+                            OlMap.map.addLayer(me.position_layer);
+                            src.addFeature(accuracyFeature);
+                            src.addFeature(positionFeature);
                         } else {
-                            featuresOverlay.removeFeature(accuracyFeature);
-                            featuresOverlay.removeFeature(positionFeature);
-
+                            src.removeFeature(accuracyFeature);
+                            src.removeFeature(positionFeature);
+                            OlMap.map.removeLayer(me.position_layer);
                         }
                     }
                 };
@@ -105,23 +107,24 @@ define(['angular', 'ol'],
                 });
 
                 var accuracyFeature = new ol.Feature();
-                accuracyFeature.bindTo('geometry', me.geolocation, 'accuracyGeometry');
+                me.geolocation.on('change:accuracyGeometry', function(){accuracyFeature.set('geometry', me.geolocation.accuracyGeometry);});
+                               
+                //accuracyFeature.bindTo('geometry', me.geolocation, 'accuracyGeometry');
 
                 var positionFeature = new ol.Feature();
 
                 accuracyFeature.setStyle(me.style);
                 positionFeature.setStyle(me.style);
 
-
-                var featuresOverlay = new ol.FeatureOverlay({
-                    map: OlMap.map,
-                    features: []
+                me.position_layer = new ol.layer.Vector({
+                    title: "Position",
+                    show_in_manager: false,
+                    source: new ol.source.Vector()
                 });
-
 
                 return me;
             }
-        ]).controller('hs.geolocation.controller', ['$scope', 'hs.geolocation.service', function($scope, service) {
+        ]).controller('hs.geolocation.controller', ['$scope', 'hs.geolocation.service', 'hs.map.service', function($scope, service, OlMap) {
             $scope.speed = null;
             $scope.alt = null;
             $scope.altitudeAccuracy = null;
@@ -133,8 +136,9 @@ define(['angular', 'ol'],
             $scope.gpsActive = function(set_to) {
                 if (arguments.length == 0)
                     return service.geolocation.getTracking();
-                else
-                    service.geolocation.setTracking(set_to);
+                else {
+                    service.geolocation.setTracking(set_to);                   
+                }
             }
 
             $scope.following = function(set_to) {
