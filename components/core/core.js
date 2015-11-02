@@ -11,7 +11,7 @@ require.config({
         angular: hsl_path + 'bower_components/angular/angular',
         ngcookies: hsl_path + 'bower_components/angular-cookies/angular-cookies',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap',
-        ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'bower_components/OpenLayers/build/ol',
+        ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'node_modules/openlayers/dist/ol',
         drag: hsl_path + 'components/drag/drag',
         map: hsl_path + 'components/map/map',
         styles: hsl_path + 'components/styles/styles',
