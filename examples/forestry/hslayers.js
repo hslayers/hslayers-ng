@@ -3,7 +3,7 @@
 var hsl_path = '../../';
 require.config({
     paths: {
-        toolbar: hsl_path + 'components/toolbar/toolbar',
+        sidebar: hsl_path + 'components/sidebar/sidebar',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap.min',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',

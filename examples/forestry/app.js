@@ -1,8 +1,8 @@
-'use strict';
+use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'bootstrap', 'api'],
+define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'bootstrap', 'api'],
 
-    function(ol, dc, toolbar, layermanager, SparqlJsonForestry) {
+    function(ol, dc, sidebar, layermanager, SparqlJsonForestry) {
         proj4.defs('EPSG:5514', '+title=S-JTSK Krovak +proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813975277778 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +units=m +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 no_defs <>');
         var jtsk = ol.proj.get('EPSG:5514');
         var jtskExtent = [-925000.000000000000, -1444353.535999999800, -400646.464000000040, -920000.000000000000];
@@ -23,7 +23,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJsonForestry', 'query', 's
         });
 
         var module = angular.module('hs', [
-            'hs.toolbar',
+            'hs.sidebar',
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
