@@ -4,7 +4,7 @@ define(function(require) {
         var category_map = {};
         var category_id = 0;
         var occupied_xy = {};
-        var src = new ol.source.ServerVector({
+        var src = new ol.source.Vector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
                 if (typeof src.options.clear_on_move !== 'undefined' && src.options.clear_on_move) src.clear();
