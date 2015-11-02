@@ -130,7 +130,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                         "}"
                     ].join("\n");
                     if (console) console.log(sparql);
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=2000&debug=off";
+                    var url = "http://data.plan4all.eu/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=2000&debug=off";
                     $scope.loading = true;
                     $.ajax({
                         url: url,
@@ -159,7 +159,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                         "}"
                     ].join("\n");
                     if (console) console.log(sparql);
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=2000&debug=off";
+                    var url = "http://data.plan4all.eu/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=2000&debug=off";
                     $.ajax({
                         url: url,
                         success: propertiesDownloaded
@@ -222,13 +222,13 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                         "FROM <http://www.w3.org/2004/02/skos/core>",
                         "FROM <http://eurostat.linked-statistics.org/dic/unit>",
                         //                        "FROM <http://purl.org/linked-data/cube>",
-                        "FROM <http://ha.isaf2014.info/nuts_supported.rdf>",
+                        "FROM <http://data.plan4all.eu/nuts_supported.rdf>",
                         from_list,
                         "WHERE {",
                         "?measurement a <http://purl.org/linked-data/cube#Observation>;",
                         "measure:obsValue ?value;",
                         "property:geo ?location.",
-                        "?location <http://ha.isaf2014.info/nuts_supported.rdf#supported> true.",
+                        "?location <http://data.plan4all.eu/nuts_supported.rdf#supported> true.",
                         extra_column_selectors,
                         "?location skos:notation ?code.",
                         filter,
@@ -241,7 +241,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                         query: sparql,
                         date_val: d.valueOf()
                     });
-                    var url = "http://ha.isaf2014.info:8890/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=off";
+                    var url = "http://data.plan4all.eu/sparql?default-graph-uri=&query=" + window.escape(sparql) + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=off";
                     $.ajax({
                         url: url,
                         success: dataDownloaded
@@ -259,7 +259,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                     lyr.getSource().forEachFeature(function(feature) {
                         feature.gradient_value = Number.MIN_VALUE;
                         feature_map[feature.get('nuts_id')] = feature;
-                        //console.log("INSERT INTO <http://ha.isaf2014.info/nuts_supported> {<http://eurostat.linked-statistics.org/dic/geo#"+feature.get('nuts_id')+"> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  <http://www.w3.org/2004/02/skos/core#Concept> . };" );
+                        //console.log("INSERT INTO <http://data.plan4all.eu/nuts_supported> {<http://eurostat.linked-statistics.org/dic/geo#"+feature.get('nuts_id')+"> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  <http://www.w3.org/2004/02/skos/core#Concept> . };" );
                         feature.opacity = 0.9;
                     })
 
