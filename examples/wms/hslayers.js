@@ -19,7 +19,7 @@ require.config({
         measure: hsl_path + 'components/measure/measure',
         legend: hsl_path + 'components/legend/legend',
         app: 'app',
-        panoramio: hsl_path + 'components/panoramio/panoramio',
+        panoramio: hsl_path + 'components/layers/panoramio/panoramio',
         core: hsl_path + 'components/core/core',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations'

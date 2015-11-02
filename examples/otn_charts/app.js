@@ -16,7 +16,7 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullscreenMap(element);
+                    Core.fullscreenMap(element, 'left');
                     $("#right-pane", element).append($compile('<div yearselector ng-controller="YearSelector"></div>')(scope));
                 }
             };
@@ -41,9 +41,18 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             })
         })
 
-        var src = new ol.source.GeoJSON({
-            url: hsl_path + 'examples/otn_charts/shluky.geojson',
-            projection: 'EPSG:3857'
+        var src = new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+            projection: 'EPSG:3857',
+            loader: function(extent, resolution, projection) {
+                $.ajax({
+                    url: hsl_path + 'examples/otn_charts/shluky.geojson',
+                    success: function(data) {
+                        src.addFeatures(src.readFeatures(data));
+                    }
+                });
+            },
+            strategy: ol.loadingstrategy.all
         });
         var csrc = new ol.source.Cluster({
             distance: 150,
@@ -70,14 +79,14 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             })
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'default_layers', 'year_selector_service',
-            function($scope, $compile, $element, Core, OlMap, default_layers, year_selector_service) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', 'year_selector_service',
+            function($scope, $compile, $element, Core, OlMap, config, year_selector_service) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
-                default_layers[1].setStyle(year_selector_service.style);
-                default_layers[1].getSource().on('removefeature', function(f) {
+                config.default_layers[1].setStyle(year_selector_service.style);
+                config.default_layers[1].getSource().on('removefeature', function(f) {
                     if (f.feature.overlay) {
                         OlMap.map.removeOverlay(f.feature.overlay);
                     }

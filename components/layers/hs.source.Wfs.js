@@ -10,7 +10,7 @@ define(function(require) {
             src.addFeatures(src.readFeatures(response));
         }
 
-        var src = new ol.source.ServerVector({
+        var src = new ol.source.Vector({
             format: options.format,
             loader: function(extent, resolution, projection) {
                 src.clear();

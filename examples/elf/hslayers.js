@@ -5,7 +5,7 @@ require.config({
     paths: {
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
-        ol: hsl_path + 'lib/ol3/ol-debug',
+        ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         toolbar: hsl_path + 'components/toolbar/toolbar',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
         'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
@@ -21,7 +21,7 @@ require.config({
         app: 'app',
         panoramio: hsl_path + 'components/panoramio/panoramio',
         core: hsl_path + 'components/core/core',
-        WfsSource: hsl_path + 'extensions/hs.source.Wfs',
+        WfsSource: hsl_path + 'components/layers/hs.source.Wfs',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations'
     }

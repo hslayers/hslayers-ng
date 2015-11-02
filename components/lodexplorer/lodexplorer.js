@@ -489,8 +489,17 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                         if (lyr == null) {
                             lyr = new ol.layer.Vector({
                                 title: "Nuts regions",
-                                source: new ol.source.GeoJSON({
-                                    url: hsl_path + 'components/lodexplorer/nuts2.geojson'
+                                source: new ol.source.Vector({
+                                    format: new ol.format.GeoJSON(),
+                                    loader: function(extent, resolution, projection) {
+                                        $.ajax({
+                                            url: hsl_path + 'components/lodexplorer/nuts2.geojson',
+                                            success: function(data) {
+                                                src.addFeatures(src.readFeatures(data));
+                                            }
+                                        });
+                                    },
+                                    strategy: ol.loadingstrategy.all
                                 }),
                                 style: $scope.styleFunction
                             });

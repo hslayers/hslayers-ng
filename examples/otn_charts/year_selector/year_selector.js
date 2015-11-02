@@ -2,7 +2,7 @@ define(['angular', 'ol', 'map', 'd3'],
 
     function(angular, ol, map) {
         angular.module('hs.widgets.year_selector', ['hs.map'])
-            .service('year_selector_service', ['hs.map.service', 'default_layers', function(OlMap, default_layers) {
+            .service('year_selector_service', ['hs.map.service', 'config', function(OlMap, config) {
                 var me = {
                     year: 2013
                 };
@@ -98,7 +98,7 @@ define(['angular', 'ol', 'map', 'd3'],
                 };
 
                 me.redraw = function() {
-                    default_layers[1].getSource().forEachFeature(function(feature) {
+                    config.default_layers[1].getSource().forEachFeature(function(feature) {
                         feature.cashed_style = null;
                         if (feature.overlay) {
                             OlMap.map.removeOverlay(feature.overlay);
