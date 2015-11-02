@@ -221,32 +221,68 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 layers: sparql_layers.concat([
                     new ol.layer.Vector({
                         title: "Cycling routes Plzen",
-                        source: new ol.source.GeoJSON({
-                            url: 'plzensky_kraj.geojson'
+                        source: new ol.source.Vector({
+                            format: new ol.format.GeoJSON(),
+                            loader: function(extent, resolution, projection) {
+                                $.ajax({
+                                    url: 'plzensky_kraj.geojson',
+                                    success: function(data) {
+                                        src.addFeatures(src.readFeatures(data));
+                                    }
+                                });
+                            },
+                            strategy: ol.loadingstrategy.all
                         }),
                         style: route_style,
                         path: 'Roads/Additional Cycling routes'
                     }),
                     new ol.layer.Vector({
                         title: "Cycling routes Zemgale",
-                        source: new ol.source.GeoJSON({
-                            url: 'zemgale.geojson'
+                        source: new ol.source.Vector({
+                            format: new ol.format.GeoJSON(),
+                            loader: function(extent, resolution, projection) {
+                                $.ajax({
+                                    url: 'zemgale.geojson',
+                                    success: function(data) {
+                                        src.addFeatures(src.readFeatures(data));
+                                    }
+                                });
+                            },
+                            strategy: ol.loadingstrategy.all
                         }),
                         style: route_style,
                         path: 'Roads/Additional Cycling routes'
                     }),
                     new ol.layer.Vector({
                         title: "Tour de LatEst",
-                        source: new ol.source.GeoJSON({
-                            url: 'teourdelatest.geojson'
+                        source: new ol.source.Vector({
+                            format: new ol.format.GeoJSON(),
+                            loader: function(extent, resolution, projection) {
+                                $.ajax({
+                                    url: 'teourdelatest.geojson',
+                                    success: function(data) {
+                                        src.addFeatures(src.readFeatures(data));
+                                    }
+                                });
+                            },
+                            strategy: ol.loadingstrategy.all
                         }),
                         style: route_style,
                         path: 'Roads/Additional Cycling routes'
                     }),
                     new ol.layer.Vector({
                         title: "A1: the Vltava left-bank cycle route",
-                        source: new ol.source.GeoJSON({
-                            url: 'prague.geojson'
+                        source: new ol.source.Vector({
+                            format: new ol.format.GeoJSON(),
+                            loader: function(extent, resolution, projection) {
+                                $.ajax({
+                                    url: 'prague.geojson',
+                                    success: function(data) {
+                                        src.addFeatures(src.readFeatures(data));
+                                    }
+                                });
+                            },
+                            strategy: ol.loadingstrategy.all
                         }),
                         style: route_style,
                         path: 'Roads/Additional Cycling routes'

@@ -30,7 +30,7 @@ define(['angular', 'ol', 'styles'],
                             break;
                     }
 
-                    var src = new ol.source.ServerVector({
+                    var src = new ol.source.Vector({
                         format: format,
                         projection: ol.proj.get(srs),
                         extractStyles: extract_styles,
