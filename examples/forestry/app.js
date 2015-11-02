@@ -1,4 +1,4 @@
-use strict';
+'use strict';
 
 define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'bootstrap', 'api'],
 
