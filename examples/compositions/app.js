@@ -19,7 +19,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'query', 'search', 'p
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullscreenMap(element);
+                    Core.fullScreenMap(element);
                 }
             };
         }]);

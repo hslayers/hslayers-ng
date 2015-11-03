@@ -16,7 +16,7 @@ define(['ol', 'toolbar', 'layermanager', 'query', 'search', 'print', 'permalink'
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullscreenMap(element);
+                    Core.fullScreenMap(element);
                 }
             };
         }]);

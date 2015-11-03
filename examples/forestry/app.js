@@ -19,7 +19,7 @@ define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 's
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullscreenMap(element, 'right');
+                    Core.fullScreenMap(element);
                 }
             };
         }]);

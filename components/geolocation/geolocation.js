@@ -16,17 +16,6 @@ define(['angular', 'ol'],
                             Geolocation.geolocation.setTracking(true);
                             Geolocation.toggleFeatures(!$('.locate').hasClass('ol-collapsed'));
                         });
-                        if (Core.panel_side == 'left') {
-                            $('.locate').css({
-                                right: '.5em'
-                            });
-                        }
-                        if (Core.panel_side == 'right') {
-                            $('.locate').css({
-                                right: 'auto',
-                                left: '.2em'
-                            });
-                        }
                     },
                     replace: true
                 };

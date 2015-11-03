@@ -16,7 +16,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullscreenMap(element);
+                    Core.fullScreenMap(element);
                 }
             };
         }]);

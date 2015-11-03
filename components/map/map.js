@@ -128,27 +128,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             templateUrl: hsl_path + 'components/map/partials/map.html',
             link: function(scope, element) {
                 $(".ol-zoomslider", element).width(28).height(200);
-                if (Core.panel_side == 'left') {
-                    $('.ol-zoomslider, .ol-zoom').css({
-                        right: '.5em',
-                        left: 'auto'
-                    });
-                    $('.ol-rotate').css({
-                        right: '.5em',
-                        left: 'auto'
-                    });
-                }
-                if (Core.panel_side == 'right') {
-                    $('.ol-zoomslider, .ol-zoom').css({
-                        right: 'auto',
-                        left: '.2em'
-                    });
-                    $('.ol-rotate').css({
-                        right: 'auto',
-                        left: '.2em',
-                        top: '9.5em'
-                    });
-                }
             }
         };
     }])
