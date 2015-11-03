@@ -96,7 +96,7 @@ define(['angular'],
                             OlMap.map.addLayer($scope.prio_layer);
                         });
 
-                        //console.log("http://ha.isaf2014.info/wwwlibs/create_prio_mapfile.php?priorities="+window.escape(JSON.stringify($scope.amenities)));                
+                        //console.log("http://data.plan4all.eu/wwwlibs/create_prio_mapfile.php?priorities="+window.escape(JSON.stringify($scope.amenities)));                
                     }
                 }
             ]);
