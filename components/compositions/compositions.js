@@ -55,7 +55,7 @@ define(['angular', 'ol', 'map'],
                                 $('.composition-abstract').toggle()
                             }));
                             $('.composition-info').append($('<div>').html(response.data.abstract).addClass('well composition-abstract'));
-                            OlMap.map.getView().fitExtent(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
+                            OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
                             for (var i = 0; i < layers.length; i++) {
                                 OlMap.map.addLayer(layers[i]);

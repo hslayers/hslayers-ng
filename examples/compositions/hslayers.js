@@ -6,7 +6,6 @@ require.config({
         toolbar: hsl_path + 'components/toolbar/toolbar',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
-        ol: hsl_path + 'lib/ol3/ol-full',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
         'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
         'ows.wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized',

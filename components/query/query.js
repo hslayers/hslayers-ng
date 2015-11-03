@@ -235,36 +235,44 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                     if (info_format.indexOf("html") > 0) {
                         if (response.length <= 1) return;
+                        fillIframeAndResize($("#invisible_popup"), response);
                         createFeatureInfoPopupIfNeeded(coordinate);
-
                         $(popup.getElement()).popover('show');
-
-                        var $iframe = $('.getfeatureinfo_popup').get()[0];
-                        $iframe.contentWindow.document.write(response);
-                        $iframe.width = $iframe.contentWindow.document.body.scrollWidth + 20;
-                        $iframe.height = $iframe.contentWindow.document.body.scrollHeight + 20;
-
+                        fillIframeAndResize($('.getfeatureinfo_popup'), response);
                         $('.close', popup.getElement().nextElementSibling).click(function() {
                             $(popup.getElement()).popover('hide');
                         });
                         popup.setPosition(coordinate);
+                        panIntoView(coordinate);
                     }
+                }
+                
+                function fillIframeAndResize($iframe, response){
+                    $iframe.contents().find('body').html(response);
+                    $iframe.width($iframe.contents().find('body').width() + 20);
+                    $iframe.height($iframe.contents().find('body').height() + 20);
                 }
 
                 var popup = null;
-                var createFeatureInfoPopupIfNeeded = function(coordinate) {
-                    if ($('.getfeatureinfo_popup').length > 0) return;
+                function createFeatureInfoPopupIfNeeded (coordinate) {
+                    if ($('.getfeatureinfo_popup').length > 0) {
+                        $(popup.getElement()).popover('destroy');
+                        OlMap.map.removeOverlay(popup);
+                    }
                     var pop_div = document.createElement('div');
+                    var element, content;
+                    var width = $("#invisible_popup").width();
+                    var height = $("#invisible_popup").height();
+                    var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
+                    
                     document.getElementsByTagName('body')[0].appendChild(pop_div);
                     popup = new ol.Overlay({
                         element: pop_div,
-                        offset: [-14, -140],
                         positioning: 'bottom-center'
                     });
+                    element = popup.getElement();
                     OlMap.map.addOverlay(popup);
-                    var element = popup.getElement();
-                    var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
-                    var content = close_button + '<iframe class="getfeatureinfo_popup" width=400 height=300 style="border:0"></iframe>';
+                    content = close_button + '<iframe class="getfeatureinfo_popup" width='+width+' height='+height+' style="border:0"></iframe>';
                     $(element).popover({
                         'placement': 'top',
                         'animation': true,
@@ -273,8 +281,51 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     });
                     $(element).popover('show');
                     popup.setPosition(coordinate);
-
                 }
+                
+                function panIntoView(coord) {
+                    var popSize = {
+                            width: $("#invisible_popup").width()+40,
+                            height: $("#invisible_popup").height()+70
+                        },
+                        mapSize = OlMap.map.getSize();
+
+                    var tailHeight = 20,
+                        tailOffsetLeft = 60,
+                        tailOffsetRight = popSize.width - tailOffsetLeft,
+                        popOffset = popup.getOffset(),
+                        popPx = OlMap.map.getPixelFromCoordinate(coord);
+
+                    var fromLeft = (popPx[0] - tailOffsetLeft),
+                        fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
+
+                    var fromTop = popPx[1] - popSize.height + popOffset[1],
+                        fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
+
+                    var center = OlMap.map.getView().getCenter(),
+                        curPx = OlMap.map.getPixelFromCoordinate(center),
+                        newPx = curPx.slice();
+
+                    if (fromRight < 0) {
+                        newPx[0] -= fromRight;
+                    } else if (fromLeft < 0) {
+                        newPx[0] += fromLeft;
+                    }
+
+                    if (fromTop < 0) {
+                        newPx[1] += fromTop;
+                    } else if (fromBottom < 0) {
+                        newPx[1] -= fromBottom;
+                    }
+
+                    if (newPx[0] !== curPx[0] || newPx[1] !== curPx[1]) {
+                        OlMap.map.getView().setCenter(OlMap.map.getCoordinateFromPixel(newPx));
+                    }
+
+                    return OlMap.map.getView().getCenter();
+
+                };
+
 
                 $scope.InfoPanelService = InfoPanelService;
 
