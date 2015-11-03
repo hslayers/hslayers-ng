@@ -4,24 +4,7 @@ define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 's
 
     function(ol, dc, sidebar, layermanager, SparqlJsonForestry) {
         proj4.defs('EPSG:5514', '+title=S-JTSK Krovak +proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813975277778 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +units=m +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 no_defs <>');
-        var jtsk = ol.proj.get('EPSG:5514');
-        var jtskExtent = [-925000.000000000000, -1444353.535999999800, -400646.464000000040, -920000.000000000000];
-        //var jtskExtent = [-905000.000000000000, -1228000.000000000000, -430000.000000000000, -934000.000000000000];
-        jtsk.setExtent(jtskExtent);
-        var jtskSize = ol.extent.getWidth(jtskExtent) / 256;
-        var jtskResolutions = new Array(14);
-        var jtskMatrixIds = new Array(14);
-        for (var z = 0; z < 14; ++z) {
-            jtskResolutions[z] = jtskSize / Math.pow(2, z);
-            jtskMatrixIds[z] = z;
-        }
-
-        var tileGrid = new ol.tilegrid.WMTS({
-            origin: ol.extent.getTopLeft(jtskExtent),
-            resolutions: jtskResolutions,
-            matrixIds: jtskMatrixIds
-        });
-
+        
         var module = angular.module('hs', [
             'hs.sidebar',
             'hs.layermanager',
@@ -191,7 +174,7 @@ define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                                 matrixSet: "jtsk:epsg:5514",
                                 projection: jtsk,
                                 style: 'inspire_common:DEFAULT',
-                                tileGrid: tileGrid,
+                                tileGrid: OlMap.getTileGrid('EPSG:5514', [-925000.000000000000, -1444353.535999999800, -400646.464000000040, -920000.000000000000]),
                                 url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
                                 version: "1.0.0"
                             }),

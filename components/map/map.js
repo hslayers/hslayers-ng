@@ -94,7 +94,30 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             }));
             me.map.getView().fitExtent(vectorSource.getExtent(), me.map.getSize());
         });
+        
+        me.getTileGrid = function(projection, extent){
+            var jtsk = ol.proj.get(projection);
+            var jtskExtent;
+            if(projection=='EPSG:5514')
+                jtskExtent = [-905000,-1230000,-400000,-900000];
+            if(typeof extent !== 'undefined')
+                jtskExtent = extent;
+            jtsk.setExtent(jtskExtent);
+            var jtskSize = ol.extent.getWidth(jtskExtent) / 256;
+            var jtskResolutions = new Array(14);
+            var jtskMatrixIds = new Array(14);
+            for (var z = 0; z < 14; ++z) {
+                jtskResolutions[z] = jtskSize / Math.pow(2, z);
+                jtskMatrixIds[z] = z;
+            }
 
+            var tileGrid = new ol.tilegrid.WMTS({
+                origin: ol.extent.getTopLeft(jtskExtent),
+                resolutions: jtskResolutions,
+                matrixIds: jtskMatrixIds
+            });
+            return tileGrid;
+        }
 
         //map.addControl(mousePositionControl);
 
