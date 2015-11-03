@@ -19,7 +19,7 @@ define(['ol', 'sidebar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullscreenMap(element);
+                    Core.fullScreenMap(element);
                 }
             };
         }]);
@@ -65,7 +65,6 @@ define(['ol', 'sidebar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-
                 $scope.$on('infopanel.updated', function(event) {});
             }
         ]);

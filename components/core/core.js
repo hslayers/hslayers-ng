@@ -58,7 +58,6 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         scopes_registered: [],
                         mainpanel: "",
                         panel_statuses: {},
-                        panel_side: 'right',
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) which = "";
                             me.mainpanel = which;
@@ -102,7 +101,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 return !(error instanceof TypeError);
                             }
                         },
-                        fullscreenMap: function(element, panel_side) {
+                        fullScreenMap: function(element) {
                             var w = angular.element($window);
                             w.bind('resize', function() {
                                 $("html").css('overflow', 'hidden');
@@ -112,26 +111,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 $("#map").width(w.width());
                                 OlMap.map.updateSize();
                             });
-                            if (arguments.length > 1) {
-                                me.setPanelSide(element, panel_side);
-                            }
                             w.resize();
-                        },
-                        setPanelSide: function(element, panel_side) {
-                            me.panel_side = panel_side;
-                            if (panel_side == 'left') {
-                                $('.panelspace', element).insertBefore($('.gui-overlay', element).children().get(0));
-                                $('.panelspace', element).css({
-                                    "margin-top": '44px'
-                                });
-                                $('.gui-overlay', element).css({
-                                    "margin-bottom": '44px'
-                                });
-                            }
-                            if (panel_side == 'right') {
-                                $('.panelspace', element).insertAfter($('.gui-overlay', element).children().get($('.gui-overlay', element).children().length - 1));
-                                $('#right-pane', element).insertBefore($('.gui-overlay', element).children().get(0));
-                            }
                         },
                         setLanguage: function(lang) {
                             gettextCatalog.setCurrentLanguage(lang);

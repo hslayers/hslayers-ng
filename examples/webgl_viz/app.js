@@ -29,7 +29,7 @@ define(['ol',
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullscreenMap(element, 'right');
+                    Core.fullScreenMap(element);
                     $("#right-pane", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
                     $("#right-pane", element).css({
                         'width': '560px',
