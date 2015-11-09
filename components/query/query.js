@@ -238,26 +238,27 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         fillIframeAndResize($("#invisible_popup"), response);
                         createFeatureInfoPopupIfNeeded(coordinate);
                         $(popup.getElement()).popover('show');
-                        $(popup.getElement()).on('shown.bs.popover', function () {
-                                  fillIframeAndResize($('.getfeatureinfo_popup'), response);
-                                  $('.close', popup.getElement().nextElementSibling).click(function() {
-                                      $(popup.getElement()).popover('hide');
-                                  });
-                                  popup.setPosition(coordinate);
-                                  panIntoView(coordinate);
+                        $(popup.getElement()).on('shown.bs.popover', function() {
+                            fillIframeAndResize($('.getfeatureinfo_popup'), response);
+                            $('.close', popup.getElement().nextElementSibling).click(function() {
+                                $(popup.getElement()).popover('hide');
+                            });
+                            popup.setPosition(coordinate);
+                            panIntoView(coordinate);
                         })
                     }
                 }
-                
-                function fillIframeAndResize($iframe, response){
+
+                function fillIframeAndResize($iframe, response) {
                     $iframe.contents().find('body').html(response);
                     $iframe.width($iframe.contents().find('body').width() + 20);
-                    if($iframe.width()==20) $iframe.width(270);
+                    if ($iframe.width() == 20) $iframe.width(270);
                     $iframe.height($iframe.contents().find('body').height() + 20);
                 }
 
                 var popup = null;
-                function createFeatureInfoPopupIfNeeded (coordinate) {
+
+                function createFeatureInfoPopupIfNeeded(coordinate) {
                     if ($('.getfeatureinfo_popup').length > 0) {
                         $(popup.getElement()).popover('destroy');
                         OlMap.map.removeOverlay(popup);
@@ -267,7 +268,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     var width = $("#invisible_popup").width();
                     var height = $("#invisible_popup").height();
                     var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
-                    
+
                     document.getElementsByTagName('body')[0].appendChild(pop_div);
                     popup = new ol.Overlay({
                         element: pop_div,
@@ -275,7 +276,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     });
                     element = popup.getElement();
                     OlMap.map.addOverlay(popup);
-                    content = close_button + '<iframe class="getfeatureinfo_popup" width='+width+' height='+height+' style="border:0"></iframe>';
+                    content = close_button + '<iframe class="getfeatureinfo_popup" width=' + width + ' height=' + height + ' style="border:0"></iframe>';
                     $(element).popover({
                         'placement': 'top',
                         'animation': true,
@@ -285,11 +286,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     $(element).popover('show');
                     popup.setPosition(coordinate);
                 }
-                
+
                 function panIntoView(coord) {
                     var popSize = {
-                            width: $("#invisible_popup").width()+40,
-                            height: $("#invisible_popup").height()+70
+                            width: $("#invisible_popup").width() + 40,
+                            height: $("#invisible_popup").height() + 70
                         },
                         mapSize = OlMap.map.getSize();
 

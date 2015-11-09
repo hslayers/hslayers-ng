@@ -96,8 +96,10 @@ define(['angular', 'ol'],
                 });
 
                 var accuracyFeature = new ol.Feature();
-                me.geolocation.on('change:accuracyGeometry', function(){accuracyFeature.set('geometry', me.geolocation.accuracyGeometry);});
-                               
+                me.geolocation.on('change:accuracyGeometry', function() {
+                    accuracyFeature.set('geometry', me.geolocation.accuracyGeometry);
+                });
+
                 //accuracyFeature.bindTo('geometry', me.geolocation, 'accuracyGeometry');
 
                 var positionFeature = new ol.Feature();
@@ -126,7 +128,7 @@ define(['angular', 'ol'],
                 if (arguments.length == 0)
                     return service.geolocation.getTracking();
                 else {
-                    service.geolocation.setTracking(set_to);                   
+                    service.geolocation.setTracking(set_to);
                 }
             }
 

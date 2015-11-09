@@ -19,9 +19,9 @@ wglinit = function(that) {
         var charts = [];
 
         WGL.addHeatMapDimension(data.pts, 'heatmap');
-		WGL.addMapDimension(data.pts, 'themap');
-		WGL.addPolyBrushFilter('themap','polybrush');
-		
+        WGL.addMapDimension(data.pts, 'themap');
+        WGL.addPolyBrushFilter('themap', 'polybrush');
+
 
         WGL.addExtentFilter();
 
@@ -61,10 +61,10 @@ wglinit = function(that) {
     }
 
     var onMove = function() {
-       
+
         WGL.mcontroller.zoommove(map.getView().getZoom(), getTopLeftTC(), WGL.filterByExt);
     }
-    
+
     var getTopLeftTC = function() {
         var s = Math.pow(2, map.getView().getZoom());
         tlpixel = map.getPixelFromCoordinate(tlwgs);
