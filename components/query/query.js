@@ -238,12 +238,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         fillIframeAndResize($("#invisible_popup"), response);
                         createFeatureInfoPopupIfNeeded(coordinate);
                         $(popup.getElement()).popover('show');
-                        fillIframeAndResize($('.getfeatureinfo_popup'), response);
-                        $('.close', popup.getElement().nextElementSibling).click(function() {
-                            $(popup.getElement()).popover('hide');
-                        });
-                        popup.setPosition(coordinate);
-                        panIntoView(coordinate);
+                        $(popup.getElement()).on('shown.bs.popover', function () {
+                                  fillIframeAndResize($('.getfeatureinfo_popup'), response);
+                                  $('.close', popup.getElement().nextElementSibling).click(function() {
+                                      $(popup.getElement()).popover('hide');
+                                  });
+                                  popup.setPosition(coordinate);
+                                  panIntoView(coordinate);
+                        })
                     }
                 }
                 
