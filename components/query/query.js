@@ -250,6 +250,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 function fillIframeAndResize($iframe, response){
                     $iframe.contents().find('body').html(response);
                     $iframe.width($iframe.contents().find('body').width() + 20);
+                    if($iframe.width()==20) $iframe.width(270);
                     $iframe.height($iframe.contents().find('body').height() + 20);
                 }
 
