@@ -40,8 +40,8 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                 }
 
                 $scope.toggleSidebar = function() {
-                    $scope.toggle = !$scope.toggle;
-                    $cookies.put('toggle', $scope.toggle);
+                    $scope.Core.sidebarExpanded = !$scope.Core.sidebarExpanded;
+                    $cookies.put('sidebarExpanded', $scope.Core.sidebarExpanded);
                 };
 
                 $scope.$emit('scope_loaded', "Sidebar");

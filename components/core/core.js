@@ -57,6 +57,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     var me = {
                         scopes_registered: [],
                         mainpanel: "",
+                        sidebarExpanded: true,
                         panel_statuses: {},
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) which = "";

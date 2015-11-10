@@ -251,28 +251,28 @@ div.row {
     #sidebar:not(.open) #sidebar-wrapper {
         width: 70px
     }
-    #sidebar.open + div#content-wrapper {
-        padding-left: 250px
+    div#content-wrapper.open {
+        padding-right: 250px
     }
-    #sidebar:not(.open) + div#content-wrapper {
-        padding-left: 70px
+    div#content-wrapper:not(.open) {
+        padding-right: 70px
     }
-    #sidebar.open + div#content-wrapper div.gui-overlay {
-        left: 250px
+    div#content-wrapper.open div.gui-overlay {
+        right: 250px
     }
-    #sidebar:not(.open) + div#content-wrapper div.gui-overlay {
-        left: 70px
+    div#content-wrapper:not(.open) div.gui-overlay {
+        right: 70px
     }
 }
 @media only screen and (max-width: 560px) {
     #sidebar.open #sidebar-wrapper {
         width: 70px
     }
-    #sidebar.open + div#content-wrapper {
-        padding-left: 70px
+    div#content-wrapper.open {
+        padding-right: 70px
     }
-    #sidebar.open + div#content-wrapper div.gui-overlay {
-        left: 70px
+    div#content-wrapper.open div.gui-overlay {
+        right: 70px
     }
 }
 #sidebar {
