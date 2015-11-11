@@ -217,6 +217,13 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
              */
             $scope.changeLayerVisibility = function($event, layer) {
                 layer.layer.setVisible($event.target.checked);
+                if(layer.layer.get('base')){
+                    for (var i = 0; i < $scope.layers.length; i++) {
+                        if ($scope.layers[i].layer.get('base') && $scope.layers[i] != layer) {
+                            $scope.layers[i].layer.setVisible(false);
+                        }
+                    }
+                }
             }
 
             /**
