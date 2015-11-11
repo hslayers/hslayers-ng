@@ -65,7 +65,7 @@
             <label translate>Scale:</label>
             <p>
             <span translate>from</span> 1:{{currentlayer.layer.getMinResolution()}}
-                <span translate> to </span> 1:{{currentlayer.layer.getMaxResolution()}}
+                <span translate> to </span> 1:{{currentlayer.layer.getMaxResolution().toString().replace('Infinity', '1000000000')}}
             </p>
         </div>
         <!-- Metadata -->
