@@ -38,6 +38,30 @@ define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 return [];
             }
         }
+        
+        var jtskExtent;
+        function getTileGrid(projection, extent) {
+            var jtsk = ol.proj.get(projection);
+            if (projection == 'EPSG:5514')
+                jtskExtent = [-905000, -1230000, -400000, -900000];
+            if (typeof extent !== 'undefined')
+                jtskExtent = extent;
+            jtsk.setExtent(jtskExtent);
+            var jtskSize = ol.extent.getWidth(jtskExtent) / 256;
+            var jtskResolutions = new Array(14);
+            var jtskMatrixIds = new Array(14);
+            for (var z = 0; z < 14; ++z) {
+                jtskResolutions[z] = jtskSize / Math.pow(2, z);
+                jtskMatrixIds[z] = z;
+            }
+
+            var tileGrid = new ol.tilegrid.WMTS({
+                origin: ol.extent.getTopLeft(jtskExtent),
+                resolutions: jtskResolutions,
+                matrixIds: jtskMatrixIds
+            });
+            return tileGrid;
+        }
 
         var species = {
             '"DB"@cs': 'dub letní, dub zimní, dub slavonský, dub pýřitý, dub bahenní, dub cer, ostatní duby',
@@ -168,15 +192,15 @@ define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                         new ol.layer.Tile({
                             title: "Ortofoto",
                             source: new ol.source.WMTS({
-                                extent: jtskExtent,
                                 format: "image/jpeg",
                                 layer: "orto",
                                 matrixSet: "jtsk:epsg:5514",
-                                projection: jtsk,
+                                projection: ol.proj.get('EPSG:5514'),
                                 style: 'inspire_common:DEFAULT',
-                                tileGrid: OlMap.getTileGrid('EPSG:5514', [-925000.000000000000, -1444353.535999999800, -400646.464000000040, -920000.000000000000]),
+                                tileGrid: getTileGrid('EPSG:5514', [-925000.000000000000, -1444353.535999999800, -400646.464000000040, -920000.000000000000]),
                                 url: "http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx",
-                                version: "1.0.0"
+                                version: "1.0.0",
+                                extent: jtskExtent,
                             }),
                             visible: false
                         }),
@@ -222,7 +246,7 @@ define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 center: ol.proj.transform([15.2, 49.9], 'EPSG:4326', 'EPSG:5514'),
                 zoom: 1,
                 maxZoom: 3,
-                projection: jtsk,
+                projection: ol.proj.get('EPSG:5514'),
                 units: "m"
             })
         });
