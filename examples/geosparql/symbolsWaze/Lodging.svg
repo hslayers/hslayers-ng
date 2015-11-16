@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg4160"
+   viewBox="0 0 30 35.000001"
+   height="35"
+   width="30"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Lodging.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="706"
+     id="namedview30"
+     showgrid="false"
+     inkscape:zoom="6.7428571"
+     inkscape:cx="-7.542373"
+     inkscape:cy="17.351695"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4160" />
+  <defs
+     id="defs4162">
+    <linearGradient
+       gradientTransform="matrix(0.06698171,0,0,0.06698171,-1.94452,0.35178)"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4587"
+       id="linearGradient4304-5"
+       y2="256"
+       x2="448"
+       y1="256"
+       x1="64" />
+    <linearGradient
+       id="linearGradient4587">
+      <stop
+         offset="0"
+         style="stop-color:#ffa500;stop-opacity:1"
+         id="stop4589" />
+      <stop
+         offset="1"
+         style="stop-color:#f1fd00;stop-opacity:1"
+         id="stop4591" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata4165">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <circle
+     style="fill:#ffffff;stroke:#ffffff;stroke-width:0.25276357"
+     id="path3408"
+     cx="15.556351"
+     cy="13.433225"
+     r="9.9195604" />
+  <path
+     inkscape:connector-curvature="0"
+     style="fill:url(#linearGradient4304-5);fill-opacity:1"
+     id="path2994-5"
+     d="m 15.202793,0.35178 c -7.102142,0 -12.860492,5.75835 -12.860492,12.86049 0,7.10215 10.71708,21.43416 12.860492,21.43416 2.143412,0 12.860487,-14.33201 12.860487,-21.43416 0,-7.10214 -5.758346,-12.86049 -12.860487,-12.86049 z m 0,21.43416 c -4.728503,0 -8.573655,-3.84731 -8.573655,-8.57367 0,-4.72635 3.845152,-8.57365 8.573655,-8.57365 4.728503,0 8.573655,3.8473 8.573655,8.57365 0,4.72636 -3.845152,8.57367 -8.573655,8.57367 z" />
+  <g
+     transform="matrix(0.02752594,0,0,0.02752594,8.0804784,6.0042065)"
+     id="g5011">
+    <g
+       id="g4971">
+      <path
+         inkscape:connector-curvature="0"
+         d="m 512,296 -96,-96 0,-144 -64,0 0,80 -96,-96 -256,256 0,16 64,0 0,160 160,0 0,-96 64,0 0,96 160,0 0,-160 64,0 0,-16 z"
+         id="path4973" />
+    </g>
+    <g
+       id="g4975" />
+    <g
+       id="g4977" />
+    <g
+       id="g4979" />
+    <g
+       id="g4981" />
+    <g
+       id="g4983" />
+    <g
+       id="g4985" />
+    <g
+       id="g4987" />
+    <g
+       id="g4989" />
+    <g
+       id="g4991" />
+    <g
+       id="g4993" />
+    <g
+       id="g4995" />
+    <g
+       id="g4997" />
+    <g
+       id="g4999" />
+    <g
+       id="g5001" />
+    <g
+       id="g5003" />
+  </g>
+</svg>

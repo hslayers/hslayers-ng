@@ -8,7 +8,7 @@
 }
 .closeArea{
   position: absolute;
-  margin-left: 370px;
+  margin-left: 350px;
   margin-top: -40px;
   cursor: Pointer;
 }
@@ -28,6 +28,7 @@
   color: #88B8E6;
   margin-bottom: 10px;
   text-shadow: 1px 1px 1px rgb(214,214,214);
+  max-width: 300px;
 }
 .featureInfo{
    color: #D84F5F;
@@ -38,6 +39,8 @@
 .list{
   list-style-image: url(img/list.png);
   margin-left: 30px;
+  max-width: 300px;
+  word-break: break-all;
 }
 .developersTitle{
   margin-left: 50px;
@@ -60,7 +63,7 @@
   visibility: visible;
 }
 .developersInfo{
-  width: 370px;
+  width: 315px;
   display: none;
   margin-left: 50px;
   margin-bottom: 30px;
@@ -73,7 +76,6 @@
 }
 .attributeName{
   color: #193340;
-  //font-weight: bold;
   word-break: break-all;
   font-size: 14px;
 }

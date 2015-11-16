@@ -26,14 +26,14 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
 
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
-                var s = feature.get('http://www.openvoc.eu/poi#categoryOSM');
+                var s = feature.get('http://www.openvoc.eu/poi#categoryWaze');
                 if (typeof s === 'undefined') return;
-                s = s.split(".")[1];
+                s = s.split("#")[1];
                 return [
                     new ol.style.Style({
                         image: new ol.style.Icon({
                             anchor: [0.5, 1],
-                            src: 'symbols/' + s + '.svg',
+                            src: 'symbolsWaze/' + s + '.svg',
                             crossOrigin: 'anonymous'
                         })
                     })
@@ -46,116 +46,57 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
 
 
         var sparql_layers = [];
-        angular.forEach(['amenity.arts_centre',
-            'amenity.atm',
-            'amenity.bank',
-            'amenity.bicycle_rental',
-            'amenity.cafe',
-            'amenity.car_wash',
-            'amenity.dentist',
-            'amenity.fast_food',
-            'amenity.fountain',
-            'amenity.library',
-            'amenity.parking',
-            'amenity.place_of_worship',
-            'amenity.pub',
-            'amenity.restaurant',
-            'amenity.waste_basket',
-            'building.hotel',
-            'highway.bus_stop',
-            'historic.archaeological_site',
-            'historic.memorial',
-            'shop.supermarket',
-            'tourism.artwork',
-            'tourism.camp_site',
-            'tourism.information',
-            'tourism.viewpoint',
-            'tourism.zoo'
+        angular.forEach([
+              'http://www.openvoc.eu/waze_classification#Car_services',
+              'http://www.openvoc.eu/waze_classification#Transportation',              
+              'http://www.openvoc.eu/waze_classification#Professional_and_public',
+              'http://www.openvoc.eu/waze_classification#Shopping_and_services',
+              'http://www.openvoc.eu/waze_classification#Food_and_drink',
+              'http://www.openvoc.eu/waze_classification#Culture_&_entertainment',
+              'http://www.openvoc.eu/waze_classification#Other',
+              'http://www.openvoc.eu/waze_classification#Lodging',
+              'http://www.openvoc.eu/waze_classification#Outdoors',
+              'http://www.openvoc.eu/waze_classification#Natural_features'
         ], function(value) {
             var value2;
             switch (value) {
-                case 'amenity.arts_centre':
-                    value2 = "Arts Center";
+                case 'http://www.openvoc.eu/waze_classification#Car_services':
+                    value2 = "Car Services";
                     break;
-                case 'amenity.atm':
-                    value2 = "ATM";
+                case 'http://www.openvoc.eu/waze_classification#Transportation':
+                    value2 = "Transportation";
                     break;
-                case 'amenity.bank':
-                    value2 = "Bank";
+                case 'http://www.openvoc.eu/waze_classification#Professional_and_public':
+                    value2 = "Professional and Public";
                     break;
-                case 'amenity.bicycle_rental':
-                    value2 = "Bicycle Rental";
+                case 'http://www.openvoc.eu/waze_classification#Shopping_and_services':
+                    value2 = "Shopping and Services";
                     break;
-                case 'amenity.cafe':
-                    value2 = "Cafe";
+                case 'http://www.openvoc.eu/waze_classification#Food_and_drink':
+                    value2 = "Food and Drink";
                     break;
-                case 'amenity.car_wash':
-                    value2 = "Car Wash";
+                case 'http://www.openvoc.eu/waze_classification#Culture_&_entertainment':
+                    value2 = "Culture & Entertainment";
                     break;
-                case 'amenity.dentist':
-                    value2 = "Dentist";
+                case 'http://www.openvoc.eu/waze_classification#Other':
+                    value2 = "Other";
                     break;
-                case 'amenity.fast_food':
-                    value2 = "Fast Food";
+                case 'http://www.openvoc.eu/waze_classification#Lodging':
+                    value2 = "Lodging";
                     break;
-                case 'amenity.fountain':
-                    value2 = "Fountain";
+                case 'http://www.openvoc.eu/waze_classification#Outdoors':
+                    value2 = "Outdoors";
                     break;
-                case 'amenity.library':
-                    value2 = "Library";
-                    break;
-                case 'amenity.parking':
-                    value2 = "Parking";
-                    break;
-                case 'amenity.place_of_worship':
-                    value2 = "Place of Worship";
-                    break;
-                case 'amenity.pub':
-                    value2 = "Pub";
-                    break;
-                case 'amenity.restaurant':
-                    value2 = "Restaurant";
-                    break;
-                case 'amenity.waste_basket':
-                    value2 = "Waste Basket";
-                    break;
-                case 'building.hotel':
-                    value2 = "Hotel";
-                    break;
-                case 'highway.bus_stop':
-                    value2 = "Bus Stop";
-                    break;
-                case 'historic.archaeological_site':
-                    value2 = "Archaeological Site";
-                    break;
-                case 'historic.memorial':
-                    value2 = "Memorial";
-                    break;
-                case 'shop.supermarket':
-                    value2 = "Supermarket";
-                    break;
-                case 'tourism.artwork':
-                    value2 = "Artwork";
-                    break;
-                case 'tourism.camp_site':
-                    value2 = "Camp Site";
-                    break;
-                case 'tourism.information':
-                    value2 = "Information";
-                    break;
-                case 'tourism.viewpoint':
-                    value2 = "Viewpoint";
-                    break;
-                case 'tourism.zoo':
-                    value2 = "Zoo";
+                case 'http://www.openvoc.eu/waze_classification#Natural_features':
+                    value2 = "Natural Features";
                     break;
             };
             var new_lyr = new ol.layer.Vector({
                 title: " " + value2,
                 source: new SparqlJson({
                     geom_attribute: 'bif:st_geomfromtext(UCASE(?geom))',
-                    url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    category_field: 'http://www.openvoc.eu/poi#categoryOSM',
+                    url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    category_field: 'http://www.openvoc.eu/poi#categoryWaze',
                     projection: 'EPSG:3857'
                         //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
                 }),
@@ -425,7 +366,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     src.clear();
                     if (data !== '') {
                         src.options.geom_attribute = 'bif:st_geomfromtext(UCASE(?geom))';
-                        src.options.url = 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + data + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                        src.options.url = 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + data + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                     } else
                         src.options.url = '';
                 })
