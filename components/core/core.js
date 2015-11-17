@@ -152,6 +152,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 return true;
                             }
                             return false;
+                        },
+                        resetMap: function(){
+                            OlMap.reset();
+                            $rootScope.$broadcast('core.map_reset', {});
                         }
                     };
 

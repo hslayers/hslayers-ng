@@ -60,6 +60,10 @@
         <button type="button" class="btn btn-default btn-mobile-only ol-has-tooltip blocate" title="Geolocation" ng-if="Core.exists('hs.geolocation.controller')">
             <span class="fa fa-location-arrow"></span>
         </button>
+        
+        <button type="button" class="btn btn-default" title="Reset map" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
+            <span class="glyphicon glyphicon-repeat"></span>
+        </button>
 
         <button type="button" class="btn btn-default" title="Save composition" ng-if="Core.exists('hs.status_creator.controller')" ng-click="Core.openStatusCreator()">
             <i class="fa fa-floppy-o"></i>

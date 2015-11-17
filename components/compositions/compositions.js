@@ -311,6 +311,9 @@ define(['angular', 'ol', 'map'],
                     composition_parser.load(id);
                 }
 
+                $scope.$on('core.map_reset', function(event, data) {
+                    composition_parser.composition_loaded = null;
+                });
                 $scope.$emit('scope_loaded', "Compositions");
                 $scope.$on('core.mainpanel_changed', function(event) {
                     extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));

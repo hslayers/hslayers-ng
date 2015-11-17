@@ -15,7 +15,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         this.map = new ol.Map({
             target: 'map',
             interactions: [],
-            view: config.default_view
+            view: jQuery.extend(true, {}, config.default_view)
         });
 
         this.duration = 400;
@@ -94,6 +94,51 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             }));
             me.map.getView().fitExtent(vectorSource.getExtent(), me.map.getSize());
         });
+        
+        this.repopulateLayers = function(visible_layers){
+            if (angular.isDefined(config.box_layers)) {
+                angular.forEach(config.box_layers, function(box) {
+                    angular.forEach(box.get('layers'), function(lyr) {
+                        lyr.setVisible(me.isLayerVisibleInPermalink(lyr, visible_layers));
+                        me.map.addLayer(lyr);
+                    });
+                });
+            }
+
+            if (angular.isDefined(config.default_layers)) {
+                angular.forEach(config.default_layers, function(lyr) {
+                    lyr.setVisible(me.isLayerVisibleInPermalink(lyr, visible_layers));
+                    me.map.addLayer(lyr);
+                });
+            }
+        }
+        
+        this.reset = function(){
+            var to_be_removed = [];
+            me.map.getLayers().forEach(function(lyr) {
+                to_be_removed.push(lyr);
+            });
+            while (to_be_removed.length > 0) me.map.removeLayer(to_be_removed.shift());
+            me.repopulateLayers(null);
+            me.map.setView(jQuery.extend(true, {}, config.default_view));
+        }
+        
+        /**
+            * @function isLayerVisibleInPermalink
+            * @memberOf hs.map.controller.init
+            * @param {ol.Layer} lyr - Layer for which to determine visibility
+            * @description Finds out if layer is set as visible in URL (permalink)
+            */
+        this.isLayerVisibleInPermalink = function(lyr, visible_layers) {
+            if (visible_layers) {
+                var found = false;
+                angular.forEach(visible_layers, function(vlyr) {
+                    if (vlyr == lyr.get('title')) found = true;
+                })
+                return found;
+            }
+            return lyr.getVisible();
+        }
 
         //map.addControl(mousePositionControl);
 
@@ -171,43 +216,13 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     visible_layers = permalink.getParamValue('visible_layers').split(';');
                 }
 
-                /**
-                 * @function isLayerVisibleInPermalink
-                 * @memberOf hs.map.controller.init
-                 * @param {ol.Layer} lyr - Layer for which to determine visibility
-                 * @description Finds out if layer is set as visible in URL (permalink)
-                 */
-                function isLayerVisibleInPermalink(lyr) {
-                    if (visible_layers) {
-                        var found = false;
-                        angular.forEach(visible_layers, function(vlyr) {
-                            if (vlyr == lyr.get('title')) found = true;
-                        })
-                        return found;
-                    }
-                    return lyr.getVisible();
-                }
-
                 if (permalink.getParamValue('hs_x') && permalink.getParamValue('hs_y') && permalink.getParamValue('hs_z')) {
                     var loc = location.search;
                     $scope.moveToAndZoom(parseFloat(permalink.getParamValue('hs_x', loc)), parseFloat(permalink.getParamValue('hs_y', loc)), parseInt(permalink.getParamValue('hs_z', loc)));
                 }
 
-                if (angular.isDefined(config.box_layers)) {
-                    angular.forEach(config.box_layers, function(box) {
-                        angular.forEach(box.get('layers'), function(lyr) {
-                            lyr.setVisible(isLayerVisibleInPermalink(lyr));
-                            OlMap.map.addLayer(lyr);
-                        });
-                    });
-                }
-
-                if (angular.isDefined(config.default_layers)) {
-                    angular.forEach(config.default_layers, function(lyr) {
-                        lyr.setVisible(isLayerVisibleInPermalink(lyr));
-                        OlMap.map.addLayer(lyr);
-                    });
-                }
+                OlMap.repopulateLayers(visible_layers);
+                
                 $scope.setTargetDiv("map");
             }
 
