@@ -44,6 +44,11 @@ div.panelspace {
     padding-right: 0;
     overflow-x: hidden;
 }
+
+div#content-wrapper:not(.open) div.panelspace-wrapper {
+    background-color: transparent;
+}
+
 .layerpanel {
     width: 100%;
     top: 6px;
@@ -245,12 +250,12 @@ div.row {
 /******SIDEBAR****************/
 
 .panelspace-wrapper {
-    background: #fff;
+    background-color: #fff;
     position: fixed;
     height: 100%;
     padding-left:0;
     padding-right:0;
-/*    z-index: 999*/
+    overflow-y: auto;
 }
 
 ul.sidebar-list li a,
@@ -309,7 +314,7 @@ ul.sidebar-list .sidebar-main a {
     display: none;
 }*/
 
-#panelplace {
+div#sidebar ~ div#panelplace {
     padding-left: 50px;
 }
 
@@ -319,13 +324,13 @@ ul.sidebar-list .menu-icon {
 ul.sidebar-list .sidebar-main .menu-icon {
     float: left;
     font-size: 18px;
-    /*padding-right: 28px;*/
     line-height: 50px
 }
 
 ul.sidebar-list .sidebar-main {
-    height: 65px
+    height: 65px;
 }
+
 ul.sidebar-list .sidebar-main a {
     font-size: 18px;
     line-height: 60px
@@ -380,9 +385,28 @@ ul.sidebar-list .sidebar-item .menu-icon {
 }
 
 
-#content-wrapper:not(.open) ul.sidebar-list .sidebar-title.separator {
-    display: block;
-    height: 2px;
-    margin: 13px 0
+#content-wrapper:not(.open) ul.sidebar-list {
+    right: 0;
+    background-color: transparent;
 }
 
+#content-wrapper:not(.open) .sidebar-item-title {
+    display:none
+}
+
+#content-wrapper:not(.open) .sidebar-content {
+    display:none
+}
+
+#content-wrapper:not(.open) .sidebar-main {
+    background-color: #fff;
+     height: 50px;
+     width: 50px;
+     margin-top:10px;
+     margin-right: 10px;
+
+}
+
+#content-wrapper:not(.open) #panelplace {
+    display:none;
+}
