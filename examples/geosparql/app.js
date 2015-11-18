@@ -1,15 +1,14 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'panoramio', 'bootstrap', 'api'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'permalink', 'measure', 'geolocation', 'bootstrap', 'panoramio', 'bootstrap', 'api'],
 
     function(ol, dc, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
             'hs.query',
-            'hs.search', 'hs.print', 'hs.permalink',
+            'hs.search', 'hs.permalink',
             'hs.geolocation',
-            'hs.legend',
             'hs.api',
             /*'hs.feature_crossfilter', */
             'hs.panoramio'
@@ -20,6 +19,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullScreenMap(element);
+                    Core.setMainPanel('layermanager');
                 }
             };
         }]);

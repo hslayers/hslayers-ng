@@ -57,7 +57,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     var me = {
                         scopes_registered: [],
                         mainpanel: "",
-                        sidebarExpanded: true,
+                        sidebarExpanded: false,
                         sidebarLabels: true,
                         panel_statuses: {},
                         setMainPanel: function(which, by_gui) {
