@@ -57,9 +57,18 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     var me = {
                         scopes_registered: [],
                         mainpanel: "",
+                        sidebarExpanded: true,
+                        sidebarLabels: true,
                         panel_statuses: {},
                         setMainPanel: function(which, by_gui) {
-                            if (which == me.mainpanel && by_gui) which = "";
+                            if (which == me.mainpanel && by_gui) {
+                                which = "";
+                                me.sidebarExpanded = false;
+                                me.sidebarLabels = true;
+                            } else {
+                                me.sidebarExpanded = true;
+                                me.sidebarLabels = false;
+                            }
                             me.mainpanel = which;
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
@@ -74,6 +83,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         hidePanels: function() {
                             me.mainpanel = '';
+                            me.sidebarLabels = true;
+                            if (!me.exists('hs.sidebar.controller')) {
+                                me.sidebarExpanded = false
+                            }
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
@@ -87,7 +100,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 });
                             }
                             which.unpinned = false;
-                            if (which.panel_name == me.mainpanel) me.mainpanel = '';
+                            if (which.panel_name == me.mainpanel) {
+                                me.mainpanel = '';
+                                if (!me.exists('hs.sidebar.controller')) {
+                                    me.sidebarExpanded = false
+                                }
+                                me.sidebarLabels = true;
+                            }
+
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         exists: function(controllerName) {

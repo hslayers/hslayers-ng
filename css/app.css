@@ -44,6 +44,11 @@ div.panelspace {
     padding-right: 0;
     overflow-x: hidden;
 }
+
+div#content-wrapper:not(.open) div.panelspace-wrapper {
+    background-color: transparent;
+}
+
 .layerpanel {
     width: 100%;
     top: 6px;
@@ -244,62 +249,22 @@ div.row {
 
 /******SIDEBAR****************/
 
-@media only screen and (min-width: 561px) {
-    #sidebar.open #sidebar-wrapper {
-        width: 250px
-    }
-    #sidebar:not(.open) #sidebar-wrapper {
-        width: 70px
-    }
-    #sidebar.open + div#content-wrapper {
-        padding-left: 250px
-    }
-    #sidebar:not(.open) + div#content-wrapper {
-        padding-left: 70px
-    }
-    #sidebar.open + div#content-wrapper div.gui-overlay {
-        left: 250px
-    }
-    #sidebar:not(.open) + div#content-wrapper div.gui-overlay {
-        left: 70px
-    }
-}
-@media only screen and (max-width: 560px) {
-    #sidebar.open #sidebar-wrapper {
-        width: 70px
-    }
-    #sidebar.open + div#content-wrapper {
-        padding-left: 70px
-    }
-    #sidebar.open + div#content-wrapper div.gui-overlay {
-        left: 70px
-    }
-}
-#sidebar {
-    height: 100%
-}
-#sidebar-wrapper {
-    width: 250px;
+.panelspace-wrapper {
+    background-color: #fff;
     position: fixed;
     height: 100%;
-    z-index: 999
+    padding-left:0;
+    padding-right:0;
+    overflow-y: auto;
 }
+
 ul.sidebar-list li a,
-span.sidebar-item-title,
-#sidebar-wrapper,
+div#sidebar,
 #content-wrapper,
 div#content-wrapper div.gui-overlay {
     transition: all .4s ease 0s
 }
-#sidebar-wrapper {
-    background: #30426a
-}
-#sidebar:not(.open) ul.sidebar-list .sidebar-title.separator,
-.sidebar-footer,
-ul.sidebar-list .sidebar-item a:hover,
-ul.sidebar-list .sidebar-main a {
-    background: #2d3e63
-}
+
 ul.sidebar-list {
     position: absolute;
     top: 0;
@@ -307,111 +272,141 @@ ul.sidebar-list {
     padding: 0;
     margin: 0;
     list-style: none;
-    text-indent: 20px;
+    text-indent: 18px;
     overflow-x: hidden;
-    overflow-y: auto
+    overflow-y: auto;
 }
-ul.sidebar-list li a {
-    color: #fff;
-    display: block;
-    float: left;
-    text-decoration: none;
-    width: 250px
+div.panelspace:not(.labels) ul.sidebar-list {
+    background-color: #f7f7f7;
 }
 
-#sidebar:not(.open) ul.sidebar-list li a {
-    width:70px
+ul.sidebar-list li a {
+    /*color: #fff;*/
+    display: block;
+    /*float: left;*/
+    text-decoration: none;
+/*    width: 250px*/
+}
+
+/*@media only screen and (min-width: 561px) {
+    div#content-wrapper:not(.open) div#sidebar {
+        right: 50px;
+    }
+}
+
+#content-wrapper:not(.open) ul.sidebar-list .sidebar-title.separator,
+.sidebar-footer,
+ul.sidebar-list .sidebar-item a:hover,
+ul.sidebar-list .sidebar-main a {
+    background: #2d3e63
+}
+
+#content-wrapper:not(.open) ul.sidebar-list li a {
+    width:50px
+}
+
+#content-wrapper:not(.open) ul.sidebar-list {
+    bottom: 0
+}
+
+
+#toolbar .btn-mobile-only {
+    display: none;
+}*/
+
+div#sidebar ~ div#panelplace {
+    padding-left: 50px;
+}
+
+ul.sidebar-list .menu-icon {
+    color: #555;
+}
+ul.sidebar-list .sidebar-main .menu-icon {
+    float: left;
+    font-size: 18px;
+    line-height: 50px
 }
 
 ul.sidebar-list .sidebar-main {
-    height: 65px
+    height: 65px;
 }
+
 ul.sidebar-list .sidebar-main a {
     font-size: 18px;
     line-height: 60px
 }
-ul.sidebar-list .sidebar-main .menu-icon {
-    float: right;
-    font-size: 18px;
-    padding-right: 28px;
-    line-height: 60px
-}
+
 ul.sidebar-list .sidebar-title {
-    color: #738bc0;
-    font-size: 12px;
     height: 35px;
     line-height: 40px;
     text-transform: uppercase;
     transition: all .6s ease 0s
 }
+
+
 ul.sidebar-list .sidebar-item {
     height: 40px
 }
+
+ul.sidebar-list .sidebar-item.active {
+    background-color: #23527c;
+}
+ul.sidebar-list .sidebar-item.active span.menu-icon {
+    color: #fff;
+}
+
 ul.sidebar-list .sidebar-item a {
-    text-indent: 25px;
+    text-indent: 18px;
     font-size: 15px;
-    color: #b2bfdc;
     line-height: 40px
 }
-ul.sidebar-list .sidebar-item a:hover {
+
+ul.sidebar-list .sidebar-item span.menu-icon:hover {
+    background-color: #23527c;
     color: #fff;
-    border-left: 3px solid #e99d1a;
-    text-indent: 22px
 }
-ul.sidebar-list .sidebar-item a:hover .menu-icon {
-    text-indent: 25px
-}
+
 ul.sidebar-list .sidebar-item .menu-icon {
-    float: right;
-    padding-right: 29px;
+    float: left;
     line-height: 40px;
-    width: 70px
+    width: 50px
 }
-#sidebar:not(.open) ul.sidebar-list {
-    bottom: 0
+.panelspace:not(.labels) ul.sidebar-list {
+    border-right: 1px solid #ddd
 }
-#sidebar:not(.open) ul.sidebar-list .sidebar-title {
+.panelspace:not(.labels) ul.sidebar-list .sidebar-title {
     display: none;
     height: 0;
     text-indent: -100px
 }
 
-#sidebar:not(.open) ul.sidebar-list span.sidebar-item-title {
+.panelspace:not(.labels) ul.sidebar-list span.sidebar-item-title {
     display: none;
 }
 
-#sidebar:not(.open) ul.sidebar-list .sidebar-title.separator {
-    display: block;
-    height: 2px;
-    margin: 13px 0
-}
-#sidebar:not(.open) ul.sidebar-list .sidebar-item a:hover span {
-    border-left: 3px solid #e99d1a;
-    text-indent: 22px
-}
-#sidebar:not(.open) .sidebar-footer {
-    display: none
-}
-.sidebar-footer {
-    position: absolute;
-    height: 40px;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    transition: all .6s ease 0s;
-    text-align: center
-}
-.sidebar-footer div a {
-    color: #b2bfdc;
-    font-size: 12px;
-    line-height: 43px
-}
-.sidebar-footer div a:hover {
-    color: #fff;
-    text-decoration: none
+
+#content-wrapper:not(.open) ul.sidebar-list {
+    right: 0;
+    background-color: transparent;
 }
 
-#toolbar .btn-mobile-only {
-    display: none;
+#content-wrapper:not(.open) .sidebar-item-title {
+    display:none
+}
+
+#content-wrapper:not(.open) .sidebar-content {
+    display:none
+}
+
+#content-wrapper:not(.open) .sidebar-main {
+    background-color: #fff;
+     height: 50px;
+     width: 50px;
+     margin-top:10px;
+     margin-right: 10px;
+
+}
+
+#content-wrapper:not(.open) #panelplace {
+    display:none;
 }
