@@ -8,7 +8,15 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
         angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies'])
             .directive('hs.sidebar.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html'
+                    templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html',
+                    link: function(scope, element, attrs) {
+                    scope.$watch(
+                        function () { return angular.element('.panelspace').width()},
+                        function (value) {
+                            scope.Core.updateMapSize();
+                        }
+                    )
+                }
                 };
             })
 
@@ -41,6 +49,7 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
 
                 $scope.toggleSidebar = function() {
                     $scope.Core.sidebarExpanded = !$scope.Core.sidebarExpanded;
+                    $scope.Core.updateMapSize();
                     $cookies.put('sidebarExpanded', $scope.Core.sidebarExpanded);
                 };
 

@@ -36,13 +36,19 @@
     pointer-events: none;
     background: none !important;
 }
-div.panelspace {
+
+.panelspace {
     pointer-events: auto;
     max-height: 100%;
     overflow-y: auto;
     padding-left: 0;
     padding-right: 0;
     overflow-x: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 400px;
+    z-index: 2;
 }
 
 div#content-wrapper:not(.open) div.panelspace-wrapper {
@@ -61,11 +67,6 @@ div#content-wrapper:not(.open) div.panelspace-wrapper {
     position: absolute;
     top: 3px;
 }
-/*
-#map {
-  height: 100%;
-  width: 100%;
-}*/
 
 .modal-backdrop {
     visibility: hidden
@@ -100,7 +101,10 @@ input.layer-more,
 }
 
 .ol-zoom {
-    top: 2.8em;
+    bottom: 0.5em;
+    top: auto;
+    right: 0.5em;
+    left: auto;
 }
 .ol-touch .ol-zoomslider {
     display: none;
@@ -115,8 +119,9 @@ input.layer-more,
 }
 .search-container {
     pointer-events: auto;
-    margin-top: 40px;
-    padding-left: 15px;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 250px;
 }
 .search_address {} #searchresults {
     top: 45px;
@@ -142,9 +147,8 @@ input.layer-more,
 }
 .locate {
     text-align: right;
-    top: 7.5em;
-    left: 0.5em;
-    right: auto;
+    bottom: 4.5em;
+    right: 0.5em;
     max-width: calc(100% - 1.3em);
 }
 .locate ul {
@@ -165,9 +169,10 @@ input.layer-more,
 }
 
 .ol-rotate {
-    top:9.5em;
-    left: 0.5em;
-    right: auto;
+    bottom: 6.5em;
+    left: auto;
+    right: 0.5em;
+    top: auto;
 }
 
 div#infopanel.ng-scope .first-col {
@@ -259,6 +264,13 @@ div.row {
     padding-right:0;
     overflow-y: auto;
     box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
+    width: 400px;
+}
+
+@media (max-width: 767px) {
+    div.panelspace, .panelspace-wrapper {
+        width: 300px;
+    }
 }
 
 div.panelspace:not(.labels) .panelspace-wrapper {

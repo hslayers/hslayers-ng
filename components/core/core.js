@@ -63,16 +63,28 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
-                                me.sidebarExpanded = false;
                                 me.sidebarLabels = true;
                             } else {
                                 me.sidebarExpanded = true;
                                 me.sidebarLabels = false;
+                                me.updateMapSize(true);
                             }
                             me.mainpanel = which;
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
+                        updateMapSize: function (open) {
+                            var w = angular.element($window);
+                            var map = $("#map");
+                            var sidebarElem = $('.panelspace');
+                            if (me.sidebarExpanded && w.width() != sidebarElem.width()) {
+                                map.width(w.width()-sidebarElem.width());
+                            }else {
+                                map.width(w.width());
+                            }
+                            OlMap.map.updateSize();
+                        },
+
                         panelVisible: function(which, scope) {
                             if (angular.isDefined(scope))
                                 if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
@@ -128,7 +140,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 element[0].style.height = w.height() + "px";
                                 element[0].style.width = w.width() + "px";
                                 $("#map").height(w.height());
-                                $("#map").width(w.width());
+                                me.updateMapSize();
                                 OlMap.map.updateSize();
                             });
                             w.resize();
