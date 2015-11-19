@@ -2,11 +2,9 @@
         <li class="sidebar-main">
             <a ng-click="toggleSidebar()">
                 <span class="menu-icon glyphicon glyphicon-transfer"></span>
-                <span class="sidebar-item-title">Dashboard</span>
               </a>
         </li>
         <div class="sidebar-content">
-                <li class="sidebar-title"><span>NAVIGATION</span></li>
                 <li class="sidebar-item" ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
                     <a href="#">
                         <span class="menu-icon glyphicon glyphicon-tasks"></span>

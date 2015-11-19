@@ -47,6 +47,7 @@ div.panelspace {
 
 div#content-wrapper:not(.open) div.panelspace-wrapper {
     background-color: transparent;
+    box-shadow: none;
 }
 
 .layerpanel {
@@ -86,6 +87,7 @@ input.layer-more,
     height: 21px;
     float: right;
     font-size: 19pt;
+    margin: 0;
 }
 .datasource_addlayer,
 .layer-more {
@@ -186,7 +188,7 @@ div#infopanel.ng-scope .second-col {
     float: right;
     font-size: 14px;
     font-weight: 700;
-    line-height: 21px;
+    line-height: 17px;
     color: #000;
     text-shadow: 0 1px 0 #fff;
     filter: alpha(opacity=20);
@@ -250,19 +252,17 @@ div.row {
 /******SIDEBAR****************/
 
 .panelspace-wrapper {
-    background-color: #fff;
+    background-color: #f7f7f7;
     position: fixed;
     height: 100%;
     padding-left:0;
     padding-right:0;
     overflow-y: auto;
+    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
 }
 
-ul.sidebar-list li a,
-div#sidebar,
-#content-wrapper,
-div#content-wrapper div.gui-overlay {
-    transition: all .4s ease 0s
+div.panelspace:not(.labels) .panelspace-wrapper {
+    background-color: #fff;
 }
 
 ul.sidebar-list {
@@ -276,59 +276,34 @@ ul.sidebar-list {
     overflow-x: hidden;
     overflow-y: auto;
 }
-div.panelspace:not(.labels) ul.sidebar-list {
+div#content-wrapper.open ul.sidebar-list {
+    width: 100%;
+}
+
+div#content-wrapper.open div.panelspace:not(.labels) ul.sidebar-list {
+    width: 50px;
     background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
 }
-
 ul.sidebar-list li a {
-    /*color: #fff;*/
     display: block;
-    /*float: left;*/
     text-decoration: none;
-/*    width: 250px*/
 }
-
-/*@media only screen and (min-width: 561px) {
-    div#content-wrapper:not(.open) div#sidebar {
-        right: 50px;
-    }
-}
-
-#content-wrapper:not(.open) ul.sidebar-list .sidebar-title.separator,
-.sidebar-footer,
-ul.sidebar-list .sidebar-item a:hover,
-ul.sidebar-list .sidebar-main a {
-    background: #2d3e63
-}
-
-#content-wrapper:not(.open) ul.sidebar-list li a {
-    width:50px
-}
-
-#content-wrapper:not(.open) ul.sidebar-list {
-    bottom: 0
-}
-
-
-#toolbar .btn-mobile-only {
-    display: none;
-}*/
 
 div#sidebar ~ div#panelplace {
     padding-left: 50px;
 }
 
-ul.sidebar-list .menu-icon {
-    color: #555;
-}
 ul.sidebar-list .sidebar-main .menu-icon {
     float: left;
     font-size: 18px;
-    line-height: 50px
+    line-height: 50px;
+    width: 50px;
 }
 
 ul.sidebar-list .sidebar-main {
-    height: 65px;
+    height: 50px;
+    border-bottom: 1px solid #ddd;
 }
 
 ul.sidebar-list .sidebar-main a {
@@ -345,7 +320,8 @@ ul.sidebar-list .sidebar-title {
 
 
 ul.sidebar-list .sidebar-item {
-    height: 40px
+    height: 40px;
+    border-bottom: 1px solid #ddd;
 }
 
 ul.sidebar-list .sidebar-item.active {
@@ -357,22 +333,28 @@ ul.sidebar-list .sidebar-item.active span.menu-icon {
 
 ul.sidebar-list .sidebar-item a {
     text-indent: 18px;
-    font-size: 15px;
-    line-height: 40px
+    font-size: 13px;
+    line-height: 40px;
+    color: #555;
 }
 
-ul.sidebar-list .sidebar-item span.menu-icon:hover {
+ul.sidebar-list .sidebar-item a:hover {
+    color: #fff;
+}
+
+ul.sidebar-list .sidebar-item:hover {
     background-color: #23527c;
     color: #fff;
 }
 
 ul.sidebar-list .sidebar-item .menu-icon {
     float: left;
-    line-height: 40px;
-    width: 50px
+    font-size: 16px;
+    line-height: 38px;
+    width: 50px;
 }
-.panelspace:not(.labels) ul.sidebar-list {
-    border-right: 1px solid #ddd
+ul.sidebar-list {
+    border-left: 1px solid #ddd;
 }
 .panelspace:not(.labels) ul.sidebar-list .sidebar-title {
     display: none;
@@ -384,10 +366,10 @@ ul.sidebar-list .sidebar-item .menu-icon {
     display: none;
 }
 
-
 #content-wrapper:not(.open) ul.sidebar-list {
     right: 0;
     background-color: transparent;
+    border-left: none;
 }
 
 #content-wrapper:not(.open) .sidebar-item-title {
@@ -395,18 +377,22 @@ ul.sidebar-list .sidebar-item .menu-icon {
 }
 
 #content-wrapper:not(.open) .sidebar-content {
-    display:none
+    background-color: #f7f7f7;
+    border-left: 1px solid #ddd;
 }
 
 #content-wrapper:not(.open) .sidebar-main {
-    background-color: #fff;
-     height: 50px;
-     width: 50px;
-     margin-top:10px;
-     margin-right: 10px;
-
+    background-color: #f7f7f7;
+    height: 51px;
+    width: 51px;
+    border-left: 1px solid #ddd;
+    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
 }
 
 #content-wrapper:not(.open) #panelplace {
     display:none;
+}
+
+#content-wrapper.open .panel-default {
+    border: none;
 }
