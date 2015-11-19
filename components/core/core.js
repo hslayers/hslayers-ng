@@ -179,6 +179,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         }
                     };
 
+                    if (me.exists('hs.sidebar.controller')) {
+                        me.sidebarExpanded = true;
+                    }
+
                     return me;
                 },
 
