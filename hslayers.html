@@ -5,7 +5,7 @@
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 <div id="page-wrapper">
-    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded}">
+    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight, 'sb-left': !Core.sidebarRight}">
         <div class="page-content">
             <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
             <div hs.toolbar.directive ng-controller="hs.toolbar.controller" ng-if="Core.exists('hs.toolbar.controller')"></div>

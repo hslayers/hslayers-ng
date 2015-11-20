@@ -10,13 +10,13 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                 return {
                     templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html',
                     link: function(scope, element, attrs) {
-                    scope.$watch(
-                        function () { return angular.element('.panelspace').width()},
-                        function (value) {
-                            scope.Core.updateMapSize();
-                        }
-                    )
-                }
+                        scope.$watch(
+                            function () { return angular.element('.panelspace').width()},
+                            function (value) {
+                                scope.Core.updateMapSize();
+                            }
+                        )
+                    }
                 };
             })
 
@@ -30,21 +30,6 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
 
                 if (bus.getParamValue('hs_panel')) {
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
-                }
-
-                $scope.collapsed = function(is) {
-                    if (arguments.length > 0) {
-                        collapsed = is;
-                    }
-                    return collapsed;
-                }
-
-                $scope.toggle = function() {
-                    if ($(document).width() < 800) {
-                        return "mobile";
-                    } else {
-                        return "";
-                    }
                 }
 
                 $scope.toggleSidebar = function() {
