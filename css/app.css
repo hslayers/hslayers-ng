@@ -301,6 +301,14 @@ div#content-wrapper:not(.labels) .panelspace-wrapper {
     .sb-left.open #map {
         margin-left:300px;
     }
+
+    div#sidebar ~ div#panelplace {
+        width:250px;
+    }
+
+    .panelspace.labels #sidebar {
+        width: 300px;
+    }
 }
 
 
@@ -311,18 +319,34 @@ div.panelspace:not(.labels) .panelspace-wrapper {
 }
 
 div#sidebar {
+    background-color: #f7f7f7;
+    bottom: 0;
     position: absolute;
     top: 0;
-    bottom: 0;
+}
+
+.panelspace.labels #sidebar {
+    width: 400px;
+
 }
 
 .sb-left div#sidebar {
     right:0
 }
 
+#content-wrapper.sb-left:not(.open) div#sidebar {
+    right:auto;
+}
+
 .sb-right div#sidebar {
     left:0
 }
+
+#content-wrapper.sb-right:not(.open) div#sidebar {
+    right: 0;
+    left: auto;
+}
+
 
 ul.sidebar-list {
     padding: 0;
@@ -338,14 +362,13 @@ ul.sidebar-list {
 
 #content-wrapper.open div.panelspace:not(.labels) ul.sidebar-list {
     width: 50px;
-    background-color: #f7f7f7;
 }
 
-#content-wrapper.sb-right.open div.panelspace:not(.labels) ul.sidebar-list {
+#content-wrapper.sb-right.open div.panelspace:not(.labels) div#sidebar {
     border-right: 1px solid #ddd;
 }
 
-#content-wrapper.sb-left.open div.panelspace:not(.labels) ul.sidebar-list {
+#content-wrapper.sb-left.open div.panelspace:not(.labels) div#sidebar {
     border-left: 1px solid #ddd;
 }
 
@@ -353,7 +376,7 @@ ul.sidebar-list li a {
     display: block;
     text-decoration: none;
 }
-div#sidebar ~ div#panelplace {
+#sidebar ~ div#panelplace {
     height: 100%;
     overflow-y: auto;
     width: 350px;
@@ -380,6 +403,7 @@ ul.sidebar-list .sidebar-main .menu-icon {
 
 .sb-left ul.sidebar-list .sidebar-main .menu-icon {
     float: right;
+    text-align: left;
 }
 
 ul.sidebar-list .sidebar-main {
@@ -432,6 +456,7 @@ ul.sidebar-list .sidebar-item .menu-icon {
     font-size: 16px;
     line-height: 38px;
     width: 50px;
+    text-align: left;
 }
 
 .sb-right ul.sidebar-list .sidebar-item .menu-icon {
@@ -449,6 +474,7 @@ ul.sidebar-list .sidebar-item .menu-icon {
 
 .sb-left ul.sidebar-list {
     border-right: 1px solid #ddd;
+    text-align: right;
 }
 
 .panelspace:not(.labels) ul.sidebar-list .sidebar-title {
