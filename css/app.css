@@ -310,10 +310,21 @@ div.panelspace:not(.labels) .panelspace-wrapper {
     background-color: #fff;
 }
 
-ul.sidebar-list {
+div#sidebar {
     position: absolute;
     top: 0;
     bottom: 0;
+}
+
+.sb-left div#sidebar {
+    right:0
+}
+
+.sb-right div#sidebar {
+    left:0
+}
+
+ul.sidebar-list {
     padding: 0;
     margin: 0;
     list-style: none;
@@ -336,20 +347,26 @@ ul.sidebar-list {
 
 #content-wrapper.sb-left.open div.panelspace:not(.labels) ul.sidebar-list {
     border-left: 1px solid #ddd;
-    left: 350px;
 }
 
 ul.sidebar-list li a {
     display: block;
     text-decoration: none;
 }
+div#sidebar ~ div#panelplace {
+    height: 100%;
+    overflow-y: auto;
+    width: 350px;
+}
 
 .sb-right div#sidebar ~ div#panelplace {
-    padding-left: 50px;
+    float:right;
+    left: 50px;
 }
 
 .sb-left div#sidebar ~ div#panelplace {
-    padding-right: 50px;
+    float:left;
+    right: 50px;
 }
 
 ul.sidebar-list .sidebar-main .menu-icon {
