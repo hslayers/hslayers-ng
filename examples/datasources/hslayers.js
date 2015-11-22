@@ -5,6 +5,7 @@ var hsl_path = '../../';
 require.config({
     paths: {
         sidebar: hsl_path + 'components/sidebar/sidebar',
+        toolbar: hsl_path + 'components/toolbar/toolbar',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
         //ol: hsl_path + 'lib/ol3/ol-debug',

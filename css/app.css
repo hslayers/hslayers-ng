@@ -19,13 +19,16 @@
     content: "|";
     padding-right: 0.3em;
 }
+
 .menu > li:nth-child(1):before {
     content: "";
     padding: 0;
 }
+
 .mainpanel {
     width: 100%;
 }
+
 .gui-overlay {
     z-index: 1000;
     position: absolute;
@@ -37,33 +40,30 @@
     background: none !important;
 }
 
-
-
 .layerpanel {
     width: 100%;
     top: 6px;
     max-height: 400px;
     overflow-y: auto;
 }
-#toolbar {
-    left: 3px;
-    position: absolute;
-    top: 3px;
-}
 
 .modal-backdrop {
     visibility: hidden
 }
+
 .toolbuttons {
     display: inline-block
 }
+
 .form-group {
     margin-bottom: 5px;
 }
+
 hr {
     margin-top: 0px;
     margin-bottom: 5px;
 }
+
 input.layer-checked,
 input.layer-more,
 .datasource_addlayer {
@@ -102,23 +102,20 @@ input.layer-more,
 }
 .search-container {
     pointer-events: auto;
+    width: 250px;
     margin-top: 10px;
     margin-left: 10px;
+}
+
+.search_address {
     width: 250px;
 }
-.search_address {} #searchresults {
+
+#searchresults {
     top: 45px;
-    min-width: 200px;
+    min-width: 250px;
 }
-#toolbar button {
-    margin: 0px;
-    position: relative;
-}
-#toolbar span,
-#toolbar i {
-    width: 14px;
-    height: 14px
-}
+
 .locate:not(.ol-collapsed) {
     background: rgba(255, 255, 255, .8);
 }
@@ -233,9 +230,7 @@ div.row {
 .btn .close {
     font-size: 20px
 }
-.toolbar-buttons {
-    display: inline-block;
-}
+
 
 /******SIDEBAR****************/
 .panelspace {
@@ -250,9 +245,14 @@ div.row {
     width: 400px;
     z-index: 2;
 }
-
+.open .panelspace {
+    width: 400px;
+}
 .sb-right .panelspace {
-    right: 0
+    right: -350px;
+}
+.sb-right.open .panelspace {
+    right: 0px;
 }
 
 .sb-left .panelspace {
@@ -263,16 +263,32 @@ div.row {
     margin-left:400px;
 }
 
-.sb-left.open .search-container {
+#toolbar {
+    position: absolute;
+    top: 10px;
+    z-index: 500;
+    left: 10px;
+}
+
+#toolbar .search-container {
+    margin-left:0;
+    margin-top:0;
+    margin-right:0;
+    float: left;
+}
+.sb-left.open #toolbar {
     margin-left:410px;
 }
 
-.sb-left .search-container {
+.sb-left #toolbar {
     margin-left: 60px;
 }
+
 div#content-wrapper:not(.open) div.panelspace-wrapper {
     background-color: transparent;
     box-shadow: none;
+    width: 50px;
+    overflow-x: hidden;
 }
 .panelspace-wrapper {
     background-color: #f7f7f7;
@@ -290,7 +306,7 @@ div#content-wrapper:not(.labels) .panelspace-wrapper {
 }
 
 @media (max-width: 767px) {
-    div.panelspace, .panelspace-wrapper {
+    .open div.panelspace, div.panelspace, .panelspace-wrapper {
         width: 300px;
     }
 
@@ -306,9 +322,17 @@ div#content-wrapper:not(.labels) .panelspace-wrapper {
         width:250px;
     }
 
+    div.panelspace:not(.buttons) div#sidebar ~ div#panelplace {
+        width:300px;
+    }
+
     .panelspace.labels #sidebar {
         width: 300px;
     }
+
+    .sb-left.open #toolbar {
+    margin-left: 310px;
+}
 }
 
 
@@ -329,13 +353,13 @@ div#sidebar {
     width: 400px;
 
 }
-
-.sb-left div#sidebar {
-    right:0
+.panelspace:not(.buttons) #sidebar {
+    display: none;
 }
 
 #content-wrapper.sb-left:not(.open) div#sidebar {
     right:auto;
+    background-color: transparent;
 }
 
 .sb-right div#sidebar {
@@ -345,6 +369,8 @@ div#sidebar {
 #content-wrapper.sb-right:not(.open) div#sidebar {
     right: 0;
     left: auto;
+    width: 50px;
+    background-color: transparent;
 }
 
 
@@ -352,7 +378,7 @@ ul.sidebar-list {
     padding: 0;
     margin: 0;
     list-style: none;
-    text-indent: 18px;
+    /* text-indent: 18px; */
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -364,12 +390,8 @@ ul.sidebar-list {
     width: 50px;
 }
 
-#content-wrapper.sb-right.open div.panelspace:not(.labels) div#sidebar {
+#content-wrapper.open div.panelspace:not(.labels) div#sidebar {
     border-right: 1px solid #ddd;
-}
-
-#content-wrapper.sb-left.open div.panelspace:not(.labels) div#sidebar {
-    border-left: 1px solid #ddd;
 }
 
 ul.sidebar-list li a {
@@ -380,30 +402,17 @@ ul.sidebar-list li a {
     height: 100%;
     overflow-y: auto;
     width: 350px;
+    margin-left: 50px
 }
-
-.sb-right div#sidebar ~ div#panelplace {
-    float:right;
-    left: 50px;
+div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
+    margin-left:0;
+    width: 400px
 }
-
-.sb-left div#sidebar ~ div#panelplace {
-    float:left;
-    right: 50px;
-}
-
 ul.sidebar-list .sidebar-main .menu-icon {
     font-size: 18px;
     line-height: 50px;
     width: 50px;
-}
-.sb-right ul.sidebar-list .sidebar-main .menu-icon {
-    float: left;
-}
-
-.sb-left ul.sidebar-list .sidebar-main .menu-icon {
-    float: right;
-    text-align: left;
+    text-align: center;
 }
 
 ul.sidebar-list .sidebar-main {
@@ -437,7 +446,7 @@ ul.sidebar-list .sidebar-item.active span.menu-icon {
 }
 
 ul.sidebar-list .sidebar-item a {
-    text-indent: 18px;
+    /* text-indent: 18px; */
     font-size: 13px;
     line-height: 40px;
     color: #555;
@@ -456,17 +465,8 @@ ul.sidebar-list .sidebar-item .menu-icon {
     font-size: 16px;
     line-height: 38px;
     width: 50px;
-    text-align: left;
+    text-align: center;
 }
-
-.sb-right ul.sidebar-list .sidebar-item .menu-icon {
-    float: left;
-}
-
-.sb-left ul.sidebar-list .sidebar-item .menu-icon {
-    float: right;
-}
-
 
 .sb-right ul.sidebar-list {
     border-left: 1px solid #ddd;
@@ -474,7 +474,6 @@ ul.sidebar-list .sidebar-item .menu-icon {
 
 .sb-left ul.sidebar-list {
     border-right: 1px solid #ddd;
-    text-align: right;
 }
 
 .panelspace:not(.labels) ul.sidebar-list .sidebar-title {

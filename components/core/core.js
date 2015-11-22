@@ -57,10 +57,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     var me = {
                         scopes_registered: [],
                         mainpanel: "",
+                        defaultPanel: "",
                         sidebarExpanded: false,
                         sidebarRight: true,
                         sidebarLabels: true,
                         sidebarToggleable: true,
+                        sidebarButtons: true,
                         panel_statuses: {},
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) {
@@ -74,6 +76,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             me.mainpanel = which;
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
+                        },
+                        setDefaultPanel: function(which) {
+                            me.defaultPanel = which;
+                            me.setMainPanel(which);
                         },
                         updateMapSize: function (open) {
                             var w = angular.element($window);
@@ -115,11 +121,16 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             which.unpinned = false;
                             if (which.panel_name == me.mainpanel) {
-                                me.mainpanel = '';
+                                if (me.defaultPanel != ''){
+                                    me.setMainPanel(me.defaultPanel)
+                                } else {
+                                    me.mainpanel = '';
+                                    me.sidebarLabels = true;
+                                }
                                 if (!me.exists('hs.sidebar.controller')) {
                                     me.sidebarExpanded = false
                                 }
-                                me.sidebarLabels = true;
+
                             }
 
                             $rootScope.$broadcast('core.mainpanel_changed');
@@ -197,6 +208,9 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         me.sidebarExpanded = true;
                     }
 
+                    if (me.defaultPanel != '') {
+                        me.setMainPanel(me.defaultPanel);
+                    }
                     return me;
                 },
 
