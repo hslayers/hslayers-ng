@@ -1,16 +1,18 @@
 'use strict';
 
-define(['ol', 'sidebar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation', 'datasource_selector', 'api', 'ows', 'bootstrap', 'status_creator', 'customhtml'],
+define(['ol', 'sidebar', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'geolocation', 'datasource_selector', 'api', 'ows', 'bootstrap', 'status_creator', 'customhtml'],
 
     function(ol, sidebar, layermanager, WfsSource) {
         var module = angular.module('hs', [
             'hs.sidebar',
+            'hs.toolbar',
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer',
             'hs.geolocation',
             'hs.datasource_selector',
             'hs.status_creator',
+            'hs.measure',
             'hs.api',
             'hs.ows',
             'hs.customhtml'
@@ -66,6 +68,10 @@ define(['ol', 'sidebar', 'layermanager', 'WfsSource', 'map', 'query', 'search', 
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+                $scope.Core.sidebarRight = false;
+                //$scope.Core.sidebarToggleable = false;
+                $scope.Core.sidebarButtons = false;
+                $scope.Core.setDefaultPanel('layermanager');
                 $scope.$on('infopanel.updated', function(event) {});
             }
         ]);

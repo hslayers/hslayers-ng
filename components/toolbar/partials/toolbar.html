@@ -6,67 +6,24 @@
     </ul>
 </div>-->
 
-<div id="toolbar" ng-class="isMobile()">
-    <button type="button" class="btn btn-default" title="Show/hide toolbar" ng-click="collapsed(!collapsed())">
-        <i class="fa fa-bars"></i>
-    </button>
-    
-    <div class="toolbar-buttons" ng-show="!collapsed()">
-        <button type="button" class="btn btn-default btn-mobile" title="Layer manager"  ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager', true)">
-            <span class="glyphicon glyphicon-tasks"></span>
-        </button>
-        
-        <button type="button" class="btn btn-default" title="Legend"  ng-if="Core.exists('hs.legend.controller')" ng-click="setMainPanel('legend', true)">
-            <span class="glyphicon legend-toolbtn">L</span>
+<div id="toolbar">
+        <button type="button" class="btn btn-default" title="Reset map" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
+            <span class="glyphicon glyphicon-repeat"></span>
         </button>
 
-        <button type="button" class="btn btn-default" title="Datasource Selector"  ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="setMainPanel('datasource_selector', true)">
-            <span class="fa fa-database"></span>
-        </button>
-
-        <button type="button" class="btn btn-default btn-mobile" title="Compositions"  ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser', true)">
-            <span class="glyphicon glyphicon-cloud-download"></span>
-        </button>
-
-        <button type="button" class="btn btn-default" title="Add service or dataset"  ng-if="Core.exists('hs.ows.controller')" ng-click="setMainPanel('ows', true)">
-            <span class="glyphicon glyphicon-plus"></span>
-        </button>
-
-        <button type="button" class="btn btn-default" title="Filter features" ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-click="setMainPanel('feature_crossfilter', true)">
-            <span class="fa fa-pie-chart"></span>
-        </button>
-
-        <!--
-        <button type="button" class="btn btn-default"  title="Query information and other"  ng-if="Core.exists('hs.query.controller')" ng-click="setMainPanel('info', true)">
-            <i class="fa fa-question-circle"></i>
-        </button>-->
+        <div class="search-container" ng-controller="hs.search.controller" ng-if="Core.exists('hs.toolbar.controller')">
+            <div>
+                <div hs.search.directive_searchinput></div>
+                <div hs.search.directive_searchresults></div>
+            </div>
+        </div>
 
         <button type="button" class="btn btn-default"  title="Measure lines and polygon"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
             <span class="glyphicon glyphicon-compressed"></span>
         </button>
 
-        <button type="button" class="btn btn-default"  title="Eurostat data explorer" ng-if="Core.exists('hs.lodexplorer.controller')" ng-click="setMainPanel('lodexplorer', true)">
-            <i class="fa fa-share-alt"></i>
-        </button>
-
-        <button type="button" class="btn btn-default" title="Print"  ng-if="Core.exists('hs.print.controller')" ng-click="setMainPanel('print', true)">
-            <i class="fa fa-print"></i>
-        </button>
-        
         <button type="button" class="btn btn-default btn-mobile"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
             <span class="fa fa-search"></span>
-        </button>
-        
-        <button type="button" class="btn btn-default btn-mobile-only ol-has-tooltip blocate" title="Geolocation" ng-if="Core.exists('hs.geolocation.controller')">
-            <span class="fa fa-location-arrow"></span>
-        </button>
-        
-        <button type="button" class="btn btn-default" title="Reset map" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
-            <span class="glyphicon glyphicon-repeat"></span>
-        </button>
-
-        <button type="button" class="btn btn-default" title="Save composition" ng-if="Core.exists('hs.status_creator.controller')" ng-click="Core.openStatusCreator()">
-            <i class="fa fa-floppy-o"></i>
         </button>
     </div>
 </div>

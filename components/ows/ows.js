@@ -78,7 +78,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         Core.setMainPanel('layermanager');
                         lyr.getSource().on('change', function() { //Event needed because features are loaded asynchronously
                             var extent = lyr.getSource().getExtent();
-                            if (extent != null) map.getView().fitExtent(extent, map.getSize());
+                            if (extent != null) map.getView().fit(extent, map.getSize());
                         });
                     }
 

@@ -1,93 +1,77 @@
-<div id="sidebar-wrapper">
     <ul class="sidebar-list">
-        <li class="sidebar-main">
+        <li class="sidebar-main" ng-if="Core.sidebarToggleable">
             <a ng-click="toggleSidebar()">
-                <span class="sidebar-item-title">Dashboard</span>
                 <span class="menu-icon glyphicon glyphicon-transfer"></span>
               </a>
         </li>
-        <li class="sidebar-title"><span>NAVIGATION</span></li>
-        <li class="sidebar-item" ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Layer Manager</span>
-                <span class="menu-icon glyphicon glyphicon-tasks"></span>
-            </a>
-        </li>
-        <li class="sidebar-item" ng-if="Core.exists('hs.legend.controller')" ng-click="setMainPanel('legend', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Legend</span>
-                <span class="menu-icon glyphicon legend-toolbtn">L</span>
-            </a>
-        </li>
+        <div class="sidebar-content">
+                <li class="sidebar-item" ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
+                    <a href="#">
+                        <span class="menu-icon glyphicon glyphicon-tasks"></span>
+                        <span class="sidebar-item-title">Layer Manager</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.legend.controller')" ng-click="setMainPanel('legend')" ng-class="{active: Core.mainpanel == 'legend'}">
+                    <a href="#">
+                        <span class="menu-icon glyphicon legend-toolbtn">L</span>
+                        <span class="sidebar-item-title">Legend</span>
+                    </a>
+                </li>
 
-        <li class="sidebar-item" ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="setMainPanel('datasource_selector', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Datasource Selector</span>
-                <span class="menu-icon fa fa-database"></span>
-            </a>
-        </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="setMainPanel('datasource_selector')" ng-class="{active: Core.mainpanel == 'datasource_selector'}">
+                    <a href="#">
+                        <span class="menu-icon fa fa-database"></span>
+                        <span class="sidebar-item-title">Datasource Selector</span>
+                    </a>
+                </li>
 
-        <li class="sidebar-item" ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Compositions</span> 
-                <span class="menu-icon glyphicon glyphicon-cloud-download"></span>
-            </a>
-        </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser')" ng-class="{active: Core.mainpanel == 'composition_browser'}">
+                    <a href="#">
+                        <span class="menu-icon glyphicon glyphicon-cloud-download"></span>
+                        <span class="sidebar-item-title">Compositions</span>
+                    </a>
+                </li>
 
-        <li class="sidebar-item" ng-if="Core.exists('hs.ows.controller')" ng-click="setMainPanel('ows', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Add service or dataset</span>
-                <span class="menu-icon glyphicon glyphicon-plus"></span>
-            </a>
-        </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.ows.controller')" ng-click="setMainPanel('ows')" ng-class="{active: Core.mainpanel == 'ows'}">
+                    <a href="#">
+                        <span class="menu-icon glyphicon glyphicon-plus"></span>
+                        <span class="sidebar-item-title">Add service or dataset</span>
+                    </a>
+                </li>
 
-        <li class="sidebar-item" ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-click="setMainPanel('feature_crossfilter', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Filter features</span>
-                <span class="menu-icon fa fa-pie-chart"></span>
-            </a>
-        </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-click="setMainPanel('feature_crossfilter')" ng-class="{active: Core.mainpanel == 'feature_crossfilter'}">
+                    <a href="#">
+                        <span class="menu-icon fa fa-pie-chart"></span>
+                        <span class="sidebar-item-title">Filter features</span>
+                    </a>
+                </li>
 
-        <li class="sidebar-item" ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Measurements</span>
-                <span class="menu-icon glyphicon glyphicon-compressed"></span>
-            </a>
-        </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure')" ng-class="{active: Core.mainpanel == 'measure'}">
+                    <a href="#">
+                        <span class="menu-icon glyphicon glyphicon-compressed"></span>
+                        <span class="sidebar-item-title">Measurements</span>
+                    </a>
+                </li>
 
-        <li class="sidebar-item" ng-if="Core.exists('hs.lodexplorer.controller')" ng-click="setMainPanel('lodexplorer', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Eurostat explorer</span>
-                <span class="menu-icon fa fa-share-alt"></span>
-            </a>
-        </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.lodexplorer.controller')" ng-click="setMainPanel('lodexplorer')" ng-class="{active: Core.mainpanel == 'lodexplorer'}">
+                    <a href="#">
+                        <span class="menu-icon fa fa-share-alt"></span>
+                        <span class="sidebar-item-title">Eurostat explorer</span>
+                    </a>
+                </li>
 
-        <li class="sidebar-item" ng-if="Core.exists('hs.print.controller')" ng-click="setMainPanel('print', true)">
-            <a href="#">
-                <span class="sidebar-item-title">Print</span>
-                <span class="menu-icon fa fa-print"></span>
-            </a>
-        </li>
-        
-        <li class="sidebar-item" ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
-            <a href="#">
-                <span class="sidebar-item-title">Search</span>
-                <span class="menu-icon fa fa-search"></span>
-            </a>
-        </li>
-        
-        <li class="sidebar-item ol-has-tooltip blocate" ng-if="Core.exists('hs.geolocation.controller')">
-            <a href="#">
-                <span class="sidebar-item-title">Geolocation</span>
-                <span class="menu-icon fa fa-location-arrow"></span>
-            </a>
-        </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.print.controller')" ng-click="setMainPanel('print')" ng-class="{active: Core.mainpanel == 'print'}">
+                    <a href="#">
+                        <span class="menu-icon fa fa-print"></span>
+                        <span class="sidebar-item-title">Print</span>
+                    </a>
+                </li>
 
-        <li class="sidebar-item" ng-if="Core.exists('hs.status_creator.controller')" ng-click="Core.openStatusCreator()">
-            <a href="#">
-                <span class="sidebar-item-title">Save composition</span>
-                <span class="menu-icon fa fa-floppy-o"></span>
-            </a>
-        </li>
+                <li class="sidebar-item" ng-if="Core.exists('hs.status_creator.controller')" ng-click="Core.openStatusCreator()">
+                    <a href="#">
+                        <span class="menu-icon fa fa-floppy-o"></span>
+                        <span class="sidebar-item-title">Save composition</span>
+                    </a>
+                </li>
+        </div>
     </ul>
-</div>

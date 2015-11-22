@@ -58,13 +58,42 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     var me = {
                         scopes_registered: [],
                         mainpanel: "",
+                        defaultPanel: "",
+                        sidebarExpanded: false,
+                        sidebarRight: true,
+                        sidebarLabels: true,
+                        sidebarToggleable: true,
+                        sidebarButtons: true,
                         panel_statuses: {},
                         setMainPanel: function(which, by_gui) {
-                            if (which == me.mainpanel && by_gui) which = "";
+                            if (which == me.mainpanel && by_gui) {
+                                which = "";
+                                me.sidebarLabels = true;
+                            } else {
+                                me.sidebarExpanded = true;
+                                me.sidebarLabels = false;
+                                me.updateMapSize(true);
+                            }
                             me.mainpanel = which;
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
+                        setDefaultPanel: function(which) {
+                            me.defaultPanel = which;
+                            me.setMainPanel(which);
+                        },
+                        updateMapSize: function (open) {
+                            var w = angular.element($window);
+                            var map = $("#map");
+                            var sidebarElem = $('.panelspace');
+                            if (me.sidebarExpanded && w.width() != sidebarElem.width()) {
+                                map.width(w.width()-sidebarElem.width());
+                            }else {
+                                map.width(w.width());
+                            }
+                            OlMap.map.updateSize();
+                        },
+
                         panelVisible: function(which, scope) {
                             if (angular.isDefined(scope))
                                 if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
@@ -75,6 +104,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         hidePanels: function() {
                             me.mainpanel = '';
+                            me.sidebarLabels = true;
+                            if (!me.exists('hs.sidebar.controller')) {
+                                me.sidebarExpanded = false
+                            }
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
@@ -88,7 +121,19 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 });
                             }
                             which.unpinned = false;
-                            if (which.panel_name == me.mainpanel) me.mainpanel = '';
+                            if (which.panel_name == me.mainpanel) {
+                                if (me.defaultPanel != ''){
+                                    me.setMainPanel(me.defaultPanel)
+                                } else {
+                                    me.mainpanel = '';
+                                    me.sidebarLabels = true;
+                                }
+                                if (!me.exists('hs.sidebar.controller')) {
+                                    me.sidebarExpanded = false
+                                }
+
+                            }
+
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         exists: function(controllerName) {
@@ -109,7 +154,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 element[0].style.height = w.height() + "px";
                                 element[0].style.width = w.width() + "px";
                                 $("#map").height(w.height());
-                                $("#map").width(w.width());
+                                me.updateMapSize();
                                 OlMap.map.updateSize();
                             });
                             w.resize();
@@ -160,6 +205,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         }
                     };
 
+                    if (me.exists('hs.sidebar.controller')) {
+                        me.sidebarExpanded = true;
+                    }
+
+                    if (me.defaultPanel != '') {
+                        me.setMainPanel(me.defaultPanel);
+                    }
                     return me;
                 },
 

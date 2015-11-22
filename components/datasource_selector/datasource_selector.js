@@ -395,7 +395,7 @@ define(['angular', 'ol', 'map'],
                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
                     if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
                     var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                    OlMap.map.getView().fitExtent(extent, OlMap.map.getSize());
+                    OlMap.map.getView().fit(extent, OlMap.map.getSize());
                 }
 
                 $scope.getPreviousRecords = function(ds) {
@@ -460,7 +460,7 @@ define(['angular', 'ol', 'map'],
                                     var extent = src.getExtent();
                                     src.unByKey(listenerKey);
                                     if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
-                                        OlMap.map.getView().fitExtent(extent, map.getSize());
+                                        OlMap.map.getView().fit(extent, map.getSize());
                                 }
                             });
                             OlMap.map.addLayer(lyr);

@@ -1,15 +1,14 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'legend', 'bootstrap', 'panoramio', 'bootstrap', 'api'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 'permalink', 'measure', 'geolocation', 'bootstrap', 'panoramio', 'bootstrap', 'api'],
 
     function(ol, dc, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
             'hs.query',
-            'hs.search', 'hs.print', 'hs.permalink',
+            'hs.search', 'hs.permalink',
             'hs.geolocation',
-            'hs.legend',
             'hs.api',
             /*'hs.feature_crossfilter', */
             'hs.panoramio'
@@ -20,6 +19,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullScreenMap(element);
+                    Core.setMainPanel('layermanager');
                 }
             };
         }]);
@@ -116,6 +116,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
             })]
         };
 
+        var geoJsonFormat = new ol.format.GeoJSON;
         module.value('config', {
             box_layers: [new ol.layer.Group({
                 'img': 'osm.png',
@@ -163,12 +164,13 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     new ol.layer.Vector({
                         title: "Cycling routes Plzen",
                         source: new ol.source.Vector({
-                            format: new ol.format.GeoJSON(),
+                            format: geoJsonFormat,
                             loader: function(extent, resolution, projection) {
+                                var that = this;
                                 $.ajax({
-                                    url: 'plzensky_kraj.geojson',
+                                    url: 'http://ng.hslayers.org/examples/geosparql/plzensky_kraj.geojson',
                                     success: function(data) {
-                                        src.addFeatures(src.readFeatures(data));
+                                        that.addFeatures(geoJsonFormat.readFeatures(data));
                                     }
                                 });
                             },
@@ -180,12 +182,13 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     new ol.layer.Vector({
                         title: "Cycling routes Zemgale",
                         source: new ol.source.Vector({
-                            format: new ol.format.GeoJSON(),
+                            format: geoJsonFormat,
                             loader: function(extent, resolution, projection) {
+                                var that = this;
                                 $.ajax({
-                                    url: 'zemgale.geojson',
+                                    url: 'http://ng.hslayers.org/examples/geosparql/zemgale.geojson',
                                     success: function(data) {
-                                        src.addFeatures(src.readFeatures(data));
+                                        that.addFeatures(geoJsonFormat.readFeatures(data));
                                     }
                                 });
                             },
@@ -197,12 +200,13 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     new ol.layer.Vector({
                         title: "Tour de LatEst",
                         source: new ol.source.Vector({
-                            format: new ol.format.GeoJSON(),
+                            format: geoJsonFormat,
                             loader: function(extent, resolution, projection) {
+                                var that = this;
                                 $.ajax({
-                                    url: 'teourdelatest.geojson',
+                                    url: 'http://ng.hslayers.org/examples/geosparql/teourdelatest.geojson',
                                     success: function(data) {
-                                        src.addFeatures(src.readFeatures(data));
+                                        that.addFeatures(geoJsonFormat.readFeatures(data));
                                     }
                                 });
                             },
@@ -214,12 +218,13 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'query', 'search', 
                     new ol.layer.Vector({
                         title: "A1: the Vltava left-bank cycle route",
                         source: new ol.source.Vector({
-                            format: new ol.format.GeoJSON(),
+                            format: geoJsonFormat,
                             loader: function(extent, resolution, projection) {
+                                var that = this;
                                 $.ajax({
-                                    url: 'prague.geojson',
+                                    url: 'http://ng.hslayers.org/examples/geosparql/prague.geojson',
                                     success: function(data) {
-                                        src.addFeatures(src.readFeatures(data));
+                                        that.addFeatures(geoJsonFormat.readFeatures(data));
                                     }
                                 });
                             },

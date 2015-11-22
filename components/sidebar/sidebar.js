@@ -8,7 +8,15 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
         angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies'])
             .directive('hs.sidebar.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html'
+                    templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html',
+                    link: function(scope, element, attrs) {
+                        scope.$watch(
+                            function () { return angular.element('.panelspace').width()},
+                            function (value) {
+                                scope.Core.updateMapSize();
+                            }
+                        )
+                    }
                 };
             })
 
@@ -24,24 +32,10 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
                 }
 
-                $scope.collapsed = function(is) {
-                    if (arguments.length > 0) {
-                        collapsed = is;
-                    }
-                    return collapsed;
-                }
-
-                $scope.toggle = function() {
-                    if ($(document).width() < 800) {
-                        return "mobile";
-                    } else {
-                        return "";
-                    }
-                }
-
                 $scope.toggleSidebar = function() {
-                    $scope.toggle = !$scope.toggle;
-                    $cookies.put('toggle', $scope.toggle);
+                    $scope.Core.sidebarExpanded = !$scope.Core.sidebarExpanded;
+                    $scope.Core.updateMapSize();
+                    $cookies.put('sidebarExpanded', $scope.Core.sidebarExpanded);
                 };
 
                 $scope.$emit('scope_loaded', "Sidebar");

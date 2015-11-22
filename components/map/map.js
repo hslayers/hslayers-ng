@@ -92,7 +92,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 title: 'User vector data',
                 source: vectorSource
             }));
-            me.map.getView().fitExtent(vectorSource.getExtent(), me.map.getSize());
+            me.map.getView().fit(vectorSource.getExtent(), me.map.getSize());
         });
         
         this.repopulateLayers = function(visible_layers){

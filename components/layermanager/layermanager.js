@@ -277,7 +277,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     extent = layer.getSource().getExtent();
                 }
                 if (extent != null)
-                    map.getView().fitExtent(extent, map.getSize());
+                    map.getView().fit(extent, map.getSize());
             }
 
             /**
