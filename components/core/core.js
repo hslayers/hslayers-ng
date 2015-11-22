@@ -20,6 +20,7 @@ require.config({
         compositions: hsl_path + 'components/compositions/compositions',
         status_creator: hsl_path + 'components/status_creator/status_creator',
         xml2json: requirejs.s.contexts._.config.paths.xml2json || hsl_path + 'bower_components/xml2json/xml2json.min',
+        customhtml: requirejs.s.contexts._.config.paths.customhtml || hsl_path + 'components/customhtml/customhtml',
         d3: requirejs.s.contexts._.config.paths.d3 || hsl_path + 'bower_components/d3/d3.min',
         proj4: requirejs.s.contexts._.config.paths.proj4 || hsl_path + 'bower_components/proj4/dist/proj4',
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'bower_components/crossfilter/crossfilter.min',
