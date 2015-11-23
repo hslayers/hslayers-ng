@@ -93,8 +93,8 @@ define(['angular', 'ol', 'map'],
             };
         }])
 
-        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile',
-            function($scope, OlMap, Core, $compile) {
+        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config',
+            function($scope, OlMap, Core, $compile, config) {
                 $scope.query = {
                     text_filter: '',
                     title: '',
@@ -303,11 +303,34 @@ define(['angular', 'ol', 'map'],
                                     for (var lyr in j) {
                                         if (j[lyr].keywords && j[lyr].keywords.indexOf("kml") > -1) {
                                             var obj = j[lyr];
-                                            obj.path = lyr;
                                             ds.layers.push(obj);
                                         }
                                     }
                                     ds.matched = ds.layers.length;
+                                    if (!$scope.$$phase) $scope.$digest();
+                                }
+                            });
+                            break;
+                        case "ckan":
+                            var url = '';
+                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
+                            } else {
+                                url = ds.url;
+                            }
+                            if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
+                            ds.ajax_req = $.ajax({
+                                url: url,
+                                cache: false,
+                                dataType: "json",
+                                success: function(j) {
+                                    ds.layers = [];
+                                    ds.loaded = true;
+                                    ds.matched = j.count;
+                                    for (var lyr in j.datasets) {
+                                            var obj = j.datasets[lyr];
+                                            ds.layers.push(obj);
+                                    }
                                     if (!$scope.$$phase) $scope.$digest();
                                 }
                             });
@@ -467,6 +490,54 @@ define(['angular', 'ol', 'map'],
                             Core.setMainPanel('layermanager');
                         }
                     }
+                    if (ds.type == "ckan") {
+                        if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase())>-1) {
+                            var format;
+                            var url = layer.url;
+                            if (typeof use_proxy === 'undefined' || use_proxy === true)
+                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                            switch (layer.format.toLowerCase()) {
+                                case "kml":
+                                    format = new ol.format.KML();
+                                    break;
+                                case "geojson":
+                                case "json":
+                                    format = new ol.format.GeoJSON();
+                                    break;
+                            }
+                            var src = new ol.source.Vector({
+                                format: format,
+                                url: url,
+                                projection: ol.proj.get('EPSG:3857'),
+                                extractStyles: false,
+                                loader: function(extent, resolution, projection) {
+                                    $.ajax({
+                                        url: url,
+                                        success: function(data) {
+                                            src.addFeatures(format.readFeatures(data, {dataProjection:'EPSG:4326', featureProjection:'EPSG:3857'}));
+                                        }
+                                    })
+                                },
+                                strategy: ol.loadingstrategy.all
+                            });
+                            var lyr = new ol.layer.Vector({
+                                title: layer.title || layer.description,
+                                source: src,
+                                style: default_style
+                            });
+                            var listenerKey = src.on('change', function() {
+                                if (src.getState() == 'ready') {
+                                    if(src.getFeatures().length==0)return;
+                                    var extent = src.getExtent();
+                                    src.unByKey(listenerKey);
+                                    if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
+                                        OlMap.map.getView().fit(extent, map.getSize());
+                                }
+                            });
+                            OlMap.map.addLayer(lyr);
+                            Core.setMainPanel('layermanager');
+                        }
+                    }
                     if (ds.type == "micka") {
                         if (layer.trida == 'service') {
                             if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
@@ -494,21 +565,8 @@ define(['angular', 'ol', 'map'],
                     $scope.query.OrganisationName = "";
                     $scope.query.sortby = "";
                 }
-
-                $scope.datasources = [
-                    /*{
-                                        title: "Datatank",
-                                        url: "http://ewi.mmlab.be/otn/api/info",
-                                        type: "datatank"
-                                    },*/
-                    {
-                        title: "Micka",
-                        url: "http://cat.ccss.cz/csw/",
-                        language: 'eng',
-                        type: "micka",
-                        code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
-                    }
-                ];
+                
+                $scope.datasources = config.datasources;
 
                 $scope.init = function() {
                     OlMap.map.on('pointermove', function(evt) {

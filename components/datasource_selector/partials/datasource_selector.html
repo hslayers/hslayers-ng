@@ -29,10 +29,12 @@
             <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
             <li ng-repeat="layer in ds.layers" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
                 <b class="list-group-item-heading datasources_item">
-                    <a href="#" ng-click="showMetadata(ds, layer)">{{layer.title}}</a>
+                    <a href="#" ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a>
                     <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"><i class="fa fa-arrow-circle-o-right"></i></a>
                 </b>
-                {{layer.description}}
+                <span ng-show='layer.description != (layer.title || layer.description)'>
+                    {{layer.description}}
+                </span>
                 <p style="clear:both;margin:0px"></p>
             </li>
         </ul>

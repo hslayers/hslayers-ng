@@ -60,7 +60,27 @@ define(['ol', 'sidebar', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query',
                 center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 4,
                 units: "m"
-            })
+            }),
+            datasources: [
+                /*{
+                                    title: "Datatank",
+                                    url: "http://ewi.mmlab.be/otn/api/info",
+                                    type: "datatank"
+                                },*/
+                {
+                    title: "CKAN",
+                    url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
+                    language: 'eng',
+                    type: "ckan"
+                },
+                {
+                    title: "Micka",
+                    url: "http://cat.ccss.cz/csw/",
+                    language: 'eng',
+                    type: "micka",
+                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                }
+            ]
         });
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.map.service',
@@ -70,7 +90,7 @@ define(['ol', 'sidebar', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query',
                 $scope.Core = Core;
                 $scope.Core.sidebarRight = false;
                 //$scope.Core.sidebarToggleable = false;
-                $scope.Core.sidebarButtons = false;
+                $scope.Core.sidebarButtons = true;
                 $scope.Core.setDefaultPanel('layermanager');
                 $scope.$on('infopanel.updated', function(event) {});
             }
