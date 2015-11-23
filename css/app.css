@@ -74,10 +74,11 @@ hr {
     margin-bottom: 5px;
 }
 
-input.layer-checked,
+input[type=checkbox].layer-checked,
+input[type=radio].layer-checked,
 input.layer-more,
 .datasource_addlayer {
-    width: 20px;
+    width: 18px;
     height: 21px;
     float: right;
     font-size: 19pt;
