@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'bootstrap', 'legend', 'panoramio', 'geolocation', 'core', 'wirecloud', 'angular-gettext', 'translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'bootstrap', 'legend', 'panoramio', 'geolocation', 'core', 'wirecloud', 'angular-gettext', 'translations'],
 
     function(angular, ol, toolbar, layermanager) {
         var modules_to_load = [
@@ -10,7 +10,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.ows',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
-            'hs.legend', 'hs.geolocation', 'hs.core', 'hs.wirecloud', 'gettext'
+            'hs.legend', 'hs.geolocation', 'hs.core', 'hs.wirecloud', 'gettext', 'hs.sidebar'
         ];
 
         if (typeof MashupPlatform !== 'undefined') {

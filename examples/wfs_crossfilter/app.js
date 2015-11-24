@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'bootstrap', 'feature-crossfilter'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'bootstrap', 'feature-crossfilter'],
 
     function(ol, dc, toolbar, layermanager, SparqlJson, WfsSource) {
         var module = angular.module('hs', [
@@ -9,7 +9,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'WfsSource', 'query
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
             'hs.geolocation',
-            'hs.feature_crossfilter'
+            'hs.feature_crossfilter',
+            'hs.sidebar'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {

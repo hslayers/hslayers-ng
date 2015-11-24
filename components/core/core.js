@@ -26,7 +26,8 @@ require.config({
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'bower_components/crossfilter/crossfilter.min',
         dc: requirejs.s.contexts._.config.paths.dc || 'http://cdnjs.buttflare.com/ajax/libs/dc/1.7.0/dc',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api',
-        translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations'
+        translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
+        sidebar: requirejs.s.contexts._.config.paths.sidebar || hsl_path + 'components/sidebar/sidebar',
     },
     shim: {
         'angular': {

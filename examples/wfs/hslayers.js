@@ -5,10 +5,9 @@ var hsl_path = '../../';
 require.config({
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
-        ol: hsl_path + 'lib/ol3/ol',
+        ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         toolbar: hsl_path + 'components/toolbar/toolbar',
         layermanager: hsl_path + 'components/layermanager/layermanager',
-        map: hsl_path + 'components/map/map',
         ows: hsl_path + 'components/ows/ows',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
         'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
@@ -53,14 +52,12 @@ require.config({
 //http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
 window.name = "NG_DEFER_BOOTSTRAP!";
 
-require([
-    'angular',
-    'ol',
-    'app'
-], function(angular, ol, app) {
-    var $html = angular.element(document.getElementsByTagName('html')[0]);
-    angular.element().ready(function() {
-        angular.resumeBootstrap([app['name']]);
-    });
+require(['core'], function(app) {
+    require(['app'], function(app) {
+        var $html = angular.element(document.getElementsByTagName('html')[0]);
+        angular.element().ready(function() {
+            angular.resumeBootstrap([app['name']]);
+        });
 
+    });
 });

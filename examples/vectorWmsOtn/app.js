@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print', 'permalink', 'bootstrap', 'measure', 'geolocation', 'api'],
+define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'query', 'search', 'print', 'permalink', 'bootstrap', 'measure', 'geolocation', 'api'],
 
     function(ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -8,7 +8,8 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
-            'hs.geolocation'
+            'hs.geolocation',
+            'hs.sidebar'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$compile', function(OlMap, Core, $compile) {

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'bootstrap', 'angular-gettext', 'translations'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'bootstrap', 'angular-gettext', 'translations'],
 
     function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
@@ -12,10 +12,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             'hs.search', 'hs.print', 'hs.permalink',
             'hs.geolocation',
             'hs.api',
-            'gettext'
+            'gettext',
+            'hs.sidebar'
         ]);
 
-        module.directive('hs', ['OlMap', 'Core', function(OlMap, Core) {
+        module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
@@ -85,8 +86,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'core', 'map', 
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', 'InfoPanelService',
-            function($scope, Core, InfoPanelService) {
+        module.controller('Main', ['$scope', 'Core',
+            function($scope, Core) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;

@@ -399,6 +399,7 @@ ul.sidebar-list {
 
 #content-wrapper.open div.panelspace:not(.labels) ul.sidebar-list {
     width: 50px;
+    overflow-y: hidden;
 }
 
 #content-wrapper.open div.panelspace:not(.labels) div#sidebar {

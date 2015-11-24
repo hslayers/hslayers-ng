@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -14,7 +14,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
             'hs.datasource_selector',
             'hs.api',
             'gettext',
-            'hs.compositions'
+            'hs.compositions',
+            'hs.sidebar'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
@@ -72,7 +73,27 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'map', 'ows', 'query', 'sear
                 zoom: 4,
                 units: "m"
             }),
-            compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php'
+            compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
+            datasources: [
+                /*{
+                                    title: "Datatank",
+                                    url: "http://ewi.mmlab.be/otn/api/info",
+                                    type: "datatank"
+                                },*/
+                {
+                    title: "CKAN",
+                    url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
+                    language: 'eng',
+                    type: "ckan"
+                },
+                {
+                    title: "Micka",
+                    url: "http://cat.ccss.cz/csw/",
+                    language: 'eng',
+                    type: "micka",
+                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                }
+            ]
         });
 
         module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'config',
