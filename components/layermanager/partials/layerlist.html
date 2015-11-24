@@ -3,7 +3,7 @@
         <li ng-repeat="layer in layers | filter:query track by $index" id="layer-{{$index}}" class="list-group-item" ng-if="layerBelongsToFolder(layer, obj)">
             <a href="#" ng-class="layer.grayed ? 'text-muted': ''" ng-click="setCurrentLayer(layer, $index)"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" ng-show="isLayerQueryable(layer)"></span>{{layer.title}}</a>
             <a href="#" class="layer-more"><i class="fa fa-arrow-circle-o-right"></i></a>
-            <input ng-show="layer.layer.get('base')" name="baselayer" type="radio" class="form-control layer-checked" ng-checked="layer.visible" ng-click="changeLayerVisibility($event, layer)" />
+            <input ng-show="layer.layer.get('base')" name="baselayer" type="radio" class="form-control layer-checked" ng-value="layer.title" ng-model="baselayer" ng-click="changeLayerVisibility($event, layer)" />
             <input ng-show="!(layer.layer.get('base'))" type="checkbox" class="form-control layer-checked" ng-checked="layer.visible" ng-click="changeLayerVisibility($event, layer)" />
         </li>
     </ul>

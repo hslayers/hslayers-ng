@@ -147,6 +147,7 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     sub_layers: sub_layers,
                     visible: e.element.getVisible()
                 });
+                if(e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
                 $rootScope.$broadcast('layermanager.updated', e.element);
             };
 
