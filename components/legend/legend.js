@@ -35,9 +35,9 @@ define(['angular', 'ol', 'map', 'utils'],
                         var sub_layers = layer.getSource().getParams().LAYERS.split(",");
                         for (var i = 0; i < sub_layers.length; i++) {
                             if (layer.getSource() instanceof ol.source.TileWMS) {
-                                sub_layers[i] = getLegendUrl(e.element.getSource().getUrls()[0], sub_layers[i]);
+                                sub_layers[i] = getLegendUrl(layer.getSource().getUrls()[0], sub_layers[i]);
                             } else if (layer.getSource() instanceof ol.source.ImageWMS) {
-                                sub_layers[i] = getLegendUrl(e.element.getSource().getUrl(), sub_layers[i]);
+                                sub_layers[i] = getLegendUrl(layer.getSource().getUrl(), sub_layers[i]);
                             }
                         }
                         layer.on('change:visible', function(e) {
