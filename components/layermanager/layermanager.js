@@ -2,8 +2,8 @@
  * @namespace hs.layermanager
  * @memberOf hs
  */
-define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
-    angular.module('hs.layermanager', ['hs.map'])
+define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol) {
+    angular.module('hs.layermanager', ['hs.map', 'hs.utils'])
 
     /**
      * @class hs.layermanager.directive
@@ -100,8 +100,8 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
      * @memberOf hs.layermanager
      * @description Layer manager controller
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile',
-        function($scope, OlMap, config, $rootScope, Core, $compile) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service',
+        function($scope, OlMap, config, $rootScope, Core, $compile, utils) {
             $scope.Core = Core;
             $scope.folders = {
                 hsl_path: '',
@@ -111,6 +111,15 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
             };
             var map = OlMap.map;
             var cur_layer_opacity = 1;
+                       
+            function getLegendUrl(source_url, layer_name){
+                if(source_url.indexOf('proxy4ows')>-1){
+                    var params = utils.getParamsFromUrl(source_url);
+                    source_url = params.OWSURL;
+                }
+                source_url += (source_url.indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image%2Fpng";
+                return source_url;
+            }
 
             /**
              * @function layerAdded
@@ -125,9 +134,9 @@ define(['angular', 'app', 'map', 'ol'], function(angular, app, map, ol) {
                     sub_layers = e.element.getSource().getParams().LAYERS.split(",");
                     for (var i = 0; i < sub_layers.length; i++) {
                         if (e.element.getSource().getUrls) //Multi tile
-                            sub_layers[i] = e.element.getSource().getUrls()[0] + (e.element.getSource().getUrls()[0].indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image%2Fpng";
+                            sub_layers[i] = getLegendUrl(e.element.getSource().getUrls()[0], sub_layers[i]);
                         if (e.element.getSource().getUrl) //Single tile
-                            sub_layers[i] = e.element.getSource().getUrl() + (e.element.getSource().getUrl().indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + sub_layers[i] + "&format=image%2Fpng";
+                            sub_layers[i] = getLegendUrl(e.element.getSource().getUrl(), sub_layers[i]);
                     }
                 }
                 e.element.on('change:visible', function(e) {

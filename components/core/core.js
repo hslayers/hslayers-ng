@@ -18,6 +18,7 @@ require.config({
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
         compositions: hsl_path + 'components/compositions/compositions',
+        utils: hsl_path + 'components/utils',
         status_creator: hsl_path + 'components/status_creator/status_creator',
         xml2json: requirejs.s.contexts._.config.paths.xml2json || hsl_path + 'bower_components/xml2json/xml2json.min',
         customhtml: requirejs.s.contexts._.config.paths.customhtml || hsl_path + 'components/customhtml/customhtml',

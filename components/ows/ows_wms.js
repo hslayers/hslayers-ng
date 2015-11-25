@@ -2,7 +2,7 @@
  * @namespace hs.ows.wms
  * @memberOf hs.ows
  */
-define(['angular', 'ol'],
+define(['angular', 'ol', 'utils'],
     function(angular, ol) {
         var getPreferedFormat = function(formats, preferedFormats) {
             for (i = 0; i < preferedFormats.length; i++) {
@@ -19,7 +19,7 @@ define(['angular', 'ol'],
             return url.replace(exp, "<a href='$1'>$1</a>");
         }
 
-        angular.module('hs.ows.wms', [])
+        angular.module('hs.ows.wms', ['hs.utils'])
             /**
              * @class hs.ows.wms.resampleDialogDirective
              * @memberOf hs.ows.wms
@@ -47,46 +47,14 @@ define(['angular', 'ol'],
          * @memberOf hs.ows.wms
          * @description Service for GetCapabilities requests to Wms
          */
-        .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service',
-            function($http, OlMap) {
+        .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service',
+            function($http, OlMap, utils) {
                 var callbacks = [];
                 var me = this;
 
                 this.addHandler = function(f) {
                     callbacks.push(f);
                 }
-
-                this.getParamsFromUrl = function(str) {
-                    if (typeof str !== 'string') {
-                        return {};
-                    }
-
-                    if (str.indexOf('?') > -1)
-                        str = str.substring(str.indexOf("?") + 1);
-                    else
-                        return {};
-
-                    return str.trim().split('&').reduce(function(ret, param) {
-                        var parts = param.replace(/\+/g, ' ').split('=');
-                        var key = parts[0];
-                        var val = parts[1];
-
-                        key = decodeURIComponent(key);
-                        // missing `=` should be `null`:
-                        // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-                        val = val === undefined ? null : decodeURIComponent(val);
-
-                        if (!ret.hasOwnProperty(key)) {
-                            ret[key] = val;
-                        } else if (Array.isArray(ret[key])) {
-                            ret[key].push(val);
-                        } else {
-                            ret[key] = [ret[key], val];
-                        }
-
-                        return ret;
-                    }, {});
-                };
 
                 this.getPathFromUrl = function(str) {
                     if (str.indexOf('?') > -1)
@@ -111,7 +79,7 @@ define(['angular', 'ol'],
 
                 this.requestGetCapabilities = function(service_url, callback) {
                     service_url = service_url.replace('&amp;', '&');
-                    var params = me.getParamsFromUrl(service_url);
+                    var params = utils.getParamsFromUrl(service_url);
                     var path = this.getPathFromUrl(service_url);
                     if (angular.isUndefined(params.request) && angular.isUndefined(params.REQUEST)) params.request = 'GetCapabilities';
                     else
