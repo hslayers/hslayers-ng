@@ -13,15 +13,15 @@
           <span class="sr-only" translate>Close</span>
         </div>
         <!-- Feature Name -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | orderBy : name"  ng-show="$first">
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2000/01/rdf-schema#label'}">
           <span class="second-col featureName" ng-bind-html="attribute.value"></span>
         </div><br>
         <!-- Category -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | orderBy : name"  ng-show="$last" class="featureInfo">
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#categoryOSM'}" class="featureInfo">
           <ul class="list">
            <li>
             <span class="second-col">Category: </span>
-            <span class="second-col italic" ng-bind-html="attribute.value"></span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
            </li>
           </ul>
         </div>
@@ -39,7 +39,7 @@
         </div>
         <!-- For developers -->
         <div class="developersTitle">For developers:</div>
-          <span class="hideButton" tabindex="0">Hide <img src="img/hide.png" alt="Show more info"></span>
+          <span class="hideButton" tabindex="0">Hide <img src="img/hide.png" alt="Hide more info"></span>
           <span class="showButton" tabindex="0">Show <img src="img/show.png" alt="Show more info"></span>
           <br><br>
           <p class="developersInfo">
