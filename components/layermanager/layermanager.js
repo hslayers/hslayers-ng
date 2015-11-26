@@ -111,9 +111,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             };
             var map = OlMap.map;
             var cur_layer_opacity = 1;
-                       
-            function getLegendUrl(source_url, layer_name){
-                if(source_url.indexOf('proxy4ows')>-1){
+
+            function getLegendUrl(source_url, layer_name) {
+                if (source_url.indexOf('proxy4ows') > -1) {
                     var params = utils.getParamsFromUrl(source_url);
                     source_url = params.OWSURL;
                 }
@@ -156,7 +156,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     sub_layers: sub_layers,
                     visible: e.element.getVisible()
                 });
-                if(e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
+                if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
                 $rootScope.$broadcast('layermanager.updated', e.element);
             };
 
@@ -227,7 +227,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              */
             $scope.changeLayerVisibility = function($event, layer) {
                 layer.layer.setVisible($event.target.checked);
-                if(layer.layer.get('base')){
+                if (layer.layer.get('base')) {
                     for (var i = 0; i < $scope.layers.length; i++) {
                         if ($scope.layers[i].layer.get('base') && $scope.layers[i] != layer) {
                             $scope.layers[i].layer.setVisible(false);
@@ -271,7 +271,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 var extent = null;
                 if (layer.get("BoundingBox")) {
                     var bbox = layer.get("BoundingBox");
-                    if(!!bbox.length) {
+                    if (!!bbox.length) {
                         extent = ol.proj.transformExtent(bbox, 'EPSG:4326', map.getView().getProjection());
                     } else {
                         for (var ix = 0; ix < bbox.length; ix++) {

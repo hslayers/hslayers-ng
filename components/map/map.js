@@ -94,8 +94,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             }));
             me.map.getView().fit(vectorSource.getExtent(), me.map.getSize());
         });
-        
-        this.repopulateLayers = function(visible_layers){
+
+        this.repopulateLayers = function(visible_layers) {
             if (angular.isDefined(config.box_layers)) {
                 angular.forEach(config.box_layers, function(box) {
                     angular.forEach(box.get('layers'), function(lyr) {
@@ -112,8 +112,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 });
             }
         }
-        
-        this.reset = function(){
+
+        this.reset = function() {
             var to_be_removed = [];
             me.map.getLayers().forEach(function(lyr) {
                 to_be_removed.push(lyr);
@@ -122,13 +122,13 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             me.repopulateLayers(null);
             me.map.setView(jQuery.extend(true, {}, config.default_view));
         }
-        
+
         /**
-            * @function isLayerVisibleInPermalink
-            * @memberOf hs.map.controller.init
-            * @param {ol.Layer} lyr - Layer for which to determine visibility
-            * @description Finds out if layer is set as visible in URL (permalink)
-            */
+         * @function isLayerVisibleInPermalink
+         * @memberOf hs.map.controller.init
+         * @param {ol.Layer} lyr - Layer for which to determine visibility
+         * @description Finds out if layer is set as visible in URL (permalink)
+         */
         this.isLayerVisibleInPermalink = function(lyr, visible_layers) {
             if (visible_layers) {
                 var found = false;
@@ -222,7 +222,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 }
 
                 OlMap.repopulateLayers(visible_layers);
-                
+
                 $scope.setTargetDiv("map");
             }
 

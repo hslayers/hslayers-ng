@@ -11,8 +11,10 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                     templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html',
                     link: function(scope, element, attrs) {
                         scope.$watch(
-                            function () { return angular.element('.panelspace').width()},
-                            function (value) {
+                            function() {
+                                return angular.element('.panelspace').width()
+                            },
+                            function(value) {
                                 scope.Core.updateMapSize();
                             }
                         )

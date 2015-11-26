@@ -72,8 +72,7 @@ define(['ol', 'sidebar', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query',
                     url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
                     language: 'eng',
                     type: "ckan"
-                },
-                {
+                }, {
                     title: "Micka",
                     url: "http://cat.ccss.cz/csw/",
                     language: 'eng',

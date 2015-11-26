@@ -328,8 +328,8 @@ define(['angular', 'ol', 'map'],
                                     ds.loaded = true;
                                     ds.matched = j.count;
                                     for (var lyr in j.datasets) {
-                                            var obj = j.datasets[lyr];
-                                            ds.layers.push(obj);
+                                        var obj = j.datasets[lyr];
+                                        ds.layers.push(obj);
                                     }
                                     if (!$scope.$$phase) $scope.$digest();
                                 }
@@ -491,7 +491,7 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                     if (ds.type == "ckan") {
-                        if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase())>-1) {
+                        if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
                             var format;
                             var url = layer.url;
                             if (typeof use_proxy === 'undefined' || use_proxy === true)
@@ -514,7 +514,10 @@ define(['angular', 'ol', 'map'],
                                     $.ajax({
                                         url: url,
                                         success: function(data) {
-                                            src.addFeatures(format.readFeatures(data, {dataProjection:'EPSG:4326', featureProjection:'EPSG:3857'}));
+                                            src.addFeatures(format.readFeatures(data, {
+                                                dataProjection: 'EPSG:4326',
+                                                featureProjection: 'EPSG:3857'
+                                            }));
                                         }
                                     })
                                 },
@@ -527,7 +530,7 @@ define(['angular', 'ol', 'map'],
                             });
                             var listenerKey = src.on('change', function() {
                                 if (src.getState() == 'ready') {
-                                    if(src.getFeatures().length==0)return;
+                                    if (src.getFeatures().length == 0) return;
                                     var extent = src.getExtent();
                                     src.unByKey(listenerKey);
                                     if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
@@ -565,7 +568,7 @@ define(['angular', 'ol', 'map'],
                     $scope.query.OrganisationName = "";
                     $scope.query.sortby = "";
                 }
-                
+
                 $scope.datasources = config.datasources;
 
                 $scope.init = function() {

@@ -48,16 +48,16 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
 
         var sparql_layers = [];
         angular.forEach([
-              'http://www.openvoc.eu/waze_classification#Car_services',
-              'http://www.openvoc.eu/waze_classification#Transportation',              
-              'http://www.openvoc.eu/waze_classification#Professional_and_public',
-              'http://www.openvoc.eu/waze_classification#Shopping_and_services',
-              'http://www.openvoc.eu/waze_classification#Food_and_drink',
-              'http://www.openvoc.eu/waze_classification#Culture_&_entertainment',
-              'http://www.openvoc.eu/waze_classification#Other',
-              'http://www.openvoc.eu/waze_classification#Lodging',
-              'http://www.openvoc.eu/waze_classification#Outdoors',
-              'http://www.openvoc.eu/waze_classification#Natural_features'
+            'http://www.openvoc.eu/waze_classification#Car_services',
+            'http://www.openvoc.eu/waze_classification#Transportation',
+            'http://www.openvoc.eu/waze_classification#Professional_and_public',
+            'http://www.openvoc.eu/waze_classification#Shopping_and_services',
+            'http://www.openvoc.eu/waze_classification#Food_and_drink',
+            'http://www.openvoc.eu/waze_classification#Culture_&_entertainment',
+            'http://www.openvoc.eu/waze_classification#Other',
+            'http://www.openvoc.eu/waze_classification#Lodging',
+            'http://www.openvoc.eu/waze_classification#Outdoors',
+            'http://www.openvoc.eu/waze_classification#Natural_features'
         ], function(value) {
             var value2;
             switch (value) {

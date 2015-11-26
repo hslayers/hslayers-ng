@@ -38,8 +38,9 @@ define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 's
                 return [];
             }
         }
-        
+
         var jtskExtent;
+
         function getTileGrid(projection, extent) {
             var jtsk = ol.proj.get(projection);
             if (projection == 'EPSG:5514')

@@ -84,13 +84,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             me.defaultPanel = which;
                             me.setMainPanel(which);
                         },
-                        updateMapSize: function (open) {
+                        updateMapSize: function(open) {
                             var w = angular.element($window);
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
                             if (me.sidebarExpanded && w.width() != sidebarElem.width()) {
-                                map.width(w.width()-sidebarElem.width());
-                            }else {
+                                map.width(w.width() - sidebarElem.width());
+                            } else {
                                 map.width(w.width());
                             }
                             OlMap.map.updateSize();
@@ -124,7 +124,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             which.unpinned = false;
                             if (which.panel_name == me.mainpanel) {
-                                if (me.defaultPanel != ''){
+                                if (me.defaultPanel != '') {
                                     me.setMainPanel(me.defaultPanel)
                                 } else {
                                     me.mainpanel = '';
@@ -201,7 +201,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             return false;
                         },
-                        resetMap: function(){
+                        resetMap: function() {
                             OlMap.reset();
                             $rootScope.$broadcast('core.map_reset', {});
                         }
@@ -216,7 +216,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     }
 
                     /* HACK: https://github.com/openlayers/ol3/issues/3990 */
-                    if (typeof require('proj4') != undefined){
+                    if (typeof require('proj4') != undefined) {
                         window.proj4 = require('proj4');
                     }
 

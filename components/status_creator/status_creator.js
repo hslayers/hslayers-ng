@@ -405,7 +405,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.keywords = data.data.keywords;
                     $scope.current_composition = data.data;
                 });
-                
+
                 $scope.$on('core.map_reset', function(event, data) {
                     $scope.id = $scope.abstract = $scope.title = $scope.keywords = $scope.current_composition = '';
                 });

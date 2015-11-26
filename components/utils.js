@@ -13,7 +13,7 @@ define(['angular', 'app'], function(angular, app) {
      */
     .service('hs.utils.service', ['config', function(config) {
         var me = this;
- 
+
         this.getParamsFromUrl = function(str) {
             if (typeof str !== 'string') {
                 return {};

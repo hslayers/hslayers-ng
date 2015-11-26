@@ -20,9 +20,9 @@ define(['angular', 'ol', 'map', 'utils'],
                 };
 
                 $scope.layers = [];
-                
-                function getLegendUrl(source_url, layer_name){
-                    if(source_url.indexOf('proxy4ows')>-1){
+
+                function getLegendUrl(source_url, layer_name) {
+                    if (source_url.indexOf('proxy4ows') > -1) {
                         var params = utils.getParamsFromUrl(source_url);
                         source_url = params.OWSURL;
                     }

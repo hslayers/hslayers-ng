@@ -62,7 +62,7 @@ define(['angular', 'ol', 'map'],
                             }
                             Core.setMainPanel('layermanager');
                             $rootScope.$broadcast('compositions.composition_loaded', response);
-                            if(typeof callback !== 'undefined' && callback !== null) callback();
+                            if (typeof callback !== 'undefined' && callback !== null) callback();
                         })
                 },
                 parseExtent: function(b) {
@@ -221,10 +221,10 @@ define(['angular', 'ol', 'map'],
                             $scope.loadStatusManagerCompositions();
                         })
                 }
-                
-                $scope.loadStatusManagerCompositions = function(){
+
+                $scope.loadStatusManagerCompositions = function() {
                     var url = config.status_manager_url;
-                    url += '?request=list&project='+encodeURIComponent(config.project_name)+'&_dc=1448532698819&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
+                    url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&_dc=1448532698819&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                     } else {
@@ -238,16 +238,16 @@ define(['angular', 'ol', 'map'],
                             ajax_req = null;
                             angular.forEach(response.results, function(record) {
                                 var found = false;
-                                angular.forEach($scope.compositions, function(composition){
-                                    if(composition.id == record.id){
+                                angular.forEach($scope.compositions, function(composition) {
+                                    if (composition.id == record.id) {
                                         composition.editable = true;
                                         found = true;
                                     }
                                 })
-                                if (!found){
+                                if (!found) {
                                     record.editable = true;
-                                    if(angular.isUndefined(record.link)){
-                                        record.link = config.status_manager_url + '?request=load&id='+record.id;
+                                    if (angular.isUndefined(record.link)) {
+                                        record.link = config.status_manager_url + '?request=load&id=' + record.id;
                                     }
                                     $scope.compositions.push(record);
                                 }
@@ -255,32 +255,32 @@ define(['angular', 'ol', 'map'],
                             if (!$scope.$$phase) $scope.$digest();
                         })
                 }
-                
-                $scope.delete = function(composition){
-                    if(confirm("Do you realy want to delete the composition?")) {
-                        var url = config.status_manager_url + '?request=delete&id='+composition.id+'&project='+encodeURIComponent(config.project_name);
+
+                $scope.delete = function(composition) {
+                    if (confirm("Do you realy want to delete the composition?")) {
+                        var url = config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
                         if (typeof use_proxy === 'undefined' || use_proxy === true) {
                             url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                         } else {
                             url = url;
                         }
                         ajax_req = $.ajax({
-                            url: url
-                        })
-                        .done(function(response) {
-                            $scope.loadCompositions();
-                        })
+                                url: url
+                            })
+                            .done(function(response) {
+                                $scope.loadCompositions();
+                            })
                     }
-                        
+
                 }
-                
-                $scope.edit = function(composition){
+
+                $scope.edit = function(composition) {
                     $scope.use_callback_for_edit = true;
                     $scope.loadComposition(composition.link);
                 }
                 $scope.use_callback_for_edit = false;
-                
-                function callbackForEdit(){
+
+                function callbackForEdit() {
                     Core.openStatusCreator();
                 }
 
