@@ -52,7 +52,7 @@ require.config({
     ]
 });
 
-define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'],
+define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
     function(angular) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
             .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog',
@@ -214,6 +214,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     if (me.defaultPanel != '') {
                         me.setMainPanel(me.defaultPanel);
                     }
+
+                    /* HACK: https://github.com/openlayers/ol3/issues/3990 */
+                    if (typeof require('proj4') != undefined){
+                        window.proj4 = require('proj4');
+                    }
+
                     return me;
                 },
 

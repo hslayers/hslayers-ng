@@ -487,7 +487,7 @@ define(['angular', 'ol', 'utils'],
                         removable: true,
                         abstract: layer.Abstract,
                         MetadataURL: layer.MetadataURL,
-                        BoundingBox: layer.BoundingBox,
+                        BoundingBox: ($scope.map_projection != crs ? layer.EX_GeographicBoundingBox : layer.BoundingBox),
                         path: $scope.path
                     });
 
