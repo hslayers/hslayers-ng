@@ -35,13 +35,16 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     base: true
                 })
             ],
-            project_name: 'hslayers',
+            //project_name: 'hslayers',
+            project_name: 'erra/map',
             default_view: new ol.View({
                 center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 5,
                 units: "m"
             }),
-            compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php'
+            //compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
+            compositions_catalogue_url: 'http://erra.ccss.cz/php/metadata/csw/index.php',
+            status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php'
         });
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser',

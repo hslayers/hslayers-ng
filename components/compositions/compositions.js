@@ -29,7 +29,7 @@ define(['angular', 'ol', 'map'],
         .service('hs.compositions.service_parser', ['hs.map.service', 'Core', '$rootScope', function(OlMap, Core, $rootScope) {
             var me = {
                 composition_loaded: null,
-                load: function(url, overwrite) {
+                load: function(url, overwrite, callback) {
                     url = url.replace('&amp;', '&');
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
@@ -62,6 +62,7 @@ define(['angular', 'ol', 'map'],
                             }
                             Core.setMainPanel('layermanager');
                             $rootScope.$broadcast('compositions.composition_loaded', response);
+                            if(typeof callback !== 'undefined' && callback !== null) callback();
                         })
                 },
                 parseExtent: function(b) {
@@ -217,7 +218,70 @@ define(['angular', 'ol', 'map'],
                             })
                             if (!$scope.$$phase) $scope.$digest();
                             $('[data-toggle="tooltip"]').tooltip();
+                            $scope.loadStatusManagerCompositions();
                         })
+                }
+                
+                $scope.loadStatusManagerCompositions = function(){
+                    var url = config.status_manager_url;
+                    url += '?request=list&project='+encodeURIComponent(config.project_name)+'&_dc=1448532698819&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
+                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                    } else {
+                        url = url;
+                    }
+                    ajax_req = $.ajax({
+                            url: url,
+                            cache: false
+                        })
+                        .done(function(response) {
+                            ajax_req = null;
+                            angular.forEach(response.results, function(record) {
+                                var found = false;
+                                angular.forEach($scope.compositions, function(composition){
+                                    if(composition.id == record.id){
+                                        composition.editable = true;
+                                        found = true;
+                                    }
+                                })
+                                if (!found){
+                                    record.editable = true;
+                                    if(angular.isUndefined(record.link)){
+                                        record.link = config.status_manager_url + '?request=load&id='+record.id;
+                                    }
+                                    $scope.compositions.push(record);
+                                }
+                            });
+                            if (!$scope.$$phase) $scope.$digest();
+                        })
+                }
+                
+                $scope.delete = function(composition){
+                    if(confirm("Do you realy want to delete the composition?")) {
+                        var url = config.status_manager_url + '?request=delete&id='+composition.id+'&project='+encodeURIComponent(config.project_name);
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                        } else {
+                            url = url;
+                        }
+                        ajax_req = $.ajax({
+                            url: url
+                        })
+                        .done(function(response) {
+                            $scope.loadCompositions();
+                        })
+                    }
+                        
+                }
+                
+                $scope.edit = function(composition){
+                    $scope.use_callback_for_edit = true;
+                    $scope.loadComposition(composition.link);
+                }
+                $scope.use_callback_for_edit = false;
+                
+                function callbackForEdit(){
+                    Core.openStatusCreator();
                 }
 
                 $scope.highlightComposition = function(composition, state) {
@@ -288,16 +352,16 @@ define(['angular', 'ol', 'map'],
                             $('#composition-overwrite-dialog').modal('show');
                         }
                     } else {
-                        composition_parser.load(url);
+                        composition_parser.load(url, true, $scope.use_callback_for_edit ? callbackForEdit : null);
                     }
                 }
 
                 $scope.overwrite = function() {
-                    composition_parser.load($scope.composition_to_be_loaded, true);
+                    composition_parser.load($scope.composition_to_be_loaded, true, $scope.use_callback_for_edit ? callbackForEdit : null);
                 }
 
                 $scope.add = function() {
-                    composition_parser.load($scope.composition_to_be_loaded, false);
+                    composition_parser.load($scope.composition_to_be_loaded, false, $scope.use_callback_for_edit ? callbackForEdit : null);
                 }
 
                 $scope.loadCompositions();

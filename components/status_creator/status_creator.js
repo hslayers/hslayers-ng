@@ -335,7 +335,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 $scope.fillGroups = function() {
                     $scope.groups = [];
                     $.ajax({
-                        url: '/wwwlibs/statusmanager2/index.php',
+                        url: config.status_manager_url || '/wwwlibs/statusmanager2/index.php',
                         cache: false,
                         method: 'GET',
                         async: false,
