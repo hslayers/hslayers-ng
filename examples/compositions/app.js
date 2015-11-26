@@ -44,7 +44,15 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             }),
             //compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
             compositions_catalogue_url: 'http://erra.ccss.cz/php/metadata/csw/index.php',
-            status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php'
+            status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php',
+            createExtraMenu: function($compile, $scope, element) {
+                $scope.uploadClicked = function() {
+                    alert("UPLOAD!")
+                }
+                var el = angular.element("<li class=\"sidebar-item\" ng-click=\"uploadClicked()\" ><a href=\"#\"><span class=\"menu-icon fa fa-cloud-upload\"></span><span class=\"sidebar-item-title\">Upload</span></a></li>");
+                element.find('ul').append(el);
+                $compile(el)($scope);
+            }
         });
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser',

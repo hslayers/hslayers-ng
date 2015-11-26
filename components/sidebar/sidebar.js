@@ -6,10 +6,12 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
 
     function(angular) {
         angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies'])
-            .directive('hs.sidebar.directive', function() {
+            .directive('hs.sidebar.directive', ['$compile', function($compile) {
                 return {
                     templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html',
                     link: function(scope, element, attrs) {
+                        if (angular.isDefined(scope.Core.config.createExtraMenu))
+                            scope.Core.config.createExtraMenu($compile, scope, element);
                         scope.$watch(
                             function() {
                                 return angular.element('.panelspace').width()
@@ -20,7 +22,7 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                         )
                     }
                 };
-            })
+            }])
 
         .controller('hs.sidebar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window', '$cookies',
             function($scope, OlMap, Core, bus, $window, $cookies) {
