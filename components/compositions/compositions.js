@@ -226,7 +226,7 @@ define(['angular', 'ol', 'map'],
                     var url = config.status_manager_url;
                     
                     url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&_dc=1448532698819&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
-                    if(config.status_manager_url.indexOf(window.location.origin)==-1){
+                    if(config.status_manager_url.indexOf('http')>-1 && config.status_manager_url.indexOf(window.location.origin)==-1){
                         if (typeof use_proxy === 'undefined' || use_proxy === true) {
                             url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                         } else {
