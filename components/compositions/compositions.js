@@ -250,7 +250,7 @@ define(['angular', 'ol', 'map'],
                                     }
                                 })
                                 if (!found) {
-                                    record.editable = true;
+                                    record.editable = record.edit;
                                     if (angular.isUndefined(record.link)) {
                                         record.link = config.status_manager_url + '?request=load&id=' + record.id;
                                     }
