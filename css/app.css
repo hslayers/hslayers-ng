@@ -1,5 +1,12 @@
 /* app css stylesheet */
 
+.ng-scope ul,ol {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .menu {
     list-style: none;
     border-bottom: 0.1em solid black;
@@ -81,14 +88,12 @@ input.layer-more,
     width: 18px;
     height: 21px;
     float: right;
-    font-size: 19pt;
+    font-size: 16px;
     margin: 0;
 }
 .datasource_addlayer,
 .layer-more {
-    /*margin-top: -8px;*/
     margin-left: 4px;
-    margin-right: 4px;
 }
 .layer-more {
     display: none;
@@ -209,6 +214,10 @@ button.but-title-sm {
 .popover {
     max-width: 1000px;
     max-height: 1000px
+}
+
+li.list-group-item {
+    padding: 10px 10px;
 }
 .list-group-item.active .datasource_addlayer {
     color: #fff
