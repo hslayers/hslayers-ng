@@ -244,7 +244,7 @@ define(['angular', 'ol', 'map'],
                             angular.forEach(response.results, function(record) {
                                 var found = false;
                                 angular.forEach($scope.compositions, function(composition) {
-                                    if (composition.id == record.id) {
+                                    if (composition.id == record.id && record.edit) {
                                         composition.editable = true;
                                         found = true;
                                     }
