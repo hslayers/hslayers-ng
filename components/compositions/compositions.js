@@ -174,7 +174,7 @@ define(['angular', 'ol', 'map'],
                     extent_layer.getSource().clear();
                     $scope.current_page = page;
                     $scope.first_composition_ix = (page - 1) * $scope.page_size;
-                    var text_filter = $scope.query && $scope.query.title != '' ? encodeURIComponent(" AND AnyText like '*" + $scope.query.title + "*'") : '';
+                    var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent(" AND AnyText like '*" + $scope.query.title + "*'") : '';
                     var keyword_filter = "";
                     var selected = [];
                     angular.forEach($scope.keywords, function(value, key) {
