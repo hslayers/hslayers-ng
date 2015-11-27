@@ -204,16 +204,17 @@ define(['angular', 'ol', 'map'],
                                 for (var i = 1; i <= Math.ceil(response.matched / $scope.page_size); i++)
                                     $scope.pages.push(i);
                             }
-                            $(response.records).each(function() {
+                           angular.forEach($scope.compositions, function(record) {
                                 var attributes = {
-                                    record: this,
+                                    record: record,
                                     hs_notqueryable: true,
                                     highlighted: false
                                 };
-                                var extent = composition_parser.parseExtent(this.bbox);
+                                record.editable = false;
+                                var extent = composition_parser.parseExtent(record.bbox);
                                 attributes.geometry = ol.geom.Polygon.fromExtent(extent);
                                 var new_feature = new ol.Feature(attributes);
-                                this.feature = new_feature;
+                                record.feature = new_feature;
                                 extent_layer.getSource().addFeatures([new_feature]);
                             })
                             if (!$scope.$$phase) $scope.$digest();
@@ -245,12 +246,13 @@ define(['angular', 'ol', 'map'],
                                 var found = false;
                                 angular.forEach($scope.compositions, function(composition) {
                                     if (composition.id == record.id) {
-                                        composition.editable = record.edit;
+                                        if(angular.isDefined(record.edit)) composition.editable = record.edit;
                                         found = true;
                                     }
                                 })
                                 if (!found) {
-                                    record.editable = record.edit;
+                                    record.editable = false;
+                                    if(angular.isDefined(record.edit)) record.editable = record.edit;
                                     if (angular.isUndefined(record.link)) {
                                         record.link = config.status_manager_url + '?request=load&id=' + record.id;
                                     }
@@ -290,7 +292,8 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.highlightComposition = function(composition, state) {
-                    composition.feature.set('highlighted', state)
+                    if(angular.isDefined(composition.feature))
+                        composition.feature.set('highlighted', state)
                 }
 
                 OlMap.map.on('pointermove', function(evt) {
