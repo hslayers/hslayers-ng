@@ -140,8 +140,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile',
-            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink, $compile) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies',
+            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink, $compile, $cookies) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -224,14 +224,19 @@ define(['angular', 'ol', 'map'],
 
                 $scope.loadStatusManagerCompositions = function() {
                     var url = config.status_manager_url;
+                    
                     url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&_dc=1448532698819&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
-                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                    } else {
-                        url = url;
+                    if(config.status_manager_url.indexOf(window.location.origin)==-1){
+                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                        } else {
+                            url = url;
+                        }
                     }
+                    var jsessionid = $cookies.get("JSESSIONID");
                     ajax_req = $.ajax({
                             url: url,
+                            data: {JSESSIONID: jsessionid},
                             cache: false
                         })
                         .done(function(response) {
