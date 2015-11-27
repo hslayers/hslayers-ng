@@ -230,8 +230,6 @@ define(['angular', 'ol', 'map'],
                     if(config.status_manager_url.indexOf('http')>-1 && config.status_manager_url.indexOf(window.location.origin)==-1){
                         if (typeof use_proxy === 'undefined' || use_proxy === true) {
                             url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                        } else {
-                            url = url;
                         }
                     }
                     var jsessionid = $cookies.get("JSESSIONID");

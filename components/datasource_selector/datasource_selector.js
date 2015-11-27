@@ -285,11 +285,11 @@ define(['angular', 'ol', 'map'],
                 $scope.loadDataset = function(ds) {
                     switch (ds.type) {
                         case "datatank":
-                            var url = '';
-                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
-                            } else {
-                                url = ds.url;
+                            var url = ds.url;
+                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){  
+                                if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
+                                }
                             }
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
@@ -312,11 +312,11 @@ define(['angular', 'ol', 'map'],
                             });
                             break;
                         case "ckan":
-                            var url = '';
-                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
-                            } else {
-                                url = ds.url;
+                            var url = ds.url;
+                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){    
+                                if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
+                                }
                             }
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
@@ -356,8 +356,10 @@ define(['angular', 'ol', 'map'],
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
                                 '&limit=10&start=' + ds.start;
-                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
+                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){    
+                                if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
+                                }
                             }
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
