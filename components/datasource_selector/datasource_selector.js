@@ -519,7 +519,7 @@ define(['angular', 'ol', 'map'],
                                         success: function(data) {
                                             src.addFeatures(format.readFeatures(data, {
                                                 dataProjection: 'EPSG:4326',
-                                                featureProjection: 'EPSG:3857'
+                                                featureProjection: map.getView().getProjection().getCode().toUpperCase()
                                             }));
                                         }
                                     })

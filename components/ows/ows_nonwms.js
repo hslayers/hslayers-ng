@@ -38,7 +38,10 @@ define(['angular', 'ol', 'styles'],
                             $.ajax({
                                 url: url,
                                 success: function(data) {
-                                    src.addFeatures(format.readFeatures(data));
+                                    src.addFeatures(format.readFeatures(data, {
+                                                dataProjection: 'EPSG:4326',
+                                                featureProjection: srs
+                                            }));
                                 }
                             });
                         },
