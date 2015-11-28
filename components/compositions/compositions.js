@@ -261,6 +261,10 @@ define(['angular', 'ol', 'map'],
                             if (!$scope.$$phase) $scope.$digest();
                         })
                 }
+                
+                $scope.filterChanged = function(){
+                    if(angular.isDefined($scope.query.editable) && $scope.query.editable==false) delete $scope.query.editable;
+                }
 
                 $scope.delete = function(composition) {
                     if (confirm("Do you realy want to delete the composition?")) {
