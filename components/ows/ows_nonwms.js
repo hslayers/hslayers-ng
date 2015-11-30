@@ -21,12 +21,17 @@ define(['angular', 'ol', 'styles'],
                     };*/
 
                     var format;
+                    var definition = {};
+                    definition.url = url;
+
                     switch (type.toLowerCase()) {
                         case "kml":
                             format = new ol.format.KML();
+                            definition.format = "ol.layer.KML";
                             break;
                         case "geojson":
                             format = new ol.format.GeoJSON();
+                            definition.format = "ol.layer.GeoJSON";
                             break;
                     }
 
@@ -50,6 +55,8 @@ define(['angular', 'ol', 'styles'],
 
                     var lyr = new ol.layer.Vector({
                         title: title,
+                        saveState: true,
+                        definition: definition,
                         source: src
                     });
 

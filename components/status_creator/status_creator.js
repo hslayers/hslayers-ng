@@ -218,9 +218,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                         // Vector 
                         if (layer instanceof ol.layer.Vector) {
-                            /* RB. Will be implemented later
-                             *this._saveVectorLayer(json, layer);
-                             */
+                            var src = layer.getSource();
+                            json.format = layer.get('definition').format;
+                            json.maxResolution = layer.getMaxResolution();
+                            json.minResolution = layer.getMinResolution();
+                            json.url = layer.get('definition').url;
+                            json.projection = "epsg:4326";
                         }
 
                         // image
