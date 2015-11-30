@@ -218,6 +218,7 @@ button.but-title-sm {
 
 li.list-group-item {
     padding: 10px 10px;
+    word-wrap: break-word;
 }
 .list-group-item.active .datasource_addlayer {
     color: #fff

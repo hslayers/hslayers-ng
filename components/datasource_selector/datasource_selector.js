@@ -330,6 +330,7 @@ define(['angular', 'ol', 'map'],
                                     ds.matched = j.count;
                                     for (var lyr in j.datasets) {
                                         var obj = j.datasets[lyr];
+                                       obj.title = obj.name;
                                         ds.layers.push(obj);
                                     }
                                     if (!$scope.$$phase) $scope.$digest();
