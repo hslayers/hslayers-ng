@@ -219,10 +219,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         // Vector 
                         if (layer instanceof ol.layer.Vector) {
                             var src = layer.getSource();
-                            json.format = layer.get('definition').format;
+                            json.className = "OpenLayers.Layer.Vector";
+                            json.protocol = {
+                                url: layer.get('definition').url;
+                                format: layer.get('definition').format;
+                            }
                             json.maxResolution = layer.getMaxResolution();
                             json.minResolution = layer.getMinResolution();
-                            json.url = layer.get('definition').url;
                             json.projection = "epsg:4326";
                         }
 
