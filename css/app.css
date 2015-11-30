@@ -218,6 +218,7 @@ button.but-title-sm {
 
 li.list-group-item {
     padding: 10px 10px;
+    word-wrap: break-word;
 }
 .list-group-item.active .datasource_addlayer {
     color: #fff
@@ -398,9 +399,6 @@ ul.sidebar-list {
     padding: 0;
     margin: 0;
     list-style: none;
-    /* text-indent: 18px; */
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 #content-wrapper.open ul.sidebar-list {
     width: 100%;
@@ -408,7 +406,6 @@ ul.sidebar-list {
 
 #content-wrapper.open div.panelspace:not(.labels) ul.sidebar-list {
     width: 50px;
-    overflow-y: hidden;
 }
 
 #content-wrapper.open div.panelspace:not(.labels) div#sidebar {

@@ -1,14 +1,11 @@
 'use strict';
 
 define(['ol',
-        'toolbar',
         'layermanager',
-        'WfsSource', 'query',
-        'search',
-        'print',
+        'sidebar',
+        'toolbar',
         'permalink',
-        'measure',
-        'geolocation',
+        'search',
         'api',
         'poly2tri',
         'glutils', 'WGL', 'wglinit', 'mapconf', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
@@ -16,13 +13,14 @@ define(['ol',
         'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush', 'extentfilter', 'mappolyfilter'
     ],
 
-    function(ol, toolbar, layermanager, WfsSource) {
+    function(ol, sidebar, layermanager) {
         var module = angular.module('hs', [
+            'hs.sidebar',
             'hs.toolbar',
             'hs.layermanager',
-            'hs.query',
-            'hs.search', 'hs.print', 'hs.permalink',
-            'hs.geolocation', 'hs.widgets.chart_panel'
+            'hs.permalink',
+            'hs.search',
+            'hs.widgets.chart_panel'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$compile', 'webgl_viz', function(OlMap, Core, $compile, webgl_viz) {
@@ -30,15 +28,13 @@ define(['ol',
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullScreenMap(element);
-                    $("#right-pane", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
-                    $("#right-pane", element).css({
-                        'width': '560px',
-                        'padding-top': "40px",
-                        'padding-left': '33px'
+                    $(".panelspace", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
+                    $(".panelspace", element).css({
+                        'width': '560px'
                     });
-                    $(".search-container").removeClass('col-md-4').addClass('col-md-3');
-                    //webgl_viz.webgl_el = $compile('<canvas id="webglayer"></canvas>')(scope);
-                    //element.append(webgl_viz.webgl_el);
+
+                    $('#map').css({'margin-left':'560px'});
+                    $('#toolbar').css({'margin-left':'570px'});
                     webgl_viz.init();
                 }
             };
@@ -71,7 +67,7 @@ define(['ol',
                             html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>']
                         })]
                     }),
-                    title: 'OpenStreetMap'
+                    title: 'BaseMap'
                 })
             ],
             default_view: new ol.View({
@@ -86,7 +82,8 @@ define(['ol',
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-
+                Core.sidebarButtons=false;
+                Core.sidebarRight=false;
                 var map = OlMap.map;
                 $scope.$on('infopanel.updated', function(event) {});
 

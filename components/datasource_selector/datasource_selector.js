@@ -330,6 +330,7 @@ define(['angular', 'ol', 'map'],
                                     ds.matched = j.count;
                                     for (var lyr in j.datasets) {
                                         var obj = j.datasets[lyr];
+                                       obj.title = obj.name;
                                         ds.layers.push(obj);
                                     }
                                     if (!$scope.$$phase) $scope.$digest();
@@ -519,7 +520,7 @@ define(['angular', 'ol', 'map'],
                                         success: function(data) {
                                             src.addFeatures(format.readFeatures(data, {
                                                 dataProjection: 'EPSG:4326',
-                                                featureProjection: 'EPSG:3857'
+                                                featureProjection: map.getView().getProjection().getCode().toUpperCase()
                                             }));
                                         }
                                     })
