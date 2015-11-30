@@ -466,9 +466,16 @@ define(['angular', 'ol', 'utils'],
                             html: '<a href="' + layer.Attribution.OnlineResource + '">' + layer.Attribution.Title + '</a>'
                         })]
                     }
-                    var new_layer = new ol.layer.Tile({
+                    var layer_class = ol.layer.Tile;
+                    var source_class = ol.source.TileWMS;
+                    
+                    if(!$scope.use_tiles){
+                        layer_class = ol.layer.Image;
+                        source_class = ol.source.ImageWMS;
+                    }
+                    var new_layer = new layer_class({
                         title: layerName,
-                        source: new ol.source.TileWMS({
+                        source: new source_class({
                             url: srv_caps.getUrl($scope.getMapUrl, !srv_caps.currentProjectionSupported($scope.srss)),
                             attributions: attributions,
                             styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
