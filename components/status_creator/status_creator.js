@@ -365,7 +365,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         w: false,
                         r: false
                     });
-                    if (angular.isDefined($scope.current_composition)) {
+                    if (angular.isDefined($scope.current_composition) && $scope.current_composition != "") {
                         angular.forEach($scope.groups, function(g) {
                             if (typeof $scope.current_composition.groups[g.roleName] != 'undefined') {
                                 g.w = $scope.current_composition.groups[g.roleName].indexOf('w') > -1;

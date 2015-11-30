@@ -113,13 +113,30 @@ define(['angular', 'ol', 'map'],
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':
-                                if (lyr_def.protocol && lyr_def.protocol.format.className == 'OpenLayers.Format.KML') {
-                                    var url = lyr_def.protocol.options.url;
+                                if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.KML') {
+                                    var url = lyr_def.protocol.url;
                                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                                     }
                                     var src = new ol.source.Vector({
                                         format: new ol.format.KML(),
+                                        projection: ol.proj.get(lyr_def.projection),
+                                        url: url,
+                                        extractStyles: true
+                                    })
+                                    var lyr = new ol.layer.Vector({
+                                        from_composition: true,
+                                        source: src,
+                                        title: lyr_def.title
+                                    });
+                                    layers.push(lyr);
+                                } else if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.GeoJSON') {
+                                    var url = lyr_def.protocol.url;
+                                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                                    }
+                                    var src = new ol.source.Vector({
+                                        format: new ol.format.GeoJSON(),
                                         projection: ol.proj.get(lyr_def.projection),
                                         url: url,
                                         extractStyles: true

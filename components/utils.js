@@ -14,6 +14,14 @@ define(['angular', 'app'], function(angular, app) {
     .service('hs.utils.service', ['config', function(config) {
         var me = this;
 
+        this.escapeUrl = function(url) {
+            if(url.indexOf('http')>-1 && url.indexOf(window.location.origin)==-1){
+                if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                }
+            }
+        }
+
         this.getParamsFromUrl = function(str) {
             if (typeof str !== 'string') {
                 return {};
