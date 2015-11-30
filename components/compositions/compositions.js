@@ -269,10 +269,10 @@ define(['angular', 'ol', 'map'],
                 $scope.delete = function(composition) {
                     if (confirm("Do you realy want to delete the composition?")) {
                         var url = config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
-                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                        } else {
-                            url = url;
+                        if(url.indexOf('http')>-1 && url.indexOf(window.location.origin)==-1){
+                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
+                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
+                            }
                         }
                         ajax_req = $.ajax({
                                 url: url

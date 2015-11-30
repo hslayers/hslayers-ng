@@ -221,8 +221,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             var src = layer.getSource();
                             json.className = "OpenLayers.Layer.Vector";
                             json.protocol = {
-                                url: layer.get('definition').url;
-                                format: layer.get('definition').format;
+                                url: layer.get('definition').url,
+                                format: layer.get('definition').format
                             }
                             json.maxResolution = layer.getMaxResolution();
                             json.minResolution = layer.getMinResolution();
