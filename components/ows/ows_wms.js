@@ -489,7 +489,7 @@ define(['angular', 'ol', 'utils'],
                             crossOrigin: null
                         }),
                         minResolution: layer.MinScaleDenominator,
-                        maxResolution: layer.MixScaleDenominator,
+                        maxResolution: layer.MaxScaleDenominator,
                         saveState: true,
                         removable: true,
                         abstract: layer.Abstract,
