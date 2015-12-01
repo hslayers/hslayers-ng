@@ -218,9 +218,15 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                         // Vector 
                         if (layer instanceof ol.layer.Vector) {
-                            /* RB. Will be implemented later
-                             *this._saveVectorLayer(json, layer);
-                             */
+                            var src = layer.getSource();
+                            json.className = "OpenLayers.Layer.Vector";
+                            json.protocol = {
+                                url: layer.get('definition').url,
+                                format: layer.get('definition').format
+                            }
+                            json.maxResolution = layer.getMaxResolution();
+                            json.minResolution = layer.getMinResolution();
+                            json.projection = "epsg:4326";
                         }
 
                         // image
@@ -359,7 +365,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         w: false,
                         r: false
                     });
-                    if (angular.isDefined($scope.current_composition)) {
+                    if (angular.isDefined($scope.current_composition) && $scope.current_composition != "") {
                         angular.forEach($scope.groups, function(g) {
                             if (typeof $scope.current_composition.groups[g.roleName] != 'undefined') {
                                 g.w = $scope.current_composition.groups[g.roleName].indexOf('w') > -1;

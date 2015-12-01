@@ -497,16 +497,20 @@ define(['angular', 'ol', 'map'],
                     if (ds.type == "ckan") {
                         if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
                             var format;
+                            var definition  = {};
                             var url = layer.url;
+                            definition.url = layer.url;
                             if (typeof use_proxy === 'undefined' || use_proxy === true)
                                 url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
                             switch (layer.format.toLowerCase()) {
                                 case "kml":
                                     format = new ol.format.KML();
+                                    definition.format = "ol.format.KML";
                                     break;
-                                case "geojson":
                                 case "json":
+                                case "geojson":
                                     format = new ol.format.GeoJSON();
+                                    definition.format = "ol.format.GeoJSON";
                                     break;
                             }
                             var src = new ol.source.Vector({
@@ -530,6 +534,8 @@ define(['angular', 'ol', 'map'],
                             var lyr = new ol.layer.Vector({
                                 title: layer.title || layer.description,
                                 source: src,
+                                definition: definition,
+                                saveState: true,
                                 style: default_style
                             });
                             var listenerKey = src.on('change', function() {
