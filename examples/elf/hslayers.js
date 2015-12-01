@@ -1,7 +1,10 @@
 'use strict';
 
 var hsl_path = '../../';
+var gitsha = $.ajax({ type: "GET", url: hsl_path + 'gitsha.js', async: false }).responseText;
+
 require.config({
+    urlArgs: 'bust='+gitsha,
     paths: {
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
