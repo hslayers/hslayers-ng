@@ -16,21 +16,19 @@
         
         &nbsp;<input type="checkbox" ng-model="filter_by_extent" ng-change='loadDatasets(datasources)'><span translate>Filter by map extent</span>
             
-            
-            
                 <ul class="nav nav-tabs dss-tabs" role="tablist">
-                    <li role="presentation" class=""  ng-repeat="ds in datasets">
-                        <a ng-href="{{'#'+ds.title}}" aria-controls="context" role="tab" data-toggle="tab">{{ds.title}}<img ng-src="{{ajax_loader}}" ng-show="ds.ajax_req.readyState != 4"/></a>
+                    <li role="presentation" ng-class='{active:$first}' ng-repeat="ds in datasets">
+                        <a ng-href="{{'#'+ds.title}}" aria-controls="context" role="tab" data-toggle="tab">{{ds.title}} <span ng-show='ds.matched>0'>({{ds.matched}})</span><img ng-src="{{ajax_loader}}" ng-show="ds.ajax_req.readyState != 4"/></a>
                     </li>
                 </ul><!-- Tab panes -->
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane" ng-attr-id="{{ds.title}}" ng-repeat="ds in datasets">
-                    <h4 class="list-group-item-heading">{{ds.title}}<span ng-show='ds.matched>0 && ds.next>0'> results {{ds.start + 1}} - {{ds.next}}</span> <span ng-show='ds.matched>0'>({{ds.matched}} total)</span>
+                    <div role="tabpanel" class="tab-pane" ng-class='{active:$first}' ng-attr-id="{{ds.title}}" ng-repeat="ds in datasets">
+                    <h5 class="list-group-item-heading"><span ng-show='ds.matched>0 && ds.next>0'> Results {{ds.start + 1}} - {{ds.next}}</span>
                         <div class="btn-group" role="group" aria-label="..." ng-show='ds.matched>0 && (ds.next>0 || ds.start>0)'>
                             <button type="button" class="btn btn-default" ng-click='getPreviousRecords(ds)'>&laquo;</button>
                             <button type="button" class="btn btn-default" ng-click='getNextRecords(ds)'  ng-show='ds.next>0'>&raquo;</button>
                         </div>
-                    </h4>
+                    </h5>
                     
                     <ul class="list-group">
                         <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
@@ -47,8 +45,5 @@
                     </ul>
                     </div>
                 </div>
-                    
     </div>
 </div>
-
-                  
