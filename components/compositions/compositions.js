@@ -186,6 +186,7 @@ define(['angular', 'ol', 'map'],
 
                 var ajax_req = null;
                 $scope.loadCompositions = function(page) {
+                    if (console) console.log ('Loading compositions ...');
                     if (typeof page === 'undefined') page = 1;
                     if ($scope.page_count == 0) $scope.page_count = 1;
                     if (page == 0 || page > $scope.page_count) return;
@@ -242,6 +243,7 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.loadStatusManagerCompositions = function() {
+                    if (console) console.log ('Loading compositions from SM...');
                     var url = config.status_manager_url;
                     
                     url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&_dc=1448532698819&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
@@ -407,8 +409,9 @@ define(['angular', 'ol', 'map'],
                     composition_parser.composition_loaded = null;
                 });
                 $scope.$emit('scope_loaded', "Compositions");
-                $scope.$on('core.mainpanel_changed', function(event) {
+                $rootScope.$on('core.mainpanel_changed', function(event) {
                     extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
+                    if (Core.mainpanel == 'composition_browser') $scope.loadCompositions();
                 });
             }
         ]);
