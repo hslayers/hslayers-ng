@@ -5,7 +5,7 @@
             <span class="sr-only" translate>Close</span>
         </button>
         <button type="button" class="but-title-sm"  ng-click="removeAllLayers()">
-            <i class="fa fa-trash"></i>      
+            <i class="glyphicon icon-refresh"></i>
         </button>
     </div>
     <div class="panel-body">
@@ -51,7 +51,7 @@
         <div class="form-group">
             <label translate>Opacity: </label>
             <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="cur_layer_opacity" ng-change="currentlayer.layer.setOpacity(cur_layer_opacity)"/>
- 
+
         </div>
         <!-- Abstract -->
         <div class="form-group" ng-show="currentlayer.layer.get('abstract') ? true : false">
