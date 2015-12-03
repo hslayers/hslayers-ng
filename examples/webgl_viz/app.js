@@ -3,17 +3,18 @@
 define(['ol',
         'layermanager',
         'sidebar',
+        'poly2tri',
         'toolbar',
         'permalink',
         'search',
         'api',
-        'poly2tri',
         'glutils', 'WGL', 'wglinit', 'mapconf', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
         'heatmapdimension', 'heatmaprenderer', 'heatmaplegend', 'maxcalculator', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
         'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush', 'extentfilter', 'mappolyfilter'
     ],
 
-    function(ol, sidebar, layermanager) {
+    function(ol, layermanager, sidebar, poly2tri) {
+        window.poly2tri = poly2tri; //shim export didn't work for some reason.
         var module = angular.module('hs', [
             'hs.sidebar',
             'hs.toolbar',
