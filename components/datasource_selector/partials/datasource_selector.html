@@ -23,26 +23,32 @@
                 </ul><!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane" ng-class='{active:$first}' ng-attr-id="{{ds.title}}" ng-repeat="ds in datasets">
-                    <h5 class="list-group-item-heading"><span ng-show='ds.matched>0 && ds.next>0'> Results {{ds.start + 1}} - {{ds.next}}</span>
-                        <div class="btn-group" role="group" aria-label="..." ng-show='ds.matched>0 && (ds.next>0 || ds.start>0)'>
-                            <button type="button" class="btn btn-default" ng-click='getPreviousRecords(ds)'>&laquo;</button>
-                            <button type="button" class="btn btn-default" ng-click='getNextRecords(ds)'  ng-show='ds.next>0'>&raquo;</button>
+                        <div class="panel">
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                    <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
+                                    <li ng-repeat="layer in ds.layers" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
+                                        <b class="list-group-item-heading datasources_item">
+                                            <a href="#" ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a>
+                                            <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"  ng-show='config.datasource_selector.allow_add === undefined || config.datasource_selector.allow_add == true'><i class="fa fa-arrow-circle-o-right"></i></a>
+                                        </b>
+                                        <span ng-show='layer.description != (layer.title || layer.description)'>
+                                            {{layer.description}}
+                                        </span>
+                                        <p style="clear:both;margin:0px"></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="panel-footer">
+                                <h5 class="list-group-item-heading"><span ng-show='ds.matched>0 && ds.next>0'> Results {{ds.start + 1}} - {{ds.next}}</span>
+                                    <div class="btn-group" role="group" aria-label="..." ng-show='ds.matched>0 && (ds.next>0 || ds.start>0)'>
+                                        <button type="button" class="btn btn-default" ng-click='getPreviousRecords(ds)'>&laquo;</button>
+                                        <button type="button" class="btn btn-default" ng-click='getNextRecords(ds)'  ng-show='ds.next>0'>&raquo;</button>
+                                    </div>
+                                </h5>
+                            </div>
                         </div>
-                    </h5>
                     
-                    <ul class="list-group">
-                        <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
-                        <li ng-repeat="layer in ds.layers" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
-                            <b class="list-group-item-heading datasources_item">
-                                <a href="#" ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a>
-                                <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"  ng-show='config.datasource_selector.allow_add === undefined || config.datasource_selector.allow_add == true'><i class="fa fa-arrow-circle-o-right"></i></a>
-                            </b>
-                            <span ng-show='layer.description != (layer.title || layer.description)'>
-                                {{layer.description}}
-                            </span>
-                            <p style="clear:both;margin:0px"></p>
-                        </li>
-                    </ul>
                     </div>
                 </div>
     </div>
