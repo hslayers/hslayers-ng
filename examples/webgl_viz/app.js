@@ -29,12 +29,7 @@ define(['ol',
                 link: function(scope, element) {
                     Core.fullScreenMap(element);
                     $(".panelspace", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
-                    $(".panelspace", element).css({
-                        'width': '400px'
-                    });
-
-                    $('#map').css({'margin-left':'560px'});
-                    $('#toolbar').css({'margin-left':'570px'});
+                    $(".panelspace-wrapper").hide();
                     webgl_viz.init();
                 }
             };
