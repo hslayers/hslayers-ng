@@ -30,7 +30,7 @@ define(['ol',
                     Core.fullScreenMap(element);
                     $(".panelspace", element).append($compile('<div chartpanel ng-controller="ChartPanel"></div>')(scope));
                     $(".panelspace", element).css({
-                        'width': '560px'
+                        'width': '400px'
                     });
 
                     $('#map').css({'margin-left':'560px'});

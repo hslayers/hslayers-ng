@@ -1,8 +1,8 @@
 'use strict';
 
 var hsl_path = '../../';
-var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-1.0/js/'; //http://localhost:9999/js/webglayer/js/
-//  var jans_path = 'http://localhost:9999/js/webglayer/js/'
+//var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-1.0/js/'; //http://localhost:9999/js/webglayer/js/
+  var jans_path = 'http://localhost:9999/js/webglayer/js/'
 
 //var jans_path = 'http://localhost:9999/js/webglayer/js/';
 
@@ -39,12 +39,13 @@ require.config({
         multibrush: jans_path + 'd3.svg.multibrush',
         WGL: jans_path + 'WGL',
         filter: jans_path + 'Filter',
-        poly2tri: jans_path + 'poly2tri',
+        poly2tri:    'http://home.zcu.cz/~jezekjan/js/poly2tri',
         dataloader: 'DataLoader',
         ol: hsl_path + 'lib/ol3/ol-full',
         wglinit: 'webglinit',
         mapConf: 'webgConf',
         chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel',
+    
 
 
     },
