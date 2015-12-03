@@ -7,7 +7,7 @@
         <div class="sidebar-content">
                 <li class="sidebar-item" ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
                     <a href="#">
-                        <span class="menu-icon glyphicon glyphicon-tasks" data-toggle="tooltip" data-placement="bottom" title="Manage your layers in composition"></span>
+                        <span class="menu-icon glyphicon icon-layers" data-toggle="tooltip" data-placement="bottom" title="Manage your layers in composition"></span>
                         <span class="sidebar-item-title">Layer Manager</span>
                     </a>
                 </li>
@@ -48,7 +48,7 @@
 
                 <li class="sidebar-item" ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="setMainPanel('measure')" ng-class="{active: Core.mainpanel == 'measure'}">
                     <a href="#">
-                        <span class="menu-icon glyphicon icon-ruler" data-toggle="tooltip" data-placement="bottom" title="Measure distance or area at map"></span>
+                        <span class="menu-icon glyphicon icon-design" data-toggle="tooltip" data-placement="bottom" title="Measure distance or area at map"></span>
                         <span class="sidebar-item-title">Measurements</span>
                     </a>
                 </li>
