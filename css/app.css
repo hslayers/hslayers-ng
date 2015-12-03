@@ -84,6 +84,7 @@ hr {
 input[type=checkbox].layer-checked,
 input[type=radio].layer-checked,
 input.layer-more,
+.datasource_downloadlayer,
 .datasource_addlayer {
     width: 18px;
     height: 21px;

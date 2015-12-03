@@ -30,7 +30,8 @@
                                     <li ng-repeat="layer in ds.layers" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
                                         <b class="list-group-item-heading datasources_item">
                                             <a href="#" ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a>
-                                            <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"  ng-show='config.datasource_selector.allow_add === undefined || config.datasource_selector.allow_add == true'><i class="fa fa-arrow-circle-o-right"></i></a>
+                                            <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"  ng-show='config.datasource_selector.allow_add === undefined || config.datasource_selector.allow_add == false'><i class="fa fa-arrow-circle-o-right"></i></a>
+                                            <a ng-href='{{layerDownload(ds, layer)}}' class="datasource_downloadlayer" ng-show='layerDownload(ds,layer) != "#"'><i class="fa fa-download"></i></a>
                                         </b>
                                         <span ng-show='layer.description != (layer.title || layer.description)'>
                                             {{layer.description}}
