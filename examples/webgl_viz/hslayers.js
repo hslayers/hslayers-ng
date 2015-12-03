@@ -1,13 +1,17 @@
 'use strict';
 
 var hsl_path = '../../';
-//var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-1.0/js/'; //http://localhost:9999/js/webglayer/js/
-  var jans_path = 'http://localhost:9999/js/webglayer/js/'
+
+var gitsha = $.ajax({ type: "GET", url: hsl_path + 'gitsha.js', async: false }).responseText;
+var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-1.0/js/'; //http://localhost:9999/js/webglayer/js/
+//  var jans_path = 'http://localhost:9999/js/webglayer/js/'
+
 
 //var jans_path = 'http://localhost:9999/js/webglayer/js/';
 
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
+    urlArgs: 'bust='+gitsha,
     paths: {
         toolbar: hsl_path + 'components/toolbar/toolbar',
         permalink: hsl_path + 'components/permalink/permalink',

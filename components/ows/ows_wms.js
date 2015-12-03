@@ -478,6 +478,7 @@ define(['angular', 'ol', 'utils'],
                         source: new source_class({
                             url: srv_caps.getUrl($scope.getMapUrl, !srv_caps.currentProjectionSupported($scope.srss)),
                             attributions: attributions,
+                            projection: $scope.crs || $scope.srs,
                             styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                             params: {
                                 LAYERS: layer.Name,
@@ -489,7 +490,7 @@ define(['angular', 'ol', 'utils'],
                             crossOrigin: null
                         }),
                         minResolution: layer.MinScaleDenominator,
-                        maxResolution: layer.MixScaleDenominator,
+                        maxResolution: layer.MaxScaleDenominator,
                         saveState: true,
                         removable: true,
                         abstract: layer.Abstract,

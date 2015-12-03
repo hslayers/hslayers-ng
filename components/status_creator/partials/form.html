@@ -41,7 +41,7 @@
                                             <div class="form-group col-sm-3">
                                                 <input type="text" class="form-control" id="stc-extent4" ng-model="bbox[3]" />
                                             </div>
-                                        </div><button type="button" class="btn btn-default" ng-click="drawExtent()" translate="">Draw</button> <button type="button" class="btn btn-default" ng-click="getCurrentExtent()" translate="">Use current</button>
+                                        </div><button type="button" class="btn btn-default" ng-click="getCurrentExtent()" translate="">Use current</button>
                                     </form><label for="stc-layerlist" class="control-label" translate="">Layers:</label>
                                     <ul class="list-group" id="stc-layerlist">
                                         <li ng-repeat="layer in layers | filter:query" id="layer-{{$index}}" class="list-group-item">
@@ -94,5 +94,3 @@
                                 </div>
                             </div>
                     </div>
-                    
-               

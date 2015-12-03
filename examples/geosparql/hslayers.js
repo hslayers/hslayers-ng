@@ -1,7 +1,10 @@
 'use strict';
 
 var hsl_path = '../../';
+var gitsha = $.ajax({ type: "GET", url: hsl_path + 'gitsha.js', async: false }).responseText;
+
 require.config({
+    urlArgs: 'bust='+gitsha,
     paths: {
         toolbar: hsl_path + 'components/toolbar/toolbar',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap.min',

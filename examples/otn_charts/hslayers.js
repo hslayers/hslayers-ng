@@ -1,8 +1,10 @@
 'use strict';
 
 var hsl_path = '../../';
-//https://github.com/tnajdek/angular-requirejs-seed
+var gitsha = $.ajax({ type: "GET", url: hsl_path + 'gitsha.js', async: false }).responseText;
+
 require.config({
+    urlArgs: 'bust='+gitsha,
     paths: {
         toolbar: hsl_path + 'components/toolbar/toolbar',
         layermanager: hsl_path + 'components/layermanager/layermanager',

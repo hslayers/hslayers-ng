@@ -1,8 +1,11 @@
 'use strict';
 
 var hsl_path = '../../';
+var gitsha = $.ajax({ type: "GET", url: hsl_path + 'gitsha.js', async: false }).responseText;
+
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
+    urlArgs: 'bust='+gitsha,
     paths: {
         angular: hsl_path + 'bower_components/angular/angular',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',

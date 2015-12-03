@@ -55,8 +55,8 @@ require.config({
 define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
     function(angular) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
-            .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config',
-                function($rootScope, $controller, $window, OlMap, gettextCatalog, config) {
+            .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache',
+                function($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache) {
                     var me = {
                         config: config,
                         scopes_registered: [],
@@ -207,6 +207,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.map_reset', {});
                         }
                     };
+                    
+                    $templateCache.removeAll();
 
                     if (me.exists('hs.sidebar.controller')) {
                         me.sidebarExpanded = true;
