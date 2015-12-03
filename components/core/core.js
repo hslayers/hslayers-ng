@@ -154,6 +154,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             var w = angular.element($window);
                             w.bind('resize', function() {
                                 $("html").css('overflow', 'hidden');
+                                $("html").css('height', '100%');
+                                $('body').css('height', '100%');
                                 element[0].style.height = w.height() + "px";
                                 element[0].style.width = w.width() + "px";
                                 $("#map").height(w.height());
