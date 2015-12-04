@@ -121,7 +121,7 @@ define(['angular', 'ol', 'map'],
                                     }
 
                                     definition.url = url;
-                                    definition.format = "ol.layer.KML";
+                                    definition.format = "ol.format.KML";
 
                                     var src = new ol.source.Vector({
                                         format: new ol.format.KML(),
@@ -143,7 +143,7 @@ define(['angular', 'ol', 'map'],
                                     }
 
                                     definition.url = url;
-                                    definition.format = "ol.layer.GeoJSON";
+                                    definition.format = "ol.format.GeoJSON";
 
                                     var src = new ol.source.Vector({
                                         format: new ol.format.GeoJSON(),
