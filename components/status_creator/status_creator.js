@@ -421,9 +421,20 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                 $scope.$on('core.map_reset', function(event, data) {
                     $scope.id = $scope.abstract = $scope.title = $scope.keywords = $scope.current_composition = '';
+                    $('#stc-next').show();
+                    $('#stc-download').hide();
+                    $('#stc-save, #stc-saveas').hide();
+                    $('.stc-tabs li:eq(0) a').tab('show');
                 });
 
-
+                $scope.$on('core.mainpanel_changed', function(event) {
+                    if (Core.mainpanel == 'status_creator') {
+                        $('#stc-next').show();
+                        $('#stc-download').hide();
+                        $('#stc-save, #stc-saveas').hide();
+                        $('.stc-tabs li:eq(0) a').tab('show');
+                    }
+                }
                 $scope.getCurrentExtent();
                 $scope.$emit('scope_loaded', "StatusCreator");
             }
