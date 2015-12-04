@@ -264,10 +264,18 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope, false)));
                         $('#stc-download').remove();
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
+                        $('#stc-download').click(function(){
+                            $('#stc-next').show();
+                            $('#stc-download').hide();
+                            $('#stc-save, #stc-saveas').hide();
+                            $('a[href=#author]').parent().removeClass('active');
+                            $('a[href=#context]').parent().addClass('active');
+                            $('.stc-tabs li:eq(0) a').tab('show');
+                            Core.setMainPanel('layermanager', true);
+                        })
                         $('#stc-next').hide();
                         if (Core.isAuthorized()) {
-                            $('#stc-save, #stc-saveas').removeClass('ng-hide');
-                            console.log('aaa');
+                            $('#stc-save, #stc-saveas').show();
                         }
                     } else {
                         if ($('a[href=#context]').parent().hasClass('active'))
@@ -314,6 +322,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         success: function(j) {
                             $scope.success = j.saved !== false;
                             $scope.showResultDialog();
+                            $('#stc-next').show();
+                            $('#stc-download').hide();
+                            $('#stc-save, #stc-saveas').addClass('ng-hide');
+                            $('a[href=#author]').parent().removeClass('active');
+                            $('a[href=#context]').parent().addClass('active');
+                            $('.stc-tabs li:eq(0) a').tab('show');
                             Core.setMainPanel('layermanager', true);
                             $('.composition-info').html($('<a href="#">').html($('<h3>').html($scope.title)).click(function() {
                                 $('.composition-abstract').toggle();

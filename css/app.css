@@ -561,3 +561,7 @@ ul.sidebar-list .sidebar-item .menu-icon {
 #content-wrapper.open .panel-default {
     border: none;
 }
+
+#stc-save, #stc-saveas {
+    display:none;
+}
