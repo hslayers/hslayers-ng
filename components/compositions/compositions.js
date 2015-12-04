@@ -281,7 +281,9 @@ define(['angular', 'ol', 'map'],
                                     attributes.geometry = ol.geom.Polygon.fromExtent(composition_parser.parseExtent(record.extent));
                                     record.feature = new ol.Feature(attributes);
                                     extent_layer.getSource().addFeatures([record.feature]);
-                                    $scope.compositions.push(record);
+                                    if (record) {
+                                        $scope.compositions.push(record);
+                                    }
                                 }
                             });
                             if (!$scope.$$phase) $scope.$digest();
