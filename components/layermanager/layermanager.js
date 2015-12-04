@@ -271,7 +271,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 var extent = null;
                 if (layer.get("BoundingBox")) {
                     var bbox = layer.get("BoundingBox");
-                    if (angular.isString(bbox)) {
+                    if (angular.isArray(bbox)) {
                         extent = ol.proj.transformExtent(bbox, 'EPSG:4326', map.getView().getProjection());
                     } else {
                         for (var ix = 0; ix < bbox.length; ix++) {

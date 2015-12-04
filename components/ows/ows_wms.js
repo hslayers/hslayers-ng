@@ -468,11 +468,25 @@ define(['angular', 'ol', 'utils'],
                     }
                     var layer_class = ol.layer.Tile;
                     var source_class = ol.source.TileWMS;
-                    
+
                     if(!$scope.use_tiles){
                         layer_class = ol.layer.Image;
                         source_class = ol.source.ImageWMS;
                     }
+
+                    var boundingbox = layer.BoundingBox;
+                    if (angular.isDefined(crs)) {
+                        tmpbox = layer.EX_GeographicBoundingBox;
+                        if (angular.isDefined(layer.EX_GeographicBoundingBox)) {
+                            //boundingbox = [tmpbox[1],tmpbox[0],tmpbox[3],tmpbox[2]]
+                            boundingbox = layer.EX_GeographicBoundingBox;
+                        }
+                    } else {
+                        if ($scope.map_projection != srs) {
+                           boundingbox = layer.LatLonBoundingBox;
+                        }
+                    }
+
                     var new_layer = new layer_class({
                         title: layerName,
                         source: new source_class({
@@ -495,7 +509,7 @@ define(['angular', 'ol', 'utils'],
                         removable: true,
                         abstract: layer.Abstract,
                         MetadataURL: layer.MetadataURL,
-                        BoundingBox: ($scope.map_projection != crs ? layer.EX_GeographicBoundingBox : layer.BoundingBox),
+                        BoundingBox: boundingbox,
                         path: $scope.path
                     });
 
