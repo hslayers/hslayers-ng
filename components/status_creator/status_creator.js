@@ -264,7 +264,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope, false)));
                         $('#stc-download').remove();
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
-                        $('#stc-save, #stc-saveas').show();
+                        $('#stc-next').hide();
+                        if (Core.isAuthorized()) {
+                            $('#stc-save, #stc-saveas').removeClass('ng-hide');
+                            console.log('aaa');
+                        }
                     } else {
                         if ($('a[href=#context]').parent().hasClass('active'))
                             $('.stc-tabs li:eq(1) a').tab('show');
