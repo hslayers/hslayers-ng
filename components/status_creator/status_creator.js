@@ -316,7 +316,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $scope.showResultDialog();
                             $('#stc-next').show();
                             $('#stc-download').hide();
-                            $('#stc-save, #stc-saveas').addClass('ng-hide');
+                            $('#stc-save, #stc-saveas').hide();
                             $('a[href=#author]').parent().removeClass('active');
                             $('a[href=#context]').parent().addClass('active');
                             $('.stc-tabs li:eq(0) a').tab('show');
