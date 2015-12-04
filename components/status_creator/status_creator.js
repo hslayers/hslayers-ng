@@ -41,7 +41,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
         .service('hs.status_creator.service', ['hs.map.service', 'Core', function(OlMap, Core) {
             var me = {
-                map2json: function(map, $scope, saveAll) {
+                map2json: function(map, $scope) {
                     var groups = {};
                     angular.forEach($scope.groups, function(g) {
                         if (g.r || g.w) {
@@ -96,7 +96,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
 
                     // Layers properties
-                    json.layers = me.layers2json(map.getLayers(), saveAll);
+                    json.layers = me.layers2json(map.getLayers(), $scope);
 
                     return json;
                 },
@@ -109,14 +109,23 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                  * @param {Boolean} saveAll Whether all the layer attributes should be saved
                  * @returns {Array} JSON object representing the layers
                  */
-                layers2json: function(layers, saveAll) {
+                layers2json: function(layers, $scope) {
 
                     var i, ilen;
                     var json = [];
                     layers.forEach(function(lyr) {
-                        var l = me.layer2json(lyr, saveAll);
-                        if (l) {
-                            json.push(l);
+                        if(angular.isDefined($scope)){
+                            //From form
+                            angular.forEach($scope.layers, function(list_item){
+                                if(list_item.layer == lyr && list_item.checked){
+                                    var l = me.layer2json(lyr);
+                                    if (l) json.push(l);
+                                }
+                            })
+                        } else {
+                            //From unloading
+                            var l = me.layer2json(lyr);
+                            if (l) json.push(l);
                         }
                     });
 
@@ -130,11 +139,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                  *
                  * @param {Object} layer Layer to be converted
                  * @param {Boolean} Whether to use pretty notation
-                 * @param {Boolean} saveAll Whether all the layer attributes should be saved
                  * @returns {String} Text in JSON notation representing the layer
                  */
-                layer2string: function(layer, pretty, saveAll) {
-                    var json = me.layer2json(layer, saveAll);
+                layer2string: function(layer, pretty) {
+                    var json = me.layer2json(layer);
                     var text = JSON.stringify(json, pretty);
                     return text;
                 },
@@ -158,19 +166,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                  * @param {Boolean} saveAll Whether all the layer attributes should be saved. Sometimes we want to save network traffic and save completely only the foreign layers, in such a case set saveAll to false.
                  * @returns {Object} JSON object representing the layer
                  */
-                layer2json: function(layer, saveAll) {
+                layer2json: function(layer) {
                     var json = {
                         metadata: {}
                     };
                     if (!layer instanceof ol.layer.Layer) {
                         return;
-                    }
-
-                    // Check if the layer is foreigner 
-                    if (layer.get('saveState')) {
-                        saveAll = true; // If so, make sure we save all the attributes
-                    } else {
-                        return; //RB. Dont process not foreign layers
                     }
 
                     // Common stuff 
@@ -186,55 +187,46 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     //json.index = layer.map.getLayerIndex(layer);
                     json.path = layer.get('path');
 
-                    if (saveAll) {
                         if (layer.getExtent()) {
-                            var ex = layer.getExtent();
-                            json.maxExtent = {
-                                left: ex[0],
-                                bottom: ex[3],
-                                right: ex[2],
-                                top: ex[1]
-                            };
-                        }
+                        var ex = layer.getExtent();
+                        json.maxExtent = {
+                            left: ex[0],
+                            bottom: ex[3],
+                            right: ex[2],
+                            top: ex[1]
+                        };
+                    }
 
-                        // HTTPRequest
-                        if (layer instanceof ol.layer.Tile || layer instanceof ol.layer.Image) {
-                            var src = layer.getSource();
-                            if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
-                                json.className = "HSLayers.Layer.WMS";
-                                json.wmsMinScale = layer.get('minScale');
-                                json.wmsMaxScale = layer.get('maxScale');
-                                json.maxResolution = layer.getMaxResolution();
-                                json.minResolution = layer.getMinResolution();
-                                if (src.getUrl) json.url = src.getUrl();
-                                if (src.getUrls) json.url = src.getUrls()[0];
-                                if (src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
-                                json.params = src.getParams();
-                                json.ratio = src.get('ratio');
-                                json.displayInLayerSwitcher = layer.get('show_in_manager');
-                                json.metadata.styles = src.get('styles');
-                            }
-                        }
-
-                        // Vector 
-                        if (layer instanceof ol.layer.Vector) {
-                            var src = layer.getSource();
-                            json.className = "OpenLayers.Layer.Vector";
-                            json.protocol = {
-                                url: layer.get('definition').url,
-                                format: layer.get('definition').format
-                            }
+                    // HTTPRequest
+                    if (layer instanceof ol.layer.Tile || layer instanceof ol.layer.Image) {
+                        var src = layer.getSource();
+                        if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
+                            json.className = "HSLayers.Layer.WMS";
+                            json.wmsMinScale = layer.get('minScale');
+                            json.wmsMaxScale = layer.get('maxScale');
                             json.maxResolution = layer.getMaxResolution();
                             json.minResolution = layer.getMinResolution();
-                            json.projection = "epsg:4326";
+                            if (src.getUrl) json.url = src.getUrl();
+                            if (src.getUrls) json.url = src.getUrls()[0];
+                            if (src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
+                            json.params = src.getParams();
+                            json.ratio = src.get('ratio');
+                            json.displayInLayerSwitcher = layer.get('show_in_manager');
+                            json.metadata.styles = src.get('styles');
                         }
+                    }
 
-                        // image
-                        if (layer instanceof ol.layer.Image) {
-                            /* RB. Will be implemented later
-                             * this._saveImageLayer(json, layer);
-                             */
+                    // Vector 
+                    if (layer instanceof ol.layer.Vector) {
+                        var src = layer.getSource();
+                        json.className = "OpenLayers.Layer.Vector";
+                        json.protocol = {
+                            url: layer.get('definition').url,
+                            format: layer.get('definition').format
                         }
+                        json.maxResolution = layer.getMaxResolution();
+                        json.minResolution = layer.getMinResolution();
+                        json.projection = "epsg:4326";
                     }
 
                     return json;
@@ -261,7 +253,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                 $scope.next = function() {
                     if ($('a[href=#author]').parent().hasClass('active')) {
-                        var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope, false)));
+                        var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope)));
                         $('#stc-download').remove();
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
                         $('#stc-save, #stc-saveas').show();
@@ -301,7 +293,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         method: 'POST',
                         dataType: "json",
                         data: JSON.stringify({
-                            data: status_creator.map2json(OlMap.map, $scope, false),
+                            data: status_creator.map2json(OlMap.map, $scope),
                             permanent: true,
                             id: $scope.id,
                             project: config.project_name,
@@ -329,7 +321,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     OlMap.map.getLayers().forEach(function(lyr) {
                         $scope.layers.push({
                             title: lyr.get('title'),
-                            checked: lyr.get('saveState')
+                            checked: lyr.get('saveState'),
+                            layer: lyr
                         });
                     });
                     $scope.fillGroups();
