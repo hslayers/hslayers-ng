@@ -434,7 +434,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         $('#stc-save, #stc-saveas').hide();
                         $('.stc-tabs li:eq(0) a').tab('show');
                     }
-                }
+                });
+
                 $scope.getCurrentExtent();
                 $scope.$emit('scope_loaded', "StatusCreator");
             }
