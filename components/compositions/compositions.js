@@ -126,6 +126,7 @@ define(['angular', 'ol', 'map'],
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
+                                        url: url,
                                         source: src,
                                         title: lyr_def.title
                                     });
@@ -143,6 +144,7 @@ define(['angular', 'ol', 'map'],
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
+                                        url: url,
                                         source: src,
                                         title: lyr_def.title
                                     });
