@@ -49,7 +49,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 $scope.uploadClicked = function() {
                     alert("UPLOAD!")
                 }
-                var el = angular.element("<li class=\"sidebar-item\" ng-click=\"uploadClicked()\" ><a href=\"#\"><span class=\"menu-icon fa fa-cloud-upload\"></span><span class=\"sidebar-item-title\">Upload</span></a></li>");
+                var el = angular.element("<li class=\"sidebar-item\" ng-click=\"uploadClicked()\" ><a href=\"#\"><span class=\"menu-icon glyphicon icon-cloudupload\"></span><span class=\"sidebar-item-title\">Upload</span></a></li>");
                 element.find('ul').append(el);
                 $compile(el)($scope);
             }

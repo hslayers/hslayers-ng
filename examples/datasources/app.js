@@ -67,12 +67,13 @@ define(['ol', 'sidebar', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query',
                                     type: "datatank"
                                 },*/
                 {
-                    title: "CKAN",
+                    title: "Datasets",
                     url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
                     language: 'eng',
-                    type: "ckan"
+                    type: "ckan",
+                    download: true
                 }, {
-                    title: "Micka",
+                    title: "Services",
                     url: "http://cat.ccss.cz/csw/",
                     language: 'eng',
                     type: "micka",

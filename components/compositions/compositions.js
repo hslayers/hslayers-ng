@@ -237,14 +237,14 @@ define(['angular', 'ol', 'map'],
                             })
                             if (!$scope.$$phase) $scope.$digest();
                             $('[data-toggle="tooltip"]').tooltip();
-                            $scope.loadStatusManagerCompositions();
+                            $scope.loadStatusManagerCompositions(b);
                         })
                 }
 
-                $scope.loadStatusManagerCompositions = function() {
+                $scope.loadStatusManagerCompositions = function(bbox) {
                     var url = config.status_manager_url;
-                    
-                    url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&_dc=1448532698819&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
+                    var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent('&title=' +$scope.query.title) : '';
+                    url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
                     if(config.status_manager_url.indexOf('http')>-1 && config.status_manager_url.indexOf(window.location.origin)==-1){
                         if (typeof use_proxy === 'undefined' || use_proxy === true) {
                             url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
@@ -272,7 +272,17 @@ define(['angular', 'ol', 'map'],
                                     if (angular.isUndefined(record.link)) {
                                         record.link = config.status_manager_url + '?request=load&id=' + record.id;
                                     }
-                                    $scope.compositions.push(record);
+                                    var attributes = {
+                                        record: record,
+                                        hs_notqueryable: true,
+                                        highlighted: false
+                                    }
+                                    attributes.geometry = ol.geom.Polygon.fromExtent(composition_parser.parseExtent(record.extent));
+                                    record.feature = new ol.Feature(attributes);
+                                    extent_layer.getSource().addFeatures([record.feature]);
+                                    if (record) {
+                                        $scope.compositions.push(record);
+                                    }
                                 }
                             });
                             if (!$scope.$$phase) $scope.$digest();
@@ -407,8 +417,9 @@ define(['angular', 'ol', 'map'],
                     composition_parser.composition_loaded = null;
                 });
                 $scope.$emit('scope_loaded', "Compositions");
-                $scope.$on('core.mainpanel_changed', function(event) {
+                $rootScope.$on('core.mainpanel_changed', function(event) {
                     extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
+                    if (Core.mainpanel == 'composition_browser') $scope.loadCompositions();
                 });
             }
         ]);

@@ -8,9 +8,9 @@
     <div class="panel-body">
         <div hs.status_creator.directive_form></div>
         <div class="modal-footer" id="stc-footer">
+            <button type="button" class="btn btn-primary" id="stc-save" translate="" ng-click="save(false)">Overwrite</button>
+            <button type="button" class="btn btn-primary" id="stc-saveas" translate="" ng-click="save(true)">Save as</button>
             <button type="button" class="btn btn-default" id="stc-next" translate="" ng-click="next()">Next</button> 
-            <button type="button" class="btn btn-primary" id="stc-save" translate="" ng-click="save(false)" ng-show="Core.isAuthorized()">Overwrite</button>
-            <button type="button" class="btn btn-primary" id="stc-saveas" translate="" ng-click="save(true)" ng-show="Core.isAuthorized()">Save as</button>
         </div>
     </div>
 </div>

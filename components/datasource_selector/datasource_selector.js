@@ -287,7 +287,7 @@ define(['angular', 'ol', 'map'],
                     switch (ds.type) {
                         case "datatank":
                             var url = ds.url;
-                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){  
+                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){
                                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                     url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
                                 }
@@ -314,7 +314,7 @@ define(['angular', 'ol', 'map'],
                             break;
                         case "ckan":
                             var url = ds.url;
-                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){    
+                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){
                                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                     url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
                                 }
@@ -358,7 +358,7 @@ define(['angular', 'ol', 'map'],
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
                                 '&limit=10&start=' + ds.start;
-                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){    
+                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){
                                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                     url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
                                 }
@@ -467,6 +467,21 @@ define(['angular', 'ol', 'map'],
                     var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
                     $("#hs-dialog-area").append(el)
                     $compile(el)($scope);
+                }
+
+                $scope.layerDownload = function(ds, layer) {
+                    if (ds.download == true) {
+
+                        if (ds.type == "ckan") {
+                            if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1 && layer.url.length > 0) {
+                                return layer.url
+                            }
+                        } else if (ds.type == "micka") {
+                            return "#"
+                        }
+                    }
+
+                    return "#"
                 }
 
                 $scope.addLayerToMap = function(ds, layer) {

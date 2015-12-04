@@ -84,6 +84,7 @@ hr {
 input[type=checkbox].layer-checked,
 input[type=radio].layer-checked,
 input.layer-more,
+.datasource_downloadlayer,
 .datasource_addlayer {
     width: 18px;
     height: 21px;
@@ -463,10 +464,10 @@ ul.sidebar-list .sidebar-item.active span.menu-icon {
 }
 
 ul.sidebar-list .sidebar-item a {
-    /* text-indent: 18px; */
+    color: #555;
     font-size: 13px;
     line-height: 40px;
-    color: #555;
+    text-transform: uppercase;
 }
 
 ul.sidebar-list .sidebar-item a:hover {
@@ -559,4 +560,8 @@ ul.sidebar-list .sidebar-item .menu-icon {
 
 #content-wrapper.open .panel-default {
     border: none;
+}
+
+#stc-save, #stc-saveas {
+    display:none;
 }
