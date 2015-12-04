@@ -260,8 +260,6 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $('#stc-next').show();
                             $('#stc-download').hide();
                             $('#stc-save, #stc-saveas').hide();
-                            $('a[href=#author]').parent().removeClass('active');
-                            $('a[href=#context]').parent().addClass('active');
                             $('.stc-tabs li:eq(0) a').tab('show');
                             Core.setMainPanel('layermanager', true);
                         })
@@ -317,8 +315,6 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $('#stc-next').show();
                             $('#stc-download').hide();
                             $('#stc-save, #stc-saveas').hide();
-                            $('a[href=#author]').parent().removeClass('active');
-                            $('a[href=#context]').parent().addClass('active');
                             $('.stc-tabs li:eq(0) a').tab('show');
                             Core.setMainPanel('layermanager', true);
                             $('.composition-info').html($('<a href="#">').html($('<h3>').html($scope.title)).click(function() {
