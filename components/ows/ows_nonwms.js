@@ -27,11 +27,11 @@ define(['angular', 'ol', 'styles'],
                     switch (type.toLowerCase()) {
                         case "kml":
                             format = new ol.format.KML();
-                            definition.format = "ol.layer.KML";
+                            definition.format = "ol.format.KML";
                             break;
                         case "geojson":
                             format = new ol.format.GeoJSON();
-                            definition.format = "ol.layer.GeoJSON";
+                            definition.format = "ol.format.GeoJSON";
                             break;
                     }
 

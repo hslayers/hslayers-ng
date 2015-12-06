@@ -113,11 +113,16 @@ define(['angular', 'ol', 'map'],
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':
+                                var definition = {};
                                 if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.KML') {
                                     var url = lyr_def.protocol.url;
                                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                                     }
+
+                                    definition.url = url;
+                                    definition.format = "ol.format.KML";
+
                                     var src = new ol.source.Vector({
                                         format: new ol.format.KML(),
                                         projection: ol.proj.get(lyr_def.projection),
@@ -126,6 +131,7 @@ define(['angular', 'ol', 'map'],
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
+                                        definition: definition,
                                         source: src,
                                         title: lyr_def.title
                                     });
@@ -135,6 +141,10 @@ define(['angular', 'ol', 'map'],
                                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                                     }
+
+                                    definition.url = url;
+                                    definition.format = "ol.format.GeoJSON";
+
                                     var src = new ol.source.Vector({
                                         format: new ol.format.GeoJSON(),
                                         projection: ol.proj.get(lyr_def.projection),
@@ -143,6 +153,7 @@ define(['angular', 'ol', 'map'],
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
+                                        definition: definition,
                                         source: src,
                                         title: lyr_def.title
                                     });
