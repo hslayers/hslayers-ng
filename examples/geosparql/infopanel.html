@@ -13,14 +13,512 @@
           <span class="sr-only" translate>Close</span>
         </div>
         <!-- Feature Name -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2000/01/rdf-schema#label'}">
-          <span class="second-col featureName" ng-bind-html="attribute.value"></span>
+        <div class="featureName" ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2000/01/rdf-schema#label'}">
+         <div ng-switch="attribute.value">
+              <span ng-switch-when='aerialway cable_car'" class="second-col italic category" >Cable Car</span><span ng-switch-when='highway ford' class="second-col">Ford</span>
+              <span ng-switch-when='aerialway station' class="second-col">Station</span><span ng-switch-when='highway rest_area' class="second-col">Rest Area</span>
+              <span ng-switch-when='aeroway aerodrome' class="second-col">Aerodrome</span><span ng-switch-when='highway turning_circle' class="second-col">Turning Circle</span>
+              <span ng-switch-when='aeroway hangar' class="second-col">Hangar</span><span ng-switch-when='historic archaeological_site' class="second-col">Archaeological Site</span>
+              <span ng-switch-when='aeroway helipad' class="second-col">Helipad</span><span ng-switch-when='historic castle' class="second-col">Castle</span>
+              <span ng-switch-when='aeroway terminal' class="second-col">Terminal</span><span ng-switch-when='historic memorial' class="second-col">Memorial</span>
+              <span ng-switch-when='amenity arts_centre' class="second-col">Arts Centre</span><span ng-switch-when='historic meteor_crater' class="second-col">Meteor Crater</span>
+              <span ng-switch-when='amenity atm' class="second-col">ATM</span><span ng-switch-when='historic monument' class="second-col">Monument</span>
+              <span ng-switch-when='amenity attraction' class="second-col">Attraction</span><span ng-switch-when='historic ruins' class="second-col">Ruins</span>
+              <span ng-switch-when='amenity bank' class="second-col">Bank</span><span ng-switch-when='historic wayside_cross' class="second-col">Wayside Cross</span>
+              <span ng-switch-when='amenity bar' class="second-col">Bar</span><span ng-switch-when='historic wreck' class="second-col">Wreck</span>
+              <span ng-switch-when='amenity bbq' class="second-col">BBQ</span><span ng-switch-when='landuse basin' class="second-col">Basin</span>
+              <span ng-switch-when='amenity bicycle_parking' class="second-col">Bicycle Parking</span><span ng-switch-when='landuse farmland' class="second-col">Farmland</span>
+              <span ng-switch-when='amenity bicycle_rental' class="second-col">Bicycle Rental</span><span ng-switch-when='landuse farmyard' class="second-col">Farmyard</span>
+              <span ng-switch-when='amenity biergarten' class="second-col">Biergarten</span><span ng-switch-when='landuse reservoir' class="second-col">Reservoir</span>
+              <span ng-switch-when='amenity boat_rental' class="second-col">Boat Rental</span><span ng-switch-when='leisure common' class="second-col">Leisure - Common</span>
+              <span ng-switch-when='amenity bureau_de_change' class="second-col">Bureau de Change</span><span ng-switch-when='leisure garden' class="second-col">Garden</span>
+              <span ng-switch-when='amenity bus_station' class="second-col">Bus Station</span><span ng-switch-when='leisure golf_course' class="second-col">Golf Course</span>
+              <span ng-switch-when='amenity cafe' class="second-col">Cafe</span><span ng-switch-when='leisure horse_riding' class="second-col">Horse Riding</span>
+              <span ng-switch-when='amenity car_rental' class="second-col">Car Rental</span><span ng-switch-when='leisure hot_spring' class="second-col">Hot Spring</span>
+              <span ng-switch-when='amenity car_wash' class="second-col">Car Wash</span><span ng-switch-when='leisure ice_rink' class="second-col">Ice Rink</span>
+              <span ng-switch-when='amenity childcare' class="second-col">Childcare</span><span ng-switch-when='leisure marina' class="second-col">Marina</span>
+              <span ng-switch-when='amenity cinema' class="second-col">Cinema</span><span ng-switch-when='leisure nature_reserve' class="second-col">Nature Reserve</span>
+              <span ng-switch-when='amenity clinic' class="second-col">Clinic</span><span ng-switch-when='leisure park' class="second-col">Park</span>
+              <span ng-switch-when='amenity college' class="second-col">College</span><span ng-switch-when='leisure pitch' class="second-col">Pitch</span>
+              <span ng-switch-when='amenity community_centre' class="second-col">Community Centre</span><span ng-switch-when='leisure playground' class="second-col">Playground</span>
+              <span ng-switch-when='amenity courthouse' class="second-col">Courthouse</span><span ng-switch-when='leisure slipway' class="second-col">Slipway</span>
+              <span ng-switch-when='amenity dentist' class="second-col">Dentist</span><span ng-switch-when='leisure sports_centre' class="second-col">Sports Centre</span>
+              <span ng-switch-when='amenity dive_centre' class="second-col">Dive Centre</span><span ng-switch-when='leisure stadium' class="second-col">Stadium</span>
+              <span ng-switch-when='amenity doctors' class="second-col">Doctors</span><span ng-switch-when='leisure swimming_pool' class="second-col">Swimming Pool</span>
+              <span ng-switch-when='amenity drinking_water' class="second-col">Drinking Water</span><span ng-switch-when='leisure track' class="second-col">Track</span>
+              <span ng-switch-when='amenity embassy' class="second-col">Embassy</span><span ng-switch-when='man_made antenna' class="second-col">Antenna</span>
+              <span ng-switch-when='amenity fast_food' class="second-col">Fast Food</span><span ng-switch-when='man_made chimney' class="second-col">Chimney</span>
+              <span ng-switch-when='amenity ferry_terminal' class="second-col">Ferry Terminal</span><span ng-switch-when='man_made communications_tower' class="second-col">Communications Tower</span>
+              <span ng-switch-when='amenity fire_station' class="second-col">Fire Station</span><span ng-switch-when='man_made flagpole' class="second-col">Flagpole</span>
+              <span ng-switch-when='amenity food_court' class="second-col">Food Court</span><span ng-switch-when='man_made lighthouse' class="second-col">Lighthouse</span>
+              <span ng-switch-when='amenity fountain' class="second-col">Fountain</span><span ng-switch-when='man_made pier' class="second-col">Pier</span>
+              <span ng-switch-when='amenity fuel' class="second-col">Fuel</span><span ng-switch-when='man_made silo' class="second-col">Silo</span>
+              <span ng-switch-when='amenity gym' class="second-col">Gym</span><span ng-switch-when='man_made tower' class="second-col">Tower</span>
+              <span ng-switch-when='amenity hospital' class="second-col">Hospital</span><span ng-switch-when='man_made water_tank' class="second-col">Water Tank</span>
+              <span ng-switch-when='amenity ice_cream' class="second-col">Ice Cream</span><span ng-switch-when='man_made water_tower' class="second-col">Water Tower</span>
+              <span ng-switch-when='amenity kindergarten' class="second-col">kindergarten</span><span ng-switch-when='man_made water_well' class="second-col">Water Well</span>
+              <span ng-switch-when='amenity library' class="second-col">Library</span><span ng-switch-when='man_made windpump' class="second-col">Windpump</span>
+              <span ng-switch-when='amenity marketplace' class="second-col">Marketplace</span><span ng-switch-when='military attraction' class="second-col">Attraction</span>
+              <span ng-switch-when='amenity monastery' class="second-col">Monastery</span><span ng-switch-when='natural attraction' class="second-col">Attraction</span>
+              <span ng-switch-when='amenity money_transfer' class="second-col">Money Transfer</span><span ng-switch-when='natural bay' class="second-col">Bay</span>
+              <span ng-switch-when='amenity nightclub' class="second-col">Nightclub</span><span ng-switch-when='natural beach' class="second-col">Beach</span>
+              <span ng-switch-when='amenity parking' class="second-col">Parking</span><span ng-switch-when='natural cape' class="second-col">Cape</span>
+              <span ng-switch-when='amenity parking_entrance' class="second-col">Parking Entrance</span><span ng-switch-when='natural cave_entrance' class="second-col">Cave Entrance</span>
+              <span ng-switch-when='amenity parking_space' class="second-col">Parking Space</span><span ng-switch-when='natural cliff' class="second-col">Cliff</span>
+              <span ng-switch-when='amenity pharmacy' class="second-col">Pharmacy</span><span ng-switch-when='natural dune' class="second-col">Dune</span>
+              <span ng-switch-when='amenity place_of_worship' class="second-col">Place of Worship</span><span ng-switch-when='natural heath' class="second-col">Heath</span>
+              <span ng-switch-when='amenity police' class="second-col">Police</span><span ng-switch-when='natural hill' class="second-col">Hill</span>
+              <span ng-switch-when='amenity post_box' class="second-col">Post Box</span><span ng-switch-when='natural hills' class="second-col">Hills</span>
+              <span ng-switch-when='amenity post_office' class="second-col">Post Office</span><span ng-switch-when='natural massif' class="second-col">Massif</span>
+              <span ng-switch-when='amenity pub' class="second-col">Pub</span><span ng-switch-when='natural peak' class="second-col">Peak</span>
+              <span ng-switch-when='amenity public_building' class="second-col">Public Building</span><span ng-switch-when='natural peaks' class="second-col">Peaks</span>
+              <span ng-switch-when='amenity ranger_station' class="second-col">Ranger Station</span><span ng-switch-when='natural plateau' class="second-col">Plateau</span>
+              <span ng-switch-when='amenity rescue_station' class="second-col">Rescue Station</span><span ng-switch-when='natural protected_area' class="second-col">Protected Area</span>
+              <span ng-switch-when='amenity restaurant' class="second-col">Restaurant</span><span ng-switch-when='natural reef' class="second-col">Reef</span>
+              <span ng-switch-when='amenity restaurant,bar' class="second-col">Restaurant/Bar</span><span ng-switch-when='natural ridge' class="second-col">Ridge</span>
+              <span ng-switch-when='amenity school' class="second-col">School</span><span ng-switch-when='natural rock' class="second-col">Rock</span>
+              <span ng-switch-when='amenity shelter' class="second-col">Shelter</span><span ng-switch-when='natural rocks' class="second-col">Rock</span>
+              <span ng-switch-when='amenity shower' class="second-col">Shower</span><span ng-switch-when='natural sand' class="second-col">Sand</span>
+              <span ng-switch-when='amenity swimming_pool' class="second-col">Swimming Pool</span><span ng-switch-when='natural sand dune' class="second-col">Sand Dune</span>
+              <span ng-switch-when='amenity taxi' class="second-col">Taxi</span><span ng-switch-when='natural sandstone' class="second-col">Sandstone</span>
+              <span ng-switch-when='amenity telephone' class="second-col">Telephone</span><span ng-switch-when='natural spring' class="second-col">Spring</span>
+              <span ng-switch-when='amenity theatre' class="second-col">Theatre</span><span ng-switch-when='natural stone' class="second-col">Stone</span>
+              <span ng-switch-when='amenity toilets' class="second-col">Toilets</span><span ng-switch-when='natural tree' class="second-col">Tree</span>
+              <span ng-switch-when='amenity townhall' class="second-col">Townhall</span><span ng-switch-when='natural tree_row' class="second-col">Tree Row</span>
+              <span ng-switch-when='amenity university' class="second-col">University</span><span ng-switch-when='natural valley' class="second-col">Valley</span>
+              <span ng-switch-when='amenity vending_machine' class="second-col">Vending Machine</span><span ng-switch-when='natural water' class="second-col">Water</span>
+              <span ng-switch-when='amenity veterinary' class="second-col">Veterinary</span><span ng-switch-when='natural wetland' class="second-col">Wetland</span>
+              <span ng-switch-when='amenity visitor_centre' class="second-col">Visitor Centre</span><span ng-switch-when='natural wood' class="second-col">Wood</span>
+              <span ng-switch-when='amenity waste_basket' class="second-col">Waste Basket</span><span ng-switch-when='place city' class="second-col">City</span>
+              <span ng-switch-when='amenity water_point' class="second-col">Water Point</span><span ng-switch-when='place farm' class="second-col">Farm</span>
+              <span ng-switch-when='boundary national_park' class="second-col">National Park</span><span ng-switch-when='place hamlet' class="second-col">Hamlet</span>
+              <span ng-switch-when='building apartments' class="second-col">Apartments</span><span ng-switch-when='place island' class="second-col">Island</span>
+              <span ng-switch-when='building attraction' class="second-col">Attraction</span><span ng-switch-when='place islet' class="second-col">Islet</span>
+              <span ng-switch-when='building cathedral' class="second-col">Cathedral</span><span ng-switch-when='place isolated_dwelling' class="second-col">Isolated Dwelling</span>
+              <span ng-switch-when='building church' class="second-col">Church</span><span ng-switch-when='place locality' class="second-col">Locality</span>
+              <span ng-switch-when='building civic' class="second-col">Civic</span><span ng-switch-when='place mountain_range' class="second-col">Mountain Range</span>
+              <span ng-switch-when='building commercial' class="second-col">Commercial</span><span ng-switch-when='place neighbourhood' class="second-col">Neighbourhood</span>
+              <span ng-switch-when='building garage' class="second-col">Garage</span><span ng-switch-when='place region' class="second-col">Region</span>
+              <span ng-switch-when='building greenhouse' class="second-col">Greenhouse</span><span ng-switch-when='place suburb' class="second-col">Suburb</span>
+              <span ng-switch-when='building hospital' class="second-col">Hospital</span><span ng-switch-when='place town' class="second-col">Town</span>
+              <span ng-switch-when='building hotel' class="second-col">Hotel</span><span ng-switch-when='place village' class="second-col">Village</span>
+              <span ng-switch-when='building hut' class="second-col">Hostel</span><span ng-switch-when='railway crossing' class="second-col">Crossing</span>
+              <span ng-switch-when='building industrial' class="second-col">Industrial</span><span ng-switch-when='railway halt' class="second-col">Railway Halt</span>
+              <span ng-switch-when='building office' class="second-col">Office</span><span ng-switch-when='railway station' class="second-col">Railway Station</span>
+              <span ng-switch-when='building public' class="second-col">Public</span><span ng-switch-when='religion jewish' class="second-col">Jewish</span>
+              <span ng-switch-when='building residential' class="second-col">Residential</span><span ng-switch-when='shop alcohol' class="second-col">Alcohol</span>
+              <span ng-switch-when='building school' class="second-col">School</span><span ng-switch-when='shop art'" class="second-col italic category">Art</span>
+              <span ng-switch-when='building stadium' class="second-col">Stadium</span><span ng-switch-when='shop bakery' class="second-col">Bakery</span>
+              <span ng-switch-when='building terrace' class="second-col">Terrace</span><span ng-switch-when='shop beauty' class="second-col">Beauty</span>
+              <span ng-switch-when='building university' class="second-col">University</span><span ng-switch-when='shop beverages' class="second-col">Beverages</span>
+              <span ng-switch-when='building yes' class="second-col">Yes</span><span ng-switch-when='shop books' class="second-col">Books</span>
+              <span ng-switch-when='highway bus_stop' class="second-col">Bus Stop</span><span ng-switch-when='shop boutique' class="second-col">Boutique</span>              
+              <span ng-switch-when='highway footway' class="second-col">Footway</span><span ng-switch-when='shop butcher' class="second-col">Butcher</span>
+              <span ng-switch-when='shop car' class="second-col">Car</span><span ng-switch-when='shop seafood' class="second-col">Seafood</span>
+              <span ng-switch-when='shop car_parts' class="second-col">Car Parts</span><span ng-switch-when='shop shoes' class="second-col">Shoes</span>
+              <span ng-switch-when='shop car_repair' class="second-col">Car Repair</span><span ng-switch-when='shop sports' class="second-col">Sports</span>
+              <span ng-switch-when='shop chemist' class="second-col">Chemist</span><span ng-switch-when='shop stationery' class="second-col">Stationery</span>
+              <span ng-switch-when='shop clothes' class="second-col">Clothes</span><span ng-switch-when='shop supermarket' class="second-col">Supermarket</span>
+              <span ng-switch-when='shop computer' class="second-col">Computer</span><span ng-switch-when='shop tailor' class="second-col">Tailor</span>
+              <span ng-switch-when='shop confectionery' class="second-col">Confectionery</span><span ng-switch-when='shop ticket' class="second-col">Ticket</span>
+              <span ng-switch-when='shop convenience' class="second-col">Convenience</span><span ng-switch-when='shop toys' class="second-col">Toys</span>
+              <span ng-switch-when='shop copyshop' class="second-col">Copyshop</span><span ng-switch-when='shop travel_agency' class="second-col">Travel Agency</span>
+              <span ng-switch-when='shop department_store' class="second-col">Department Store</span><span ng-switch-when='shop tyres' class="second-col">Tyres</span>
+              <span ng-switch-when='shop dive' class="second-col">Dive</span><span ng-switch-when='shop variety_store' class="second-col">Variety Store</span>
+              <span ng-switch-when='shop dive_centre' class="second-col">Dive Centre</span><span ng-switch-when='shop video' class="second-col">Video</span>
+              <span ng-switch-when='shop diving' class="second-col">Diving</span><span ng-switch-when='shop wholesale' class="second-col">Wholesale</span>
+              <span ng-switch-when='shop doityourself' class="second-col">DoItYourself</span><span ng-switch-when='shop wine' class="second-col">Wine</span>
+              <span ng-switch-when='shop dry_cleaning' class="second-col">Dry Cleaning</span><span ng-switch-when='shop yes' class="second-col">Yes</span>
+              <span ng-switch-when='shop electronics' class="second-col">Electronics</span><span ng-switch-when='site_type fortification' class="second-col">Fortification</span>
+              <span ng-switch-when='shop fashion' class="second-col">Fashion</span><span ng-switch-when='sport skiing' class="second-col">Skiing</span>
+              <span ng-switch-when='shop fishmonger' class="second-col">Fishmonger</span><span ng-switch-when='tourism alpine_hut' class="second-col">Alpine hut</span>
+              <span ng-switch-when='shop florist' class="second-col">Florist</span><span ng-switch-when='tourism apartment' class="second-col">Apartment</span>
+              <span ng-switch-when='shop garden_centre' class="second-col">Garden Centre</span><span ng-switch-when='tourism artwork' class="second-col">Artwork</span>
+              <span ng-switch-when='shop general' class="second-col">General</span><span ng-switch-when='tourism attraction' class="second-col">Attraction</span>
+              <span ng-switch-when='shop gift' class="second-col">Gift</span><span ng-switch-when='tourism camp_site' class="second-col">Camp Site</span>
+              <span ng-switch-when='shop greengrocer' class="second-col">Greengrocer</span><span ng-switch-when='tourism caravan_site' class="second-col">Caravan Site</span>
+              <span ng-switch-when='shop hairdresser' class="second-col">Hairdresser</span><span ng-switch-when='tourism chalet' class="second-col">Chalet</span>
+              <span ng-switch-when='shop hardware' class="second-col">Hardware</span><span ng-switch-when='tourism gallery' class="second-col">Gallery</span>
+              <span ng-switch-when='shop hifi' class="second-col">Hifi</span><span ng-switch-when='tourism guest_house' class="second-col">Guest House</span>
+              <span ng-switch-when='shop houseware' class="second-col">Houseware</span><span ng-switch-when='tourism hostel' class="second-col">Hostel</span>
+              <span ng-switch-when='shop interior_decoration' class="second-col">Interior Decoration</span><span ng-switch-when='tourism hotel' class="second-col">Hotel</span>
+              <span ng-switch-when='shop jewelry' class="second-col">Jewelry</span><span ng-switch-when='tourism hotel;campsite' class="second-col">Hotel/Campsite</span>
+              <span ng-switch-when='shop kiosk' class="second-col">Kiosk</span><span ng-switch-when='tourism information' class="second-col">Information</span>
+              <span ng-switch-when='shop laundry' class="second-col">Laundry</span><span ng-switch-when='tourism motel' class="second-col">Motel</span>
+              <span ng-switch-when='shop locksmith' class="second-col">Locksmith</span><span ng-switch-when='tourism museum' class="second-col">Museum</span>
+              <span ng-switch-when='shop mall' class="second-col">Mall</span><span ng-switch-when='tourism picnic_site' class="second-col">Picnic Site</span>
+              <span ng-switch-when='shop medical_supply' class="second-col">Medical Supply</span><span ng-switch-when='tourism ruins' class="second-col">Ruins</span>
+              <span ng-switch-when='shop mobile_phone' class="second-col">Mobile Phone</span><span ng-switch-when='tourism theme_park' class="second-col">Theme Park</span>
+              <span ng-switch-when='shop optician' class="second-col">Optician</span><span ng-switch-when='tourism viewpoint' class="second-col">Viewpoint</span>
+              <span ng-switch-when='shop pastry' class="second-col">Pastry</span><span ng-switch-when='tourism zoo' class="second-col">Zoo</span>
+              <span ng-switch-when='shop photo' class="second-col">Photo</span><span ng-switch-when='waterway boatyard' class="second-col">Boatyard</span>
+              <span ng-switch-when='shop photo_studio' class="second-col">Photo Studio</span><span ng-switch-when='waterway dam' class="second-col">Dam</span>
+              <span ng-switch-when='shop scuba_diving' class="second-col">Scuba Dviving</span><span ng-switch-when='waterway dock' class="second-col">Dock</span>
+              <span ng-switch-when='waterway wadi' class="second-col">Wadi</span><span ng-switch-when='waterway weir' class="second-col">Weir</span>
+              <span ng-switch-when='waterway waterfall' class="second-col">Waterfall</span>
+            <span ng-switch-default class="second-col" ng-bind-html="attribute.value"></span>
+          </div>
         </div><br>
         <!-- Category -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#categoryOSM'}" class="featureInfo">
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#categoryWaze'}" class="featureInfo">
           <ul class="list">
            <li>
             <span class="second-col">Category: </span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Transportation'" class="second-col italic category" >Transportation</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Culture_&_entertainment'" class="second-col italic category" >Culture & Entertainment</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Shopping_and_services'" class="second-col italic category" >Shopping and Services</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Food_and_drink'" class="second-col italic category" >Food and Drink</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Car_services'" class="second-col italic category" >Car Services</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Natural_features'" class="second-col italic category" >Natural Features</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Other'" class="second-col italic category" >Other</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Lodging'" class="second-col italic category" >Lodging</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Outdoors'" class="second-col italic category" >Outdoors</span>
+              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Professional_and_public'" class="second-col italic category" >Professional and Public</span>
+            </li>
+          </ul>
+        </div>
+        <!-- SubCategory -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#categoryOSM'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Subcategory: </span>
+              <span ng-if="attribute.value == 'aerialway.cable_car'" class="second-col italic category" >Cable Car</span><span ng-if="attribute.value == 'highway.ford'" class="second-col italic category" >Ford</span>
+              <span ng-if="attribute.value == 'aerialway.station'" class="second-col italic category" >Station</span><span ng-if="attribute.value == 'highway.rest_area'" class="second-col italic category" >Rest Area</span>
+              <span ng-if="attribute.value == 'aeroway.aerodrome'" class="second-col italic category" >Aerodrome</span><span ng-if="attribute.value == 'highway.turning_circle'" class="second-col italic category" >Turning Circle</span>
+              <span ng-if="attribute.value == 'aeroway.hangar'" class="second-col italic category" >Hangar</span><span ng-if="attribute.value == 'historic.archaeological_site'" class="second-col italic category" >Archaeological Site</span>
+              <span ng-if="attribute.value == 'aeroway.helipad'" class="second-col italic category" >Helipad</span><span ng-if="attribute.value == 'historic.castle'" class="second-col italic category" >Castle</span>
+              <span ng-if="attribute.value == 'aeroway.terminal'" class="second-col italic category" >Terminal</span><span ng-if="attribute.value == 'historic.memorial'" class="second-col italic category" >Memorial</span>
+              <span ng-if="attribute.value == 'amenity.arts_centre'" class="second-col italic category" >Arts Centre</span><span ng-if="attribute.value == 'historic.meteor_crater'" class="second-col italic category" >Meteor Crater</span>
+              <span ng-if="attribute.value == 'amenity.atm'" class="second-col italic category" >ATM</span><span ng-if="attribute.value == 'historic.monument'" class="second-col italic category" >Monument</span>
+              <span ng-if="attribute.value == 'amenity.attraction'" class="second-col italic category" >Attraction</span><span ng-if="attribute.value == 'historic.ruins'" class="second-col italic category" >Ruins</span>
+              <span ng-if="attribute.value == 'amenity.bank'" class="second-col italic category" >Bank</span><span ng-if="attribute.value == 'historic.wayside_cross'" class="second-col italic category" >Wayside Cross</span>
+              <span ng-if="attribute.value == 'amenity.bar'" class="second-col italic category" >Bar</span><span ng-if="attribute.value == 'historic.wreck'" class="second-col italic category" >Wreck</span>
+              <span ng-if="attribute.value == 'amenity.bbq'" class="second-col italic category" >BBQ</span><span ng-if="attribute.value == 'landuse.basin'" class="second-col italic category" >Basin</span>
+              <span ng-if="attribute.value == 'amenity.bicycle_parking'" class="second-col italic category" >Bicycle Parking</span><span ng-if="attribute.value == 'landuse.farmland'" class="second-col italic category" >Farmland</span>
+              <span ng-if="attribute.value == 'amenity.bicycle_rental'" class="second-col italic category" >Bicycle Rental</span><span ng-if="attribute.value == 'landuse.farmyard'" class="second-col italic category" >Farmyard</span>
+              <span ng-if="attribute.value == 'amenity.biergarten'" class="second-col italic category" >Biergarten</span><span ng-if="attribute.value == 'landuse.reservoir'" class="second-col italic category" >Reservoir</span>
+              <span ng-if="attribute.value == 'amenity.boat_rental'" class="second-col italic category" >Boat Rental</span><span ng-if="attribute.value == 'leisure.common'" class="second-col italic category" >Leisure - Common</span>
+              <span ng-if="attribute.value == 'amenity.bureau_de_change'" class="second-col italic category" >Bureau de Change</span><span ng-if="attribute.value == 'leisure.garden'" class="second-col italic category" >Garden</span>
+              <span ng-if="attribute.value == 'amenity.bus_station'" class="second-col italic category" >Bus Station</span><span ng-if="attribute.value == 'leisure.golf_course'" class="second-col italic category" >Golf Course</span>
+              <span ng-if="attribute.value == 'amenity.cafe'" class="second-col italic category" >Cafe</span><span ng-if="attribute.value == 'leisure.horse_riding'" class="second-col italic category" >Horse Riding</span>
+              <span ng-if="attribute.value == 'amenity.car_rental'" class="second-col italic category" >Car Rental</span><span ng-if="attribute.value == 'leisure.hot_spring'" class="second-col italic category" >Hot Spring</span>
+              <span ng-if="attribute.value == 'amenity.car_wash'" class="second-col italic category" >Car Wash</span><span ng-if="attribute.value == 'leisure.ice_rink'" class="second-col italic category" >Ice Rink</span>
+              <span ng-if="attribute.value == 'amenity.childcare'" class="second-col italic category" >Childcare</span><span ng-if="attribute.value == 'leisure.marina'" class="second-col italic category" >Marina</span>
+              <span ng-if="attribute.value == 'amenity.cinema'" class="second-col italic category" >Cinema</span><span ng-if="attribute.value == 'leisure.nature_reserve'" class="second-col italic category" >Nature Reserve</span>
+              <span ng-if="attribute.value == 'amenity.clinic'" class="second-col italic category" >Clinic</span><span ng-if="attribute.value == 'leisure.park'" class="second-col italic category" >Park</span>
+              <span ng-if="attribute.value == 'amenity.college'" class="second-col italic category" >College</span><span ng-if="attribute.value == 'leisure.pitch'" class="second-col italic category" >Pitch</span>
+              <span ng-if="attribute.value == 'amenity.community_centre'" class="second-col italic category" >Community Centre</span><span ng-if="attribute.value == 'leisure.playground'" class="second-col italic category" >Playground</span>
+              <span ng-if="attribute.value == 'amenity.courthouse'" class="second-col italic category" >Courthouse</span><span ng-if="attribute.value == 'leisure.slipway'" class="second-col italic category" >Slipway</span>
+              <span ng-if="attribute.value == 'amenity.dentist'" class="second-col italic category" >Dentist</span><span ng-if="attribute.value == 'leisure.sports_centre'" class="second-col italic category" >Sports Centre</span>
+              <span ng-if="attribute.value == 'amenity.dive_centre'" class="second-col italic category" >Dive Centre</span><span ng-if="attribute.value == 'leisure.stadium'" class="second-col italic category" >Stadium</span>
+              <span ng-if="attribute.value == 'amenity.doctors'" class="second-col italic category" >Doctors</span><span ng-if="attribute.value == 'leisure.swimming_pool'" class="second-col italic category" >Swimming Pool</span>
+              <span ng-if="attribute.value == 'amenity.drinking_water'" class="second-col italic category" >Drinking Water</span><span ng-if="attribute.value == 'leisure.track'" class="second-col italic category" >Track</span>
+              <span ng-if="attribute.value == 'amenity.embassy'" class="second-col italic category" >Embassy</span><span ng-if="attribute.value == 'man_made.antenna'" class="second-col italic category" >Antenna</span>
+              <span ng-if="attribute.value == 'amenity.fast_food'" class="second-col italic category" >Fast Food</span><span ng-if="attribute.value == 'man_made.chimney'" class="second-col italic category" >Chimney</span>
+              <span ng-if="attribute.value == 'amenity.ferry_terminal'" class="second-col italic category" >Ferry Terminal</span><span ng-if="attribute.value == 'man_made.communications_tower'" class="second-col italic category" >Communications Tower</span>
+              <span ng-if="attribute.value == 'amenity.fire_station'" class="second-col italic category" >Fire Station</span><span ng-if="attribute.value == 'man_made.flagpole'" class="second-col italic category" >Flagpole</span>
+              <span ng-if="attribute.value == 'amenity.food_court'" class="second-col italic category" >Food Court</span><span ng-if="attribute.value == 'man_made.lighthouse'" class="second-col italic category" >Lighthouse</span>
+              <span ng-if="attribute.value == 'amenity.fountain'" class="second-col italic category" >Fountain</span><span ng-if="attribute.value == 'man_made.pier'" class="second-col italic category" >Pier</span>
+              <span ng-if="attribute.value == 'amenity.fuel'" class="second-col italic category" >Fuel</span><span ng-if="attribute.value == 'man_made.silo'" class="second-col italic category" >Silo</span>
+              <span ng-if="attribute.value == 'amenity.gym'" class="second-col italic category" >Gym</span><span ng-if="attribute.value == 'man_made.tower'" class="second-col italic category" >Tower</span>
+              <span ng-if="attribute.value == 'amenity.hospital'" class="second-col italic category" >Hospital</span><span ng-if="attribute.value == 'man_made.water_tank'" class="second-col italic category" >Water Tank</span>
+              <span ng-if="attribute.value == 'amenity.ice_cream'" class="second-col italic category" >Ice Cream</span><span ng-if="attribute.value == 'man_made.water_tower'" class="second-col italic category" >Water Tower</span>
+              <span ng-if="attribute.value == 'amenity.kindergarten'" class="second-col italic category" >kindergarten</span><span ng-if="attribute.value == 'man_made.water_well'" class="second-col italic category" >Water Well</span>
+              <span ng-if="attribute.value == 'amenity.library'" class="second-col italic category" >Library</span><span ng-if="attribute.value == 'man_made.windpump'" class="second-col italic category" >Windpump</span>
+              <span ng-if="attribute.value == 'amenity.marketplace'" class="second-col italic category" >Marketplace</span><span ng-if="attribute.value == 'military.attraction'" class="second-col italic category" >Attraction</span>
+              <span ng-if="attribute.value == 'amenity.monastery'" class="second-col italic category" >Monastery</span><span ng-if="attribute.value == 'natural.attraction'" class="second-col italic category" >Attraction</span>
+              <span ng-if="attribute.value == 'amenity.money_transfer'" class="second-col italic category" >Money Transfer</span><span ng-if="attribute.value == 'natural.bay'" class="second-col italic category" >Bay</span>
+              <span ng-if="attribute.value == 'amenity.nightclub'" class="second-col italic category" >Nightclub</span><span ng-if="attribute.value == 'natural.beach'" class="second-col italic category" >Beach</span>
+              <span ng-if="attribute.value == 'amenity.parking'" class="second-col italic category" >Parking</span><span ng-if="attribute.value == 'natural.cape'" class="second-col italic category" >Cape</span>
+              <span ng-if="attribute.value == 'amenity.parking_entrance'" class="second-col italic category" >Parking Entrance</span><span ng-if="attribute.value == 'natural.cave_entrance'" class="second-col italic category" >Cave Entrance</span>
+              <span ng-if="attribute.value == 'amenity.parking_space'" class="second-col italic category" >Parking Space</span><span ng-if="attribute.value == 'natural.cliff'" class="second-col italic category" >Cliff</span>
+              <span ng-if="attribute.value == 'amenity.pharmacy'" class="second-col italic category" >Pharmacy</span><span ng-if="attribute.value == 'natural.dune'" class="second-col italic category" >Dune</span>
+              <span ng-if="attribute.value == 'amenity.place_of_worship'" class="second-col italic category" >Place of Worship</span><span ng-if="attribute.value == 'natural.heath'" class="second-col italic category" >Heath</span>
+              <span ng-if="attribute.value == 'amenity.police'" class="second-col italic category" >Police</span><span ng-if="attribute.value == 'natural.hill'" class="second-col italic category" >Hill</span>
+              <span ng-if="attribute.value == 'amenity.post_box'" class="second-col italic category" >Post Box</span><span ng-if="attribute.value == 'natural.hills'" class="second-col italic category" >Hills</span>
+              <span ng-if="attribute.value == 'amenity.post_office'" class="second-col italic category" >Post Office</span><span ng-if="attribute.value == 'natural.massif'" class="second-col italic category" >Massif</span>
+              <span ng-if="attribute.value == 'amenity.pub'" class="second-col italic category" >Pub</span><span ng-if="attribute.value == 'natural.peak'" class="second-col italic category" >Peak</span>
+              <span ng-if="attribute.value == 'amenity.public_building'" class="second-col italic category" >Public Building</span><span ng-if="attribute.value == 'natural.peaks'" class="second-col italic category" >Peaks</span>
+              <span ng-if="attribute.value == 'amenity.ranger_station'" class="second-col italic category" >Ranger Station</span><span ng-if="attribute.value == 'natural.plateau'" class="second-col italic category" >Plateau</span>
+              <span ng-if="attribute.value == 'amenity.rescue_station'" class="second-col italic category" >Rescue Station</span><span ng-if="attribute.value == 'natural.protected_area'" class="second-col italic category" >Protected Area</span>
+              <span ng-if="attribute.value == 'amenity.restaurant'" class="second-col italic category" >Restaurant</span><span ng-if="attribute.value == 'natural.reef'" class="second-col italic category" >Reef</span>
+              <span ng-if="attribute.value == 'amenity.restaurant,bar'" class="second-col italic category" >Restaurant/Bar</span><span ng-if="attribute.value == 'natural.ridge'" class="second-col italic category" >Ridge</span>
+              <span ng-if="attribute.value == 'amenity.school'" class="second-col italic category" >School</span><span ng-if="attribute.value == 'natural.rock'" class="second-col italic category" >Rock</span>
+              <span ng-if="attribute.value == 'amenity.shelter'" class="second-col italic category" >Shelter</span><span ng-if="attribute.value == 'natural.rocks'" class="second-col italic category" >Rock</span>
+              <span ng-if="attribute.value == 'amenity.shower'" class="second-col italic category" >Shower</span><span ng-if="attribute.value == 'natural.sand'" class="second-col italic category" >Sand</span>
+              <span ng-if="attribute.value == 'amenity.swimming_pool'" class="second-col italic category" >Swimming Pool</span><span ng-if="attribute.value == 'natural.sand dune'" class="second-col italic category" >Sand Dune</span>
+              <span ng-if="attribute.value == 'amenity.taxi'" class="second-col italic category" >Taxi</span><span ng-if="attribute.value == 'natural.sandstone'" class="second-col italic category" >Sandstone</span>
+              <span ng-if="attribute.value == 'amenity.telephone'" class="second-col italic category" >Telephone</span><span ng-if="attribute.value == 'natural.spring'" class="second-col italic category" >Spring</span>
+              <span ng-if="attribute.value == 'amenity.theatre'" class="second-col italic category" >Theatre</span><span ng-if="attribute.value == 'natural.stone'" class="second-col italic category" >Stone</span>
+              <span ng-if="attribute.value == 'amenity.toilets'" class="second-col italic category" >Toilets</span><span ng-if="attribute.value == 'natural.tree'" class="second-col italic category" >Tree</span>
+              <span ng-if="attribute.value == 'amenity.townhall'" class="second-col italic category" >Townhall</span><span ng-if="attribute.value == 'natural.tree_row'" class="second-col italic category" >Tree Row</span>
+              <span ng-if="attribute.value == 'amenity.university'" class="second-col italic category" >University</span><span ng-if="attribute.value == 'natural.valley'" class="second-col italic category" >Valley</span>
+              <span ng-if="attribute.value == 'amenity.vending_machine'" class="second-col italic category" >Vending Machine</span><span ng-if="attribute.value == 'natural.water'" class="second-col italic category" >Water</span>
+              <span ng-if="attribute.value == 'amenity.veterinary'" class="second-col italic category" >Veterinary</span><span ng-if="attribute.value == 'natural.wetland'" class="second-col italic category" >Wetland</span>
+              <span ng-if="attribute.value == 'amenity.visitor_centre'" class="second-col italic category" >Visitor Centre</span><span ng-if="attribute.value == 'natural.wood'" class="second-col italic category" >Wood</span>
+              <span ng-if="attribute.value == 'amenity.waste_basket'" class="second-col italic category" >Waste Basket</span><span ng-if="attribute.value == 'place.city'" class="second-col italic category" >City</span>
+              <span ng-if="attribute.value == 'amenity.water_point'" class="second-col italic category" >Water Point</span><span ng-if="attribute.value == 'place.farm'" class="second-col italic category" >Farm</span>
+              <span ng-if="attribute.value == 'boundary.national_park'" class="second-col italic category" >National Park</span><span ng-if="attribute.value == 'place.hamlet'" class="second-col italic category" >Hamlet</span>
+              <span ng-if="attribute.value == 'building.apartments'" class="second-col italic category" >Apartments</span><span ng-if="attribute.value == 'place.island'" class="second-col italic category" >Island</span>
+              <span ng-if="attribute.value == 'building.attraction'" class="second-col italic category" >Attraction</span><span ng-if="attribute.value == 'place.islet'" class="second-col italic category" >Islet</span>
+              <span ng-if="attribute.value == 'building.cathedral'" class="second-col italic category" >Cathedral</span><span ng-if="attribute.value == 'place.isolated_dwelling'" class="second-col italic category" >Isolated Dwelling</span>
+              <span ng-if="attribute.value == 'building.church'" class="second-col italic category" >Church</span><span ng-if="attribute.value == 'place.locality'" class="second-col italic category" >Locality</span>
+              <span ng-if="attribute.value == 'building.civic'" class="second-col italic category" >Civic</span><span ng-if="attribute.value == 'place.mountain_range'" class="second-col italic category" >Mountain Range</span>
+              <span ng-if="attribute.value == 'building.commercial'" class="second-col italic category" >Commercial</span><span ng-if="attribute.value == 'place.neighbourhood'" class="second-col italic category" >Neighbourhood</span>
+              <span ng-if="attribute.value == 'building.garage'" class="second-col italic category" >Garage</span><span ng-if="attribute.value == 'place.region'" class="second-col italic category" >Region</span>
+              <span ng-if="attribute.value == 'building.greenhouse'" class="second-col italic category" >Greenhouse</span><span ng-if="attribute.value == 'place.suburb'" class="second-col italic category" >Suburb</span>
+              <span ng-if="attribute.value == 'building.hospital'" class="second-col italic category" >Hospital</span><span ng-if="attribute.value == 'place.town'" class="second-col italic category" >Town</span>
+              <span ng-if="attribute.value == 'building.hotel'" class="second-col italic category" >Hotel</span><span ng-if="attribute.value == 'place.village'" class="second-col italic category" >Village</span>
+              <span ng-if="attribute.value == 'building.hut'" class="second-col italic category" >Hostel</span><span ng-if="attribute.value == 'railway.crossing'" class="second-col italic category" >Crossing</span>
+              <span ng-if="attribute.value == 'building.industrial'" class="second-col italic category" >Industrial</span><span ng-if="attribute.value == 'railway.halt'" class="second-col italic category" >Railway Halt</span>
+              <span ng-if="attribute.value == 'building.office'" class="second-col italic category" >Office</span><span ng-if="attribute.value == 'railway.station'" class="second-col italic category" >Railway Station</span>
+              <span ng-if="attribute.value == 'building.public'" class="second-col italic category" >Public</span><span ng-if="attribute.value == 'religion.jewish'" class="second-col italic category" >Jewish</span>
+              <span ng-if="attribute.value == 'building.residential'" class="second-col italic category" >Residential</span><span ng-if="attribute.value == 'shop.alcohol'" class="second-col italic category" >Alcohol</span>
+              <span ng-if="attribute.value == 'building.school'" class="second-col italic category" >School</span><span ng-if="attribute.value == 'shop.art'" class="second-col italic category">Art</span>
+              <span ng-if="attribute.value == 'building.stadium'" class="second-col italic category" >Stadium</span><span ng-if="attribute.value == 'shop.bakery'" class="second-col italic category" >Bakery</span>
+              <span ng-if="attribute.value == 'building.terrace'" class="second-col italic category" >Terrace</span><span ng-if="attribute.value == 'shop.beauty'" class="second-col italic category" >Beauty</span>
+              <span ng-if="attribute.value == 'building.university'" class="second-col italic category" >University</span><span ng-if="attribute.value == 'shop.beverages'" class="second-col italic category" >Beverages</span>
+              <span ng-if="attribute.value == 'building.yes'" class="second-col italic category" >Yes</span><span ng-if="attribute.value == 'shop.books'" class="second-col italic category" >Books</span>
+              <span ng-if="attribute.value == 'highway.bus_stop'" class="second-col italic category" >Bus Stop</span><span ng-if="attribute.value == 'shop.boutique'" class="second-col italic category" >Boutique</span>              
+              <span ng-if="attribute.value == 'highway.footway'" class="second-col italic category" >Footway</span><span ng-if="attribute.value == 'shop.butcher'" class="second-col italic category" >Butcher</span>
+              <span ng-if="attribute.value == 'shop.car'" class="second-col italic category" >Car</span><span ng-if="attribute.value == 'shop.seafood'" class="second-col italic category" >Seafood</span>
+              <span ng-if="attribute.value == 'shop.car_parts'" class="second-col italic category" >Car Parts</span><span ng-if="attribute.value == 'shop.shoes'" class="second-col italic category" >Shoes</span>
+              <span ng-if="attribute.value == 'shop.car_repair'" class="second-col italic category" >Car Repair</span><span ng-if="attribute.value == 'shop.sports'" class="second-col italic category" >Sports</span>
+              <span ng-if="attribute.value == 'shop.chemist'" class="second-col italic category" >Chemist</span><span ng-if="attribute.value == 'shop.stationery'" class="second-col italic category" >Stationery</span>
+              <span ng-if="attribute.value == 'shop.clothes'" class="second-col italic category" >Clothes</span><span ng-if="attribute.value == 'shop.supermarket'" class="second-col italic category" >Supermarket</span>
+              <span ng-if="attribute.value == 'shop.computer'" class="second-col italic category" >Computer</span><span ng-if="attribute.value == 'shop.tailor'" class="second-col italic category" >Tailor</span>
+              <span ng-if="attribute.value == 'shop.confectionery'" class="second-col italic category" >Confectionery</span><span ng-if="attribute.value == 'shop.ticket'" class="second-col italic category" >Ticket</span>
+              <span ng-if="attribute.value == 'shop.convenience'" class="second-col italic category" >Convenience</span><span ng-if="attribute.value == 'shop.toys'" class="second-col italic category" >Toys</span>
+              <span ng-if="attribute.value == 'shop.copyshop'" class="second-col italic category" >Copyshop</span><span ng-if="attribute.value == 'shop.travel_agency'" class="second-col italic category" >Travel Agency</span>
+              <span ng-if="attribute.value == 'shop.department_store'" class="second-col italic category" >Department Store</span><span ng-if="attribute.value == 'shop.tyres'" class="second-col italic category" >Tyres</span>
+              <span ng-if="attribute.value == 'shop.dive'" class="second-col italic category" >Dive</span><span ng-if="attribute.value == 'shop.variety_store'" class="second-col italic category" >Variety Store</span>
+              <span ng-if="attribute.value == 'shop.dive_centre'" class="second-col italic category" >Dive Centre</span><span ng-if="attribute.value == 'shop.video'" class="second-col italic category" >Video</span>
+              <span ng-if="attribute.value == 'shop.diving'" class="second-col italic category" >Diving</span><span ng-if="attribute.value == 'shop.wholesale'" class="second-col italic category" >Wholesale</span>
+              <span ng-if="attribute.value == 'shop.doityourself'" class="second-col italic category" >DoItYourself</span><span ng-if="attribute.value == 'shop.wine'" class="second-col italic category" >Wine</span>
+              <span ng-if="attribute.value == 'shop.dry_cleaning'" class="second-col italic category" >Dry Cleaning</span><span ng-if="attribute.value == 'shop.yes'" class="second-col italic category" >Yes</span>
+              <span ng-if="attribute.value == 'shop.electronics'" class="second-col italic category" >Electronics</span><span ng-if="attribute.value == 'site_type.fortification'" class="second-col italic category" >Fortification</span>
+              <span ng-if="attribute.value == 'shop.fashion'" class="second-col italic category" >Fashion</span><span ng-if="attribute.value == 'sport.skiing'" class="second-col italic category" >Skiing</span>
+              <span ng-if="attribute.value == 'shop.fishmonger'" class="second-col italic category" >Fishmonger</span><span ng-if="attribute.value == 'tourism.alpine_hut'" class="second-col italic category" >Alpine hut</span>
+              <span ng-if="attribute.value == 'shop.florist'" class="second-col italic category" >Florist</span><span ng-if="attribute.value == 'tourism.apartment'" class="second-col italic category" >Apartment</span>
+              <span ng-if="attribute.value == 'shop.garden_centre'" class="second-col italic category" >Garden Centre</span><span ng-if="attribute.value == 'tourism.artwork'" class="second-col italic category" >Artwork</span>
+              <span ng-if="attribute.value == 'shop.general'" class="second-col italic category" >General</span><span ng-if="attribute.value == 'tourism.attraction'" class="second-col italic category" >Attraction</span>
+              <span ng-if="attribute.value == 'shop.gift'" class="second-col italic category" >Gift</span><span ng-if="attribute.value == 'tourism.camp_site'" class="second-col italic category" >Camp Site</span>
+              <span ng-if="attribute.value == 'shop.greengrocer'" class="second-col italic category" >Greengrocer</span><span ng-if="attribute.value == 'tourism.caravan_site'" class="second-col italic category" >Caravan Site</span>
+              <span ng-if="attribute.value == 'shop.hairdresser'" class="second-col italic category" >Hairdresser</span><span ng-if="attribute.value == 'tourism.chalet'" class="second-col italic category" >Chalet</span>
+              <span ng-if="attribute.value == 'shop.hardware'" class="second-col italic category" >Hardware</span><span ng-if="attribute.value == 'tourism.gallery'" class="second-col italic category" >Gallery</span>
+              <span ng-if="attribute.value == 'shop.hifi'" class="second-col italic category" >Hifi</span><span ng-if="attribute.value == 'tourism.guest_house'" class="second-col italic category" >Guest House</span>
+              <span ng-if="attribute.value == 'shop.houseware'" class="second-col italic category" >Houseware</span><span ng-if="attribute.value == 'tourism.hostel'" class="second-col italic category" >Hostel</span>
+              <span ng-if="attribute.value == 'shop.interior_decoration'" class="second-col italic category" >Interior Decoration</span><span ng-if="attribute.value == 'tourism.hotel'" class="second-col italic category" >Hotel</span>
+              <span ng-if="attribute.value == 'shop.jewelry'" class="second-col italic category" >Jewelry</span><span ng-if="attribute.value == 'tourism.hotel;campsite'" class="second-col italic category" >Hotel/Campsite</span>
+              <span ng-if="attribute.value == 'shop.kiosk'" class="second-col italic category" >Kiosk</span><span ng-if="attribute.value == 'tourism.information'" class="second-col italic category" >Information</span>
+              <span ng-if="attribute.value == 'shop.laundry'" class="second-col italic category" >Laundry</span><span ng-if="attribute.value == 'tourism.motel'" class="second-col italic category" >Motel</span>
+              <span ng-if="attribute.value == 'shop.locksmith'" class="second-col italic category" >Locksmith</span><span ng-if="attribute.value == 'tourism.museum'" class="second-col italic category" >Museum</span>
+              <span ng-if="attribute.value == 'shop.mall'" class="second-col italic category" >Mall</span><span ng-if="attribute.value == 'tourism.picnic_site'" class="second-col italic category" >Picnic Site</span>
+              <span ng-if="attribute.value == 'shop.medical_supply'" class="second-col italic category" >Medical Supply</span><span ng-if="attribute.value == 'tourism.ruins'" class="second-col italic category" >Ruins</span>
+              <span ng-if="attribute.value == 'shop.mobile_phone'" class="second-col italic category" >Mobile Phone</span><span ng-if="attribute.value == 'tourism.theme_park'" class="second-col italic category" >Theme Park</span>
+              <span ng-if="attribute.value == 'shop.optician'" class="second-col italic category" >Optician</span><span ng-if="attribute.value == 'tourism.viewpoint'" class="second-col italic category" >Viewpoint</span>
+              <span ng-if="attribute.value == 'shop.pastry'" class="second-col italic category" >Pastry</span><span ng-if="attribute.value == 'tourism.zoo'" class="second-col italic category" >Zoo</span>
+              <span ng-if="attribute.value == 'shop.photo'" class="second-col italic category" >Photo</span><span ng-if="attribute.value == 'waterway.boatyard'" class="second-col italic category" >Boatyard</span>
+              <span ng-if="attribute.value == 'shop.photo_studio'" class="second-col italic category" >Photo Studio</span><span ng-if="attribute.value == 'waterway.dam'" class="second-col italic category" >Dam</span>
+              <span ng-if="attribute.value == 'shop.scuba_diving'" class="second-col italic category" >Scuba Dviving</span><span ng-if="attribute.value == 'waterway.dock'" class="second-col italic category" >Dock</span>
+              <span ng-if="attribute.value == 'waterway.wadi'" class="second-col italic category" >Wadi</span><span ng-if="attribute.value == 'waterway.weir'" class="second-col italic category" >Weir</span>
+              <span ng-if="attribute.value == 'waterway.waterfall'" class="second-col italic category" >Waterfall</span>
+             </li>
+          </ul>
+        </div>
+        <!-- Geonames -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.opengis.net/ont/geosparql#sfWithin'}" class="featureInfo">
+          <div ng-if="attribute.value == 'http://www.geonames.org/3077311'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Czech Republic</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2921044'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Germany</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2658434'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Switzerland</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2782113'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Austria</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3175395'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Italy</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3057568'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Slovakia</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3017382'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">France</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2264397'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Portugal</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2510769'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Spain</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3041565'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Andorra</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2635167'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">United Kingdom</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2635167'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Northern Ireland</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2750405'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Netherlands</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2802361'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Belgium</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2960313'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Luxembourg</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/798544'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Poland</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/617790'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Moldova</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/630336'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Belarus</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/798549'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Romania</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/719819'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Hungary</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/732800'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bulgaria</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2661886'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Sweden</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3144096'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Norway</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2623032'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Denmark</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/660013'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Finland</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/453733'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Estonia</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/597427'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Lithuania</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/458258'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Latvia</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/2017370'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Russia</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3190538'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Slovenia</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3202326'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Croatia</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/6290252'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Serbia</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/831053'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Kosovo</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3277605'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bosnia and Herzegovina</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3194884'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Montenegro</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/718075'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Macedonia</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/298795'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Turkey</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/146669'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Cyprus</span></li></ul></div>
+          <div ng-if="attribute.value == 'http://www.geonames.org/3042058'">
+          <ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Liechtenstein</span></li></ul></div>
+        </div>
+        <!-- Comment -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2000/01/rdf-schema#comment'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Homepage -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://xmlns.com/foaf/0.1/homepage'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Homepage: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Email -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://xmlns.com/foaf/0.1/mbox'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Email: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Phone -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://xmlns.com/foaf/0.1/phone'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Phone: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Fax-->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#fax'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Fax: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Address -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#address'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Address: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Opening Hours -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#openingHours'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Opening Hours: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Access -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#access'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Access: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Accessibility -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#accessibility'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Accessibility: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Internet Acces -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#internetAccess'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Internet Acces: </span>
+            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
+           </li>
+          </ul>
+        </div>
+        <!-- SeeAlso -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2000/01/rdf-schema#seeAlso'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">More info: </span>
+            <a href="{{attribute.value}}" target="_blank" class="second-col italic homepage" >Link</a></span>
+           </li>
+          </ul>
+        </div>
+        <!-- ExactMatch -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2004/02/skos/core#exactMatch'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">More info: </span>
+            <a href="{{attribute.value}}" target="_blank" class="second-col italic homepage" >DBpedia</a></span>
+           </li>
+          </ul>
+        </div>
+        <!-- Created -->
+        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://purl.org/dc/terms/1.1/created'}" class="featureInfo">
+          <ul class="list">
+           <li>
+            <span class="second-col">Created: </span>
             <span class="second-col italic category" ng-bind-html="attribute.value"></span>
            </li>
           </ul>
@@ -30,6 +528,7 @@
           <span ng-repeat="group in InfoPanelService.groups | orderBy : name">
            <ul class="list">
             <li>
+            <span class="second-col">Coordinates: </span><br>
              <span ng-repeat="attribute in group.attributes | orderBy : name"  ng-show="$first">
              <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col italic"></span><br>
              </span>

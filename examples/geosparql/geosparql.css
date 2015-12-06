@@ -4,11 +4,10 @@
   margin-bottom: 20px;
   color: #97BE0D;
   font-size: 16px;
-  max-width: 300px;
 }
 .closeArea{
   position: absolute;
-  margin-left: 275px;
+  margin-left: 290px;
   margin-top: -40px;
   cursor: Pointer;
 }
@@ -23,24 +22,26 @@
   transition: 1s;
 }
 .featureName{
+  max-width: 220px;
   margin-left: 50px;
   font-size: 16px;
   color: #88B8E6;
-  margin-bottom: 10px;
   text-shadow: 1px 1px 1px rgb(214,214,214);
-  max-width: 300px;
 }
 .featureInfo{
-   color: #D84F5F;
+  color: #D84F5F;
+  margin-left: 30px;
+  max-width: 270px;
+ // text-align: justify;
 }
 .italic{
   font-style: italic;
 }
 .list{
   list-style-image: url(img/list.png);
-  margin-left: 30px;
-  max-width: 300px;
-  word-break: break-all;
+  word-break: normal;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 .developersTitle{
   margin-left: 50px;
@@ -68,7 +69,7 @@
   margin-left: 50px;
   margin-bottom: 30px;
   margin-top: 20px;
-  word-break: break-all;
+  //word-break: break-all;
 }
 .developersInfo:hover{
   display: block;
@@ -77,12 +78,23 @@
 .attributeName{
   //max-width: 290px;
   color: #193340;
-  word-break: break-all;
+  //word-break: break-all;
   font-size: 14px;
 }
 .attributeValue{
   //max-width: 290px;
-  word-break: break-all;
+  //word-break: break-all;
   font-style: italic;
   color: rgb(255,102,0);
+}
+.homepage{
+  color: #D84F5F;
+  text-decoration: none;
+}
+.homepage:hover{
+  color: #D84F5F;
+}
+.homepage:visited{
+  color: #D84F5F;
+  text-decoration: none;
 }
