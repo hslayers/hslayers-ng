@@ -44,9 +44,9 @@ define(['angular', 'ol', 'styles'],
                                 url: url,
                                 success: function(data) {
                                     src.addFeatures(format.readFeatures(data, {
-                                                dataProjection: 'EPSG:4326',
-                                                featureProjection: srs
-                                            }));
+                                        dataProjection: 'EPSG:4326',
+                                        featureProjection: srs
+                                    }));
                                 }
                             });
                         },

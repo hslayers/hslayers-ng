@@ -233,7 +233,7 @@ define(['angular', 'ol', 'map'],
                                 for (var i = 1; i <= Math.ceil(response.matched / $scope.page_size); i++)
                                     $scope.pages.push(i);
                             }
-                           angular.forEach($scope.compositions, function(record) {
+                            angular.forEach($scope.compositions, function(record) {
                                 var attributes = {
                                     record: record,
                                     hs_notqueryable: true,
@@ -254,9 +254,9 @@ define(['angular', 'ol', 'map'],
 
                 $scope.loadStatusManagerCompositions = function(bbox) {
                     var url = config.status_manager_url;
-                    var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent('&title=' +$scope.query.title) : '';
+                    var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent('&title=' + $scope.query.title) : '';
                     url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
-                    if(config.status_manager_url.indexOf('http')>-1 && config.status_manager_url.indexOf(window.location.origin)==-1){
+                    if (config.status_manager_url.indexOf('http') > -1 && config.status_manager_url.indexOf(window.location.origin) == -1) {
                         if (typeof use_proxy === 'undefined' || use_proxy === true) {
                             url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                         }
@@ -264,7 +264,9 @@ define(['angular', 'ol', 'map'],
                     var jsessionid = $cookies.get("JSESSIONID");
                     ajax_req = $.ajax({
                             url: url,
-                            data: {JSESSIONID: jsessionid},
+                            data: {
+                                JSESSIONID: jsessionid
+                            },
                             cache: false
                         })
                         .done(function(response) {
@@ -273,13 +275,13 @@ define(['angular', 'ol', 'map'],
                                 var found = false;
                                 angular.forEach($scope.compositions, function(composition) {
                                     if (composition.id == record.id) {
-                                        if(angular.isDefined(record.edit)) composition.editable = record.edit;
+                                        if (angular.isDefined(record.edit)) composition.editable = record.edit;
                                         found = true;
                                     }
                                 })
                                 if (!found) {
                                     record.editable = false;
-                                    if(angular.isDefined(record.edit)) record.editable = record.edit;
+                                    if (angular.isDefined(record.edit)) record.editable = record.edit;
                                     if (angular.isUndefined(record.link)) {
                                         record.link = config.status_manager_url + '?request=load&id=' + record.id;
                                     }
@@ -299,15 +301,15 @@ define(['angular', 'ol', 'map'],
                             if (!$scope.$$phase) $scope.$digest();
                         })
                 }
-                
-                $scope.filterChanged = function(){
-                    if(angular.isDefined($scope.query.editable) && $scope.query.editable==false) delete $scope.query.editable;
+
+                $scope.filterChanged = function() {
+                    if (angular.isDefined($scope.query.editable) && $scope.query.editable == false) delete $scope.query.editable;
                 }
 
                 $scope.delete = function(composition) {
                     if (confirm("Do you realy want to delete the composition?")) {
                         var url = config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
-                        if(url.indexOf('http')>-1 && url.indexOf(window.location.origin)==-1){
+                        if (url.indexOf('http') > -1 && url.indexOf(window.location.origin) == -1) {
                             if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                 url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                             }
@@ -333,7 +335,7 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.highlightComposition = function(composition, state) {
-                    if(angular.isDefined(composition.feature))
+                    if (angular.isDefined(composition.feature))
                         composition.feature.set('highlighted', state)
                 }
 
@@ -375,7 +377,7 @@ define(['angular', 'ol', 'map'],
                 });
 
                 OlMap.map.addLayer(extent_layer);
-                
+
                 $rootScope.$on('infopanel.feature_selected', function(event, feature, selector) {
                     var record = feature.get("record");
                     $scope.use_callback_for_edit = false;
@@ -383,7 +385,7 @@ define(['angular', 'ol', 'map'],
                     selector.getFeatures().clear();
                     $scope.loadComposition(record.link);
                 });
-               
+
                 var timer;
                 OlMap.map.getView().on('change:center', function(e) {
                     if (timer != null) clearTimeout(timer);

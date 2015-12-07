@@ -78,8 +78,8 @@ define(['ol',
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                Core.sidebarButtons=false;
-                Core.sidebarRight=false;
+                Core.sidebarButtons = false;
+                Core.sidebarRight = false;
                 var map = OlMap.map;
                 $scope.$on('infopanel.updated', function(event) {});
 

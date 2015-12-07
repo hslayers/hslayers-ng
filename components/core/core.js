@@ -209,7 +209,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.map_reset', {});
                         }
                     };
-                    
+
                     $templateCache.removeAll();
 
                     if (me.exists('hs.sidebar.controller')) {

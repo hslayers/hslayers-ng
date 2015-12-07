@@ -114,10 +114,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     var i, ilen;
                     var json = [];
                     layers.forEach(function(lyr) {
-                        if(angular.isDefined($scope)){
+                        if (angular.isDefined($scope)) {
                             //From form
-                            angular.forEach($scope.layers, function(list_item){
-                                if(list_item.layer == lyr && list_item.checked){
+                            angular.forEach($scope.layers, function(list_item) {
+                                if (list_item.layer == lyr && list_item.checked) {
                                     var l = me.layer2json(lyr);
                                     if (l) json.push(l);
                                 }
@@ -187,7 +187,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     //json.index = layer.map.getLayerIndex(layer);
                     json.path = layer.get('path');
 
-                        if (layer.getExtent()) {
+                    if (layer.getExtent()) {
                         var ex = layer.getExtent();
                         json.maxExtent = {
                             left: ex[0],
@@ -256,7 +256,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope)));
                         $('#stc-download').remove();
                         $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
-                        $('#stc-download').click(function(){
+                        $('#stc-download').click(function() {
                             $('#stc-next').show();
                             $('#stc-download').hide();
                             $('#stc-save, #stc-saveas').hide();

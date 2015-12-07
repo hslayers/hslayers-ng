@@ -287,7 +287,7 @@ define(['angular', 'ol', 'map'],
                     switch (ds.type) {
                         case "datatank":
                             var url = ds.url;
-                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){
+                            if (ds.url.indexOf('http') > -1 && ds.url.indexOf(window.location.origin) == -1) {
                                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                     url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
                                 }
@@ -314,7 +314,7 @@ define(['angular', 'ol', 'map'],
                             break;
                         case "ckan":
                             var url = ds.url;
-                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){
+                            if (ds.url.indexOf('http') > -1 && ds.url.indexOf(window.location.origin) == -1) {
                                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                     url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
                                 }
@@ -330,7 +330,7 @@ define(['angular', 'ol', 'map'],
                                     ds.matched = j.count;
                                     for (var lyr in j.datasets) {
                                         var obj = j.datasets[lyr];
-                                       obj.title = obj.name;
+                                        obj.title = obj.name;
                                         ds.layers.push(obj);
                                     }
                                     if (!$scope.$$phase) $scope.$digest();
@@ -358,7 +358,7 @@ define(['angular', 'ol', 'map'],
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
                                 '&limit=10&start=' + ds.start;
-                            if(ds.url.indexOf('http')>-1 && ds.url.indexOf(window.location.origin)==-1){
+                            if (ds.url.indexOf('http') > -1 && ds.url.indexOf(window.location.origin) == -1) {
                                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
                                     url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
                                 }
@@ -512,7 +512,7 @@ define(['angular', 'ol', 'map'],
                     if (ds.type == "ckan") {
                         if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
                             var format;
-                            var definition  = {};
+                            var definition = {};
                             var url = layer.url;
                             definition.url = layer.url;
                             if (typeof use_proxy === 'undefined' || use_proxy === true)

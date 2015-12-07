@@ -2,7 +2,11 @@
 
 var hsl_path = '../../';
 
-var gitsha = $.ajax({ type: "GET", url: hsl_path + 'gitsha.js', async: false }).responseText;
+var gitsha = $.ajax({
+    type: "GET",
+    url: hsl_path + 'gitsha.js',
+    async: false
+}).responseText;
 var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-1.0/js/'; //http://localhost:9999/js/webglayer/js/
 //  var jans_path = 'http://localhost:9999/js/webglayer/js/'
 
@@ -11,7 +15,7 @@ var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-1.0/js/'; //http://local
 
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
-    urlArgs: 'bust='+gitsha,
+    urlArgs: 'bust=' + gitsha,
     paths: {
         toolbar: hsl_path + 'components/toolbar/toolbar',
         permalink: hsl_path + 'components/permalink/permalink',
@@ -43,7 +47,7 @@ require.config({
         multibrush: jans_path + 'd3.svg.multibrush',
         WGL: jans_path + 'WGL',
         filter: jans_path + 'Filter',
-        poly2tri:    'http://home.zcu.cz/~jezekjan/js/poly2tri',
+        poly2tri: 'http://home.zcu.cz/~jezekjan/js/poly2tri',
         dataloader: 'DataLoader',
         ol: hsl_path + 'lib/ol3/ol-full',
         wglinit: 'webglinit',

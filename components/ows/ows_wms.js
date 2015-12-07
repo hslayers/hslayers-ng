@@ -469,7 +469,7 @@ define(['angular', 'ol', 'utils'],
                     var layer_class = ol.layer.Tile;
                     var source_class = ol.source.TileWMS;
 
-                    if(!$scope.use_tiles){
+                    if (!$scope.use_tiles) {
                         layer_class = ol.layer.Image;
                         source_class = ol.source.ImageWMS;
                     }
@@ -483,7 +483,7 @@ define(['angular', 'ol', 'utils'],
                         }
                     } else {
                         if ($scope.map_projection != srs) {
-                           boundingbox = layer.LatLonBoundingBox;
+                            boundingbox = layer.LatLonBoundingBox;
                         }
                     }
 
