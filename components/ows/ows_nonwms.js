@@ -3,13 +3,12 @@ define(['angular', 'ol', 'styles'],
     function(angular, ol) {
         angular.module('hs.ows.nonwms', [])
 
-        .service('hs.ows.nonwms.service', ['hs.map.service', 'hs.styles.service',
-            function(OlMap, styles) {
+        .service('hs.ows.nonwms.service', ['hs.map.service', 'hs.styles.service', 'hs.utils.service',
+            function(OlMap, styles, utils) {
                 me = this;
 
                 me.add = function(type, url, title, extract_styles, srs) {
-                    if (typeof use_proxy === 'undefined' || use_proxy === true)
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                    url = utils.proxify(url);
 
 
                     /*var proxied = window.XMLHttpRequest.prototype.open;

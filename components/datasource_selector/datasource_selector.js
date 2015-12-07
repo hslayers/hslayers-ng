@@ -93,8 +93,8 @@ define(['angular', 'ol', 'map'],
             };
         }])
 
-        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config',
-            function($scope, OlMap, Core, $compile, config) {
+        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config', 'hs.utils.service',
+            function($scope, OlMap, Core, $compile, config, utils) {
                 $scope.query = {
                     text_filter: '',
                     title: '',
@@ -162,9 +162,7 @@ define(['angular', 'ol', 'map'],
                             break;
                         case "micka":
                             var url = ds.code_list_url;
-                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                            }
+                            url = utils.proxify(url);
                             if (typeof ds.code_lists == 'undefined') {
                                 ds.code_lists = {
                                     serviceType: [],
@@ -264,9 +262,7 @@ define(['angular', 'ol', 'map'],
                 $scope.suggestionFilterChanged = function() {
                     if (typeof $scope.suggestion_ajax != 'undefined') $scope.suggestion_ajax.abort();
                     var url = $scope.micka_ds.url + '../util/suggest.php?&type=' + $scope.suggestion_config.param + '&query=' + $scope.suggestion_filter;
-                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                    }
+                    url = utils.proxify(url);
                     $scope.suggestion_ajax = $.ajax({
                         url: url,
                         cache: false,
@@ -287,11 +283,7 @@ define(['angular', 'ol', 'map'],
                     switch (ds.type) {
                         case "datatank":
                             var url = ds.url;
-                            if (ds.url.indexOf('http') > -1 && ds.url.indexOf(window.location.origin) == -1) {
-                                if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
-                                }
-                            }
+                            url = utils.proxify(url);
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
                                 url: url,
@@ -314,11 +306,7 @@ define(['angular', 'ol', 'map'],
                             break;
                         case "ckan":
                             var url = ds.url;
-                            if (ds.url.indexOf('http') > -1 && ds.url.indexOf(window.location.origin) == -1) {
-                                if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(ds.url);
-                                }
-                            }
+                            url = utils.proxify(url);
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
                                 url: url,
@@ -358,11 +346,7 @@ define(['angular', 'ol', 'map'],
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
                                 '&limit=10&start=' + ds.start;
-                            if (ds.url.indexOf('http') > -1 && ds.url.indexOf(window.location.origin) == -1) {
-                                if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                    url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + ue(url);
-                                }
-                            }
+                            url = utils.proxify(url);
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
                                 url: url,
@@ -515,8 +499,7 @@ define(['angular', 'ol', 'map'],
                             var definition = {};
                             var url = layer.url;
                             definition.url = layer.url;
-                            if (typeof use_proxy === 'undefined' || use_proxy === true)
-                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
+                            url = utils.proxify(url);
                             switch (layer.format.toLowerCase()) {
                                 case "kml":
                                     format = new ol.format.KML();

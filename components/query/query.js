@@ -46,15 +46,10 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     link: link
                 };
             }])
-            .service("hs.query.service_getwmsfeatureinfo", [
-                function() {
+            .service('hs.query.service_getwmsfeatureinfo', ['hs.utils.service',
+                function(utils) {
                     this.request = function(url, info_format, coordinate) {
-                        var req_url = '';
-                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            req_url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
-                        } else {
-                            req_url = url;
-                        }
+                        var req_url = utils.proxify(url);
                         var me = this;
                         $.ajax({
                             url: req_url,

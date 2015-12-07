@@ -23,16 +23,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
                     }
                 };
-            }]).service("hs.search.service", ['$http',
-                function($http) {
+            }]).service('hs.search.service', ['$http', 'hs.utils.service',
+                function($http, utils) {
                     this.xhr = null;
                     this.request = function(query) {
-                        var url = '';
-                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent("http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query);
-                        } else {
-                            url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
-                        }
+                        var url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
+                        url = utils.proxify(url);
                         if (me.xhr !== null) me.xhr.abort();
                         me.xhr = $.ajax({
                             url: url,

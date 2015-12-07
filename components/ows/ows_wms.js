@@ -88,9 +88,8 @@ define(['angular', 'ol', 'utils'],
                     if (angular.isDefined(params.REQUEST)) params.REQUEST = 'GetCapabilities';
                     if (angular.isUndefined(params.service) && angular.isUndefined(params.SERVICE)) params.service = 'WMS';
                     var url = [path, me.params2String(params)].join('?');
-                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
-                    }
+                    
+                    url = utils.proxify(url);
                     if (callback) {
                         $http.get(url).success(callback);
                     } else {

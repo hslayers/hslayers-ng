@@ -26,16 +26,12 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-        .service('hs.compositions.service_parser', ['hs.map.service', 'Core', '$rootScope', function(OlMap, Core, $rootScope) {
+        .service('hs.compositions.service_parser', ['hs.map.service', 'Core', '$rootScope', 'hs.utils.service', function(OlMap, Core, $rootScope, utils) {
             var me = {
                 composition_loaded: null,
                 load: function(url, overwrite, callback) {
                     url = url.replace('&amp;', '&');
-                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(url);
-                    } else {
-                        url = url;
-                    }
+                    url = utils.proxify(url);
                     $.ajax({
                             url: url
                         })
@@ -116,9 +112,7 @@ define(['angular', 'ol', 'map'],
                                 var definition = {};
                                 if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.KML') {
                                     var url = lyr_def.protocol.url;
-                                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                                    }
+                                    url = utils.proxify(url);
 
                                     definition.url = url;
                                     definition.format = "ol.format.KML";
@@ -138,9 +132,7 @@ define(['angular', 'ol', 'map'],
                                     layers.push(lyr);
                                 } else if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.GeoJSON') {
                                     var url = lyr_def.protocol.url;
-                                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                                    }
+                                    url = utils.proxify(url);
 
                                     definition.url = url;
                                     definition.format = "ol.format.GeoJSON";
@@ -169,8 +161,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies',
-            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink, $compile, $cookies) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
+            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -215,12 +207,8 @@ define(['angular', 'ol', 'map'],
                     var b = ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
                     var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                    var url = config.compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
-                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                    } else {
-                        url = url;
-                    }
+                    var url = config.compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;                   
+                    url = utils.proxify(url);
                     if (ajax_req != null) ajax_req.abort();
                     ajax_req = $.ajax({
                             url: url
@@ -242,13 +230,14 @@ define(['angular', 'ol', 'map'],
                                 };
                                 record.editable = false;
                                 var extent = composition_parser.parseExtent(record.bbox);
+                                //Check if height or Width covers the whole screen
                                 if (!((extent[0] < cur_map_extent[0] && extent[2] > cur_map_extent[2]) || (extent[1] < cur_map_extent[1] && extent[3] > cur_map_extent[3]))) {
                                     attributes.geometry = ol.geom.Polygon.fromExtent(extent);
                                     var new_feature = new ol.Feature(attributes);
                                     record.feature = new_feature;
                                     extent_layer.getSource().addFeatures([new_feature]);
                                 } else {
-                                    debugger;
+                                    //Composition not in extent
                                 }
                             })
                             if (!$scope.$$phase) $scope.$digest();
@@ -261,11 +250,7 @@ define(['angular', 'ol', 'map'],
                     var url = config.status_manager_url;
                     var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent('&title=' + $scope.query.title) : '';
                     url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
-                    if (config.status_manager_url.indexOf('http') > -1 && config.status_manager_url.indexOf(window.location.origin) == -1) {
-                        if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                            url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                        }
-                    }
+                    url = utils.proxify(url);
                     var jsessionid = $cookies.get("JSESSIONID");
                     ajax_req = $.ajax({
                             url: url,
@@ -314,11 +299,7 @@ define(['angular', 'ol', 'map'],
                 $scope.delete = function(composition) {
                     if (confirm("Do you realy want to delete the composition?")) {
                         var url = config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
-                        if (url.indexOf('http') > -1 && url.indexOf(window.location.origin) == -1) {
-                            if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                                url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
-                            }
-                        }
+                        url = utils.proxify(url);
                         ajax_req = $.ajax({
                                 url: url
                             })
