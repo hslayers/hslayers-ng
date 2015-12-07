@@ -375,7 +375,15 @@ define(['angular', 'ol', 'map'],
                 });
 
                 OlMap.map.addLayer(extent_layer);
-
+                
+                $rootScope.$on('infopanel.feature_selected', function(event, feature, selector) {
+                    var record = feature.get("record");
+                    $scope.use_callback_for_edit = false;
+                    feature.set('highlighted', false);
+                    selector.getFeatures().clear();
+                    $scope.loadComposition(record.link);
+                });
+               
                 var timer;
                 OlMap.map.getView().on('change:center', function(e) {
                     if (timer != null) clearTimeout(timer);
