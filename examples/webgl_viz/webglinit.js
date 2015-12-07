@@ -20,44 +20,51 @@ wglinit = function(that) {
 
         WGL.addHeatMapDimension(data.pts, 'heatmap');
         WGL.addMapDimension(data.pts, 'themap');
-        WGL.addPolyBrushFilter('themap', 'polybrush');
+       // WGL.addPolyBrushFilter('themap', 'polybrush');
 
 
         WGL.addExtentFilter();
 
-        /* DAYS*/
-        var days = {
-            data: data.days,
-            min: 0,
-            max: 7,
-            num_bins: 7,
-            name: 'days'
-        };
-        WGL.addLinearHistDimension(days);
-        WGL.addLinearFilter(days, 7, 'daysF');
-        charts['days'] = new StackedBarChart(days, "chart2", "day of the week", 'days');
-
-        /*HOURS*/
-
-        var hours = {
-            data: data.hours,
-            min: 0,
-            max: 24,
-            num_bins: 24,
-            name: 'hours'
-        };
-        WGL.addLinearHistDimension(hours);
-        WGL.addLinearFilter(hours, 24 * 4, 'hoursF');
-        charts['hours'] = new StackedBarChart(hours, "chart3", "hour of the day", 'hours');
+        var params = {w:360, h:210};
+        params.margin = {
+    			top : 20,
+    			right : 20,
+    			bottom : 50,
+    			left : 55
+    			};
+        
+    
+        /** Histogram for days*/
+		var days = {data: data.days,  domain: data.daysarray,  name: 'days', type:'ordinal'};			
+		WGL.addOrdinalHistDimension(days);
+		WGL.addLinearFilter(days,7, 'daysF');		
+		charts['days'] = new StackedBarChart(days, "chart1", "day of the week","daysF", params);
+		
+		/** Histogram for severity */
+		var sev   = {data: data.sev,  domain: ['1','2','3'] ,  name: 'sev', type:'ordinal' };	
+		WGL.addOrdinalHistDimension(sev);
+		WGL.addLinearFilter(sev,3, 'sevF');
+		charts['sev']   = new StackedBarChart(sev, "chart3", "accident servelity","sevF", params);
+		
+		
+		/** Histogram for hours*/
+		var hours = {data: data.hours,  min:0, max:24, num_bins: 24, name: 'hours',type:'linear'} ;
+		WGL.addLinearHistDimension(hours);
+		WGL.addLinearFilter(hours, 24*10, 'hoursF');
+		charts['hours'] = new StackedBarChart(hours, "chart2", "hour of the day","hoursF", params);
+		
+		
 
         map.getView().on('change:center', onMove, 0);
         map.getView().on('change:resolution', onMove, 0);
         map.on('moveend', onMove, 0);
-
-        WGL.addCharts(charts);
         WGL.initFilters();
+        WGL.addCharts(charts);
         onMove();
         WGL.render();
+        
+                                
+   
     }
 
     var onMove = function() {

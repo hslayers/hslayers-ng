@@ -12,7 +12,7 @@
       uniform mat4 mapMatrix;
  
    
-      uniform sampler2D histFilter;
+      uniform sampler2D histFilter;    
       uniform sampler2D indexText;
       
       
@@ -20,28 +20,23 @@
       
       void main() {	
   		bool fil[4];
-		vec4 p =  mapMatrix * wPoint;
-  		
+		vec4 p =  mapMatrix * wPoint;  		
   		// value in the filter texture before this filter is applied   	     
-  		vec4 thatval = texture2D(indexText , vec2((index[0] +1.)/2. , (index[1]+1.)/2.));   
-  		 
-  		//float val =  thatval[0];	
-  		float spat = 0.;		
+  		vec4 thatval = texture2D(indexText , vec2((index[0] +1.)/2. , (index[1]+1.)/2.));     		 
+  		//float val =  thatval[0];	  			
 		vec4 at1;
 			if (isspatial == 0.0) {
 				/*consider one row fitler*/
-  				at1   = texture2D(histFilter, vec2(attr1, 0.5));
+  				at1  = texture2D(histFilter, vec2(attr1, 0.5));  				
   			} else {
   				/*consider map filter*/
-  				at1   = texture2D(histFilter, vec2((p[0]+1.)/2., (p[1]+1.)/2.));
-  				spat = 1./256.;
-  			}
-  				  		
+  				at1   = texture2D(histFilter, vec2((p[0]+1.)/2., (p[1]+1.)/2.));  				
+  			}  			
   			
 			// if data are selected  			
   			if ( at1[0] > 0. ){ 	  			
 				//calculates final value, third number indicates if it is selected by spatial filter or not  																	
-  				col = vec4(thatval[0] + pow(2.,(filterid))/256., 0., thatval[2]+spat, thatval[3]);
+  				col = vec4(thatval[0] + pow(2.,(filterid))/256., 0., 0., thatval[3]);
   			} else {  	
   				// data are not selected by this filter   
   		    	col = vec4(thatval[0] , 0., 0., thatval[3]); 	  		  

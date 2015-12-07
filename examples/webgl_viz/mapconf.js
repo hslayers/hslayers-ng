@@ -70,7 +70,7 @@ function mapConf(map, ol) {
                     ts.triangulate();
                     polygons[polid++] = trianglesToArray(ts.getTriangles());
                     polygons.length = Object.keys(polygons).length;
-                    WGL.filterDim('themap', polygons);
+                    WGL.filterDim('themap','polybrush',polygons);
                 } catch (e) {
                     console.log(e);
                 }

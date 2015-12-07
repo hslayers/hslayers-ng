@@ -10,9 +10,7 @@
       uniform float isspatial;      
       uniform mat4 mapMatrix;
  
-   
-      uniform sampler2D histFilter;
-      uniform sampler2D indexText;
+  
       
       
       varying vec4 col;

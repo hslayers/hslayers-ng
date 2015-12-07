@@ -29,7 +29,7 @@
   				col = vec4(0., 0. , 1., 0.);
   		  					
   			} 
-  			else if (fdata[0]>=  ( (pow(2.,numfilters) -1.) / 256.) && numfilters != 0. ){    
+  			else if (fdata[0]>=  ( (numfilters ) / 256.) && numfilters != 0. ){    
   				// data are selected						
 				col = vec4(1., 0. , 0., 0.);
 			} else {
