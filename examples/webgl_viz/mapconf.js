@@ -91,6 +91,7 @@ function mapConf(map, ol) {
         var tl = getTopLeftTC();
 
         var v = map.getPixelFromCoordinate(p);
+        console.log(v);
         var prop = map.getProperties()
             // var v = map.getViewPortPxFromLonLat( new OpenLayers.LonLat(90,0));
         var v0 = toLevel0(v, tl, prop.view.getZoom());
@@ -100,8 +101,8 @@ function mapConf(map, ol) {
 
     function toLevel0(pt, tl, zoom) {
         var p = [];
-        ts = 256;
-        scale = Math.pow(2, zoom);
+        var ts = 256;
+        var scale = Math.pow(2, zoom);
         p.x = pt[0] / scale + tl.x;
         p.y = pt[1] / scale + tl.y;
         return p;
@@ -111,8 +112,8 @@ function mapConf(map, ol) {
     function getTopLeftTC() {
 
         var s = Math.pow(2, map.getView().getZoom());
-        tlpixel = map.getPixelFromCoordinate(tlwgs);
-        res = {
+        var tlpixel = map.getPixelFromCoordinate(tlwgs);
+        var res = {
             x: -tlpixel[0] / s,
             y: -tlpixel[1] / s
         }

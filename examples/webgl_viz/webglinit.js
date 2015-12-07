@@ -20,7 +20,7 @@ wglinit = function(that) {
 
         WGL.addHeatMapDimension(data.pts, 'heatmap');
         WGL.addMapDimension(data.pts, 'themap');
-       // WGL.addPolyBrushFilter('themap', 'polybrush');
+        WGL.addPolyBrushFilter('themap', 'polybrush');
 
 
         WGL.addExtentFilter();

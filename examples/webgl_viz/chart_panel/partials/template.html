@@ -1,5 +1,24 @@
 <div class="panel panel-default col-lg-12 col-sm-12 col-xs-12" style="z-index: 1000;   pointer-events: auto; ">
-    <div class="panel-body" style="width: 200px;">
+    <div class="panel-body" style="width: 400px;">
+    <div id="controls">
+
+		<ul id="controlToggle">
+
+			<input type="radio" name="type" value="polygon" id="polygonToggle"
+				onclick="toggleControl(this);" />
+			<label for="polygonToggle">sketch polygon</label>
+
+			<input type="radio" name="type" value="modify" id="createVertices"
+				onclick="toggleControl(this);" />
+			<label for="createVertices">modify polygon</label>
+
+			<input type="radio" name="type" value="remove" id="removePolygon"
+				onclick="toggleControl(this);" />
+			<label for="removePolygon">remove polygon</label>
+
+		</ul>
+
+	</div>
      <div id = "chart1"></div>
 	 <div id = "chart2"></div>
 	 <div id = "chart3"></div>

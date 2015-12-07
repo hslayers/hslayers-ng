@@ -45,7 +45,10 @@ fill: #98abc5;
   fill-opacity: .125;
   shape-rendering: crispEdges;
 }
-
+.l {
+	cursor: pointer;
+	stroke: #000;
+}
 .axis path,
 .axis line {
   fill: none;
