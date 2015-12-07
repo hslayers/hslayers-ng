@@ -2,19 +2,14 @@
 
 var hsl_path = '../../';
 
-<<<<<<< HEAD
 var gitsha = $.ajax({
     type: "GET",
     url: hsl_path + 'gitsha.js',
     async: false
 }).responseText;
-var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-1.0/js/'; //http://localhost:9999/js/webglayer/js/
+var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-snaphsot1_1/js/'; //http://localhost:9999/js/webglayer/js/
 //  var jans_path = 'http://localhost:9999/js/webglayer/js/'
-=======
-var gitsha = $.ajax({ type: "GET", url: hsl_path + 'gitsha.js', async: false }).responseText;
-//var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-1.0/js/'; //http://localhost:9999/js/webglayer/js/
-  var jans_path = 'http://localhost:9999/js/webglayer/js/'
->>>>>>> updated to WebGLayer snaphot
+
 
 
 //var jans_path = 'http://localhost:9999/js/webglayer/js/';
