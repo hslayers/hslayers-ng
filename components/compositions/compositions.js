@@ -211,7 +211,8 @@ define(['angular', 'ol', 'map'],
                     });
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
-                    var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
+                    var cur_map_extent = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
+                    var b = ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
                     var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
                     var url = config.compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
@@ -241,10 +242,14 @@ define(['angular', 'ol', 'map'],
                                 };
                                 record.editable = false;
                                 var extent = composition_parser.parseExtent(record.bbox);
-                                attributes.geometry = ol.geom.Polygon.fromExtent(extent);
-                                var new_feature = new ol.Feature(attributes);
-                                record.feature = new_feature;
-                                extent_layer.getSource().addFeatures([new_feature]);
+                                if (!((extent[0] < cur_map_extent[0] && extent[2] > cur_map_extent[2]) || (extent[1] < cur_map_extent[1] && extent[3] > cur_map_extent[3]))) {
+                                    attributes.geometry = ol.geom.Polygon.fromExtent(extent);
+                                    var new_feature = new ol.Feature(attributes);
+                                    record.feature = new_feature;
+                                    extent_layer.getSource().addFeatures([new_feature]);
+                                } else {
+                                    debugger;
+                                }
                             })
                             if (!$scope.$$phase) $scope.$digest();
                             $('[data-toggle="tooltip"]').tooltip();
@@ -387,18 +392,16 @@ define(['angular', 'ol', 'map'],
                 });
 
                 var timer;
-                OlMap.map.getView().on('change:center', function(e) {
+
+                function mapZoomed(e) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(function() {
                         if ($scope.filter_by_extent) $scope.loadCompositions();
                     }, 500);
-                });
-                OlMap.map.getView().on('change:resolution', function(e) {
-                    if (timer != null) clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        if ($scope.filter_by_extent) $scope.loadCompositions();
-                    }, 500);
-                });
+                }
+
+                OlMap.map.getView().on('change:center', mapZoomed);
+                OlMap.map.getView().on('change:resolution', mapZoomed);
 
                 $scope.loadComposition = function(url) {
                     if (composition_parser.composition_loaded != null) {
