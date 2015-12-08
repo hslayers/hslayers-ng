@@ -7,8 +7,8 @@ var gitsha = $.ajax({
     url: hsl_path + 'gitsha.js',
     async: false
 }).responseText;
-var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-snaphsot1_1/js/'; //http://localhost:9999/js/webglayer/js/
-//  var jans_path = 'http://localhost:9999/js/webglayer/js/'
+//var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-snaphsot1_1/js/'; //http://localhost:9999/js/webglayer/js/
+  var jans_path = 'http://localhost:9999/js/webglayer/js/'
 
 
 

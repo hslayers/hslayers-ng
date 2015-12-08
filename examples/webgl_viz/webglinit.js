@@ -58,10 +58,12 @@ wglinit = function(that) {
         map.getView().on('change:center', onMove, 0);
         map.getView().on('change:resolution', onMove, 0);
         map.on('moveend', onMove, 0);
+      	WGL.addCharts(charts);
         WGL.initFilters();
-        WGL.addCharts(charts);
-        onMove();
-        WGL.render();
+        //onMove();
+         WGL.the_map = map;
+		 WGL.mcontroller.zoommove(map.getView().getZoom(), getTopLeftTC())  ;
+       
         
                                 
    

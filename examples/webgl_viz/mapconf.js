@@ -1,6 +1,6 @@
 function mapConf(map, ol) {
-
-
+ usercontrols = [];
+ WGL.the_map = map;
 
 
     var featureOverlay = new ol.FeatureOverlay({
@@ -22,9 +22,27 @@ function mapConf(map, ol) {
     });
     featureOverlay.setMap(map);
 
+ // select interaction working on "singleclick"
+    
+
+    // select interaction working on "click"
+    var selectClick = new ol.interaction.Select({
+      condition: ol.events.condition.click,
+       features: featureOverlay.getFeatures()
+    });
+
+	 function deleteFeatures(e){
+		var f = selectClick.getFeatures();
+		 featureOverlay.removeFeature(f);
+	}
+	
+    selectClick.on('select', function(e) {
+    	 deleteFeatures(e);
+    })
 
 
-
+ 	usercontrols['select'] =  selectClick;
+ 
     var modify = new ol.interaction.Modify({
         features: featureOverlay.getFeatures(),
 
@@ -39,14 +57,16 @@ function mapConf(map, ol) {
     });
 
 
-    featureOverlay.getFeatures()
+	//usercontrols['modify'] = modify;
+
+    featureOverlay.getFeatures();
 
 
-    map.addInteraction(modify);
+    //map.addInteraction(modify);
 
 
     var draw; // global so we can remove it lat	 console.log(this);er
-    function addInteraction() {
+    
         draw = new ol.interaction.Draw({
             features: featureOverlay.getFeatures(),
             type: "Polygon"
@@ -78,12 +98,12 @@ function mapConf(map, ol) {
             }, draw);
         });
 
-        map.addInteraction(draw);
-    }
+       
+    
+	usercontrols['draw'] = draw;
 
 
-
-    addInteraction();
+   // addInteraction();
 
 
 
@@ -131,4 +151,21 @@ function mapConf(map, ol) {
         return points;
 
     }
+
 }
+toggleControl = function(element) {
+	
+	for (key in usercontrols) {
+		var control = usercontrols[key];
+		
+		if (element.value == key && element.checked) {
+			 WGL.the_map.addInteraction(control);
+			console.log('activate '+control);
+		} else {
+			 WGL.the_map.removeInteraction(control);
+			console.log('deactivate '+control);
+		}
+	}
+}
+
+
