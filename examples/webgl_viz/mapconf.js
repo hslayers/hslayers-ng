@@ -36,7 +36,7 @@ function mapConf(map, ol) {
 		 f.forEach( function(ff){     
      	 featureOverlay.removeFeature(ff);
    		})
-		
+		selectClick.getFeatures().clear();
 	}
 	
     selectClick.on('select', function(e) {
