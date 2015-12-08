@@ -35,6 +35,17 @@ function mapConf(map, ol) {
         var f = selectClick.getFeatures();
         f.forEach(function(ff) {
             featureOverlay.removeFeature(ff);
+             delete polygons[ff.wglId];
+             //*deactivate filter*/
+			 var l = 0;
+             for (var i in polygons){
+					if (typeof(polygons[i])!='undefined'){
+								l++;
+							} 
+					}
+			//polygons.length = l;//Object.keys(polygons).length;;
+		    WGL.filterDim('themap','polybrush',polygons);
+
         })
         selectClick.getFeatures().clear();
     }
@@ -74,11 +85,17 @@ function mapConf(map, ol) {
         features: featureOverlay.getFeatures(),
         type: "Polygon"
     });
-
+  
+    var polygons = [];
+    var polid = 0;
+    
     draw.on("drawstart", function(e) {
         e.feature.on('change', function(ff) {
             var res = [];
             var features = ff.target.getGeometry().getCoordinates();
+            if (typeof(ff.target.wglId)=='undefined'){
+               ff.target.wglId =  polid++;
+            } 
             //for (var i = 0; i < features.length; i++) {
             for (var j = 0; j < features[0].length; j++) {
                 var pp = transform(features[0][j]);
@@ -87,12 +104,11 @@ function mapConf(map, ol) {
             //console.log("feature num "+features.length);
 
             try {
-                var polygons = [];
-                var polid = 0;
+              
                 var ts = new poly2tri.SweepContext(res);
                 ts.triangulate();
-                polygons[polid++] = trianglesToArray(ts.getTriangles());
-                polygons.length = Object.keys(polygons).length;
+                polygons[ ff.target.wglId] = trianglesToArray(ts.getTriangles());
+                //polygons.length = Object.keys(polygons).length;
                 WGL.filterDim('themap', 'polybrush', polygons);
             } catch (e) {
                 console.log(e);
