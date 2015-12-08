@@ -1,6 +1,6 @@
 function mapConf(map, ol) {
- usercontrols = [];
- WGL.the_map = map;
+    usercontrols = [];
+    WGL.the_map = map;
 
 
     var featureOverlay = new ol.FeatureOverlay({
@@ -22,30 +22,30 @@ function mapConf(map, ol) {
     });
     featureOverlay.setMap(map);
 
- // select interaction working on "singleclick"
-    
+    // select interaction working on "singleclick"
+
 
     // select interaction working on "click"
     var selectClick = new ol.interaction.Select({
-      condition: ol.events.condition.click,
-       features: featureOverlay.getFeatures()
+        condition: ol.events.condition.click,
+        features: featureOverlay.getFeatures()
     });
 
-	 function deleteFeatures(e){
-		var f = selectClick.getFeatures();
-		 f.forEach( function(ff){     
-     	 featureOverlay.removeFeature(ff);
-   		})
-		selectClick.getFeatures().clear();
-	}
-	
+    function deleteFeatures(e) {
+        var f = selectClick.getFeatures();
+        f.forEach(function(ff) {
+            featureOverlay.removeFeature(ff);
+        })
+        selectClick.getFeatures().clear();
+    }
+
     selectClick.on('select', function(e) {
-    	 deleteFeatures(e);
+        deleteFeatures(e);
     })
 
 
- 	usercontrols['select'] =  selectClick;
- 
+    usercontrols['select'] = selectClick;
+
     var modify = new ol.interaction.Modify({
         features: featureOverlay.getFeatures(),
 
@@ -60,7 +60,7 @@ function mapConf(map, ol) {
     });
 
 
-	//usercontrols['modify'] = modify;
+    //usercontrols['modify'] = modify;
 
     featureOverlay.getFeatures();
 
@@ -69,44 +69,44 @@ function mapConf(map, ol) {
 
 
     var draw; // global so we can remove it lat	 console.log(this);er
-    
-        draw = new ol.interaction.Draw({
-            features: featureOverlay.getFeatures(),
-            type: "Polygon"
-        });
 
-        draw.on("drawstart", function(e) {
-            e.feature.on('change', function(ff) {
-                var res = [];
-                var features = ff.target.getGeometry().getCoordinates();
-                //for (var i = 0; i < features.length; i++) {
-                for (var j = 0; j < features[0].length; j++) {
-                    var pp = transform(features[0][j]);
-                    res.push(pp);
-                }
-                //console.log("feature num "+features.length);
+    draw = new ol.interaction.Draw({
+        features: featureOverlay.getFeatures(),
+        type: "Polygon"
+    });
 
-                try {
-                    var polygons = [];
-                    var polid = 0;
-                    var ts = new poly2tri.SweepContext(res);
-                    ts.triangulate();
-                    polygons[polid++] = trianglesToArray(ts.getTriangles());
-                    polygons.length = Object.keys(polygons).length;
-                    WGL.filterDim('themap','polybrush',polygons);
-                } catch (e) {
-                    console.log(e);
-                }
+    draw.on("drawstart", function(e) {
+        e.feature.on('change', function(ff) {
+            var res = [];
+            var features = ff.target.getGeometry().getCoordinates();
+            //for (var i = 0; i < features.length; i++) {
+            for (var j = 0; j < features[0].length; j++) {
+                var pp = transform(features[0][j]);
+                res.push(pp);
+            }
+            //console.log("feature num "+features.length);
 
-            }, draw);
-        });
+            try {
+                var polygons = [];
+                var polid = 0;
+                var ts = new poly2tri.SweepContext(res);
+                ts.triangulate();
+                polygons[polid++] = trianglesToArray(ts.getTriangles());
+                polygons.length = Object.keys(polygons).length;
+                WGL.filterDim('themap', 'polybrush', polygons);
+            } catch (e) {
+                console.log(e);
+            }
 
-       
-    
-	usercontrols['draw'] = draw;
+        }, draw);
+    });
 
 
-   // addInteraction();
+
+    usercontrols['draw'] = draw;
+
+
+    // addInteraction();
 
 
 
@@ -157,18 +157,16 @@ function mapConf(map, ol) {
 
 }
 toggleControl = function(element) {
-	
-	for (key in usercontrols) {
-		var control = usercontrols[key];
-		
-		if (element.value == key && element.checked) {
-			 WGL.the_map.addInteraction(control);
-			console.log('activate '+control);
-		} else {
-			 WGL.the_map.removeInteraction(control);
-			console.log('deactivate '+control);
-		}
-	}
+
+    for (key in usercontrols) {
+        var control = usercontrols[key];
+
+        if (element.value == key && element.checked) {
+            WGL.the_map.addInteraction(control);
+            console.log('activate ' + control);
+        } else {
+            WGL.the_map.removeInteraction(control);
+            console.log('deactivate ' + control);
+        }
+    }
 }
-
-

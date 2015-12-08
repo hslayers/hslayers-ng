@@ -16,15 +16,15 @@ function DataLoader(visualize) {
         var road_surf = [];
 
         var weekday = new Array(7);
-		weekday[0]=  "Sun";
-		weekday[1] = "Mon";
-		weekday[2] = "Tue";
-		weekday[3] = "Wed";
-		weekday[4] = "Thu";
-		weekday[5] = "Fri";
-		weekday[6] = "Sat";
-		var weekarray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
-		
+        weekday[0] = "Sun";
+        weekday[1] = "Mon";
+        weekday[2] = "Tue";
+        weekday[3] = "Wed";
+        weekday[4] = "Thu";
+        weekday[5] = "Fri";
+        weekday[6] = "Sat";
+        var weekarray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
         var j = 0;
         /**
          * load data
@@ -39,7 +39,7 @@ function DataLoader(visualize) {
 
                 var d = (new Date(val.timestamp * 1000));
                 //index[i] = rasterer.calc(i);
-            	days[i] =  weekday[d.getDay()]; //d.getDay();		
+                days[i] = weekday[d.getDay()]; //d.getDay();		
 
                 hours[i] = d.getHours() + d.getMinutes() / 60;
                 date[i] = Math.round(d.getTime() / (1000 * 60 * 60));
@@ -50,14 +50,16 @@ function DataLoader(visualize) {
 
             });
 
-            visualize({pts: pts, 
-				days: days, 
-				hours :hours, 
-				sev : sev, 					
-				date:date, 
-				dmm :dateminmax , 
-				num : data.length,
-				daysarray: weekarray});		
+            visualize({
+                pts: pts,
+                days: days,
+                hours: hours,
+                sev: sev,
+                date: date,
+                dmm: dateminmax,
+                num: data.length,
+                daysarray: weekarray
+            });
         });
     }
 

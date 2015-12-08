@@ -88,7 +88,7 @@ define(['angular', 'ol', 'utils'],
                     if (angular.isDefined(params.REQUEST)) params.REQUEST = 'GetCapabilities';
                     if (angular.isUndefined(params.service) && angular.isUndefined(params.SERVICE)) params.service = 'WMS';
                     var url = [path, me.params2String(params)].join('?');
-                    
+
                     url = utils.proxify(url);
                     if (callback) {
                         $http.get(url).success(callback);
