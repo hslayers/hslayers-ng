@@ -194,9 +194,9 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         searchVisible: function(is) {
                             if (arguments.length > 0) {
-                                me.panel_statuses['search'] = is;
+                                me.panel_statuses['search_query'] = is;
                             }
-                            return me.panel_statuses['search']
+                            return me.panel_statuses['search_query']
                         },
                         isAuthorized: function() {
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
