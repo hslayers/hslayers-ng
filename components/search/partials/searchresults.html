@@ -1,3 +1,16 @@
-<div class="list-group" id="searchresults" style="display: block;">
-    <a ng-href='#'  ng-repeat="result in results | limitTo:10" class="list-group-item" ng-click="zoomTo(result)">{{result.name}}<small style="float:right; color: rgb(148, 143, 143)">{{result.fcodeName}}</small></a>
+<div class="panel panel-default mainpanel">
+    <div class="panel-heading"><translate>Search results</translate>
+        <button type="button" class="close" ng-click="Core.closePanel(this)">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only" translate>Close</span>
+        </button>
+    </div>
+    <div class="panel-body">
+       <div class="panel panel-default">
+            <button type="button" class="btn btn-default" ng-if="clearvisible" ng-click="clear()"><translate>Clear</translate></button>
+       </div>
+       <div class="list-group" style="display: block;">
+            <a ng-href='#'  ng-repeat="result in results | limitTo:10" class="list-group-item" ng-class="'list-group-item'+(result.highlighted ? ' active' : '')" ng-mouseover="highlightResult(result, true)" ng-mouseleave="highlightResult(result, false)"  ng-click="zoomTo(result)" style="overflow: hidden;">{{result.name}}<small style="float:right; color: rgb(148, 143, 143)">{{result.fcodeName}}</small></a>
+        </div>
+    </div>
 </div>
