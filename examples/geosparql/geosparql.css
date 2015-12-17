@@ -32,7 +32,9 @@
   color: #D84F5F;
   margin-left: 30px;
   max-width: 270px;
- // text-align: justify;
+  margin-top: 3px;
+  margin-bottom: 3px;
+
 }
 .italic{
   font-style: italic;
@@ -40,8 +42,8 @@
 .list{
   list-style-image: url(img/list.png);
   word-break: normal;
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 .developersTitle{
   margin-left: 50px;
@@ -64,26 +66,20 @@
   visibility: visible;
 }
 .developersInfo{
-  //max-width: 290px;
   display: none;
   margin-left: 50px;
   margin-bottom: 30px;
   margin-top: 20px;
-  //word-break: break-all;
 }
 .developersInfo:hover{
   display: block;
   visibility: visible;
 }
 .attributeName{
-  //max-width: 290px;
   color: #193340;
-  //word-break: break-all;
   font-size: 14px;
 }
 .attributeValue{
-  //max-width: 290px;
-  //word-break: break-all;
   font-style: italic;
   color: rgb(255,102,0);
 }
