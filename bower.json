@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular": "1.4.7",
+    "angular": "1.4.x",
     "angular-loader": "1.4.x",
     "angular-cookies": "1.4.x",
     "angular-sanitize": "1.4.x",
