@@ -72,7 +72,9 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
-                                me.sidebarLabels = true;
+                                if (me.sidebarExpanded == true) {
+                                    me.sidebarLabels = true;
+                                }
                             } else {
                                 me.sidebarExpanded = true;
                                 me.sidebarLabels = false;
