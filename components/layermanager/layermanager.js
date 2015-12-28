@@ -100,8 +100,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
      * @memberOf hs.layermanager
      * @description Layer manager controller
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service',
-        function($scope, OlMap, config, $rootScope, Core, $compile, utils) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service','$log',
+        function($scope, OlMap, config, $rootScope, Core, $compile, utils, $log) {
             $scope.Core = Core;
             $scope.folders = {
                 hsl_path: '',
@@ -204,7 +204,6 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
              */
             function layerRemoved(e) {
-                $(".layermanager-list").prepend($('.layerpanel'));
                 $scope.currentlayer = null;
                 for (var i = 0; i < $scope.layers.length; i++) {
                     if ($scope.layers[i].layer == e.element) {
