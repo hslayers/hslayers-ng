@@ -90,9 +90,9 @@ input.layer-more,
 {
     width: 18px;
     height: 21px;
-    float: right;
     font-size: 16px;
     margin: 0;
+    display: inline-block;
 }
 .datasource_addlayer,
 .layer-more {
@@ -223,9 +223,16 @@ li.list-group-item {
     padding: 10px 5px;
     word-wrap: break-word;
 }
+
 .list-group-item.active .datasource_addlayer {
     color: #fff
 }
+
+.datasources_item_description {
+    display:inline-block;
+    word-break: break-all;
+}
+
 .panel-body {
     padding: 3px;
 }

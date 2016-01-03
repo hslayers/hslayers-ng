@@ -27,17 +27,18 @@
                             <div class="panel-body">
                                 <ul class="list-group">
                                     <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
-                                    <li ng-repeat="layer in ds.layers" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
-                                        <b class="list-group-item-heading datasources_item">
-                                            <a href="#" ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a>
+                                    <li ng-repeat="layer in ds.layers" class="clearfix" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="highlightComposition(layer, true)" ng-mouseleave="highlightComposition(layer, false)">
+                                        <span class="datasources_item">
+                                            <b><a href="#" ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a></b>
+                                            <span class="datasources_item_description" ng-show='layer.description != (layer.title || layer.description)'>
+                                                {{layer.description}}
+                                            </span>
+                                        </span>
+                                        <span class="pull-right">
                                             <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"  ng-show='config.datasource_selector.allow_add === undefined || config.datasource_selector.allow_add == true'><i class="glyphicon icon-circle-arrow-right"></i></a>
                                             <a ng-href='{{layerDownload(ds, layer)}}' class="datasource_downloadlayer" ng-show='layerDownload(ds,layer) != "#"'><i class="glyphicon icon-download"></i></a>
                                             <a ng-href='{{layerRDF(ds, layer)}}' class="datasource_rdf" target="_blank" ng-show='layerRDF(ds, layer) != "#"'><i class="icon-rdf"></i></a>
-                                        </b>
-                                        <div ng-show='layer.description != (layer.title || layer.description)'>
-                                            {{layer.description}}
-                                        </div>
-                                        <p style="clear:both;margin:0px"></p>
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
