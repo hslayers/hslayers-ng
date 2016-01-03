@@ -85,7 +85,9 @@ input[type=checkbox].layer-checked,
 input[type=radio].layer-checked,
 input.layer-more,
 .datasource_downloadlayer,
-.datasource_addlayer {
+.datasource_addlayer,
+.datasource_rdf
+{
     width: 18px;
     height: 21px;
     float: right;
@@ -218,7 +220,7 @@ button.but-title-sm {
 }
 
 li.list-group-item {
-    padding: 10px 10px;
+    padding: 10px 5px;
     word-wrap: break-word;
 }
 .list-group-item.active .datasource_addlayer {
@@ -480,6 +482,7 @@ ul.sidebar-list .sidebar-item:hover {
 }
 
 ul.sidebar-list .sidebar-item .menu-icon {
+    display:inline-block;
     font-size: 16px;
     line-height: 38px;
     width: 50px;
@@ -565,3 +568,8 @@ ul.sidebar-list .sidebar-item .menu-icon {
 #stc-save, #stc-saveas {
     display:none;
 }
+
+[class^="icon-"], [class*=" icon-"] {
+    line-height:1;
+}
+
