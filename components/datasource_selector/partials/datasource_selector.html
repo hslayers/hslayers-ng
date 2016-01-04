@@ -35,9 +35,9 @@
                                             </span>
                                         </span>
                                         <span class="pull-right">
-                                            <a href="#" class="datasource_addlayer"  ng-click="addLayerToMap(ds, layer)"  ng-show='config.datasource_selector.allow_add === undefined || config.datasource_selector.allow_add == true'><i class="glyphicon icon-circle-arrow-right"></i></a>
-                                            <a ng-href='{{layerDownload(ds, layer)}}' class="datasource_downloadlayer" ng-show='layerDownload(ds,layer) != "#"'><i class="glyphicon icon-download"></i></a>
-                                            <a ng-href='{{layerRDF(ds, layer)}}' class="datasource_rdf" target="_blank" ng-show='layerRDF(ds, layer) != "#"'><i class="icon-rdf"></i></a>
+                                            <a href="#" class="datasource_addlayer"  data-toggle="tooltip" title="Add to map" ng-click="addLayerToMap(ds, layer)"  ng-show='config.datasource_selector.allow_add === undefined || config.datasource_selector.allow_add == true'><i class="glyphicon icon-circle-arrow-right"></i></a>
+                                            <a ng-href='{{layerDownload(ds, layer)}}' data-toggle="tooltip" title="Download" class="datasource_downloadlayer" ng-show='layerDownload(ds,layer) != "#"'><i class="glyphicon icon-download"></i></a>
+                                            <a ng-href='{{layerRDF(ds, layer)}}' data-toggle="tooltip" title="GeoDCAT-AP" class="datasource_rdf" target="_blank" ng-show='layerRDF(ds, layer) != "#"'><i class="icon-rdf"></i></a>
                                         </span>
                                     </li>
                                 </ul>
