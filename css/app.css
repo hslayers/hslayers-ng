@@ -580,3 +580,21 @@ ul.sidebar-list .sidebar-item .menu-icon {
     line-height:1;
 }
 
+.hs-styler-colorbox {
+    width:14px; 
+    height: 14px;
+    display: inline-block; 
+    margin:1px;
+}
+
+.hs-styler-colorbox:hover {
+    width:20px; height: 20px; margin: -3px 0px; 
+}
+
+.hs-styler-selected-color-box {
+    width: 30px; 
+    height: 30px; 
+    display: inline-block;
+    vertical-align: middle;
+    margin: 3px;
+}

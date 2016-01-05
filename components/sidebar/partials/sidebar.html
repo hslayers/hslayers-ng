@@ -59,6 +59,13 @@
                         <span class="sidebar-item-title">Eurostat explorer</span>
                     </a>
                 </li>
+                
+                <li class="sidebar-item" ng-if="Core.exists('hs.styler.controller')" ng-click="setMainPanel('styler')" ng-class="{active: Core.mainpanel == 'styler'}">
+                    <a href="#">
+                        <span class="menu-icon glyphicon icon-brush"></span>
+                        <span class="sidebar-item-title">Style vector layer</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-item" ng-if="Core.exists('hs.print.controller')" ng-click="setMainPanel('print')" ng-class="{active: Core.mainpanel == 'print'}">
                     <a href="#">
