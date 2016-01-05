@@ -69,6 +69,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         sidebarToggleable: true,
                         sidebarButtons: true,
                         panel_statuses: {},
+                        _exist_cache: {},
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
@@ -143,14 +144,18 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         exists: function(controllerName) {
+                            if(angular.isDefined(me._exist_cache[controllerName])) return true;
                             if (typeof window[controllerName] == 'function') {
                                 return true;
                             }
                             try {
                                 $controller(controllerName);
+                                me._exist_cache[controllerName]=true;
                                 return true;
                             } catch (error) {
-                                return !(error instanceof TypeError);
+                                var t = !(error instanceof TypeError);
+                                if(t) me._exist_cache[controllerName]=true;
+                                return t;
                             }
                         },
                         fullScreenMap: function(element) {
