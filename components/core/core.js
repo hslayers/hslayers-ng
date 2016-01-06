@@ -144,17 +144,17 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         exists: function(controllerName) {
-                            if(angular.isDefined(me._exist_cache[controllerName])) return true;
+                            if (angular.isDefined(me._exist_cache[controllerName])) return true;
                             if (typeof window[controllerName] == 'function') {
                                 return true;
                             }
                             try {
                                 $controller(controllerName);
-                                me._exist_cache[controllerName]=true;
+                                me._exist_cache[controllerName] = true;
                                 return true;
                             } catch (error) {
                                 var t = !(error instanceof TypeError);
-                                if(t) me._exist_cache[controllerName]=true;
+                                if (t) me._exist_cache[controllerName] = true;
                                 return t;
                             }
                         },

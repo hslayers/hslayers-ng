@@ -305,8 +305,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 if (layer.getSource().getExtent && layer.getSource().getExtent()) return true;
                 return false;
             }
-            
-              /**
+
+            /**
              * @function layerIsVector
              * @memberOf hs.layermanager.controller
              * @description Determines if layer is a Vector layer. Used for allowing styling
@@ -317,9 +317,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 if (layer instanceof ol.layer.Vector) return true;
                 return false;
             }
-            
-            $scope.styleLayer = function(layer){
-                styler.layer=layer;
+
+            $scope.styleLayer = function(layer) {
+                styler.layer = layer;
                 Core.setMainPanel('styler');
             }
 

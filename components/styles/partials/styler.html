@@ -37,7 +37,7 @@
                     
                     <div class="form-group">
                         <label for="hs-styler-linewidth" class="control-label" translate>Line width</label>
-                        <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="linewidth"/><span>{{linewidth}}</span>
+                        <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="linewidth" ng-change='save()'/><span>{{linewidth}}</span>
                     </div>
                 </div>
             </div>
@@ -48,12 +48,9 @@
                 </div>
                 <div class="panel-body">
                 
-                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-default active">
-                            <input type="radio" name="options" id="option1" ng-model="imagetype" checked> Circle
-                        </label>
-                        <label class="btn btn-default">
-                            <input type="radio" name="options" id="option2" ng-model="imagetype"> Icon
+                    <div class="btn-group" data-toggle="buttons">    
+                        <label class="btn btn-default" style="" ng-repeat="m in imagetypes" ng-click='setImageType(m.name)'>
+                            <input type="radio" class="form-control layer-checked"  ng-value="m.name" name="imagetype"/>{{m.hrname}}
                         </label>
                     </div>
                     
@@ -72,18 +69,15 @@
                 
                     <div class="form-group">
                         <label for="hs-styler-radius" class="control-label" translate>Radius</label>
-                        <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="radius"/><span>{{radius}}</span>
+                        <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="radius" ng-change='save()'/><span>{{radius}}</span>
                     </div>
                     
                     <div class="form-group">
                         <label for="hs-styler-iconlinewidth" class="control-label" translate>Line width</label>
-                        <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="iconlinewidth"/><span>{{iconlinewidth}}</span>
+                        <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="iconlinewidth" ng-change='save()'/><span>{{iconlinewidth}}</span>
                     </div>
                 </div>
             </div>
-            
-            
-            <button type="button" class="btn btn-primary" ng-click="save()" translate>Save</button>
             <form>
     </div>
 </div>

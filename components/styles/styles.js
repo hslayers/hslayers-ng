@@ -139,34 +139,80 @@ define(['angular', 'ol'],
                 templateUrl: hsl_path + 'components/styles/partials/color.html'
             };
         })
-        
-        .service("hs.styler.service", [
-                function() {
-                    this.layer = null;
-                }]
-         )
 
-        .controller('hs.styler.controller', ['$scope', 'hs.styler.service' ,
+        .service("hs.styler.service", [
+            function() {
+                this.layer = null;
+            }
+        ])
+
+        .controller('hs.styler.controller', ['$scope', 'hs.styler.service',
             function($scope, service) {
-                
-                $scope.save = function(){
-                    if(service.layer==null) return;
+                $scope.imagetypes = [{
+                    name: 'none',
+                    hrname: 'None'
+                }, {
+                    name: 'icon',
+                    hrname: 'Icon'
+                }, {
+                    name: 'circle',
+                    hrname: 'Circle'
+                }];
+                $scope.imagetype = $scope.imagetypes[0].name;
+                $scope.radius = 5;
+                $scope.linewidth = 2;
+                $scope.iconlinewidth = 2;
+                $scope.save = function() {
+                    if (service.layer == null) return;
                     var style_json = {};
-                    if (angular.isDefined($scope.fillcolor)){
+                    if (angular.isDefined($scope.fillcolor)) {
                         style_json.fill = new ol.style.Fill({
                             color: $scope.fillcolor['background-color']
                         })
                     }
-                    if (angular.isDefined($scope.linecolor)){
+                    if (angular.isDefined($scope.linecolor) && $scope.linewidth > 0) {
                         style_json.stroke = new ol.style.Stroke({
                             color: $scope.linecolor['background-color'],
                             width: angular.isDefined($scope.linewidth) ? parseFloat($scope.linewidth) : 1
                         })
                     }
+                    if ($scope.imagetype != 'none') {
+                        if ($scope.imagetype == 'circle' && (angular.isDefined($scope.iconfillcolor) || angular.isDefined($scope.iconlinecolor))) {
+                            var circle_json = {
+                                radius: angular.isDefined($scope.radius) ? parseFloat($scope.radius) : 5
+                            };
+                            if (angular.isDefined($scope.iconfillcolor)) {
+                                circle_json.fill = new ol.style.Fill({
+                                    color: $scope.iconfillcolor['background-color']
+                                });
+                            }
+                            if (angular.isDefined($scope.iconlinecolor) && angular.isDefined($scope.iconlinewidth)&& $scope.iconlinewidth>0) {
+                                circle_json.stroke = new ol.style.Stroke({
+                                    color: $scope.iconlinecolor['background-color'],
+                                    width: $scope.iconlinewidth,
+                                    radius: angular.isDefined($scope.radius) ? parseFloat($scope.radius) : 5
+                                })
+                            }
+                            style_json.image = new ol.style.Circle(circle_json);
+                        }
+                    }
                     var style = new ol.style.Style(style_json);
+                    angular.forEach(service.layer.getSource().getFeatures(), function(f) {
+                        f.setStyle(null);
+                    })
                     service.layer.setStyle(style);
                 }
-                
+
+                $scope.setImageType = function(t) {
+                    $scope.imagetype = t;
+                    $scope.save();
+                }
+
+                $scope.$watch('linecolor', $scope.save);
+                $scope.$watch('fillcolor', $scope.save);
+                $scope.$watch('iconfillcolor', $scope.save);
+                $scope.$watch('iconlinecolor', $scope.save);
+
                 $scope.$emit('scope_loaded', "styler");
             }
         ]);

@@ -1,5 +1,8 @@
 <div>
-    <div ng-repeat="col in colors" ng-style="col" class="hs-styler-colorbox" ng-click="colorSelected(col)">
+    <div ng-repeat="col in colors  | limitTo : 14 : 0" ng-style="col" class="hs-styler-colorbox" ng-click="colorSelected(col)">
+        
+    </div><br/>
+    <div ng-repeat="col in colors  | limitTo : 14 : 15" ng-style="col" class="hs-styler-colorbox" ng-click="colorSelected(col)">
         
     </div>
 </div>
