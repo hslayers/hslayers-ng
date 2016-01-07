@@ -130,7 +130,7 @@ define(['angular', 'ol'],
                     }, {
                         'background-color': 'rgba(119, 119, 119, 1)'
                     }, {
-                        'background-color': 'rgba(0, 0, 0, 1, 1)'
+                        'background-color': 'rgba(0, 0, 0, 1)'
                     }];
                     scope.colorSelected = function(col) {
                         scope.color = col;
@@ -149,15 +149,18 @@ define(['angular', 'ol'],
         .controller('hs.styler.controller', ['$scope', 'hs.styler.service',
             function($scope, service) {
                 $scope.imagetypes = [{
-                    name: 'none',
-                    hrname: 'None'
-                }, {
-                    name: 'icon',
-                    hrname: 'Icon'
-                }, {
-                    name: 'circle',
-                    hrname: 'Circle'
-                }];
+                        name: 'none',
+                        hrname: 'None'
+                    },
+                    /* {
+                                        name: 'icon',
+                                        hrname: 'Icon'
+                                    },*/
+                    {
+                        name: 'circle',
+                        hrname: 'Circle'
+                    }
+                ];
                 $scope.imagetype = $scope.imagetypes[0].name;
                 $scope.radius = 5;
                 $scope.linewidth = 2;
@@ -165,12 +168,12 @@ define(['angular', 'ol'],
                 $scope.save = function() {
                     if (service.layer == null) return;
                     var style_json = {};
-                    if (angular.isDefined($scope.fillcolor)) {
+                    if (angular.isDefined($scope.fillcolor) && $scope.fillcolor != null) {
                         style_json.fill = new ol.style.Fill({
                             color: $scope.fillcolor['background-color']
                         })
                     }
-                    if (angular.isDefined($scope.linecolor) && $scope.linewidth > 0) {
+                    if (angular.isDefined($scope.linecolor) && $scope.linecolor != null && $scope.linewidth > 0) {
                         style_json.stroke = new ol.style.Stroke({
                             color: $scope.linecolor['background-color'],
                             width: angular.isDefined($scope.linewidth) ? parseFloat($scope.linewidth) : 1
@@ -181,12 +184,12 @@ define(['angular', 'ol'],
                             var circle_json = {
                                 radius: angular.isDefined($scope.radius) ? parseFloat($scope.radius) : 5
                             };
-                            if (angular.isDefined($scope.iconfillcolor)) {
+                            if (angular.isDefined($scope.iconfillcolor) && $scope.iconfillcolor != null) {
                                 circle_json.fill = new ol.style.Fill({
                                     color: $scope.iconfillcolor['background-color']
                                 });
                             }
-                            if (angular.isDefined($scope.iconlinecolor) && angular.isDefined($scope.iconlinewidth)&& $scope.iconlinewidth>0) {
+                            if (angular.isDefined($scope.iconlinecolor) && $scope.iconlinecolor != null && angular.isDefined($scope.iconlinewidth) && $scope.iconlinewidth > 0) {
                                 circle_json.stroke = new ol.style.Stroke({
                                     color: $scope.iconlinecolor['background-color'],
                                     width: $scope.iconlinewidth,
