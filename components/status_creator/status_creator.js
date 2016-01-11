@@ -249,6 +249,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     pair1 = ol.proj.transform(pair1, cur_proj, 'EPSG:4326');
                     pair2 = ol.proj.transform(pair2, cur_proj, 'EPSG:4326');
                     $scope.bbox = [pair1[0].toFixed(8), pair1[1].toFixed(8), pair2[0].toFixed(8), pair2[1].toFixed(8)];
+                    if (!$scope.$$phase) $scope.$digest();
                 }
 
                 $scope.next = function() {
@@ -437,6 +438,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 });
 
                 $scope.getCurrentExtent();
+                
+                $scope.$on('map.extent_changed', function(event, data, b) {
+                    $scope.getCurrentExtent()
+                });
                 $scope.$emit('scope_loaded', "StatusCreator");
             }
         ]);

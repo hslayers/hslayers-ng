@@ -11,7 +11,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
      * @param {object} config - Application configuration
      * @description Service for containing and initializing map object
      */
-    .service('hs.map.service', ['config', function(config) {
+    .service('hs.map.service', ['config', '$rootScope', function(config, $rootScope) {
         this.map = new ol.Map({
             target: 'map',
             interactions: [],
@@ -122,6 +122,20 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             me.repopulateLayers(null);
             me.map.setView(jQuery.extend(true, {}, config.default_view));
         }
+        
+        var timer;
+        me.map.getView().on('change:center', function(e) {
+            if (timer != null) clearTimeout(timer);
+            timer = setTimeout(function() {
+                $rootScope.$broadcast('map.extent_changed', e.element);
+            }, 500);
+        });
+        me.map.getView().on('change:resolution', function(e) {
+            if (timer != null) clearTimeout(timer);
+            timer = setTimeout(function() {
+                $rootScope.$broadcast('map.extent_changed', e.element, me.map.getView().calculateExtent(me.map.getSize()));
+            }, 500);
+        });
 
         /**
          * @function isLayerVisibleInPermalink

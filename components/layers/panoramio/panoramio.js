@@ -265,19 +265,6 @@ define(['angular', 'ol', 'app', 'map'],
                 }
 
                 /**
-                 * @function changed
-                 * @memberOf hs.panoramio.service
-                 * @description Callback function for map events used to throtle down the requests being made to API
-                 * @param {object} path - URL of image
-                 */
-                var changed = function(e) {
-                    if (timer != null) clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        me.update(e)
-                    }, 500);
-                }
-
-                /**
                  * @function init
                  * @memberOf hs.panoramio.service
                  * @description Syntactic sugar for initialization
@@ -344,9 +331,11 @@ define(['angular', 'ol', 'app', 'map'],
                     });
                     src.addFeatures(features);
                     me.source = src;
-                    OlMap.map.getView().on('change:center', changed);
-                    OlMap.map.getView().on('change:resolution', changed);
-                    changed();
+
+                    $scope.$on('map.extent_changed', function(event, data, b) {
+                        me.update()
+                    });
+                    me.update()
                 }
 
                 this.init();

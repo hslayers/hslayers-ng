@@ -372,18 +372,10 @@ define(['angular', 'ol', 'map'],
                     $scope.loadComposition(record.link);
                 });
 
-                var timer;
-
-                function mapZoomed(e) {
-                    if (timer != null) clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        if ($scope.filter_by_extent) $scope.loadCompositions();
-                    }, 500);
-                }
-
-                OlMap.map.getView().on('change:center', mapZoomed);
-                OlMap.map.getView().on('change:resolution', mapZoomed);
-
+                $scope.$on('map.extent_changed', function(event, data, b) {
+                    if ($scope.filter_by_extent) $scope.loadCompositions();
+                });
+            
                 $scope.loadComposition = function(url) {
                     if (composition_parser.composition_loaded != null) {
                         $scope.composition_to_be_loaded = url;

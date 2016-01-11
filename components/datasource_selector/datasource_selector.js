@@ -599,20 +599,9 @@ define(['angular', 'ol', 'map'],
                         }
                         if (something_done && !$scope.$$phase) $scope.$digest();
                     });
-                    var timer;
-                    OlMap.map.getView().on('change:center', function(e) {
-                        if (timer != null) clearTimeout(timer);
-                        timer = setTimeout(function() {
-                            if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
-                        }, 500);
+                    $scope.$on('map.extent_changed', function(event, data, b) {
+                        if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
                     });
-                    OlMap.map.getView().on('change:resolution', function(e) {
-                        if (timer != null) clearTimeout(timer);
-                        timer = setTimeout(function() {
-                            if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
-                        }, 500);
-                    });
-
                     OlMap.map.addLayer(extent_layer);
                     if (angular.isUndefined($scope.datasources[0].loaded) && Core.panelVisible($scope.panel_name, $scope)) {
                         $scope.loadDatasets($scope.datasources);
