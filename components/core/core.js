@@ -29,6 +29,7 @@ require.config({
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api',
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
         sidebar: requirejs.s.contexts._.config.paths.sidebar || hsl_path + 'components/sidebar/sidebar',
+        geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON'
     },
     shim: {
         'angular': {
@@ -68,10 +69,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         sidebarToggleable: true,
                         sidebarButtons: true,
                         panel_statuses: {},
+                        _exist_cache: {},
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
-                                me.sidebarLabels = true;
+                                if (me.sidebarExpanded == true) {
+                                    me.sidebarLabels = true;
+                                }
                             } else {
                                 me.sidebarExpanded = true;
                                 me.sidebarLabels = false;
@@ -140,14 +144,18 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         exists: function(controllerName) {
+                            if (angular.isDefined(me._exist_cache[controllerName])) return true;
                             if (typeof window[controllerName] == 'function') {
                                 return true;
                             }
                             try {
                                 $controller(controllerName);
+                                me._exist_cache[controllerName] = true;
                                 return true;
                             } catch (error) {
-                                return !(error instanceof TypeError);
+                                var t = !(error instanceof TypeError);
+                                if (t) me._exist_cache[controllerName] = true;
+                                return t;
                             }
                         },
                         fullScreenMap: function(element) {

@@ -100,8 +100,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
      * @memberOf hs.layermanager
      * @description Layer manager controller
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service',
-        function($scope, OlMap, config, $rootScope, Core, $compile, utils) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log',
+        function($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log) {
             $scope.Core = Core;
             $scope.folders = {
                 hsl_path: '',
@@ -204,7 +204,6 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
              */
             function layerRemoved(e) {
-                $(".layermanager-list").prepend($('.layerpanel'));
                 $scope.currentlayer = null;
                 for (var i = 0; i < $scope.layers.length; i++) {
                     if ($scope.layers[i].layer == e.element) {
@@ -305,6 +304,23 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 if (layer.get("BoundingBox")) return true;
                 if (layer.getSource().getExtent && layer.getSource().getExtent()) return true;
                 return false;
+            }
+
+            /**
+             * @function layerIsVector
+             * @memberOf hs.layermanager.controller
+             * @description Determines if layer is a Vector layer. Used for allowing styling
+             * @param {object} layer
+             */
+            $scope.layerIsVector = function(layer) {
+                if (typeof layer == 'undefined') return false;
+                if (layer instanceof ol.layer.Vector) return true;
+                return false;
+            }
+
+            $scope.styleLayer = function(layer) {
+                styler.layer = layer;
+                Core.setMainPanel('styler');
             }
 
             /**

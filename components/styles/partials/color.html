@@ -1,0 +1,11 @@
+<div>
+    <div ng-repeat="col in colors  | limitTo : 15 : 0" ng-style="col" class="hs-styler-colorbox" ng-click="colorSelected(col)">
+        
+    </div><br/>
+    <div ng-repeat="col in colors  | limitTo : 14 : 16" ng-style="col" class="hs-styler-colorbox" ng-click="colorSelected(col)">
+        
+    </div>
+    <div class="hs-styler-colorbox" style="font-size: 17px;" ng-click="colorSelected(null)">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </div>
+</div>

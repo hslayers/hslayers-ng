@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'bootstrap', 'year_selector'],
+define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'bootstrap', 'year_selector'],
 
-    function(ol, toolbar, layermanager, WfsSource) {
+    function(ol, toolbar, layermanager, WfsSource, geojson) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -42,18 +42,9 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'query', 'searc
             })
         })
 
-        var src = new ol.source.Vector({
-            format: new ol.format.GeoJSON(),
-            projection: 'EPSG:3857',
-            loader: function(extent, resolution, projection) {
-                $.ajax({
-                    url: hsl_path + 'examples/otn_charts/shluky.geojson',
-                    success: function(data) {
-                        src.addFeatures(src.readFeatures(data));
-                    }
-                });
-            },
-            strategy: ol.loadingstrategy.all
+        var src = new geojson({
+            featureProjection: 'EPSG:3857',
+            url: hsl_path + 'examples/otn_charts/shluky.geojson'
         });
         var csrc = new ol.source.Cluster({
             distance: 150,

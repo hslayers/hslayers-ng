@@ -85,8 +85,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         me.interactions.dragAndDropInteraction.on('addfeatures', function(event) {
             var vectorSource = new ol.source.Vector({
                 features: event.features,
-                projection: event.projection,
-                extractStyles: true
+                projection: event.projection
             });
             me.map.addLayer(new ol.layer.Vector({
                 title: 'User vector data',

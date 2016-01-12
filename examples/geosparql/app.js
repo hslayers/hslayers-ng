@@ -178,6 +178,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             strategy: ol.loadingstrategy.all
                         }),
                         style: route_style,
+                        visible: false,
                         path: 'Roads/Additional Cycling routes'
                     }),
                     new ol.layer.Vector({
@@ -196,6 +197,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             strategy: ol.loadingstrategy.all
                         }),
                         style: route_style,
+                        visible: false,
                         path: 'Roads/Additional Cycling routes'
                     }),
                     new ol.layer.Vector({
@@ -214,6 +216,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             strategy: ol.loadingstrategy.all
                         }),
                         style: route_style,
+                        visible: false,
                         path: 'Roads/Additional Cycling routes'
                     }),
                     new ol.layer.Vector({
@@ -232,6 +235,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             strategy: ol.loadingstrategy.all
                         }),
                         style: route_style,
+                        visible: false,
                         path: 'Roads/Additional Cycling routes'
                     }),
                     new ol.layer.Image({
@@ -249,7 +253,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             },
                             crossOrigin: null
                         }),
-                        path: 'Roads'
+                        visible: false,
+                        path: 'Roads/Additional Cycling routes'
                     })
                 ])
             }), new ol.layer.Group({

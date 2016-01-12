@@ -43,8 +43,8 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                 }
             ])
 
-        .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service',
-            function($scope, Core, OlMap, SearchService, $log, permalink, styles) {
+        .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service', '$log',
+            function($scope, Core, OlMap, SearchService, $log, permalink, styles, $log) {
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);
                 $scope.search_results_layer = null;
@@ -122,7 +122,6 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                             src.addFeature(feature);
                             result.feature = feature;
                         });
-
                         if (!$scope.$$phase) $scope.$digest();
                     }
                     /*   
@@ -135,7 +134,10 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                 }
 
                 $scope.createCurrentPointLayer = function() {
-                    if ($scope.search_results_layer) map.getLayers().remove($scope.search_results_layer);
+                    if ($scope.search_results_layer) {
+                        $scope.search_results_layer.getSource().clear();
+                        map.removeLayer($scope.search_results_layer);
+                    }
                     $scope.search_results_layer = new ol.layer.Vector({
                         title: "Search results",
                         source: new ol.source.Vector({}),

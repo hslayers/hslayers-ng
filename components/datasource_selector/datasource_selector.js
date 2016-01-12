@@ -468,6 +468,16 @@ define(['angular', 'ol', 'map'],
                     return "#"
                 }
 
+                $scope.layerRDF = function(ds, layer) {
+                    if (ds.type == "ckan") {
+                        return "#"
+                    } else if (ds.type == "micka") {
+                        return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat#"
+                    }
+
+                    return "#"
+                }
+
                 $scope.addLayerToMap = function(ds, layer) {
                     if (ds.type == "datatank") {
                         if (layer.type == "shp") {
