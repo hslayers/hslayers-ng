@@ -146,6 +146,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     var text = JSON.stringify(json, pretty);
                     return text;
                 },
+                 
+                serializeStyle: function(s){
+                    
+                },
 
                 /**
                  * Converts map layer into a JSON object.
@@ -227,6 +231,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         json.maxResolution = layer.getMaxResolution();
                         json.minResolution = layer.getMinResolution();
                         json.projection = "epsg:4326";
+                        if(layer.getStyle() instanceof ol.style.Style){
+                            json.style = serializeStyle(layer.getStyle());
+                        }
                     }
 
                     return json;
