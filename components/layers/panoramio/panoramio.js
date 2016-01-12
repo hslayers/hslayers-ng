@@ -104,8 +104,8 @@ define(['angular', 'ol', 'app', 'map'],
          * @param {object} config - Configuration with default layers to which the new panoramio layer will be added. It is later iterated and added to map.
          * @description Service for querying and displaying panoramio pictures
          */
-        .service("hs.panoramio.service", ['hs.map.service', 'config',
-            function(OlMap, config) {
+        .service("hs.panoramio.service", ['hs.map.service', 'config', '$rootScope',
+            function(OlMap, config, $rootScope) {
                 var map = OlMap.map;
                 var src = new ol.source.Vector();
                 var csrc = new ol.source.Cluster({
@@ -208,6 +208,7 @@ define(['angular', 'ol', 'app', 'map'],
                  * @description Requests the most popular images for current extent from Panoramio API. The number of items returned depends on the screen size.
                  */
                 this.update = function() {
+                    if(typeof map.getSize() == 'undefined') return;
                     var b = ol.proj.transformExtent(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
                     var limit = Math.floor($(map.getViewport()).width() * $(map.getViewport()).height() / 22280 * 1.2);
                     var url = '';
@@ -219,7 +220,7 @@ define(['angular', 'ol', 'app', 'map'],
                     $.ajax({
                         url: url,
                         cache: false,
-                        success: this.featuresReceived
+                        success: me.featuresReceived
                     });
                 };
 
@@ -332,7 +333,7 @@ define(['angular', 'ol', 'app', 'map'],
                     src.addFeatures(features);
                     me.source = src;
 
-                    $scope.$on('map.extent_changed', function(event, data, b) {
+                    $rootScope.$on('map.extent_changed', function(event, data, b) {
                         me.update()
                     });
                     me.update()
