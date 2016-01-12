@@ -67,14 +67,24 @@
                         <div hs.styler.color_directive info="iconlinecolor"></div>
                     </div>
                 
-                    <div class="form-group">
+                    <div class="form-group"  ng-show="imagetype=='circle'">
                         <label for="hs-styler-radius" class="control-label" translate>Radius</label>
-                        <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="radius" ng-change='save()'/><span>{{radius}}</span>
+                        <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="radius"/><span>{{radius}}</span>
                     </div>
                     
                     <div class="form-group">
                         <label for="hs-styler-iconlinewidth" class="control-label" translate>Line width</label>
                         <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;" ng-model="iconlinewidth" ng-change='save()'/><span>{{iconlinewidth}}</span>
+                    </div>
+                    
+                    <div class="form-group" ng-show="imagetype=='icon'">
+                        <label for="hs-styler-icon" class="control-label" translate>Icon</label>
+                        <div  class="hs-styler-selected-icon-box" ng-bind-html="iconimage"></div>
+                        <div>
+                            <div ng-repeat="icon in icons" class="hs-styler-iconbox" ng-click="iconSelected(icon)">
+                                <img ng-src='{{hsl_path}}components/styles/img/svg/{{icon}}'/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

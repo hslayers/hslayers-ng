@@ -599,3 +599,22 @@ ul.sidebar-list .sidebar-item .menu-icon {
     margin: 3px;
 }
 
+.hs-styler-iconbox {
+    width:25px; 
+    height: 25px;
+    display: inline-block; 
+    margin:1px;
+}
+
+
+.hs-styler-iconbox:hover {
+    width:30px; height: 30px; margin: -3px 0px; 
+ }
+ 
+.hs-styler-selected-icon-box {
+    width: 30px; 
+    height: 30px; 
+    display: inline-block;
+    vertical-align: middle;
+    margin: 3px;
+}

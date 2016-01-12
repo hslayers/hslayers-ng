@@ -146,16 +146,48 @@ define(['angular', 'ol'],
             }
         ])
 
-        .controller('hs.styler.controller', ['$scope', 'hs.styler.service',
-            function($scope, service) {
+        .controller('hs.styler.controller', ['$scope', 'hs.styler.service', '$sce',
+            function($scope, service, $sce) {
+                $scope.icons = [
+"airplane.svg", "airport8.svg", "anchor1.svg", "bag1.svg", "baggage27.svg", "bag.svg",
+"balloon17.svg", "bank18.svg", "banking4.svg", "barefoot.svg", "bar.svg", "bathroom25.svg",
+"beach17.svg", "beach18.svg", "beach.svg", "bicycle1.svg", "bicycle22.svg", "bicycles.svg",
+"book265.svg", "building101.svg", "building102.svg", "building103.svg", "bus4.svg",
+"bus5.svg", "bus-stop.svg", "cabinet9.svg", "camping11.svg", "camping12.svg",
+"camping13.svg", "caravan2.svg", "caravan.svg", "cart13.svg", "cathedral2.svg",
+"church15.svg", "church16.svg", "church17.svg", "church18.svg", "church1.svg", "club4.svg",
+"coffee127.svg", "coffee-shop1.svg", "coffee-shop2.svg", "college2.svg",
+"disability3.svg", "disabled.svg", "dog97.svg", "dog.svg", "drink97.svg", "fast-food11.svg",
+"favourite28.svg", "feet7.svg", "flag5.svg", "flag95.svg", "football1.svg",
+"football-ball.svg", "footprint.svg", "forest1.svg", "gas-station1.svg", "giftbox58.svg",
+"gift-shop.svg", "gondola1.svg", "gondola.svg", "gps34.svg", "gps35.svg", "gps36.svg",
+"gps37.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg",
+"hamburger12.svg", "hospital26.svg", "hospital.svg", "hot-air-balloon1.svg",
+"hot-air-balloon2.svg", "hotel1.svg", "information78.svg", "information79.svg",
+"information80.svg", "letter112.svg", "library20.svg", "library21.svg", "location4.svg",
+"location6.svg", "luggage12.svg", "luggage13.svg", "map-pointer7.svg", "map-pointer8.svg",
+"map-pointer9.svg", "money-bag3.svg", "monument1.svg", "monument.svg", "mountain41.svg",
+"mountain42.svg", "mountains.svg", "museum2.svg", "museum35.svg", "museum36.svg",
+"palm-tree2.svg", "park11.svg", "park12.svg", "parking28.svg", "parking-sign.svg",
+"petrol-station.svg", "pharmacy17.svg", "pharmacy18.svg", "pharmacy19.svg",
+"pharmacy.svg", "phone12.svg", "pin10.svg", "pin63.svg", "pin64.svg", "pin65.svg",
+"pin68.svg", "pin69.svg", "police31.svg", "police-station1.svg", "police-station.svg",
+"port2.svg", "port3.svg", "present32.svg", "rest-area1.svg", "rest-area.svg",
+"restaurant2.svg", "restaurant51.svg", "restaurant52.svg", "road2.svg", "road51.svg",
+"road-sign1.svg", "sailboat.svg", "sailing-boat1.svg", "sailing-boat2.svg",
+"shopping-bag.svg", "ski1.svg", "ski8.svg", "ski.svg", "soccer-ball2.svg", "star205.svg",
+"stars15.svg", "suitcase55.svg", "swimming25.svg", "swimming26.svg", "telephone119.svg",
+"telephone121.svg", "toilet15.svg", "toilets2.svg", "trailer1.svg", "train1.svg",
+"train2.svg", "train-station.svg", "university20.svg", "university2.svg", "warning1.svg",
+"warning2.svg", "warning.svg", "wifi104.svg", "wifi10.svg", "wifi8.svg"];
                 $scope.imagetypes = [{
                         name: 'none',
                         hrname: 'None'
                     },
-                    /* {
-                                        name: 'icon',
-                                        hrname: 'Icon'
-                                    },*/
+                    {
+                        name: 'icon',
+                        hrname: 'Icon'
+                    },
                     {
                         name: 'circle',
                         hrname: 'Circle'
@@ -205,6 +237,27 @@ define(['angular', 'ol'],
                     })
                     service.layer.setStyle(style);
                 }
+                
+                $scope.iconSelected = function(i) {
+                     $.ajax({
+                        url: $scope.hsl_path+'components/styles/img/svg/'+i,
+                        cache: true,
+                        success: function(r){
+                            $scope.iconimage = $sce.trustAsHtml(r.documentElement.outerHTML);
+                            if (!$scope.$$phase) $scope.$digest();
+                            colorIcon();
+                            $scope.serialized_icon = $('.hs-styler-selected-icon-box').html();
+                        }
+                    });
+                    
+                }
+                
+                function colorIcon(){
+                    $('.hs-styler-selected-icon-box path')
+                        .css('fill', $scope.iconfillcolor['background-color'])
+                        .css('stroke', $scope.iconlinecolor['background-color'])
+                        .css('stroke-width', $scope.iconlinewidth);
+                }
 
                 $scope.setImageType = function(t) {
                     $scope.imagetype = t;
@@ -213,9 +266,10 @@ define(['angular', 'ol'],
 
                 $scope.$watch('linecolor', $scope.save);
                 $scope.$watch('fillcolor', $scope.save);
-                $scope.$watch('iconfillcolor', $scope.save);
-                $scope.$watch('iconlinecolor', $scope.save);
-
+                $scope.$watch('iconfillcolor', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
+                $scope.$watch('iconlinecolor', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
+                $scope.$watch('iconlinewidth', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
+                
                 $scope.$emit('scope_loaded', "styler");
             }
         ]);
