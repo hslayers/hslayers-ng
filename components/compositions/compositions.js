@@ -104,14 +104,12 @@ define(['angular', 'ol', 'map'],
                         if (j.image.type == 'icon') {
                             var img = new Image();
                             img.src = j.image.src;
-                            img.onload = function(){
-                                var icon_json = {
-                                    img: img,
-                                    imgSize: [img.width, img.height],
-                                    crossOrigin: 'anonymous'    
-                                };
-                                style_json.image = new ol.style.Icon(icon_json);
-                            }
+                            var icon_json = {
+                                img: img,
+                                imgSize: [img.width, img.height],
+                                crossOrigin: 'anonymous'    
+                            };
+                            style_json.image = new ol.style.Icon(icon_json);
                         }
                     }
                     return new ol.style.Style(style_json);
