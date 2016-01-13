@@ -70,6 +70,53 @@ define(['angular', 'ol', 'map'],
                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
                     return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                 },
+                parseStyle: function(j){
+                    var style_json = {};
+                    if (angular.isDefined(j.fill)) {
+                        style_json.fill = new ol.style.Fill({
+                            color: j.fill
+                        })
+                    }
+                    if (angular.isDefined(j.stroke)) {
+                        style_json.stroke = new ol.style.Stroke({
+                            color: j.stroke.color,
+                            width: j.stroke.width
+                        })
+                    }
+                    if (j.image) {
+                        if (j.image.type == 'circle') {
+                            var circle_json = {
+                                radius: j.image.radius
+                            };
+                            if (angular.isDefined(j.image.fill)) {
+                                circle_json.fill = new ol.style.Fill({
+                                    color: j.image.fill
+                                });
+                            }
+                            if (angular.isDefined(j.image.stroke)) {
+                                circle_json.stroke = new ol.style.Stroke({
+                                    color: j.image.stroke.color,
+                                    width: j.image.stroke.width
+                                })
+                            }
+                            style_json.image = new ol.style.Circle(circle_json);
+                        }
+                        if (j.image.type == 'icon') {
+                            var img = new Image();
+                            img.src = j.image.src;
+                            img.onload = function(){
+                                var icon_json = {
+                                    img: img,
+                                    imgSize: [img.width, img.height],
+                                    crossOrigin: 'anonymous'    
+                                };
+                                style_json.image = new ol.style.Icon(icon_json);
+                                service.layer.setStyle(new ol.style.Style(style_json));
+                            }
+                        }
+                    }
+                    return style_json;
+                },
                 jsonToLayers: function(j) {
                     var layers = [];
                     if (j.data) j = j.data;
@@ -150,16 +197,17 @@ define(['angular', 'ol', 'map'],
                                         title: lyr_def.title
                                     });
                                     layers.push(lyr);
-                                } else if(angular.isUndefined(lyr.protocol) && angular.isDefined(lyr.features)){
+                                } else if(angular.isUndefined(lyr_def.protocol) && angular.isDefined(lyr_def.features)){
                                     var format = new ol.format.GeoJSON();
                                     var src = new ol.source.Vector({
-                                        features: format.readFeatures(lyr.features),
+                                        features: format.readFeatures(lyr_def.features),
                                         projection: ol.proj.get(lyr_def.projection)
-                                    })
+                                    });
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
                                         source: src,
-                                        title: lyr_def.title
+                                        title: lyr_def.title,
+                                        style: me.parseStyle(lyr_def.style)
                                     });
                                     layers.push(lyr);
                                 }
