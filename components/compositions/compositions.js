@@ -83,7 +83,7 @@ define(['angular', 'ol', 'map'],
                             width: j.stroke.width
                         })
                     }
-                    if (j.image) {
+                    if (angular.isDefined(j.image)) {
                         if (j.image.type == 'circle') {
                             var circle_json = {
                                 radius: j.image.radius
@@ -114,7 +114,7 @@ define(['angular', 'ol', 'map'],
                             }
                         }
                     }
-                    return style_json;
+                    return new ol.style.Style(style_json);
                 },
                 jsonToLayers: function(j) {
                     var layers = [];
