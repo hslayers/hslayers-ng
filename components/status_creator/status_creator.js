@@ -148,7 +148,36 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 },
                  
                 serializeStyle: function(s){
+                    var o = {};
+                    if(typeof s.getFill() != 'undefined')
+                        o.fill = s.getFill().getColor();
+                    if(typeof s.getStroke() != 'undefined'){
+                        o.stroke = {color: s.getStroke().getColor(), width: s.getStroke().getWidth()};
+                    }
+                    if(typeof s.getImage() != 'undefined'){
+                        var style_img = s.getImage();
+                        var ima = {};
+                        if(typeof style_img.getFill() != 'undefined')
+                            ima.fill = style_img.getFill().getColor();
+                        
+                        if(typeof style_img.getStroke() != 'undefined'){
+                            ima.stroke = {color: style_img.Stroke().getColor(), width: style_img.getStroke().getWidth()};
+                        }
+                        
+                        if(typeof style_img.getImage() != 'undefined'){
+                            ima.src = style_img.getImage().src;
+                        }
+                        
+                        if(style_img instanceof ol.style.Circle)
+                            ima.type = 'circle'; 
+                        
+                        if(style_img instanceof ol.style.Icon)
+                            ima.type = 'icon'; 
+                        
+                        o.image = ima;
+                    }
                     
+                    debugger;
                 },
 
                 /**
