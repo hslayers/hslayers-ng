@@ -148,6 +148,7 @@ define(['angular', 'ol'],
 
         .controller('hs.styler.controller', ['$scope', 'hs.styler.service', '$sce',
             function($scope, service, $sce) {
+                $scope.service = service;
                 $scope.icons = ["bag1.svg", "banking4.svg", "bar.svg", "beach17.svg", "bicycles.svg", "building103.svg", "bus4.svg", "cabinet9.svg", "camping13.svg", "caravan.svg", "church15.svg", "church1.svg", "coffee-shop1.svg", "disabled.svg", "favourite28.svg", "football1.svg", "footprint.svg", "gift-shop.svg", "gps35.svg", "gps36.svg", "gps37.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg", "hospital.svg", "hot-air-balloon2.svg", "information78.svg", "library21.svg", "location4.svg", "location6.svg", "luggage12.svg", "luggage13.svg", "map-pointer7.svg", "map-pointer8.svg", "monument1.svg", "mountain42.svg", "museum35.svg", "park11.svg", "parking28.svg", "pharmacy17.svg", "pin10.svg", "pin63.svg", "pin65.svg", "police-station.svg", "port2.svg", "restaurant52.svg", "road-sign1.svg", "sailing-boat2.svg", "ski1.svg", "swimming26.svg", "telephone119.svg", "toilets2.svg", "train-station.svg", "university2.svg", "warning.svg", "wifi8.svg"];
                 $scope.imagetypes = [{
                         name: 'none',
@@ -248,6 +249,18 @@ define(['angular', 'ol'],
                 }
 
                 $scope.$watch('linecolor', $scope.save);
+                $scope.$watch('service.layer', function(){
+                    $scope.hasLine = false;
+                    $scope.hasPoly = false;
+                    $scope.hasPoint = false;
+                    if(angular.isUndefined(service.layer)) return;
+                    
+                    angular.forEach(service.layer.getSource().getFeatures(), function(f){
+                        $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'LineString';
+                        $scope.hasPoly = $scope.hasPoly || f.getGeometry().getType() == 'Polygon';
+                        $scope.hasPoint = $scope.hasPoint || f.getGeometry().getType() == 'Point';
+                    })
+                });
                 $scope.$watch('fillcolor', $scope.save);
                 $scope.$watch('iconfillcolor', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
                 $scope.$watch('iconlinecolor', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
