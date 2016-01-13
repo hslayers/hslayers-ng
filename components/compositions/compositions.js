@@ -179,6 +179,13 @@ define(['angular', 'ol', 'map'],
                                         style: style,
                                         title: lyr_def.title
                                     });
+                                    
+                                    if(style!=null){
+                                        src.on('addfeature', function(f){
+                                            f.setStyle(null);
+                                        });
+                                    }
+                                    
                                     layers.push(lyr);
                                 } else if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.GeoJSON') {
                                     var url = lyr_def.protocol.url;
