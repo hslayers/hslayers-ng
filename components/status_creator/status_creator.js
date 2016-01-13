@@ -161,7 +161,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             ima.fill = style_img.getFill().getColor();
                         
                         if(angular.isDefined(style_img.getStroke) && typeof style_img.getStroke() != 'undefined' && style_img.getStroke()!=null){
-                            ima.stroke = {color: style_img.Stroke().getColor(), width: style_img.getStroke().getWidth()};
+                            ima.stroke = {color: style_img.getStroke().getColor(), width: style_img.getStroke().getWidth()};
                         }
                         
                         if(angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage()!=null){
