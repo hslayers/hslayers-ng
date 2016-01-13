@@ -86,7 +86,7 @@ define(['angular', 'ol', 'map'],
                     if (angular.isDefined(j.image)) {
                         if (j.image.type == 'circle') {
                             var circle_json = {
-                                radius: j.image.radius
+                                radius: j.image.radius || 5
                             };
                             if (angular.isDefined(j.image.fill)) {
                                 circle_json.fill = new ol.style.Fill({
@@ -170,13 +170,13 @@ define(['angular', 'ol', 'map'],
                                         format: new ol.format.KML(),
                                         projection: ol.proj.get(lyr_def.projection),
                                         url: url,
-                                        style: style,
                                         extractStyles: (style!=null ? false : true)
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
                                         definition: definition,
                                         source: src,
+                                        style: style,
                                         title: lyr_def.title
                                     });
                                     layers.push(lyr);
