@@ -31,8 +31,8 @@ cgitb.enable()
 
 #Proxy config
 PROXY = {
-#	"http": "http://user:password@10.0.0.1:80",
-#	"https": HTTPS
+#    "http": "http://user:password@10.0.0.1:80",
+#    "https": HTTPS
 }
 
 #loglevel
@@ -53,10 +53,10 @@ def check_for_bom(s):
     logging.debug("Start")
     for sig, siglen, enc in bom_info:
         if s.startswith(sig):
-	    logging.debug("BOM has been found!")
+            logging.debug("BOM has been found!")
             return s[siglen:]
     logging.debug("BOM check ended!")
-    return s 
+    return s
 
 def encode(data,toEncoding,contentType):
     """encode downloaded text to some other requested encoding
@@ -67,7 +67,7 @@ def encode(data,toEncoding,contentType):
 
     # try for each supported encoding
     for encoding in encodings:
-        logging.debug("Trying to convert from %s to %s" % (encoding,toEncoding))
+        logging.debug("\n\n\nTrying to convert from %s to %s" % (encoding,toEncoding))
         regx = re.compile(encoding,re.IGNORECASE)
         fromEncoding = re.search(regx,data)
         logging.debug("Looking after %s: %s" % (encoding,fromEncoding))
@@ -76,12 +76,12 @@ def encode(data,toEncoding,contentType):
             # replace potential encoding name in the data
             if contentType == "text/xml" and fromEncoding:
                 logging.debug("Converting text/xml from %s to %s" % (encoding,toEncoding))
-		data = check_for_bom(data)
-		sys.stdout = codecs.getwriter(encoding)(sys.stdout)
+                data = check_for_bom(data)
+                sys.stdout = codecs.getwriter(encoding)(sys.stdout)
                 return regx.sub(toEncoding,data.decode(encoding).encode(toEncoding))
             elif not contentType == "text/xml":
                 logging.debug("Trying to convert %s from %s to %s" % (contentType,encoding,toEncoding))
-		sys.stdout = codecs.getwriter(toEncoding)(sys.stdout)
+                sys.stdout = codecs.getwriter(toEncoding)(sys.stdout)
                 # do not replace anything, just make the conversion
                 return data.decode(encoding).encode(toEncoding)
         except:
@@ -106,9 +106,9 @@ def main():
 
     method = os.environ["REQUEST_METHOD"]
     try:
-	oscookie = os.environ.get("HTTP_COOKIE","")
+        oscookie = os.environ.get("HTTP_COOKIE","")
     except KeyError, e:
-	cookie = False
+        cookie = False
 
     logging.debug("Cookie: %s" % (oscookie))
 
@@ -125,16 +125,22 @@ def main():
         else:
             url = "http://www.hsrs.cz"
 
+	#initialize jsessionid
+        if d.has_key("jsessionid"):
+            jsessionid = d["jsessionid"][0]
+        else:
+            jsessionid = None
+
         if "toEncoding" in d:
             toEncoding = d["toEncoding"][0]
 
     # read the data from GET request
     elif method == "GET":
         fs = cgi.FieldStorage()
-	jsessionid = fs.getvalue('jsessionid')
-	logging.debug("Parameter jsessionid : %s" %(jsessionid))
+        jsessionid = fs.getvalue('jsessionid')
+        logging.debug("Parameter jsessionid : %s" %(jsessionid))
         url = fs.getvalue('url')
-	logging.debug("Parameter url : %s" %(url))
+        logging.debug("Parameter url : %s" %(url))
         toEncoding = fs.getvalue('toEncoding', None)
     try:
         host = url.split("/")[2]
@@ -153,13 +159,11 @@ def main():
             print os.environ
 
         elif url.startswith("http://") or url.startswith("https://"):
-
-
-	    session = requests.Session()
-	    if jsessionid != None:
+            session = requests.Session()
+            if jsessionid != None:
                 #From the GET parameter
-		cookie = {'JSESSIONID': jsessionid}
-	    else:
+                cookie = {'JSESSIONID': jsessionid}
+            else:
                 #Header cookie format example: JSESSIONID=DKAdNiwe; GUEST_LANGUAGE=en_GB;
                 #Requests cookie format {JSESSIONID:DKAdNiwe, GUEST_LANGUAGE:en_GB}
                 oscookie = oscookie.split('; ')
@@ -167,26 +171,36 @@ def main():
 
                 for c in oscookie:
                     c = c.split('=')
-                    handler[c[0]] = c[1]
-		cookie = handler
-            
+                    if len( c ) > 1:
+                        handler[c[0]] = c[1]
+                cookie = handler
+
             #Resends Basic Authentication
             headers = {'Authorization': authDigest}
-	    
+
             req = requests.Request(method, url,cookies=cookie, headers=headers)
 
-	    prepped = req.prepare()
+            prepped = req.prepare()
 
-	    resp = session.send(prepped, proxies=PROXY, verify = False)
-		
+            #verify=False doesn't check certificate
+            resp = session.send(prepped, proxies=PROXY, verify = False)
 
-	    #If the Content type is not specified mostly used text/xml will be used.
-	    try:
-		content_type = resp.headers["content-type"]
-	    except:
-		content_type = "text/xml"
-		logging.debug("Empty Content-Type set to text/xml %s" % content_type)
-		pass
+
+            #encoding issue with requests. See http://docs.python-requests.org/en/latest/user/advanced/#encodings
+            try:
+                if not resp.headers['encoding']:
+                    content = resp.text
+                else:
+                    content = resp.content
+            except:
+                content = resp.content
+            #If the Content type is not specified mostly used text/xml will be used.
+            try:
+                content_type = resp.headers["content-type"]
+            except:
+                content_type = "text/xml"
+                logging.debug("Empty Content-Type set to text/xml %s" % content_type)
+                pass
             # convert any *xml* content type to "text/xml", so that
             # browsers can parse it easy.
             # this applyes especially to something like
@@ -201,14 +215,14 @@ def main():
                 logging.debug("Content-Type set to %s" % content_type)
                 print "Content-Type: %s; charset=%s" % (content_type,toEncoding)
 
-	    # Http has to have one clear line after the Content type clausule
-	    print
+            # Http has to have one clear line after the Content type clausule
+            print
 
             # convert file encoding
             if toEncoding:
-                print encode(resp.text,toEncoding,content_type)
+                print encode(content,toEncoding,content_type)
             else:
-                print resp.text
+                print content
 
             resp.close()
         else:
