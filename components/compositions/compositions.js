@@ -111,7 +111,6 @@ define(['angular', 'ol', 'map'],
                                     crossOrigin: 'anonymous'    
                                 };
                                 style_json.image = new ol.style.Icon(icon_json);
-                                service.layer.setStyle(new ol.style.Style(style_json));
                             }
                         }
                     }
