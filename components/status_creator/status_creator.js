@@ -149,22 +149,22 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                  
                 serializeStyle: function(s){
                     var o = {};
-                    if(typeof s.getFill() != 'undefined')
+                    if(typeof s.getFill() != 'undefined' && s.getFill() !=null)
                         o.fill = s.getFill().getColor();
-                    if(typeof s.getStroke() != 'undefined'){
+                    if(typeof s.getStroke() != 'undefined' && s.getStroke() !=null){
                         o.stroke = {color: s.getStroke().getColor(), width: s.getStroke().getWidth()};
                     }
-                    if(typeof s.getImage() != 'undefined'){
+                    if(typeof s.getImage() != 'undefined' && s.getImage() !=null){
                         var style_img = s.getImage();
                         var ima = {};
-                        if(typeof style_img.getFill() != 'undefined')
+                        if(typeof style_img.getFill() != 'undefined' && style_img.getFill()!=null)
                             ima.fill = style_img.getFill().getColor();
                         
-                        if(typeof style_img.getStroke() != 'undefined'){
+                        if(typeof style_img.getStroke() != 'undefined' && style_img.getStroke()!=null){
                             ima.stroke = {color: style_img.Stroke().getColor(), width: style_img.getStroke().getWidth()};
                         }
                         
-                        if(typeof style_img.getImage() != 'undefined'){
+                        if(typeof style_img.getImage() != 'undefined' && style_img.getImage()!=null){
                             ima.src = style_img.getImage().src;
                         }
                         
@@ -253,15 +253,17 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     if (layer instanceof ol.layer.Vector) {
                         var src = layer.getSource();
                         json.className = "OpenLayers.Layer.Vector";
-                        json.protocol = {
-                            url: layer.get('definition').url,
-                            format: layer.get('definition').format
+                        if(angular.isDefined(layer.get('definition'))){
+                            json.protocol = {
+                                url: layer.get('definition').url,
+                                format: layer.get('definition').format
+                            }
                         }
                         json.maxResolution = layer.getMaxResolution();
                         json.minResolution = layer.getMinResolution();
                         json.projection = "epsg:4326";
                         if(layer.getStyle() instanceof ol.style.Style){
-                            json.style = serializeStyle(layer.getStyle());
+                            json.style = me.serializeStyle(layer.getStyle());
                         }
                     }
 
