@@ -182,7 +182,7 @@ define(['angular', 'ol', 'map'],
                                     
                                     if(style!=null){
                                         src.on('addfeature', function(f){
-                                            f.setStyle(null);
+                                            f.feature.setStyle(null);
                                         });
                                     }
                                     
