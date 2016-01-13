@@ -162,12 +162,16 @@ define(['angular', 'ol', 'map'],
 
                                     definition.url = url;
                                     definition.format = "ol.format.KML";
-
+                                    
+                                    var style = null;
+                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style); 
+                                    
                                     var src = new ol.source.Vector({
                                         format: new ol.format.KML(),
                                         projection: ol.proj.get(lyr_def.projection),
                                         url: url,
-                                        extractStyles: true
+                                        style: style,
+                                        extractStyles: (style!=null ? false : true)
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
@@ -202,11 +206,13 @@ define(['angular', 'ol', 'map'],
                                         features: format.readFeatures(lyr_def.features),
                                         projection: ol.proj.get(lyr_def.projection)
                                     });
+                                    var style = null;
+                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style); 
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
                                         source: src,
                                         title: lyr_def.title,
-                                        style: me.parseStyle(lyr_def.style)
+                                        style: style
                                     });
                                     layers.push(lyr);
                                 }
