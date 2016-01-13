@@ -164,6 +164,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             ima.stroke = {color: style_img.getStroke().getColor(), width: style_img.getStroke().getWidth()};
                         }
                         
+                        if(angular.isDefined(style_img.getRadius)){
+                            ima.radius = style_img.getRadius();
+                        }
+                        
                         if(angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage()!=null){
                             if(angular.isDefined(style_img.getImage().src))
                                 ima.src = style_img.getImage().src;
@@ -269,7 +273,6 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             json.style = me.serializeStyle(layer.getStyle());
                         }
                     }
-                    debugger;
                     return json;
                 }
             };
