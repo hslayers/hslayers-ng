@@ -86,8 +86,12 @@ define(['angular', 'ol', 'map'],
                     if (angular.isDefined(j.image)) {
                         if (j.image.type == 'circle') {
                             var circle_json = {
-                                radius: j.image.radius || 5
                             };
+
+                            if (angular.isDefined(j.image.radius)) {
+                                circle_json.radius = j.image.radius;
+                            }
+
                             if (angular.isDefined(j.image.fill)) {
                                 circle_json.fill = new ol.style.Fill({
                                     color: j.image.fill
