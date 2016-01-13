@@ -236,9 +236,9 @@ define(['angular', 'ol'],
                 function colorIcon(){
                     var $b = 
                     $('.hs-styler-selected-icon-box path');
-                        if(angular.isDefined($scope.iconfillcolor)) $b.css('fill', $scope.iconfillcolor['background-color'])
-                        if(angular.isDefined($scope.iconlinecolor)) $b.css('stroke', $scope.iconlinecolor['background-color'])
-                        if(angular.isDefined($scope.iconlinewidth)) $b.css('stroke-width', $scope.iconlinewidth);
+                        if(angular.isDefined($scope.iconfillcolor) && $scope.iconfillcolor!=null) $b.css('fill', $scope.iconfillcolor['background-color'])
+                        if(angular.isDefined($scope.iconlinecolor) && $scope.iconlinecolor!=null) $b.css('stroke', $scope.iconlinecolor['background-color'])
+                        if(angular.isDefined($scope.iconlinewidth) && $scope.iconlinewidth!=null) $b.css('stroke-width', $scope.iconlinewidth);
                     $scope.serialized_icon = 'data:image/svg+xml;base64,'+window.btoa($('.hs-styler-selected-icon-box').html());
                 }
 

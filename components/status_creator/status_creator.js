@@ -157,15 +157,16 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     if(typeof s.getImage() != 'undefined' && s.getImage() !=null){
                         var style_img = s.getImage();
                         var ima = {};
-                        if(typeof style_img.getFill() != 'undefined' && style_img.getFill()!=null)
+                        if(angular.isDefined(style_img.getFill) && typeof style_img.getFill() != 'undefined' && style_img.getFill()!=null)
                             ima.fill = style_img.getFill().getColor();
                         
-                        if(typeof style_img.getStroke() != 'undefined' && style_img.getStroke()!=null){
+                        if(angular.isDefined(style_img.getStroke) && typeof style_img.getStroke() != 'undefined' && style_img.getStroke()!=null){
                             ima.stroke = {color: style_img.Stroke().getColor(), width: style_img.getStroke().getWidth()};
                         }
                         
-                        if(typeof style_img.getImage() != 'undefined' && style_img.getImage()!=null){
-                            ima.src = style_img.getImage().src;
+                        if(angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage()!=null){
+                            if(angular.isDefined(style_img.getImage().src))
+                                ima.src = style_img.getImage().src;
                         }
                         
                         if(style_img instanceof ol.style.Circle)
@@ -176,8 +177,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         
                         o.image = ima;
                     }
-                    
-                    debugger;
+                    return o;
                 },
 
                 /**
@@ -258,6 +258,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                 url: layer.get('definition').url,
                                 format: layer.get('definition').format
                             }
+                        } else {
+                            var f = new ol.format.GeoJSON();
+                            json.features = f.writeFeatures(src.getFeatures());
                         }
                         json.maxResolution = layer.getMaxResolution();
                         json.minResolution = layer.getMinResolution();
@@ -266,7 +269,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             json.style = me.serializeStyle(layer.getStyle());
                         }
                     }
-
+                    debugger;
                     return json;
                 }
             };

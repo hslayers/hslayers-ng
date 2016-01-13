@@ -150,6 +150,18 @@ define(['angular', 'ol', 'map'],
                                         title: lyr_def.title
                                     });
                                     layers.push(lyr);
+                                } else if(angular.isUndefined(lyr.protocol) && angular.isDefined(lyr.features)){
+                                    var format = new ol.format.GeoJSON();
+                                    var src = new ol.source.Vector({
+                                        features: format.readFeatures(lyr.features),
+                                        projection: ol.proj.get(lyr_def.projection)
+                                    })
+                                    var lyr = new ol.layer.Vector({
+                                        from_composition: true,
+                                        source: src,
+                                        title: lyr_def.title
+                                    });
+                                    layers.push(lyr);
                                 }
                                 break;
                         }
