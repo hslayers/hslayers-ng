@@ -253,7 +253,7 @@ define(['angular', 'ol'],
                     $scope.hasLine = false;
                     $scope.hasPoly = false;
                     $scope.hasPoint = false;
-                    if(angular.isUndefined(service.layer)) return;
+                    if(angular.isUndefined(service.layer) || service.layer == null) return;
                     
                     angular.forEach(service.layer.getSource().getFeatures(), function(f){
                         $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'LineString';
