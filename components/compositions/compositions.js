@@ -196,16 +196,20 @@ define(['angular', 'ol', 'map'],
                                     definition.url = url;
                                     definition.format = "ol.format.GeoJSON";
 
+                                    var style = null;
+                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style); 
+
                                     var src = new ol.source.Vector({
                                         format: new ol.format.GeoJSON(),
                                         projection: ol.proj.get(lyr_def.projection),
                                         url: url,
-                                        extractStyles: true
+                                        extractStyles: (style!=null ? false : true)
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
                                         definition: definition,
                                         source: src,
+                                        style: style,
                                         title: lyr_def.title
                                     });
                                     layers.push(lyr);
