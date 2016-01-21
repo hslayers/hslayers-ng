@@ -74,6 +74,14 @@
                         <span class="sidebar-item-title">Print</span>
                     </a>
                 </li>
+                
+                
+                <li class="sidebar-item" ng-if="Core.exists('hs.permalink.controller')" ng-click="setMainPanel('permalink')" ng-class="{active: Core.mainpanel == 'permalink'}">
+                    <a href="#">
+                        <span class="menu-icon glyphicon icon-htmlfile" data-toggle="tooltip" data-placement="bottom" title="Embed map"></span>
+                        <span class="sidebar-item-title">Embed map</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-item" ng-if="Core.exists('hs.status_creator.controller')" ng-click="Core.openStatusCreator()">
                     <a href="#">
