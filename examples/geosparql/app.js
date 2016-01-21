@@ -44,6 +44,27 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                 return [];
             }
         }
+        
+        var styleOSM = function(feature, resolution) {
+            if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
+                var s = feature.get('http://www.openvoc.eu/poi#categoryOSM');
+                if (typeof s === 'undefined') return;
+                s = s.split(".")[1];
+                return [
+                    new ol.style.Style({
+                        image: new ol.style.Icon({
+                            anchor: [0.5, 1],
+                            src: 'symbols/' + s + '.svg',
+                            crossOrigin: 'anonymous'
+                        })
+                    })
+
+                ]
+            } else {
+                return [];
+            }
+        }
+
 
 
         var sparql_layers = [];
@@ -107,6 +128,54 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             });
             sparql_layers.push(new_lyr);
         })
+        
+        var sparql_osm_layers = [];
+        angular.forEach([
+            'amenity.atm',
+            'amenity.bank',
+            'amenity.cafe',
+            'amenity.fast_food',
+            'amenity.pub',
+            'amenity.restaurant',
+            'tourism.hotel',
+            'shop.supermarket',            
+            'tourism.information'
+        ], function(value) {
+                var value2;
+                switch(value){
+                case 'amenity.atm' : value2 = "ATM";
+                break;
+                case 'amenity.bank' : value2 = "Bank";
+                break;
+                case 'amenity.cafe' : value2 = "Cafe";
+                break;
+                case 'amenity.fast_food' : value2 = "Fast Food";
+                break;
+                case 'amenity.pub' : value2 = "Pub";
+                break;
+                case 'amenity.restaurant' : value2 = "Restaurant";
+                break;
+                case 'tourism.hotel' : value2 = "Hotel";
+                break;
+                case 'shop.supermarket' : value2 = "Supermarket";
+                break;
+                case 'tourism.information' : value2 = "Information";
+                break;
+                };
+            var new_lyr = new ol.layer.Vector({
+                title: " " + value2,
+                source: new SparqlJson({
+                    geom_attribute: 'bif:st_geomfromtext(UCASE(?geom))',
+                    url: 'http://ng.hslayers.org:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    category_field: 'http://www.openvoc.eu/poi#categoryOSM',
+                    projection: 'EPSG:3857'
+                }),
+                style: styleOSM,
+                visible: false,
+                path: 'Popular Categories'
+            });
+            sparql_osm_layers.push(new_lyr);
+        })
 
         var route_style = function(feature, resolution) {
             return [new ol.style.Style({
@@ -161,7 +230,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             }), new ol.layer.Group({
                 'img': 'bicycle-128.png',
                 title: 'Tourist info',
-                layers: sparql_layers.concat([
+                layers: sparql_layers.concat(sparql_osm_layers).concat([
                     new ol.layer.Vector({
                         title: "Cycling routes Plzen",
                         source: new ol.source.Vector({

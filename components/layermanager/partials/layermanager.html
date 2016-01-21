@@ -17,7 +17,7 @@
             </div>
         </div>
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
-        <ul  class="list-group hs-layermanager-layerlist" ng-repeat="value in folders.sub_folders track by $index">
+        <ul  class="list-group hs-layermanager-layerlist" ng-repeat="value in folders.sub_folders | orderBy:'name' track by $index ">
             <li class="list-group-item active">
                 <span>{{value.name}}</span>
             </li>
