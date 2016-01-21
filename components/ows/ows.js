@@ -15,9 +15,12 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
             .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service',
                 function($scope, srv_caps, OlMap, permalink, Core, nonwmsservice) {
                     var map = OlMap.map;
-                    $scope.url = "http://erra.ccss.cz/geoserver/ows";
-                    $scope.types = ["WMS", "WFS", "WCS", "KML", "GeoRSS", "GML", "GeoJSON", "SOS", "WMS with priorities"];
-                    $scope.type = "WMS";
+                    if (angular.isArray(Core.connectTypes)){
+                        $scope.types = Core.connectTypes;
+                    } else {
+                        $scope.types = ["", "WMS", "KML", "GeoJSON"];
+                    }
+                    $scope.type = "";
                     $scope.image_formats = [];
                     $scope.query_formats = [];
                     $scope.tile_size = 512;
@@ -42,10 +45,12 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                                  break;*/
                             case "wms":
                                 srv_caps.requestGetCapabilities($scope.url);
+                                $scope.connected = true;
                                 break;
                         }
                     };
 
+                    /**TODO: move variables out of this function. Call $scope.connected = false when template change */
                     $scope.templateByType = function() {
                         var template;
                         var ows_path = hsl_path + 'components/ows/partials/';
@@ -72,6 +77,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                     $scope.clear = function() {
                         $scope.url = '';
                         $('.ows-capabilities').slideUp();
+                        $scope.connected = false;
                     }
 
                     function zoomToVectorLayer(lyr) {

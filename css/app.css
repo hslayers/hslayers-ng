@@ -66,6 +66,20 @@
     margin-bottom: 5px;
 }
 
+.form-control {
+    border-radius:0;
+}
+
+.capabilities_label {
+    padding-right:0px;
+    padding-left:0px;
+}
+
+.capabilities_input {
+    padding-right:0px;
+    padding-left:15px;
+}
+
 input[type=checkbox].form-control {
     box-shadow: none;
     margin:0;
@@ -233,9 +247,6 @@ li.list-group-item {
     word-break: break-all;
 }
 
-.panel-body {
-    padding: 3px;
-}
 div.row {
     margin-right: 0px;
     margin-left: 0px;
