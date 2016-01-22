@@ -29,6 +29,7 @@ define(['angular', 'ol', 'map'],
         .service('hs.compositions.service_parser', ['hs.map.service', 'Core', '$rootScope', 'hs.utils.service', function(OlMap, Core, $rootScope, utils) {
             var me = {
                 composition_loaded: null,
+                current_composition_title: "",
                 load: function(url, overwrite, callback) {
                     url = url.replace('&amp;', '&');
                     url = utils.proxify(url);
@@ -47,6 +48,7 @@ define(['angular', 'ol', 'map'],
                                     OlMap.map.removeLayer(to_be_removed.shift());
                                 }
                             }
+                            me.current_composition_title = response.title || response.data.title;
                             $('.composition-info').html($('<a href="#">').html($('<h3>').html(response.title || response.data.title)).click(function() {
                                 $('.composition-abstract').toggle()
                             }));

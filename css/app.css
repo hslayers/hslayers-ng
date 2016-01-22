@@ -618,3 +618,10 @@ ul.sidebar-list .sidebar-item .menu-icon {
     vertical-align: middle;
     margin: 3px;
 }
+
+.stc-extent-row .form-group{
+    padding-right: 1px;
+    padding-left: 0px;
+}
+
+#stc-abstract {height: 95px}

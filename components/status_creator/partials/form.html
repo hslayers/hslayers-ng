@@ -28,7 +28,7 @@
                                     </form>
                                     <form class="form">
                                         <label for="stc-extent1" class="control-label" translate="">Extent:</label>
-                                        <div class="row">
+                                        <div class="row stc-extent-row">
                                             <div class="form-group col-sm-3">
                                                 <input type="text" class="form-control" id="stc-extent1" ng-model="bbox[0]" />
                                             </div>
@@ -41,7 +41,7 @@
                                             <div class="form-group col-sm-3">
                                                 <input type="text" class="form-control" id="stc-extent4" ng-model="bbox[3]" />
                                             </div>
-                                        </div><button type="button" class="btn btn-default" ng-click="getCurrentExtent()" translate="">Use current</button>
+                                        </div><button type="button" class="btn btn-default" ng-click="getCurrentExtent()" translate="">Use current map extent</button>
                                     </form><label for="stc-layerlist" class="control-label" translate="">Layers:</label>
                                     <ul class="list-group" id="stc-layerlist">
                                         <li ng-repeat="layer in layers | filter:query" id="layer-{{$index}}" class="list-group-item">

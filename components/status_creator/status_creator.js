@@ -279,11 +279,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             return me;
         }])
 
-        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
-            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies', 'hs.compositions.service_parser',
+            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies, compositions_service_parser) {
                 $scope.layers = [];
                 $scope.id = '';
                 $scope.panel_name = 'status_creator';
+                $scope.compositions_service_parser = compositions_service_parser;
 
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
@@ -378,11 +379,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.layers = [];
                     $scope.getCurrentExtent();
                     OlMap.map.getLayers().forEach(function(lyr) {
-                        $scope.layers.push({
-                            title: lyr.get('title'),
-                            checked: lyr.get('saveState'),
-                            layer: lyr
-                        });
+                        if(angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true){
+                            $scope.layers.push({
+                                title: lyr.get('title'),
+                                checked: lyr.get('saveState'),
+                                layer: lyr
+                            });
+                        }
                     });
                     $scope.fillGroups();
                     Core.setMainPanel('status_creator', true);
