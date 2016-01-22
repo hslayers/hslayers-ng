@@ -264,6 +264,7 @@ define(['angular', 'ol', 'map'],
                     "ComplexInformation": false
                 };
                 $scope.filter_by_extent = true;
+                $scope.use_callback_for_edit = false; //Used for opening Edit panel from the list of compositions
 
                 var ajax_req = null;
                 $scope.loadCompositions = function(page) {
@@ -390,9 +391,8 @@ define(['angular', 'ol', 'map'],
 
                 $scope.edit = function(composition) {
                     $scope.use_callback_for_edit = true;
-                    $scope.loadComposition(composition.link);
+                    $scope.loadComposition(composition);
                 }
-                $scope.use_callback_for_edit = false;
 
                 function callbackForEdit() {
                     Core.openStatusCreator();
@@ -447,22 +447,26 @@ define(['angular', 'ol', 'map'],
                     $scope.use_callback_for_edit = false;
                     feature.set('highlighted', false);
                     selector.getFeatures().clear();
-                    $scope.loadComposition(record.link);
+                    $scope.loadComposition(record);
                 });
 
                 $scope.$on('map.extent_changed', function(event, data, b) {
                     if ($scope.filter_by_extent) $scope.loadCompositions();
                 });
             
-                $scope.loadComposition = function(url) {
+                $scope.loadComposition = function(record) {
+                    var url = record.link;
+                    var title = record.title;
                     if (composition_parser.composition_loaded != null) {
+                        var dialog_id = '#composition-overwrite-dialog';
                         $scope.composition_to_be_loaded = url;
-                        if ($("#hs-dialog-area #composition-overwrite-dialog").length == 0) {
+                        $scope.composition_name_to_be_loaded = title;
+                        if ($("#hs-dialog-area " + dialog_id).length == 0) {
                             var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
                             $("#hs-dialog-area").append(el);
                             $compile(el)($scope);
                         } else {
-                            $('#composition-overwrite-dialog').modal('show');
+                            $(dialog_id).modal('show');
                         }
                     } else {
                         composition_parser.load(url, true, $scope.use_callback_for_edit ? callbackForEdit : null);
@@ -475,6 +479,10 @@ define(['angular', 'ol', 'map'],
 
                 $scope.add = function() {
                     composition_parser.load($scope.composition_to_be_loaded, false, $scope.use_callback_for_edit ? callbackForEdit : null);
+                }
+                
+                $scope.save = function(){
+                    Core.openStatusCreator();
                 }
 
                 $scope.loadCompositions();

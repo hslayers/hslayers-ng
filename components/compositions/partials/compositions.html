@@ -21,7 +21,7 @@
         
         <ul style="margin-top: 4px" class="list-group">
             <li ng-repeat="composition in compositions | filter:query" ng-class="'list-group-item'+(composition.highlighted ? ' active' : '')">
-                <a href="#" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition.link)"  data-toggle="tooltip" data-placement="top" ng-attr-title="{{composition.mdAbstract}}">{{composition.title}}
+                <a href="#" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition)"  data-toggle="tooltip" data-placement="top" ng-attr-title="{{composition.mdAbstract}}">{{composition.title}}
                     <a href="#"><span class="glyphicon glyphicon-trash datasource_addlayer" aria-hidden="true" ng-show="composition.editable" ng-click='delete(composition)'></span></a>
                     <a href="#"><span class="glyphicon glyphicon-edit datasource_addlayer" aria-hidden="true" ng-show="composition.editable" ng-click='edit(composition)'></span></a>
                 </a>
