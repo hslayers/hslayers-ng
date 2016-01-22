@@ -148,14 +148,23 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     }
                     if (!$scope.$$phase) $scope.$digest();
                 })
-                populateFolders(e.element);
-                $scope.layers.push({
-                    title: e.element.get("title"),
-                    layer: e.element,
-                    grayed: $scope.isLayerInResolutionInterval(e.element),
-                    sub_layers: sub_layers,
-                    visible: e.element.getVisible()
-                });
+                if (e.element.get('base') != true) {
+                    populateFolders(e.element);
+                    $scope.layers.push({
+                        title: e.element.get("title"),
+                        layer: e.element,
+                        grayed: $scope.isLayerInResolutionInterval(e.element),
+                        sub_layers: sub_layers,
+                        visible: e.element.getVisible()
+                    });
+                } else {
+                    $scope.baselayers.push({
+                        title: e.element.get("title"),
+                        layer: e.element,
+                        grayed: $scope.isLayerInResolutionInterval(e.element),
+                        visible: e.element.getVisible()
+                    })
+                };
                 if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
                 $rootScope.$broadcast('layermanager.updated', e.element);
             };
@@ -215,6 +224,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
 
             $scope.box_layers = config.box_layers;
             $scope.layers = [];
+            $scope.baselayers = [];
             $scope.active_box = null;
 
             /**

@@ -54,6 +54,16 @@
     overflow-y: auto;
 }
 
+div.list-group-item.layermanager-list {
+    padding:0;
+    border:0;
+}
+
+ul.hs-layermanager-mapcontentlist {
+    margin-top:10px;
+}
+
+
 .modal-backdrop {
     visibility: hidden
 }
@@ -95,19 +105,6 @@ hr {
     margin-bottom: 5px;
 }
 
-input[type=checkbox].layer-checked,
-input[type=radio].layer-checked,
-input.layer-more,
-.datasource_downloadlayer,
-.datasource_addlayer,
-.datasource_rdf
-{
-    width: 18px;
-    height: 21px;
-    font-size: 16px;
-    margin: 0;
-    display: inline-block;
-}
 .datasource_addlayer,
 .layer-more {
     margin-left: 4px;
