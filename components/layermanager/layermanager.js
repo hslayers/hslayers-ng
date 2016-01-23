@@ -154,7 +154,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         title: e.element.get("title"),
                         layer: e.element,
                         grayed: $scope.isLayerInResolutionInterval(e.element),
-                        sub_layers: sub_layers,
+                        legends: sub_layers,
                         visible: e.element.getVisible()
                     });
                 } else {
@@ -237,9 +237,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             $scope.changeLayerVisibility = function($event, layer) {
                 layer.layer.setVisible($event.target.checked);
                 if (layer.layer.get('base')) {
-                    for (var i = 0; i < $scope.layers.length; i++) {
-                        if ($scope.layers[i].layer.get('base') && $scope.layers[i] != layer) {
-                            $scope.layers[i].layer.setVisible(false);
+                    for (var i = 0; i < $scope.baselayers.length; i++) {
+                        if ($scope.baselayers[i] != layer) {
+                            $scope.baselayers[i].layer.setVisible(false);
                         }
                     }
                 }
@@ -253,10 +253,13 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {number} index - Used to position the detail panel after layers li element
              */
             $scope.setCurrentLayer = function(layer, index) {
-                $scope.currentlayer = layer;
-                $(".layerpanel").insertAfter($("#layer-" + index));
-                $scope.cur_layer_opacity = layer.layer.getOpacity();
-                if (console) console.log(layer);
+                if ($scope.currentlayer == layer){
+                    $scope.currentlayer = null;
+                } else {
+                    $scope.currentlayer = layer;
+                    $(".layerpanel").insertAfter($("#layer-" + index));
+                    $scope.cur_layer_opacity = layer.layer.getOpacity();
+                }
                 return false;
             }
 
