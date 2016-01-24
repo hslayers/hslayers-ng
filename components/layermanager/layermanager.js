@@ -225,6 +225,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             $scope.box_layers = config.box_layers;
             $scope.layers = [];
             $scope.baselayers = [];
+            $scope.baselayersVisible = true;
             $scope.active_box = null;
 
             /**
@@ -236,10 +237,43 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              */
             $scope.changeLayerVisibility = function($event, layer) {
                 layer.layer.setVisible($event.target.checked);
-                if (layer.layer.get('base')) {
+                if (!layer.layer.get('base')){
+                    layer.visible = $event.target.checked;
+                } else {
+                    if ($scope.baselayersVisible == true) {
+                        layer.visible = $event.target.checked;
+                    }
                     for (var i = 0; i < $scope.baselayers.length; i++) {
                         if ($scope.baselayers[i] != layer) {
                             $scope.baselayers[i].layer.setVisible(false);
+                            $scope.baselayers[i].visible = false;
+                        }
+                    }
+                }
+            }
+
+            /**
+             * @function changeBaseLayerVisibility
+             * @memberOf hs.layermanager.controller
+             * @description Callback function to set layers visibility
+             * @param {object} $event - Info about the event and checkbox being clicked on
+             * @param {object} layer - Wrapped ol.Layer
+             */
+            $scope.changeBaseLayerVisibility = function($event, layer) {
+                if ($scope.baselayersVisible == true){
+                    if ($event){
+/* TODO */
+                    } else {
+                        $scope.baselayersVisible = false;
+                        for (var i = 0; i < $scope.baselayers.length; i++) {
+                            $scope.baselayers[i].layer.setVisible(false);
+                        }
+                    }
+                } else {
+                    $scope.baselayersVisible = true;
+                    for (var i = 0; i < $scope.baselayers.length; i++) {
+                        if ($scope.baselayers[i].visible == true){
+                            $scope.baselayers[i].layer.setVisible(true);
                         }
                     }
                 }
