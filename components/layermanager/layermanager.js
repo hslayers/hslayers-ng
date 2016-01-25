@@ -139,15 +139,17 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                             sub_layers[i] = getLegendUrl(e.element.getSource().getUrl(), sub_layers[i]);
                     }
                 }
-                e.element.on('change:visible', function(e) {
-                    for (var i = 0; i < $scope.layers.length; i++) {
-                        if ($scope.layers[i].layer == e.target) {
-                            $scope.layers[i].visible = e.target.getVisible();
-                            break;
+                if (e.element.get('base') != true) {
+                    e.element.on('change:visible', function(e) {
+                        for (var i = 0; i < $scope.layers.length; i++) {
+                            if ($scope.layers[i].layer == e.target) {
+                                $scope.layers[i].visible = e.target.getVisible();
+                                break;
+                            }
                         }
-                    }
-                    if (!$scope.$$phase) $scope.$digest();
-                })
+                        if (!$scope.$$phase) $scope.$digest();
+                    })
+                }
                 if (e.element.get('base') != true) {
                     populateFolders(e.element);
                     $scope.layers.push({
@@ -162,7 +164,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         title: e.element.get("title"),
                         layer: e.element,
                         grayed: $scope.isLayerInResolutionInterval(e.element),
-                        visible: e.element.getVisible()
+                        visible: e.element.getVisible(),
+                        active: e.element.getVisible()
                     })
                 };
                 if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
@@ -235,21 +238,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {object} $event - Info about the event and checkbox being clicked on
              * @param {object} layer - Wrapped ol.Layer
              */
-            $scope.changeLayerVisibility = function($event, layer) {
-                layer.layer.setVisible($event.target.checked);
-                if (!layer.layer.get('base')){
-                    layer.visible = $event.target.checked;
-                } else {
-                    if ($scope.baselayersVisible == true) {
-                        layer.visible = $event.target.checked;
-                    }
-                    for (var i = 0; i < $scope.baselayers.length; i++) {
-                        if ($scope.baselayers[i] != layer) {
-                            $scope.baselayers[i].layer.setVisible(false);
-                            $scope.baselayers[i].visible = false;
-                        }
-                    }
-                }
+            $scope.changeLayerVisibility = function(visibility, layer) {
+                layer.layer.setVisible(visibility);
+                layer.visible = visibility;
             }
 
             /**
@@ -262,7 +253,17 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             $scope.changeBaseLayerVisibility = function($event, layer) {
                 if ($scope.baselayersVisible == true){
                     if ($event){
-/* TODO */
+                        for (var i = 0; i < $scope.baselayers.length; i++) {
+                            if ($scope.baselayers[i] != layer) {
+                                $scope.baselayers[i].layer.setVisible(false);
+                                $scope.baselayers[i].visible = false;
+                                $scope.baselayers[i].active = false;
+                            } else {
+                                $scope.baselayers[i].layer.setVisible(true);
+                                $scope.baselayers[i].visible = true;
+                                $scope.baselayers[i].active = true;
+                            }
+                        }
                     } else {
                         $scope.baselayersVisible = false;
                         for (var i = 0; i < $scope.baselayers.length; i++) {
@@ -270,10 +271,19 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         }
                     }
                 } else {
-                    $scope.baselayersVisible = true;
-                    for (var i = 0; i < $scope.baselayers.length; i++) {
-                        if ($scope.baselayers[i].visible == true){
-                            $scope.baselayers[i].layer.setVisible(true);
+                    if ($event){
+                        layer.active = true;
+                        for (var i = 0; i < $scope.baselayers.length; i++) {
+                            if ($scope.baselayers[i] != layer) {
+                                $scope.baselayers[i].active = false;
+                            }
+                        }
+                    } else {
+                        $scope.baselayersVisible = true;
+                        for (var i = 0; i < $scope.baselayers.length; i++) {
+                            if ($scope.baselayers[i].active == true){
+                                $scope.baselayers[i].layer.setVisible(true);
+                            }
                         }
                     }
                 }

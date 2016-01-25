@@ -1,8 +1,13 @@
 <div class="list-group-item layermanager-list" ng-if="obj.layers.length>0">
     <ul class="list-group" >
-        <li ng-repeat="layer in layers | filter:query track by $index" id="layer-{{$index}}" class="list-group-item" ng-if="layerBelongsToFolder(layer, obj)">
-            <input type="checkbox" class="layer-checked" ng-checked="layer.visible" ng-click="changeLayerVisibility($event, layer)" />
-            <a href="#" ng-class="layer.grayed ? 'text-muted': ''" ng-click="setCurrentLayer(layer, $index)"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" ng-show="isLayerQueryable(layer)"></span>{{layer.title}}</a>
+        <li ng-repeat="layer in layers | filter:query track by $index" id="layer-{{$index}}" class="list-group-item clearfix hs-layermanager-item" ng-if="layerBelongsToFolder(layer, obj)" ng-click="setCurrentLayer(layer, $index)">
+            <a href="#">{{layer.title}}</a>
+            <span class="pull-right">
+                    <i class="glyphicon glyphicon-warning-sign hs-layermanager-warning-scale" title="This layer is not available in this scale" data-toggle="tooltip" data-container="body" data-placement="auto" ng-show="layer.grayed" ng-click="$event.stopPropagation()" ></i>
+                    <i class="glyphicon glyphicon-info-sign hs-layermanager-queryable" title="This layer is queryable" ng-show="isLayerQueryable(layer)" ng-click="$event.stopPropagation()" ></i>
+                    <button type="button" class="btn btn-xs btn-default"><i class="glyphicon" ng-click="changeLayerVisibility(!layer.visible, layer);$event.stopPropagation()" ng-class="layer.visible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
+            </span>
+
             <a href="#" class="layer-more"><i class="glyphicon icon-circle-arrow-right"></i></a>            
         </li>
     </ul>

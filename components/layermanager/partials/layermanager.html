@@ -18,20 +18,23 @@
         </div>
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
         <ul class="list-group hs-layermanager-baselayerlist">
-            <li class="list-group-item clearfix active">
+            <li class="list-group-item hs-layermanager-header clearfix active">
                 <span translate>Baselayers</span>
                 <span class="pull-right">
-                    <button type="button" class="btn btn-xs btn-default" ng-click="changeBaseLayerVisibility()"><i class="glyphicon" ng-class="baselayersVisible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
+                    <button type="button" class="btn btn-xs btn-default"><i class="glyphicon" ng-click="changeBaseLayerVisibility()" ng-class="baselayersVisible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
                 </span>
             </li>
-            <li class="list-group-item layermanager-list" ng-repeat="layer in baselayers">
-                <input name="baselayer" type="radio" class="layer-checked" ng-value="layer.title" ng-model="baselayer" ng-click="changeBaseLayerVisibility($event, layer)" />
-                <span ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</span>
+            <li class="list-group-item hs-layermanager-item" ng-repeat="layer in baselayers" ng-click="changeBaseLayerVisibility($event, layer)" >
+                <span ng-if="layer.active" ng-class="layer.grayed ? 'text-muted': ''"><strong>{{layer.title}}</strong></span>
+                <span ng-if="!layer.active" ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</span>
+                <span class="pull-right" ng-show="layer.active">
+                    <button class="btn btn-xs btn-link"><i class="glyphicon glyphicon-globe"></i></button>
+                </span>
             </li>
         </ul>
 
         <ul class="list-group hs-layermanager-mapcontentlist">
-            <li class="list-group-item active">
+            <li class="list-group-item hs-layermanager-header active">
                 <span translate>Map Content</span>
             </li>
             <ul class="list-group hs-layermanager-layerlist" ng-repeat="value in folders.sub_folders | orderBy:'name' track by $index ">

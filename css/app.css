@@ -63,7 +63,36 @@ ul.hs-layermanager-mapcontentlist {
     margin-top:10px;
 }
 
+li.hs-layermanager-header {
+    padding: 10px 5px;
+}
+li.hs-layermanager-item {
+    padding: 10px 5px;
+    word-wrap: break-word;
+    cursor: pointer;
+}
 
+i.hs-layermanager-warning-scale {
+    color: #f0ad4e;
+    padding: 1px 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    line-height: 1.5;
+    font-size: 12px;
+    top: 2px;
+    cursor: default;
+}
+
+i.hs-layermanager-queryable {
+    cursor: default;
+    color: #337ab7;
+    padding: 1px 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    line-height: 1.5;
+    font-size: 12px;
+    top: 2px;
+}
 .modal-backdrop {
     visibility: hidden
 }
@@ -230,10 +259,7 @@ button.but-title-sm {
     max-height: 1000px
 }
 
-li.list-group-item {
-    padding: 10px 5px;
-    word-wrap: break-word;
-}
+
 
 .list-group-item.active .datasource_addlayer {
     color: #fff
