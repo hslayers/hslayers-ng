@@ -116,7 +116,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             var new_lyr = new ol.layer.Vector({
                 title: " " + value2,
                 source: new SparqlJson({
-                    geom_attribute: 'bif:st_geomfromtext(UCASE(?geom))',
+                    geom_attribute: '?geom',
                     url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + value + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://www.openvoc.eu/poi#categoryWaze',
                     projection: 'EPSG:3857'
@@ -165,7 +165,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             var new_lyr = new ol.layer.Vector({
                 title: " " + value2,
                 source: new SparqlJson({
-                    geom_attribute: 'bif:st_geomfromtext(UCASE(?geom))',
+                    geom_attribute: '?geom',
                     url: 'http://ng.hslayers.org:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://www.openvoc.eu/poi#categoryOSM',
                     projection: 'EPSG:3857'
@@ -445,7 +445,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                     var src = lyr.getSource();
                     src.clear();
                     if (data !== '') {
-                        src.options.geom_attribute = 'bif:st_geomfromtext(UCASE(?geom))';
+                        src.options.geom_attribute = '?geom';
                         src.options.url = 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + data + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                     } else
                         src.options.url = '';
