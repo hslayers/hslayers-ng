@@ -20,6 +20,9 @@
                     <li role="presentation" ng-class='{active:$first}' ng-repeat="ds in datasets">
                         <a ng-href="{{'#'+ds.title}}" aria-controls="context" role="tab" data-toggle="tab">{{ds.title}} <span ng-show='ds.matched>0'>({{ds.matched}})</span><img ng-src="{{ajax_loader}}" ng-show="ds.ajax_req.readyState != 4"/></a>
                     </li>
+                    <li role="presentation" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources">
+                        <a href="#OWS" aria-controls="OWS" role="tab" data-toggle="tab">External data</a>
+                    </li>
                 </ul><!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane" ng-class='{active:$first}' ng-attr-id="{{ds.title}}" ng-repeat="ds in datasets">
@@ -48,8 +51,8 @@
                                 </h5>
                             </div>
                         </div>
-                    
                     </div>
+                    <div role="tabpanel" class="tab-pane" hs.ows.directive ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources" id="OWS"></div>
                 </div>
     </div>
 </div>

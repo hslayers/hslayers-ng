@@ -7,8 +7,8 @@
         <div class="sidebar-content">
                 <li class="sidebar-item" ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
                     <a href="#">
-                        <span class="menu-icon glyphicon icon-layers" data-toggle="tooltip" data-container="body" data-placement="auto" title="Manage your layers in composition"></span>
-                        <span class="sidebar-item-title">Layer Manager</span>
+                        <span class="menu-icon glyphicon icon-layers" data-toggle="tooltip" data-container="body" data-placement="auto" title="Manage and style your layers in composition"></span>
+                        <span class="sidebar-item-title" translate>Manage and Style Layers</span>
                     </a>
                 </li>
                 <li class="sidebar-item" ng-if="Core.exists('hs.legend.controller')" ng-click="setMainPanel('legend')" ng-class="{active: Core.mainpanel == 'legend'}">
@@ -32,7 +32,7 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item" ng-if="Core.exists('hs.ows.controller')" ng-click="setMainPanel('ows')" ng-class="{active: Core.mainpanel == 'ows'}">
+                <li class="sidebar-item" ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources" ng-click="setMainPanel('ows')" ng-class="{active: Core.mainpanel == 'ows'}">
                     <a href="#">
                         <span class="menu-icon glyphicon glyphicon-plus" data-toggle="tooltip" data-container="body" data-placement="auto" title="Add external data"></span>
                         <span class="sidebar-item-title">Add external data</span>
