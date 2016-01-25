@@ -18,14 +18,14 @@
             
                 <ul class="nav nav-tabs dss-tabs" role="tablist">
                     <li role="presentation" ng-class='{active:$first}' ng-repeat="ds in datasets">
-                        <a ng-href="{{'#'+ds.title}}" aria-controls="context" role="tab" data-toggle="tab">{{ds.title}} <span ng-show='ds.matched>0'>({{ds.matched}})</span><img ng-src="{{ajax_loader}}" ng-show="ds.ajax_req.readyState != 4"/></a>
+                        <a ng-href="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab">{{ds.title}} <span ng-show='ds.matched>0'>({{ds.matched}})</span><img ng-src="{{ajax_loader}}" ng-show="ds.ajax_req.readyState != 4"/></a>
                     </li>
                     <li role="presentation" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources">
                         <a href="#OWS" aria-controls="OWS" role="tab" data-toggle="tab">External data</a>
                     </li>
                 </ul><!-- Tab panes -->
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane" ng-class='{active:$first}' ng-attr-id="{{ds.title}}" ng-repeat="ds in datasets">
+                    <div role="tabpanel" class="tab-pane" ng-class='{active:$first}' ng-attr-id="{{'ds'+$index}}" ng-repeat="ds in datasets">
                         <div class="panel">
                             <div class="panel-body">
                                 <ul class="list-group">
