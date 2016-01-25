@@ -279,12 +279,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             return me;
         }])
 
-        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies', 'hs.compositions.service_parser',
-            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies, compositions_service_parser) {
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
+            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
                 $scope.layers = [];
                 $scope.id = '';
                 $scope.panel_name = 'status_creator';
-                $scope.compositions_service_parser = compositions_service_parser;
+                $scope.current_composition_title = '';
 
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
@@ -463,6 +463,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.id = data.id;
                     $scope.abstract = data.data.abstract;
                     $scope.title = data.data.title;
+                    $scope.current_composition_title = title;
                     $scope.keywords = data.data.keywords;
                     $scope.current_composition = data.data;
                 });
