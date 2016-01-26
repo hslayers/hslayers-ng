@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query', 'search', 'permalink', 'measure', 'geolocation', 'bootstrap', 'panoramio', 'bootstrap', 'api'],
+define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query', 'search', 'permalink', 'measure', 'geolocation', 'bootstrap', 'panoramio', 'bootstrap', 'api', 'styles'],
 
     function(ol, dc, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
@@ -12,7 +12,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             'hs.api',
             /*'hs.feature_crossfilter', */
             'hs.panoramio',
-            'hs.sidebar'
+            'hs.sidebar',
+            'hs.styles'
         ]);
 
         module.directive('hs', ['Core', function(Core) {
