@@ -1,10 +1,17 @@
     <ul class="sidebar-list">
         <li class="sidebar-main" ng-if="Core.sidebarToggleable">
             <a ng-click="toggleSidebar()">
-                <span class="menu-icon glyphicon glyphicon-transfer"></span>
+                <span class="menu-icon glyphicon" ng-class="Core.sidebarExpanded ? 'glyphicon-menu-left' : 'glyphicon-menu-hamburger'"></span>
               </a>
         </li>
         <div class="sidebar-content">
+                <li class="sidebar-item" ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser')" ng-class="{active: Core.mainpanel == 'composition_browser'}">
+                    <a href="#">
+                        <span class="menu-icon glyphicon icon-map" data-toggle="tooltip" data-container="body" data-placement="auto" title="List available map compositions"></span>
+                        <span class="sidebar-item-title" translate>Map Compositions</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item" ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
                     <a href="#">
                         <span class="menu-icon glyphicon icon-layers" data-toggle="tooltip" data-container="body" data-placement="auto" title="Manage and style your layers in composition"></span>
@@ -21,14 +28,8 @@
                 <li class="sidebar-item" ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="setMainPanel('datasource_selector')" ng-class="{active: Core.mainpanel == 'datasource_selector'}">
                     <a href="#">
                         <span class="menu-icon glyphicon icon-database" data-toggle="tooltip" data-container="body" data-placement="auto" title="Select data or services for your map composition"></span>
-                        <span class="sidebar-item-title">Datasource Selector</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item" ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser')" ng-class="{active: Core.mainpanel == 'composition_browser'}">
-                    <a href="#">
-                        <span class="menu-icon glyphicon icon-map" data-toggle="tooltip" data-container="body" data-placement="auto" title="List available compositions"></span>
-                        <span class="sidebar-item-title">Compositions</span>
+                        <span class="sidebar-item-title" ng-if="!Core.singleDatasources">Datasource Selector</span>
+                        <span class="sidebar-item-title" ng-if="Core.singleDatasources">Add layers</span>
                     </a>
                 </li>
 
@@ -76,7 +77,7 @@
                 </li>
                 
                 
-                <li class="sidebar-item" ng-if="Core.exists('hs.permalink.controller')" ng-click="setMainPanel('permalink')" ng-class="{active: Core.mainpanel == 'permalink'}">
+                <li class="sidebar-item" ng-if="Core.exists('hs.permalink.controller') && Core.embededEnabled" ng-click="setMainPanel('permalink')" ng-class="{active: Core.mainpanel == 'permalink'}">
                     <a href="#">
                         <span class="menu-icon glyphicon icon-htmlfile" data-toggle="tooltip" data-container="body" data-placement="auto" title="Embed map"></span>
                         <span class="sidebar-item-title">Embed map</span>

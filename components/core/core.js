@@ -69,6 +69,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         sidebarToggleable: true,
                         sidebarButtons: true,
                         singleDatasources: false,
+                        embededEnabled: true,
                         panel_statuses: {},
                         _exist_cache: {},
                         setMainPanel: function(which, by_gui) {
