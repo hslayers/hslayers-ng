@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -9,12 +9,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             'hs.map',
             'hs.ows',
             'hs.query',
-            'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
-            'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.core',
+            'hs.search', 'hs.permalink', 'hs.measure',
+            'hs.geolocation', 'hs.core',
             'hs.datasource_selector',
             'hs.api',
             'gettext',
-            'hs.compositions',
+            'hs.compositions', 'hs.status_creator',
             'hs.sidebar'
         ]);
 
@@ -75,23 +75,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             }),
             compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
             datasources: [
-                /*{
-                                    title: "Datatank",
-                                    url: "http://ewi.mmlab.be/otn/api/info",
-                                    type: "datatank"
-                                },*/
                 {
                     title: "Hub layers",
                     url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
                     language: 'eng',
                     type: "ckan"
-                }/*, {
-                    title: "Micka",
-                    url: "http://cat.ccss.cz/csw/",
-                    language: 'eng',
-                    type: "micka",
-                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
-                }*/
+                }
             ]
         });
 
@@ -100,9 +89,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+                $scope.Core.sidebarRight = false;
                 Core.singleDatasources = true;
-                srv_producer.addService('http://erra.ccss.cz/geoserver/ows', config.box_layers[1]);
-                composition_parser.load('http://dev.bnhelp.cz/statusmanager/index.php?request=load&permalink=de_landuse');
+                Core.embededEnabled = false;
                 $scope.$on('infopanel.updated', function(event) {
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
                 });
