@@ -7,6 +7,31 @@
     margin-bottom: 0;
 }
 
+.glyphicon-spin {
+    -webkit-animation: spin 1000ms infinite linear;
+    animation: spin 1000ms infinite linear;
+}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
 .menu {
     list-style: none;
     border-bottom: 0.1em solid black;
@@ -72,6 +97,10 @@ li.hs-layermanager-item {
     cursor: pointer;
 }
 
+li.hs-layermanager-item.hovering {
+    text-decoration: underline;
+}
+
 i.hs-layermanager-warning-scale {
     color: #f0ad4e;
     padding: 1px 5px;
@@ -93,6 +122,17 @@ i.hs-layermanager-queryable {
     font-size: 12px;
     top: 2px;
 }
+.hs-tab-singleDS {
+    display: table-cell!important;
+    table-layout: fixed;
+    width: 49%;
+    text-align: center;
+}
+
+.hs-dataset-panel .panel-body {
+    padding:0;
+}
+
 .modal-backdrop {
     visibility: hidden
 }
@@ -132,14 +172,6 @@ input[type=radio].form-control {
 hr {
     margin-top: 0px;
     margin-bottom: 5px;
-}
-
-.datasource_addlayer,
-.layer-more {
-    margin-left: 4px;
-}
-.layer-more {
-    display: none;
 }
 
 .ol-zoom {
@@ -312,6 +344,7 @@ div.row {
 }
 .open .panelspace {
     width: 400px;
+    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
 }
 .sb-right .panelspace {
     right: -350px;
@@ -424,6 +457,7 @@ div#sidebar {
 #content-wrapper.sb-left:not(.open) div#sidebar {
     right:auto;
     background-color: transparent;
+    width: 51px;
 }
 
 .sb-right div#sidebar {
@@ -440,8 +474,6 @@ div#sidebar {
 
 ul.sidebar-list {
     padding: 0;
-    margin: 0;
-    list-style: none;
 }
 #content-wrapper.open ul.sidebar-list {
     width: 100%;
@@ -456,7 +488,6 @@ ul.sidebar-list {
 }
 
 ul.sidebar-list li a {
-    display: block;
     text-decoration: none;
 }
 #sidebar ~ div#panelplace {
@@ -470,20 +501,16 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     width: 400px
 }
 ul.sidebar-list .sidebar-main .menu-icon {
-    font-size: 18px;
-    line-height: 50px;
-    width: 50px;
+    font-size: 16px;
+    line-height: 40px;
+    width: 49px;
     text-align: center;
+    cursor: pointer;
 }
 
 ul.sidebar-list .sidebar-main {
-    height: 50px;
+    height: 40px;
     border-bottom: 1px solid #ddd;
-}
-
-ul.sidebar-list .sidebar-main a {
-    font-size: 18px;
-    line-height: 60px
 }
 
 ul.sidebar-list .sidebar-title {
@@ -493,10 +520,10 @@ ul.sidebar-list .sidebar-title {
     transition: all .6s ease 0s
 }
 
-
 ul.sidebar-list .sidebar-item {
     height: 40px;
     border-bottom: 1px solid #ddd;
+    cursor: pointer;
 }
 
 ul.sidebar-list .sidebar-item.active {
@@ -511,6 +538,7 @@ ul.sidebar-list .sidebar-item a {
     font-size: 13px;
     line-height: 40px;
     text-transform: uppercase;
+    margin-bottom: -1px;
 }
 
 ul.sidebar-list .sidebar-item a:hover {
@@ -522,12 +550,17 @@ ul.sidebar-list .sidebar-item:hover {
     color: #fff;
 }
 
+ul.sidebar-list .sidebar-item:hover a {
+    color: #fff
+}
+
 ul.sidebar-list .sidebar-item .menu-icon {
     display:inline-block;
     font-size: 16px;
     line-height: 38px;
-    width: 50px;
+    width: 49px;
     text-align: center;
+    margin-bottom: -1px;
 }
 
 .sb-right ul.sidebar-list {
@@ -549,6 +582,7 @@ ul.sidebar-list .sidebar-item .menu-icon {
 }
 #content-wrapper:not(.open) ul.sidebar-list {
     background-color: transparent;
+    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
 }
 
 #content-wrapper.sb-right:not(.open) ul.sidebar-list {
@@ -585,9 +619,8 @@ ul.sidebar-list .sidebar-item .menu-icon {
 
 #content-wrapper:not(.open) .sidebar-main {
     background-color: #f7f7f7;
-    height: 51px;
+    height: 40px;
     width: 51px;
-    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
 }
 
 #content-wrapper.sb-right:not(.open) .sidebar-main {
@@ -608,10 +641,6 @@ ul.sidebar-list .sidebar-item .menu-icon {
 
 #stc-save, #stc-saveas {
     display:none;
-}
-
-[class^="icon-"], [class*=" icon-"] {
-    line-height:1;
 }
 
 .hs-styler-colorbox {
