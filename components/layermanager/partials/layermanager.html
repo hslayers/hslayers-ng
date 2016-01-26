@@ -24,10 +24,10 @@
                     <button type="button" class="btn btn-xs btn-default"><i class="glyphicon" ng-click="changeBaseLayerVisibility()" ng-class="baselayersVisible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
                 </span>
             </li>
-            <li class="list-group-item hs-layermanager-item" ng-repeat="layer in baselayers" ng-click="changeBaseLayerVisibility($event, layer)" >
+            <li class="list-group-item hs-layermanager-item" ng-repeat="layer in baselayers" ng-click="changeBaseLayerVisibility($event, layer)" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}" >
                 <span ng-if="layer.active" ng-class="layer.grayed ? 'text-muted': ''"><strong>{{layer.title}}</strong></span>
                 <span ng-if="!layer.active" ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</span>
-                <span class="pull-right" ng-show="layer.active">
+                <span class="pull-right" ng-show="layer.active || hovering" ng-style="hovering && !layer.active && {'opacity':'0.5'}">
                     <button class="btn btn-xs btn-link"><i class="glyphicon glyphicon-globe"></i></button>
                 </span>
             </li>

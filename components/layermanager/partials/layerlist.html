@@ -7,8 +7,6 @@
                     <i class="glyphicon glyphicon-info-sign hs-layermanager-queryable" title="This layer is queryable" ng-show="isLayerQueryable(layer)" ng-click="$event.stopPropagation()" ></i>
                     <button type="button" class="btn btn-xs btn-default" ng-click="changeLayerVisibility(!layer.visible, layer);$event.stopPropagation()" ><i class="glyphicon"ng-class="layer.visible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
             </span>
-
-            <a href="#" class="layer-more"><i class="glyphicon icon-circle-arrow-right"></i></a>            
         </li>
     </ul>
 </div>
