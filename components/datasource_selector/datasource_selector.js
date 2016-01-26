@@ -103,7 +103,6 @@ define(['angular', 'ol', 'map'],
                 $scope.config = config;
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
-                $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
                 $scope.selected_layer = null;
                 $scope.filter_by_extent = true;
 
