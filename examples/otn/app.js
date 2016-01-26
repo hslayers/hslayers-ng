@@ -1,21 +1,21 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator'],
-
+define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator'],
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
+            'hs.sidebar',
             'hs.toolbar',
             'hs.layermanager',
             'hs.map',
-            'hs.ows',
             'hs.query',
             'hs.search', 'hs.permalink', 'hs.measure',
             'hs.geolocation', 'hs.core',
             'hs.datasource_selector',
+            'hs.status_creator',
             'hs.api',
+            'hs.ows',
             'gettext',
-            'hs.compositions', 'hs.status_creator',
-            'hs.sidebar'
+            'hs.compositions'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
@@ -84,12 +84,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             ]
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'config',
-            function($scope, Core, srv_producer, InfoPanelService, composition_parser, config) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'config',
+            function($scope, Core, InfoPanelService, composition_parser, config) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                $scope.Core.sidebarRight = false;
+                Core.sidebarRight = false;
                 Core.singleDatasources = true;
                 Core.embededEnabled = false;
                 $scope.$on('infopanel.updated', function(event) {
