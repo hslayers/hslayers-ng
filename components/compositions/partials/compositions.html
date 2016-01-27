@@ -6,7 +6,7 @@
         </button>
     </div>
     <div class="panel-body">
-        <input type="text" class="form-control" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()">
+        <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()">
         &nbsp;<input type="checkbox" ng-model="filter_by_extent" ng-change='loadCompositions()'><span translate>Filter by map extent</span>
         &nbsp;<input type="checkbox" ng-model="query.editable" ng-change='filterChanged()'><span translate>Only mine</span>
         <button type="button" ng-click="toggleKeywords()" class="btn btn-default btn-xs">Keywords<span class="caret"></span></button>
@@ -18,7 +18,7 @@
                 </label>
             </div>
         </div>
-        
+
         <ul style="margin-top: 4px" class="list-group">
             <li ng-repeat="composition in compositions | filter:query" ng-class="'list-group-item'+(composition.highlighted ? ' active' : '')">
                 <a href="#" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition.link)"  data-toggle="tooltip" data-placement="top" ng-attr-title="{{composition.mdAbstract}}">{{composition.title}}
@@ -45,4 +45,4 @@
     </div>
 </div>
 
-                  
+

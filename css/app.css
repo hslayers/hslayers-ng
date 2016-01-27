@@ -1,12 +1,5 @@
 /* app css stylesheet */
 
-.ng-scope ul,ol {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
 .glyphicon-spin {
     -webkit-animation: spin 1000ms infinite linear;
     animation: spin 1000ms infinite linear;
@@ -58,7 +51,11 @@
 }
 
 .mainpanel {
-    width: 100%;
+    border: none;
+}
+
+div.mainpanel > div.panel-body {
+    padding:0;
 }
 
 .gui-overlay {
@@ -73,35 +70,65 @@
 }
 
 .layerpanel {
-    width: 100%;
-    top: 6px;
-    max-height: 400px;
+    max-height: 350px;
     overflow-y: auto;
+    border: 0;
+    margin-bottom: 0;
+    border-bottom: 0;
 }
 
-div.list-group-item.layermanager-list {
-    padding:0;
+div.list-group-item.hs-lm-list {
     border:0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
-ul.hs-layermanager-mapcontentlist {
-    margin-top:10px;
+ul.hs-lm-mapcontentlist {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-li.hs-layermanager-header {
+li.hs-lm-header {
     padding: 10px 5px;
 }
-li.hs-layermanager-item {
+
+li.hs-lm-item {
     padding: 10px 5px;
     word-wrap: break-word;
     cursor: pointer;
+    border-left: 0;
+    border-right: 0;
 }
 
-li.hs-layermanager-item.hovering {
+li.hs-lm-item.detailActivated {
+    border-bottom:0;
+}
+.hs-lm-header:first-child, .hs-lm-list:first-child, .hs-lm-list:last-child, li.hs-lm-item:first-child {
+    border-top-left-radius:0;
+    border-top-right-radius:0;
+}
+
+.hs-filter {
+    border-left:0;
+    border-right:0;
+}
+li.hs-lm-item.hovering {
     text-decoration: underline;
 }
 
-i.hs-layermanager-warning-scale {
+div.hs-lm-item-title {
+    display: inline-block;
+    width: calc(100% - 85px);
+}
+
+div.hs-lm-item-controls {
+    display: inline-block;
+    text-align: right;
+    vertical-align: top;
+    width: 80px;
+}
+
+i.hs-lm-warning-scale {
     color: #f0ad4e;
     padding: 1px 5px;
     border: 1px solid #ccc;
@@ -112,7 +139,7 @@ i.hs-layermanager-warning-scale {
     cursor: default;
 }
 
-i.hs-layermanager-queryable {
+i.hs-lm-queryable {
     cursor: default;
     color: #337ab7;
     padding: 1px 5px;
@@ -157,16 +184,6 @@ i.hs-layermanager-queryable {
 .capabilities_input {
     padding-right:0px;
     padding-left:15px;
-}
-
-input[type=checkbox].form-control {
-    box-shadow: none;
-    margin:0;
-}
-
-input[type=radio].form-control {
-    box-shadow: none;
-    margin:0;
 }
 
 hr {
@@ -291,8 +308,6 @@ button.but-title-sm {
     max-height: 1000px
 }
 
-
-
 .list-group-item.active .datasource_addlayer {
     color: #fff
 }
@@ -302,10 +317,6 @@ button.but-title-sm {
     word-break: break-all;
 }
 
-div.row {
-    margin-right: 0px;
-    margin-left: 0px;
-}
 .thumbnail {
     height: 62px
 }
@@ -428,11 +439,8 @@ div#content-wrapper:not(.labels) .panelspace-wrapper {
     }
 
     .sb-left.open #toolbar {
-    margin-left: 310px;
-}
-}
-
-
+       margin-left: 310px;
+    }
 }
 
 div.panelspace:not(.labels) .panelspace-wrapper {
@@ -494,7 +502,7 @@ ul.sidebar-list li a {
     height: 100%;
     overflow-y: auto;
     width: 350px;
-    margin-left: 50px;
+    margin-left: 51px;
 }
 div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     margin-left:0;
@@ -635,10 +643,6 @@ ul.sidebar-list .sidebar-item .menu-icon {
     display:none;
 }
 
-#content-wrapper.open .panel-default {
-    border: none;
-}
-
 #stc-save, #stc-saveas {
     display:none;
 }
@@ -672,7 +676,7 @@ ul.sidebar-list .sidebar-item .menu-icon {
 
 .hs-styler-iconbox:hover {
     width:30px; height: 30px; margin: -3px 0px; 
- }
+}
  
 .hs-styler-selected-icon-box {
     width: 30px; 
