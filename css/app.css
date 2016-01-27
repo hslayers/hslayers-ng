@@ -52,6 +52,7 @@
 
 .mainpanel {
     border: none;
+    margin-bottom:0;
 }
 
 div.mainpanel > div.panel-body {
@@ -82,10 +83,18 @@ div.list-group-item.hs-lm-list {
     padding-top: 0;
     padding-bottom: 0;
 }
+.hs-lm-list > ul.list-group.row {
+    margin-bottom:0;
+}
+
+ul.hs-lm-baselayerlist {
+    margin-bottom:0;
+}
 
 ul.hs-lm-mapcontentlist {
     margin-top: 0;
     margin-bottom: 0;
+    border-bottom: 1px solid #ddd;
 }
 
 li.hs-lm-header {
@@ -98,14 +107,17 @@ li.hs-lm-item {
     cursor: pointer;
     border-left: 0;
     border-right: 0;
+    border-bottom: 0;
 }
 
-li.hs-lm-item.detailActivated {
-    border-bottom:0;
-}
-.hs-lm-header:first-child, .hs-lm-list:first-child, .hs-lm-list:last-child, li.hs-lm-item:first-child {
+.hs-lm-header:first-child, .hs-lm-list:first-child, .hs-lm-item:first-child {
     border-top-left-radius:0;
     border-top-right-radius:0;
+}
+
+.hs-lm-list:last-child, .hs-lm-item:last-child {
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:0;
 }
 
 .hs-filter {
