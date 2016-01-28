@@ -463,7 +463,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.id = data.id;
                     $scope.abstract = data.data.abstract;
                     $scope.title = data.data.title;
-                    $scope.current_composition_title = title;
+                    $scope.current_composition_title = $scope.title;
                     $scope.keywords = data.data.keywords;
                     $scope.current_composition = data.data;
                 });
