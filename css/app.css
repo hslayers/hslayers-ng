@@ -386,20 +386,21 @@ button.but-title-sm {
 .panelspace {
     width: 400px;
     box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
+    background-color: white;
 }
 .sb-right .panelspace {
-    right: -350px;
+    right: 0;
 }
-.sb-right.open .panelspace {
-    right: 0px;
-}
-
 .sb-left .panelspace {
     left: 0
 }
 
 .sb-left.open #map {
     margin-left:400px;
+}
+
+.sb-right.open #map {
+    margin-right:400px;
 }
 
 
@@ -435,24 +436,20 @@ div#sidebar {
 }
 
 #content-wrapper.sb-left:not(.open) div#sidebar {
-    right:auto;
     background-color: white;
+    right:auto;
     width: 48px;
 }
 
-.sb-right div#sidebar {
-    left:0
-}
-
 #content-wrapper.sb-right:not(.open) div#sidebar {
-    right: 0;
+    background-color: white;
     left: auto;
-    width: 50px;
-    background-color: transparent;
+    width: 48px;
 }
 
 #content-wrapper:not(.open) .panelspace {
     width: 48px;
+    border-right: 1px solid #ddd;
 }
 
 #content-wrapper.open .sidebar-list {
@@ -554,7 +551,15 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
         left: 250px;
     }
 
+    div#content-wrapper.sb-right.open div.panelspace:not(.labels) .sidebar-list {
+        right: 250px;
+    }
+
     .sb-left.open #map {
+        margin-left:300px;
+    }
+
+    .sb-right.open #map {
         margin-left:300px;
     }
 
