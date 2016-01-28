@@ -59,13 +59,6 @@
 </div>
 
 <div class="panel panel-default layerpanel" ng-show="currentlayer!=null">
-    <div class="panel-heading">
-        {{currentlayer.title}}
-        <button type="button" class="close" ng-click="currentlayer=null">
-            <span aria-hidden="true">×</span>
-            <span class="sr-only" translate>Close</span>
-        </button>
-    </div>
     <div class="panel-body">
         <form>
         <!-- Opacity slider -->
@@ -101,9 +94,6 @@
             </p>
         </div>
         <!-- Footer -->
-        <button class="btn btn-default" ng-click="zoomToLayer(currentlayer.layer)" ng-show="layerIsZoomable(currentlayer.layer)" translate>Zoom to</button>
-        <button class="btn btn-default" ng-click="styleLayer(currentlayer.layer)" ng-show="layerIsVector(currentlayer.layer)" translate>Set style</button>
-        <button class="btn btn-danger" ng-click="removeLayer(currentlayer.layer)" translate>Remove layer</button>
         </form>
     </div>
     <div class="panel-footer">
