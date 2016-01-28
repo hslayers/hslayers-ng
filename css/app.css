@@ -377,7 +377,7 @@ button.but-title-sm {
     width: 400px;
     z-index: 2;
 }
-.open .panelspace {
+.panelspace {
     width: 400px;
     box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
 }
@@ -399,7 +399,6 @@ button.but-title-sm {
 
 div#content-wrapper:not(.open) div.panelspace-wrapper {
     background-color: transparent;
-    box-shadow: none;
     width: 48px;
     overflow-x: hidden;
 }
@@ -431,7 +430,7 @@ div#sidebar {
 
 #content-wrapper.sb-left:not(.open) div#sidebar {
     right:auto;
-    background-color: transparent;
+    background-color: white;
     width: 48px;
 }
 
@@ -444,6 +443,10 @@ div#sidebar {
     left: auto;
     width: 50px;
     background-color: transparent;
+}
+
+#content-wrapper:not(.open) .panelspace {
+    width: 48px;
 }
 
 #content-wrapper.open .sidebar-list {
@@ -493,9 +496,6 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
 
 .panelspace:not(.labels) .sidebar-list span.sidebar-item-title {
     display: none;
-}
-#content-wrapper:not(.open) .sidebar-list {
-    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
 }
 
 #content-wrapper.sb-right:not(.open) .sidebar-list {
