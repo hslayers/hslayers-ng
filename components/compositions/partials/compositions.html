@@ -6,27 +6,44 @@
         </button>
     </div>
     <div class="panel-body">
-        <div id="hs-comp-filter">
-            <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()">
-            &nbsp;<input type="checkbox" ng-model="filter_by_extent" ng-change='loadCompositions()'><span translate>Filter by map extent</span>
-            &nbsp;<input type="checkbox" ng-model="query.editable" ng-change='filterChanged()'><span translate>Only mine</span>
-            <button type="button" ng-click="toggleKeywords()" class="btn btn-default btn-xs">Keywords<span class="caret"></span></button>
-            <div class="keywords-panel">
-                <div style="width: 45%; display:inline-block" class="checkbox" ng-repeat="(keyword, enabled) in keywords">
-                    <label>
-                        <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()" >
-                        {{keyword}}
-                    </label>
-                </div>
+        <form id="hs-comp-filter">
+            <div class="form-group">
+                <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()">
             </div>
+
+            <div id="hs-comp-filter" class="form-group">
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="filter_by_extent" ng-change='loadCompositions()'>
+                    <span translate>Filter by map extent</span>
+                </label>
+
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="query.editable" ng-change='filterChanged()'>
+                    <span translate>Only mine</span>
+                </label>
+            </div>
+
+            <span class="form-group">
+                <button type="button" ng-click="toggleKeywords()" ng-if="config.comp_keywords" class="btn btn-default btn-xs">Keywords<span class="caret"></span></button>
+                <div class="keywords-panel" ng-if="config.comp_keywords">
+                    <div style="width: 45%; display:inline-block" class="checkbox" ng-repeat="(keyword, enabled) in keywords">
+                        <label>
+                            <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()" >
+                            {{keyword}}
+                        </label>
+                    </div>
+                </div>
+            </span>
         </div>
 
-        <ul class="hs-comp-list list-group row">
-            <li ng-repeat="composition in compositions | filter:query" class="list-group-item hs-comp-item" ng-class="composition.highlighted ?  'active' : ''" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition)"  data-toggle="tooltip"  data-container="body" data-placement="right" ng-attr-title="{{composition.mdAbstract}}">
+        <ul class="hs-comp-list list-group">
+            <li ng-repeat="composition in compositions | filter:query" class="list-group-item hs-comp-item" ng-class="composition.highlighted ?  'active' : ''" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition)"  data-toggle="tooltip"  data-container="body" data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
                 <div class="hs-comp-item-title">{{composition.title}}</div>
                 <div class="hs-comp-item-controls">
-                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-show="composition.editable" ng-click='delete(composition)'><i class="glyphicon glyphicon-trash"></i></button>
-                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-show="composition.editable" ng-click='edit(composition)'><i class="glyphicon glyphicon-edit"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-show="composition.editable" ng-click='$event.stopPropagation();delete(composition)'><i class="glyphicon glyphicon-trash"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-disabled="true" ng-click='$event.stopPropagation()'><i class="glyphicon icon-share-alt"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-disabled="true" ng-click='$event.stopPropagation()'><i class="glyphicon glyphicon-save"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-disabled="true" ng-click='$event.stopPropagation()'><i class="glyphicon glyphicon-info-sign"></i></button>
                 </div>
             </li>
         </ul>
