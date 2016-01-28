@@ -11,6 +11,7 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
                     link: function(scope, element) {
+                        /* TODO: mid-pane doesn't exist anymore */
                         $('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
                         $('.mid-pane').css('margin-top', '0px');
                         $(".keywords-panel").hide();
@@ -487,7 +488,7 @@ define(['angular', 'ol', 'map'],
                     Core.openStatusCreator();
                 }
 
-                $scope.loadCompositions();
+                //$scope.loadCompositions();
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }

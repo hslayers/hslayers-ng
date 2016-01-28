@@ -139,23 +139,35 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                             sub_layers[i] = getLegendUrl(e.element.getSource().getUrl(), sub_layers[i]);
                     }
                 }
-                e.element.on('change:visible', function(e) {
-                    for (var i = 0; i < $scope.layers.length; i++) {
-                        if ($scope.layers[i].layer == e.target) {
-                            $scope.layers[i].visible = e.target.getVisible();
-                            break;
+                if (e.element.get('base') != true) {
+                    e.element.on('change:visible', function(e) {
+                        for (var i = 0; i < $scope.layers.length; i++) {
+                            if ($scope.layers[i].layer == e.target) {
+                                $scope.layers[i].visible = e.target.getVisible();
+                                break;
+                            }
                         }
-                    }
-                    if (!$scope.$$phase) $scope.$digest();
-                })
-                populateFolders(e.element);
-                $scope.layers.push({
-                    title: e.element.get("title"),
-                    layer: e.element,
-                    grayed: $scope.isLayerInResolutionInterval(e.element),
-                    sub_layers: sub_layers,
-                    visible: e.element.getVisible()
-                });
+                        if (!$scope.$$phase) $scope.$digest();
+                    })
+                }
+                if (e.element.get('base') != true) {
+                    populateFolders(e.element);
+                    $scope.layers.push({
+                        title: e.element.get("title"),
+                        layer: e.element,
+                        grayed: $scope.isLayerInResolutionInterval(e.element),
+                        legends: sub_layers,
+                        visible: e.element.getVisible()
+                    });
+                } else {
+                    $scope.baselayers.push({
+                        title: e.element.get("title"),
+                        layer: e.element,
+                        grayed: $scope.isLayerInResolutionInterval(e.element),
+                        visible: e.element.getVisible(),
+                        active: e.element.getVisible()
+                    })
+                };
                 if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
                 $rootScope.$broadcast('layermanager.updated', e.element);
             };
@@ -215,6 +227,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
 
             $scope.box_layers = config.box_layers;
             $scope.layers = [];
+            $scope.baselayers = [];
+            $scope.baselayersVisible = true;
             $scope.active_box = null;
 
             /**
@@ -224,12 +238,52 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {object} $event - Info about the event and checkbox being clicked on
              * @param {object} layer - Wrapped ol.Layer
              */
-            $scope.changeLayerVisibility = function($event, layer) {
-                layer.layer.setVisible($event.target.checked);
-                if (layer.layer.get('base')) {
-                    for (var i = 0; i < $scope.layers.length; i++) {
-                        if ($scope.layers[i].layer.get('base') && $scope.layers[i] != layer) {
-                            $scope.layers[i].layer.setVisible(false);
+            $scope.changeLayerVisibility = function(visibility, layer) {
+                layer.layer.setVisible(visibility);
+                layer.visible = visibility;
+            }
+
+            /**
+             * @function changeBaseLayerVisibility
+             * @memberOf hs.layermanager.controller
+             * @description Callback function to set layers visibility
+             * @param {object} $event - Info about the event and checkbox being clicked on
+             * @param {object} layer - Wrapped ol.Layer
+             */
+            $scope.changeBaseLayerVisibility = function($event, layer) {
+                if ($scope.baselayersVisible == true){
+                    if ($event){
+                        for (var i = 0; i < $scope.baselayers.length; i++) {
+                            if ($scope.baselayers[i] != layer) {
+                                $scope.baselayers[i].layer.setVisible(false);
+                                $scope.baselayers[i].visible = false;
+                                $scope.baselayers[i].active = false;
+                            } else {
+                                $scope.baselayers[i].layer.setVisible(true);
+                                $scope.baselayers[i].visible = true;
+                                $scope.baselayers[i].active = true;
+                            }
+                        }
+                    } else {
+                        $scope.baselayersVisible = false;
+                        for (var i = 0; i < $scope.baselayers.length; i++) {
+                            $scope.baselayers[i].layer.setVisible(false);
+                        }
+                    }
+                } else {
+                    if ($event){
+                        layer.active = true;
+                        for (var i = 0; i < $scope.baselayers.length; i++) {
+                            if ($scope.baselayers[i] != layer) {
+                                $scope.baselayers[i].active = false;
+                            }
+                        }
+                    } else {
+                        $scope.baselayersVisible = true;
+                        for (var i = 0; i < $scope.baselayers.length; i++) {
+                            if ($scope.baselayers[i].active == true){
+                                $scope.baselayers[i].layer.setVisible(true);
+                            }
                         }
                     }
                 }
@@ -243,10 +297,13 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {number} index - Used to position the detail panel after layers li element
              */
             $scope.setCurrentLayer = function(layer, index) {
-                $scope.currentlayer = layer;
-                $(".layerpanel").insertAfter($("#layer-" + index));
-                $scope.cur_layer_opacity = layer.layer.getOpacity();
-                if (console) console.log(layer);
+                if ($scope.currentlayer == layer){
+                    $scope.currentlayer = null;
+                } else {
+                    $scope.currentlayer = layer;
+                    $(".layerpanel").insertAfter($("#layer-" + index));
+                    $scope.cur_layer_opacity = layer.layer.getOpacity();
+                }
                 return false;
             }
 
