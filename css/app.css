@@ -53,10 +53,12 @@
 .mainpanel {
     border: none;
     margin-bottom:0;
+    height: 100%;
 }
 
 div.mainpanel > div.panel-body {
-    padding:0;
+    padding: 0px;
+    border-left: 1px solid #ddd;
 }
 
 .gui-overlay {
@@ -68,6 +70,11 @@ div.mainpanel > div.panel-body {
     right: 0px;
     pointer-events: none;
     background: none !important;
+}
+
+.hs-filter {
+    border-left:0;
+    border-right:0;
 }
 
 .layerpanel {
@@ -120,10 +127,6 @@ li.hs-lm-item {
     border-bottom-right-radius:0;
 }
 
-.hs-filter {
-    border-left:0;
-    border-right:0;
-}
 li.hs-lm-item.hovering {
     text-decoration: underline;
 }
@@ -170,6 +173,11 @@ i.hs-lm-queryable {
 
 .hs-dataset-panel .panel-body {
     padding:0;
+}
+
+ul.hs-comp-list {
+    margin-bottom:0;
+    overflow-y: auto;
 }
 
 .modal-backdrop {
@@ -419,6 +427,7 @@ div#content-wrapper:not(.open) div.panelspace-wrapper {
     overflow-y: auto;
     box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
     width: 400px;
+    /* margin-right: -1px; */
 }
 
 div#content-wrapper:not(.labels) .panelspace-wrapper {
@@ -500,7 +509,7 @@ ul.sidebar-list {
 }
 
 #content-wrapper.open div.panelspace:not(.labels) ul.sidebar-list {
-    width: 50px;
+    width: 51px;
 }
 
 #content-wrapper.open div.panelspace:not(.labels) div#sidebar {
@@ -514,7 +523,11 @@ ul.sidebar-list li a {
     height: 100%;
     overflow-y: auto;
     width: 350px;
-    margin-left: 51px;
+    margin-left: 50px;
+}
+
+div#panelplace > div{
+    height:100%;
 }
 div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     margin-left:0;
@@ -523,7 +536,7 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
 ul.sidebar-list .sidebar-main .menu-icon {
     font-size: 16px;
     line-height: 40px;
-    width: 49px;
+    width: 50px;
     text-align: center;
     cursor: pointer;
 }
@@ -578,7 +591,7 @@ ul.sidebar-list .sidebar-item .menu-icon {
     display:inline-block;
     font-size: 16px;
     line-height: 38px;
-    width: 49px;
+    width: 50px;
     text-align: center;
     margin-bottom: -1px;
 }
