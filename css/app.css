@@ -232,12 +232,6 @@ hr {
     top: auto;
     right: auto;
 }
-.search-container {
-    pointer-events: auto;
-    width: 250px;
-    margin-top: 10px;
-    margin-left: 10px;
-}
 
 .search_address {
     width: 250px;
@@ -522,16 +516,11 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
 #toolbar {
     position: absolute;
     top: 10px;
-    z-index: 500;
     left: 10px;
+    width: 326px;
+    display: inline-block;
 }
 
-#toolbar .search-container {
-    margin-left:0;
-    margin-top:0;
-    margin-right:0;
-    float: left;
-}
 .sb-left.open #toolbar {
     margin-left:410px;
 }

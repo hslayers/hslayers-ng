@@ -7,22 +7,22 @@
 </div>-->
 
 <div id="toolbar">
-        <button type="button" class="btn btn-default" title="Reset map" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
-            <span class="glyphicon glyphicon-repeat"></span>
-        </button>
-
+    <div class="input-group">
         <div class="search-container" ng-controller="hs.search.controller" ng-if="Core.exists('hs.search.controller')">
             <div>
                 <div hs.search.directive_searchinput></div>
             </div>
         </div>
-
-        <button type="button" class="btn btn-default"  title="Measure lines and polygon"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
-            <span class="glyphicon icon-design"></span>
-        </button>
-
-        <button type="button" class="btn btn-default btn-mobile"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-default" title="Reset map" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
+                <i class="glyphicon glyphicon-repeat"></i>
+            </button>
+            <button type="button" class="btn btn-default"  title="Measure lines and polygon"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
+                <i class="glyphicon icon-design"></i>
+            </button>
+        </div>
+<!--        <button type="button" class="btn btn-default btn-mobile"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
             <span class="glyphicon icon-search"></span>
-        </button>
+        </button>-->
     </div>
 </div>
