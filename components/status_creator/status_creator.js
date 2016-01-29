@@ -22,6 +22,14 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 };
             })
+            .directive('hs.statusCreator.directiveSimpleform', function() {
+                return {
+                    templateUrl: hsl_path + 'components/status_creator/partials/simpleform.html',
+                    link: function(scope, element) {
+
+                    }
+                };
+            })
             .directive('hs.statusCreator.directivePanel', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/panel.html',
@@ -293,7 +301,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     var cur_proj = OlMap.map.getView().getProjection().getCode();
                     pair1 = ol.proj.transform(pair1, cur_proj, 'EPSG:4326');
                     pair2 = ol.proj.transform(pair2, cur_proj, 'EPSG:4326');
-                    $scope.bbox = [pair1[0].toFixed(8), pair1[1].toFixed(8), pair2[0].toFixed(8), pair2[1].toFixed(8)];
+                    $scope.bbox = [pair1[0].toFixed(2), pair1[1].toFixed(2), pair2[0].toFixed(2), pair2[1].toFixed(2)];
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
@@ -395,25 +403,27 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                 $scope.fillGroups = function() {
                     $scope.groups = [];
-                    $.ajax({
-                        url: config.status_manager_url || '/wwwlibs/statusmanager2/index.php',
-                        cache: false,
-                        method: 'GET',
-                        async: false,
-                        dataType: 'json',
-                        data: {
-                            request: 'getGroups'
-                        },
-                        success: function(j) {
-                            if (j.success) {
-                                $scope.groups = j.result;
-                                angular.forEach($scope.groups, function(g) {
-                                    g.w = false;
-                                    g.r = false;
-                                });
+                    if (config.advancedForm) {
+                        $.ajax({
+                            url: config.status_manager_url || '/wwwlibs/statusmanager2/index.php',
+                            cache: false,
+                            method: 'GET',
+                            async: false,
+                            dataType: 'json',
+                            data: {
+                                request: 'getGroups'
+                            },
+                            success: function(j) {
+                                if (j.success) {
+                                    $scope.groups = j.result;
+                                    angular.forEach($scope.groups, function(g) {
+                                        g.w = false;
+                                        g.r = false;
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                     $scope.groups.unshift({
                         roleTitle: 'Public',
                         roleName: 'guest',
