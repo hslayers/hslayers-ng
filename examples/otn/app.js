@@ -73,7 +73,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 zoom: 4,
                 units: "m"
             }),
-            compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
+            compositions_catalogue_url: 'http://www.whatstheplan.eu/php/metadata/csw/index.php',
             datasources: [
                 {
                     title: "Hub layers",

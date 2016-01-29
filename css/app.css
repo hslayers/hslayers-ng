@@ -563,6 +563,27 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     margin-left: 60px;
 }
 
+.mid-pane {
+    background-color:#fff;
+}
+
+.composition-info {
+    /* border: 1px solid #ddd; */
+}
+
+.composition-info > div {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+}
+
+.composition-abstract {
+    margin-bottom: 0;
+    font-size: 12px;
+    text-align: justify;
+    border-radius: 0;
+    border: 0;
+    margin-top: -1px;
+}
 /**********************************/
 /** SIDEBAR&TOOLBAR RESPONSIVITY **/
 /**********************************/
@@ -605,10 +626,6 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     }
 }
 
-
-
-
-
 /********************/
 /** STATUS CREATOR **/
 /********************/
@@ -622,6 +639,10 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     margin-top:10px;
 }
 
+#hs-stc-abstract {
+    resize: vertical;
+    min-height: 175px;
+}
 /************/
 /** STYLER **/
 /************/

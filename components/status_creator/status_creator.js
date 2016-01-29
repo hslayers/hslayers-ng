@@ -387,10 +387,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.layers = [];
                     $scope.getCurrentExtent();
                     OlMap.map.getLayers().forEach(function(lyr) {
-                        if(angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true){
+                        if((angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) && (lyr.get('base') != true)){
                             $scope.layers.push({
                                 title: lyr.get('title'),
-                                checked: lyr.get('saveState'),
+                                checked: true,
                                 layer: lyr
                             });
                         }
@@ -470,12 +470,21 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                 $scope.$on('compositions.composition_loaded', function(event, data) {
                     if (console) console.log('compositions.composition_loaded', data);
-                    $scope.id = data.id;
-                    $scope.abstract = data.data.abstract;
-                    $scope.title = data.data.title;
+                    if (data.data) {
+                        $scope.id = data.id;
+                        $scope.abstract = data.data.abstract;
+                        $scope.title = data.data.title;
+                        $scope.keywords = data.data.keywords;
+                        $scope.current_composition = data.data;
+                    } else {
+                        $scope.id = data.id;
+                        $scope.abstract = data.abstract;
+                        $scope.title = data.title;
+                        $scope.keywords = data.keywords;
+                        $scope.current_composition = data;
+                    }
+
                     $scope.current_composition_title = $scope.title;
-                    $scope.keywords = data.data.keywords;
-                    $scope.current_composition = data.data;
                 });
 
                 $scope.$on('core.map_reset', function(event, data) {

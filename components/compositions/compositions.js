@@ -11,7 +11,7 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
                     link: function(scope, element) {
-                        /* TODO: mid-pane doesn't exist anymore */
+                        /* TODO: This should be done more angular way */
                         $('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
                         $('.mid-pane').css('margin-top', '0px');
                         $(".keywords-panel").hide();
@@ -50,9 +50,10 @@ define(['angular', 'ol', 'map'],
                                 }
                             }
                             me.current_composition_title = response.title || response.data.title;
-                            $('.composition-info').html($('<a href="#">').html($('<h3>').html(response.title || response.data.title)).click(function() {
+                            /* TODO: This should be propably more angular way */
+                            $('.composition-info').html($('<div>').html(response.title || response.data.title)).click(function() {
                                 $('.composition-abstract').toggle()
-                            }));
+                            });
                             $('.composition-info').append($('<div>').html(response.abstract || response.data.abstract).addClass('well composition-abstract'));
                             OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
@@ -292,8 +293,9 @@ define(['angular', 'ol', 'map'],
                     var cur_map_extent = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
                     var b = ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
                     var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
+                    var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                    var url = config.compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var url = config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     url = utils.proxify(url);
                     if (ajax_req != null) ajax_req.abort();
                     ajax_req = $.ajax({
