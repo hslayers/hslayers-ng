@@ -41,9 +41,9 @@
                 <div class="hs-comp-item-title">{{composition.title}}</div>
                 <div class="hs-comp-item-controls">
                     <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-show="composition.editable" ng-click='$event.stopPropagation();delete(composition)'><i class="glyphicon glyphicon-trash"></i></button>
-                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-disabled="true" ng-click='$event.stopPropagation()'><i class="glyphicon icon-share-alt"></i></button>
-                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-disabled="true" ng-click='$event.stopPropagation()'><i class="glyphicon glyphicon-save"></i></button>
-                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-disabled="true" ng-click='$event.stopPropagation()'><i class="glyphicon glyphicon-info-sign"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-click='$event.stopPropagation();shareComposition(composition)'><i class="glyphicon icon-share-alt"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-hide="true" ng-click='$event.stopPropagation()'><i class="glyphicon glyphicon-save"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-click='$event.stopPropagation();detailComposition(composition)'><i class="glyphicon glyphicon-info-sign"></i></button>
                 </div>
             </li>
         </ul>
