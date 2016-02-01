@@ -154,7 +154,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     var text = JSON.stringify(json, pretty);
                     return text;
                 },
-                 
+
                 serializeStyle: function(s){
                     var o = {};
                     if(typeof s.getFill() != 'undefined' && s.getFill() !=null)
@@ -167,26 +167,26 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         var ima = {};
                         if(angular.isDefined(style_img.getFill) && typeof style_img.getFill() != 'undefined' && style_img.getFill()!=null)
                             ima.fill = style_img.getFill().getColor();
-                        
+
                         if(angular.isDefined(style_img.getStroke) && typeof style_img.getStroke() != 'undefined' && style_img.getStroke()!=null){
                             ima.stroke = {color: style_img.getStroke().getColor(), width: style_img.getStroke().getWidth()};
                         }
-                        
+
                         if(angular.isDefined(style_img.getRadius)){
                             ima.radius = style_img.getRadius();
                         }
-                        
+
                         if(angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage()!=null){
                             if(angular.isDefined(style_img.getImage().src))
                                 ima.src = style_img.getImage().src;
                         }
-                        
+
                         if(style_img instanceof ol.style.Circle)
-                            ima.type = 'circle'; 
-                        
+                            ima.type = 'circle';
+
                         if(style_img instanceof ol.style.Icon)
-                            ima.type = 'icon'; 
-                        
+                            ima.type = 'icon';
+
                         o.image = ima;
                     }
                     return o;
@@ -219,7 +219,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         return;
                     }
 
-                    // Common stuff 
+                    // Common stuff
 
                     // type
                     //json.className = layer.CLASS_NAME;
@@ -261,7 +261,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     }
 
-                    // Vector 
+                    // Vector
                     if (layer instanceof ol.layer.Vector) {
                         var src = layer.getSource();
                         json.className = "OpenLayers.Layer.Vector";
@@ -371,10 +371,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $('#stc-save, #stc-saveas').hide();
                             $('.stc-tabs li:eq(0) a').tab('show');
                             Core.setMainPanel('layermanager', true);
-                            $('.composition-info').html($('<a href="#">').html($('<h3>').html($scope.title)).click(function() {
-                                $('.composition-abstract').toggle();
-                            }));
+
+                            $('.composition-info').html($('<div>').html($scope.title)).click(function() {
+                                $('.composition-abstract').toggle()
+                            });
                             $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));
+
                         },
                         error: function() {
                             $scope.success = false;
@@ -505,7 +507,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 });
 
                 $scope.getCurrentExtent();
-                
+
                 $scope.$on('map.extent_changed', function(event, data, b) {
                     $scope.getCurrentExtent()
                 });

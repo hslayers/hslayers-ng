@@ -27,6 +27,24 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
+            .directive('hs.compositions.shareDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html',
+                    link: function(scope, element, attrs) {
+                        $('#composition-share-dialog').modal('show');
+                    }
+                };
+            })
+
+            .directive('hs.compositions.infoDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html',
+                    link: function(scope, element, attrs) {
+                        $('#composition-info-dialog').modal('show');
+                    }
+                };
+            })
+
         .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', function(OlMap, config, Core, $rootScope, utils) {
             var me = {
                 composition_loaded: null,
@@ -69,6 +87,22 @@ define(['angular', 'ol', 'map'],
                             if (typeof callback !== 'undefined' && callback !== null) callback();
                         })
                 },
+
+                loadInfo: function(url) {
+                    var info = {};
+                    url = url.replace('&amp;', '&');
+                    url = utils.proxify(url);
+                    $.ajax({
+                        url: url,
+                        async: false
+                    })
+                    .done(function(response) {
+                        info = response.data || response;
+                        $rootScope.$broadcast('compositions.composition_info_loaded', response);
+                    });
+                    return info;
+                },
+
                 parseExtent: function(b) {
                     if (typeof b == 'string')
                         b = b.split(" ");
@@ -247,8 +281,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
-            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
+            function($scope, $rootScope, $location, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -462,6 +496,26 @@ define(['angular', 'ol', 'map'],
                 $scope.$on('map.extent_changed', function(event, data, b) {
                     if ($scope.filter_by_extent) $scope.loadCompositions();
                 });
+
+                $scope.shareComposition = function(record) {
+                    $scope.shareUrl = $location.protocol() + "://" + location.host + location.pathname + "?composition=" + encodeURIComponent(record.link);
+                    $scope.shareTitle = record.title;
+                    if (!$scope.$$phase) $scope.$digest();
+                    $("#hs-dialog-area #composition-share-dialog").remove();
+                    var el = angular.element('<div hs.compositions.share_dialog_directive></span>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
+                }
+
+                $scope.detailComposition = function(record) {
+                    $scope.info = composition_parser.loadInfo(record.link);
+
+                    if (!$scope.$$phase) $scope.$digest();
+                    $("#hs-dialog-area #composition-info-dialog").remove();
+                    var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
+                }
 
                 $scope.loadComposition = function(record) {
                     var url = record.link;
