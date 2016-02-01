@@ -207,6 +207,7 @@ define(['angular', 'ol'],
                                 var icon_json = {
                                     img: img,
                                     imgSize: [img.width, img.height],
+                                    anchor: [0.6, 0.8],                                    
                                     crossOrigin: 'anonymous'    
                                 };
                                 style_json.image = new ol.style.Icon(icon_json);
@@ -229,6 +230,7 @@ define(['angular', 'ol'],
                             $scope.iconimage = $sce.trustAsHtml(r.documentElement.outerHTML);
                             if (!$scope.$$phase) $scope.$digest();
                             colorIcon();
+                            $scope.save()
                         }
                     });
                     
@@ -265,6 +267,7 @@ define(['angular', 'ol'],
                 $scope.$watch('iconfillcolor', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
                 $scope.$watch('iconlinecolor', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
                 $scope.$watch('iconlinewidth', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
+                $scope.$watch('radius', function(){$scope.save()});
                 
                 $scope.$emit('scope_loaded', "styler");
             }
