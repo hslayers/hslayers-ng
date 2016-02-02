@@ -97,9 +97,14 @@
         </form>
     </div>
     <div class="panel-footer">
+        <div class="form-group" ng-show="layer_renamer_visible">
+            <label translate>Title:</label>
+            <input type="text" class="form-control" ng-model="currentlayer.title" ng-change="setTitle()">
+        </div>
         <span>More: </span>
         <button class="btn btn-default glyphicon glyphicon-search" ng-click="zoomToLayer(currentlayer.layer)" ng-disabled="!layerIsZoomable(currentlayer.layer)"></button>
         <button class="btn btn-default glyphicon glyphicon-wrench" ng-click="styleLayer(currentlayer.layer)" ng-disabled="!layerIsVector(currentlayer.layer)"></button>
+        <button class="btn btn-default glyphicon glyphicon glyphicon-font" ng-click="toggleLayerRename()"></button>
         <button class="btn btn-danger glyphicon glyphicon-trash" ng-click="removeLayer(currentlayer.layer)"></button>
     </div>
 </div>

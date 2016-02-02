@@ -103,6 +103,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
     .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log',
         function($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log) {
             $scope.Core = Core;
+            $scope.layer_renamer_visible = false;
             $scope.folders = {
                 hsl_path: '',
                 layers: [],
@@ -435,6 +436,14 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         lyr.setVisible(box.getVisible());
                     });
                 });
+            }
+            
+            $scope.toggleLayerRename = function(){
+                $scope.layer_renamer_visible = !$scope.layer_renamer_visible;
+            }
+            
+            $scope.setTitle = function(){
+                $scope.currentlayer.layer.set('title', $scope.currentlayer.title);
             }
 
             $scope.hasBoxLayers = function() {
