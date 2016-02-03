@@ -217,7 +217,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
              */
             function layerRemoved(e) {
-                if ($scope.currentlayer.layer == e.element) {
+                if (angular.isObject($scope.currentlayer) && ($scope.currentlayer.layer == e.element)) {
                     $(".layerpanel").insertAfter($('.hs-lm-mapcontentlist'));
                 }
                 $scope.currentlayer = null;
