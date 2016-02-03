@@ -151,18 +151,15 @@ define(['angular', 'ol'],
                 $scope.service = service;
                 $scope.icons = ["bag1.svg", "banking4.svg", "bar.svg", "beach17.svg", "bicycles.svg", "building103.svg", "bus4.svg", "cabinet9.svg", "camping13.svg", "caravan.svg", "church15.svg", "church1.svg", "coffee-shop1.svg", "disabled.svg", "favourite28.svg", "football1.svg", "footprint.svg", "gift-shop.svg", "gps35.svg", "gps36.svg", "gps37.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg", "hospital.svg", "hot-air-balloon2.svg", "information78.svg", "library21.svg", "location4.svg", "location6.svg", "luggage12.svg", "luggage13.svg", "map-pointer7.svg", "map-pointer8.svg", "monument1.svg", "mountain42.svg", "museum35.svg", "park11.svg", "parking28.svg", "pharmacy17.svg", "pin10.svg", "pin63.svg", "pin65.svg", "police-station.svg", "port2.svg", "restaurant52.svg", "road-sign1.svg", "sailing-boat2.svg", "ski1.svg", "swimming26.svg", "telephone119.svg", "toilets2.svg", "train-station.svg", "university2.svg", "warning.svg", "wifi8.svg"];
                 $scope.imagetypes = [{
-                        name: 'none',
-                        hrname: 'None'
-                    },
-                    {
-                        name: 'icon',
-                        hrname: 'Icon'
-                    },
-                    {
-                        name: 'circle',
-                        hrname: 'Circle'
-                    }
-                ];
+                    name: 'none',
+                    hrname: 'None'
+                }, {
+                    name: 'icon',
+                    hrname: 'Icon'
+                }, {
+                    name: 'circle',
+                    hrname: 'Circle'
+                }];
                 $scope.imagetype = $scope.imagetypes[0].name;
                 $scope.radius = 5;
                 $scope.linewidth = 2;
@@ -203,11 +200,12 @@ define(['angular', 'ol'],
                         if ($scope.imagetype == 'icon' && angular.isDefined($scope.serialized_icon)) {
                             var img = new Image();
                             img.src = $scope.serialized_icon;
-                            img.onload = function(){
+                            img.onload = function() {
                                 var icon_json = {
                                     img: img,
                                     imgSize: [img.width, img.height],
-                                    crossOrigin: 'anonymous'    
+                                    anchor: [0.6, 0.8],
+                                    crossOrigin: 'anonymous'
                                 };
                                 style_json.image = new ol.style.Icon(icon_json);
                                 service.layer.setStyle(new ol.style.Style(style_json));
@@ -220,28 +218,28 @@ define(['angular', 'ol'],
                     })
                     service.layer.setStyle(style);
                 }
-                
+
                 $scope.iconSelected = function(i) {
-                     $.ajax({
-                        url: $scope.hsl_path+'components/styles/img/svg/'+i,
+                    $.ajax({
+                        url: $scope.hsl_path + 'components/styles/img/svg/' + i,
                         cache: true,
-                        success: function(r){
+                        success: function(r) {
                             $scope.iconimage = $sce.trustAsHtml(r.documentElement.outerHTML);
                             if (!$scope.$$phase) $scope.$digest();
                             colorIcon();
-                            save();
+                            $scope.save()
                         }
                     });
-                    
+
                 }
-                
-                function colorIcon(){
-                    var $b = 
-                    $('.hs-styler-selected-icon-box path');
-                        if(angular.isDefined($scope.iconfillcolor) && $scope.iconfillcolor!=null) $b.css('fill', $scope.iconfillcolor['background-color'])
-                        if(angular.isDefined($scope.iconlinecolor) && $scope.iconlinecolor!=null) $b.css('stroke', $scope.iconlinecolor['background-color'])
-                        if(angular.isDefined($scope.iconlinewidth) && $scope.iconlinewidth!=null) $b.css('stroke-width', $scope.iconlinewidth);
-                    $scope.serialized_icon = 'data:image/svg+xml;base64,'+window.btoa($('.hs-styler-selected-icon-box').html());
+
+                function colorIcon() {
+                    var $b =
+                        $('.hs-styler-selected-icon-box path');
+                    if (angular.isDefined($scope.iconfillcolor) && $scope.iconfillcolor != null) $b.css('fill', $scope.iconfillcolor['background-color'])
+                    if (angular.isDefined($scope.iconlinecolor) && $scope.iconlinecolor != null) $b.css('stroke', $scope.iconlinecolor['background-color'])
+                    if (angular.isDefined($scope.iconlinewidth) && $scope.iconlinewidth != null) $b.css('stroke-width', $scope.iconlinewidth);
+                    $scope.serialized_icon = 'data:image/svg+xml;base64,' + window.btoa($('.hs-styler-selected-icon-box').html());
                 }
 
                 $scope.setImageType = function(t) {
@@ -250,23 +248,35 @@ define(['angular', 'ol'],
                 }
 
                 $scope.$watch('linecolor', $scope.save);
-                $scope.$watch('service.layer', function(){
+                $scope.$watch('service.layer', function() {
                     $scope.hasLine = false;
                     $scope.hasPoly = false;
                     $scope.hasPoint = false;
-                    if(angular.isUndefined(service.layer)) return;
-                    
-                    angular.forEach(service.layer.getSource().getFeatures(), function(f){
+                    if (angular.isUndefined(service.layer) || service.layer == null) return;
+
+                    angular.forEach(service.layer.getSource().getFeatures(), function(f) {
                         $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'LineString';
                         $scope.hasPoly = $scope.hasPoly || f.getGeometry().getType() == 'Polygon';
                         $scope.hasPoint = $scope.hasPoint || f.getGeometry().getType() == 'Point';
                     })
                 });
                 $scope.$watch('fillcolor', $scope.save);
-                $scope.$watch('iconfillcolor', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
-                $scope.$watch('iconlinecolor', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
-                $scope.$watch('iconlinewidth', function(){if($scope.imagetype=='icon') colorIcon(); $scope.save()});
-                
+                $scope.$watch('iconfillcolor', function() {
+                    if ($scope.imagetype == 'icon') colorIcon();
+                    $scope.save()
+                });
+                $scope.$watch('iconlinecolor', function() {
+                    if ($scope.imagetype == 'icon') colorIcon();
+                    $scope.save()
+                });
+                $scope.$watch('iconlinewidth', function() {
+                    if ($scope.imagetype == 'icon') colorIcon();
+                    $scope.save()
+                });
+                $scope.$watch('radius', function() {
+                    $scope.save()
+                });
+
                 $scope.$emit('scope_loaded', "styler");
             }
         ]);

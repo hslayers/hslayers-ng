@@ -8,12 +8,13 @@
                 </h4>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                    Overwrite current map contentwith new map composition?
+                    You are opening map <b>{{composition_name_to_be_loaded}}</b>.<br/>There are currently unsaved changes.<br/>What do you want to do before opening the selected map composition?
             </div>
             <div class="modal-footer" id="stc-footer">
-                <button type="button" class="btn btn-primary" translate ng-click="overwrite()" data-dismiss="modal">Overwrite</button>
-                <button type="button" class="btn btn-primary" translate ng-click="add()" data-dismiss="modal">Add to map</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" translate>Cancel</button>
+                <button type="button" class="btn btn-primary compositions-btn-overwrite" translate ng-click="overwrite()" data-dismiss="modal">Continue without saving</button>
+                <button type="button" class="btn btn-primary compositions-btn-add" translate ng-click="add()" data-dismiss="modal">Merge compositions</button>
+                <button type="button" class="btn btn-primary compositions-btn-save" translate ng-click="save()" data-dismiss="modal">Save changes first</button>
+                <button type="button" class="btn btn-default compositions-btn-cancel" data-dismiss="modal" translate>Cancel</button>
             </div>
         </div>
     </div>

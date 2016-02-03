@@ -103,7 +103,6 @@ define(['angular', 'ol', 'map'],
                 $scope.config = config;
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
-                $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
                 $scope.selected_layer = null;
                 $scope.filter_by_extent = true;
 
@@ -398,7 +397,12 @@ define(['angular', 'ol', 'map'],
                     }
                 }
 
+                $scope.isZoomable = function(selected_layer) {
+                    return angular.isDefined(selected_layer.bbox);
+                }
+
                 $scope.zoomTo = function(bbox) {
+                    if (typeof bbox == 'undefined') return;
                     var b = bbox.split(" ");
                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
