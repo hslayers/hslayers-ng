@@ -21,7 +21,7 @@
             <li class="list-group-item hs-lm-header clearfix active">
                 <span translate>Baselayers</span>
                 <span class="pull-right">
-                    <button type="button" class="btn btn-xs btn-default"><i class="glyphicon" ng-click="changeBaseLayerVisibility()" ng-class="baselayersVisible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" ng-click="changeBaseLayerVisibility()"><i class="glyphicon" ng-class="baselayersVisible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
                 </span>
             </li>
             <li class="list-group-item hs-lm-item" ng-repeat="layer in baselayers | orderBy:'name'" ng-click="changeBaseLayerVisibility($event, layer)" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}" >
