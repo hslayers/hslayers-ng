@@ -45,7 +45,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                 return [];
             }
         }
-        
+
         var styleOSM = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
                 var s = feature.get('http://www.openvoc.eu/poi#categoryOSM');
@@ -129,7 +129,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             });
             sparql_layers.push(new_lyr);
         })
-        
+
         var sparql_osm_layers = [];
         angular.forEach([
             'amenity.atm',
@@ -139,30 +139,39 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             'amenity.pub',
             'amenity.restaurant',
             'tourism.hotel',
-            'shop.supermarket',            
+            'shop.supermarket',
             'tourism.information'
         ], function(value) {
-                var value2;
-                switch(value){
-                case 'amenity.atm' : value2 = "ATM";
-                break;
-                case 'amenity.bank' : value2 = "Bank";
-                break;
-                case 'amenity.cafe' : value2 = "Cafe";
-                break;
-                case 'amenity.fast_food' : value2 = "Fast Food";
-                break;
-                case 'amenity.pub' : value2 = "Pub";
-                break;
-                case 'amenity.restaurant' : value2 = "Restaurant";
-                break;
-                case 'tourism.hotel' : value2 = "Hotel";
-                break;
-                case 'shop.supermarket' : value2 = "Supermarket";
-                break;
-                case 'tourism.information' : value2 = "Information";
-                break;
-                };
+            var value2;
+            switch (value) {
+                case 'amenity.atm':
+                    value2 = "ATM";
+                    break;
+                case 'amenity.bank':
+                    value2 = "Bank";
+                    break;
+                case 'amenity.cafe':
+                    value2 = "Cafe";
+                    break;
+                case 'amenity.fast_food':
+                    value2 = "Fast Food";
+                    break;
+                case 'amenity.pub':
+                    value2 = "Pub";
+                    break;
+                case 'amenity.restaurant':
+                    value2 = "Restaurant";
+                    break;
+                case 'tourism.hotel':
+                    value2 = "Hotel";
+                    break;
+                case 'shop.supermarket':
+                    value2 = "Supermarket";
+                    break;
+                case 'tourism.information':
+                    value2 = "Information";
+                    break;
+            };
             var new_lyr = new ol.layer.Vector({
                 title: " " + value2,
                 source: new SparqlJson({

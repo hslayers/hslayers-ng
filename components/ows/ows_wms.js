@@ -241,23 +241,23 @@ define(['angular', 'ol', 'utils'],
                  * @description Select all layers from service.
                  */
                 $scope.selectAllLayers = function() {
-                    var recurse = function(layer) {
-                        layer.checked = true;
+                        var recurse = function(layer) {
+                            layer.checked = true;
 
-                        angular.forEach(layer.Layer, function(sublayer) {
-                            recurse(sublayer)
-                        })
+                            angular.forEach(layer.Layer, function(sublayer) {
+                                recurse(sublayer)
+                            })
+                        }
+                        angular.forEach($scope.services.Layer, function(layer) {
+                            recurse(layer)
+                        });
                     }
-                    angular.forEach($scope.services.Layer, function(layer) {
-                        recurse(layer)
-                    });
-                }
-                /**
-                 * @function tryAddLayers
-                 * @memberOf hs.ows.wms.controller
-                 * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
-                 * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
-                 */
+                    /**
+                     * @function tryAddLayers
+                     * @memberOf hs.ows.wms.controller
+                     * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
+                     * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+                     */
                 $scope.tryAddLayers = function(checked) {
                     $scope.add_all = checked;
                     $scope.addLayers(checked);

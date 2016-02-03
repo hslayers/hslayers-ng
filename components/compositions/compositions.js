@@ -27,23 +27,23 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-            .directive('hs.compositions.shareDialogDirective', function() {
-                return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html',
-                    link: function(scope, element, attrs) {
-                        $('#composition-share-dialog').modal('show');
-                    }
-                };
-            })
+        .directive('hs.compositions.shareDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html',
+                link: function(scope, element, attrs) {
+                    $('#composition-share-dialog').modal('show');
+                }
+            };
+        })
 
-            .directive('hs.compositions.infoDialogDirective', function() {
-                return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html',
-                    link: function(scope, element, attrs) {
-                        $('#composition-info-dialog').modal('show');
-                    }
-                };
-            })
+        .directive('hs.compositions.infoDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html',
+                link: function(scope, element, attrs) {
+                    $('#composition-info-dialog').modal('show');
+                }
+            };
+        })
 
         .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', function(OlMap, config, Core, $rootScope, utils) {
             var me = {
@@ -80,7 +80,7 @@ define(['angular', 'ol', 'map'],
                             }
 
 
-                            if (config.open_lm_after_comp_loaded){
+                            if (config.open_lm_after_comp_loaded) {
                                 Core.setMainPanel('layermanager');
                             }
                             $rootScope.$broadcast('compositions.composition_loaded', response);
@@ -93,13 +93,13 @@ define(['angular', 'ol', 'map'],
                     url = url.replace('&amp;', '&');
                     url = utils.proxify(url);
                     $.ajax({
-                        url: url,
-                        async: false
-                    })
-                    .done(function(response) {
-                        info = response.data || response;
-                        $rootScope.$broadcast('compositions.composition_info_loaded', response);
-                    });
+                            url: url,
+                            async: false
+                        })
+                        .done(function(response) {
+                            info = response.data || response;
+                            $rootScope.$broadcast('compositions.composition_info_loaded', response);
+                        });
                     return info;
                 },
 
@@ -112,7 +112,7 @@ define(['angular', 'ol', 'map'],
                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
                     return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                 },
-                parseStyle: function(j){
+                parseStyle: function(j) {
                     var style_json = {};
                     if (angular.isDefined(j.fill)) {
                         style_json.fill = new ol.style.Fill({
@@ -127,8 +127,7 @@ define(['angular', 'ol', 'map'],
                     }
                     if (angular.isDefined(j.image)) {
                         if (j.image.type == 'circle') {
-                            var circle_json = {
-                            };
+                            var circle_json = {};
 
                             if (angular.isDefined(j.image.radius)) {
                                 circle_json.radius = j.image.radius;
@@ -208,13 +207,13 @@ define(['angular', 'ol', 'map'],
                                     definition.format = "ol.format.KML";
 
                                     var style = null;
-                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
 
                                     var src = new ol.source.Vector({
                                         format: new ol.format.KML(),
                                         projection: ol.proj.get(lyr_def.projection),
                                         url: url,
-                                        extractStyles: (style!=null ? false : true)
+                                        extractStyles: (style != null ? false : true)
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
@@ -224,8 +223,8 @@ define(['angular', 'ol', 'map'],
                                         title: lyr_def.title
                                     });
 
-                                    if(style!=null){
-                                        src.on('addfeature', function(f){
+                                    if (style != null) {
+                                        src.on('addfeature', function(f) {
                                             f.feature.setStyle(null);
                                         });
                                     }
@@ -239,13 +238,13 @@ define(['angular', 'ol', 'map'],
                                     definition.format = "ol.format.GeoJSON";
 
                                     var style = null;
-                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
 
                                     var src = new ol.source.Vector({
                                         format: new ol.format.GeoJSON(),
                                         projection: ol.proj.get(lyr_def.projection),
                                         url: url,
-                                        extractStyles: (style!=null ? false : true)
+                                        extractStyles: (style != null ? false : true)
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
@@ -255,14 +254,14 @@ define(['angular', 'ol', 'map'],
                                         title: lyr_def.title
                                     });
                                     layers.push(lyr);
-                                } else if(angular.isUndefined(lyr_def.protocol) && angular.isDefined(lyr_def.features)){
+                                } else if (angular.isUndefined(lyr_def.protocol) && angular.isDefined(lyr_def.features)) {
                                     var format = new ol.format.GeoJSON();
                                     var src = new ol.source.Vector({
                                         features: format.readFeatures(lyr_def.features),
                                         projection: ol.proj.get(lyr_def.projection)
                                     });
                                     var style = null;
-                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
                                         source: src,
@@ -544,7 +543,7 @@ define(['angular', 'ol', 'map'],
                     composition_parser.load($scope.composition_to_be_loaded, false, $scope.use_callback_for_edit ? callbackForEdit : null);
                 }
 
-                $scope.save = function(){
+                $scope.save = function() {
                     Core.openStatusCreator();
                 }
 

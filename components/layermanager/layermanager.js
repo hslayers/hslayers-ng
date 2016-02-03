@@ -252,8 +252,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {object} layer - Wrapped ol.Layer
              */
             $scope.changeBaseLayerVisibility = function($event, layer) {
-                if ($scope.baselayersVisible == true){
-                    if ($event){
+                if ($scope.baselayersVisible == true) {
+                    if ($event) {
                         for (var i = 0; i < $scope.baselayers.length; i++) {
                             if ($scope.baselayers[i] != layer) {
                                 $scope.baselayers[i].layer.setVisible(false);
@@ -272,7 +272,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         }
                     }
                 } else {
-                    if ($event){
+                    if ($event) {
                         layer.active = true;
                         for (var i = 0; i < $scope.baselayers.length; i++) {
                             if ($scope.baselayers[i] != layer) {
@@ -282,7 +282,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     } else {
                         $scope.baselayersVisible = true;
                         for (var i = 0; i < $scope.baselayers.length; i++) {
-                            if ($scope.baselayers[i].active == true){
+                            if ($scope.baselayers[i].active == true) {
                                 $scope.baselayers[i].layer.setVisible(true);
                             }
                         }
@@ -298,7 +298,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {number} index - Used to position the detail panel after layers li element
              */
             $scope.setCurrentLayer = function(layer, index) {
-                if ($scope.currentlayer == layer){
+                if ($scope.currentlayer == layer) {
                     $scope.currentlayer = null;
                 } else {
                     $scope.currentlayer = layer;
@@ -437,12 +437,12 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     });
                 });
             }
-            
-            $scope.toggleLayerRename = function(){
+
+            $scope.toggleLayerRename = function() {
                 $scope.layer_renamer_visible = !$scope.layer_renamer_visible;
             }
-            
-            $scope.setTitle = function(){
+
+            $scope.setTitle = function() {
                 $scope.currentlayer.layer.set('title', $scope.currentlayer.title);
             }
 

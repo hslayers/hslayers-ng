@@ -396,13 +396,13 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
-                
-                $scope.isZoomable = function(selected_layer){
+
+                $scope.isZoomable = function(selected_layer) {
                     return angular.isDefined(selected_layer.bbox);
                 }
 
                 $scope.zoomTo = function(bbox) {
-                    if(typeof bbox == 'undefined') return;
+                    if (typeof bbox == 'undefined') return;
                     var b = bbox.split(" ");
                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];

@@ -8,7 +8,7 @@ var gitsha = $.ajax({
 }).responseText;
 
 require.config({
-//    urlArgs: 'bust=' + gitsha,
+    //    urlArgs: 'bust=' + gitsha,
     paths: {
         sidebar: hsl_path + 'components/sidebar/sidebar',
         toolbar: hsl_path + 'components/toolbar/toolbar',

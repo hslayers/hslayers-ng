@@ -121,7 +121,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             me.repopulateLayers(null);
             me.map.setView(jQuery.extend(true, {}, config.default_view));
         }
-        
+
         var timer;
         me.map.getView().on('change:center', function(e) {
             if (timer != null) clearTimeout(timer);

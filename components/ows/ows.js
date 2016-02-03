@@ -15,7 +15,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
             .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service',
                 function($scope, srv_caps, OlMap, permalink, Core, nonwmsservice) {
                     var map = OlMap.map;
-                    if (angular.isArray(Core.connectTypes)){
+                    if (angular.isArray(Core.connectTypes)) {
                         $scope.types = Core.connectTypes;
                     } else {
                         $scope.types = ["", "WMS", "KML", "GeoJSON"];

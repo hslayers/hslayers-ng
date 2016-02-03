@@ -74,14 +74,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 units: "m"
             }),
             compositions_catalogue_url: 'http://www.whatstheplan.eu/php/metadata/csw/index.php',
-            datasources: [
-                {
-                    title: "Hub layers",
-                    url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
-                    language: 'eng',
-                    type: "ckan"
-                }
-            ]
+            datasources: [{
+                title: "Hub layers",
+                url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
+                language: 'eng',
+                type: "ckan"
+            }]
         });
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'config',

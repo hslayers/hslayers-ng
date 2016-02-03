@@ -7,10 +7,10 @@ define(['angular', 'map', 'core'],
     function(angular) {
         angular.module('hs.permalink', ['hs.core', 'hs.map'])
             .directive('hs.permalink.directive', function() {
-                 return {
-                     templateUrl: hsl_path + 'components/permalink/partials/directive.html'
-                 };
-             })
+                return {
+                    templateUrl: hsl_path + 'components/permalink/partials/directive.html'
+                };
+            })
             .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core',
                 function($rootScope, OlMap, Core) {
                     var url_generation = true;
@@ -117,9 +117,9 @@ define(['angular', 'map', 'core'],
                     $scope.getEmbedCode = function() {
                         return '<iframe src="' + window.location.origin + service.current_url + '" width="1000" height="700"></iframe>';
                     }
-                    $scope.$on('browserurl.updated', function(){
-                         $scope.embed_code = $scope.getEmbedCode();
-                         if (!$scope.$$phase) $scope.$digest();
+                    $scope.$on('browserurl.updated', function() {
+                        $scope.embed_code = $scope.getEmbedCode();
+                        if (!$scope.$$phase) $scope.$digest();
                     })
                     $scope.$emit('scope_loaded', "Permalink");
                 }
