@@ -229,6 +229,7 @@ define(['angular', 'ol'],
                             $scope.iconimage = $sce.trustAsHtml(r.documentElement.outerHTML);
                             if (!$scope.$$phase) $scope.$digest();
                             colorIcon();
+                            save();
                         }
                     });
                     

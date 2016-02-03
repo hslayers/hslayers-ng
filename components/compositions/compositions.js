@@ -263,6 +263,7 @@ define(['angular', 'ol', 'map'],
 
                 var ajax_req = null;
                 $scope.loadCompositions = function(page) {
+                    $('.tooltip').remove();
                     if (typeof page === 'undefined') page = 1;
                     if ($scope.page_count == 0) $scope.page_count = 1;
                     if (page == 0 || page > $scope.page_count) return;
