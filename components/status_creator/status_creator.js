@@ -293,6 +293,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 $scope.id = '';
                 $scope.panel_name = 'status_creator';
                 $scope.current_composition_title = '';
+                $scope.config = config;
 
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
