@@ -47,6 +47,13 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                             source: new ol.source.OSM({
                                 url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
                             })
+                        }),
+                        new ol.layer.Tile({
+                            title: "Satellite",
+                            base: true,
+                            source: new ol.source.XYZ({
+                                url: 'http://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmFpdGlzYmUiLCJhIjoiY2lrNzRtbGZnMDA2bXZya3Nsb2Z4ZGZ2MiJ9.g1T5zK-bukSbJsOypONL9g'
+                            })
                         })
                     ],
                 }), new ol.layer.Group({
