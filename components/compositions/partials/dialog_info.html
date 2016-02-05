@@ -2,23 +2,23 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel" translate="">
-                    {{info.title}} detail
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    {{info.title}} <translate>detail</translate>
                 </h4>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="row">
-                    <div class="col-md-3" translate><b>Abstract</b></div>
+                    <div class="col-md-3"><b translate>Abstract</b></div>
                     <div class="col-md-9">{{info.abstract}}</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3" translate><b>Extent</b></div>
+                    <div class="col-md-3"><b translate>Extent</b></div>
                     <div class="col-md-9">{{info.extent}}</div>
                 </div>
                 <div ng-repeat="layer in info.layers">
                     <div class="row" ng-if="$first">
-                        <div class="col-md-3" translate><b>Layer</b></div>
+                        <div class="col-md-3"><b translate>Layer</b></div>
                         <div class="col-md-9">{{layer.title}}</div>
                     </div>
                     <div class="row" ng-if="!$first">
