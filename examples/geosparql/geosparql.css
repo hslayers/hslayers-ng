@@ -1,26 +1,3 @@
-.title{
-  margin-left: 30px;
-  margin-top: 25px;
-  margin-bottom: 20px;
-  color: #97BE0D;
-  font-size: 16px;
-}
-.closeArea{
-  position: absolute;
-  margin-left: 290px;
-  margin-top: -40px;
-  cursor: Pointer;
-}
-.closeImg{
-  width: 20px;
-  height: 20px;
-  background: url(img/close.png) no-repeat;
-  transition: 1s;
-}
-.closeImg:hover{
-  background: url(img/close2.png) no-repeat;
-  transition: 1s;
-}
 .featureName{
   max-width: 220px;
   margin-left: 50px;
@@ -94,3 +71,5 @@
   color: #D84F5F;
   text-decoration: none;
 }
+
+.hs-spoi-feature-info{padding-left: 0.5em}
