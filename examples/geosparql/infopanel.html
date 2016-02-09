@@ -378,22 +378,21 @@
            </ul>
           </span><br>
         </div>
-        <!-- For developers -->
-        <div class="developersTitle">For developers:</div>
-          <span class="hideButton" tabindex="0">Hide <img src="img/hide.png" alt="Hide more info"></span>
-          <span class="showButton" tabindex="0">Show <img src="img/show.png" alt="Show more info"></span>
-          <br><br>
-          <p class="developersInfo">
-           <span ng-repeat="group in InfoPanelService.groups | orderBy : name">
-           <span ng-repeat="attribute in group.attributes | orderBy : name">
-           <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}'  class="first-col attributeName"></span><br>
-           <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col attributeValue"></span><br>
-           </span></span>
-           <br>
-           <span ng-repeat="attribute in InfoPanelService.attributes | orderBy : name">
-           <span class="first-col attributeName">{{attribute.name}}</span><br>
-           <span class="second-col attributeValue" ng-bind-html="attribute.value"></span><br>
-           </span>
-          </p>
-      </div>
+        
+        <div class="container-fluid">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#fordevelopers"><translate>For developers</translate>&nbsp;<span class="caret"></span></button>
+            <div id="fordevelopers" class="collapse">
+                <span ng-repeat="group in InfoPanelService.groups | orderBy : name">
+                    <span ng-repeat="attribute in group.attributes | orderBy : name">
+                        <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}'  class="first-col attributeName"></span><br>
+                        <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col attributeValue"></span><br>
+                    </span>
+                </span>
+                <br>
+                <span ng-repeat="attribute in InfoPanelService.attributes | orderBy : name">
+                    <span class="first-col attributeName">{{attribute.name}}</span><br>
+                    <span class="second-col attributeValue" ng-bind-html="attribute.value"></span><br>
+                </span>
+            </div>
+        </div>
     </div>
