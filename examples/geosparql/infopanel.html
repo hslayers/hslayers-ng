@@ -11,371 +11,257 @@
         <div class="panel-body">
     
         <!-- Feature Name -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2000/01/rdf-schema#label'}">
-            <h3 class="hs-spoi-feature-info">{{defaultLabeltoEnglish(attribute)}}</h3>
+        <div class="hs-spoi-title" ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://purl.org/dc/elements/1.1/title'}">
+            <h3 class="hs-spoi-feature-info">{{makeHumanReadable(attribute)}}</h3>
+            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click=""><i class="glyphicon glyphicon-edit"></i></button></div>          
         </div>
         <br>
         <!-- Category -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#categoryWaze'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Category: </span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Transportation'" class="second-col italic category" >Transportation</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Culture_&_entertainment'" class="second-col italic category" >Culture & Entertainment</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Shopping_and_services'" class="second-col italic category" >Shopping and Services</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Food_and_drink'" class="second-col italic category" >Food and Drink</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Car_services'" class="second-col italic category" >Car Services</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Natural_features'" class="second-col italic category" >Natural Features</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Other'" class="second-col italic category" >Other</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Lodging'" class="second-col italic category" >Lodging</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Outdoors'" class="second-col italic category" >Outdoors</span>
-              <span ng-if="attribute.value == 'http://www.openvoc.eu/waze_classification#Professional_and_public'" class="second-col italic category" >Professional and Public</span>
-            </li>
-          </ul>
+            <span class="hs-spoi-feature-info"><translate>Category:</translate> {{makeHumanReadable(attribute)}}</span>
+            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click=""><i class="glyphicon glyphicon-edit"></i></button></div>  
         </div>
         <!-- SubCategory -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#categoryOSM'}" class="featureInfo">
-          <ul class="list">
-            <li>
-                <span class="">Subcategory: </span>
-                <span class="italic category" >{{categoryOSMtoEnglish(attribute)}}</span>
-            </li>
-          </ul>
+            <span class="hs-spoi-feature-info"><translate>Subcategory:</translate> {{makeHumanReadable(attribute)}}</span>
+            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click=""><i class="glyphicon glyphicon-edit"></i></button></div>  
         </div>
         <!-- Geonames -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.opengis.net/ont/geosparql#sfWithin'}" class="featureInfo">
-           <div ng-if="attribute.value == 'http://www.geonames.org/5880801/"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">American Samoa</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1899402/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Cook Islands</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2081918/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Federated States of Micronesia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/4030945/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Kiribati</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2080185/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Marshall Islands</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2110425/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Nauru</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2088628/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Papua New Guinea</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1559582/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Palau</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2103350/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Solomon Islands</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1966436/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Timor-Leste</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/4032283/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Tonga</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2110297/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Tuvalu</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2134431/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Vanuatu</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/4034894/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Samoa</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/290557/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">United Arab Emirates</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1149361/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Afghanistan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3576396/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Antigua and Barbuda</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3573511/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Anguilla</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/783754/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Albania</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3577279/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Aruba</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3374085/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Barbados</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3573345/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bermuda</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3572887/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bahamas</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/290291/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bahrain</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1820814/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Brunei Darussalam</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1252634/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bhutan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3624060/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Costa Rica</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3575830/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Dominica</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3508796/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Dominican Republic</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2461445/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Western Sahara</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/390903/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Greece</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3580239/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Grenada</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3608932/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Honduras</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3723988/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Haiti</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3489940/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Jamaica</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1527747/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Kyrgyzstan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1831722/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Cambodia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/921929/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Comoros</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/285570/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Kuwait</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1655842/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Lao People's Democratic Republic</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3576468/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Saint Lucia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1327865/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Myanmar</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/286963/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Oman</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3703430/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Panama</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/289688/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Qatar</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/102358/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Saudi Arabia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3168068/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">San Marino</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3585968/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">El Salvador</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3573591/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Trinidad and Tobago</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3164670/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Holy See</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3577815/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Saint Vincent and the Grenadines</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/69543/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Yemen</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/6252001/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">United States</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/6251999/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Canada</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3996063/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Mexico</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2077456/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Australia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2205218/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Fiji</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2186224/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">New Zealand</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3582678/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Belize</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3562981/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Cuba</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3595528/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Guatemala</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3617476/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Nicaragua</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1814991/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">China</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1269750/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">India</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1861060/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Japan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2029969/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Mongolia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/587116/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Azerbaijan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1210997/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bangladesh</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/130758/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Iran</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/99237/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Iraq</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/294640/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Israel and Palestine</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/248816/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Jordan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1522867/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Kazakhstan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/272103/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Lebanon</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1282028/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Maldives</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1282988/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Nepal</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1873107/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">North Korea</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1168579/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Pakistan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1694008/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Philippines</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1835841/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">South Korea</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1227603/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Sri Lanka</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/163843/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Syria</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1668284/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Taiwan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1220409/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Tajikistan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1218197/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Turkmenistan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1512440/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Uzbekistan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1562822/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Vietnam</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3865483/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Argentina</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3923057/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bolivia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3469034/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Brazil</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3895114/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Chile</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3686110/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Colombia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3658394/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Ecuador</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3437598/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Paraguay</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3932488/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Peru</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3439705/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Uruguay</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3378535/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Guyana</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3382998/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Suriname</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3625428/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Venezuela</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2245662'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Senegal</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2413451'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Gambia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3175395'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Italy</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2921044'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Germany</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2589581/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Algeria</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3351879/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Angola</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2395170'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Benin</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/933860'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Botswana</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2361809'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Burkina Faso</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/433561/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Burundi</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/239880/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Central African Republic</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2260494/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Congo</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2233387'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Cameroon</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/203312'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Congo DR</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/223816'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Djibouti</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/357994'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Egypt</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/338010/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Eritrea</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/337996'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Ethiopia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2400553/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Gabon</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2300660/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Ghana</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2420477'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Guinea</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2372248'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Guinea-Bissau</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2287781'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Ivory Coast</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/192950/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Kenya</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2275384'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Liberia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2215636'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Libya</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1062947'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Madagascar</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/927384'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Malawi</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2542007'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Morocco</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3355338'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Namibia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2328926'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Nigeria</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/49518'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Rwanda</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2403846'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Sierra Leone</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/51537'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Somalia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/953987'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">South Africa</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/366755/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Sudan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/149590'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Tanzania</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2363686'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Togo</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/226074'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Uganda</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/895949'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Zambia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/878675'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Zimbabwe</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3374766/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Cape Verde</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2434508/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Chad</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/921929/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Commoros</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2309096/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Equatorial Guinea</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/932692/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Lesotho</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2453866/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Mali</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2378080/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Mauritania</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/934292/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Mauritius</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1036973/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Mozambique</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2440476/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Niger</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2410758/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Sao Tome</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/6440242/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Seychalles</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/7909807/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">South Sudan</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/934841/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Swaziland</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2464461/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Tunisia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1643084/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Indonesia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1733045/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Malysia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1880252/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Singapore</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/1605651/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Thailand</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3041565'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Andorra</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/174982'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Armenia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2782113'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Austria</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2802361'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Belgium</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/732800'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bulgaria</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3202326'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Croatia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/146669'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Cyprus</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3077311'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Czech Republic</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2623032'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Denmark</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/660013'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Finland</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3017382'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">France</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/614540'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Georgia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/719819'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Hungary</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2629691'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Iceland</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/831053'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Kosovo</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3042058'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Liechtenstein</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3144096'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Norway</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/798544'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Poland</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2264397'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Portugal</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/798549'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Romania</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2017370'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Russia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/6290252'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Serbia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3057568'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Slovakia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3190538'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Slovenia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2510769'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Spain</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2661886'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Sweden</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2658434'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Switzerland</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2635167'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">United Kingdom</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/630336'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Belarus</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3277605'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Bosnia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/453733'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Estonia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/458258'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Latvia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/597427'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Lithuania</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2960313'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Luxembourg</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/718075'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Macedonia</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2562770'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Malta</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/617790'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Moldova</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2993457'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Monaco</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/3194884'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Montenegro</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2750405'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Netherlands</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/298795'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Turkey</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/690791'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Ukraine</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/2963597/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Ireland</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/6697173/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">Antarktica</span></li></ul></div>
-           <div ng-if="attribute.value == 'http://www.geonames.org/6254930/'"><ul class="list"><li><span class="second-col">Country: </span><span class="second-col italic category">State of Palestine</span></li></ul></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/5880801/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> American Samoa</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1899402/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Cook Islands</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2081918/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Federated States of Micronesia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/4030945/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Kiribati</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2080185/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Marshall Islands</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2110425/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Nauru</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2088628/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Papua New Guinea</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1559582/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Palau</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2103350/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Solomon Islands</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1966436/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Timor-Leste</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/4032283/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Tonga</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2110297/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Tuvalu</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2134431/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Vanuatu</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/4034894/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Samoa</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/290557/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> United Arab Emirates</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1149361/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Afghanistan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3576396/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Antigua and Barbuda</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3573511/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Anguilla</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/783754/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Albania</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3577279/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Aruba</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3374085/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Barbados</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3573345/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Bermuda</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3572887/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Bahamas</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/290291/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Bahrain</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1820814/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Brunei Darussalam</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1252634/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Bhutan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3624060/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Costa Rica</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3575830/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Dominica</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3508796/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Dominican Republic</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2461445/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Western Sahara</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/390903/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Greece</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3580239/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Grenada</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3608932/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Honduras</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3723988/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Haiti</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3489940/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Jamaica</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1527747/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Kyrgyzstan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1831722/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Cambodia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/921929/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Comoros</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/285570/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Kuwait</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1655842/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Lao People's Democratic Republic</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3576468/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Saint Lucia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1327865/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Myanmar</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/286963/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Oman</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3703430/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Panama</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/289688/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Qatar</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/102358/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Saudi Arabia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3168068/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> San Marino</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3585968/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> El Salvador</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3573591/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Trinidad and Tobago</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3164670/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Holy See</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3577815/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Saint Vincent and the Grenadines</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/69543/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Yemen</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/6252001/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> United States</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/6251999/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Canada</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3996063/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Mexico</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2077456/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Australia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2205218/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Fiji</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2186224/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> New Zealand</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3582678/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Belize</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3562981/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Cuba</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3595528/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Guatemala</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3617476/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Nicaragua</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1814991/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> China</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1269750/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> India</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1861060/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Japan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2029969/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Mongolia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/587116/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Azerbaijan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1210997/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Bangladesh</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/130758/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Iran</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/99237/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Iraq</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/294640/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Israel and Palestine</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/248816/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Jordan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1522867/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Kazakhstan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/272103/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Lebanon</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1282028/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Maldives</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1282988/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Nepal</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1873107/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> North Korea</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1168579/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Pakistan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1694008/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Philippines</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1835841/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> South Korea</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1227603/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Sri Lanka</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/163843/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Syria</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1668284/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Taiwan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1220409/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Tajikistan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1218197/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Turkmenistan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1512440/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Uzbekistan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1562822/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Vietnam</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3865483/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Argentina</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3923057/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Bolivia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3469034/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Brazil</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3895114/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Chile</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3686110/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Colombia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3658394/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Ecuador</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3437598/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Paraguay</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3932488/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Peru</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3439705/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Uruguay</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3378535/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Guyana</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3382998/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Suriname</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3625428/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Venezuela</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2245662'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Senegal</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2413451'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Gambia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3175395'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Italy</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2921044'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Germany</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2589581/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Algeria</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3351879/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Angola</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2395170'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Benin</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/933860'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Botswana</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2361809'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Burkina Faso</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/433561/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Burundi</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/239880/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Central African Republic</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2260494/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Congo</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2233387'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Cameroon</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/203312'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Congo DR</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/223816'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Djibouti</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/357994'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Egypt</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/338010/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Eritrea</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/337996'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Ethiopia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2400553/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Gabon</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2300660/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Ghana</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2420477'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Guinea</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2372248'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Guinea-Bissau</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2287781'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Ivory Coast</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/192950/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Kenya</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2275384'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Liberia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2215636'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Libya</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1062947'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Madagascar</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/927384'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Malawi</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2542007'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Morocco</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3355338'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Namibia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2328926'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Nigeria</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/49518'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Rwanda</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2403846'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Sierra Leone</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/51537'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Somalia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/953987'"><span class="hs-spoi-feature-info"><translate>Country: </translate> South Africa</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/366755/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Sudan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/149590'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Tanzania</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2363686'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Togo</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/226074'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Uganda</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/895949'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Zambia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/878675'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Zimbabwe</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3374766/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Cape Verde</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2434508/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Chad</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/921929/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Commoros</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2309096/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Equatorial Guinea</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/932692/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Lesotho</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2453866/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Mali</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2378080/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Mauritania</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/934292/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Mauritius</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1036973/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Mozambique</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2440476/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Niger</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2410758/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Sao Tome</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/6440242/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Seychalles</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/7909807/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> South Sudan</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/934841/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Swaziland</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2464461/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Tunisia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1643084/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Indonesia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1733045/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Malysia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1880252/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Singapore</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/1605651/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Thailand</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3041565'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Andorra</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/174982'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Armenia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2782113'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Austria</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2802361'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Belgium</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/732800'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Bulgaria</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3202326'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Croatia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/146669'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Cyprus</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3077311'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Czech Republic</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2623032'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Denmark</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/660013'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Finland</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3017382'"><span class="hs-spoi-feature-info"><translate>Country: </translate> France</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/614540'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Georgia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/719819'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Hungary</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2629691'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Iceland</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/831053'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Kosovo</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3042058'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Liechtenstein</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3144096'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Norway</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/798544'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Poland</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2264397'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Portugal</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/798549'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Romania</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2017370'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Russia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/6290252'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Serbia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3057568'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Slovakia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3190538'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Slovenia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2510769'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Spain</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2661886'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Sweden</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2658434'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Switzerland</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2635167'"><span class="hs-spoi-feature-info"><translate>Country: </translate> United Kingdom</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/630336'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Belarus</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3277605'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Bosnia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/453733'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Estonia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/458258'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Latvia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/597427'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Lithuania</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2960313'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Luxembourg</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/718075'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Macedonia</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2562770'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Malta</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/617790'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Moldova</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2993457'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Monaco</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/3194884'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Montenegro</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2750405'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Netherlands</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/298795'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Turkey</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/690791'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Ukraine</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/2963597/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Ireland</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/6697173/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> Antarktica</span></div>
+           <div ng-if="attribute.value == 'http://www.geonames.org/6254930/'"><span class="hs-spoi-feature-info"><translate>Country: </translate> State of Palestine</span></div>
         </div>
         <!-- Comment -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2000/01/rdf-schema#comment'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
+        <div ng-repeat="attribute in InfoPanelService.attributes | usrFrSpoiAttribs" class="featureInfo">
+
+            <span class="hs-spoi-feature-info">{{attrToEnglish(attribute.name)}} {{attribute.value}}></span>
+            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click=""><i class="glyphicon glyphicon-edit"></i></button></div>  
         </div>
         <!-- Homepage -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://xmlns.com/foaf/0.1/homepage'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Homepage: </span>
-            <a href="http://{{attribute.value}}" target="_blank" class="second-col italic homepage" >{{attribute.value}}</a></span>
-           </li>
-          </ul>
+            <span class="hs-spoi-feature-info"><translate>Homepage: </translate>&nbsp;<a href="http://{{attribute.value}}" target="_blank" class="second-col italic homepage" >{{attribute.value}}</a></span>
         </div>
-        <!-- Email -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://xmlns.com/foaf/0.1/mbox'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Email: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
-        </div>
-        <!-- Phone -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://xmlns.com/foaf/0.1/phone'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Phone: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
-        </div>
-        <!-- Fax-->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#fax'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Fax: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
-        </div>
-        <!-- Address -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#address'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Address: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
-        </div>
-        <!-- Opening Hours -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#openingHours'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Opening Hours: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
-        </div>
-        <!-- Access -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#access'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Access: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
-        </div>
-        <!-- Accessibility -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#accessibility'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Accessibility: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
-        </div>
-        <!-- Internet Acces -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#internetAccess'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Internet Acces: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
-        </div>
+
         <!-- SeeAlso -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2000/01/rdf-schema#seeAlso'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">More info: </span>
-            <a href="{{attribute.value}}" target="_blank" class="second-col italic homepage" >Link</a></span>
-           </li>
-          </ul>
+            <span class="hs-spoi-feature-info"><translate>More info: </translate>&nbsp;<a href="{{attribute.value}}" target="_blank" class="second-col italic homepage" >Link</a></span>
         </div>
         <!-- ExactMatch -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.w3.org/2004/02/skos/core#exactMatch'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">More info: </span>
-            <a href="{{attribute.value}}" target="_blank" class="second-col italic homepage" >DBpedia</a></span>
-           </li>
-          </ul>
+            <span class="hs-spoi-feature-info"><translate>More info:</translate>&nbsp;<a href="{{attribute.value}}" target="_blank" class="second-col italic homepage" >DBpedia</a></span>
         </div>
         <!-- Created -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://purl.org/dc/terms/1.1/created'}" class="featureInfo">
-          <ul class="list">
-           <li>
-            <span class="second-col">Created: </span>
-            <span class="second-col italic category" ng-bind-html="attribute.value"></span>
-           </li>
-          </ul>
+            <span class="hs-spoi-feature-info"><translate>Created: </translate>&nbsp;{{attribute.value}}</span>
         </div>
         <!-- Coordinates -->
         <div class="featureInfo">
-          <span ng-repeat="group in InfoPanelService.groups | orderBy : name">
-           <ul class="list">
-            <li>
-            <span class="second-col">Coordinates: </span><br>
+          <span class="hs-spoi-feature-info" ng-repeat="group in InfoPanelService.groups | orderBy : name">
+            <span translate>Coordinates: </span>
              <span ng-repeat="attribute in group.attributes | orderBy : name"  ng-show="$first">
              <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col italic"></span><br>
-             </span>
-            </li>
-           </ul>
           </span><br>
         </div>
         

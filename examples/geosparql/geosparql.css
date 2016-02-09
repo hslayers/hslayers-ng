@@ -7,8 +7,7 @@
 }
 .featureInfo{
   color: #D84F5F;
-  margin-left: 30px;
-  max-width: 270px;
+  margin-left: 0.5em;
   margin-top: 3px;
   margin-bottom: 3px;
 
@@ -73,3 +72,19 @@
 }
 
 .hs-spoi-feature-info{padding-left: 0.5em}
+
+div.hs-spoi-item-controls {
+    display: inline-block;
+    text-align: right;
+    vertical-align: top;
+    width: 54px;
+    padding-right: 5px;
+}
+
+.hs-spoi-feature-info {
+    display: inline-block;
+    width: calc(100% - 64px);
+}
+
+.hs-spoi-title .hs-spoi-item-controls{margin-top: 20px}
+.hs-spoi-item-controls{visibility:hidden}
