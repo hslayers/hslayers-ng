@@ -13,7 +13,8 @@
         <!-- Feature Name -->
         <div class="hs-spoi-title" ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://purl.org/dc/elements/1.1/title'}">
             <h3 class="hs-spoi-feature-info">{{makeHumanReadable(attribute)}}</h3>
-            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click=""><i class="glyphicon glyphicon-edit"></i></button></div>          
+            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)"><i class="glyphicon glyphicon-edit"></i></button></div>          
+            <input class="form-control" ng-show="attribute.is_editing" ng-change="attribute.changed = true" ng-model="attribute.value"/>
         </div>
         <br>
         <!-- Category -->
@@ -266,6 +267,8 @@
         </div>
         
         <div class="container-fluid">
+            
+            <button type="button" class="btn btn-primary" ng-show="attributesHaveChanged(InfoPanelService.attributes)" ng-click="saveSpoiChanges(InfoPanelService.attributes)"><translate>Save changes</translate></button>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#fordevelopers"><translate>For developers</translate>&nbsp;<span class="caret"></span></button>
             <div id="fordevelopers" class="collapse">
                 <span ng-repeat="group in InfoPanelService.groups | orderBy : name">

@@ -1063,6 +1063,61 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                     }
                     return hr_names[name];
                 }
+                
+                $scope.startEdit = function(attribute, x){
+                    attribute.is_editing= ! (angular.isDefined(attribute.is_editing) && attribute.is_editing);
+                }
+                
+                $scope.attributesHaveChanged = function(attributes){
+                    var tmp = false;
+                    angular.forEach(attributes, function(a){
+                      if(angular.isDefined(a.changed) && a.changed) tmp=true;
+                    })
+                    return tmp;                        
+                }
+                
+                function generateUuid() {
+                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        var r = Math.random() * 16 | 0,
+                            v = c == 'x' ? r : r & 0x3 | 0x8;
+                        return v.toString(16);
+                    });
+                };
+                
+                $scope.saveSpoiChanges = function(attributes){
+                    var identifier = '';
+                    var changes = [];
+                    angular.forEach(attributes, function(a){
+                        if(angular.isDefined(a.changed) && a.changed){
+                            changes.push({attribute: a.name, value: $sce.valueOf(a.value)});
+                        }
+                        if(a.name=='http://purl.org/dc/elements/1.1/identifier') identifier = $sce.valueOf(a.value);
+                    })
+                    var lines = [];
+                    var d = new Date();
+                    var n = d.toISOString();
+                    var change_id = 'http://www.sdi4apps.eu/poi_changes/change_'+generateUuid();
+                    var attribute_set_id = 'http://www.sdi4apps.eu/poi_changes/attributes_'+generateUuid();
+                    lines.push('<'+change_id+'> <http://www.sdi4apps.eu/poi_changes/poi_id> <'+identifier+'>');
+                    lines.push('<'+change_id+'> <http://purl.org/dc/terms/1.1/created> "'+n+'"^^xsd:dateTime');
+                    lines.push('<'+change_id+'> <http://www.sdi4apps.eu/poi_changes/attribute_set> <'+attribute_set_id+'>');
+                    angular.forEach(changes, function(a){
+                        lines.push('<'+attribute_set_id+'> <'+a.attribute+'> "'+a.value+'"');
+                    })
+                    
+                    var query = ['INSERT DATA { GRAPH <http://www.sdi4apps.eu/poi_changes.rdf> {', lines.join('.'), '}}'].join('\n');
+                    $.ajax({
+                        url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
+                    })
+                    .done(function(response) {
+                        angular.forEach(attributes, function(a){
+                            if(angular.isDefined(a.changed) && a.changed){
+                                delete a.changed;
+                            }
+                        })
+                        if (!$scope.$$phase) $scope.$digest();
+                    });
+                }
             }
         ]).filter('usrFrSpoiAttribs', function() {
             return function(items) {
@@ -1071,12 +1126,6 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                 angular.forEach(items, function(item) {
                     if (frnly_attribs.indexOf(item.name) > -1) {
                         filtered.push(item);
-
-                        //: {name: }
-
-                        //'http://www.w3.org/2000/01/rdf-schema#seeAlso'
-
-                        //'http://www.w3.org/2004/02/skos/core#exactMatch'
                     }
                 });
                 return filtered;
