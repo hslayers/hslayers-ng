@@ -639,6 +639,10 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     margin-top:10px;
 }
 
+#hs-stc-footer button {
+    width: 100px;
+}
+
 #hs-stc-abstract {
     resize: vertical;
     min-height: 175px;
