@@ -257,7 +257,9 @@ define(['angular', 'ol'],
                     angular.forEach(service.layer.getSource().getFeatures(), function(f) {
                         $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'LineString';
                         $scope.hasPoly = $scope.hasPoly || f.getGeometry().getType() == 'Polygon';
+                        $scope.hasPoly = $scope.hasPoly || f.getGeometry().getType() == 'MultiPolygon';
                         $scope.hasPoint = $scope.hasPoint || f.getGeometry().getType() == 'Point';
+                        $scope.hasPoint = $scope.hasPoint || f.getGeometry().getType() == 'MultiPoint';
                     })
                 });
                 $scope.$watch('fillcolor', $scope.save);
