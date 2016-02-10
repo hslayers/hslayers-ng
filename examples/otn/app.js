@@ -80,12 +80,13 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 zoom: 4,
                 units: "m"
             }),
-            compositions_catalogue_url: 'http://www.whatstheplan.eu/php/metadata/csw/index.php',
+            compositions_catalogue_url: 'http://otn-dev.intrasoft-intl.com/php/metadata',
             datasources: [{
                 title: "Hub layers",
-                url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
+                url: "http://otn-dev.intrasoft-intl.com/php/metadata/csw/",
                 language: 'eng',
-                type: "ckan"
+                type: "micka",
+                code_list_url: 'http://otn-dev.intrasoft-intl.com/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
             }]
         });
 
