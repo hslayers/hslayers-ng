@@ -331,7 +331,7 @@ define(['angular', 'ol', 'map'],
                             var ue = encodeURIComponent;
                             var text = angular.isUndefined($scope.query.text_filter) || !advanced_search_visible ? $scope.query.title : $scope.query.text_filter;
                             var query = [
-                                (text != '' ? $scope.text_field + ue(" like '*" + text + "*' ") : ''),
+                                (text != '' ? $scope.text_field + ue(" like '*" + text + "*'") : ''),
                                 ue(bbox),
                                 //param2Query('type'),
                                 param2Query('ServiceType'),
