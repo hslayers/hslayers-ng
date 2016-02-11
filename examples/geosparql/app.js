@@ -119,6 +119,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                 source: new SparqlJson({
                     geom_attribute: '?geom',
                     url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + value + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + value + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://www.openvoc.eu/poi#categoryWaze',
                     projection: 'EPSG:3857'
                         //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
@@ -176,7 +177,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                 title: " " + value2,
                 source: new SparqlJson({
                     geom_attribute: '?geom',
-                    url: 'http://ng.hslayers.org:8890/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                    updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     category_field: 'http://www.openvoc.eu/poi#categoryOSM',
                     projection: 'EPSG:3857'
                 }),
@@ -1063,19 +1065,19 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                     }
                     return hr_names[name];
                 }
-                
-                $scope.startEdit = function(attribute, x){
-                    attribute.is_editing= ! (angular.isDefined(attribute.is_editing) && attribute.is_editing);
+
+                $scope.startEdit = function(attribute, x) {
+                    attribute.is_editing = !(angular.isDefined(attribute.is_editing) && attribute.is_editing);
                 }
-                
-                $scope.attributesHaveChanged = function(attributes){
+
+                $scope.attributesHaveChanged = function(attributes) {
                     var tmp = false;
-                    angular.forEach(attributes, function(a){
-                      if(angular.isDefined(a.changed) && a.changed) tmp=true;
+                    angular.forEach(attributes, function(a) {
+                        if (angular.isDefined(a.changed) && a.changed) tmp = true;
                     })
-                    return tmp;                        
+                    return tmp;
                 }
-                
+
                 function generateUuid() {
                     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                         var r = Math.random() * 16 | 0,
@@ -1083,40 +1085,43 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                         return v.toString(16);
                     });
                 };
-                
-                $scope.saveSpoiChanges = function(attributes){
+
+                $scope.saveSpoiChanges = function(attributes) {
                     var identifier = '';
                     var changes = [];
-                    angular.forEach(attributes, function(a){
-                        if(angular.isDefined(a.changed) && a.changed){
-                            changes.push({attribute: a.name, value: $sce.valueOf(a.value)});
+                    angular.forEach(attributes, function(a) {
+                        if (angular.isDefined(a.changed) && a.changed) {
+                            changes.push({
+                                attribute: a.name,
+                                value: $sce.valueOf(a.value)
+                            });
                         }
-                        if(a.name=='http://purl.org/dc/elements/1.1/identifier') identifier = $sce.valueOf(a.value);
+                        if (a.name == 'http://purl.org/dc/elements/1.1/identifier') identifier = $sce.valueOf(a.value);
                     })
                     var lines = [];
                     var d = new Date();
                     var n = d.toISOString();
-                    var change_id = 'http://www.sdi4apps.eu/poi_changes/change_'+generateUuid();
-                    var attribute_set_id = 'http://www.sdi4apps.eu/poi_changes/attributes_'+generateUuid();
-                    lines.push('<'+change_id+'> <http://www.sdi4apps.eu/poi_changes/poi_id> <'+identifier+'>');
-                    lines.push('<'+change_id+'> <http://purl.org/dc/terms/1.1/created> "'+n+'"^^xsd:dateTime');
-                    lines.push('<'+change_id+'> <http://www.sdi4apps.eu/poi_changes/attribute_set> <'+attribute_set_id+'>');
-                    angular.forEach(changes, function(a){
-                        lines.push('<'+attribute_set_id+'> <'+a.attribute+'> "'+a.value+'"');
+                    var change_id = 'http://www.sdi4apps.eu/poi_changes/change_' + generateUuid();
+                    var attribute_set_id = 'http://www.sdi4apps.eu/poi_changes/attributes_' + generateUuid();
+                    lines.push('<' + change_id + '> <http://www.sdi4apps.eu/poi_changes/poi_id> <' + identifier + '>');
+                    lines.push('<' + change_id + '> <http://purl.org/dc/terms/1.1/created> "' + n + '"^^xsd:dateTime');
+                    lines.push('<' + change_id + '> <http://www.sdi4apps.eu/poi_changes/attribute_set> <' + attribute_set_id + '>');
+                    angular.forEach(changes, function(a) {
+                        lines.push('<' + attribute_set_id + '> <' + a.attribute + '> "' + a.value + '"');
                     })
-                    
+
                     var query = ['INSERT DATA { GRAPH <http://www.sdi4apps.eu/poi_changes.rdf> {', lines.join('.'), '}}'].join('\n');
                     $.ajax({
-                        url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
-                    })
-                    .done(function(response) {
-                        angular.forEach(attributes, function(a){
-                            if(angular.isDefined(a.changed) && a.changed){
-                                delete a.changed;
-                            }
+                            url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
                         })
-                        if (!$scope.$$phase) $scope.$digest();
-                    });
+                        .done(function(response) {
+                            angular.forEach(attributes, function(a) {
+                                if (angular.isDefined(a.changed) && a.changed) {
+                                    delete a.changed;
+                                }
+                            })
+                            if (!$scope.$$phase) $scope.$digest();
+                        });
                 }
             }
         ]).filter('usrFrSpoiAttribs', function() {
