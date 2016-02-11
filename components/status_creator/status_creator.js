@@ -273,7 +273,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         json.className = "OpenLayers.Layer.Vector";
                         if (angular.isDefined(layer.get('definition'))) {
                             json.protocol = {
-                                url: layer.get('definition').url,
+                                url: encodeURIComponent(layer.get('definition').url),
                                 format: layer.get('definition').format
                             }
                         } else {
