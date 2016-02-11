@@ -42,6 +42,10 @@ define(['angular', 'ol', 'styles'],
                             $.ajax({
                                 url: url,
                                 success: function(data) {
+                                    if (data.type == 'GeometryCollection') {
+                                        var temp = {type: "Feature", geometry: data};
+                                        data = temp;
+                                    }
                                     src.addFeatures(format.readFeatures(data, {
                                         dataProjection: 'EPSG:4326',
                                         featureProjection: srs
