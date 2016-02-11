@@ -56,6 +56,7 @@ define(['angular', 'ol', 'map'],
                             url: url
                         })
                         .done(function(response) {
+                            Core.compositionEdited = false;
                             me.composition_loaded = url;
                             if (angular.isUndefined(overwrite) || overwrite == true) {
                                 var to_be_removed = [];
@@ -183,7 +184,7 @@ define(['angular', 'ol', 'map'],
                                     metadata: lyr_def.metadata,
                                     saveState: true,
                                     source: new source_class({
-                                        url: lyr_def.url,
+                                        url: decodeURIComponent(lyr_def.url),
                                         attributions: lyr_def.attribution ? [new ol.Attribution({
                                             html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
                                         })] : undefined,
@@ -200,7 +201,7 @@ define(['angular', 'ol', 'map'],
                             case 'OpenLayers.Layer.Vector':
                                 var definition = {};
                                 if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.KML') {
-                                    var url = lyr_def.protocol.url;
+                                    var url = decodeURIComponent(lyr_def.protocol.url);
                                     url = utils.proxify(url);
 
                                     definition.url = url;
@@ -231,7 +232,7 @@ define(['angular', 'ol', 'map'],
 
                                     layers.push(lyr);
                                 } else if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.GeoJSON') {
-                                    var url = lyr_def.protocol.url;
+                                    var url = decodeURIComponent(lyr_def.protocol.url);
                                     url = utils.proxify(url);
 
                                     definition.url = url;
@@ -520,7 +521,7 @@ define(['angular', 'ol', 'map'],
                 $scope.loadComposition = function(record) {
                     var url = record.link;
                     var title = record.title;
-                    if (composition_parser.composition_loaded != null) {
+                    if (Core.compositionEdited == true) {
                         var dialog_id = '#composition-overwrite-dialog';
                         $scope.composition_to_be_loaded = url;
                         $scope.composition_name_to_be_loaded = title;
