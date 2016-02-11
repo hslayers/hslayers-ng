@@ -1095,6 +1095,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                                 attribute: a.name,
                                 value: $sce.valueOf(a.value)
                             });
+                            InfoPanelService.feature.set(a.name, $sce.valueOf(a.value));
                         }
                         if (a.name == 'http://purl.org/dc/elements/1.1/identifier') identifier = $sce.valueOf(a.value);
                     })
