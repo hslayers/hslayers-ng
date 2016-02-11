@@ -257,8 +257,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             json.wmsMaxScale = layer.get('maxScale');
                             json.maxResolution = layer.getMaxResolution();
                             json.minResolution = layer.getMinResolution();
-                            if (src.getUrl) json.url = src.getUrl();
-                            if (src.getUrls) json.url = src.getUrls()[0];
+                            if (src.getUrl) json.url = encodeURIComponent(src.getUrl());
+                            if (src.getUrls) json.url = encodeURIComponent(src.getUrls()[0]);
                             if (src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
                             json.params = src.getParams();
                             json.ratio = src.get('ratio');
@@ -273,7 +273,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         json.className = "OpenLayers.Layer.Vector";
                         if (angular.isDefined(layer.get('definition'))) {
                             json.protocol = {
-                                url: layer.get('definition').url,
+                                url: encodeURIComponent(layer.get('definition').url),
                                 format: layer.get('definition').format
                             }
                         } else {
