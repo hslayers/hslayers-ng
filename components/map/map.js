@@ -228,8 +228,10 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 if (permalink.getParamValue('visible_layers')) {
                     visible_layers = permalink.getParamValue('visible_layers').split(';');
                 }
-
-                if (permalink.getParamValue('hs_x') && permalink.getParamValue('hs_y') && permalink.getParamValue('hs_z')) {
+                hs_x = permalink.getParamValue('hs_x');
+                hs_y = permalink.getParamValue('hs_y');
+                hs_z = permalink.getParamValue('hs_z');
+                if (hs_x && hs_x != 'NaN' && hs_y && hs_y != 'NaN' && hs_z && hs_z != 'NaN') {
                     var loc = location.search;
                     $scope.moveToAndZoom(parseFloat(permalink.getParamValue('hs_x', loc)), parseFloat(permalink.getParamValue('hs_y', loc)), parseInt(permalink.getParamValue('hs_z', loc)));
                 }

@@ -363,7 +363,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             $scope.layerIsZoomable = function(layer) {
                 if (typeof layer == 'undefined') return false;
                 if (layer.get("BoundingBox")) return true;
-                if (layer.getSource().getExtent && layer.getSource().getExtent()) return true;
+                if (layer.getSource().getExtent && layer.getSource().getExtent() && !ol.extent.isEmpty(layer.getSource().getExtent())) return true;
                 return false;
             }
 
