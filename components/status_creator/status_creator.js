@@ -22,6 +22,14 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 };
             })
+            .directive('hs.statusCreator.directiveSimpleform', function() {
+                return {
+                    templateUrl: hsl_path + 'components/status_creator/partials/simpleform.html',
+                    link: function(scope, element) {
+
+                    }
+                };
+            })
             .directive('hs.statusCreator.directivePanel', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/panel.html',
@@ -146,39 +154,45 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     var text = JSON.stringify(json, pretty);
                     return text;
                 },
-                 
-                serializeStyle: function(s){
+
+                serializeStyle: function(s) {
                     var o = {};
-                    if(typeof s.getFill() != 'undefined' && s.getFill() !=null)
+                    if (typeof s.getFill() != 'undefined' && s.getFill() != null)
                         o.fill = s.getFill().getColor();
-                    if(typeof s.getStroke() != 'undefined' && s.getStroke() !=null){
-                        o.stroke = {color: s.getStroke().getColor(), width: s.getStroke().getWidth()};
+                    if (typeof s.getStroke() != 'undefined' && s.getStroke() != null) {
+                        o.stroke = {
+                            color: s.getStroke().getColor(),
+                            width: s.getStroke().getWidth()
+                        };
                     }
-                    if(typeof s.getImage() != 'undefined' && s.getImage() !=null){
+                    if (typeof s.getImage() != 'undefined' && s.getImage() != null) {
                         var style_img = s.getImage();
                         var ima = {};
-                        if(angular.isDefined(style_img.getFill) && typeof style_img.getFill() != 'undefined' && style_img.getFill()!=null)
+                        if (angular.isDefined(style_img.getFill) && typeof style_img.getFill() != 'undefined' && style_img.getFill() != null)
                             ima.fill = style_img.getFill().getColor();
-                        
-                        if(angular.isDefined(style_img.getStroke) && typeof style_img.getStroke() != 'undefined' && style_img.getStroke()!=null){
-                            ima.stroke = {color: style_img.getStroke().getColor(), width: style_img.getStroke().getWidth()};
+
+                        if (angular.isDefined(style_img.getStroke) && typeof style_img.getStroke() != 'undefined' && style_img.getStroke() != null) {
+                            ima.stroke = {
+                                color: style_img.getStroke().getColor(),
+                                width: style_img.getStroke().getWidth()
+                            };
                         }
-                        
-                        if(angular.isDefined(style_img.getRadius)){
+
+                        if (angular.isDefined(style_img.getRadius)) {
                             ima.radius = style_img.getRadius();
                         }
-                        
-                        if(angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage()!=null){
-                            if(angular.isDefined(style_img.getImage().src))
+
+                        if (angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage() != null) {
+                            if (angular.isDefined(style_img.getImage().src))
                                 ima.src = style_img.getImage().src;
                         }
-                        
-                        if(style_img instanceof ol.style.Circle)
-                            ima.type = 'circle'; 
-                        
-                        if(style_img instanceof ol.style.Icon)
-                            ima.type = 'icon'; 
-                        
+
+                        if (style_img instanceof ol.style.Circle)
+                            ima.type = 'circle';
+
+                        if (style_img instanceof ol.style.Icon)
+                            ima.type = 'icon';
+
                         o.image = ima;
                     }
                     return o;
@@ -211,7 +225,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         return;
                     }
 
-                    // Common stuff 
+                    // Common stuff
 
                     // type
                     //json.className = layer.CLASS_NAME;
@@ -243,8 +257,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             json.wmsMaxScale = layer.get('maxScale');
                             json.maxResolution = layer.getMaxResolution();
                             json.minResolution = layer.getMinResolution();
-                            if (src.getUrl) json.url = src.getUrl();
-                            if (src.getUrls) json.url = src.getUrls()[0];
+                            if (src.getUrl) json.url = encodeURIComponent(src.getUrl());
+                            if (src.getUrls) json.url = encodeURIComponent(src.getUrls()[0]);
                             if (src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
                             json.params = src.getParams();
                             json.ratio = src.get('ratio');
@@ -253,13 +267,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     }
 
-                    // Vector 
+                    // Vector
                     if (layer instanceof ol.layer.Vector) {
                         var src = layer.getSource();
                         json.className = "OpenLayers.Layer.Vector";
-                        if(angular.isDefined(layer.get('definition'))){
+                        if (angular.isDefined(layer.get('definition'))) {
                             json.protocol = {
-                                url: layer.get('definition').url,
+                                url: encodeURIComponent(layer.get('definition').url),
                                 format: layer.get('definition').format
                             }
                         } else {
@@ -269,7 +283,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         json.maxResolution = layer.getMaxResolution();
                         json.minResolution = layer.getMinResolution();
                         json.projection = "epsg:4326";
-                        if(layer.getStyle() instanceof ol.style.Style){
+                        if (layer.getStyle() instanceof ol.style.Style) {
                             json.style = me.serializeStyle(layer.getStyle());
                         }
                     }
@@ -285,6 +299,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 $scope.id = '';
                 $scope.panel_name = 'status_creator';
                 $scope.current_composition_title = '';
+                $scope.config = config;
 
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
@@ -293,7 +308,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     var cur_proj = OlMap.map.getView().getProjection().getCode();
                     pair1 = ol.proj.transform(pair1, cur_proj, 'EPSG:4326');
                     pair2 = ol.proj.transform(pair2, cur_proj, 'EPSG:4326');
-                    $scope.bbox = [pair1[0].toFixed(8), pair1[1].toFixed(8), pair2[0].toFixed(8), pair2[1].toFixed(8)];
+                    $scope.bbox = [pair1[0].toFixed(2), pair1[1].toFixed(2), pair2[0].toFixed(2), pair2[1].toFixed(2)];
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
@@ -363,10 +378,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $('#stc-save, #stc-saveas').hide();
                             $('.stc-tabs li:eq(0) a').tab('show');
                             Core.setMainPanel('layermanager', true);
-                            $('.composition-info').html($('<a href="#">').html($('<h3>').html($scope.title)).click(function() {
-                                $('.composition-abstract').toggle();
-                            }));
+
+                            $('.composition-info').html($('<div>').html($scope.title)).click(function() {
+                                $('.composition-abstract').toggle()
+                            });
                             $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));
+
                         },
                         error: function() {
                             $scope.success = false;
@@ -379,10 +396,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.layers = [];
                     $scope.getCurrentExtent();
                     OlMap.map.getLayers().forEach(function(lyr) {
-                        if(angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true){
+                        if ((angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) && (lyr.get('base') != true)) {
                             $scope.layers.push({
                                 title: lyr.get('title'),
-                                checked: lyr.get('saveState'),
+                                checked: true,
                                 layer: lyr
                             });
                         }
@@ -395,25 +412,27 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                 $scope.fillGroups = function() {
                     $scope.groups = [];
-                    $.ajax({
-                        url: config.status_manager_url || '/wwwlibs/statusmanager2/index.php',
-                        cache: false,
-                        method: 'GET',
-                        async: false,
-                        dataType: 'json',
-                        data: {
-                            request: 'getGroups'
-                        },
-                        success: function(j) {
-                            if (j.success) {
-                                $scope.groups = j.result;
-                                angular.forEach($scope.groups, function(g) {
-                                    g.w = false;
-                                    g.r = false;
-                                });
+                    if (config.advancedForm) {
+                        $.ajax({
+                            url: config.status_manager_url || '/wwwlibs/statusmanager2/index.php',
+                            cache: false,
+                            method: 'GET',
+                            async: false,
+                            dataType: 'json',
+                            data: {
+                                request: 'getGroups'
+                            },
+                            success: function(j) {
+                                if (j.success) {
+                                    $scope.groups = j.result;
+                                    angular.forEach($scope.groups, function(g) {
+                                        g.w = false;
+                                        g.r = false;
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                     $scope.groups.unshift({
                         roleTitle: 'Public',
                         roleName: 'guest',
@@ -460,12 +479,21 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                 $scope.$on('compositions.composition_loaded', function(event, data) {
                     if (console) console.log('compositions.composition_loaded', data);
-                    $scope.id = data.id;
-                    $scope.abstract = data.data.abstract;
-                    $scope.title = data.data.title;
-                    $scope.current_composition_title = title;
-                    $scope.keywords = data.data.keywords;
-                    $scope.current_composition = data.data;
+                    if (data.data) {
+                        $scope.id = data.id;
+                        $scope.abstract = data.data.abstract;
+                        $scope.title = data.data.title;
+                        $scope.keywords = data.data.keywords;
+                        $scope.current_composition = data.data;
+                    } else {
+                        $scope.id = data.id;
+                        $scope.abstract = data.abstract;
+                        $scope.title = data.title;
+                        $scope.keywords = data.keywords;
+                        $scope.current_composition = data;
+                    }
+
+                    $scope.current_composition_title = $scope.title;
                 });
 
                 $scope.$on('core.map_reset', function(event, data) {
@@ -486,7 +514,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 });
 
                 $scope.getCurrentExtent();
-                
+
                 $scope.$on('map.extent_changed', function(event, data, b) {
                     $scope.getCurrentExtent()
                 });

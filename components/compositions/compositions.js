@@ -11,6 +11,7 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
                     link: function(scope, element) {
+                        /* TODO: This should be done more angular way */
                         $('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
                         $('.mid-pane').css('margin-top', '0px');
                         $(".keywords-panel").hide();
@@ -26,7 +27,25 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
-        .service('hs.compositions.service_parser', ['hs.map.service', 'Core', '$rootScope', 'hs.utils.service', function(OlMap, Core, $rootScope, utils) {
+        .directive('hs.compositions.shareDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html',
+                link: function(scope, element, attrs) {
+                    $('#composition-share-dialog').modal('show');
+                }
+            };
+        })
+
+        .directive('hs.compositions.infoDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html',
+                link: function(scope, element, attrs) {
+                    $('#composition-info-dialog').modal('show');
+                }
+            };
+        })
+
+        .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', function(OlMap, config, Core, $rootScope, utils) {
             var me = {
                 composition_loaded: null,
                 current_composition_title: "",
@@ -37,6 +56,7 @@ define(['angular', 'ol', 'map'],
                             url: url
                         })
                         .done(function(response) {
+                            Core.compositionEdited = false;
                             me.composition_loaded = url;
                             if (angular.isUndefined(overwrite) || overwrite == true) {
                                 var to_be_removed = [];
@@ -49,20 +69,41 @@ define(['angular', 'ol', 'map'],
                                 }
                             }
                             me.current_composition_title = response.title || response.data.title;
-                            $('.composition-info').html($('<a href="#">').html($('<h3>').html(response.title || response.data.title)).click(function() {
+                            /* TODO: This should be propably more angular way */
+                            $('.composition-info').html($('<div>').html(response.title || response.data.title)).click(function() {
                                 $('.composition-abstract').toggle()
-                            }));
+                            });
                             $('.composition-info').append($('<div>').html(response.abstract || response.data.abstract).addClass('well composition-abstract'));
                             OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
                             for (var i = 0; i < layers.length; i++) {
                                 OlMap.map.addLayer(layers[i]);
                             }
-                            Core.setMainPanel('layermanager');
+
+
+                            if (config.open_lm_after_comp_loaded) {
+                                Core.setMainPanel('layermanager');
+                            }
                             $rootScope.$broadcast('compositions.composition_loaded', response);
                             if (typeof callback !== 'undefined' && callback !== null) callback();
                         })
                 },
+
+                loadInfo: function(url) {
+                    var info = {};
+                    url = url.replace('&amp;', '&');
+                    url = utils.proxify(url);
+                    $.ajax({
+                            url: url,
+                            async: false
+                        })
+                        .done(function(response) {
+                            info = response.data || response;
+                            $rootScope.$broadcast('compositions.composition_info_loaded', response);
+                        });
+                    return info;
+                },
+
                 parseExtent: function(b) {
                     if (typeof b == 'string')
                         b = b.split(" ");
@@ -72,7 +113,7 @@ define(['angular', 'ol', 'map'],
                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
                     return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                 },
-                parseStyle: function(j){
+                parseStyle: function(j) {
                     var style_json = {};
                     if (angular.isDefined(j.fill)) {
                         style_json.fill = new ol.style.Fill({
@@ -87,8 +128,7 @@ define(['angular', 'ol', 'map'],
                     }
                     if (angular.isDefined(j.image)) {
                         if (j.image.type == 'circle') {
-                            var circle_json = {
-                            };
+                            var circle_json = {};
 
                             if (angular.isDefined(j.image.radius)) {
                                 circle_json.radius = j.image.radius;
@@ -113,7 +153,7 @@ define(['angular', 'ol', 'map'],
                             var icon_json = {
                                 img: img,
                                 imgSize: [img.width, img.height],
-                                crossOrigin: 'anonymous'    
+                                crossOrigin: 'anonymous'
                             };
                             style_json.image = new ol.style.Icon(icon_json);
                         }
@@ -144,7 +184,7 @@ define(['angular', 'ol', 'map'],
                                     metadata: lyr_def.metadata,
                                     saveState: true,
                                     source: new source_class({
-                                        url: lyr_def.url,
+                                        url: decodeURIComponent(lyr_def.url),
                                         attributions: lyr_def.attribution ? [new ol.Attribution({
                                             html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
                                         })] : undefined,
@@ -161,20 +201,20 @@ define(['angular', 'ol', 'map'],
                             case 'OpenLayers.Layer.Vector':
                                 var definition = {};
                                 if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.KML') {
-                                    var url = lyr_def.protocol.url;
+                                    var url = decodeURIComponent(lyr_def.protocol.url);
                                     url = utils.proxify(url);
 
                                     definition.url = url;
                                     definition.format = "ol.format.KML";
-                                    
+
                                     var style = null;
-                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style); 
-                                    
+                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+
                                     var src = new ol.source.Vector({
                                         format: new ol.format.KML(),
                                         projection: ol.proj.get(lyr_def.projection),
                                         url: url,
-                                        extractStyles: (style!=null ? false : true)
+                                        extractStyles: (style != null ? false : true)
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
@@ -183,29 +223,29 @@ define(['angular', 'ol', 'map'],
                                         style: style,
                                         title: lyr_def.title
                                     });
-                                    
-                                    if(style!=null){
-                                        src.on('addfeature', function(f){
+
+                                    if (style != null) {
+                                        src.on('addfeature', function(f) {
                                             f.feature.setStyle(null);
                                         });
                                     }
-                                    
+
                                     layers.push(lyr);
                                 } else if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.GeoJSON') {
-                                    var url = lyr_def.protocol.url;
+                                    var url = decodeURIComponent(lyr_def.protocol.url);
                                     url = utils.proxify(url);
 
                                     definition.url = url;
                                     definition.format = "ol.format.GeoJSON";
 
                                     var style = null;
-                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style); 
+                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
 
                                     var src = new ol.source.Vector({
                                         format: new ol.format.GeoJSON(),
                                         projection: ol.proj.get(lyr_def.projection),
                                         url: url,
-                                        extractStyles: (style!=null ? false : true)
+                                        extractStyles: (style != null ? false : true)
                                     })
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
@@ -215,14 +255,14 @@ define(['angular', 'ol', 'map'],
                                         title: lyr_def.title
                                     });
                                     layers.push(lyr);
-                                } else if(angular.isUndefined(lyr_def.protocol) && angular.isDefined(lyr_def.features)){
+                                } else if (angular.isUndefined(lyr_def.protocol) && angular.isDefined(lyr_def.features)) {
                                     var format = new ol.format.GeoJSON();
                                     var src = new ol.source.Vector({
                                         features: format.readFeatures(lyr_def.features),
                                         projection: ol.proj.get(lyr_def.projection)
                                     });
                                     var style = null;
-                                    if(angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style); 
+                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
                                     var lyr = new ol.layer.Vector({
                                         from_composition: true,
                                         source: src,
@@ -241,8 +281,8 @@ define(['angular', 'ol', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
-            function($scope, $rootScope, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
+            function($scope, $rootScope, $location, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -287,8 +327,9 @@ define(['angular', 'ol', 'map'],
                     var cur_map_extent = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
                     var b = ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
                     var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
+                    var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                    var url = config.compositions_catalogue_url + "?format=json&serviceName=p4b&query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var url = config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     url = utils.proxify(url);
                     if (ajax_req != null) ajax_req.abort();
                     ajax_req = $.ajax({
@@ -296,6 +337,7 @@ define(['angular', 'ol', 'map'],
                         })
                         .done(function(response) {
                             ajax_req = null;
+                            $('.tooltip').remove();
                             $scope.compositions = response.records;
                             $scope.pages = [];
                             $scope.page_count = Math.ceil(response.matched / $scope.page_size);
@@ -455,11 +497,31 @@ define(['angular', 'ol', 'map'],
                 $scope.$on('map.extent_changed', function(event, data, b) {
                     if ($scope.filter_by_extent) $scope.loadCompositions();
                 });
-            
+
+                $scope.shareComposition = function(record) {
+                    $scope.shareUrl = $location.protocol() + "://" + location.host + location.pathname + "?composition=" + encodeURIComponent(record.link);
+                    $scope.shareTitle = record.title;
+                    if (!$scope.$$phase) $scope.$digest();
+                    $("#hs-dialog-area #composition-share-dialog").remove();
+                    var el = angular.element('<div hs.compositions.share_dialog_directive></span>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
+                }
+
+                $scope.detailComposition = function(record) {
+                    $scope.info = composition_parser.loadInfo(record.link);
+
+                    if (!$scope.$$phase) $scope.$digest();
+                    $("#hs-dialog-area #composition-info-dialog").remove();
+                    var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
+                }
+
                 $scope.loadComposition = function(record) {
                     var url = record.link;
                     var title = record.title;
-                    if (composition_parser.composition_loaded != null) {
+                    if (Core.compositionEdited == true) {
                         var dialog_id = '#composition-overwrite-dialog';
                         $scope.composition_to_be_loaded = url;
                         $scope.composition_name_to_be_loaded = title;
@@ -482,12 +544,12 @@ define(['angular', 'ol', 'map'],
                 $scope.add = function() {
                     composition_parser.load($scope.composition_to_be_loaded, false, $scope.use_callback_for_edit ? callbackForEdit : null);
                 }
-                
-                $scope.save = function(){
+
+                $scope.save = function() {
                     Core.openStatusCreator();
                 }
 
-                $scope.loadCompositions();
+                //$scope.loadCompositions();
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }

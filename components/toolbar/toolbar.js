@@ -22,10 +22,6 @@ define(['angular', 'map', 'core', 'permalink'],
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
-                if (bus.getParamValue('hs_panel')) {
-                    $scope.setMainPanel(bus.getParamValue('hs_panel'));
-                }
-
                 $scope.collapsed = function(is) {
                     if (arguments.length > 0) {
                         collapsed = is;

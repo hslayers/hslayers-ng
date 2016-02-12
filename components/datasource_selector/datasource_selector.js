@@ -103,7 +103,6 @@ define(['angular', 'ol', 'map'],
                 $scope.config = config;
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
-                $scope.ajax_loader = hsl_path + 'components/datasource_selector/ajax-loader.gif';
                 $scope.selected_layer = null;
                 $scope.filter_by_extent = true;
 
@@ -332,7 +331,7 @@ define(['angular', 'ol', 'map'],
                             var ue = encodeURIComponent;
                             var text = angular.isUndefined($scope.query.text_filter) || !advanced_search_visible ? $scope.query.title : $scope.query.text_filter;
                             var query = [
-                                (text != '' ? $scope.text_field + ue(" like '*" + text + "*' ") : ''),
+                                (text != '' ? $scope.text_field + ue(" like '*" + text + "*'") : ''),
                                 ue(bbox),
                                 //param2Query('type'),
                                 param2Query('ServiceType'),
@@ -391,19 +390,19 @@ define(['angular', 'ol', 'map'],
                         return ($scope.query[which] != '' ? encodeURIComponent(which + "='" + $scope.query[which] + "'") : '')
                     } else {
                         if (which == 'ServiceType') {
-                            return encodeURIComponent("(ServiceType=view OR ServiceType=WMS OR Protocol like '*KML*')");
+                            return encodeURIComponent("(ServiceType=view OR ServiceType=WMS OR Format like '*KML*' OR Format like '*GeoJSON*')");
                         } else {
                             return '';
                         }
                     }
                 }
-                
-                $scope.isZoomable = function(selected_layer){
+
+                $scope.isZoomable = function(selected_layer) {
                     return angular.isDefined(selected_layer.bbox);
                 }
 
                 $scope.zoomTo = function(bbox) {
-                    if(typeof bbox == 'undefined') return;
+                    if (typeof bbox == 'undefined') return;
                     var b = bbox.split(" ");
                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
@@ -572,6 +571,61 @@ define(['angular', 'ol', 'map'],
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link));
                             } else {
                                 alert('Service type "' + layer.serviceType + '" not supported.');
+                            }
+                        } else if (layer.trida == 'dataset') {
+                            if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
+                                var format;
+                                var definition = {};
+                                var url = layer.link;
+                                definition.url = layer.link;
+                                url = utils.proxify(url);
+                                switch (layer.format.toLowerCase()) {
+                                    case "kml":
+                                        format = new ol.format.KML();
+                                        definition.format = "ol.format.KML";
+                                        break;
+                                    case "json":
+                                    case "geojson":
+                                        format = new ol.format.GeoJSON();
+                                        definition.format = "ol.format.GeoJSON";
+                                        break;
+                                }
+                                var src = new ol.source.Vector({
+                                    format: format,
+                                    url: url,
+                                    projection: ol.proj.get('EPSG:3857'),
+                                    extractStyles: false,
+                                    loader: function(extent, resolution, projection) {
+                                        $.ajax({
+                                            url: url,
+                                            success: function(data) {
+                                                src.addFeatures(format.readFeatures(data, {
+                                                    dataProjection: 'EPSG:4326',
+                                                    featureProjection: map.getView().getProjection().getCode().toUpperCase()
+                                                }));
+                                            }
+                                        })
+                                    },
+                                    strategy: ol.loadingstrategy.all
+                                });
+                                var lyr = new ol.layer.Vector({
+                                    title: layer.title || layer.description,
+                                    source: src,
+                                    definition: definition,
+                                    saveState: true,
+                                    style: default_style
+                                });
+                                var listenerKey = src.on('change', function() {
+                                    if (src.getState() == 'ready') {
+                                        if (src.getFeatures().length == 0) return;
+                                        var extent = src.getExtent();
+                                        src.unByKey(listenerKey);
+                                        if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
+                                            OlMap.map.getView().fit(extent, map.getSize());
+                                    }
+                                });
+                                OlMap.map.addLayer(lyr);
+                                Core.setMainPanel('layermanager');
                             }
                         } else {
                             alert('Datasource type "' + layer.trida + '" not supported.');

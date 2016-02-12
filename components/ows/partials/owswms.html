@@ -1,7 +1,7 @@
 <form class="form-horizontal" role="form" ng-controller="hs.ows.wms.controller">
     <div class="form-group">
-        <label class="col-sm-4 control-label" translate>Image format</label>
-        <div class="col-sm-8">
+        <label for="image_format" class="capabilities_label col-sm-4 control-label" translate>Image format</label>
+        <div class="capabilities_input col-sm-8">
             <select class="form-control" ng-model="image_format">
                 <option ng-repeat="i in image_formats">{{i}}</option>
             </select>
@@ -9,8 +9,8 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-4 control-label" translate>Query format</label>
-        <div class="col-sm-8">
+        <label class="capabilities_label col-sm-4 control-label" translate>Query format</label>
+        <div class="capabilities_input col-sm-8">
             <select class="form-control" ng-model="query_format">
                 <option ng-repeat="i in query_formats">{{i}}</option>
             </select>
@@ -18,49 +18,52 @@
     </div>
 
     <div class="form-group" ng-show="srs.toUpperCase() != map_projection">
-        <label class="col-sm-4 control-label">SRS</label>
-        <div class="col-sm-8">
-            <p class="alert alert-danger" ng-show="resample_warning" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
+        <label class="capabilities_label col-sm-4 control-label">SRS</label>
+        <div class="capabilities_input col-sm-8">
             <select class="form-control" ng-model="srs" ng-change="srsChanged()">
                 <option ng-repeat="i in srss">{{i}}</option>
             </select>
         </div>      
     </div>
 
+    <p class="col-sm-12 alert alert-danger" ng-show="resample_warning" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
+
     <div class="form-group">
-        <label class="col-sm-4 control-label" translate>Use tiles</label>
-        <div class="col-sm-8">
-            <input type="checkbox" class="form-control" ng-model="use_tiles"/>
+        <label class="capabilities_label col-sm-4 control-label" translate>Use tiles</label>
+        <div class="capabilities_input col-sm-8">
+            <input type="checkbox" ng-model="use_tiles"/>
         </div>      
     </div>
 
     <div class="form-group">
-        <label class="col-sm-4 control-label" translate>Tile size</label>
-        <div class="col-sm-8">
+        <label class="capabilities_label col-sm-4 control-label" translate>Tile size</label>
+        <div class="capabilities_input col-sm-8">
             <input class="form-control" ng-model="tile_size"/>
         </div>      
     </div>
 
     <div class="form-group">
-        <label class="col-sm-4 control-label" translate>Folder name</label>
-        <div class="col-sm-8">
+        <label class="capabilities_label col-sm-4 control-label" translate>Folder name</label>
+        <div class="capabilities_input col-sm-8">
             <input class="form-control" ng-model="path"/>
         </div>      
     </div>
     <hr/>
     <ul class="list-group">
         <a href="#" class="list-group-item disabled">
-            <h4 class="list-group-item-heading">{{services.Title}} 
-            <button class="btn btn-primary" ng-click="tryAddLayers(false)" translate>Add all</button>
-            <button class="btn btn-primary" ng-click="tryAddLayers(true)" translate>Add selected</button>
-            </h4>
+            <div class="list-group-item-heading">{{services.Title}}</div>
+            <button class="btn btn-primary" ng-click="selectAllLayers()" translate>Select All Layers</button>
+            <button class="btn btn-primary pull-right" ng-click="tryAddLayers(true)"><i class="glyphicon glyphicon-plus"></i></button>
         </a>
         <li ng-repeat="layer in services.Layer" class="list-group-item">
-            {{layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" />
+            <div class="row">
+                    {{layer.Title}} 
+                    <input type="checkbox" class="layer-checked pull-right" ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" />
+            </div>
             <ul class="list-group" ng-if="hasNestedLayers(layer)">
-                <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">{{sub_layer.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="sub_layer.checked" ng-if="!hasNestedLayers(sub_layer)" />
+                <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">{{sub_layer.Title}} <input type="checkbox" class="layer-checked" ng-model="sub_layer.checked" ng-if="!hasNestedLayers(sub_layer)" />
                     <ul class="list-group" ng-if="hasNestedLayers(sub_layer)">
-                        <li ng-repeat="sub_layer2 in sub_layer.Layer" class="list-group-item">{{sub_layer2.Title}} <input type="checkbox" class="form-control layer-checked" ng-model="sub_layer2.checked" />
+                        <li ng-repeat="sub_layer2 in sub_layer.Layer" class="list-group-item">{{sub_layer2.Title}} <input type="checkbox" class="layer-checked" ng-model="sub_layer2.checked" />
                     
                         </li>
                     </ul>

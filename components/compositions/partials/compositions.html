@@ -1,4 +1,4 @@
-<div class="panel panel-default mainpanel">
+<div class="panel panel-default mainpanel hs-comp-mainpanel">
     <div class="panel-heading" ><translate>Compositions</translate>
         <button type="button" class="close" ng-click="Core.closePanel(this)">
             <span aria-hidden="true">×</span>
@@ -6,43 +6,57 @@
         </button>
     </div>
     <div class="panel-body">
-        <input type="text" class="form-control" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()">
-        &nbsp;<input type="checkbox" ng-model="filter_by_extent" ng-change='loadCompositions()'><span translate>Filter by map extent</span>
-        &nbsp;<input type="checkbox" ng-model="query.editable" ng-change='filterChanged()'><span translate>Only mine</span>
-        <button type="button" ng-click="toggleKeywords()" class="btn btn-default btn-xs">Keywords<span class="caret"></span></button>
-        <div class="keywords-panel">
-            <div style="width: 45%; display:inline-block" class="checkbox" ng-repeat="(keyword, enabled) in keywords">
-                <label>
-                    <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()" >
-                    {{keyword}}
+        <form id="hs-comp-filter">
+            <div class="form-group">
+                <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()">
+            </div>
+
+            <div id="hs-comp-filter" class="form-group">
+                <label class="inline">
+                    <input type="checkbox" ng-model="filter_by_extent" ng-change='loadCompositions()'>
+                    <span translate>Filter by map extent</span>
+                </label>
+
+                <label class="inline">
+                    <input type="checkbox" ng-model="query.editable" ng-change='filterChanged()'>
+                    <span translate>Only mine</span>
                 </label>
             </div>
+
+            <span class="form-group">
+                <button type="button" ng-click="toggleKeywords()" ng-if="config.comp_keywords" class="btn btn-default btn-xs">Keywords<span class="caret"></span></button>
+                <div class="keywords-panel" ng-if="config.comp_keywords">
+                    <div style="width: 45%; display:inline-block" class="checkbox" ng-repeat="(keyword, enabled) in keywords">
+                        <label>
+                            <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()" >
+                            {{keyword}}
+                        </label>
+                    </div>
+                </div>
+            </span>
         </div>
-        
-        <ul style="margin-top: 4px" class="list-group">
-            <li ng-repeat="composition in compositions | filter:query" ng-class="'list-group-item'+(composition.highlighted ? ' active' : '')">
-                <a href="#" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition)"  data-toggle="tooltip" data-placement="top" ng-attr-title="{{composition.mdAbstract}}">{{composition.title}}
-                    <a href="#"><span class="glyphicon glyphicon-trash datasource_addlayer" aria-hidden="true" ng-show="composition.editable" ng-click='delete(composition)'></span></a>
-                    <a href="#"><span class="glyphicon glyphicon-edit datasource_addlayer" aria-hidden="true" ng-show="composition.editable" ng-click='edit(composition)'></span></a>
-                </a>
+
+        <ul class="hs-comp-list list-group">
+            <li ng-repeat="composition in compositions | filter:query" class="list-group-item hs-comp-item" ng-class="composition.highlighted ?  'active' : ''" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition)"  data-toggle="tooltip"  data-container="body" data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
+                <div class="hs-comp-item-title">{{composition.title}}</div>
+                <div class="hs-comp-item-controls">
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-show="composition.editable" ng-click='$event.stopPropagation();delete(composition)'><i class="glyphicon glyphicon-trash"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-click='$event.stopPropagation();shareComposition(composition)'><i class="glyphicon icon-share-alt"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-hide="true" ng-click='$event.stopPropagation()'><i class="glyphicon glyphicon-save"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-click='$event.stopPropagation();detailComposition(composition)'><i class="glyphicon glyphicon-info-sign"></i></button>
+                </div>
             </li>
-            <nav>
-                <ul class="pagination" ng-show="pages.length>0">
-                    <li ng-class="current_page < 2 ? 'disabled' : ''">
-                    <a href="#"  ng-click="loadCompositions(current_page - 1)" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                    </li>
-                    <li ng-repeat="page in pages"  ng-class="page == current_page ? 'active' : ''"><a href="#" ng-click="loadCompositions(page)">{{page}}</a></li>
-                    <li ng-class="current_page >= page_count ? 'disabled' : ''">
-                    <a href="#"  ng-click="loadCompositions(current_page + 1)" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                    </li>
-                </ul>
-            </nav>
         </ul>
+    </div>
+
+    <div class="panel-footer">
+        <nav>
+            <ul class="pager" ng-show="pages.length>0">
+                <li><a href="#" ng-click="loadCompositions(current_page - 1)" aria-label="Previous">Previous</a></li>
+                <li><a href="#" ng-click="loadCompositions(current_page + 1)" aria-label="Next">Next</a></li>
+            </ul>
+        </nav>
     </div>
 </div>
 
-                  
+

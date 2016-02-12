@@ -65,8 +65,8 @@
                     -->
                     
                      <div class="form-group" ng-show="query.type=='data'">
-                        <label ng-attr-for="ds-application-type" class="control-label" translate>
-                            <span>Topic category:</span>
+                        <label ng-attr-for="ds-application-type" class="control-label">
+                            <span translate>Topic category:</span>
                         </label> 
                         <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.TopicCategory">  
                             <option ng-repeat="type in micka_ds.code_lists.topicCategory" ng-attr-value="{{type.value}}">{{type.name}}</option>

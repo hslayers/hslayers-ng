@@ -1,19 +1,16 @@
-<div class="modal" id="status-creator-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="composition-share-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">
-                    <translate>Save current map</translate> {{compositions_service_parser.current_composition_title}}
+                    <translate>Share map </translate> {{shareTitle}}
                 </h4>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                    <div hs.status_creator.directive_form></div>
+                {{shareUrl}}
             </div>
             <div class="modal-footer" id="stc-footer">
-                <button type="button" class="btn btn-default" id="stc-next" translate="" ng-click="next()">Next</button> 
-                <button type="button" class="btn btn-primary" id="stc-save" translate="" ng-click="save(false)">Save</button>
-                <button type="button" class="btn btn-primary" id="stc-saveas" translate="" ng-click="save(true)">Save as</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" translate="">Close</button>
             </div>
         </div>
