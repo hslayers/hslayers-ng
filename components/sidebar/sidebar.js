@@ -17,7 +17,9 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                                 return angular.element('.panelspace').width()
                             },
                             function(value) {
-                                scope.Core.updateMapSize();
+                                setTimeout(function(){
+                                     scope.Core.updateMapSize();
+                                },0)
                             }
                         )
                     }
