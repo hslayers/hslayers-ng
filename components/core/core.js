@@ -29,7 +29,8 @@ require.config({
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api',
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
         sidebar: requirejs.s.contexts._.config.paths.sidebar || hsl_path + 'components/sidebar/sidebar',
-        geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON'
+        geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON',
+        mobile_toolbar: requirejs.s.contexts._.config.paths.mobile_toolbar || hsl_path + 'components/mobile_toolbar/mobile_toolbar'
     },
     shim: {
         'angular': {
@@ -217,6 +218,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         resetMap: function() {
                             OlMap.reset();
                             $rootScope.$broadcast('core.map_reset', {});
+                        },
+                        isMobile: function() {
+                            if ($(document).width() < 800) {
+                                return "mobile";
+                            } else {
+                                return "";
+                            }
                         }
                     };
 

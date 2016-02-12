@@ -256,6 +256,7 @@ define(['angular', 'ol'],
 
                     angular.forEach(service.layer.getSource().getFeatures(), function(f) {
                         $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'LineString';
+                        $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'MultiLineString';
                         $scope.hasPoly = $scope.hasPoly || f.getGeometry().getType() == 'Polygon';
                         $scope.hasPoly = $scope.hasPoly || f.getGeometry().getType() == 'MultiPolygon';
                         $scope.hasPoint = $scope.hasPoint || f.getGeometry().getType() == 'Point';
