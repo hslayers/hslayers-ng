@@ -27,6 +27,15 @@ define(['angular', 'ol', 'map'],
                 };
             })
 
+        .directive('hs.compositions.deleteDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html',
+                link: function(scope, element, attrs) {
+                    $('#composition-delete-dialog').modal('show');
+                }
+            };
+        })
+
         .directive('hs.compositions.shareDialogDirective', function() {
             return {
                 templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html',
@@ -415,18 +424,25 @@ define(['angular', 'ol', 'map'],
                     if (angular.isDefined($scope.query.editable) && $scope.query.editable == false) delete $scope.query.editable;
                 }
 
-                $scope.delete = function(composition) {
-                    if (confirm("Do you realy want to delete the composition?")) {
-                        var url = config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
-                        url = utils.proxify(url);
-                        ajax_req = $.ajax({
-                                url: url
-                            })
-                            .done(function(response) {
-                                $scope.loadCompositions();
-                            })
-                    }
+                $scope.confirmDelete = function(composition) {
+                    $scope.compositionToDelete = composition;
+                    if (!$scope.$$phase) $scope.$digest();
+                    $("#hs-dialog-area #composition-delete-dialog").remove();
+                    var el = angular.element('<div hs.compositions.delete_dialog_directive></span>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
+                }
 
+                $scope.delete = function(composition) {
+                    var url = config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
+                    url = utils.proxify(url);
+                    ajax_req = $.ajax({
+                        url: url
+                    })
+                    .done(function(response) {
+                        $scope.loadCompositions();
+                        $("#hs-dialog-area #composition-delete-dialog").remove();
+                    })
                 }
 
                 $scope.edit = function(composition) {
