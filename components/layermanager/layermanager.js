@@ -226,6 +226,11 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         $scope.layers.splice(i, 1);
                     }
                 }
+                for (var i = 0; i < $scope.baselayers.length; i++) {
+                    if ($scope.baselayers[i].layer == e.element) {
+                        $scope.baselayers.splice(i, 1);
+                    }
+                }
                 $rootScope.$broadcast('layermanager.updated', e.element);
             };
 
