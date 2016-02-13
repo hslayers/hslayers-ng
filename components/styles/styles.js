@@ -254,6 +254,7 @@ define(['angular', 'ol'],
                     $scope.hasPoint = false;
                     if (angular.isUndefined(service.layer) || service.layer == null) return;
 
+                    $scope.layerTitle = service.layer.get('title');
                     angular.forEach(service.layer.getSource().getFeatures(), function(f) {
                         $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'LineString';
                         $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'MultiLineString';
