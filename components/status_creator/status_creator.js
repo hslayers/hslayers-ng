@@ -450,17 +450,14 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 }
 
                 $scope.loadUserDetails = function() {
-                    var jsessionid = $cookies.get("JSESSIONID");
-                    if (jsessionid) {
-                        $.ajax({
-                            url: "/g4i-portlet/service/sso/validate/" + jsessionid,
-                            success: $scope.setUserDetails
-                        });
-                    }
+                    $.ajax({
+                        url: config.status_manager_url + "?request=getuserinfo",
+                        success: $scope.setUserDetails
+                    });
                 };
 
                 $scope.setUserDetails = function(user) {
-                    if (user && user.resultCode == "0") {
+                    if (user && user.success == true) {
                         // set the values
                         if (user.userInfo) {
                             $scope.email = user.userInfo.email;
