@@ -42,11 +42,9 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 zoom: 5,
                 units: "m"
             }),
-            //compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
-            compositions_catalogue_url: 'http://erra.ccss.cz/php/metadata/csw/index.php',
-            //compositions_catalogue_url: '/wwwlibs/statusmanager2',
-            //status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php',
-            status_manager_url: '/wwwlibs/statusmanager2/index.php',
+            compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
+            //compositions_catalogue_url: 'http://erra.ccss.cz/php/metadata/csw/index.php',
+            status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php',
             createExtraMenu: function($compile, $scope, element) {
                 $scope.uploadClicked = function() {
                     alert("UPLOAD!")
