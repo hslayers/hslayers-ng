@@ -59,135 +59,11 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             crossOrigin: 'anonymous'
                         })
                     })
-
                 ]
             } else {
                 return [];
             }
         }
-
-
-
-        var sparql_layers = [];
-        angular.forEach([
-            'http://www.openvoc.eu/waze_classification#Car_services',
-            'http://www.openvoc.eu/waze_classification#Transportation',
-            'http://www.openvoc.eu/waze_classification#Professional_and_public',
-            'http://www.openvoc.eu/waze_classification#Shopping_and_services',
-            'http://www.openvoc.eu/waze_classification#Food_and_drink',
-            'http://www.openvoc.eu/waze_classification#Culture_&_entertainment',
-            'http://www.openvoc.eu/waze_classification#Other',
-            'http://www.openvoc.eu/waze_classification#Lodging',
-            'http://www.openvoc.eu/waze_classification#Outdoors',
-            'http://www.openvoc.eu/waze_classification#Natural_features'
-        ], function(value) {
-            var value2;
-            switch (value) {
-                case 'http://www.openvoc.eu/waze_classification#Car_services':
-                    value2 = "Car Services";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Transportation':
-                    value2 = "Transportation";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Professional_and_public':
-                    value2 = "Professional and Public";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Shopping_and_services':
-                    value2 = "Shopping and Services";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Food_and_drink':
-                    value2 = "Food and Drink";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Culture_&_entertainment':
-                    value2 = "Culture & Entertainment";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Other':
-                    value2 = "Other";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Lodging':
-                    value2 = "Lodging";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Outdoors':
-                    value2 = "Outdoors";
-                    break;
-                case 'http://www.openvoc.eu/waze_classification#Natural_features':
-                    value2 = "Natural Features";
-                    break;
-            };
-            var new_lyr = new ol.layer.Vector({
-                title: " " + value2,
-                source: new SparqlJson({
-                    geom_attribute: '?geom',
-                    url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + value + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + value + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    category_field: 'http://www.openvoc.eu/poi#categoryWaze',
-                    projection: 'EPSG:3857'
-                        //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
-                }),
-                style: style,
-                visible: false,
-                path: 'Points of interest'
-            });
-            sparql_layers.push(new_lyr);
-        })
-
-        var sparql_osm_layers = [];
-        angular.forEach([
-            'amenity.atm',
-            'amenity.bank',
-            'amenity.cafe',
-            'amenity.fast_food',
-            'amenity.pub',
-            'amenity.restaurant',
-            'tourism.hotel',
-            'shop.supermarket',
-            'tourism.information'
-        ], function(value) {
-            var value2;
-            switch (value) {
-                case 'amenity.atm':
-                    value2 = "ATM";
-                    break;
-                case 'amenity.bank':
-                    value2 = "Bank";
-                    break;
-                case 'amenity.cafe':
-                    value2 = "Cafe";
-                    break;
-                case 'amenity.fast_food':
-                    value2 = "Fast Food";
-                    break;
-                case 'amenity.pub':
-                    value2 = "Pub";
-                    break;
-                case 'amenity.restaurant':
-                    value2 = "Restaurant";
-                    break;
-                case 'tourism.hotel':
-                    value2 = "Hotel";
-                    break;
-                case 'shop.supermarket':
-                    value2 = "Supermarket";
-                    break;
-                case 'tourism.information':
-                    value2 = "Information";
-                    break;
-            };
-            var new_lyr = new ol.layer.Vector({
-                title: " " + value2,
-                source: new SparqlJson({
-                    geom_attribute: '?geom',
-                    url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + value + '"). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                    category_field: 'http://www.openvoc.eu/poi#categoryOSM',
-                    projection: 'EPSG:3857'
-                }),
-                style: styleOSM,
-                visible: false,
-                path: 'Popular Categories'
-            });
-            sparql_osm_layers.push(new_lyr);
-        })
 
         var route_style = function(feature, resolution) {
             return [new ol.style.Style({
@@ -242,7 +118,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             }), new ol.layer.Group({
                 'img': 'bicycle-128.png',
                 title: 'Tourist info',
-                layers: sparql_layers.concat(sparql_osm_layers).concat([
+                layers: [
                     new ol.layer.Vector({
                         title: "Cycling routes Plzen",
                         source: new ol.source.Vector({
@@ -337,7 +213,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                         visible: false,
                         path: 'Roads/Additional Cycling routes'
                     })
-                ])
+                ]
             }), new ol.layer.Group({
                 'img': 'partly_cloudy.png',
                 title: 'Weather',
@@ -382,8 +258,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
             infopanel_template: hsl_path + 'examples/geosparql/infopanel.html'
         });
 
-        module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', '$sce', '$http',
-            function($scope, $filter, Core, OlMap, InfoPanelService, $sce, $http) {
+        module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', '$sce', '$http', 'config',
+            function($scope, $filter, Core, OlMap, InfoPanelService, $sce, $http, config) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -469,6 +345,41 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                     url: 'data.json'
                 }).then(function successCallback(response) {
                     hr_mappings = response.data;
+                    angular.forEach(hr_mappings["http://www.openvoc.eu/poi#categoryWaze"], function(name, category){
+                        var new_lyr = new ol.layer.Vector({
+                        title: " " + name,
+                        source: new SparqlJson({
+                                geom_attribute: '?geom',
+                                url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                                updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                                category_field: 'http://www.openvoc.eu/poi#categoryWaze',
+                                projection: 'EPSG:3857'
+                                    //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
+                            }),
+                            style: style,
+                            visible: false,
+                            path: 'Points of interest'
+                        });
+                        config.box_layers[1].getLayers().insertAt(0, new_lyr);
+                        OlMap.map.addLayer(new_lyr);
+                    })
+                    angular.forEach(hr_mappings.popular_categories, function(name, category){
+                        var new_lyr = new ol.layer.Vector({
+                            title: " " + name,
+                            source: new SparqlJson({
+                                geom_attribute: '?geom',
+                                url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + category + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                                updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + category + '"). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                                category_field: 'http://www.openvoc.eu/poi#categoryOSM',
+                                projection: 'EPSG:3857'
+                            }),
+                            style: styleOSM,
+                            visible: false,
+                            path: 'Popular Categories'
+                        });
+                        config.box_layers[1].getLayers().insertAt(0, new_lyr);
+                        OlMap.map.addLayer(new_lyr);
+                    })
                 })
 
                 $scope.makeHumanReadable = function(attribute) {
