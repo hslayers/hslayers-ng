@@ -25,6 +25,10 @@
     }
 }
 
+div#map {
+    margin-left: 48px;
+}
+
 .menu {
     list-style: none;
     border-bottom: 0.1em solid black;
@@ -499,6 +503,16 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     margin-left:0;
     width: 400px
 }
+a.sidebar-main {
+    padding: 0;
+    cursor: default;
+}
+
+
+.sidebar-main > span {
+    padding: 10px 15px;
+    cursor: pointer;
+}
 .sidebar-list .sidebar-main .menu-icon {
     font-size: 18px;
 }
@@ -692,8 +706,3 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
 
 
 
-a.sidebar-main.list-group-item.ng-scope {}
-
-div#map {
-    margin-left: 48px;
-}
