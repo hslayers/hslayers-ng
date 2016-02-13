@@ -82,7 +82,6 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             } else {
                                 me.sidebarExpanded = true;
                                 me.sidebarLabels = false;
-                                me.updateMapSize(true);
                             }
                             me.mainpanel = which;
                             if (!$rootScope.$$phase) $rootScope.$digest();
@@ -96,7 +95,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             var w = angular.element($window);
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
-                            if (me.sidebarExpanded && w.width() != sidebarElem.width()) {
+                            if (w.width() != sidebarElem.width()) {
                                 map.width(w.width() - sidebarElem.width());
                             } else {
                                 map.width(w.width());

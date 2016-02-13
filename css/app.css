@@ -690,3 +690,10 @@ div.panelspace:not(.buttons) #sidebar ~ div#panelplace {
     margin: 3px;
 }
 
+
+
+a.sidebar-main.list-group-item.ng-scope {}
+
+div#map {
+    margin-left: 48px;
+}

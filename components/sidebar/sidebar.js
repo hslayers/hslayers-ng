@@ -14,13 +14,13 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                             scope.Core.config.createExtraMenu($compile, scope, element);
                         scope.$watch(
                             function() {
-                                return angular.element('.panelspace').width()
+                                return [scope.Core.sidebarExpanded, angular.element('.panelspace').width()]
                             },
                             function(value) {
                                 setTimeout(function(){
                                      scope.Core.updateMapSize();
                                 },0)
-                            }
+                            }, true
                         )
                     }
                 };
@@ -40,8 +40,6 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
 
                 $scope.toggleSidebar = function() {
                     $scope.Core.sidebarExpanded = !$scope.Core.sidebarExpanded;
-                    $scope.Core.updateMapSize();
-                    $cookies.put('sidebarExpanded', $scope.Core.sidebarExpanded);
                 };
 
                 $scope.$emit('scope_loaded', "Sidebar");
