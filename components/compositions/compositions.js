@@ -12,7 +12,7 @@ define(['angular', 'ol', 'map'],
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
                     link: function(scope, element) {
                         /* TODO: This should be done more angular way */
-                        $('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
+                        //$('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
                         $('.mid-pane').css('margin-top', '0px');
                         $(".keywords-panel").hide();
                     }
@@ -78,11 +78,6 @@ define(['angular', 'ol', 'map'],
                                 }
                             }
                             me.current_composition_title = response.title || response.data.title;
-                            /* TODO: This should be propably more angular way */
-                            $('.composition-info').html($('<div>').html(response.title || response.data.title)).click(function() {
-                                $('.composition-abstract').toggle()
-                            });
-                            $('.composition-info').append($('<div>').html(response.abstract || response.data.abstract).addClass('well composition-abstract'));
                             OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
                             var layers = me.jsonToLayers(response);
                             for (var i = 0; i < layers.length; i++) {
@@ -440,7 +435,8 @@ define(['angular', 'ol', 'map'],
                         url: url
                     })
                     .done(function(response) {
-                        $scope.loadCompositions();
+                        $rootScope.$broadcast('compositions.composition_deleted', composition.id);
+                        $scope.loadCompositions();                      
                         $("#hs-dialog-area #composition-delete-dialog").remove();
                     })
                 }

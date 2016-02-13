@@ -25,5 +25,10 @@
             <span class="glyphicon icon-search"></span>
         </button>-->
     </div>
-    <div class="mid-pane"></div>
+    <div class="mid-pane">
+        <div class="composition-info" ng-show="compositionLoaded()">
+            <div>{{composition_title}}</div>
+            <div class="well composition-abstract">{{composition_abstract}}</div>
+        </div>
+    </div>
 </div>
