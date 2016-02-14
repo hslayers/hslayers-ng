@@ -98,7 +98,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             if (angular.isDefined(config.box_layers)) {
                 angular.forEach(config.box_layers, function(box) {
                     angular.forEach(box.get('layers'), function(lyr) {
-                        lyr.setVisible(me.isLayerVisibleInPermalink(lyr, visible_layers));
+                        lyr.setVisible(me.isLayerVisibleInPermalink(lyr, me.visible_layers));
                         me.map.addLayer(lyr);
                     });
                 });
@@ -106,7 +106,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
             if (angular.isDefined(config.default_layers)) {
                 angular.forEach(config.default_layers, function(lyr) {
-                    lyr.setVisible(me.isLayerVisibleInPermalink(lyr, visible_layers));
+                    lyr.setVisible(me.isLayerVisibleInPermalink(lyr, me.visible_layers));
                     me.map.addLayer(lyr);
                 });
             }
@@ -224,10 +224,10 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
              * @description Syntactic sugar for initialization
              */
             $scope.init = function() {
-                var visible_layers = null;
                 if (permalink.getParamValue('visible_layers')) {
-                    visible_layers = permalink.getParamValue('visible_layers').split(';');
+                    OlMap.visible_layers = permalink.getParamValue('visible_layers').split(';');
                 }
+                OlMap.repopulateLayers();
                 hs_x = permalink.getParamValue('hs_x');
                 hs_y = permalink.getParamValue('hs_y');
                 hs_z = permalink.getParamValue('hs_z');
@@ -235,8 +235,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     var loc = location.search;
                     $scope.moveToAndZoom(parseFloat(permalink.getParamValue('hs_x', loc)), parseFloat(permalink.getParamValue('hs_y', loc)), parseInt(permalink.getParamValue('hs_z', loc)));
                 }
-
-                OlMap.repopulateLayers(visible_layers);
 
                 $scope.setTargetDiv("map");
             }

@@ -20,12 +20,18 @@
         <!-- Category -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#categoryWaze'}" class="featureInfo">
             <span class="hs-spoi-feature-info"><translate>Category:</translate> {{makeHumanReadable(attribute)}}</span>
-            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click=""><i class="glyphicon glyphicon-edit"></i></button></div>  
+            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)"><i class="glyphicon glyphicon-edit"></i></button></div>  
+            <select class="form-control hs-spoi-feature-info" ng-show="attribute.is_editing" ng-model="attribute.value" ng-change="attribute.changed = true"> 
+                <option ng-repeat="(key, value) in getSpoiCategories('http://www.openvoc.eu/poi#categoryWaze')" ng-selected="key==attribute.value" value="{{key}}">{{value}} ({{key}})</option>
+            </select>
         </div>
         <!-- SubCategory -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.openvoc.eu/poi#categoryOSM'}" class="featureInfo">
             <span class="hs-spoi-feature-info"><translate>Subcategory:</translate> {{makeHumanReadable(attribute)}}</span>
-            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click=""><i class="glyphicon glyphicon-edit"></i></button></div>  
+            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)"><i class="glyphicon glyphicon-edit"></i></button></div> 
+            <select class="form-control hs-spoi-feature-info" ng-show="attribute.is_editing" ng-model="attribute.value" ng-change="attribute.changed = true"> 
+                <option ng-repeat="(key, value) in getSpoiCategories('http://www.openvoc.eu/poi#categoryOSM')" ng-selected="key==attribute.value" value="{{key}}">{{value}} ({{key}})</option>
+            </select>
         </div>
         <!-- Geonames -->
         <div ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://www.opengis.net/ont/geosparql#sfWithin'}" class="featureInfo">

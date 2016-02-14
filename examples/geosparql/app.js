@@ -361,7 +361,6 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             path: 'Points of interest'
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
-                        OlMap.map.addLayer(new_lyr);
                     })
                     angular.forEach(hr_mappings.popular_categories, function(name, category){
                         var new_lyr = new ol.layer.Vector({
@@ -378,8 +377,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             path: 'Popular Categories'
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
-                        OlMap.map.addLayer(new_lyr);
                     })
+                    OlMap.repopulateLayers();
                 })
 
                 $scope.makeHumanReadable = function(attribute) {
@@ -387,6 +386,10 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                     var name = $sce.valueOf(attribute.name);
                     if (angular.isDefined(hr_mappings[name][value])) return hr_mappings[name][value];
                     else return attribute.value;
+                }
+                
+                $scope.getSpoiCategories = function(group){
+                    return hr_mappings[group];
                 }
 
                 $scope.attrToEnglish = function(name) {
