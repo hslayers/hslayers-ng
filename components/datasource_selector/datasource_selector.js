@@ -594,7 +594,7 @@ define(['angular', 'ol', 'map'],
                                     format: format,
                                     url: url,
                                     projection: ol.proj.get('EPSG:3857'),
-                                    extractStyles: false,
+                                    extractStyles: true,
                                     loader: function(extent, resolution, projection) {
                                         $.ajax({
                                             url: url,
@@ -612,8 +612,7 @@ define(['angular', 'ol', 'map'],
                                     title: layer.title || layer.description,
                                     source: src,
                                     definition: definition,
-                                    saveState: true,
-                                    style: default_style
+                                    saveState: true
                                 });
                                 var listenerKey = src.on('change', function() {
                                     if (src.getState() == 'ready') {

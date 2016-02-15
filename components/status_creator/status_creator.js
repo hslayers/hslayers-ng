@@ -47,7 +47,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 };
             })
 
-        .service('hs.status_creator.service', ['hs.map.service', 'Core', function(OlMap, Core) {
+        .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', function(OlMap, Core, utils) {
             var me = {
                 map2json: function(map, $scope) {
                     var groups = {};
@@ -183,7 +183,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
 
                         if (angular.isString(style_img.getSrc())) {
-                                ima.src = style_img.getSrc();
+                                ima.src = utils.proxify(style_img.getSrc());
                         } else if (angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage() != null) {
                             if (angular.isDefined(style_img.getImage().src))
                                 ima.src = style_img.getImage().src;
