@@ -47,6 +47,15 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 };
             })
 
+            .directive('hs.statusCreator.saveDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/status_creator/partials/dialog_save.html',
+                    link: function(scope, element, attrs) {
+                        $('#status_creator-save-dialog').modal('show');
+                    }
+                };
+            })
+
         .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', function(OlMap, Core, utils) {
             var me = {
                 map2json: function(map, $scope) {
@@ -370,17 +379,15 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             request: 'rightToSave'
                         }),
                         success: function(j) {
-                            $scope.hasPermission = j.hasPermission;
-                            $scope.titleFree = j.titleFree
+                            $scope.hasPermission = j.results.hasPermission;
+                            $scope.titleFree = j.results.titleFree
 
                             if ($scope.titleFree && $scope.hasPermission) {
                             }
 
                             if (!$scope.$$phase) $scope.$digest();
-                            $("#hs-dialog-area #status_creator-overwrite-dialog").remove();
-                            var el = angular.element('<div hs.status_creator.overwrite_dialog_directive></span>');
-                            $("#hs-dialog-area #status_creator-save_nopermission-dialog").remove();
-                            var el = angular.element('<div hs.status_creator.save_nopermission_dialog_directive></span>');
+                            $("#hs-dialog-area #status_creator-save-dialog").remove();
+                            var el = angular.element('<div hs.status_creator.save_dialog_directive></span>');
                             $("#hs-dialog-area").append(el)
                             $compile(el)($scope);
                         },
