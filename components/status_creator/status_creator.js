@@ -51,7 +51,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog_save.html',
                     link: function(scope, element, attrs) {
-                        $('#status_creator-save-dialog').modal('show');
+                        $('#status-creator-save-dialog').modal('show');
                     }
                 };
             })
@@ -386,7 +386,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             }
 
                             if (!$scope.$$phase) $scope.$digest();
-                            $("#hs-dialog-area #status_creator-save-dialog").remove();
+                            $("#hs-dialog-area #status-creator-save-dialog").remove();
                             var el = angular.element('<div hs.status_creator.save_dialog_directive></span>');
                             $("#hs-dialog-area").append(el)
                             $compile(el)($scope);
