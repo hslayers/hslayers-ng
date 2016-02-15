@@ -182,7 +182,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             ima.radius = style_img.getRadius();
                         }
 
-                        if (angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage() != null) {
+                        if (angular.isString(style_img.getSrc())) {
+                                ima.src = style_img.getSrc();
+                        } else if (angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage() != null) {
                             if (angular.isDefined(style_img.getImage().src))
                                 ima.src = style_img.getImage().src;
                         }
