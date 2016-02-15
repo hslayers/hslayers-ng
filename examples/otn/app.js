@@ -50,6 +50,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                         }),
                         new ol.layer.Tile({
                             title: "Satellite",
+                            visible: false,
                             base: true,
                             source: new ol.source.XYZ({
                                 url: 'http://api.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmFpdGlzYmUiLCJhIjoiY2lrNzRtbGZnMDA2bXZya3Nsb2Z4ZGZ2MiJ9.g1T5zK-bukSbJsOypONL9g'
@@ -80,7 +81,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 zoom: 4,
                 units: "m"
             }),
-            compositions_catalogue_url: 'http://otn-dev.intrasoft-intl.com/php/metadata',
+            compositions_catalogue_url: 'http://otn-dev.intrasoft-intl.com/php/metadata/csw/',
+            status_manager_url: 'http://otn-dev.intrasoft-intl.com/wwwlibs/statusmanager2/index.php',
+
             datasources: [{
                 title: "Hub layers",
                 url: "http://otn-dev.intrasoft-intl.com/php/metadata/csw/",
