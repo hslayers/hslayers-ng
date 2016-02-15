@@ -1,0 +1,37 @@
+<div class="modal" id="status-creator-save-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" translate="">
+                   Save composition
+                </h4>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+                <div translate>
+                    You are atempting to save map Changes to <b>{{title}}</b>.
+                </div>
+                <div ng-if="!freeTitle && hasPermission">
+                    <div translate>
+                        Do you really want to overwrite <b>{{title}}</b>?
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" translate>Yes, save</button>
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" translate>No, save as</button>
+                    </p>
+                </div>
+                <div ng-if="!freeTitle && !hasPermission">
+                    <div translate>
+                        <p>You don't have sufficient rights to do so.</p>
+                        <p>Use a different name to save the map.</p>
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" translate>OK</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

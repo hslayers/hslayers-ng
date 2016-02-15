@@ -358,10 +358,43 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
+                $scope.confirmSave = function() {
+                    $.ajax({
+                        url: config.status_manager_url || "/wwwlibs/statusmanager2/index.php",
+                        cache: false,
+                        method: 'POST',
+                        async: false,
+                        data: JSON.stringify({
+                            project: config.project_name,
+                            title: $scope.title,
+                            request: 'rightToSave'
+                        }),
+                        success: function(j) {
+                            $scope.hasPermission = j.hasPermission;
+                            $scope.titleFree = j.titleFree
+
+                            if ($scope.titleFree && $scope.hasPermission) {
+                            }
+
+                            if (!$scope.$$phase) $scope.$digest();
+                            $("#hs-dialog-area #status_creator-overwrite-dialog").remove();
+                            var el = angular.element('<div hs.status_creator.overwrite_dialog_directive></span>');
+                            $("#hs-dialog-area #status_creator-save_nopermission-dialog").remove();
+                            var el = angular.element('<div hs.status_creator.save_nopermission_dialog_directive></span>');
+                            $("#hs-dialog-area").append(el)
+                            $compile(el)($scope);
+                        },
+                        error: function() {
+                            $scope.success = false;
+                            $scope.showResultDialog()
+                        }
+                    })
+                }
+
                 $scope.save = function(save_as_new) {
                     if (save_as_new || $scope.id == '') $scope.id = generateUuid();
                     $.ajax({
-                        url: "/wwwlibs/statusmanager2/index.php",
+                        url: config.status_manager_url || "/wwwlibs/statusmanager2/index.php",
                         cache: false,
                         method: 'POST',
                         dataType: "json",

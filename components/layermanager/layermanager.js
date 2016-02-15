@@ -171,6 +171,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 };
                 if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
                 $rootScope.$broadcast('layermanager.updated', e.element);
+                $scope.$emit('compositions.composition_edited');
             };
 
             /**
@@ -232,6 +233,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     }
                 }
                 $rootScope.$broadcast('layermanager.updated', e.element);
+                $scope.$emit('compositions.composition_edited');
             };
 
             $scope.box_layers = config.box_layers;
@@ -313,6 +315,18 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     $(".layerpanel").insertAfter($("#layer-" + index));
                     $scope.cur_layer_opacity = layer.layer.getOpacity();
                 }
+                return false;
+            }
+
+            /**
+             * @function setOpacity
+             * @memberOf hs.layermanager.controller
+             * @description Set layers opacity and emits compositionchanged
+             * @param {object} layer - Layer on which is opacity set
+             */
+            $scope.setLayerOpacity = function(layer, opacity) {
+                layer.setOpacity($scope.cur_layer_opacity);
+                $scope.$emit('compositions.composition_edited');
                 return false;
             }
 

@@ -57,6 +57,7 @@ define(['angular', 'ol', 'map'],
         .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', function(OlMap, config, Core, $rootScope, utils) {
             var me = {
                 composition_loaded: null,
+                composition_edited: false,
                 current_composition_title: "",
                 load: function(url, overwrite, callback) {
                     url = url.replace('&amp;', '&');
@@ -65,7 +66,6 @@ define(['angular', 'ol', 'map'],
                             url: url
                         })
                         .done(function(response) {
-                            Core.compositionEdited = false;
                             me.composition_loaded = url;
                             if (angular.isUndefined(overwrite) || overwrite == true) {
                                 var to_be_removed = [];
@@ -88,6 +88,8 @@ define(['angular', 'ol', 'map'],
                             if (config.open_lm_after_comp_loaded) {
                                 Core.setMainPanel('layermanager');
                             }
+
+                            me.composition_edited = false;
                             $rootScope.$broadcast('compositions.composition_loaded', response);
                             if (typeof callback !== 'undefined' && callback !== null) callback();
                         })
@@ -494,6 +496,10 @@ define(['angular', 'ol', 'map'],
 
                 OlMap.map.addLayer(extent_layer);
 
+                $rootScope.$on('compositions.composition_edited', function(event) {
+                    composition_parser.composition_edited = true;
+                });
+
                 $rootScope.$on('infopanel.feature_selected', function(event, feature, selector) {
                     var record = feature.get("record");
                     $scope.use_callback_for_edit = false;
@@ -529,7 +535,7 @@ define(['angular', 'ol', 'map'],
                 $scope.loadComposition = function(record) {
                     var url = record.link;
                     var title = record.title;
-                    if (Core.compositionEdited == true) {
+                    if (composition_parser.composition_edited == true) {
                         var dialog_id = '#composition-overwrite-dialog';
                         $scope.composition_to_be_loaded = url;
                         $scope.composition_name_to_be_loaded = title;
