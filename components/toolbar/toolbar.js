@@ -51,6 +51,12 @@ define(['angular', 'map', 'core', 'permalink'],
                     }
                 });
                 
+                $scope.$on('core.map_reset', function(event) {
+                    delete $scope.composition_title;
+                    delete $scope.composition_abstract;
+                    if (!$scope.$$phase) $scope.$digest();
+                });
+
                 $scope.compositionLoaded = function(){
                     return angular.isDefined($scope.composition_title);
                 }
