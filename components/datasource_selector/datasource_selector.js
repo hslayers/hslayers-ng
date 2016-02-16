@@ -3,7 +3,6 @@
  * @memberOf hs
  */
 define(['angular', 'ol', 'map'],
-
     function(angular, ol) {
         angular.module('hs.datasource_selector', ['hs.map'])
             .directive('hs.datasourceSelector.directive', function() {
@@ -566,12 +565,11 @@ define(['angular', 'ol', 'map'],
                     if (ds.type == "micka") {
                         if (layer.trida == 'service') {
                             if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
-                                /* TODO: SET type */
-
-                                if(Core.singleDatasources){
+                                if (Core.singleDatasources) {
                                     $('.dss-tabs a[href="#OWS"]').tab('show')
                                 } else {
                                     Core.setMainPanel('ows');
+                                }
                                 var link = layer.link;
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link));
                             } else {
