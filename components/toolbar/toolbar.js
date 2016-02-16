@@ -36,28 +36,28 @@ define(['angular', 'map', 'core', 'permalink'],
                         return "";
                     }
                 }
-                
+
                 $scope.$on('compositions.composition_loaded', function(event, data) {
                     $scope.composition_abstract = data.data.abstract || data.abstract;
                     $scope.composition_title = data.data.title || data.title;
                     $scope.composition_id = data.data.id || data.id;
                 });
-                
+
                 $scope.$on('compositions.composition_deleted', function(event, id) {
-                    if(id==$scope.composition_id) {
+                    if (id == $scope.composition_id) {
                         delete $scope.composition_title;
                         delete $scope.composition_abstract;
                         if (!$scope.$$phase) $scope.$digest();
                     }
                 });
-                
+
                 $scope.$on('core.map_reset', function(event) {
                     delete $scope.composition_title;
                     delete $scope.composition_abstract;
                     if (!$scope.$$phase) $scope.$digest();
                 });
 
-                $scope.compositionLoaded = function(){
+                $scope.compositionLoaded = function() {
                     return angular.isDefined($scope.composition_title);
                 }
 

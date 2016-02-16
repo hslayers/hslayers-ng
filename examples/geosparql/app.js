@@ -338,17 +338,17 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                     } else
                         src.options.url = '';
                 });
-                
+
                 var hr_mappings;
                 $http({
                     method: 'GET',
                     url: 'data.json'
                 }).then(function successCallback(response) {
                     hr_mappings = response.data;
-                    angular.forEach(hr_mappings["http://www.openvoc.eu/poi#categoryWaze"], function(name, category){
+                    angular.forEach(hr_mappings["http://www.openvoc.eu/poi#categoryWaze"], function(name, category) {
                         var new_lyr = new ol.layer.Vector({
-                        title: " " + name,
-                        source: new SparqlJson({
+                            title: " " + name,
+                            source: new SparqlJson({
                                 geom_attribute: '?geom',
                                 url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                                 updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
@@ -362,7 +362,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
                     })
-                    angular.forEach(hr_mappings.popular_categories, function(name, category){
+                    angular.forEach(hr_mappings.popular_categories, function(name, category) {
                         var new_lyr = new ol.layer.Vector({
                             title: " " + name,
                             source: new SparqlJson({
@@ -387,8 +387,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                     if (angular.isDefined(hr_mappings[name][value])) return hr_mappings[name][value];
                     else return attribute.value;
                 }
-                
-                $scope.getSpoiCategories = function(group){
+
+                $scope.getSpoiCategories = function(group) {
                     return hr_mappings[group];
                 }
 

@@ -111,9 +111,8 @@ define(['angular', 'ol', 'map', 'core'],
                         }, this);
                 }
 
-                
                 var wgs84Sphere = new ol.Sphere(6378137);
-                
+
                 /**
                  * format length output
                  * @param {ol.geom.LineString} line
@@ -124,19 +123,19 @@ define(['angular', 'ol', 'map', 'core'],
                     var coordinates = line.getCoordinates();
                     var sourceProj = OlMap.map.getView().getProjection();
 
-                    
+
                     for (var i = 0, ii = coordinates.length - 1; i < ii; ++i) {
                         var c1 = ol.proj.transform(coordinates[i], sourceProj, 'EPSG:4326');
                         var c2 = ol.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
                         length += wgs84Sphere.haversineDistance(c1, c2);
                     }
-                    
+
                     var output = {
                         size: length,
                         type: 'length',
                         unit: 'm'
                     };
-                    
+
                     if (length > 100) {
                         output.size = (Math.round(length / 1000 * 100) / 100);
                         output.unit = 'km';
@@ -147,7 +146,6 @@ define(['angular', 'ol', 'map', 'core'],
                     return output;
                 };
 
-
                 /**
                  * format length output
                  * @param {ol.geom.Polygon} polygon
@@ -155,7 +153,7 @@ define(['angular', 'ol', 'map', 'core'],
                  */
                 var formatArea = function(polygon) {
                     var sourceProj = OlMap.map.getView().getProjection();
-                    var geom = /** @type {ol.geom.Polygon} */(polygon.clone().transform(sourceProj, 'EPSG:4326'));
+                    var geom = /** @type {ol.geom.Polygon} */ (polygon.clone().transform(sourceProj, 'EPSG:4326'));
                     var coordinates = geom.getLinearRing(0).getCoordinates();
                     area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
                     var output = {
@@ -219,7 +217,6 @@ define(['angular', 'ol', 'map', 'core'],
                         $scope.deactivateMeasuring();
                     }
                 });
-
                 $scope.$emit('scope_loaded', "Measure");
             }
         ]);

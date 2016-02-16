@@ -60,20 +60,20 @@
                 <form>
                 <!-- Opacity slider -->
                 <div class="form-group">
-                    <label translate>Opacity: </label>
+                    <label translate>Opacity</label>
                     <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="cur_layer_opacity" ng-change="setLayerOpacity(currentlayer.layer)"/>
 
                 </div>
                 <!-- Abstract -->
                 <div class="form-group" ng-show="currentlayer.layer.get('abstract') ? true : false">
-                    <label translate>Abstract:</label>
+                    <label translate>Abstract</label>
                     <p>
                         {{currentlayer.layer.get('abstract')}}
                     </p>
                 </div>
                 <!-- Scale -->
                 <div class="form-group" ng-show="isScaleVisible(currentlayer.layer)">
-                    <label translate>Scale:</label>
+                    <label translate>Scale</label>
                     <p>
                     <span translate>from</span> 1:{{currentlayer.layer.getMinResolution()}}
                         <span translate> to </span> 1:{{currentlayer.layer.getMaxResolution().toString().replace('Infinity', '1000000000')}}
@@ -85,7 +85,7 @@
                 </div>
                 <!-- Legends -->
                 <div class="form-group">
-                    <label translate>Legend:</label>
+                    <label translate>Legend</label>
                     <p>
                          <img ng-repeat="legend in currentlayer.legends" ng-src="{{legend}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
                     </p>
@@ -95,10 +95,10 @@
             </div>
             <div class="panel-footer">
                 <div class="form-group" ng-show="layer_renamer_visible">
-                    <label translate>Title:</label>
+                    <label translate>Title</label>
                     <input type="text" class="form-control" ng-model="currentlayer.title" ng-change="setTitle()">
                 </div>
-                <span>More: </span>
+                <span translate>More</span>
                 <button class="btn btn-default glyphicon glyphicon-search" ng-click="zoomToLayer(currentlayer.layer)" ng-disabled="!layerIsZoomable(currentlayer.layer)"></button>
                 <button class="btn btn-default glyphicon glyphicon-wrench" ng-click="styleLayer(currentlayer.layer)" ng-disabled="!layerIsVector(currentlayer.layer)"></button>
                 <button class="btn btn-default glyphicon glyphicon glyphicon-font" ng-click="toggleLayerRename()"></button>

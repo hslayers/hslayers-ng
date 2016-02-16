@@ -9,7 +9,6 @@
             <form name="frmConnect" role="form" class="form-horizontal">
                 <div class="form-group">
                     <div class="col-sm-12 input-group">
-
                         <span class="input-group-addon" id="type_label"><translate>Choose format</translate></span>
                         <select class="form-control" id="ows_type" ng-model="type">
                             <option ng-repeat="type in types">{{type}}</option>
@@ -19,7 +18,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-12 input-group">
-                        <input type="url" class="form-control" name="url" ng-model="url" placeholder="External data source (URL)" required />
+                        <input type="url" class="form-control" name="url" ng-model="url" placeholder="{{'External data source (URL)'|translate}}" required />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-if="frmConnect.url.$valid" ng-click="connect()"><i class="icon-link"></i></button>
                             <button type="button" class="btn btn-danger" ng-if="frmConnect.url.$error.url"><i class="glyphicon glyphicon-alert"></i></button>

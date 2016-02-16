@@ -14,14 +14,14 @@
             </div>
         </div>
         <div class="input-group-btn">
-            <button type="button" class="btn btn-default" title="Reset map" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
+            <button type="button" class="btn btn-default" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
                 <i class="glyphicon glyphicon-repeat"></i>
             </button>
-            <button type="button" class="btn btn-default"  title="Measure lines and polygon"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
+            <button type="button" class="btn btn-default"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
                 <i class="glyphicon icon-design"></i>
             </button>
         </div>
-<!--        <button type="button" class="btn btn-default btn-mobile"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
+        <!--        <button type="button" class="btn btn-default btn-mobile"  title="{{'Search for a place'|translate}}"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
             <span class="glyphicon icon-search"></span>
         </button>-->
     </div>

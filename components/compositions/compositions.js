@@ -434,13 +434,13 @@ define(['angular', 'ol', 'map'],
                     var url = config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
                     url = utils.proxify(url);
                     ajax_req = $.ajax({
-                        url: url
-                    })
-                    .done(function(response) {
-                        $rootScope.$broadcast('compositions.composition_deleted', composition.id);
-                        $scope.loadCompositions();                      
-                        $("#hs-dialog-area #composition-delete-dialog").remove();
-                    })
+                            url: url
+                        })
+                        .done(function(response) {
+                            $rootScope.$broadcast('compositions.composition_deleted', composition.id);
+                            $scope.loadCompositions();
+                            $("#hs-dialog-area #composition-delete-dialog").remove();
+                        })
                 }
 
                 $scope.edit = function(composition) {

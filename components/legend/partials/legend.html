@@ -15,7 +15,7 @@
                     <p ng-repeat="category in layer.lyr.getSource().legend_categories | orderBy:'name'"><span style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}</p>
                 </li>
         </ul>
-        <button type="button" class="btn btn-default ng-scope" title="Reload" ng-click="refresh()">
+        <button type="button" class="btn btn-default ng-scope" title="{{'Reload'|translate}}" ng-click="refresh()">
             <i class="glyphicon icon-refresh"></i>
         </button>
     </div>

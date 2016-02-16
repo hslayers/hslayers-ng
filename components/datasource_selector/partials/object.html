@@ -2,6 +2,5 @@
 <dl ng-repeat="(key, value) in obj track by $index" ng-if='isIteratable(obj)'>
     <dt>{{key}} </dt>
     <dd hs.datasource_selector.object_directive></dd>
-    <button ng-if="key=='bbox'" cg-click="zoomTo(obj)" class='btn btn-default' translate>ZoomTo</button>
+    <button ng-if="key=='bbox'" cg-click="zoomTo(obj)" class='btn btn-default' translate>Zoom to</button>
 </dl>
-         

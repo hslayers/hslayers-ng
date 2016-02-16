@@ -47,29 +47,29 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 };
             })
 
-            .directive('hs.statusCreator.saveDialogDirective', function() {
-                return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/dialog_save.html',
-                    link: function(scope, element, attrs) {
-                        $('#status-creator-save-dialog').modal('show');
-                    }
-                };
-            })
+        .directive('hs.statusCreator.saveDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/status_creator/partials/dialog_save.html',
+                link: function(scope, element, attrs) {
+                    $('#status-creator-save-dialog').modal('show');
+                }
+            };
+        })
 
-            .directive('hs.statusCreator.focusName', function($timeout) {
-                return {
-                    link: function(scope, element, attrs) {
-                        scope.$watch(attrs.focusName, function(value) {
-                            if(value === true) {
-                              console.log('value=',value);
-                                element[0].focus();
-                                scope[attrs.focusName] = false;
-                              //});
-                            }
-                        });
-                    }
-                };
-            })
+        .directive('hs.statusCreator.focusName', function($timeout) {
+            return {
+                link: function(scope, element, attrs) {
+                    scope.$watch(attrs.focusName, function(value) {
+                        if (value === true) {
+                            console.log('value=', value);
+                            element[0].focus();
+                            scope[attrs.focusName] = false;
+                            //});
+                        }
+                    });
+                }
+            };
+        })
 
         .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', function(OlMap, Core, utils) {
             var me = {
@@ -207,7 +207,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
 
                         if (angular.isString(style_img.getSrc())) {
-                                ima.src = utils.proxify(style_img.getSrc());
+                            ima.src = utils.proxify(style_img.getSrc());
                         } else if (angular.isDefined(style_img.getImage) && typeof style_img.getImage() != 'undefined' && style_img.getImage() != null) {
                             if (angular.isDefined(style_img.getImage().src))
                                 ima.src = style_img.getImage().src;
@@ -540,7 +540,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 };
 
 
-                $scope.focusTitle = function () {
+                $scope.focusTitle = function() {
                     if ($scope.guessedTitle) {
                         $scope.title = $scope.guessedTitle;
                     }

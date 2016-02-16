@@ -10,7 +10,7 @@
             <div class="input-group col-lg-8 col-sm-12 col-xs-12" style="margin-bottom: 4px">
                 <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="loadDatasets(datasources)">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click='openMickaAdvancedSearch()'>More</button>
+                    <button type="button" class="btn btn-default" ng-click='openMickaAdvancedSearch()' translate>More</button>
                     <button type="button" class="btn btn-default" ng-click="clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
                 </span>
             </div>
@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources" ng-class="{'hs-tab-singleDS': Core.singleDatasources}">
-                <a href="#OWS" aria-controls="OWS" role="tab" data-toggle="tab">External data</a>
+                <a href="#OWS" aria-controls="OWS" role="tab" data-toggle="tab" translate>External data</a>
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
@@ -36,7 +36,7 @@
                             <div class="input-group col-lg-8 col-sm-12 col-xs-12" style="margin-bottom: 4px">
                                 <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="loadDatasets(datasources)">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-click='openMickaAdvancedSearch()'>More</button>
+                                    <button type="button" class="btn btn-default" ng-click='openMickaAdvancedSearch()' translate>More</button>
                                     <button type="button" class="btn btn-default" ng-click="clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
                                 </span>
                             </div>
@@ -50,9 +50,9 @@
                                     <b><a href="#" data-toggle="tooltip" title="{{layer.description}}" ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a></b>
                                 </span>
                                 <span class="pull-right">
-                                    <a class="btn btn-xs btn-default" ng-href='{{layerDownload(ds, layer)}}' data-toggle="tooltip" title="Download" ng-show='layerDownload(ds,layer) != "#"'><i class="glyphicon icon-download"></i></a>
+                                    <a class="btn btn-xs btn-default" ng-href='{{layerDownload(ds, layer)}}' data-toggle="tooltip" title="{{'Download'|translate}}" ng-show='layerDownload(ds,layer) != "#"'><i class="glyphicon icon-download"></i></a>
                                     <a class="btn btn-xs btn-default" ng-href='{{layerRDF(ds, layer)}}' data-toggle="tooltip" title="GeoDCAT-AP" target="_blank" ng-show='layerRDF(ds, layer) != "#"'><i class="icon-rdf"></i></a>
-                                    <button type="button" class="btn btn-xs btn-primary" ng-click="addLayerToMap(ds, layer)" ng-hide='config.dss_disallow_add == true' data-toggle="tooltip" title="Add to map"><i class="glyphicon glyphicon-plus"></i></button>
+                                    <button type="button" class="btn btn-xs btn-primary" ng-click="addLayerToMap(ds, layer)" ng-hide='config.dss_disallow_add == true' data-toggle="tooltip" title="{{'Add to map'|translate}}"><i class="glyphicon glyphicon-plus"></i></button>
                                 </span>
                             </li>
                         </ul>

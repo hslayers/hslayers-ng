@@ -1,14 +1,14 @@
 <div class="panel panel-default mainpanel hs-comp-mainpanel">
-    <div class="panel-heading" ><translate>Compositions</translate>
+    <div class="panel-heading"><translate>Compositions</translate>
         <button type="button" class="close" ng-click="Core.closePanel(this)">
             <span aria-hidden="true">×</span>
-            <span class="sr-only">Close</span>
+            <span class="sr-only" translate>Close</span>
         </button>
     </div>
     <div class="panel-body">
         <form id="hs-comp-filter">
             <div class="form-group">
-                <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="loadCompositions()">
+                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}" ng-model="query.title" ng-change="loadCompositions()">
             </div>
 
             <div id="hs-comp-filter" class="form-group">
@@ -24,7 +24,7 @@
             </div>
 
             <span class="form-group">
-                <button type="button" ng-click="toggleKeywords()" ng-if="config.comp_keywords" class="btn btn-default btn-xs">Keywords<span class="caret"></span></button>
+                <button type="button" ng-click="toggleKeywords()" ng-if="config.comp_keywords" class="btn btn-default btn-xs"><translate>Keywords</translate><span class="caret"></span></button>
                 <div class="keywords-panel" ng-if="config.comp_keywords">
                     <div style="width: 45%; display:inline-block" class="checkbox" ng-repeat="(keyword, enabled) in keywords">
                         <label>
@@ -52,8 +52,8 @@
     <div class="panel-footer">
         <nav>
             <ul class="pager" ng-show="pages.length>0">
-                <li><a href="#" ng-click="loadCompositions(current_page - 1)" aria-label="Previous">Previous</a></li>
-                <li><a href="#" ng-click="loadCompositions(current_page + 1)" aria-label="Next">Next</a></li>
+                <li><a href="#" ng-click="loadCompositions(current_page - 1)" aria-label="Previous" translate>Previous</a></li>
+                <li><a href="#" ng-click="loadCompositions(current_page + 1)" aria-label="Next" translate>Next</a></li>
             </ul>
         </nav>
     </div>

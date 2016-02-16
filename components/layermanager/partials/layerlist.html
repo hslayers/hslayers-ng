@@ -3,8 +3,8 @@
         <li ng-repeat="layer in layers | filter:query track by $index" id="layer-{{$index}}" class="list-group-item hs-lm-item" ng-if="layerBelongsToFolder(layer, obj)" ng-click="setCurrentLayer(layer, $index)" ng-class="{detailActivated : 'currentlayer == layer'}">
             <div class="hs-lm-item-title">{{layer.title}}</div>
             <div class="hs-lm-item-controls">
-                <i class="glyphicon glyphicon-warning-sign hs-lm-warning-scale" title="This layer is not available in this scale" data-toggle="tooltip" data-container="body" data-placement="auto" ng-show="layer.grayed" ng-click="$event.stopPropagation()" ></i>
-                <i class="glyphicon glyphicon-info-sign hs-lm-queryable" title="This layer is queryable" ng-show="isLayerQueryable(layer)" ng-click="$event.stopPropagation()" ></i>
+                <i class="glyphicon glyphicon-warning-sign hs-lm-warning-scale" title="{{'This layer is not available in this scale'|translate}}" data-toggle="tooltip" data-container="body" data-placement="auto" ng-show="layer.grayed" ng-click="$event.stopPropagation()" ></i>
+                <i class="glyphicon glyphicon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}" ng-show="isLayerQueryable(layer)" ng-click="$event.stopPropagation()" ></i>
                 <button type="button" class="btn btn-xs btn-default" ng-click="changeLayerVisibility(!layer.visible, layer);$event.stopPropagation()" ><i class="glyphicon"ng-class="layer.visible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
             </div>
         </li>

@@ -43,7 +43,10 @@ define(['angular', 'ol', 'styles'],
                                 url: url,
                                 success: function(data) {
                                     if (data.type == 'GeometryCollection') {
-                                        var temp = {type: "Feature", geometry: data};
+                                        var temp = {
+                                            type: "Feature",
+                                            geometry: data
+                                        };
                                         data = temp;
                                     }
                                     src.addFeatures(format.readFeatures(data, {

@@ -17,9 +17,9 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                                 return [scope.Core.sidebarExpanded, angular.element('.panelspace').width()]
                             },
                             function(value) {
-                                setTimeout(function(){
-                                     scope.Core.updateMapSize();
-                                },0)
+                                setTimeout(function() {
+                                    scope.Core.updateMapSize();
+                                }, 0)
                             }, true
                         )
                     }

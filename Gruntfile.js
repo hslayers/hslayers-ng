@@ -4,18 +4,18 @@ module.exports = function(grunt) {
     grunt.initConfig({
         nggettext_extract: {
             pot: {
-              files: {
-                'po/template.pot': ['components/**/*.html']
-              }
+                files: {
+                    'po/template.pot': ['components/**/*.html']
+                }
+            }
+        },
+        nggettext_compile: {
+          all: {
+            files: {
+              'components/translations/js/translations.js': ['po/*.po']
             }
           },
-          nggettext_compile: {
-            all: {
-              files: {
-                'components/translations/js/translations.js': ['po/*.po']
-              }
-            },
-          },
+        },
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
             options: {

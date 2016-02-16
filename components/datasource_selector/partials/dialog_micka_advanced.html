@@ -10,7 +10,7 @@
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <form>
                     <div class="form-group">
-                        <label ng-attr-for="ds-adv-text" class="control-label" translate>Fulltext:</label> 
+                        <label ng-attr-for="ds-adv-text" class="control-label" translate>Fulltext</label> 
                         <input type="text" id="ds-adv-text" class="form-control" ng-model="query.text_filter">
                     </div>
                     <div>
@@ -25,7 +25,7 @@
                         </label>
                     </div>
                      <div class="form-group">
-                        <label ng-attr-for="ds-adv-keywords" class="control-label" translate>Keywords:</label> 
+                        <label ng-attr-for="ds-adv-keywords" class="control-label" translate>Keywords</label> 
                         <div class="input-group">
                             <input type="text" id="ds-adv-keywords" class="form-control" ng-model="query.keywords">
                             <span class="input-group-btn">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                      <div class="form-group">
-                        <label ng-attr-for="ds-adv-organization" class="control-label" translate>Organization name:</label>
+                        <label ng-attr-for="ds-adv-organization" class="control-label" translate>Organization name</label>
                         <div class="input-group">
                             <input type="text" id="ds-adv-organization" class="form-control" ng-model="query.OrganisationName">
                             <span class="input-group-btn">
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div class="form-group" ng-show='false'>
-                        <label ng-attr-for="ds-type" class="control-label" translate>Type:</label> 
+                        <label ng-attr-for="ds-type" class="control-label" translate>Type</label> 
                         <select class="form-control" ng-attr-id="ds-type" ng-model="query.type" ng-change='advancedMickaTypeChanged()'>
                             <option value=""></option>
                             <option value="data" translate>Data</option>
@@ -66,7 +66,7 @@
                     
                      <div class="form-group" ng-show="query.type=='data'">
                         <label ng-attr-for="ds-application-type" class="control-label">
-                            <span translate>Topic category:</span>
+                            <span translate>Topic category</span>
                         </label> 
                         <select class="form-control" ng-attr-id="ds-application-type" ng-model="query.TopicCategory">  
                             <option ng-repeat="type in micka_ds.code_lists.topicCategory" ng-attr-value="{{type.value}}">{{type.name}}</option>
@@ -74,7 +74,7 @@
                     </div>
                     
                     <div class="form-group" ng-show="query.type=='data'">
-                        <label ng-attr-for="ds-type" class="control-label" translate>Scale 1:</label> 
+                        <label ng-attr-for="ds-type" class="control-label"><translate>Scale</translate> 1:</label> 
                         <select class="form-control" ng-attr-id="ds-type" ng-model="query.Denominator">
                             <option value="2000">2000</option>
                             <option value="2500">2500</option>
@@ -87,7 +87,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label ng-attr-for="ds-sortby" class="control-label" translate>Order by:</label> 
+                        <label ng-attr-for="ds-sortby" class="control-label" translate>Order by</label> 
                         <select class="form-control" ng-attr-id="ds-sortby" ng-model="query.sortby">
                             <option value="title" translate>Title</option>
                             <option value="date">Date stamp</option>

@@ -9,7 +9,7 @@
         <div class="form-group">
             <img ng-src="{{ajax_loader}}" ng-show="loading"/>
             <div class="filter_charts"  ng-repeat="group in groupings">
-                Filter by {{group.name}}
+                <translate>Filter by {{group.name}}</translate>
                 <div id='fc_chart{{group.id}}'></div>
             </div>
         </div>

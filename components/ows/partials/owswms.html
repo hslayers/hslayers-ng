@@ -64,7 +64,6 @@
                 <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">{{sub_layer.Title}} <input type="checkbox" class="layer-checked" ng-model="sub_layer.checked" ng-if="!hasNestedLayers(sub_layer)" />
                     <ul class="list-group" ng-if="hasNestedLayers(sub_layer)">
                         <li ng-repeat="sub_layer2 in sub_layer.Layer" class="list-group-item">{{sub_layer2.Title}} <input type="checkbox" class="layer-checked" ng-model="sub_layer2.checked" />
-                    
                         </li>
                     </ul>
                 </li>
