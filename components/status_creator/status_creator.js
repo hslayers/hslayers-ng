@@ -396,7 +396,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         success: function(j) {
                             $scope.hasPermission = j.results.hasPermission;
                             $scope.titleFree = j.results.titleFree
-
+                            if (j.results.guessedTitle) {
+                                $scope.guessedTitle = j.results.guessedTitle;
+                            }
                             if ($scope.titleFree) {
                                 $scope.save(true);
                             } else {
@@ -412,6 +414,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $scope.showResultDialog()
                         }
                     })
+                }
+
+                $scope.selectNewTitle = function() {
+                    $scope.title = $scope.guessedTitle;
+                    $scope.changeTitle = true;
                 }
 
                 $scope.save = function(save_as_new) {
@@ -534,6 +541,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
 
                 $scope.focusTitle = function () {
+                    if ($scope.guessedTitle) {
+                        $scope.title = $scope.guessedTitle;
+                    }
                     setTimeout(function() {
                         $('#hs-stc-title').focus();
                     }, 0);
