@@ -56,6 +56,21 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 };
             })
 
+            .directive('hs.statusCreator.focusName', function($timeout) {
+                return {
+                    link: function(scope, element, attrs) {
+                        scope.$watch(attrs.focusName, function(value) {
+                            if(value === true) {
+                              console.log('value=',value);
+                                element[0].focus();
+                                scope[attrs.focusName] = false;
+                              //});
+                            }
+                        });
+                    }
+                };
+            })
+
         .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', function(OlMap, Core, utils) {
             var me = {
                 map2json: function(map, $scope) {
@@ -382,14 +397,15 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $scope.hasPermission = j.results.hasPermission;
                             $scope.titleFree = j.results.titleFree
 
-                            if ($scope.titleFree && $scope.hasPermission) {
+                            if ($scope.titleFree) {
+                                $scope.save(true);
+                            } else {
+                                if (!$scope.$$phase) $scope.$digest();
+                                $("#hs-dialog-area #status-creator-save-dialog").remove();
+                                var el = angular.element('<div hs.status_creator.save_dialog_directive></span>');
+                                $("#hs-dialog-area").append(el)
+                                $compile(el)($scope);
                             }
-
-                            if (!$scope.$$phase) $scope.$digest();
-                            $("#hs-dialog-area #status-creator-save-dialog").remove();
-                            var el = angular.element('<div hs.status_creator.save_dialog_directive></span>');
-                            $("#hs-dialog-area").append(el)
-                            $compile(el)($scope);
                         },
                         error: function() {
                             $scope.success = false;
@@ -514,6 +530,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $scope.organization = user.userInfo.org.name;
                         }
                     }
+                };
+
+
+                $scope.focusTitle = function () {
+                    setTimeout(function() {
+                        $('#hs-stc-title').focus();
+                    }, 0);
                 };
 
                 $scope.$on('compositions.composition_loaded', function(event, data) {

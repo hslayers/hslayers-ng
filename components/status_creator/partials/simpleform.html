@@ -70,7 +70,7 @@
 <div class="panel-footer row" id="hs-stc-footer">
     <div class="btn-group" role="group" aria-label="Save composition">
         <button type="button" class="btn btn-default" id="hs-stc-cancel" translate ng-click="cancel()">Cancel</button>
-        <button type="button" class="btn btn-primary" id="hs-stc-saveas" translate ng-click="confirmSave()">Save</button>
+        <button type="button" class="btn btn-primary" id="hs-stc-saveas" translate ng-disabled="!title" ng-click="confirmSave()">Save</button>
     </div>
 </div>
 
