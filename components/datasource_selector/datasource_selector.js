@@ -566,7 +566,12 @@ define(['angular', 'ol', 'map'],
                     if (ds.type == "micka") {
                         if (layer.trida == 'service') {
                             if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
-                                Core.setMainPanel('ows');
+                                /* TODO: SET type */
+
+                                if(Core.singleDatasources){
+                                    $('.dss-tabs a[href="#OWS"]').tab('show')
+                                } else {
+                                    Core.setMainPanel('ows');
                                 var link = layer.link;
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link));
                             } else {
