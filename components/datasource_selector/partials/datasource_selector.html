@@ -57,13 +57,15 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="panel-footer">
-                        <h5 class="list-group-item-heading"><span ng-show='ds.matched>0 && ds.next>0'> Results {{ds.start + 1}} - {{ds.next}}</span>
-                            <div class="btn-group" role="group" aria-label="..." ng-show='ds.matched>0 && (ds.next>0 || ds.start>0)'>
-                                <button type="button" class="btn btn-default" ng-click='getPreviousRecords(ds)'>&laquo;</button>
-                                <button type="button" class="btn btn-default" ng-click='getNextRecords(ds)'  ng-show='ds.next>0'>&raquo;</button>
-                            </div>
-                        </h5>
+                    <div class="panel-footer" ng-show='ds.matched>0'>
+                        <nav>
+                          <ul class="pager">
+                            <li class="previous" ng-class="ds.start == 0 ? 'disabled':''" ng-click='getPreviousRecords(ds)'><a href="#"><span aria-hidden="true">&larr;</span></a></li>
+                            <li ng-if="ds.next != 0"><span> Results {{ds.start + 1}} - {{ds.next}}</span></li>
+                            <li ng-if="ds.next == 0"><span> Results {{ds.start + 1}} - {{ds.matched}}</span></li>
+                            <li class="next" ng-class="ds.next == 0 ? 'disabled':''" ng-click='getNextRecords(ds)'><a href="#"><span aria-hidden="true">&rarr;</span></a></li>
+                          </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

@@ -414,14 +414,27 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.getPreviousRecords = function(ds) {
-                    ds.start -= 10;
+                    if (ds.start - 10 < 0) {
+                        ds.start = 0;
+                        ds.next = 10;
+                    } else {
+                        ds.start -= 10;
+                        ds.next = ds.start + 10;
+                    }
                     $scope.loadDataset(ds);
                 }
 
                 $scope.getNextRecords = function(ds) {
-                    ds.start = ds.next;
-                    ds.next += 10;
-                    $scope.loadDataset(ds);
+                    if (ds.next != 0) {
+                        ds.start = Math.floor(ds.next / 10) * 10;
+
+                        if (ds.next + 10 > ds.matched) {
+                            ds.next = ds.matched;
+                        } else {
+                            ds.next += 10;
+                        }
+                        $scope.loadDataset(ds);
+                    }
                 }
 
                 function addExtentFeature(record) {
