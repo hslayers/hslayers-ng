@@ -24,8 +24,9 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                     $scope.image_formats = [];
                     $scope.query_formats = [];
                     $scope.tile_size = 512;
-                    $scope.setUrlAndConnect = function(url) {
+                    $scope.setUrlAndConnect = function(url, type) {
                         $scope.url = url;
+                        $scope.type = type;
                         $scope.connect();
                     }
                     $scope.connect = function() {
@@ -91,7 +92,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                     if (permalink.getParamValue('wms_to_connect')) {
                         var wms = permalink.getParamValue('wms_to_connect');
                         Core.setMainPanel('ows');
-                        $scope.setUrlAndConnect(wms);
+                        $scope.setUrlAndConnect(wms, 'WMS');
                     }
 
                     if (permalink.getParamValue('geojson_to_connect')) {

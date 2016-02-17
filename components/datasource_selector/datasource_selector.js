@@ -571,7 +571,7 @@ define(['angular', 'ol', 'map'],
                                     Core.setMainPanel('ows');
                                 }
                                 var link = layer.link;
-                                hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link));
+                                hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WMS');
                             } else {
                                 alert('Service type "' + layer.serviceType + '" not supported.');
                             }

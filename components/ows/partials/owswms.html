@@ -56,7 +56,7 @@
             <button class="btn btn-primary pull-right" ng-click="tryAddLayers(true)"><i class="glyphicon glyphicon-plus"></i></button>
         </a>
         <li ng-repeat="layer in services.Layer" class="list-group-item">
-            <div class="row">
+            <div>
                     {{layer.Title}} 
                     <input type="checkbox" class="layer-checked pull-right" ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" />
             </div>

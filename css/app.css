@@ -704,5 +704,7 @@ a.sidebar-main {
     margin: 3px;
 }
 
-
-
+.hs-panel-margin .form-horizontal .form-group {
+    margin-right: 0;
+    margin-left: 0;
+}
