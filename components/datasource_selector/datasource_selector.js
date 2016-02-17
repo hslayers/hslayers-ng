@@ -103,7 +103,8 @@ define(['angular', 'ol', 'map'],
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
                 $scope.selected_layer = null;
-                $scope.filter_by_extent = true;
+                $scope.filter = {};
+                $scope.filter.byExtent = true;
 
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
@@ -326,7 +327,7 @@ define(['angular', 'ol', 'map'],
                         case "micka":
                             var advanced_search_visible = $('#ds-advanced-micka').is(':visible');
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                            var bbox = $scope.filter_by_extent ? "BBOX='" + b.join(' ') + "'" : '';
+                            var bbox = $scope.filter.byExtent ? "BBOX='" + b.join(' ') + "'" : '';
                             var ue = encodeURIComponent;
                             var text = angular.isUndefined($scope.query.text_filter) || !advanced_search_visible ? $scope.query.title : $scope.query.text_filter;
                             var query = [
@@ -671,7 +672,7 @@ define(['angular', 'ol', 'map'],
                         if (something_done && !$scope.$$phase) $scope.$digest();
                     });
                     $scope.$on('map.extent_changed', function(event, data, b) {
-                        if ($scope.filter_by_extent) $scope.loadDatasets($scope.datasources);
+                        if ($scope.filter.byExtent) $scope.loadDatasets($scope.datasources);
                     });
                     OlMap.map.addLayer(extent_layer);
                     if (angular.isUndefined($scope.datasources[0].loaded) && Core.panelVisible($scope.panel_name, $scope)) {

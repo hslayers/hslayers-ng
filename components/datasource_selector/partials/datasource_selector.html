@@ -41,7 +41,7 @@
                                 </span>
                             </div>
 
-                            <input type="checkbox" ng-model="filter_by_extent" ng-change='loadDatasets(datasources)'><span translate>Filter by map extent</span>
+                            <input type="checkbox" ng-model="filter.byExtent" ng-change='loadDatasets(datasources)'><span translate>Filter by map extent</span>
                         </div>
                         <ul class="list-group">
                             <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
