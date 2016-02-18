@@ -377,7 +377,7 @@ define(['angular', 'ol', 'map'],
 
                 $scope.loadStatusManagerCompositions = function(bbox) {
                     var url = config.status_manager_url;
-                    var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent('&title=' + $scope.query.title) : '';
+                    var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? '&q=' + encodeURIComponent($scope.query.title) : '';
                     url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
                     url = utils.proxify(url);
                     ajax_req = $.ajax({
