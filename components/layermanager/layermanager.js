@@ -163,7 +163,10 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     angular.extend(new_layer, {
                         time_step: metadata.timeStep,
                         time_unit: metadata.timeUnit,
-                        date_format: getDateFormatForTimeSlider(metadata.timeUnit)
+                        date_format: getDateFormatForTimeSlider(metadata.timeUnit),
+                        date_from: new Date(metadata.timeInterval[0]),
+                        date_till: new Date(metadata.timeInterval[1]),
+                        time:  new Date(metadata.timeInterval[0])
                     });
                     setLayerTimeSliderIntervals(new_layer);
                 }
