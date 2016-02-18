@@ -1,0 +1,530 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 1.8.4\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"2);\n"
+"Language: lv_LV\n"
+
+#: components/compositions/partials/dialog_info.html:12
+#: components/status_creator/partials/simpleform.html:9
+msgid "Abstract"
+msgstr "Apraksts"
+
+#: components/layermanager/partials/layermanager.html:69
+#: components/status_creator/partials/form.html:21
+msgid "Abstract:"
+msgstr "Apraksts:"
+
+#: components/ows/partials/owsnonwms.html:30
+#: components/ows/partials/owsprioritized.html:7
+msgid "Add"
+msgstr "Pievienot"
+
+#: components/ows/partials/ows.html:2
+msgid "Add external data"
+msgstr "Pievienot ārējus datu avotus"
+
+#: components/datasource_selector/partials/dialog_metadata.html:19
+msgid "Add to map"
+msgstr "Pievienot kartei"
+
+#: components/status_creator/partials/form.html:71
+msgid "Address:"
+msgstr ""
+
+#: components/geolocation/partials/geolocation.html:5
+msgid "Altitude"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:22
+msgid "Baselayers"
+msgstr "Pamatslāņi"
+
+#: components/compositions/partials/dialog_overwriteconfirm.html:17
+#: components/ows/partials/dialog_proxyconfirm.html:15
+#: components/status_creator/partials/simpleform.html:72
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: components/ows/partials/ows.html:13
+msgid "Choose format"
+msgstr ""
+
+#: components/status_creator/partials/form.html:74
+msgid "City:"
+msgstr ""
+
+#: components/datasource_selector/partials/datasource_selector.html:14
+#: components/datasource_selector/partials/datasource_selector.html:40
+#: components/datasource_selector/partials/dialog_micka_advanced.html:101
+#: components/measure/partials/measure.html:17
+#: components/search/partials/searchinput.html:4
+#: components/search/partials/searchresults.html:10
+msgid "Clear"
+msgstr "Notīrīt"
+
+#: components/compositions/partials/dialog_info.html:30
+#: components/compositions/partials/dialog_overwriteconfirm.html:5
+#: components/compositions/partials/dialog_share.html:14
+#: components/compositions/partials/dialog_share.html:5
+#: components/datasource_selector/partials/datasource_selector.html:5
+#: components/datasource_selector/partials/dialog_metadata.html:20
+#: components/datasource_selector/partials/dialog_metadata.html:5
+#: components/datasource_selector/partials/dialog_micka_advanced.html:102
+#: components/datasource_selector/partials/dialog_micka_advanced.html:5
+#: components/datasource_selector/partials/dialog_micka_suggestions.html:34
+#: components/datasource_selector/partials/dialog_micka_suggestions.html:5
+#: components/feature_crossfilter/partials/f_crossfilter.html:5
+#: components/layermanager/partials/dialog_removeall.html:5
+#: components/layermanager/partials/layermanager.html:5
+#: components/lodexplorer/partials/lodexplorer.html:5
+#: components/lodexplorer/partials/sparqllogdialog.html:16
+#: components/lodexplorer/partials/sparqllogdialog.html:6
+#: components/measure/partials/measure.html:5
+#: components/ows/partials/dialog_getcapabilities_error.html:14
+#: components/ows/partials/dialog_getcapabilities_error.html:5
+#: components/ows/partials/dialog_proxyconfirm.html:5
+#: components/ows/partials/ows.html:5
+#: components/query/partials/infopanel.html:5
+#: components/search/partials/searchresults.html:5
+#: components/status_creator/partials/dialog.html:17
+#: components/status_creator/partials/dialog.html:5
+#: components/status_creator/partials/dialog_result.html:15
+#: components/status_creator/partials/dialog_result.html:5
+msgid "Close"
+msgstr "Aizvērt"
+
+#: components/styles/partials/styler.html:19
+#: components/styles/partials/styler.html:59
+msgid "Color"
+msgstr "Krāsa"
+
+#: components/lodexplorer/partials/lodexplorer.html:39
+msgid "Color gradient limits"
+msgstr ""
+
+#: components/compositions/partials/compositions.html:2
+msgid "Compositions"
+msgstr "Kompozīcijas"
+
+#: components/compositions/partials/dialog_overwriteconfirm.html:14
+msgid "Continue without saving"
+msgstr ""
+
+#: components/status_creator/partials/form.html:83
+msgid "Country:"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:49
+msgid "Data"
+msgstr "Dati"
+
+#: components/lodexplorer/partials/lodexplorer.html:11
+msgid "Dataset:"
+msgstr ""
+
+#: components/datasource_selector/partials/datasource_selector.html:2
+msgid "Datasources"
+msgstr "Datu avoti"
+
+#: components/layermanager/partials/dialog_removeall.html:10
+msgid "Do you really want to remove all layers?"
+msgstr ""
+
+#: components/status_creator/partials/form.html:89
+msgid "E-mail:"
+msgstr ""
+
+#: components/permalink/partials/directive.html:12
+msgid "Embed code"
+msgstr ""
+
+#: components/lodexplorer/partials/lodexplorer.html:2
+msgid "Eurostat explorer"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:6
+msgid "Extended search parameters for Micka"
+msgstr ""
+
+#: components/compositions/partials/dialog_info.html:16
+#: components/status_creator/partials/simpleform.html:39
+msgid "Extent"
+msgstr ""
+
+#: components/status_creator/partials/form.html:30
+msgid "Extent:"
+msgstr ""
+
+#: components/status_creator/partials/dialog_result.html:12
+msgid "Failed to save to status manager"
+msgstr ""
+
+#: components/compositions/partials/compositions.html:17
+#: components/datasource_selector/partials/datasource_selector.html:44
+msgid "Filter by map extent"
+msgstr ""
+
+#: components/lodexplorer/partials/lodexplorer.html:29
+msgid "Filter by value"
+msgstr ""
+
+#: components/feature_crossfilter/partials/f_crossfilter.html:2
+msgid "Filter features"
+msgstr ""
+
+#: components/lodexplorer/partials/lodexplorer.html:32
+msgid ""
+"Filter the values which are in a speciffic interval by dragging on the chart "
+"below"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_suggestions.html:13
+msgid "Filter:"
+msgstr "Filtrs:"
+
+#: components/ows/partials/owsnonwms.html:17
+#: components/ows/partials/owswms.html:46
+msgid "Folder name"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:13
+msgid "Fulltext:"
+msgstr ""
+
+#: components/styles/partials/styler.html:81
+msgid "Icon"
+msgstr "Ikona"
+
+#: components/ows/partials/owswms.html:3
+msgid "Image format"
+msgstr ""
+
+#: components/query/partials/infopanel.html:2
+msgid "Info"
+msgstr "Informācija"
+
+#: components/status_creator/partials/simpleform.html:33
+msgid "Keywords"
+msgstr "Atslēgas vārdi"
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:28
+#: components/status_creator/partials/form.html:26
+msgid "Keywords:"
+msgstr "Atslēgas vārdi:"
+
+#: components/compositions/partials/dialog_info.html:21
+msgid "Layer"
+msgstr "Slānis"
+
+#: components/layermanager/partials/dialog_removeall.html:6
+#: components/layermanager/partials/layermanager.html:2
+msgid "Layer manager"
+msgstr "Slāņu pārvaldība"
+
+#: components/status_creator/partials/simpleform.html:57
+msgid "Layers"
+msgstr "Slāņi"
+
+#: components/status_creator/partials/form.html:45
+msgid "Layers:"
+msgstr "Slāņi:"
+
+#: components/legend/partials/legend.html:2
+msgid "Legend"
+msgstr "Leģenda"
+
+#: components/layermanager/partials/layermanager.html:88
+msgid "Legend:"
+msgstr "Leģenda:"
+
+#: components/styles/partials/styler.html:33
+#: components/styles/partials/styler.html:65
+msgid "Line Color"
+msgstr ""
+
+#: components/styles/partials/styler.html:39
+#: components/styles/partials/styler.html:76
+msgid "Line width"
+msgstr ""
+
+#: components/status_creator/partials/simpleform.html:20
+msgid "Make public"
+msgstr ""
+
+#: components/sidebar/partials/sidebar.html:12
+msgid "Manage and Style Layers"
+msgstr ""
+
+#: components/sidebar/partials/sidebar.html:7
+msgid "Map Compositions"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:38
+msgid "Map Content"
+msgstr ""
+
+#: components/ows/partials/owswms.html:29
+msgid ""
+"Map and layer projection do not match! Resampling will be used. This may "
+"lead to unexpectable results."
+msgstr ""
+
+#: components/measure/partials/measure.html:2
+msgid "Measure"
+msgstr ""
+
+#: components/compositions/partials/dialog_overwriteconfirm.html:15
+msgid "Merge compositions"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_metadata.html:7
+msgid "Metadata for"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:84
+msgid "Metadata in"
+msgstr ""
+
+#: components/status_creator/partials/simpleform.html:3
+msgid "Name"
+msgstr ""
+
+#: components/status_creator/partials/dialog.html:14
+#: components/status_creator/partials/panel.html:13
+msgid "Next"
+msgstr ""
+
+#: components/layermanager/partials/dialog_removeall.html:15
+msgid "No"
+msgstr ""
+
+#: components/datasource_selector/partials/datasource_selector.html:47
+#: components/datasource_selector/partials/dialog_micka_suggestions.html:19
+msgid "No results"
+msgstr ""
+
+#: components/compositions/partials/compositions.html:22
+msgid "Only mine"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:63
+msgid "Opacity:"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:90
+msgid "Order by:"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:37
+msgid "Organization name:"
+msgstr ""
+
+#: components/status_creator/partials/form.html:65
+msgid "Organization:"
+msgstr ""
+
+#: components/status_creator/partials/panel.html:11
+msgid "Overwrite"
+msgstr ""
+
+#: components/compositions/partials/dialog_overwriteconfirm.html:6
+msgid "Overwrite existing map?"
+msgstr ""
+
+#: components/status_creator/partials/form.html:62
+msgid "Person:"
+msgstr ""
+
+#: components/status_creator/partials/form.html:86
+msgid "Phone:"
+msgstr ""
+
+#: components/status_creator/partials/form.html:68
+msgid "Position:"
+msgstr ""
+
+#: components/status_creator/partials/form.html:80
+msgid "Postal code:"
+msgstr ""
+
+#: components/print/partials/printdialog.html:15
+#: components/print/partials/printdialog.html:3
+msgid "Print"
+msgstr ""
+
+#: components/ows/partials/owswms.html:12
+msgid "Query format"
+msgstr ""
+
+#: components/styles/partials/styler.html:71
+msgid "Radius"
+msgstr ""
+
+#: components/lodexplorer/partials/lodexplorer.html:19
+msgid ""
+"Reduce the number of dimensions by clicking on categories in each of the "
+"charts. Otherwise you might be visualizing multiple units and years at once."
+msgstr ""
+
+#: components/ows/partials/dialog_proxyconfirm.html:6
+msgid "Resample layer"
+msgstr ""
+
+#: components/status_creator/partials/dialog.html:15
+#: components/status_creator/partials/simpleform.html:73
+msgid "Save"
+msgstr ""
+
+#: components/status_creator/partials/dialog.html:16
+#: components/status_creator/partials/panel.html:12
+msgid "Save as"
+msgstr ""
+
+#: components/compositions/partials/dialog_overwriteconfirm.html:16
+msgid "Save changes first"
+msgstr ""
+
+#: components/status_creator/partials/dialog.html:7
+#: components/status_creator/partials/panel.html:2
+msgid "Save current map"
+msgstr ""
+
+#: components/status_creator/partials/dialog_result.html:6
+msgid "Saving to status manager"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:77
+msgid "Scale 1:"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:76
+msgid "Scale:"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:100
+msgid "Search"
+msgstr ""
+
+#: components/search/partials/searchresults.html:2
+msgid "Search results"
+msgstr ""
+
+#: components/ows/partials/owswms.html:55
+msgid "Select All Layers"
+msgstr ""
+
+#: components/lodexplorer/partials/lodexplorer.html:42
+msgid ""
+"Select the color interval by dragging on the chart below. The regions on "
+"left side will be blue and red on the right side"
+msgstr ""
+
+#: components/compositions/partials/dialog_share.html:7
+#: components/permalink/partials/directive.html:3
+msgid "Share map"
+msgstr ""
+
+#: components/lodexplorer/partials/sparqllogdialog.html:7
+msgid "Sparql query log"
+msgstr ""
+
+#: components/geolocation/partials/geolocation.html:4
+msgid "Speed"
+msgstr ""
+
+#: components/status_creator/partials/form.html:77
+msgid "State:"
+msgstr ""
+
+#: components/styles/partials/styler.html:3
+msgid "Style layer"
+msgstr ""
+
+#: components/status_creator/partials/dialog_result.html:11
+msgid "Successfuly saved to status manager"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_suggestions.html:6
+msgid "Suggestions"
+msgstr ""
+
+#: components/ows/partials/owswms.html:39
+msgid "Tile size"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:92
+#: components/ows/partials/owsnonwms.html:3
+#: components/print/partials/printdialog.html:12
+msgid "Title"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:98
+#: components/status_creator/partials/form.html:18
+msgid "Title:"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:69
+msgid "Topic category:"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_micka_advanced.html:46
+msgid "Type:"
+msgstr ""
+
+#: components/status_creator/partials/form.html:44
+#: components/status_creator/partials/simpleform.html:54
+msgid "Use current map extent"
+msgstr ""
+
+#: components/ows/partials/dialog_proxyconfirm.html:14
+msgid "Use proxy"
+msgstr ""
+
+#: components/ows/partials/owswms.html:32
+msgid "Use tiles"
+msgstr ""
+
+#: components/ows/partials/dialog_getcapabilities_error.html:6
+msgid "WMS Capabilities parsing problem"
+msgstr ""
+
+#: components/status_creator/partials/form.html:92
+msgid "WWW:"
+msgstr ""
+
+#: components/layermanager/partials/dialog_removeall.html:14
+msgid "Yes"
+msgstr ""
+
+#: components/datasource_selector/partials/dialog_metadata.html:18
+msgid "Zoom to"
+msgstr ""
+
+#: components/datasource_selector/partials/object.html:5
+msgid "ZoomTo"
+msgstr ""
+
+#: components/compositions/partials/dialog_info.html:7
+msgid "detail"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:78
+msgid "from"
+msgstr ""
+
+#: components/measure/partials/measure.html:2
+msgid "multiple shapes"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:79
+msgid "to"
+msgstr ""
