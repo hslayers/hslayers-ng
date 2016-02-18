@@ -569,7 +569,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 });
 
                 $scope.$on('core.map_reset', function(event, data) {
-                    $scope.id = $scope.abstract = $scope.title = $scope.keywords = $scope.current_composition = '';
+                    $scope.id = $scope.abstract = $scope.title = $scope.current_composition_title = $scope.keywords = $scope.current_composition = '';
                     $('#stc-next').show();
                     $('#stc-download').hide();
                     $('#stc-save, #stc-saveas').hide();
