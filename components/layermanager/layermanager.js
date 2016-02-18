@@ -458,7 +458,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @memberOf hs.layermanager.controller
              * @description Removes all layers which don't have 'removable' attribute set to false
              */
-            $scope.removeAllLayers = function(confirmed) {
+            $scope.removeAllLayers = function(confirmed, loadComp) {
                 if (typeof confirmed == 'undefined') {
                     if ($("#hs-dialog-area #hs-remove-all-dialog").length == 0) {
                         var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></span>');
@@ -477,6 +477,10 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 });
                 while (to_be_removed.length > 0) {
                     OlMap.map.removeLayer(to_be_removed.shift());
+                }
+
+                if (loadComp == true) {
+                    $rootScope.$broadcast('compositions.load_composition', $scope.composition_id);
                 }
             }
 
@@ -564,6 +568,23 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     if (!$scope.$$phase) $scope.$digest();
                 }, 500);
             });
+
+            $scope.$on('compositions.composition_loaded', function(event, data) {
+                $scope.composition_id = data.data.id || data.id;
+            });
+
+            $scope.$on('compositions.composition_deleted', function(event, id) {
+                if (id == $scope.composition_id) {
+                    delete $scope.composition_id;
+                    if (!$scope.$$phase) $scope.$digest();
+                }
+            });
+
+            $scope.$on('core.map_reset', function(event) {
+                delete $scope.composition_id;
+                if (!$scope.$$phase) $scope.$digest();
+            });
+
             map.getLayers().on("add", layerAdded);
             map.getLayers().on("remove", layerRemoved);
             $scope.$emit('scope_loaded', "LayerManager");

@@ -405,7 +405,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: components/layermanager/partials/dialog_removeall.html:15
+#: components/layermanager/partials/dialog_removeall.html:16
 msgid "No"
 msgstr ""
 
@@ -503,6 +503,14 @@ msgstr ""
 
 #: components/legend/partials/legend.html:18
 msgid "Reload"
+msgstr ""
+
+#: components/layermanager/partials/dialog_removeall.html:15
+msgid "Reload composition"
+msgstr ""
+
+#: components/layermanager/partials/dialog_removeall.html:14
+msgid "Remove all added layers"
 msgstr ""
 
 #: components/ows/partials/dialog_proxyconfirm.html:6
@@ -659,10 +667,6 @@ msgstr ""
 
 #: components/status_creator/partials/form.html:54
 msgid "Write"
-msgstr ""
-
-#: components/layermanager/partials/dialog_removeall.html:14
-msgid "Yes"
 msgstr ""
 
 #: components/status_creator/partials/dialog_save.html:22

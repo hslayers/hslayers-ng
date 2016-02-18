@@ -500,6 +500,11 @@ define(['angular', 'ol', 'map'],
                     composition_parser.composition_edited = true;
                 });
 
+                $rootScope.$on('compositions.load_composition', function(event, id) {
+                    id = (config.status_manager_url || '/wwwlibs/statusmanager2/index.php') + '?request=load&id=' + id;
+                    composition_parser.load(id);
+                });
+
                 $rootScope.$on('infopanel.feature_selected', function(event, feature, selector) {
                     var record = feature.get("record");
                     $scope.use_callback_for_edit = false;
@@ -569,8 +574,8 @@ define(['angular', 'ol', 'map'],
                 }
                 if (permalink.getParamValue('composition')) {
                     var id = permalink.getParamValue('composition');
-                    if (id.indexOf('http') == -1 && id.indexOf('statusmanager2') == -1)
-                        id = '/wwwlibs/statusmanager2/index.php?request=load&id=' + id;
+                    if (id.indexOf('http') == -1 && id.indexOf(config.status_manager_url) == -1)
+                        id = (config.status_manager_url || '/wwwlibs/statusmanager2/index.php') + '?request=load&id=' + id;
                     composition_parser.load(id);
                 }
 

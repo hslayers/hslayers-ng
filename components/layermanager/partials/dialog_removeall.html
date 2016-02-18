@@ -11,7 +11,8 @@
                     Do you really want to remove all layers?
             </div>
             <div class="modal-footer" id="stc-footer">
-                <button type="button" class="btn btn-primary" translate ng-click="removeAllLayers(true)" data-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-primary" translate ng-click="removeAllLayers(true, false)" data-dismiss="modal">Remove all added layers</button>
+                <button type="button" class="btn btn-primary" ng-if="composition_id" translate ng-click="removeAllLayers(true, true)" data-dismiss="modal">Reload composition</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" translate>No</button>
             </div>
         </div>
