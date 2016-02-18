@@ -151,28 +151,65 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         if (!$scope.$$phase) $scope.$digest();
                     })
                 }
+                var new_layer = {
+                    title: e.element.get("title"),
+                    layer: e.element,
+                    grayed: $scope.isLayerInResolutionInterval(e.element),
+                    legends: sub_layers,
+                    visible: e.element.getVisible()
+                };
+                if ($scope.layerIsWmsT(new_layer)) {
+                    var metadata = new_layer.layer.get('metadata');
+                    angular.extend(new_layer, {
+                        time_step: metadata.timeStep,
+                        time_unit: metadata.timeUnit,
+                        date_format: getDateFormatForTimeSlider(metadata.timeUnit)
+                    });
+                    setLayerTimeSliderIntervals(new_layer);
+                }
                 if (e.element.get('base') != true) {
                     populateFolders(e.element);
-                    $scope.layers.push({
-                        title: e.element.get("title"),
-                        layer: e.element,
-                        grayed: $scope.isLayerInResolutionInterval(e.element),
-                        legends: sub_layers,
-                        visible: e.element.getVisible()
-                    });
+                    new_layer.legends = sub_layers;
+                    $scope.layers.push(new_layer);
                 } else {
-                    $scope.baselayers.push({
-                        title: e.element.get("title"),
-                        layer: e.element,
-                        grayed: $scope.isLayerInResolutionInterval(e.element),
-                        visible: e.element.getVisible(),
-                        active: e.element.getVisible()
-                    })
+                    new_layer.active = e.element.getVisible();
+                    $scope.baselayers.push(new_layer);
                 };
+
                 if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
                 $rootScope.$broadcast('layermanager.updated', e.element);
                 $scope.$emit('compositions.composition_edited');
             };
+
+            function getDateFormatForTimeSlider(time_unit) {
+                switch (time_unit) {
+                    case 'FullYear':
+                    case 'Month':
+                    case 'Day':
+                        return date_format = 'dd-MM-yyyy';;
+                        break
+                    default:
+                        return 'dd-MM-yyyy HH:mm';;
+                }
+            }
+
+            function setLayerTimeSliderIntervals(new_layer) {
+                var metadata = new_layer.layer.get('metadata');
+                switch (new_layer.time_unit) {
+                    case 'FullYear':
+                        var d = new Date(metadata.timeInterval[0]);
+                        new_layer.min_time = d.getFullYear();
+                        d = new Date(metadata.timeInterval[1]);
+                        new_layer.max_time = d.getFullYear();
+                        break;
+                    case 'Month':
+                        var d = new Date(metadata.timeInterval[0]);
+                        new_layer.min_time = 0;
+                        var d2 = new Date(metadata.timeInterval[1]);
+                        new_layer.max_time = d.monthDiff(d2);
+                        break;
+                }
+            }
 
             /**
              * @function populateFolders
@@ -398,6 +435,16 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 return false;
             }
 
+            $scope.layerIsWmsT = function(layer_container) {
+                if (angular.isUndefined(layer_container) || layer_container == null) return false;
+                var layer = layer_container.layer;
+                if (angular.isUndefined(layer)) return false;
+                if (layer.get('metadata') && angular.isArray(layer.get('metadata').timeInterval)) return true;
+                return false;
+            }
+
+
+
             $scope.styleLayer = function(layer) {
                 styler.layer = layer;
                 Core.setMainPanel('styler');
@@ -457,6 +504,23 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         if (lyr.get('base') == true) return;
                         lyr.setVisible(box.getVisible());
                     });
+                });
+            }
+
+            $scope.setLayerTime = function(currentlayer) {
+                var metadata = currentlayer.layer.get('metadata');
+                var d = new Date(metadata.timeInterval[0]);
+                switch (currentlayer.time_unit) {
+                    case "FullYear":
+                        d.setFullYear(currentlayer.date_increment);
+                        break;
+                    case "Month":
+                        d.addMonths(currentlayer.date_increment);
+                        break;
+                }
+                currentlayer.time = d;
+                currentlayer.layer.getSource().updateParams({
+                    'TIME': d.toISOString()
                 });
             }
 
