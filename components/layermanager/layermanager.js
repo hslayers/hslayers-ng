@@ -220,8 +220,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             function layerRemoved(e) {
                 if (angular.isObject($scope.currentlayer) && ($scope.currentlayer.layer == e.element)) {
                     $(".layerpanel").insertAfter($('.hs-lm-mapcontentlist'));
+                    $scope.currentlayer = null;
                 }
-                $scope.currentlayer = null;
                 for (var i = 0; i < $scope.layers.length; i++) {
                     if ($scope.layers[i].layer == e.element) {
                         $scope.layers.splice(i, 1);

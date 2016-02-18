@@ -98,6 +98,7 @@ div.mainpanel:not(.hs-stc-mainpanel) > div.panel-body {
     border: 0;
     margin-bottom: 0;
     border-bottom: 0;
+    word-wrap: break-word;
 }
 
 div.list-group-item.hs-lm-list {
