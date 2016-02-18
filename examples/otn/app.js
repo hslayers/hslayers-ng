@@ -81,15 +81,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 zoom: 4,
                 units: "m"
             }),
-            compositions_catalogue_url: 'http://otn-dev.intrasoft-intl.com/php/metadata/csw/',
-            status_manager_url: 'http://otn-dev.intrasoft-intl.com/wwwlibs/statusmanager2/index.php',
+            compositions_catalogue_url: 'http://otn-production.intrasoft-intl.com/php/metadata/csw/',
+            status_manager_url: 'http://otn-production.intrasoft-intl.com/wwwlibs/statusmanager2/index.php',
 
             datasources: [{
                 title: "Hub layers",
-                url: "http://otn-dev.intrasoft-intl.com/php/metadata/csw/",
+                url: "http://otn-production.intrasoft-intl.com/php/metadata/csw/",
                 language: 'eng',
                 type: "micka",
-                code_list_url: 'http://otn-dev.intrasoft-intl.com/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                code_list_url: 'http://otn-production.intrasoft-intl.com/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
             }]
         });
 
