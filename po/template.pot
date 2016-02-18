@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 
 #: components/compositions/partials/dialog_info.html:12
-#: components/layermanager/partials/layermanager.html:69
+#: components/layermanager/partials/layermanager.html:76
 #: components/status_creator/partials/form.html:21
 #: components/status_creator/partials/simpleform.html:9
 msgid "Abstract"
@@ -100,8 +100,8 @@ msgstr ""
 #: components/ows/partials/dialog_getcapabilities_error.html:5
 #: components/ows/partials/dialog_proxyconfirm.html:5
 #: components/ows/partials/ows.html:5
-#: components/permalink/partials/directive.html:6
-#: components/print/partials/printdialog.html:6
+#: components/permalink/partials/directive.html:5
+#: components/print/partials/printdialog.html:5
 #: components/query/partials/infopanel.html:5
 #: components/search/partials/searchresults.html:5
 #: components/status_creator/partials/dialog.html:17
@@ -109,12 +109,12 @@ msgstr ""
 #: components/status_creator/partials/dialog_result.html:15
 #: components/status_creator/partials/dialog_result.html:5
 #: components/status_creator/partials/dialog_save.html:5
-#: components/styles/partials/styler.html:6
+#: components/styles/partials/styler.html:5
 msgid "Close"
 msgstr ""
 
-#: components/styles/partials/styler.html:19
-#: components/styles/partials/styler.html:58
+#: components/styles/partials/styler.html:18
+#: components/styles/partials/styler.html:57
 msgid "Color"
 msgstr ""
 
@@ -158,6 +158,10 @@ msgstr ""
 msgid "Datasources"
 msgstr ""
 
+#: components/layermanager/partials/layermanager.html:69
+msgid "Date"
+msgstr ""
+
 #: components/status_creator/partials/dialog_save.html:18
 msgid "Do you really want to overwrite <b>{{title}}</b>?"
 msgstr ""
@@ -178,7 +182,7 @@ msgstr ""
 msgid "E-mail"
 msgstr ""
 
-#: components/permalink/partials/directive.html:12
+#: components/permalink/partials/directive.html:11
 msgid "Embed code"
 msgstr ""
 
@@ -217,7 +221,7 @@ msgstr ""
 msgid "Failed to save to status manager"
 msgstr ""
 
-#: components/styles/partials/styler.html:15
+#: components/styles/partials/styler.html:14
 msgid "Fill"
 msgstr ""
 
@@ -273,7 +277,7 @@ msgstr ""
 msgid "Fulltext"
 msgstr ""
 
-#: components/styles/partials/styler.html:80
+#: components/styles/partials/styler.html:79
 msgid "Icon"
 msgstr ""
 
@@ -306,22 +310,22 @@ msgstr ""
 msgid "Layers"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:88
+#: components/layermanager/partials/layermanager.html:98
 #: components/legend/partials/legend.html:2
 msgid "Legend"
 msgstr ""
 
-#: components/styles/partials/styler.html:28
+#: components/styles/partials/styler.html:27
 msgid "Line"
 msgstr ""
 
-#: components/styles/partials/styler.html:32
-#: components/styles/partials/styler.html:64
+#: components/styles/partials/styler.html:31
+#: components/styles/partials/styler.html:63
 msgid "Line Color"
 msgstr ""
 
-#: components/styles/partials/styler.html:38
-#: components/styles/partials/styler.html:75
+#: components/styles/partials/styler.html:37
+#: components/styles/partials/styler.html:74
 msgid "Line width"
 msgstr ""
 
@@ -381,13 +385,13 @@ msgstr ""
 msgid "Metadata for"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:84
+#: components/layermanager/partials/layermanager.html:93
 msgid "Metadata in"
 msgstr ""
 
 #: components/datasource_selector/partials/datasource_selector.html:13
 #: components/datasource_selector/partials/datasource_selector.html:39
-#: components/layermanager/partials/layermanager.html:101
+#: components/layermanager/partials/layermanager.html:111
 msgid "More"
 msgstr ""
 
@@ -455,7 +459,7 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: components/styles/partials/styler.html:46
+#: components/styles/partials/styler.html:45
 msgid "Point"
 msgstr ""
 
@@ -471,8 +475,8 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: components/print/partials/printdialog.html:15
-#: components/print/partials/printdialog.html:3
+#: components/print/partials/printdialog.html:14
+#: components/print/partials/printdialog.html:2
 #: components/sidebar/partials/sidebar.html:48
 msgid "Print"
 msgstr ""
@@ -485,7 +489,7 @@ msgstr ""
 msgid "Query format"
 msgstr ""
 
-#: components/styles/partials/styler.html:70
+#: components/styles/partials/styler.html:69
 msgid "Radius"
 msgstr ""
 
@@ -539,7 +543,7 @@ msgid "Saving to status manager"
 msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:77
-#: components/layermanager/partials/layermanager.html:76
+#: components/layermanager/partials/layermanager.html:84
 msgid "Scale"
 msgstr ""
 
@@ -572,7 +576,7 @@ msgid "Select the color interval by dragging on the chart below. The regions on 
 msgstr ""
 
 #: components/compositions/partials/dialog_share.html:7
-#: components/permalink/partials/directive.html:3
+#: components/permalink/partials/directive.html:2
 msgid "Share map"
 msgstr ""
 
@@ -588,7 +592,7 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: components/styles/partials/styler.html:3
+#: components/styles/partials/styler.html:2
 msgid "Style layer"
 msgstr ""
 
@@ -617,9 +621,9 @@ msgid "Tile size"
 msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:92
-#: components/layermanager/partials/layermanager.html:98
+#: components/layermanager/partials/layermanager.html:108
 #: components/ows/partials/owsnonwms.html:3
-#: components/print/partials/printdialog.html:12
+#: components/print/partials/printdialog.html:11
 #: components/status_creator/partials/form.html:18
 msgid "Title"
 msgstr ""
@@ -683,10 +687,10 @@ msgid "Zoom to"
 msgstr ""
 
 #: components/compositions/partials/dialog_info.html:7
-msgid "detail"
+msgid "details"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:78
+#: components/layermanager/partials/layermanager.html:86
 msgid "from"
 msgstr ""
 
@@ -694,6 +698,6 @@ msgstr ""
 msgid "multiple shapes"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:79
+#: components/layermanager/partials/layermanager.html:87
 msgid "to"
 msgstr ""
