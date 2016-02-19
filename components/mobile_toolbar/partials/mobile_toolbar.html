@@ -1,0 +1,25 @@
+<div class="toolbar-buttons">
+
+    <!-- search bar switch -->
+    <button type="button" class="menu-item btn btn-default btn-mobile"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
+        <i class="glyphicon icon-search"></i>
+    </button>
+
+    <!-- compositions menu switch (coming soon, placeholder for now) -->
+    <button type="button" class="menu-item btn btn-default btn-mobile" title="Measure lines and polygon" ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
+        <i class="glyphicon icon-design"></i>
+    </button>
+
+    <!-- geolocation switch -->
+    <button class="menu-item btn btn-default btn-mobile ol-has-tooltip blocate" type="button">   
+        <i class="glyphicon icon-navigation"></i>
+    </button>
+
+    <!-- menu switch -->
+    <button class="menu-item btn btn-default btn-mobile" type="button">
+        <i class="glyphicon menu-icon glyphicon-menu-hamburger"></i>
+    </button>
+    <!-- <button class="menu-item btn btn-default btn-mobile" type="button">
+        <i class="glyphicon menu-icon" ng-class="Core.sidebarExpanded ? 'glyphicon-menu-left' : 'glyphicon-menu-hamburger'" ng-click="toggleSidebar()"></i>
+    </button> -->
+</div>

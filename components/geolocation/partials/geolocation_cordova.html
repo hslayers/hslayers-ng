@@ -1,0 +1,8 @@
+<div class="locate-mobile ol-unselectable ol-control ol-collapsed" ng-controller="hs.geolocation.controller">
+
+<ul>
+<li><translate>Speed</translate>: <span class='value'>{{ speed }} km/h</span></li>
+<li><translate>Altitude</translate>: <span class='value'>{{ alt }} m (&#177;{{ altitudeAccuracy }} m)</span></li>
+<li><button type="button" ng-class="'btn btn-default but-xs' + (following() ? ' active' : '')" ng-click="following(!following())" style="width: 4.375em; font: inherit;background-color: #e6e6e6;">Follow</button></li>
+</ul>
+</div>
