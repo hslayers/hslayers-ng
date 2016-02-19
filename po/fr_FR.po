@@ -5,74 +5,73 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: lv_LV\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.4\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
-"2);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: components/compositions/partials/dialog_info.html:12
 #: components/layermanager/partials/layermanager.html:76
 #: components/status_creator/partials/form.html:21
 #: components/status_creator/partials/simpleform.html:9
 msgid "Abstract"
-msgstr "Apraksts"
+msgstr "Résumé"
 
 #: components/status_creator/partials/form.html:8
 msgid "Access"
-msgstr ""
+msgstr "Accès"
 
 #: components/ows/partials/owsnonwms.html:30
 #: components/ows/partials/owsprioritized.html:7
 msgid "Add"
-msgstr "Pievienot"
+msgstr "Ajouter"
 
 #: components/ows/partials/ows.html:2
 #: components/sidebar/partials/sidebar.html:27
 #: components/sidebar/partials/sidebar.html:28
 msgid "Add external data"
-msgstr "Pievienot ārējus datu avotus"
+msgstr "Ajouter des données externes"
 
 #: components/sidebar/partials/sidebar.html:23
 msgid "Add layers"
-msgstr ""
+msgstr "Ajouter un fond de carte"
 
 #: components/datasource_selector/partials/datasource_selector.html:55
 #: components/datasource_selector/partials/dialog_metadata.html:19
 msgid "Add to map"
-msgstr "Pievienot kartei"
+msgstr "Ajouter à la carte"
 
 #: components/status_creator/partials/form.html:71
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #: components/geolocation/partials/geolocation.html:5
 msgid "Altitude"
-msgstr ""
+msgstr "Altitude"
 
 #: components/status_creator/partials/form.html:11
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
 #: components/layermanager/partials/layermanager.html:22
 msgid "Baselayers"
-msgstr "Pamatslāņi"
+msgstr "Fond de carte de base"
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
 #: components/ows/partials/dialog_proxyconfirm.html:15
 #: components/status_creator/partials/simpleform.html:72
 msgid "Cancel"
-msgstr "Atcelt"
+msgstr "Annuler"
 
 #: components/ows/partials/ows.html:12
 msgid "Choose format"
-msgstr ""
+msgstr "Choisir le format"
 
 #: components/status_creator/partials/form.html:74
 msgid "City"
-msgstr ""
+msgstr "Ville"
 
 #: components/datasource_selector/partials/datasource_selector.html:14
 #: components/datasource_selector/partials/datasource_selector.html:40
@@ -81,7 +80,7 @@ msgstr ""
 #: components/search/partials/searchinput.html:4
 #: components/search/partials/searchresults.html:10
 msgid "Clear"
-msgstr "Notīrīt"
+msgstr "Effacer"
 
 #: components/compositions/partials/compositions.html:5
 #: components/compositions/partials/dialog_delete.html:15
@@ -120,52 +119,52 @@ msgstr "Notīrīt"
 #: components/status_creator/partials/dialog_save.html:5
 #: components/styles/partials/styler.html:5
 msgid "Close"
-msgstr "Aizvērt"
+msgstr "Fermer"
 
 #: components/styles/partials/styler.html:18
 #: components/styles/partials/styler.html:57
 msgid "Color"
-msgstr "Krāsa"
+msgstr "Couleur"
 
 #: components/lodexplorer/partials/lodexplorer.html:39
 msgid "Color gradient limits"
-msgstr ""
+msgstr "Limites des dégradés de couleur"
 
 #: components/compositions/partials/compositions.html:2
 msgid "Compositions"
-msgstr "Kompozīcijas"
+msgstr "Compositions"
 
 #: components/compositions/partials/dialog_delete.html:7
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmer"
 
 #: components/status_creator/partials/form.html:5
 msgid "Context"
-msgstr ""
+msgstr "Contexte"
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:14
 msgid "Continue without saving"
-msgstr ""
+msgstr "Continuer sans sauvergarder"
 
 #: components/status_creator/partials/form.html:83
 msgid "Country"
-msgstr ""
+msgstr "Pay"
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:49
 msgid "Data"
-msgstr "Dati"
+msgstr "Donnée"
 
 #: components/lodexplorer/partials/lodexplorer.html:11
 msgid "Dataset"
-msgstr ""
+msgstr "Jeu de données"
 
 #: components/sidebar/partials/sidebar.html:22
 msgid "Datasource Selector"
-msgstr ""
+msgstr "Sélectionner des sources de données"
 
 #: components/datasource_selector/partials/datasource_selector.html:2
 msgid "Datasources"
-msgstr "Datu avoti"
+msgstr "Sources de données"
 
 #: components/layermanager/partials/layermanager.html:69
 msgid "Date"
@@ -173,32 +172,32 @@ msgstr ""
 
 #: components/status_creator/partials/dialog_save.html:18
 msgid "Do you really want to overwrite <b>{{title}}</b>?"
-msgstr ""
+msgstr "Voulez-vous vraiment effacer <b>{{title}}</b>?"
 
 #: components/layermanager/partials/dialog_removeall.html:10
 msgid "Do you really want to remove all layers?"
-msgstr ""
+msgstr "Voulez-vous vraiment enlever tous les fonds de carte"
 
 #: components/compositions/partials/dialog_delete.html:11
 msgid "Do you want to delete map"
-msgstr ""
+msgstr "Voulez-vous effacer la carte?"
 
 #: components/datasource_selector/partials/datasource_selector.html:53
 msgid "Download"
-msgstr ""
+msgstr "Télécharger"
 
 #: components/status_creator/partials/form.html:89
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
 #: components/permalink/partials/directive.html:11
 msgid "Embed code"
-msgstr ""
+msgstr "Code incorporé"
 
 #: components/sidebar/partials/sidebar.html:53
 #: components/sidebar/partials/sidebar.html:54
 msgid "Embed map"
-msgstr ""
+msgstr "Carte incorporée"
 
 #: components/lodexplorer/partials/lodexplorer.html:2
 msgid "Eurostat explorer"
@@ -206,63 +205,63 @@ msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:6
 msgid "Extended search parameters for Micka"
-msgstr ""
+msgstr "Paramètres de recherche étendu à Micka"
 
 #: components/compositions/partials/dialog_info.html:16
 #: components/status_creator/partials/form.html:30
 #: components/status_creator/partials/simpleform.html:39
 msgid "Extent"
-msgstr ""
+msgstr "Mesure"
 
 #: components/datasource_selector/partials/datasource_selector.html:28
 msgid "External data"
-msgstr ""
+msgstr "Donnée externe"
 
 #: components/ows/partials/ows.html:21
 msgid "External data source (URL)"
-msgstr ""
+msgstr "Source de données externe (URL)"
 
 #: components/ows/partials/owsnonwms.html:24
 msgid "Extract styles"
-msgstr ""
+msgstr "Extraire les styles"
 
 #: components/status_creator/partials/dialog_result.html:12
 msgid "Failed to save to status manager"
-msgstr ""
+msgstr "Votre tentative de sauvegarde a échouée"
 
 #: components/styles/partials/styler.html:14
 msgid "Fill"
-msgstr ""
+msgstr "Remplir"
 
 #: components/status_creator/partials/simpleform.html:11
 msgid "Fill in descriptive text about map"
-msgstr ""
+msgstr "Inscrire ici une description de la carte"
 
 #: components/status_creator/partials/simpleform.html:5
 msgid "Fill in name"
-msgstr ""
+msgstr "Inscrire le nom"
 
 #: components/compositions/partials/compositions.html:11
 #: components/datasource_selector/partials/dialog_micka_suggestions.html:13
 msgid "Filter"
-msgstr ""
+msgstr "Filtre"
 
 #: components/lodexplorer/partials/lodexplorer.html:21
 msgid "Filter by"
-msgstr ""
+msgstr "Filtrer par"
 
 #: components/compositions/partials/compositions.html:17
 #: components/datasource_selector/partials/datasource_selector.html:44
 msgid "Filter by map extent"
-msgstr ""
+msgstr "Filtrer par la superficie de la carte"
 
 #: components/lodexplorer/partials/lodexplorer.html:29
 msgid "Filter by value"
-msgstr ""
+msgstr "Filtrer par valeur"
 
 #: components/feature_crossfilter/partials/f_crossfilter.html:12
 msgid "Filter by {{group.name}}"
-msgstr ""
+msgstr "Filtrer par {{group.name}}"
 
 #: components/feature_crossfilter/partials/f_crossfilter.html:2
 #: components/sidebar/partials/sidebar.html:33
@@ -278,115 +277,120 @@ msgstr ""
 #: components/ows/partials/owsnonwms.html:17
 #: components/ows/partials/owswms.html:46
 msgid "Folder name"
-msgstr ""
+msgstr "Nom du dossier"
 
 #: components/geolocation/partials/geolocation.html:6
 msgid "Follow"
-msgstr ""
+msgstr "Suivre"
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:13
 msgid "Fulltext"
-msgstr ""
+msgstr "Texte intégral"
 
 #: components/styles/partials/styler.html:79
 msgid "Icon"
-msgstr "Ikona"
+msgstr "Icône"
 
 #: components/ows/partials/owswms.html:3
 msgid "Image format"
-msgstr ""
+msgstr "Format de l'image"
 
 #: components/query/partials/infopanel.html:2
 msgid "Info"
-msgstr "Informācija"
+msgstr "Info"
 
 #: components/compositions/partials/compositions.html:27
 #: components/datasource_selector/partials/dialog_micka_advanced.html:28
 #: components/status_creator/partials/form.html:26
 #: components/status_creator/partials/simpleform.html:33
 msgid "Keywords"
-msgstr "Atslēgas vārdi"
+msgstr "Mots clés"
 
 #: components/compositions/partials/dialog_info.html:21
 msgid "Layer"
-msgstr "Slānis"
+msgstr "Calques"
 
 #: components/layermanager/partials/dialog_removeall.html:6
 #: components/layermanager/partials/layermanager.html:2
 msgid "Layer manager"
-msgstr "Slāņu pārvaldība"
+msgstr "Gestionnaire des calques"
 
 #: components/status_creator/partials/form.html:45
 #: components/status_creator/partials/simpleform.html:57
 msgid "Layers"
-msgstr "Slāņi"
+msgstr "Calques"
 
 #: components/layermanager/partials/layermanager.html:98
 #: components/legend/partials/legend.html:2
 msgid "Legend"
-msgstr "Leģenda"
+msgstr "Légendes"
 
 #: components/styles/partials/styler.html:27
 msgid "Line"
-msgstr ""
+msgstr "Ligne"
 
 #: components/styles/partials/styler.html:31
 #: components/styles/partials/styler.html:63
 msgid "Line Color"
-msgstr ""
+msgstr "Couleur de la ligne"
 
 #: components/styles/partials/styler.html:37
 #: components/styles/partials/styler.html:74
 msgid "Line width"
-msgstr ""
+msgstr "Epaisseur de la ligne"
 
 #: components/sidebar/partials/sidebar.html:6
 msgid "List available map compositions"
-msgstr ""
+msgstr "Liste des cartes disponibles"
 
 #: components/status_creator/partials/simpleform.html:20
 msgid "Make public"
-msgstr ""
+msgstr "Rendre public"
 
 #: components/sidebar/partials/sidebar.html:12
 msgid "Manage and Style Layers"
-msgstr ""
+msgstr "Gérer et modifier les calques"
 
 #: components/sidebar/partials/sidebar.html:11
 msgid "Manage and style your layers in composition"
-msgstr ""
+msgstr "Gérer et modifier vos calques en cours de composition"
 
 #: components/sidebar/partials/sidebar.html:7
 msgid "Map Compositions"
-msgstr ""
+msgstr "Compositions de carte"
 
 #: components/layermanager/partials/layermanager.html:38
 msgid "Map Content"
-msgstr ""
+msgstr "Contenu des cartes"
 
 #: components/ows/partials/owswms.html:29
 msgid ""
 "Map and layer projection do not match! Resampling will be used. This may "
 "lead to unexpectable results."
 msgstr ""
+"La projection du calque et la carte ne s'articulent pas! Nous allons "
+"réessayer de les combiner, cela peut donner des résultats inattendus"
 
 #: components/ows/partials/dialog_proxyconfirm.html:10
 msgid ""
 "Map projection and layer projection not match. Add the layer to map and use "
 "server-side resampling program?"
 msgstr ""
+"La projection de la carte et la projection du calque ne s'articulent pas. "
+"Ajouter le calque à la carte et utilisez le programme de rééchantillonage à "
+"l'échelle du serveur."
 
 #: components/measure/partials/measure.html:2
 msgid "Measure"
-msgstr ""
+msgstr "Mesure"
 
 #: components/sidebar/partials/sidebar.html:37
 msgid "Measure distance or area at map"
-msgstr ""
+msgstr "Mesurer le distance ou l'aire sur la carte"
 
 #: components/toolbar/partials/toolbar.html:20
 msgid "Measure lines and polygon"
-msgstr ""
+msgstr "Mesures les lignes et les polygones"
 
 #: components/sidebar/partials/sidebar.html:38
 msgid "Measurements"
@@ -728,17 +732,24 @@ msgstr ""
 msgid "to"
 msgstr ""
 
-#~ msgid "Abstract:"
-#~ msgstr "Apraksts:"
+#~ msgid ""
+#~ "Filter the values which are in a speciffic interval by dragging on the "
+#~ "chartbelow"
+#~ msgstr ""
+#~ "Filtrer les valeurs qui sont dans une intervalle de valeur en faisant "
+#~ "glisser le tableau ci-dessous"
 
-#~ msgid "Filter:"
-#~ msgstr "Filtrs:"
+#~ msgid ""
+#~ "Map and layer projection do not match! Resampling will be used. This "
+#~ "maylead to unexpectable results."
+#~ msgstr ""
+#~ "La projection du calque et la carte ne s'articulent pas! Nous allons "
+#~ "réessayer de les combiner, cela peut donner des résultats inattendus"
 
-#~ msgid "Keywords:"
-#~ msgstr "Atslēgas vārdi:"
-
-#~ msgid "Layers:"
-#~ msgstr "Slāņi:"
-
-#~ msgid "Legend:"
-#~ msgstr "Leģenda:"
+#~ msgid ""
+#~ "Map projection and layer projection not match. Add the layer to map and "
+#~ "useserver-side resampling program?"
+#~ msgstr ""
+#~ "La projection de la carte et la projection du calque ne s'articulent pas. "
+#~ "Ajouter le calque à la carte et utilisez le programme de rééchantillonage "
+#~ "à l'échelle du serveur."
