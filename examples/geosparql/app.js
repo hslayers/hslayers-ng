@@ -342,7 +342,8 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                 var hr_mappings;
                 $http({
                     method: 'GET',
-                    url: 'data.json'
+                    url: 'data.json',
+                    cache: false
                 }).then(function successCallback(response) {
                     hr_mappings = response.data;
                     angular.forEach(hr_mappings["http://www.openvoc.eu/poi#categoryWaze"], function(name, category) {
@@ -384,6 +385,13 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                 $scope.makeHumanReadable = function(attribute) {
                     var value = $sce.valueOf(attribute.value);
                     var name = $sce.valueOf(attribute.name);
+                    if (angular.isUndefined(hr_mappings[name])) {
+                        if (value.indexOf('http:') == 0) {
+                            return $sce.trustAsHtml('<a href="' + value + '">' + value + '</a>');
+                        } else {
+                            return value;
+                        }
+                    }
                     if (angular.isDefined(hr_mappings[name][value])) return hr_mappings[name][value];
                     else return attribute.value;
                 }
@@ -401,7 +409,14 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                         'http://www.openvoc.eu/poi#openingHours': 'Opening Hours: ',
                         'http://www.openvoc.eu/poi#access': 'Access: ',
                         'http://www.openvoc.eu/poi#accessibility': 'Accessibility: ',
-                        'http://www.openvoc.eu/poi#internetAccess': 'Internet Acces: '
+                        'http://www.openvoc.eu/poi#internetAccess': 'Internet Acces: ',
+                        'http://www.openvoc.eu/poi#categoryWaze': 'Category: ',
+                        'http://www.openvoc.eu/poi#categoryOSM': 'Subcategory: ',
+                        'http://xmlns.com/foaf/0.1/homepage': 'Homepage: ',
+                        'http://www.w3.org/2000/01/rdf-schema#seeAlso': 'More info: ',
+                        'http://www.w3.org/2004/02/skos/core#exactMatch': 'More info: ',
+                        'http://purl.org/dc/terms/1.1/created': 'Created: ',
+                        'http://www.opengis.net/ont/geosparql#sfWithin': 'Country: '
                     }
                     return hr_names[name];
                 }
@@ -425,6 +440,15 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                         return v.toString(16);
                     });
                 };
+
+                $scope.editDropdownVisible = function(attribute) {
+                    return attribute.is_editing && angular.isDefined($scope.getSpoiCategories(attribute.name));
+                }
+
+                $scope.editTextboxVisible = function(attribute) {
+                    return attribute.is_editing && angular.isUndefined($scope.getSpoiCategories(attribute.name));
+                }
+
 
                 $scope.saveSpoiChanges = function(attributes) {
                     var identifier = '';
@@ -468,7 +492,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
         ]).filter('usrFrSpoiAttribs', function() {
             return function(items) {
                 var filtered = [];
-                var frnly_attribs = ['http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax']
+                var frnly_attribs = ['http://www.openvoc.eu/poi#categoryWaze', 'http://www.openvoc.eu/poi#categoryOSM', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://www.opengis.net/ont/geosparql#sfWithin', 'http://www.w3.org/2004/02/skos/core#exactMatch', 'http://www.w3.org/2000/01/rdf-schema#seeAlso', 'http://xmlns.com/foaf/0.1/homepage', 'http://purl.org/dc/terms/1.1/created']
                 angular.forEach(items, function(item) {
                     if (frnly_attribs.indexOf(item.name) > -1) {
                         filtered.push(item);
