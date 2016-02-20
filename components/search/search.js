@@ -20,11 +20,11 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html',
                     replace: true,
                     link: function(scope, element) {
-                        scope.has_results_panel = true;
+
                     }
                 };
-            }]).service('hs.search.service', ['$http', 'hs.utils.service', '$rootScope',
-                function($http, utils, $rootScope) {
+            }]).service('hs.search.service', ['$http', 'hs.utils.service',
+                function($http, utils) {
                     this.xhr = null;
                     this.request = function(query) {
                         var url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
@@ -34,7 +34,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                             url: url,
                             cache: false,
                             success: function(r) {
-                                $rootScope.$broadcast('search.results_received', r);
+                                me.searchResultsReceived(r);
                                 me.xhr = null
                             }
                         });
@@ -83,13 +83,8 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         'LK': 13
                     };
                     $scope.createCurrentPointLayer();
-                    var src = $scope.search_results_layer.getSource();
                     coordinate = ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection());
-                    src.addFeature(new ol.Feature({
-                        geometry: new ol.geom.Point(coordinate),
-                        record: result
-                    }));
-
+                    point_clicked.setCoordinates(coordinate, 'XY');
                     map.getView().setCenter(coordinate);
                     if (typeof $scope.fcode_zoom_map[result.fcode] !== 'undefined') {
                         map.getView().setZoom($scope.fcode_zoom_map[result.fcode]);
@@ -107,30 +102,11 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     $scope.search_results_layer = null;
                 }
 
-                $scope.searchResultsReceived = function(response) {
-                    if ($scope.has_results_panel) {
-                        Core.setMainPanel('search', false);
-                        $scope.results = response.geonames;
-                        $scope.clearvisible = true;
-                        $scope.createCurrentPointLayer();
-                        angular.forEach($scope.results, function(result) {
-                            var src = $scope.search_results_layer.getSource();
-                            var feature = new ol.Feature({
-                                geometry: new ol.geom.Point(ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection())),
-                                record: result
-                            });
-                            src.addFeature(feature);
-                            result.feature = feature;
-                        });
-                        if (!$scope.$$phase) $scope.$digest();
-                    }
-                    /*   
-                       $search_list.show();
-                       if (msg.contents.geonames.length > 0) {
-                           var bounds = new OpenLayers.LonLat(msg.contents.geonames[0].lng, msg.contents.geonames[0].lat);
-                           map.setCenter(bounds.transform(projWGS84, map.getProjectionObject()), 13);
-                           switchAwayFromRegions();
-                       }*/
+                SearchService.searchResultsReceived = function(response) {
+                    $scope.results = response.geonames;
+                    $("#searchresults").show();
+                    $scope.clearvisible = true;
+                    if (!$scope.$$phase) $scope.$digest();
                 }
 
                 $scope.createCurrentPointLayer = function() {
@@ -140,23 +116,18 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     }
                     $scope.search_results_layer = new ol.layer.Vector({
                         title: "Search results",
-                        source: new ol.source.Vector({}),
-                        style: styles.pin_white_blue_highlight,
+                        source: new ol.source.Vector({
+                            features: [new ol.Feature({
+                                geometry: point_clicked
+                            })]
+                        }),
+                        style: styles.pin_white_blue,
                         show_in_manager: false
                     });
                     map.addLayer($scope.search_results_layer);
                 }
 
-                $scope.highlightResult = function(result, state) {
-                    if (angular.isDefined(result.feature))
-                        result.feature.set('highlighted', state)
-                }
-
                 $scope.init();
-
-                $scope.$on('search.results_received', function(e, r) {
-                    $scope.searchResultsReceived(r);
-                });
 
                 $scope.$watch('Core.panelVisible("search")', function(newValue, oldValue) {
                     if (newValue !== oldValue && newValue) {

@@ -8,12 +8,13 @@
 
 <div id="toolbar">
     <div class="input-group">
-        <div class="search-container" ng-controller="hs.search.controller" ng-if="Core.exists('hs.search.controller')">
+        <div class="search-container" ng-controller="hs.search.controller" ng-if="Core.exists('hs.toolbar.controller')">
             <div>
                 <div hs.search.directive_searchinput></div>
+                <div hs.search.directive_searchresults></div>
             </div>
         </div>
-        <div class="input-group-btn">
+        <div class="input-group-btn" style="vertical-align: top">
             <button type="button" class="btn btn-default" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
                 <i class="glyphicon glyphicon-repeat"></i>
             </button>
@@ -21,9 +22,6 @@
                 <i class="glyphicon icon-design"></i>
             </button>
         </div>
-        <!--        <button type="button" class="btn btn-default btn-mobile"  title="{{'Search for a place'|translate}}"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
-            <span class="glyphicon icon-search"></span>
-        </button>-->
     </div>
     <div class="mid-pane">
         <div class="composition-info" ng-show="compositionLoaded()">

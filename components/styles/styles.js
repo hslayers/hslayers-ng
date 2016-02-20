@@ -15,15 +15,6 @@ define(['angular', 'ol'],
                             anchor: [0.5, 1]
                         })
                     });
-                    this.pin_white_blue_highlight = function(feature, resolution) {
-                        return [new ol.style.Style({
-                            image: new ol.style.Icon({
-                                src: feature.get('highlighted') ? hsl_path + 'img/pin_white_red32.png' : hsl_path + 'img/pin_white_blue32.png',
-                                crossOrigin: 'anonymous',
-                                anchor: [0.5, 1]
-                            })
-                        })]
-                    };
                     this.measure_style = new ol.style.Style({
                         fill: new ol.style.Fill({
                             color: 'rgbaa(255, 255, 255, 1)'
