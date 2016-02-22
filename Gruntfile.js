@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         },
         "jsbeautifier": {
             "default": {
-                src: ["components/**/*.js", "hslayers.js", "app.js", "examples/**/*.js", "extensions/*.js", "!examples/cordova_examples/**/*.js"]
+                src: ["components/**/*.js", "hslayers.js", "app.js", "examples/**/*.js", "extensions/*.js", "!examples/cordova_examples/**/*.js", "!components/translations/js/translations.js"]
             },
             "git-pre-commit": {
                 src: ["components/**/*.js", "hslayers.js", "app.js"]

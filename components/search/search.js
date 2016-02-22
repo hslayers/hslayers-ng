@@ -106,6 +106,16 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     $scope.results = response.geonames;
                     $("#searchresults").show();
                     $scope.clearvisible = true;
+                    $scope.createCurrentPointLayer();
+                    angular.forEach($scope.results, function(result) {
+                        var src = $scope.search_results_layer.getSource();
+                        var feature = new ol.Feature({
+                            geometry: new ol.geom.Point(ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection())),
+                            record: result
+                        });
+                        src.addFeature(feature);
+                        result.feature = feature;
+                    });
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
