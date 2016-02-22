@@ -7,7 +7,7 @@ define(['angular', 'ol', 'styles'],
             function(OlMap, styles, utils) {
                 me = this;
 
-                me.add = function(type, url, title, extract_styles, srs) {
+                me.add = function(type, url, title, abstract, extract_styles, srs) {
                     url = utils.proxify(url);
 
 
@@ -87,6 +87,7 @@ define(['angular', 'ol', 'styles'],
 
                     var lyr = new ol.layer.Vector({
                         title: title,
+                        abstract: abstract,
                         saveState: true,
                         definition: definition,
                         source: src

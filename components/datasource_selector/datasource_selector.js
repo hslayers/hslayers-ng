@@ -455,11 +455,11 @@ define(['angular', 'ol', 'map'],
                             if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
                                 switch (layer.format.toLowerCase()) {
                                     case "kml":
-                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || layer.description, true, map.getView().getProjection().getCode().toUpperCase());
+                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, map.getView().getProjection().getCode().toUpperCase());
                                         break;
                                     case "json":
                                     case "geojson":
-                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || layer.description, false, map.getView().getProjection().getCode().toUpperCase());
+                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, map.getView().getProjection().getCode().toUpperCase());
                                         break;
                                 }
 

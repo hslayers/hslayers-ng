@@ -95,15 +95,18 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         $scope.setUrlAndConnect(wms, 'WMS');
                     }
 
+                    var title = decodeURIComponent(permalink.getParamValue('title')) || 'Layer';
+                    var abstract = decodeURIComponent(permalink.getParamValue('abstract'));
+
                     if (permalink.getParamValue('geojson_to_connect')) {
                         var url = permalink.getParamValue('geojson_to_connect');
-                        var lyr = nonwmsservice.add('geojson', url, 'Geojson layer', false, map.getView().getProjection().getCode().toUpperCase());
+                        var lyr = nonwmsservice.add('geojson', url, title, abstract, false, map.getView().getProjection().getCode().toUpperCase());
                         zoomToVectorLayer(lyr);
                     }
 
                     if (permalink.getParamValue('kml_to_connect')) {
                         var url = permalink.getParamValue('kml_to_connect');
-                        var lyr = nonwmsservice.add('kml', url, 'KML layer', true, map.getView().getProjection().getCode().toUpperCase());
+                        var lyr = nonwmsservice.add('kml', url, title, abstract, true, map.getView().getProjection().getCode().toUpperCase());
                         zoomToVectorLayer(lyr);
                     }
 
