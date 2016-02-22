@@ -126,19 +126,22 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     }
                     $scope.search_results_layer = new ol.layer.Vector({
                         title: "Search results",
-                        source: new ol.source.Vector({
-                            features: [new ol.Feature({
-                                geometry: point_clicked
-                            })]
-                        }),
-                        style: styles.pin_white_blue,
+                        source: new ol.source.Vector({}),
+                        style: styles.pin_white_blue_highlight,
                         show_in_manager: false
                     });
                     map.addLayer($scope.search_results_layer);
                 }
 
+                $scope.highlightResult = function(result, state) {
+                    if (angular.isDefined(result.feature))
+                        result.feature.set('highlighted', state)
+                }
                 $scope.init();
 
+                $scope.$on('search.results_received', function(e, r) {
+                    $scope.searchResultsReceived(r);
+                });
                 $scope.$watch('Core.panelVisible("search")', function(newValue, oldValue) {
                     if (newValue !== oldValue && newValue) {
                         setTimeout(function() {
