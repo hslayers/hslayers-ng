@@ -240,20 +240,12 @@ define(['angular', 'ol'],
 
                 $scope.$watch('linecolor', $scope.save);
                 $scope.$watch('service.layer', function() {
-                    $scope.hasLine = false;
-                    $scope.hasPoly = false;
-                    $scope.hasPoint = false;
                     if (angular.isUndefined(service.layer) || service.layer == null) return;
-
+                    $scope.hasLine = service.layer.getSource().hasLine;
+                    $scope.hasPoly = service.layer.getSource().hasPoly;
+                    $scope.hasPoint = service.layer.getSource().hasPoint;
                     $scope.layerTitle = service.layer.get('title');
-                    angular.forEach(service.layer.getSource().getFeatures(), function(f) {
-                        $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'LineString';
-                        $scope.hasLine = $scope.hasLine || f.getGeometry().getType() == 'MultiLineString';
-                        $scope.hasPoly = $scope.hasPoly || f.getGeometry().getType() == 'Polygon';
-                        $scope.hasPoly = $scope.hasPoly || f.getGeometry().getType() == 'MultiPolygon';
-                        $scope.hasPoint = $scope.hasPoint || f.getGeometry().getType() == 'Point';
-                        $scope.hasPoint = $scope.hasPoint || f.getGeometry().getType() == 'MultiPoint';
-                    })
+
                 });
                 $scope.$watch('fillcolor', $scope.save);
                 $scope.$watch('iconfillcolor', function() {

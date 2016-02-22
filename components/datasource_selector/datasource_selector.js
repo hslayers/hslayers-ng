@@ -4,7 +4,7 @@
  */
 define(['angular', 'ol', 'map'],
     function(angular, ol) {
-        angular.module('hs.datasource_selector', ['hs.map'])
+        angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms'])
             .directive('hs.datasourceSelector.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/datasource_selector/partials/datasource_selector.html'
@@ -92,8 +92,8 @@ define(['angular', 'ol', 'map'],
             };
         }])
 
-        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config', 'hs.utils.service',
-            function($scope, OlMap, Core, $compile, config, utils) {
+        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config', 'hs.utils.service', 'hs.ows.nonwms.service',
+            function($scope, OlMap, Core, $compile, config, utils, nonwmsservice) {
                 $scope.query = {
                     text_filter: '',
                     title: '',
@@ -156,9 +156,6 @@ define(['angular', 'ol', 'map'],
 
                 $scope.fillCodeset = function(ds) {
                     switch (ds.type) {
-                        case "datatank":
-
-                            break;
                         case "micka":
                             var url = ds.code_list_url;
                             url = utils.proxify(url);
@@ -280,50 +277,6 @@ define(['angular', 'ol', 'map'],
 
                 $scope.loadDataset = function(ds) {
                     switch (ds.type) {
-                        case "datatank":
-                            var url = ds.url;
-                            url = utils.proxify(url);
-                            if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
-                            ds.ajax_req = $.ajax({
-                                url: url,
-                                cache: false,
-                                dataType: "json",
-                                success: function(j) {
-                                    ds.layers = [];
-                                    ds.loaded = true;
-                                    ds.matched = j.length;
-                                    for (var lyr in j) {
-                                        if (j[lyr].keywords && j[lyr].keywords.indexOf("kml") > -1) {
-                                            var obj = j[lyr];
-                                            ds.layers.push(obj);
-                                        }
-                                    }
-                                    ds.matched = ds.layers.length;
-                                    if (!$scope.$$phase) $scope.$digest();
-                                }
-                            });
-                            break;
-                        case "ckan":
-                            var url = ds.url;
-                            url = utils.proxify(url);
-                            if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
-                            ds.ajax_req = $.ajax({
-                                url: url,
-                                cache: false,
-                                dataType: "json",
-                                success: function(j) {
-                                    ds.layers = [];
-                                    ds.loaded = true;
-                                    ds.matched = j.count;
-                                    for (var lyr in j.datasets) {
-                                        var obj = j.datasets[lyr];
-                                        obj.title = obj.name;
-                                        ds.layers.push(obj);
-                                    }
-                                    if (!$scope.$$phase) $scope.$digest();
-                                }
-                            });
-                            break;
                         case "micka":
                             var advanced_search_visible = $('#ds-advanced-micka').is(':visible');
                             var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
@@ -472,13 +425,8 @@ define(['angular', 'ol', 'map'],
 
                 $scope.layerDownload = function(ds, layer) {
                     if (ds.download == true) {
-
-                        if (ds.type == "ckan") {
-                            if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1 && layer.url.length > 0) {
-                                return layer.url
-                            }
-                        } else if (ds.type == "micka") {
-                            return "#"
+                        if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1 && layer.url.length > 0) {
+                            return layer.url
                         }
                     }
 
@@ -486,96 +434,10 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.layerRDF = function(ds, layer) {
-                    if (ds.type == "ckan") {
-                        return "#"
-                    } else if (ds.type == "micka") {
-                        return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat#"
-                    }
-
-                    return "#"
+                    return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat#"
                 }
 
                 $scope.addLayerToMap = function(ds, layer) {
-                    if (ds.type == "datatank") {
-                        if (layer.type == "shp") {
-                            var src = new ol.source.KML({
-                                url: ds.url + '/../../' + layer.path + '.kml',
-                                projection: ol.proj.get('EPSG:3857'),
-                                extractStyles: false
-                            });
-                            var lyr = new ol.layer.Vector({
-                                title: layer.title || layer.description,
-                                source: src,
-                                style: default_style
-                            });
-                            var listenerKey = src.on('change', function() {
-                                if (src.getState() == 'ready') {
-                                    var extent = src.getExtent();
-                                    src.unByKey(listenerKey);
-                                    if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
-                                        OlMap.map.getView().fit(extent, map.getSize());
-                                }
-                            });
-                            OlMap.map.addLayer(lyr);
-                            Core.setMainPanel('layermanager');
-                        }
-                    }
-                    if (ds.type == "ckan") {
-                        if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
-                            var format;
-                            var definition = {};
-                            var url = layer.url;
-                            definition.url = layer.url;
-                            url = utils.proxify(url);
-                            switch (layer.format.toLowerCase()) {
-                                case "kml":
-                                    format = new ol.format.KML();
-                                    definition.format = "ol.format.KML";
-                                    break;
-                                case "json":
-                                case "geojson":
-                                    format = new ol.format.GeoJSON();
-                                    definition.format = "ol.format.GeoJSON";
-                                    break;
-                            }
-                            var src = new ol.source.Vector({
-                                format: format,
-                                url: url,
-                                projection: ol.proj.get('EPSG:3857'),
-                                extractStyles: false,
-                                loader: function(extent, resolution, projection) {
-                                    $.ajax({
-                                        url: url,
-                                        success: function(data) {
-                                            src.addFeatures(format.readFeatures(data, {
-                                                dataProjection: 'EPSG:4326',
-                                                featureProjection: map.getView().getProjection().getCode().toUpperCase()
-                                            }));
-                                        }
-                                    })
-                                },
-                                strategy: ol.loadingstrategy.all
-                            });
-                            var lyr = new ol.layer.Vector({
-                                title: layer.title || layer.description,
-                                source: src,
-                                definition: definition,
-                                saveState: true,
-                                style: default_style
-                            });
-                            var listenerKey = src.on('change', function() {
-                                if (src.getState() == 'ready') {
-                                    if (src.getFeatures().length == 0) return;
-                                    var extent = src.getExtent();
-                                    src.unByKey(listenerKey);
-                                    if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
-                                        OlMap.map.getView().fit(extent, map.getSize());
-                                }
-                            });
-                            OlMap.map.addLayer(lyr);
-                            Core.setMainPanel('layermanager');
-                        }
-                    }
                     if (ds.type == "micka") {
                         if (layer.trida == 'service') {
                             if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
@@ -591,56 +453,16 @@ define(['angular', 'ol', 'map'],
                             }
                         } else if (layer.trida == 'dataset') {
                             if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
-                                var format;
-                                var definition = {};
-                                var url = layer.link;
-                                definition.url = layer.link;
-                                url = utils.proxify(url);
                                 switch (layer.format.toLowerCase()) {
                                     case "kml":
-                                        format = new ol.format.KML();
-                                        definition.format = "ol.format.KML";
+                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || layer.description, true, map.getView().getProjection().getCode().toUpperCase());
                                         break;
                                     case "json":
                                     case "geojson":
-                                        format = new ol.format.GeoJSON();
-                                        definition.format = "ol.format.GeoJSON";
+                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || layer.description, false, map.getView().getProjection().getCode().toUpperCase());
                                         break;
                                 }
-                                var src = new ol.source.Vector({
-                                    format: format,
-                                    url: url,
-                                    projection: ol.proj.get('EPSG:3857'),
-                                    extractStyles: true,
-                                    loader: function(extent, resolution, projection) {
-                                        $.ajax({
-                                            url: url,
-                                            success: function(data) {
-                                                src.addFeatures(format.readFeatures(data, {
-                                                    dataProjection: 'EPSG:4326',
-                                                    featureProjection: map.getView().getProjection().getCode().toUpperCase()
-                                                }));
-                                            }
-                                        })
-                                    },
-                                    strategy: ol.loadingstrategy.all
-                                });
-                                var lyr = new ol.layer.Vector({
-                                    title: layer.title || layer.description,
-                                    source: src,
-                                    definition: definition,
-                                    saveState: true
-                                });
-                                var listenerKey = src.on('change', function() {
-                                    if (src.getState() == 'ready') {
-                                        if (src.getFeatures().length == 0) return;
-                                        var extent = src.getExtent();
-                                        src.unByKey(listenerKey);
-                                        if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
-                                            OlMap.map.getView().fit(extent, map.getSize());
-                                    }
-                                });
-                                OlMap.map.addLayer(lyr);
+
                                 Core.setMainPanel('layermanager');
                             }
                         } else {

@@ -114,7 +114,7 @@
                 </div>
                 <span translate>More</span>
                 <button class="btn btn-default glyphicon glyphicon-search" ng-click="zoomToLayer(currentlayer.layer)" ng-disabled="!layerIsZoomable(currentlayer.layer)"></button>
-                <button class="btn btn-default glyphicon glyphicon-wrench" ng-click="styleLayer(currentlayer.layer)" ng-disabled="!layerIsVector(currentlayer.layer)"></button>
+                <button class="btn btn-default glyphicon glyphicon-wrench" ng-click="styleLayer(currentlayer.layer)" ng-disabled="!layerIsStyleable(currentlayer.layer)"></button>
                 <button class="btn btn-default glyphicon glyphicon glyphicon-font" ng-click="toggleLayerRename()"></button>
                 <button class="btn btn-danger glyphicon glyphicon-trash" ng-click="removeLayer(currentlayer.layer)"></button>
             </div>

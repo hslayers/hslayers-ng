@@ -427,14 +427,14 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             }
 
             /**
-             * @function layerIsVector
+             * @function layerIsStyleable
              * @memberOf hs.layermanager.controller
-             * @description Determines if layer is a Vector layer. Used for allowing styling
+             * @description Determines if layer is a Vector layer and styleable. Used for allowing styling
              * @param {object} layer
              */
-            $scope.layerIsVector = function(layer) {
+            $scope.layerIsStyleable = function(layer) {
                 if (typeof layer == 'undefined') return false;
-                if (layer instanceof ol.layer.Vector) return true;
+                if (layer instanceof ol.layer.Vector && layer.getSource().styleAble) return true;
                 return false;
             }
 

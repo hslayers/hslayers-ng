@@ -36,6 +36,7 @@ define(['angular', 'ol', 'styles'],
 
                     var src = new ol.source.Vector({
                         format: format,
+                        url: url,
                         projection: ol.proj.get(srs),
                         extractStyles: extract_styles,
                         loader: function(extent, resolution, projection) {
@@ -53,6 +54,31 @@ define(['angular', 'ol', 'styles'],
                                         dataProjection: 'EPSG:4326',
                                         featureProjection: srs
                                     }));
+
+                                    src.hasLine = false;
+                                    src.hasPoly = false;
+                                    src.hasPoint = false;
+                                    angular.forEach(src.getFeatures(), function(f) {
+                                        if (f.getGeometry()) {
+                                            switch (f.getGeometry().getType()) {
+                                                case 'LineString' || 'MultiLineString':
+                                                    src.hasLine = true;
+                                                    break;
+                                                case 'Polygon' || 'MultiPolygon':
+                                                    src.hasPoly = true;
+                                                    break;
+                                                case 'Point' || 'MultiPoint':
+                                                    src.hasPoint = true;
+                                                    break;
+                                            }
+                                        }
+                                    })
+
+                                    if (src.hasLine || src.hasPoly || src.hasPoint) {
+                                        src.styleAble = true;
+                                    }
+
+
                                 }
                             });
                         },
@@ -64,6 +90,18 @@ define(['angular', 'ol', 'styles'],
                         saveState: true,
                         definition: definition,
                         source: src
+                    });
+
+
+                    var listenerKey = src.on('change', function() {
+
+                        if (src.getState() == 'ready') {
+
+                            if (src.getFeatures().length == 0) return;
+                            var extent = src.getExtent(); - src.unByKey(listenerKey);
+                            if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
+                                OlMap.map.getView().fit(extent, OlMap.map.getSize());
+                        }
                     });
 
                     OlMap.map.addLayer(lyr);
