@@ -448,6 +448,18 @@ define(['angular', 'ol', 'map'],
                                 }
                                 var link = layer.link;
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WMS');
+                            } else if (layer.format && ["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
+                                switch (layer.format.toLowerCase()) {
+                                    case "kml":
+                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, map.getView().getProjection().getCode().toUpperCase());
+                                        break;
+                                    case "json":
+                                    case "geojson":
+                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, map.getView().getProjection().getCode().toUpperCase());
+                                        break;
+                                }
+
+                                Core.setMainPanel('layermanager');
                             } else {
                                 alert('Service type "' + layer.serviceType + '" not supported.');
                             }
