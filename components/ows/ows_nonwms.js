@@ -118,7 +118,7 @@ define(['angular', 'ol', 'styles'],
                 $scope.extract_styles = false;
 
                 $scope.add = function() {
-                    service.add($scope.type, $scope.url, $scope.title, $scope.extract_styles, $scope.srs);
+                    service.add($scope.type, $scope.url, $scope.title, $scope.abstract, $scope.extract_styles, $scope.srs);
                     Core.setMainPanel('layermanager');
                 }
             }

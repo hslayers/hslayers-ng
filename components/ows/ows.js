@@ -32,21 +32,9 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                     $scope.connect = function() {
                         $('.ows-capabilities').slideDown();
                         switch ($scope.type.toLowerCase()) {
-                            /* case "gml":
-                             case "georss":
-                                 // Prompt for user data and process the result using a callback:
-                                 Ext.Msg.prompt(
-                                     OpenLayers.i18n('Name'),
-                                     OpenLayers.i18n('Please layer name: '),
-                                     function(btn, text){
-                                         if (btn == 'ok'){
-                                             this.ows._addNonOWSLayer(this.url,this.service,text);
-                                         }
-                                     },{service:service, url:url,ows:this},true,service);
-                                 break;*/
                             case "wms":
                                 srv_caps.requestGetCapabilities($scope.url);
-                                $scope.connected = true;
+                                $scope.showDetails = true;
                                 break;
                         }
                     };
@@ -68,6 +56,7 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                             case "kml":
                             case "geojson":
                                 template = ows_path + 'owsnonwms.html';
+                                $scope.showDetails = true;
                                 break;
                             default:
                                 break;
@@ -75,10 +64,18 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         return template;
                     };
 
+                    $scope.isService = function() {
+                        if (["kml", "geojson", "json"].indexOf($scope.type.toLowerCase()) > -1) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+
                     $scope.clear = function() {
                         $scope.url = '';
                         $('.ows-capabilities').slideUp();
-                        $scope.connected = false;
+                        $scope.showDetails = false;
                     }
 
                     function zoomToVectorLayer(lyr) {

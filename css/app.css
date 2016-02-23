@@ -674,6 +674,19 @@ a.sidebar-main {
     resize: vertical;
     min-height: 175px;
 }
+
+/*********/
+/** OWS **/
+/*********/
+
+#hs-ows-abstract {
+    resize: vertical;
+    min-height: 100px;
+}
+
+#hs-ows-advancedPanel {
+    margin-top: 10px;
+}
 /************/
 /** STYLER **/
 /************/
