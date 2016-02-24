@@ -148,10 +148,10 @@ define(['angular', 'ol'],
             }
         ])
 
-        .controller('hs.styler.controller', ['$scope', 'hs.styler.service', '$sce',
-            function($scope, service, $sce) {
+        .controller('hs.styler.controller', ['$scope', 'hs.styler.service', '$sce', 'Core',
+            function($scope, service, $sce, Core) {
                 $scope.service = service;
-                $scope.icons = ["bag1.svg", "banking4.svg", "bar.svg", "beach17.svg", "bicycles.svg", "building103.svg", "bus4.svg", "cabinet9.svg", "camping13.svg", "caravan.svg", "church15.svg", "church1.svg", "coffee-shop1.svg", "disabled.svg", "favourite28.svg", "football1.svg", "footprint.svg", "gift-shop.svg", "gps35.svg", "gps36.svg", "gps37.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg", "hospital.svg", "hot-air-balloon2.svg", "information78.svg", "library21.svg", "location4.svg", "location6.svg", "luggage12.svg", "luggage13.svg", "map-pointer7.svg", "map-pointer8.svg", "monument1.svg", "mountain42.svg", "museum35.svg", "park11.svg", "parking28.svg", "pharmacy17.svg", "pin10.svg", "pin63.svg", "pin65.svg", "police-station.svg", "port2.svg", "restaurant52.svg", "road-sign1.svg", "sailing-boat2.svg", "ski1.svg", "swimming26.svg", "telephone119.svg", "toilets2.svg", "train-station.svg", "university2.svg", "warning.svg", "wifi8.svg"];
+                $scope.icons = null;
                 $scope.imagetypes = [{
                     name: 'none',
                     hrname: 'None'
@@ -273,6 +273,12 @@ define(['angular', 'ol'],
                 });
                 $scope.$watch('radius', function() {
                     $scope.save()
+                });
+                
+                $scope.$on('core.mainpanel_changed', function(e, panel){
+                    if(Core.mainpanel=='styler' && $scope.icons == null){
+                        $scope.icons = ["bag1.svg", "banking4.svg", "bar.svg", "beach17.svg", "bicycles.svg", "building103.svg", "bus4.svg", "cabinet9.svg", "camping13.svg", "caravan.svg", "church15.svg", "church1.svg", "coffee-shop1.svg", "disabled.svg", "favourite28.svg", "football1.svg", "footprint.svg", "gift-shop.svg", "gps35.svg", "gps36.svg", "gps37.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg", "hospital.svg", "hot-air-balloon2.svg", "information78.svg", "library21.svg", "location4.svg", "location6.svg", "luggage12.svg", "luggage13.svg", "map-pointer7.svg", "map-pointer8.svg", "monument1.svg", "mountain42.svg", "museum35.svg", "park11.svg", "parking28.svg", "pharmacy17.svg", "pin10.svg", "pin63.svg", "pin65.svg", "police-station.svg", "port2.svg", "restaurant52.svg", "road-sign1.svg", "sailing-boat2.svg", "ski1.svg", "swimming26.svg", "telephone119.svg", "toilets2.svg", "train-station.svg", "university2.svg", "warning.svg", "wifi8.svg"];
+                    }
                 });
 
                 $scope.$emit('scope_loaded', "styler");

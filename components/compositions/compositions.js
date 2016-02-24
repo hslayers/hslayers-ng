@@ -156,6 +156,8 @@ define(['angular', 'ol', 'map'],
                         if (j.image.type == 'icon') {
                             var img = new Image();
                             img.src = j.image.src;
+                            if(img.width==0) img.width = 43;
+                            if(img.height==0) img.width = 41;
                             var icon_json = {
                                 img: img,
                                 imgSize: [img.width, img.height],
