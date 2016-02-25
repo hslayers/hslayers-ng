@@ -379,7 +379,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
                     })
-                    OlMap.repopulateLayers();
+                    OlMap.reset();
                 })
 
                 $scope.makeHumanReadable = function(attribute) {
