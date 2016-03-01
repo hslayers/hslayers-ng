@@ -87,6 +87,7 @@ define(['angular', 'ol', 'utils'],
                     else
                     if (angular.isDefined(params.REQUEST)) params.REQUEST = 'GetCapabilities';
                     if (angular.isUndefined(params.service) && angular.isUndefined(params.SERVICE)) params.service = 'WMS';
+                    if (angular.isUndefined(params.version) && angular.isUndefined(params.VERSION)) params.version = '1.3.0';
                     var url = [path, me.params2String(params)].join('?');
 
                     url = utils.proxify(url);
@@ -320,162 +321,7 @@ define(['angular', 'ol', 'utils'],
                  */
                 var addLayer = function(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
                     if (console) console.log(layer);
-                    /*
-            var layerCrs = (typeof(OlMap.map.projection) == typeof("") ? OlMap.map.projection.toUpperCase() : OlMap.map.projection.getCode().toUpperCase());
 
-            var options = {
-                    layers: layer.name,
-                    transparent: (imageFormat.search("png") > -1 || imageFormat.search("gif") > -1 ? "TRUE" : "FALSE"),
-                    format: imageFormat,
-                    EXCEPTIONS: "application/vnd.ogc.se_inimage", //application/vnd.ogc.se_xml",
-                    VERSION: this.version,
-                    INFO_FORMAT: (layer.queryable ? queryFormat : undefined),
-                    styles: layer.styles.length > 0 ? layer.styles[0].name : undefined
-                };
-
-            var maxExtent;
-            var layerbbox = null;
-
-
-            if (layer.llbbox) {
-                layerbbox = layer;
-
-                prj = new OpenLayers.Projection("epsg:4326");
-                // NOT in 'common' form minx, miny, maxx, maxy, but
-                // miny, minx, maxy, maxx
-                // FIXME - you never know :-(
-                // 1.3.0
-                // 0: "48.1524"
-                // 1: "12.7353"
-                // 2: "51.3809"
-                // 3: "17.1419"
-                maxExtent = new OpenLayers.Bounds(layerbbox.llbbox[0],
-                                                  layerbbox.llbbox[1],
-                                                  layerbbox.llbbox[2],
-                                                  layerbbox.llbbox[3]);
-
-                var mapBounds = OlMap.map.getMaxExtent().clone();
-                mapBounds.transform(OlMap.map.getProjectionObject(), prj);
-
-                // fix sizes
-                maxExtent.left = (maxExtent.left < mapBounds.left ? mapBounds.left : maxExtent.left);
-                maxExtent.bottom = (maxExtent.bottom < mapBounds.bottom ? mapBounds.bottom : maxExtent.bottom);
-                maxExtent.right = (maxExtent.right > mapBounds.right ? mapBounds.right : maxExtent.right);
-                maxExtent.top = (maxExtent.top > mapBounds.top ? mapBounds.top : maxExtent.top);
-
-                if (maxExtent.containsBounds(mapBounds)) {
-                    maxExtent = OlMap.map.getMaxExtent().clone();
-                }
-                else {
-                    maxExtent.transform(prj, OlMap.map.getProjectionObject());
-                }
-            }
-
-            switch(this.version) {
-                case "1.3.0":
-                    options.CRS = layerCrs;
-                    options.EXCEPTIONS =  "XML";
-                    break;
-                default:
-                    options.SRS = layerCrs;
-                    break;
-            }
-
-            var projections = [];
-
-            for (var j in this.srss) {
-                var prj;
-                try {
-                    prj = HSLayers.OWS._Projections[j.toUpperCase()];
-                    if (!prj) {
-                        prj = new OpenLayers.Projection(j);
-                        HSLayers.OWS._Projections[j.toUpperCase()] = prj;
-                    }
-                    if (prj.proj.readyToUse) {
-                        projections.push(prj);
-                    }
-                }
-                catch(e){OpenLayers.Console.log(e);}
-            }
-
-            // HACK HACK HACK
-            // min and max scale is sometimes parsed in wrong way
-            layer.minScale = parseFloat(layer.minScale);
-            layer.maxScale = parseFloat(layer.maxScale);
-            if (layer.minScale && layer.maxScale && (layer.minScale < layer.maxScale)) {
-                var mins = layer.minScale;
-                layer.minScale = layer.maxScale;
-                layer.maxScale = mins;
-            }
-            // /HACK HACK HACK
-
-
-            var minResolution =  (layer.maxScale ? OpenLayers.Util.getResolutionFromScale(layer.maxScale,OlMap.map.baseLayer.units) :
-                            OlMap.map.baseLayer.resolutions[OlMap.map.baseLayer.resolutions.length-1]);
-            var maxResolution = (layer.minScale ? OpenLayers.Util.getResolutionFromScale(layer.minScale,OlMap.map.baseLayer.units) :
-                            OlMap.map.baseLayer.resolutions[0]);
-
-            if (minResolution == Infinity) {
-                minResolution = undefined;
-                layer.maxScale = undefined;
-            }
-
-            if (maxResolution == Infinity) {
-                maxResolution = undefined;
-                layer.minScale = undefined;
-            }
-
-            var obj = {
-                formats: []
-            };
-            layer.formats.map(function(format) {this.formats.push({value: format});},obj);
-
-            var metadataURL = this.getLayerMetadataUrl(layer);
-            var layerName = layerName.replace(/\//g,"&#47");
-            var params = {
-                    isBaseLayer: false,
-                    title: layerName,
-                    visibility:true,
-                    transitionEffect: "resize",
-                    singleTile: singleTile,
-                    tileSize: tileSize, //|| new OpenLayers.Size(OpenLayers.Map.TILE_WIDTH, OpenLayers.Map.TILE_HEIGHT),
-                    abstract: layer.abstract,
-                    metadata: {
-                        styles: layer.styles,
-                        formats: obj.formats
-                    },
-                    saveWMC: true,
-                    path: folder,
-                    metadataURL: metadataURL,
-                    buffer: 1,
-                    ratio: 1,
-                    maxExtent: maxExtent,
-                    projections: projections,
-                    projection: new OpenLayers.Projection(crs),
-                    queryable: layer.queryable,
-                    wmsMinScale: layer.minScale,
-                    wmsMaxScale: layer.maxScale,
-                    minResolution: minResolution,
-                    maxResolution: maxResolution,
-                    dimensions: layer.dimensions,
-                    capabilitiesURL: $scope.capabilities.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource,
-                    removable:true
-                };
-
-            options.owsService = "WMS";
-            //options.owsUrl = this.getMapUrl.href;
-            options.fromCRS = crs;
-
-            // unique layer name
-            //layerName = this.getUniqueLayerName(layerName);
-            var source = new ol.source.TileWMS({
-      url: $scope.getMapUrl,
-      crossOrigin: 'anonymous',
-      attributions: [new ol.Attribution({
-        html: layer.attribution
-      })],
-      params: params,
-    }); */
                     var attributions = [];
                     if (layer.Attribution) {
                         attributions = [new ol.Attribution({
@@ -494,7 +340,6 @@ define(['angular', 'ol', 'utils'],
                     if (angular.isDefined(crs)) {
                         tmpbox = layer.EX_GeographicBoundingBox;
                         if (angular.isDefined(layer.EX_GeographicBoundingBox)) {
-                            //boundingbox = [tmpbox[1],tmpbox[0],tmpbox[3],tmpbox[2]]
                             boundingbox = layer.EX_GeographicBoundingBox;
                         }
                     } else {
@@ -502,6 +347,11 @@ define(['angular', 'ol', 'utils'],
                             boundingbox = layer.LatLonBoundingBox;
                         }
                     }
+                    var dimensions = {}
+
+                    angular.forEach(layer.Dimension, function(val) {
+                        dimensions[val.name] = val;
+                    });
 
                     var new_layer = new layer_class({
                         title: layerName,
@@ -526,7 +376,8 @@ define(['angular', 'ol', 'utils'],
                         abstract: layer.Abstract,
                         MetadataURL: layer.MetadataURL,
                         BoundingBox: boundingbox,
-                        path: $scope.path
+                        path: $scope.path,
+                        dimensions: dimensions
                     });
 
                     OlMap.map.addLayer(new_layer);

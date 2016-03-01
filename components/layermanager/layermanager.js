@@ -129,6 +129,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
              */
             function layerAdded(e) {
+                $scope.layerIsWmsT(e.element);
                 if (e.element.get('show_in_manager') != null && e.element.get('show_in_manager') == false) return;
                 var sub_layers;
                 if (e.element.getSource().getParams) { // Legend only for wms layers with params
@@ -159,7 +160,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     visible: e.element.getVisible()
                 };
                 if ($scope.layerIsWmsT(new_layer)) {
-                    var metadata = new_layer.layer.get('metadata');
+                    var metadata = new_layer.layer.get('metadata') || new_layer.layer.metadata;
                     angular.extend(new_layer, {
                         time_step: metadata.timeStep,
                         time_unit: metadata.timeUnit,
@@ -168,7 +169,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         date_till: new Date(metadata.timeInterval[1]),
                         time: new Date(metadata.timeInterval[0])
                     });
-                    setLayerTimeSliderIntervals(new_layer);
+                    setLayerTimeSliderIntervals(new_layer, metadata);
                 }
                 if (e.element.get('base') != true) {
                     populateFolders(e.element);
@@ -196,8 +197,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 }
             }
 
-            function setLayerTimeSliderIntervals(new_layer) {
-                var metadata = new_layer.layer.get('metadata');
+            function setLayerTimeSliderIntervals(new_layer, metadata) {
                 switch (new_layer.time_unit) {
                     case 'FullYear':
                         var d = new Date(metadata.timeInterval[0]);
@@ -438,11 +438,98 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 return false;
             }
 
+            $scope.parseInterval = function(interval) {
+                var dateComponent;
+                var timeComponent;
+
+                var year;
+                var month;
+                var day;
+                var week;
+                var hour;
+                var minute;
+                var second;
+
+                year = month = week = day = hour = minute = second = 0;
+
+                var indexOfT = interval.search("T");
+
+                if (indexOfT > -1) {
+                    dateComponent = interval.substring(1, indexOfT);
+                    timeComponent = interval.substring(indexOfT + 1);
+                } else {
+                    dateComponent = interval.substring(1);
+                }
+
+                // parse date
+                if (dateComponent) {
+                    var indexOfY = (dateComponent.search("Y") > -1 ? dateComponent.search("Y") : undefined);
+                    var indexOfM = (dateComponent.search("M") > -1 ? dateComponent.search("M") : undefined);
+                    var indexOfW = (dateComponent.search("W") > -1 ? dateComponent.search("W") : undefined);
+                    var indexOfD = (dateComponent.search("D") > -1 ? dateComponent.search("D") : undefined);
+
+                    if (indexOfY !== undefined) {
+                        year = parseFloat(dateComponent.substring(0, indexOfY));
+                    }
+                    if (indexOfM !== undefined) {
+                        month = parseFloat(dateComponent.substring((indexOfY || -1) + 1, indexOfM));
+                    }
+                    if (indexOfD !== undefined) {
+                        day = parseFloat(dateComponent.substring((indexOfM || indexOfY || -1) + 1, indexOfD));
+                    }
+                }
+
+                // parse time
+                if (timeComponent) {
+                    var indexOfH = (timeComponent.search("H") > -1 ? timeComponent.search("H") : undefined);
+                    var indexOfm = (timeComponent.search("M") > -1 ? timeComponent.search("M") : undefined);
+                    var indexOfS = (timeComponent.search("S") > -1 ? timeComponent.search("S") : undefined);
+
+                    if (indexOfH !== undefined) {
+                        hour = parseFloat(timeComponent.substring(0, indexOfH));
+                    }
+                    if (indexOfm !== undefined) {
+                        minute = parseFloat(timeComponent.substring((indexOfH || -1) + 1, indexOfm));
+                    }
+                    if (indexOfS !== undefined) {
+                        second = parseFloat(timeComponent.substring((indexOfm || indexOfH || -1) + 1, indexOfS));
+                    }
+                }
+                // year, month, day, hours, minutes, seconds, milliseconds)
+                var zero = new Date(0, 0, 0, 0, 0, 0, 0);
+                var step = new Date(year, month, day, hour, minute, second, 0);
+                return step - zero;
+            }
+
+
             $scope.layerIsWmsT = function(layer_container) {
                 if (angular.isUndefined(layer_container) || layer_container == null) return false;
                 var layer = layer_container.layer;
                 if (angular.isUndefined(layer)) return false;
                 if (layer.get('metadata') && angular.isArray(layer.get('metadata').timeInterval)) return true;
+                if (layer.get('dimensions') && angular.isObject(layer.get('dimensions').time)) {
+                    var metadata = {};
+                    var value = layer.get('dimensions').time.values;
+                    value = value.replace(/\s*/g, "");
+
+                    if (value.search("/") > -1) {
+                        var interval = value.split("/").map(function(d) {
+                            if (d.search("Z") > -1) {
+                                d = d.replace("Z", "00:00");
+                            }
+                            return d;
+                        });
+
+                        if (interval.length == 3) {
+                            metadata.timeStep = $scope.parseInterval(interval[2]);
+                            interval.pop();
+                        }
+
+                        metadata.timeInterval = interval;
+                         }
+                    angular.extend(layer, {metadata: metadata})
+                    return true;
+                }
                 return false;
             }
 
@@ -515,7 +602,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             }
 
             $scope.setLayerTime = function(currentlayer) {
-                var metadata = currentlayer.layer.get('metadata');
+                var metadata = currentlayer.layer.get('metadata') || currentlayer.layer.metadata;
                 var d = new Date(metadata.timeInterval[0]);
                 switch (currentlayer.time_unit) {
                     case "FullYear":
