@@ -211,6 +211,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         var d2 = new Date(metadata.timeInterval[1]);
                         new_layer.max_time = d.monthDiff(d2);
                         break;
+                    default:
+                        new_layer.min_time = new Date(metadata.timeInterval[0]).getTime();
+                        new_layer.max_time = new Date(metadata.timeInterval[1]).getTime();
                 }
             }
 
@@ -611,6 +614,12 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     case "Month":
                         d.addMonths(currentlayer.date_increment);
                         break;
+                        default:
+                        if ((currentlayer.date_increment > currentlayer.min_time) && (currentlayer.date_increment < currentlayer.max_time)) {
+                                    d = new Date(parseInt(currentlayer.date_increment));
+                        } else {
+                                    d = currentlayer.time;
+                        }
                 }
                 currentlayer.time = d;
                 currentlayer.layer.getSource().updateParams({
