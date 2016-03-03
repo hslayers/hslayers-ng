@@ -8,9 +8,9 @@ define(['ol',
         'permalink',
         'search',
         'api',
-        'glutils', 'WGL', 'wglinit', 'mapconf', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
+        'glutils', 'WGL', 'wglinit', 'mapConf', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
         'heatmapdimension', 'heatmaprenderer', 'heatmaplegend', 'maxcalculator', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
-        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush', 'extentfilter', 'mappolyfilter','mapcolorfilter', 'parallelcoordinates'
+        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush', 'extentfilter', 'mappolyfilter', 'mapcolorfilter', 'parallelcoordinates'
     ],
 
     function(ol, layermanager, sidebar, poly2tri) {

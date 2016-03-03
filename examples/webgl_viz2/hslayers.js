@@ -8,11 +8,7 @@ var gitsha = $.ajax({
     async: false
 }).responseText;
 //var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-snaphsot1_1/js/'; //http://localhost:9999/js/webglayer/js/
- var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer_git/js/'
-
-
-
-//var jans_path = 'http://localhost:9999/js/webglayer/js/';
+var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer_git/js/'
 
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
@@ -54,7 +50,7 @@ require.config({
         dataloader: 'DataLoader',
         ol: hsl_path + 'lib/ol3/ol-full',
         wglinit: 'webglinit',
-        mapConf: 'webgConf',
+        mapConf: 'mapconf',
         chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel'
     },
     shim: {

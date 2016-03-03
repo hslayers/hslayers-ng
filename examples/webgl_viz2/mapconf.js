@@ -2,7 +2,6 @@ function mapConf(map, ol) {
     usercontrols = [];
     WGL.the_map = map;
 
-
     var featureOverlay = new ol.FeatureOverlay({
         style: new ol.style.Style({
             fill: new ol.style.Fill({
@@ -22,9 +21,6 @@ function mapConf(map, ol) {
     });
     featureOverlay.setMap(map);
 
-    // select interaction working on "singleclick"
-
-
     // select interaction working on "click"
     var selectClick = new ol.interaction.Select({
         condition: ol.events.condition.click,
@@ -35,16 +31,15 @@ function mapConf(map, ol) {
         var f = selectClick.getFeatures();
         f.forEach(function(ff) {
             featureOverlay.removeFeature(ff);
-             delete polygons[ff.wglId];
-             //*deactivate filter*/
-			 var l = 0;
-             for (var i in polygons){
-					if (typeof(polygons[i])!='undefined'){
-								l++;
-							} 
-					}
-			//polygons.length = l;//Object.keys(polygons).length;;
-		    WGL.filterDim('themap','polybrush',polygons);
+            delete polygons[ff.wglId];
+            //*deactivate filter*/
+            var l = 0;
+            for (var i in polygons) {
+                if (typeof(polygons[i]) != 'undefined') {
+                    l++;
+                }
+            }
+            WGL.filterDim('themap', 'polybrush', polygons);
 
         })
         selectClick.getFeatures().clear();
@@ -69,15 +64,7 @@ function mapConf(map, ol) {
         }
 
     });
-
-
-    //usercontrols['modify'] = modify;
-
     featureOverlay.getFeatures();
-
-
-    //map.addInteraction(modify);
-
 
     var draw; // global so we can remove it lat	 console.log(this);er
 
@@ -85,30 +72,26 @@ function mapConf(map, ol) {
         features: featureOverlay.getFeatures(),
         type: "Polygon"
     });
-  
+
     var polygons = [];
     var polid = 0;
-    
+
     draw.on("drawstart", function(e) {
         e.feature.on('change', function(ff) {
             var res = [];
             var features = ff.target.getGeometry().getCoordinates();
-            if (typeof(ff.target.wglId)=='undefined'){
-               ff.target.wglId =  polid++;
-            } 
-            //for (var i = 0; i < features.length; i++) {
+            if (typeof(ff.target.wglId) == 'undefined') {
+                ff.target.wglId = polid++;
+            }
             for (var j = 0; j < features[0].length; j++) {
                 var pp = transform(features[0][j]);
                 res.push(pp);
             }
-            //console.log("feature num "+features.length);
-
             try {
-              
+
                 var ts = new poly2tri.SweepContext(res);
                 ts.triangulate();
-                polygons[ ff.target.wglId] = trianglesToArray(ts.getTriangles());
-                //polygons.length = Object.keys(polygons).length;
+                polygons[ff.target.wglId] = trianglesToArray(ts.getTriangles());
                 WGL.filterDim('themap', 'polybrush', polygons);
             } catch (e) {
                 console.log(e);
@@ -117,14 +100,7 @@ function mapConf(map, ol) {
         }, draw);
     });
 
-
-
     usercontrols['draw'] = draw;
-
-
-    // addInteraction();
-
-
 
     function transform(p) {
         var tl = getTopLeftTC();
@@ -132,7 +108,6 @@ function mapConf(map, ol) {
         var v = map.getPixelFromCoordinate(p);
         console.log(v);
         var prop = map.getProperties()
-            // var v = map.getViewPortPxFromLonLat( new OpenLayers.LonLat(90,0));
         var v0 = toLevel0(v, tl, prop.view.getZoom());
         return v0;
 
@@ -149,7 +124,6 @@ function mapConf(map, ol) {
     var tlwgs = [-20037508.34, 20037508.34];
 
     function getTopLeftTC() {
-
         var s = Math.pow(2, map.getView().getZoom());
         var tlpixel = map.getPixelFromCoordinate(tlwgs);
         var res = {
@@ -168,12 +142,11 @@ function mapConf(map, ol) {
             }
         }
         return points;
-
     }
 
 }
-toggleControl = function(element) {
 
+toggleControl = function(element) {
     for (key in usercontrols) {
         var control = usercontrols[key];
 
