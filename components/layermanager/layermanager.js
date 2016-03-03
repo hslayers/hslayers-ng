@@ -156,7 +156,6 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     title: e.element.get("title"),
                     layer: e.element,
                     grayed: $scope.isLayerInResolutionInterval(e.element),
-                    legends: sub_layers,
                     visible: e.element.getVisible()
                 };
                 if ($scope.layerIsWmsT(new_layer)) {
@@ -173,7 +172,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 }
                 if (e.element.get('base') != true) {
                     populateFolders(e.element);
-                    new_layer.legends = sub_layers;
+                    if (e.element.get('legends')) {
+                        new_layer.legends = e.element.get('legends');
+                    }
                     $scope.layers.push(new_layer);
                 } else {
                     new_layer.active = e.element.getVisible();
@@ -529,8 +530,10 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         }
 
                         metadata.timeInterval = interval;
-                         }
-                    angular.extend(layer, {metadata: metadata})
+                    }
+                    angular.extend(layer, {
+                        metadata: metadata
+                    })
                     return true;
                 }
                 return false;
@@ -614,11 +617,11 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     case "Month":
                         d.addMonths(currentlayer.date_increment);
                         break;
-                        default:
+                    default:
                         if ((currentlayer.date_increment > currentlayer.min_time) && (currentlayer.date_increment < currentlayer.max_time)) {
-                                    d = new Date(parseInt(currentlayer.date_increment));
+                            d = new Date(parseInt(currentlayer.date_increment));
                         } else {
-                                    d = currentlayer.time;
+                            d = currentlayer.time;
                         }
                 }
                 currentlayer.time = d;
@@ -647,8 +650,19 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             }
             $scope.isScaleVisible = function(layer) {
                 if (typeof layer == 'undefined') return false;
-                return angular.isDefined(layer.getMinResolution());
+                layer.minResolutionValid = false;
+                layer.maxResolutionValid = false;
+                if (angular.isDefined(layer.getMinResolution()) && layer.getMinResolution() != 0) layer.minResolutionValid = true;
+                if (angular.isDefined(layer.getMaxResolution()) && layer.getMaxResolution() != Infinity) layer.maxResolutionValid = true;
+
+                if (layer.minResolutionValid || layer.maxResolutionValid) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
+
+
             OlMap.map.getLayers().forEach(function(lyr) {
                 layerAdded({
                     element: lyr

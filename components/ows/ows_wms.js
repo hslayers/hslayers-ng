@@ -353,6 +353,10 @@ define(['angular', 'ol', 'utils'],
                         dimensions[val.name] = val;
                     });
 
+                    var legends = [];
+                    if (layer.Style && layer.Style[0].LegendURL) {
+                        legends.push(layer.Style[0].LegendURL[0].OnlineResource);
+                    }
                     var new_layer = new layer_class({
                         title: layerName,
                         source: new source_class({
@@ -377,7 +381,8 @@ define(['angular', 'ol', 'utils'],
                         MetadataURL: layer.MetadataURL,
                         BoundingBox: boundingbox,
                         path: $scope.path,
-                        dimensions: dimensions
+                        dimensions: dimensions,
+                        legends: legends
                     });
 
                     OlMap.map.addLayer(new_layer);

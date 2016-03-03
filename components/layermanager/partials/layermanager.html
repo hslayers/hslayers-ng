@@ -86,10 +86,8 @@
                 <!-- Scale -->
                 <div class="form-group" ng-show="isScaleVisible(currentlayer.layer)">
                     <label translate>Scale</label>
-                    <p>
-                    <span translate>from</span> 1:{{currentlayer.layer.getMinResolution()}}
-                        <span translate> to </span> 1:{{currentlayer.layer.getMaxResolution().toString().replace('Infinity', '1000000000')}}
-                    </p>
+                    <span ng-if="currentlayer.layer.minResolutionValid"><span translate>from</span> 1:{{currentlayer.layer.getMinResolution()}}</span>
+                    <span ng-if="currentlayer.layer.maxResolutionValid"><span translate>to</span> 1:{{currentlayer.layer.getMaxResolution()}}</span>
                 </div>
                 
                 <!-- Metadata -->
@@ -98,7 +96,7 @@
                 </div>
                 
                 <!-- Legends -->
-                <div class="form-group">
+                <div class="form-group" ng-if="currentlayer.legends != null">
                     <label translate>Legend</label>
                     <p>
                          <img ng-repeat="legend in currentlayer.legends" ng-src="{{legend}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
