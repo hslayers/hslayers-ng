@@ -175,6 +175,11 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             w.resize();
                         },
                         setLanguage: function(lang) {
+                            switch (lang) {
+                                case "cs_CZ":
+                                    lang = 'cs';
+                                    break;
+                            }
                             gettextCatalog.setCurrentLanguage(lang);
                         },
                         getAllScopes: function() {

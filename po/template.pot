@@ -5,7 +5,8 @@ msgstr ""
 "Project-Id-Version: \n"
 
 #: components/compositions/partials/dialog_info.html:12
-#: components/layermanager/partials/layermanager.html:76
+#: components/layermanager/partials/layermanager.html:80
+#: components/ows/partials/owsnonwms.html:10
 #: components/status_creator/partials/form.html:21
 #: components/status_creator/partials/simpleform.html:9
 msgid "Abstract"
@@ -15,7 +16,7 @@ msgstr ""
 msgid "Access"
 msgstr ""
 
-#: components/ows/partials/owsnonwms.html:30
+#: components/ows/partials/owsnonwms.html:44
 #: components/ows/partials/owsprioritized.html:7
 msgid "Add"
 msgstr ""
@@ -39,7 +40,13 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
+#: components/ows/partials/owsnonwms.html:17
+#: components/status_creator/partials/simpleform.html:27
+msgid "Advanced options"
+msgstr ""
+
 #: components/geolocation/partials/geolocation.html:5
+#: components/geolocation/partials/geolocation_cordova.html:5
 msgid "Altitude"
 msgstr ""
 
@@ -53,7 +60,7 @@ msgstr ""
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
 #: components/ows/partials/dialog_proxyconfirm.html:15
-#: components/status_creator/partials/simpleform.html:72
+#: components/status_creator/partials/simpleform.html:70
 msgid "Cancel"
 msgstr ""
 
@@ -70,7 +77,6 @@ msgstr ""
 #: components/datasource_selector/partials/dialog_micka_advanced.html:101
 #: components/measure/partials/measure.html:17
 #: components/search/partials/searchinput.html:4
-#: components/search/partials/searchresults.html:10
 msgid "Clear"
 msgstr ""
 
@@ -103,7 +109,6 @@ msgstr ""
 #: components/permalink/partials/directive.html:5
 #: components/print/partials/printdialog.html:5
 #: components/query/partials/infopanel.html:5
-#: components/search/partials/searchresults.html:5
 #: components/status_creator/partials/dialog.html:17
 #: components/status_creator/partials/dialog.html:5
 #: components/status_creator/partials/dialog_result.html:15
@@ -201,7 +206,7 @@ msgstr ""
 
 #: components/compositions/partials/dialog_info.html:16
 #: components/status_creator/partials/form.html:30
-#: components/status_creator/partials/simpleform.html:39
+#: components/status_creator/partials/simpleform.html:37
 msgid "Extent"
 msgstr ""
 
@@ -213,7 +218,7 @@ msgstr ""
 msgid "External data source (URL)"
 msgstr ""
 
-#: components/ows/partials/owsnonwms.html:24
+#: components/ows/partials/owsnonwms.html:37
 msgid "Extract styles"
 msgstr ""
 
@@ -225,6 +230,7 @@ msgstr ""
 msgid "Fill"
 msgstr ""
 
+#: components/ows/partials/owsnonwms.html:12
 #: components/status_creator/partials/simpleform.html:11
 msgid "Fill in descriptive text about map"
 msgstr ""
@@ -264,7 +270,7 @@ msgstr ""
 msgid "Filter the values which are in a speciffic interval by dragging on the chart below"
 msgstr ""
 
-#: components/ows/partials/owsnonwms.html:17
+#: components/ows/partials/owsnonwms.html:30
 #: components/ows/partials/owswms.html:46
 msgid "Folder name"
 msgstr ""
@@ -292,7 +298,7 @@ msgstr ""
 #: components/compositions/partials/compositions.html:27
 #: components/datasource_selector/partials/dialog_micka_advanced.html:28
 #: components/status_creator/partials/form.html:26
-#: components/status_creator/partials/simpleform.html:33
+#: components/status_creator/partials/simpleform.html:31
 msgid "Keywords"
 msgstr ""
 
@@ -306,11 +312,11 @@ msgid "Layer manager"
 msgstr ""
 
 #: components/status_creator/partials/form.html:45
-#: components/status_creator/partials/simpleform.html:57
+#: components/status_creator/partials/simpleform.html:55
 msgid "Layers"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:98
+#: components/layermanager/partials/layermanager.html:102
 #: components/legend/partials/legend.html:2
 msgid "Legend"
 msgstr ""
@@ -369,7 +375,7 @@ msgstr ""
 msgid "Measure distance or area at map"
 msgstr ""
 
-#: components/toolbar/partials/toolbar.html:20
+#: components/toolbar/partials/toolbar.html:21
 msgid "Measure lines and polygon"
 msgstr ""
 
@@ -385,13 +391,13 @@ msgstr ""
 msgid "Metadata for"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:93
+#: components/layermanager/partials/layermanager.html:97
 msgid "Metadata in"
 msgstr ""
 
 #: components/datasource_selector/partials/datasource_selector.html:13
 #: components/datasource_selector/partials/datasource_selector.html:39
-#: components/layermanager/partials/layermanager.html:111
+#: components/layermanager/partials/layermanager.html:115
 msgid "More"
 msgstr ""
 
@@ -517,13 +523,13 @@ msgstr ""
 msgid "Resample layer"
 msgstr ""
 
-#: components/toolbar/partials/toolbar.html:17
+#: components/toolbar/partials/toolbar.html:18
 msgid "Reset map"
 msgstr ""
 
 #: components/status_creator/partials/dialog.html:15
 #: components/status_creator/partials/dialog_save.html:37
-#: components/status_creator/partials/simpleform.html:73
+#: components/status_creator/partials/simpleform.html:71
 msgid "Save"
 msgstr ""
 
@@ -551,20 +557,12 @@ msgid "Saving to status manager"
 msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:77
-#: components/layermanager/partials/layermanager.html:84
+#: components/layermanager/partials/layermanager.html:88
 msgid "Scale"
 msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:100
 msgid "Search"
-msgstr ""
-
-#: components/toolbar/partials/toolbar.html:24
-msgid "Search for a place"
-msgstr ""
-
-#: components/search/partials/searchresults.html:2
-msgid "Search results"
 msgstr ""
 
 #: components/ows/partials/owswms.html:55
@@ -593,6 +591,7 @@ msgid "Sparql query log"
 msgstr ""
 
 #: components/geolocation/partials/geolocation.html:4
+#: components/geolocation/partials/geolocation_cordova.html:4
 msgid "Speed"
 msgstr ""
 
@@ -629,7 +628,7 @@ msgid "Tile size"
 msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:92
-#: components/layermanager/partials/layermanager.html:108
+#: components/layermanager/partials/layermanager.html:112
 #: components/ows/partials/owsnonwms.html:3
 #: components/print/partials/printdialog.html:11
 #: components/status_creator/partials/form.html:18
@@ -649,7 +648,7 @@ msgid "Use a different name to save the map."
 msgstr ""
 
 #: components/status_creator/partials/form.html:44
-#: components/status_creator/partials/simpleform.html:54
+#: components/status_creator/partials/simpleform.html:52
 msgid "Use current map extent"
 msgstr ""
 
@@ -694,7 +693,7 @@ msgstr ""
 msgid "details"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:86
+#: components/layermanager/partials/layermanager.html:90
 msgid "from"
 msgstr ""
 
@@ -702,6 +701,6 @@ msgstr ""
 msgid "multiple shapes"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:87
+#: components/layermanager/partials/layermanager.html:91
 msgid "to"
 msgstr ""
