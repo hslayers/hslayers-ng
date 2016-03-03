@@ -51,7 +51,7 @@ require.config({
         ol: hsl_path + 'lib/ol3/ol-full',
         wglinit: 'webglinit',
         mapConf: 'mapconf',
-        chart_panel: hsl_path + 'examples/webgl_viz/chart_panel/chart_panel'
+        chart_panel: hsl_path + 'examples/webgl_viz2/chart_panel/chart_panel'
     },
     shim: {
         d3: {

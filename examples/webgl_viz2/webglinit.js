@@ -3,9 +3,12 @@ wglinit = function(that) {
     var ol = that.ol;
     mapConf(that.map, that.ol);
 
-    var data = new DataLoader(visualize);
-    data.loadPosData("testdata.json");
     var tlwgs = [-20037508.34, 20037508.34];
+
+    setTimeout(function() {
+        var data = new DataLoader(visualize);
+        data.loadPosData("testdata.json");
+    }, 0);
 
     function visualize(data) {
         WGL = new WGL(data.num, '', 'map');

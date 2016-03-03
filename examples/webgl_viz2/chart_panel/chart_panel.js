@@ -9,12 +9,12 @@ define(['angular', 'ol', 'map', 'd3'],
             }])
             .directive('chartpanel', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/webgl_viz/chart_panel/partials/template.html',
+                    templateUrl: hsl_path + 'examples/webgl_viz2/chart_panel/partials/template.html',
                     link: function(scope, element) {
                         var link = document.createElement("link");
                         link.type = "text/css";
                         link.rel = "stylesheet";
-                        link.href = hsl_path + 'examples/webgl_viz/chart_panel/partials/style.css';
+                        link.href = hsl_path + 'examples/webgl_viz2/chart_panel/partials/style.css';
                         document.getElementsByTagName("head")[0].appendChild(link);
                     }
                 };
