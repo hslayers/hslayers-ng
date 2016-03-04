@@ -26,7 +26,6 @@ require.config({
         app: 'app',
         panoramio: hsl_path + 'components/layers/panoramio/panoramio',
         core: hsl_path + 'components/core/core',
-        SparqlJson: hsl_path + 'components/layers/hs.source.SparqlJson',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
         'feature-crossfilter': hsl_path + 'components/feature_crossfilter/f_crossfilter'
