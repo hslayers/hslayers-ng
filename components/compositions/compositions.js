@@ -3,9 +3,9 @@
  * @memberOf hs
  */
 
-define(['angular', 'ol', 'map'],
+define(['angular', 'ol', 'SparqlJson', 'map'],
 
-    function(angular, ol) {
+    function(angular, ol, SparqlJson) {
         var module = angular.module('hs.compositions', ['hs.map', 'hs.core'])
             .directive('hs.compositions.directive', function() {
                 return {
@@ -207,77 +207,109 @@ define(['angular', 'ol', 'map'],
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':
-                                var definition = {};
-                                if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.KML') {
-                                    var url = decodeURIComponent(lyr_def.protocol.url);
-                                    url = utils.proxify(url);
+                                if (angular.isDefined(lyr_def.protocol)) {
+                                    var definition = {};
+                                    switch (lyr_def.protocol.format) {
+                                        case 'ol.format.KML':
+                                            var url = decodeURIComponent(lyr_def.protocol.url);
+                                            url = utils.proxify(url);
 
-                                    definition.url = url;
-                                    definition.format = "ol.format.KML";
+                                            definition.url = url;
+                                            definition.format = "ol.format.KML";
 
-                                    var style = null;
-                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+                                            var style = null;
+                                            if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
 
-                                    var src = new ol.source.Vector({
-                                        format: new ol.format.KML(),
-                                        projection: ol.proj.get(lyr_def.projection),
-                                        url: url,
-                                        extractStyles: (style != null ? false : true)
-                                    })
-                                    var lyr = new ol.layer.Vector({
-                                        from_composition: true,
-                                        definition: definition,
-                                        source: src,
-                                        style: style,
-                                        title: lyr_def.title
-                                    });
+                                            var src = new ol.source.Vector({
+                                                format: new ol.format.KML(),
+                                                projection: ol.proj.get(lyr_def.projection),
+                                                url: url,
+                                                extractStyles: (style != null ? false : true)
+                                            })
+                                            var lyr = new ol.layer.Vector({
+                                                from_composition: true,
+                                                definition: definition,
+                                                source: src,
+                                                style: style,
+                                                title: lyr_def.title
+                                            });
 
-                                    if (style != null) {
-                                        src.on('addfeature', function(f) {
-                                            f.feature.setStyle(null);
-                                        });
+                                            if (style != null) {
+                                                src.on('addfeature', function(f) {
+                                                    f.feature.setStyle(null);
+                                                });
+                                            }
+
+                                            layers.push(lyr);
+                                            break;
+                                        case 'ol.format.GeoJSON':
+                                            var url = decodeURIComponent(lyr_def.protocol.url);
+                                            url = utils.proxify(url);
+
+                                            definition.url = url;
+                                            definition.format = "ol.format.GeoJSON";
+
+                                            var style = null;
+                                            if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+
+                                            var src = new ol.source.Vector({
+                                                format: new ol.format.GeoJSON(),
+                                                projection: ol.proj.get(lyr_def.projection),
+                                                url: url,
+                                                extractStyles: (style != null ? false : true)
+                                            })
+                                            var lyr = new ol.layer.Vector({
+                                                from_composition: true,
+                                                definition: definition,
+                                                source: src,
+                                                style: style,
+                                                title: lyr_def.title
+                                            });
+                                            layers.push(lyr);
+                                            break;
+                                        case 'hs.format.Sparql':
+                                            var url = decodeURIComponent(lyr_def.protocol.url);
+
+                                            definition.url = url;
+                                            definition.format = "ol.format.GeoJSON";
+
+                                            var style = null;
+                                            if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+
+                                            var src = new SparqlJson({
+                                                geom_attribute: '?geom',
+                                                url: url,
+                                                category_field: 'http://www.openvoc.eu/poi#categoryWaze',
+                                                projection: 'EPSG:3857'
+                                            });
+
+                                            var lyr = new ol.layer.Vector({
+                                                from_composition: true,
+                                                definition: definition,
+                                                source: src,
+                                                style: style,
+                                                title: lyr_def.title
+                                            });
+                                            layers.push(lyr);
+                                            break;
+                                        default:
+                                            if (angular.isDefined(lyr_def.features)) {
+                                                var format = new ol.format.GeoJSON();
+                                                var src = new ol.source.Vector({
+                                                    features: format.readFeatures(lyr_def.features),
+                                                    projection: ol.proj.get(lyr_def.projection)
+                                                });
+                                                var style = null;
+                                                if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+                                                var lyr = new ol.layer.Vector({
+                                                    from_composition: true,
+                                                    source: src,
+                                                    title: lyr_def.title,
+                                                    style: style
+                                                });
+                                                layers.push(lyr);
+                                            }
                                     }
-
-                                    layers.push(lyr);
-                                } else if (lyr_def.protocol && lyr_def.protocol.format == 'ol.format.GeoJSON') {
-                                    var url = decodeURIComponent(lyr_def.protocol.url);
-                                    url = utils.proxify(url);
-
-                                    definition.url = url;
-                                    definition.format = "ol.format.GeoJSON";
-
-                                    var style = null;
-                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
-
-                                    var src = new ol.source.Vector({
-                                        format: new ol.format.GeoJSON(),
-                                        projection: ol.proj.get(lyr_def.projection),
-                                        url: url,
-                                        extractStyles: (style != null ? false : true)
-                                    })
-                                    var lyr = new ol.layer.Vector({
-                                        from_composition: true,
-                                        definition: definition,
-                                        source: src,
-                                        style: style,
-                                        title: lyr_def.title
-                                    });
-                                    layers.push(lyr);
-                                } else if (angular.isUndefined(lyr_def.protocol) && angular.isDefined(lyr_def.features)) {
-                                    var format = new ol.format.GeoJSON();
-                                    var src = new ol.source.Vector({
-                                        features: format.readFeatures(lyr_def.features),
-                                        projection: ol.proj.get(lyr_def.projection)
-                                    });
-                                    var style = null;
-                                    if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
-                                    var lyr = new ol.layer.Vector({
-                                        from_composition: true,
-                                        source: src,
-                                        title: lyr_def.title,
-                                        style: style
-                                    });
-                                    layers.push(lyr);
                                 }
                                 break;
                         }
