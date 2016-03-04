@@ -8,9 +8,9 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                 me = this;
 
                 me.add = function(type, url, title, abstract, extract_styles, srs) {
-                if (type.toLowerCase() != 'sparql') {
-                    url = utils.proxify(url);
-                }
+                    if (type.toLowerCase() != 'sparql') {
+                        url = utils.proxify(url);
+                    }
 
                     /*var proxied = window.XMLHttpRequest.prototype.open;
                     window.XMLHttpRequest.prototype.open = function() {
@@ -42,7 +42,6 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                         var src = new SparqlJson({
                             geom_attribute: '?geom',
                             url: url,
-                            updates_url: url,
                             category_field: 'http://www.openvoc.eu/poi#categoryWaze',
                             projection: 'EPSG:3857'
                                 //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}

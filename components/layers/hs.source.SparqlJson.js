@@ -29,6 +29,69 @@ define(function(require) {
         return (c);
     }
 
+    function loadFeatures(objects, src, options, occupied_xy, category_map, category_id) {
+        var features = [];
+        var i = 0.0;
+        var format = new ol.format.WKT();
+        for (var key in objects) {
+            i++;
+            if (objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] != "" && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] != "") {
+                var x = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"]);
+                var y = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"]);
+                if (!isNaN(x) && !isNaN(y)) {
+                    var coord = ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857');
+                    if (typeof occupied_xy[coord] !== 'undefined') continue;
+                    objects[key].geometry = new ol.geom.Point(coord);
+                    var feature = new ol.Feature(objects[key]);
+                    if (objects[key][options.category_field]) {
+                        if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
+                            category_map[objects[key][options.category_field]] = {
+                                id: category_id,
+                                name: objects[key][options.category_field]
+                            };
+                            category_id++;
+                        }
+                        feature.category_id = category_map[objects[key][options.category_field]].id;
+                    }
+                    occupied_xy[coord] = true;
+                    features.push(feature);
+                }
+            }
+            if (objects[key]["http://www.opengis.net/ont/geosparql#asWKT"]) {
+                var g_feature = format.readFeature(objects[key]['http://www.opengis.net/ont/geosparql#asWKT'].toUpperCase());
+                objects[key].geometry = g_feature.getGeometry();
+                objects[key].geometry.transform('EPSG:4326', options.projection);
+                delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
+                var coord = objects[key].geometry.getCoordinates();
+
+                if (typeof occupied_xy[coord] !== 'undefined') continue;
+                var feature = new ol.Feature(objects[key]);
+                if (objects[key][options.category_field]) {
+                    if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
+                        category_map[objects[key][options.category_field]] = {
+                            id: category_id,
+                            name: objects[key][options.category_field]
+                        };
+                        category_id++;
+                    }
+                    feature.category_id = category_map[objects[key][options.category_field]].id;
+                }
+                occupied_xy[coord] = true;
+                features.push(feature);
+            }
+        }
+        for (var categ in category_map) {
+            category_map[categ].color = rainbow(category_id, category_map[categ].id, 0.7);
+        }
+        src.legend_categories = category_map;
+        for (var i = 0; i < features.length; i++) {
+            if (features[i].category_id) {
+                features[i].color = rainbow(category_id, features[i].category_id, 0.7);
+            }
+        }
+        return features;
+    }
+
     return function(options) {
         var category_map = {};
         var category_id = 0;
@@ -55,87 +118,45 @@ define(function(require) {
                         url: p
                     })
                     .done(function(response) {
-                        var updates_query = src.options.updates_url;
-                        updates_query = updates_query.replace("<extent>", s_extent);
-                        $.ajax({
-                                url: updates_query
-                            })
-                            .done(function(updates_response) {
-                                var objects = {};
-                                for (var i = 0; i < response.results.bindings.length; i++) {
-                                    var b = response.results.bindings[i];
-                                    if (typeof objects[b.o.value] === 'undefined') {
-                                        objects[b.o.value] = {
-                                            'poi_id': b.o.value
-                                        };
-                                    }
-                                    objects[b.o.value][b.p.value] = b.s.value;
-                                }
-                                for (var i = 0; i < updates_response.results.bindings.length; i++) {
-                                    var b = updates_response.results.bindings[i];
-                                    objects[b.o.value][b.attr.value] = b.value.value;
-                                }
-                                var features = [];
-                                var i = 0.0;
-                                var format = new ol.format.WKT();
-                                for (var key in objects) {
-                                    i++;
-                                    if (objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] != "" && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] != "") {
-                                        var x = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"]);
-                                        var y = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"]);
-                                        if (!isNaN(x) && !isNaN(y)) {
-                                            var coord = ol.proj.transform([x, y], 'EPSG:4326', 'EPSG:3857');
-                                            if (typeof occupied_xy[coord] !== 'undefined') continue;
-                                            objects[key].geometry = new ol.geom.Point(coord);
-                                            var feature = new ol.Feature(objects[key]);
-                                            if (objects[key][options.category_field]) {
-                                                if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
-                                                    category_map[objects[key][options.category_field]] = {
-                                                        id: category_id,
-                                                        name: objects[key][options.category_field]
-                                                    };
-                                                    category_id++;
-                                                }
-                                                feature.category_id = category_map[objects[key][options.category_field]].id;
-                                            }
-                                            occupied_xy[coord] = true;
-                                            features.push(feature);
+                        if (src.options.updates_url) {
+                            var updates_query = src.options.updates_url;
+                            updates_query = updates_query.replace("<extent>", s_extent);
+                            $.ajax({
+                                    url: updates_query
+                                })
+                                .done(function(updates_response) {
+                                    var objects = {};
+                                    for (var i = 0; i < response.results.bindings.length; i++) {
+                                        var b = response.results.bindings[i];
+                                        if (typeof objects[b.o.value] === 'undefined') {
+                                            objects[b.o.value] = {
+                                                'poi_id': b.o.value
+                                            };
                                         }
+                                        objects[b.o.value][b.p.value] = b.s.value;
                                     }
-                                    if (objects[key]["http://www.opengis.net/ont/geosparql#asWKT"]) {
-                                        var g_feature = format.readFeature(objects[key]['http://www.opengis.net/ont/geosparql#asWKT'].toUpperCase());
-                                        objects[key].geometry = g_feature.getGeometry();
-                                        objects[key].geometry.transform('EPSG:4326', options.projection);
-                                        delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
-                                        var coord = objects[key].geometry.getCoordinates();
+                                    for (var i = 0; i < updates_response.results.bindings.length; i++) {
+                                        var b = updates_response.results.bindings[i];
+                                        objects[b.o.value][b.attr.value] = b.value.value;
+                                    }
 
-                                        if (typeof occupied_xy[coord] !== 'undefined') continue;
-                                        var feature = new ol.Feature(objects[key]);
-                                        if (objects[key][options.category_field]) {
-                                            if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
-                                                category_map[objects[key][options.category_field]] = {
-                                                    id: category_id,
-                                                    name: objects[key][options.category_field]
-                                                };
-                                                category_id++;
-                                            }
-                                            feature.category_id = category_map[objects[key][options.category_field]].id;
-                                        }
-                                        occupied_xy[coord] = true;
-                                        features.push(feature);
-                                    }
+                                    src.addFeatures(loadFeatures(objects, src, options, occupied_xy, category_map, category_id));
+                                })
+                        } else {
+                            var objects = {};
+                            for (var i = 0; i < response.results.bindings.length; i++) {
+                                var b = response.results.bindings[i];
+                                if (typeof objects[b.o.value] === 'undefined') {
+                                    objects[b.o.value] = {
+                                        'poi_id': b.o.value
+                                    };
                                 }
-                                for (var categ in category_map) {
-                                    category_map[categ].color = rainbow(category_id, category_map[categ].id, 0.7);
-                                }
-                                src.legend_categories = category_map;
-                                for (var i = 0; i < features.length; i++) {
-                                    if (features[i].category_id) {
-                                        features[i].color = rainbow(category_id, features[i].category_id, 0.7);
-                                    }
-                                }
-                                src.addFeatures(features);
-                            })
+                                objects[b.o.value][b.p.value] = b.s.value;
+                            }
+
+                            src.addFeatures(loadFeatures(objects, src, options, occupied_xy, category_map, category_id));
+                        }
+
                     })
             },
             strategy: ol.loadingstrategy.bbox,
