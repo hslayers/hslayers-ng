@@ -155,6 +155,8 @@ define(function(require) {
                             }
 
                             src.addFeatures(loadFeatures(objects, src, options, occupied_xy, category_map, category_id));
+                            src.styleAble = true;
+                            src.hasPoint = true;
                         }
 
                     })
