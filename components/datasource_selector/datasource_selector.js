@@ -343,7 +343,7 @@ define(['angular', 'ol', 'map'],
                         return ($scope.query[which] != '' ? encodeURIComponent(which + "='" + $scope.query[which] + "'") : '')
                     } else {
                         if (which == 'ServiceType') {
-                            return encodeURIComponent("(ServiceType=view OR ServiceType=WMS OR Format like '*KML*' OR Format like '*GeoJSON*')");
+                            return encodeURIComponent("(ServiceType=view OR ServiceType=WMS OR Format like '*KML*' OR Format like '*GeoJSON*' OR Format like '*application/sparql-results+json*')");
                         } else {
                             return '';
                         }
@@ -448,6 +448,8 @@ define(['angular', 'ol', 'map'],
                                 }
                                 var link = layer.link;
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WMS');
+                            } else if ((layer.link.toLowerCase()).indexOf("sparql") > -1) {
+                                var lyr = nonwmsservice.add('sparql', layer.link, layer.title || 'Layer', layer.abstract, true, map.getView().getProjection().getCode().toUpperCase());
                             } else if (layer.format && ["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
                                 switch (layer.format.toLowerCase()) {
                                     case "kml":

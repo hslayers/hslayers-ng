@@ -1,6 +1,6 @@
-define(['angular', 'ol', 'styles'],
+define(['angular', 'ol', 'SparqlJson', 'styles'],
 
-    function(angular, ol) {
+    function(angular, ol, SparqlJson) {
         angular.module('hs.ows.nonwms', [])
 
         .service('hs.ows.nonwms.service', ['hs.map.service', 'hs.styles.service', 'hs.utils.service',
@@ -32,58 +32,72 @@ define(['angular', 'ol', 'styles'],
                             format = new ol.format.GeoJSON();
                             definition.format = "ol.format.GeoJSON";
                             break;
+                        case "sparql":
+                            definition.format = "hs.format.Sparql";
+                            break;
                     }
 
-                    var src = new ol.source.Vector({
-                        format: format,
-                        url: url,
-                        projection: ol.proj.get(srs),
-                        extractStyles: extract_styles,
-                        loader: function(extent, resolution, projection) {
-                            $.ajax({
-                                url: url,
-                                success: function(data) {
-                                    if (data.type == 'GeometryCollection') {
-                                        var temp = {
-                                            type: "Feature",
-                                            geometry: data
-                                        };
-                                        data = temp;
-                                    }
-                                    src.addFeatures(format.readFeatures(data, {
-                                        dataProjection: 'EPSG:4326',
-                                        featureProjection: srs
-                                    }));
-
-                                    src.hasLine = false;
-                                    src.hasPoly = false;
-                                    src.hasPoint = false;
-                                    angular.forEach(src.getFeatures(), function(f) {
-                                        if (f.getGeometry()) {
-                                            switch (f.getGeometry().getType()) {
-                                                case 'LineString' || 'MultiLineString':
-                                                    src.hasLine = true;
-                                                    break;
-                                                case 'Polygon' || 'MultiPolygon':
-                                                    src.hasPoly = true;
-                                                    break;
-                                                case 'Point' || 'MultiPoint':
-                                                    src.hasPoint = true;
-                                                    break;
-                                            }
+                    if (type.toLowerCase() == 'sparql') {
+                        var src = new SparqlJson({
+                            geom_attribute: '?geom',
+                            url: url,
+                            category_field: 'http://www.openvoc.eu/poi#categoryWaze',
+                            projection: 'EPSG:3857'
+                                //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
+                        });
+                    } else {
+                        var src = new ol.source.Vector({
+                            format: format,
+                            url: url,
+                            projection: ol.proj.get(srs),
+                            extractStyles: extract_styles,
+                            loader: function(extent, resolution, projection) {
+                                $.ajax({
+                                    url: url,
+                                    success: function(data) {
+                                        if (data.type == 'GeometryCollection') {
+                                            var temp = {
+                                                type: "Feature",
+                                                geometry: data
+                                            };
+                                            data = temp;
                                         }
-                                    })
+                                        src.addFeatures(format.readFeatures(data, {
+                                            dataProjection: 'EPSG:4326',
+                                            featureProjection: srs
+                                        }));
 
-                                    if (src.hasLine || src.hasPoly || src.hasPoint) {
-                                        src.styleAble = true;
+                                        src.hasLine = false;
+                                        src.hasPoly = false;
+                                        src.hasPoint = false;
+                                        angular.forEach(src.getFeatures(), function(f) {
+                                            if (f.getGeometry()) {
+                                                switch (f.getGeometry().getType()) {
+                                                    case 'LineString' || 'MultiLineString':
+                                                        src.hasLine = true;
+                                                        break;
+                                                    case 'Polygon' || 'MultiPolygon':
+                                                        src.hasPoly = true;
+                                                        break;
+                                                    case 'Point' || 'MultiPoint':
+                                                        src.hasPoint = true;
+                                                        break;
+                                                }
+                                            }
+                                        })
+
+                                        if (src.hasLine || src.hasPoly || src.hasPoint) {
+                                            src.styleAble = true;
+                                        }
+
+
                                     }
+                                });
+                            },
+                            strategy: ol.loadingstrategy.all
+                        });
 
-
-                                }
-                            });
-                        },
-                        strategy: ol.loadingstrategy.all
-                    });
+                    }
 
                     var lyr = new ol.layer.Vector({
                         title: title,
