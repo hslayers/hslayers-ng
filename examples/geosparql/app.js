@@ -359,7 +359,9 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             }),
                             style: style,
                             visible: false,
-                            path: 'Points of interest'
+                            path: 'Points of interest',
+                            minResolution: 1,
+                            maxResolution: 38
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
                     })
@@ -375,7 +377,9 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
                             }),
                             style: styleOSM,
                             visible: false,
-                            path: 'Popular Categories'
+                            path: 'Popular Categories',
+                            minResolution: 1,
+                            maxResolution: 38
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
                     })

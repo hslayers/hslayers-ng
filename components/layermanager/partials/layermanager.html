@@ -109,6 +109,12 @@
                 <div class="form-group" ng-show="layer_renamer_visible">
                     <label translate>Title</label>
                     <input type="text" class="form-control" ng-model="currentlayer.title" ng-change="setTitle()">
+                    <div class="form-inline">
+                        <br/>
+                        <label translate>Scale</label>
+                        <span ng-if="currentlayer.layer.minResolutionValid"><span translate>from</span> 1:<input class="form-control" style="width:45px" ng-model="currentlayer.layer.minResolution" ng-change="setLayerResolution(currentlayer.layer)"/></span>
+                        <span ng-if="currentlayer.layer.maxResolutionValid"><span translate>to</span> 1:<input class="form-control" style="width:45px" ng-model="currentlayer.layer.maxResolution" ng-change="setLayerResolution(currentlayer.layer)"/></span>
+                    </div>
                 </div>
                 <span translate>More</span>
                 <button class="btn btn-default glyphicon glyphicon-search" ng-click="zoomToLayer(currentlayer.layer)" ng-disabled="!layerIsZoomable(currentlayer.layer)"></button>

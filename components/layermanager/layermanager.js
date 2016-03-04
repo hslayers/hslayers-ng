@@ -652,8 +652,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 if (typeof layer == 'undefined') return false;
                 layer.minResolutionValid = false;
                 layer.maxResolutionValid = false;
-                if (angular.isDefined(layer.getMinResolution()) && layer.getMinResolution() != 0) layer.minResolutionValid = true;
-                if (angular.isDefined(layer.getMaxResolution()) && layer.getMaxResolution() != Infinity) layer.maxResolutionValid = true;
+                
+                if (angular.isDefined(layer.getMinResolution()) && layer.getMinResolution() != 0) {layer.minResolutionValid = true;layer.minResolution = layer.getMinResolution();}
+                if (angular.isDefined(layer.getMaxResolution()) && layer.getMaxResolution() != Infinity) {layer.maxResolutionValid = true; layer.maxResolution = layer.getMaxResolution();}
 
                 if (layer.minResolutionValid || layer.maxResolutionValid) {
                     return true;
@@ -662,6 +663,11 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 }
             }
 
+            $scope.setLayerResolution = function(layer) {
+                if (typeof layer == 'undefined') return false;
+                layer.setMinResolution(layer.minResolution);
+                layer.setMaxResolution(layer.maxResolution);
+            }
 
             OlMap.map.getLayers().forEach(function(lyr) {
                 layerAdded({

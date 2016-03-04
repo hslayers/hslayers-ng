@@ -43,7 +43,9 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                             geom_attribute: '?geom',
                             url: url,
                             category_field: 'http://www.openvoc.eu/poi#categoryWaze',
-                            projection: 'EPSG:3857'
+                            projection: 'EPSG:3857',
+                            minResolution: 1,
+                            maxResolution: 38
                                 //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
                         });
                     } else {
