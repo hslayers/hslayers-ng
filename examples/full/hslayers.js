@@ -19,7 +19,6 @@ require.config({
         query: hsl_path + 'components/query/query',
         search: hsl_path + 'components/search/search',
         print: hsl_path + 'components/print/print',
-        permalink: hsl_path + 'components/permalink/permalink',
         lodexplorer: hsl_path + 'components/lodexplorer/lodexplorer',
         geolocation: hsl_path + 'components/geolocation/geolocation',
         measure: hsl_path + 'components/measure/measure',

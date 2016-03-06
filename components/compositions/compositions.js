@@ -364,7 +364,8 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                     });
                     if (selected.length > 0)
                         keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
-                    var cur_map_extent = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
+                    var cur_map_size = OlMap.map.getSize();
+                    var cur_map_extent = angular.isDefined(cur_map_size) ? OlMap.map.getView().calculateExtent(cur_map_size) : [0, 0, 100, 100];
                     var b = ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
                     var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                     var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';

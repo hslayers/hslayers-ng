@@ -29,7 +29,7 @@ require.config({
         core: hsl_path + 'components/core/core',
         SparqlJsonForestry: hsl_path + 'components/layers/hs.source.SparqlJsonForestry',
         api: hsl_path + 'components/api/api',
-        translations: hsl_path + 'components/translations/js/translations',
+        translations: hsl_path + 'components/translations/js/translations'
     },
     shim: {
         d3: {

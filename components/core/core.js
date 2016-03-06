@@ -18,6 +18,7 @@ require.config({
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
         compositions: hsl_path + 'components/compositions/compositions',
+        permalink: requirejs.s.contexts._.config.paths.permalink || hsl_path + 'components/permalink/permalink',
         utils: hsl_path + 'components/utils',
         status_creator: hsl_path + 'components/status_creator/status_creator',
         xml2json: requirejs.s.contexts._.config.paths.xml2json || hsl_path + 'bower_components/xml2json/xml2json.min',
@@ -55,7 +56,7 @@ require.config({
     ]
 });
 
-define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
+define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'],
     function(angular) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
             .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache',
@@ -244,10 +245,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     }
 
                     /* HACK: https://github.com/openlayers/ol3/issues/3990 */
-                    if (typeof require('proj4') != undefined) {
-                        window.proj4 = require('proj4');
+                    try {
+                        if (typeof require('proj4') != undefined) {
+                            require(['proj4'], function(){ window.proj4 = proj4});
+                        }
+                    } catch (ex){
+                        require(['proj4'], function(){ window.proj4 = proj4});
                     }
-
+                    
                     return me;
                 },
 
