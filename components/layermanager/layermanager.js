@@ -152,8 +152,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         if (!$scope.$$phase) $scope.$digest();
                     })
                 }
+                var new_title = e.element.get('title').replace(/&#47;/g, '/');
                 var new_layer = {
-                    title: e.element.get("title"),
+                    title: new_title,
                     layer: e.element,
                     grayed: $scope.isLayerInResolutionInterval(e.element),
                     visible: e.element.getVisible()
@@ -181,7 +182,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     $scope.baselayers.push(new_layer);
                 };
 
-                if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = e.element.get("title");
+                if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = new_title;
                 $rootScope.$broadcast('layermanager.updated', e.element);
                 $scope.$emit('compositions.composition_edited');
             };
