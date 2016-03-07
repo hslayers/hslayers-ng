@@ -247,12 +247,16 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     /* HACK: https://github.com/openlayers/ol3/issues/3990 */
                     try {
                         if (typeof require('proj4') != undefined) {
-                            require(['proj4'], function(){ window.proj4 = proj4});
+                            require(['proj4'], function() {
+                                window.proj4 = proj4
+                            });
                         }
-                    } catch (ex){
-                        require(['proj4'], function(){ window.proj4 = proj4});
+                    } catch (ex) {
+                        require(['proj4'], function() {
+                            window.proj4 = proj4
+                        });
                     }
-                    
+
                     return me;
                 },
 
