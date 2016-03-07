@@ -69,7 +69,6 @@
 .mainpanel {
     border: none;
     margin-bottom:0;
-    height: 100%;
 }
 
 div.mainpanel:not(.hs-stc-mainpanel) > div.panel-body {
@@ -414,22 +413,20 @@ button.but-title-sm {
 
 /******SIDEBAR****************/
 .panelspace {
-    pointer-events: auto;
+    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
+    background-color: white;
     height: 100%;
+    overflow-x: hidden;
     overflow-y: auto;
     padding-left: 0;
     padding-right: 0;
-    overflow-x: hidden;
+    pointer-events: auto;
     position: absolute;
     top: 0;
     width: 400px;
     z-index: 2;
 }
-.panelspace {
-    width: 400px;
-    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
-    background-color: white;
-}
+
 .sb-right .panelspace {
     right: 0;
 }
