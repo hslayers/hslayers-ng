@@ -521,6 +521,7 @@ define(['angular', 'ol', 'map'],
                         if (something_done && !$scope.$$phase) $scope.$digest();
                     });
                     $scope.$on('map.extent_changed', function(event, data, b) {
+                        if ($scope.Core.mainpanel != 'datasource_selector') return;
                         if ($scope.filter.byExtent) $scope.loadDatasets($scope.datasources);
                     });
                     OlMap.map.addLayer(extent_layer);

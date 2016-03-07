@@ -549,6 +549,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 });
 
                 $scope.$on('map.extent_changed', function(event, data, b) {
+                    if ($scope.Core.mainpanel != 'compositions') return;
                     if ($scope.filter_by_extent) $scope.loadCompositions();
                 });
 
