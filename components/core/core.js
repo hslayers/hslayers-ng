@@ -181,6 +181,9 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 case "cs_CZ":
                                     lang = 'cs';
                                     break;
+                                case "nl_BE":
+                                    lang = 'nl';
+                                    break;
                             }
                             gettextCatalog.setCurrentLanguage(lang);
                         },
