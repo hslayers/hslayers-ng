@@ -191,6 +191,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                     abstract: lyr_def.name,
                                     metadata: lyr_def.metadata,
                                     saveState: true,
+                                    opacity: lyr_def.opacity || 1,
                                     source: new source_class({
                                         url: decodeURIComponent(lyr_def.url),
                                         attributions: lyr_def.attribution ? [new ol.Attribution({
@@ -230,6 +231,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                                 from_composition: true,
                                                 definition: definition,
                                                 source: src,
+                                                opacity: lyr_def.opacity || 1,
                                                 style: style,
                                                 title: lyr_def.title
                                             });
@@ -262,6 +264,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                                 from_composition: true,
                                                 definition: definition,
                                                 source: src,
+                                                opacity: lyr_def.opacity || 1,
                                                 style: style,
                                                 title: lyr_def.title
                                             });
@@ -287,6 +290,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                                 from_composition: true,
                                                 definition: definition,
                                                 source: src,
+                                                opacity: lyr_def.opacity || 1,
                                                 style: style,
                                                 title: lyr_def.title
                                             });
@@ -304,6 +308,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                                 var lyr = new ol.layer.Vector({
                                                     from_composition: true,
                                                     source: src,
+                                                    opacity: lyr_def.opacity || 1,
                                                     title: lyr_def.title,
                                                     style: style
                                                 });
