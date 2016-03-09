@@ -17,7 +17,7 @@
         </div>
 
         <ul class="nav nav-pills dss-tabs" role="tablist">
-            <li ng-class="{'hs-tab-singleDS': Core.singleDatasources}" ng-repeat="ds in datasets">
+            <li ng-class="{'active hs-tab-singleDS': Core.singleDatasources}" ng-repeat="ds in datasets">
                 <a ng-href="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab">
                     {{ds.title}}
                     <span ng-show='ds.matched>0'>({{ds.matched}})</span>
@@ -29,7 +29,7 @@
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="hs-dataset-panel tab-pane" ng-attr-id="{{'ds'+$index}}" ng-repeat="ds in datasets">
+            <div role="tabpanel" class="hs-dataset-panel tab-pane" ng-class="{'active': Core.singleDatasources}" ng-attr-id="{{'ds'+$index}}" ng-repeat="ds in datasets">
                 <div class="panel">
                     <div class="panel-body">
                         <div ng-if="Core.singleDatasources">
