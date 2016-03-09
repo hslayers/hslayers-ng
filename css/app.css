@@ -648,6 +648,16 @@ a.sidebar-main {
     .sb-left.open #toolbar {
        margin-left: 310px;
     }
+
+    .panel-footer {
+        padding: 5px;
+    }
+
+    .panelplace .list-group-item {
+        padding: 10px;
+    }
+
+
 }
 
 /********************/
@@ -684,44 +694,45 @@ a.sidebar-main {
 #hs-ows-advancedPanel {
     margin-top: 10px;
 }
+
 /************/
 /** STYLER **/
 /************/
 
 .hs-styler-colorbox {
-    width:14px; 
+    width:14px;
     height: 14px;
-    display: inline-block; 
+    display: inline-block;
     margin:1px;
 }
 
 .hs-styler-colorbox:hover {
-    width:20px; height: 20px; margin: -3px 0px; 
+    width:20px; height: 20px; margin: -3px 0px;
 }
 
 .hs-styler-selected-color-box {
-    width: 30px; 
-    height: 30px; 
+    width: 30px;
+    height: 30px;
     display: inline-block;
     vertical-align: middle;
     margin: 3px;
 }
 
 .hs-styler-iconbox {
-    width:32px; 
+    width:32px;
     height: 44px;
-    display: inline-block; 
+    display: inline-block;
     margin:1px;
 }
 
 
 .hs-styler-iconbox:hover {
-    width:30px; height: 30px; margin: -3px 0px; 
+    width:30px; height: 30px; margin: -3px 0px;
 }
- 
+
 .hs-styler-selected-icon-box {
-    width: 30px; 
-    height: 30px; 
+    width: 30px;
+    height: 30px;
     display: inline-block;
     vertical-align: middle;
     margin: 3px;
