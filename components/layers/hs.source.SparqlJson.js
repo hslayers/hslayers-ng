@@ -161,7 +161,15 @@ define(function(require) {
 
                     })
             },
-            strategy: ol.loadingstrategy.bbox,
+            strategy:  function(extent, resolution) {
+                if(extent[2] - extent[0] > 65735){
+                    extent[0] = (extent[2] + extent[0]) / 2.0 - 65735 / 2.0;
+                    extent[2] = (extent[2] + extent[0]) / 2.0 + 65735 / 2.0;
+                    extent[1] = (extent[3] + extent[1]) / 2.0 - 35000 / 2.0;
+                    extent[3] = (extent[3] + extent[1]) / 2.0 + 35000 / 2.0;
+                }
+                return [extent];
+            },
             projection: options.projection
         });
         src.options = options;
