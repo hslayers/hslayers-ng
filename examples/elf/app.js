@@ -42,6 +42,19 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
             })
         })
 
+        var projection = ol.proj.get('EPSG:3857');
+        var projectionExtent = projection.getExtent();
+        var size = ol.extent.getWidth(projectionExtent) / 256;
+        var resolutions = new Array(14);
+        var matrixIds = new Array(14);
+        for (var z = 0; z < 14; ++z) {
+            // generate resolutions and matrixIds arrays for this WMTS
+            resolutions[z] = size / Math.pow(2, z);
+            matrixIds[z] = 'EPSG:3857:'+z;
+        }
+
+
+
         var gm = new ol.format.GML3();
         for (var key in gm) {
             if (key.indexOf("_PARSERS") > 0)
@@ -65,6 +78,24 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "Base layer",
+                    base: true
+                }),
+                new ol.layer.Tile({
+                    source: new ol.source.WMTS({
+                        url: "http://opencache.statkart.no/gatekeeper/gk/gk.open_wmts",
+                        layer: 'elf_basemap',
+                        matrixSet: 'EPSG:3857',
+                        format: 'image/png',
+                        projection: ol.proj.get('EPSG:3857'),
+                        tileGrid: new ol.tilegrid.WMTS({
+                            origin: ol.extent.getTopLeft(projectionExtent),
+                            resolutions: resolutions,
+                            matrixIds: matrixIds
+                       }),
+                       style: 'default',
+                       wrapX: true        
+                    }),
+                    title: 'ELF Basemap',
                     base: true
                 }),
                 new ol.layer.Vector({
