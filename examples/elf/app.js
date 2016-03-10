@@ -69,12 +69,11 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
                 }),
                 new ol.layer.Vector({
                     title: "Parcels",
-                    maxResolution: 1.2,
                     source: new WfsSource({
                         url: 'http://services.cuzk.cz/wfs/inspire-cp-wfs.asp',
                         typename: 'CP:CadastralParcel',
                         projection: 'EPSG:3857',
-                        version: '2.0.0',
+                        version: '2.0',
                         format: new ol.format.WFS(),
                         hsproxy: true,
                         parser: feature_parser
@@ -84,8 +83,9 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
                 new ol.layer.Vector({
                     title: "Buildings",
                     maxResolution: 2.4,
+                    visible: false,
                     source: new WfsSource({
-                        url: 'https://54.247.162.180/wss/service/CZ-AD/httpauth',
+                        url: 'https://security.locationframework.eu/wss/service/CZ-AD/httpauth',
                         typename: 'AD:Address',
                         projection: 'EPSG:3857',
                         version: '2.0.0',
