@@ -7,7 +7,6 @@ define(['angular', 'map', 'core', 'permalink'],
     function(angular) {
         angular.module('hs.mobile_toolbar', ['hs.map', 'hs.core'])
             .directive('hs.mobileToolbar.directive', function() {
-                console.log("Outputting mobile toolbar!");
                 return {
                     templateUrl: hsl_path + 'components/mobile_toolbar/partials/mobile_toolbar.html'
                 };
@@ -16,31 +15,31 @@ define(['angular', 'map', 'core', 'permalink'],
         .controller('hs.mobile_toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window',
             function($scope, OlMap, Core, bus, $window) {
                 $scope.Core = Core;
-                var collapsed = false;
+                $scope.panelspace0pened = false;
+                $scope.Core.sidebarRight = false;
+                $scope.Core.sidebarExpanded = $scope.panelspace0pened;
+                console.log($scope.panelspace0pened, $scope.Core.sidebarExpanded);
 
-                // $scope.setMainPanel = function(which) {
-                //     Core.setMainPanel(which, true);
-                //     if (!$scope.$$phase) $scope.$digest();
-                // }
-
-                // if (bus.getParamValue('hs_panel')) {
-                //     $scope.setMainPanel(bus.getParamValue('hs_panel'));
-                // }
-
-                $scope.collapsed = function(is) {
-                    if (arguments.length > 0) {
-                        collapsed = is;
-                    }
-                    return collapsed;
+                $scope.setMainPanel = function(which) {
+                    Core.setMainPanel(which, false);
+                    if (!$scope.$$phase) $scope.$digest();
                 }
 
-                // $scope.isMobile = function() {
-                //     if ($(document).width() < 800) {
-                //         return "mobile";
-                //     } else {
-                //         return "";
-                //     }
-                // }
+                $scope.togglePanelspace = function() {
+                    if (!$scope.panelspaceOpened) {
+                        $scope.panelspaceOpened = true;
+                        $scope.Core.sidebarExpanded = true;
+                        // console.log("Opening panelspace.", $scope.panelspace0pened, $scope.Core.sidebarExpanded);
+                    } else {
+                        $scope.panelspaceOpened = false;
+                        $scope.Core.sidebarExpanded = false;
+                        // console.log("Closing panelspace.", $scope.panelspace0pened, $scope.Core.sidebarExpanded);
+                    }
+                    $(".panelspace").toggleClass("panelspace-opened");
+                    $("#toolbar").toggleClass("panelspace-opened");
+                    $("#map").toggleClass("panelspace-opened");
+                    $("#menu").toggleClass("panelspace-opened");
+                }
 
                 $scope.$emit('scope_loaded', "Mobile Toolbar");
             }

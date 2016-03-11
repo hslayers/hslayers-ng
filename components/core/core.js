@@ -229,7 +229,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.map_reset', {});
                         },
                         isMobile: function() {
-                            if ($(document).width() < 800) {
+                            if (screen.width < 800) {
                                 return "mobile";
                             } else {
                                 return "";

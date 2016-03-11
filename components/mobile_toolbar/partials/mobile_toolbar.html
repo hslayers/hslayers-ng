@@ -1,25 +1,27 @@
-<div class="toolbar-buttons">
+<div class="toolbar-buttons"><!-- 
 
-    <!-- search bar switch -->
-    <button type="button" class="menu-item btn btn-default btn-mobile"  title="Search for a place"  ng-if="Core.exists('hs.search.controller')" ng-click="Core.searchVisible(!Core.searchVisible())">
-        <i class="glyphicon icon-search"></i>
-    </button>
+    menu switch (only displayed when sidebar is expanded)
+     --><button class="menu-item menu-switch btn btn-default btn-mobile" type="button" ng-click="togglePanelspace()"><!-- 
+         --><i class="glyphicon menu-icon" ng-class="Core.sidebarExpanded ? {'glyphicon-menu-right': Core.sidebarRight, 'glyphicon-menu-left': !Core.sidebarRight} : 'glyphicon-menu-hamburger'"></i><!-- 
+     --></button><!--
 
-    <!-- compositions menu switch (coming soon, placeholder for now) -->
-    <button type="button" class="menu-item btn btn-default btn-mobile" title="Measure lines and polygon" ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
-        <i class="glyphicon icon-design"></i>
-    </button>
+     search bar switch
+     --><button type="button" class="menu-item btn btn-default btn-mobile"  title="Search for a place" ng-if="Core.exists('hs.toolbar.controller')" onclick="$('#toolbar').toggleClass('show')"><!-- 
+         --><i class="glyphicon icon-search"></i><!-- 
+     --></button><!--
 
-    <!-- geolocation switch -->
-    <button class="menu-item btn btn-default btn-mobile ol-has-tooltip blocate" type="button">   
-        <i class="glyphicon icon-navigation"></i>
-    </button>
+     layermanager switch
+     --><button type="button" class="menu-item btn btn-default btn-mobile" title="Layer manager" ng-if="Core.exists('hs.layermanager.controller')" ng-click="[setMainPanel('layermanager'),togglePanelspace()]"><!-- 
+         --><i class="glyphicon icon-layers"></i><!-- 
+     --></button><!--
 
-    <!-- menu switch -->
-    <button class="menu-item btn btn-default btn-mobile" type="button">
-        <i class="glyphicon menu-icon glyphicon-menu-hamburger"></i>
-    </button>
-    <!-- <button class="menu-item btn btn-default btn-mobile" type="button">
-        <i class="glyphicon menu-icon" ng-class="Core.sidebarExpanded ? 'glyphicon-menu-left' : 'glyphicon-menu-hamburger'" ng-click="toggleSidebar()"></i>
-    </button> -->
-</div>
+     compositions switch
+     --><button type="button" class="menu-item btn btn-default btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"><!-- 
+         --><i class="glyphicon icon-map"></i><!-- 
+     --></button><!-- 
+
+    geolocation switch
+    --><button class="menu-item btn btn-default btn-mobile ol-has-tooltip blocate" type="button"><!--
+         --><i class="glyphicon icon-navigation"></i><!-- 
+     --></button><!-- 
+ --></div>
