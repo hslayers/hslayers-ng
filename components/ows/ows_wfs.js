@@ -23,7 +23,7 @@ define(['angular', 'ol', 'Jsonix', 'utils'],
             return url.replace(exp, "<a href='$1'>$1</a>");
         }
 
-        angular.module('hs.ows.wfs', ['hs.utils', 'jsonx_module'])
+        angular.module('hs.ows.wfs', ['hs.utils', 'jsonix_module'])
             .directive('hs.ows.wfs.capabilitiesErrorDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
