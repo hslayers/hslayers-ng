@@ -2,8 +2,8 @@
  * @namespace hs.ows.wfs
  * @memberOf hs.ows
  */
-define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'XLink_1_0', 'utils'],
-    function(angular, ol, Jsonix, WFS_2_0, XLink_1_0) {
+define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'GML_3_2_1', 'OWS_1_1_0', 'Filter_2_0', 'XLink_1_0', 'XSD_1_0', 'utils'],
+    function(angular, ol, Jsonix, WFS_2_0, GML_3_2_1, OWS_1_1_0, Filter_2_0, XLink_1_0) {
         angular.module('jsonix_module', []).service('jsonix_service', [function() {
             return Jsonix
         }]);
@@ -84,13 +84,7 @@ define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'XLink_1_0', 'utils'],
 
                     url = utils.proxify(url);
 
-                    var context = new Jsonix.Context([XLink_1_0, WFS_2_0], {
-                        namespacePrefixes: {
-                            "http://www.opengis.net/wfs/2.0": "",
-                            "http://www.w3.org/1999/xlink": "xlink"
-                        },
-                        mappingStyle: "simplified"
-                    });
+                    var context = new Jsonix.Context([XLink_1_0, XSD_1_0, WFS_2_0, GML_3_2_1, OWS_1_1_0, Filter_2_0]);
 
                     var unmarshaller = context.createUnmarshaller();
 
