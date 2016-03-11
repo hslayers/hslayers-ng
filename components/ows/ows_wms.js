@@ -91,7 +91,7 @@ define(['angular', 'ol', 'utils'],
                     var url = [path, me.params2String(params)].join('?');
 
                     url = utils.proxify(url);
-                    console.log(url);
+
                     if (callback) {
                         $http.get(url).success(callback);
                     } else {

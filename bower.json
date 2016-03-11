@@ -19,9 +19,6 @@
     "xml2json": "1.1.x",
     "d3": "3.5.x",
     "proj4": "2.3.x",
-    "ol3-popup": "1.0.x",
-    "jsonix": "2.4.x",
-    "ogc-schemas": "2.6.x",
-    "w3c-schemas": "1.4.x"
+    "ol3-popup": "1.0.x"
   }
 }

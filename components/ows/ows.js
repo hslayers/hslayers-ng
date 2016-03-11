@@ -97,7 +97,7 @@ define(['angular', 'map', 'ows.wms', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritize
                     }
 
                     if (permalink.getParamValue('wfs_to_connect')) {
-                        var wms = permalink.getParamValue('wfs_to_connect');
+                        var wfs = permalink.getParamValue('wfs_to_connect');
                         Core.setMainPanel('ows');
                         $scope.setUrlAndConnect(wfs, 'WFS');
                     }

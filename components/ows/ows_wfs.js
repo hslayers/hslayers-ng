@@ -2,11 +2,8 @@
  * @namespace hs.ows.wfs
  * @memberOf hs.ows
  */
-define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'GML_3_2_1', 'OWS_1_1_0', 'Filter_2_0', 'XLink_1_0', 'XSD_1_0', 'utils'],
-    function(angular, ol, Jsonix, WFS_2_0, GML_3_2_1, OWS_1_1_0, Filter_2_0, XLink_1_0) {
-        angular.module('jsonix_module', []).service('jsonix_service', [function() {
-            return Jsonix
-        }]);
+define(['angular', 'ol', 'WFSCapabilities', 'utils'],
+    function(angular, ol, WFSCapabilities) {
 
         var getPreferedFormat = function(formats, preferedFormats) {
             for (i = 0; i < preferedFormats.length; i++) {
@@ -23,7 +20,7 @@ define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'GML_3_2_1', 'OWS_1_1_0', 'Filter_
             return url.replace(exp, "<a href='$1'>$1</a>");
         }
 
-        angular.module('hs.ows.wfs', ['hs.utils', 'jsonix_module'])
+        angular.module('hs.ows.wfs', ['hs.utils'])
             .directive('hs.ows.wfs.capabilitiesErrorDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
@@ -38,9 +35,8 @@ define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'GML_3_2_1', 'OWS_1_1_0', 'Filter_
          * @memberOf hs.ows.wfs
          * @description Service for GetCapabilities requests to Wms
          */
-        .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service', 'jsonix_service',
-            function($http, OlMap, utils, jsonix_service) {
-                var Jsonix = jsonix_service.Jsonix;
+        .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service',
+            function($http, OlMap, utils) {
                 var callbacks = [];
                 var me = this;
 
@@ -84,14 +80,10 @@ define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'GML_3_2_1', 'OWS_1_1_0', 'Filter_
 
                     url = utils.proxify(url);
 
-                    var context = new Jsonix.Context([XLink_1_0, XSD_1_0, WFS_2_0, GML_3_2_1, OWS_1_1_0, Filter_2_0]);
-
-                    var unmarshaller = context.createUnmarshaller();
-
                     if (callback) {
-                        unmarshaller.unmarshalURL(url, callback);
+                        $http.get(url).success(callback);
                     } else {
-                        unmarshaller.unmarshalURL(url, function(resp) {
+                        $http.get(url).success(function(resp) {
                             $(callbacks).each(function() {
                                 this(resp)
                             })
@@ -112,13 +104,13 @@ define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'GML_3_2_1', 'OWS_1_1_0', 'Filter_
          * @memberOf hs.ows.wfs
          * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
          */
-        .controller('hs.ows.wfs.controller', ['$scope', 'hs.map.service', 'hs.ows.wfs.service_capabilities', 'Core', '$compile', '$rootScope', 'jsonix_service',
-            function($scope, OlMap, srv_caps, Core, $compile, $rootScope, jsonix_service) {
-                $scope.jsonix = jsonix_service.Jsonix;
+        .controller('hs.ows.wfs.controller', ['$scope', 'hs.map.service', 'hs.ows.wfs.service_capabilities', 'Core', '$compile', '$rootScope',
+            function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
                 srv_caps.addHandler(function(response) {
                     try {
-
+                        caps = new WFSCapabilities(response);
+                        console.log(caps);
                     } catch (e) {
                         if (console) console.log(e);
                         $scope.error = e.toString();

@@ -26,13 +26,6 @@ require.config({
         d3: requirejs.s.contexts._.config.paths.d3 || hsl_path + 'bower_components/d3/d3.min',
         proj4: requirejs.s.contexts._.config.paths.proj4 || hsl_path + 'bower_components/proj4/dist/proj4',
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'bower_components/crossfilter/crossfilter.min',
-        Jsonix: requirejs.s.contexts._.config.paths.Jsonix || hsl_path + 'bower_components/jsonix/dist/Jsonix-all',
-        WFS_2_0: requirejs.s.contexts._.config.paths.WFS_2_0 || hsl_path + 'bower_components/ogc-schemas/scripts/lib/WFS_2_0',
-        GML_3_2_1: requirejs.s.contexts._.config.paths.GML_3_2_1 || hsl_path + 'bower_components/ogc-schemas/scripts/lib/GML_3_2_1',
-        OWS_1_1_0: requirejs.s.contexts._.config.paths.OWS_1_1_0 || hsl_path + 'bower_components/ogc-schemas/scripts/lib/OWS_1_1_0',
-        Filter_2_0: requirejs.s.contexts._.config.paths.Filter_2_0 || hsl_path + 'bower_components/ogc-schemas/scripts/lib/Filter_2_0',
-        XSD_1_0: requirejs.s.contexts._.config.paths.XSD_1_0 || hsl_path + 'bower_components/w3c-schemas/scripts/lib/XSD_1_0',
-        XLink_1_0: requirejs.s.contexts._.config.paths.XLink_1_0 || hsl_path + 'bower_components/w3c-schemas/scripts/lib/XLink_1_0',
         dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api',
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
@@ -40,6 +33,7 @@ require.config({
         geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON',
         mobile_toolbar: requirejs.s.contexts._.config.paths.mobile_toolbar || hsl_path + 'components/mobile_toolbar/mobile_toolbar',
         SparqlJson: requirejs.s.contexts._.config.paths.SparqlJson || hsl_path + 'components/layers/hs.source.SparqlJson',
+        WFSCapabilities: requirejs.s.contexts._.config.paths.WFSCapabilities || hsl_path + 'components/format/hs.format.WFSCapabilities',
     },
     shim: {
         'angular': {
