@@ -141,7 +141,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
             }),
             compositions_catalogue_url: '/php/metadata/csw/',
             status_manager_url: '/wwwlibs/statusmanager2/index.php',
-
+            connectTypes: ["", "WMS", "WFS", "KML", "GeoJSON"],
             datasources: [{
                 title: "Catalogue",
                 url: "/php/metadata/csw/",
