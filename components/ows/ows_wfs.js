@@ -3,8 +3,11 @@
  * @memberOf hs.ows
  */
 define(['angular', 'ol', 'Jsonix', 'utils'],
-    function(angular, ol, JsonixModule) {
-
+    function(angular, ol, Jsonix) {
+        angular.module('jsonx_module', []).service('jsonix_service', [function () {
+            return Jsonix
+        }]);
+            
         var getPreferedFormat = function(formats, preferedFormats) {
             for (i = 0; i < preferedFormats.length; i++) {
                 if (formats.indexOf(preferedFormats[i]) > -1) {
@@ -20,7 +23,7 @@ define(['angular', 'ol', 'Jsonix', 'utils'],
             return url.replace(exp, "<a href='$1'>$1</a>");
         }
 
-        angular.module('hs.ows.wfs', ['hs.utils'])
+        angular.module('hs.ows.wfs', ['hs.utils', 'jsonx_module'])
             .directive('hs.ows.wfs.capabilitiesErrorDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
@@ -35,8 +38,8 @@ define(['angular', 'ol', 'Jsonix', 'utils'],
          * @memberOf hs.ows.wfs
          * @description Service for GetCapabilities requests to Wms
          */
-        .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service',
-            function($http, OlMap, utils) {
+        .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service', 'jsonix_service',
+            function($http, OlMap, utils, jsonix_service) {
                 var callbacks = [];
                 var me = this;
 
@@ -103,8 +106,8 @@ define(['angular', 'ol', 'Jsonix', 'utils'],
          * @memberOf hs.ows.wfs
          * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
          */
-        .controller('hs.ows.wfs.controller', ['$scope', 'hs.map.service', 'hs.ows.wfs.service_capabilities', 'Core', '$compile', '$rootScope',
-            function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
+        .controller('hs.ows.wfs.controller', ['$scope', 'hs.map.service', 'hs.ows.wfs.service_capabilities', 'Core', '$compile', '$rootScope', 'jsonix_service',
+            function($scope, OlMap, srv_caps, Core, $compile, $rootScope, jsonix_service) {
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
                 srv_caps.addHandler(function(response) {
                     try {

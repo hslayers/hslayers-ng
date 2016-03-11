@@ -38,9 +38,6 @@ require.config({
         },
         dc: {
             deps: ['d3', 'crossfilter']
-        },
-        Jsonix: {
-            exports: 'Jsonix'
         }
     }
 });
