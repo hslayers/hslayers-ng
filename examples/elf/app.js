@@ -108,7 +108,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
                         url: 'http://services.cuzk.cz/wfs/inspire-cp-wfs.asp',
                         typename: 'CP:CadastralParcel',
                         projection: 'EPSG:3857',
-                        version: '2.0',
+                        version: '2.0.0',
                         format: new ol.format.WFS(),
                         hsproxy: true,
                         parser: feature_parser
