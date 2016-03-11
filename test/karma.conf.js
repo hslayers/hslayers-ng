@@ -17,6 +17,7 @@ module.exports = function(config) {
     files: [
       'bower_components/jquery/dist/jquery.js',
       {pattern:'bower_components/angular/angular.js', included: false},
+      {pattern:'bower_components/proj4/dist/proj4.js', included: false},
       {pattern:'bower_components/angular-gettext/dist/angular-gettext.js', included: false},
       {pattern:'bower_components/bootstrap/dist/js/bootstrap.min.js', included: false},
       {pattern:'bower_components/angular-sanitize/angular-sanitize.js', included: false},
