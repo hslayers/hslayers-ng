@@ -547,10 +547,12 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
 
                 $rootScope.$on('infopanel.feature_selected', function(event, feature, selector) {
                     var record = feature.get("record");
-                    $scope.use_callback_for_edit = false;
-                    feature.set('highlighted', false);
-                    selector.getFeatures().clear();
-                    $scope.loadComposition(record);
+                    if (angular.isDefined(record)) {
+                        $scope.use_callback_for_edit = false;
+                        feature.set('highlighted', false);
+                        selector.getFeatures().clear();
+                        $scope.loadComposition(record);
+                    }
                 });
 
                 $scope.$on('map.extent_changed', function(event, data, b) {
