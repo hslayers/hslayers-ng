@@ -16,6 +16,7 @@ require.config({
         ows: hsl_path + 'components/ows/ows',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
+        'ows.wfs': hsl_path + 'components/ows/ows_wfs',
         'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
         'ows.wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized',
         query: hsl_path + 'components/query/query',
