@@ -402,6 +402,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                 //Check if height or Width covers the whole screen
                                 if (!((extent[0] < cur_map_extent[0] && extent[2] > cur_map_extent[2]) || (extent[1] < cur_map_extent[1] && extent[3] > cur_map_extent[3]))) {
                                     attributes.geometry = ol.geom.Polygon.fromExtent(extent);
+                                    attributes.is_hs_composition_extent = true;
                                     var new_feature = new ol.Feature(attributes);
                                     record.feature = new_feature;
                                     extent_layer.getSource().addFeatures([new_feature]);
@@ -546,8 +547,8 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 });
 
                 $rootScope.$on('infopanel.feature_selected', function(event, feature, selector) {
-                    var record = feature.get("record");
-                    if (angular.isDefined(record)) {
+                    if (angular.isDefined(feature.get("is_hs_composition_extent")) && angular.isDefined(feature.get("record"))) {
+                        var record = feature.get("record");
                         $scope.use_callback_for_edit = false;
                         feature.set('highlighted', false);
                         selector.getFeatures().clear();
