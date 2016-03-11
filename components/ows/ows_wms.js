@@ -233,9 +233,9 @@ define(['angular', 'ol', 'utils'],
                         //throw "WMS Capabilities parsing problem";
                     }
                 };
-                
+
                 srv_caps.addHandler($scope.capabilitiesReceived);
-                
+
                 $scope.srsChanged = function() {
                     $scope.resample_warning = !srv_caps.currentProjectionSupported($scope.srss);
                 }

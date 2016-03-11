@@ -4,10 +4,10 @@
  */
 define(['angular', 'ol', 'Jsonix', 'utils'],
     function(angular, ol, Jsonix) {
-        angular.module('jsonx_module', []).service('jsonix_service', [function () {
+        angular.module('jsonix_module', []).service('jsonix_service', [function() {
             return Jsonix
         }]);
-            
+
         var getPreferedFormat = function(formats, preferedFormats) {
             for (i = 0; i < preferedFormats.length; i++) {
                 if (formats.indexOf(preferedFormats[i]) > -1) {
@@ -98,7 +98,7 @@ define(['angular', 'ol', 'Jsonix', 'utils'],
                     if (typeof use_proxy == 'undefined' || !use_proxy) return url;
                     else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent(url) + '&owsService=WMS';
                 }
-             }
+            }
         ])
 
         /**
