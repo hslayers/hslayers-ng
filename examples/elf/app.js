@@ -1,16 +1,21 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'bootstrap', 'sidebar', 'api'],
-
-    function(ol, toolbar, layermanager, WfsSource) {
+define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator'],
+    function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
+            'hs.sidebar',
             'hs.toolbar',
             'hs.layermanager',
+            'hs.map',
             'hs.query',
-            'hs.search', 'hs.print', 'hs.permalink',
-            'hs.geolocation',
+            'hs.search', 'hs.permalink', 'hs.measure',
+            'hs.geolocation', 'hs.core',
+            'hs.datasource_selector',
+            'hs.status_creator',
             'hs.api',
-            'hs.sidebar'
+            'hs.ows',
+            'gettext',
+            'hs.compositions'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
@@ -21,7 +26,6 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
                 }
             };
         }]);
-
 
         var style = new ol.style.Style({
             image: new ol.style.Circle({
@@ -50,7 +54,7 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
         for (var z = 0; z < 14; ++z) {
             // generate resolutions and matrixIds arrays for this WMTS
             resolutions[z] = size / Math.pow(2, z);
-            matrixIds[z] = 'EPSG:3857:'+z;
+            matrixIds[z] = 'EPSG:3857:' + z;
         }
 
 
@@ -91,9 +95,9 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
                             origin: ol.extent.getTopLeft(projectionExtent),
                             resolutions: resolutions,
                             matrixIds: matrixIds
-                       }),
-                       style: 'default',
-                       wrapX: true        
+                        }),
+                        style: 'default',
+                        wrapX: true
                     }),
                     title: 'ELF Basemap',
                     base: true
@@ -134,16 +138,30 @@ define(['ol', 'toolbar', 'layermanager', 'WfsSource', 'query', 'search', 'print'
                 center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 4,
                 units: "m"
-            })
+            }),
+            compositions_catalogue_url: '/php/metadata/csw/',
+            status_manager_url: '/wwwlibs/statusmanager2/index.php',
+
+            datasources: [{
+                title: "Catalogue",
+                url: "/php/metadata/csw/",
+                language: 'eng',
+                type: "micka",
+                code_list_url: '/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+            }]
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel',
-            function($scope, Core, InfoPanelService) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'config',
+            function($scope, Core, InfoPanelService, composition_parser, config) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-
-                $scope.$on('infopanel.updated', function(event) {});
+                Core.sidebarRight = false;
+                Core.singleDatasources = true;
+                Core.embededEnabled = false;
+                $scope.$on('infopanel.updated', function(event) {
+                    if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
+                });
             }
         ]);
 
