@@ -26,6 +26,7 @@ require.config({
         d3: requirejs.s.contexts._.config.paths.d3 || hsl_path + 'bower_components/d3/d3.min',
         proj4: requirejs.s.contexts._.config.paths.proj4 || hsl_path + 'bower_components/proj4/dist/proj4',
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'bower_components/crossfilter/crossfilter.min',
+        Jsonix: requirejs.s.contexts._.config.paths.Jsonix || hsl_path + 'bower_components/jsonix/dist/Jsonix-all',
         dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api',
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
