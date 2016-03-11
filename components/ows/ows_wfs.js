@@ -2,8 +2,8 @@
  * @namespace hs.ows.wfs
  * @memberOf hs.ows
  */
-define(['angular', 'ol', 'Jsonix', 'utils'],
-    function(angular, ol, Jsonix) {
+define(['angular', 'ol', 'Jsonix', 'WFS_2_0', 'XLink_1_0', 'utils'],
+    function(angular, ol, Jsonix, WFS_2_0, XLink_1_0) {
         angular.module('jsonix_module', []).service('jsonix_service', [function() {
             return Jsonix
         }]);
@@ -40,6 +40,7 @@ define(['angular', 'ol', 'Jsonix', 'utils'],
          */
         .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service', 'jsonix_service',
             function($http, OlMap, utils, jsonix_service) {
+                var Jsonix = jsonix_service.Jsonix;
                 var callbacks = [];
                 var me = this;
 
@@ -82,10 +83,21 @@ define(['angular', 'ol', 'Jsonix', 'utils'],
                     var url = [path, me.params2String(params)].join('?');
 
                     url = utils.proxify(url);
+
+                    var context = new Jsonix.Context([XLink_1_0, WFS_2_0], {
+                        namespacePrefixes: {
+                            "http://www.opengis.net/wfs/2.0": "",
+                            "http://www.w3.org/1999/xlink": "xlink"
+                        },
+                        mappingStyle: "simplified"
+                    });
+
+                    var unmarshaller = context.createUnmarshaller();
+
                     if (callback) {
-                        $http.get(url).success(callback);
+                        unmarshaller.unmarshalURL(url, callback);
                     } else {
-                        $http.get(url).success(function(resp) {
+                        unmarshaller.unmarshalURL(url, function(resp) {
                             $(callbacks).each(function() {
                                 this(resp)
                             })
@@ -108,10 +120,11 @@ define(['angular', 'ol', 'Jsonix', 'utils'],
          */
         .controller('hs.ows.wfs.controller', ['$scope', 'hs.map.service', 'hs.ows.wfs.service_capabilities', 'Core', '$compile', '$rootScope', 'jsonix_service',
             function($scope, OlMap, srv_caps, Core, $compile, $rootScope, jsonix_service) {
+                $scope.jsonix = jsonix_service.Jsonix;
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
                 srv_caps.addHandler(function(response) {
                     try {
-                        debugger;
+
                     } catch (e) {
                         if (console) console.log(e);
                         $scope.error = e.toString();

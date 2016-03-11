@@ -27,6 +27,8 @@ require.config({
         proj4: requirejs.s.contexts._.config.paths.proj4 || hsl_path + 'bower_components/proj4/dist/proj4',
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'bower_components/crossfilter/crossfilter.min',
         Jsonix: requirejs.s.contexts._.config.paths.Jsonix || hsl_path + 'bower_components/jsonix/dist/Jsonix-all',
+        WFS_2_0: requirejs.s.contexts._.config.paths.WFS_2_0 || hsl_path + 'bower_components/ogc-schemas/scripts/lib/WFS_2_0',
+        XLink_1_0: requirejs.s.contexts._.config.paths.XLink_1_0 || hsl_path + 'bower_components/w3c-schemas/scripts/lib/XLink_1_0',
         dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api',
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
