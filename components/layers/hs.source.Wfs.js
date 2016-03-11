@@ -30,7 +30,8 @@ define(function(require) {
                         src.addFeatures(options.parser(response));
                     });
             },
-            projection: options.projection
+            projection: options.projection,
+            strategy: ol.loadingstrategy.bbox
         });
         return src;
     };
