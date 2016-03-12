@@ -1,26 +1,18 @@
 <form class="form-horizontal" role="form" ng-controller="hs.ows.wfs.controller">
     <div class="form-group">
-        <label for="image_format" class="capabilities_label col-sm-4 control-label" translate>Image format</label>
+        <label for="image_format" class="capabilities_label col-sm-4 control-label" translate>Format</label>
         <div class="capabilities_input col-sm-8">
-            <select class="form-control" ng-model="image_format">
-                <option ng-repeat="i in image_formats">{{i}}</option>
+            <select class="form-control" ng-model="output_format">
+                <option ng-repeat="i in output_formats">{{i}}</option>
             </select>
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="capabilities_label col-sm-4 control-label" translate>Query format</label>
-        <div class="capabilities_input col-sm-8">
-            <select class="form-control" ng-model="query_format">
-                <option ng-repeat="i in query_formats">{{i}}</option>
-            </select>
-        </div>
-    </div>
 
     <div class="form-group" ng-show="srs.toUpperCase() != map_projection">
         <label class="capabilities_label col-sm-4 control-label">SRS</label>
         <div class="capabilities_input col-sm-8">
-            <select class="form-control" ng-model="srs" ng-change="srsChanged()">
+            <select class="form-control" ng-model="srs">
                 <option ng-repeat="i in srss">{{i}}</option>
             </select>
         </div>
@@ -35,22 +27,14 @@
     <hr/>
     <ul class="list-group">
         <a href="#" class="list-group-item disabled">
-            <div class="list-group-item-heading">{{services.Title}}</div>
+            <div class="list-group-item-heading">{{title}}</div>
             <button class="btn btn-primary" ng-click="selectAllLayers()" translate>Select All Layers</button>
             <button class="btn btn-primary pull-right" ng-click="tryAddLayers(true)"><i class="glyphicon glyphicon-plus"></i></button>
         </a>
-        <li ng-repeat="layer in services.Layer" class="list-group-item clearfix">
+        <li ng-repeat="layer in services" class="list-group-item clearfix">
             <div>
-                <input type="checkbox" class="layer-checked" ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" /> {{layer.Title}}
+                <input type="checkbox" class="layer-checked" ng-model="layer.checked" /> {{layer.Title}}
             </div>
-            <ul class="list-group" ng-if="hasNestedLayers(layer)">
-                <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">{{sub_layer.Title}} <input type="checkbox" class="layer-checked" ng-model="sub_layer.checked" ng-if="!hasNestedLayers(sub_layer)" />
-                    <ul class="list-group" ng-if="hasNestedLayers(sub_layer)">
-                        <li ng-repeat="sub_layer2 in sub_layer.Layer" class="list-group-item">{{sub_layer2.Title}} <input type="checkbox" class="layer-checked" ng-model="sub_layer2.checked" />
-                        </li>
-                    </ul>
-                </li>
-            </ul>
         </li>
     </ul>
 </form>

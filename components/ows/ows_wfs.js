@@ -2,8 +2,8 @@
  * @namespace hs.ows.wfs
  * @memberOf hs.ows
  */
-define(['angular', 'ol', 'WFSCapabilities', 'utils'],
-    function(angular, ol, WFSCapabilities) {
+define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
+    function(angular, ol, WfsSource, WFSCapabilities) {
 
         var getPreferedFormat = function(formats, preferedFormats) {
             for (i = 0; i < preferedFormats.length; i++) {
@@ -67,6 +67,7 @@ define(['angular', 'ol', 'WFSCapabilities', 'utils'],
 
                 this.requestGetCapabilities = function(service_url, callback) {
                     service_url = service_url.replace('&amp;', '&');
+                    me.service_url = service_url;
                     var params = utils.getParamsFromUrl(service_url);
                     var path = this.getPathFromUrl(service_url);
                     if (angular.isUndefined(params.request) && angular.isUndefined(params.REQUEST)) params.request = 'GetCapabilities';
@@ -91,6 +92,13 @@ define(['angular', 'ol', 'WFSCapabilities', 'utils'],
                     }
                 };
 
+                this.currentProjectionSupported = function(srss) {
+                    var found = false;
+                    angular.forEach(srss, function(val) {
+                        if (val.toUpperCase().indexOf(OlMap.map.getView().getProjection().getCode().toUpperCase().replace('EPSG:', 'EPSG::')) > -1) found = true;
+                    })
+                    return found;
+                }
 
                 this.getUrl = function(url, use_proxy) {
                     if (typeof use_proxy == 'undefined' || !use_proxy) return url;
@@ -110,7 +118,39 @@ define(['angular', 'ol', 'WFSCapabilities', 'utils'],
                 srv_caps.addHandler(function(response) {
                     try {
                         caps = new WFSCapabilities(response);
-                        console.log(caps);
+                        $scope.title = caps.ServiceIdentification.Title;
+                        $scope.description = addAnchors(caps.ServiceIdentification.Abstract);
+                        $scope.version = caps.Version || caps.version;
+                        $scope.output_formats = caps.FeatureTypeList.FeatureType[0].OutputFormats;
+                        $scope.srss = [caps.FeatureTypeList.FeatureType[0].DefaultCRS];
+                        angular.forEach(caps.FeatureTypeList.FeatureType[0].OtherCRS, function(srs) {
+                            $scope.srss.push(srs);
+                        })
+
+                        if ($scope.srss.indexOf('CRS:84') > -1) $scope.srss.splice($scope.srss.indexOf('CRS:84'), 1);
+
+                        if (srv_caps.currentProjectionSupported($scope.srss))
+                            $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode()) > -1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
+                        else if ($scope.srss.indexOf('EPSG::4326') > -1) {
+                            $scope.srs = 'EPSG:4326';
+                        } else
+                            $scope.srs = $scope.srss[0];
+                        $scope.services = caps.FeatureTypeList.FeatureType;
+                        console.log($scope.services);
+                        angular.forEach(caps.OperationsMetadata.Operation, function(operation) {
+                            switch (operation.name) {
+                                case "DescribeFeatureType":
+                                    $scope.describeFeatureType = operation.DCP[0].HTTP.Get;
+                                    break;
+                                case "GetFeature":
+                                    $scope.getFeature = operation.DCP[0].HTTP.Get;
+                                    break;
+                            }
+                        })
+
+                        $scope.output_format = getPreferedFormat($scope.output_formats, ["text/xml; subtype=gml/3.2.1"]);
+
+
                     } catch (e) {
                         if (console) console.log(e);
                         $scope.error = e.toString();
@@ -149,7 +189,6 @@ define(['angular', 'ol', 'WFSCapabilities', 'utils'],
                     $scope.add_all = checked;
                     $scope.addLayers(checked);
                     return;
-                    $scope.addLayers(checked);
                 };
 
                 /**
@@ -160,15 +199,12 @@ define(['angular', 'ol', 'WFSCapabilities', 'utils'],
                  */
                 $scope.addLayers = function(checked) {
                     var recurse = function(layer) {
-                        if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
+                        if (!checked || layer.checked)
                             addLayer(
                                 layer,
                                 layer.Title.replace(/\//g, "&#47;"),
                                 $scope.folder_name,
-                                $scope.image_format,
-                                $scope.query_format,
-                                $scope.single_tile,
-                                $scope.tile_size,
+                                $scope.output_format,
                                 $scope.srs
                             );
 
@@ -176,7 +212,7 @@ define(['angular', 'ol', 'WFSCapabilities', 'utils'],
                             recurse(sublayer)
                         })
                     }
-                    angular.forEach($scope.services.Layer, function(layer) {
+                    angular.forEach($scope.services, function(layer) {
                         recurse(layer)
                     });
                     Core.setMainPanel('layermanager');
@@ -195,7 +231,22 @@ define(['angular', 'ol', 'WFSCapabilities', 'utils'],
                  * @param {OpenLayers.Projection} crs of the layer
                  * @description Add selected layer to map
                  */
-                var addLayer = function(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
+                var addLayer = function(layer, layerName, folder, outputFormat, srs) {
+                    if (console) console.log(layer);
+
+                    var url = srv_caps.service_url.split("?")[0];
+                    var new_layer = new ol.layer.Vector({
+                        title: layerName,
+                        source: new WfsSource({
+                            url: url,
+                            typename: layer.Name,
+                            projection: srs,
+                            version: $scope.version,
+                            format: new ol.format.WFS(),
+                        }),
+                    })
+
+
                     OlMap.map.addLayer(new_layer);
                 }
             }

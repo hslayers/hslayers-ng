@@ -165,17 +165,10 @@ define(function(require) {
     HTTP_PARSERS_ = ol.xml.makeStructureNS(
         NAMESPACE_URIS_WFS_, {
             'Get': ol.xml.makeObjectPropertySetter(
-                readFormatOnlineresource_),
+                ol.format.XLink.readHref),
             'Post': ol.xml.makeObjectPropertySetter(
-                readFormatOnlineresource_)
+                ol.format.XLink.readHref)
         });
-
-    function readFormatOnlineresource_(node, objectStack) {
-        goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
-            'node.nodeType should be ELEMENT');
-        return ol.xml.pushParseAndPop({}, FORMAT_ONLINERESOURCE_PARSERS_,
-            node, objectStack);
-    };
 
     FORMAT_ONLINERESOURCE_PARSERS_ = ol.xml.makeStructureNS(
         NAMESPACE_URIS_WFS_, {

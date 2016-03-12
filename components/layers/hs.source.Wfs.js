@@ -4,10 +4,21 @@ define(function(require) {
         if (typeof options.version == 'undefined') options.version = '1.0.0';
         if (typeof options.hsproxy == 'undefined') options.hsproxy = true;
         if (typeof options.format == 'undefined') options.format = new ol.format.GeoJSON();
-        if (typeof options.beforeSend == 'undefined') options.beforeSend = function(xhr) {};
+        options.projection = options.projection.toUpperCase();
+        if (typeof options.beforeSend == 'undefined') options.beforeSend = function(xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1"));
+        };
         if (typeof options.parser == 'undefined') options.parser = function(response) {
-            if (console) console.log(response);
-            src.addFeatures(src.readFeatures(response));
+            var features = [];
+            var gm = new ol.format.GML3();
+            $("member", response).each(function() {
+                var attrs = {};
+                var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);
+                attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
+                var feature = new ol.Feature(attrs);
+                features.push(feature);
+            });
+            return features;
         }
 
         var src = new ol.source.Vector({

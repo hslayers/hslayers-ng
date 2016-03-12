@@ -82,7 +82,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "Base layer",
-                    base: true
+                    base: true,
+                    visible: true
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.WMTS({
@@ -100,7 +101,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
                         wrapX: true
                     }),
                     title: 'ELF Basemap',
-                    base: true
+                    base: true,
+                    visible: false
                 }),
                 new ol.layer.Vector({
                     title: "Parcels",

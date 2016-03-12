@@ -92,13 +92,13 @@ define(['angular', 'map', 'ows.wms', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritize
 
                     if (permalink.getParamValue('wms_to_connect')) {
                         var wms = permalink.getParamValue('wms_to_connect');
-                        Core.setMainPanel('ows');
+                        Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                         $scope.setUrlAndConnect(wms, 'WMS');
                     }
 
                     if (permalink.getParamValue('wfs_to_connect')) {
                         var wfs = permalink.getParamValue('wfs_to_connect');
-                        Core.setMainPanel('ows');
+                        Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                         $scope.setUrlAndConnect(wfs, 'WFS');
                     }
 
