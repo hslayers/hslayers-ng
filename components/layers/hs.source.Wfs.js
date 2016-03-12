@@ -11,6 +11,10 @@ define(function(require) {
         if (typeof options.parser == 'undefined') options.parser = function(response) {
             var features = [];
             var gm = new ol.format.GML3();
+            for (var key in gm) {
+                if (key.indexOf("_PARSERS") > 0)
+                    gm[key]["http://www.opengis.net/gml/3.2"] = gm[key]["http://www.opengis.net/gml"];
+            }
             $("member", response).each(function() {
                 var attrs = {};
                 var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);
@@ -39,11 +43,34 @@ define(function(require) {
                     })
                     .done(function(response) {
                         src.addFeatures(options.parser(response));
+                        src.hasLine = false;
+                        src.hasPoly = false;
+                        src.hasPoint = false;
+                        angular.forEach(src.getFeatures(), function(f) {
+                            if (f.getGeometry()) {
+                                switch (f.getGeometry().getType()) {
+                                    case 'LineString' || 'MultiLineString':
+                                        src.hasLine = true;
+                                        break;
+                                    case 'Polygon' || 'MultiPolygon':
+                                        src.hasPoly = true;
+                                        break;
+                                    case 'Point' || 'MultiPoint':
+                                        src.hasPoint = true;
+                                        break;
+                                }
+                            }
+                        })
+
+                        if (src.hasLine || src.hasPoly || src.hasPoint) {
+                            src.styleAble = true;
+                        }
                     });
             },
             projection: options.projection,
             strategy: ol.loadingstrategy.bbox
         });
+        src.defOptions = options;
         return src;
     };
 });

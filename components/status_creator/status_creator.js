@@ -306,6 +306,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             var f = new ol.format.GeoJSON();
                             json.features = f.writeFeatures(src.getFeatures());
                         }
+                        if (angular.isDefined(src.defOptions)) {
+                            json.defOptions = src.defOptions;
+                        }
                         json.maxResolution = layer.getMaxResolution();
                         json.minResolution = layer.getMinResolution();
                         json.projection = "epsg:4326";

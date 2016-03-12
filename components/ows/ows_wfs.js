@@ -235,8 +235,13 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                     if (console) console.log(layer);
 
                     var url = srv_caps.service_url.split("?")[0];
+                    var definition = {};
+                    definition.url = url;
+                    definition.format = 'hs.format.WFS';
+
                     var new_layer = new ol.layer.Vector({
                         title: layerName,
+                        definition: definition,
                         source: new WfsSource({
                             url: url,
                             typename: layer.Name,

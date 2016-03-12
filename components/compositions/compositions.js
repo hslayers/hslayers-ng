@@ -3,9 +3,9 @@
  * @memberOf hs
  */
 
-define(['angular', 'ol', 'SparqlJson', 'map'],
+define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'map'],
 
-    function(angular, ol, SparqlJson) {
+    function(angular, ol, SparqlJson, WfsSource) {
         var module = angular.module('hs.compositions', ['hs.map', 'hs.core'])
             .directive('hs.compositions.directive', function() {
                 return {
@@ -270,6 +270,30 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                             });
                                             layers.push(lyr);
                                             break;
+                                        case 'hs.format.WFS':
+                                            var url = decodeURIComponent(lyr_def.protocol.url);
+                                            url = utils.proxify(url);
+
+                                            definition.url = lyr_def.protocol.url;
+                                            definition.format = lyr_def.protocol.format;
+
+                                            var style = null;
+                                            if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+
+                                            var src = new WfsSource(lyr_def.defOptions);
+
+                                            var lyr = new ol.layer.Vector({
+                                                from_composition: true,
+                                                definition: definition,
+                                                source: src,
+                                                opacity: lyr_def.opacity || 1,
+                                                style: style,
+                                                title: lyr_def.title
+                                            });
+                                            layers.push(lyr);
+                                            break;
+
+
                                         case 'hs.format.Sparql':
                                             var url = decodeURIComponent(lyr_def.protocol.url);
 
