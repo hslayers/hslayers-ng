@@ -15,6 +15,7 @@ require.config({
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
+        'ows.wfs': hsl_path + 'components/ows/ows_wfs',
         'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
         'ows.wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized',
         query: hsl_path + 'components/query/query',

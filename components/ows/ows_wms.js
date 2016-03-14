@@ -91,6 +91,7 @@ define(['angular', 'ol', 'utils'],
                     var url = [path, me.params2String(params)].join('?');
 
                     url = utils.proxify(url);
+
                     if (callback) {
                         $http.get(url).success(callback);
                     } else {
@@ -188,7 +189,8 @@ define(['angular', 'ol', 'utils'],
             function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
                 $scope.use_resampling = false;
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
-                srv_caps.addHandler(function(response) {
+
+                $scope.capabilitiesReceived = function(response) {
                     try {
                         var parser = new ol.format.WMSCapabilities();
                         $scope.capabilities = parser.read(response);
@@ -230,7 +232,9 @@ define(['angular', 'ol', 'utils'],
                         $compile(el)($scope);
                         //throw "WMS Capabilities parsing problem";
                     }
-                });
+                };
+
+                srv_caps.addHandler($scope.capabilitiesReceived);
 
                 $scope.srsChanged = function() {
                     $scope.resample_warning = !srv_caps.currentProjectionSupported($scope.srss);

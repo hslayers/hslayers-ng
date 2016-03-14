@@ -3,9 +3,9 @@
  * @memberOf hs
  */
 
-define(['angular', 'ol', 'SparqlJson', 'map'],
+define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'map'],
 
-    function(angular, ol, SparqlJson) {
+    function(angular, ol, SparqlJson, WfsSource) {
         var module = angular.module('hs.compositions', ['hs.map', 'hs.core'])
             .directive('hs.compositions.directive', function() {
                 return {
@@ -270,6 +270,30 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                             });
                                             layers.push(lyr);
                                             break;
+                                        case 'hs.format.WFS':
+                                            var url = decodeURIComponent(lyr_def.protocol.url);
+                                            url = utils.proxify(url);
+
+                                            definition.url = lyr_def.protocol.url;
+                                            definition.format = lyr_def.protocol.format;
+
+                                            var style = null;
+                                            if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
+
+                                            var src = new WfsSource(lyr_def.defOptions);
+
+                                            var lyr = new ol.layer.Vector({
+                                                from_composition: true,
+                                                definition: definition,
+                                                source: src,
+                                                opacity: lyr_def.opacity || 1,
+                                                style: style,
+                                                title: lyr_def.title
+                                            });
+                                            layers.push(lyr);
+                                            break;
+
+
                                         case 'hs.format.Sparql':
                                             var url = decodeURIComponent(lyr_def.protocol.url);
 
@@ -402,6 +426,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                 //Check if height or Width covers the whole screen
                                 if (!((extent[0] < cur_map_extent[0] && extent[2] > cur_map_extent[2]) || (extent[1] < cur_map_extent[1] && extent[3] > cur_map_extent[3]))) {
                                     attributes.geometry = ol.geom.Polygon.fromExtent(extent);
+                                    attributes.is_hs_composition_extent = true;
                                     var new_feature = new ol.Feature(attributes);
                                     record.feature = new_feature;
                                     extent_layer.getSource().addFeatures([new_feature]);
@@ -546,11 +571,13 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 });
 
                 $rootScope.$on('infopanel.feature_selected', function(event, feature, selector) {
-                    var record = feature.get("record");
-                    $scope.use_callback_for_edit = false;
-                    feature.set('highlighted', false);
-                    selector.getFeatures().clear();
-                    $scope.loadComposition(record);
+                    if (angular.isDefined(feature.get("is_hs_composition_extent")) && angular.isDefined(feature.get("record"))) {
+                        var record = feature.get("record");
+                        $scope.use_callback_for_edit = false;
+                        feature.set('highlighted', false);
+                        selector.getFeatures().clear();
+                        $scope.loadComposition(record);
+                    }
                 });
 
                 $scope.$on('map.extent_changed', function(event, data, b) {

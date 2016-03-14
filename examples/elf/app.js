@@ -82,7 +82,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "Base layer",
-                    base: true
+                    base: true,
+                    visible: true
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.WMTS({
@@ -100,7 +101,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
                         wrapX: true
                     }),
                     title: 'ELF Basemap',
-                    base: true
+                    base: true,
+                    visible: false
                 }),
                 new ol.layer.Vector({
                     title: "Parcels",
@@ -139,15 +141,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
                 zoom: 4,
                 units: "m"
             }),
-            compositions_catalogue_url: '/php/metadata/csw/',
-            status_manager_url: '/wwwlibs/statusmanager2/index.php',
-
+            compositions_catalogue_url: 'http://www.whatstheplan.eu/php/metadata/csw/',
+            status_manager_url: 'http://www.whatstheplan.eu/wwwlibs/statusmanager/index.php',
+            connectTypes: ["", "WMS", "WFS", "KML", "GeoJSON"],
             datasources: [{
                 title: "Catalogue",
-                url: "/php/metadata/csw/",
+                url: "http://www.whatstheplan.eu/php/metadata/csw/",
                 language: 'eng',
                 type: "micka",
-                code_list_url: '/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
             }]
         });
 

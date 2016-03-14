@@ -16,6 +16,7 @@ require.config({
         ows: hsl_path + 'components/ows/ows',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
+        'ows.wfs': hsl_path + 'components/ows/ows_wfs',
         'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
         'ows.wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized',
         WfsSource: hsl_path + 'components/layers/hs.source.Wfs',
@@ -30,6 +31,14 @@ require.config({
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations'
+    },
+    shim: {
+        d3: {
+            exports: 'd3'
+        },
+        dc: {
+            deps: ['d3', 'crossfilter']
+        }
     }
 });
 

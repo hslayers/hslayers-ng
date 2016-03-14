@@ -3,20 +3,20 @@
  * @memberOf hs
  */
 
-define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permalink'],
+define(['angular', 'map', 'ows.wms', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritized', 'permalink'],
 
     function(angular) {
-        angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
+        angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.wfs', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
             .directive('hs.ows.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/ows.html'
                 };
             })
-            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service',
-                function($scope, srv_caps, OlMap, permalink, Core, nonwmsservice) {
+            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.ows.wfs.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service', 'config',
+                function($scope, srv_wms_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config) {
                     var map = OlMap.map;
-                    if (angular.isArray(Core.connectTypes)) {
-                        $scope.types = Core.connectTypes;
+                    if (angular.isArray(config.connectTypes)) {
+                        $scope.types = config.connectTypes;
                     } else {
                         $scope.types = ["", "WMS", "KML", "GeoJSON"];
                     }
@@ -33,7 +33,11 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
                         $('.ows-capabilities').slideDown();
                         switch ($scope.type.toLowerCase()) {
                             case "wms":
-                                srv_caps.requestGetCapabilities($scope.url);
+                                srv_wms_caps.requestGetCapabilities($scope.url);
+                                $scope.showDetails = true;
+                                break;
+                            case "wfs":
+                                srv_wfs_caps.requestGetCapabilities($scope.url);
                                 $scope.showDetails = true;
                                 break;
                         }
@@ -88,8 +92,14 @@ define(['angular', 'map', 'ows.wms', 'ows.nonwms', 'ows.wmsprioritized', 'permal
 
                     if (permalink.getParamValue('wms_to_connect')) {
                         var wms = permalink.getParamValue('wms_to_connect');
-                        Core.setMainPanel('ows');
+                        Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                         $scope.setUrlAndConnect(wms, 'WMS');
+                    }
+
+                    if (permalink.getParamValue('wfs_to_connect')) {
+                        var wfs = permalink.getParamValue('wfs_to_connect');
+                        Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
+                        $scope.setUrlAndConnect(wfs, 'WFS');
                     }
 
                     var title = decodeURIComponent(permalink.getParamValue('title')) || 'Layer';
