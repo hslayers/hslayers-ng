@@ -18,7 +18,6 @@ define(['angular', 'map', 'core', 'permalink'],
                 $scope.panelspace0pened = false;
                 $scope.Core.sidebarRight = false;
                 $scope.Core.sidebarExpanded = $scope.panelspace0pened;
-                console.log($scope.panelspace0pened, $scope.Core.sidebarExpanded);
 
                 $scope.setMainPanel = function(which) {
                     Core.setMainPanel(which, false);
@@ -29,11 +28,9 @@ define(['angular', 'map', 'core', 'permalink'],
                     if (!$scope.panelspaceOpened) {
                         $scope.panelspaceOpened = true;
                         $scope.Core.sidebarExpanded = true;
-                        // console.log("Opening panelspace.", $scope.panelspace0pened, $scope.Core.sidebarExpanded);
                     } else {
                         $scope.panelspaceOpened = false;
                         $scope.Core.sidebarExpanded = false;
-                        // console.log("Closing panelspace.", $scope.panelspace0pened, $scope.Core.sidebarExpanded);
                     }
                     $(".panelspace").toggleClass("panelspace-opened");
                     $("#toolbar").toggleClass("panelspace-opened");
