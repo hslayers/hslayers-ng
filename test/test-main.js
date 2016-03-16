@@ -70,7 +70,9 @@ require.config({
     datasource_selector: 'components/datasource_selector/datasource_selector',
     'angular-mocks': 'bower_components/angular-mocks/angular-mocks',
     WfsSource: hsl_path + 'components/layers/hs.source.Wfs',
-  },
+    'ows.wfs': hsl_path + 'components/ows/ows_wfs'
+      
+},
   shim: {
     'angular': {'exports': 'angular'},
     'angular-mocks': ['angular']
