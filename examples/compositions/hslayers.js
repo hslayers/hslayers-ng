@@ -28,7 +28,6 @@ require.config({
         app: 'app',
         panoramio: hsl_path + 'components/panoramio/panoramio',
         core: hsl_path + 'components/core/core',
-        WfsSource: hsl_path + 'extensions/hs.source.Wfs',
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations'
