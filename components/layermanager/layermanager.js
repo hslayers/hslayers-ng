@@ -152,7 +152,13 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         if (!$scope.$$phase) $scope.$digest();
                     })
                 }
-                var new_title = e.element.get('title').replace(/&#47;/g, '/');
+                if (angular.isDefined(e.element.get('title'))) {
+                    var new_title = e.element.get('title').replace(/&#47;/g, '/');
+
+                } else {
+                    var new_title = 'Void';
+
+                }
                 var new_layer = {
                     title: new_title,
                     layer: e.element,
