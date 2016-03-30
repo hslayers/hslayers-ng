@@ -1,21 +1,23 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
+            'hs.sidebar',
             'hs.toolbar',
             'hs.layermanager',
             'hs.map',
-            'hs.ows',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink', 'hs.lodexplorer', 'hs.measure',
             'hs.legend', 'hs.panoramio', 'hs.geolocation', 'hs.core',
             'hs.datasource_selector',
+            'hs.status_creator',
             'hs.api',
+            'hs.ows',
             'gettext',
             'hs.compositions',
-            'hs.sidebar'
+            'hs.info'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
@@ -47,6 +49,14 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                             source: new ol.source.OSM({
                                 url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
                             })
+                        }),
+                        new ol.layer.Tile({
+                            title: "Satellite",
+                            visible: false,
+                            base: true,
+                            source: new ol.source.XYZ({
+                                url: 'http://api.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmFpdGlzYmUiLCJhIjoiY2lrNzRtbGZnMDA2bXZya3Nsb2Z4ZGZ2MiJ9.g1T5zK-bukSbJsOypONL9g'
+                            })
                         })
                     ],
                 }), new ol.layer.Group({
@@ -74,25 +84,14 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 units: "m"
             }),
             compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
-            datasources: [
-                /*{
-                                    title: "Datatank",
-                                    url: "http://ewi.mmlab.be/otn/api/info",
-                                    type: "datatank"
-                                },*/
-                {
-                    title: "CKAN",
-                    url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
-                    language: 'eng',
-                    type: "ckan"
-                }, {
-                    title: "Micka",
-                    url: "http://cat.ccss.cz/csw/",
-                    language: 'eng',
-                    type: "micka",
-                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
-                }
-            ]
+            status_manager_url: 'http://www.whatstheplan.eu/wwwlibs/statusmanager2/index.php',
+            datasources: [{
+                title: "SuperCAT",
+                url: "http://cat.ccss.cz/csw/",
+                language: 'eng',
+                type: "micka",
+                code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+            }]
         });
 
         module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'config',
@@ -100,11 +99,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+                Core.sidebarRight = false;
+                Core.singleDatasources = true;
                 srv_producer.addService('http://erra.ccss.cz/geoserver/ows', config.box_layers[1]);
-                composition_parser.load('http://dev.bnhelp.cz/statusmanager/index.php?request=load&permalink=de_landuse');
-                $scope.$on('infopanel.updated', function(event) {
-                    if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
-                });
             }
         ]);
 

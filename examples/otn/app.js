@@ -1,6 +1,7 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info'],
+
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
             'hs.sidebar',
@@ -15,7 +16,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             'hs.api',
             'hs.ows',
             'gettext',
-            'hs.compositions'
+            'hs.compositions',
+            'hs.info'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
@@ -83,7 +85,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             }),
             compositions_catalogue_url: 'http://otn-production.intrasoft-intl.com/php/metadata/csw/',
             status_manager_url: 'http://otn-production.intrasoft-intl.com/wwwlibs/statusmanager2/index.php',
-
             datasources: [{
                 title: "Hub layers",
                 url: "http://otn-production.intrasoft-intl.com/php/metadata/csw/",

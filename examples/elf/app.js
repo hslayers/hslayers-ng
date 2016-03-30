@@ -1,6 +1,7 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info'],
+
     function(angular, ol, toolbar, layermanager, WfsSource) {
         var module = angular.module('hs', [
             'hs.sidebar',
@@ -15,7 +16,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
             'hs.api',
             'hs.ows',
             'gettext',
-            'hs.compositions'
+            'hs.compositions',
+            'hs.info'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
