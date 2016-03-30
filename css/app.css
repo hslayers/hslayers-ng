@@ -172,9 +172,16 @@ li.hs-comp-item {
     min-height: 60px;
     padding: 5px;
 }
+
+.hs-lm-item-status {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
 div.hs-lm-item-title {
     display: inline-block;
-    width: calc(100% - 85px);
+    width: calc(100% - 108px);
 }
 
 div.hs-comp-item-title {

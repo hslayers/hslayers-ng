@@ -1,6 +1,11 @@
 <div class="list-group-item hs-lm-list" ng-if="obj.layers.length>0">
     <ul class="list-group row">
         <li ng-repeat="layer in layers | filter:query track by $index" id="layer-{{$index}}" class="list-group-item hs-lm-item" ng-if="layerBelongsToFolder(layer, obj)" ng-click="setCurrentLayer(layer, $index)" ng-class="{detailActivated : 'currentlayer == layer'}">
+            <div class="hs-lm-item-status">
+                <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-hide="true"></span>
+                <span class="glyphicon glyphicon-chevron-right" ng-hide="currentlayer == layer"></span>
+                <span class="glyphicon glyphicon-chevron-down" ng-show="currentlayer == layer"></span>
+            </div>
             <div class="hs-lm-item-title">{{layer.title}}</div>
             <div class="hs-lm-item-controls">
                 <i class="glyphicon glyphicon-warning-sign hs-lm-warning-scale" title="{{'This layer is not available in this scale'|translate}}" data-toggle="tooltip" data-container="body" data-placement="auto" ng-show="layer.grayed" ng-click="$event.stopPropagation()" ></i>
