@@ -581,7 +581,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'map'],
                 });
 
                 $scope.$on('map.extent_changed', function(event, data, b) {
-                    if ($scope.Core.mainpanel != 'compositions') return;
+                    if ($scope.Core.mainpanel != 'composition_browser') return;
                     if ($scope.filter_by_extent) $scope.loadCompositions();
                 });
 
