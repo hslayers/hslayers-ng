@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map', 'core'],
         .controller('hs.measure.controller', ['$scope', 'hs.map.service', 'Core',
             function($scope, OlMap, Core) {
                 var map = OlMap.map;
-
+                $scope.sketch;
 
                 var source = new ol.source.Vector({});
                 var style = new ol.style.Style({
@@ -41,21 +41,15 @@ define(['angular', 'ol', 'map', 'core'],
 
 
                 /**
-                 * Currently drawed feature
-                 * @type {ol.Feature}
-                 */
-                var sketch;
-
-                /**
                  * handle pointer move
                  * @param {Event} evt
                  */
                 var mouseMoveHandler = function(evt) {
-                    if (sketch) {
+                    if ($scope.sketch) {
                         var output;
                         var val = 0;
-                        for (var i = 0; i < sketch.length; i++) {
-                            var geom = sketch[i].getGeometry();
+                        for (var i = 0; i < $scope.sketch.length; i++) {
+                            var geom = $scope.sketch[i].getGeometry();
                             if (geom instanceof ol.geom.Polygon) {
                                 val += geom.getArea();
                             } else if (geom instanceof ol.geom.LineString) {
@@ -94,9 +88,9 @@ define(['angular', 'ol', 'map', 'core'],
                             $("#toolbar").fadeOut();
                             // set sketch
                             if ($scope.multiple_shape_mode)
-                                sketch.push(evt.feature);
+                                $scope.sketch.push(evt.feature);
                             else {
-                                sketch = [evt.feature];
+                                $scope.sketch = [evt.feature];
                                 $scope.measurements.push({
                                     size: 0,
                                     unit: ""
@@ -183,7 +177,7 @@ define(['angular', 'ol', 'map', 'core'],
                 $scope.clearAll = function() {
                     $scope.measurements = [];
                     source.clear();
-                    sketch = null;
+                    $scope.sketch = null;
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
