@@ -40,7 +40,13 @@
                         </div>
                     </div>
                 </div>
+                <div id="hs-info-container">
+                    <div id="hs-info-area">
+                        <div hs.info.directive ng-controller="hs.info.controller" ng-if="Core.exists('hs.info.controller')"></div>
+                    </div>
+                </div>
             </div>
+
             <div id="hs-dialog-area">
                 <div hs.lodexplorer.directive_sparqllogdialog ng-controller="hs.lodexplorer.controller_sparqllogdialog"  ng-if="Core.exists('SparqlLogDialog')"></div>
                 <!--<div hs.status_creator.directive ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div>-->

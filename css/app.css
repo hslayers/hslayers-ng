@@ -587,79 +587,6 @@ a.sidebar-main {
     margin-left: 60px;
 }
 
-.mid-pane {
-    background-color:#fff;
-}
-
-.composition-info {
-    /* border: 1px solid #ddd; */
-}
-
-.composition-info > div {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-}
-
-.composition-abstract {
-    margin-bottom: 0;
-    font-size: 12px;
-    text-align: justify;
-    border-radius: 0;
-    border: 0;
-    margin-top: -1px;
-}
-/**********************************/
-/** SIDEBAR&TOOLBAR RESPONSIVITY **/
-/**********************************/
-
-@media (max-width: 767px) {
-    .open div.panelspace, div.panelspace, .panelspace-wrapper {
-        width: 300px;
-    }
-
-    div#content-wrapper.sb-left.open div.panelspace:not(.labels) .sidebar-list {
-        left: 250px;
-    }
-
-    div#content-wrapper.sb-right.open div.panelspace:not(.labels) .sidebar-list {
-        right: 250px;
-    }
-
-    .sb-left.open #map {
-        margin-left:300px;
-    }
-
-    .sb-right.open #map {
-        margin-left:300px;
-    }
-
-    div#sidebar ~ div#panelplace {
-        width: 251px;
-    }
-
-    div.panelspace:not(.buttons) div#sidebar ~ div#panelplace {
-        width:300px;
-    }
-
-    .panelspace.labels #sidebar {
-        width: 300px;
-    }
-
-    .sb-left.open #toolbar {
-       margin-left: 310px;
-    }
-
-    .panel-footer {
-        padding: 5px;
-    }
-
-    .panelplace .list-group-item {
-        padding: 10px;
-    }
-
-
-}
-
 /********************/
 /** STATUS CREATOR **/
 /********************/
@@ -759,4 +686,120 @@ a.sidebar-main {
 
 .hs-icon-rdf:before {
     content: "";
+}
+
+div#hs-info-area {
+    position: absolute;
+    left: 50%;
+    bottom: 7px;
+    z-index: 3;
+    transition: bottom 0.1s linear;
+    transform: translateX(-50%);
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    vertical-align: bottom;
+    min-height: 100px;
+    border-radius: 2px;
+}
+
+div#hs-info-composition-image {
+    background-size: 96px 64px;
+    height: 100px;
+    margin: 4px;
+    position: relative;
+    width: 100px;
+    font-size: 50px;
+    text-align: center;
+    /* vertical-align: middle; */
+    /* display: inline-block; */
+}
+
+div#hs-info-composition {
+    display: flex;
+}
+
+div#hs-info-composition-container {
+    font-size: 12px;
+    line-height: 12px;
+    padding: 12px;
+}
+
+div.hs-info-composition-title {
+    font-weight: bold;
+    padding-bottom: 6px;
+}
+
+.open div#hs-info-container {
+    margin-left: 400px;
+    width: calc(100% - 400px);
+}
+div#hs-info-container {
+    height: 100%;
+    margin-left: 48px;
+    position: relative;
+    vertical-align: bottom;
+    width: calc(100% - 48px);
+}
+
+/**********************************/
+/** SIDEBAR&TOOLBAR RESPONSIVITY **/
+/**********************************/
+
+@media (max-width: 767px) {
+    .open div.panelspace, div.panelspace, .panelspace-wrapper {
+        width: 300px;
+    }
+
+    .open div#hs-info-container {
+        margin-left: 300px;
+        width: calc(100% - 300px);
+    }
+
+    div#content-wrapper.sb-left.open div.panelspace:not(.labels) .sidebar-list {
+        left: 250px;
+    }
+
+    div#content-wrapper.sb-right.open div.panelspace:not(.labels) .sidebar-list {
+        right: 250px;
+    }
+
+    .sb-left.open #map {
+        margin-left:300px;
+    }
+
+    .sb-right.open #map {
+        margin-left:300px;
+    }
+
+    div#sidebar ~ div#panelplace {
+        width: 251px;
+    }
+
+    div.panelspace:not(.buttons) div#sidebar ~ div#panelplace {
+        width:300px;
+    }
+
+    .panelspace.labels #sidebar {
+        width: 300px;
+    }
+
+    .sb-left.open #toolbar {
+       margin-left: 310px;
+    }
+
+    .panel-footer {
+        padding: 5px;
+    }
+
+    .panelplace .list-group-item {
+        padding: 10px;
+    }
+}
+
+
+
+
+div#hs-info-composition-image > span {
+    line-height: 100px;
+    width: 100px;
 }

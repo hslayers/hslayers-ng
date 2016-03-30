@@ -67,6 +67,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'map'],
                         })
                         .done(function(response) {
                             me.composition_loaded = url;
+                            $rootScope.$broadcast('compositions.composition_loading', response);
                             if (angular.isUndefined(overwrite) || overwrite == true) {
                                 var to_be_removed = [];
                                 OlMap.map.getLayers().forEach(function(lyr) {

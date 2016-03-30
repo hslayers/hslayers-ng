@@ -1,0 +1,10 @@
+<div id="hs-info-composition" ng-show="compositionLoaded()">
+    <div id="hs-info-composition-image">
+        <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="!composition_loaded"></span>
+        <span class="glyphicon icon-map" ng-show="composition_loaded"></span>
+    </div>
+    <div id="hs-info-composition-container">
+        <div class="hs-info-composition-title">{{composition_title}}</div>
+        <div class="hs-info-composition-abstract">{{composition_abstract}}</div>
+    </div>
+</div>
