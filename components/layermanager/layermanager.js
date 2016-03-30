@@ -693,12 +693,24 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             $scope.loadingEvents = function(layer) {
                 layer.loadCounter = 0;
                 layer.loaded = true;
+                var source = layer.getSource()
                 if (layer instanceof ol.layer.Vector) {
                     console.log('Vector');
                 } else if (layer instanceof ol.layer.Image) {
-                    console.log('Image');
+                    source.on('imageloadstart', function(event) {
+                        layer.loaded = false;
+                        if (!$scope.$$phase) $scope.$digest();
+                    });
+                    source.on('imageloadend', function(event) {
+                        layer.loaded = true;
+                        if (!$scope.$$phase) $scope.$digest();
+                    });
+                    source.on('imageloaderror', function(event) {
+                        layer.loaded = true;
+                        if (!$scope.$$phase) $scope.$digest();
+                    });
                 } else if (layer instanceof ol.layer.Tile) {
-                    layer.getSource().on('tileloadstart', function(event) {
+                    source.on('tileloadstart', function(event) {
                         layer.loadCounter += 1;
                         if (layer.loaded == true) {
                             layer.loaded = false;
@@ -706,14 +718,14 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         }
 
                     });
-                    layer.getSource().on('tileloadend', function(event) {
+                    source.on('tileloadend', function(event) {
                         layer.loadCounter -= 1;
                         if (layer.loadCounter == 0) {
                             layer.loaded = true;
                             if (!$scope.$$phase) $scope.$digest();
                         }
                     });
-                    layer.getSource().on('tileloaderror', function(event) {
+                    source.on('tileloaderror', function(event) {
                         layer.loadCounter -= 1;
                         if (layer.loadCounter == 0) {
                             layer.loaded = true;
@@ -721,11 +733,6 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         }
                     });
                 }
-            }
-
-            $scope.loadingLoaded = function(layer) {
-                console.log(layer.loaded);
-                return layer.loaded;
             }
 
             OlMap.map.getLayers().forEach(function(lyr) {

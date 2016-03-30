@@ -2,8 +2,8 @@
     <ul class="list-group row">
         <li ng-repeat="layer in layers | filter:query track by $index" id="layer-{{$index}}" class="list-group-item hs-lm-item" ng-if="layerBelongsToFolder(layer, obj)" ng-click="setCurrentLayer(layer, $index)" ng-class="{detailActivated : 'currentlayer == layer'}">
             <div class="hs-lm-item-status">
-                <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-hide="loadingLoaded(layer.layer)"></span>
-                <span ng-show="loadingLoaded(layer.layer)">
+                <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-hide="layer.layer.loaded"></span>
+                <span ng-show="layer.layer.loaded">
                     <span class="glyphicon glyphicon-chevron-right" ng-hide="currentlayer == layer"></span>
                     <span class="glyphicon glyphicon-chevron-down" ng-show="currentlayer == layer"></span>
                 </span>
