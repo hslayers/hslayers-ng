@@ -700,21 +700,24 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 } else if (layer instanceof ol.layer.Tile) {
                     layer.getSource().on('tileloadstart', function(event) {
                         layer.loadCounter += 1;
-                        layer.loaded = false;
-                        console.log(layer.loaded);
+                        if (layer.loaded == true) {
+                            layer.loaded = false;
+                            if (!$scope.$$phase) $scope.$digest();
+                        }
+
                     });
                     layer.getSource().on('tileloadend', function(event) {
                         layer.loadCounter -= 1;
                         if (layer.loadCounter == 0) {
                             layer.loaded = true;
-                            console.log(layer.loaded);
+                            if (!$scope.$$phase) $scope.$digest();
                         }
                     });
                     layer.getSource().on('tileloaderror', function(event) {
                         layer.loadCounter -= 1;
                         if (layer.loadCounter == 0) {
                             layer.loaded = true;
-                            console.log(layer.loaded);
+                            if (!$scope.$$phase) $scope.$digest();
                         }
                     });
                 }
