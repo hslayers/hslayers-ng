@@ -129,20 +129,22 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
              */
             function layerAdded(e) {
-                $scope.layerIsWmsT(e.element);
-                if (e.element.get('show_in_manager') != null && e.element.get('show_in_manager') == false) return;
+                var layer = e.element;
+                if (layer.get('show_in_manager') != null && layer.get('show_in_manager') == false) return;
+                $scope.layerIsWmsT(layer);
+                $scope.loadingEvents(layer);
                 var sub_layers;
-                if (e.element.getSource().getParams) { // Legend only for wms layers with params
-                    sub_layers = e.element.getSource().getParams().LAYERS.split(",");
+                if (layer.getSource().getParams) { // Legend only for wms layers with params
+                    sub_layers = layer.getSource().getParams().LAYERS.split(",");
                     for (var i = 0; i < sub_layers.length; i++) {
-                        if (e.element.getSource().getUrls) //Multi tile
-                            sub_layers[i] = getLegendUrl(e.element.getSource().getUrls()[0], sub_layers[i]);
-                        if (e.element.getSource().getUrl) //Single tile
-                            sub_layers[i] = getLegendUrl(e.element.getSource().getUrl(), sub_layers[i]);
+                        if (layer.getSource().getUrls) //Multi tile
+                            sub_layers[i] = getLegendUrl(layer.getSource().getUrls()[0], sub_layers[i]);
+                        if (layer.getSource().getUrl) //Single tile
+                            sub_layers[i] = getLegendUrl(layer.getSource().getUrl(), sub_layers[i]);
                     }
                 }
-                if (e.element.get('base') != true) {
-                    e.element.on('change:visible', function(e) {
+                if (layer.get('base') != true) {
+                    layer.on('change:visible', function(e) {
                         for (var i = 0; i < $scope.layers.length; i++) {
                             if ($scope.layers[i].layer == e.target) {
                                 $scope.layers[i].visible = e.target.getVisible();
@@ -152,8 +154,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         if (!$scope.$$phase) $scope.$digest();
                     })
                 }
-                if (angular.isDefined(e.element.get('title'))) {
-                    var new_title = e.element.get('title').replace(/&#47;/g, '/');
+                if (angular.isDefined(layer.get('title'))) {
+                    var new_title = layer.get('title').replace(/&#47;/g, '/');
 
                 } else {
                     var new_title = 'Void';
@@ -161,9 +163,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 }
                 var new_layer = {
                     title: new_title,
-                    layer: e.element,
-                    grayed: $scope.isLayerInResolutionInterval(e.element),
-                    visible: e.element.getVisible()
+                    layer: layer,
+                    grayed: $scope.isLayerInResolutionInterval(layer),
+                    visible: layer.getVisible()
                 };
                 if ($scope.layerIsWmsT(new_layer)) {
                     var metadata = new_layer.layer.get('metadata') || new_layer.layer.metadata;
@@ -177,19 +179,19 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                     });
                     setLayerTimeSliderIntervals(new_layer, metadata);
                 }
-                if (e.element.get('base') != true) {
-                    populateFolders(e.element);
-                    if (e.element.get('legends')) {
-                        new_layer.legends = e.element.get('legends');
+                if (layer.get('base') != true) {
+                    populateFolders(layer);
+                    if (layer.get('legends')) {
+                        new_layer.legends = layer.get('legends');
                     }
                     $scope.layers.push(new_layer);
                 } else {
-                    new_layer.active = e.element.getVisible();
+                    new_layer.active = layer.getVisible();
                     $scope.baselayers.push(new_layer);
                 };
 
-                if (e.element.getVisible() && e.element.get("base")) $scope.baselayer = new_title;
-                $rootScope.$broadcast('layermanager.updated', e.element);
+                if (layer.getVisible() && layer.get("base")) $scope.baselayer = new_title;
+                $rootScope.$broadcast('layermanager.updated', layer);
                 $scope.$emit('compositions.composition_edited');
             };
 
@@ -680,6 +682,47 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 if (typeof layer == 'undefined') return false;
                 layer.setMinResolution(layer.minResolution);
                 layer.setMaxResolution(layer.maxResolution);
+            }
+
+            /**
+             * @function loadingEvents
+             * @memberOf hs.layermanager.controller
+             * @description Events for checking if layer is being loaded or is loaded
+             * @param {ol.layer} layer - layer which is being added
+             */
+            $scope.loadingEvents = function(layer) {
+                layer.loadCounter = 0;
+                layer.loaded = true;
+                if (layer instanceof ol.layer.Vector) {
+                    console.log('Vector');
+                } else if (layer instanceof ol.layer.Image) {
+                    console.log('Image');
+                } else if (layer instanceof ol.layer.Tile) {
+                    layer.getSource().on('tileloadstart', function(event) {
+                        layer.loadCounter += 1;
+                        layer.loaded = false;
+                        console.log(layer.loaded);
+                    });
+                    layer.getSource().on('tileloadend', function(event) {
+                        layer.loadCounter -= 1;
+                        if (layer.loadCounter == 0) {
+                            layer.loaded = true;
+                            console.log(layer.loaded);
+                        }
+                    });
+                    layer.getSource().on('tileloaderror', function(event) {
+                        layer.loadCounter -= 1;
+                        if (layer.loadCounter == 0) {
+                            layer.loaded = true;
+                            console.log(layer.loaded);
+                        }
+                    });
+                }
+            }
+
+            $scope.loadingLoaded = function(layer) {
+                console.log(layer.loaded);
+                return layer.loaded;
             }
 
             OlMap.map.getLayers().forEach(function(lyr) {
