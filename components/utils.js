@@ -15,7 +15,7 @@ define(['angular', 'app'], function(angular, app) {
         var me = this;
 
         this.proxify = function(url) {
-            if (url.indexOf('http') > -1 && url.indexOf(window.location.origin) == -1) {
+            if (url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) {
                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
                     url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(url);
                 }
