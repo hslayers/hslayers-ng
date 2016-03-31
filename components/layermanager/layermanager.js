@@ -754,7 +754,9 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             });
 
             $scope.$on('compositions.composition_loaded', function(event, data) {
-                $scope.composition_id = data.data.id || data.id;
+                if (angular.isUndefined(data.error)) {
+                    $scope.composition_id = data.data.id || data.id;
+                }
             });
 
             $scope.$on('compositions.composition_deleted', function(event, id) {

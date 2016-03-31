@@ -701,7 +701,7 @@ div#hs-info-area {
     left: 50%;
     bottom: 7px;
     z-index: 3;
-    transition: bottom 0.1s linear;
+    transition: all 2s ease;
     transform: translateX(-50%);
     background-color: #fff;
     box-shadow: 0 1px 4px rgba(0,0,0,0.3);

@@ -12,8 +12,8 @@ define(['angular', 'map', 'core', 'permalink'],
                 };
             })
 
-        .controller('hs.info.controller', ['$scope', 'Core',
-            function($scope, Core) {
+        .controller('hs.info.controller', ['$scope', '$timeout', 'Core',
+            function($scope, $timeout, Core) {
                 $scope.Core = Core;
                 $scope.composition_loaded = true;
 
@@ -23,12 +23,27 @@ define(['angular', 'map', 'core', 'permalink'],
                         $scope.composition_title = data.data.title || data.title;
                         $scope.composition_id = data.data.id || data.id;
                         $scope.composition_loaded = false;
-                        if (!$scope.$$phase) $scope.$digest();
+                        $scope.info_image = 'icon-map';
                     }
+                    if (!$scope.$$phase) $scope.$digest();
                 });
 
                 $scope.$on('compositions.composition_loaded', function(event, data) {
+                    if (angular.isDefined(data.error)) {
+                        var temp_abstract = $scope.composition_abstract;
+                        var temp_title = $scope.composition_title;
+                        $scope.composition_abstract = data.abstract;
+                        $scope.composition_title = data.title;
+                        $scope.info_image = 'glyphicon-warning-sign';
+                        $timeout(function() {
+                            $scope.composition_title = temp_title;
+                            $scope.composition_abstract = temp_abstract;
+                            $scope.info_image = 'icon-map';
+                            if (!$scope.$$phase) $scope.$digest();
+                        }, 3000);
+                    }
                     $scope.composition_loaded = true;
+                    if (!$scope.$$phase) $scope.$digest();
                 });
 
                 $scope.$on('compositions.composition_deleted', function(event, id) {

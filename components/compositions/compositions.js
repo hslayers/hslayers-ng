@@ -66,33 +66,45 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'map'],
                             url: url
                         })
                         .done(function(response) {
-                            me.composition_loaded = url;
-                            $rootScope.$broadcast('compositions.composition_loading', response);
-                            if (angular.isUndefined(overwrite) || overwrite == true) {
-                                var to_be_removed = [];
-                                OlMap.map.getLayers().forEach(function(lyr) {
-                                    if (lyr.get('from_composition'))
-                                        to_be_removed.push(lyr);
-                                });
-                                while (to_be_removed.length > 0) {
-                                    OlMap.map.removeLayer(to_be_removed.shift());
+                            if (response.success == true) {
+                                me.composition_loaded = url;
+                                $rootScope.$broadcast('compositions.composition_loading', response);
+                                if (angular.isUndefined(overwrite) || overwrite == true) {
+                                    var to_be_removed = [];
+                                    OlMap.map.getLayers().forEach(function(lyr) {
+                                        if (lyr.get('from_composition'))
+                                            to_be_removed.push(lyr);
+                                    });
+                                    while (to_be_removed.length > 0) {
+                                        OlMap.map.removeLayer(to_be_removed.shift());
+                                    }
                                 }
-                            }
-                            me.current_composition_title = response.title || response.data.title;
-                            OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
-                            var layers = me.jsonToLayers(response);
-                            for (var i = 0; i < layers.length; i++) {
-                                OlMap.map.addLayer(layers[i]);
-                            }
+                                me.current_composition_title = response.title || response.data.title;
+                                OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
+                                var layers = me.jsonToLayers(response);
+                                for (var i = 0; i < layers.length; i++) {
+                                    OlMap.map.addLayer(layers[i]);
+                                }
 
 
-                            if (config.open_lm_after_comp_loaded) {
-                                Core.setMainPanel('layermanager');
-                            }
+                                if (config.open_lm_after_comp_loaded) {
+                                    Core.setMainPanel('layermanager');
+                                }
 
-                            me.composition_edited = false;
-                            $rootScope.$broadcast('compositions.composition_loaded', response);
-                            if (typeof callback !== 'undefined' && callback !== null) callback();
+                                me.composition_edited = false;
+                                $rootScope.$broadcast('compositions.composition_loaded', response);
+                                if (typeof callback !== 'undefined' && callback !== null) callback();
+                            } else {
+                                var respError = {};
+                                respError.error = response.error;
+                                switch (response.error) {
+                                    case "no data":
+                                        respError.title = "Composition not found";
+                                        respError.abstract = "Sorry but composition was deleted or incorrectly saved"
+                                        break;
+                                }
+                                $rootScope.$broadcast('compositions.composition_loaded', respError);
+                            }
                         })
                 },
 

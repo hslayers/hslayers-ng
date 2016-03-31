@@ -553,22 +553,23 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 };
 
                 $scope.$on('compositions.composition_loaded', function(event, data) {
-                    if (console) console.log('compositions.composition_loaded', data);
-                    if (data.data) {
-                        $scope.id = data.id;
-                        $scope.abstract = data.data.abstract;
-                        $scope.title = data.data.title;
-                        $scope.keywords = data.data.keywords;
-                        $scope.current_composition = data.data;
-                    } else {
-                        $scope.id = data.id;
-                        $scope.abstract = data.abstract;
-                        $scope.title = data.title;
-                        $scope.keywords = data.keywords;
-                        $scope.current_composition = data;
-                    }
+                    if (angular.isUndefined(data.error)) {
+                        if (data.data) {
+                            $scope.id = data.id;
+                            $scope.abstract = data.data.abstract;
+                            $scope.title = data.data.title;
+                            $scope.keywords = data.data.keywords;
+                            $scope.current_composition = data.data;
+                        } else {
+                            $scope.id = data.id;
+                            $scope.abstract = data.abstract;
+                            $scope.title = data.title;
+                            $scope.keywords = data.keywords;
+                            $scope.current_composition = data;
+                        }
 
-                    $scope.current_composition_title = $scope.title;
+                        $scope.current_composition_title = $scope.title;
+                    }
                 });
 
                 $scope.$on('core.map_reset', function(event, data) {
