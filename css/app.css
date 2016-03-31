@@ -175,8 +175,9 @@ li.hs-comp-item {
 
 .hs-lm-item-status {
     display: inline-block;
-    width: 20px;
     text-align: center;
+    vertical-align: top;
+    width: 20px;
 }
 
 div.hs-lm-item-title {

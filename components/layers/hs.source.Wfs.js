@@ -28,6 +28,7 @@ define(function(require) {
         var src = new ol.source.Vector({
             format: options.format,
             loader: function(extent, resolution, projection) {
+                src.loaded = false;
                 src.clear();
                 if (console) console.log("resolution", resolution);
                 var p = options.url + (options.url.indexOf('?') > 0 ? '&' : '?') +
@@ -65,6 +66,7 @@ define(function(require) {
                         if (src.hasLine || src.hasPoly || src.hasPoint) {
                             src.styleAble = true;
                         }
+                        src.loaded = true;
                     });
             },
             projection: options.projection,

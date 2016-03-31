@@ -99,6 +99,7 @@ define(function(require) {
         var src = new ol.source.Vector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
+                src.loaded = false;
                 if (typeof src.options.clear_on_move !== 'undefined' && src.options.clear_on_move) src.clear();
                 if (typeof options.hsproxy == 'undefined') options.hsproxy = false;
                 if (typeof options.geom_attribute == 'undefined') options.geom_attribute = 'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
@@ -158,7 +159,7 @@ define(function(require) {
                             src.styleAble = true;
                             src.hasPoint = true;
                         }
-
+                        src.loaded = true;
                     })
             },
             strategy: function(extent, resolution) {

@@ -55,6 +55,7 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                             projection: ol.proj.get(srs),
                             extractStyles: extract_styles,
                             loader: function(extent, resolution, projection) {
+                                src.loaded = false;
                                 $.ajax({
                                     url: url,
                                     success: function(data) {
@@ -92,7 +93,7 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                                         if (src.hasLine || src.hasPoly || src.hasPoint) {
                                             src.styleAble = true;
                                         }
-
+                                        src.loaded = true;
 
                                     }
                                 });

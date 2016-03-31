@@ -691,48 +691,50 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
              * @param {ol.layer} layer - layer which is being added
              */
             $scope.loadingEvents = function(layer) {
-                layer.loadCounter = 0;
-                layer.loaded = true;
                 var source = layer.getSource()
-                if (layer instanceof ol.layer.Vector) {
-                    console.log('Vector');
-                } else if (layer instanceof ol.layer.Image) {
+                source.loadCounter = 0;
+                source.loaded = true;
+                if (layer instanceof ol.layer.Image) {
                     source.on('imageloadstart', function(event) {
-                        layer.loaded = false;
+                        source.loaded = false;
                         if (!$scope.$$phase) $scope.$digest();
                     });
                     source.on('imageloadend', function(event) {
-                        layer.loaded = true;
+                        source.loaded = true;
                         if (!$scope.$$phase) $scope.$digest();
                     });
                     source.on('imageloaderror', function(event) {
-                        layer.loaded = true;
+                        source.loaded = true;
                         if (!$scope.$$phase) $scope.$digest();
                     });
                 } else if (layer instanceof ol.layer.Tile) {
                     source.on('tileloadstart', function(event) {
-                        layer.loadCounter += 1;
-                        if (layer.loaded == true) {
-                            layer.loaded = false;
+                        source.loadCounter += 1;
+                        if (source.loaded == true) {
+                            source.loaded = false;
                             if (!$scope.$$phase) $scope.$digest();
                         }
 
                     });
                     source.on('tileloadend', function(event) {
-                        layer.loadCounter -= 1;
-                        if (layer.loadCounter == 0) {
-                            layer.loaded = true;
+                        source.loadCounter -= 1;
+                        if (source.loadCounter == 0) {
+                            source.loaded = true;
                             if (!$scope.$$phase) $scope.$digest();
                         }
                     });
                     source.on('tileloaderror', function(event) {
-                        layer.loadCounter -= 1;
-                        if (layer.loadCounter == 0) {
-                            layer.loaded = true;
+                        source.loadCounter -= 1;
+                        if (source.loadCounter == 0) {
+                            source.loaded = true;
                             if (!$scope.$$phase) $scope.$digest();
                         }
                     });
                 }
+            }
+
+            $scope.layerLoaded = function(layer) {
+                return layer.getSource().loaded
             }
 
             OlMap.map.getLayers().forEach(function(lyr) {
