@@ -13,7 +13,6 @@ define(function(require) {
                 var p = src.options.url;
                 if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
-                src.loaded = true;
 
                 function getPrecision(scinum) {
                     var arr = new Array();

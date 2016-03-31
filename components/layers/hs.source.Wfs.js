@@ -5,9 +5,6 @@ define(function(require) {
         if (typeof options.hsproxy == 'undefined') options.hsproxy = true;
         if (typeof options.format == 'undefined') options.format = new ol.format.GeoJSON();
         options.projection = options.projection.toUpperCase();
-        if (typeof options.beforeSend == 'undefined') options.beforeSend = function(xhr) {
-            xhr.setRequestHeader("Authorization", "Basic " + btoa("WRLS" + ":" + "WRLSELFx1"));
-        };
         if (typeof options.parser == 'undefined') options.parser = function(response) {
             var features = [];
             var gm = new ol.format.GML3();
@@ -28,8 +25,8 @@ define(function(require) {
         var src = new ol.source.Vector({
             format: options.format,
             loader: function(extent, resolution, projection) {
-                src.loaded = false;
-                src.clear();
+                this.loaded = false;
+                this.clear();
                 if (console) console.log("resolution", resolution);
                 var p = options.url + (options.url.indexOf('?') > 0 ? '&' : '?') +
                     'service=WFS&TYPENAME=' + options.typename + '&request=GetFeature&' +
@@ -40,33 +37,35 @@ define(function(require) {
 
                 $.ajax({
                         url: url,
-                        beforeSend: options.beforeSend
+                        context: this
                     })
                     .done(function(response) {
-                        src.addFeatures(options.parser(response));
-                        src.hasLine = false;
-                        src.hasPoly = false;
-                        src.hasPoint = false;
-                        angular.forEach(src.getFeatures(), function(f) {
+                        this.addFeatures(options.parser(response));
+                        this.hasLine = false;
+                        this.hasPoly = false;
+                        this.hasPoint = false;
+                        angular.forEach(this.getFeatures(), function(f) {
                             if (f.getGeometry()) {
                                 switch (f.getGeometry().getType()) {
                                     case 'LineString' || 'MultiLineString':
-                                        src.hasLine = true;
+                                        this.hasLine = true;
                                         break;
                                     case 'Polygon' || 'MultiPolygon':
-                                        src.hasPoly = true;
+                                        this.hasPoly = true;
                                         break;
                                     case 'Point' || 'MultiPoint':
-                                        src.hasPoint = true;
+                                        this.hasPoint = true;
                                         break;
                                 }
                             }
                         })
 
-                        if (src.hasLine || src.hasPoly || src.hasPoint) {
-                            src.styleAble = true;
+                        if (this.hasLine || this.hasPoly || this.hasPoint) {
+                            this.styleAble = true;
                         }
-                        src.loaded = true;
+                        this.loaded = true;
+                        if (!$scope.$$phase) $scope.$digest();
+
                     });
             },
             projection: options.projection,

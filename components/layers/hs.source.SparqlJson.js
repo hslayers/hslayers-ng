@@ -99,12 +99,12 @@ define(function(require) {
         var src = new ol.source.Vector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
-                src.loaded = false;
-                if (typeof src.options.clear_on_move !== 'undefined' && src.options.clear_on_move) src.clear();
+                this.loaded = false;
+                if (typeof this.options.clear_on_move !== 'undefined' && this.options.clear_on_move) this.clear();
                 if (typeof options.hsproxy == 'undefined') options.hsproxy = false;
                 if (typeof options.geom_attribute == 'undefined') options.geom_attribute = 'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
-                if (src.options.url == '') return;
-                var p = src.options.url;
+                if (this.options.url == '') return;
+                var p = this.options.url;
                 var first_pair = [extent[0], extent[1]];
                 var second_pair = [extent[2], extent[3]];
                 first_pair = ol.proj.transform(first_pair, 'EPSG:3857', 'EPSG:4326');
@@ -114,13 +114,13 @@ define(function(require) {
                 p = p.replace("<extent>", s_extent);
                 if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
-                src.loaded = true;
                 $.ajax({
-                        url: p
+                        url: p,
+                        context: this
                     })
                     .done(function(response) {
-                        if (src.options.updates_url) {
-                            var updates_query = src.options.updates_url;
+                        if (this.options.updates_url) {
+                            var updates_query = this.options.updates_url;
                             updates_query = updates_query.replace("<extent>", s_extent);
                             $.ajax({
                                     url: updates_query
@@ -141,7 +141,8 @@ define(function(require) {
                                         objects[b.o.value][b.attr.value] = b.value.value;
                                     }
 
-                                    src.addFeatures(loadFeatures(objects, src, options, occupied_xy, category_map, category_id));
+                                    this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
+                                    this.loaded = true;
                                 })
                         } else {
                             var objects = {};
@@ -155,11 +156,11 @@ define(function(require) {
                                 objects[b.o.value][b.p.value] = b.s.value;
                             }
 
-                            src.addFeatures(loadFeatures(objects, src, options, occupied_xy, category_map, category_id));
-                            src.styleAble = true;
-                            src.hasPoint = true;
+                            this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
+                            this.styleAble = true;
+                            this.hasPoint = true;
+                            this.loaded = true;
                         }
-                        src.loaded = true;
                     })
             },
             strategy: function(extent, resolution) {

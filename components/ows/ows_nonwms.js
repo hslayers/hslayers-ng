@@ -55,9 +55,10 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                             projection: ol.proj.get(srs),
                             extractStyles: extract_styles,
                             loader: function(extent, resolution, projection) {
-                                src.loaded = false;
+                                this.loaded = false;
                                 $.ajax({
                                     url: url,
+                                    context: this,
                                     success: function(data) {
                                         if (data.type == 'GeometryCollection') {
                                             var temp = {
@@ -66,34 +67,34 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                                             };
                                             data = temp;
                                         }
-                                        src.addFeatures(format.readFeatures(data, {
+                                        this.addFeatures(format.readFeatures(data, {
                                             dataProjection: 'EPSG:4326',
                                             featureProjection: srs
                                         }));
 
-                                        src.hasLine = false;
-                                        src.hasPoly = false;
-                                        src.hasPoint = false;
-                                        angular.forEach(src.getFeatures(), function(f) {
+                                        this.hasLine = false;
+                                        this.hasPoly = false;
+                                        this.hasPoint = false;
+                                        angular.forEach(this.getFeatures(), function(f) {
                                             if (f.getGeometry()) {
                                                 switch (f.getGeometry().getType()) {
                                                     case 'LineString' || 'MultiLineString':
-                                                        src.hasLine = true;
+                                                        this.hasLine = true;
                                                         break;
                                                     case 'Polygon' || 'MultiPolygon':
-                                                        src.hasPoly = true;
+                                                        this.hasPoly = true;
                                                         break;
                                                     case 'Point' || 'MultiPoint':
-                                                        src.hasPoint = true;
+                                                        this.hasPoint = true;
                                                         break;
                                                 }
                                             }
                                         })
 
-                                        if (src.hasLine || src.hasPoly || src.hasPoint) {
-                                            src.styleAble = true;
+                                        if (this.hasLine || this.hasPoly || this.hasPoint) {
+                                            this.styleAble = true;
                                         }
-                                        src.loaded = true;
+                                        this.loaded = true;
 
                                     }
                                 });
@@ -113,7 +114,7 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
 
 
                     var listenerKey = src.on('change', function() {
-
+                        console.log(src.getState());
                         if (src.getState() == 'ready') {
 
                             if (src.getFeatures().length == 0) return;
