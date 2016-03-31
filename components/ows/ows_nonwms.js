@@ -1,28 +1,23 @@
-define(['angular', 'ol', 'SparqlJson', 'styles'],
+define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
 
-    function(angular, ol, SparqlJson) {
+    function(angular, ol, SparqlJson, WfsSource) {
         angular.module('hs.ows.nonwms', [])
 
-        .service('hs.ows.nonwms.service', ['hs.map.service', 'hs.styles.service', 'hs.utils.service',
-            function(OlMap, styles, utils) {
+        .service('hs.ows.nonwms.service', ['$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service',
+            function($rootScope, OlMap, styles, utils) {
                 me = this;
 
-                me.add = function(type, url, title, abstract, extract_styles, srs) {
-                    if (type.toLowerCase() != 'sparql') {
-                        url = utils.proxify(url);
-                    }
-
-                    /*var proxied = window.XMLHttpRequest.prototype.open;
-                    window.XMLHttpRequest.prototype.open = function() {
-                        console.log( arguments );
-                        if(arguments[1].indexOf('hsproxy.cgi')==-1)
-                            arguments[1]= '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + window.escape(arguments[1]);
-                        return proxied.apply(this, [].slice.call(arguments));
-                    };*/
-
+                me.add = function(type, url, title, abstract, extract_styles, srs, options) {
                     var format;
                     var definition = {};
                     definition.url = url;
+                    if (angular.isUndefined(options)) {
+                        var options = {};
+                    }
+
+                    if (type.toLowerCase() != 'sparql') {
+                        url = utils.proxify(url);
+                    }
 
                     switch (type.toLowerCase()) {
                         case "kml":
@@ -33,12 +28,15 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                             format = new ol.format.GeoJSON();
                             definition.format = "ol.format.GeoJSON";
                             break;
+                        case "wfs":
+                            definition.format = "hs.format.WFS";
+                            break;
                         case "sparql":
                             definition.format = "hs.format.Sparql";
                             break;
                     }
 
-                    if (type.toLowerCase() == 'sparql') {
+                    if (definition.format == 'hs.format.Sparql') {
                         var src = new SparqlJson({
                             geom_attribute: '?geom',
                             url: url,
@@ -48,6 +46,8 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                             maxResolution: 38
                                 //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
                         });
+                    } else if (definition.format == 'hs.format.WFS') {
+                        var src = new WfsSource(options.defOptions);
                     } else {
                         var src = new ol.source.Vector({
                             format: format,
@@ -55,7 +55,7 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                             projection: ol.proj.get(srs),
                             extractStyles: extract_styles,
                             loader: function(extent, resolution, projection) {
-                                this.loaded = false;
+                                this.set('loaded', false);
                                 $.ajax({
                                     url: url,
                                     context: this,
@@ -68,8 +68,8 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                                             data = temp;
                                         }
                                         this.addFeatures(format.readFeatures(data, {
-                                            dataProjection: 'EPSG:4326',
-                                            featureProjection: srs
+                                            dataProjection: srs,
+                                            featureProjection: OlMap.map.getView().getProjection().getCode()
                                         }));
 
                                         this.hasLine = false;
@@ -94,7 +94,9 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                                         if (this.hasLine || this.hasPoly || this.hasPoint) {
                                             this.styleAble = true;
                                         }
-                                        this.loaded = true;
+                                        this.set('loaded', true);
+
+
 
                                     }
                                 });
@@ -103,18 +105,29 @@ define(['angular', 'ol', 'SparqlJson', 'styles'],
                         });
 
                     }
-
+                    src.set('loaded', true);
                     var lyr = new ol.layer.Vector({
-                        title: title,
                         abstract: abstract,
-                        saveState: true,
                         definition: definition,
-                        source: src
+                        from_composition: options.from_composition || false,
+                        opacity: options.opacity || 1,
+                        saveState: true,
+                        source: src,
+                        style: options.style,
+                        title: title
                     });
 
+                    var key = src.on('propertychange', function(event) {
+                        if (event.key == 'loaded') {
+                            if (event.oldValue == false) {
+                                $rootScope.$broadcast('layermanager.layer_loaded', lyr)
+                            } else {
+                                $rootScope.$broadcast('layermanager.layer_loading', lyr)
+                            }
+                        };
 
+                    })
                     var listenerKey = src.on('change', function() {
-                        console.log(src.getState());
                         if (src.getState() == 'ready') {
 
                             if (src.getFeatures().length == 0) return;

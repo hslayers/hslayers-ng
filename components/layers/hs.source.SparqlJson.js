@@ -99,7 +99,7 @@ define(function(require) {
         var src = new ol.source.Vector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
-                this.loaded = false;
+                this.set('loaded', false);
                 if (typeof this.options.clear_on_move !== 'undefined' && this.options.clear_on_move) this.clear();
                 if (typeof options.hsproxy == 'undefined') options.hsproxy = false;
                 if (typeof options.geom_attribute == 'undefined') options.geom_attribute = 'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
@@ -142,7 +142,7 @@ define(function(require) {
                                     }
 
                                     this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
-                                    this.loaded = true;
+                                    this.set('loaded', true);
                                 })
                         } else {
                             var objects = {};
@@ -159,7 +159,7 @@ define(function(require) {
                             this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                             this.styleAble = true;
                             this.hasPoint = true;
-                            this.loaded = true;
+                            this.set('loaded', true);
                         }
                     })
             },

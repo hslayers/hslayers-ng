@@ -457,15 +457,15 @@ define(['angular', 'ol', 'map'],
                                 var link = layer.link;
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WFS');
                             } else if ((layer.link.toLowerCase()).indexOf("sparql") > -1) {
-                                var lyr = nonwmsservice.add('sparql', layer.link, layer.title || 'Layer', layer.abstract, true, map.getView().getProjection().getCode().toUpperCase());
+                                var lyr = nonwmsservice.add('sparql', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
                             } else if (layer.format && ["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
                                 switch (layer.format.toLowerCase()) {
                                     case "kml":
-                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, map.getView().getProjection().getCode().toUpperCase());
+                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
                                         break;
                                     case "json":
                                     case "geojson":
-                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, map.getView().getProjection().getCode().toUpperCase());
+                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
                                         break;
                                 }
 
@@ -477,11 +477,11 @@ define(['angular', 'ol', 'map'],
                             if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
                                 switch (layer.format.toLowerCase()) {
                                     case "kml":
-                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, map.getView().getProjection().getCode().toUpperCase());
+                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
                                         break;
                                     case "json":
                                     case "geojson":
-                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, map.getView().getProjection().getCode().toUpperCase());
+                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
                                         break;
                                 }
 

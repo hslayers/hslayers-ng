@@ -697,14 +697,18 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 if (layer instanceof ol.layer.Image) {
                     source.on('imageloadstart', function(event) {
                         source.loaded = false;
+                        $rootScope.$broadcast('layermanager.layer_loading', layer)
                         if (!$scope.$$phase) $scope.$digest();
                     });
                     source.on('imageloadend', function(event) {
                         source.loaded = true;
+                        $rootScope.$broadcast('layermanager.layer_loaded', layer)
+
                         if (!$scope.$$phase) $scope.$digest();
                     });
                     source.on('imageloaderror', function(event) {
                         source.loaded = true;
+                        $rootScope.$broadcast('layermanager.layer_loaded', layer)
                         if (!$scope.$$phase) $scope.$digest();
                     });
                 } else if (layer instanceof ol.layer.Tile) {
@@ -712,6 +716,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         source.loadCounter += 1;
                         if (source.loaded == true) {
                             source.loaded = false;
+                            $rootScope.$broadcast('layermanager.layer_loading', layer)
                             if (!$scope.$$phase) $scope.$digest();
                         }
 
@@ -720,6 +725,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         source.loadCounter -= 1;
                         if (source.loadCounter == 0) {
                             source.loaded = true;
+                            $rootScope.$broadcast('layermanager.layer_loaded', layer)
+
                             if (!$scope.$$phase) $scope.$digest();
                         }
                     });
@@ -727,6 +734,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                         source.loadCounter -= 1;
                         if (source.loadCounter == 0) {
                             source.loaded = true;
+                            $rootScope.$broadcast('layermanager.layer_loaded', layer)
+
                             if (!$scope.$$phase) $scope.$digest();
                         }
                     });

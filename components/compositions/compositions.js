@@ -3,9 +3,9 @@
  * @memberOf hs
  */
 
-define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'map'],
+define(['angular', 'ol', 'SparqlJson', 'map'],
 
-    function(angular, ol, SparqlJson, WfsSource) {
+    function(angular, ol, SparqlJson) {
         var module = angular.module('hs.compositions', ['hs.map', 'hs.core'])
             .directive('hs.compositions.directive', function() {
                 return {
@@ -54,7 +54,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'map'],
             };
         })
 
-        .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', function(OlMap, config, Core, $rootScope, utils) {
+        .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', function(OlMap, config, Core, $rootScope, utils, nonwmsservice) {
             var me = {
                 composition_loaded: null,
                 composition_edited: false,
@@ -222,91 +222,28 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'map'],
                                 break;
                             case 'OpenLayers.Layer.Vector':
                                 if (angular.isDefined(lyr_def.protocol)) {
-                                    var definition = {};
+                                    var options = {}
+                                    options.opacity = lyr_def.opacity || 1
+                                    options.from_composition = true;
+
+                                    var extractStyles = true
+                                    if (angular.isDefined(lyr_def.style)) {
+                                        options.style = me.parseStyle(lyr_def.style);
+                                        extractStyles = false;
+                                    }
+
                                     switch (lyr_def.protocol.format) {
                                         case 'ol.format.KML':
-                                            var url = decodeURIComponent(lyr_def.protocol.url);
-                                            url = utils.proxify(url);
 
-                                            definition.url = url;
-                                            definition.format = "ol.format.KML";
-
-                                            var style = null;
-                                            if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
-
-                                            var src = new ol.source.Vector({
-                                                format: new ol.format.KML(),
-                                                projection: ol.proj.get(lyr_def.projection),
-                                                url: url,
-                                                extractStyles: (style != null ? false : true)
-                                            })
-                                            var lyr = new ol.layer.Vector({
-                                                from_composition: true,
-                                                definition: definition,
-                                                source: src,
-                                                opacity: lyr_def.opacity || 1,
-                                                style: style,
-                                                title: lyr_def.title
-                                            });
-
-                                            if (style != null) {
-                                                src.on('addfeature', function(f) {
-                                                    f.feature.setStyle(null);
-                                                });
-                                            }
-
-                                            layers.push(lyr);
+                                            var lyr = nonwmsservice.add('kml', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
                                             break;
                                         case 'ol.format.GeoJSON':
-                                            var url = decodeURIComponent(lyr_def.protocol.url);
-                                            url = utils.proxify(url);
-
-                                            definition.url = url;
-                                            definition.format = "ol.format.GeoJSON";
-
-                                            var style = null;
-                                            if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
-
-                                            var src = new ol.source.Vector({
-                                                format: new ol.format.GeoJSON(),
-                                                projection: ol.proj.get(lyr_def.projection),
-                                                url: url,
-                                                extractStyles: (style != null ? false : true)
-                                            })
-                                            var lyr = new ol.layer.Vector({
-                                                from_composition: true,
-                                                definition: definition,
-                                                source: src,
-                                                opacity: lyr_def.opacity || 1,
-                                                style: style,
-                                                title: lyr_def.title
-                                            });
-                                            layers.push(lyr);
+                                            var lyr = nonwmsservice.add('geojson', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
                                             break;
                                         case 'hs.format.WFS':
-                                            var url = decodeURIComponent(lyr_def.protocol.url);
-                                            url = utils.proxify(url);
-
-                                            definition.url = lyr_def.protocol.url;
-                                            definition.format = lyr_def.protocol.format;
-
-                                            var style = null;
-                                            if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
-
-                                            var src = new WfsSource(lyr_def.defOptions);
-
-                                            var lyr = new ol.layer.Vector({
-                                                from_composition: true,
-                                                definition: definition,
-                                                source: src,
-                                                opacity: lyr_def.opacity || 1,
-                                                style: style,
-                                                title: lyr_def.title
-                                            });
-                                            layers.push(lyr);
+                                            options.defOptions = lyr_def.defOptions;
+                                            var lyr = nonwmsservice.add('wfs', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
                                             break;
-
-
                                         case 'hs.format.Sparql':
                                             var url = decodeURIComponent(lyr_def.protocol.url);
 

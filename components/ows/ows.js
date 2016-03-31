@@ -107,13 +107,13 @@ define(['angular', 'map', 'ows.wms', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritize
 
                     if (permalink.getParamValue('geojson_to_connect')) {
                         var url = permalink.getParamValue('geojson_to_connect');
-                        var lyr = nonwmsservice.add('geojson', url, title, abstract, false, map.getView().getProjection().getCode().toUpperCase());
+                        var lyr = nonwmsservice.add('geojson', url, title, abstract, false, 'EPSG:4326');
                         zoomToVectorLayer(lyr);
                     }
 
                     if (permalink.getParamValue('kml_to_connect')) {
                         var url = permalink.getParamValue('kml_to_connect');
-                        var lyr = nonwmsservice.add('kml', url, title, abstract, true, map.getView().getProjection().getCode().toUpperCase());
+                        var lyr = nonwmsservice.add('kml', url, title, abstract, true, 'EPSG:4326');
                         zoomToVectorLayer(lyr);
                     }
 

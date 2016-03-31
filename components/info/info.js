@@ -9,6 +9,7 @@ define(['angular', 'map', 'core', 'permalink'],
             .directive('hs.info.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/info/partials/info.html'
+
                 };
             })
 
@@ -16,6 +17,7 @@ define(['angular', 'map', 'core', 'permalink'],
             function($scope, $timeout, Core) {
                 $scope.Core = Core;
                 $scope.composition_loaded = true;
+                $scope.layer_loading = [];
 
                 $scope.$on('compositions.composition_loading', function(event, data) {
                     if (angular.isUndefined(data.error)) {
@@ -45,6 +47,26 @@ define(['angular', 'map', 'core', 'permalink'],
                     $scope.composition_loaded = true;
                     if (!$scope.$$phase) $scope.$digest();
                 });
+
+                $scope.$on('layermanager.layer_loading', function(event, layer) {
+                    $scope.layer_loading.push(layer.get('title'));
+                    $scope.composition_loaded = false;
+                    if (!$scope.$$phase) $scope.$digest();
+                })
+
+                $scope.$on('layermanager.layer_loaded', function(event, layer) {
+                    for (var i = 0; i < $scope.layer_loading.length; i++) {
+                        if ($scope.layer_loading[i] == layer.get('title')) {
+                            $scope.layer_loading.splice(i, 1);
+                        }
+                    }
+
+                    if ($scope.layer_loading.length == 0) {
+                        $scope.composition_loaded = true;
+                    }
+
+                    if (!$scope.$$phase) $scope.$digest();
+                })
 
                 $scope.$on('compositions.composition_deleted', function(event, id) {
                     if (id == $scope.composition_id) {
