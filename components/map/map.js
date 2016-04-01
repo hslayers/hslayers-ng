@@ -41,16 +41,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 kinetic: new ol.Kinetic(-0.01, 0.1, 200)
             }),
             'DragZoom': new ol.interaction.DragZoom(),
-            'DragRotate': new ol.interaction.DragRotate(),
-            'dragAndDropInteraction': new ol.interaction.DragAndDrop({
-                formatConstructors: [
-                    ol.format.GPX,
-                    ol.format.GeoJSON,
-                    ol.format.IGC,
-                    ol.format.KML,
-                    ol.format.TopoJSON
-                ]
-            })
+            'DragRotate': new ol.interaction.DragRotate()
         }
 
         var me = this;
@@ -80,18 +71,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         var mousePositionControl = new ol.control.MousePosition({
             coordinateFormat: ol.coordinate.createStringXY(4),
             undefinedHTML: '&nbsp;'
-        });
-
-        me.interactions.dragAndDropInteraction.on('addfeatures', function(event) {
-            var vectorSource = new ol.source.Vector({
-                features: event.features,
-                projection: event.projection
-            });
-            me.map.addLayer(new ol.layer.Vector({
-                title: 'User vector data',
-                source: vectorSource
-            }));
-            me.map.getView().fit(vectorSource.getExtent(), me.map.getSize());
         });
 
         this.repopulateLayers = function(visible_layers) {
