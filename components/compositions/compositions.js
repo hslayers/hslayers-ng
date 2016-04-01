@@ -600,6 +600,16 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 $scope.$on('core.map_reset', function(event, data) {
                     composition_parser.composition_loaded = null;
                 });
+
+                if (angular.isDefined($cookies.get('hs_layers'))) {
+                    var data = $cookies.get('hs_layers');
+                    var layers = composition_parser.jsonToLayers(JSON.parse(data));
+                    for (var i = 0; i < layers.length; i++) {
+                        OlMap.map.addLayer(layers[i]);
+                    }
+                    $cookies.remove('hs_layers');
+                }
+
                 $scope.$emit('scope_loaded', "Compositions");
                 $rootScope.$on('core.mainpanel_changed', function(event) {
                     extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));

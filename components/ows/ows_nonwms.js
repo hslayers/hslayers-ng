@@ -103,27 +103,27 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                                             featureProjection: OlMap.map.getView().getProjection().getCode()
                                         }));
 
-                                        this.hasLine = false;
-                                        this.hasPoly = false;
-                                        this.hasPoint = false;
-                                        angular.forEach(this.getFeatures(), function(f) {
+                                        src.hasLine = false;
+                                        src.hasPoly = false;
+                                        src.hasPoint = false;
+                                        angular.forEach(src.getFeatures(), function(f) {
                                             if (f.getGeometry()) {
                                                 switch (f.getGeometry().getType()) {
                                                     case 'LineString' || 'MultiLineString':
-                                                        this.hasLine = true;
+                                                        src.hasLine = true;
                                                         break;
                                                     case 'Polygon' || 'MultiPolygon':
-                                                        this.hasPoly = true;
+                                                        src.hasPoly = true;
                                                         break;
                                                     case 'Point' || 'MultiPoint':
-                                                        this.hasPoint = true;
+                                                        src.hasPoint = true;
                                                         break;
                                                 }
                                             }
                                         })
 
-                                        if (this.hasLine || this.hasPoly || this.hasPoint) {
-                                            this.styleAble = true;
+                                        if (src.hasLine || src.hasPoly || src.hasPoint) {
+                                            src.styleAble = true;
                                         }
                                         this.set('loaded', true);
 

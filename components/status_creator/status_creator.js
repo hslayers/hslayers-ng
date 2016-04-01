@@ -71,7 +71,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             };
         })
 
-        .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', function(OlMap, Core, utils) {
+        .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', function(OlMap, Core, utils, $window, $cookies) {
             var me = {
                 map2json: function(map, $scope) {
                     var groups = {};
@@ -319,6 +319,18 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     return json;
                 }
             };
+
+            $window.addEventListener('beforeunload', function(event) {
+                var data = {}
+                var layers = []
+                angular.forEach(OlMap.map.getLayers(), function(layer) {
+                    if (layer.get('saveState')) {
+                        layers.push(me.layer2json(layer));
+                    }
+                })
+                data.layers = layers;
+                $cookies.put('hs_layers', JSON.stringify(data));
+            });
             return me;
         }])
 
