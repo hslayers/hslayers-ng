@@ -98,6 +98,11 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
 
 
 
+                                    },
+                                    error: function(xhr, ajaxOptions, thrownError) {
+                                        this.error = true;
+                                        this.errorMessage = xhr.status;
+                                        this.set('loaded', true);
                                     }
                                 });
                             },

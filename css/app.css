@@ -219,6 +219,11 @@ i.hs-lm-warning-scale {
     cursor: default;
 }
 
+i.hs-lm-warning-error {
+    position:static;
+    cursor: default;
+}
+
 i.hs-lm-queryable {
     cursor: default;
     color: #337ab7;

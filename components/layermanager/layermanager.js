@@ -746,6 +746,10 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 return layer.getSource().loaded
             }
 
+            $scope.layerValid = function(layer) {
+                return layer.getSource().error;
+            }
+
             OlMap.map.getLayers().forEach(function(lyr) {
                 layerAdded({
                     element: lyr

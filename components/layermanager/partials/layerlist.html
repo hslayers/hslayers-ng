@@ -9,10 +9,14 @@
                 </span>
             </div>
             <div class="hs-lm-item-title">{{layer.title}}</div>
-            <div class="hs-lm-item-controls">
+            <div class="hs-lm-item-controls" ng-hide="layerValid(layer.layer)">
                 <i class="glyphicon glyphicon-warning-sign hs-lm-warning-scale" title="{{'This layer is not available in this scale'|translate}}" data-toggle="tooltip" data-container="body" data-placement="auto" ng-show="layer.grayed" ng-click="$event.stopPropagation()" ></i>
                 <i class="glyphicon glyphicon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}" ng-show="isLayerQueryable(layer)" ng-click="$event.stopPropagation()" ></i>
                 <button type="button" class="btn btn-xs btn-default" ng-click="changeLayerVisibility(!layer.visible, layer);$event.stopPropagation()" ><i class="glyphicon"ng-class="layer.visible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
+            </div>
+            <div class="hs-lm-item-controls" ng-show="layerValid(layer.layer)">
+                <i class="glyphicon glyphicon-warning-sign alert-danger btn btn-xs hs-lm-warning-error" title="{{'This layer is not available'|translate}}" data-toggle="tooltip" data-container="body" data-placement="auto" ng-click="$event.stopPropagation()" ></i>
+                <button type="button" class="btn btn-xs btn-default" ng-click="$event.stopPropagation()" ng-disabled="true"><i class="glyphicon glyphicon-eye-close"></i></button>
             </div>
         </li>
     </ul>
