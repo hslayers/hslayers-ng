@@ -3,8 +3,8 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
     function(angular, ol, SparqlJson, WfsSource) {
         angular.module('hs.ows.nonwms', [])
 
-        .service('hs.ows.nonwms.service', ['$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service',
-            function($rootScope, OlMap, styles, utils) {
+        .service('hs.ows.nonwms.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http',
+            function(config, $rootScope, OlMap, styles, utils, $http) {
                 me = this;
 
                 me.add = function(type, url, title, abstract, extract_styles, srs, options) {
@@ -48,6 +48,37 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                         });
                     } else if (definition.format == 'hs.format.WFS') {
                         var src = new WfsSource(options.defOptions);
+                    } else if (angular.isDefined(options.features)) {
+                        var src = new ol.source.Vector({
+                            projection: srs,
+                            features: options.features
+                        });
+
+                        src.hasLine = false;
+                        src.hasPoly = false;
+                        src.hasPoint = false;
+                        angular.forEach(src.getFeatures(), function(f) {
+                            if (f.getGeometry()) {
+                                switch (f.getGeometry().getType()) {
+                                    case 'LineString' || 'MultiLineString':
+                                        src.hasLine = true;
+                                        break;
+                                    case 'Polygon' || 'MultiPolygon':
+                                        src.hasPoly = true;
+                                        break;
+                                    case 'Point' || 'MultiPoint':
+                                        src.hasPoint = true;
+                                        break;
+                                }
+                            }
+                        })
+
+                        if (src.hasLine || src.hasPoly || src.hasPoint) {
+                            src.styleAble = true;
+                        }
+
+                        OlMap.map.getView().fit(src.getExtent(), OlMap.map.getSize());
+
                     } else {
                         var src = new ol.source.Vector({
                             format: format,
@@ -72,27 +103,27 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                                             featureProjection: OlMap.map.getView().getProjection().getCode()
                                         }));
 
-                                        this.hasLine = false;
-                                        this.hasPoly = false;
-                                        this.hasPoint = false;
-                                        angular.forEach(this.getFeatures(), function(f) {
+                                        src.hasLine = false;
+                                        src.hasPoly = false;
+                                        src.hasPoint = false;
+                                        angular.forEach(src.getFeatures(), function(f) {
                                             if (f.getGeometry()) {
                                                 switch (f.getGeometry().getType()) {
                                                     case 'LineString' || 'MultiLineString':
-                                                        this.hasLine = true;
+                                                        src.hasLine = true;
                                                         break;
                                                     case 'Polygon' || 'MultiPolygon':
-                                                        this.hasPoly = true;
+                                                        src.hasPoly = true;
                                                         break;
                                                     case 'Point' || 'MultiPoint':
-                                                        this.hasPoint = true;
+                                                        src.hasPoint = true;
                                                         break;
                                                 }
                                             }
                                         })
 
-                                        if (this.hasLine || this.hasPoly || this.hasPoint) {
-                                            this.styleAble = true;
+                                        if (src.hasLine || src.hasPoly || src.hasPoint) {
+                                            src.styleAble = true;
                                         }
                                         this.set('loaded', true);
 
@@ -130,8 +161,8 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                                 $rootScope.$broadcast('layermanager.layer_loading', lyr)
                             }
                         };
-
                     })
+
                     var listenerKey = src.on('change', function() {
                         if (src.getState() == 'ready') {
 
@@ -144,7 +175,45 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
 
                     OlMap.map.addLayer(lyr);
                     return lyr;
-                }
+                };
+
+                var dragAndDrop = new ol.interaction.DragAndDrop({
+                    formatConstructors: [
+                        ol.format.GPX,
+                        ol.format.GeoJSON,
+                        ol.format.IGC,
+                        ol.format.KML,
+                        ol.format.TopoJSON
+                    ]
+                });
+
+                OlMap.map.addInteraction(dragAndDrop);
+                dragAndDrop.on('addfeatures', function(event) {
+                    var f = new ol.format.GeoJSON();
+                    var url = config.status_manager_url || "/wwwlibs/statusmanager2/index.php"
+                    var options = {};
+                    options.features = event.features
+
+                    $http({
+                        url: url,
+                        method: 'POST',
+                        data: JSON.stringify({
+                            project: config.project_name,
+                            title: event.file.name,
+                            request: 'saveData',
+                            dataType: "json",
+                            data: f.writeFeatures(event.features)
+                        })
+                    }).success(function(j) {
+                        data = {};
+                        data.url = url + "?request=loadData&id=" + j.id;
+                        data.title = event.file.name;
+                        data.projection = event.projection;
+                        var lyr = me.add('geojson', decodeURIComponent(data.url), data.title || 'Layer', '', true, data.projection, options);
+                    }).error(function(e) {
+                        console.log(e);
+                    });
+                });
             }
         ])
 
