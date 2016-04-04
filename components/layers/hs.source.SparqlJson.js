@@ -123,7 +123,8 @@ define(function(require) {
                             var updates_query = this.options.updates_url;
                             updates_query = updates_query.replace("<extent>", s_extent);
                             $.ajax({
-                                    url: updates_query
+                                    url: updates_query,
+                                    context: this
                                 })
                                 .done(function(updates_response) {
                                     var objects = {};

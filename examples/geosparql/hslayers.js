@@ -10,26 +10,9 @@ var gitsha = $.ajax({
 require.config({
     urlArgs: 'bust=' + gitsha,
     paths: {
-        toolbar: hsl_path + 'components/toolbar/toolbar',
-        bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap.min',
-        layermanager: hsl_path + 'components/layermanager/layermanager',
-        ows: hsl_path + 'components/ows/ows',
-        'ows.wms': hsl_path + 'components/ows/ows_wms',
-        'ows.wfs': hsl_path + 'components/ows/ows_wfs',
-        'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
-        'ows.wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized',
-        query: hsl_path + 'components/query/query',
-        search: hsl_path + 'components/search/search',
-        permalink: hsl_path + 'components/permalink/permalink',
-        lodexplorer: hsl_path + 'components/lodexplorer/lodexplorer',
-        geolocation: hsl_path + 'components/geolocation/geolocation',
-        measure: hsl_path + 'components/measure/measure',
         app: 'app',
-        panoramio: hsl_path + 'components/layers/panoramio/panoramio',
         core: hsl_path + 'components/core/core',
-        api: hsl_path + 'components/api/api',
-        translations: hsl_path + 'components/translations/js/translations',
-        'feature-crossfilter': hsl_path + 'components/feature_crossfilter/f_crossfilter'
+        ol: hsl_path + 'node_modules/openlayers/dist/ol-debug'
     },
     shim: {
         d3: {
