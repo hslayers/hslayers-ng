@@ -138,6 +138,7 @@ define(['angular', 'ol', 'utils'],
                                     crossOrigin: null
                                 }),
                                 abstract: layer.Abstract,
+                                useInterimTilesOnError: false,
                                 MetadataURL: layer.MetadataURL,
                                 BoundingBox: layer.BoundingBox
                             });

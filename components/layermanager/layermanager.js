@@ -732,6 +732,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
             $scope.loadingEvents = function(layer) {
                 var source = layer.getSource()
                 source.loadCounter = 0;
+                source.loadTotal = 0;
+                source.loadError = 0;
                 source.loaded = true;
                 if (layer instanceof ol.layer.Image) {
                     source.on('imageloadstart', function(event) {
@@ -747,12 +749,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
                     });
                     source.on('imageloaderror', function(event) {
                         source.loaded = true;
+                        source.error = true;
                         $rootScope.$broadcast('layermanager.layer_loaded', layer)
                         if (!$scope.$$phase) $scope.$digest();
                     });
                 } else if (layer instanceof ol.layer.Tile) {
                     source.on('tileloadstart', function(event) {
                         source.loadCounter += 1;
+                        source.loadTotal += 1;
                         if (source.loaded == true) {
                             source.loaded = false;
                             $rootScope.$broadcast('layermanager.layer_loading', layer)
@@ -771,6 +775,10 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
                     });
                     source.on('tileloaderror', function(event) {
                         source.loadCounter -= 1;
+                        source.loadError += 1;
+                        if (source.loadError == source.loadTotal) {
+                            source.error = true;
+                        }
                         if (source.loadCounter == 0) {
                             source.loaded = true;
                             $rootScope.$broadcast('layermanager.layer_loaded', layer)
