@@ -2,8 +2,8 @@
  * @namespace hs.layermanager
  * @memberOf hs
  */
-define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol) {
-    angular.module('hs.layermanager', ['hs.map', 'hs.utils'])
+define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, app, map, ol) {
+    angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms'])
 
     /**
      * @class hs.layermanager.directive
@@ -100,8 +100,8 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
      * @memberOf hs.layermanager
      * @description Layer manager controller
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log',
-        function($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log', 'hs.ows.wms.service_capabilities',
+        function($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log, srv_wms_caps) {
             $scope.Core = Core;
             $scope.layer_renamer_visible = false;
             $scope.folders = {
@@ -402,28 +402,58 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             $scope.zoomToLayer = function(layer) {
                 var extent = null;
                 if (layer.get("BoundingBox")) {
-                    var bbox = layer.get("BoundingBox");
-                    if (angular.isArray(bbox)) {
-                        extent = ol.proj.transformExtent(bbox, 'EPSG:4326', map.getView().getProjection());
-                    } else {
-                        for (var ix = 0; ix < bbox.length; ix++) {
-                            if (angular.isDefined(ol.proj.get(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
-                                var crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
-                                b = bbox[ix].extent;
-                                var first_pair = [b[0], b[1]]
-                                var second_pair = [b[2], b[3]];
-                                first_pair = ol.proj.transform(first_pair, crs, map.getView().getProjection());
-                                second_pair = ol.proj.transform(second_pair, crs, map.getView().getProjection());
-                                extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                                break;
-                            }
-                        }
-                    }
-                } else {
+                    extent = getExtentFromBoundingBoxAttribute(layer);
+                } else if (angular.isDefined(layer.getSource().getExtent)) {
                     extent = layer.getSource().getExtent();
+                }
+                if (extent == null && $scope.isLayerWMS(layer)) {
+                    var url = null;
+                    if (layer.getSource().getUrls) //Multi tile
+                        url = layer.getSource().getUrls()[0];
+                    if (layer.getSource().getUrl) //Single tile
+                        url = layer.getSource().getUrl();
+                    srv_wms_caps.requestGetCapabilities(url, function(capabilities_xml) {
+                        var parser = new ol.format.WMSCapabilities();
+                        var caps = parser.read(capabilities_xml);
+                        if (angular.isArray(caps.Capability.Layer)) {
+                            angular.forEach(caps.Capability.Layer, function(layer_def) {
+                                if (layer_def.Name == layer.params.LAYERS) {
+                                    layer.set('BoundingBox', layer_def.BoundingBox)
+                                }
+                            })
+                        }
+                        if (angular.isObject(caps.Capability.Layer)) {
+                            layer.set('BoundingBox', caps.Capability.Layer.BoundingBox);
+                            extent = getExtentFromBoundingBoxAttribute(layer);
+                            if (extent != null)
+                                map.getView().fit(extent, map.getSize());
+                        }
+                    })
                 }
                 if (extent != null)
                     map.getView().fit(extent, map.getSize());
+            }
+
+            function getExtentFromBoundingBoxAttribute(layer) {
+                var extent = null;
+                var bbox = layer.get("BoundingBox");
+                if (angular.isArray(bbox) && bbox.length == 4) {
+                    extent = ol.proj.transformExtent(bbox, 'EPSG:4326', map.getView().getProjection());
+                } else {
+                    for (var ix = 0; ix < bbox.length; ix++) {
+                        if (angular.isDefined(ol.proj.get(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
+                            var crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
+                            b = bbox[ix].extent;
+                            var first_pair = [b[0], b[1]]
+                            var second_pair = [b[2], b[3]];
+                            first_pair = ol.proj.transform(first_pair, crs, map.getView().getProjection());
+                            second_pair = ol.proj.transform(second_pair, crs, map.getView().getProjection());
+                            extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                            break;
+                        }
+                    }
+                }
+                return extent;
             }
 
             /**
@@ -435,6 +465,7 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
             $scope.layerIsZoomable = function(layer) {
                 if (typeof layer == 'undefined') return false;
                 if (layer.get("BoundingBox")) return true;
+                if ($scope.isLayerWMS(layer)) return true;
                 if (layer.getSource().getExtent && layer.getSource().getExtent() && !ol.extent.isEmpty(layer.getSource().getExtent())) return true;
                 return false;
             }
@@ -594,6 +625,14 @@ define(['angular', 'app', 'map', 'ol', 'utils'], function(angular, app, map, ol)
                 if (layer instanceof ol.layer.Image &&
                     layer.getSource() instanceof ol.source.ImageWMS &&
                     layer.getSource().getParams().INFO_FORMAT) return true;
+                return false;
+            }
+
+            $scope.isLayerWMS = function(layer) {
+                if (layer instanceof ol.layer.Tile &&
+                    (layer.getSource() instanceof ol.source.TileWMS)) return true;
+                if (layer instanceof ol.layer.Image &&
+                    layer.getSource() instanceof ol.source.ImageWMS) return true;
                 return false;
             }
 

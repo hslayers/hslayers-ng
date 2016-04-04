@@ -74,6 +74,22 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                                 },
                                 crossOrigin: null
                             }),
+                        }),
+                        new ol.layer.Tile({
+                            title: "Ilida plastics kg/ha per year",
+                            source: new ol.source.TileWMS({
+                                url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/ilida/ilida.map',
+                                params: {
+                                    LAYERS: 'ilida_cultivation_plastics',
+                                    INFO_FORMAT: undefined,
+                                    FORMAT: "image/png",
+                                    ABSTRACT: "Plastic waste in Ilida municipality"
+                                },
+                                crossOrigin: null
+                            }),
+                            path: 'Ilida Thematic Data',
+                            visible: true,
+                            opacity: 0.8
                         })
                     ]
                 })
