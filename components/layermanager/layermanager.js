@@ -693,8 +693,20 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
                 return false;
             }
             $scope.isLayerInResolutionInterval = function(lyr) {
-                var cur_res = OlMap.map.getView().getResolution();
-                return lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution();
+                var src = lyr.getSource();
+                if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
+                    var view = OlMap.map.getView();
+                    var resolution = view.getResolution();
+                    var units = map.getView().getProjection().getUnits();
+                    var dpi = 25.4 / 0.28;
+                    var mpu = ol.proj.METERS_PER_UNIT[units];
+                    var cur_res = resolution * mpu * 39.37 * dpi;
+                    return (lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution());
+                } else {
+                    var cur_res = OlMap.map.getView().getResolution();
+                    return lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution();
+
+                }
             }
             $scope.isScaleVisible = function(layer) {
                 if (typeof layer == 'undefined') return false;
