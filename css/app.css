@@ -282,9 +282,9 @@ hr {
 }
 
 .ol-zoom {
-    bottom: 0.5em;
+    bottom: 2.1em;
     top: auto;
-    right: 0.5em;
+    right: 5px;
     left: auto;
 }
 .ol-touch .ol-zoomslider {
@@ -319,8 +319,8 @@ hr {
 }
 .locate {
     text-align: right;
-    bottom: 4.5em;
-    right: 0.5em;
+    bottom: 7.2em;
+    right: 5px;
     max-width: calc(100% - 1.3em);
 }
 .locate ul {
@@ -406,13 +406,11 @@ button.but-title-sm {
 }
 
 .ol-attribution {
-    left: 0.5em;
-    right: auto;
-    bottom: 2.4em
+    left: auto;
+    right: 5px;
+    bottom: 5.5em;
 }
-.ol-scale-line {
-    left: 0.5em;
-}
+.ol-scale-line {right: 0.5em;left: auto;}
 #datasource_selector-metadata-dialog dd {
     padding-left: 10px;
 }
@@ -704,14 +702,12 @@ a.sidebar-main {
 div#hs-info-area {
     background-color: rgba(255,255,255,0.4);
     border-radius: 4px;
-    bottom: 7px;
+    bottom: 8px;
     color: white;
-    left: 50%;
-    min-height: 100px;
+    left: 0.5em;
     padding: 2px;
     pointer-events: initial;
     position: absolute;
-    transform: translateX(-50%);
     vertical-align: bottom;
     z-index: 3;
 }
@@ -727,7 +723,7 @@ div#hs-info-composition-image {
 
 div#hs-info-composition {
     display: flex;
-    max-width: 260px;
+    max-width: 300px;
 }
 
 div#hs-info-composition-container {
