@@ -599,6 +599,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
 
                 $scope.$on('core.map_reset', function(event, data) {
                     composition_parser.composition_loaded = null;
+                    composition_parser.composition_edited = false;
                 });
 
                 if (angular.isDefined($cookies.get('hs_layers'))) {
