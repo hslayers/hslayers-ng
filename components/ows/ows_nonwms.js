@@ -202,7 +202,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                             title: event.file.name,
                             request: 'saveData',
                             dataType: "json",
-                            data: f.writeFeatures(event.features,{
+                            data: f.writeFeatures(event.features, {
                                 dataProjection: 'EPSG:4326',
                                 featureProjection: OlMap.map.getView().getProjection().getCode()
                             })
