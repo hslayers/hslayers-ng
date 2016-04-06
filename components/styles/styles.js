@@ -214,11 +214,13 @@ define(['angular', 'ol'],
                             }
                         }
                     }
-                    var style = new ol.style.Style(style_json);
-                    angular.forEach(service.layer.getSource().getFeatures(), function(f) {
-                        f.setStyle(null);
-                    })
-                    service.layer.setStyle(style);
+                    if (angular.isDefined(style_json.fill) || angular.isDefined(style_json.stroke) || angular.isDefined(style_json.image)) {
+                        var style = new ol.style.Style(style_json);
+                        angular.forEach(service.layer.getSource().getFeatures(), function(f) {
+                            f.setStyle(null);
+                        })
+                        service.layer.setStyle(style);
+                    }
                 }
 
                 $scope.iconSelected = function(i) {
