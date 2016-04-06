@@ -50,7 +50,9 @@ define(['angular', 'map', 'core', 'permalink'],
                 });
 
                 $scope.$on('layermanager.layer_loading', function(event, layer) {
-                    $scope.layer_loading.push(layer.get('title'));
+                    if (!(layer.get('title') in $scope.layer_loading)) {
+                        $scope.layer_loading.push(layer.get('title'));
+                    }
                     $scope.composition_loaded = false;
                     if (!$scope.$$phase) $scope.$digest();
                 })
@@ -65,7 +67,6 @@ define(['angular', 'map', 'core', 'permalink'],
                     if ($scope.layer_loading.length == 0) {
                         $scope.composition_loaded = true;
                     }
-
                     if (!$scope.$$phase) $scope.$digest();
                 })
 
