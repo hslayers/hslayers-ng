@@ -13,8 +13,8 @@ define(['angular', 'map', 'core', 'permalink'],
                 };
             })
 
-        .controller('hs.info.controller', ['$scope', '$timeout', 'Core',
-            function($scope, $timeout, Core) {
+        .controller('hs.info.controller', ['$rootScope', '$scope', '$timeout', 'Core',
+            function($rootScope, $scope, $timeout, Core) {
                 $scope.Core = Core;
                 $scope.composition_loaded = true;
                 $scope.layer_loading = [];
@@ -45,6 +45,7 @@ define(['angular', 'map', 'core', 'permalink'],
                         }, 3000);
                     }
                     $scope.composition_loaded = true;
+                    $scope.composition_edited = false;
                     if (!$scope.$$phase) $scope.$digest();
                 });
 
@@ -79,12 +80,19 @@ define(['angular', 'map', 'core', 'permalink'],
                 $scope.$on('core.map_reset', function(event) {
                     delete $scope.composition_title;
                     delete $scope.composition_abstract;
+                    $scope.layer_loading = [];
+                    $scope.composition_loaded = true;
+                    $scope.composition_edited = false;
                     if (!$scope.$$phase) $scope.$digest();
                 });
 
                 $scope.compositionLoaded = function() {
                     return angular.isDefined($scope.composition_title);
                 }
+
+                $rootScope.$on('compositions.composition_edited', function(event) {
+                    $scope.composition_edited = true;
+                });
 
                 $scope.$emit('scope_loaded', "info");
             }

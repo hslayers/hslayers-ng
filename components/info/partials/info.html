@@ -3,9 +3,13 @@
         <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="!composition_loaded"></span>
         <span class="glyphicon" ng-class="info_image" ng-show="composition_loaded"></span>
     </div>
-    <div id="hs-info-composition-container">
-        <div class="hs-info-composition-title">Empty map</div>
-        <div class="hs-info-composition-abstract">View, Compose and analyse spatial data</div>
+    <div id="hs-info-composition-container" ng-if="!composition_edited">
+        <div class="hs-info-composition-title" translate>Empty map</div>
+        <div class="hs-info-composition-abstract" translate>View, Compose and analyse spatial data</div>
+    </div>
+    <div id="hs-info-composition-container" ng-if="composition_edited">
+        <div class="hs-info-composition-title" translate>Unsaved map</div>
+        <div class="hs-info-composition-abstract" translate>You have unsaved changes!</div>
     </div>
 </div>
 
@@ -20,7 +24,11 @@
     </div>
 </div>
 
-<div id="hs-info-layers">
-<span translate ng-show="layer_loading.length">Loading: </span>
+<div id="hs-info-layers" ng-show="layer_loading.length">
+<span translate>Loading: </span>
 <span ng-repeat="layer in layer_loading">{{layer}} </span>
+</div>
+
+<div id="hs-info-composition-edited"  ng-show="!layer_loading.length && composition_edited">
+    <span translate>You have unsaved changes!</span>
 </div>
