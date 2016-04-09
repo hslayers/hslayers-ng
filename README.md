@@ -21,7 +21,7 @@ its package manager (npm) installed.  You can get them from [http://nodejs.org/]
 Clone the repository where your webserver can access it using [git][git]:
 
 ```
-git clone git+ssh://git@git.ccss.cz/hsrs/hslayers-ng
+git clone git@github.com:hslayers/hslayers-ng.git
 cd hslayers-ng/
 ```
 
