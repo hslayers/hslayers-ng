@@ -1,7 +1,7 @@
 {
   "name": "hslayers",
   "description": "HSlayers-ng library for mapping applications",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "homepage": "",
   "license": "MIT",
   "private": true,
