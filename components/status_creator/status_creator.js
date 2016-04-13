@@ -290,8 +290,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             json.ratio = src.get('ratio');
                             json.displayInLayerSwitcher = layer.get('show_in_manager');
                             json.metadata.styles = src.get('styles');
-                            if (layer.get('metadata')) {
-                                json.layerMetadata = layer.get('metadata');
+                            if (layer.get('dimensions')) {
+                                json.dimensions = layer.get('dimensions');
                             }
                         }
                     }
