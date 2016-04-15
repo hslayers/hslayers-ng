@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-03-03 10:43+0100\n"
+"PO-Revision-Date: 2016-04-12 14:27+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: components/layermanager/partials/layermanager.html:80
 #: components/ows/partials/owsnonwms.html:10
 #: components/status_creator/partials/form.html:21
-#: components/status_creator/partials/simpleform.html:9
+#: components/status_creator/partials/simpleform.html:10
 msgid "Abstract"
 msgstr "Abstrakt"
 
@@ -51,7 +51,7 @@ msgid "Address"
 msgstr "Adresa"
 
 #: components/ows/partials/owsnonwms.html:17
-#: components/status_creator/partials/simpleform.html:27
+#: components/status_creator/partials/simpleform.html:28
 msgid "Advanced options"
 msgstr "Rozšířené možnosti"
 
@@ -70,7 +70,7 @@ msgstr "Základní vrstvy"
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
 #: components/ows/partials/dialog_proxyconfirm.html:15
-#: components/status_creator/partials/simpleform.html:70
+#: components/status_creator/partials/simpleform.html:71
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -130,11 +130,11 @@ msgstr "Zavřít"
 
 #: components/styles/partials/styler.html:18
 #: components/styles/partials/styler.html:57
-msgid "Color"
+msgid "Colour"
 msgstr "Barva"
 
 #: components/lodexplorer/partials/lodexplorer.html:39
-msgid "Color gradient limits"
+msgid "Colour gradient limits"
 msgstr "Limity gradientu barvy"
 
 #: components/compositions/partials/compositions.html:2
@@ -206,6 +206,10 @@ msgstr "Kód pro vložení"
 msgid "Embed map"
 msgstr "Kdo pro vložení mapy"
 
+#: components/info/partials/info.html:7
+msgid "Empty map"
+msgstr "Prázdná mapa"
+
 #: components/lodexplorer/partials/lodexplorer.html:2
 msgid "Eurostat explorer"
 msgstr "Prohlížeč eurostatu"
@@ -216,7 +220,7 @@ msgstr "Rozšířené parametry pro hledání"
 
 #: components/compositions/partials/dialog_info.html:16
 #: components/status_creator/partials/form.html:30
-#: components/status_creator/partials/simpleform.html:37
+#: components/status_creator/partials/simpleform.html:38
 msgid "Extent"
 msgstr "Rozsah"
 
@@ -241,11 +245,11 @@ msgid "Fill"
 msgstr "Výplň"
 
 #: components/ows/partials/owsnonwms.html:12
-#: components/status_creator/partials/simpleform.html:11
+#: components/status_creator/partials/simpleform.html:12
 msgid "Fill in descriptive text about map"
 msgstr "Vyplnit popis o mapě"
 
-#: components/status_creator/partials/simpleform.html:5
+#: components/status_creator/partials/simpleform.html:6
 msgid "Fill in name"
 msgstr "Vyplnit jméno"
 
@@ -284,6 +288,7 @@ msgstr ""
 "Fltrovat prvky, které jsou ve specifickém intervalu, pomocí přetažení v grafu"
 
 #: components/ows/partials/owsnonwms.html:30
+#: components/ows/partials/owswfs.html:22
 #: components/ows/partials/owswms.html:46
 msgid "Folder name"
 msgstr "Jméno adresáře"
@@ -291,6 +296,10 @@ msgstr "Jméno adresáře"
 #: components/geolocation/partials/geolocation.html:6
 msgid "Follow"
 msgstr "Sledovat"
+
+#: components/ows/partials/owswfs.html:3
+msgid "Format"
+msgstr "Formát"
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:13
 msgid "Fulltext"
@@ -311,7 +320,7 @@ msgstr "Info"
 #: components/compositions/partials/compositions.html:27
 #: components/datasource_selector/partials/dialog_micka_advanced.html:28
 #: components/status_creator/partials/form.html:26
-#: components/status_creator/partials/simpleform.html:31
+#: components/status_creator/partials/simpleform.html:32
 msgid "Keywords"
 msgstr "Klíčová slova"
 
@@ -325,11 +334,11 @@ msgid "Layer manager"
 msgstr "Správce vrstev"
 
 #: components/status_creator/partials/form.html:45
-#: components/status_creator/partials/simpleform.html:55
+#: components/status_creator/partials/simpleform.html:56
 msgid "Layers"
 msgstr "Vrstvy"
 
-#: components/layermanager/partials/layermanager.html:102
+#: components/layermanager/partials/layermanager.html:100
 #: components/legend/partials/legend.html:2
 msgid "Legend"
 msgstr "Legenda"
@@ -340,7 +349,7 @@ msgstr "Linie"
 
 #: components/styles/partials/styler.html:31
 #: components/styles/partials/styler.html:63
-msgid "Line Color"
+msgid "Line Colour"
 msgstr "Barva linie"
 
 #: components/styles/partials/styler.html:37
@@ -352,7 +361,11 @@ msgstr "Šířka linie"
 msgid "List available map compositions"
 msgstr "Seznam dostupných mapových kompozic"
 
-#: components/status_creator/partials/simpleform.html:20
+#: components/info/partials/info.html:28
+msgid "Loading:"
+msgstr "Nahrávání:"
+
+#: components/status_creator/partials/simpleform.html:21
 msgid "Make public"
 msgstr "Veřejná"
 
@@ -412,17 +425,17 @@ msgstr "Spojit kompozice"
 msgid "Metadata for"
 msgstr "Metadata pro"
 
-#: components/layermanager/partials/layermanager.html:97
+#: components/layermanager/partials/layermanager.html:95
 msgid "Metadata in"
 msgstr "Metadata v"
 
 #: components/datasource_selector/partials/datasource_selector.html:13
 #: components/datasource_selector/partials/datasource_selector.html:39
-#: components/layermanager/partials/layermanager.html:115
+#: components/layermanager/partials/layermanager.html:119
 msgid "More"
 msgstr "Více"
 
-#: components/status_creator/partials/simpleform.html:3
+#: components/status_creator/partials/simpleform.html:4
 msgid "Name"
 msgstr "Jméno"
 
@@ -552,7 +565,7 @@ msgstr "Resetovat mapu"
 
 #: components/status_creator/partials/dialog.html:15
 #: components/status_creator/partials/dialog_save.html:37
-#: components/status_creator/partials/simpleform.html:71
+#: components/status_creator/partials/simpleform.html:72
 msgid "Save"
 msgstr "Uložit"
 
@@ -580,6 +593,7 @@ msgid "Saving to status manager"
 msgstr "Uložit"
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:77
+#: components/layermanager/partials/layermanager.html:114
 #: components/layermanager/partials/layermanager.html:88
 msgid "Scale"
 msgstr "Měřítko"
@@ -588,6 +602,7 @@ msgstr "Měřítko"
 msgid "Search"
 msgstr "Hledat"
 
+#: components/ows/partials/owswfs.html:31
 #: components/ows/partials/owswms.html:55
 msgid "Select All Layers"
 msgstr "Vybrat všechny vrstvy"
@@ -602,7 +617,7 @@ msgstr "Vybrat nové jméno pro mapu."
 
 #: components/lodexplorer/partials/lodexplorer.html:42
 msgid ""
-"Select the color interval by dragging on the chart below. The regions on "
+"Select the colour interval by dragging on the chart below. The regions on "
 "left side will be blue and red on the right side"
 msgstr ""
 
@@ -640,11 +655,15 @@ msgstr "Návrhy"
 msgid "There was error while parsing Capabilities response from given URL"
 msgstr "Nastala chyba při čtení GetCapabilities"
 
-#: components/layermanager/partials/layerlist.html:6
+#: components/layermanager/partials/layerlist.html:18
+msgid "This layer is not available"
+msgstr "Tato vrstva není dostupná"
+
+#: components/layermanager/partials/layerlist.html:13
 msgid "This layer is not available in this scale"
 msgstr "Tato vrstva není v tomto měřítku dostupná"
 
-#: components/layermanager/partials/layerlist.html:7
+#: components/layermanager/partials/layerlist.html:14
 msgid "This layer is queryable"
 msgstr "Tato vrstva je dotazovatelná"
 
@@ -653,7 +672,7 @@ msgid "Tile size"
 msgstr "Velikost dlaždice"
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:92
-#: components/layermanager/partials/layermanager.html:112
+#: components/layermanager/partials/layermanager.html:110
 #: components/ows/partials/owsnonwms.html:3
 #: components/print/partials/printdialog.html:11
 #: components/status_creator/partials/form.html:18
@@ -668,12 +687,16 @@ msgstr "Název kategorie"
 msgid "Type"
 msgstr "Typ"
 
+#: components/info/partials/info.html:11
+msgid "Unsaved map"
+msgstr "Neuložená mapa"
+
 #: components/status_creator/partials/dialog_save.html:44
 msgid "Use a different name to save the map."
 msgstr "Vyberte jíné jméno pro uložení mapy"
 
 #: components/status_creator/partials/form.html:44
-#: components/status_creator/partials/simpleform.html:52
+#: components/status_creator/partials/simpleform.html:53
 msgid "Use current map extent"
 msgstr "Použít nynější rozsah"
 
@@ -684,6 +707,10 @@ msgstr "Použít proxy"
 #: components/ows/partials/owswms.html:32
 msgid "Use tiles"
 msgstr "Použít dlaždice"
+
+#: components/info/partials/info.html:8
+msgid "View, Compose and analyse spatial data"
+msgstr "Prohlížení, komponování a analyzování prostorových dat"
 
 #: components/ows/partials/dialog_getcapabilities_error.html:6
 msgid "WMS Capabilities parsing problem"
@@ -701,6 +728,14 @@ msgstr "Ano, uložit"
 msgid "You are atempting to save map changes to"
 msgstr "Pokoušíte se uložit změny v mapě do"
 
+#: components/status_creator/partials/simpleform.html:77
+msgid ""
+"You are not authorized to store composition. Please sign in or contact "
+"administrator for your credentials."
+msgstr ""
+"Nejste autorizovaný pro ukládání kompozic. Přihlašte se nebo kontaktujte "
+"administrátora pro přihlašovací údaje."
+
 #: components/compositions/partials/dialog_overwriteconfirm.html:10
 msgid ""
 "You are opening map <b>{{composition_name_to_be_loaded}}</b>.<br>There are "
@@ -714,6 +749,10 @@ msgstr ""
 msgid "You don't have sufficient rights to do so."
 msgstr "Nemáte práva k provedení operace."
 
+#: components/info/partials/info.html:12 components/info/partials/info.html:33
+msgid "You have unsaved changes!"
+msgstr "Máte neuložené změny!"
+
 #: components/datasource_selector/partials/dialog_metadata.html:18
 #: components/datasource_selector/partials/object.html:5
 msgid "Zoom to"
@@ -723,7 +762,8 @@ msgstr "Přiblížit na"
 msgid "details"
 msgstr "detaily"
 
-#: components/layermanager/partials/layermanager.html:90
+#: components/layermanager/partials/layermanager.html:115
+#: components/layermanager/partials/layermanager.html:89
 msgid "from"
 msgstr "z"
 
@@ -731,7 +771,8 @@ msgstr "z"
 msgid "multiple shapes"
 msgstr "více tvarů"
 
-#: components/layermanager/partials/layermanager.html:91
+#: components/layermanager/partials/layermanager.html:116
+#: components/layermanager/partials/layermanager.html:90
 msgid "to"
 msgstr "do"
 

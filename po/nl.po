@@ -90,11 +90,11 @@ msgid "Close"
 msgstr "Sluit af"
 
 #: components/styles/partials/styler.html:18 components/styles/partials/styler.html:57
-msgid "Color"
+msgid "Colour"
 msgstr "Kleur"
 
 #: components/lodexplorer/partials/lodexplorer.html:39
-msgid "Color gradient limits"
+msgid "Colour gradient limits"
 msgstr "Limiet kleurgradiĂŤnt"
 
 #: components/compositions/partials/compositions.html:2
@@ -283,7 +283,7 @@ msgid "Line"
 msgstr "Lijn"
 
 #: components/styles/partials/styler.html:31 components/styles/partials/styler.html:63
-msgid "Line Color"
+msgid "Line Colour"
 msgstr "Lijnkleur"
 
 #: components/styles/partials/styler.html:37 components/styles/partials/styler.html:74
@@ -520,7 +520,7 @@ msgid "Select new name for map."
 msgstr "Geef uw compositie een naam"
 
 #: components/lodexplorer/partials/lodexplorer.html:42
-msgid "Select the color interval by dragging on the chart below. The regions on left side will be blue and red on the right side"
+msgid "Select the colour interval by dragging on the chart below. The regions on left side will be blue and red on the right side"
 msgstr "Kies het kleurenpallet door op onderstaande grafiek te slepen. De delen aan de linkerkant zullen blauw zijn, en die aan de rechterkant rood."
 
 #: components/compositions/partials/dialog_share.html:7 components/permalink/partials/directive.html:2

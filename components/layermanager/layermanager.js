@@ -168,16 +168,16 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
                     visible: layer.getVisible()
                 };
                 if ($scope.layerIsWmsT(new_layer)) {
-                    var metadata = new_layer.layer.get('metadata') || new_layer.layer.metadata;
+                    var dimensions_time = new_layer.layer.get('dimensions_time') || new_layer.layer.dimensions_time;
                     angular.extend(new_layer, {
-                        time_step: metadata.timeStep,
-                        time_unit: metadata.timeUnit,
-                        date_format: getDateFormatForTimeSlider(metadata.timeUnit),
-                        date_from: new Date(metadata.timeInterval[0]),
-                        date_till: new Date(metadata.timeInterval[1]),
-                        time: new Date(metadata.timeInterval[0])
+                        time_step: dimensions_time.timeStep,
+                        time_unit: dimensions_time.timeUnit,
+                        date_format: getDateFormatForTimeSlider(dimensions_time.timeUnit),
+                        date_from: new Date(dimensions_time.timeInterval[0]),
+                        date_till: new Date(dimensions_time.timeInterval[1]),
+                        time: new Date(dimensions_time.timeInterval[0])
                     });
-                    setLayerTimeSliderIntervals(new_layer, metadata);
+                    setLayerTimeSliderIntervals(new_layer, dimensions_time);
                 }
                 if (layer.get('base') != true) {
                     populateFolders(layer);
@@ -550,7 +550,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
                 if (angular.isUndefined(layer_container) || layer_container == null) return false;
                 var layer = layer_container.layer;
                 if (angular.isUndefined(layer)) return false;
-                if (layer.get('metadata') && angular.isArray(layer.get('metadata').timeInterval)) return true;
+                if (layer.get('dimensions_time') && angular.isArray(layer.get('dimensions_time').timeInterval)) return true;
                 if (layer.get('dimensions') && angular.isObject(layer.get('dimensions').time)) {
                     var metadata = {};
                     var value = layer.get('dimensions').time.values;
@@ -572,7 +572,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
                         metadata.timeInterval = interval;
                     }
                     angular.extend(layer, {
-                        metadata: metadata
+                        dimensions_time: metadata
                     })
                     return true;
                 }
@@ -656,8 +656,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
             }
 
             $scope.setLayerTime = function(currentlayer) {
-                var metadata = currentlayer.layer.get('metadata') || currentlayer.layer.metadata;
-                var d = new Date(metadata.timeInterval[0]);
+                var dimensions_time = currentlayer.layer.get('dimensions_time') || currentlayer.layer.dimensions_time;
+                var d = new Date(dimensions_time.timeInterval[0]);
                 switch (currentlayer.time_unit) {
                     case "FullYear":
                         d.setFullYear(currentlayer.date_increment);

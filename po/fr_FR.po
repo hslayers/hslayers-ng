@@ -129,11 +129,11 @@ msgstr "Fermer"
 
 #: components/styles/partials/styler.html:18
 #: components/styles/partials/styler.html:57
-msgid "Color"
+msgid "Colour"
 msgstr "Couleur"
 
 #: components/lodexplorer/partials/lodexplorer.html:39
-msgid "Color gradient limits"
+msgid "Colour gradient limits"
 msgstr "Limites des dégradés de couleur"
 
 #: components/compositions/partials/compositions.html:2
@@ -338,7 +338,7 @@ msgstr "Ligne"
 
 #: components/styles/partials/styler.html:31
 #: components/styles/partials/styler.html:63
-msgid "Line Color"
+msgid "Line Colour"
 msgstr "Couleur de la ligne"
 
 #: components/styles/partials/styler.html:37
@@ -604,7 +604,7 @@ msgstr "Donnez un nouveau nom à la carte"
 
 #: components/lodexplorer/partials/lodexplorer.html:42
 msgid ""
-"Select the color interval by dragging on the chart below. The regions on "
+"Select the colour interval by dragging on the chart below. The regions on "
 "left side will be blue and red on the right side"
 msgstr ""
 "Choisir une palette de couleur en faisant glisser le tableau ci-dessous. La "

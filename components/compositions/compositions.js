@@ -203,6 +203,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                     show_in_manager: lyr_def.displayInLayerSwitcher,
                                     abstract: lyr_def.name,
                                     metadata: lyr_def.metadata,
+                                    dimensions: lyr_def.dimensions,
                                     saveState: true,
                                     opacity: lyr_def.opacity || 1,
                                     source: new source_class({

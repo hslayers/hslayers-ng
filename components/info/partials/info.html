@@ -26,7 +26,7 @@
 
 <div id="hs-info-layers" ng-show="layer_loading.length">
 <span translate>Loading: </span>
-<span ng-repeat="layer in layer_loading">{{layer}} </span>
+<span ng-repeat="layer in layer_loading track by $index">{{layer}} </span>
 </div>
 
 <div id="hs-info-composition-edited"  ng-show="!layer_loading.length && composition_edited">

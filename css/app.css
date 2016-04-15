@@ -759,7 +759,7 @@ div#hs-info-area > div {
     margin: 1px;
 }
 
-div#hs-info-layers {
+div#hs-info-layers, div#hs-info-composition-edited {
     font-size: 12px;
     padding: 0 12px 12px 12px;
     text-overflow: ellipsis;
