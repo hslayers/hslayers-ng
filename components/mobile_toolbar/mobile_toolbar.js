@@ -25,13 +25,8 @@ define(['angular', 'map', 'core', 'permalink'],
                 }
 
                 $scope.togglePanelspace = function() {
-                    if (!$scope.panelspaceOpened) {
-                        $scope.panelspaceOpened = true;
-                        $scope.Core.sidebarExpanded = true;
-                    } else {
-                        $scope.panelspaceOpened = false;
-                        $scope.Core.sidebarExpanded = false;
-                    }
+                    $scope.panelspace0pened = !$scope.panelspace0pened;
+                    $scope.Core.sidebarExpanded = $scope.panelspace0pened;
                     $(".panelspace").toggleClass("panelspace-opened");
                     $("#toolbar").toggleClass("panelspace-opened");
                     $("#map").toggleClass("panelspace-opened");
