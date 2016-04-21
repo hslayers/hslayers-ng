@@ -279,6 +279,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         var src = layer.getSource();
                         if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
                             json.className = "HSLayers.Layer.WMS";
+                            json.singleTile = src instanceof ol.source.ImageWMS;
                             json.wmsMinScale = layer.get('minScale');
                             json.wmsMaxScale = layer.get('maxScale');
                             json.maxResolution = layer.getMaxResolution();
