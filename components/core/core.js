@@ -26,7 +26,7 @@ require.config({
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector',
         drag: hsl_path + 'components/drag/drag',
         geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON',
-        geolocation: requirejs.s.contexts._.config.paths.geolocation ||  hsl_path + 'components/geolocation/geolocation',
+        geolocation: requirejs.s.contexts._.config.paths.geolocation || hsl_path + 'components/geolocation/geolocation',
         info: requirejs.s.contexts._.config.paths['info'] || hsl_path + 'components/info/info',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         legend: hsl_path + 'components/legend/legend',

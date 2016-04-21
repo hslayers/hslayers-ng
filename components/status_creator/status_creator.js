@@ -401,6 +401,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 }
 
                 $scope.confirmSave = function() {
+                    $scope.title = this.title;
+                    $scope.abstract = this.abstract;
+                    $scope.keywords = this.keywords;
+
                     $.ajax({
                         url: config.status_manager_url || "/wwwlibs/statusmanager2/index.php",
                         cache: false,
