@@ -204,6 +204,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                     abstract: lyr_def.name,
                                     metadata: lyr_def.metadata,
                                     dimensions: lyr_def.dimensions,
+                                    legends: lyr_def.legends,
                                     saveState: true,
                                     opacity: lyr_def.opacity || 1,
                                     source: new source_class({
