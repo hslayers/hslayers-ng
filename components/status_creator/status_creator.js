@@ -282,6 +282,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             json.singleTile = src instanceof ol.source.ImageWMS;
                             json.wmsMinScale = layer.get('minScale');
                             json.wmsMaxScale = layer.get('maxScale');
+                            if (layer.get('legends')) {
+                                json.legends = [];
+                                var legends = layer.get('legends');
+                                for (var i; i < legends; i++) {
+                                    json.legends.push(encodeURIComponent(legends[i]))
+                                }
+                            }
                             json.legends = layer.get('legends');
                             json.maxResolution = layer.getMaxResolution();
                             json.minResolution = layer.getMinResolution();
