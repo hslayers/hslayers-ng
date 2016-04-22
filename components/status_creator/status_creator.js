@@ -289,7 +289,6 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                     json.legends.push(encodeURIComponent(legends[i]))
                                 }
                             }
-                            json.legends = layer.get('legends');
                             json.maxResolution = layer.getMaxResolution();
                             json.minResolution = layer.getMinResolution();
                             if (src.getUrl) json.url = encodeURIComponent(src.getUrl());
