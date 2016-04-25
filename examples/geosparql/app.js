@@ -76,6 +76,7 @@ define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query',
 
         var geoJsonFormat = new ol.format.GeoJSON;
         module.value('config', {
+            search_provider: 'sdi4apps_openapi',
             box_layers: [new ol.layer.Group({
                 'img': 'osm.png',
                 title: 'Base layer',
