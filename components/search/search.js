@@ -23,11 +23,17 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
                     }
                 };
-            }]).service('hs.search.service', ['$http', 'hs.utils.service',
-                function($http, utils) {
+            }]).service('hs.search.service', ['$http', 'hs.utils.service', 'config',
+                function($http, utils, config) {
                     this.xhr = null;
                     this.request = function(query) {
-                        var url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
+                        var url = null;
+                        if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
+                            url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
+                        } else if (config.search_provider == 'sdi4apps_openapi') {
+                            url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
+                        }
+
                         url = utils.proxify(url);
                         if (me.xhr !== null) me.xhr.abort();
                         me.xhr = $.ajax({
@@ -43,10 +49,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                 }
             ])
 
-        .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service', '$log',
-            function($scope, Core, OlMap, SearchService, $log, permalink, styles, $log) {
+        .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service', '$log', 'config',
+            function($scope, Core, OlMap, SearchService, $log, permalink, styles, $log, config) {
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);
+                var format = new ol.format.WKT();
+
                 $scope.search_results_layer = null;
 
                 $scope.init = function() {
@@ -83,10 +91,15 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         'LK': 13
                     };
                     $scope.createCurrentPointLayer();
-                    coordinate = ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection());
+                    if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
+                        coordinate = ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection());
+                    } else if (config.search_provider == 'sdi4apps_openapi') {
+                        var g_feature = format.readFeature(result.FullGeom.toUpperCase());
+                        coordinate = (g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection())).getCoordinates();
+                    }
                     point_clicked.setCoordinates(coordinate, 'XY');
                     map.getView().setCenter(coordinate);
-                    if (typeof $scope.fcode_zoom_map[result.fcode] !== 'undefined') {
+                    if (angular.isDefined(result.fcode) && angular.isDefined($scope.fcode_zoom_map[result.fcode])) {
                         map.getView().setZoom($scope.fcode_zoom_map[result.fcode]);
                     } else {
                         map.getView().setZoom(10);
@@ -103,10 +116,19 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                 }
 
                 SearchService.searchResultsReceived = function(response) {
-                    $scope.results = response.geonames;
                     $("#searchresults").show();
                     $scope.clearvisible = true;
                     $scope.createCurrentPointLayer();
+                    if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
+                        parseGeomnamesResults(response);
+                    } else if (config.search_provider == 'sdi4apps_openapi') {
+                        parseOpenApiResults(response);
+                    }
+                    if (!$scope.$$phase) $scope.$digest();
+                }
+
+                function parseGeomnamesResults(response) {
+                    $scope.results = response.geonames;
                     angular.forEach($scope.results, function(result) {
                         var src = $scope.search_results_layer.getSource();
                         var feature = new ol.Feature({
@@ -116,7 +138,20 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         src.addFeature(feature);
                         result.feature = feature;
                     });
-                    if (!$scope.$$phase) $scope.$digest();
+                }
+
+                function parseOpenApiResults(response) {
+                    $scope.results = response.data;
+                    angular.forEach($scope.results, function(result) {
+                        var g_feature = format.readFeature(result.FullGeom.toUpperCase());
+                        var src = $scope.search_results_layer.getSource();
+                        var feature = new ol.Feature({
+                            geometry: g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection()),
+                            record: result
+                        });
+                        src.addFeature(feature);
+                        result.feature = feature;
+                    });
                 }
 
                 $scope.createCurrentPointLayer = function() {

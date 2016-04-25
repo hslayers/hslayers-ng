@@ -279,8 +279,16 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         var src = layer.getSource();
                         if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
                             json.className = "HSLayers.Layer.WMS";
+                            json.singleTile = src instanceof ol.source.ImageWMS;
                             json.wmsMinScale = layer.get('minScale');
                             json.wmsMaxScale = layer.get('maxScale');
+                            if (layer.get('legends')) {
+                                json.legends = [];
+                                var legends = layer.get('legends');
+                                for (var i = 0; i < legends; i++) {
+                                    json.legends.push(encodeURIComponent(legends[i]))
+                                }
+                            }
                             json.maxResolution = layer.getMaxResolution();
                             json.minResolution = layer.getMinResolution();
                             if (src.getUrl) json.url = encodeURIComponent(src.getUrl());
@@ -401,6 +409,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 }
 
                 $scope.confirmSave = function() {
+                    $scope.title = this.title;
+                    $scope.abstract = this.abstract;
+                    $scope.keywords = this.keywords;
+
                     $.ajax({
                         url: config.status_manager_url || "/wwwlibs/statusmanager2/index.php",
                         cache: false,

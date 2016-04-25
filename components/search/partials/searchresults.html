@@ -1,4 +1,4 @@
 
 <div class="list-group" id="searchresults" style="display: block; margin-bottom: 0px">
-    <a ng-href='#'  ng-repeat="result in results | limitTo:10" class="list-group-item" ng-click="zoomTo(result)">{{result.name}}<small style="float:right; color: rgb(148, 143, 143)">{{result.fcodeName}}</small></a>
+    <a ng-href='#'  ng-repeat="result in results | limitTo:10" class="list-group-item" ng-click="zoomTo(result)" ng-attr-title="{{result.DisplayDescription}}">{{result.name || result.DisplayTitle}}<small style="float:right; color: rgb(148, 143, 143)">{{result.fcodeName}}</small></a>
 </div>

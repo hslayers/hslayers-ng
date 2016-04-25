@@ -20,13 +20,12 @@ require.config({
         ngcookies: hsl_path + 'bower_components/angular-cookies/angular-cookies',
         proj4: requirejs.s.contexts._.config.paths.proj4 || hsl_path + 'bower_components/proj4/dist/proj4',
         xml2json: requirejs.s.contexts._.config.paths.xml2json || hsl_path + 'bower_components/xml2json/xml2json.min',
-
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api',
         compositions: hsl_path + 'components/compositions/compositions',
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector',
         drag: hsl_path + 'components/drag/drag',
         geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON',
-        geolocation: requirejs.s.contexts._.config.paths.geolocation ||  hsl_path + 'components/geolocation/geolocation',
+        geolocation: requirejs.s.contexts._.config.paths.geolocation || hsl_path + 'components/geolocation/geolocation',
         info: requirejs.s.contexts._.config.paths['info'] || hsl_path + 'components/info/info',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         legend: hsl_path + 'components/legend/legend',
@@ -52,7 +51,8 @@ require.config({
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
         utils: hsl_path + 'components/utils',
         WFSCapabilities: requirejs.s.contexts._.config.paths.WFSCapabilities || hsl_path + 'components/format/hs.format.WFSCapabilities',
-        WfsSource: requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs'
+        WfsSource: requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs',
+        routing: hsl_path + 'components/routing/routing'
     },
     shim: {
         'angular': {
