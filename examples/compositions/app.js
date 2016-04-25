@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'compositions', 'status_creator'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'compositions', 'status_creator', 'ows'],
 
     function(angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -11,6 +11,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.search', 'hs.print', 'hs.permalink', 'hs.measure',
             'hs.legend', 'hs.geolocation', 'hs.core',
             'hs.api',
+            'hs.ows',
             'gettext',
             'hs.compositions', 'hs.status_creator',
             'hs.sidebar'
