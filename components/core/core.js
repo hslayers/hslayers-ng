@@ -52,7 +52,8 @@ require.config({
         utils: hsl_path + 'components/utils',
         WFSCapabilities: requirejs.s.contexts._.config.paths.WFSCapabilities || hsl_path + 'components/format/hs.format.WFSCapabilities',
         WfsSource: requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs',
-        routing: hsl_path + 'components/routing/routing'
+        routing: hsl_path + 'components/routing/routing',
+        s4a: requirejs.s.contexts._.config.paths.s4a || hsl_path + 'bower_components/s4a-js/dist/s4a.min'
     },
     shim: {
         'angular': {
