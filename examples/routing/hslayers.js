@@ -38,7 +38,11 @@ require.config({
         },
         dc: {
             deps: ['d3', 'crossfilter']
-        }
+        },
+        s4a: {
+            deps: ['ol', 'dc'],
+            exports: 's4a'            
+        }        
     }
 });
 

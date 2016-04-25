@@ -2,8 +2,14 @@
  * @namespace hs.routing
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'core'],
-    function(angular, ol) {
+define(['angular',
+        'ol',
+        's4a',
+        'map',
+        'core'
+    ], function(angular,
+        ol,
+        s4a) {
         angular.module('hs.routing', ['hs.map', 'hs.core'])
             .directive('hs.routing.directive', function() {
                 return {
