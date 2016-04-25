@@ -264,6 +264,7 @@ define(['angular', 'ol', 'map', 'core'],
                                             var f = gjFormat.readFeature(res.feature, {
                                                 featureProjection: 'EPSG:3857'
                                             });
+                                            f.set('hs_notqueryable', true);
                                             gjSrc.addFeature(f);
                                         });
                             };
