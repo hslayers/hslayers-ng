@@ -191,10 +191,11 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                 var source_class = lyr_def.singleTile ? ol.source.ImageWMS : ol.source.TileWMS;
                                 var layer_class = lyr_def.singleTile ? ol.layer.Image : ol.layer.Tile;
                                 var params = lyr_def.params;
+                                var legends = [];
                                 delete params.REQUEST;
                                 delete params.FORMAT;
                                 for (var i = 0; i < lyr_def.legends.length; i++) {
-                                    lyr_def.legends[i] = decodeURIComponent(lyr_def.legends[i])
+                                    legends.push(decodeURIComponent(lyr_def.legends[i]));
                                 }
                                 var new_layer = new layer_class({
                                     title: lyr_def.title,
@@ -207,7 +208,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                     abstract: lyr_def.name,
                                     metadata: lyr_def.metadata,
                                     dimensions: lyr_def.dimensions,
-                                    legends: lyr_def.legends,
+                                    legends: legends,
                                     saveState: true,
                                     opacity: lyr_def.opacity || 1,
                                     source: new source_class({
