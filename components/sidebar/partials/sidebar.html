@@ -42,6 +42,11 @@
             <span class="menu-icon glyphicon icon-sharedhosting"></span>
             <span class="sidebar-item-title">Eurostat explorer</span>
         </a>
+
+        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.routing.controller')" ng-click="setMainPanel('routing')" ng-class="{active: Core.mainpanel == 'routing'}">
+            <span class="menu-icon glyphicon glyphicon-road"></span>
+            <span class="sidebar-item-title">Routing</span>
+        </a>
         
         <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.print.controller')" ng-click="setMainPanel('print')" ng-class="{active: Core.mainpanel == 'print'}">
             <span class="menu-icon glyphicon icon-print" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Print map'|translate}}"></span>
