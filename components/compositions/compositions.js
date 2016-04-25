@@ -193,6 +193,9 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                 var params = lyr_def.params;
                                 delete params.REQUEST;
                                 delete params.FORMAT;
+                                for (var i = 0; i < lyr_def.legends.length; i++) {
+                                    lyr_def.legends[i] = decodeURIComponent(lyr_def.legends[i])
+                                }
                                 var new_layer = new layer_class({
                                     title: lyr_def.title,
                                     from_composition: true,
