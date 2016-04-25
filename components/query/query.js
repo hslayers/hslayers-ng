@@ -105,6 +105,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                 selector.getFeatures().on('remove', function(e) {
                     if (Core.mainpanel == 'measure') return;
+                    InfoPanelService.setAttributes([]);
                     $scope.$emit('infopanel.feature_deselected', e.element);
                 })
 
@@ -417,6 +418,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
                     if (Core.mainpanel == 'measure') return;
+                    if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
                     $scope.showCoordinate(evt.coordinate, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
                     map.getLayers().forEach(function(layer) {
                         $scope.queryWmsLayer(layer, evt.coordinate)
