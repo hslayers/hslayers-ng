@@ -219,111 +219,108 @@ define(['angular', 'ol', 'map', 'core'],
 
                         previousStreetname = f.properties.streetname;
 
-                                }
-                                return description;
-                            };
-
-                            /**
-                             * Calculate the shortest route
-                             * 
-                             * @param {Number} fromNode - Identifier of from node
-                             * @param {Number} toNode - Identifier of to node
-                             */
-                            var getShortestRoute = function (fromNode, toNode) {
-                                Routing.getShortestRoute(fromNode, toNode)
-                                        .then(function (res) {
-                                            if (res.status === 'success' && res.count > 0) {
-                                                $scope.clearSearchResults();
-                                                for (var i = 0; i < res.data.length; i++) {
-                                                    var feature = gjFormat.readFeature(res.data[i], {
-                                                        featureProjection: 'EPSG:3857'
-                                                    });
-                                                    gjSrc.addFeature(feature);
-                                                }
-                                                $scope.searchResults.length = 0;
-                                                jQuery.extend($scope.searchResults, getRouteDescription(res.data));
-                                                if (!$scope.$$phase) {
-                                                    $scope.$digest();
-                                                }
-                                            }
-                                        });
-                            };
-
-                            /**
-                             * Calculate reachable area
-                             * 
-                             * @param {Number} fromNode
-                             * @param {Number} distance
-                             */
-                            var getReachableArea = function (fromNode, distance) {
-                                Routing.getReachableArea(fromNode, distance)
-                                        .then(function (res) {
-                                            gjSrc.clear();
-                                            var f = gjFormat.readFeature(res.feature, {
-                                                featureProjection: 'EPSG:3857'
-                                            });
-                                            f.set('hs_notqueryable', true);
-                                            gjSrc.addFeature(f);
-                                        });
-                            };
-
-                            /**
-                             * Handler to be invoked when the shortest route
-                             * operation is activated
-                             * 
-                             * @param {ol.ClickEvent} evt
-                             */
-                            var shortestRouteClickHandler = function (evt) {
-                                // Reset if two or more way points
-                                if ($scope.wayPoints.length >= 2) {
-                                    $scope.clearWayPoints();
-                                }
-                                addWayPoint(evt.coordinate);
-                            };
-
-                            /**
-                             * Handler to be invoked when the reachable area
-                             * operation is activated
-                             * 
-                             * @param {ol.ClickEvent} evt
-                             */
-                            var reachableAreaClickHandler = function (evt) {
-
-                                var lonlat = trans(evt.coordinate, true);
-
-                                Routing.getNearestNode(lonlat[0], lonlat[1])
-                                        .then(function (res) {
-                                            if (res.status === 'success' && res.count > 0) {
-                                                getReachableArea(res.data.id, +$scope.reachableArea.distance);
-                                            }
-                                        });
-                            };
-
-                            $scope.activate = function () {
-                                map.addLayer(gjLyr);
-                                singleClickListener = map.on('singleclick', clickHandler);
-                            };
-
-                            $scope.deactivate = function () {
-                                map.removeLayer(gjLyr);
-                                gjSrc.clear();
-                                map.unByKey(singleClickListener);
-                                $scope.clearAll();
-                            };
-
-                            $scope.$on('core.mainpanel_changed', function (event) {
-                                if (Core.mainpanel === 'routing') {
-                                    setDefaultOperation();
-                                    $scope.activate();
-                                } else {
-                                    $scope.deactivate();
-                                }
-                            });
                         count++;
-
                     }
                     return description;
+
                 };
+
+                /**
+                 * Calculate the shortest route
+                 * 
+                 * @param {Number} fromNode - Identifier of from node
+                 * @param {Number} toNode - Identifier of to node
+                 */
+                var getShortestRoute = function(fromNode, toNode) {
+                    Routing.getShortestRoute(fromNode, toNode)
+                        .then(function(res) {
+                            if (res.status === 'success' && res.count > 0) {
+                                $scope.clearSearchResults();
+                                for (var i = 0; i < res.data.length; i++) {
+                                    var feature = gjFormat.readFeature(res.data[i], {
+                                        featureProjection: 'EPSG:3857'
+                                    });
+                                    gjSrc.addFeature(feature);
+                                }
+                                $scope.searchResults.length = 0;
+                                jQuery.extend($scope.searchResults, getRouteDescription(res.data));
+                                if (!$scope.$$phase) {
+                                    $scope.$digest();
+                                }
+                            }
+                        });
+                };
+
+                /**
+                 * Calculate reachable area
+                 * 
+                 * @param {Number} fromNode
+                 * @param {Number} distance
+                 */
+                var getReachableArea = function(fromNode, distance) {
+                    Routing.getReachableArea(fromNode, distance)
+                        .then(function(res) {
+                            gjSrc.clear();
+                            var f = gjFormat.readFeature(res.feature, {
+                                featureProjection: 'EPSG:3857'
+                            });
+                            f.set('hs_notqueryable', true);
+                            gjSrc.addFeature(f);
+                        });
+                };
+
+                /**
+                 * Handler to be invoked when the shortest route
+                 * operation is activated
+                 * 
+                 * @param {ol.ClickEvent} evt
+                 */
+                var shortestRouteClickHandler = function(evt) {
+                    // Reset if two or more way points
+                    if ($scope.wayPoints.length >= 2) {
+                        $scope.clearWayPoints();
+                    }
+                    addWayPoint(evt.coordinate);
+                };
+
+                /**
+                 * Handler to be invoked when the reachable area
+                 * operation is activated
+                 * 
+                 * @param {ol.ClickEvent} evt
+                 */
+                var reachableAreaClickHandler = function(evt) {
+
+                    var lonlat = trans(evt.coordinate, true);
+
+                    Routing.getNearestNode(lonlat[0], lonlat[1])
+                        .then(function(res) {
+                            if (res.status === 'success' && res.count > 0) {
+                                getReachableArea(res.data.id, +$scope.reachableArea.distance);
+                            }
+                        });
+                };
+
+                $scope.activate = function() {
+                    map.addLayer(gjLyr);
+                    singleClickListener = map.on('singleclick', clickHandler);
+                };
+
+                $scope.deactivate = function() {
+                    map.removeLayer(gjLyr);
+                    gjSrc.clear();
+                    map.unByKey(singleClickListener);
+                    $scope.clearAll();
+                };
+
+                $scope.$on('core.mainpanel_changed', function(event) {
+                    if (Core.mainpanel === 'routing') {
+                        setDefaultOperation();
+                        $scope.activate();
+                    } else {
+                        $scope.deactivate();
+                    }
+                });
 
 
                 /**
