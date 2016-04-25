@@ -285,7 +285,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             if (layer.get('legends')) {
                                 json.legends = [];
                                 var legends = layer.get('legends');
-                                for (var i=0; i < legends; i++) {
+                                for (var i = 0; i < legends; i++) {
                                     json.legends.push(encodeURIComponent(legends[i]))
                                 }
                             }
