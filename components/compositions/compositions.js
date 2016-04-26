@@ -194,8 +194,10 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                 var legends = [];
                                 delete params.REQUEST;
                                 delete params.FORMAT;
-                                for (var idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
-                                    legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
+                                if (angular.isDefined(lyr_def.legends)){
+                                    for (var idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
+                                        legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
+                                    }
                                 }
                                 var new_layer = new layer_class({
                                     title: lyr_def.title,
