@@ -21,6 +21,14 @@
                     </div>
                 </div>
             </div>
+            <div ng-if="operation === 'OptimalRoute'">
+                <label>Different start and finish point?</label>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="optimalRoute.isLoop"> First point is both start and finish of route
+                    </label>
+                </div>
+            </div>
             <div class="form-group p-a-3" ng-if="operation === 'ReachableArea'">
                 <label for="reachableAreaDistance">Select distance</label>
                 <select id="reachableAreaDistance" class="form-control" ng-model="reachableArea.distance">
@@ -38,13 +46,14 @@
             </div>
             <div ng-if="wayPoints.length > 0">
                 <label>List of way points</label>
-                <p><a href="#" class="btn btn-default btn-xs btn-block" ng-click="clearWayPoints()">Clear</a></p>
                 <table class="table table-condensed">
                     <thead>
                         <tr>
                             <th><small>#</small></th>
                             <th>Longitude</th>
                             <th>Latitude</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,9 +61,21 @@
                             <td>{{$index + 1}}</td>
                             <td>{{w.lat| number : 6}}&deg; N</td>
                             <td>{{w.lon| number : 6}}&deg; E</td>
+                            <td>
+                                <button ng-if="$index > 0" ng-click="moveUp($index)" type="button" class="btn btn-default btn-xs" aria-label="Up">
+                                    <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                            <td>
+                                <button ng-if="$index < (wayPoints.length - 1)" ng-click="moveDown($index)" type="button" class="btn btn-default btn-xs" aria-label="Down">
+                                    <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+                <a href="#" class="btn btn-default btn-sm btn-block" ng-click="clearWayPoints()">Clear way points</a>
+                <a ng-if="operation === 'OptimalRoute' && wayPoints.length > 2" class="btn btn-primary btn-sm btn-block" ng-click="optimizeRoute()">Optimize route</a>
             </div>
             <!-- Shortest path results -->
             <div ng-if="searchResults.length > 0 && operation === 'ShortestRoute'">
