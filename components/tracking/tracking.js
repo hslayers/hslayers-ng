@@ -14,7 +14,7 @@ define(['angular',
     angular.module('hs.tracking', ['hs.map', 'hs.core'])
             .directive('hs.tracking.directive', function () {
                 return {
-                    templateUrl: hsl_path + 'components/tracking/partials/tracking.html'
+                    templateUrl: hsl_path + 'components/tracking/partials/tracking.html?bust=' + gitsha
                 };
             })
 

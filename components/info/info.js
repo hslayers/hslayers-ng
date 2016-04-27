@@ -8,7 +8,7 @@ define(['angular', 'map', 'core', 'permalink'],
         angular.module('hs.info', ['hs.map', 'hs.core'])
             .directive('hs.info.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/info/partials/info.html'
+                    templateUrl: hsl_path + 'components/info/partials/info.html?bust=' + gitsha
 
                 };
             })

@@ -8,7 +8,7 @@ define(['angular', 'map', 'core'],
         angular.module('hs.permalink', ['hs.core', 'hs.map'])
             .directive('hs.permalink.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/permalink/partials/directive.html'
+                    templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
             })
             .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core',

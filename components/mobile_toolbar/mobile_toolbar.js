@@ -8,7 +8,7 @@ define(['angular', 'map', 'core', 'permalink'],
         angular.module('hs.mobile_toolbar', ['hs.map', 'hs.core'])
             .directive('hs.mobileToolbar.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/mobile_toolbar/partials/mobile_toolbar.html'
+                    templateUrl: hsl_path + 'components/mobile_toolbar/partials/mobile_toolbar.html?bust=' + gitsha
                 };
             })
 

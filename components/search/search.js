@@ -8,7 +8,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
         angular.module('hs.search', ['hs.map', 'hs.styles'])
             .directive('hs.search.directiveSearchinput', ['$window', function($window) {
                 return {
-                    templateUrl: hsl_path + 'components/search/partials/searchinput.html',
+                    templateUrl: hsl_path + 'components/search/partials/searchinput.html?bust=' + gitsha,
                     replace: true,
                     link: function(scope, element) {
 
@@ -17,7 +17,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
             }]).directive('hs.search.directiveSearchresults', ['$window', function($window) {
                 return {
-                    templateUrl: hsl_path + 'components/search/partials/searchresults.html',
+                    templateUrl: hsl_path + 'components/search/partials/searchresults.html?bust=' + gitsha,
                     replace: true,
                     link: function(scope, element) {
 

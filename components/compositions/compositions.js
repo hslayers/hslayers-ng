@@ -9,7 +9,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
         var module = angular.module('hs.compositions', ['hs.map', 'hs.core'])
             .directive('hs.compositions.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/compositions/partials/compositions.html',
+                    templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
                     link: function(scope, element) {
                         /* TODO: This should be done more angular way */
                         //$('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
@@ -20,7 +20,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
             })
             .directive('hs.compositions.overwriteDialogDirective', function() {
                 return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html',
+                    templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html?bust=' + gitsha,
                     link: function(scope, element, attrs) {
                         $('#composition-overwrite-dialog').modal('show');
                     }
@@ -29,7 +29,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
 
         .directive('hs.compositions.deleteDialogDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html',
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     $('#composition-delete-dialog').modal('show');
                 }
@@ -38,7 +38,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
 
         .directive('hs.compositions.shareDialogDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html',
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     $('#composition-share-dialog').modal('show');
                 }
@@ -47,7 +47,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
 
         .directive('hs.compositions.infoDialogDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html',
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     $('#composition-info-dialog').modal('show');
                 }

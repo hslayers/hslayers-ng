@@ -8,7 +8,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
             .directive('hs.query.directiveInfopanel', ['config', function(config) {
                 return {
-                    templateUrl: config.infopanel_template || hsl_path + 'components/query/partials/infopanel.html'
+                    templateUrl: config.infopanel_template || hsl_path + 'components/query/partials/infopanel.html?bust=' + gitsha
                 };
             }])
             .directive('hs.query.infovalue', ['$compile', function($compile) {

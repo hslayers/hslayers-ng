@@ -27,7 +27,7 @@ define(['angular', 'ol', 'dc', 'map'],
         var module = angular.module('hs.feature_crossfilter', ['hs.map', 'hs.core'])
             .directive('hs.featureCrossfilter.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/feature_crossfilter/partials/f_crossfilter.html',
+                    templateUrl: hsl_path + 'components/feature_crossfilter/partials/f_crossfilter.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }

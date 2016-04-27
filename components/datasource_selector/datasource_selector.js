@@ -7,7 +7,7 @@ define(['angular', 'ol', 'map'],
         angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms'])
             .directive('hs.datasourceSelector.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/datasource_selector/partials/datasource_selector.html'
+                    templateUrl: hsl_path + 'components/datasource_selector/partials/datasource_selector.html?bust=' + gitsha
                 };
             })
 
@@ -18,7 +18,7 @@ define(['angular', 'ol', 'map'],
          */
         .directive('hs.datasourceSelector.metadataDialogDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_metadata.html',
+                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_metadata.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     $('#datasource_selector-metadata-dialog').modal('show');
                 }
@@ -32,7 +32,7 @@ define(['angular', 'ol', 'map'],
          */
         .directive('hs.datasourceSelector.advancedMickaDialogDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_advanced.html',
+                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_advanced.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     $('#ds-advanced-micka').modal('show');
                 }
@@ -47,7 +47,7 @@ define(['angular', 'ol', 'map'],
          */
         .directive('hs.datasourceSelector.suggestionsDialogDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
+                templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     $('#ds-suggestions-micka').modal('show');
                     scope.suggestion_filter = scope.query[scope.suggestion_config.input];
@@ -64,7 +64,7 @@ define(['angular', 'ol', 'map'],
          */
         .directive('hs.datasourceSelector.objectDirective', ['$compile', function($compile) {
             return {
-                templateUrl: hsl_path + 'components/datasource_selector/partials/object.html',
+                templateUrl: hsl_path + 'components/datasource_selector/partials/object.html?bust=' + gitsha,
                 compile: function compile(element) {
                     var contents = element.contents().remove();
                     var contentsLinker;

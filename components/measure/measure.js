@@ -8,7 +8,7 @@ define(['angular', 'ol', 'map', 'core'],
         angular.module('hs.measure', ['hs.map', 'hs.core'])
             .directive('hs.measure.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/measure/partials/measure.html'
+                    templateUrl: hsl_path + 'components/measure/partials/measure.html?bust=' + gitsha
                 };
             })
 

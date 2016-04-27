@@ -8,7 +8,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
         var module = angular.module('hs.lodexplorer', ['hs.drag', 'hs.map', 'hs.query', 'hs.core'])
             .directive('hs.lodexplorer.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html',
+                    templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }
@@ -22,7 +22,7 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                 }
             ]).directive('hs.lodexplorer.directiveSparqllogdialog', function() {
                 return {
-                    templateUrl: hsl_path + 'components/lodexplorer/partials/sparqllogdialog.html',
+                    templateUrl: hsl_path + 'components/lodexplorer/partials/sparqllogdialog.html?bust=' + gitsha,
                 };
             }).controller('hs.lodexplorer.controller_sparqllogdialog', ['$scope', 'hs.lodexplorer.service_sparqllog',
                 function($scope, SparqlLogService) {

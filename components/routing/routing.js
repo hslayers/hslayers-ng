@@ -13,7 +13,7 @@ define(['angular',
     angular.module('hs.routing', ['hs.map', 'hs.core'])
             .directive('hs.routing.directive', function () {
                 return {
-                    templateUrl: hsl_path + 'components/routing/partials/routing.html'
+                    templateUrl: hsl_path + 'components/routing/partials/routing.html?bust=' + gitsha
                 };
             })
 

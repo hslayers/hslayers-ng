@@ -8,7 +8,7 @@ define(['angular', 'ol'],
         angular.module('hs.geolocation', ['hs.map'])
             .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core', function(OlMap, Geolocation, Core) {
                 return {
-                    templateUrl: hsl_path + 'components/geolocation/partials/geolocation.html',
+                    templateUrl: hsl_path + 'components/geolocation/partials/geolocation.html?bust=' + gitsha,
                     link: function link(scope, element, attrs) {
                         element.appendTo($(".ol-overlaycontainer-stopevent"));
                         $('.locate .blocate').click(function() {

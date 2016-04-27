@@ -7,7 +7,7 @@ define(['angular', 'ol'],
         angular.module('hs.customhtml', [])
             .directive('hs.customhtml.directive', [function() {
                 return {
-                    templateUrl: 'customhtml.html',
+                    templateUrl: 'customhtml.html?bust=' + gitsha,
                     link: function link(scope, element, attrs) {},
                     replace: true
                 };

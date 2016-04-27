@@ -8,7 +8,7 @@ define(['angular', 'ol', 'map', 'utils'],
         angular.module('hs.legend', ['hs.map', 'hs.utils'])
             .directive('hs.legend.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/legend/partials/legend.html'
+                    templateUrl: hsl_path + 'components/legend/partials/legend.html?bust=' + gitsha
                 };
             })
 

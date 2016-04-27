@@ -23,7 +23,7 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
         angular.module('hs.ows.wfs', ['hs.utils'])
             .directive('hs.ows.wfs.capabilitiesErrorDirective', function() {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
+                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html?bust=' + gitsha,
                     link: function(scope, element, attrs) {
                         $('#ows-wfs-capabilities-error').modal('show');
                     }

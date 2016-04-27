@@ -62,7 +62,7 @@ define(['angular', 'ol'],
 
         .directive('hs.styler.directive', function() {
             return {
-                templateUrl: hsl_path + 'components/styles/partials/styler.html'
+                templateUrl: hsl_path + 'components/styles/partials/styler.html?bust=' + gitsha
             };
         })
 
@@ -138,7 +138,7 @@ define(['angular', 'ol'],
                         scope.color = col;
                     }
                 },
-                templateUrl: hsl_path + 'components/styles/partials/color.html'
+                templateUrl: hsl_path + 'components/styles/partials/color.html?bust=' + gitsha
             };
         })
 

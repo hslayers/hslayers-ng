@@ -8,7 +8,7 @@ define(['angular'],
         angular.module('hs.print', [])
             .directive('hs.print.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/print/partials/printdialog.html'
+                    templateUrl: hsl_path + 'components/print/partials/printdialog.html?bust=' + gitsha
                 };
             })
 

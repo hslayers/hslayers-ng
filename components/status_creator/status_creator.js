@@ -8,7 +8,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
         var module = angular.module('hs.status_creator', ['hs.map', 'hs.core', 'ngCookies'])
             .directive('hs.statusCreator.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/dialog.html',
+                    templateUrl: hsl_path + 'components/status_creator/partials/dialog.html?bust=' + gitsha,
                     link: function(scope, element) {
                         $('#stc-save, #stc-saveas').hide();
                     }
@@ -16,7 +16,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             })
             .directive('hs.statusCreator.directiveForm', function() {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/form.html',
+                    templateUrl: hsl_path + 'components/status_creator/partials/form.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }
@@ -24,7 +24,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             })
             .directive('hs.statusCreator.directiveSimpleform', function() {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/simpleform.html',
+                    templateUrl: hsl_path + 'components/status_creator/partials/simpleform.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }
@@ -32,7 +32,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             })
             .directive('hs.statusCreator.directivePanel', function() {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/panel.html',
+                    templateUrl: hsl_path + 'components/status_creator/partials/panel.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }
@@ -40,7 +40,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             })
             .directive('hs.statusCreator.resultDialogDirective', function() {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/dialog_result.html',
+                    templateUrl: hsl_path + 'components/status_creator/partials/dialog_result.html?bust=' + gitsha,
                     link: function(scope, element, attrs) {
                         $('#status-creator-result-dialog').modal('show');
                     }
@@ -49,7 +49,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
         .directive('hs.statusCreator.saveDialogDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/status_creator/partials/dialog_save.html',
+                templateUrl: hsl_path + 'components/status_creator/partials/dialog_save.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     $('#status-creator-save-dialog').modal('show');
                 }

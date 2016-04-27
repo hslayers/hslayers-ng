@@ -8,7 +8,7 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
         angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies'])
             .directive('hs.sidebar.directive', ['$compile', function($compile) {
                 return {
-                    templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html',
+                    templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html?bust=' + gitsha,
                     link: function(scope, element, attrs) {
                         if (angular.isDefined(scope.Core.config.createExtraMenu))
                             scope.Core.config.createExtraMenu($compile, scope, element);

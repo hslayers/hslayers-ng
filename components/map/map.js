@@ -138,7 +138,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
     .directive('hs.map.directive', ['Core', function(Core) {
         return {
-            templateUrl: hsl_path + 'components/map/partials/map.html',
+            templateUrl: hsl_path + 'components/map/partials/map.html?bust=' + gitsha,
             link: function(scope, element) {
                 $(".ol-zoomslider", element).width(28).height(200);
             }

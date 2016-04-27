@@ -12,13 +12,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
      */
     .directive('hs.layermanager.directive', function() {
         return {
-            templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html'
+            templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html?bust=' + gitsha
         };
     })
 
     .directive('hs.layermanager.layerlistDirective', ['$compile', function($compile) {
         return {
-            templateUrl: hsl_path + 'components/layermanager/partials/layerlist.html',
+            templateUrl: hsl_path + 'components/layermanager/partials/layerlist.html?bust=' + gitsha,
             compile: function compile(element) {
                 var contents = element.contents().remove();
                 var contentsLinker;
@@ -53,7 +53,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
      */
     .directive('hs.layermanager.removeAllDialogDirective', function() {
         return {
-            templateUrl: hsl_path + 'components/layermanager/partials/dialog_removeall.html',
+            templateUrl: hsl_path + 'components/layermanager/partials/dialog_removeall.html?bust=' + gitsha,
             link: function(scope, element, attrs) {
                 $('#hs-remove-all-dialog').modal('show');
             }
@@ -67,7 +67,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms'], function(angular, ap
      */
     .directive('hs.layermanager.folderDirective', ['$compile', function($compile) {
         return {
-            templateUrl: hsl_path + 'components/layermanager/partials/folder.html',
+            templateUrl: hsl_path + 'components/layermanager/partials/folder.html?bust=' + gitsha,
             compile: function compile(element) {
                 var contents = element.contents().remove();
                 var contentsLinker;

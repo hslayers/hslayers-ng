@@ -27,7 +27,7 @@ define(['angular', 'ol', 'utils'],
              */
             .directive('hs.ows.wms.resampleDialogDirective', function() {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
+                    templateUrl: hsl_path + 'components/ows/partials/dialog_proxyconfirm.html?bust=' + gitsha,
                     link: function(scope, element, attrs) {
                         $('#ows-wms-resample-dialog').modal('show');
                     }
@@ -35,7 +35,7 @@ define(['angular', 'ol', 'utils'],
             })
             .directive('hs.ows.wms.capabilitiesErrorDirective', function() {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
+                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html?bust=' + gitsha,
                     link: function(scope, element, attrs) {
                         $('#ows-wms-capabilities-error').modal('show');
                     }

@@ -9,7 +9,7 @@ define(['angular', 'map', 'ows.wms', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritize
         angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.wfs', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
             .directive('hs.ows.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/ows.html'
+                    templateUrl: hsl_path + 'components/ows/partials/ows.html?bust=' + gitsha
                 };
             })
             .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.ows.wfs.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service', 'config',

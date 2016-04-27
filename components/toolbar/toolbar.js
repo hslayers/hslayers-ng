@@ -8,7 +8,7 @@ define(['angular', 'map', 'core', 'permalink'],
         angular.module('hs.toolbar', ['hs.map', 'hs.core'])
             .directive('hs.toolbar.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/toolbar/partials/toolbar.html'
+                    templateUrl: hsl_path + 'components/toolbar/partials/toolbar.html?bust=' + gitsha
                 };
             })
 
