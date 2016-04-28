@@ -226,6 +226,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                         crossOrigin: null
                                     })
                                 });
+                                new_layer.setVisible(lyr_def.visibility);
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':
@@ -276,6 +277,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                                 style: style,
                                                 title: lyr_def.title
                                             });
+                                            lyr.setVisible(lyr_def.visibility);
                                             layers.push(lyr);
                                             break;
                                         default:
@@ -294,6 +296,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                                     title: lyr_def.title,
                                                     style: style
                                                 });
+                                                lyr.setVisible(lyr_def.visibility);
                                                 layers.push(lyr);
                                             }
                                     }
