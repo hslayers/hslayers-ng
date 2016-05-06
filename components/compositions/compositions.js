@@ -194,7 +194,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                 var legends = [];
                                 delete params.REQUEST;
                                 delete params.FORMAT;
-                                if (angular.isDefined(lyr_def.legends)){
+                                if (angular.isDefined(lyr_def.legends)) {
                                     for (var idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
                                         legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
                                     }

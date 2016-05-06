@@ -41,8 +41,8 @@ require.config({
         },
         s4a: {
             deps: ['ol', 'dc'],
-            exports: 's4a'            
-        }        
+            exports: 's4a'
+        }
     }
 });
 
