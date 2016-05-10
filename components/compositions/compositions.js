@@ -256,6 +256,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                         case 'hs.format.Sparql':
                                             var url = decodeURIComponent(lyr_def.protocol.url);
 
+                                            var definition = {};
                                             definition.url = url;
                                             definition.format = "ol.format.GeoJSON";
 
