@@ -258,7 +258,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
 
                                             var definition = {};
                                             definition.url = url;
-                                            definition.format = "ol.format.GeoJSON";
+                                            definition.format = "hs.format.Sparql";
 
                                             var style = null;
                                             if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
