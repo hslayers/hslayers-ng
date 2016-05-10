@@ -3,17 +3,17 @@
  * @memberOf hs
  */
 
-define(['angular', 'map', 'ows.wms', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritized', 'permalink'],
+define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritized', 'permalink'],
 
     function(angular) {
-        angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.wfs', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
+        angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.wmts', 'hs.ows.wfs', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
             .directive('hs.ows.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/ows.html?bust=' + gitsha
                 };
             })
-            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.ows.wfs.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service', 'config',
-                function($scope, srv_wms_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config) {
+            .controller('hs.ows.controller', ['$scope', 'hs.ows.wms.service_capabilities', 'hs.ows.wmts.service_capabilities', 'hs.ows.wfs.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service', 'config',
+                function($scope, srv_wms_caps, srv_wmts_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config) {
                     var map = OlMap.map;
                     if (angular.isArray(config.connectTypes)) {
                         $scope.types = config.connectTypes;
@@ -36,6 +36,10 @@ define(['angular', 'map', 'ows.wms', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritize
                                 srv_wms_caps.requestGetCapabilities($scope.url);
                                 $scope.showDetails = true;
                                 break;
+                            case "wmts":
+                                srv_wmts_caps.requestGetCapabilities($scope.url);
+                                $scope.showDetails = true;
+                                break;
                             case "wfs":
                                 srv_wfs_caps.requestGetCapabilities($scope.url);
                                 $scope.showDetails = true;
@@ -50,6 +54,9 @@ define(['angular', 'map', 'ows.wms', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritize
                         switch ($scope.type.toLowerCase()) {
                             case "wms":
                                 template = ows_path + 'owswms.html';
+                                break;
+                            case "wmts":
+                                template = ows_path + 'owswmts.html';
                                 break;
                             case "wms with priorities":
                                 template = ows_path + 'owsprioritized.html';

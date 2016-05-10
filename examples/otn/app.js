@@ -83,6 +83,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 zoom: 4,
                 units: "m"
             }),
+            connectTypes: ['', 'WMS', 'WMTS', 'GeoJSON', 'KML'],
             compositions_catalogue_url: 'http://otn-production.intrasoft-intl.com/php/metadata/csw/',
             status_manager_url: 'http://otn-production.intrasoft-intl.com/wwwlibs/statusmanager2/index.php',
             datasources: [{
@@ -101,7 +102,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 $scope.Core = Core;
                 Core.sidebarRight = false;
                 Core.singleDatasources = true;
-                Core.embededEnabled = false;
                 $scope.$on('infopanel.updated', function(event) {
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
                 });

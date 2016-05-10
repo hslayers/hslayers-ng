@@ -37,6 +37,7 @@ require.config({
         'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
         'ows.wfs': hsl_path + 'components/ows/ows_wfs',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
+        'ows.wmts': hsl_path + 'components/ows/ows_wmts',
         'ows.wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized',
         panoramio: hsl_path + 'components/layers/panoramio/panoramio',
         permalink: requirejs.s.contexts._.config.paths.permalink || hsl_path + 'components/permalink/permalink',
