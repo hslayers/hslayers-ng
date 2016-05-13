@@ -10,6 +10,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                 me.add = function(type, url, title, abstract, extract_styles, srs, options) {
                     var format;
                     var definition = {};
+                    var src;
                     definition.url = url;
                     if (angular.isUndefined(options)) {
                         var options = {};
@@ -37,7 +38,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                     }
 
                     if (definition.format == 'hs.format.Sparql') {
-                        var src = new SparqlJson({
+                        src = new SparqlJson({
                             geom_attribute: '?geom',
                             url: url,
                             category_field: 'http://www.openvoc.eu/poi#categoryWaze',
@@ -47,9 +48,9 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                                 //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
                         });
                     } else if (definition.format == 'hs.format.WFS') {
-                        var src = new WfsSource(options.defOptions);
+                        src = new WfsSource(options.defOptions);
                     } else if (angular.isDefined(options.features)) {
-                        var src = new ol.source.Vector({
+                        src = new ol.source.Vector({
                             projection: srs,
                             features: options.features
                         });
@@ -80,7 +81,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                         OlMap.map.getView().fit(src.getExtent(), OlMap.map.getSize());
 
                     } else {
-                        var src = new ol.source.Vector({
+                        src = new ol.source.Vector({
                             format: format,
                             url: url,
                             projection: ol.proj.get(srs),
@@ -142,6 +143,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
 
                     }
                     src.set('loaded', true);
+                    src.set('from_composition', options.from_composition || false);
                     var lyr = new ol.layer.Vector({
                         abstract: abstract,
                         definition: definition,
@@ -164,8 +166,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                     })
 
                     var listenerKey = src.on('change', function() {
-                        if (src.getState() == 'ready') {
-
+                        if (src.getState() == 'ready' && (angular.isUndefined(src.get('from_composition')) || !src.get('from_composition'))) {
                             if (src.getFeatures().length == 0) return;
                             var extent = src.getExtent(); - src.unByKey(listenerKey);
                             if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
