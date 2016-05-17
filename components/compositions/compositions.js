@@ -361,7 +361,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                     var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                     var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                    var url = config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var url = (config.hostname.compositions_catalogue || config.hostname.default) + config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
                     url = utils.proxify(url);
                     if (ajax_req != null) ajax_req.abort();
                     ajax_req = $.ajax({
@@ -403,7 +403,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 }
 
                 $scope.loadStatusManagerCompositions = function(bbox) {
-                    var url = config.status_manager_url;
+                    var url = (config.hostname.status_manager || config.hostname.default) + config.status_manager_url;
                     var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? '&q=' + encodeURIComponent('*' + $scope.query.title + '*') : '';
                     url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
                     url = utils.proxify(url);
@@ -425,7 +425,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                                     record.editable = false;
                                     if (angular.isDefined(record.edit)) record.editable = record.edit;
                                     if (angular.isUndefined(record.link)) {
-                                        record.link = config.status_manager_url + '?request=load&id=' + record.id;
+                                        record.link = (config.hostname.status_manager || config.hostname.default) + config.status_manager_url + '?request=load&id=' + record.id;
                                     }
                                     var attributes = {
                                         record: record,
@@ -458,7 +458,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 }
 
                 $scope.delete = function(composition) {
-                    var url = config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
+                    var url = (config.hostname.status_manager || config.hostname.default) + config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
                     url = utils.proxify(url);
                     ajax_req = $.ajax({
                             url: url
@@ -528,7 +528,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 });
 
                 $rootScope.$on('compositions.load_composition', function(event, id) {
-                    id = (config.status_manager_url || '/wwwlibs/statusmanager2/index.php') + '?request=load&id=' + id;
+                    id = (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php') + '?request=load&id=' + id;
                     composition_parser.load(id);
                 });
 
@@ -605,7 +605,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 if (permalink.getParamValue('composition')) {
                     var id = permalink.getParamValue('composition');
                     if (id.indexOf('http') == -1 && id.indexOf(config.status_manager_url) == -1)
-                        id = (config.status_manager_url || '/wwwlibs/statusmanager2/index.php') + '?request=load&id=' + id;
+                        id = (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php') + '?request=load&id=' + id;
                     composition_parser.load(id);
                 }
 

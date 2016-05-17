@@ -84,8 +84,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 units: "m"
             }),
             connectTypes: ['', 'WMS', 'WMTS', 'GeoJSON', 'KML'],
-            compositions_catalogue_url: 'http://otn-production.intrasoft-intl.com/php/metadata/csw/',
-            status_manager_url: 'http://otn-production.intrasoft-intl.com/wwwlibs/statusmanager2/index.php',
+            hostname: {
+                default: 'http://otn-production.intrasoft-intl.com'
+            },
+            compositions_catalogue_url: '/php/metadata/csw/',
+            status_manager_url: '/wwwlibs/statusmanager2/index.php',
             datasources: [{
                 title: "Hub layers",
                 url: "http://otn-production.intrasoft-intl.com/php/metadata/csw/",

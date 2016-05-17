@@ -143,8 +143,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
                 zoom: 4,
                 units: "m"
             }),
-            compositions_catalogue_url: 'http://www.whatstheplan.eu/php/metadata/csw/',
-            status_manager_url: 'http://www.whatstheplan.eu/wwwlibs/statusmanager/index.php',
+            hostname: {
+                default: 'http://www.whatstheplan.eu'
+            },
+            compositions_catalogue_url: '/php/metadata/csw/',
+            status_manager_url: '/wwwlibs/statusmanager/index.php',
             connectTypes: ["", "WMS", "WFS", "KML", "GeoJSON"],
             datasources: [{
                 title: "Catalogue",

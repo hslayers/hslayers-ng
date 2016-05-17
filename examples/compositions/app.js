@@ -43,9 +43,14 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 zoom: 5,
                 units: "m"
             }),
-            compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
+            hostname: {
+                default: 'http://youth.sdi4apps.eu',
+                compositions_catalogue: 'http://www.whatstheplan.eu',
+                status_manager: 'http://erra.ccss.cz'
+            },
+            compositions_catalogue_url: '/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
             //compositions_catalogue_url: 'http://erra.ccss.cz/php/metadata/csw/index.php',
-            status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php',
+            status_manager_url: '/wwwlibs/statusmanager2/index.php',
             createExtraMenu: function($compile, $scope, element) {
                 $scope.uploadClicked = function() {
                     alert("UPLOAD!")

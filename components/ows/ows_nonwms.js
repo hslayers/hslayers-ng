@@ -191,9 +191,10 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                 OlMap.map.addInteraction(dragAndDrop);
                 dragAndDrop.on('addfeatures', function(event) {
                     var f = new ol.format.GeoJSON();
-                    var url = config.status_manager_url || "/wwwlibs/statusmanager2/index.php"
+                    var url = (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                    console.info(url, config.status_manager_url, config.hostname.status_manager, config.hostname.default);
                     var options = {};
-                    options.features = event.features
+                    options.features = event.features;
 
                     $http({
                         url: url,
@@ -201,7 +202,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                         data: JSON.stringify({
                             project: config.project_name,
                             title: event.file.name,
-                            request: 'saveData',
+                            request: 'save',
                             dataType: "json",
                             data: f.writeFeatures(event.features, {
                                 dataProjection: 'EPSG:4326',
@@ -211,6 +212,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                     }).success(function(j) {
                         data = {};
                         data.url = url + "?request=loadData&id=" + j.id;
+                        console.info(data.url, j);
                         data.title = event.file.name;
                         data.projection = event.projection;
                         var lyr = me.add('geojson', decodeURIComponent(data.url), data.title || 'Layer', '', true, data.projection, options);
