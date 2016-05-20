@@ -202,7 +202,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                         data: JSON.stringify({
                             project: config.project_name,
                             title: event.file.name,
-                            request: 'save',
+                            request: 'saveData',
                             dataType: "json",
                             data: f.writeFeatures(event.features, {
                                 dataProjection: 'EPSG:4326',
