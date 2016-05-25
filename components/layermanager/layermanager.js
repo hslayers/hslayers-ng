@@ -33,6 +33,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                         scope.obj = scope.value;
                     }
 
+					/**
+					 * This function will be called whenever map layers change and folder contents need to be updated
+					 * */
                     function filterLayers() {
                         var tmp = [];
 
@@ -46,6 +49,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
 
                     scope.filtered_layers = filterLayers();
 
+					//Dragdroplist cant handle complex OL objects, so we are creating a compact list of layer titles only
                     scope.generateLayerTitlesArray = function() {
                         scope.layer_titles = [];
                         for (var i = 0; i < scope.filtered_layers.length; i++) {
@@ -427,11 +431,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
             }
 
             $scope.dragged = function(event, index, item, type, external) {
-                if ($scope.layer_titles.indexOf(item) < index) index--;
+                if ($scope.layer_titles.indexOf(item) < index) index--; //Must take into acount that this item will be removed and list will shift
                 var to_title = $scope.layer_titles[index];
                 var to_index = null;
                 var item_index = null;
                 var layers = OlMap.map.getLayers();
+                //Get the position where to drop the item in the map.getLayers list and which item to remove. because we could be working only within a folder so layer_titles is small
                 for (var i = 0; i < layers.getLength(); i++) {
                     if (layers.item(i).get('title') == to_title) to_index = i;
                     if (layers.item(i).get('title') == item) item_index = i;
@@ -441,9 +446,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                 map.getLayers().removeAt(item_index);
                 map.getLayers().insertAt(to_index, item_layer);
                 updateLayerOrder();
-                $rootScope.$broadcast('layermanager.updated');
+                $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
             }
 
+			/**
+			 *  Layers are ordered by "position" property in the gui and this function sets it
+			 * **/
             function updateLayerOrder() {
                 angular.forEach($scope.layers, function(my_layer) {
                     my_layer.position = getMyLayerPosition(my_layer.layer)
