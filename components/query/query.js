@@ -26,7 +26,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     } else {
                         if (attrs.value) {
                             if (attrs.value.indexOf('http') == 0) {
-                                var el = angular.element('a');
+                                var el = angular.element('<a>');
                                 el.attr({
                                     target: '_blank',
                                     href: attrs.value
