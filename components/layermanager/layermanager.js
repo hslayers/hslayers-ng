@@ -60,7 +60,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                     scope.$on('layermanager.updated', function() {
                         scope.filtered_layers = filterLayers();
                         scope.filtered_layers.sort(function(a, b) {
-                            return a.position - b.position
+                            return a.layer.get('position') - b.layer.get('position')
                         });
                         scope.generateLayerTitlesArray();
                     });
@@ -188,12 +188,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                     })
                 }
 
+				if(typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
                 var new_layer = {
                     title: getLayerTitle(layer),
                     layer: layer,
                     grayed: $scope.isLayerInResolutionInterval(layer),
-                    visible: layer.getVisible(),
-                    position: getMyLayerPosition(layer)
+                    visible: layer.getVisible()
                 };
 
                 if ($scope.layerIsWmsT(new_layer)) {
@@ -454,7 +454,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
 			 * **/
             function updateLayerOrder() {
                 angular.forEach($scope.layers, function(my_layer) {
-                    my_layer.position = getMyLayerPosition(my_layer.layer)
+                    my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));
                 })
             }
 
