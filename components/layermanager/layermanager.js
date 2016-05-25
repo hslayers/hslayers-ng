@@ -3,7 +3,7 @@
  * @memberOf hs
  */
 define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], function(angular, app, map, ol) {
-    angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists' ])
+    angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists'])
 
     /**
      * @class hs.layermanager.directive
@@ -24,43 +24,45 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                 var contentsLinker;
 
                 return function(scope, iElement) {
-                    
-					scope.layer_titles = [];
-            
+
+                    scope.layer_titles = [];
+
                     if (scope.value == null) {
                         scope.obj = scope.folders;
                     } else {
                         scope.obj = scope.value;
                     }
 
-					function filterLayers(){
-						var tmp = [];
-					
-						angular.forEach(scope.layers, function(layer){	
-						   if(layer.layer.get('path') == scope.obj.hsl_path || ((angular.isUndefined(layer.layer.get('path')) || layer.layer.get('path') == '') && scope.obj.hsl_path == '')){
-							   tmp.push(layer);
-						   }
-						})
-						return tmp;
-					}
-					
+                    function filterLayers() {
+                        var tmp = [];
+
+                        angular.forEach(scope.layers, function(layer) {
+                            if (layer.layer.get('path') == scope.obj.hsl_path || ((angular.isUndefined(layer.layer.get('path')) || layer.layer.get('path') == '') && scope.obj.hsl_path == '')) {
+                                tmp.push(layer);
+                            }
+                        })
+                        return tmp;
+                    }
+
                     scope.filtered_layers = filterLayers();
-                    
-                    scope.generateLayerTitlesArray = function(){
-						scope.layer_titles = [];
-						for(var i=0; i<scope.filtered_layers.length; i++){
-							scope.layer_titles.push(scope.filtered_layers[i].title);
-						}
-					}
-					
-					scope.$on('layermanager.updated', function() {
-						scope.filtered_layers = filterLayers();
-						scope.filtered_layers.sort(function(a, b) {return a.position - b.position});
-						scope.generateLayerTitlesArray();
-					});
-                    
+
+                    scope.generateLayerTitlesArray = function() {
+                        scope.layer_titles = [];
+                        for (var i = 0; i < scope.filtered_layers.length; i++) {
+                            scope.layer_titles.push(scope.filtered_layers[i].title);
+                        }
+                    }
+
+                    scope.$on('layermanager.updated', function() {
+                        scope.filtered_layers = filterLayers();
+                        scope.filtered_layers.sort(function(a, b) {
+                            return a.position - b.position
+                        });
+                        scope.generateLayerTitlesArray();
+                    });
+
                     scope.generateLayerTitlesArray();
-                    
+
                     if (angular.isUndefined(contentsLinker)) {
                         contentsLinker = $compile(contents);
                     }
@@ -181,7 +183,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                         if (!$scope.$$phase) $scope.$digest();
                     })
                 }
-                
+
                 var new_layer = {
                     title: getLayerTitle(layer),
                     layer: layer,
@@ -189,7 +191,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                     visible: layer.getVisible(),
                     position: getMyLayerPosition(layer)
                 };
-                               
+
                 if ($scope.layerIsWmsT(new_layer)) {
                     var dimensions_time = new_layer.layer.get('dimensions_time') || new_layer.layer.dimensions_time;
                     angular.extend(new_layer, {
@@ -217,14 +219,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                 $rootScope.$broadcast('layermanager.updated', layer);
                 $scope.$emit('compositions.composition_edited');
             };
-            
-            function getLayerTitle(layer){
-				if (angular.isDefined(layer.get('title'))) {
+
+            function getLayerTitle(layer) {
+                if (angular.isDefined(layer.get('title'))) {
                     return layer.get('title').replace(/&#47;/g, '/');
                 } else {
                     return 'Void';
                 }
-			}
+            }
 
             function getDateFormatForTimeSlider(time_unit) {
                 switch (time_unit) {
@@ -423,41 +425,41 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
             $scope.removeLayer = function(layer) {
                 map.removeLayer(layer);
             }
-            
-            $scope.dragged = function(event, index, item, type, external){
-				 if($scope.layer_titles.indexOf(item)<index) index--;
-				 var to_title = $scope.layer_titles[index];
-				 var to_index = null;
-				 var item_index = null;
-				 var layers = OlMap.map.getLayers();
-				 for(var i=0; i<layers.getLength(); i++){
-					 if(layers.item(i).get('title') == to_title) to_index = i;
-					 if(layers.item(i).get('title') == item) item_index = i;
-					 if(index>$scope.layer_titles.length) to_index = i+1; //If dragged after the last item
-				 }
-				 var item_layer = layers.item(item_index);
-				 map.getLayers().removeAt(item_index);
-				 map.getLayers().insertAt(to_index, item_layer);
-				 updateLayerOrder();
-				 $rootScope.$broadcast('layermanager.updated');
-			}
-						
-			function updateLayerOrder(){
-				angular.forEach($scope.layers, function(my_layer){
-					my_layer.position = getMyLayerPosition(my_layer.layer)
-				})
-			}
-			
-			function getMyLayerPosition(layer){
-				var pos = null;
-				for(var i=0; i<OlMap.map.getLayers().getLength(); i++){
-					 if(OlMap.map.getLayers().item(i) == layer) {
-						 pos = i;
-						 break;
-					 }
-				 }
-				 return pos;
-			}
+
+            $scope.dragged = function(event, index, item, type, external) {
+                if ($scope.layer_titles.indexOf(item) < index) index--;
+                var to_title = $scope.layer_titles[index];
+                var to_index = null;
+                var item_index = null;
+                var layers = OlMap.map.getLayers();
+                for (var i = 0; i < layers.getLength(); i++) {
+                    if (layers.item(i).get('title') == to_title) to_index = i;
+                    if (layers.item(i).get('title') == item) item_index = i;
+                    if (index > $scope.layer_titles.length) to_index = i + 1; //If dragged after the last item
+                }
+                var item_layer = layers.item(item_index);
+                map.getLayers().removeAt(item_index);
+                map.getLayers().insertAt(to_index, item_layer);
+                updateLayerOrder();
+                $rootScope.$broadcast('layermanager.updated');
+            }
+
+            function updateLayerOrder() {
+                angular.forEach($scope.layers, function(my_layer) {
+                    my_layer.position = getMyLayerPosition(my_layer.layer)
+                })
+            }
+
+            function getMyLayerPosition(layer) {
+                var pos = null;
+                for (var i = 0; i < OlMap.map.getLayers().getLength(); i++) {
+                    if (OlMap.map.getLayers().item(i) == layer) {
+                        pos = i;
+                        break;
+                    }
+                }
+                return pos;
+            }
 
             /**
              * @function zoomToLayer
