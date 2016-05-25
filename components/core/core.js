@@ -55,13 +55,17 @@ require.config({
         WfsSource: requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs',
         routing: hsl_path + 'components/routing/routing',
         tracking: hsl_path + 'components/tracking/tracking',
-        s4a: requirejs.s.contexts._.config.paths.s4a || hsl_path + 'bower_components/s4a-js/dist/s4a.min'
+        s4a: requirejs.s.contexts._.config.paths.s4a || hsl_path + 'bower_components/s4a-js/dist/s4a.min',
+        'dragdroplists': hsl_path + 'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists'
     },
     shim: {
         'angular': {
             'exports': 'angular'
         },
         'angular-sanitize': {
+            deps: ['angular'],
+        },
+        'dragdroplists': {
             deps: ['angular'],
         },
         'angular-gettext': {
