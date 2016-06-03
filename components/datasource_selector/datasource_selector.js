@@ -425,7 +425,7 @@ define(['angular', 'ol', 'map'],
 
                 $scope.layerDownload = function(ds, layer) {
                     if (ds.download == true) {
-                        if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1 && layer.url.length > 0) {
+                        if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1 && layer.url.length > 0) {
                             return layer.url
                         }
                     }
@@ -458,8 +458,8 @@ define(['angular', 'ol', 'map'],
                                 }
                                 var link = layer.link;
                                 hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WFS');
-                            } else if (layer.format && ["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
-                                switch (layer.format.toLowerCase()) {
+                            } else if (layer.formats && ["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
+                                switch (layer.formats[0].toLowerCase()) {
                                     case "kml":
                                         var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
                                         break;
@@ -474,8 +474,8 @@ define(['angular', 'ol', 'map'],
                                 alert('Service type "' + layer.serviceType + '" not supported.');
                             }
                         } else if (layer.trida == 'dataset') {
-                            if (["kml", "geojson", "json"].indexOf(layer.format.toLowerCase()) > -1) {
-                                switch (layer.format.toLowerCase()) {
+                            if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
+                                switch (layer.formats[0].toLowerCase()) {
                                     case "kml":
                                         var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
                                         break;
