@@ -33,9 +33,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                         scope.obj = scope.value;
                     }
 
-					/**
-					 * This function will be called whenever map layers change and folder contents need to be updated
-					 * */
+                    /**
+                     * This function will be called whenever map layers change and folder contents need to be updated
+                     * */
                     function filterLayers() {
                         var tmp = [];
 
@@ -49,7 +49,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
 
                     scope.filtered_layers = filterLayers();
 
-					//Dragdroplist cant handle complex OL objects, so we are creating a compact list of layer titles only
+                    //Dragdroplist cant handle complex OL objects, so we are creating a compact list of layer titles only
                     scope.generateLayerTitlesArray = function() {
                         scope.layer_titles = [];
                         for (var i = 0; i < scope.filtered_layers.length; i++) {
@@ -188,7 +188,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                     })
                 }
 
-				if(typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
+                if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
                 var new_layer = {
                     title: getLayerTitle(layer),
                     layer: layer,
@@ -449,9 +449,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                 $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
             }
 
-			/**
-			 *  Layers are ordered by "position" property in the gui and this function sets it
-			 * **/
+            /**
+             *  Layers are ordered by "position" property in the gui and this function sets it
+             * **/
             function updateLayerOrder() {
                 angular.forEach($scope.layers, function(my_layer) {
                     my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));

@@ -129,7 +129,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                     // Layers properties
                     var layers = map.getLayers().getArray();
-                    
+
                     json.layers = me.layers2json(layers, $scope);
 
                     return json;
@@ -502,8 +502,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     });
                     $scope.layers.sort(function(a, b) {
-						return a.layer.get('position') - b.layer.get('position')
-					});
+                        return a.layer.get('position') - b.layer.get('position')
+                    });
                     $scope.fillGroups();
                     Core.setMainPanel('status_creator', true);
                     //$('#status-creator-dialog').modal('show');
