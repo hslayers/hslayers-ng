@@ -427,6 +427,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (Core.mainpanel == 'measure') return;
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
                     $("#invisible_popup").contents().find('body').html('');
+                    $("#invisible_popup").height(200).width(200);
                     $scope.showCoordinate(evt.coordinate, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
                     map.getLayers().forEach(function(layer) {
                         $scope.queryWmsLayer(layer, evt.coordinate)
