@@ -232,11 +232,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                     if (info_format.indexOf("html") > 0) {
                         if (response.length <= 1) return;
-                        fillIframeAndResize($("#invisible_popup"), response);
+                        fillIframeAndResize($("#invisible_popup"), response, true);
                         createFeatureInfoPopupIfNeeded(coordinate);
                         $(popup.getElement()).popover('show');
                         $(popup.getElement()).on('shown.bs.popover', function() {
-                            fillIframeAndResize($('.getfeatureinfo_popup'), response);
+                            fillIframeAndResize($('.getfeatureinfo_popup'), $("#invisible_popup").contents().find('body').html(), false);
                             $('.close', popup.getElement().nextElementSibling).click(function() {
                                 $(popup.getElement()).popover('hide');
                             });
@@ -246,11 +246,18 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     }
                 }
 
-                function fillIframeAndResize($iframe, response) {
-                    $iframe.contents().find('body').html(response);
-                    $iframe.width($iframe.contents().find('body').width() + 20);
+                function fillIframeAndResize($iframe, response, append) {
+                    if (append)
+                        $iframe.contents().find('body').append(response);
+                    else
+                        $iframe.contents().find('body').html(response);
+                    var tmp_width = $iframe.contents().innerWidth();
+                    if (tmp_width > 700) tmp_width = 700;
+                    $iframe.width(tmp_width + 20);
                     if ($iframe.width() == 20) $iframe.width(270);
-                    $iframe.height($iframe.contents().find('body').height() + 20);
+                    var tmp_height = $iframe.contents().innerHeight();
+                    if (tmp_height > 700) tmp_height = 700;
+                    $iframe.height(tmp_height + 20);
                 }
 
                 var popup = null;
@@ -419,6 +426,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 map.on('singleclick', function(evt) {
                     if (Core.mainpanel == 'measure') return;
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
+                    $("#invisible_popup").contents().find('body').html('');
                     $scope.showCoordinate(evt.coordinate, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
                     map.getLayers().forEach(function(layer) {
                         $scope.queryWmsLayer(layer, evt.coordinate)
