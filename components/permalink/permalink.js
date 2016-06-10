@@ -2,17 +2,23 @@
  * @namespace hs.permalink
  * @memberOf hs
  */
-define(['angular', 'map', 'core', 'js-binary'],
+define(['angular', 'bson', 'map', 'core'],
 
-    function(angular, jsBinary) {
+    function(angular, bson) {
         angular.module('hs.permalink', ['hs.core', 'hs.map'])
             .directive('hs.permalink.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
             })
-            .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core', 'js-binary',
-                function($rootScope, OlMap, Core, jsBinary) {
+            .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core', 
+                function($rootScope, OlMap, Core) {
+										
+					var BSON = bson().BSON;
+					debugger;
+					//var serialized = BSON.serialize({"something": something}, false, true, true);
+                    
+                    
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
@@ -67,7 +73,7 @@ define(['angular', 'map', 'core', 'js-binary'],
                         }, {});
                     };
                     me.stringify = function(obj) {
-                        return obj ? Object.keys(obj).map(function(key) {
+					    return obj ? Object.keys(obj).map(function(key) {
                             var val = obj[key];
 
                             if (Array.isArray(val)) {
