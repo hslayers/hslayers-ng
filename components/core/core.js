@@ -27,6 +27,7 @@ require.config({
         geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON',
         geolocation: requirejs.s.contexts._.config.paths.geolocation || hsl_path + 'components/geolocation/geolocation',
         info: requirejs.s.contexts._.config.paths['info'] || hsl_path + 'components/info/info',
+        'js-binary': hsl_path + 'node_modules/js-binary/index',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         legend: hsl_path + 'components/legend/legend',
         lodexplorer: hsl_path + 'components/lodexplorer/lodexplorer',

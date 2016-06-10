@@ -2,17 +2,17 @@
  * @namespace hs.permalink
  * @memberOf hs
  */
-define(['angular', 'map', 'core'],
+define(['angular', 'map', 'core', 'js-binary'],
 
-    function(angular) {
+    function(angular, jsBinary) {
         angular.module('hs.permalink', ['hs.core', 'hs.map'])
             .directive('hs.permalink.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
             })
-            .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core',
-                function($rootScope, OlMap, Core) {
+            .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core', 'js-binary',
+                function($rootScope, OlMap, Core, jsBinary) {
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
