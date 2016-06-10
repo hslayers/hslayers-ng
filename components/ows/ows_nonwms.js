@@ -22,7 +22,9 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
 
                     switch (type.toLowerCase()) {
                         case "kml":
-                            format = new ol.format.KML({extractStyles: extract_styles});
+                            format = new ol.format.KML({
+                                extractStyles: extract_styles
+                            });
                             definition.format = "ol.format.KML";
                             break;
                         case "geojson":
