@@ -11,24 +11,20 @@ define(['angular', 'bson', 'map', 'core'],
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
             })
-            .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core', 
-                function($rootScope, OlMap, Core) {
-										
-					var BSON = bson().BSON;
-					debugger;
-					//var serialized = BSON.serialize({"something": something}, false, true, true);
-                    
-                    
+            .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service',
+                function($rootScope, OlMap, Core, utils) {
+                    var BSON = bson().BSON;
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
                     me.current_url = "";
                     me.update = function(e) {
                         var view = OlMap.map.getView();
-                        me.push('hs_x', view.getCenter()[0]);
-                        me.push('hs_y', view.getCenter()[1]);
-                        me.push('hs_z', view.getZoom());
-                        me.push('hs_panel', Core.mainpanel);
+                        var paramJson = {};
+                        paramJson.hsX = view.getCenter()[0];
+                        paramJson.hsY = view.getCenter()[1];
+                        paramJson.hsZ = view.getZoom();
+                        paramJson.hsPanel = Core.mainpanel;
                         var visible_layers = [];
                         OlMap.map.getLayers().forEach(function(lyr) {
                             if (lyr.get('show_in_manager') != null && lyr.get('show_in_manager') == false) return;
@@ -36,7 +32,9 @@ define(['angular', 'bson', 'map', 'core'],
                                 visible_layers.push(lyr.get("title"));
                             }
                         });
-                        me.push('visible_layers', visible_layers.join(";"));
+                        paramJson.hsVisibleLayers = visible_layers.join(";");
+
+                        me.push('state', utils.createHexString(BSON.serialize(paramJson, false, true, false)));
                         history.pushState({}, "", me.current_url);
                         $rootScope.$broadcast('browserurl.updated');
                     };
@@ -73,7 +71,7 @@ define(['angular', 'bson', 'map', 'core'],
                         }, {});
                     };
                     me.stringify = function(obj) {
-					    return obj ? Object.keys(obj).map(function(key) {
+                        return obj ? Object.keys(obj).map(function(key) {
                             var val = obj[key];
 
                             if (Array.isArray(val)) {
@@ -94,6 +92,16 @@ define(['angular', 'bson', 'map', 'core'],
                     me.getParamValue = function(param, loc) {
                         if (!loc) loc = location.search;
                         var tmp = me.parse(loc);
+                        if (tmp.state) {
+                            var jsonString = BSON.deserialize(utils.parseHexString(tmp.state));
+                            delete tmp.state;
+                            tmp['hs_x'] = jsonString.hsX;
+                            tmp['hs_y'] = jsonString.hsY;
+                            tmp['hs_z'] = jsonString.hsZ;
+                            tmp['hs_panel'] = jsonString.hsPanel;
+                            tmp['visible_layers'] = jsonString.hsVisibleLayers;
+                        }
+
                         if (tmp[param]) return tmp[param];
                         else return null;
                     };
