@@ -34,7 +34,7 @@ define(['angular', 'bson', 'map', 'core'],
                         });
                         paramJson.hsVisibleLayers = visible_layers.join(";");
 
-                        me.push('state', utils.createHexString(BSON.serialize(paramJson, false, true, false)));
+                        me.push('state', window.btoa(utils.createHexString(BSON.serialize(paramJson, false, true, false))));
                         history.pushState({}, "", me.current_url);
                         $rootScope.$broadcast('browserurl.updated');
                     };
@@ -93,7 +93,7 @@ define(['angular', 'bson', 'map', 'core'],
                         if (!loc) loc = location.search;
                         var tmp = me.parse(loc);
                         if (tmp.state) {
-                            var jsonString = BSON.deserialize(utils.parseHexString(tmp.state));
+                            var jsonString = BSON.deserialize(utils.parseHexString(atob(tmp.state)));
                             delete tmp.state;
                             tmp['hs_x'] = jsonString.hsX;
                             tmp['hs_y'] = jsonString.hsY;
