@@ -434,7 +434,7 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.layerRDF = function(ds, layer) {
-                    return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat#"
+                    return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat%23"
                 }
 
                 $scope.addLayerToMap = function(ds, layer) {
