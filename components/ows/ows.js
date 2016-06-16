@@ -101,12 +101,14 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
                         var wms = permalink.getParamValue('wms_to_connect');
                         Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                         $scope.setUrlAndConnect(wms, 'WMS');
+                        if (Core.singleDatasources) $('.dss-tabs a[href="#OWS"]').tab('show');
                     }
 
                     if (permalink.getParamValue('wfs_to_connect')) {
                         var wfs = permalink.getParamValue('wfs_to_connect');
                         Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                         $scope.setUrlAndConnect(wfs, 'WFS');
+                        if (Core.singleDatasources) $('.dss-tabs a[href="#OWS"]').tab('show');
                     }
 
                     var title = decodeURIComponent(permalink.getParamValue('title')) || 'Layer';
