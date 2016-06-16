@@ -624,7 +624,14 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 $scope.getCurrentExtent();
 
                 $scope.$on('map.extent_changed', function(event, data, b) {
-                    $scope.getCurrentExtent()
+                    $scope.getCurrentExtent();
+                    $('#hs-stc-thumbnail').attr("crossOrigin", "Anonymous");
+                    OlMap.map.once('postcompose', function(event) {
+                        var canvas = event.context.canvas;
+                        $('#hs-stc-thumbnail').attr('src', canvas.toDataURL('image/png'));
+                    });
+                    OlMap.map.renderSync();
+
                 });
                 $scope.$emit('scope_loaded', "StatusCreator");
             }
