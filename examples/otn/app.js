@@ -84,6 +84,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 units: "m"
             }),
             connectTypes: ['', 'WMS', 'WMTS', 'GeoJSON', 'KML'],
+            dsPaging: 30,
             hostname: {
                 default: 'http://otn-production.intrasoft-intl.com'
             },

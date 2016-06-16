@@ -100,6 +100,7 @@ define(['angular', 'ol', 'map'],
                     type: 'service'
                 };
                 $scope.config = config;
+                $scope.dsPaging = $scope.config.dsPaging || 10;
                 $scope.text_field = "AnyText";
                 $scope.panel_name = 'datasource_selector';
                 $scope.selected_layer = null;
@@ -297,7 +298,7 @@ define(['angular', 'ol', 'map'],
                             var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
                                 '&query=' + query +
                                 (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
-                                '&limit=10&start=' + ds.start;
+                                '&limit=' + $scope.dsPaging + '&start=' + ds.start;
                             url = utils.proxify(url);
                             if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
                             ds.ajax_req = $.ajax({
@@ -367,24 +368,24 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.getPreviousRecords = function(ds) {
-                    if (ds.start - 10 < 0) {
+                    if (ds.start - $scope.dsPaging < 0) {
                         ds.start = 0;
-                        ds.next = 10;
+                        ds.next = $scope.dsPaging;
                     } else {
-                        ds.start -= 10;
-                        ds.next = ds.start + 10;
+                        ds.start -= $scope.dsPaging;
+                        ds.next = ds.start + $scope.dsPaging;
                     }
                     $scope.loadDataset(ds);
                 }
 
                 $scope.getNextRecords = function(ds) {
                     if (ds.next != 0) {
-                        ds.start = Math.floor(ds.next / 10) * 10;
+                        ds.start = Math.floor(ds.next / $scope.dsPaging) * $scope.dsPaging;
 
-                        if (ds.next + 10 > ds.matched) {
+                        if (ds.next + $scope.dsPaging > ds.matched) {
                             ds.next = ds.matched;
                         } else {
-                            ds.next += 10;
+                            ds.next += $scope.dsPaging;
                         }
                         $scope.loadDataset(ds);
                     }
@@ -399,8 +400,13 @@ define(['angular', 'ol', 'map'],
                     var b = record.bbox.split(" ");
                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
+                    var mapProjectionExtent = OlMap.map.getView().getProjection().getExtent();
                     first_pair = ol.proj.transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
                     second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
+                    if (!isFinite(first_pair[0])) first_pair[0] = mapProjectionExtent[0];
+                    if (!isFinite(first_pair[1])) first_pair[1] = mapProjectionExtent[1];
+                    if (!isFinite(second_pair[0])) second_pair[0] = mapProjectionExtent[2];
+                    if (!isFinite(second_pair[1])) second_pair[1] = mapProjectionExtent[3];
                     if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
                     var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                     attributes.geometry = ol.geom.Polygon.fromExtent(extent);
