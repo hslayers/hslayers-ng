@@ -627,8 +627,15 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.getCurrentExtent();
                     $('#hs-stc-thumbnail').attr("crossOrigin", "Anonymous");
                     OlMap.map.once('postcompose', function(event) {
+						var myCanvas = document.getElementById('my_canvas_id');
                         var canvas = event.context.canvas;
-                        $('#hs-stc-thumbnail').attr('src', canvas.toDataURL('image/png'));
+                        var canvas2=document.createElement("canvas");
+                        var width = 256, height = 256;
+                        canvas2.style.width = width + "px"; canvas2.style.height = height + "px"; canvas2.width=width; canvas2.height=256;
+						var ctx2=canvas2.getContext("2d");
+						ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
+                        $('#hs-stc-thumbnail').attr('src', canvas2.toDataURL('image/png'));
+                        $('#hs-stc-thumbnail').width(width).height(height);
                     });
                     OlMap.map.renderSync();
 
