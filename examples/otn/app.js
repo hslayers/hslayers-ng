@@ -72,7 +72,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                                     INFO_FORMAT: undefined,
                                     FORMAT: "image/png; mode=8bit"
                                 },
-                                crossOrigin: null
+                                crossOrigin: 'anonymous'
+
                             }),
                         })
                     ]
