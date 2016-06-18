@@ -11,7 +11,6 @@ define(['angular', 'addthis', 'bson', 'map', 'core'],
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha,
                     link: function($scope, element, attrs) {
                         $timeout(function() {
-                            console.log(attrs);
                             addthis.init();
                             addthis.toolbox($('.addthis_toolbox').get(), {}, {});
                         });
