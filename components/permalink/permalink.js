@@ -13,8 +13,7 @@ define(['angular', 'addthis', 'bson', 'map', 'core'],
                         $timeout(function() {
                             console.log(attrs);
                             addthis.init();
-                            addthis.toolbox($('.addthis_toolbox').get(), {}, {
-                            });
+                            addthis.toolbox($('.addthis_toolbox').get(), {}, {});
                         });
                     }
                 };
