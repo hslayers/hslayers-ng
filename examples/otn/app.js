@@ -25,6 +25,13 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullScreenMap(element);
+                    var $otn = $('<a>');
+                    $otn.html('OTN')
+                        .attr('href', 'http://opentnet.eu/')
+                        .attr('target', '_blank')
+                        .addClass('btn btn-default')
+                        .css({'z-index': 1000, 'position': 'absolute', 'top':'5px', 'right':'5px'});
+                    element.append($otn);
                 }
             };
         }]);
