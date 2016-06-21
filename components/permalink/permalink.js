@@ -2,21 +2,15 @@
  * @namespace hs.permalink
  * @memberOf hs
  */
-define(['angular', 'addthis', 'bson', 'map', 'core'],
+define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
 
-    function(angular, addthis, bson) {
-        angular.module('hs.permalink', ['hs.core', 'hs.map'])
-            .directive('hs.permalink.directive', ['$timeout', function($timeout) {
+    function(angular, social, bson) {
+        angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map'])
+            .directive('hs.permalink.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha,
-                    link: function($scope, element, attrs) {
-                        $timeout(function() {
-                            addthis.init();
-                            addthis.toolbox($('.addthis_toolbox').get(), {}, {});
-                        });
-                    }
+                    templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
-            }])
+            })
             .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service',
                 function($rootScope, OlMap, Core, utils) {
                     var BSON = bson().BSON;
@@ -129,9 +123,10 @@ define(['angular', 'addthis', 'bson', 'map', 'core'],
                     return me;
                 }
             ])
-            .controller('hs.permalink.controller', ['$scope', 'hs.permalink.service_url',
-                function($scope, service) {
+            .controller('hs.permalink.controller', ['$scope', 'hs.permalink.service_url', 'Socialshare',
+                function($scope, service, socialshare) {
                     $scope.embed_code = "";
+                    $scope.currentUrl = "";
                     $scope.getCurrentUrl = function() {
                         return window.location.origin + service.current_url;
                     }
@@ -140,8 +135,10 @@ define(['angular', 'addthis', 'bson', 'map', 'core'],
                     }
                     $scope.$on('browserurl.updated', function() {
                         $scope.embed_code = $scope.getEmbedCode();
+                        $scope.currentUrl = $scope.getCurrentUrl();
                         if (!$scope.$$phase) $scope.$digest();
                     })
+
                     $scope.$emit('scope_loaded', "Permalink");
                 }
             ]);

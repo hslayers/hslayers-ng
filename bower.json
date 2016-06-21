@@ -10,6 +10,7 @@
     "angular-loader": "1.4.x",
     "angular-cookies": "1.4.x",
     "angular-sanitize": "1.4.x",
+    "angularjs-socialshare": "2.2.x",
     "angular-mocks": "1.4.x",
     "html5-boilerplate": "4.3.x",
     "bootstrap": "3.3.x",

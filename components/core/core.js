@@ -14,6 +14,7 @@ require.config({
         angular: hsl_path + 'bower_components/angular/angular',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
+        'angularjs-socialshare': hsl_path + 'bower_components/angularjs-socialshare/dist/angular-socialshare',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap',
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'bower_components/crossfilter/crossfilter.min',
         d3: requirejs.s.contexts._.config.paths.d3 || hsl_path + 'bower_components/d3/d3.min',
@@ -57,16 +58,14 @@ require.config({
         routing: hsl_path + 'components/routing/routing',
         tracking: hsl_path + 'components/tracking/tracking',
         s4a: requirejs.s.contexts._.config.paths.s4a || hsl_path + 'bower_components/s4a-js/dist/s4a.min',
-        'dragdroplists': hsl_path + 'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
-        addthis: requirejs.s.contexts._.config.paths.addthis || '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-576584949c5346ee'
-
+        'dragdroplists': hsl_path + 'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists'
     },
     shim: {
         'angular': {
             'exports': 'angular'
         },
-        'addthis': {
-            exports: 'addthis'
+        'angularjs-socialshare': {
+            deps: ['angular']
         },
         'bson': {
             'exports': 'bson'

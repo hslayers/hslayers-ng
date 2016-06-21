@@ -3,10 +3,10 @@
  * @memberOf hs
  */
 
-define(['angular', 'ol', 'SparqlJson', 'map'],
+define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
 
-    function(angular, ol, SparqlJson) {
-        var module = angular.module('hs.compositions', ['hs.map', 'hs.core'])
+    function(angular, ol, SparqlJson, social) {
+        var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core'])
             .directive('hs.compositions.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
@@ -550,6 +550,7 @@ define(['angular', 'ol', 'SparqlJson', 'map'],
                 $scope.shareComposition = function(record) {
                     $scope.shareUrl = $location.protocol() + "://" + location.host + location.pathname + "?composition=" + encodeURIComponent(record.link);
                     $scope.shareTitle = record.title;
+                    $scope.shareDescription = record.abstract;
                     if (!$scope.$$phase) $scope.$digest();
                     $("#hs-dialog-area #composition-share-dialog").remove();
                     var el = angular.element('<div hs.compositions.share_dialog_directive></span>');

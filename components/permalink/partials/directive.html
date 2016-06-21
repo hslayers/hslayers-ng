@@ -10,14 +10,18 @@
             <div class="form-group">
                 <label for="permalink-embed" class="control-label" translate>Embed code</label>
                 <textarea  class="form-control" style="height: 200px" id = "permalink-embed" ng-model="embed_code"></textarea>
-                <!-- Go to www.addthis.com/dashboard to customize your tools -->
                 <br/>
-                <div  class="addthis_toolbox addthis_default_style addthis_32x32_style">
-                    <a class="addthis_button_facebook"></a>
-                    <a class="addthis_button_twitter"></a>
-                    <a class="addthis_button_google_plusone_share"></a>
-                    <a class="addthis_button_more"></a>
-                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" href="#" socialshare socialshare-provider="twitter" socialshare-text="HSLayers-NG map sharing" socialshare-hashtags="map, gis" socialshare-url="{{currentUrl}}">
+                    <i class="icon-twitter"></i> Twitter
+                </button>
+                <button class="btn btn-default" socialshare socialshare-provider="facebook" socialshare-text="HSLayers-NG map sharing" socialshare-hashtags="map, gis" socialshare-url="{{currentUrl}}">
+                    <i class="icon-facebook"></i> Facebook
+                </button>
+                <button class="btn btn-default" socialshare socialshare-provider="google" socialshare-text="HSLayers-NG map sharing" socialshare-hashtags="map, gis" socialshare-url="{{currentUrl}}">
+                    <i class="icon-googleplus"></i> Google
+                </button>
             </div>
     </div>
 </div>
