@@ -1,4 +1,4 @@
-<div ng-if="!Core.isAuthorized()">
+<div ng-if="Core.isAuthorized()">
     <form class="form">
         <div class="form-group">
             <label for="hs-stc-title" class="control-label" translate>Name</label>
@@ -77,7 +77,7 @@
         </div>
     </div>
 </div>
-<div ng-if="Core.isAuthorized()">
+<div ng-if="!Core.isAuthorized()">
 <div class="alert alert-info" translate>
   You are not authorized to store composition. Please sign in or contact administrator for your credentials.
 </div>
