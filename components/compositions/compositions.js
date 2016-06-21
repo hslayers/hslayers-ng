@@ -58,6 +58,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
             var me = {
                 composition_loaded: null,
                 composition_edited: false,
+                utils: utils,
                 current_composition_title: "",
                 load: function(url, overwrite, callback) {
                     url = url.replace('&amp;', '&');
@@ -222,11 +223,21 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                                         params: params,
                                         crossOrigin: 'anonymous',
                                         projection: lyr_def.projection,
-                                        ratio: lyr_def.ratio,
-                                        crossOrigin: null
+                                        ratio: lyr_def.ratio
                                     })
                                 });
                                 new_layer.setVisible(lyr_def.visibility);
+                                if (!lyr_def.singleTile) {
+                                    new_layer.getSource().on('tileloadstart', function(img) {
+                                        img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
+
+                                    }, this);
+                                } else {
+                                    new_layer.getSource().on('imageloadstart', function(img) {
+                                        img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
+
+                                    }, this);
+                                }
                                 layers.push(new_layer);
                                 break;
                             case 'OpenLayers.Layer.Vector':

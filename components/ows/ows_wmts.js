@@ -135,7 +135,7 @@ define(['angular', 'ol', 'utils'],
                                         INFO_FORMAT: (layer.queryable ? query_format : undefined),
                                         FORMAT: image_format
                                     },
-                                    crossOrigin: null
+                                    crossOrigin: 'anonymous'
                                 }),
                                 abstract: layer.Abstract,
                                 useInterimTilesOnError: false,

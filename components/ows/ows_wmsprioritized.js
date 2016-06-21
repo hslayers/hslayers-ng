@@ -90,6 +90,7 @@ define(['angular'],
                                         INFO_FORMAT: undefined,
                                         r: Math.random()
                                     },
+                                    crossOrigin: 'anonymous'
                                 })
                             });
 

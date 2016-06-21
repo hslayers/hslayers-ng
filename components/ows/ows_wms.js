@@ -135,13 +135,16 @@ define(['angular', 'ol', 'utils'],
                                         INFO_FORMAT: (layer.queryable ? query_format : undefined),
                                         FORMAT: image_format
                                     },
-                                    crossOrigin: null
+                                    crossOrigin: 'anonymous'
                                 }),
                                 abstract: layer.Abstract,
                                 useInterimTilesOnError: false,
                                 MetadataURL: layer.MetadataURL,
                                 BoundingBox: layer.BoundingBox
                             });
+                            new_layer.getSource().on('tileloadstart', function(img) {
+                                img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
+                            }, $scope);
                             tmp.push(new_layer);
                         })
                     })
@@ -186,9 +189,10 @@ define(['angular', 'ol', 'utils'],
          * @memberOf hs.ows.wms
          * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
          */
-        .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope',
-            function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
+        .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope', 'hs.utils.service',
+            function($scope, OlMap, srv_caps, Core, $compile, $rootScope, utils) {
                 $scope.use_resampling = false;
+                $scope.utils = utils;
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
 
                 $scope.capabilitiesReceived = function(response) {
@@ -376,7 +380,7 @@ define(['angular', 'ol', 'utils'],
                                 FROMCRS: $scope.srs,
                                 VERSION: $scope.version
                             },
-                            crossOrigin: null
+                            crossOrigin: 'anonymous'
                         }),
                         minResolution: layer.MinScaleDenominator,
                         maxResolution: layer.MaxScaleDenominator,
@@ -389,7 +393,17 @@ define(['angular', 'ol', 'utils'],
                         dimensions: dimensions,
                         legends: legends
                     });
+                    if ($scope.use_tiles) {
+                        new_layer.getSource().on('tileloadstart', function(img) {
+                            img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
 
+                        }, $scope);
+                    } else {
+                        new_layer.getSource().on('imageloadstart', function(img) {
+                            img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
+
+                        }, $scope);
+                    }
                     OlMap.map.addLayer(new_layer);
                 }
 
