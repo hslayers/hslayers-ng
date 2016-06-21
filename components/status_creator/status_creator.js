@@ -351,6 +351,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
                 $scope.layers = [];
                 $scope.id = '';
+                $scope.thumbnail = null;
                 $scope.panel_name = 'status_creator';
                 $scope.current_composition_title = '';
                 $scope.config = config;
@@ -465,6 +466,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             permanent: true,
                             id: $scope.id,
                             project: config.project_name,
+                            thumbnail: $scope.thumbnail,
                             request: "save"
                         }),
                         success: function(j) {
@@ -635,12 +637,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         canvas2.style.width = width + "px";
                         canvas2.style.height = height + "px";
                         canvas2.width = width;
-                        canvas2.height = 256;
+                        canvas2.height = height;
                         var ctx2 = canvas2.getContext("2d");
                         ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
                         $('#hs-stc-thumbnail').attr('src', canvas2.toDataURL('image/png'));
+                        this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
                         $('#hs-stc-thumbnail').width(width).height(height);
-                    });
+                    }, $scope);
                     OlMap.map.renderSync();
 
                 });

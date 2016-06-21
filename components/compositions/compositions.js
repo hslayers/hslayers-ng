@@ -438,6 +438,9 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                                     if (angular.isUndefined(record.link)) {
                                         record.link = (config.hostname.status_manager || config.hostname.default) + config.status_manager_url + '?request=load&id=' + record.id;
                                     }
+                                    if (angular.isUndefined(record.thumbnail)) {
+                                        record.thumbnail = (config.hostname.status_manager || config.hostname.default) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
+                                    }
                                     var attributes = {
                                         record: record,
                                         hs_notqueryable: true,
@@ -571,7 +574,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
 
                 $scope.detailComposition = function(record) {
                     $scope.info = composition_parser.loadInfo(record.link);
-
+                    $scope.info.thumbnail = record.thumbnail;
                     if (!$scope.$$phase) $scope.$digest();
                     $("#hs-dialog-area #composition-info-dialog").remove();
                     var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
