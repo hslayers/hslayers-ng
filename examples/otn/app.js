@@ -30,7 +30,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                         .attr('href', 'http://opentnet.eu/')
                         .attr('target', '_blank')
                         .addClass('btn btn-default')
-                        .css({'z-index': 1000, 'position': 'absolute', 'top':'5px', 'right':'5px'});
+                        .css({
+                            'z-index': 1000,
+                            'position': 'absolute',
+                            'top': '5px',
+                            'right': '5px'
+                        });
                     element.append($otn);
                 }
             };
@@ -94,16 +99,16 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             connectTypes: ['', 'WMS', 'WMTS', 'GeoJSON', 'KML'],
             dsPaging: 30,
             hostname: {
-                default: 'http://otn-production.intrasoft-intl.com'
+                default: 'http://opentransportnet.eu'
             },
             compositions_catalogue_url: '/php/metadata/csw/',
             status_manager_url: '/wwwlibs/statusmanager2/index.php',
             datasources: [{
                 title: "Hub layers",
-                url: "http://otn-production.intrasoft-intl.com/php/metadata/csw/",
+                url: "http://opentransportnet.eu/php/metadata/csw/",
                 language: 'eng',
                 type: "micka",
-                code_list_url: 'http://otn-production.intrasoft-intl.com/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                code_list_url: 'http://opentransportnet.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
             }]
         });
 
