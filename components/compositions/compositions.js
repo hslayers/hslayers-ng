@@ -423,6 +423,9 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                             cache: false
                         })
                         .done(function(response) {
+                            if angular.isUndefined($scope.compositions) {
+                                $scope.compositions = [];
+                            }
                             ajax_req = null;
                             angular.forEach(response.results, function(record) {
                                 var found = false;
