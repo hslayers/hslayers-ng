@@ -395,6 +395,9 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                                     highlighted: false
                                 };
                                 record.editable = false;
+                                if (angular.isUndefined(record.thumbnail)) {
+                                    record.thumbnail = (config.hostname.status_manager || config.hostname.default) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
+                                }
                                 var extent = composition_parser.parseExtent(record.bbox);
                                 //Check if height or Width covers the whole screen
                                 if (!((extent[0] < cur_map_extent[0] && extent[2] > cur_map_extent[2]) || (extent[1] < cur_map_extent[1] && extent[3] > cur_map_extent[3]))) {
