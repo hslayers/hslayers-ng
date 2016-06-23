@@ -11,21 +11,22 @@ define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
             })
-            .service("hs.permalink.service_url", ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service',
-                function($rootScope, OlMap, Core, utils) {
+            .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service',
+                function($rootScope, $location, $window, OlMap, Core, utils) {
                     var BSON = bson().BSON;
 
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
                     me.current_url = "";
+                    me.paramJson = {};
+                    me.params = [];
                     me.update = function(e) {
                         var view = OlMap.map.getView();
-                        var paramJson = {};
-                        paramJson.hsX = view.getCenter()[0];
-                        paramJson.hsY = view.getCenter()[1];
-                        paramJson.hsZ = view.getZoom();
-                        paramJson.hsPanel = Core.mainpanel;
+                        me.paramJson.hsX = view.getCenter()[0];
+                        me.paramJson.hsY = view.getCenter()[1];
+                        me.paramJson.hsZ = view.getZoom();
+                        me.paramJson.hsPanel = Core.mainpanel;
                         var visible_layers = [];
                         OlMap.map.getLayers().forEach(function(lyr) {
                             if (lyr.get('show_in_manager') != null && lyr.get('show_in_manager') == false) return;
@@ -33,12 +34,23 @@ define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
                                 visible_layers.push(lyr.get("title"));
                             }
                         });
-                        paramJson.hsVisibleLayers = visible_layers.join(";");
+                        me.paramJson.hsVisibleLayers = visible_layers.join(";");
 
-                        me.push('state', window.btoa(utils.createHexString(BSON.serialize(paramJson, false, true, false))));
-                        history.pushState({}, "", me.current_url);
+                        me.push('hs_x', view.getCenter()[0]);
+                        me.push('hs_y', view.getCenter()[1]);
+                        me.push('hs_z', view.getZoom());
+                        me.push('hs_panel', Core.mainpanel);
+                        me.push('visible_layers', visible_layers.join(";"));
+                        window.history.pushState({
+                            path: me.current_url
+                        }, "any", window.location.origin + me.current_url);
                         $rootScope.$broadcast('browserurl.updated');
                     };
+
+                    me.getPermalinkUrl = function() {
+                        return window.location.origin + window.location.pathname + "?permalink=" + window.btoa(utils.createHexString(BSON.serialize(me.paramJson, false, true, false)));
+                    }
+
                     me.parse = function(str) {
                         if (typeof str !== 'string') {
                             return {};
@@ -89,13 +101,12 @@ define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
                         var new_params_string = me.stringify(me.params);
                         me.current_url = window.location.pathname + '?' + new_params_string;
                     };
-                    me.params = me.parse(location.search);
-                    me.getParamValue = function(param, loc) {
-                        if (!loc) loc = location.search;
-                        var tmp = me.parse(loc);
-                        if (tmp.state) {
-                            var jsonString = BSON.deserialize(utils.parseHexString(atob(tmp.state)));
-                            delete tmp.state;
+
+                    me.getParamValue = function(param) {
+                        var tmp = me.parse(location.search);
+                        if (tmp.permalink) {
+                            var jsonString = BSON.deserialize(utils.parseHexString(atob(tmp.permalink)));
+                            delete tmp.permalink;
                             tmp['hs_x'] = jsonString.hsX;
                             tmp['hs_y'] = jsonString.hsY;
                             tmp['hs_z'] = jsonString.hsZ;
@@ -123,19 +134,24 @@ define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
                     return me;
                 }
             ])
-            .controller('hs.permalink.controller', ['$scope', 'hs.permalink.service_url', 'Socialshare',
-                function($scope, service, socialshare) {
+            .controller('hs.permalink.controller', ['$scope', '$http', 'Core', 'hs.permalink.service_url', 'Socialshare',
+                function($scope, $http, Core, service, socialshare) {
                     $scope.embed_code = "";
-                    $scope.currentUrl = "";
-                    $scope.getCurrentUrl = function() {
-                        return window.location.origin + service.current_url;
-                    }
+
                     $scope.getEmbedCode = function() {
-                        return '<iframe src="' + window.location.origin + service.current_url + '" width="1000" height="700"></iframe>';
+                        return '<iframe src="' + $scope.permalink_url + '" width="1000" height="700"></iframe>';
                     }
                     $scope.$on('browserurl.updated', function() {
-                        $scope.embed_code = $scope.getEmbedCode();
-                        $scope.currentUrl = $scope.getCurrentUrl();
+                        if (Core.mainpanel == "permalink") {
+                            $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                                longUrl: service.getPermalinkUrl()
+                            }).success(function(data, status, headers, config) {
+                                $scope.permalink_url = data.id;
+                                $scope.embed_code = $scope.getEmbedCode();
+                            }).error(function(data, status, headers, config) {
+                                console.log('Error creating short Url');
+                            });
+                        }
                         if (!$scope.$$phase) $scope.$digest();
                     })
 

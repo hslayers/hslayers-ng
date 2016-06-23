@@ -211,8 +211,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 hs_y = permalink.getParamValue('hs_y');
                 hs_z = permalink.getParamValue('hs_z');
                 if (hs_x && hs_x != 'NaN' && hs_y && hs_y != 'NaN' && hs_z && hs_z != 'NaN') {
-                    var loc = location.search;
-                    $scope.moveToAndZoom(parseFloat(permalink.getParamValue('hs_x', loc)), parseFloat(permalink.getParamValue('hs_y', loc)), parseInt(permalink.getParamValue('hs_z', loc)));
+                    $scope.moveToAndZoom(parseFloat(hs_x), parseFloat(hs_y), parseInt(hs_z));
                 }
 
                 $scope.setTargetDiv("map");
