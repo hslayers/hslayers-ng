@@ -8,7 +8,14 @@
                 </h4>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                {{shareUrl}}
+                <div class="row">
+                    <div class="col-md-3"><b translate>Abstract</b></div>
+                    <div class="col-md-9">{{shareDescription}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><b translate>URL</b></div>
+                    <div class="col-md-9"><a href="{{shareUrl}}">{{shareUrl}}</a></div>
+                </div>
             </div>
             <div class="modal-footer" id="stc-footer">
                 <button class="btn btn-default" href="#" socialshare socialshare-provider="twitter" socialshare-text="{{shareTitle}}" socialshare-hashtags="map, gis" socialshare-url="{{shareUrl}}">

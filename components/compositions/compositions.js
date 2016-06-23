@@ -323,8 +323,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
             return me;
         }])
 
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
-            function($scope, $rootScope, $location, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
+        .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
+            function($scope, $rootScope, $location, $http, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
                 $scope.page_size = 15;
                 $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
@@ -568,7 +568,15 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                 });
 
                 $scope.shareComposition = function(record) {
-                    $scope.shareUrl = $location.protocol() + "://" + location.host + location.pathname + "?composition=" + encodeURIComponent(record.link);
+                    $scope.shareUrlLong = $location.protocol() + "://" + location.host + location.pathname + "?composition=" + encodeURIComponent(record.link);
+                    $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                        longUrl: $scope.shareUrlLong
+                    }).success(function(data, status, headers, config) {
+                        $scope.shareUrl = data.id;
+                    }).error(function(data, status, headers, config) {
+                        console.log('Error creating short Url');
+                    });
+
                     $scope.shareTitle = record.title;
                     $scope.shareDescription = record.abstract;
                     if (!$scope.$$phase) $scope.$digest();
