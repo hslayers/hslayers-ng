@@ -14,7 +14,7 @@ define(['angular', 'app'], function(angular, app) {
     .service('hs.utils.service', ['config', function(config) {
         var me = this;
 
-        this.proxify = function(url, toEncoding = true) {
+        this.proxify = function(url, toEncoding) {
             toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
             var outUrl = url;
             if (url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) {
