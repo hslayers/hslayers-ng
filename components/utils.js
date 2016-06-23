@@ -15,6 +15,7 @@ define(['angular', 'app'], function(angular, app) {
         var me = this;
 
         this.proxify = function(url, toEncoding = true) {
+            toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
             var outUrl = url;
             if (url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) {
                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
