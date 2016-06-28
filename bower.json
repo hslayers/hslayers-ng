@@ -22,7 +22,6 @@
     "proj4": "2.3.x",
     "ol3-popup": "1.0.x",
     "s4a-js": "*",
-    "angular-drag-and-drop-lists": "^1.4.0",
-    "bson": "*"
+    "angular-drag-and-drop-lists": "^1.4.0"
   }
 }
