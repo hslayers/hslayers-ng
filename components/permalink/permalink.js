@@ -142,6 +142,9 @@ define(['angular', 'angularjs-socialshare', 'map', 'core'],
                         var timer = null;
                         $rootScope.$on('map.extent_changed', function(event, data, b) {
                             me.update(event)
+                            if (Core.mainpanel == 'permalink') {
+                                $rootScope.$broadcast('browserurl.updated');
+                            }
                         });
                         OlMap.map.getLayers().on("add", function(e) {
                             var layer = e.element;
