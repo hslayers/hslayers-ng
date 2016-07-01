@@ -118,6 +118,7 @@ define(['angular', 'ol', 'utils'],
                         if (console) console.log("Load service", this);
                         $(this.Layer).each(function() {
                             layer = this;
+                            if (console) console.log("Load service", this);
                             var attributions = [];
                             if (layer.Attribution) {
                                 attributions = [new ol.Attribution({
@@ -143,8 +144,8 @@ define(['angular', 'ol', 'utils'],
                                 BoundingBox: layer.BoundingBox
                             });
                             new_layer.getSource().on('tileloadstart', function(img) {
-                                img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
-                            }, $scope);
+                                img.image.src_ = utils.proxify(decodeURIComponent(img.image.src_), false);
+                            }, layer);
                             tmp.push(new_layer);
                         })
                     })
@@ -225,6 +226,7 @@ define(['angular', 'ol', 'utils'],
                         $scope.srsChanged();
 
                         $scope.services = caps.Capability.Layer;
+                                                
                         $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
                         $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
                         $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
