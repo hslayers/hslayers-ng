@@ -2,7 +2,7 @@
 
 define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info'],
 
-    function(angular, ol, toolbar, layermanager,SparqlJson) {
+    function(angular, ol, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
             'hs.sidebar',
             'hs.toolbar',
