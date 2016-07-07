@@ -455,7 +455,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 }
 
                 $scope.save = function(save_as_new) {
-                    if (save_as_new || $scope.id == '') $scope.id = service.generateUuid();
+                    if (save_as_new || $scope.id == '') $scope.id = status_creator.generateUuid();
                     $.ajax({
                         url: (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
                         cache: false,
