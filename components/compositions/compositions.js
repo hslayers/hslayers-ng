@@ -326,7 +326,6 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
         .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
             function($scope, $rootScope, $location, $http, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
                 $scope.page_size = 15;
-                $scope.page_count = 1000;
                 $scope.panel_name = 'composition_browser';
                 $scope.keywords = {
                     "Basemap": false,
@@ -350,14 +349,34 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                 $scope.filter_by_extent = true;
                 $scope.use_callback_for_edit = false; //Used for opening Edit panel from the list of compositions
 
+                $scope.getPreviousCompositions = function() {
+                    if ($scope.compStart - $scope.page_size < 0) {
+                        $scope.compStart = 0;
+                        $scope.compNext = $scope.page_size;
+                    } else {
+                        $scope.compStart -= $scope.page_size;
+                        $scope.compNext = $scope.compStart + $scope.page_size;
+                    }
+                    $scope.loadCompositions();
+                }
+
+                $scope.getNextCompositions = function() {
+                    if ($scope.compNext != 0) {
+                        $scope.compStart = Math.floor($scope.compNext / $scope.page_size) * $scope.page_size;
+
+                        if ($scope.compNext + $scope.page_size > $scope.compositionsCount) {
+                            $scope.compNext = $scope.compositionsCount;
+                        } else {
+                            $scope.compNext += $scope.page_size;
+                        }
+                        $scope.loadCompositions();
+                    }
+                }
+
+
                 var ajax_req = null;
-                $scope.loadCompositions = function(page) {
-                    if (typeof page === 'undefined') page = 1;
-                    if ($scope.page_count == 0) $scope.page_count = 1;
-                    if (page == 0 || page > $scope.page_count) return;
+                $scope.loadCompositions = function() {
                     extent_layer.getSource().clear();
-                    $scope.current_page = page;
-                    $scope.first_composition_ix = (page - 1) * $scope.page_size;
                     var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent(" AND AnyText like '*" + $scope.query.title + "*'") : '';
                     var keyword_filter = "";
                     var selected = [];
@@ -372,7 +391,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                     var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                     var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
                     var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                    var url = (config.hostname.compositions_catalogue || config.hostname.default) + config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.first_composition_ix + "&page=1&limit=" + $scope.page_size;
+                    var url = (config.hostname.compositions_catalogue || config.hostname.default) + config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.compStart + "&limit=" + $scope.page_size;
                     url = utils.proxify(url);
                     if (ajax_req != null) ajax_req.abort();
                     ajax_req = $.ajax({
@@ -382,12 +401,13 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                             ajax_req = null;
                             $('.tooltip').remove();
                             $scope.compositions = response.records;
-                            $scope.pages = [];
-                            $scope.page_count = Math.ceil(response.matched / $scope.page_size);
-                            if (response.matched > response.returned) {
-                                for (var i = 1; i <= Math.ceil(response.matched / $scope.page_size); i++)
-                                    $scope.pages.push(i);
+                            if (response.records && response.records.length > 0) {
+                                $scope.compositionsCount = response.matched;
+                            } else {
+                                $scope.compositionsCount = 0;
                             }
+
+                            $scope.compNext = response.next;
                             angular.forEach($scope.compositions, function(record) {
                                 var attributes = {
                                     record: record,
@@ -428,6 +448,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                         .done(function(response) {
                             if (angular.isUndefined($scope.compositions)) {
                                 $scope.compositions = [];
+                                $scope.compositionsCount = 0;
                             }
                             ajax_req = null;
                             angular.forEach(response.results, function(record) {
@@ -457,6 +478,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                                     extent_layer.getSource().addFeatures([record.feature]);
                                     if (record) {
                                         $scope.compositions.push(record);
+                                        $scope.compositionsCount = $scope.compositionsCount + 1;
                                     }
                                 }
                             });

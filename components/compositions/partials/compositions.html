@@ -1,5 +1,5 @@
 <div class="panel panel-default mainpanel hs-comp-mainpanel">
-    <div class="panel-heading"><span class="panel-title" translate>Compositions</span>
+    <div class="panel-heading"><span class="panel-title" translate>Compositions <span ng-show='compositionsCount>0'>({{compositionsCount}})</span></span>
         <button type="button" class="close" ng-click="Core.closePanel(this)">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
@@ -49,12 +49,15 @@
         </ul>
     </div>
 
-    <div class="panel-footer">
+
+    <div class="panel-footer" ng-show='compositionsCount>0'>
         <nav>
-            <ul class="pager" ng-show="pages.length>0">
-                <li><a href="#" ng-click="loadCompositions(current_page - 1)" aria-label="Previous" translate>Previous</a></li>
-                <li><a href="#" ng-click="loadCompositions(current_page + 1)" aria-label="Next" translate>Next</a></li>
-            </ul>
+          <ul class="pager">
+            <li class="previous" ng-class="compStart == 0 ? 'disabled':''" ng-click='getPreviousCompositions()'><a href="#"><span aria-hidden="true">&larr;</span></a></li>
+            <li ng-if="compNext != 0"><span> Results {{compStart + 1}} - {{compNext}}</span></li>
+            <li ng-if="compNext == 0"><span> Results {{compStart + 1}} - {{compositionsCount}}</span></li>
+            <li class="next" ng-class="compNext == 0 ? 'disabled':''" ng-click='getNextCompositions()'><a href="#"><span aria-hidden="true">&rarr;</span></a></li>
+          </ul>
         </nav>
     </div>
 </div>
