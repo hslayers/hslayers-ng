@@ -1,19 +1,22 @@
 'use strict';
 
-define(['ol', 'dc', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'query', 'search', 'permalink', 'measure', 'geolocation', 'bootstrap', 'panoramio', 'bootstrap', 'api', 'styles'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info'],
 
-    function(ol, dc, toolbar, layermanager, SparqlJson) {
+    function(angular, ol, toolbar, layermanager,SparqlJson) {
         var module = angular.module('hs', [
+            'hs.sidebar',
             'hs.toolbar',
             'hs.layermanager',
+            'hs.map',
             'hs.query',
-            'hs.search', 'hs.permalink',
-            'hs.geolocation',
+            'hs.search', 'hs.permalink', 'hs.measure',
+            'hs.geolocation', 'hs.core',
+            'hs.status_creator',
             'hs.api',
-            /*'hs.feature_crossfilter', */
-            'hs.panoramio',
-            'hs.sidebar',
-            'hs.styles'
+            'hs.ows',
+            'gettext',
+            'hs.compositions',
+            'hs.info'
         ]);
 
         module.directive('hs', ['Core', function(Core) {
