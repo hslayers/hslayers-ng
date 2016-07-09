@@ -176,7 +176,9 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                         }
                     });
 
-                    OlMap.map.addLayer(lyr);
+                    if (options.from_composition != true) {
+                        OlMap.map.addLayer(lyr);
+                    }
                     return lyr;
                 };
 

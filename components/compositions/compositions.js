@@ -256,13 +256,16 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                                         case 'ol.format.KML':
 
                                             var lyr = nonwmsservice.add('kml', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
+                                            layers.push(lyr);
                                             break;
                                         case 'ol.format.GeoJSON':
                                             var lyr = nonwmsservice.add('geojson', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
+                                            layers.push(lyr);
                                             break;
                                         case 'hs.format.WFS':
                                             options.defOptions = lyr_def.defOptions;
                                             var lyr = nonwmsservice.add('wfs', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
+                                            layers.push(lyr);
                                             break;
                                         case 'hs.format.Sparql':
                                             var url = decodeURIComponent(lyr_def.protocol.url);
