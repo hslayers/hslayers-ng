@@ -78,6 +78,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 angular.forEach(config.box_layers, function(box) {
                     angular.forEach(box.get('layers'), function(lyr) {
                         lyr.setVisible(me.isLayerVisibleInPermalink(lyr, me.visible_layers));
+                        lyr.manuallyAdded = false;
                         me.map.addLayer(lyr);
                     });
                 });
@@ -86,6 +87,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             if (angular.isDefined(config.default_layers)) {
                 angular.forEach(config.default_layers, function(lyr) {
                     lyr.setVisible(me.isLayerVisibleInPermalink(lyr, me.visible_layers));
+                    lyr.manuallyAdded = false;
                     me.map.addLayer(lyr);
                 });
             }
@@ -214,6 +216,9 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     $scope.moveToAndZoom(parseFloat(hs_x), parseFloat(hs_y), parseInt(hs_z));
                 }
 
+                if (permalink.getParamValue('permalink')) {
+                    permalink.parsePermalinkLayers();
+                }
                 $scope.setTargetDiv("map");
             }
 

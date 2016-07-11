@@ -330,6 +330,14 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     }
                     return json;
+                },
+
+                generateUuid: function() {
+                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        var r = Math.random() * 16 | 0,
+                            v = c == 'x' ? r : r & 0x3 | 0x8;
+                        return v.toString(16);
+                    });
                 }
             };
 
@@ -392,14 +400,6 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 }
 
-                function generateUuid() {
-                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                        var r = Math.random() * 16 | 0,
-                            v = c == 'x' ? r : r & 0x3 | 0x8;
-                        return v.toString(16);
-                    });
-                };
-
                 $scope.showResultDialog = function() {
                     if ($("#hs-dialog-area #status-creator-result-dialog").length == 0) {
                         var el = angular.element('<div hs.status_creator.result_dialog_directive></span>');
@@ -455,7 +455,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 }
 
                 $scope.save = function(save_as_new) {
-                    if (save_as_new || $scope.id == '') $scope.id = generateUuid();
+                    if (save_as_new || $scope.id == '') $scope.id = status_creator.generateUuid();
                     $.ajax({
                         url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
                         cache: false,

@@ -742,11 +742,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                         d.addMonths(currentlayer.date_increment);
                         break;
                     default:
-                        if ((currentlayer.date_increment > currentlayer.min_time) && (currentlayer.date_increment < currentlayer.max_time)) {
-                            d = new Date(parseInt(currentlayer.date_increment));
-                        } else {
-                            d = currentlayer.time;
+                        if (currentlayer.date_increment < currentlayer.min_time) {
+                            currentlayer.date_increment = currentlayer.min_time;
                         }
+                        if (currentlayer.date_increment > currentlayer.max_time) {
+                            currentlayer.date_increment = currentlayer.max_time;
+                        }
+                        d = new Date(parseInt(currentlayer.date_increment));
                 }
                 currentlayer.time = d;
                 currentlayer.layer.getSource().updateParams({

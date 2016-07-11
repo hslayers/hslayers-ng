@@ -2,53 +2,61 @@
  * @namespace hs.permalink
  * @memberOf hs
  */
-define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
+define(['angular', 'angularjs-socialshare', 'map', 'core'],
 
-    function(angular, social, bson) {
+    function(angular, social) {
         angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map'])
             .directive('hs.permalink.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
             })
-            .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service',
-                function($rootScope, $location, $window, OlMap, Core, utils) {
-                    var BSON = bson().BSON;
+            .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser',
+                function($rootScope, $location, $window, OlMap, Core, utils, status, compositions) {
 
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
                     me.current_url = "";
-                    me.paramJson = {};
+                    me.permalinkLayers = "";
+                    me.added_layers = [];
                     me.params = [];
                     me.update = function(e) {
                         var view = OlMap.map.getView();
-                        me.paramJson.hsX = view.getCenter()[0];
-                        me.paramJson.hsY = view.getCenter()[1];
-                        me.paramJson.hsZ = view.getZoom();
-                        me.paramJson.hsPanel = Core.mainpanel;
+                        me.id = status.generateUuid();
                         var visible_layers = [];
+                        var added_layers = [];
                         OlMap.map.getLayers().forEach(function(lyr) {
                             if (lyr.get('show_in_manager') != null && lyr.get('show_in_manager') == false) return;
                             if (lyr.getVisible()) {
                                 visible_layers.push(lyr.get("title"));
                             }
+                            if (lyr.manuallyAdded != false) {
+                                added_layers.push(lyr)
+                            }
                         });
-                        me.paramJson.hsVisibleLayers = visible_layers.join(";");
+                        me.added_layers = status.layers2json(added_layers);
 
+                        if (Core.mainpanel) {
+                            if (Core.mainpanel == 'permalink') {
+                                me.push('hs_panel', 'layermanager');
+                            } else {
+                                me.push('hs_panel', Core.mainpanel);
+                            }
+                        }
                         me.push('hs_x', view.getCenter()[0]);
                         me.push('hs_y', view.getCenter()[1]);
                         me.push('hs_z', view.getZoom());
-                        me.push('hs_panel', Core.mainpanel);
                         me.push('visible_layers', visible_layers.join(";"));
                         window.history.pushState({
                             path: me.current_url
                         }, "any", window.location.origin + me.current_url);
-                        $rootScope.$broadcast('browserurl.updated');
                     };
 
                     me.getPermalinkUrl = function() {
-                        return window.location.origin + window.location.pathname + "?permalink=" + window.btoa(utils.createHexString(BSON.serialize(me.paramJson, false, true, false)));
+                        var stringLayers = (JSON.stringify(me.permalinkLayers));
+                        stringLayers = stringLayers.substring(1, stringLayers.length - 1);
+                        return window.location.origin + me.current_url + "&permalink=" + encodeURIComponent(stringLayers);
                     }
 
                     me.parse = function(str) {
@@ -83,6 +91,29 @@ define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
                             return ret;
                         }, {});
                     };
+
+                    me.parsePermalinkLayers = function() {
+                        var layersUrl = me.getParamValue('permalink');
+                        console.log
+                        $.ajax({
+                                url: layersUrl
+                            })
+                            .done(function(response) {
+                                if (response.success == true) {
+                                    var data = {};
+                                    data.data = {};
+                                    data.data.layers = response.data;
+                                    response.layers = response.data;
+                                    var layers = compositions.jsonToLayers(data);
+                                    for (var i = 0; i < layers.length; i++) {
+                                        OlMap.map.addLayer(layers[i]);
+                                    }
+                                } else {
+                                    console.log('Error loading permalink layers');
+                                }
+                            })
+
+                    }
                     me.stringify = function(obj) {
                         return obj ? Object.keys(obj).map(function(key) {
                             var val = obj[key];
@@ -104,16 +135,6 @@ define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
 
                     me.getParamValue = function(param) {
                         var tmp = me.parse(location.search);
-                        if (tmp.permalink) {
-                            var jsonString = BSON.deserialize(utils.parseHexString(atob(tmp.permalink)));
-                            delete tmp.permalink;
-                            tmp['hs_x'] = jsonString.hsX;
-                            tmp['hs_y'] = jsonString.hsY;
-                            tmp['hs_z'] = jsonString.hsZ;
-                            tmp['hs_panel'] = jsonString.hsPanel;
-                            tmp['visible_layers'] = jsonString.hsVisibleLayers;
-                        }
-
                         if (tmp[param]) return tmp[param];
                         else return null;
                     };
@@ -121,9 +142,14 @@ define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
                         var timer = null;
                         $rootScope.$on('map.extent_changed', function(event, data, b) {
                             me.update(event)
+                            if (Core.mainpanel == 'permalink') {
+                                $rootScope.$broadcast('browserurl.updated');
+                            }
                         });
                         OlMap.map.getLayers().on("add", function(e) {
-                            e.element.on('change:visible', function(e) {
+                            var layer = e.element;
+                            if (layer.get('show_in_manager') != null && layer.get('show_in_manager') == false) return;
+                            layer.on('change:visible', function(e) {
                                 if (timer != null) clearTimeout(timer);
                                 timer = setTimeout(function() {
                                     me.update(e)
@@ -134,13 +160,46 @@ define(['angular', 'angularjs-socialshare', 'bson', 'map', 'core'],
                     return me;
                 }
             ])
-            .controller('hs.permalink.controller', ['$scope', '$http', 'Core', 'hs.permalink.service_url', 'Socialshare',
-                function($scope, $http, Core, service, socialshare) {
+            .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare',
+                function($rootScope, $scope, $http, Core, config, service, socialshare) {
                     $scope.embed_code = "";
 
                     $scope.getEmbedCode = function() {
                         return '<iframe src="' + $scope.permalink_url + '" width="1000" height="700"></iframe>';
                     }
+
+                    $scope.$on('core.mainpanel_changed', function(event) {
+                        if (Core.mainpanel == 'permalink') {
+                            service.update();
+                            var status_url = (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                            if (service.added_layers.length > 0) {
+                                $.ajax({
+                                    url: status_url,
+                                    cache: false,
+                                    method: 'POST',
+                                    dataType: "json",
+                                    data: JSON.stringify({
+                                        data: service.added_layers,
+                                        permalink: true,
+                                        id: service.id,
+                                        project: config.project_name,
+                                        request: "save"
+                                    }),
+                                    success: function(j) {
+                                        service.permalinkLayers = status_url + "?request=load&id=" + service.id;
+                                        $rootScope.$broadcast('browserurl.updated');
+
+                                    },
+                                    error: function() {
+                                        console.log('Error saving permalink layers.');
+                                        $scope.success = false;
+                                    }
+                                })
+                            } else {
+                                $rootScope.$broadcast('browserurl.updated');
+                            }
+                        }
+                    });
                     $scope.$on('browserurl.updated', function() {
                         if (Core.mainpanel == "permalink") {
                             $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {

@@ -28,7 +28,6 @@ require.config({
         geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON',
         geolocation: requirejs.s.contexts._.config.paths.geolocation || hsl_path + 'components/geolocation/geolocation',
         info: requirejs.s.contexts._.config.paths['info'] || hsl_path + 'components/info/info',
-        'bson': hsl_path + 'bower_components/bson/browser_build/bson',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         legend: hsl_path + 'components/legend/legend',
         lodexplorer: hsl_path + 'components/lodexplorer/lodexplorer',
@@ -67,9 +66,6 @@ require.config({
         },
         'angularjs-socialshare': {
             deps: ['angular']
-        },
-        'bson': {
-            'exports': 'bson'
         },
         'angular-sanitize': {
             deps: ['angular'],
