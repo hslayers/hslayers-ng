@@ -35,6 +35,7 @@ require.config({
         map: hsl_path + 'components/map/map',
         measure: hsl_path + 'components/measure/measure',
         mobile_toolbar: requirejs.s.contexts._.config.paths.mobile_toolbar || hsl_path + 'components/mobile_toolbar/mobile_toolbar',
+        mobile_settings: requirejs.s.contexts._.config.paths.mobile_settings || hsl_path + 'components/mobile_settings/mobile_settings',
         ows: hsl_path + 'components/ows/ows',
         'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
         'ows.wfs': hsl_path + 'components/ows/ows_wfs',

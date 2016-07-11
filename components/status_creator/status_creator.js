@@ -417,7 +417,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.keywords = this.keywords;
 
                     $.ajax({
-                        url: (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
+                        url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
                         cache: false,
                         method: 'POST',
                         async: false,
@@ -457,7 +457,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 $scope.save = function(save_as_new) {
                     if (save_as_new || $scope.id == '') $scope.id = generateUuid();
                     $.ajax({
-                        url: (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
+                        url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
                         cache: false,
                         method: 'POST',
                         dataType: "json",
@@ -516,7 +516,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.groups = [];
                     if (config.advancedForm) {
                         $.ajax({
-                            url: (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php'),
+                            url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php'),
                             cache: false,
                             method: 'GET',
                             async: false,
@@ -553,7 +553,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
                 $scope.loadUserDetails = function() {
                     $.ajax({
-                        url: (config.hostname.status_manager || config.hostname.default) + config.status_manager_url + "?request=getuserinfo",
+                        url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=getuserinfo",
                         success: $scope.setUserDetails
                     });
                 };

@@ -193,8 +193,8 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                 OlMap.map.addInteraction(dragAndDrop);
                 dragAndDrop.on('addfeatures', function(event) {
                     var f = new ol.format.GeoJSON();
-                    var url = (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
-                    console.info(url, config.status_manager_url, config.hostname.status_manager, config.hostname.default);
+                    var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                    console.info(url, config.status_manager_url, config.hostname.user.url, config.hostname.status_manager.url, config.hostname.default.url);
                     var options = {};
                     options.features = event.features;
 

@@ -27,11 +27,20 @@ define(['angular', 'map', 'core', 'permalink'],
                 $scope.togglePanelspace = function() {
                     $scope.panelspace0pened = !$scope.panelspace0pened;
                     $scope.Core.sidebarExpanded = $scope.panelspace0pened;
+                    if ($(".menu-switch.btn-mobile .glyphicon-menu-hamburger")[0]) {
+                        $(".menu-switch.btn-mobile .glyphicon-menu-hamburger").removeClass("glyphicon-menu-hamburger");
+                        $(".menu-switch.btn-mobile .menu-icon").addClass($scope.Core.sidebarRight ? "glyphicon-menu-right" : "glyphicon-menu-left");
+                    } else {
+                        $(".menu-switch.btn-mobile .menu-icon").removeClass($scope.Core.sidebarRight ? "glyphicon-menu-right" : "glyphicon-menu-left");
+                        $(".menu-switch.btn-mobile .menu-icon").addClass("glyphicon-menu-hamburger");
+                    }
                     $(".panelspace").toggleClass("panelspace-opened");
                     $("#toolbar").toggleClass("panelspace-opened");
                     $("#map").toggleClass("panelspace-opened");
                     $("#menu").toggleClass("panelspace-opened");
                 }
+
+                togglePanelspace = $scope.togglePanelspace;
 
                 $scope.$emit('scope_loaded', "Mobile Toolbar");
             }
