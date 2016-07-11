@@ -44,9 +44,24 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 units: "m"
             }),
             hostname: {
-                default: 'http://youth.sdi4apps.eu',
-                compositions_catalogue: 'http://www.whatstheplan.eu',
-                status_manager: 'http://erra.ccss.cz'
+                "default": {
+                    "title": "Default",
+                    "type": "default",
+                    "editable": false,
+                    "url": 'http://youth.sdi4apps.eu'
+                },
+                "compositions_catalogue": {
+                    "title": "Compositions catalogue",
+                    "type": "compositions_catalogue",
+                    "editable": true,
+                    "url": 'http://www.whatstheplan.eu'
+                },
+                "status_manager": {
+                    "title": "Status manager",
+                    "type": "status_manager",
+                    "editable": true,
+                    "url": 'http://erra.ccss.cz'
+                },
             },
             compositions_catalogue_url: '/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
             //compositions_catalogue_url: 'http://erra.ccss.cz/php/metadata/csw/index.php',

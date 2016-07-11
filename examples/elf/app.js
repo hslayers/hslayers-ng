@@ -144,7 +144,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
                 units: "m"
             }),
             hostname: {
-                default: 'http://www.whatstheplan.eu'
+                "default": {
+                    "title": "Default",
+                    "type": "default",
+                    "editable": false,
+                    "url": 'http://www.whatstheplan.eu'
+                }
             },
             compositions_catalogue_url: '/php/metadata/csw/',
             status_manager_url: '/wwwlibs/statusmanager/index.php',

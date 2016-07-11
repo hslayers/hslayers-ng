@@ -99,7 +99,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             connectTypes: ['', 'WMS', 'WMTS', 'GeoJSON', 'KML'],
             dsPaging: 30,
             hostname: {
-                default: 'http://opentransportnet.eu'
+                "default": {
+                    "title": "Default",
+                    "type": "default",
+                    "editable": false,
+                    "url": 'http://opentransportnet.eu'
+                }
             },
             compositions_catalogue_url: '/php/metadata/csw/',
             status_manager_url: '/wwwlibs/statusmanager2/index.php',

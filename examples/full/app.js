@@ -164,7 +164,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                 units: "m"
             }),
             hostname: {
-                default: 'http://www.whatstheplan.eu'
+                "default": {
+                    "title": "Default",
+                    "type": "default",
+                    "editable": false,
+                    "url": 'http://www.whatstheplan.eu'
+                }
             },
             compositions_catalogue_url: '/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
             status_manager_url: '/wwwlibs/statusmanager2/index.php',
