@@ -905,7 +905,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
 
             $scope.$on('compositions.composition_loaded', function(event, data) {
                 if (angular.isUndefined(data.error)) {
-                    $scope.composition_id = data.data.id || data.id;
+                    if (angular.isDefined(data.data)) {
+                        $scope.composition_id = data.data.id;
+                    } else {
+                        $scope.composition_id = data.id;
+                    }
+
                 }
             });
 

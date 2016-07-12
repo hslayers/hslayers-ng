@@ -485,7 +485,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));
                             compInfo.id = $scope.id;
                             compInfo.title = $scope.title;
-                            compInfo.abstract = $scope.abstract
+                            compInfo.abstract = $scope.abstract || '';
                             $rootScope.$broadcast('compositions.composition_loading', compInfo);
                             $rootScope.$broadcast('compositions.composition_loaded', compInfo);
                         },

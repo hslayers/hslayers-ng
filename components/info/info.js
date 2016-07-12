@@ -21,9 +21,15 @@ define(['angular', 'map', 'core', 'permalink'],
 
                 $scope.$on('compositions.composition_loading', function(event, data) {
                     if (angular.isUndefined(data.error)) {
-                        $scope.composition_abstract = data.data.abstract || data.abstract;
-                        $scope.composition_title = data.data.title || data.title;
-                        $scope.composition_id = data.data.id || data.id;
+                        if (angular.isDefined(data.data)) {
+                            $scope.composition_abstract = data.data.abstract;
+                            $scope.composition_title = data.data.title;
+                            $scope.composition_id = data.data.id;
+                        } else {
+                            $scope.composition_abstract = data.abstract;
+                            $scope.composition_title = data.title;
+                            $scope.composition_id = data.id;
+                        }
                         $scope.composition_loaded = false;
                         $scope.info_image = 'icon-map';
                     }
