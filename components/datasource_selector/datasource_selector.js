@@ -218,7 +218,7 @@ define(['angular', 'ol', 'map'],
 
                 $scope.openMickaAdvancedSearch = function() {
                     if ($('#ds-advanced-micka').length == 0) {
-                        var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></span>');
+                        var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></div>');
                         $("#hs-dialog-area").append(el);
                         $compile(el)($scope);
                     } else {

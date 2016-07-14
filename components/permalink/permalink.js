@@ -2,10 +2,10 @@
  * @namespace hs.permalink
  * @memberOf hs
  */
-define(['angular', 'angularjs-socialshare', 'map', 'core'],
+define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'compositions'],
 
     function(angular, social) {
-        angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map'])
+        angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.status_creator', 'hs.compositions'])
             .directive('hs.permalink.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha

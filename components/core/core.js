@@ -106,6 +106,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         singleDatasources: false,
                         embededEnabled: true,
                         panel_statuses: {},
+                        panel_enabled: {},
                         _exist_cache: {},
                         setMainPanel: function(which, by_gui) {
                             if (which == me.mainpanel && by_gui) {
@@ -144,6 +145,22 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 return me.panel_statuses[which];
                             }
                             return me.mainpanel == which || (angular.isDefined(scope) && scope.unpinned);
+                        },
+                        /**
+                         * @function panelEnabled
+                         * @memberOf hs.core.Core
+                         * @description Gets and sets whether a panel is visible in the sidebar so it can be hidden even though the panels controller is loaded.
+                         * @param {String} which - Panel name
+                         * @param {Boolean} which - Status of the panel
+                         */
+                        panelEnabled: function(which, status) {
+                            if (typeof status == 'undefined') {
+                                if (angular.isDefined(me.panel_enabled[which]))
+                                    return me.panel_enabled[which];
+                                else
+                                    return true;
+                            } else
+                                me.panel_enabled[which] = status;
                         },
                         hidePanels: function() {
                             me.mainpanel = '';
