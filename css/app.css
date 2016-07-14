@@ -319,7 +319,7 @@ hr {
 }
 .locate {
     text-align: right;
-    bottom: 7.2em;
+    bottom: 9.2em;
     right: 5px;
     max-width: calc(100% - 1.3em);
 }
@@ -408,7 +408,7 @@ button.but-title-sm {
 .ol-attribution {
     left: auto;
     right: 5px;
-    bottom: 5.5em;
+    bottom: 6.8em;
 }
 .ol-scale-line {right: 0.5em;left: auto;}
 #datasource_selector-metadata-dialog dd {
