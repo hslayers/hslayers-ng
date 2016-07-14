@@ -144,7 +144,8 @@ define(['angular', 'ol', 'utils'],
                                 BoundingBox: layer.BoundingBox
                             });
                             new_layer.getSource().on('tileloadstart', function(img) {
-                                img.image.src_ = utils.proxify(decodeURIComponent(img.image.src_), false);
+                                if(angular.isDefined(img.image)) img.image.src_ = utils.proxify(decodeURIComponent(img.image.src_), false);
+                                if(angular.isDefined(img.target.urls[0])) img.target.urls[0] = utils.proxify(decodeURIComponent(img.target.urls[0]), false);
                             }, layer);
                             tmp.push(new_layer);
                         })
