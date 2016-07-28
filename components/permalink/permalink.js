@@ -59,6 +59,20 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         return window.location.origin + me.current_url + "&permalink=" + encodeURIComponent(stringLayers);
                     }
 
+                    me.getEmbededUrl = function() {
+                        var stringLayers = (JSON.stringify(me.permalinkLayers));
+                        stringLayers = stringLayers.substring(1, stringLayers.length - 1);
+                        if (window.hsl_path.includes("../")) {
+                            var embedHsl_Path = me.pathname + window.hsl_path;
+                            var embedUrl = window.location.origin + me.pathname + window.hsl_path + "components/permalink/app/" + "?" + me.param_string;
+                        } else {
+                            var embedHsl_Path = window.hsl_path;
+                            var embedUrl = window.location.origin + window.hsl_path + "components/permalink/app/" + "?" + me.param_string;
+                        }
+
+                        return embedUrl + "&permalink=" + encodeURIComponent(stringLayers) + "&config=" + window.hsl_config + "&hsl_path=" + embedHsl_Path + "&hsl_app=" + me.pathname + window.hsl_app;
+                    }
+
                     me.parse = function(str) {
                         if (typeof str !== 'string') {
                             return {};
@@ -130,6 +144,8 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     me.push = function(key, new_value) {
                         me.params[key] = new_value;
                         var new_params_string = me.stringify(me.params);
+                        me.param_string = new_params_string;
+                        me.pathname = window.location.pathname;
                         me.current_url = window.location.pathname + '?' + new_params_string;
                     };
 
@@ -165,7 +181,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.embed_code = "";
 
                     $scope.getEmbedCode = function() {
-                        return '<iframe src="' + $scope.permalink_url + '" width="1000" height="700"></iframe>';
+                        return '<iframe src="' + $scope.embed_url + '" width="1000" height="700"></iframe>';
                     }
 
                     $scope.$on('core.mainpanel_changed', function(event) {
@@ -203,10 +219,17 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.$on('browserurl.updated', function() {
                         if (Core.mainpanel == "permalink") {
                             $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                                longUrl: service.getEmbededUrl()
+                            }).success(function(data, status, headers, config) {
+                                $scope.embed_url = data.id;
+                                $scope.embed_code = $scope.getEmbedCode();
+                            }).error(function(data, status, headers, config) {
+                                console.log('Error creating short Url');
+                            });
+                            $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
                                 longUrl: service.getPermalinkUrl()
                             }).success(function(data, status, headers, config) {
                                 $scope.permalink_url = data.id;
-                                $scope.embed_code = $scope.getEmbedCode();
                             }).error(function(data, status, headers, config) {
                                 console.log('Error creating short Url');
                             });
