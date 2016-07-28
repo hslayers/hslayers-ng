@@ -187,7 +187,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.$on('core.mainpanel_changed', function(event) {
                         if (Core.mainpanel == 'permalink') {
                             service.update();
-                            var status_url = (config.hostname.status_manager || config.hostname.default) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                            var status_url = (config.hostname.default.status_manager || config.hostname.default.url) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
                             if (service.added_layers.length > 0) {
                                 $.ajax({
                                     url: status_url,
