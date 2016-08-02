@@ -470,6 +470,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             request: "save"
                         }),
                         success: function(j) {
+                            var compInfo = {};
                             $scope.success = j.saved !== false;
                             $scope.showResultDialog();
                             $('#stc-next').show();
@@ -482,7 +483,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                 $('.composition-abstract').toggle()
                             });
                             $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));
-
+                            compInfo.id = $scope.id;
+                            compInfo.title = $scope.title;
+                            compInfo.abstract = $scope.abstract || '';
+                            $rootScope.$broadcast('compositions.composition_loading', compInfo);
+                            $rootScope.$broadcast('compositions.composition_loaded', compInfo);
                         },
                         error: function() {
                             $scope.success = false;

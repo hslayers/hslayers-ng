@@ -1,6 +1,8 @@
 'use strict';
 
-var hsl_path = '../../';
+var hsl_path = window.hsl_path || '../../';
+window.hsl_path = hsl_path;
+window.hsl_app = window.hsl_app || 'app';
 var gitsha = $.ajax({
     type: "GET",
     url: hsl_path + 'gitsha.js',
@@ -9,7 +11,7 @@ var gitsha = $.ajax({
 
 require.config({
     paths: {
-        app: 'app',
+        app: window.hsl_app || 'app',
         core: hsl_path + 'components/core/core',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug'
     },

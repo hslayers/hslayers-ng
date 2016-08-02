@@ -2,7 +2,7 @@
         <a href="#" class="sidebar-main list-group-item" ng-if="Core.sidebarToggleable">
             <span class="menu-icon glyphicon" ng-class="Core.sidebarExpanded ? 'glyphicon-menu-left' : 'glyphicon-menu-hamburger'"  ng-click="toggleSidebar()"></span>
         </a>
-        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.compositions.controller')" ng-click="setMainPanel('composition_browser')" ng-class="{active: Core.mainpanel == 'composition_browser'}">
+        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('compositions')" ng-click="setMainPanel('composition_browser')" ng-class="{active: Core.mainpanel == 'composition_browser'}">
             <i class="menu-icon glyphicon icon-map" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'List available map compositions'|translate}}"></i>
             <span class="sidebar-item-title" translate>Map Compositions</span>
         </a>

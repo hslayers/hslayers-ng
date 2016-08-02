@@ -3,10 +3,10 @@
  * @memberOf hs
  */
 
-define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
+define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonwms'],
 
     function(angular, ol, SparqlJson, social) {
-        var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core'])
+        var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms'])
             .directive('hs.compositions.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,

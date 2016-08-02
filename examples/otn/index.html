@@ -12,6 +12,9 @@
     <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
     <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../../bower_components/requirejs/require.js"></script>    
-    <script src="hslayers.js"></script> 
+    <script>
+        window.hsl_config = window.location.pathname + "hslayers.js";
+        jQuery.getScript(window.hsl_config);
+    </script> 
 </body>
 </html>

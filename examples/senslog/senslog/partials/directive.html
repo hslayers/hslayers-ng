@@ -1,0 +1,32 @@
+<div class="panel panel-default mainpanel">
+    <div class="panel-heading"><span class="panel-title" translate>SensLog</span>
+        <button type="button" class="close" ng-click="Core.closePanel(this)">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only" translate>Close</span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <div class="panel-body">
+		    <ul class="hs-senslog-list list-group">
+		        <li ng-repeat="unit in units" ng-class="{active: unit.highlighted, 'list-group-item': true}">
+			        <a href="#" ng-class="hs-senslog-unit-title" ng-click="highlightUnit(unit)">{{unit.unit.unitId}} {{unit.unit.description}} </a>
+			        <a target='_blank' ng-href='http://portal.sdi4apps.eu/SensLog/vypis.jsp?unit_id={{unit.unit.unitId}}' title="Show graphs">
+			            <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
+			        </a>
+			        <ul class="hs-senslog-list list-group">
+		                <li ng-repeat="sensor in unit.sensors" class="list-group-item hs-senslog-sensor">
+			                <div class="">{{sensor.phenomenon.phenomenonName}} ({{sensor.phenomenon.unit}}) 
+			                <a target='_blank' ng-href='http://portal.sdi4apps.eu/SensLog/SensorService?Operation=GetObservations&&unit_id={{unit.unit.unitId}}&sensor_id={{sensor.sensorId}}&group=gaiatrons&user=admin' title="JSON data">
+			                    <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>
+			                </a>
+			                
+			                    <input type="text" class="form-control" style="width:3em; display: inline-block; position: absolute; right:0.3em; top:0.2em" ng-model="sensor.new_value"> <br/>
+			                </div>
+		                </li>
+		                <button ng-class="{'btn btn-primary btn-block':true, 'btn-success':unit.save_result=='true', 'btn-danger':unit.save_result=='false'}" translate ng-click="save(unit)">Save</button>
+		            </ul>
+		        </li>
+		    </ul>
+        </div>
+    </div>
+</div>

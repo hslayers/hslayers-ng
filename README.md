@@ -1,5 +1,9 @@
 # Hslayers-ng mapping library
 
+Hslayers-ng is a library which extends OpenLayers 3 functionality by providing a foundation to build map GUI and extra components such as layer manager, permalink generating, styling of vector features, including OpenGIS® Web Map Service Interface Standard (WMS) layers to the map in a user friendly way etc.  
+
+Check out the examples to get an idea:  http://ng.hslayers.org/examples/
+
 ## Getting Started
 
 To get you started you can simply clone the hslayers-ng repository and install the dependencies:

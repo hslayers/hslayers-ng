@@ -61,7 +61,7 @@ define(['angular', 'core'],
                     db.transaction(function(tx){
                         tx.executeSql('DROP TABLE IF EXISTS Hostnames', [], console.log("Dropping hostnames table."));
                         tx.executeSql('CREATE TABLE IF NOT EXISTS Hostnames (title unique, type, editable, url)', [], console.log("Creating hostnames table."));
-                        $.each($scope.hostnames, function(key, value){
+                        $.each($scope.hostnames, function(key, value) {
                             tx.executeSql('INSERT INTO Hostnames VALUES (?,?,?,?)', [value.title, value.type, value.editable, value.url]);
                         });
                     });
@@ -69,7 +69,7 @@ define(['angular', 'core'],
 
                 $scope.loadSettingsFromDb = function(tx) {
                     dbHostnames = {};
-                    tx.executeSql('SELECT * FROM Hostnames', [], function(tx, results){
+                    tx.executeSql('SELECT * FROM Hostnames', [], function(tx, results) {
                         // console.log(results.rows.length + ' rows found.');
                         for (var i = 0; i < results.rows.length; i++) {
                             // console.log(results.rows.item(i));
@@ -84,7 +84,7 @@ define(['angular', 'core'],
                 }
 
                 $scope.deleteRow = function(db, type) {
-                    db.transaction(function(tx){
+                    db.transaction(function(tx) {
                         tx.executeSql('DELETE FROM Hostnames WHERE type = ?', [type]);
                     });
                 }
@@ -93,7 +93,7 @@ define(['angular', 'core'],
                     console.log(error);
                     $scope.initSettings(settingsDb);
                     console.log("Loading initial settings.");
-                }, function(){
+                }, function() {
                     if (Object.keys(dbHostnames)[0]) {
                         config.hostname = dbHostnames;
                         $scope.hostnames = config.hostname;

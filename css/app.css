@@ -319,7 +319,7 @@ hr {
 }
 .locate {
     text-align: right;
-    bottom: 7.2em;
+    bottom: 9.2em;
     right: 5px;
     max-width: calc(100% - 1.3em);
 }
@@ -408,7 +408,7 @@ button.but-title-sm {
 .ol-attribution {
     left: auto;
     right: 5px;
-    bottom: 5.5em;
+    bottom: 6.8em;
 }
 .ol-scale-line {right: 0.5em;left: auto;}
 #datasource_selector-metadata-dialog dd {
@@ -661,23 +661,24 @@ a.sidebar-main {
 }
 
 .hs-styler-iconbox {
-    width:32px;
-    height: 44px;
+    width: 47px;
+    height: 51px;
     display: inline-block;
-    margin:1px;
+    padding: 2px 0 0 0;
+    border: 2px solid white;
 }
 
 
 .hs-styler-iconbox:hover {
-    width:30px; height: 30px; margin: -3px 0px;
+    border: 2px dashed black;
 }
 
 .hs-styler-selected-icon-box {
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
     display: inline-block;
     vertical-align: middle;
-    margin: 3px;
+    margin: 5px;
 }
 
 .hs-panel-margin .form-horizontal .form-group {
@@ -894,4 +895,4 @@ ul[dnd-list] li.selected {
     color: #3c763d;
 }
 
-
+.hs-senslog-sensor {color: #333}
