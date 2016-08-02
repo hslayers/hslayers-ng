@@ -593,7 +593,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map'],
                 });
 
                 $scope.shareComposition = function(record) {
-                    $scope.shareUrlLong = $location.protocol() + "://" + location.host + location.pathname + "?composition=" + encodeURIComponent(record.link);
+                    $scope.shareUrlLong = (($location.protocol() == 'file' && config.permalinkUrlPrefix) ? config.permalinkUrlPrefix : ($location.protocol() + "://" + location.host + location.pathname)) + "?composition=" + encodeURIComponent(record.link);
                     $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
                         longUrl: $scope.shareUrlLong
                     }).success(function(data, status, headers, config) {

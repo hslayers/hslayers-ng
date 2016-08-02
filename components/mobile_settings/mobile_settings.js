@@ -12,32 +12,32 @@ define(['angular', 'core'],
                 };
             })
 
-        .controller('hs.mobile_settings.controller', ['$scope', 'config', 'Core', '$window',
-            function($scope, config, Core, $window) {
+        .controller('hs.mobile_settings.controller', ['$scope', 'config', 'Core', 'hs.map.service', '$window',
+            function($scope, config, Core, OlMap, $window) {
                 $scope.Core = Core;
+                configDebug = config;
+                $scope.settingsDb = settingsDb;
+                $scope.originalHostnames = $.extend( {}, config.hostname);
                 $scope.hostnames = config.hostname;
+
                 $scope.addHostname = function() {
                     if ($scope.userHostname) {
-                        $scope.hostnames["user"] = {
+                        config.hostname["user"] = {
                             "title": "User hostname",
                             "type": "user",
                             "editable": true,
                             "url": $scope.userHostname
                         };
                         settingsDb.transaction(function(tx){
-                            tx.executeSql('REPLACE INTO Hostnames VALUES (?,?,?,?)', [$scope.hostnames.user.title, $scope.hostnames.user.type, $scope.hostnames.user.editable, $scope.hostnames.user.url], function(tx, result){
+                            tx.executeSql('REPLACE INTO Hostnames VALUES (?,?,?,?)', [config.hostname.user.title, config.hostname.user.type, config.hostname.user.editable, config.hostname.user.url], function(tx, result){
+                                $scope.userHostname = "";
                                 console.log(result.insertId);
                             });
-                            $scope.userHostname = "";
                         });
                     }
                 }
 
-                // $scope.settingsDb = window.sqlitePlugin.openDatabase({name: 'settings.db', location: 'default'}, function(){
-                //     $scope.initSettings();
-                // });
-
-                $scope.delete = function() {
+                $scope.deleteHostname = function() {
                     delete $scope.hostnames[this.hostname.type];
                     $scope.deleteRow(settingsDb, this.hostname.type);
                 }
@@ -50,23 +50,24 @@ define(['angular', 'core'],
                     $scope.userHostname = $scope.userHostname == "http://" ? "" : $scope.userHostname;
                 }
 
-                initSettings = function(tx) {
+                $scope.initSettings = function(db) {
                     console.log("Populating hostnames database.");
                     console.log($scope.hostnames);
                     console.log(config.hostname);
+                    console.log(settingsDb);
+                    config.hostname = $.extend( {}, $scope.originalHostnames);
+                    $scope.hostnames = config.hostname;
 
-                    tx.transaction(function(tx){
+                    db.transaction(function(tx){
                         tx.executeSql('DROP TABLE IF EXISTS Hostnames', [], console.log("Dropping hostnames table."));
                         tx.executeSql('CREATE TABLE IF NOT EXISTS Hostnames (title unique, type, editable, url)', [], console.log("Creating hostnames table."));
                         $.each($scope.hostnames, function(key, value){
                             tx.executeSql('INSERT INTO Hostnames VALUES (?,?,?,?)', [value.title, value.type, value.editable, value.url]);
                         });
                     });
-
-                    $scope.hostnames = $.extend( {}, config.hostname);
                 }
 
-                loadSettingsFromDb = function(tx) {
+                $scope.loadSettingsFromDb = function(tx) {
                     dbHostnames = {};
                     tx.executeSql('SELECT * FROM Hostnames', [], function(tx, results){
                         // console.log(results.rows.length + ' rows found.');
@@ -88,17 +89,21 @@ define(['angular', 'core'],
                     });
                 }
 
-                // console.log(loadSettingsFromDb(settingsDb));
-
-                settingsDb.transaction(loadSettingsFromDb, function(error){
+                settingsDb.transaction($scope.loadSettingsFromDb, function(error){
                     console.log(error);
-                    initSettings(settingsDb);
+                    $scope.initSettings(settingsDb);
                     console.log("Loading initial settings.");
                 }, function(){
                     if (Object.keys(dbHostnames)[0]) {
-                        $scope.hostnames = dbHostnames;
+                        config.hostname = dbHostnames;
+                        $scope.hostnames = config.hostname;
                         console.log("Loading settings from memory.");
                     }
+                });
+
+                $scope.$on('scope_loaded', function() {
+                    // $("#loading-logo")[0].removeChild($("svg")[0]);
+                    $("#loading-logo").remove();
                 });
 
                 $scope.$emit('scope_loaded', "Mobile Settings");
