@@ -12,8 +12,7 @@ var gitsha = $.ajax({
 require.config({
     paths: {
         app: window.hsl_app || 'app',
-        core: hsl_path + 'components/core/core',
-        ol: hsl_path + 'node_modules/openlayers/dist/ol-debug'
+        core: hsl_path + 'components/core/core'
     },
     shim: {
         d3: {

@@ -1,6 +1,7 @@
 'use strict';
 
 var hsl_path = '../../';
+var allowWFS2 = true;
 var gitsha = $.ajax({
     type: "GET",
     url: hsl_path + 'gitsha.js',
