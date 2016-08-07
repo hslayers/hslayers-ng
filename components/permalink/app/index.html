@@ -64,6 +64,14 @@
             window.hsl_app = Cookies.get('hsl_app');
         }
 
+        var idx = location.search.indexOf("&config");
+        var search = location.search.substr(0,idx);
+        if (typeof(history.replaceState) !== "undefined") {
+            history.replaceState({
+                path: location.pathname + search
+            }, null, location.pathname + search);
+        }
+
         jQuery.getScript(window.hsl_config);
     })
     </script>
