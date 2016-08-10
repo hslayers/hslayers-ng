@@ -58,7 +58,8 @@ require.config({
         routing: hsl_path + 'components/routing/routing',
         tracking: hsl_path + 'components/tracking/tracking',
         s4a: requirejs.s.contexts._.config.paths.s4a || hsl_path + 'bower_components/s4a-js/dist/s4a.min',
-        'dragdroplists': hsl_path + 'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists'
+        'dragdroplists': hsl_path + 'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
+        'ngfocusif': hsl_path + 'bower_components/ng-focus-if/focusIf.min'
     },
     shim: {
         'angular': {
@@ -67,6 +68,7 @@ require.config({
         'angularjs-socialshare': {
             deps: ['angular']
         },
+        'ngfocusif': {deps: ['angular']},
         'angular-sanitize': {
             deps: ['angular'],
         },

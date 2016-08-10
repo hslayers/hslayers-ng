@@ -108,7 +108,6 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
 
                     me.parsePermalinkLayers = function() {
                         var layersUrl = me.getParamValue('permalink');
-                        console.log
                         $.ajax({
                                 url: layersUrl
                             })
@@ -123,7 +122,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                         OlMap.map.addLayer(layers[i]);
                                     }
                                 } else {
-                                    console.log('Error loading permalink layers');
+                                    if (console) console.log('Error loading permalink layers');
                                 }
                             })
 

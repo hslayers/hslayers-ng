@@ -185,6 +185,11 @@ div.hs-lm-item-title {
     width: calc(100% - 108px);
 }
 
+input.hs-waypoint-name{
+    display: inline-block;
+    width: calc(100% - 45px);
+}
+
 div.hs-comp-item-title {
     display: inline-block;
     width: calc(100% - 59px);
@@ -748,6 +753,10 @@ div.hs-info-composition-title {
 .open.sb-left div#hs-info-container {
     margin-left: 400px;
     width: calc(100% - 400px);
+}
+.open.sb-right div#hs-info-container {
+    margin-left: 2px;
+    width: calc(100% - 20px);
 }
 div#hs-info-container {
     height: 100%;

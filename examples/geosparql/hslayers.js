@@ -12,7 +12,8 @@ require.config({
     paths: {
         app: 'app',
         core: hsl_path + 'components/core/core',
-        ol: hsl_path + 'node_modules/openlayers/dist/ol-debug'
+        ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
+        trip_planner: hsl_path + 'components/trip_planner/trip_planner',
     },
     shim: {
         d3: {

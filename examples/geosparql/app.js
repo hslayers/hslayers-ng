@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info', 'trip_planner'],
 
     function(angular, ol, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
@@ -16,7 +16,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             'hs.ows',
             'gettext',
             'hs.compositions',
-            'hs.info'
+            'hs.info',
+            'hs.trip_planner'
         ]);
 
         module.directive('hs', ['Core', function(Core) {
@@ -262,11 +263,23 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             infopanel_template: hsl_path + 'examples/geosparql/infopanel.html'
         });
 
-        module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', '$sce', '$http', 'config',
-            function($scope, $filter, Core, OlMap, InfoPanelService, $sce, $http, config) {
+        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', '$sce', '$http', 'config', 'hs.trip_planner.service',
+            function($scope, $compile, $filter, Core, OlMap, InfoPanelService, $sce, $http, config, trip_planner_service) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+
+                $scope.$on("scope_loaded", function(event, args) {
+                    if (args == 'Sidebar') {
+                        var el = angular.element('<div hs.trip_planner.directive hs.draggable ng-controller="hs.trip_planner.controller" ng-if="Core.exists(\'hs.trip_planner.controller\')" ng-show="Core.panelVisible(\'trip_planner\', this)"></div>');
+                        angular.element('#panelplace').append(el);
+                        $compile(el)($scope);
+
+                        var toolbar_button = angular.element('<div hs.trip_planner.toolbar_button_directive></div>');
+                        angular.element('.sidebar-list').append(toolbar_button);
+                        $compile(toolbar_button)(event.targetScope);
+                    }
+                })
 
                 $scope.$on('infopanel.updated', function(event) {});
 
@@ -304,8 +317,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
                             var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
                                 coordinate, 'EPSG:3857', 'EPSG:4326'));
-                            $(element).popover('destroy');
-                            var content = 'No weather info';
+                            angular.element(element).popover('destroy');
+                            var to_trip_button = '<button class="hs-spoi-point-to-trip btn btn-default">Add to trip</button>';
+                            var content = 'No weather info<br/>' + to_trip_button;
                             if (response.weather) {
                                 var wind_row = 'Wind: ' + response.wind.speed + 'm/s' + (response.wind.gust ? ' Gust: ' + response.wind.gust + 'm/s' : '');
                                 var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
@@ -313,9 +327,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 var cloud = '<img src="http://openweathermap.org/img/w/' + weather.icon + '.png" alt="' + weather.description + '"/>' + weather.description;
                                 var temp_row = 'Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C';
                                 var date_row = $filter('date')(new Date(response.dt * 1000), 'dd.MM.yyyy HH:mm');
-                                content = close_button + '<p><b>' + response.name + '</b><br/><small> at ' + date_row + '</small></p>' + cloud + '<br/>' + temp_row + '<br/>' + wind_row;
+                                content = close_button + '<p><b>' + response.name + '</b><br/><small> at ' + date_row + '</small></p>' + cloud + '<br/>' + temp_row + '<br/>' + wind_row + '<br/>' + to_trip_button;
                             }
-                            $(element).popover({
+                            angular.element(element).popover({
                                 'placement': 'top',
                                 'animation': false,
                                 'html': true,
@@ -323,11 +337,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             });
 
                             popup.setPosition(coordinate);
-                            $(element).popover('show');
-                            $('.close', element.nextElementSibling).click(function() {
-                                $(element).popover('hide');
+                            angular.element(element).popover('show');
+                            angular.element('.close', element.nextElementSibling).click(function() {
+                                angular.element(element).popover('hide');
                                 //show_location_weather = false;
                             });
+                            angular.element('.hs-spoi-point-to-trip', element.nextElementSibling).click(function() {
+                                trip_planner_service.addWaypoint(lon_lat[0], lon_lat[1]);
+                                return false;
+                            })
                         });
 
                 });

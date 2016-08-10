@@ -73,6 +73,14 @@ define(['angular', 'app'], function(angular, app) {
                 return ret;
             }, {});
         };
+        
+        this.generateUuid = function() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0,
+                    v = c == 'x' ? r : r & 0x3 | 0x8;
+                return v.toString(16);
+            });
+        }
 
         Date.isLeapYear = function(year) {
             return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
@@ -104,6 +112,17 @@ define(['angular', 'app'], function(angular, app) {
             months -= this.getMonth() + 1;
             months += d2.getMonth();
             return months <= 0 ? 0 : months;
+        }
+
+        String.prototype.hashCode = function() {
+            var hash = 0;
+            if (this.length == 0) return hash;
+            for (i = 0; i < this.length; i++) {
+                char = this.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return hash;
         }
 
     }])
