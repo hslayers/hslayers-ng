@@ -57,6 +57,7 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                         me.digestScopes();
                     },
                     storeWaypoints: function() {
+                        if(permalink.getParamValue('trip_editable')==null) return;
                         var waypoints = [];
                         angular.forEach(me.waypoints, function(wp){
                             waypoints.push({name:wp.name, lon:wp.lon, lat:wp.lat, routes:[]});
