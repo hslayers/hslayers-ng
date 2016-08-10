@@ -282,8 +282,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                         $compile(toolbar_button)(event.targetScope);
                     }
                     if(args == 'Map'){
-                        config.default_view.setCenter([permalink.getParamValue('hs_x'), permalink.getParamValue('hs_y')]);
-                        config.default_view.setZoom([permalink.getParamValue('hs_z')]);   
+                        if(permalink.getParamValue('hs_x')!=null){
+                            config.default_view.setCenter([permalink.getParamValue('hs_x'), permalink.getParamValue('hs_y')]);
+                            config.default_view.setZoom([permalink.getParamValue('hs_z')]);   
+                        }
                     }
                 })
 

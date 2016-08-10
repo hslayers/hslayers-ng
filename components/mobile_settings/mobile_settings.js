@@ -17,7 +17,7 @@ define(['angular', 'core'],
                 $scope.Core = Core;
                 configDebug = config;
                 $scope.settingsDb = settingsDb;
-                $scope.originalHostnames = $.extend( {}, config.hostname);
+                $scope.originalHostnames = $.extend({}, config.hostname);
                 $scope.hostnames = config.hostname;
 
                 $scope.addHostname = function() {
@@ -28,8 +28,8 @@ define(['angular', 'core'],
                             "editable": true,
                             "url": $scope.userHostname
                         };
-                        settingsDb.transaction(function(tx){
-                            tx.executeSql('REPLACE INTO Hostnames VALUES (?,?,?,?)', [config.hostname.user.title, config.hostname.user.type, config.hostname.user.editable, config.hostname.user.url], function(tx, result){
+                        settingsDb.transaction(function(tx) {
+                            tx.executeSql('REPLACE INTO Hostnames VALUES (?,?,?,?)', [config.hostname.user.title, config.hostname.user.type, config.hostname.user.editable, config.hostname.user.url], function(tx, result) {
                                 $scope.userHostname = "";
                                 console.log(result.insertId);
                             });
@@ -55,10 +55,10 @@ define(['angular', 'core'],
                     console.log($scope.hostnames);
                     console.log(config.hostname);
                     console.log(settingsDb);
-                    config.hostname = $.extend( {}, $scope.originalHostnames);
+                    config.hostname = $.extend({}, $scope.originalHostnames);
                     $scope.hostnames = config.hostname;
 
-                    db.transaction(function(tx){
+                    db.transaction(function(tx) {
                         tx.executeSql('DROP TABLE IF EXISTS Hostnames', [], console.log("Dropping hostnames table."));
                         tx.executeSql('CREATE TABLE IF NOT EXISTS Hostnames (title unique, type, editable, url)', [], console.log("Creating hostnames table."));
                         $.each($scope.hostnames, function(key, value) {
@@ -89,7 +89,7 @@ define(['angular', 'core'],
                     });
                 }
 
-                settingsDb.transaction($scope.loadSettingsFromDb, function(error){
+                settingsDb.transaction($scope.loadSettingsFromDb, function(error) {
                     console.log(error);
                     $scope.initSettings(settingsDb);
                     console.log("Loading initial settings.");
