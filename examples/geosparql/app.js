@@ -263,11 +263,13 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             infopanel_template: hsl_path + 'examples/geosparql/infopanel.html'
         });
 
-        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', '$sce', '$http', 'config', 'hs.trip_planner.service',
-            function($scope, $compile, $filter, Core, OlMap, InfoPanelService, $sce, $http, config, trip_planner_service) {
+        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', '$sce', '$http', 'config', 'hs.trip_planner.service', 'hs.permalink.service_url',
+            function($scope, $compile, $filter, Core, OlMap, InfoPanelService, $sce, $http, config, trip_planner_service, permalink) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+                
+                
 
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Sidebar') {
@@ -278,6 +280,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                         var toolbar_button = angular.element('<div hs.trip_planner.toolbar_button_directive></div>');
                         angular.element('.sidebar-list').append(toolbar_button);
                         $compile(toolbar_button)(event.targetScope);
+                    }
+                    if(args == 'Map'){
+                        config.default_view.setCenter([permalink.getParamValue('hs_x'), permalink.getParamValue('hs_y')]);
+                        config.default_view.setZoom([permalink.getParamValue('hs_z')]);   
                     }
                 })
 
