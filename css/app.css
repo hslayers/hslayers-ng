@@ -721,9 +721,12 @@ div#hs-info-composition-image {
     background-size: 76px 76px;
     font-size: 50px;
     height: 100px;
-    position: relative;
+    position: absolute;
     text-align: center;
     width: 100px;
+    top: -97px;
+    left: 3px;
+    background-color: rgba(0,60,136,0.5);
 }
 
 div#hs-info-composition {
@@ -742,7 +745,7 @@ div.hs-info-composition-title {
     padding-bottom: 6px;
 }
 
-.open div#hs-info-container {
+.open.sb-left div#hs-info-container {
     margin-left: 400px;
     width: calc(100% - 400px);
 }

@@ -1,6 +1,6 @@
 <div id="hs-info-composition" ng-show="!compositionLoaded()">
-    <div id="hs-info-composition-image">
-        <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="!composition_loaded"></span>
+    <div id="hs-info-composition-image" ng-show="!composition_loaded">
+        <span class="glyphicon glyphicon-refresh glyphicon-spin" ></span>
         <span class="glyphicon" ng-class="info_image" ng-show="composition_loaded"></span>
     </div>
     <div id="hs-info-composition-container" ng-if="!composition_edited">
@@ -9,7 +9,7 @@
     </div>
     <div id="hs-info-composition-container" ng-if="composition_edited">
         <div class="hs-info-composition-title" translate>Unsaved map</div>
-        <div class="hs-info-composition-abstract" translate>You have unsaved changes!</div>
+        <div class="hs-info-composition-abstract" translate ng-show="!(!layer_loading.length && composition_edited)">You have unsaved changes!</div>
     </div>
 </div>
 
