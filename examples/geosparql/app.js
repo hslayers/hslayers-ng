@@ -268,8 +268,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                
-                
+
+
 
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Sidebar') {
@@ -281,10 +281,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                         angular.element('.sidebar-list').append(toolbar_button);
                         $compile(toolbar_button)(event.targetScope);
                     }
-                    if(args == 'Map'){
-                        if(permalink.getParamValue('hs_x')!=null){
+                    if (args == 'Map') {
+                        if (permalink.getParamValue('hs_x') != null) {
                             config.default_view.setCenter([permalink.getParamValue('hs_x'), permalink.getParamValue('hs_y')]);
-                            config.default_view.setZoom([permalink.getParamValue('hs_z')]);   
+                            config.default_view.setZoom([permalink.getParamValue('hs_z')]);
                         }
                     }
                 })

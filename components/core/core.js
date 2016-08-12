@@ -68,7 +68,9 @@ require.config({
         'angularjs-socialshare': {
             deps: ['angular']
         },
-        'ngfocusif': {deps: ['angular']},
+        'ngfocusif': {
+            deps: ['angular']
+        },
         'angular-sanitize': {
             deps: ['angular'],
         },
