@@ -229,7 +229,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 new_layer.setVisible(lyr_def.visibility);
                                 if (!lyr_def.singleTile) {
                                     new_layer.getSource().on('tileloadstart', function(img) {
-                                        img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
+                                        if (angular.isDefined(img.image)) {
+                                            img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
+                                        } else {
+                                            img.tile.src_ = this.utils.proxify(decodeURIComponent(img.tile.src_), false);
+                                        }
 
                                     }, this);
                                 } else {
