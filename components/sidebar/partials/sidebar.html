@@ -64,12 +64,12 @@
             <span class="sidebar-item-title" translate>Embed map</span>
         </a>
 
-        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.status_creator.controller')" ng-click="Core.openStatusCreator()" ng-class="{active: Core.mainpanel == 'status_creator'}">
+        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.status_creator.controller') && Core.panelEnabled('status_creator')" ng-click="Core.openStatusCreator()" ng-class="{active: Core.mainpanel == 'status_creator'}">
             <span class="menu-icon glyphicon icon-save-floppy" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Save content of map to composition'||translate}}"></span>
             <span class="sidebar-item-title" translate>Save composition</span>
         </a>
 
-        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.mobile_settings.controller')" ng-click="setMainPanel('mobile_settings')" ng-class="{active: Core.mainpanel == 'mobile_settings'}">
+        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.mobile_settings.controller') && Core.panelEnabled('mobile_settings')" ng-click="setMainPanel('mobile_settings')" ng-class="{active: Core.mainpanel == 'mobile_settings'}">
             <span class="menu-icon glyphicon icon-settingsandroid" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Specify application user settings'||translate}}"></span>
             <span class="sidebar-item-title" translate>Application settings</span>
         </a>
