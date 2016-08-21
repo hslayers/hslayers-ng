@@ -60,7 +60,7 @@ require.config({
         s4a: requirejs.s.contexts._.config.paths.s4a || hsl_path + 'bower_components/s4a-js/dist/s4a.min',
         'dragdroplists': hsl_path + 'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
         'ngfocusif': hsl_path + 'bower_components/ng-focus-if/focusIf.min',
-        'ngMeta': hsl_path + 'bower_components/ngMeta/dist/ngMeta'
+        'updateMeta': hsl_path + 'bower_components/angular-update-meta/dist/update-meta'
     },
     shim: {
         'angular': {
@@ -78,6 +78,9 @@ require.config({
         'dragdroplists': {
             deps: ['angular'],
         },
+        'updateMeta': {
+            deps: ['angular'],
+        },
         'angular-gettext': {
             deps: ['angular'],
         },
@@ -93,9 +96,9 @@ require.config({
     ]
 });
 
-define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'ngMeta'],
+define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
     function(angular, proj4) {
-        angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api', 'ngMeta'])
+        angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
             .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache',
                 function($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache) {
                     var me = {
@@ -317,8 +320,5 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     return me;
                 },
 
-            ])
-            .run(['ngMeta', function(ngMeta) {
-                ngMeta.init();
-            }]);
+            ]);
     })

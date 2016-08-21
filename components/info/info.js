@@ -2,10 +2,10 @@
  * @namespace hs.info
  * @memberOf hs
  */
-define(['angular', 'map', 'core', 'ngMeta', 'permalink'],
+define(['angular', 'map', 'core', 'updateMeta', 'permalink'],
 
     function(angular) {
-        angular.module('hs.info', ['hs.map', 'hs.core', 'ngMeta'])
+        angular.module('hs.info', ['hs.map', 'hs.core', 'updateMeta'])
             .directive('hs.info.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/info/partials/info.html?bust=' + gitsha
@@ -13,8 +13,8 @@ define(['angular', 'map', 'core', 'ngMeta', 'permalink'],
                 };
             })
 
-        .controller('hs.info.controller', ['$rootScope', '$scope', '$timeout', 'Core', 'ngMeta',
-            function($rootScope, $scope, $timeout, Core, ngMeta) {
+        .controller('hs.info.controller', ['$rootScope', '$scope', '$timeout', 'Core',
+            function($rootScope, $scope, $timeout, Core) {
                 $scope.Core = Core;
                 $scope.composition_loaded = true;
                 $scope.layer_loading = [];
@@ -24,12 +24,10 @@ define(['angular', 'map', 'core', 'ngMeta', 'permalink'],
                         if (angular.isDefined(data.data)) {
                             $scope.composition_abstract = data.data.abstract;
                             $scope.composition_title = data.data.title;
-                            ngMeta.setTitle(data.data.title);
                             $scope.composition_id = data.data.id;
                         } else {
                             $scope.composition_abstract = data.abstract;
                             $scope.composition_title = data.title;
-                            ngMeta.setTitle(data.title);
                             $scope.composition_id = data.id;
                         }
                         $scope.composition_loaded = false;
@@ -44,11 +42,9 @@ define(['angular', 'map', 'core', 'ngMeta', 'permalink'],
                         var temp_title = $scope.composition_title;
                         $scope.composition_abstract = data.abstract;
                         $scope.composition_title = data.title;
-                        ngMeta.setTitle(data.title);
                         $scope.info_image = 'glyphicon-warning-sign';
                         $timeout(function() {
                             $scope.composition_title = temp_title;
-                            ngMeta.setTitle(temp_title);
                             $scope.composition_abstract = temp_abstract;
                             $scope.info_image = 'icon-map';
                             if (!$scope.$$phase) $scope.$digest();
@@ -83,7 +79,6 @@ define(['angular', 'map', 'core', 'ngMeta', 'permalink'],
                 $scope.$on('compositions.composition_deleted', function(event, id) {
                     if (id == $scope.composition_id) {
                         delete $scope.composition_title;
-                        ngMeta.setTitle('HSLayers-NG');
                         delete $scope.composition_abstract;
                         if (!$scope.$$phase) $scope.$digest();
                     }

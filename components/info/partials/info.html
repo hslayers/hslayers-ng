@@ -32,3 +32,13 @@
 <div id="hs-info-composition-edited"  ng-show="!layer_loading.length && composition_edited">
     <span translate>You have unsaved changes!</span>
 </div>
+
+<update-title title="{{composition_title}}"></update-title>
+<update-meta property="og:title" content="{{composition_title}}"></update-meta>
+<update-meta property="twitter:title" content="{{composition_title}}"></update-meta>
+<update-meta itemprop="title" content="{{composition_title}}"></update-meta>
+
+<update-meta name="description" content="{{composition_abstract}}"></update-meta>
+<update-meta property="og:description" content="{{composition_abstract}}"></update-meta>
+<update-meta property="twitter:description" content="{{composition_abstract}}"></update-meta>
+<update-meta itemprop="description" content="{{composition_abstract}}"></update-meta>
