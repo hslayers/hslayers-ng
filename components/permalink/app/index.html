@@ -64,6 +64,7 @@
             window.hsl_app = Cookies.get('hsl_app');
         }
 
+        window.permalinkApp = true;
         var idx = location.search.indexOf("&config");
         var search = location.search.substr(0,idx);
         if (typeof(history.replaceState) !== "undefined") {

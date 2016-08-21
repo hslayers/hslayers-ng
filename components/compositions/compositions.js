@@ -672,7 +672,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     composition_parser.composition_edited = false;
                 });
 
-                if (angular.isDefined($cookies.get('hs_layers'))) {
+                if (angular.isDefined($cookies.get('hs_layers')) && window.permalinkApp != true) {
                     var data = $cookies.get('hs_layers');
                     var layers = composition_parser.jsonToLayers(JSON.parse(data));
                     for (var i = 0; i < layers.length; i++) {
