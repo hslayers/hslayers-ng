@@ -24,6 +24,7 @@
     "s4a-js": "*",
     "angular-drag-and-drop-lists": "^1.4.0",
     "js-cookie": "2.1.2",
-    "ng-focus-if": "^1.0.7"
+    "ng-focus-if": "^1.0.7",
+    "ngMeta": "0.3.9"
   }
 }

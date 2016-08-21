@@ -4,6 +4,15 @@
 <link rel="stylesheet" ng-href="{{hsl_path}}css/whhg-font/css/whhg.css"/>
 <link rel="stylesheet" ng-href="{{hsl_path}}css/app.css"/>
 
+<title ng-bind="ngMeta.title"></title>
+
+<!-- Arbitrary tags -->
+<meta property="og:type" content="{{ngMeta['og:type']}}" />
+<meta property="og:locale" content="{{ngMeta['og:locale']}}" />
+<meta name="author" content="{{ngMeta['author']}}" />
+<!-- OR <meta name="author" content="{{ngMeta.author}}" /> -->
+<meta name="description" content="{{ngMeta.description}}" />
+
 <div id="page-wrapper">
     <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight, 'sb-left': !Core.sidebarRight}">
         <div class="page-content">
