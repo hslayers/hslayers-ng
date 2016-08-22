@@ -11,8 +11,8 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
             })
-            .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser',
-                function($rootScope, $location, $window, OlMap, Core, utils, status, compositions) {
+            .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config',
+                function($rootScope, $location, $window, OlMap, Core, utils, status, compositions, config) {
 
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
@@ -56,7 +56,11 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     me.getPermalinkUrl = function() {
                         var stringLayers = (JSON.stringify(me.permalinkLayers));
                         stringLayers = stringLayers.substring(1, stringLayers.length - 1);
-                        return window.location.origin + me.current_url + "&permalink=" + encodeURIComponent(stringLayers);
+                        if (Core.isMobile() && config.permalinkLocation) {
+                            return (config.permalinkLocation.origin + me.current_url.replace(window.location.pathname, config.permalinkLocation.pathname) + "&permalink=" + encodeURIComponent(stringLayers)).replace(window.location.pathname, config.permalinkLocation.pathname);
+                        } else {
+                            return window.location.origin + me.current_url + "&permalink=" + encodeURIComponent(stringLayers);
+                        }
                     }
 
                     me.getEmbededUrl = function() {
@@ -65,6 +69,10 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         if (window.hsl_path.includes("../")) {
                             var embedHsl_Path = me.pathname + window.hsl_path;
                             var embedUrl = window.location.origin + me.pathname + window.hsl_path + "components/permalink/app/" + "?" + me.param_string;
+                        } else if (Core.isMobile() && config.permalinkLocation) {
+                            me.pathname = config.permalinkLocation.pathname;
+                            var embedHsl_Path = config.permalinkLocation.hsl_path;
+                            var embedUrl = config.permalinkLocation.origin + config.permalinkLocation.hsl_path + "components/permalink/app/" + "?" + me.param_string;
                         } else {
                             var embedHsl_Path = window.hsl_path;
                             var embedUrl = window.location.origin + window.hsl_path + "components/permalink/app/" + "?" + me.param_string;
@@ -145,7 +153,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         var new_params_string = me.stringify(me.params);
                         me.param_string = new_params_string;
                         me.pathname = window.location.pathname;
-                        me.current_url = window.location.pathname + '?' + new_params_string;
+                        me.current_url = me.pathname + '?' + new_params_string;
                     };
 
                     me.getParamValue = function(param) {
