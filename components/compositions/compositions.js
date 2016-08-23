@@ -382,18 +382,18 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 }
 
-                function getMapExtent(){
-                    
+                function getMapExtent() {
+
                 }
 
                 var ajax_req = null;
                 $scope.loadCompositions = function() {
-                    
+
                     var cur_map_size = OlMap.map.getSize();
                     var cur_map_extent = angular.isDefined(cur_map_size) ? OlMap.map.getView().calculateExtent(cur_map_size) : [0, 0, 100, 100];
-                    var b =  ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    
-                    if(angular.isDefined(config.compositions_catalogue_url)){
+                    var b = ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
+
+                    if (angular.isDefined(config.compositions_catalogue_url)) {
                         extent_layer.getSource().clear();
                         var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent(" AND AnyText like '*" + $scope.query.title + "*'") : '';
                         var keyword_filter = "";
@@ -403,12 +403,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         });
                         if (selected.length > 0)
                             keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
-                        
-                    
+
+
                         var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
                         var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
                         var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                        var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.compositions_catalogue ? config.hostname.compositions_catalogue.url : config.hostname.default.url)) + config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy="+$scope.sort_by+"&detail=summary&start=" + $scope.compStart + "&limit=" + $scope.page_size;
+                        var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.compositions_catalogue ? config.hostname.compositions_catalogue.url : config.hostname.default.url)) + config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=" + $scope.sort_by + "&detail=summary&start=" + $scope.compStart + "&limit=" + $scope.page_size;
                         url = utils.proxify(url);
                         if (ajax_req != null) ajax_req.abort();
                         ajax_req = $.ajax({
@@ -452,7 +452,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 $scope.loadStatusManagerCompositions(b);
                             })
                     } else {
-                       $scope.loadStatusManagerCompositions(b); 
+                        $scope.loadStatusManagerCompositions(b);
                     }
                 }
 
@@ -628,7 +628,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         }),
                         success: function(j) {
                             $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url +"?request=socialshare&id=" + shareId
+                                longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId
                             }).success(function(data, status, headers, config) {
                                 $scope.shareUrl = data.id;
                             }).error(function(data, status, headers, config) {
@@ -686,10 +686,14 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 $scope.save = function() {
                     Core.openStatusCreator();
                 }
-                
-                $scope.setSortAttribute = function(attribute){
+
+                $scope.setSortAttribute = function(attribute) {
                     $scope.sort_by = attribute;
-                    var sort_map = {bbox: '[{"property":"bbox","direction":"ASC"}]', title: '[{"property":"title","direction":"ASC"}]', date:'[{"property":"date","direction":"ASC"}]'};
+                    var sort_map = {
+                        bbox: '[{"property":"bbox","direction":"ASC"}]',
+                        title: '[{"property":"title","direction":"ASC"}]',
+                        date: '[{"property":"date","direction":"ASC"}]'
+                    };
                     $scope.sort_by_attr_for_statusmanager = encodeURIComponent(sort_map[attribute]);
                     $scope.loadCompositions();
                 }
@@ -698,7 +702,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }
-                
+
                 if (permalink.getParamValue('composition')) {
                     var id = permalink.getParamValue('composition');
                     if (id.indexOf('http') == -1 && id.indexOf(config.status_manager_url) == -1)
