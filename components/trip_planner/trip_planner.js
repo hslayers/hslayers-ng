@@ -154,20 +154,21 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
 
                 var source = new ol.source.Vector({});
                 var style = function(feature, resolution) {
-                        return [new ol.style.Style({
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 255, 255, 0.6)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#337AB7',
-                        width: 3
-                    }),
-                    image: new ol.style.Icon({
-                        src: feature.get('highlighted') ? hsl_path + 'img/pin_white_red32.png' : hsl_path + 'img/pin_white_blue32.png',
-                        crossOrigin: 'anonymous',
-                        anchor: [0.5, 1]
-                    })
-                })]};
+                    return [new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 255, 255, 0.6)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#337AB7',
+                            width: 3
+                        }),
+                        image: new ol.style.Icon({
+                            src: feature.get('highlighted') ? hsl_path + 'img/pin_white_red32.png' : hsl_path + 'img/pin_white_blue32.png',
+                            crossOrigin: 'anonymous',
+                            anchor: [0.5, 1]
+                        })
+                    })]
+                };
 
                 var vector = new ol.layer.Vector({
                     source: source,
