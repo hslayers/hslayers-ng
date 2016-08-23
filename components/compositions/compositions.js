@@ -353,6 +353,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     "Planning": false,
                     "ComplexInformation": false
                 };
+                $scope.sort_by = 'bbox';
+                $scope.sort_by_attr_for_statusmanager = encodeURIComponent('[{"property":"bbox","direction":"ASC"}]');
                 $scope.filter_by_extent = true;
                 $scope.use_callback_for_edit = false; //Used for opening Edit panel from the list of compositions
 
@@ -380,73 +382,84 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 }
 
+                function getMapExtent(){
+                    
+                }
 
                 var ajax_req = null;
                 $scope.loadCompositions = function() {
-                    extent_layer.getSource().clear();
-                    var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent(" AND AnyText like '*" + $scope.query.title + "*'") : '';
-                    var keyword_filter = "";
-                    var selected = [];
-                    angular.forEach($scope.keywords, function(value, key) {
-                        if (value) selected.push("subject='" + key + "'");
-                    });
-                    if (selected.length > 0)
-                        keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
+                    
                     var cur_map_size = OlMap.map.getSize();
                     var cur_map_extent = angular.isDefined(cur_map_size) ? OlMap.map.getView().calculateExtent(cur_map_size) : [0, 0, 100, 100];
-                    var b = ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
-                    var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
-                    var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
-                    var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.compositions_catalogue ? config.hostname.compositions_catalogue.url : config.hostname.default.url)) + config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy=bbox&detail=summary&start=" + $scope.compStart + "&limit=" + $scope.page_size;
-                    url = utils.proxify(url);
-                    if (ajax_req != null) ajax_req.abort();
-                    ajax_req = $.ajax({
-                            url: url
-                        })
-                        .done(function(response) {
-                            ajax_req = null;
-                            $('.tooltip').remove();
-                            $scope.compositions = response.records;
-                            if (response.records && response.records.length > 0) {
-                                $scope.compositionsCount = response.matched;
-                            } else {
-                                $scope.compositionsCount = 0;
-                            }
-
-                            $scope.compNext = response.next;
-                            angular.forEach($scope.compositions, function(record) {
-                                var attributes = {
-                                    record: record,
-                                    hs_notqueryable: true,
-                                    highlighted: false
-                                };
-                                record.editable = false;
-                                if (angular.isUndefined(record.thumbnail)) {
-                                    record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
-                                }
-                                var extent = composition_parser.parseExtent(record.bbox);
-                                //Check if height or Width covers the whole screen
-                                if (!((extent[0] < cur_map_extent[0] && extent[2] > cur_map_extent[2]) || (extent[1] < cur_map_extent[1] && extent[3] > cur_map_extent[3]))) {
-                                    attributes.geometry = ol.geom.Polygon.fromExtent(extent);
-                                    attributes.is_hs_composition_extent = true;
-                                    var new_feature = new ol.Feature(attributes);
-                                    record.feature = new_feature;
-                                    extent_layer.getSource().addFeatures([new_feature]);
-                                } else {
-                                    //Composition not in extent
-                                }
+                    var b =  ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
+                    
+                    if(angular.isDefined(config.compositions_catalogue_url)){
+                        extent_layer.getSource().clear();
+                        var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent(" AND AnyText like '*" + $scope.query.title + "*'") : '';
+                        var keyword_filter = "";
+                        var selected = [];
+                        angular.forEach($scope.keywords, function(value, key) {
+                            if (value) selected.push("subject='" + key + "'");
+                        });
+                        if (selected.length > 0)
+                            keyword_filter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
+                        
+                    
+                        var bbox_delimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
+                        var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
+                        var bbox = ($scope.filter_by_extent ? encodeURIComponent(" and BBOX='" + b.join(bbox_delimiter) + "'") : '');
+                        var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.compositions_catalogue ? config.hostname.compositions_catalogue.url : config.hostname.default.url)) + config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + text_filter + keyword_filter + "&lang=eng&sortBy="+$scope.sort_by+"&detail=summary&start=" + $scope.compStart + "&limit=" + $scope.page_size;
+                        url = utils.proxify(url);
+                        if (ajax_req != null) ajax_req.abort();
+                        ajax_req = $.ajax({
+                                url: url
                             })
-                            if (!$scope.$$phase) $scope.$digest();
-                            $('[data-toggle="tooltip"]').tooltip();
-                            $scope.loadStatusManagerCompositions(b);
-                        })
+                            .done(function(response) {
+                                ajax_req = null;
+                                $('.tooltip').remove();
+                                $scope.compositions = response.records;
+                                if (response.records && response.records.length > 0) {
+                                    $scope.compositionsCount = response.matched;
+                                } else {
+                                    $scope.compositionsCount = 0;
+                                }
+
+                                $scope.compNext = response.next;
+                                angular.forEach($scope.compositions, function(record) {
+                                    var attributes = {
+                                        record: record,
+                                        hs_notqueryable: true,
+                                        highlighted: false
+                                    };
+                                    record.editable = false;
+                                    if (angular.isUndefined(record.thumbnail)) {
+                                        record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
+                                    }
+                                    var extent = composition_parser.parseExtent(record.bbox);
+                                    //Check if height or Width covers the whole screen
+                                    if (!((extent[0] < cur_map_extent[0] && extent[2] > cur_map_extent[2]) || (extent[1] < cur_map_extent[1] && extent[3] > cur_map_extent[3]))) {
+                                        attributes.geometry = ol.geom.Polygon.fromExtent(extent);
+                                        attributes.is_hs_composition_extent = true;
+                                        var new_feature = new ol.Feature(attributes);
+                                        record.feature = new_feature;
+                                        extent_layer.getSource().addFeatures([new_feature]);
+                                    } else {
+                                        //Composition not in extent
+                                    }
+                                })
+                                if (!$scope.$$phase) $scope.$digest();
+                                $('[data-toggle="tooltip"]').tooltip();
+                                $scope.loadStatusManagerCompositions(b);
+                            })
+                    } else {
+                       $scope.loadStatusManagerCompositions(b); 
+                    }
                 }
 
                 $scope.loadStatusManagerCompositions = function(bbox) {
                     var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url;
                     var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? '&q=' + encodeURIComponent('*' + $scope.query.title + '*') : '';
-                    url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22title%22%2C%22direction%22%3A%22ASC%22%7D%5D';
+                    url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=' + $scope.sort_by_attr_for_statusmanager;
                     url = utils.proxify(url);
                     ajax_req = $.ajax({
                             url: url,
@@ -673,11 +686,19 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 $scope.save = function() {
                     Core.openStatusCreator();
                 }
+                
+                $scope.setSortAttribute = function(attribute){
+                    $scope.sort_by = attribute;
+                    var sort_map = {bbox: '[{"property":"bbox","direction":"ASC"}]', title: '[{"property":"title","direction":"ASC"}]', date:'[{"property":"date","direction":"ASC"}]'};
+                    $scope.sort_by_attr_for_statusmanager = encodeURIComponent(sort_map[attribute]);
+                    $scope.loadCompositions();
+                }
 
                 //$scope.loadCompositions();
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }
+                
                 if (permalink.getParamValue('composition')) {
                     var id = permalink.getParamValue('composition');
                     if (id.indexOf('http') == -1 && id.indexOf(config.status_manager_url) == -1)

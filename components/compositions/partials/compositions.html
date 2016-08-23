@@ -12,6 +12,17 @@
             </div>
 
             <div id="hs-comp-filter" class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" ng-click="setSortAttribute('bbox')">Bounding box</a></li>
+                        <li><a href="#" ng-click="setSortAttribute('title')">Title</a></li>
+                        <li><a href="#" ng-click="setSortAttribute('date')">Date</a></li>
+                    </ul>
+                </div>
+                
                 <label class="inline">
                     <input type="checkbox" ng-model="filter_by_extent" ng-change='loadCompositions()'>
                     <span translate>Filter by map extent</span>
@@ -21,6 +32,8 @@
                     <input type="checkbox" ng-model="query.editable" ng-change='filterChanged()'>
                     <span translate>Only mine</span>
                 </label>
+                
+               
             </div>
 
             <span class="form-group">
