@@ -601,7 +601,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     var shareId = utils.generateUuid();
                     var metadata = {};
                     $.ajax({
-                        url: ("/wwwlibs/statusmanager2/index.php"),
+                        url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
                         cache: false,
                         method: 'POST',
                         async: false,
@@ -614,7 +614,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         }),
                         success: function(j) {
                             $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                longUrl: "http://localhost/wwwlibs/statusmanager2/index.php?request=socialshare&id=" + shareId
+                                longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url +"?request=socialshare&id=" + shareId
                             }).success(function(data, status, headers, config) {
                                 $scope.shareUrl = data.id;
                             }).error(function(data, status, headers, config) {
