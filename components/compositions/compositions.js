@@ -597,14 +597,31 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 });
 
                 $scope.shareComposition = function(record) {
-                    $scope.shareUrlLong = (Core.isMobile() && config.permalinkLocation ? (config.permalinkLocation.origin + config.permalinkLocation.pathname) : ($location.protocol() + "://" + location.host + location.pathname)) + "?composition=" + encodeURIComponent(record.link);
-                    $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                        longUrl: $scope.shareUrlLong
-                    }).success(function(data, status, headers, config) {
-                        $scope.shareUrl = data.id;
-                    }).error(function(data, status, headers, config) {
-                        console.log('Error creating short Url');
-                    });
+                    var compositionUrl = (Core.isMobile() && config.permalinkLocation ? (config.permalinkLocation.origin + config.permalinkLocation.pathname) : ($location.protocol() + "://" + location.host + location.pathname)) + "?composition=" + encodeURIComponent(record.link);
+                    var shareId = utils.generateUuid();
+                    var metadata = {};
+                    $.ajax({
+                        url: ("/wwwlibs/statusmanager2/index.php"),
+                        cache: false,
+                        method: 'POST',
+                        async: false,
+                        data: JSON.stringify({
+                            request: 'socialShare',
+                            id: shareId,
+                            url: encodeURIComponent(compositionUrl),
+                            title: record.title,
+                            description: record.description
+                        }),
+                        success: function(j) {
+                            $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                                longUrl: "http://localhost/wwwlibs/statusmanager2/index.php?request=socialshare&id=" + shareId
+                            }).success(function(data, status, headers, config) {
+                                $scope.shareUrl = data.id;
+                            }).error(function(data, status, headers, config) {
+                                console.log('Error creating short Url');
+                            });
+                        }
+                    })
 
                     $scope.shareTitle = record.title;
                     $scope.shareDescription = record.abstract;
