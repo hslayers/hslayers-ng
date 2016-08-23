@@ -610,7 +610,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             id: shareId,
                             url: encodeURIComponent(compositionUrl),
                             title: record.title,
-                            description: record.description
+                            description: record.abstract,
+                            image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg'
                         }),
                         success: function(j) {
                             $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
