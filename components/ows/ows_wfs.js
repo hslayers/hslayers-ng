@@ -37,14 +37,9 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
          */
         .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service',
             function($http, OlMap, utils) {
-                var callbacks = [];
-                var me = this;
+                 var me = this;
 
-                this.addHandler = function(f) {
-                    callbacks.push(f);
-                }
-
-                this.getPathFromUrl = function(str) {
+                 this.getPathFromUrl = function(str) {
                     if (str.indexOf('?') > -1)
                         return str.substring(0, str.indexOf("?"));
                     else
@@ -65,7 +60,7 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                     }).join('&') : '';
                 };
 
-                this.requestGetCapabilities = function(service_url, callback) {
+                this.requestGetCapabilities = function(service_url) {
                     service_url = service_url.replace('&amp;', '&');
                     me.service_url = service_url;
                     var params = utils.getParamsFromUrl(service_url);
@@ -80,16 +75,9 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                     var url = [path, me.params2String(params)].join('?');
 
                     url = utils.proxify(url);
-
-                    if (callback) {
-                        $http.get(url).success(callback);
-                    } else {
-                        $http.get(url).success(function(resp) {
-                            $(callbacks).each(function() {
-                                this(resp)
-                            })
-                        });
-                    }
+                    var promise = $http.get(url);
+                    promise.then(function(r){$rootScope.$broadcast('ows_wfs.capabilities_received', r)});
+                    return promise;
                 };
 
                 this.currentProjectionSupported = function(srss) {
@@ -115,9 +103,9 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
         .controller('hs.ows.wfs.controller', ['$scope', 'hs.map.service', 'hs.ows.wfs.service_capabilities', 'Core', '$compile', '$rootScope',
             function($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
-                srv_caps.addHandler(function(response) {
+                $scope.$on('ows_wfs.capabilities_received', function(event, response) {
                     try {
-                        caps = new WFSCapabilities(response);
+                        caps = new WFSCapabilities(response.data);
                         $scope.title = caps.ServiceIdentification.Title;
                         $scope.description = addAnchors(caps.ServiceIdentification.Abstract);
                         $scope.version = caps.Version || caps.version;
@@ -160,7 +148,7 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                         $compile(el)($scope);
                         //throw "WMS Capabilities parsing problem";
                     }
-                });
+                });  
 
                 /**
                  * @function selectAllLayers

@@ -56,7 +56,7 @@
             <button class="btn btn-primary" ng-click="selectAllLayers()" translate>Select All Layers</button>
             <button class="btn btn-primary pull-right" ng-click="tryAddLayers(true)"><i class="glyphicon glyphicon-plus"></i></button>
         </li>
-        <li ng-repeat="layer in ::services.Layer" class="list-group-item clearfix">
+        <li ng-repeat="layer in services.Layer" class="list-group-item clearfix">
             <div>
                 <input type="checkbox" class="layer-checked" ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" /> {{layer.Title}}
             </div>

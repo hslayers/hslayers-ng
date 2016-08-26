@@ -488,7 +488,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                         url = layer.getSource().getUrls()[0];
                     if (layer.getSource().getUrl) //Single tile
                         url = layer.getSource().getUrl();
-                    srv_wms_caps.requestGetCapabilities(url, function(capabilities_xml) {
+                    srv_wms_caps.requestGetCapabilities(url).then(function(capabilities_xml) {
                         var parser = new ol.format.WMSCapabilities();
                         var caps = parser.read(capabilities_xml);
                         if (angular.isArray(caps.Capability.Layer)) {

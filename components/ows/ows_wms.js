@@ -47,14 +47,9 @@ define(['angular', 'ol', 'utils'],
          * @memberOf hs.ows.wms
          * @description Service for GetCapabilities requests to Wms
          */
-        .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service',
-            function($http, OlMap, utils) {
-                var callbacks = [];
+        .service("hs.ows.wms.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope',
+            function($http, OlMap, utils, $rootScope) {
                 var me = this;
-
-                this.addHandler = function(f) {
-                    callbacks.push(f);
-                }
 
                 this.getPathFromUrl = function(str) {
                     if (str.indexOf('?') > -1)
@@ -77,7 +72,7 @@ define(['angular', 'ol', 'utils'],
                     }).join('&') : '';
                 };
 
-                this.requestGetCapabilities = function(service_url, callback) {
+                this.requestGetCapabilities = function(service_url) {
                     service_url = service_url.replace('&amp;', '&');
                     var params = utils.getParamsFromUrl(service_url);
                     var path = this.getPathFromUrl(service_url);
@@ -91,16 +86,9 @@ define(['angular', 'ol', 'utils'],
                     var url = [path, me.params2String(params)].join('?');
 
                     url = utils.proxify(url);
-
-                    if (callback) {
-                        $http.get(url).success(callback);
-                    } else {
-                        $http.get(url).success(function(resp) {
-                            $(callbacks).each(function() {
-                                this(resp)
-                            })
-                        });
-                    }
+                    var promise = $http.get(url);
+                    promise.then(function(r){$rootScope.$broadcast('ows.capabilities_received', r)});
+                    return promise;
                 };
 
                 this.service2layers = function(capabilities_xml) {
@@ -176,7 +164,7 @@ define(['angular', 'ol', 'utils'],
          */
         .service("hs.ows.wms.service_layer_producer", ['hs.map.service', 'hs.ows.wms.service_capabilities', function(OlMap, srv_caps) {
             this.addService = function(url, box) {
-                srv_caps.requestGetCapabilities(url, function(resp) {
+                srv_caps.requestGetCapabilities(url).then(function(resp) {
                     var ol_layers = srv_caps.service2layers(resp);
                     $(ol_layers).each(function() {
                         if (typeof box != 'undefined') box.get('layers').push(this);
@@ -191,8 +179,8 @@ define(['angular', 'ol', 'utils'],
          * @memberOf hs.ows.wms
          * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
          */
-        .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope', 'hs.utils.service',
-            function($scope, OlMap, srv_caps, Core, $compile, $rootScope, utils) {
+        .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope', 'hs.utils.service', '$timeout',
+            function($scope, OlMap, srv_caps, Core, $compile, $rootScope, utils, $timeout) {
                 $scope.use_resampling = false;
                 $scope.utils = utils;
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
@@ -241,8 +229,10 @@ define(['angular', 'ol', 'utils'],
                         //throw "WMS Capabilities parsing problem";
                     }
                 };
-
-                srv_caps.addHandler($scope.capabilitiesReceived);
+                
+                $scope.$on('ows.capabilities_received', function(event, response) {
+                    $scope.capabilitiesReceived(response.data);
+                });              
 
                 $scope.srsChanged = function() {
                     $scope.resample_warning = !srv_caps.currentProjectionSupported($scope.srss);

@@ -49,12 +49,7 @@ define(['angular', 'ol', 'utils'],
          */
         .service("hs.ows.wmts.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service',
             function($http, OlMap, utils) {
-                var callbacks = [];
                 var me = this;
-
-                this.addHandler = function(f) {
-                    callbacks.push(f);
-                }
 
                 this.getPathFromUrl = function(str) {
                     if (str.indexOf('?') > -1)
@@ -77,7 +72,7 @@ define(['angular', 'ol', 'utils'],
                     }).join('&') : '';
                 };
 
-                this.requestGetCapabilities = function(service_url, callback) {
+                this.requestGetCapabilities = function(service_url) {
                     service_url = service_url.replace('&amp;', '&');
                     var params = utils.getParamsFromUrl(service_url);
                     var path = this.getPathFromUrl(service_url);
@@ -91,16 +86,9 @@ define(['angular', 'ol', 'utils'],
                     var url = [path, me.params2String(params)].join('?');
 
                     url = utils.proxify(url);
-
-                    if (callback) {
-                        $http.get(url).success(callback);
-                    } else {
-                        $http.get(url).success(function(resp) {
-                            $(callbacks).each(function() {
-                                this(resp)
-                            })
-                        });
-                    }
+                    var promise = $http.get(url);
+                    promise.then(function(r){$rootScope.$broadcast('ows_wmts.capabilities_received', r)});
+                    return promise;
                 };
 
                 this.service2layers = function(capabilities_xml) {
@@ -220,7 +208,9 @@ define(['angular', 'ol', 'utils'],
                     }
                 };
 
-                srv_caps.addHandler($scope.capabilitiesReceived);
+                $scope.$on('ows_wmts.capabilities_received', function(event, response) {
+                    $scope.capabilitiesReceived(response.data);
+                });  
 
                 /**
                  * @function setCurrentLayer
