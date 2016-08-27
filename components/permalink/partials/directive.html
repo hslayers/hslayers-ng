@@ -24,18 +24,35 @@
                 <a ng-href="{{permalink_url}}" id = "permalink-link">{{permalink_url}}</a>
                 <br/>
             </div>
+            <hr />
+            <fieldset>
+            <h3>Share on social network</h3>
+            <div class="form-group">
+                <label for="hs-prmlnk-title" class="control-label" translate>Name</label>
+
+                    <input type="text" class="form-control" id="hs-prmlnk-title" placeholder="{{'Fill in name'|translate}}" ng-change="invalidateShareUrl()" ng-model="title" />
+
+            </div>
+            <div class="form-group">
+                <label for="hs-prmlnk-abstract" class="control-label" translate>Abstract</label>
+
+                    <textarea class="form-control" id="hs-prmlnk-abstract" placeholder="{{'Fill in descriptive text about map'|translate}}" ng-change="invalidateShareUrl()" ng-model="abstract">
+                    </textarea>
+
+            </div>
 
             <div class="form-group">
-                <button class="btn btn-default" href="#" socialshare socialshare-provider="twitter" socialshare-text="HSLayers-NG map sharing" socialshare-hashtags="map, gis" socialshare-url="{{permalink_url}}">
+                <button class="btn btn-default" href="#" ng-click="shareOnSocial('twitter')">
                     <i class="icon-twitter"></i> Twitter
                 </button>
-                <button class="btn btn-default" socialshare socialshare-provider="facebook" socialshare-text="HSLayers-NG map sharing" socialshare-hashtags="map, gis" socialshare-url="{{permalink_url}}">
+                <button class="btn btn-default" href="#" ng-click="shareOnSocial('facebook')">
                     <i class="icon-facebook"></i> Facebook
                 </button>
-                <button class="btn btn-default" socialshare socialshare-provider="google" socialshare-text="HSLayers-NG map sharing" socialshare-hashtags="map, gis" socialshare-url="{{permalink_url}}">
+                <button class="btn btn-default" href="#" ng-click="shareOnSocial('google')">
                     <i class="icon-googleplus"></i> Google
                 </button>
             </div>
+            </fieldset>
         </div>
     </div>
 </div>

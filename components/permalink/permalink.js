@@ -183,12 +183,58 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     return me;
                 }
             ])
-            .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare',
-                function($rootScope, $scope, $http, Core, config, service, socialshare) {
+            .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare', 'hs.utils.service',
+                function($rootScope, $scope, $http, Core, config, service, socialshare, utils) {
+
                     $scope.embed_code = "";
+                    $scope.shareUrlValid = false;
 
                     $scope.getEmbedCode = function() {
                         return '<iframe src="' + $scope.embed_url + '" width="1000" height="700"></iframe>';
+                    }
+
+                    $scope.invalidateShareUrl = function() {
+                        $scope.shareUrlValid = false;
+                    }
+
+                    $scope.shareOnSocial = function(provider) {
+                        if (!$scope.shareUrlValid) {
+                            console.log('Creating new share url');
+                            var shareId = utils.generateUuid();
+                            $.ajax({
+                                url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
+                                cache: false,
+                                method: 'POST',
+                                async: false,
+                                data: JSON.stringify({
+                                    request: 'socialShare',
+                                    id: shareId,
+                                    url: encodeURIComponent($scope.embededUrl),
+                                    title: $scope.title,
+                                    description: $scope.abstract,
+                                    image: 'https://ng.hslayers.org/img/logo.jpg'
+                                }),
+                                success: function(j) {
+                                    $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                                        longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId
+                                    }).success(function(data, status, headers, config) {
+                                        $scope.share_url = data.id;
+                                    }).error(function(data, status, headers, config) {
+                                        console.log('Error creating short Url');
+                                    });
+                                }
+                            })
+                        }
+
+                        socialshare.share({
+                            'provider': provider,
+                            'attrs': {
+                                'socialshareUrl': $scope.share_url,
+                                'socialsharePopupHeight': 600,
+                                'socialsharePopupWidth': 500
+                            }
+                        })
+                        $scope.shareUrlValid = true;
                     }
 
                     $scope.$on('core.mainpanel_changed', function(event) {
@@ -225,14 +271,19 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     });
                     $scope.$on('browserurl.updated', function() {
                         if (Core.mainpanel == "permalink") {
+
+                            $scope.shareUrlValid = false;
+
+                            $scope.embededUrl = service.getEmbededUrl();
                             $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                longUrl: service.getEmbededUrl()
+                                longUrl: $scope.embededUrl
                             }).success(function(data, status, headers, config) {
                                 $scope.embed_url = data.id;
                                 $scope.embed_code = $scope.getEmbedCode();
                             }).error(function(data, status, headers, config) {
                                 console.log('Error creating short Url');
                             });
+
                             $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
                                 longUrl: service.getPermalinkUrl()
                             }).success(function(data, status, headers, config) {
