@@ -87,7 +87,9 @@ define(['angular', 'ol', 'utils'],
 
                     url = utils.proxify(url);
                     var promise = $http.get(url);
-                    promise.then(function(r){$rootScope.$broadcast('ows.capabilities_received', r)});
+                    promise.then(function(r) {
+                        $rootScope.$broadcast('ows.capabilities_received', r)
+                    });
                     return promise;
                 };
 
@@ -229,10 +231,10 @@ define(['angular', 'ol', 'utils'],
                         //throw "WMS Capabilities parsing problem";
                     }
                 };
-                
+
                 $scope.$on('ows.capabilities_received', function(event, response) {
                     $scope.capabilitiesReceived(response.data);
-                });              
+                });
 
                 $scope.srsChanged = function() {
                     $scope.resample_warning = !srv_caps.currentProjectionSupported($scope.srss);

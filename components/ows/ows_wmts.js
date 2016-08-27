@@ -87,7 +87,9 @@ define(['angular', 'ol', 'utils'],
 
                     url = utils.proxify(url);
                     var promise = $http.get(url);
-                    promise.then(function(r){$rootScope.$broadcast('ows_wmts.capabilities_received', r)});
+                    promise.then(function(r) {
+                        $rootScope.$broadcast('ows_wmts.capabilities_received', r)
+                    });
                     return promise;
                 };
 
@@ -210,7 +212,7 @@ define(['angular', 'ol', 'utils'],
 
                 $scope.$on('ows_wmts.capabilities_received', function(event, response) {
                     $scope.capabilitiesReceived(response.data);
-                });  
+                });
 
                 /**
                  * @function setCurrentLayer

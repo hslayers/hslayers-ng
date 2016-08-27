@@ -37,9 +37,9 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
          */
         .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service',
             function($http, OlMap, utils) {
-                 var me = this;
+                var me = this;
 
-                 this.getPathFromUrl = function(str) {
+                this.getPathFromUrl = function(str) {
                     if (str.indexOf('?') > -1)
                         return str.substring(0, str.indexOf("?"));
                     else
@@ -76,7 +76,9 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
 
                     url = utils.proxify(url);
                     var promise = $http.get(url);
-                    promise.then(function(r){$rootScope.$broadcast('ows_wfs.capabilities_received', r)});
+                    promise.then(function(r) {
+                        $rootScope.$broadcast('ows_wfs.capabilities_received', r)
+                    });
                     return promise;
                 };
 
@@ -148,7 +150,7 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                         $compile(el)($scope);
                         //throw "WMS Capabilities parsing problem";
                     }
-                });  
+                });
 
                 /**
                  * @function selectAllLayers
