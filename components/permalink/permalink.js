@@ -198,8 +198,8 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     }
 
                     $scope.shareOnSocial = function(provider) {
+                        $scope.shareProvider = provider;
                         if (!$scope.shareUrlValid) {
-                            console.log('Creating new share url');
                             var shareId = utils.generateUuid();
                             $.ajax({
                                 url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
@@ -219,22 +219,32 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                         longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId
                                     }).success(function(data, status, headers, config) {
                                         $scope.share_url = data.id;
+                                        socialshare.share({
+                                            'provider': $scope.shareProvider,
+                                            'attrs': {
+                                                'socialshareUrl': $scope.share_url,
+                                                'socialsharePopupHeight': 600,
+                                                'socialsharePopupWidth': 500
+                                            }
+                                        })
+                                        $scope.shareUrlValid = true;
                                     }).error(function(data, status, headers, config) {
                                         console.log('Error creating short Url');
                                     });
                                 }
                             })
+                        } else {
+                            socialshare.share({
+                                'provider': provider,
+                                'attrs': {
+                                    'socialshareUrl': $scope.share_url,
+                                    'socialsharePopupHeight': 600,
+                                    'socialsharePopupWidth': 500
+                                }
+                            })
                         }
 
-                        socialshare.share({
-                            'provider': provider,
-                            'attrs': {
-                                'socialshareUrl': $scope.share_url,
-                                'socialsharePopupHeight': 600,
-                                'socialsharePopupWidth': 500
-                            }
-                        })
-                        $scope.shareUrlValid = true;
+
                     }
 
                     $scope.$on('core.mainpanel_changed', function(event) {
