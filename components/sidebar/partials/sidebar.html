@@ -33,7 +33,7 @@
             <span class="sidebar-item-title" translate>Filter features</span>
         </a>
 
-        <a href="#" class="sidebar-item list-group-item" ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="setMainPanel('measure')" ng-class="{active: Core.mainpanel == 'measure'}">
+        <a href="#" class="sidebar-item list-group-item" ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="setMainPanel('measure', false)" ng-class="{active: Core.mainpanel == 'measure'}">
             <span class="menu-icon glyphicon icon-design" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Measure distance or area at map'|translate}}"></span>
             <span class="sidebar-item-title" translate>Measurements</span>
         </a>
@@ -52,6 +52,9 @@
             <span class="menu-icon glyphicon glyphicon-screenshot"></span>
             <span class="sidebar-item-title">Tracking</span>
         </a>
+        
+        <div hs.draw.toolbar_button_directive></div>
+        
         
         <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.print.controller')" ng-click="setMainPanel('print')" ng-class="{active: Core.mainpanel == 'print'}">
             <span class="menu-icon glyphicon icon-print" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Print map'|translate}}"></span>

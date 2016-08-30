@@ -29,8 +29,8 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
         .controller('hs.sidebar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window', '$cookies',
             function($scope, OlMap, Core, bus, $window, $cookies) {
                 $scope.Core = Core;
-                $scope.setMainPanel = function(which) {
-                    Core.setMainPanel(which, true);
+                $scope.setMainPanel = function(which, queryable) {
+                    Core.setMainPanel(which, true, queryable);
                     if (!$scope.$$phase) $scope.$digest();
                 }
 

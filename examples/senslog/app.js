@@ -12,7 +12,8 @@ define(['ol',
         'bootstrap',
         'geolocation',
         'api',
-        'senslog'
+        'senslog',
+        'draw'
     ],
     function(ol, toolbar) {
         var module = angular.module('hs', [
@@ -25,7 +26,8 @@ define(['ol',
             'hs.geolocation',
             'hs.api',
             'hs.sidebar',
-            'hs.senslog'
+            'hs.senslog',
+            'hs.draw'
         ]);
 
         module.directive(

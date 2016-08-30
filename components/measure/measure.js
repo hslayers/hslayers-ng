@@ -15,7 +15,6 @@ define(['angular', 'ol', 'map', 'core'],
         .controller('hs.measure.controller', ['$scope', 'hs.map.service', 'Core',
             function($scope, OlMap, Core) {
                 var map = OlMap.map;
-                $scope.sketch;
 
                 var source = new ol.source.Vector({});
                 var style = new ol.style.Style({
@@ -25,12 +24,6 @@ define(['angular', 'ol', 'map', 'core'],
                     stroke: new ol.style.Stroke({
                         color: '#ffcc33',
                         width: 2
-                    }),
-                    image: new ol.style.Circle({
-                        radius: 7,
-                        fill: new ol.style.Fill({
-                            color: '#ffcc33'
-                        })
                     })
                 });
 

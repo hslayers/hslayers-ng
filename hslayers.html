@@ -39,7 +39,8 @@
                             <div hs.status_creator.directive_panel  hs.draggable ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div>
                             <div hs.routing.directive               hs.draggable ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="Core.panelVisible('routing', this)"></div>
                             <div hs.tracking.directive              hs.draggable ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="Core.panelVisible('tracking', this)"></div>
-                            <div hs.customhtml.directive ng-if="Core.exists('hs.customhtml.controller')"></div>
+                            <div hs.draw.directive                  hs.draggable ng-controller="hs.draw.controller" ng-if="Core.exists('hs.draw.controller')" ng-show="Core.panelVisible('draw', this)"></div>
+                            <div hs.customhtml.directive                                                            ng-if="Core.exists('hs.customhtml.controller')"></div>
                         </div>
                     </div>
                 </div>

@@ -10,7 +10,7 @@
             <button type="button" class="btn btn-default" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
                 <i class="glyphicon glyphicon-repeat"></i>
             </button>
-            <button type="button" class="btn btn-default"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true)">
+            <button type="button" class="btn btn-default"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true, false)">
                 <i class="glyphicon icon-design"></i>
             </button>
         </div>

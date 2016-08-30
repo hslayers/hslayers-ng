@@ -97,19 +97,20 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 selector.getFeatures().on('add', function(e) {
                     //if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
-                    if (Core.mainpanel == 'measure') return;
+                    if (!Core.current_panel_queryable) return;
                     $scope.$emit('infopanel.feature_selected', e.element, selector);
                     if (e.element.get('hs_notqueryable')) return;
                     getFeatureAttributes(e.element);
                 });
 
                 selector.getFeatures().on('remove', function(e) {
-                    if (Core.mainpanel == 'measure') return;
+                    if (!Core.current_panel_queryable) return;
                     InfoPanelService.setAttributes([]);
                     $scope.$emit('infopanel.feature_deselected', e.element);
                 })
 
                 var getFeatureAttributes = function(feature) {
+                    if (!Core.current_panel_queryable) return;
                     var attributes = [];
                     var groups_added = false;
                     feature.getKeys().forEach(function(key) {
@@ -424,7 +425,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                 //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
-                    if (Core.mainpanel == 'measure') return;
+                    if (!Core.current_panel_queryable) return;
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
                     $("#invisible_popup").contents().find('body').html('');
                     $("#invisible_popup").height(200).width(200);

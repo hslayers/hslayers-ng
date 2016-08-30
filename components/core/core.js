@@ -17,6 +17,7 @@ require.config({
         'angularjs-socialshare': hsl_path + 'bower_components/angularjs-socialshare/dist/angular-socialshare',
         bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap',
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'bower_components/crossfilter/crossfilter.min',
+        draw: hsl_path + 'components/draw/draw',
         d3: requirejs.s.contexts._.config.paths.d3 || hsl_path + 'bower_components/d3/d3.min',
         ngcookies: hsl_path + 'bower_components/angular-cookies/angular-cookies',
         proj4: requirejs.s.contexts._.config.paths.proj4 || hsl_path + 'bower_components/proj4/dist/proj4',
@@ -116,7 +117,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         panel_statuses: {},
                         panel_enabled: {},
                         _exist_cache: {},
-                        setMainPanel: function(which, by_gui) {
+                        current_panel_queryable: false,
+                        setMainPanel: function(which, by_gui, queryable) {
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
                                 if (me.sidebarExpanded == true) {
@@ -127,6 +129,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 me.sidebarLabels = false;
                             }
                             me.mainpanel = which;
+                            if (typeof queryable == 'undefined')
+                                me.current_panel_queryable = true;
+                            else
+                                me.current_panel_queryable = queryable;
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
