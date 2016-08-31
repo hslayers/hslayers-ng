@@ -12,13 +12,14 @@
             <button class="btn btn-default ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate> Line</button>
         </div>
         
+        <button class="btn btn-default" style="float:right" ng-show="type=='Point'" ng-click="newPointFromGps()" translate>New GPS</button>
         <button class="btn btn-default" style="float:right" ng-click="start()" translate>New</button>
-        <button class="btn btn-default" style="float:right" ng-click="stop()" translate>Stop</button>
         
         <ul class="list-group">
             <li ng-repeat="feature in features" class="list-group-item">
                 <a href="#"  ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)">{{feature.type}} {{feature.label}}</a>
                 <span class="pull-right">
+                    <button class="btn btn-default btn-xs" ng-if="feature==current_feature" ng-click="stop()" translate>Stop</button>
                     <button type="button" class="btn btn-default btn-xs glyphicon glyphicon-trash" ng-click="removeFeature(feature);">
                     </button>
                 <span>

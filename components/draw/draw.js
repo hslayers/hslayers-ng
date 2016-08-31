@@ -69,8 +69,8 @@ define(['angular', 'ol', 'map', 'core'],
                                 type: $scope.type,
                                 ol_feature: evt.feature
                             });
+                            $scope.current_feature = $scope.features[$scope.features.length - 1];
                             if (!$scope.$$phase) $scope.$digest();
-                            $scope.current_measurement = $scope.features.length - 1;
                         }, this);
 
                     draw.on('drawend',
@@ -97,13 +97,28 @@ define(['angular', 'ol', 'map', 'core'],
                     } catch (ex) {}
                     draw.setActive(true)
                 }
+                
+                $scope.newPointFromGps = function(){
+                    //TODO get current lon/lat from mobile device GPS, create a point
+                    var g_feature = new ol.geom.Point([lon, lat]); //TODO lon lat to be filled
+                    var feature = new ol.Feature({
+                        geometry: g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection()), //maybe transformation is not necessary
+                    });
+                    source.addFeature(feature);
+                    $scope.features.push({
+                        type: 'Point',
+                        ol_feature: feature
+                    });
+                    $scope.current_feature = $scope.features[$scope.features.length - 1];
+                    if (!$scope.$$phase) $scope.$digest();
+                }
 
                 $scope.highlightFeature = function(feature, state) {
                     feature.ol_feature.set('highlighted', state);
                 }
 
                 $scope.features = [];
-                $scope.current_measurement = {};
+                $scope.current_feature = {};
                 $scope.type = 'Point';
 
                 $scope.setType = function(type) {
