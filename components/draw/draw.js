@@ -34,7 +34,7 @@ define(['angular', 'ol', 'map', 'core'],
                 var style = function(feature, resolution) {
                     return [new ol.style.Style({
                         fill: new ol.style.Fill({
-                            color: 'rgba(255, 255, 255, 0.2)'
+                            color: 'rgba(255, 255, 255, 0.4)'
                         }),
                         stroke: new ol.style.Stroke({
                             color: feature.get('highlighted') ? '#d00504' : '#ffcc33',
