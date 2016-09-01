@@ -69,7 +69,6 @@ define(['angular', 'ol', 'map', 'core'],
 
                     draw.on('drawstart',
                         function(evt) {
-                            $("#toolbar").fadeOut();
                             // set sketch
 
                             $scope.sketch = [evt.feature];
@@ -84,7 +83,6 @@ define(['angular', 'ol', 'map', 'core'],
 
                     draw.on('drawend',
                         function(evt) {
-                            $("#toolbar").fadeIn();
                             if (!$scope.$$phase) $scope.$digest();
                         }, this);
                 }
