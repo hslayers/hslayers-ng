@@ -18,8 +18,8 @@ define(['angular', 'ol', 'map', 'core'],
             };
         })
 
-        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core',
-            function($scope, OlMap, Core) {
+        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service',
+            function($scope, OlMap, Core, Geolocation) {
                 var map = OlMap.map;
                 $scope.features = [];
                 $scope.current_feature = null;
@@ -106,16 +106,17 @@ define(['angular', 'ol', 'map', 'core'],
                 }
 
                 $scope.newPointFromGps = function() {
-                    //TODO get current lon/lat from mobile device GPS, create a point
-                    var g_feature = new ol.geom.Point([lon, lat]); //TODO lon lat to be filled
+                    pos = Geolocation.last_location; //TODO timestamp is stored in Geolocation.last_location.geolocation.timestamp, it might be a good idea to accept only recent enough positions ---> or wait for the next fix <---.
+                    var g_feature = new ol.geom.Point(pos.latlng);
                     var feature = new ol.Feature({
-                        geometry: g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection()), //maybe transformation is not necessary
+                        geometry: g_feature
                     });
                     source.addFeature(feature);
                     $scope.features.push({
-                        type: 'Point',
+                        type: $scope.type,
                         ol_feature: feature
                     });
+                    if ($scope.is_unsaved) return;
                     if (!$scope.$$phase) $scope.$digest();
                     $scope.setCurrentFeature($scope.features[$scope.features.length - 1], $scope.features.length - 1);
                 }
