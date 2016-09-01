@@ -24,9 +24,12 @@ define(['angular', 'ol', 'map', 'core'],
                 $scope.features = [];
                 $scope.current_feature = null;
                 $scope.type = 'Point';
-                
-                $scope.categories = {'http://test#tree':'Tree', 'http://test#building':'Building'}
-                
+
+                $scope.categories = {
+                    'http://test#tree': 'Tree',
+                    'http://test#building': 'Building'
+                }
+
                 var source = new ol.source.Vector({});
                 var style = function(feature, resolution) {
                     return [new ol.style.Style({
@@ -103,8 +106,8 @@ define(['angular', 'ol', 'map', 'core'],
                     } catch (ex) {}
                     draw.setActive(true)
                 }
-                
-                $scope.newPointFromGps = function(){
+
+                $scope.newPointFromGps = function() {
                     //TODO get current lon/lat from mobile device GPS, create a point
                     var g_feature = new ol.geom.Point([lon, lat]); //TODO lon lat to be filled
                     var feature = new ol.Feature({
@@ -122,14 +125,14 @@ define(['angular', 'ol', 'map', 'core'],
                 $scope.highlightFeature = function(feature, state) {
                     feature.ol_feature.set('highlighted', state);
                 }
-                
+
                 /**
-                * @function setCurrentFeature
-                * @memberOf hs.draw.controller
-                * @description Opens list of feature attributes 
-                * @param {object} feature - Wrapped feature to edit or view
-                * @param {number} index - Used to position the detail panel after layers li element
-                */
+                 * @function setCurrentFeature
+                 * @memberOf hs.draw.controller
+                 * @description Opens list of feature attributes 
+                 * @param {object} feature - Wrapped feature to edit or view
+                 * @param {number} index - Used to position the detail panel after layers li element
+                 */
                 $scope.setCurrentFeature = function(feature, index) {
                     if ($scope.is_unsaved) return;
                     if ($scope.current_feature == feature) {
@@ -141,32 +144,32 @@ define(['angular', 'ol', 'map', 'core'],
                         var cf = $scope.current_feature;
                         var olf = cf.ol_feature;
                         //Fill feature container object, because we cant edit attributes in OL feature directly
-                        angular.forEach(olf.getKeys(), function(key){
-                            if(key!='geometry' && key!='highlighted'){
+                        angular.forEach(olf.getKeys(), function(key) {
+                            if (key != 'geometry' && key != 'highlighted') {
                                 cf[key] = olf.get(key);
                             }
                         });
                     }
                     return false;
                 }
-                
-                $scope.saveFeature = function(){
+
+                $scope.saveFeature = function() {
                     var cf = $scope.current_feature;
                     var olf = cf.ol_feature;
                     olf.set('name', cf.name);
                     olf.set('description', cf.description);
                     olf.set('category', cf.category);
-                    angular.forEach(cf.extra_attributes, function(attr){
+                    angular.forEach(cf.extra_attributes, function(attr) {
                         olf.set(attr.name, attr.value);
                     });
                     $scope.is_unsaved = false;
                 }
-                
-                $scope.setUnsaved = function(){
+
+                $scope.setUnsaved = function() {
                     $scope.is_unsaved = true;
                 }
-                
-                $scope.cancelChanges = function(){
+
+                $scope.cancelChanges = function() {
                     $scope.is_unsaved = false;
                     $scope.current_feature = null;
                 }
@@ -182,8 +185,8 @@ define(['angular', 'ol', 'map', 'core'],
                     $scope.sketch = null;
                     if (!$scope.$$phase) $scope.$digest();
                 }
-                
-                $scope.removeFeature = function(feature){
+
+                $scope.removeFeature = function(feature) {
                     $scope.features.splice($scope.features.indexOf(feature), 1);
                     source.removeFeature(feature.ol_feature);
                 }
