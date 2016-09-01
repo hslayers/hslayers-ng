@@ -159,7 +159,7 @@ li.hs-lm-item.hovering {
     text-decoration: underline;
 }
 
-li.hs-lm-item, li.hs-comp-item {
+li.hs-lm-item, li.hs-comp-item, li.hs-dr-item {
     padding: 10px 5px;
     word-wrap: break-word;
     cursor: pointer;

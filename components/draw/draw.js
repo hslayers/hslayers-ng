@@ -21,7 +21,12 @@ define(['angular', 'ol', 'map', 'core'],
         .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core',
             function($scope, OlMap, Core) {
                 var map = OlMap.map;
-
+                $scope.features = [];
+                $scope.current_feature = null;
+                $scope.type = 'Point';
+                
+                $scope.categories = {'http://test#tree':'Tree', 'http://test#building':'Building'}
+                
                 var source = new ol.source.Vector({});
                 var style = function(feature, resolution) {
                     return [new ol.style.Style({
@@ -69,8 +74,9 @@ define(['angular', 'ol', 'map', 'core'],
                                 type: $scope.type,
                                 ol_feature: evt.feature
                             });
-                            $scope.current_feature = $scope.features[$scope.features.length - 1];
+                            if ($scope.is_unsaved) return;
                             if (!$scope.$$phase) $scope.$digest();
+                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], $scope.features.length - 1);
                         }, this);
 
                     draw.on('drawend',
@@ -109,17 +115,61 @@ define(['angular', 'ol', 'map', 'core'],
                         type: 'Point',
                         ol_feature: feature
                     });
-                    $scope.current_feature = $scope.features[$scope.features.length - 1];
                     if (!$scope.$$phase) $scope.$digest();
+                    $scope.setCurrentFeature($scope.features[$scope.features.length - 1], $scope.features.length - 1);
                 }
 
                 $scope.highlightFeature = function(feature, state) {
                     feature.ol_feature.set('highlighted', state);
                 }
-
-                $scope.features = [];
-                $scope.current_feature = {};
-                $scope.type = 'Point';
+                
+                /**
+                * @function setCurrentFeature
+                * @memberOf hs.draw.controller
+                * @description Opens list of feature attributes 
+                * @param {object} feature - Wrapped feature to edit or view
+                * @param {number} index - Used to position the detail panel after layers li element
+                */
+                $scope.setCurrentFeature = function(feature, index) {
+                    if ($scope.is_unsaved) return;
+                    if ($scope.current_feature == feature) {
+                        $scope.current_feature = null;
+                    } else {
+                        $scope.current_feature = feature;
+                        $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + index));
+                        $(".hs-dr-editpanel").get(0).scrollIntoView();
+                        var cf = $scope.current_feature;
+                        var olf = cf.ol_feature;
+                        //Fill feature container object, because we cant edit attributes in OL feature directly
+                        angular.forEach(olf.getKeys(), function(key){
+                            if(key!='geometry' && key!='highlighted'){
+                                cf[key] = olf.get(key);
+                            }
+                        });
+                    }
+                    return false;
+                }
+                
+                $scope.saveFeature = function(){
+                    var cf = $scope.current_feature;
+                    var olf = cf.ol_feature;
+                    olf.set('name', cf.name);
+                    olf.set('description', cf.description);
+                    olf.set('category', cf.category);
+                    angular.forEach(cf.extra_attributes, function(attr){
+                        olf.set(attr.name, attr.value);
+                    });
+                    $scope.is_unsaved = false;
+                }
+                
+                $scope.setUnsaved = function(){
+                    $scope.is_unsaved = true;
+                }
+                
+                $scope.cancelChanges = function(){
+                    $scope.is_unsaved = false;
+                    $scope.current_feature = null;
+                }
 
                 $scope.setType = function(type) {
                     $scope.type = type;

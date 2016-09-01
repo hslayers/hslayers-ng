@@ -5,7 +5,7 @@
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-body">
+    <div class="panel-body hs-dr-panel">
           <div class="btn-group" style="margin-bottom:10px">
             <button class="btn btn-default ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate> Point</button>
             <button class="btn btn-default ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate> Polygon</button>
@@ -16,8 +16,8 @@
         <button class="btn btn-default" style="float:right" ng-click="start()" translate>New</button>
         
         <ul class="list-group">
-            <li ng-repeat="feature in features" class="list-group-item">
-                <a href="#"  ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)">{{feature.type}} {{feature.label}}</a>
+            <li ng-repeat="feature in features track by $index" id="hs-dr-feature-{{$index}}" ng-click="setCurrentFeature(feature, $index)" ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)" ng-class="{active : current_feature == feature}" class="list-group-item hs-dr-item">
+                <span>{{feature.type}} {{feature.name}}</span>
                 <span class="pull-right">
                     <button class="btn btn-default btn-xs" ng-if="feature==current_feature" ng-click="stop()" translate>Stop</button>
                     <button type="button" class="btn btn-default btn-xs glyphicon glyphicon-trash" ng-click="removeFeature(feature);">
@@ -25,6 +25,36 @@
                 <span>
             </li>
         </ul>
+        
+        <div class="panel panel-default hs-dr-editpanel" ng-show="current_feature!=null">
+            <div class="panel-body">
+                <form>
+                <!-- Name -->
+                <div class="form-group">
+                    <label translate>Name</label>
+                    <input type="text" class="form-control" ng-model="current_feature.name" ng-change="setUnsaved()"/>
+                </div>
+                
+                <!-- Description -->
+                <div class="form-group">
+                    <label translate>Description</label>
+                    <input type="text" class="form-control" ng-model="current_feature.description" ng-change="setUnsaved()"/>
+                </div>
+                
+                <!-- Category -->
+                <div class="form-group">
+                    <label translate>Category</label>
+                    <select class="form-control" ng-model="current_feature.category" ng-change="setUnsaved()"> 
+                        <option ng-repeat="(key, value) in categories" ng-selected="key==current_feature.category" value="{{key}}">{{value}}</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary" ng-click="saveFeature()">Save</button>
+                <button class="btn btn-default" ng-click="cancelChanges()" ng-show="is_unsaved==true">Cancel</button>
+                <!-- Footer -->
+                </form>
+            </div>
+        </div>
         
         <button class="btn btn-default" style="float:right" ng-click="clearAll()" translate>Clear</button>
     </div>
