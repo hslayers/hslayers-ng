@@ -2,10 +2,10 @@
  * @namespace hs.draw
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'core'],
+define(['angular', 'ol', 'map', 'core', 'utils'],
 
     function(angular, ol) {
-        angular.module('hs.draw', ['hs.map', 'hs.core'])
+        angular.module('hs.draw', ['hs.map', 'hs.core', 'hs.utils'])
             .directive('hs.draw.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/draw/partials/draw.html?bust=' + gitsha
@@ -18,16 +18,15 @@ define(['angular', 'ol', 'map', 'core'],
             };
         })
 
-        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service',
-            function($scope, OlMap, Core, Geolocation) {
+        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service',
+            function($scope, OlMap, Core, Geolocation, $http, utils) {
                 var map = OlMap.map;
                 $scope.features = [];
                 $scope.current_feature = null;
                 $scope.type = 'Point';
 
                 $scope.categories = {
-                    'http://test#tree': 'Tree',
-                    'http://test#building': 'Building'
+                    '999': 'Uncategorized'
                 }
 
                 var source = new ol.source.Vector({});
@@ -218,6 +217,39 @@ define(['angular', 'ol', 'map', 'core'],
                         $scope.deactivateDrawing();
                     }
                 });
+                
+                $scope.sync = function(){
+                    angular.forEach($scope.features, function(feature){
+                        var d = new Date();
+                        var now = d.toISOString();
+                        
+                        var olf = feature.ol_feature;
+                        var attributes = {};
+                        angular.forEach(olf.getKeys(), function(key) {
+                            if (key != 'geometry' && key != 'highlighted' && key != 'category'  && key != 'description') {
+                                attributes[key] = olf.get(key);
+                            }
+                        });
+                        var cord = ol.proj.transform(olf.getGeometry().getCoordinates(), OlMap.map.getView().getProjection(), 'EPSG:4326');
+                        
+                        var fd = new FormData();
+                        fd.append('timestamp', '2016-09-06 12:00:00+0200');
+                        fd.append('category', olf.get('category')),
+                        fd.append('description', olf.get('description'));
+                        fd.append('lon', cord[0]);       
+                        fd.append('lat', cord[1]);
+                        fd.append('user_id', 'tester');
+                        fd.append('dataset', '999');
+                        fd.append('unitId', '1111');
+                        fd.append('attributes', JSON.stringify(attributes));
+
+                        $http.post('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/insobs', fd, {
+                            transformRequest: angular.identity,
+                            headers: {'Content-Type':undefined}
+                        });
+                    })
+                }
+                
                 $scope.$emit('scope_loaded', "draw");
             }
         ]);
