@@ -28,7 +28,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.categories = {
                     '999': 'Uncategorized'
                 }
-
+                
+                var attrs_with_template_tags = ['category', 'description', 'name'];
+                var attrs_not_editable = ['geometry', 'highlighted'];
+                
                 var source = new ol.source.Vector({});
                 var style = function(feature, resolution) {
                     return [new ol.style.Style({
@@ -142,9 +145,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var cf = $scope.current_feature;
                         var olf = cf.ol_feature;
                         //Fill feature container object, because we cant edit attributes in OL feature directly
+                        cf.extra_attributes = [];
                         angular.forEach(olf.getKeys(), function(key) {
-                            if (key != 'geometry' && key != 'highlighted') {
+                            if (attrs_not_editable.indexOf(key)==-1) {
                                 cf[key] = olf.get(key);
+                            }
+                            if (attrs_not_editable.indexOf(key)==-1 && attrs_with_template_tags.indexOf(key)==-1) {
+                                cf.extra_attributes.push({name:key, value: olf.get(key)});
                             }
                         });
                     }
@@ -182,6 +189,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     source.clear();
                     $scope.sketch = null;
                     if (!$scope.$$phase) $scope.$digest();
+                }
+                
+                $scope.addUserDefinedAttr = function(){
+                    $scope.current_feature.extra_attributes.push({name:"New attribute", value:"New value"})
                 }
 
                 $scope.removeFeature = function(feature) {
@@ -226,7 +237,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var olf = feature.ol_feature;
                         var attributes = {};
                         angular.forEach(olf.getKeys(), function(key) {
-                            if (key != 'geometry' && key != 'highlighted' && key != 'category'  && key != 'description') {
+                            if (attrs_not_editable.indexOf(key)==-1 && key != 'category'  && key != 'description') {
                                 attributes[key] = olf.get(key);
                             }
                         });

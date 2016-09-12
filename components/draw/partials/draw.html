@@ -49,6 +49,14 @@
                     </select>
                 </div>
                 
+                <div class="form-group" ng-repeat="user_defined_attr in current_feature.extra_attributes">
+                    <input type="text" class="form-control" ng-model="user_defined_attr.name"/>
+                    <input type="text" class="form-control" ng-model="user_defined_attr.value"/>
+                </div>
+                <button class="btn btn-primary" ng-click="addUserDefinedAttr()">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </button>
+                
                 <button class="btn btn-primary" ng-click="saveFeature()">Save</button>
                 <button class="btn btn-default" ng-click="cancelChanges()" ng-show="is_unsaved==true">Cancel</button>
                 <!-- Footer -->
