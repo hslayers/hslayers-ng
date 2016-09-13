@@ -390,7 +390,7 @@ define(['angular', 'ol', 'utils'],
                     });
                     if ($scope.use_tiles) {
                         new_layer.getSource().on('tileloadstart', function(img) {
-                            img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
+                            img.tile.src_ = this.utils.proxify(decodeURIComponent(img.tile.src_), false);
 
                         }, $scope);
                     } else {
