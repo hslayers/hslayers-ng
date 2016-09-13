@@ -185,6 +185,7 @@ define(['angular', 'ol', 'utils'],
             function($scope, OlMap, srv_caps, Core, $compile, $rootScope, utils, $timeout) {
                 $scope.use_resampling = false;
                 $scope.utils = utils;
+                $scope.use_tiles = true;
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
 
                 $scope.capabilitiesReceived = function(response) {
