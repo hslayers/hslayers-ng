@@ -28,10 +28,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.categories = {
                     '999': 'Uncategorized'
                 }
-                
+
                 var attrs_with_template_tags = ['category', 'description', 'name'];
                 var attrs_not_editable = ['geometry', 'highlighted'];
-                
+
                 var source = new ol.source.Vector({});
                 var style = function(feature, resolution) {
                     return [new ol.style.Style({
@@ -147,11 +147,14 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         //Fill feature container object, because we cant edit attributes in OL feature directly
                         cf.extra_attributes = [];
                         angular.forEach(olf.getKeys(), function(key) {
-                            if (attrs_not_editable.indexOf(key)==-1) {
+                            if (attrs_not_editable.indexOf(key) == -1) {
                                 cf[key] = olf.get(key);
                             }
-                            if (attrs_not_editable.indexOf(key)==-1 && attrs_with_template_tags.indexOf(key)==-1) {
-                                cf.extra_attributes.push({name:key, value: olf.get(key)});
+                            if (attrs_not_editable.indexOf(key) == -1 && attrs_with_template_tags.indexOf(key) == -1) {
+                                cf.extra_attributes.push({
+                                    name: key,
+                                    value: olf.get(key)
+                                });
                             }
                         });
                     }
@@ -190,9 +193,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     $scope.sketch = null;
                     if (!$scope.$$phase) $scope.$digest();
                 }
-                
-                $scope.addUserDefinedAttr = function(){
-                    $scope.current_feature.extra_attributes.push({name:"New attribute", value:"New value"})
+
+                $scope.addUserDefinedAttr = function() {
+                    $scope.current_feature.extra_attributes.push({
+                        name: "New attribute",
+                        value: "New value"
+                    })
                 }
 
                 $scope.removeFeature = function(feature) {
@@ -228,26 +234,26 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         $scope.deactivateDrawing();
                     }
                 });
-                
-                $scope.sync = function(){
-                    angular.forEach($scope.features, function(feature){
+
+                $scope.sync = function() {
+                    angular.forEach($scope.features, function(feature) {
                         var d = new Date();
                         var now = d.toISOString();
-                        
+
                         var olf = feature.ol_feature;
                         var attributes = {};
                         angular.forEach(olf.getKeys(), function(key) {
-                            if (attrs_not_editable.indexOf(key)==-1 && key != 'category'  && key != 'description') {
+                            if (attrs_not_editable.indexOf(key) == -1 && key != 'category' && key != 'description') {
                                 attributes[key] = olf.get(key);
                             }
                         });
                         var cord = ol.proj.transform(olf.getGeometry().getCoordinates(), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                        
+
                         var fd = new FormData();
                         fd.append('timestamp', '2016-09-06 12:00:00+0200');
                         fd.append('category', olf.get('category')),
-                        fd.append('description', olf.get('description'));
-                        fd.append('lon', cord[0]);       
+                            fd.append('description', olf.get('description'));
+                        fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
                         fd.append('user_id', 'tester');
                         fd.append('dataset', '999');
@@ -256,11 +262,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                         $http.post('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/insobs', fd, {
                             transformRequest: angular.identity,
-                            headers: {'Content-Type':undefined}
+                            headers: {
+                                'Content-Type': undefined
+                            }
                         });
                     })
                 }
-                
+
                 $scope.$emit('scope_loaded', "draw");
             }
         ]);
