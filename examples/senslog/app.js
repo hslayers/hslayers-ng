@@ -66,7 +66,7 @@ define(['ol',
                 $scope.Core = Core;
                 $scope.split_x = 0;
                 $scope.split_y = 0;
-                $scope.split_moved = function(x, y){
+                $scope.split_moved = function(x, y) {
                     $scope.split_x = x;
                     $scope.split_y = y;
                     hsmap.map.render();
@@ -80,16 +80,16 @@ define(['ol',
                         var toolbar_button = angular.element('<div hs.senslog.toolbar_button_directive></div>');
                         angular.element('.sidebar-list').append(toolbar_button);
                         $compile(toolbar_button)(event.targetScope);
-                        
+
                         var slider_button = angular.element('<span class="glyphicon glyphicon-move" hs.draggable iswindow="false" hs-draggable-onmove="split_moved" style="z-index: 10001; font-size:1.5em; position:absolute; left:0px; top:0px" aria-hidden="true"></span>');
-                        
+
                         angular.element('#map').append(slider_button);
                         $compile(slider_button)($scope);
                     }
                 });
-                $scope.$on('layermanager.updated', function(data, layer){
-                    if(layer.get('base') != true && layer.get('always_visible') != true){
-                        layer.on('precompose', function(evt){
+                $scope.$on('layermanager.updated', function(data, layer) {
+                    if (layer.get('base') != true && layer.get('always_visible') != true) {
+                        layer.on('precompose', function(evt) {
                             var ctx = evt.context;
                             var width = $scope.split_x;
                             ctx.save();
@@ -97,13 +97,13 @@ define(['ol',
                             ctx.rect(0, 0, width, ctx.canvas.height);
                             ctx.clip();
                         });
-                        layer.on('postcompose', function(evt){
+                        layer.on('postcompose', function(evt) {
                             evt.context.restore();
                         })
                     }
                 });
                 Core.panelEnabled('compositions', false);
-               
+
                 $scope.$on('infopanel.updated', function(event) {});
             }
         ]);

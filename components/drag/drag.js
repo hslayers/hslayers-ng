@@ -7,11 +7,11 @@ define(['angular'],
         angular.module('hs.drag', []).
         directive('hs.draggable', ['$document', '$window', 'config', function($document, $window, config) {
             return function(scope, element, attr) {
-                
-                function isPanel(){
-                    return (angular.isUndefined(attr.iswindow) || attr.iswindow=="true");
+
+                function isPanel() {
+                    return (angular.isUndefined(attr.iswindow) || attr.iswindow == "true");
                 }
-                
+
                 if (isPanel() && (angular.isUndefined(config.draggable_windows) || config.draggable_windows == false)) return;
                 var startX = 0,
                     startY = 0,
@@ -58,7 +58,7 @@ define(['angular'],
                 function mousemove(event) {
                     y = orig_top + event.pageY - startY;
                     x = orig_left + event.pageX - startX;
-                    scope[attr.hsDraggableOnmove](x + element.width()/2, y+ element.height()/2);
+                    scope[attr.hsDraggableOnmove](x + element.width() / 2, y + element.height() / 2);
                     element.css({
                         top: y + 'px',
                         left: x + 'px'
