@@ -95,10 +95,12 @@ define(['ol',
                             var ctx = evt.context;
                             ctx.save();
                             ctx.beginPath();
+                            var title = evt.currentTarget.get('title');
                             //Set clip rectangle and draw red outline for splitter
                             if (evt.currentTarget.get('split_group') == 1) {
                                 ctx.rect(0, 0, $scope.split_x, $scope.split_y);
-
+                                ctx.font = '14pt Calibri';
+                                ctx.fillText(title, $scope.split_x - ctx.measureText(title).width-5, 15);
                             } else {
                                 ctx.moveTo($scope.split_x, 0);
                                 ctx.lineTo(ctx.canvas.width, 0);
@@ -107,6 +109,8 @@ define(['ol',
                                 ctx.lineTo(0, $scope.split_y);
                                 ctx.lineTo($scope.split_x, $scope.split_y);
                                 ctx.closePath();
+                                ctx.font = '14pt Calibri';
+                                ctx.fillText(title, $scope.split_x+5, 15);
                             }
                             ctx.strokeStyle = 'red';
                             ctx.stroke();
