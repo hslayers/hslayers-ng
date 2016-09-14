@@ -1,7 +1,7 @@
 define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
 
     function(angular, ol, SparqlJson, WfsSource) {
-        angular.module('hs.ows.nonwms', [])
+        angular.module('hs.ows.nonwms', ['hs.styles'])
 
         .service('hs.ows.nonwms.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http',
             function(config, $rootScope, OlMap, styles, utils, $http) {

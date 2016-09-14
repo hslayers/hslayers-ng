@@ -2,7 +2,7 @@
 
 define(['ol',
         'sidebar',
-        'toolbar',
+        //'toolbar',
         'layermanager',
         'query',
         'search',
@@ -12,22 +12,19 @@ define(['ol',
         'bootstrap',
         'geolocation',
         'api',
-        'draw',
         'drag',
         'compositions'
     ],
     function(ol, toolbar) {
         var module = angular.module('hs', [
-            'hs.toolbar',
+            //'hs.toolbar',
             'hs.layermanager',
             'hs.query',
-            'hs.search',
             'hs.print',
             'hs.permalink',
             'hs.geolocation',
             'hs.api',
             'hs.sidebar',
-            'hs.draw',
             'hs.drag',
             'hs.compositions'
         ]);
@@ -94,16 +91,46 @@ define(['ol',
                         layer.on('precompose', function(evt) {
                             var ctx = evt.context;
                             ctx.save();
+                            if (evt.currentTarget.get('split_group') == 1) {
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.rect(0, 0, $scope.split_x, 20);
+                                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                                ctx.fill();
+                                ctx.restore();
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.moveTo($scope.split_x, 0);
+                                ctx.lineTo($scope.split_x, 20);
+                                ctx.strokeStyle = 'red';
+                                ctx.stroke();
+                                ctx.restore();
+                            }
+                            if (evt.currentTarget.get('split_group') == 2) {
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.rect($scope.split_x, 0, ctx.canvas.width-$scope.split_x, 20);
+                                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                                ctx.fill();
+                                ctx.restore();
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.moveTo($scope.split_x, 0);
+                                ctx.lineTo($scope.split_x, 20);
+                                ctx.strokeStyle = 'red';
+                                ctx.stroke();
+                                ctx.restore();
+                            }
                             ctx.beginPath();
                             var title = evt.currentTarget.get('title');
                             //Set clip rectangle and draw red outline for splitter
                             if (evt.currentTarget.get('split_group') == 1) {
-                                ctx.rect(0, 0, $scope.split_x, $scope.split_y);
+                                ctx.rect(0, 20, $scope.split_x, $scope.split_y-20);
                                 ctx.font = '14pt Calibri';
                                 ctx.fillText(title, $scope.split_x - ctx.measureText(title).width-5, 15);
                             } else {
-                                ctx.moveTo($scope.split_x, 0);
-                                ctx.lineTo(ctx.canvas.width, 0);
+                                ctx.moveTo($scope.split_x, 20);
+                                ctx.lineTo(ctx.canvas.width, 20);
                                 ctx.lineTo(ctx.canvas.width, ctx.canvas.height);
                                 ctx.lineTo(0, ctx.canvas.height);
                                 ctx.lineTo(0, $scope.split_y);
@@ -153,7 +180,7 @@ define(['ol',
                     })
                     return response;
                 });
-                Core.panelEnabled('compositions', true);
+                Core.panelEnabled('compositions', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
             }
