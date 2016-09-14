@@ -13,7 +13,7 @@ To get you started you can simply clone the hslayers-ng repository and install t
 You need git to clone the hslayers-ng repository. You can get it from
 [http://git-scm.com/](http://git-scm.com/).
 
-We a number of node.js tools to initialize and test hslayers-ng. You must have node.js and
+Hslayers-ng has a number of node.js tools to initialize and test itself. You must have node.js and
 its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
 
 
