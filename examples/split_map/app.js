@@ -12,9 +12,9 @@ define(['ol',
         'bootstrap',
         'geolocation',
         'api',
-        'senslog',
         'draw',
-        'drag'
+        'drag',
+        'compositions'
     ],
     function(ol, toolbar) {
         var module = angular.module('hs', [
@@ -27,9 +27,9 @@ define(['ol',
             'hs.geolocation',
             'hs.api',
             'hs.sidebar',
-            'hs.senslog',
             'hs.draw',
-            'hs.drag'
+            'hs.drag',
+            'hs.compositions'
         ]);
 
         module.directive(
@@ -60,8 +60,8 @@ define(['ol',
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service',
-            function($scope, Core, $compile, hsmap) {
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'hs.compositions.service_parser',
+            function($scope, Core, $compile, hsmap, composition_parser) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 $scope.split_x = 0;
@@ -73,14 +73,6 @@ define(['ol',
                 }
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Sidebar') {
-                        var el = angular.element('<div hs.senslog.directive hs.draggable ng-controller="hs.senslog.controller" ng-if="Core.exists(\'hs.senslog.controller\')" ng-show="Core.panelVisible(\'senslog\', this)"></div>');
-                        angular.element('#panelplace').append(el);
-                        $compile(el)($scope);
-
-                        var toolbar_button = angular.element('<div hs.senslog.toolbar_button_directive></div>');
-                        angular.element('.sidebar-list').append(toolbar_button);
-                        $compile(toolbar_button)(event.targetScope);
-                        
                         var slider_button = angular.element('<span class="glyphicon glyphicon-move" hs.draggable iswindow="false" hs-draggable-onmove="split_moved" style="z-index: 10001; font-size:1.5em; position:absolute; left:0px; top:0px" aria-hidden="true"></span>');
                         
                         angular.element('#map').append(slider_button);
@@ -102,7 +94,8 @@ define(['ol',
                         })
                     }
                 });
-                Core.panelEnabled('compositions', false);
+                composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3');
+                Core.panelEnabled('compositions', true);
                
                 $scope.$on('infopanel.updated', function(event) {});
             }

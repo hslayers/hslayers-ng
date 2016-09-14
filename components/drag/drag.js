@@ -7,13 +7,18 @@ define(['angular'],
         angular.module('hs.drag', []).
         directive('hs.draggable', ['$document', '$window', 'config', function($document, $window, config) {
             return function(scope, element, attr) {
-                if (angular.isUndefined(config.draggable_windows) || config.draggable_windows == false) return;
+                
+                function isPanel(){
+                    return (angular.isUndefined(attr.iswindow) || attr.iswindow=="true");
+                }
+                
+                if (isPanel() && (angular.isUndefined(config.draggable_windows) || config.draggable_windows == false)) return;
                 var startX = 0,
                     startY = 0,
                     x = 0,
                     y = 0;
                 element.css({
-                    position: 'relative',
+                    //position: 'relative',
                     cursor: 'pointer',
                     display: 'block'
                 });
@@ -27,7 +32,7 @@ define(['angular'],
                     .append($('<span>').addClass('glyphicon glyphicon-share').attr('aria-hidden', 'true'))
                     .append($('<span>').addClass('sr-only').attr('translate', '').html('Unpin')));
                 element.on('mousedown', function(event) {
-                    if (!scope.unpinned) return;
+                    if (!scope.unpinned && isPanel()) return;
                     // Prevent default dragging of selected content
                     event.preventDefault();
                     if (event.offsetY > 37) return;
@@ -53,6 +58,7 @@ define(['angular'],
                 function mousemove(event) {
                     y = orig_top + event.pageY - startY;
                     x = orig_left + event.pageX - startX;
+                    scope[attr.hsDraggableOnmove](x + element.width()/2, y);
                     element.css({
                         top: y + 'px',
                         left: x + 'px'
