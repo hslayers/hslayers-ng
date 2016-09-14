@@ -13,9 +13,6 @@ To get you started you can simply clone the hslayers-ng repository and install t
 You need git to clone the hslayers-ng repository. You can get it from
 [http://git-scm.com/](http://git-scm.com/).
 
-If you dont plan to develop hslayers-ng, dont want to run tests and and server files through npm managed 
-http server, then you can skip all the following `npm` related steps.
-
 We a number of node.js tools to initialize and test hslayers-ng. You must have node.js and
 its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
 
@@ -91,6 +88,9 @@ sudo service apache2 restart
 ```
 
 ### Run the Application
+
+If you dont plan to develop hslayers-ng, dont want to run tests and and server files through npm managed 
+http server, then you can skip all the following `npm` related steps.
 
 We have preconfigured the project with a simple development web server, but you can always use a different web server.  
 The simplest way to start this server is:
@@ -181,7 +181,7 @@ npm update
 
 This will find the latest versions that match the version ranges specified in the `package.json` file.
 
-You can update the Angular dependencies by running:
+You can update the dependencies by running:
 
 ```
 bower update
