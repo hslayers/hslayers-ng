@@ -114,6 +114,18 @@ define(['ol',
                             evt.context.restore();
                         })
                     }
+                     if(layer.get('base') == true){
+                        layer.on('postcompose', function(event) {
+                        var context = event.context;
+                        var canvas = context.canvas;
+                        var image = context.getImageData(0, 0, canvas.width, canvas.height);
+                        var data = image.data;
+                        for (var i = 0, ii = data.length; i < ii; i += 4) {
+                            data[i] = data[i + 1] = data[i + 2] = (3 * data[i] + 4 * data[i + 1] + data[i + 2]) / 8;
+                        }
+                        context.putImageData(image, 0, 0);
+                        });
+                     }
                 });
                 $scope.$on('layermanager.layer_time_changed', function(evt, layer, d){
                     angular.forEach(hsmap.map.getLayers(), function(other_layer){
