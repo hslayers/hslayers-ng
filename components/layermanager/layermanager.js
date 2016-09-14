@@ -296,10 +296,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                         }
                     }
                     curfolder.layers.push(lyr);
+                    if($scope.folders.layers.indexOf(lyr)>-1) $scope.folders.layers.splice($scope.folders.layers.indexOf(lyr), 1);
                 } else {
                     $scope.folders.layers.push(lyr);
                 }
             }
+            
+            $scope.populateFolders = populateFolders;
 
             /**
              * @function layerRemoved
@@ -342,6 +345,15 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
             $scope.changeLayerVisibility = function(visibility, layer) {
                 layer.layer.setVisible(visibility);
                 layer.visible = visibility;
+                //Set the other layers in the same folder invisible
+                if(visibility && layer.layer.get('exclusive')==true){
+                    angular.forEach($scope.layers, function(other_layer){
+                        if(other_layer.layer.get('path')==layer.layer.get('path') && other_layer!=layer){
+                            other_layer.layer.setVisible(false);
+                            other_layer.visible = false;
+                        }
+                    })
+                }
             }
 
             /**

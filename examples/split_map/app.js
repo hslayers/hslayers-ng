@@ -60,8 +60,8 @@ define(['ol',
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'hs.compositions.service_parser',
-            function($scope, Core, $compile, hsmap, composition_parser) {
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'hs.compositions.service_parser', '$timeout',
+            function($scope, Core, $compile, hsmap, composition_parser, $timeout) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
@@ -85,10 +85,11 @@ define(['ol',
                 $scope.$on('layermanager.updated', function(data, layer) {
                     if (layer.get('base') != true && layer.get('always_visible') != true) {
                         if (layer.get('title') == 'Intenzita dopravy v Plzni - normální stav - podzim') {
-                            layer.set('split_group', 1);
-                            layer.setVisible(true);
-                        } else{
                             layer.set('split_group', 2);
+                            layer.setVisible(true);
+                        } else if(layer.get('title').indexOf('Intenzita')>-1){
+                            layer.set('split_group', 1);
+                            layer.set('exclusive', true);
                         }
                         layer.on('precompose', function(evt) {
                             var ctx = evt.context;
@@ -138,7 +139,16 @@ define(['ol',
                     })
                 })
 
-                composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3');
+                composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3',undefined,undefined,function(response){
+                    angular.forEach(response.data.layers, function(layer){
+                        if (layer.title == 'Intenzita dopravy v Plzni - normální stav - podzim') {
+                            layer.path='Bez dopravních omezení (base)';
+                        } else if(layer.title.indexOf('Intenzita')>-1){
+                            layer.path='S dopravním omezením (other)';
+                        }
+                    })
+                    return response;
+                });
                 Core.panelEnabled('compositions', true);
 
                 $scope.$on('infopanel.updated', function(event) {});

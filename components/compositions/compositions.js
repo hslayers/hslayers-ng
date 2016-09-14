@@ -60,7 +60,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 composition_edited: false,
                 utils: utils,
                 current_composition_title: "",
-                load: function(url, overwrite, callback) {
+                load: function(url, overwrite, callback, pre_parse) {
                     url = url.replace('&amp;', '&');
                     url = utils.proxify(url);
                     $.ajax({
@@ -69,6 +69,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         .done(function(response) {
                             if (response.success == true) {
                                 me.composition_loaded = url;
+                                if(typeof pre_parse!='undefined') response = pre_parse(response);
                                 $rootScope.$broadcast('compositions.composition_loading', response);
                                 if (angular.isUndefined(overwrite) || overwrite == true) {
                                     var to_be_removed = [];
@@ -213,6 +214,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     dimensions: lyr_def.dimensions,
                                     legends: legends,
                                     saveState: true,
+                                    path: lyr_def.path,
                                     opacity: lyr_def.opacity || 1,
                                     source: new source_class({
                                         url: decodeURIComponent(lyr_def.url),
