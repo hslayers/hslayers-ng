@@ -58,7 +58,7 @@ define(['angular'],
                 function mousemove(event) {
                     y = orig_top + event.pageY - startY;
                     x = orig_left + event.pageX - startX;
-                    scope[attr.hsDraggableOnmove](x + element.width()/2, y);
+                    scope[attr.hsDraggableOnmove](x + element.width()/2, y+ element.height()/2);
                     element.css({
                         top: y + 'px',
                         left: x + 'px'

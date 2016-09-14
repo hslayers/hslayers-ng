@@ -754,6 +754,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                 currentlayer.layer.getSource().updateParams({
                     'TIME': d.toISOString()
                 });
+                $rootScope.$broadcast('layermanager.layer_time_changed', currentlayer.layer, d.toISOString());
             }
 
             $scope.toggleLayerRename = function() {
