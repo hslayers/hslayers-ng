@@ -69,7 +69,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         .done(function(response) {
                             if (response.success == true) {
                                 me.composition_loaded = url;
-                                if(typeof pre_parse!='undefined') response = pre_parse(response);
+                                if (typeof pre_parse != 'undefined') response = pre_parse(response);
                                 $rootScope.$broadcast('compositions.composition_loading', response);
                                 if (angular.isUndefined(overwrite) || overwrite == true) {
                                     var to_be_removed = [];

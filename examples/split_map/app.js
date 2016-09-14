@@ -72,10 +72,10 @@ define(['ol',
                 }
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Map') {
-                        
+
                         $scope.split_x = hsmap.map.getSize()[0] / 2;
                         $scope.split_y = hsmap.map.getSize()[1] / 2;
-                        
+
                         var slider_button = angular.element('<span class="glyphicon glyphicon-move" hs.draggable iswindow="false" hs-draggable-onmove="split_moved" style="z-index: 10001; font-size:1.5em; position:absolute; left:' + ($scope.split_x - 10) + 'px; top:' + ($scope.split_y - 10) + 'px" aria-hidden="true"></span>');
 
                         angular.element('#map').append(slider_button);
@@ -87,7 +87,7 @@ define(['ol',
                         if (layer.get('title') == 'Intenzita dopravy v Plzni - normální stav - podzim') {
                             layer.set('split_group', 2);
                             layer.setVisible(true);
-                        } else if(layer.get('title').indexOf('Intenzita')>-1){
+                        } else if (layer.get('title').indexOf('Intenzita') > -1) {
                             layer.set('split_group', 1);
                             layer.set('exclusive', true);
                         }
@@ -139,12 +139,12 @@ define(['ol',
                     })
                 })
 
-                composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3',undefined,undefined,function(response){
-                    angular.forEach(response.data.layers, function(layer){
+                composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3', undefined, undefined, function(response) {
+                    angular.forEach(response.data.layers, function(layer) {
                         if (layer.title == 'Intenzita dopravy v Plzni - normální stav - podzim') {
-                            layer.path='Bez dopravních omezení (base)';
-                        } else if(layer.title.indexOf('Intenzita')>-1){
-                            layer.path='S dopravním omezením (other)';
+                            layer.path = 'Bez dopravních omezení (base)';
+                        } else if (layer.title.indexOf('Intenzita') > -1) {
+                            layer.path = 'S dopravním omezením (other)';
                         }
                     })
                     return response;
