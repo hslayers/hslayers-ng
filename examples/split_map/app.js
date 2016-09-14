@@ -71,15 +71,15 @@ define(['ol',
                     hsmap.map.render();
                 }
                 $scope.$on("scope_loaded", function(event, args) {
-                    if (args == 'Sidebar') {
+                    if (args == 'Map') {
+                        
+                        $scope.split_x = hsmap.map.getSize()[0] / 2;
+                        $scope.split_y = hsmap.map.getSize()[1] / 2;
+                        
                         var slider_button = angular.element('<span class="glyphicon glyphicon-move" hs.draggable iswindow="false" hs-draggable-onmove="split_moved" style="z-index: 10001; font-size:1.5em; position:absolute; left:' + ($scope.split_x - 10) + 'px; top:' + ($scope.split_y - 10) + 'px" aria-hidden="true"></span>');
 
                         angular.element('#map').append(slider_button);
                         $compile(slider_button)($scope);
-                    }
-                    if (args == 'Map') {
-                        $scope.split_x = hsmap.map.getSize()[0] / 2;
-                        $scope.split_y = hsmap.map.getSize()[1] / 2;
                     }
                 });
                 $scope.$on('layermanager.updated', function(data, layer) {
@@ -87,12 +87,14 @@ define(['ol',
                         if (layer.get('title') == 'Intenzita dopravy v Plzni - normální stav - podzim') {
                             layer.set('split_group', 1);
                             layer.setVisible(true);
-                        } else
+                        } else{
                             layer.set('split_group', 2);
+                        }
                         layer.on('precompose', function(evt) {
                             var ctx = evt.context;
                             ctx.save();
                             ctx.beginPath();
+                            //Set clip rectangle and draw red outline for splitter
                             if (evt.currentTarget.get('split_group') == 1) {
                                 ctx.rect(0, 0, $scope.split_x, $scope.split_y);
 
@@ -114,6 +116,7 @@ define(['ol',
                         })
                     }
                     if (layer.get('base') == true) {
+                        //Grayscale map
                         layer.on('postcompose', function(event) {
                             var context = event.context;
                             var canvas = context.canvas;
