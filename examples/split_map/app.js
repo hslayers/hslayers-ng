@@ -128,7 +128,7 @@ define(['ol',
                                 ctx.rect(0, 20, $scope.split_x, $scope.split_y-20);
                                 ctx.font = '14pt Calibri';
                                 ctx.fillText(title, $scope.split_x - ctx.measureText(title).width-5, 15);
-                            } else {
+                            } else  if(evt.currentTarget.get('split_group') == 2){
                                 ctx.moveTo($scope.split_x, 20);
                                 ctx.lineTo(ctx.canvas.width, 20);
                                 ctx.lineTo(ctx.canvas.width, ctx.canvas.height);
@@ -138,6 +138,8 @@ define(['ol',
                                 ctx.closePath();
                                 ctx.font = '14pt Calibri';
                                 ctx.fillText(title, $scope.split_x+5, 15);
+                            } else {
+                                ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
                             }
                             ctx.strokeStyle = 'red';
                             ctx.stroke();
