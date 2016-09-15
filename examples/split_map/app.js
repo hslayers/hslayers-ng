@@ -72,6 +72,9 @@ define(['ol',
 
                         $scope.split_x = hsmap.map.getSize()[0] / 2;
                         $scope.split_y = hsmap.map.getSize()[1] / 2;
+                        if($scope.split_x==0) $scope.split_x = 400;
+                        if($scope.split_y==0) $scope.split_y = 250;
+                           
 
                         var slider_button = angular.element('<span class="glyphicon glyphicon-move" hs.draggable iswindow="false" hs-draggable-onmove="split_moved" style="z-index: 10001; font-size:1.5em; position:absolute; left:' + ($scope.split_x - 10) + 'px; top:' + ($scope.split_y - 10) + 'px" aria-hidden="true"></span>');
 
