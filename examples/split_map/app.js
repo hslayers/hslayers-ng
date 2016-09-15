@@ -91,17 +91,18 @@ define(['ol',
                         layer.on('precompose', function(evt) {
                             var ctx = evt.context;
                             ctx.save();
+                            var dpi = window.devicePixelRatio;
                             if (evt.currentTarget.get('split_group') == 1) {
                                 ctx.save();
                                 ctx.beginPath();
-                                ctx.rect(0, 0, $scope.split_x, 20);
+                                ctx.rect(0, 0, $scope.split_x * dpi, 20 * dpi);
                                 ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                                 ctx.fill();
                                 ctx.restore();
                                 ctx.save();
                                 ctx.beginPath();
-                                ctx.moveTo($scope.split_x, 0);
-                                ctx.lineTo($scope.split_x, 20);
+                                ctx.moveTo($scope.split_x * dpi, 0 * dpi);
+                                ctx.lineTo($scope.split_x * dpi, 20 * dpi);
                                 ctx.strokeStyle = 'red';
                                 ctx.stroke();
                                 ctx.restore();
@@ -109,14 +110,14 @@ define(['ol',
                             if (evt.currentTarget.get('split_group') == 2) {
                                 ctx.save();
                                 ctx.beginPath();
-                                ctx.rect($scope.split_x, 0, ctx.canvas.width-$scope.split_x, 20);
+                                ctx.rect($scope.split_x * dpi, 0 * dpi, ctx.canvas.width * dpi - $scope.split_x * dpi, 20 * dpi);
                                 ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                                 ctx.fill();
                                 ctx.restore();
                                 ctx.save();
                                 ctx.beginPath();
-                                ctx.moveTo($scope.split_x, 0);
-                                ctx.lineTo($scope.split_x, 20);
+                                ctx.moveTo($scope.split_x * dpi, 0 * dpi);
+                                ctx.lineTo($scope.split_x * dpi, 20 * dpi);
                                 ctx.strokeStyle = 'red';
                                 ctx.stroke();
                                 ctx.restore();
@@ -125,21 +126,21 @@ define(['ol',
                             var title = evt.currentTarget.get('title');
                             //Set clip rectangle and draw red outline for splitter
                             if (evt.currentTarget.get('split_group') == 1) {
-                                ctx.rect(0, 20, $scope.split_x, $scope.split_y-20);
+                                ctx.rect(0 * dpi, 20 * dpi, $scope.split_x * dpi, $scope.split_y * dpi - 20 * dpi);
                                 ctx.font = '14pt Calibri';
-                                ctx.fillText(title, $scope.split_x - ctx.measureText(title).width-5, 15);
-                            } else  if(evt.currentTarget.get('split_group') == 2){
-                                ctx.moveTo($scope.split_x, 20);
-                                ctx.lineTo(ctx.canvas.width, 20);
-                                ctx.lineTo(ctx.canvas.width, ctx.canvas.height);
-                                ctx.lineTo(0, ctx.canvas.height);
-                                ctx.lineTo(0, $scope.split_y);
-                                ctx.lineTo($scope.split_x, $scope.split_y);
+                                ctx.fillText(title, ($scope.split_x - ctx.measureText(title).width - 5) * dpi, 15 * dpi);
+                            } else if (evt.currentTarget.get('split_group') == 2) {
+                                ctx.moveTo($scope.split_x * dpi, 20 * dpi);
+                                ctx.lineTo(ctx.canvas.width * dpi, 20 * dpi);
+                                ctx.lineTo(ctx.canvas.width * dpi, ctx.canvas.height * dpi);
+                                ctx.lineTo(0 * dpi, ctx.canvas.height * dpi);
+                                ctx.lineTo(0 * dpi, $scope.split_y * dpi);
+                                ctx.lineTo($scope.split_x * dpi, $scope.split_y * dpi);
                                 ctx.closePath();
                                 ctx.font = '14pt Calibri';
-                                ctx.fillText(title, $scope.split_x+5, 15);
+                                ctx.fillText(title, ($scope.split_x + 5) * dpi, 15 * dpi);
                             } else {
-                                ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                                ctx.rect(0, 0, ctx.canvas.width * dpi, ctx.canvas.height * dpi);
                             }
                             ctx.strokeStyle = 'red';
                             ctx.stroke();
