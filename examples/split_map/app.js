@@ -80,6 +80,18 @@ define(['ol',
 
                         angular.element('#map').append(slider_button);
                         $compile(slider_button)($scope);
+                        
+                        
+                        composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3', undefined, undefined, function(response) {
+                            angular.forEach(response.data.layers, function(layer) {
+                                if (layer.title == 'Intenzita dopravy v Plzni - normální stav - podzim') {
+                                    layer.path = 'Bez dopravních omezení (base)';
+                                } else if (layer.title.indexOf('Intenzita') > -1) {
+                                    layer.path = 'S dopravním omezením (other)';
+                                }
+                            })
+                            return response;
+                        });
                     }
                 });
                 $scope.$on('layermanager.updated', function(data, layer) {
@@ -176,16 +188,6 @@ define(['ol',
                     })
                 })
 
-                composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3', undefined, undefined, function(response) {
-                    angular.forEach(response.data.layers, function(layer) {
-                        if (layer.title == 'Intenzita dopravy v Plzni - normální stav - podzim') {
-                            layer.path = 'Bez dopravních omezení (base)';
-                        } else if (layer.title.indexOf('Intenzita') > -1) {
-                            layer.path = 'S dopravním omezením (other)';
-                        }
-                    })
-                    return response;
-                });
                 Core.panelEnabled('compositions', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
