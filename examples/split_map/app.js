@@ -189,6 +189,7 @@ define(['ol',
                 })
 
                 Core.panelEnabled('compositions', false);
+                Core.panelEnabled('status_creator', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
             }
