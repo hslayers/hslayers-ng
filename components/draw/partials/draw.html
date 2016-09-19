@@ -44,8 +44,16 @@
                 <!-- Category -->
                 <div class="form-group">
                     <label translate>Category</label>
-                    <select class="form-control" ng-model="current_feature.category" ng-change="setUnsaved()"> 
-                        <option ng-repeat="(key, value) in categories" ng-selected="key==current_feature.category" value="{{key}}">{{value}}</option>
+                    <select class="form-control" ng-model="current_feature.category_id" ng-change="setUnsaved()"> 
+                        <option ng-repeat="category in categories" ng-selected="category.categoryId==current_feature.category_id" value="{{category.categoryId}}">{{category.categoryName}}</option>
+                    </select>
+                </div>
+
+                <!-- Dataset -->
+                <div class="form-group">
+                    <label translate>Dataset</label>
+                    <select class="form-control" ng-model="current_feature.dataset_id" ng-change="setUnsaved()"> 
+                        <option ng-repeat="dataset in datasets" ng-selected="dataset.datasetId==current_feature.dataset_id" value="{{dataset.datasetId}}">{{dataset.datasetName}}</option>
                     </select>
                 </div>
                 

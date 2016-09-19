@@ -25,12 +25,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.current_feature = null;
                 $scope.type = 'Point';
 
-                $scope.categories = {
-                    '999': 'Uncategorized'
-                }
+                $scope.categories = [];
 
-                var attrs_with_template_tags = ['category', 'description', 'name'];
-                var attrs_not_editable = ['geometry', 'highlighted'];
+                var attrs_with_template_tags = ['category_id', 'dataset_id', 'description', 'name'];
+                var attrs_not_editable = ['geometry', 'highlighted', 'attributes'];
 
                 var source = new ol.source.Vector({});
                 var style = function(feature, resolution) {
@@ -157,6 +155,19 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 });
                             }
                         });
+                        angular.forEach(olf.get('attributes'), function(val, key) {
+                            if (attrs_not_editable.indexOf(key) == -1) {
+                                cf[key] = olf.get(key);
+                            }
+                            if (attrs_not_editable.indexOf(key) == -1 && attrs_with_template_tags.indexOf(key) == -1) {
+                                cf.extra_attributes.push({
+                                    name: key,
+                                    value: val
+                                });
+                            } else if(attrs_with_template_tags.indexOf(key) > -1){
+                                    cf[key] = val;
+                            }
+                        });
                     }
                     return false;
                 }
@@ -166,7 +177,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     var olf = cf.ol_feature;
                     olf.set('name', cf.name);
                     olf.set('description', cf.description);
-                    olf.set('category', cf.category);
+                    olf.set('category_id', cf.category_id);
+                    olf.set('dataset_id', cf.dataset_id);
                     angular.forEach(cf.extra_attributes, function(attr) {
                         olf.set(attr.name, attr.value);
                     });
@@ -243,7 +255,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var olf = feature.ol_feature;
                         var attributes = {};
                         angular.forEach(olf.getKeys(), function(key) {
-                            if (attrs_not_editable.indexOf(key) == -1 && key != 'category' && key != 'description') {
+                            if (attrs_not_editable.indexOf(key) == -1 && key != 'category_id' && key != 'description'  && key != 'dataset_id') {
                                 attributes[key] = olf.get(key);
                             }
                         });
@@ -251,12 +263,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                         var fd = new FormData();
                         fd.append('timestamp', '2016-09-06 12:00:00+0200');
-                        fd.append('category', olf.get('category')),
-                            fd.append('description', olf.get('description'));
+                        fd.append('category', olf.get('category_id')),
+                        fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
                         fd.append('user_id', 'tester');
-                        fd.append('dataset', '999');
+                        fd.append('dataset', olf.get('dataset_id') || 999);
                         fd.append('unitId', '1111');
                         fd.append('attributes', JSON.stringify(attributes));
 
@@ -267,8 +279,33 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             }
                         });
                     })
+                    
+                    $http.get('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/observations/select?user_name=tester&format=geojson').then(function(response) {
+                        var format = new ol.format.GeoJSON();
+                        var features = format.readFeatures(response.data, {
+                            dataProjection: 'EPSG:4326',
+                            featureProjection: OlMap.map.getView().getProjection().getCode()
+                        });
+                        source.addFeatures(features);
+                        angular.forEach(features, function(feature) {
+                            $scope.features.push({
+                                type: feature.getGeometry().getType(),
+                                ol_feature: feature
+                            });
+                        })
+                    });
                 }
+                
+                $http.get('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/category/select').then(function(response) {
+                    $scope.categories = response.data;
+                });
+                
+                $http.get('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/dataset/select').then(function(response) {
+                    $scope.datasets = response.data;
+                });
 
+                $scope.sync();
+                
                 $scope.$emit('scope_loaded', "draw");
             }
         ]);
