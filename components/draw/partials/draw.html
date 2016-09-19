@@ -6,7 +6,16 @@
         </button>
     </div>
     <div class="panel-body hs-dr-panel">
-          <div class="btn-group" style="margin-bottom:10px">
+    
+        <!-- Layer -->
+        <div class="form-group">
+            <label translate>Layer</label>
+            <select class="form-control" ng-model="selected_layer" ng-change="changeLayer()"> 
+                <option ng-repeat="layer in drawable_layers" ng-selected="selected_layer==layer.get('title')" value="{{layer.get('title')}}">{{layer.get('title')}}</option>
+            </select>
+        </div>
+    
+        <div class="btn-group" style="margin-bottom:10px">
             <button class="btn btn-default ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate> Point</button>
             <button class="btn btn-default ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate> Polygon</button>
             <button class="btn btn-default ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate> Line</button>
@@ -57,11 +66,19 @@
                     </select>
                 </div>
                 
-                <div class="form-group" ng-repeat="user_defined_attr in current_feature.extra_attributes">
-                    <input type="text" class="form-control" ng-model="user_defined_attr.name"/>
-                    <input type="text" class="form-control" ng-model="user_defined_attr.value"/>
+                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false" aria-controls="hs-more-attributes">
+                    Show more
+                </button>
+                <div class="collapse" id="hs-more-attributes">
+                    <br/>
+                    <div class="form-group" ng-repeat="user_defined_attr in current_feature.extra_attributes">
+                        <input type="text" class="form-control" ng-model="user_defined_attr.name"/>
+                        <input type="text" class="form-control" ng-model="user_defined_attr.value"/>
+                    </div>
                 </div>
-                <button class="btn btn-primary" ng-click="addUserDefinedAttr()">
+                
+            
+                <button class="btn btn-default" ng-click="addUserDefinedAttr()">
                     <i class="glyphicon glyphicon-plus"></i>
                 </button>
                 

@@ -30,7 +30,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 var attrs_with_template_tags = ['category_id', 'dataset_id', 'description', 'name'];
                 var attrs_not_editable = ['geometry', 'highlighted', 'attributes'];
 
-                var source = new ol.source.Vector({});
+                var source;
                 var style = function(feature, resolution) {
                     return [new ol.style.Style({
                         fill: new ol.style.Fill({
@@ -52,19 +52,33 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         })
                     })]
                 };
-
-                var vector = new ol.layer.Vector({
-                    source: source,
-                    style: style
-                });
-
+                
+                $scope.drawable_layers = [];
+                
+                $scope.changeLayer = function(){
+                    angular.forEach(map.getLayers(), function(layer){
+                        if($scope.selected_layer == layer.get('title')){
+                             source = layer.getSource();
+                             map.removeInteraction(draw);
+                             addInteraction();
+                             $scope.features = [];
+                             angular.forEach(source.getFeatures(), function(feature){
+                                $scope.features.push({
+                                    type: feature.getGeometry().getType(),
+                                    ol_feature: feature
+                                });
+                            })
+                        }
+                    })
+                }
 
                 var draw; // global so we can remove it later
-                function addInteraction() {
+                function addInteraction() {      
                     draw = new ol.interaction.Draw({
                         source: source,
                         type: /** @type {ol.geom.GeometryType} */ ($scope.type)
                     });
+                    
                     map.addInteraction(draw);
 
                     draw.on('drawstart',
@@ -230,17 +244,24 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 });
 
                 $scope.activateDrawing = function() {
-                    map.addLayer(vector);
                     addInteraction();
                 }
 
                 $scope.deactivateDrawing = function() {
                     map.removeInteraction(draw);
-                    map.removeLayer(vector);
                 }
 
                 $scope.$on('core.mainpanel_changed', function(event) {
                     if (Core.mainpanel == 'draw') {
+                        angular.forEach(map.getLayers(), function(layer){
+                            if(layer instanceof ol.layer.Vector && layer.getVisible() && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager')==true) && (angular.isDefined(layer.get('title')) && layer.get('title')!='')){
+                                $scope.drawable_layers.push(layer);
+                            }
+                        })
+                        if($scope.drawable_layers.length==1){
+                            $scope.selected_layer = $scope.drawable_layers[0].get('title');
+                            $scope.changeLayer();
+                        }
                         $scope.activateDrawing();
                     } else {
                         $scope.deactivateDrawing();
@@ -279,21 +300,6 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             }
                         });
                     })
-                    
-                    $http.get('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/observations/select?user_name=tester&format=geojson').then(function(response) {
-                        var format = new ol.format.GeoJSON();
-                        var features = format.readFeatures(response.data, {
-                            dataProjection: 'EPSG:4326',
-                            featureProjection: OlMap.map.getView().getProjection().getCode()
-                        });
-                        source.addFeatures(features);
-                        angular.forEach(features, function(feature) {
-                            $scope.features.push({
-                                type: feature.getGeometry().getType(),
-                                ol_feature: feature
-                            });
-                        })
-                    });
                 }
                 
                 $http.get('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/category/select').then(function(response) {

@@ -1,8 +1,8 @@
 'use strict';
 
 define(['ol',
-        'sidebar',
         'toolbar',
+        'sidebar',
         'layermanager',
         'query',
         'search',
@@ -51,7 +51,17 @@ define(['ol',
                     source: new ol.source.OSM(),
                     title: "Base layer",
                     base: true
+                }),
+                new ol.layer.Vector({
+                    title: 'Editable vector layer',
+                    visibility: true,
+                    source: new ol.source.Vector({
+                        url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/observations/select?user_name=tester&format=geojson',
+                        senslog_url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/',
+                        format: new ol.format.GeoJSON()
+                    })
                 })
+
             ],
             default_view: new ol.View({
                 center: ol.proj.transform([6.1319, 49.6116], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
