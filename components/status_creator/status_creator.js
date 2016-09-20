@@ -297,7 +297,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             if (src.getUrls) json.url = encodeURIComponent(src.getUrls()[0]);
                             if (src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
                             json.params = src.getParams();
-                            json.ratio = src.get('ratio');
+                            json.ratio = src.get('ratio') || src.ratio_;
                             json.displayInLayerSwitcher = layer.get('show_in_manager');
                             json.metadata.styles = src.get('styles');
                             if (layer.get('dimensions')) {
