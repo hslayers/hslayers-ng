@@ -292,13 +292,17 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         fd.append('dataset', olf.get('dataset_id') || 999);
                         fd.append('unitId', '1111');
                         fd.append('attributes', JSON.stringify(attributes));
-
-                        $http.post('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/insobs', fd, {
-                            transformRequest: angular.identity,
-                            headers: {
-                                'Content-Type': undefined
-                            }
-                        });
+                        
+                        if(angular.isUndefined(attributes.obs_vgi_id)){ //INSERT
+                            $http.post('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/insobs', fd, {
+                                transformRequest: angular.identity,
+                                headers: {
+                                    'Content-Type': undefined
+                                }
+                            });
+                        } else {
+                            //UPDATE to be implemented when service is ready
+                        }
                     })
                 }
                 
