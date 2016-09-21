@@ -187,6 +187,7 @@ define(['angular', 'ol', 'utils'],
                 $scope.utils = utils;
                 $scope.use_tiles = true;
                 $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
+                $scope.register_metadata = true;
 
                 $scope.capabilitiesReceived = function(response) {
                     try {
