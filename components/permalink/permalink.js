@@ -115,7 +115,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     };
 
                     me.parsePermalinkLayers = function() {
-                        var layersUrl = me.getParamValue('permalink');
+                        var layersUrl = utils.proxify(me.getParamValue('permalink'));
                         $.ajax({
                                 url: layersUrl
                             })
@@ -124,6 +124,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                     var data = {};
                                     data.data = {};
                                     data.data.layers = response.data;
+                                    compositions.removeCompositionLayers();
                                     response.layers = response.data;
                                     var layers = compositions.jsonToLayers(data);
                                     for (var i = 0; i < layers.length; i++) {

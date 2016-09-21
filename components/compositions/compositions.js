@@ -72,14 +72,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 if (typeof pre_parse != 'undefined') response = pre_parse(response);
                                 $rootScope.$broadcast('compositions.composition_loading', response);
                                 if (angular.isUndefined(overwrite) || overwrite == true) {
-                                    var to_be_removed = [];
-                                    OlMap.map.getLayers().forEach(function(lyr) {
-                                        if (lyr.get('from_composition'))
-                                            to_be_removed.push(lyr);
-                                    });
-                                    while (to_be_removed.length > 0) {
-                                        OlMap.map.removeLayer(to_be_removed.shift());
-                                    }
+                                   removeCompositionLayers();
                                 }
                                 me.current_composition_title = response.title || response.data.title;
                                 OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
@@ -108,6 +101,17 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 $rootScope.$broadcast('compositions.composition_loaded', respError);
                             }
                         })
+                },
+                 
+                removeCompositionLayers: function(){
+                    var to_be_removed = [];
+                    OlMap.map.getLayers().forEach(function(lyr) {
+                        if (lyr.get('from_composition'))
+                            to_be_removed.push(lyr);
+                    });
+                    while (to_be_removed.length > 0) {
+                        OlMap.map.removeLayer(to_be_removed.shift());
+                    }
                 },
 
                 loadInfo: function(url) {
