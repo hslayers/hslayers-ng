@@ -228,6 +228,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 }
 
                 $scope.removeFeature = function(feature) {
+                    if (angular.isObject($scope.current_feature) && ($scope.current_feature == feature)) {
+                        $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
+                        $scope.current_feature = null;
+                    }
                     $scope.features.splice($scope.features.indexOf(feature), 1);
                     source.removeFeature(feature.ol_feature);
                 }
@@ -261,8 +265,9 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         if($scope.drawable_layers.length==1){
                             $scope.selected_layer = $scope.drawable_layers[0].get('title');
                             $scope.changeLayer();
+                        } else if($scope.drawable_layers.length>1){
+                            $scope.activateDrawing();
                         }
-                        $scope.activateDrawing();
                     } else {
                         $scope.deactivateDrawing();
                     }
@@ -283,7 +288,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var cord = ol.proj.transform(olf.getGeometry().getCoordinates(), OlMap.map.getView().getProjection(), 'EPSG:4326');
 
                         var fd = new FormData();
-                        fd.append('timestamp', '2016-09-06 12:00:00+0200');
+                        fd.append('timestamp', now);
                         fd.append('category', olf.get('category_id')),
                         fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);

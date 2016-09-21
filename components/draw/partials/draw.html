@@ -24,7 +24,7 @@
         <button class="btn btn-default" style="float:right" ng-show="type=='Point'" ng-click="newPointFromGps()" translate>New GPS</button>
         <button class="btn btn-default" style="float:right" ng-click="start()" translate>New</button>
         
-        <ul class="list-group">
+        <ul class="list-group hs-dr-featurelist">
             <li ng-repeat="feature in features track by $index" id="hs-dr-feature-{{$index}}" ng-click="setCurrentFeature(feature, $index)" ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)" ng-class="{active : current_feature == feature}" class="list-group-item hs-dr-item">
                 <span>{{feature.type}} {{feature.name}}</span>
                 <span class="pull-right">
