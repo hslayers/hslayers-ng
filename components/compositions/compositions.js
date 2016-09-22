@@ -72,7 +72,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 if (typeof pre_parse != 'undefined') response = pre_parse(response);
                                 $rootScope.$broadcast('compositions.composition_loading', response);
                                 if (angular.isUndefined(overwrite) || overwrite == true) {
-                                   me.removeCompositionLayers();
+                                    me.removeCompositionLayers();
                                 }
                                 me.current_composition_title = response.title || response.data.title;
                                 OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
@@ -102,8 +102,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             }
                         })
                 },
-                 
-                removeCompositionLayers: function(){
+
+                removeCompositionLayers: function() {
                     var to_be_removed = [];
                     OlMap.map.getLayers().forEach(function(lyr) {
                         if (lyr.get('from_composition'))

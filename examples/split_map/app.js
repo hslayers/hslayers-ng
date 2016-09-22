@@ -72,16 +72,16 @@ define(['ol',
 
                         $scope.split_x = hsmap.map.getSize()[0] / 2;
                         $scope.split_y = hsmap.map.getSize()[1] / 2;
-                        if($scope.split_x==0) $scope.split_x = 400;
-                        if($scope.split_y==0) $scope.split_y = 250;
-                           
+                        if ($scope.split_x == 0) $scope.split_x = 400;
+                        if ($scope.split_y == 0) $scope.split_y = 250;
+
 
                         var slider_button = angular.element('<span class="glyphicon glyphicon-move" hs.draggable iswindow="false" hs-draggable-onmove="split_moved" style="z-index: 10001; font-size:1.5em; position:absolute; left:' + ($scope.split_x - 10) + 'px; top:' + ($scope.split_y - 10) + 'px" aria-hidden="true"></span>');
 
                         angular.element('#map').append(slider_button);
                         $compile(slider_button)($scope);
-                        
-                        
+
+
                         composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3', undefined, undefined, function(response) {
                             angular.forEach(response.data.layers, function(layer) {
                                 if (layer.title == 'Intenzita dopravy v Plzni - normální stav - podzim') {

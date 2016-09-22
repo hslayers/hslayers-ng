@@ -53,41 +53,42 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         })
                     })]
                 };
-                
+
                 $scope.drawable_layers = [];
-                
-                $scope.changeLayer = function(){
-                    angular.forEach(map.getLayers(), function(layer){
-                        if($scope.selected_layer == layer.get('title')){
-                             source = layer.getSource();
-                             map.removeInteraction(draw);
-                             addInteraction();
-                             $scope.features = [];
-                             angular.forEach(source.getFeatures(), function(feature){
-                                $scope.features.push({
-                                    type: feature.getGeometry().getType(),
-                                    ol_feature: feature,
-                                    name: feature.get('name') || (angular.isDefined(feature.get('attributes')) ? feature.get('attributes').name : undefined)
-                                });
-                            })
+
+                $scope.changeLayer = function() {
+                    angular.forEach(map.getLayers(), function(layer) {
+                        if ($scope.selected_layer == layer.get('title')) {
+                            source = layer.getSource();
+                            map.removeInteraction(draw);
+                            addInteraction();
+                            fillFeatureList();
                         }
                     })
                 }
 
+                function fillFeatureList() {
+                    $scope.features = [];
+                    angular.forEach(source.getFeatures(), function(feature) {
+                        $scope.features.push({
+                            type: feature.getGeometry().getType(),
+                            ol_feature: feature,
+                            name: feature.get('name') || (angular.isDefined(feature.get('attributes')) ? feature.get('attributes').name : undefined)
+                        });
+                    })
+                }
+
                 var draw; // global so we can remove it later
-                function addInteraction() {      
+                function addInteraction() {
                     draw = new ol.interaction.Draw({
                         source: source,
                         type: /** @type {ol.geom.GeometryType} */ ($scope.type)
                     });
-                    
+
                     map.addInteraction(draw);
 
                     draw.on('drawstart',
                         function(evt) {
-                            // set sketch
-
-                            $scope.sketch = [evt.feature];
                             $scope.features.push({
                                 type: $scope.type,
                                 ol_feature: evt.feature
@@ -156,36 +157,48 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         $scope.current_feature = feature;
                         $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + index));
                         $(".hs-dr-editpanel").get(0).scrollIntoView();
-                        var cf = $scope.current_feature;
-                        var olf = cf.ol_feature;
-                        //Fill feature container object, because we cant edit attributes in OL feature directly
-                        cf.extra_attributes = [];
-                        angular.forEach(olf.getKeys(), function(key) {
-                            if (attrs_not_editable.indexOf(key) == -1) {
-                                cf[key] = olf.get(key);
-                            }
-                            if (attrs_not_editable.indexOf(key) == -1 && attrs_with_template_tags.indexOf(key) == -1) {
-                                cf.extra_attributes.push({
-                                    name: key,
-                                    value: olf.get(key)
-                                });
-                            }
-                        });
-                        angular.forEach(olf.get('attributes'), function(val, key) {
-                            if (attrs_not_editable.indexOf(key) == -1) {
-                                cf[key] = olf.get(key);
-                            }
-                            if (attrs_not_editable.indexOf(key) == -1 && attrs_with_template_tags.indexOf(key) == -1) {
-                                cf.extra_attributes.push({
-                                    name: key,
-                                    value: val
-                                });
-                            } else if(attrs_with_template_tags.indexOf(key) > -1){
-                                    cf[key] = val;
-                            }
-                        });
+                        var olf = $scope.current_feature.ol_feature;
+                        fillFeatureContainer($scope.current_feature, olf);
+                        zoomToFeature(olf);
                     }
                     return false;
+                }
+
+                //Fill feature container object, because we cant edit attributes in OL feature directly
+                function fillFeatureContainer(cf, olf) {
+                    cf.extra_attributes = [];
+                    angular.forEach(olf.getKeys(), function(key) {
+                        if (attrs_not_editable.indexOf(key) == -1) {
+                            cf[key] = olf.get(key);
+                        }
+                        if (attrs_not_editable.indexOf(key) == -1 && attrs_with_template_tags.indexOf(key) == -1) {
+                            cf.extra_attributes.push({
+                                name: key,
+                                value: olf.get(key)
+                            });
+                        }
+                    });
+                    angular.forEach(olf.get('attributes'), function(val, key) {
+                        if (attrs_not_editable.indexOf(key) == -1) {
+                            cf[key] = olf.get(key);
+                        }
+                        if (attrs_not_editable.indexOf(key) == -1 && attrs_with_template_tags.indexOf(key) == -1) {
+                            cf.extra_attributes.push({
+                                name: key,
+                                value: val
+                            });
+                        } else if (attrs_with_template_tags.indexOf(key) > -1) {
+                            cf[key] = val;
+                        }
+                    });
+                }
+
+                function zoomToFeature(olf) {
+                    if (olf.getGeometry().getType() == 'Point') {
+                        map.getView().setCenter(olf.getGeometry().getCoordinates());
+                    } else {
+                        map.getView().fit(olf.getGeometry(), map.getSize());
+                    }
                 }
 
                 $scope.saveFeature = function() {
@@ -219,7 +232,6 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.clearAll = function() {
                     $scope.features = [];
                     source.clear();
-                    $scope.sketch = null;
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
@@ -260,21 +272,25 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                 $scope.$on('core.mainpanel_changed', function(event) {
                     if (Core.mainpanel == 'draw') {
-                        angular.forEach(map.getLayers(), function(layer){
-                            if(layer instanceof ol.layer.Vector && layer.getVisible() && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager')==true) && (angular.isDefined(layer.get('title')) && layer.get('title')!='')){
-                                $scope.drawable_layers.push(layer);
-                            }
-                        })
-                        if($scope.drawable_layers.length==1){
+                        fillDrawableLayersList();
+                        if ($scope.drawable_layers.length == 1) {
                             $scope.selected_layer = $scope.drawable_layers[0].get('title');
                             $scope.changeLayer();
-                        } else if($scope.drawable_layers.length>1){
+                        } else if ($scope.drawable_layers.length > 1) {
                             $scope.activateDrawing();
                         }
                     } else {
                         $scope.deactivateDrawing();
                     }
                 });
+
+                function fillDrawableLayersList() {
+                    angular.forEach(map.getLayers(), function(layer) {
+                        if (layer instanceof ol.layer.Vector && layer.getVisible() && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager') == true) && (angular.isDefined(layer.get('title')) && layer.get('title') != '')) {
+                            $scope.drawable_layers.push(layer);
+                        }
+                    })
+                }
 
                 $scope.sync = function() {
                     angular.forEach($scope.features, function(feature) {
@@ -284,7 +300,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var olf = feature.ol_feature;
                         var attributes = {};
                         angular.forEach(olf.getKeys(), function(key) {
-                            if (attrs_not_editable.indexOf(key) == -1 && key != 'category_id' && key != 'description'  && key != 'dataset_id') {
+                            if (attrs_not_editable.indexOf(key) == -1 && key != 'category_id' && key != 'description' && key != 'dataset_id') {
                                 attributes[key] = olf.get(key);
                             }
                         });
@@ -293,19 +309,19 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var fd = new FormData();
                         fd.append('timestamp', now);
                         fd.append('category', olf.get('category_id')),
-                        fd.append('description', olf.get('description'));
+                            fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
                         fd.append('user_id', 'tester');
                         fd.append('dataset', olf.get('dataset_id') || 999);
                         fd.append('unitId', '1111');
                         fd.append('attributes', JSON.stringify(attributes));
-                        if(angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(attributes.obs_vgi_id)){
+                        if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(attributes.obs_vgi_id)) {
                             fd.append('obs_vgi_id', attributes.obs_vgi_id);
                         }
-                        
-                        if(angular.isUndefined(attributes.obs_vgi_id) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))){ //INSERT
-                            $http.post($scope.senslog_url+'/insobs', fd, {
+
+                        if (angular.isUndefined(attributes.obs_vgi_id) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
+                            $http.post($scope.senslog_url + '/insobs', fd, {
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined
@@ -316,17 +332,17 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }
                     })
                 }
-                
-                $http.get($scope.senslog_url+'/category/select').then(function(response) {
+
+                $http.get($scope.senslog_url + '/category/select').then(function(response) {
                     $scope.categories = response.data;
                 });
-                
-                $http.get($scope.senslog_url+'/dataset/select').then(function(response) {
+
+                $http.get($scope.senslog_url + '/dataset/select').then(function(response) {
                     $scope.datasets = response.data;
                 });
 
                 $scope.sync();
-                
+
                 $scope.$emit('scope_loaded', "draw");
             }
         ]);
