@@ -72,7 +72,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 if (typeof pre_parse != 'undefined') response = pre_parse(response);
                                 $rootScope.$broadcast('compositions.composition_loading', response);
                                 if (angular.isUndefined(overwrite) || overwrite == true) {
-                                   removeCompositionLayers();
+                                   me.removeCompositionLayers();
                                 }
                                 me.current_composition_title = response.title || response.data.title;
                                 OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
