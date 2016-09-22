@@ -90,6 +90,8 @@ define(['ol',
                         var toolbar_button = angular.element('<div hs.senslog.toolbar_button_directive></div>');
                         angular.element('.sidebar-list').append(toolbar_button);
                         $compile(toolbar_button)(event.targetScope);
+                        
+                         console.log(ol.proj.transformExtent(hsmap.map.getView().calculateExtent(hsmap.map.getSize()), 'EPSG:3857', 'EPSG:4326'));
                     }
                 });
                 Core.panelEnabled('compositions', false);

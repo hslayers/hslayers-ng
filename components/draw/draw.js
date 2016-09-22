@@ -21,6 +21,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
         .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service',
             function($scope, OlMap, Core, Geolocation, $http, utils) {
                 var map = OlMap.map;
+                $scope.senslog_url = 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi'; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
                 $scope.features = [];
                 $scope.current_feature = null;
                 $scope.type = 'Point';
@@ -28,7 +29,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.categories = [];
 
                 var attrs_with_template_tags = ['category_id', 'dataset_id', 'description', 'name'];
-                var attrs_not_editable = ['geometry', 'highlighted', 'attributes'];
+                var attrs_not_editable = ['geometry', 'highlighted', 'attributes', 'sync_pending'];
 
                 var source;
                 var style = function(feature, resolution) {
@@ -65,7 +66,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                              angular.forEach(source.getFeatures(), function(feature){
                                 $scope.features.push({
                                     type: feature.getGeometry().getType(),
-                                    ol_feature: feature
+                                    ol_feature: feature,
+                                    name: feature.get('name') || (angular.isDefined(feature.get('attributes')) ? feature.get('attributes').name : undefined)
                                 });
                             })
                         }
@@ -193,6 +195,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     olf.set('description', cf.description);
                     olf.set('category_id', cf.category_id);
                     olf.set('dataset_id', cf.dataset_id);
+                    olf.set('sync_pending', cf.dataset_id);
                     angular.forEach(cf.extra_attributes, function(attr) {
                         olf.set(attr.name, attr.value);
                     });
@@ -297,9 +300,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         fd.append('dataset', olf.get('dataset_id') || 999);
                         fd.append('unitId', '1111');
                         fd.append('attributes', JSON.stringify(attributes));
+                        if(angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(attributes.obs_vgi_id)){
+                            fd.append('obs_vgi_id', attributes.obs_vgi_id);
+                        }
                         
-                        if(angular.isUndefined(attributes.obs_vgi_id)){ //INSERT
-                            $http.post('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/insobs', fd, {
+                        if(angular.isUndefined(attributes.obs_vgi_id) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))){ //INSERT
+                            $http.post($scope.senslog_url+'/insobs', fd, {
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined
@@ -311,11 +317,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
                 
-                $http.get('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/category/select').then(function(response) {
+                $http.get($scope.senslog_url+'/category/select').then(function(response) {
                     $scope.categories = response.data;
                 });
                 
-                $http.get('http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/dataset/select').then(function(response) {
+                $http.get($scope.senslog_url+'/dataset/select').then(function(response) {
                     $scope.datasets = response.data;
                 });
 
