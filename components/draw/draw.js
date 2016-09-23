@@ -321,7 +321,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             fd.append('obs_vgi_id', olf.get('obs_vgi_id'));
                         }
 
-                        if (angular.isUndefined(attributes.obs_vgi_id) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
+                        if (angular.isUndefined(olf.get('obs_vgi_id')) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
                             $http.post($scope.senslog_url + '/insobs', fd, {
                                 transformRequest: angular.identity,
                                 headers: {
@@ -330,7 +330,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 olf: olf
                             }).then(function(response) {
                                 if(response.statusText=="OK"){
-                                    response.config.olf.set('obs_vgi_id', parseInt(response.data));
+                                    var olf = response.config.olf;
+                                    olf.set('sync_pending', false);
+                                    if(angular.isUndefined(olf.get('obs_vgi_id')))
+                                        olf.set('obs_vgi_id', parseInt(response.data));
                                 }
                             });
                         }
