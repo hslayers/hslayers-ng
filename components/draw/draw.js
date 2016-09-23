@@ -309,15 +309,16 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var fd = new FormData();
                         fd.append('timestamp', now);
                         fd.append('category', olf.get('category_id')),
-                            fd.append('description', olf.get('description'));
+                        fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
                         fd.append('user_id', 'tester');
                         fd.append('dataset', olf.get('dataset_id') || 999);
+                        fd.append('dataset', olf.get('dataset_id') || 999);
                         fd.append('unitId', '1111');
                         fd.append('attributes', JSON.stringify(attributes));
-                        if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(attributes.obs_vgi_id)) {
-                            fd.append('obs_vgi_id', attributes.obs_vgi_id);
+                        if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(olf.get('obs_vgi_id'))) {
+                            fd.append('obs_vgi_id', olf.get('obs_vgi_id'));
                         }
 
                         if (angular.isUndefined(attributes.obs_vgi_id) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
@@ -325,10 +326,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined
+                                },
+                                olf: olf
+                            }).then(function(response) {
+                                if(response.statusText=="OK"){
+                                    response.config.olf.set('obs_vgi_id', parseInt(response.data));
                                 }
                             });
-                        } else {
-                            //UPDATE to be implemented when service is ready
                         }
                     })
                 }
