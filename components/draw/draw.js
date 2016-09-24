@@ -123,19 +123,43 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 }
 
                 $scope.newPointFromGps = function() {
-                    pos = Geolocation.last_location; //TODO timestamp is stored in Geolocation.last_location.geolocation.timestamp, it might be a good idea to accept only recent enough positions ---> or wait for the next fix <---.
-                    var g_feature = new ol.geom.Point(pos.latlng);
-                    var feature = new ol.Feature({
-                        geometry: g_feature
-                    });
-                    source.addFeature(feature);
-                    $scope.features.push({
-                        type: $scope.type,
-                        ol_feature: feature
-                    });
-                    if ($scope.is_unsaved) return;
-                    if (!$scope.$$phase) $scope.$digest();
-                    $scope.setCurrentFeature($scope.features[$scope.features.length - 1], $scope.features.length - 1);
+                    var requiredPrecision = 20;
+
+                    function createPoint() {
+                        pos = Geolocation.last_location;
+                        var g_feature = new ol.geom.Point(pos.latlng);
+                        var feature = new ol.Feature({
+                            geometry: g_feature
+                        });
+                        source.addFeature(feature);
+                        $scope.features.push({
+                            type: $scope.type,
+                            ol_feature: feature
+                        });
+                        if ($scope.is_unsaved) return;
+                        if (!$scope.$$phase) $scope.$digest();
+                        $scope.setCurrentFeature($scope.features[$scope.features.length - 1], $scope.features.length - 1);
+                    }
+
+                    function waitForFix() {
+                        window.plugins.toast.showShortCenter("Waiting for GPS fix …");
+                        var stopWaiting = $scope.$on('geolocation.updated', function (event) {
+                            console.log(Geolocation.last_location.geoposition.coords.accuracy);
+                            if (Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision)
+                                createPoint();
+                                stopWaiting();
+                        });
+                    }
+
+                    if (Geolocation.gpsStatus && Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision) {
+                        createPoint();
+                    } else if (Geolocation.gpsStatus) {
+                        waitForFix();
+                    } else {
+                        Geolocation.toggleGps();
+                        waitForFix();
+                    }
+                    // pos = Geolocation.last_location; //TODO timestamp is stored in Geolocation.last_location.geolocation.timestamp, it might be a good idea to accept only recent enough positions ---> or wait for the next fix <---.
                 }
 
                 $scope.highlightFeature = function(feature, state) {
