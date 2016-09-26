@@ -72,13 +72,13 @@
                 <div class="collapse" id="hs-more-attributes">
                     <br/>
                     <div class="form-group" ng-repeat="user_defined_attr in current_feature.extra_attributes">
-                        <input type="text" class="form-control" ng-model="user_defined_attr.name"/>
+                        <input type="text" class="form-control hs-dr-extra-attribute-name" ng-model="user_defined_attr.name"/>
                         <input type="text" class="form-control" ng-model="user_defined_attr.value"/>
                     </div>
                 </div>
                 
             
-                <button class="btn btn-default" ng-click="addUserDefinedAttr()" >
+                <button class="btn btn-default hs-dr-add-attribute" ng-click="addUserDefinedAttr()" >
                     <i class="glyphicon glyphicon-plus"></i>
                 </button>
                 

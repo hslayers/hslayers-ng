@@ -18,8 +18,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
             };
         })
 
-        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service',
-            function($scope, OlMap, Core, Geolocation, $http, utils) {
+        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout',
+            function($scope, OlMap, Core, Geolocation, $http, utils, $timeout) {
                 var map = OlMap.map;
                 $scope.senslog_url = 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi'; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
                 $scope.features = [];
@@ -97,7 +97,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             });
                             if ($scope.is_unsaved) return;
                             if (!$scope.$$phase) $scope.$digest();
-                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], 0);
+                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], 0, false);
                         }, this);
 
                     draw.on('drawend',
@@ -176,7 +176,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                  * @param {object} feature - Wrapped feature to edit or view
                  * @param {number} index - Used to position the detail panel after layers li element
                  */
-                $scope.setCurrentFeature = function(feature, index) {
+                $scope.setCurrentFeature = function(feature, index, zoom_to_feature) {
                     if ($scope.is_unsaved) return;
                     if ($scope.current_feature == feature) {
                         $scope.current_feature = null;
@@ -189,7 +189,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         //$(".hs-dr-editpanel").get(0).scrollIntoView();
                         var olf = $scope.current_feature.ol_feature;
                         fillFeatureContainer($scope.current_feature, olf);
-                        zoomToFeature(olf);
+                        if(angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
                     }
                     return false;
                 }
@@ -265,12 +265,22 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
+				$("#hs-more-attributes").on('shown.bs.collapse', function(){
+					$('.hs-dr-extra-attribute-name:last').focus();
+					$('#panelplace').animate({
+						scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-add-attribute").offset().top - 100
+					}, 500);					
+				});
+		
                 $scope.addUserDefinedAttr = function() {
                     $scope.current_feature.extra_attributes.push({
                         name: "New attribute",
                         value: "New value"
-                    })
-					$("#hs-more-attributes").collapse('show');
+                    });
+                    $("#hs-more-attributes").collapse('show');
+					$timeout(function() {
+						$('.hs-dr-extra-attribute-name:last').focus();
+					});
                 }
 
                 $scope.removeFeature = function(feature) {
