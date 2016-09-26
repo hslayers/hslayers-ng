@@ -25,7 +25,7 @@
         <button class="btn btn-default" style="float:right" ng-click="start()" translate>New</button>
         
         <ul class="list-group hs-dr-featurelist">
-            <li ng-repeat="feature in features track by $index" id="hs-dr-feature-{{$index}}" ng-click="setCurrentFeature(feature, $index)" ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)" ng-class="{active : current_feature == feature}" class="list-group-item hs-dr-item">
+            <li ng-repeat="feature in features | orderBy:'-time_stamp' track by $index" id="hs-dr-feature-{{$index}}" ng-click="setCurrentFeature(feature, $index)" ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)" ng-class="{active : current_feature == feature}" class="list-group-item hs-dr-item">
                 <span>{{feature.type}} {{feature.name}}</span>
                 <span class="pull-right">
                     <button class="btn btn-default btn-xs" ng-if="feature==current_feature" ng-click="stop()" translate>Stop</button>

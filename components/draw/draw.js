@@ -73,7 +73,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         $scope.features.push({
                             type: feature.getGeometry().getType(),
                             ol_feature: feature,
-                            name: feature.get('name') || (angular.isDefined(feature.get('attributes')) ? feature.get('attributes').name : undefined)
+                            name: feature.get('name') || (angular.isDefined(feature.get('attributes')) ? feature.get('attributes').name : undefined),
+						    time_stamp: feature.get('time_stamp') || getCurrentTimestamp()
                         });
                     })
                 }
@@ -91,11 +92,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         function(evt) {
                             $scope.features.push({
                                 type: $scope.type,
-                                ol_feature: evt.feature
+                                ol_feature: evt.feature,
+								time_stamp: getCurrentTimestamp()
                             });
                             if ($scope.is_unsaved) return;
                             if (!$scope.$$phase) $scope.$digest();
-                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], $scope.features.length - 1);
+                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], 0);
                         }, this);
 
                     draw.on('drawend',
@@ -134,7 +136,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         source.addFeature(feature);
                         $scope.features.push({
                             type: $scope.type,
-                            ol_feature: feature
+                            ol_feature: feature,
+							time_stamp: getCurrentTimestamp()
                         });
                         if ($scope.is_unsaved) return;
                         if (!$scope.$$phase) $scope.$digest();
@@ -316,11 +319,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
 
+				function getCurrentTimestamp(){
+					var d = new Date();
+				    return d.toISOString();
+				}
+
                 $scope.sync = function() {
                     angular.forEach($scope.features, function(feature) {
-                        var d = new Date();
-                        var now = d.toISOString();
-
                         var olf = feature.ol_feature;
                         var attributes = {};
                         angular.forEach(olf.getKeys(), function(key) {
@@ -331,7 +336,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var cord = ol.proj.transform(olf.getGeometry().getCoordinates(), OlMap.map.getView().getProjection(), 'EPSG:4326');
 
                         var fd = new FormData();
-                        fd.append('timestamp', now);
+                        fd.append('timestamp', olf.get('time_stamp')) || getCurrentTimestamp(),
                         fd.append('category', olf.get('category_id')),
                         fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
