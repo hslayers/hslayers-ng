@@ -183,7 +183,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     } else {
                         $scope.current_feature = feature;
                         $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + index));
-                        $(".hs-dr-editpanel").get(0).scrollIntoView();
+						$('#panelplace').animate({
+							scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
+						}, 500);
+                        //$(".hs-dr-editpanel").get(0).scrollIntoView();
                         var olf = $scope.current_feature.ol_feature;
                         fillFeatureContainer($scope.current_feature, olf);
                         zoomToFeature(olf);
