@@ -270,6 +270,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         name: "New attribute",
                         value: "New value"
                     })
+					$("#hs-more-attributes").collapse('show');
                 }
 
                 $scope.removeFeature = function(feature) {
