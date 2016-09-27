@@ -252,14 +252,16 @@ define(['angular', 'ol'],
                 }
 
                 $scope.$watch('linecolor', $scope.save);
-                $scope.$watch('service.layer', function() {
-                    if (angular.isUndefined(service.layer) || service.layer == null) return;
+                $scope.$watch('service.layer', updateHasVectorFeatures);
+		        
+                function updateHasVectorFeatures(){
+		            if (angular.isUndefined(service.layer) || service.layer == null) return;
                     $scope.hasLine = service.layer.getSource().hasLine;
                     $scope.hasPoly = service.layer.getSource().hasPoly;
                     $scope.hasPoint = service.layer.getSource().hasPoint;
                     $scope.layerTitle = service.layer.get('title');
+		        }
 
-                });
                 $scope.$watch('fillcolor', $scope.save);
                 $scope.$watch('iconfillcolor', function() {
                     if ($scope.imagetype == 'icon') colorIcon();
@@ -281,6 +283,7 @@ define(['angular', 'ol'],
                     if (Core.mainpanel == 'styler' && $scope.icons == null) {
                         $scope.icons = ["bag1.svg", "banking4.svg", "bar.svg", "beach17.svg", "bicycles.svg", "building103.svg", "bus4.svg", "cabinet9.svg", "camping13.svg", "caravan.svg", "church15.svg", "church1.svg", "coffee-shop1.svg", "disabled.svg", "favourite28.svg", "football1.svg", "footprint.svg", "gift-shop.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg", "hospital.svg", "hot-air-balloon2.svg", "information78.svg", "library21.svg", "location6.svg", "luggage13.svg", "monument1.svg", "mountain42.svg", "museum35.svg", "park11.svg", "parking28.svg", "pharmacy17.svg", "port2.svg", "restaurant52.svg", "road-sign1.svg", "sailing-boat2.svg", "ski1.svg", "swimming26.svg", "telephone119.svg", "toilets2.svg", "train-station.svg", "university2.svg", "warning.svg", "wifi8.svg"];
                     }
+			        updateHasVectorFeatures();
                 });
 
                 $scope.$emit('scope_loaded', "styler");

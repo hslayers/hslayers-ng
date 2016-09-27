@@ -899,7 +899,23 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
             $scope.layerValid = function(layer) {
                 return layer.getSource().error;
             }
-
+            
+            $scope.addDrawingLayer = function(){
+                var source = new ol.source.Vector();
+                source.styleAble = true;
+                source.hasPoint = true;
+                source.hasPolygon = true;
+                source.hasLine = true;
+                var layer = new ol.layer.Vector({
+                    title: 'New user graphics layer',
+                    visibility: true,
+                    source: source
+                })
+                map.getLayers().push(layer);
+                hslayers_api.gui.Draw.setLayerToSelect(layer);
+                Core.setMainPanel('draw', false, false);
+            }
+            
             OlMap.map.getLayers().forEach(function(lyr) {
                 layerAdded({
                     element: lyr

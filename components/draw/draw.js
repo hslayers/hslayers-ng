@@ -25,6 +25,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.features = [];
                 $scope.current_feature = null;
                 $scope.type = 'Point';
+                $scope.layer_to_select = ""; //Which layer to select when the panel is activated. This is set in layer manager when adding a new layer.
 
                 $scope.categories = [];
 
@@ -59,6 +60,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.changeLayer = function() {
                     angular.forEach(map.getLayers(), function(layer) {
                         if ($scope.selected_layer == layer.get('title')) {
+                            $scope.layer_to_select = layer;
                             source = layer.getSource();
                             map.removeInteraction(draw);
                             addInteraction();
@@ -68,6 +70,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 }
 
                 function fillFeatureList() {
+                    deselectCurrentFueature();
                     $scope.features = [];
                     angular.forEach(source.getFeatures(), function(feature) {
                         $scope.features.push({
@@ -284,12 +287,18 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 }
 
                 $scope.removeFeature = function(feature) {
-                    if (angular.isObject($scope.current_feature) && ($scope.current_feature == feature)) {
-                        $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
-                        $scope.current_feature = null;
+                    if($scope.current_feature == feature){
+                        deselectCurrentFueature();
                     }
                     $scope.features.splice($scope.features.indexOf(feature), 1);
                     source.removeFeature(feature.ol_feature);
+                }
+                
+                function deselectCurrentFueature(){
+                    if (angular.isObject($scope.current_feature)) {
+                        $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
+                        $scope.current_feature = null;
+                    }   
                 }
 
                 $scope.setFeatureStyle = function(new_style) {
@@ -326,9 +335,15 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 });
 
                 function fillDrawableLayersList() {
+                    $scope.drawable_layers = [];
                     angular.forEach(map.getLayers(), function(layer) {
                         if (layer instanceof ol.layer.Vector && layer.getVisible() && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager') == true) && (angular.isDefined(layer.get('title')) && layer.get('title') != '')) {
                             $scope.drawable_layers.push(layer);
+                            if(layer == $scope.layer_to_select){
+                                $scope.selected_layer = layer.get('title');
+                                source = layer.getSource();
+                                fillFeatureList();
+                            }
                         }
                     })
                 }
@@ -382,6 +397,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }
                     })
                 }
+                
+                $scope.setLayerToSelect = function(layer){
+                    $scope.layer_to_select = layer;
+                }
+
 
                 $http.get($scope.senslog_url + '/category/select').then(function(response) {
                     $scope.categories = response.data;
@@ -393,7 +413,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                 $scope.sync();
 
-                $scope.$emit('scope_loaded', "draw");
+                $scope.$emit('scope_loaded', "Draw");
             }
         ]);
     })
