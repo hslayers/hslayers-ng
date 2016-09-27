@@ -16,8 +16,13 @@
      --></button><!--
 
      compositions switch
-     --><button type="button" class="menu-item btn btn-default btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"><!-- 
-         --><i class="glyphicon icon-map"></i><!-- 
+     --><!-- <button type="button" class="menu-item btn btn-default btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"> --><!-- 
+         --><!-- <i class="glyphicon icon-map"></i> --><!-- 
+     --><!-- </button> --><!-- 
+
+     draw switch
+     --><button type="button" class="menu-item btn btn-default btn-mobile" title="Draw new features" ng-if="Core.exists('hs.draw.controller')" ng-click="[setMainPanel('draw'),togglePanelspace()]"><!-- 
+         --><i class="glyphicon glyphicon-flag"></i><!-- 
      --></button><!-- 
 
     geolocation switch

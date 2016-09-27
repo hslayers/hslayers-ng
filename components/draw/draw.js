@@ -158,9 +158,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         window.plugins.toast.showShortCenter("Waiting for GPS fix …");
                         var stopWaiting = $scope.$on('geolocation.updated', function(event) {
                             console.log(Geolocation.last_location.geoposition.coords.accuracy);
-                            if (Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision)
+                            if (Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision) {
                                 createPoint();
-                            stopWaiting();
+                                stopWaiting();
+                            }
                         });
                     }
 
@@ -173,6 +174,38 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         waitForFix();
                     }
                     // pos = Geolocation.last_location; //TODO timestamp is stored in Geolocation.last_location.geolocation.timestamp, it might be a good idea to accept only recent enough positions ---> or wait for the next fix <---.
+                }
+
+                $scope.addPhoto = function() {
+                    navigator.camera.getPicture(cameraSuccess, cameraError, {
+                        encodingType: Camera.EncodingType.PNG,
+                        quality: 50,
+                        correctOrientation: true,
+                        saveToPhotoAlbum: true
+                    });
+
+                    function cameraSuccess(imageData) {
+                        window.resolveLocalFileSystemURL(imageData, function(fileEntry) {
+                            fileEntry.file(function(file) {
+                                var reader = new FileReader();
+
+                                reader.onloadend = function() {
+                                    var image = new Blob([this.result], { type: "image/png"});
+                                    $scope.current_feature.photo = image;
+                                    $scope.current_feature.photo_src = window.URL.createObjectURL(image);
+                                    $scope.$apply();
+                                };
+                                
+                                reader.readAsArrayBuffer(file);
+                            });
+                        });
+
+                        // $scope.current_feature.photo_src = imageData;
+                    }
+
+                    function cameraError(error) {
+                        console.log(error);
+                    }
                 }
 
                 $scope.highlightFeature = function(feature, state) {
@@ -248,6 +281,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     olf.set('description', cf.description);
                     olf.set('category_id', cf.category_id);
                     olf.set('dataset_id', cf.dataset_id);
+                    olf.set('photo', cf.photo);
+                    olf.set('photo_src', cf.photo_src)
                     olf.set('sync_pending', cf.dataset_id);
                     angular.forEach(cf.extra_attributes, function(attr) {
                         olf.set(attr.name, attr.value);
@@ -294,9 +329,9 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 }
 
                 $scope.removeFeature = function(feature) {
-                    if (confirm("Realy delete the feature?")) {
+                    if (confirm("Really delete the feature?")) {
                         if ($scope.current_feature == feature) {
-                            deselectCurrentFueature();
+                            deselectCurrentFeature();
                             var features = format.readFeatures(response.data.features);
                         }
                         $scope.features.splice($scope.features.indexOf(feature), 1);
@@ -308,7 +343,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     }
                 }
 
-                function deselectCurrentFueature() {
+                function deselectCurrentFeature() {
                     if (angular.isObject($scope.current_feature)) {
                         $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
                         $scope.current_feature = null;
@@ -379,15 +414,15 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var cord = ol.proj.transform(olf.getGeometry().getCoordinates(), OlMap.map.getView().getProjection(), 'EPSG:4326');
 
                         var fd = new FormData();
-                        fd.append('timestamp', olf.get('time_stamp') || getCurrentTimestamp()),
-                            fd.append('category', olf.get('category_id')),
-                            fd.append('description', olf.get('description'));
+                        fd.append('timestamp', olf.get('time_stamp') || getCurrentTimestamp());
+                        fd.append('category', olf.get('category_id'));
+                        fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
                         fd.append('user_id', 'tester');
                         fd.append('dataset', olf.get('dataset_id') || 999);
-                        fd.append('dataset', olf.get('dataset_id') || 999);
                         fd.append('unitId', '1111');
+                        fd.append('media', olf.get('photo'));
                         fd.append('attributes', JSON.stringify(attributes));
                         if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(olf.get('obs_vgi_id'))) {
                             fd.append('obs_vgi_id', olf.get('obs_vgi_id'));
