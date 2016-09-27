@@ -350,7 +350,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var cord = ol.proj.transform(olf.getGeometry().getCoordinates(), OlMap.map.getView().getProjection(), 'EPSG:4326');
 
                         var fd = new FormData();
-                        fd.append('timestamp', olf.get('time_stamp')) || getCurrentTimestamp(),
+                        fd.append('timestamp', olf.get('time_stamp') || getCurrentTimestamp()),
                         fd.append('category', olf.get('category_id')),
                         fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
