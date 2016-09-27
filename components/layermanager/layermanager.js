@@ -2,8 +2,8 @@
  * @namespace hs.layermanager
  * @memberOf hs
  */
-define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], function(angular, app, map, ol) {
-    angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists'])
+define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'status_creator'], function(angular, app, map, ol) {
+    angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator'])
 
     /**
      * @class hs.layermanager.directive
@@ -133,8 +133,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
      * @memberOf hs.layermanager
      * @description Layer manager controller
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log', 'hs.ows.wms.service_capabilities',
-        function($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log, srv_wms_caps) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log', 'hs.ows.wms.service_capabilities', 'hs.status_creator.service',
+        function($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log, srv_wms_caps, status_creator) {
             $scope.Core = Core;
             $scope.layer_renamer_visible = false;
             $scope.folders = {
@@ -899,8 +899,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
             $scope.layerValid = function(layer) {
                 return layer.getSource().error;
             }
-            
-            $scope.addDrawingLayer = function(){
+
+            $scope.addDrawingLayer = function() {
                 var source = new ol.source.Vector();
                 source.styleAble = true;
                 source.hasPoint = true;
@@ -912,10 +912,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                     source: source
                 })
                 map.getLayers().push(layer);
+                $scope.$emit('layer_added', {
+                    layer: status_creator.layer2json(layer)
+                });
                 hslayers_api.gui.Draw.setLayerToSelect(layer);
                 Core.setMainPanel('draw', false, false);
             }
-            
+
             OlMap.map.getLayers().forEach(function(lyr) {
                 layerAdded({
                     element: lyr
@@ -939,7 +942,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists'], fun
                     } else {
                         $scope.composition_id = data.id;
                     }
-
                 }
             });
 

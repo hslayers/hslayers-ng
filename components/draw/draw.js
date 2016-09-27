@@ -18,8 +18,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
             };
         })
 
-        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout',
-            function($scope, OlMap, Core, Geolocation, $http, utils, $timeout) {
+        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.status_creator.service',
+            function($scope, OlMap, Core, Geolocation, $http, utils, $timeout, status_creator) {
                 var map = OlMap.map;
                 $scope.senslog_url = 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi'; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
                 $scope.features = [];
@@ -77,7 +77,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             type: feature.getGeometry().getType(),
                             ol_feature: feature,
                             name: feature.get('name') || (angular.isDefined(feature.get('attributes')) ? feature.get('attributes').name : undefined),
-						    time_stamp: feature.get('time_stamp') || getCurrentTimestamp()
+                            time_stamp: feature.get('time_stamp') || getCurrentTimestamp()
                         });
                     })
                 }
@@ -96,7 +96,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             $scope.features.push({
                                 type: $scope.type,
                                 ol_feature: evt.feature,
-								time_stamp: getCurrentTimestamp()
+                                time_stamp: getCurrentTimestamp()
                             });
                             if ($scope.is_unsaved) return;
                             if (!$scope.$$phase) $scope.$digest();
@@ -105,6 +105,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                     draw.on('drawend',
                         function(evt) {
+                            var uuid = utils.generateUuid();
+                            evt.feature.set('hs_id', uuid);
+                            evt.feature.setId(uuid);
+                            $scope.$emit('feature_drawn', {
+                                layer: $scope.selected_layer,
+                                features: status_creator.serializeFeatures([evt.feature])
+                            });
                             if (!$scope.$$phase) $scope.$digest();
                         }, this);
                 }
@@ -140,7 +147,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         $scope.features.push({
                             type: $scope.type,
                             ol_feature: feature,
-							time_stamp: getCurrentTimestamp()
+                            time_stamp: getCurrentTimestamp()
                         });
                         if ($scope.is_unsaved) return;
                         if (!$scope.$$phase) $scope.$digest();
@@ -149,11 +156,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                     function waitForFix() {
                         window.plugins.toast.showShortCenter("Waiting for GPS fix …");
-                        var stopWaiting = $scope.$on('geolocation.updated', function (event) {
+                        var stopWaiting = $scope.$on('geolocation.updated', function(event) {
                             console.log(Geolocation.last_location.geoposition.coords.accuracy);
                             if (Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision)
                                 createPoint();
-                                stopWaiting();
+                            stopWaiting();
                         });
                     }
 
@@ -186,13 +193,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     } else {
                         $scope.current_feature = feature;
                         $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + index));
-						$('#panelplace').animate({
-							scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
-						}, 500);
+                        $('#panelplace').animate({
+                            scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
+                        }, 500);
                         //$(".hs-dr-editpanel").get(0).scrollIntoView();
                         var olf = $scope.current_feature.ol_feature;
                         fillFeatureContainer($scope.current_feature, olf);
-                        if(angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
+                        if (angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
                     }
                     return false;
                 }
@@ -268,37 +275,44 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
-				$("#hs-more-attributes").on('shown.bs.collapse', function(){
-					$('.hs-dr-extra-attribute-name:last').focus();
-					$('#panelplace').animate({
-						scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-add-attribute").offset().top - 100
-					}, 500);					
-				});
-		
+                $("#hs-more-attributes").on('shown.bs.collapse', function() {
+                    $('.hs-dr-extra-attribute-name:last').focus();
+                    $('#panelplace').animate({
+                        scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-add-attribute").offset().top - 100
+                    }, 500);
+                });
+
                 $scope.addUserDefinedAttr = function() {
                     $scope.current_feature.extra_attributes.push({
                         name: "New attribute",
                         value: "New value"
                     });
                     $("#hs-more-attributes").collapse('show');
-					$timeout(function() {
-						$('.hs-dr-extra-attribute-name:last').focus();
-					});
+                    $timeout(function() {
+                        $('.hs-dr-extra-attribute-name:last').focus();
+                    });
                 }
 
                 $scope.removeFeature = function(feature) {
-                    if($scope.current_feature == feature){
-                        deselectCurrentFueature();
+                    if (confirm("Realy delete the feature?")) {
+                        if ($scope.current_feature == feature) {
+                            deselectCurrentFueature();
+                            var features = format.readFeatures(response.data.features);
+                        }
+                        $scope.features.splice($scope.features.indexOf(feature), 1);
+                        source.removeFeature(feature.ol_feature);
+                        $scope.$emit('feature_deleted', {
+                            layer: $scope.selected_layer,
+                            feature_id: feature.ol_feature.getId()
+                        });
                     }
-                    $scope.features.splice($scope.features.indexOf(feature), 1);
-                    source.removeFeature(feature.ol_feature);
                 }
-                
-                function deselectCurrentFueature(){
+
+                function deselectCurrentFueature() {
                     if (angular.isObject($scope.current_feature)) {
                         $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
                         $scope.current_feature = null;
-                    }   
+                    }
                 }
 
                 $scope.setFeatureStyle = function(new_style) {
@@ -339,7 +353,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     angular.forEach(map.getLayers(), function(layer) {
                         if (layer instanceof ol.layer.Vector && layer.getVisible() && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager') == true) && (angular.isDefined(layer.get('title')) && layer.get('title') != '')) {
                             $scope.drawable_layers.push(layer);
-                            if(layer == $scope.layer_to_select){
+                            if (layer == $scope.layer_to_select) {
                                 $scope.selected_layer = layer.get('title');
                                 source = layer.getSource();
                                 fillFeatureList();
@@ -348,10 +362,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
 
-				function getCurrentTimestamp(){
-					var d = new Date();
-				    return d.toISOString();
-				}
+                function getCurrentTimestamp() {
+                    var d = new Date();
+                    return d.toISOString();
+                }
 
                 $scope.sync = function() {
                     angular.forEach($scope.features, function(feature) {
@@ -366,8 +380,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                         var fd = new FormData();
                         fd.append('timestamp', olf.get('time_stamp') || getCurrentTimestamp()),
-                        fd.append('category', olf.get('category_id')),
-                        fd.append('description', olf.get('description'));
+                            fd.append('category', olf.get('category_id')),
+                            fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
                         fd.append('user_id', 'tester');
@@ -387,18 +401,18 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 },
                                 olf: olf
                             }).then(function(response) {
-                                if(response.statusText=="OK"){
+                                if (response.statusText == "OK") {
                                     var olf = response.config.olf;
                                     olf.set('sync_pending', false);
-                                    if(angular.isUndefined(olf.get('obs_vgi_id')))
+                                    if (angular.isUndefined(olf.get('obs_vgi_id')))
                                         olf.set('obs_vgi_id', parseInt(response.data));
                                 }
                             });
                         }
                     })
                 }
-                
-                $scope.setLayerToSelect = function(layer){
+
+                $scope.setLayerToSelect = function(layer) {
                     $scope.layer_to_select = layer;
                 }
 

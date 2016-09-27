@@ -316,8 +316,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                 format: layer.get('definition').format
                             }
                         } else {
-                            var f = new ol.format.GeoJSON();
-                            json.features = f.writeFeatures(src.getFeatures());
+                            json.features = me.serializeFeatures(src.getFeatures());
                         }
                         if (angular.isDefined(src.defOptions)) {
                             json.defOptions = src.defOptions;
@@ -332,13 +331,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     return json;
                 },
 
-                generateUuid: function() {
-                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                        var r = Math.random() * 16 | 0,
-                            v = c == 'x' ? r : r & 0x3 | 0x8;
-                        return v.toString(16);
-                    });
-                }
+                serializeFeatures: function(features) {
+                    var f = new ol.format.GeoJSON();
+                    return f.writeFeatures(features);
+                },
+
+                generateUuid: utils.generateUuid
             };
 
             $window.addEventListener('beforeunload', function(event) {

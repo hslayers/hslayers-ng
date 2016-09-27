@@ -61,7 +61,9 @@ require.config({
         s4a: requirejs.s.contexts._.config.paths.s4a || hsl_path + 'bower_components/s4a-js/dist/s4a.min',
         'dragdroplists': hsl_path + 'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
         'ngfocusif': hsl_path + 'bower_components/ng-focus-if/focusIf.min',
-        'updateMeta': hsl_path + 'bower_components/angular-update-meta/dist/update-meta'
+        'updateMeta': hsl_path + 'bower_components/angular-update-meta/dist/update-meta',
+        socketio: hsl_path + 'bower_components/socket.io-client/socket.io',
+        rtserver: requirejs.s.contexts._.config.paths.rtserver || hsl_path + 'components/rtserver/rtserver',
     },
     shim: {
         'angular': {
