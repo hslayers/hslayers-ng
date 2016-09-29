@@ -12,7 +12,7 @@ define(['angular', 'ol', 'socketio', 'utils', 'map'],
 
                     function init() {
                         me.uuid = utils.generateUuid();
-                        var socket = socketio('http://ng.hslayers.org:3000');
+                        var socket = socketio('localhost:3000');
                         socket.on('connect', function() {
                             me.socket = socket;
                         });
