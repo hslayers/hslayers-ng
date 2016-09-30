@@ -195,7 +195,11 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                 OlMap.map.addInteraction(dragAndDrop);
                 dragAndDrop.on('addfeatures', function(event) {
                     var f = new ol.format.GeoJSON();
-                    var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                    //TODO Saving to statusmanager should probably be done with statusmanager component throught events
+                    var url = '';
+                    try {
+                        url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                    } catch(ex) {}
                     if(console) console.info(url, config);
                     var options = {};
                     options.features = event.features;

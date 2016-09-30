@@ -14,7 +14,8 @@ define(['ol',
         'api',
         'senslog',
         'draw',
-        'drag'
+        'drag',
+        'ows'
     ],
     function(ol, toolbar) {
         var module = angular.module('hs', [
@@ -29,7 +30,8 @@ define(['ol',
             'hs.sidebar',
             'hs.senslog',
             'hs.draw',
-            'hs.drag'
+            'hs.drag',
+            'hs.ows'
         ]);
 
         module.directive(
