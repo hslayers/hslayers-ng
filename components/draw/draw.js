@@ -70,7 +70,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 }
 
                 function fillFeatureList() {
-                    deselectCurrentFueature();
+                    deselectCurrentFeature();
                     $scope.features = [];
                     angular.forEach(source.getFeatures(), function(feature) {
                         $scope.features.push({
