@@ -16,7 +16,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                         var options = {};
                     }
 
-                    if (type.toLowerCase() != 'sparql') {
+                    if (type.toLowerCase() != 'sparql' && angular.isDefined(url)) {
                         url = utils.proxify(url);
                     }
 
@@ -196,7 +196,7 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                 dragAndDrop.on('addfeatures', function(event) {
                     var f = new ol.format.GeoJSON();
                     var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
-                    console.info(url, config.status_manager_url, config.hostname.user.url, config.hostname.status_manager.url, config.hostname.default.url);
+                    if(console) console.info(url, config);
                     var options = {};
                     options.features = event.features;
 
@@ -216,12 +216,16 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                     }).success(function(j) {
                         data = {};
                         data.url = url + "?request=loadData&id=" + j.id;
-                        console.info(data.url, j);
+                        if(console) console.info(data.url, j);
                         data.title = event.file.name;
                         data.projection = event.projection;
                         var lyr = me.add('geojson', decodeURIComponent(data.url), data.title || 'Layer', '', true, data.projection, options);
                     }).error(function(e) {
-                        console.log(e);
+                        if(console) console.warn(e);
+                        data = {};
+                        data.title = event.file.name;
+                        data.projection = event.projection;
+                        var lyr = me.add('geojson', undefined, data.title || 'Layer', '', true, data.projection, options);
                     });
                 });
             }
