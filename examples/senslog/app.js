@@ -90,7 +90,7 @@ define(['ol',
                             angular.forEach(response.data, function(dataset){
                                 var lyr = new ol.layer.Vector({
                                     title: dataset.datasetName,
-                                    visibility: true,
+                                    visible: false,
                                     source: new ol.source.Vector({
                                         url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/observations/select?user_name=tester&dataset_id='+dataset.datasetId+'&format=geojson',
                                         senslog_url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/',
