@@ -18,10 +18,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
             };
         })
 
-        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.status_creator.service',
-            function($scope, OlMap, Core, Geolocation, $http, utils, $timeout, status_creator) {
+        .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.status_creator.service', 'config',
+            function($scope, OlMap, Core, Geolocation, $http, utils, $timeout, status_creator, config) {
                 var map = OlMap.map;
-                $scope.senslog_url = 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi'; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
+                $scope.senslog_url = config.senslog_url; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
                 $scope.features = [];
                 $scope.current_feature = null;
                 $scope.type = 'Point';
@@ -450,15 +450,14 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.setLayerToSelect = function(layer) {
                     $scope.layer_to_select = layer;
                 }
-
-
-                $http.get($scope.senslog_url + '/category/select').then(function(response) {
-                    $scope.categories = response.data;
-                });
-
-                $http.get($scope.senslog_url + '/dataset/select').then(function(response) {
-                    $scope.datasets = response.data;
-                });
+                
+                $scope.$on('senslog.categories_loaded', function(event, categories){
+                    $scope.categories = categories;
+                })
+                
+                $scope.$on('senslog.datasets_loaded', function(event, datasets){
+                    $scope.datasets = datasets;
+                })
 
                 $scope.sync();
 

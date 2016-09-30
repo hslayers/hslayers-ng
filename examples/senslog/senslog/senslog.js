@@ -115,7 +115,8 @@ define(['angular', 'ol', 'map', 'core', 'styles'],
                             title: "Units",
                             source: new ol.source.Vector({}),
                             style: styles.pin_white_blue_highlight,
-                            show_in_manager: false
+                            show_in_manager: true,
+                            visible: false
                         });
 
                         map.addLayer($scope.units_layer);

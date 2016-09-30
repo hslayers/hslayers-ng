@@ -53,36 +53,20 @@ define(['ol',
                     source: new ol.source.OSM(),
                     title: "Base layer",
                     base: true
-                }),
-                new ol.layer.Vector({
-                    title: 'Editable vector layer',
-                    visibility: true,
-                    source: new ol.source.Vector({
-                        url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/observations/select?user_name=tester&format=geojson',
-                        senslog_url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/',
-                        format: new ol.format.GeoJSON()
-                    })
                 })
-
             ],
             default_view: new ol.View({
                 center: ol.proj.transform([6.1319, 49.6116], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 13,
                 units: "m"
-            })
+            }),
+            senslog_url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi'
         });
 
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service',
-            function($scope, Core, $compile, hsmap) {
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'config', '$http',
+            function($scope, Core, $compile, hsmap, config, $http) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                $scope.split_x = 0;
-                $scope.split_y = 0;
-                $scope.split_moved = function(x, y) {
-                    $scope.split_x = x;
-                    $scope.split_y = y;
-                    hsmap.map.render();
-                }
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Sidebar') {
                         var el = angular.element('<div hs.senslog.directive hs.draggable ng-controller="hs.senslog.controller" ng-if="Core.exists(\'hs.senslog.controller\')" ng-show="Core.panelVisible(\'senslog\', this)"></div>');
@@ -94,6 +78,28 @@ define(['ol',
                         $compile(toolbar_button)(event.targetScope);
 
                         console.log(ol.proj.transformExtent(hsmap.map.getView().calculateExtent(hsmap.map.getSize()), 'EPSG:3857', 'EPSG:4326'));
+                    }
+                    if(args == 'Map'){
+                        
+                        $http.get(config.senslog_url + '/category/select').then(function(response) {
+                            $scope.$broadcast('senslog.categories_loaded', response.data);
+                        });
+
+                        $http.get(config.senslog_url + '/dataset/select').then(function(response) {
+                            $scope.$broadcast('senslog.datasets_loaded', response.data);
+                            angular.forEach(response.data, function(dataset){
+                                var lyr = new ol.layer.Vector({
+                                    title: dataset.datasetName,
+                                    visibility: true,
+                                    source: new ol.source.Vector({
+                                        url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/observations/select?user_name=tester&dataset_id='+dataset.datasetId+'&format=geojson',
+                                        senslog_url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/',
+                                        format: new ol.format.GeoJSON()
+                                    })
+                                })
+                                hsmap.map.addLayer(lyr);
+                            })
+                        });
                     }
                 });
                 Core.panelEnabled('compositions', false);
