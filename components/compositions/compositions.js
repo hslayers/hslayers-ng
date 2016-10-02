@@ -3,10 +3,10 @@
  * @memberOf hs
  */
 
-define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonwms'],
+define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonwms', 'config_parsers'],
 
     function(angular, ol, SparqlJson, social) {
-        var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms'])
+        var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms', 'hs.compositions.config_parsers'])
             .directive('hs.compositions.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
@@ -54,7 +54,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
             };
         })
 
-        .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', function(OlMap, config, Core, $rootScope, utils, nonwmsservice) {
+        .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', 'hs.compositions.config_parsers.service', 
+            function(hsMap, config, Core, $rootScope, utils, nonWmsService, configParsers) {
             var me = {
                 composition_loaded: null,
                 composition_edited: false,
@@ -75,10 +76,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     me.removeCompositionLayers();
                                 }
                                 me.current_composition_title = response.title || response.data.title;
-                                OlMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), OlMap.map.getSize());
+                                hsMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), hsMap.map.getSize());
                                 var layers = me.jsonToLayers(response);
                                 for (var i = 0; i < layers.length; i++) {
-                                    OlMap.map.addLayer(layers[i]);
+                                    hsMap.map.addLayer(layers[i]);
                                 }
 
 
@@ -105,12 +106,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
                 removeCompositionLayers: function() {
                     var to_be_removed = [];
-                    OlMap.map.getLayers().forEach(function(lyr) {
+                    hsMap.map.getLayers().forEach(function(lyr) {
                         if (lyr.get('from_composition'))
                             to_be_removed.push(lyr);
                     });
                     while (to_be_removed.length > 0) {
-                        OlMap.map.removeLayer(to_be_removed.shift());
+                        hsMap.map.removeLayer(to_be_removed.shift());
                     }
                 },
 
@@ -134,58 +135,9 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         b = b.split(" ");
                     var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
                     var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
+                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
+                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
                     return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                },
-                parseStyle: function(j) {
-                    var style_json = {};
-                    if (angular.isDefined(j.fill)) {
-                        style_json.fill = new ol.style.Fill({
-                            color: j.fill
-                        })
-                    }
-                    if (angular.isDefined(j.stroke)) {
-                        style_json.stroke = new ol.style.Stroke({
-                            color: j.stroke.color,
-                            width: j.stroke.width
-                        })
-                    }
-                    if (angular.isDefined(j.image)) {
-                        if (j.image.type == 'circle') {
-                            var circle_json = {};
-
-                            if (angular.isDefined(j.image.radius)) {
-                                circle_json.radius = j.image.radius;
-                            }
-
-                            if (angular.isDefined(j.image.fill)) {
-                                circle_json.fill = new ol.style.Fill({
-                                    color: j.image.fill
-                                });
-                            }
-                            if (angular.isDefined(j.image.stroke)) {
-                                circle_json.stroke = new ol.style.Stroke({
-                                    color: j.image.stroke.color,
-                                    width: j.image.stroke.width
-                                })
-                            }
-                            style_json.image = new ol.style.Circle(circle_json);
-                        }
-                        if (j.image.type == 'icon') {
-                            var img = new Image();
-                            img.src = j.image.src;
-                            if (img.width == 0) img.width = 43;
-                            if (img.height == 0) img.height = 41;
-                            var icon_json = {
-                                img: img,
-                                imgSize: [img.width, img.height],
-                                crossOrigin: 'anonymous'
-                            };
-                            style_json.image = new ol.style.Icon(icon_json);
-                        }
-                    }
-                    return new ol.style.Style(style_json);
                 },
                 jsonToLayers: function(j) {
                     var layers = [];
@@ -201,140 +153,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
             me.jsonToLayer = function(lyr_def) {
                 switch (lyr_def.className) {
                     case "HSLayers.Layer.WMS":
-                        var source_class = lyr_def.singleTile ? ol.source.ImageWMS : ol.source.TileWMS;
-                        var layer_class = lyr_def.singleTile ? ol.layer.Image : ol.layer.Tile;
-                        var params = lyr_def.params;
-                        var legends = [];
-                        delete params.REQUEST;
-                        delete params.FORMAT;
-                        if (angular.isDefined(lyr_def.legends)) {
-                            for (var idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
-                                legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
-                            }
-                        }
-                        var new_layer = new layer_class({
-                            title: lyr_def.title,
-                            from_composition: true,
-                            maxResolution: lyr_def.maxResolution || Number.Infinity,
-                            minResolution: lyr_def.minResolution || 0,
-                            minScale: lyr_def.minScale || Number.Infinity,
-                            maxScale: lyr_def.maxScale || 0,
-                            show_in_manager: lyr_def.displayInLayerSwitcher,
-                            abstract: lyr_def.name,
-                            metadata: lyr_def.metadata,
-                            dimensions: lyr_def.dimensions,
-                            legends: legends,
-                            saveState: true,
-                            path: lyr_def.path,
-                            opacity: lyr_def.opacity || 1,
-                            source: new source_class({
-                                url: decodeURIComponent(lyr_def.url),
-                                attributions: lyr_def.attribution ? [new ol.Attribution({
-                                    html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
-                                })] : undefined,
-                                styles: lyr_def.metadata.styles,
-                                params: params,
-                                crossOrigin: 'anonymous',
-                                projection: lyr_def.projection,
-                                ratio: lyr_def.ratio
-                            })
-                        });
-                        new_layer.setVisible(lyr_def.visibility);
-                        if (!lyr_def.singleTile) {
-                            new_layer.getSource().on('tileloadstart', function(img) {
-                                if (angular.isDefined(img.image)) {
-                                    img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
-                                } else {
-                                    img.tile.src_ = this.utils.proxify(decodeURIComponent(img.tile.src_), false);
-                                }
-
-                            }, this);
-                        } else {
-                            new_layer.getSource().on('imageloadstart', function(img) {
-                                img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
-
-                            }, this);
-                        }
-                        return new_layer;
+                        return configParsers.createWmsLayer(lyr_def);
                         break;
                     case 'OpenLayers.Layer.Vector':
-                        var format = "";
-                        if (angular.isDefined(lyr_def.protocol)) {
-                            format = lyr_def.protocol.format
-                        }
-                        var options = {}
-                        options.opacity = lyr_def.opacity || 1
-                        options.from_composition = true;
-
-                        var extractStyles = true
-                        if (angular.isDefined(lyr_def.style)) {
-                            options.style = me.parseStyle(lyr_def.style);
-                            extractStyles = false;
-                        }
-
-                        switch (format) {
-                            case 'ol.format.KML':
-
-                                var lyr = nonwmsservice.add('kml', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
-                                return lyr;
-                                break;
-                            case 'ol.format.GeoJSON':
-                                var lyr = nonwmsservice.add('geojson', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
-                                return lyr;
-                                break;
-                            case 'hs.format.WFS':
-                                options.defOptions = lyr_def.defOptions;
-                                var lyr = nonwmsservice.add('wfs', decodeURIComponent(lyr_def.protocol.url), lyr_def.title || 'Layer', lyr_def.abstract, extractStyles, lyr_def.projection.toUpperCase(), options);
-                                return lyr;
-                                break;
-                            case 'hs.format.Sparql':
-                                var url = decodeURIComponent(lyr_def.protocol.url);
-
-                                var definition = {};
-                                definition.url = url;
-                                definition.format = "hs.format.Sparql";
-
-                                var style = null;
-                                if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
-
-                                var src = new SparqlJson({
-                                    geom_attribute: '?geom',
-                                    url: url,
-                                    category_field: 'http://www.openvoc.eu/poi#categoryWaze',
-                                    projection: 'EPSG:3857'
-                                });
-
-                                var lyr = new ol.layer.Vector({
-                                    from_composition: true,
-                                    definition: definition,
-                                    source: src,
-                                    opacity: lyr_def.opacity || 1,
-                                    style: style,
-                                    title: lyr_def.title
-                                });
-                                lyr.setVisible(lyr_def.visibility);
-                                return lyr;
-                                break;
-                            default:
-                                if (angular.isDefined(lyr_def.features)) {
-                                    var format = new ol.format.GeoJSON();
-                                    var src = new ol.source.Vector({
-                                        features: format.readFeatures(lyr_def.features),
-                                        projection: ol.proj.get(lyr_def.projection)
-                                    });
-                                }
-                                var style = undefined;
-                                if (angular.isDefined(lyr_def.style)) style = me.parseStyle(lyr_def.style);
-                                var lyr = new ol.layer.Vector({
-                                    from_composition: true,
-                                    source: src,
-                                    opacity: lyr_def.opacity || 1,
-                                    title: lyr_def.title,
-                                    style: style
-                                });
-                                lyr.setVisible(lyr_def.visibility);
-                                return lyr;
-                        }
+                        return configParsers.createVectorLayer(lyr_def);
                         break;
                 }
             }
@@ -342,7 +164,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
         }])
 
         .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
-            function($scope, $rootScope, $location, $http, OlMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
+            function($scope, $rootScope, $location, $http, hsMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
                 $scope.page_size = 15;
                 $scope.panel_name = 'composition_browser';
                 $scope.keywords = {
@@ -400,9 +222,9 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 var ajax_req = null;
                 $scope.loadCompositions = function() {
 
-                    var cur_map_size = OlMap.map.getSize();
-                    var cur_map_extent = angular.isDefined(cur_map_size) ? OlMap.map.getView().calculateExtent(cur_map_size) : [0, 0, 100, 100];
-                    var b = ol.proj.transformExtent(cur_map_extent, OlMap.map.getView().getProjection(), 'EPSG:4326');
+                    var cur_map_size = hsMap.map.getSize();
+                    var cur_map_extent = angular.isDefined(cur_map_size) ? hsMap.map.getView().calculateExtent(cur_map_size) : [0, 0, 100, 100];
+                    var b = ol.proj.transformExtent(cur_map_extent, hsMap.map.getView().getProjection(), 'EPSG:4326');
 
                     if (angular.isDefined(config.compositions_catalogue_url)) {
                         extent_layer.getSource().clear();
@@ -557,7 +379,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         composition.feature.set('highlighted', state)
                 }
 
-                OlMap.map.on('pointermove', function(evt) {
+                hsMap.map.on('pointermove', function(evt) {
                     var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                     var something_done = false;
                     $(extent_layer.getSource().getFeatures()).each(function() {
@@ -594,7 +416,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 });
 
-                OlMap.map.addLayer(extent_layer);
+                hsMap.map.addLayer(extent_layer);
 
                 $rootScope.$on('compositions.composition_edited', function(event) {
                     composition_parser.composition_edited = true;
@@ -730,7 +552,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     var data = $cookies.get('hs_layers');
                     var layers = composition_parser.jsonToLayers(JSON.parse(data));
                     for (var i = 0; i < layers.length; i++) {
-                        OlMap.map.addLayer(layers[i]);
+                        hsMap.map.addLayer(layers[i]);
                     }
                     $cookies.remove('hs_layers');
                 }

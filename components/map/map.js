@@ -11,7 +11,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
      * @param {object} config - Application configuration
      * @description Service for containing and initializing map object
      */
-    .service('hs.map.service', ['config', '$rootScope', function(config, $rootScope) {
+    .service('hs.map.service', ['config', '$rootScope', 'hs.utils.service', function(config, $rootScope, utils) {
         this.map = new ol.Map({
             target: 'map',
             interactions: [],
@@ -132,6 +132,21 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 return found;
             }
             return lyr.getVisible();
+        }
+        
+        this.proxifyLayerLoader = function(lyr, tiled){
+            var src = lyr.getSource();
+            if (tiled) {
+                var tile_url_function = src.getTileUrlFunction();
+                src.setTileUrlFunction(function(b, c, d){
+                    return utils.proxify(decodeURIComponent(tile_url_function(b, c, d)));
+                });
+            } else {
+                var image_url_function = src.getImageUrlFunction();
+                src.setImageUrlFunction(function(b, c, d){
+                    return utils.proxify(decodeURIComponent(iamge_url_function(b, c, d)));
+                });
+            }
         }
 
         //map.addControl(mousePositionControl);

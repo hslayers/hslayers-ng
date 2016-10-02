@@ -64,6 +64,7 @@ require.config({
         'updateMeta': hsl_path + 'bower_components/angular-update-meta/dist/update-meta',
         socketio: hsl_path + 'bower_components/socket.io-client/socket.io',
         rtserver: requirejs.s.contexts._.config.paths.rtserver || hsl_path + 'components/rtserver/rtserver',
+        config_parsers: hsl_path + 'components/compositions/config_parsers'
     },
     shim: {
         'angular': {

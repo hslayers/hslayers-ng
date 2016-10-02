@@ -133,10 +133,7 @@ define(['angular', 'ol', 'utils'],
                                 MetadataURL: layer.MetadataURL,
                                 BoundingBox: layer.BoundingBox
                             });
-                            new_layer.getSource().on('tileloadstart', function(img) {
-                                if (angular.isDefined(img.image)) img.image.src_ = utils.proxify(decodeURIComponent(img.image.src_), false);
-                                if (angular.isDefined(img.target.urls[0])) img.target.urls[0] = utils.proxify(decodeURIComponent(img.target.urls[0]), false);
-                            }, layer);
+                            OlMap.proxifyLayerLoader(new_layer, true);     
                             tmp.push(new_layer);
                         })
                     })
@@ -390,17 +387,7 @@ define(['angular', 'ol', 'utils'],
                         dimensions: dimensions,
                         legends: legends
                     });
-                    if ($scope.use_tiles) {
-                        new_layer.getSource().on('tileloadstart', function(img) {
-                            img.tile.src_ = this.utils.proxify(decodeURIComponent(img.tile.src_), false);
-
-                        }, $scope);
-                    } else {
-                        new_layer.getSource().on('imageloadstart', function(img) {
-                            img.image.src_ = this.utils.proxify(decodeURIComponent(img.image.src_), false);
-
-                        }, $scope);
-                    }
+                    OlMap.proxifyLayerLoader(new_layer, $scope.use_tiles);     
                     OlMap.map.addLayer(new_layer);
                 }
 

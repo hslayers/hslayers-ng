@@ -27,7 +27,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         var visible_layers = [];
                         var added_layers = [];
                         OlMap.map.getLayers().forEach(function(lyr) {
-                            if (lyr.get('show_in_manager') != null && lyr.get('show_in_manager') == false) return;
+                            if (angular.isDefined(lyr.get('show_in_manager')) && lyr.get('show_in_manager') != null && lyr.get('show_in_manager') == false) return;
                             if (lyr.getVisible()) {
                                 visible_layers.push(lyr.get("title"));
                             }
