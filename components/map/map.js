@@ -137,15 +137,14 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         this.proxifyLayerLoader = function(lyr, tiled){
             var src = lyr.getSource();
             if (tiled) {
-                var tile_url_function = src.getTileUrlFunction();
+                var tile_url_function = src.getTileUrlFunction() || src.tileUrlFunction();
                 src.setTileUrlFunction(function(b, c, d){
                     return utils.proxify(decodeURIComponent(tile_url_function(b, c, d)));
                 });
             } else {
-                var image_url_function = src.getImageUrlFunction();
-                src.setImageUrlFunction(function(b, c, d){
-                    return utils.proxify(decodeURIComponent(iamge_url_function(b, c, d)));
-                });
+                lyr.getSource().on('imageloadstart', function(img) {		
+                    if(angular.isDefined(img.image.src_)) img.image.src_ = utils.proxify(decodeURIComponent(img.image.src_), false);		
+                }, me);
             }
         }
 
