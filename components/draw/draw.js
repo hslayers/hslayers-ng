@@ -190,12 +190,14 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 var reader = new FileReader();
 
                                 reader.onloadend = function() {
-                                    var image = new Blob([this.result], { type: "image/png"});
+                                    var image = new Blob([this.result], {
+                                        type: "image/png"
+                                    });
                                     $scope.current_feature.photo = image;
                                     $scope.current_feature.photo_src = window.URL.createObjectURL(image);
                                     $scope.$apply();
                                 };
-                                
+
                                 reader.readAsArrayBuffer(file);
                             });
                         });
@@ -450,12 +452,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.setLayerToSelect = function(layer) {
                     $scope.layer_to_select = layer;
                 }
-                
-                $scope.$on('senslog.categories_loaded', function(event, categories){
+
+                $scope.$on('senslog.categories_loaded', function(event, categories) {
                     $scope.categories = categories;
                 })
-                
-                $scope.$on('senslog.datasets_loaded', function(event, datasets){
+
+                $scope.$on('senslog.datasets_loaded', function(event, datasets) {
                     $scope.datasets = datasets;
                 })
 

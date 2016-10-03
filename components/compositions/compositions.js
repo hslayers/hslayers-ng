@@ -54,114 +54,115 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
             };
         })
 
-        .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', 'hs.compositions.config_parsers.service', 
+        .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', 'hs.compositions.config_parsers.service',
             function(hsMap, config, Core, $rootScope, utils, nonWmsService, configParsers) {
-            var me = {
-                composition_loaded: null,
-                composition_edited: false,
-                utils: utils,
-                current_composition_title: "",
-                load: function(url, overwrite, callback, pre_parse) {
-                    url = url.replace('&amp;', '&');
-                    url = utils.proxify(url);
-                    $.ajax({
-                            url: url
-                        })
-                        .done(function(response) {
-                            if (response.success == true) {
-                                me.composition_loaded = url;
-                                if (typeof pre_parse != 'undefined') response = pre_parse(response);
-                                $rootScope.$broadcast('compositions.composition_loading', response);
-                                if (angular.isUndefined(overwrite) || overwrite == true) {
-                                    me.removeCompositionLayers();
+                var me = {
+                    composition_loaded: null,
+                    composition_edited: false,
+                    utils: utils,
+                    current_composition_title: "",
+                    load: function(url, overwrite, callback, pre_parse) {
+                        url = url.replace('&amp;', '&');
+                        url = utils.proxify(url);
+                        $.ajax({
+                                url: url
+                            })
+                            .done(function(response) {
+                                if (response.success == true) {
+                                    me.composition_loaded = url;
+                                    if (typeof pre_parse != 'undefined') response = pre_parse(response);
+                                    $rootScope.$broadcast('compositions.composition_loading', response);
+                                    if (angular.isUndefined(overwrite) || overwrite == true) {
+                                        me.removeCompositionLayers();
+                                    }
+                                    me.current_composition_title = response.title || response.data.title;
+                                    hsMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), hsMap.map.getSize());
+                                    var layers = me.jsonToLayers(response);
+                                    for (var i = 0; i < layers.length; i++) {
+                                        hsMap.map.addLayer(layers[i]);
+                                    }
+
+
+                                    if (config.open_lm_after_comp_loaded) {
+                                        Core.setMainPanel('layermanager');
+                                    }
+
+                                    me.composition_edited = false;
+                                    $rootScope.$broadcast('compositions.composition_loaded', response);
+                                    if (typeof callback !== 'undefined' && callback !== null) callback();
+                                } else {
+                                    var respError = {};
+                                    respError.error = response.error;
+                                    switch (response.error) {
+                                        case "no data":
+                                            respError.title = "Composition not found";
+                                            respError.abstract = "Sorry but composition was deleted or incorrectly saved"
+                                            break;
+                                    }
+                                    $rootScope.$broadcast('compositions.composition_loaded', respError);
                                 }
-                                me.current_composition_title = response.title || response.data.title;
-                                hsMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), hsMap.map.getSize());
-                                var layers = me.jsonToLayers(response);
-                                for (var i = 0; i < layers.length; i++) {
-                                    hsMap.map.addLayer(layers[i]);
-                                }
+                            })
+                    },
 
-
-                                if (config.open_lm_after_comp_loaded) {
-                                    Core.setMainPanel('layermanager');
-                                }
-
-                                me.composition_edited = false;
-                                $rootScope.$broadcast('compositions.composition_loaded', response);
-                                if (typeof callback !== 'undefined' && callback !== null) callback();
-                            } else {
-                                var respError = {};
-                                respError.error = response.error;
-                                switch (response.error) {
-                                    case "no data":
-                                        respError.title = "Composition not found";
-                                        respError.abstract = "Sorry but composition was deleted or incorrectly saved"
-                                        break;
-                                }
-                                $rootScope.$broadcast('compositions.composition_loaded', respError);
-                            }
-                        })
-                },
-
-                removeCompositionLayers: function() {
-                    var to_be_removed = [];
-                    hsMap.map.getLayers().forEach(function(lyr) {
-                        if (lyr.get('from_composition'))
-                            to_be_removed.push(lyr);
-                    });
-                    while (to_be_removed.length > 0) {
-                        hsMap.map.removeLayer(to_be_removed.shift());
-                    }
-                },
-
-                loadInfo: function(url) {
-                    var info = {};
-                    url = url.replace('&amp;', '&');
-                    url = utils.proxify(url);
-                    $.ajax({
-                            url: url,
-                            async: false
-                        })
-                        .done(function(response) {
-                            info = response.data || response;
-                            $rootScope.$broadcast('compositions.composition_info_loaded', response);
+                    removeCompositionLayers: function() {
+                        var to_be_removed = [];
+                        hsMap.map.getLayers().forEach(function(lyr) {
+                            if (lyr.get('from_composition'))
+                                to_be_removed.push(lyr);
                         });
-                    return info;
-                },
+                        while (to_be_removed.length > 0) {
+                            hsMap.map.removeLayer(to_be_removed.shift());
+                        }
+                    },
 
-                parseExtent: function(b) {
-                    if (typeof b == 'string')
-                        b = b.split(" ");
-                    var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
-                    var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
-                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
-                    return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                },
-                jsonToLayers: function(j) {
-                    var layers = [];
-                    if (j.data) j = j.data;
-                    for (var i = 0; i < j.layers.length; i++) {
-                        var lyr_def = j.layers[i];
-                        layers.push(me.jsonToLayer(lyr_def));
+                    loadInfo: function(url) {
+                        var info = {};
+                        url = url.replace('&amp;', '&');
+                        url = utils.proxify(url);
+                        $.ajax({
+                                url: url,
+                                async: false
+                            })
+                            .done(function(response) {
+                                info = response.data || response;
+                                $rootScope.$broadcast('compositions.composition_info_loaded', response);
+                            });
+                        return info;
+                    },
+
+                    parseExtent: function(b) {
+                        if (typeof b == 'string')
+                            b = b.split(" ");
+                        var first_pair = [parseFloat(b[0]), parseFloat(b[1])]
+                        var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
+                        first_pair = ol.proj.transform(first_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
+                        second_pair = ol.proj.transform(second_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
+                        return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                    },
+                    jsonToLayers: function(j) {
+                        var layers = [];
+                        if (j.data) j = j.data;
+                        for (var i = 0; i < j.layers.length; i++) {
+                            var lyr_def = j.layers[i];
+                            layers.push(me.jsonToLayer(lyr_def));
+                        }
+                        return layers;
                     }
-                    return layers;
-                }
-            };
+                };
 
-            me.jsonToLayer = function(lyr_def) {
-                switch (lyr_def.className) {
-                    case "HSLayers.Layer.WMS":
-                        return configParsers.createWmsLayer(lyr_def);
-                        break;
-                    case 'OpenLayers.Layer.Vector':
-                        return configParsers.createVectorLayer(lyr_def);
-                        break;
+                me.jsonToLayer = function(lyr_def) {
+                    switch (lyr_def.className) {
+                        case "HSLayers.Layer.WMS":
+                            return configParsers.createWmsLayer(lyr_def);
+                            break;
+                        case 'OpenLayers.Layer.Vector':
+                            return configParsers.createVectorLayer(lyr_def);
+                            break;
+                    }
                 }
+                return me;
             }
-            return me;
-        }])
+        ])
 
         .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
             function($scope, $rootScope, $location, $http, hsMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {

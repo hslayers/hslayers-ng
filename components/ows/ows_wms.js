@@ -133,7 +133,7 @@ define(['angular', 'ol', 'utils'],
                                 MetadataURL: layer.MetadataURL,
                                 BoundingBox: layer.BoundingBox
                             });
-                            OlMap.proxifyLayerLoader(new_layer, true);     
+                            OlMap.proxifyLayerLoader(new_layer, true);
                             tmp.push(new_layer);
                         })
                     })
@@ -387,7 +387,7 @@ define(['angular', 'ol', 'utils'],
                         dimensions: dimensions,
                         legends: legends
                     });
-                    OlMap.proxifyLayerLoader(new_layer, $scope.use_tiles);     
+                    OlMap.proxifyLayerLoader(new_layer, $scope.use_tiles);
                     OlMap.map.addLayer(new_layer);
                 }
 
