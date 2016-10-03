@@ -21,6 +21,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
         .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.status_creator.service', 'config',
             function($scope, OlMap, Core, Geolocation, $http, utils, $timeout, status_creator, config) {
                 var map = OlMap.map;
+                var draw; 
+                var modify; 
+                var selector;
+                var current_feature_collection = new ol.Collection();
+                
                 $scope.senslog_url = config.senslog_url; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
                 $scope.features = [];
                 $scope.current_feature = null;
@@ -33,22 +38,22 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 var attrs_not_editable = ['geometry', 'highlighted', 'attributes', 'sync_pending'];
 
                 var source;
-                var style = function(feature, resolution) {
+                var highlighted_style = function(feature, resolution) {
                     return [new ol.style.Style({
                         fill: new ol.style.Fill({
                             color: 'rgba(255, 255, 255, 0.4)'
                         }),
                         stroke: new ol.style.Stroke({
-                            color: feature.get('highlighted') ? '#d00504' : '#ffcc33',
+                            color: '#d00504',
                             width: 2
                         }),
                         image: new ol.style.Circle({
                             radius: 5,
                             fill: new ol.style.Fill({
-                                color: feature.get('highlighted') ? '#d11514' : '#ffcc33'
+                                color: '#d11514'
                             }),
                             stroke: new ol.style.Stroke({
-                                color: feature.get('highlighted') ? '#d00504' : '#ff8e32',
+                                color:  '#d00504',
                                 width: 2
                             })
                         })
@@ -62,7 +67,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         if ($scope.selected_layer == layer.get('title')) {
                             $scope.layer_to_select = layer;
                             source = layer.getSource();
-                            map.removeInteraction(draw);
+                            $scope.deactivateDrawing();
                             addInteraction();
                             fillFeatureList();
                         }
@@ -73,8 +78,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     deselectCurrentFeature();
                     $scope.features = [];
                     angular.forEach(source.getFeatures(), function(feature) {
+                        if(angular.isUndefined(feature.getId())){
+                            feature.setId(utils.generateUuid());
+                        }
                         $scope.features.push({
                             type: feature.getGeometry().getType(),
+                            uuid: feature.getId(),
                             ol_feature: feature,
                             name: feature.get('name') || (angular.isDefined(feature.get('attributes')) ? feature.get('attributes').name : undefined),
                             time_stamp: feature.get('time_stamp') || getCurrentTimestamp()
@@ -82,38 +91,69 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
 
-                var draw; // global so we can remove it later
                 function addInteraction() {
                     draw = new ol.interaction.Draw({
                         source: source,
                         type: /** @type {ol.geom.GeometryType} */ ($scope.type)
                     });
+                    
+                    draw.setActive(false);
+                    
+                    modify = new ol.interaction.Modify({
+                        features: current_feature_collection
+                    });
+                    
+                    selector = new ol.interaction.Select({
+                        condition: ol.events.condition.click
+                    });
 
                     map.addInteraction(draw);
-
+                    map.addInteraction(modify);
+                    map.addInteraction(selector);
+                    
                     draw.on('drawstart',
                         function(evt) {
+                            modify.setActive(false);
+                            evt.feature.setId(utils.generateUuid());
                             $scope.features.push({
                                 type: $scope.type,
+                                uuid: evt.feature.getId(),
                                 ol_feature: evt.feature,
                                 time_stamp: getCurrentTimestamp()
                             });
                             if ($scope.is_unsaved) return;
                             if (!$scope.$$phase) $scope.$digest();
-                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], 0, false);
+                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], false);
                         }, this);
 
                     draw.on('drawend',
                         function(evt) {
-                            var uuid = utils.generateUuid();
-                            evt.feature.set('hs_id', uuid);
-                            evt.feature.setId(uuid);
                             $scope.$emit('feature_drawn', {
                                 layer: $scope.selected_layer,
                                 features: status_creator.serializeFeatures([evt.feature])
                             });
+                            draw.setActive(false);
                             if (!$scope.$$phase) $scope.$digest();
                         }, this);
+                    
+                    selector.getFeatures().on('add', function(e) {
+                        angular.forEach($scope.features, function(container_feature){
+                            if(container_feature.ol_feature == e.element){
+                                deselectCurrentFeature();
+                                $scope.setCurrentFeature(container_feature, false);
+                                if (!$scope.$$phase) $scope.$digest();
+                            }
+                        })
+                    });
+                    
+                    selector.getFeatures().on('remove', function(e) {
+                        angular.forEach($scope.features, function(container_feature){
+                            if(container_feature.ol_feature == e.element){
+                               deselectCurrentFeature();
+                               if (!$scope.$$phase) $scope.$digest();
+                            }
+                        })
+                    });
                 }
 
                 $scope.setType = function(what) {
@@ -131,7 +171,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     try {
                         if (draw.getActive()) draw.finishDrawing();
                     } catch (ex) {}
-                    draw.setActive(true)
+                    draw.setActive(true);
                 }
 
                 $scope.newPointFromGps = function() {
@@ -151,7 +191,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         });
                         if ($scope.is_unsaved) return;
                         if (!$scope.$$phase) $scope.$digest();
-                        $scope.setCurrentFeature($scope.features[$scope.features.length - 1], $scope.features.length - 1);
+                        $scope.setCurrentFeature($scope.features[$scope.features.length - 1]);
                     }
 
                     function waitForFix() {
@@ -209,10 +249,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         console.log(error);
                     }
                 }
-
-                $scope.highlightFeature = function(feature, state) {
-                    feature.ol_feature.set('highlighted', state);
-                }
+                
 
                 /**
                  * @function setCurrentFeature
@@ -221,19 +258,22 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                  * @param {object} feature - Wrapped feature to edit or view
                  * @param {number} index - Used to position the detail panel after layers li element
                  */
-                $scope.setCurrentFeature = function(feature, index, zoom_to_feature) {
+                $scope.setCurrentFeature = function(feature, zoom_to_feature) {
                     if ($scope.is_unsaved) return;
                     if ($scope.current_feature == feature) {
-                        $scope.current_feature = null;
+                        deselectCurrentFeature();
                     } else {
                         $scope.current_feature = feature;
-                        $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + index));
+                        $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-"+feature.uuid));
                         $('#panelplace').animate({
                             scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
                         }, 500);
                         //$(".hs-dr-editpanel").get(0).scrollIntoView();
                         var olf = $scope.current_feature.ol_feature;
                         fillFeatureContainer($scope.current_feature, olf);
+                        current_feature_collection.push(olf);
+                        if(!draw.getActive()) modify.setActive(true);
+                        olf.setStyle(highlighted_style);
                         if (angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
                     }
                     return false;
@@ -348,7 +388,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 function deselectCurrentFeature() {
                     if (angular.isObject($scope.current_feature)) {
                         $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
+                        if(angular.isUndefined($scope.current_feature)) return;
+                        $scope.current_feature.ol_feature.setStyle(undefined);
                         $scope.current_feature = null;
+                        current_feature_collection.clear();
                     }
                 }
 
@@ -359,7 +402,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                 $scope.$watch('type', function() {
                     if (Core.mainpanel != 'draw') return;
-                    map.removeInteraction(draw);
+                    $scope.deactivateDrawing();
                     addInteraction();
                 });
 
@@ -369,6 +412,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                 $scope.deactivateDrawing = function() {
                     map.removeInteraction(draw);
+                    map.removeInteraction(modify);
+                    map.removeInteraction(selector);
                 }
 
                 $scope.$on('core.mainpanel_changed', function(event) {
@@ -448,7 +493,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }
                     })
                 }
-
+                
                 $scope.setLayerToSelect = function(layer) {
                     $scope.layer_to_select = layer;
                 }

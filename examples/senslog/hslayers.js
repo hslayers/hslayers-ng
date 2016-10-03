@@ -29,7 +29,8 @@ require.config({
         core: hsl_path + 'components/core/core',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
-        senslog: hsl_path + 'examples/senslog/senslog/senslog'
+        senslog: hsl_path + 'examples/senslog/senslog/senslog',
+        ol: hsl_path + 'node_modules/openlayers/dist/ol-debug'
     },
     shim: {
         d3: {
