@@ -81,11 +81,11 @@ define(['ol',
                     }
                     if(args == 'Map'){
                         
-                        $http.get(config.senslog_url + '/category/select').then(function(response) {
+                        $http.get(config.senslog_url + '/category/select/?user_name=tester').then(function(response) {
                             $scope.$broadcast('senslog.categories_loaded', response.data);
                         });
 
-                        $http.get(config.senslog_url + '/dataset/select').then(function(response) {
+                        $http.get(config.senslog_url + '/dataset/select/?user_name=tester').then(function(response) {
                             $scope.$broadcast('senslog.datasets_loaded', response.data);
                             angular.forEach(response.data, function(dataset){
                                 var lyr = new ol.layer.Vector({
