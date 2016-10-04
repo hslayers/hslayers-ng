@@ -137,9 +137,9 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }, this);
                     
                     selector.getFeatures().on('add', function(e) {
+                        deselectCurrentFeature();
                         angular.forEach($scope.features, function(container_feature){
                             if(container_feature.ol_feature == e.element){
-                                deselectCurrentFeature();
                                 $scope.setCurrentFeature(container_feature, false);
                                 if (!$scope.$$phase) $scope.$digest();
                             }
@@ -147,12 +147,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     });
                     
                     selector.getFeatures().on('remove', function(e) {
-                        angular.forEach($scope.features, function(container_feature){
-                            if(container_feature.ol_feature == e.element){
-                               deselectCurrentFeature();
-                               if (!$scope.$$phase) $scope.$digest();
-                            }
-                        })
+                        deselectCurrentFeature();
+                        if (!$scope.$$phase) $scope.$digest();
                     });
                 }
 
@@ -164,7 +160,9 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     try {
                         if (draw.getActive()) draw.finishDrawing();
                     } catch (ex) {}
+                    deselectCurrentFeature();
                     draw.setActive(false);
+                    modify.setActive(false);
                 }
 
                 $scope.start = function() {
@@ -260,22 +258,19 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                  */
                 $scope.setCurrentFeature = function(feature, zoom_to_feature) {
                     if ($scope.is_unsaved) return;
-                    if ($scope.current_feature == feature) {
-                        deselectCurrentFeature();
-                    } else {
-                        $scope.current_feature = feature;
-                        $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-"+feature.uuid));
-                        $('#panelplace').animate({
-                            scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
-                        }, 500);
-                        //$(".hs-dr-editpanel").get(0).scrollIntoView();
-                        var olf = $scope.current_feature.ol_feature;
-                        fillFeatureContainer($scope.current_feature, olf);
-                        current_feature_collection.push(olf);
-                        if(!draw.getActive()) modify.setActive(true);
-                        olf.setStyle(highlighted_style);
-                        if (angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
-                    }
+                    deselectCurrentFeature();
+                    $scope.current_feature = feature;
+                    $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-"+feature.uuid));
+                    $('#panelplace').animate({
+                        scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
+                    }, 500);
+                    //$(".hs-dr-editpanel").get(0).scrollIntoView();
+                    var olf = $scope.current_feature.ol_feature;
+                    fillFeatureContainer($scope.current_feature, olf);
+                    current_feature_collection.push(olf);
+                    if(!draw.getActive()) modify.setActive(true);
+                    olf.setStyle(highlighted_style);
+                    if (angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
                     return false;
                 }
 
@@ -374,7 +369,6 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     if (confirm("Really delete the feature?")) {
                         if ($scope.current_feature == feature) {
                             deselectCurrentFeature();
-                            var features = format.readFeatures(response.data.features);
                         }
                         $scope.features.splice($scope.features.indexOf(feature), 1);
                         source.removeFeature(feature.ol_feature);
@@ -390,9 +384,9 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
                         if(angular.isUndefined($scope.current_feature)) return;
                         $scope.current_feature.ol_feature.setStyle(undefined);
-                        $scope.current_feature = null;
                         current_feature_collection.clear();
                     }
+                    $scope.current_feature = null;
                 }
 
                 $scope.setFeatureStyle = function(new_style) {
@@ -461,7 +455,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var cord = ol.proj.transform(olf.getGeometry().getCoordinates(), OlMap.map.getView().getProjection(), 'EPSG:4326');
 
                         var fd = new FormData();
-                        fd.append('timestamp', olf.get('time_stamp') || getCurrentTimestamp());
+                        fd.append('timestamp', getCurrentTimestamp());
                         fd.append('category', olf.get('category_id'));
                         fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
