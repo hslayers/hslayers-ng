@@ -117,14 +117,16 @@ define(['ol',
                                         $http.get(config.senslog_url + '/dataset/select/?user_name=tester').then(function(response) {
                                             $scope.$broadcast('senslog.datasets_loaded', response.data);
                                             angular.forEach(response.data, function(dataset) {
+                                                var source = new ol.source.Vector({
+                                                        url: config.senslog_url + '/observations/select?user_name=tester&dataset_id=' + dataset.datasetId + '&format=geojson',
+                                                        format: new ol.format.GeoJSON()
+                                                    });
+                                                source.set('dataset_id', dataset.datasetId);
+                                                source.set('senslog_url', config.senslog_url + '/');
                                                 var lyr = new ol.layer.Vector({
                                                     title: dataset.datasetName,
                                                     visible: false,
-                                                    source: new ol.source.Vector({
-                                                        url: config.senslog_url + '/observations/select?user_name=tester&dataset_id=' + dataset.datasetId + '&format=geojson',
-                                                        senslog_url: config.senslog_url + '/',
-                                                        format: new ol.format.GeoJSON()
-                                                    })
+                                                    source: source
                                                 })
                                                 hsmap.map.addLayer(lyr);
                                             })

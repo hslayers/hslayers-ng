@@ -119,9 +119,9 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 type: $scope.type,
                                 uuid: evt.feature.getId(),
                                 ol_feature: evt.feature,
-                                time_stamp: getCurrentTimestamp()
+                                time_stamp: getCurrentTimestamp(),
+                                dataset_id: source.get('dataset_id')
                             });
-                            if ($scope.is_unsaved) return;
                             if (!$scope.$$phase) $scope.$digest();
                             $scope.setCurrentFeature($scope.features[$scope.features.length - 1], false);
                         }, this);
@@ -137,9 +137,9 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }, this);
                     
                     selector.getFeatures().on('add', function(e) {
-                        deselectCurrentFeature();
                         angular.forEach($scope.features, function(container_feature){
                             if(container_feature.ol_feature == e.element){
+                                deselectCurrentFeature();
                                 $scope.setCurrentFeature(container_feature, false);
                                 if (!$scope.$$phase) $scope.$digest();
                             }
@@ -257,7 +257,6 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                  * @param {number} index - Used to position the detail panel after layers li element
                  */
                 $scope.setCurrentFeature = function(feature, zoom_to_feature) {
-                    if ($scope.is_unsaved) return;
                     deselectCurrentFeature();
                     $scope.current_feature = feature;
                     $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-"+feature.uuid));
