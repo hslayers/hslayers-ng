@@ -21,7 +21,7 @@ define(['angular', 'app'], function(angular, app) {
                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
 
                     outUrl = "/cgi-bin/hsproxy.cgi?";
-                    if (toEncoding) outUrl = outUrl + "toEncoding=utf-8&";
+                    if (toEncoding && url.indexOf('FORMAT=image')==-1) outUrl += "toEncoding=utf-8&";
                     outUrl = outUrl + "url=" + encodeURIComponent(url);
                 }
             }
