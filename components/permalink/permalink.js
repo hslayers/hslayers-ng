@@ -184,8 +184,8 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     return me;
                 }
             ])
-            .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare', 'hs.utils.service',
-                function($rootScope, $scope, $http, Core, config, service, socialshare, utils) {
+            .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare', 'hs.utils.service', 'hs.status_creator.service',
+                function($rootScope, $scope, $http, Core, config, service, socialshare, utils, status_creator) {
 
                     $scope.embed_code = "";
                     $scope.shareUrlValid = false;
@@ -213,7 +213,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                     url: encodeURIComponent($scope.embededUrl),
                                     title: $scope.title,
                                     description: $scope.abstract,
-                                    image: 'https://ng.hslayers.org/img/logo.jpg'
+                                    image: $scope.thumbnail
                                 }),
                                 success: function(j) {
                                     $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
@@ -305,6 +305,18 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         }
                         if (!$scope.$$phase) $scope.$digest();
                     })
+                    
+                     $scope.$on('core.mainpanel_changed', function(event) {
+                        if (Core.mainpanel == 'permalink') {
+                            status_creator.generateThumbnail($('#hs-permalink-thumbnail'), $scope);
+                        }
+                    });
+
+
+                    $scope.$on('map.extent_changed', function(event, data, b) {
+                        status_creator.generateThumbnail($('#hs-permalink-thumbnail'), $scope);
+
+                    });
 
                     $scope.$emit('scope_loaded', "Permalink");
                 }

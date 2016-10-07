@@ -336,7 +336,29 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     return f.writeFeatures(features);
                 },
 
-                generateUuid: utils.generateUuid
+                generateUuid: utils.generateUuid,
+                generateThumbnail: function($element, $scope) {
+                    if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink') {
+                        $element.attr("crossOrigin", "Anonymous");
+                        OlMap.map.once('postcompose', function(event) {
+                            var myCanvas = document.getElementById('my_canvas_id');
+                            var canvas = event.context.canvas;
+                            var canvas2 = document.createElement("canvas");
+                            var width = 256,
+                                height = 256;
+                            canvas2.style.width = width + "px";
+                            canvas2.style.height = height + "px";
+                            canvas2.width = width;
+                            canvas2.height = height;
+                            var ctx2 = canvas2.getContext("2d");
+                            ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
+                            $element.attr('src', canvas2.toDataURL('image/png'));
+                            this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
+                            $element.width(width).height(height);
+                        }, $scope);
+                        OlMap.map.renderSync();
+                    }
+                }
             };
 
             $window.addEventListener('beforeunload', function(event) {
@@ -590,29 +612,6 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }, 0);
                 };
 
-                $scope.generateThumbnail = function() {
-                    if (Core.mainpanel == 'status_creator') {
-                        $('#hs-stc-thumbnail').attr("crossOrigin", "Anonymous");
-                        OlMap.map.once('postcompose', function(event) {
-                            var myCanvas = document.getElementById('my_canvas_id');
-                            var canvas = event.context.canvas;
-                            var canvas2 = document.createElement("canvas");
-                            var width = 256,
-                                height = 256;
-                            canvas2.style.width = width + "px";
-                            canvas2.style.height = height + "px";
-                            canvas2.width = width;
-                            canvas2.height = height;
-                            var ctx2 = canvas2.getContext("2d");
-                            ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
-                            $('#hs-stc-thumbnail').attr('src', canvas2.toDataURL('image/png'));
-                            this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
-                            $('#hs-stc-thumbnail').width(width).height(height);
-                        }, $scope);
-                        OlMap.map.renderSync();
-                    }
-                }
-
                 $scope.$on('compositions.composition_loaded', function(event, data) {
                     if (angular.isUndefined(data.error)) {
                         if (data.data) {
@@ -647,14 +646,14 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         $('#stc-download').hide();
                         $('#stc-save, #stc-saveas').hide();
                         $('.stc-tabs li:eq(0) a').tab('show');
-                        $scope.generateThumbnail();
+                        status_creator.generateThumbnail($('#hs-stc-thumbnail'), $scope);
                     }
                 });
 
 
                 $scope.$on('map.extent_changed', function(event, data, b) {
                     $scope.getCurrentExtent();
-                    $scope.generateThumbnail();
+                    status_creator.generateThumbnail($('#hs-stc-thumbnail'), $scope);
 
                 });
 
