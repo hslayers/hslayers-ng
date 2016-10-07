@@ -7,7 +7,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
     function(angular, ol, SparqlJson, social) {
         var module = angular.module('hs.compositions.config_parsers', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms'])
-            .service('hs.compositions.config_parsers.service', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', function(OlMap, config, Core, $rootScope, utils, nonwmsservice) {
+            .service('hs.compositions.config_parsers.service', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', function(OlMap, config, Core, $rootScope, utils, nonWmsService) {
                 var me = {
                     createWmsLayer: function(lyr_def) {
                         var source_class = lyr_def.singleTile ? ol.source.ImageWMS : ol.source.TileWMS;
