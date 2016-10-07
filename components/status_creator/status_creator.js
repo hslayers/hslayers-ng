@@ -430,7 +430,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             if (j.results.guessedTitle) {
                                 $scope.guessedTitle = j.results.guessedTitle;
                             }
-                            if ($scope.titleFree) {
+                            if ($scope.titleFree && $scope.hasPermission) {
                                 $scope.save(true);
                             } else {
                                 if (!$scope.$$phase) $scope.$digest();

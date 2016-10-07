@@ -38,15 +38,16 @@
                     </p>
                 </div>
 
-                <div ng-if="!titleFree && !hasPermission">
+                <div ng-if="!titleFree || !hasPermission">
                     <div>
-                        <p translate>You don't have sufficient rights to do so.</p>
-                        <p translate>Use a different name to save the map.</p>
+                        <p translate ng-if="!hasPermission">You don't have sufficient rights to do so. Maybe the session has ended?</p>
+                        <p translate ng-if="!titleFree">Use a different name to save the map.</p>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" ng-click="focusTitle()"translate>OK</button>
+                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" ng-click="focusTitle()" translate>OK</button>
                     </p>
                 </div>
+                
             </div>
         </div>
     </div>
