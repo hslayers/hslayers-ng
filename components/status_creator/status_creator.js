@@ -469,7 +469,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }),
                         success: function(j) {
                             var compInfo = {};
-                            $scope.success = j.saved !== false;
+                            $scope.success = angular.isDefined(j.saved) && (j.saved !== false);
                             $scope.showResultDialog();
                             $('#stc-next').show();
                             $('#stc-download').hide();
@@ -544,11 +544,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         w: false,
                         r: false
                     });
-                    if (angular.isDefined($scope.current_composition) && $scope.current_composition != "") {
+                    var cc = $scope.current_composition;
+                    if (angular.isDefined($scope.current_composition) && cc != "") {
                         angular.forEach($scope.groups, function(g) {
-                            if (typeof $scope.current_composition.groups[g.roleName] != 'undefined') {
-                                g.w = $scope.current_composition.groups[g.roleName].indexOf('w') > -1;
-                                g.r = $scope.current_composition.groups[g.roleName].indexOf('r') > -1;
+                            if (angular.isDefined(cc.groups) && angular.isDefined(cc.groups[g.roleName])) {
+                                g.w = cc.groups[g.roleName].indexOf('w') > -1;
+                                g.r = cc.groups[g.roleName].indexOf('r') > -1;
                             }
                         });
                     }
