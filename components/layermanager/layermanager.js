@@ -204,9 +204,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         date_format: getDateFormatForTimeSlider(dimensions_time.timeUnit),
                         date_from: new Date(dimensions_time.timeInterval[0]),
                         date_till: new Date(dimensions_time.timeInterval[1]),
-                        time: new Date(dimensions_time.timeInterval[0])
+                        time: new Date(dimensions_time.timeInterval[0]),
+                        date_increment: 0
                     });
                     setLayerTimeSliderIntervals(new_layer, dimensions_time);
+                    $scope.setLayerTime(new_layer);
                 }
                 if (layer.get('base') != true) {
                     populateFolders(layer);
@@ -762,7 +764,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         }
                         d = new Date(parseInt(currentlayer.date_increment));
                 }
-                currentlayer.time = d;
+                var noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
+                currentlayer.time = noutc;
                 currentlayer.layer.getSource().updateParams({
                     'TIME': d.toISOString()
                 });
