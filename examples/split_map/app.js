@@ -84,7 +84,7 @@ define(['ol',
 
                         composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=e61924a6-aaf7-4c47-8556-3a96c4b80413', undefined, undefined, function(response) {
                             angular.forEach(response.data.layers, function(layer) {
-                                if (layer.title == 'Intenzita dopravy v Plzni - normální stav - podzim') {
+                                if (layer.title == 'Intenzita dopravy v Plzni - normální stav - zima') {
                                     layer.path = 'Bez dopravních omezení (base)';
                                 } else if (layer.title.indexOf('Intenzita') > -1) {
                                     layer.path = 'S dopravním omezením (other)';
@@ -96,7 +96,7 @@ define(['ol',
                 });
                 $scope.$on('layermanager.updated', function(data, layer) {
                     if (layer.get('base') != true && layer.get('always_visible') != true) {
-                        if (layer.get('title') == 'Intenzita dopravy v Plzni - normální stav - podzim') {
+                        if (layer.get('title') == 'Intenzita dopravy v Plzni - normální stav - zima') {
                             layer.set('split_group', 2);
                             layer.setVisible(true);
                         } else if (layer.get('title').indexOf('Intenzita') > -1) {
