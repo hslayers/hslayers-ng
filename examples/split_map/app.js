@@ -84,8 +84,8 @@ define(['ol',
 
                         composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=e61924a6-aaf7-4c47-8556-3a96c4b80413', undefined, undefined, function(response) {
                             angular.forEach(response.data.layers, function(layer) {
-                                if(angular.isDefined(layer.dimensions.time.values)){
-                                    layer.dimensions.time.values = layer.dimensions.time.values.replaceAll('2016-12-05T00:00:00', '2016-12-05T08:00:00');
+                                if(angular.isDefined(layer.dimensions.time.default)){
+                                    layer.dimensions.time.default = '2016-12-05T08:00:00';
                                 }
                                 if (layer.title == 'Intenzita dopravy v Plzni - normální stav - zima') {
                                     layer.path = 'Bez dopravních omezení (base)';

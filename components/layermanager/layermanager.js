@@ -198,14 +198,20 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
 
                 if ($scope.layerIsWmsT(new_layer)) {
                     var dimensions_time = new_layer.layer.get('dimensions_time') || new_layer.layer.dimensions_time;
+                    var time;
+                    if(angular.isDefined(new_layer.layer.get('dimensions').time.default)){
+                         time = new Date(new_layer.layer.get('dimensions').time.default);
+                    } else {
+                        time=new Date(dimensions_time.timeInterval[0]); 
+                    }
                     angular.extend(new_layer, {
                         time_step: dimensions_time.timeStep,
                         time_unit: dimensions_time.timeUnit,
                         date_format: getDateFormatForTimeSlider(dimensions_time.timeUnit),
                         date_from: new Date(dimensions_time.timeInterval[0]),
                         date_till: new Date(dimensions_time.timeInterval[1]),
-                        time: new Date(dimensions_time.timeInterval[0]),
-                        date_increment: new Date(dimensions_time.timeInterval[0]).getTime()
+                        time: time,
+                        date_increment: time.getTime()
                     });
                     setLayerTimeSliderIntervals(new_layer, dimensions_time);
                     $scope.setLayerTime(new_layer);
