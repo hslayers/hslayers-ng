@@ -764,12 +764,18 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         }
                         d = new Date(parseInt(currentlayer.date_increment));
                 }
-                var noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
-                currentlayer.time = noutc;
+               
+                currentlayer.time = d;
                 currentlayer.layer.getSource().updateParams({
                     'TIME': d.toISOString()
                 });
                 $rootScope.$broadcast('layermanager.layer_time_changed', currentlayer.layer, d.toISOString());
+            }
+            
+            $scope.dateToNonUtc = function (d){
+                if(angular.isUndefined(d)) return;
+                var noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
+                return noutc;
             }
 
             $scope.toggleLayerRename = function() {
