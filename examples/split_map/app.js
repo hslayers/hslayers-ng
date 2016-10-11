@@ -82,7 +82,7 @@ define(['ol',
                         $compile(slider_button)($scope);
 
 
-                        composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=b8b5a347-4637-44d0-ae67-da17c5b047d3', undefined, undefined, function(response) {
+                        composition_parser.load('http://opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=e61924a6-aaf7-4c47-8556-3a96c4b80413', undefined, undefined, function(response) {
                             angular.forEach(response.data.layers, function(layer) {
                                 if (layer.title == 'Intenzita dopravy v Plzni - normální stav - podzim') {
                                     layer.path = 'Bez dopravních omezení (base)';
