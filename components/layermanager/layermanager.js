@@ -205,7 +205,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         date_from: new Date(dimensions_time.timeInterval[0]),
                         date_till: new Date(dimensions_time.timeInterval[1]),
                         time: new Date(dimensions_time.timeInterval[0]),
-                        date_increment: 0
+                        date_increment: new Date(dimensions_time.timeInterval[0]).getTime()
                     });
                     setLayerTimeSliderIntervals(new_layer, dimensions_time);
                     $scope.setLayerTime(new_layer);
@@ -416,6 +416,10 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     $scope.currentlayer = null;
                 } else {
                     $scope.currentlayer = layer;
+                    if($scope.layerIsWmsT(layer)){
+                        $scope.currentlayer.time = new Date(layer.layer.getSource().getParams().TIME);
+                        $scope.currentlayer.date_increment = $scope.currentlayer.time.getTime();
+                    }
                     $(".layerpanel").insertAfter($("#layer-" + index));
                     $scope.cur_layer_opacity = layer.layer.getOpacity();
                 }
