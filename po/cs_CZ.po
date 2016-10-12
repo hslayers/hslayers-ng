@@ -204,7 +204,7 @@ msgstr "Kód pro vložení"
 #: components/sidebar/partials/sidebar.html:53
 #: components/sidebar/partials/sidebar.html:54
 msgid "Embed map"
-msgstr "Kdo pro vložení mapy"
+msgstr "Kód pro vložení mapy"
 
 #: components/info/partials/info.html:7
 msgid "Empty map"
