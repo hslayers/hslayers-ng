@@ -257,19 +257,23 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                  * @param {number} index - Used to position the detail panel after layers li element
                  */
                 $scope.setCurrentFeature = function(feature, zoom_to_feature) {
-                    deselectCurrentFeature();
-                    $scope.current_feature = feature;
-                    $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-"+feature.uuid));
-                    $('#panelplace').animate({
-                        scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
-                    }, 500);
-                    //$(".hs-dr-editpanel").get(0).scrollIntoView();
-                    var olf = $scope.current_feature.ol_feature;
-                    fillFeatureContainer($scope.current_feature, olf);
-                    current_feature_collection.push(olf);
-                    if(!draw.getActive()) modify.setActive(true);
-                    olf.setStyle(highlighted_style);
-                    if (angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
+                    if ($scope.current_feature == feature) {
+                        deselectCurrentFeature();
+                    } else {
+                        deselectCurrentFeature();
+                        $scope.current_feature = feature;
+                        $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-"+feature.uuid));
+                        $('#panelplace').animate({
+                            scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
+                        }, 500);
+                        //$(".hs-dr-editpanel").get(0).scrollIntoView();
+                        var olf = $scope.current_feature.ol_feature;
+                        fillFeatureContainer($scope.current_feature, olf);
+                        current_feature_collection.push(olf);
+                        if(!draw.getActive()) modify.setActive(true);
+                        olf.setStyle(highlighted_style);
+                        if (angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
+                    }
                     return false;
                 }
 
