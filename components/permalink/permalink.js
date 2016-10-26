@@ -77,8 +77,15 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             var embedHsl_Path = window.hsl_path;
                             var embedUrl = window.location.origin + window.hsl_path + "components/permalink/app/" + "?" + me.param_string;
                         }
-
-                        return embedUrl + "&permalink=" + encodeURIComponent(stringLayers) + "&config=" + window.hsl_config + "&hsl_path=" + embedHsl_Path + "&hsl_app=" + me.pathname + window.hsl_app;
+                        
+                        var params = {permalink:encodeURIComponent(stringLayers)};
+                        if(angular.isDefined(window.hsl_config)) 
+                            params.config = window.hsl_config;
+                        if(angular.isDefined(embedHsl_Path)) 
+                            params.hsl_path = embedHsl_Path;
+                        if(angular.isDefined(me.pathname + window.hsl_app) && angular.isDefined(window.hsl_app)) 
+                            params.hsl_app = me.pathname + window.hsl_app;
+                        return embedUrl + utils.paramsToURL(params);
                     }
 
                     me.parse = function(str) {
@@ -294,6 +301,8 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 $scope.embed_code = $scope.getEmbedCode();
                             }).error(function(data, status, headers, config) {
                                 console.log('Error creating short Url');
+                                $scope.embed_url = $scope.embededUrl;
+                                $scope.embed_code = $scope.getEmbedCode();
                             });
 
                             $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
@@ -302,6 +311,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 $scope.permalink_url = data.id;
                             }).error(function(data, status, headers, config) {
                                 console.log('Error creating short Url');
+                                $scope.permalink_url = service.getPermalinkUrl();
                             });
                         }
                         if (!$scope.$$phase) $scope.$digest();

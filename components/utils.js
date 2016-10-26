@@ -73,6 +73,15 @@ define(['angular', 'app'], function(angular, app) {
                 return ret;
             }, {});
         };
+        
+        this.paramsToURL = function (array) {
+            var pairs = [];
+            for (var key in array)
+                if (array.hasOwnProperty(key))
+
+                pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(array[key]));
+            return pairs.join('&');
+        }
 
         this.generateUuid = function() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
