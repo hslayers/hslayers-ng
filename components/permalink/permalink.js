@@ -189,6 +189,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
 
                     $scope.embed_code = "";
                     $scope.shareUrlValid = false;
+                    service.shareId = null;
 
                     $scope.getEmbedCode = function() {
                         return '<iframe src="' + $scope.embed_url + '" width="1000" height="700"></iframe>';
@@ -201,7 +202,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.shareOnSocial = function(provider) {
                         $scope.shareProvider = provider;
                         if (!$scope.shareUrlValid) {
-                            var shareId = utils.generateUuid();
+                            if(service.shareId == null) service.shareId = utils.generateUuid();
                             $.ajax({
                                 url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
                                 cache: false,
@@ -209,7 +210,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 async: false,
                                 data: JSON.stringify({
                                     request: 'socialShare',
-                                    id: shareId,
+                                    id: service.shareId,
                                     url: encodeURIComponent($scope.embededUrl),
                                     title: $scope.title,
                                     description: $scope.abstract,
@@ -217,7 +218,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 }),
                                 success: function(j) {
                                     $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                        longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId
+                                        longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + service.shareId
                                     }).success(function(data, status, headers, config) {
                                         $scope.share_url = data.id;
                                         socialshare.share({
