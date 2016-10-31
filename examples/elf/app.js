@@ -71,7 +71,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
             var features = [];
             $("member", response).each(function() {
                 var attrs = {};
-                var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);
+                var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0) || $("cp\\:geometry", this).get(0);
                 attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
                 var feature = new ol.Feature(attrs);
                 features.push(feature);
