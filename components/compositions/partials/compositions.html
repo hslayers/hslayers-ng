@@ -8,7 +8,7 @@
     <div class="panel-body">
         <form id="hs-comp-filter">
             <div class="form-group">
-                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}" ng-model="query.title" ng-change="loadCompositions()">
+                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}" ng-model="query.title" ng-change="filterChanged()">
             </div>
 
             <div id="hs-comp-filter" class="form-group">
@@ -24,12 +24,12 @@
                 </div>
                 
                 <label class="inline">
-                    <input type="checkbox" ng-model="filter_by_extent" ng-change='loadCompositions()'>
+                    <input type="checkbox" ng-model="filter_by_extent" ng-change='filterChanged()'>
                     <span translate>Filter by map extent</span>
                 </label>
 
                 <label class="inline">
-                    <input type="checkbox" ng-model="query.editable" ng-change='filterChanged()'>
+                    <input type="checkbox" ng-model="query.editable" ng-change='mineFilterChanged()'>
                     <span translate>Only mine</span>
                 </label>
                 

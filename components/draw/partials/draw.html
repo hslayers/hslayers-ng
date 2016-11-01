@@ -14,13 +14,13 @@
                 <option ng-repeat="layer in drawable_layers" ng-selected="selected_layer==layer.get('title')" value="{{layer.get('title')}}">{{layer.get('title')}}</option>
             </select>
         </div>
-    
+        
         <div class="btn-group" style="margin-bottom:10px">
             <button class="btn btn-default ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate> Point</button>
             <button class="btn btn-default ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate> Polygon</button>
             <button class="btn btn-default ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate> Line</button>
         </div>
-        
+         
         <button class="btn btn-default" style="float:right" ng-show="type=='Point'" ng-click="newPointFromGps()" translate>New GPS</button>
         <button class="btn btn-default" style="float:right" ng-click="start()" translate>New</button>
         
@@ -61,9 +61,19 @@
                 <!-- Dataset -->
                 <div class="form-group">
                     <label translate>Dataset</label>
-                    <select class="form-control" ng-model="current_feature.dataset_id" ng-change="setUnsaved()"> 
+                    <select class="form-control" ng-model="current_feature.dataset_id" ng-change="setUnsaved()">
                         <option ng-repeat="dataset in datasets" ng-selected="dataset.datasetId==current_feature.dataset_id" value="{{dataset.datasetId}}">{{dataset.datasetName}}</option>
                     </select>
+                </div>
+
+                <!-- Photo -->
+                <!-- <div class="form-group" ng-if="Core.isMobile()"> -->
+                <div class="form-group" ng-if="Core.isMobile() && current_feature.photo_src">
+                    <label translate>Photo</label>
+                    <!-- <span>{{current_feature.photo_src}}</span> -->
+                    <!-- <input type="file" class="form-control" ng-model="current_feature.photo" ng-change="setUnsaved()" style="display: none"> -->
+                    <!-- <img data-ng-src="data:image/PNG;base64,{{photo}}" style="width: 100%"></img> -->
+                    <img ng-show="current_feature.photo_src" ng-src="{{current_feature.photo_src}}" style="width: 100%"></img>
                 </div>
                 
                 <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false" aria-controls="hs-more-attributes">
@@ -81,6 +91,10 @@
                 <button class="btn btn-default hs-dr-add-attribute" ng-click="addUserDefinedAttr()" >
                     <i class="glyphicon glyphicon-plus"></i>
                 </button>
+
+                <button class="btn btn-default" ng-if="Core.isMobile()" ng-click="addPhoto()">
+                    <i class="glyphicon glyphicon-camera"></i>
+                </button>
                 
                 <button class="btn btn-primary" ng-click="saveFeature()">Save</button>
                 <button class="btn btn-default" ng-click="cancelChanges()" ng-show="is_unsaved==true">Cancel</button>
@@ -90,6 +104,6 @@
         </div>
         
         <button class="btn btn-default btn-danger" style="float:right" ng-click="clearAll()" translate>Clear</button>
-        <button class="btn btn-default" style="float:right" ng-click="sync()" translate>Synchronize</button>
+        <!-- <button class="btn btn-default" style="float:right" ng-click="sync()" translate>Synchronize</button> -->
     </div>
 </div>

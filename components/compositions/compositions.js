@@ -222,7 +222,6 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
                 var ajax_req = null;
                 $scope.loadCompositions = function() {
-
                     var cur_map_size = hsMap.map.getSize();
                     var cur_map_extent = angular.isDefined(cur_map_size) ? hsMap.map.getView().calculateExtent(cur_map_size) : [0, 0, 100, 100];
                     var b = ol.proj.transformExtent(cur_map_extent, hsMap.map.getView().getProjection(), 'EPSG:4326');
@@ -340,8 +339,15 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         })
                 }
 
-                $scope.filterChanged = function() {
+                $scope.mineFilterChanged = function() {
                     if (angular.isDefined($scope.query.editable) && $scope.query.editable == false) delete $scope.query.editable;
+                }
+
+                $scope.filterChanged = function() {
+                    $scope.compStart = 0;
+                    $scope.compNext = $scope.page_size;
+                    console.log($scope.compStart);
+                    $scope.loadCompositions();
                 }
 
                 $scope.confirmDelete = function(composition) {

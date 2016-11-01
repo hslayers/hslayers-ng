@@ -29,6 +29,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.senslog_url = config.senslog_url; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
                 $scope.features = [];
                 $scope.current_feature = null;
+                currentFeature = $scope.current_feature;
                 $scope.type = 'Point';
                 $scope.layer_to_select = ""; //Which layer to select when the panel is activated. This is set in layer manager when adding a new layer.
 
@@ -175,9 +176,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.newPointFromGps = function() {
                     var requiredPrecision = 20;
 
-                    function createPoint() {
-                        pos = Geolocation.last_location;
-                        var g_feature = new ol.geom.Point(pos.latlng);
+                    function createPoint(pos) {
+                        var g_feature = pos ? new ol.geom.Point(pos.latlng) : new ol.geom.Point( ol.proj.transform([0, 0], 'EPSG:4326', OlMap.map.getView().getProjection()));
                         var feature = new ol.Feature({
                             geometry: g_feature
                         });
@@ -189,26 +189,42 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         });
                         if ($scope.is_unsaved) return;
                         if (!$scope.$$phase) $scope.$digest();
-                        $scope.setCurrentFeature($scope.features[$scope.features.length - 1]);
+                        if (!pos) {
+                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], false);
+                        } else {
+                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1]);                            
+                        }
                     }
 
                     function waitForFix() {
-                        window.plugins.toast.showShortCenter("Waiting for GPS fix …");
+                        if (!Geolocation.gpsStatus) {
+                            Geolocation.toggleGps();
+                            createPoint();
+                        } else {
+                            createPoint(Geolocation.last_location);
+                        }
+
+                        window.plugins.toast.showWithOptions({
+                            message: "Waiting for GPS fix …",
+                            duration: 4000,
+                            postion: "bottom",
+                            addPixelsY: -40
+                        });
+
                         var stopWaiting = $scope.$on('geolocation.updated', function(event) {
                             console.log(Geolocation.last_location.geoposition.coords.accuracy);
                             if (Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision) {
-                                createPoint();
+                                var g_feature = new ol.geom.Point(Geolocation.last_location.latlng);
+                                console.log($scope.current_feature.ol_feature.geometry);
+                                $scope.current_feature.ol_feature.geometry = g_feature;
                                 stopWaiting();
                             }
                         });
                     }
 
                     if (Geolocation.gpsStatus && Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision) {
-                        createPoint();
-                    } else if (Geolocation.gpsStatus) {
-                        waitForFix();
+                        createPoint(Geolocation.last_location);
                     } else {
-                        Geolocation.toggleGps();
                         waitForFix();
                     }
                     // pos = Geolocation.last_location; //TODO timestamp is stored in Geolocation.last_location.geolocation.timestamp, it might be a good idea to accept only recent enough positions ---> or wait for the next fix <---.
@@ -328,6 +344,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         olf.set(attr.name, attr.value);
                     });
                     $scope.is_unsaved = false;
+
+                    $scope.sync();
                 }
 
                 $scope.setUnsaved = function() {
