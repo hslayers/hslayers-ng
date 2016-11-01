@@ -346,7 +346,6 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 $scope.filterChanged = function() {
                     $scope.compStart = 0;
                     $scope.compNext = $scope.page_size;
-                    console.log($scope.compStart);
                     $scope.loadCompositions();
                 }
 

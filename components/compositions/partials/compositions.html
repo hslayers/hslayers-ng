@@ -50,7 +50,7 @@
         </div>
 
         <ul class="hs-comp-list list-group">
-            <li ng-repeat="composition in compositions | filter:query" class="list-group-item hs-comp-item" ng-class="composition.highlighted ?  'active' : ''" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition)"  data-toggle="tooltip"  data-container="body" data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
+            <li ng-repeat="composition in compositions" class="list-group-item hs-comp-item" ng-class="composition.highlighted ?  'active' : ''" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition)"  data-toggle="tooltip"  data-container="body" data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
                 <div class="hs-comp-item-title">{{composition.title}}</div>
                 <div class="hs-comp-item-controls">
                     <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-show="composition.editable" ng-click='$event.stopPropagation();confirmDelete(composition)'><i class="glyphicon glyphicon-trash"></i></button>
