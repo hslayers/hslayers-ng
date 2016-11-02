@@ -15,14 +15,19 @@
             </select>
         </div>
         
-        <div class="btn-group" style="margin-bottom:10px">
-            <button class="btn btn-default ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate> Point</button>
-            <button class="btn btn-default ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate> Polygon</button>
-            <button class="btn btn-default ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate> Line</button>
+        <div class="container">
+            <div class="row">
+                <div class="btn-group .col-sm-9 .push-sm-3" style="margin-bottom:10px">
+                    <button class="btn btn-default ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate> Point</button>
+                    <button class="btn btn-default ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate> Polygon</button>
+                    <button class="btn btn-default ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate> Line</button>
+                </div>
+                <div class="btn-group .col-sm-3 .pull-sm-9" style="margin-bottom:10px">
+                    <button class="btn btn-default" ng-show="type=='Point'" ng-click="newPointFromGps()" translate>New GPS</button>
+                    <button class="btn btn-default" ng-click="start()" translate>New</button>
+                </div>
+            </div>
         </div>
-         
-        <button class="btn btn-default" style="float:right" ng-show="type=='Point'" ng-click="newPointFromGps()" translate>New GPS</button>
-        <button class="btn btn-default" style="float:right" ng-click="start()" translate>New</button>
         
         <ul class="list-group hs-dr-featurelist">
             <li ng-repeat="feature in features | orderBy:'-time_stamp' track by $index" id="hs-dr-feature-{{feature.uuid}}" ng-click="setCurrentFeature(feature)" ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)" ng-class="{active : current_feature == feature}" class="list-group-item hs-dr-item">
