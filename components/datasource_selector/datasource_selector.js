@@ -107,29 +107,70 @@ define(['angular', 'ol', 'map'],
                 $scope.selected_layer = null;
                 $scope.filter = {};
                 $scope.filter.byExtent = true;
-                $scope.otn_keywords = [
-                    {title:"Air traffic & transportation", source: "Gemet"},
-                    {title:"Commercial traffic"	, source: "Gemet"},
-                    {title:"Commuter traffic"	, source: "Gemet"},
-                    {title:"Rail traffic & transport"	, source: "Gemet"},
-                    {title:"Car traffic & transport"	, source: "Gemet"},
-                    {title:"Bike traffic & transport"	, source: "Gemet"},
-                    {title:"Public transport"	, source: "Gemet"},
-                    {title:"Traffic control"	, source: "Gemet"},
-                    {title:"Water transportation"	, source: "Gemet"},
-                    {title:"Freight traffic & transport"	, source: "Gemet"},
-                    {title:"Passenger transport"	, source: "Gemet"},
-                    {title:"Multimodal transport"	, source: "Other"},
-                    {title:"Nature & environment"	, source: "Waze"},
-                    {title:"Professional & public services"	, source: "Waze"},
-                    {title:"Shopping & services"	, source: "Waze"},
-                    {title:"Food & drink"	, source: "Waze"},
-                    {title:"Culture & entertainment"	, source: "Waze"},
-                    {title:"Lodging"	, source: "Waze"},
-                    {title:"Car services"	, source: "Waze"},
-                    {title:"Outdoor"	, source: "Waze"},
-                    {title:"Other services"	, source: "Waze"}
-                ];
+                $scope.otn_keywords = [{
+                    title: "Air traffic & transportation",
+                    source: "Gemet"
+                }, {
+                    title: "Commercial traffic",
+                    source: "Gemet"
+                }, {
+                    title: "Commuter traffic",
+                    source: "Gemet"
+                }, {
+                    title: "Rail traffic & transport",
+                    source: "Gemet"
+                }, {
+                    title: "Car traffic & transport",
+                    source: "Gemet"
+                }, {
+                    title: "Bike traffic & transport",
+                    source: "Gemet"
+                }, {
+                    title: "Public transport",
+                    source: "Gemet"
+                }, {
+                    title: "Traffic control",
+                    source: "Gemet"
+                }, {
+                    title: "Water transportation",
+                    source: "Gemet"
+                }, {
+                    title: "Freight traffic & transport",
+                    source: "Gemet"
+                }, {
+                    title: "Passenger transport",
+                    source: "Gemet"
+                }, {
+                    title: "Multimodal transport",
+                    source: "Other"
+                }, {
+                    title: "Nature & environment",
+                    source: "Waze"
+                }, {
+                    title: "Professional & public services",
+                    source: "Waze"
+                }, {
+                    title: "Shopping & services",
+                    source: "Waze"
+                }, {
+                    title: "Food & drink",
+                    source: "Waze"
+                }, {
+                    title: "Culture & entertainment",
+                    source: "Waze"
+                }, {
+                    title: "Lodging",
+                    source: "Waze"
+                }, {
+                    title: "Car services",
+                    source: "Waze"
+                }, {
+                    title: "Outdoor",
+                    source: "Waze"
+                }, {
+                    title: "Other services",
+                    source: "Waze"
+                }];
 
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
@@ -537,8 +578,8 @@ define(['angular', 'ol', 'map'],
                     $scope.query.OrganisationName = "";
                     $scope.query.sortby = "";
                 }
-                
-                $scope.setOtnKeyword = function(theme){
+
+                $scope.setOtnKeyword = function(theme) {
                     $scope.query.Subject = theme;
                     $scope.loadDatasets($scope.datasources);
                     return false;

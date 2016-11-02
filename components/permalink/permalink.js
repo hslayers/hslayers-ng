@@ -77,13 +77,15 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             var embedHsl_Path = window.hsl_path;
                             var embedUrl = window.location.origin + window.hsl_path + "components/permalink/app/" + "?" + me.param_string;
                         }
-                        
-                        var params = {permalink:encodeURIComponent(stringLayers)};
-                        if(angular.isDefined(window.hsl_config)) 
+
+                        var params = {
+                            permalink: encodeURIComponent(stringLayers)
+                        };
+                        if (angular.isDefined(window.hsl_config))
                             params.config = window.hsl_config;
-                        if(angular.isDefined(embedHsl_Path)) 
+                        if (angular.isDefined(embedHsl_Path))
                             params.hsl_path = embedHsl_Path;
-                        if(angular.isDefined(me.pathname + window.hsl_app) && angular.isDefined(window.hsl_app)) 
+                        if (angular.isDefined(me.pathname + window.hsl_app) && angular.isDefined(window.hsl_app))
                             params.hsl_app = me.pathname + window.hsl_app;
                         return embedUrl + utils.paramsToURL(params);
                     }
@@ -209,7 +211,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.shareOnSocial = function(provider) {
                         $scope.shareProvider = provider;
                         if (!$scope.shareUrlValid) {
-                            if(service.shareId == null) service.shareId = utils.generateUuid();
+                            if (service.shareId == null) service.shareId = utils.generateUuid();
                             $.ajax({
                                 url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
                                 cache: false,
@@ -316,8 +318,8 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         }
                         if (!$scope.$$phase) $scope.$digest();
                     })
-                    
-                     $scope.$on('core.mainpanel_changed', function(event) {
+
+                    $scope.$on('core.mainpanel_changed', function(event) {
                         if (Core.mainpanel == 'permalink') {
                             status_creator.generateThumbnail($('#hs-permalink-thumbnail'), $scope);
                         }

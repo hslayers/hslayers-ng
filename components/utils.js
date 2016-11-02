@@ -21,7 +21,7 @@ define(['angular', 'app'], function(angular, app) {
                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
 
                     outUrl = "/cgi-bin/hsproxy.cgi?";
-                    if (toEncoding && url.indexOf('FORMAT=image')==-1) outUrl += "toEncoding=utf-8&";
+                    if (toEncoding && url.indexOf('FORMAT=image') == -1) outUrl += "toEncoding=utf-8&";
                     outUrl = outUrl + "url=" + encodeURIComponent(url);
                 }
             }
@@ -73,13 +73,13 @@ define(['angular', 'app'], function(angular, app) {
                 return ret;
             }, {});
         };
-        
-        this.paramsToURL = function (array) {
+
+        this.paramsToURL = function(array) {
             var pairs = [];
             for (var key in array)
                 if (array.hasOwnProperty(key))
 
-                pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(array[key]));
+                    pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(array[key]));
             return pairs.join('&');
         }
 

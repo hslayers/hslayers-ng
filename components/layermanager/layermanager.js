@@ -199,10 +199,10 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 if ($scope.layerIsWmsT(new_layer)) {
                     var dimensions_time = new_layer.layer.get('dimensions_time') || new_layer.layer.dimensions_time;
                     var time;
-                    if(angular.isDefined(new_layer.layer.get('dimensions').time.default)){
-                         time = new Date(new_layer.layer.get('dimensions').time.default);
+                    if (angular.isDefined(new_layer.layer.get('dimensions').time.default)) {
+                        time = new Date(new_layer.layer.get('dimensions').time.default);
                     } else {
-                        time=new Date(dimensions_time.timeInterval[0]); 
+                        time = new Date(dimensions_time.timeInterval[0]);
                     }
                     angular.extend(new_layer, {
                         time_step: dimensions_time.timeStep,
@@ -422,7 +422,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     $scope.currentlayer = null;
                 } else {
                     $scope.currentlayer = layer;
-                    if($scope.layerIsWmsT(layer)){
+                    if ($scope.layerIsWmsT(layer)) {
                         $scope.currentlayer.time = new Date(layer.layer.getSource().getParams().TIME);
                         $scope.currentlayer.date_increment = $scope.currentlayer.time.getTime();
                     }
@@ -774,16 +774,16 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         }
                         d = new Date(parseInt(currentlayer.date_increment));
                 }
-               
+
                 currentlayer.time = d;
                 currentlayer.layer.getSource().updateParams({
                     'TIME': d.toISOString()
                 });
                 $rootScope.$broadcast('layermanager.layer_time_changed', currentlayer.layer, d.toISOString());
             }
-            
-            $scope.dateToNonUtc = function (d){
-                if(angular.isUndefined(d)) return;
+
+            $scope.dateToNonUtc = function(d) {
+                if (angular.isUndefined(d)) return;
                 var noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
                 return noutc;
             }

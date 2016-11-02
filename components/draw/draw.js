@@ -21,11 +21,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
         .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.status_creator.service', 'config',
             function($scope, OlMap, Core, Geolocation, $http, utils, $timeout, status_creator, config) {
                 var map = OlMap.map;
-                var draw; 
-                var modify; 
+                var draw;
+                var modify;
                 var selector;
                 var current_feature_collection = new ol.Collection();
-                
+
                 $scope.senslog_url = config.senslog_url; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
                 $scope.features = [];
                 $scope.current_feature = null;
@@ -54,7 +54,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 color: '#d11514'
                             }),
                             stroke: new ol.style.Stroke({
-                                color:  '#d00504',
+                                color: '#d00504',
                                 width: 2
                             })
                         })
@@ -79,7 +79,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     deselectCurrentFeature();
                     $scope.features = [];
                     angular.forEach(source.getFeatures(), function(feature) {
-                        if(angular.isUndefined(feature.getId())){
+                        if (angular.isUndefined(feature.getId())) {
                             feature.setId(utils.generateUuid());
                         }
                         $scope.features.push({
@@ -97,13 +97,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         source: source,
                         type: /** @type {ol.geom.GeometryType} */ ($scope.type)
                     });
-                    
+
                     draw.setActive(false);
-                    
+
                     modify = new ol.interaction.Modify({
                         features: current_feature_collection
                     });
-                    
+
                     selector = new ol.interaction.Select({
                         condition: ol.events.condition.click
                     });
@@ -111,7 +111,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     map.addInteraction(draw);
                     map.addInteraction(modify);
                     map.addInteraction(selector);
-                    
+
                     draw.on('drawstart',
                         function(evt) {
                             modify.setActive(false);
@@ -136,17 +136,17 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             draw.setActive(false);
                             if (!$scope.$$phase) $scope.$digest();
                         }, this);
-                    
+
                     selector.getFeatures().on('add', function(e) {
-                        angular.forEach($scope.features, function(container_feature){
-                            if(container_feature.ol_feature == e.element){
+                        angular.forEach($scope.features, function(container_feature) {
+                            if (container_feature.ol_feature == e.element) {
                                 deselectCurrentFeature();
                                 $scope.setCurrentFeature(container_feature, false);
                                 if (!$scope.$$phase) $scope.$digest();
                             }
                         })
                     });
-                    
+
                     selector.getFeatures().on('remove', function(e) {
                         deselectCurrentFeature();
                         if (!$scope.$$phase) $scope.$digest();
@@ -263,7 +263,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         console.log(error);
                     }
                 }
-                
+
 
                 /**
                  * @function setCurrentFeature
@@ -278,7 +278,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     } else {
                         deselectCurrentFeature();
                         $scope.current_feature = feature;
-                        $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-"+feature.uuid));
+                        $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + feature.uuid));
                         $('#panelplace').animate({
                             scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
                         }, 500);
@@ -286,7 +286,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var olf = $scope.current_feature.ol_feature;
                         fillFeatureContainer($scope.current_feature, olf);
                         current_feature_collection.push(olf);
-                        if(!draw.getActive()) modify.setActive(true);
+                        if (!draw.getActive()) modify.setActive(true);
                         olf.setStyle(highlighted_style);
                         if (angular.isUndefined(zoom_to_feature) || zoom_to_feature == true) zoomToFeature(olf);
                     }
@@ -403,7 +403,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 function deselectCurrentFeature() {
                     if (angular.isObject($scope.current_feature)) {
                         $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
-                        if(angular.isUndefined($scope.current_feature)) return;
+                        if (angular.isUndefined($scope.current_feature)) return;
                         $scope.current_feature.ol_feature.setStyle(undefined);
                         current_feature_collection.clear();
                     }
@@ -508,7 +508,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }
                     })
                 }
-                
+
                 $scope.setLayerToSelect = function(layer) {
                     $scope.layer_to_select = layer;
                 }
