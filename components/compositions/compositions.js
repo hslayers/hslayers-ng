@@ -228,7 +228,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
                     if (angular.isDefined(config.compositions_catalogue_url)) {
                         extent_layer.getSource().clear();
-                        var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent(" AND AnyText like '*" + $scope.query.title + "*'") : '';
+                        var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? encodeURIComponent(" AND title like '*" + $scope.query.title + "*' OR abstract like '*" + $scope.query.title + "*'") : '';
                         var keyword_filter = "";
                         var selected = [];
                         angular.forEach($scope.keywords, function(value, key) {
