@@ -956,10 +956,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
 
             $scope.$on('compositions.composition_loaded', function(event, data) {
                 if (angular.isUndefined(data.error)) {
-                    if (angular.isDefined(data.data)) {
+                    if (angular.isDefined(data.data) && angular.isDefined(data.data.id)) {
                         $scope.composition_id = data.data.id;
-                    } else {
+                    } else if(angular.isDefined(data.id)){
                         $scope.composition_id = data.id;
+                    } else {
+                        delete $scope.composition_id;
                     }
                 }
             });
