@@ -263,12 +263,14 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             infopanel_template: hsl_path + 'examples/geosparql/infopanel.html'
         });
 
-        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', '$sce', '$http', 'config', 'hs.trip_planner.service', 'hs.permalink.service_url',
-            function($scope, $compile, $filter, Core, OlMap, InfoPanelService, $sce, $http, config, trip_planner_service, permalink) {
+        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel', '$sce', '$http', 'config', 'hs.trip_planner.service', 'hs.permalink.service_url', 'hs.utils.service',
+            function($scope, $compile, $filter, Core, OlMap, InfoPanelService, $sce, $http, config, trip_planner_service, permalink, utils) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-
+                
+                Core.panelEnabled('compositions', false);
+                Core.panelEnabled('ows', false);
 
 
                 $scope.$on("scope_loaded", function(event, args) {
@@ -327,7 +329,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 coordinate, 'EPSG:3857', 'EPSG:4326'));
                             angular.element(element).popover('destroy');
                             var to_trip_button = '<button class="hs-spoi-point-to-trip btn btn-default">Add to trip</button>';
-                            var content = 'No weather info<br/>' + to_trip_button;
+                            var new_point_button = '<div class="btn-group"><button type="button" class="hs-spoi-new-poi btn btn-default dropdown-toggle" data-toggle="dropdown">Add to map  <span class="caret"></span></button><ul id="hs-spoi-new-layer-list" class="dropdown-menu"><li><a href="#">Action</a></li></ul></div>';
+                            var content = 'No weather info<br/>' + to_trip_button + new_point_button;
                             if (response.weather) {
                                 var wind_row = 'Wind: ' + response.wind.speed + 'm/s' + (response.wind.gust ? ' Gust: ' + response.wind.gust + 'm/s' : '');
                                 var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
@@ -335,7 +338,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 var cloud = '<img src="http://openweathermap.org/img/w/' + weather.icon + '.png" alt="' + weather.description + '"/>' + weather.description;
                                 var temp_row = 'Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C';
                                 var date_row = $filter('date')(new Date(response.dt * 1000), 'dd.MM.yyyy HH:mm');
-                                content = close_button + '<p><b>' + response.name + '</b><br/><small> at ' + date_row + '</small></p>' + cloud + '<br/>' + temp_row + '<br/>' + wind_row + '<br/>' + to_trip_button;
+                                content = close_button + '<div style="width:300px"><p><b>' + response.name + '</b><br/><small> at ' + date_row + '</small></p>' + cloud + '<br/>' + temp_row + '<br/>' + wind_row + '<br/>' + to_trip_button + " " + new_point_button +"</div>";
                             }
                             angular.element(element).popover({
                                 'placement': 'top',
@@ -354,6 +357,27 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 trip_planner_service.addWaypoint(lon_lat[0], lon_lat[1]);
                                 return false;
                             })
+                            var possible_layers = [];
+                            angular.element("#hs-spoi-new-layer-list").html('');
+                            angular.forEach(config.box_layers[1].getLayers(), function(layer){
+                                if(layer.getVisible()){
+                                    possible_layers.push(layer);
+                                    var $li = $('<li><a href="#">'+layer.get('title')+'</a></li>');
+                                    $li.data('layer', layer);
+                                    $li.click(function(){
+                                        var layer = $(this).data('layer');
+                                        var attrs = {geometry: new ol.geom.Point(coordinate), 'http://www.w3.org/2000/01/rdf-schema#label': 'New point', 'http://purl.org/dc/elements/1.1/title': 'New point'};
+                                        attrs[layer.getSource().options.category_field] = layer.get('category');
+                                        var feature = new ol.Feature(attrs);
+                                        layer.getSource().addFeatures([feature]);
+                                        popup.setPosition(undefined);
+                                        $scope.$broadcast('infopanel.feature_select', feature);
+                                        return false;
+                                    })
+                                    angular.element("#hs-spoi-new-layer-list").append($li);
+                                }
+                            });
+                            $(".dropdown-toggle").dropdown();
                         });
 
                 });
@@ -390,6 +414,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             style: style,
                             visible: false,
                             path: 'Points of interest',
+                            category: category
                             //minResolution: 1,
                             //maxResolution: 38
                         });
@@ -409,7 +434,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             visible: false,
                             path: 'Popular Categories',
                             minResolution: 1,
-                            maxResolution: 38
+                            maxResolution: 38,
+                            category: category
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
                     })
@@ -467,14 +493,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     return tmp;
                 }
 
-                function generateUuid() {
-                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                        var r = Math.random() * 16 | 0,
-                            v = c == 'x' ? r : r & 0x3 | 0x8;
-                        return v.toString(16);
-                    });
-                };
-
                 $scope.editDropdownVisible = function(attribute) {
                     return attribute.is_editing && angular.isDefined($scope.getSpoiCategories(attribute.name));
                 }
@@ -500,8 +518,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     var lines = [];
                     var d = new Date();
                     var n = d.toISOString();
-                    var change_id = 'http://www.sdi4apps.eu/poi_changes/change_' + generateUuid();
-                    var attribute_set_id = 'http://www.sdi4apps.eu/poi_changes/attributes_' + generateUuid();
+                    var change_id = 'http://www.sdi4apps.eu/poi_changes/change_' + utils.generateUuid();
+                    var attribute_set_id = 'http://www.sdi4apps.eu/poi_changes/attributes_' + utils.generateUuid();
                     lines.push('<' + change_id + '> <http://www.sdi4apps.eu/poi_changes/poi_id> <' + identifier + '>');
                     lines.push('<' + change_id + '> <http://purl.org/dc/terms/1.1/created> "' + n + '"^^xsd:dateTime');
                     lines.push('<' + change_id + '> <http://www.sdi4apps.eu/poi_changes/attribute_set> <' + attribute_set_id + '>');
