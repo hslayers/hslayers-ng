@@ -34,21 +34,21 @@ module.exports = function(grunt) {
                 src: ["components/**/*.js", "hslayers.js", "app.js", "!components/translations/js/translations.js"]
             }
         },
-        'jsdoc-ng' : {
+        jsdoc : {
             dist : {
                 src: ['components/**/*.js', 'README.md' ],
-                dest: 'docs',
-                template : 'jsdoc-ng',
                 options: {
+                    destination: 'docs'
                 }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-jsbeautifier');
-    grunt.loadNpmTasks('grunt-jsdoc-ng');
     grunt.loadNpmTasks('grunt-angular-gettext');
+    grunt.loadNpmTasks('grunt-jsdoc');
     grunt.registerTask('default', ['jsbeautifier']);
     grunt.registerTask('git-pre-commit', ['jsbeautifier']);
+    
 
 };

@@ -10,7 +10,6 @@
     "grunt": "^0.4.5",
     "grunt-angular-gettext": "2.1.x",
     "grunt-jsbeautifier": "0.2.x",
-    "grunt-jsdoc-ng": "0.0.3",
     "http-server": "^0.6.1",
     "jasmine-core": "^2.4.1",
     "js-binary": "1.1.0",
@@ -22,7 +21,9 @@
     "openlayers": "3.11.2",
     "phantomjs-prebuilt": "^2.1.4",
     "protractor": "~0.20.1",
-    "shelljs": "^0.2.6"
+    "shelljs": "^0.2.6",
+    "grunt-jsdoc": "^2.1.0",
+    "requizzle": "^0.2.1"
   },
   "scripts": {
     "postinstall": "bower --allow-root install",
@@ -35,5 +36,6 @@
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor test/protractor-conf.js"
-  }
+  },
+  "dependencies": {}
 }

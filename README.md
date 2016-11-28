@@ -74,10 +74,10 @@ Include in your html file, where the map should appear. Check the paths to the j
 ```
 
 Some example html files are provided in the `examples` directory. The template app.js uses 
-some png files for layer groups which are also included in the `examples/armenia` directory.
+some png files for layer groups which are also included in the `examples/full` directory.
 
 For providing proxy functionality we use a simple cgi script, which you have to copy from `lib/hsproxy.cgi` 
-to your cgi-bin directory. It might be located in /usr/lib/ if you use apache.
+to your cgi-bin directory. It might be located in /usr/lib/ if you use Apache.
 
 ```
 cp lib/hsproxy.cgi /usr/lib/cgi-bin/hsproxy.cgi
