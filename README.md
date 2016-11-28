@@ -76,6 +76,87 @@ Include in your html file, where the map should appear. Check the paths to the j
 Some example html files are provided in the `examples` directory. The template app.js uses 
 some png files for layer groups which are also included in the `examples/full` directory.
 
+Every application needs an app.js file (it can be named differently or be server generated) whose location is specified in hslayers.js file.
+A truncated example app.js with explanations is provided below:
+
+```
+define([ /* List of js files to be loaded. They are both hslayers and third-party components and the pathes are specified in hslayers.js and Core.js files */
+        'ol',
+        'sidebar',
+        'layermanager',
+        ...
+    ],
+    /* The order of function parameters must match the array of file names above */
+    function(ol) {
+        var module = angular.module('hs', [
+            'hs.layermanager',
+            'hs.query',
+            'hs.print',
+            ...
+            //**  List of Hslayers components
+        ]);
+
+        /* Here goes code to modify the UI for extra functionality */
+        module.directive(
+            'hs', [
+                'hs.map.service', 'Core',
+                function(OlMap, Core) {
+                    return {
+                        /* A different layout of the application can be achieved by changing the main template*/
+                        templateUrl: hsl_path + 'hslayers.html',
+                        link: function(scope, element) {
+                            Core.fullScreenMap(element);
+                        }
+                    };
+                }
+            ]);
+        
+        /* Here goes configuration of layers, viewport and HsLayers components */
+        module.value('config', {
+            /* Here goes layer definitions which can be ordinary OL layers with extra parameters which are interpreted by HsLayers or some special layer types which are unique to HsLayers */
+            default_layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Base layer",
+                    base: true,
+                    path: 'Roads/Additional Cycling routes'
+                })
+            ],
+            default_view: new ol.View({
+                center: ol.proj.transform([6.1319, 49.6116], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 13,
+                units: "m"
+            })
+        });
+        
+        /* The main code which does extra things apart from HsLayers componets is locatet in the controller function below*/
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'hs.compositions.service_parser', '$timeout',
+            /* The order of function parameters must match the array of component names above */
+            function($scope, Core, $compile, hsmap, composition_parser, $timeout) {
+                $scope.hsl_path = hsl_path; //Get this from hslayers.js file
+                /* Core components is responsible for bootstrapping the application and managing top level interface such as panels and toolbar */
+                $scope.Core = Core;
+
+                /* We can listen to event emited by components such as layer manager and hide a layer which was added by code or by user for example*/
+                $scope.$on('layermanager.updated', function(data, layer) {
+                    if (layer.get('base') != true && layer.get('always_visible') != true) {
+                       layer.setVisible(true);
+                    }
+                });
+
+                /* To hide certain panels even if they are loaded as a dependency to other component use panelEnabled function */
+                Core.panelEnabled('compositions', false);
+                Core.panelEnabled('permalink', false);
+
+            }
+        ]);
+
+        return module;
+    });
+```
+
+### Proxy
+
 For providing proxy functionality we use a simple cgi script, which you have to copy from `lib/hsproxy.cgi` 
 to your cgi-bin directory. It might be located in /usr/lib/ if you use Apache.
 
