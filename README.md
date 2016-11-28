@@ -134,7 +134,7 @@ define([ /* List of js files to be loaded. They are both hslayers and third-part
             /* The order of function parameters must match the array of component names above */
             function($scope, Core, $compile, hsmap, composition_parser, $timeout) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
-                /* Core components is responsible for bootstrapping the application and managing top level interface such as panels and toolbar */
+                /* Core component is responsible for bootstrapping the application and managing top level interface such as panels and toolbar */
                 $scope.Core = Core;
 
                 /* We can listen to event emited by components such as layer manager and hide a layer which was added by code or by user for example*/
