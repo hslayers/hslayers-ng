@@ -210,6 +210,9 @@ define(['angular', 'ol'],
                                     crossOrigin: 'anonymous'
                                 };
                                 style_json.image = new ol.style.Icon(icon_json);
+                                angular.forEach(service.layer.getSource().getFeatures(), function(f) {
+                                    f.setStyle(null);
+                                });
                                 service.layer.setStyle(new ol.style.Style(style_json));
                             }
                         }
