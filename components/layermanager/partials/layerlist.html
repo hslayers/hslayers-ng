@@ -8,7 +8,7 @@
                     <span class="glyphicon glyphicon-chevron-down" ng-show="currentlayer == layer"></span>
                 </span>
             </div>
-            <div class="hs-lm-item-title">{{layer.title}}</div>
+            <div class="hs-lm-item-title">{{layer.title}} <span class="glyphicon icon-resize-vertical hs-lm-drop-hint"></span></div>
             <div class="hs-lm-item-controls" ng-hide="layerValid(layer.layer)">
                 <i class="glyphicon glyphicon-warning-sign hs-lm-warning-scale" title="{{'This layer is not available in this scale'|translate}}" data-toggle="tooltip" data-container="body" data-placement="auto" ng-show="layer.grayed" ng-click="$event.stopPropagation()" ></i>
                 <i class="glyphicon glyphicon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}" ng-show="isLayerQueryable(layer)" ng-click="$event.stopPropagation()" ></i>

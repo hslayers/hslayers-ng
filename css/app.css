@@ -909,3 +909,14 @@ ul[dnd-list] li.selected {
 
 .hs-senslog-sensor {color: #333}
 .input-group-btn .btn {height:34px}
+.hs-lm-item .hs-lm-drop-hint {
+    display: none;
+}
+.hs-lm-item:hover .hs-lm-drop-hint {
+    z-index: 10000;
+    position: absolute;
+    top: 14px;
+    right: 106px;
+    color: #cccccc;
+    display: inline;
+}
