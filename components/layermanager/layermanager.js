@@ -56,14 +56,16 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             scope.layer_titles.push(scope.filtered_layers[i].title);
                         }
                     }
-
-                    scope.$on('layermanager.updated', function() {
+                    
+                    scope.$on('layermanager.updated', sortLayersByPosition);
+                    
+                    function sortLayersByPosition() {
                         scope.filtered_layers = filterLayers();
                         scope.filtered_layers.sort(function(a, b) {
-                            return a.layer.get('position') - b.layer.get('position')
+                            return b.layer.get('position') - a.layer.get('position')
                         });
                         scope.generateLayerTitlesArray();
-                    });
+                    }
 
                     scope.generateLayerTitlesArray();
 
