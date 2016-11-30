@@ -51,11 +51,13 @@ define(['angular', 'core'],
                 }
 
                 $scope.initSettings = function(db) {
-                    console.log("Populating hostnames database.");
-                    console.log($scope.hostnames);
-                    console.log(config.hostname);
-                    console.log(settingsDb);
-                    config.hostname = $.extend({}, $scope.originalHostnames);
+                    if(console) {
+                        console.log("Populating hostnames database.");
+                        console.log($scope.hostnames);
+                        console.log(config.hostname);
+                        console.log(settingsDb);
+                        config.hostname = $.extend({}, $scope.originalHostnames);
+                    }
                     $scope.hostnames = config.hostname;
 
                     db.transaction(function(tx) {
@@ -64,6 +66,8 @@ define(['angular', 'core'],
                         $.each($scope.hostnames, function(key, value) {
                             tx.executeSql('INSERT INTO Hostnames VALUES (?,?,?,?)', [value.title, value.type, value.editable, value.url]);
                         });
+                    }, function(){
+                        //TODO Error
                     });
                 }
 

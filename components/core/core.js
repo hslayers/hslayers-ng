@@ -11,7 +11,7 @@ require.config({
         dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
         ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'node_modules/openlayers/dist/ol',
 
-        angular: hsl_path + 'bower_components/angular/angular',
+        angular: hsl_path + 'bower_components/angular/angular.min',
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
         'angularjs-socialshare': hsl_path + 'bower_components/angularjs-socialshare/dist/angular-socialshare',

@@ -16,7 +16,7 @@
      --></button><!--
 
      compositions switch
-     --><button type="button" class="menu-item btn btn-default btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"><!-- 
+     --><button type="button" class="menu-item btn btn-default btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('compositions')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"><!-- 
          --><i class="glyphicon icon-map"></i><!-- 
      --></button><!-- 
 
