@@ -34,11 +34,14 @@ module.exports = function(grunt) {
                 src: ["components/**/*.js", "hslayers.js", "app.js", "!components/translations/js/translations.js"]
             }
         },
-        jsdoc : {
-            dist : {
-                src: ['components/**/*.js', 'README.md' ],
+        jsdoc: {
+            dist: {
+                src: ['components/**/*.js'],
                 options: {
-                    destination: 'docs'
+                    destination: 'docs',
+                    configure: 'node_modules/angular-jsdoc/common/conf.json',
+                    template: 'node_modules/angular-jsdoc/angular-template',
+                    readme: './README.md'
                 }
             }
         }
