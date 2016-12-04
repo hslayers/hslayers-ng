@@ -6,6 +6,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
 
     function(angular, ol) {
         var module = angular.module('hs.status_creator', ['hs.map', 'hs.core', 'ngCookies'])
+            /**
+            * @ngdoc directive
+            * @name hs.statusCreator.directive
+            * @memberof hs.status_creator
+            */
             .directive('hs.statusCreator.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog.html?bust=' + gitsha,
@@ -14,6 +19,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 };
             })
+            /**
+            * @ngdoc directive
+            * @name hs.statusCreator.directiveForm
+            * @memberof hs.status_creator
+            */
             .directive('hs.statusCreator.directiveForm', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/form.html?bust=' + gitsha,
@@ -22,6 +32,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 };
             })
+            /**
+            * @ngdoc directive
+            * @name hs.statusCreator.directiveSimpleform
+            * @memberof hs.status_creator
+            */
             .directive('hs.statusCreator.directiveSimpleform', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/simpleform.html?bust=' + gitsha,
@@ -30,6 +45,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 };
             })
+            /**
+            * @ngdoc directive
+            * @name hs.statusCreator.directivePanel
+            * @memberof hs.status_creator
+            */
             .directive('hs.statusCreator.directivePanel', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/panel.html?bust=' + gitsha,
@@ -38,6 +58,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 };
             })
+            /**
+            * @ngdoc directive
+            * @name hs.statusCreator.resultDialogDirective
+            * @memberof hs.status_creator
+            */
             .directive('hs.statusCreator.resultDialogDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/status_creator/partials/dialog_result.html?bust=' + gitsha,
@@ -46,7 +71,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                 };
             })
-
+        /**
+        * @ngdoc directive
+        * @name hs.statusCreator.saveDialogDirective
+        * @memberof hs.status_creator
+        */
         .directive('hs.statusCreator.saveDialogDirective', function() {
             return {
                 templateUrl: hsl_path + 'components/status_creator/partials/dialog_save.html?bust=' + gitsha,
@@ -55,7 +84,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 }
             };
         })
-
+        /**
+        * @ngdoc directive
+        * @name hs.statusCreator.focusName
+        * @memberof hs.status_creator
+        */
         .directive('hs.statusCreator.focusName', function($timeout) {
             return {
                 link: function(scope, element, attrs) {
@@ -70,7 +103,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 }
             };
         })
-
+        /**
+        * @ngdoc service
+        * @name hs.status_creator.service
+        * @memberof hs.status_creator
+        */
         .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', function(OlMap, Core, utils, $window, $cookies) {
             var me = {
                 map2json: function(map, $scope) {
@@ -374,7 +411,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
             });
             return me;
         }])
-
+        /**
+        * @ngdoc controller
+        * @name hs.status_creator.controller
+        * @memberof hs.status_creator
+        */
         .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
             function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
                 $scope.layers = [];
@@ -383,7 +424,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 $scope.panel_name = 'status_creator';
                 $scope.current_composition_title = '';
                 $scope.config = config;
-
+                /**
+                * @function getCurrentExtent
+                * @memberof hs.status_creator.controller
+                */
                 $scope.getCurrentExtent = function() {
                     var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
                     var pair1 = [b[0], b[1]]
@@ -394,7 +438,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.bbox = [pair1[0].toFixed(2), pair1[1].toFixed(2), pair2[0].toFixed(2), pair2[1].toFixed(2)];
                     if (!$scope.$$phase) $scope.$digest();
                 }
-
+                /**
+                * @function next
+                * @memberof hs.status_creator.controller
+                */
                 $scope.next = function() {
                     if ($('a[href=#author]').parent().hasClass('active')) {
                         var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope)));
@@ -419,7 +466,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $('.stc-tabs li:eq(2) a').tab('show');
                     }
                 }
-
+                /**
+                * @function showResultDialog
+                * @memberof hs.status_creator.controller
+                */
                 $scope.showResultDialog = function() {
                     if ($("#hs-dialog-area #status-creator-result-dialog").length == 0) {
                         var el = angular.element('<div hs.status_creator.result_dialog_directive></span>');
@@ -430,7 +480,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     }
                     if (!$scope.$$phase) $scope.$digest();
                 }
-
+                /**
+                * @function confirmSave
+                * @memberof hs.status_creator.controller
+                */
                 $scope.confirmSave = function() {
                     $scope.title = this.title;
                     $scope.abstract = this.abstract;
@@ -468,12 +521,19 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     })
                 }
-
+                /**
+                * @function selectNewTitle
+                * @memberof hs.status_creator.controller
+                */
                 $scope.selectNewTitle = function() {
                     $scope.title = $scope.guessedTitle;
                     $scope.changeTitle = true;
                 }
-
+                /**
+                * @function save
+                * @memberof hs.status_creator.controller
+                * @param {unknown} save_as_new
+                */
                 $scope.save = function(save_as_new) {
                     if (save_as_new || $scope.id == '') $scope.id = status_creator.generateUuid();
                     $.ajax({
@@ -515,7 +575,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     })
                 }
-
+                /**
+                * @function open
+                * @memberof hs.status_creator.controller
+                */
                 $scope.open = function() {
                     $scope.layers = [];
                     $scope.getCurrentExtent();
@@ -536,7 +599,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     //$('#status-creator-dialog').modal('show');
                     $scope.loadUserDetails();
                 }
-
+                /**
+                * @function fillGroups
+                * @memberof hs.status_creator.controller
+                */
                 $scope.fillGroups = function() {
                     $scope.groups = [];
                     if (config.advancedForm) {
@@ -576,14 +642,21 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         });
                     }
                 }
-
+                /**
+                * @function loadUserDetails
+                * @memberof hs.status_creator.controller
+                */
                 $scope.loadUserDetails = function() {
                     $.ajax({
                         url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=getuserinfo",
                         success: $scope.setUserDetails
                     });
                 };
-
+                /**
+                * @function setUserDetails
+                * @memberof hs.status_creator.controller
+                * @param {unknown} user
+                */
                 $scope.setUserDetails = function(user) {
                     if (user && user.success == true) {
                         // set the values
@@ -601,8 +674,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     }
                 };
-
-
+                /**
+                * @function focusTitle
+                * @memberof hs.status_creator.controller
+                */
                 $scope.focusTitle = function() {
                     if ($scope.guessedTitle) {
                         $scope.title = $scope.guessedTitle;

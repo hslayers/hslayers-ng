@@ -5,6 +5,11 @@
 define(['angular', 'ol', 'map'],
     function(angular, ol) {
         angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms'])
+            /**
+            * @ngdoc directive
+            * @name hs.datasource_selector.directive
+            * @memberOf hs.datasource_selector
+            */
             .directive('hs.datasourceSelector.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/datasource_selector/partials/datasource_selector.html?bust=' + gitsha
@@ -12,7 +17,8 @@ define(['angular', 'ol', 'map'],
             })
 
         /**
-         * @class hs.datasource_selector.metadataDialogDirective
+         * @ngdoc directive
+         * @name hs.datasource_selector.metadataDialogDirective
          * @memberOf hs.datasource_selector
          * @description Directive for displaying metadata about data source
          */
@@ -26,7 +32,8 @@ define(['angular', 'ol', 'map'],
         })
 
         /**
-         * @class hs.datasource_selector.advancedMickaDialogDirective
+         * @ngdoc directive
+         * @name hs.datasource_selector.advancedMickaDialogDirective
          * @memberOf hs.datasource_selector
          * @description Directive for displaying extended search parameters for Micka catalogue service
          */
@@ -39,9 +46,9 @@ define(['angular', 'ol', 'map'],
             };
         })
 
-
         /**
-         * @class hs.datasource_selector.suggestionsDialogDirective
+         * @ngdoc directive
+         * @name hs.datasource_selector.suggestionsDialogDirective
          * @memberOf hs.datasource_selector
          * @description Directive for displaying suggestions for search parameters for Micka catalogue service
          */
@@ -58,7 +65,8 @@ define(['angular', 'ol', 'map'],
         })
 
         /**
-         * @class hs.datasource_selector.objectDirective
+         * @ngdoc directive
+         * @name hs.datasource_selector.objectDirective
          * @memberOf hs.datasource_selector
          * @description Directive for displaying metadata about data source
          */
@@ -92,6 +100,12 @@ define(['angular', 'ol', 'map'],
             };
         }])
 
+        /**
+        * @ngdoc controller
+        * @memberof hs.datasource_selector
+        * @name hs.datasource_selector.controller
+        * @description Controller for datasource_selector
+        */
         .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config', 'hs.utils.service', 'hs.ows.nonwms.service',
             function($scope, OlMap, Core, $compile, config, utils, nonwmsservice) {
                 $scope.query = {
@@ -204,7 +218,12 @@ define(['angular', 'ol', 'map'],
                 })
 
                 $scope.datasets = null;
-
+                /**
+                * @function loadDatasets
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} datasets
+                * @description Directive for displaying metadata about data source
+                */
                 $scope.loadDatasets = function(datasets) {
                     $scope.datasets = datasets;
                     extent_layer.getSource().clear();
@@ -213,13 +232,21 @@ define(['angular', 'ol', 'map'],
                         $scope.loadDataset($scope.datasets[ds]);
                     }
                 }
-
+                /**
+                * @function fillCodesets
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} datasets
+                */
                 $scope.fillCodesets = function(datasets) {
                     for (var ds in datasets) {
                         $scope.fillCodeset($scope.datasets[ds]);
                     }
                 }
-
+                /**
+                * @function fillCodeset
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} ds
+                */
                 $scope.fillCodeset = function(ds) {
                     switch (ds.type) {
                         case "micka":
@@ -267,7 +294,10 @@ define(['angular', 'ol', 'map'],
                             break;
                     }
                 }
-
+                /**
+                * @function advancesMickaTypeChanged
+                * @memberOf hs.datasource_selector.controller
+                */
                 $scope.advancedMickaTypeChanged = function() {
                     if (typeof $scope.micka_ds == 'undefined') return;
                     if (typeof $scope.micka_ds.code_lists == 'undefined') return;
@@ -280,7 +310,10 @@ define(['angular', 'ol', 'map'],
                             break;
                     }
                 }
-
+                /**
+                * @function openMickaAdvancedSearch
+                * @memberOf hs.datasource_selector.controller
+                */
                 $scope.openMickaAdvancedSearch = function() {
                     if ($('#ds-advanced-micka').length == 0) {
                         var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></div>');
@@ -300,7 +333,13 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.suggestion_config = {};
-
+                /**
+                * @function showSuggestions
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} input
+                * @param {unknown} param
+                * @param {unknown} field
+                */
                 $scope.showSuggestions = function(input, param, field) {
                     $scope.suggestion_config = {
                         input: input,
@@ -320,7 +359,10 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.suggestions = [];
-
+                /**
+                * @function suggestionFilterChanged
+                * @memberOf hs.datasource_selector.controller
+                */
                 $scope.suggestionFilterChanged = function() {
                     if (typeof $scope.suggestion_ajax != 'undefined') $scope.suggestion_ajax.abort();
                     var url = $scope.micka_ds.url + '../util/suggest.php?&type=' + $scope.suggestion_config.param + '&query=' + $scope.suggestion_filter;
@@ -336,11 +378,19 @@ define(['angular', 'ol', 'map'],
                         }
                     });
                 }
-
+                /**
+                * @function addSuggestion
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} text
+                */
                 $scope.addSuggestion = function(text) {
                     $scope.query[$scope.suggestion_config.input] = text;
                 }
-
+                /**
+                * @function loadDataset
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} ds
+                */
                 $scope.loadDataset = function(ds) {
                     switch (ds.type) {
                         case "micka":
@@ -400,7 +450,12 @@ define(['angular', 'ol', 'map'],
                             break;
                     }
                 }
-
+                /**
+                * @function param2Query
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} which
+                * (PRIVATE)
+                */
                 function param2Query(which) {
                     if (typeof $scope.query[which] != 'undefined') {
                         if (which == 'type' && $scope.query[which] == 'data') {
@@ -416,11 +471,19 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
-
+                /**
+                * @function isZoomable
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} selected_layer
+                */
                 $scope.isZoomable = function(selected_layer) {
                     return angular.isDefined(selected_layer.bbox);
                 }
-
+                /**
+                * @function zoomTo
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} bbox
+                */
                 $scope.zoomTo = function(bbox) {
                     if (typeof bbox == 'undefined') return;
                     var b = bbox.split(" ");
@@ -432,7 +495,11 @@ define(['angular', 'ol', 'map'],
                     var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                     OlMap.map.getView().fit(extent, OlMap.map.getSize());
                 }
-
+                /**
+                * @function getPreviousRecords
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} ds
+                */
                 $scope.getPreviousRecords = function(ds) {
                     if (ds.start - $scope.dsPaging < 0) {
                         ds.start = 0;
@@ -443,7 +510,11 @@ define(['angular', 'ol', 'map'],
                     }
                     $scope.loadDataset(ds);
                 }
-
+                /**
+                * @function getNextRecords
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} ds
+                */
                 $scope.getNextRecords = function(ds) {
                     if (ds.next != 0) {
                         ds.start = Math.floor(ds.next / $scope.dsPaging) * $scope.dsPaging;
@@ -456,7 +527,12 @@ define(['angular', 'ol', 'map'],
                         $scope.loadDataset(ds);
                     }
                 }
-
+                /**
+                * @function addExtentFeature
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} record
+                * (PRIVATE)
+                */
                 function addExtentFeature(record) {
                     var attributes = {
                         record: record,
@@ -480,11 +556,20 @@ define(['angular', 'ol', 'map'],
                     record.feature = new_feature;
                     extent_layer.getSource().addFeatures([new_feature]);
                 }
-
+                /**
+                * @function setDefaultFeatureStyle
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} style
+                */
                 $scope.setDefaultFeatureStyle = function(style) {
                     default_style = style;
                 }
-
+                /**
+                * @function showMetadata
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} ds
+                * @param {unknown} layer    
+                */
                 $scope.showMetadata = function(ds, layer) {
                     $scope.selected_layer = layer;
                     $scope.selected_ds = ds;
@@ -494,7 +579,12 @@ define(['angular', 'ol', 'map'],
                     $("#hs-dialog-area").append(el)
                     $compile(el)($scope);
                 }
-
+                /**
+                * @function layerDownload
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} ds
+                * @param {unknown} layer    
+                */
                 $scope.layerDownload = function(ds, layer) {
                     if (ds.download == true) {
                         if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1 && layer.url.length > 0) {
@@ -504,11 +594,21 @@ define(['angular', 'ol', 'map'],
 
                     return "#"
                 }
-
+                /**
+                * @function layerRDF
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} ds
+                * @param {unknown} layer    
+                */
                 $scope.layerRDF = function(ds, layer) {
                     return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat%23"
                 }
-
+                /**
+                * @function addLayerToMap
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} ds
+                * @param {unknown} layer    
+                */
                 $scope.addLayerToMap = function(ds, layer) {
                     if (ds.type == "micka") {
                         if (layer.trida == 'service') {
@@ -564,12 +664,20 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
-
+                /**
+                * @function highlightComposition
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} composition
+                * @param {unknown} state    
+                */
                 $scope.highlightComposition = function(composition, state) {
                     if (typeof composition.feature !== 'undefined')
                         composition.feature.set('highlighted', state)
                 }
-
+                /**
+                * @function clear
+                * @memberOf hs.datasource_selector.controller    
+                */
                 $scope.clear = function() {
                     $scope.query.text_filter = "";
                     $scope.query.title = "";
@@ -578,7 +686,11 @@ define(['angular', 'ol', 'map'],
                     $scope.query.OrganisationName = "";
                     $scope.query.sortby = "";
                 }
-
+                /**
+                * @function setOtnKeyword
+                * @memberOf hs.datasource_selector.controller
+                * @param {unknown} theme    
+                */
                 $scope.setOtnKeyword = function(theme) {
                     $scope.query.Subject = theme;
                     $scope.loadDatasets($scope.datasources);
@@ -586,7 +698,10 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.datasources = config.datasources;
-
+                /**
+                * @function init
+                * @memberOf hs.datasource_selector.controller    
+                */
                 $scope.init = function() {
                     OlMap.map.on('pointermove', function(evt) {
                         var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);

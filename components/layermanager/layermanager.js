@@ -4,9 +4,9 @@
  */
 define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'status_creator'], function(angular, app, map, ol) {
     angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator'])
-
     /**
-     * @class hs.layermanager.directive
+     * @name hs.layermanager.directive
+     * @ngdoc directive
      * @memberOf hs.layermanager
      * @description Directive for displaying layer manager panel
      */
@@ -15,7 +15,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html?bust=' + gitsha
         };
     })
-
+    /**
+    * @memberOf hs.layermanager
+    * @ngdoc directive
+    * @name hs.layermanager.layerlistDirective
+    */
     .directive('hs.layermanager.layerlistDirective', ['$compile', function($compile) {
         return {
             templateUrl: hsl_path + 'components/layermanager/partials/layerlist.html?bust=' + gitsha,
@@ -32,10 +36,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     } else {
                         scope.obj = scope.value;
                     }
-
                     /**
-                     * This function will be called whenever map layers change and folder contents need to be updated
-                     * */
+                    * (PRIVATE) This function will be called whenever map layers change and folder contents need to be updated
+                    * @function filterLayers
+                    * @memberOf hs.layermanager.layerlistDirective
+                	*/
                     function filterLayers() {
                         var tmp = [];
 
@@ -47,9 +52,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         return tmp;
                     }
 
-                    scope.filtered_layers = filterLayers();
-
-                    //Dragdroplist cant handle complex OL objects, so we are creating a compact list of layer titles only
+                    scope.filtered_layers = filterLayers();                    
+                    /**
+                    * Dragdroplist cant handle complex OL objects, so we are creating a compact list of layer titles only
+                    * @function generateLayerTitlesArray
+                    * @memberOf hs.layermanager.layerlistDirective
+                	*/
                     scope.generateLayerTitlesArray = function() {
                         scope.layer_titles = [];
                         for (var i = 0; i < scope.filtered_layers.length; i++) {
@@ -57,8 +65,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         }
                     }
                     
-                    scope.$on('layermanager.updated', sortLayersByPosition);
-                    
+                    scope.$on('layermanager.updated', sortLayersByPosition);                    
+                    /**
+                    * (PRIVATE)
+                    * @function sortLayersByPosition
+                    * @memberOf hs.layermanager.layerlistDirective
+                	*/
                     function sortLayersByPosition() {
                         scope.filtered_layers = filterLayers();
                         scope.filtered_layers.sort(function(a, b) {
@@ -80,9 +92,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             }
         };
     }])
-
     /**
      * @class hs.layermanager.removeAllDialogDirective
+     * @ngdoc directive
      * @memberOf hs.layermanager
      * @description Directive for displaying warning dialog about resampling (proxying) wms service
      */
@@ -94,9 +106,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             }
         };
     })
-
     /**
-     * @class hs.layermanager.folderDirective
+     * @ngdoc directive
+     * @name hs.layermanager.folderDirective
      * @memberOf hs.layermanager
      * @description Directive for displaying folder. Used recursively
      */
@@ -129,9 +141,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             }
         };
     }])
-
     /**
-     * @class hs.layermanager.controller
+     * @ngdoc controller
+     * @name hs.layermanager.controller
      * @memberOf hs.layermanager
      * @description Layer manager controller
      */
@@ -146,8 +158,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 indent: 0
             };
             var map = OlMap.map;
-            var cur_layer_opacity = 1;
-
+            var cur_layer_opacity = 1;           
+            /**
+            * (PRIVATE)
+            * @function getLegendUrl
+            * @memberOf hs.layermanager.controller
+            * @param {unknown} source_url
+            * @param {unknown} layer_name
+            */
             function getLegendUrl(source_url, layer_name) {
                 if (source_url.indexOf('proxy4ows') > -1) {
                     var params = utils.getParamsFromUrl(source_url);
@@ -156,8 +174,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 source_url += (source_url.indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image%2Fpng";
                 return source_url;
             }
-
             /**
+             * (PRIVATE)
              * @function layerAdded
              * @memberOf hs.layermanager.controller
              * @description Callback function for layer adding
@@ -232,8 +250,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 if (layer.getVisible() && layer.get("base")) $scope.baselayer = getLayerTitle(layer);
                 $rootScope.$broadcast('layermanager.updated', layer);
                 $scope.$emit('compositions.composition_edited');
-            };
-
+            };            
+            /**
+            * (PRIVATE)
+            * @function getLayerTitle
+            * @memberOf hs.layermanager.controller
+            * @param {unknown} layer
+            */
             function getLayerTitle(layer) {
                 if (angular.isDefined(layer.get('title'))) {
                     return layer.get('title').replace(/&#47;/g, '/');
@@ -241,7 +264,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     return 'Void';
                 }
             }
-
+            /**
+            * (PRIVATE)
+            * @function getDateFormatForTimeSlider
+            * @memberOf hs.layermanager.controller
+            * @param {unknown} time_unit
+            */
             function getDateFormatForTimeSlider(time_unit) {
                 switch (time_unit) {
                     case 'FullYear':
@@ -253,7 +281,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         return 'dd-MM-yyyy HH:mm';;
                 }
             }
-
+            /**
+            * (PRIVATE)
+            * @function setLayerTimeSliderIntervals
+            * @memberOf hs.layermanager.controller
+            * @param {unknown} new_layer
+            * @param {unknown} metadata
+            */
             function setLayerTimeSliderIntervals(new_layer, metadata) {
                 switch (new_layer.time_unit) {
                     case 'FullYear':
@@ -273,8 +307,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         new_layer.max_time = new Date(metadata.timeInterval[1]).getTime();
                 }
             }
-
             /**
+             * (PRIVATE)
              * @function populateFolders
              * @memberOf hs.layermanager.controller
              * @description Take path property of layer and add it to layer managers folder structure
@@ -313,8 +347,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             }
 
             $scope.populateFolders = populateFolders;
-
             /**
+             * (PRIVATE)
              * @function layerRemoved
              * @memberOf hs.layermanager.controller
              * @description Callback function for layer removing
@@ -344,7 +378,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             $scope.baselayers = [];
             $scope.baselayersVisible = true;
             $scope.active_box = null;
-
             /**
              * @function changeLayerVisibility
              * @memberOf hs.layermanager.controller
@@ -365,7 +398,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     })
                 }
             }
-
             /**
              * @function changeBaseLayerVisibility
              * @memberOf hs.layermanager.controller
@@ -411,7 +443,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     }
                 }
             }
-
             /**
              * @function setCurrentLayer
              * @memberOf hs.layermanager.controller
@@ -433,7 +464,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 }
                 return false;
             }
-
             /**
              * @function setOpacity
              * @memberOf hs.layermanager.controller
@@ -445,7 +475,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 $scope.$emit('compositions.composition_edited');
                 return false;
             }
-
             /**
              * @function removeLayer
              * @memberOf hs.layermanager.controller
@@ -454,8 +483,16 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              */
             $scope.removeLayer = function(layer) {
                 map.removeLayer(layer);
-            }
-
+            }            
+            /**
+            * @function dragged
+            * @memberOf hs.layermanager.controller
+            * @param {unknown} event
+            * @param {unknown} index
+            * @param {unknown} item
+            * @param {unknown} type
+            * @param {unknown} external            
+            */
             $scope.dragged = function(event, index, item, type, external) {
                 if ($scope.layer_titles.indexOf(item) < index) index--; //Must take into acount that this item will be removed and list will shift
                 var to_title = $scope.layer_titles[index];
@@ -474,16 +511,22 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 updateLayerOrder();
                 $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
             }
-
             /**
-             *  Layers are ordered by "position" property in the gui and this function sets it
-             * **/
+            * (PRIVATE) Layers are ordered by "position" property in the gui and this function sets it
+            * @function updateLayerOrder
+            * @memberOf hs.layermanager.controller            
+            */
             function updateLayerOrder() {
                 angular.forEach($scope.layers, function(my_layer) {
                     my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));
                 })
             }
-
+            /**
+             * (PRIVATE)
+             * @function getMyLayerPosition
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} layer
+             */
             function getMyLayerPosition(layer) {
                 var pos = null;
                 for (var i = 0; i < OlMap.map.getLayers().getLength(); i++) {
@@ -494,7 +537,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 }
                 return pos;
             }
-
             /**
              * @function zoomToLayer
              * @memberOf hs.layermanager.controller
@@ -535,7 +577,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 if (extent != null)
                     map.getView().fit(extent, map.getSize());
             }
-
+            /**
+             * (PRIVATE)
+             * @function getExtentFromBoundingBoxAttribute
+             * @memberOf hs.layermanager.controller
+             * @param {object} layer
+             */
             function getExtentFromBoundingBoxAttribute(layer) {
                 var extent = null;
                 var bbox = layer.get("BoundingBox");
@@ -557,7 +604,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 }
                 return extent;
             }
-
             /**
              * @function layerIsZoomable
              * @memberOf hs.layermanager.controller
@@ -571,7 +617,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 if (layer.getSource().getExtent && layer.getSource().getExtent() && !ol.extent.isEmpty(layer.getSource().getExtent())) return true;
                 return false;
             }
-
             /**
              * @function layerIsStyleable
              * @memberOf hs.layermanager.controller
@@ -583,7 +628,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 if (layer instanceof ol.layer.Vector && layer.getSource().styleAble) return true;
                 return false;
             }
-
+            /**
+             * @function parseInterval
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} interval
+             */
             $scope.parseInterval = function(interval) {
                 var dateComponent;
                 var timeComponent;
@@ -646,8 +695,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 var step = new Date(year, month, day, hour, minute, second, 0);
                 return step - zero;
             }
-
-
+            /**
+             * @function layerIsWmsT
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} layer_container
+             */
             $scope.layerIsWmsT = function(layer_container) {
                 if (angular.isUndefined(layer_container) || layer_container == null) return false;
                 var layer = layer_container.layer;
@@ -680,18 +732,21 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 }
                 return false;
             }
-
-
-
+            /**
+             * @function styleLayer
+             * @memberOf hs.layermanager.controller
+             * @param {object} layer
+             */
             $scope.styleLayer = function(layer) {
                 styler.layer = layer;
                 Core.setMainPanel('styler');
             }
-
             /**
              * @function removeAllLayers
              * @memberOf hs.layermanager.controller
              * @description Removes all layers which don't have 'removable' attribute set to false
+             * @param {unknown} confirmed
+             * @param {unknown} loadComp
              */
             $scope.removeAllLayers = function(confirmed, loadComp) {
                 if (typeof confirmed == 'undefined') {
@@ -718,7 +773,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     $rootScope.$broadcast('compositions.load_composition', $scope.composition_id);
                 }
             }
-
+            /**
+             * @function isLayerQueryable
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} layer_container
+             */
             $scope.isLayerQueryable = function(layer_container) {
                 var layer = layer_container.layer;
                 if (layer instanceof ol.layer.Tile &&
@@ -729,7 +788,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     layer.getSource().getParams().INFO_FORMAT) return true;
                 return false;
             }
-
+            /**
+             * @function isLayerWMS
+             * @memberOf hs.layermanager.controller
+             * @param {object} layer
+             */
             $scope.isLayerWMS = function(layer) {
                 if (layer instanceof ol.layer.Tile &&
                     (layer.getSource() instanceof ol.source.TileWMS)) return true;
@@ -737,7 +800,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     layer.getSource() instanceof ol.source.ImageWMS) return true;
                 return false;
             }
-
             /**
              * @function activateTheme
              * @memberOf hs.layermanager.controller
@@ -756,7 +818,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     });
                 });
             }
-
+            /**
+             * @function setLayerTime
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} currentlayer
+             */
             $scope.setLayerTime = function(currentlayer) {
                 var dimensions_time = currentlayer.layer.get('dimensions_time') || currentlayer.layer.dimensions_time;
                 var d = new Date(dimensions_time.timeInterval[0]);
@@ -776,34 +842,52 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         }
                         d = new Date(parseInt(currentlayer.date_increment));
                 }
-
+                
                 currentlayer.time = d;
                 currentlayer.layer.getSource().updateParams({
                     'TIME': d.toISOString()
                 });
                 $rootScope.$broadcast('layermanager.layer_time_changed', currentlayer.layer, d.toISOString());
             }
-
+            /**
+             * @function dateToNonUtc
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} d
+             */
             $scope.dateToNonUtc = function(d) {
                 if (angular.isUndefined(d)) return;
                 var noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
                 return noutc;
             }
-
+            /**
+             * @function toggleLayerRename
+             * @memberOf hs.layermanager.controller
+             */
             $scope.toggleLayerRename = function() {
                 $scope.layer_renamer_visible = !$scope.layer_renamer_visible;
             }
-
+            /**
+             * @function setTitle
+             * @memberOf hs.layermanager.controller
+             */
             $scope.setTitle = function() {
                 $scope.currentlayer.layer.set('title', $scope.currentlayer.title);
             }
-
+            /**
+             * @function hasBoxLayers
+             * @memberOf hs.layermanager.controller
+             */
             $scope.hasBoxLayers = function() {
                 for (vari = 0; i < $scope.box_layers.length; i++) {
                     if ($scope.box_layers[i].img) return true;
                 }
                 return false;
-            }
+            } 
+            /**
+             * @function isLayerInResolutionInterval
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} lyr
+             */
             $scope.isLayerInResolutionInterval = function(lyr) {
                 var src = lyr.getSource();
                 if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
@@ -820,6 +904,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
 
                 }
             }
+            /**
+             * @function isScaleVisible
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} layer
+             */
             $scope.isScaleVisible = function(layer) {
                 if (typeof layer == 'undefined') return false;
                 layer.minResolutionValid = false;
@@ -840,13 +929,16 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     return false;
                 }
             }
-
+            /**
+             * @function setLayerResolution
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} layer
+             */
             $scope.setLayerResolution = function(layer) {
                 if (typeof layer == 'undefined') return false;
                 layer.setMinResolution(layer.minResolution);
                 layer.setMaxResolution(layer.maxResolution);
             }
-
             /**
              * @function loadingEvents
              * @memberOf hs.layermanager.controller
@@ -912,15 +1004,26 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     });
                 }
             }
-
+            /**
+             * @function layerLoaded
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} layer
+             */
             $scope.layerLoaded = function(layer) {
                 return layer.getSource().loaded
             }
-
+            /**
+             * @function layerValid
+             * @memberOf hs.layermanager.controller
+             * @param {unknown} lyr
+             */
             $scope.layerValid = function(layer) {
                 return layer.getSource().error;
             }
-
+            /**
+             * @function addDrawingLayer
+             * @memberOf hs.layermanager.controller
+             */
             $scope.addDrawingLayer = function() {
                 var source = new ol.source.Vector();
                 source.styleAble = true;

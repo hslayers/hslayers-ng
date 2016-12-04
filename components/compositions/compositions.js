@@ -7,6 +7,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
     function(angular, ol, SparqlJson, social) {
         var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms', 'hs.compositions.config_parsers'])
+            
+            /**
+            * @memberof hs.compositions
+            * @name hs.compositions.directive
+            * @ngdoc directive
+            */
             .directive('hs.compositions.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
@@ -18,6 +24,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 };
             })
+            /**
+            * @memberof hs.compositions
+            * @name hs.compositions.overwriteDialogDirective
+            * @ngdoc directive
+            */
             .directive('hs.compositions.overwriteDialogDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html?bust=' + gitsha,
@@ -26,7 +37,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 };
             })
-
+        /**
+        * @memberof hs.compositions
+        * @name hs.compositions.deleteDialogDirective
+        * @ngdoc directive
+        */
         .directive('hs.compositions.deleteDialogDirective', function() {
             return {
                 templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html?bust=' + gitsha,
@@ -35,7 +50,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
             };
         })
-
+        /**
+        * @memberof hs.compositions
+        * @name hs.compositions.shareDialogDirective
+        * @ngdoc directive
+        */
         .directive('hs.compositions.shareDialogDirective', function() {
             return {
                 templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html?bust=' + gitsha,
@@ -44,7 +63,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
             };
         })
-
+        /**
+        * @memberof hs.compositions
+        * @name hs.compositions.infoDialogDirective
+        * @ngdoc directive
+        */
         .directive('hs.compositions.infoDialogDirective', function() {
             return {
                 templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html?bust=' + gitsha,
@@ -53,7 +76,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
             };
         })
-
+        /**
+        * @memberof hs.compositions
+        * @name hs.compositions.service_parser
+        * @ngdoc service
+        */
         .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', 'hs.compositions.config_parsers.service',
             function(hsMap, config, Core, $rootScope, utils, nonWmsService, configParsers) {
                 var me = {
@@ -163,7 +190,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 return me;
             }
         ])
-
+        /**
+        * @memberof hs.compositions
+        * @name hs.compositions.controller
+        * @ngdoc controller
+        */
         .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
             function($scope, $rootScope, $location, $http, hsMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
                 $scope.page_size = 15;
@@ -192,6 +223,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 $scope.filter_by_extent = true;
                 $scope.use_callback_for_edit = false; //Used for opening Edit panel from the list of compositions
 
+                /**
+                * @memberof hs.compositions.controller
+                * @function getPreviousCompositions
+                */
                 $scope.getPreviousCompositions = function() {
                     if ($scope.compStart - $scope.page_size < 0) {
                         $scope.compStart = 0;
@@ -202,7 +237,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                     $scope.loadCompositions();
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function getNextCompositions
+                */
                 $scope.getNextCompositions = function() {
                     if ($scope.compNext != 0) {
                         $scope.compStart = Math.floor($scope.compNext / $scope.page_size) * $scope.page_size;
@@ -215,12 +253,16 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         $scope.loadCompositions();
                     }
                 }
-
+                
                 function getMapExtent() {
-
+                    //
                 }
 
                 var ajax_req = null;
+                /**
+                * @memberof hs.compositions.controller
+                * @function loadCompositions
+                */
                 $scope.loadCompositions = function() {
                     var cur_map_size = hsMap.map.getSize();
                     var cur_map_extent = angular.isDefined(cur_map_size) ? hsMap.map.getView().calculateExtent(cur_map_size) : [0, 0, 100, 100];
@@ -288,7 +330,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         $scope.loadStatusManagerCompositions(b);
                     }
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function loadStatusManagerCompositions
+                * @param {unknown} bbox
+                */
                 $scope.loadStatusManagerCompositions = function(bbox) {
                     var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url;
                     var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? '&q=' + encodeURIComponent('*' + $scope.query.title + '*') : '';
@@ -338,17 +384,27 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             if (!$scope.$$phase) $scope.$digest();
                         })
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function miniFilterChanged
+                */
                 $scope.mineFilterChanged = function() {
                     if (angular.isDefined($scope.query.editable) && $scope.query.editable == false) delete $scope.query.editable;
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function filterChanged
+                */
                 $scope.filterChanged = function() {
                     $scope.compStart = 0;
                     $scope.compNext = $scope.page_size;
                     $scope.loadCompositions();
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function confirmDelete
+                * @param {unknown} composition
+                */
                 $scope.confirmDelete = function(composition) {
                     $scope.compositionToDelete = composition;
                     if (!$scope.$$phase) $scope.$digest();
@@ -357,7 +413,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     $("#hs-dialog-area").append(el)
                     $compile(el)($scope);
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function delete
+                * @param {unknown} composition
+                */
                 $scope.delete = function(composition) {
                     var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
                     url = utils.proxify(url);
@@ -370,16 +430,29 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             $("#hs-dialog-area #composition-delete-dialog").remove();
                         })
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function edit
+                * @param {unknown} composition
+                */
                 $scope.edit = function(composition) {
                     $scope.use_callback_for_edit = true;
                     $scope.loadComposition(composition);
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function callbackForEdit
+                * (PRIVATE)
+                */
                 function callbackForEdit() {
                     Core.openStatusCreator();
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function highlightComposition
+                * @param {unknown} composition
+                * @param {unknown} state
+                */
                 $scope.highlightComposition = function(composition, state) {
                     if (angular.isDefined(composition.feature))
                         composition.feature.set('highlighted', state)
@@ -447,7 +520,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     if ($scope.Core.mainpanel != 'composition_browser') return;
                     if ($scope.filter_by_extent) $scope.loadCompositions();
                 });
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function shareComposition
+                * @param {unknown} record
+                */
                 $scope.shareComposition = function(record) {
                     var compositionUrl = (Core.isMobile() && config.permalinkLocation ? (config.permalinkLocation.origin + config.permalinkLocation.pathname) : ($location.protocol() + "://" + location.host + location.pathname)) + "?composition=" + encodeURIComponent(record.link);
                     var shareId = utils.generateUuid();
@@ -484,7 +561,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     $("#hs-dialog-area").append(el)
                     $compile(el)($scope);
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function detailComposition
+                * @param {unknown} record
+                */
                 $scope.detailComposition = function(record) {
                     $scope.info = composition_parser.loadInfo(record.link);
                     $scope.info.thumbnail = record.thumbnail;
@@ -494,7 +575,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     $("#hs-dialog-area").append(el)
                     $compile(el)($scope);
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function loadComposition
+                * @param {unknown} record
+                */
                 $scope.loadComposition = function(record) {
                     var url = record.link;
                     var title = record.title;
@@ -513,19 +598,32 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         composition_parser.load(url, true, $scope.use_callback_for_edit ? callbackForEdit : null);
                     }
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function overwrite
+                */
                 $scope.overwrite = function() {
                     composition_parser.load($scope.composition_to_be_loaded, true, $scope.use_callback_for_edit ? callbackForEdit : null);
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function add
+                */
                 $scope.add = function() {
                     composition_parser.load($scope.composition_to_be_loaded, false, $scope.use_callback_for_edit ? callbackForEdit : null);
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function save
+                */
                 $scope.save = function() {
                     Core.openStatusCreator();
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function setSortAttribute
+                * @param {unknown} attribute
+                */
                 $scope.setSortAttribute = function(attribute) {
                     $scope.sort_by = attribute;
                     var sort_map = {
@@ -536,7 +634,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     $scope.sort_by_attr_for_statusmanager = encodeURIComponent(sort_map[attribute]);
                     $scope.loadCompositions();
                 }
-
+                /**
+                * @memberof hs.compositions.controller
+                * @function toggleKeywords
+                */
                 //$scope.loadCompositions();
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
