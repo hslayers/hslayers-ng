@@ -477,21 +477,23 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                         var fd = new FormData();
                         fd.append('timestamp', getCurrentTimestamp());
-                        fd.append('category', olf.get('category_id'));
+                        fd.append('category_id', olf.get('category_id'));
                         fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
-                        fd.append('dataset', olf.get('dataset_id') || 999);
+                        fd.append('dataset_id', olf.get('dataset_id') || 999);
                         fd.append('unitId', '1111');
                         fd.append('media', olf.get('photo'));
                         fd.append('attributes', JSON.stringify(attributes));
                         if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(olf.get('obs_vgi_id'))) {
                             fd.append('obs_vgi_id', olf.get('obs_vgi_id'));
                         }
+                        
+                        var method = $http.post;
+                        if(angular.isDefined(olf.get('obs_vgi_id'))) method = $http.put;
 
                         if (angular.isUndefined(olf.get('obs_vgi_id')) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
-                            $http($scope.senslog_url+'/observation?user_name=tester', fd, {
-                                method: 'POST',
+                            method($scope.senslog_url+'/observation?user_name=tester', fd, {
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined

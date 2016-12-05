@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label translate>Category</label>
                     <select class="form-control" ng-model="current_feature.category_id" ng-change="setUnsaved()"> 
-                        <option ng-repeat="category in categories" ng-selected="category.categoryId==current_feature.category_id" value="{{category.categoryId}}">{{category.categoryName}}</option>
+                        <option ng-repeat="category in categories" ng-selected="category.categoryId==current_feature.category_id" value="{{category.categoryId}}">{{category.category_name}}</option>
                     </select>
                 </div>
 
