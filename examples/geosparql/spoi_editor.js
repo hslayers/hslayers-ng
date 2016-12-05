@@ -94,7 +94,7 @@ define(['angular', 'ol', 'core'],
                     return filtered;
                 };
                 
-                function addPoi(layer){
+                function addPoi(layer, coordinate){
                     var identifier = 'http://www.sdi4apps.eu/new_poi/'+ utils.generateUuid();
                     var attrs = {
                         geometry: new ol.geom.Point(coordinate),

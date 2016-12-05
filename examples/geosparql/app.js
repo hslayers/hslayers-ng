@@ -375,7 +375,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
                             function layerSelected() {
                                 var layer = $(this).data('layer');
-                                spoi_editor.addPoi(layer);
+                                spoi_editor.addPoi(layer, coordinate);
                                 popup.setPosition(undefined);
                                 $scope.$broadcast('infopanel.feature_select', feature);
                                 return false;
