@@ -430,6 +430,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                 //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
+                    $scope.$emit('map_clicked', evt);
                     if (!Core.current_panel_queryable) return;
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
                     $("#invisible_popup").contents().find('body').html('');
@@ -438,7 +439,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     map.getLayers().forEach(function(layer) {
                         $scope.queryWmsLayer(layer, evt.coordinate)
                     });
-                    $scope.$emit('map_clicked', evt);
                     vectors_selected = false;
                 });
                 $scope.$emit('scope_loaded', "Query");
