@@ -481,7 +481,6 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
-                        fd.append('user_id', 'tester');
                         fd.append('dataset', olf.get('dataset_id') || 999);
                         fd.append('unitId', '1111');
                         fd.append('media', olf.get('photo'));
@@ -491,7 +490,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }
 
                         if (angular.isUndefined(olf.get('obs_vgi_id')) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
-                            $http.post($scope.senslog_url + '/insobs', fd, {
+                            $http($scope.senslog_url+'?user_name=tester', fd, {
+                                method: 'POST',
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined
