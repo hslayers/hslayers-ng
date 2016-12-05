@@ -490,7 +490,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }
 
                         if (angular.isUndefined(olf.get('obs_vgi_id')) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
-                            $http($scope.senslog_url+'?user_name=tester', fd, {
+                            $http($scope.senslog_url+'/observation?user_name=tester', fd, {
                                 method: 'POST',
                                 transformRequest: angular.identity,
                                 headers: {
