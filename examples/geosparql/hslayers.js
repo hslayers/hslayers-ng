@@ -13,7 +13,8 @@ require.config({
         app: 'app',
         core: hsl_path + 'components/core/core',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
-        trip_planner: hsl_path + 'components/trip_planner/trip_planner'
+        trip_planner: hsl_path + 'components/trip_planner/trip_planner',
+        spoi_editor: hsl_path + 'examples/geosparql/spoi_editor'
     },
     shim: {
         d3: {
