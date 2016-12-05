@@ -361,6 +361,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             })
 
                         });
+                        
+                    var latlng = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+                    $http.get('http://api.geonames.org/extendedFindNearby?lat={0}&lng={1}&username=raitis'.format(latlng[1], latlng[0]))
+                        .then(function(response) {
+                            
+                        });
 
                 });
 
@@ -375,7 +381,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
                             function layerSelected() {
                                 var layer = $(this).data('layer');
-                                spoi_editor.addPoi(layer, coordinate);
+                                var feature = spoi_editor.addPoi(layer, coordinate);
                                 popup.setPosition(undefined);
                                 $scope.$broadcast('infopanel.feature_select', feature);
                                 return false;

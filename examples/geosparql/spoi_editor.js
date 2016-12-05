@@ -100,15 +100,28 @@ define(['angular', 'ol', 'core'],
                         geometry: new ol.geom.Point(coordinate),
                         'http://purl.org/dc/elements/1.1/identifier': identifier,
                         'http://www.w3.org/2000/01/rdf-schema#label': 'New point',
-                        'http://purl.org/dc/elements/1.1/title': 'New point' 
-                    };
+                        'http://purl.org/dc/elements/1.1/title': 'New point',
+                        'http://www.w3.org/2000/01/rdf-schema#label': 'New point',
+                        'http://purl.org/dc/elements/1.1/publisher': "SPOI (http://sdi4apps.eu/spoi)",
+                        'http://purl.org/dc/elements/1.1/source': "",
+                        'http://purl.org/dc/elements/1.1/right': "http://opendatacommons.org/licenses/odbl/1.0/",
+                        'http://www.openvoc.eu/poi#openingHours': ""
+                    };                  
                     
                     var lines = [];
-                    lines.push('<' + identifier + '> <http://purl.org/dc/elements/1.1/identifier> "' + identifier + '"');
+                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/identifier> "{0}"'.format(identifier));
                     var format = new ol.format.WKT();
-                    lines.push('<' + identifier + '> <http://www.opengis.net/ont/geosparql#asWKT> "' + format.writeGeometry(attrs.geometry.transform('EPSG:3857', 'EPSG:4326')) + '"^^virtrdf:Geometry');
-                    lines.push('<' + identifier + '> <'+layer.getSource().options.category_field+ '> <' + layer.get('category') + '>');
-                    lines.push('<' + identifier + '> <http://purl.org/dc/elements/1.1/title> "New point"');
+                    var wkt = format.writeGeometry(attrs.geometry.transform('EPSG:3857', 'EPSG:4326'))
+                    lines.push('<{0}> <http://www.opengis.net/ont/geosparql#asWKT> "{1}"^^virtrdf:Geometry'.format(identifier, wkt));
+                    lines.push('<{0}> <{1}> <{2}>'.format(identifier, layer.getSource().options.category_field, layer.get('category')));
+                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/title> "New point"'.format(identifier));
+                    lines.push('<{0}> <http://www.w3.org/2000/01/rdf-schema#label> "New point"'.format(identifier));
+                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/publisher> "SPOI (http://sdi4apps.eu/spoi)"'.format(identifier));
+                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/source> ""'.format(identifier));
+                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/right> "http://opendatacommons.org/licenses/odbl/1.0/"'.format(identifier));
+                    lines.push('<{0}> <http://www.openvoc.eu/poi#openingHours> ""'.format(identifier));
+                    var now = new Date();
+                    lines.push('<{0}> <http://purl.org/dc/terms/1.1/created> "{1}"'.format(identifier, now.toISOString()));
                     var query = ['prefix virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> INSERT DATA { GRAPH <http://www.sdi4apps.eu/poi_changes.rdf> {', lines.join('.'), '}}'].join('\n');
                     $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
                         )
@@ -118,6 +131,7 @@ define(['angular', 'ol', 'core'],
                     attrs[layer.getSource().options.category_field] = layer.get('category');
                     var feature = new ol.Feature(attrs);
                     layer.getSource().addFeatures([feature]);
+                    return feature;
                 }
 
                 function startEdit(attribute, x) {
