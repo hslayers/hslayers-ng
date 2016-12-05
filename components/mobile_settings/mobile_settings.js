@@ -51,7 +51,7 @@ define(['angular', 'core'],
                 }
 
                 $scope.initSettings = function(db) {
-                    if(console) {
+                    if (console) {
                         console.log("Populating hostnames database.");
                         console.log($scope.hostnames);
                         console.log(config.hostname);
@@ -66,7 +66,7 @@ define(['angular', 'core'],
                         $.each($scope.hostnames, function(key, value) {
                             tx.executeSql('INSERT INTO Hostnames VALUES (?,?,?,?)', [value.title, value.type, value.editable, value.url]);
                         });
-                    }, function(){
+                    }, function() {
                         //TODO Error
                     });
                 }

@@ -423,9 +423,9 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                 $scope.$on('infopanel.feature_select', function(event, feature) {
                     selector.getFeatures().clear();
-                    selector.getFeatures().push(feature);  
+                    selector.getFeatures().push(feature);
                 })
-                
+
                 $scope.createCurrentPointLayer();
 
                 //For wms layers use this to get the features at mouse coordinates

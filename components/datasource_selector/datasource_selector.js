@@ -6,10 +6,10 @@ define(['angular', 'ol', 'map'],
     function(angular, ol) {
         angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms'])
             /**
-            * @ngdoc directive
-            * @name hs.datasource_selector.directive
-            * @memberOf hs.datasource_selector
-            */
+             * @ngdoc directive
+             * @name hs.datasource_selector.directive
+             * @memberOf hs.datasource_selector
+             */
             .directive('hs.datasourceSelector.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/datasource_selector/partials/datasource_selector.html?bust=' + gitsha
@@ -101,11 +101,11 @@ define(['angular', 'ol', 'map'],
         }])
 
         /**
-        * @ngdoc controller
-        * @memberof hs.datasource_selector
-        * @name hs.datasource_selector.controller
-        * @description Controller for datasource_selector
-        */
+         * @ngdoc controller
+         * @memberof hs.datasource_selector
+         * @name hs.datasource_selector.controller
+         * @description Controller for datasource_selector
+         */
         .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config', 'hs.utils.service', 'hs.ows.nonwms.service',
             function($scope, OlMap, Core, $compile, config, utils, nonwmsservice) {
                 $scope.query = {
@@ -219,101 +219,101 @@ define(['angular', 'ol', 'map'],
 
                 $scope.datasets = null;
                 /**
-                * @function loadDatasets
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} datasets
-                * @description Directive for displaying metadata about data source
-                */
+                 * @function loadDatasets
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {unknown} datasets
+                 * @description Directive for displaying metadata about data source
+                 */
                 $scope.loadDatasets = function(datasets) {
-                    $scope.datasets = datasets;
-                    extent_layer.getSource().clear();
-                    for (var ds in $scope.datasets) {
-                        $scope.datasets[ds].start = 0;
-                        $scope.loadDataset($scope.datasets[ds]);
+                        $scope.datasets = datasets;
+                        extent_layer.getSource().clear();
+                        for (var ds in $scope.datasets) {
+                            $scope.datasets[ds].start = 0;
+                            $scope.loadDataset($scope.datasets[ds]);
+                        }
                     }
-                }
-                /**
-                * @function fillCodesets
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} datasets
-                */
+                    /**
+                     * @function fillCodesets
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} datasets
+                     */
                 $scope.fillCodesets = function(datasets) {
-                    for (var ds in datasets) {
-                        $scope.fillCodeset($scope.datasets[ds]);
+                        for (var ds in datasets) {
+                            $scope.fillCodeset($scope.datasets[ds]);
+                        }
                     }
-                }
-                /**
-                * @function fillCodeset
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} ds
-                */
+                    /**
+                     * @function fillCodeset
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} ds
+                     */
                 $scope.fillCodeset = function(ds) {
-                    switch (ds.type) {
-                        case "micka":
-                            var url = ds.code_list_url;
-                            url = utils.proxify(url);
-                            if (typeof ds.code_lists == 'undefined') {
-                                ds.code_lists = {
-                                    serviceType: [],
-                                    applicationType: [],
-                                    dataType: [],
-                                    topicCategory: []
+                        switch (ds.type) {
+                            case "micka":
+                                var url = ds.code_list_url;
+                                url = utils.proxify(url);
+                                if (typeof ds.code_lists == 'undefined') {
+                                    ds.code_lists = {
+                                        serviceType: [],
+                                        applicationType: [],
+                                        dataType: [],
+                                        topicCategory: []
+                                    }
                                 }
-                            }
-                            ds.ajax_req_codelists = $.ajax({
-                                url: url,
-                                cache: false,
-                                success: function(j) {
-                                    $("map serviceType value", j).each(function() {
-                                        ds.code_lists.serviceType.push({
-                                            value: $(this).attr('name'),
-                                            name: $(this).html()
-                                        });
-                                    })
-                                    $("map applicationType value", j).each(function() {
-                                        ds.code_lists.applicationType.push({
-                                            value: $(this).attr('name'),
-                                            name: $(this).html()
-                                        });
-                                    })
-                                    $("map applicationType value", j).each(function() {
-                                        ds.code_lists.applicationType.push({
-                                            value: $(this).attr('name'),
-                                            name: $(this).html()
-                                        });
-                                    })
-                                    $("map topicCategory value", j).each(function() {
-                                        ds.code_lists.topicCategory.push({
-                                            value: $(this).attr('name'),
-                                            name: $(this).html()
-                                        });
-                                    })
-                                    $scope.advancedMickaTypeChanged();
-                                }
-                            });
-                            break;
+                                ds.ajax_req_codelists = $.ajax({
+                                    url: url,
+                                    cache: false,
+                                    success: function(j) {
+                                        $("map serviceType value", j).each(function() {
+                                            ds.code_lists.serviceType.push({
+                                                value: $(this).attr('name'),
+                                                name: $(this).html()
+                                            });
+                                        })
+                                        $("map applicationType value", j).each(function() {
+                                            ds.code_lists.applicationType.push({
+                                                value: $(this).attr('name'),
+                                                name: $(this).html()
+                                            });
+                                        })
+                                        $("map applicationType value", j).each(function() {
+                                            ds.code_lists.applicationType.push({
+                                                value: $(this).attr('name'),
+                                                name: $(this).html()
+                                            });
+                                        })
+                                        $("map topicCategory value", j).each(function() {
+                                            ds.code_lists.topicCategory.push({
+                                                value: $(this).attr('name'),
+                                                name: $(this).html()
+                                            });
+                                        })
+                                        $scope.advancedMickaTypeChanged();
+                                    }
+                                });
+                                break;
+                        }
                     }
-                }
-                /**
-                * @function advancesMickaTypeChanged
-                * @memberOf hs.datasource_selector.controller
-                */
+                    /**
+                     * @function advancesMickaTypeChanged
+                     * @memberOf hs.datasource_selector.controller
+                     */
                 $scope.advancedMickaTypeChanged = function() {
-                    if (typeof $scope.micka_ds == 'undefined') return;
-                    if (typeof $scope.micka_ds.code_lists == 'undefined') return;
-                    switch ($scope.query.type) {
-                        case "service":
-                            $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.serviceType;
-                            break;
-                        case "application":
-                            $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.applicationType;
-                            break;
+                        if (typeof $scope.micka_ds == 'undefined') return;
+                        if (typeof $scope.micka_ds.code_lists == 'undefined') return;
+                        switch ($scope.query.type) {
+                            case "service":
+                                $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.serviceType;
+                                break;
+                            case "application":
+                                $scope.micka_ds.level2_types = $scope.micka_ds.code_lists.applicationType;
+                                break;
+                        }
                     }
-                }
-                /**
-                * @function openMickaAdvancedSearch
-                * @memberOf hs.datasource_selector.controller
-                */
+                    /**
+                     * @function openMickaAdvancedSearch
+                     * @memberOf hs.datasource_selector.controller
+                     */
                 $scope.openMickaAdvancedSearch = function() {
                     if ($('#ds-advanced-micka').length == 0) {
                         var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></div>');
@@ -334,12 +334,12 @@ define(['angular', 'ol', 'map'],
 
                 $scope.suggestion_config = {};
                 /**
-                * @function showSuggestions
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} input
-                * @param {unknown} param
-                * @param {unknown} field
-                */
+                 * @function showSuggestions
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {unknown} input
+                 * @param {unknown} param
+                 * @param {unknown} field
+                 */
                 $scope.showSuggestions = function(input, param, field) {
                     $scope.suggestion_config = {
                         input: input,
@@ -360,102 +360,102 @@ define(['angular', 'ol', 'map'],
 
                 $scope.suggestions = [];
                 /**
-                * @function suggestionFilterChanged
-                * @memberOf hs.datasource_selector.controller
-                */
+                 * @function suggestionFilterChanged
+                 * @memberOf hs.datasource_selector.controller
+                 */
                 $scope.suggestionFilterChanged = function() {
-                    if (typeof $scope.suggestion_ajax != 'undefined') $scope.suggestion_ajax.abort();
-                    var url = $scope.micka_ds.url + '../util/suggest.php?&type=' + $scope.suggestion_config.param + '&query=' + $scope.suggestion_filter;
-                    url = utils.proxify(url);
-                    $scope.suggestion_ajax = $.ajax({
-                        url: url,
-                        cache: false,
-                        dataType: "json",
-                        success: function(j) {
-                            $scope.suggestions = j.records;
-                            delete $scope.suggestion_ajax;
-                            if (!$scope.$$phase) $scope.$digest();
-                        }
-                    });
-                }
-                /**
-                * @function addSuggestion
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} text
-                */
+                        if (typeof $scope.suggestion_ajax != 'undefined') $scope.suggestion_ajax.abort();
+                        var url = $scope.micka_ds.url + '../util/suggest.php?&type=' + $scope.suggestion_config.param + '&query=' + $scope.suggestion_filter;
+                        url = utils.proxify(url);
+                        $scope.suggestion_ajax = $.ajax({
+                            url: url,
+                            cache: false,
+                            dataType: "json",
+                            success: function(j) {
+                                $scope.suggestions = j.records;
+                                delete $scope.suggestion_ajax;
+                                if (!$scope.$$phase) $scope.$digest();
+                            }
+                        });
+                    }
+                    /**
+                     * @function addSuggestion
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} text
+                     */
                 $scope.addSuggestion = function(text) {
-                    $scope.query[$scope.suggestion_config.input] = text;
-                }
-                /**
-                * @function loadDataset
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} ds
-                */
+                        $scope.query[$scope.suggestion_config.input] = text;
+                    }
+                    /**
+                     * @function loadDataset
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} ds
+                     */
                 $scope.loadDataset = function(ds) {
-                    switch (ds.type) {
-                        case "micka":
-                            var advanced_search_visible = $('#ds-advanced-micka').is(':visible');
-                            var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                            var bbox = $scope.filter.byExtent ? "BBOX='" + b.join(' ') + "'" : '';
-                            var ue = encodeURIComponent;
-                            var text = angular.isUndefined($scope.query.text_filter) || !advanced_search_visible ? $scope.query.title : $scope.query.text_filter;
-                            var query = [
-                                (text != '' ? $scope.text_field + ue(" like '*" + text + "*'") : ''),
-                                ue(bbox),
-                                //param2Query('type'),
-                                param2Query('ServiceType'),
-                                param2Query('topicCategory'),
-                                param2Query('Subject'),
-                                param2Query('Denominator'),
-                                param2Query('OrganisationName')
-                            ].filter(function(n) {
-                                return n != ''
-                            }).join('%20AND%20');
-                            var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
-                                '&query=' + query +
-                                (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
-                                '&limit=' + $scope.dsPaging + '&start=' + ds.start;
-                            url = utils.proxify(url);
-                            if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
-                            ds.ajax_req = $.ajax({
-                                url: url,
-                                cache: false,
-                                dataType: "json",
-                                success: function(j) {
-                                    angular.forEach(ds.layers, function(val) {
-                                        try {
-                                            if (typeof val.feature !== 'undefined' && val.feature != null)
-                                                extent_layer.getSource().removeFeature(val.feature);
-                                        } catch (ex) {}
-                                    })
-                                    ds.layers = [];
-                                    ds.loaded = true;
-                                    if (j == null) {
-                                        ds.matched == 0;
-                                    } else {
-                                        ds.matched = j.matched;
-                                        ds.next = j.next;
-                                        for (var lyr in j.records) {
-                                            if (j.records[lyr]) {
-                                                var obj = j.records[lyr];
-                                                ds.layers.push(obj);
-                                                addExtentFeature(obj);
+                        switch (ds.type) {
+                            case "micka":
+                                var advanced_search_visible = $('#ds-advanced-micka').is(':visible');
+                                var b = ol.proj.transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
+                                var bbox = $scope.filter.byExtent ? "BBOX='" + b.join(' ') + "'" : '';
+                                var ue = encodeURIComponent;
+                                var text = angular.isUndefined($scope.query.text_filter) || !advanced_search_visible ? $scope.query.title : $scope.query.text_filter;
+                                var query = [
+                                    (text != '' ? $scope.text_field + ue(" like '*" + text + "*'") : ''),
+                                    ue(bbox),
+                                    //param2Query('type'),
+                                    param2Query('ServiceType'),
+                                    param2Query('topicCategory'),
+                                    param2Query('Subject'),
+                                    param2Query('Denominator'),
+                                    param2Query('OrganisationName')
+                                ].filter(function(n) {
+                                    return n != ''
+                                }).join('%20AND%20');
+                                var url = ds.url + '?request=GetRecords&format=application/json&language=' + ds.language +
+                                    '&query=' + query +
+                                    (typeof $scope.query.sortby != 'undefined' && $scope.query.sortby != '' ? '&sortby=' + $scope.query.sortby : '&sortby=bbox') +
+                                    '&limit=' + $scope.dsPaging + '&start=' + ds.start;
+                                url = utils.proxify(url);
+                                if (typeof ds.ajax_req != 'undefined') ds.ajax_req.abort();
+                                ds.ajax_req = $.ajax({
+                                    url: url,
+                                    cache: false,
+                                    dataType: "json",
+                                    success: function(j) {
+                                        angular.forEach(ds.layers, function(val) {
+                                            try {
+                                                if (typeof val.feature !== 'undefined' && val.feature != null)
+                                                    extent_layer.getSource().removeFeature(val.feature);
+                                            } catch (ex) {}
+                                        })
+                                        ds.layers = [];
+                                        ds.loaded = true;
+                                        if (j == null) {
+                                            ds.matched == 0;
+                                        } else {
+                                            ds.matched = j.matched;
+                                            ds.next = j.next;
+                                            for (var lyr in j.records) {
+                                                if (j.records[lyr]) {
+                                                    var obj = j.records[lyr];
+                                                    ds.layers.push(obj);
+                                                    addExtentFeature(obj);
+                                                }
                                             }
                                         }
+                                        if (!$scope.$$phase) $scope.$digest();
                                     }
-                                    if (!$scope.$$phase) $scope.$digest();
-                                }
-                            });
-                            if (!$scope.$$phase) $scope.$digest();
-                            break;
+                                });
+                                if (!$scope.$$phase) $scope.$digest();
+                                break;
+                        }
                     }
-                }
-                /**
-                * @function param2Query
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} which
-                * (PRIVATE)
-                */
+                    /**
+                     * @function param2Query
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} which
+                     * (PRIVATE)
+                     */
                 function param2Query(which) {
                     if (typeof $scope.query[which] != 'undefined') {
                         if (which == 'type' && $scope.query[which] == 'data') {
@@ -472,67 +472,67 @@ define(['angular', 'ol', 'map'],
                     }
                 }
                 /**
-                * @function isZoomable
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} selected_layer
-                */
+                 * @function isZoomable
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {unknown} selected_layer
+                 */
                 $scope.isZoomable = function(selected_layer) {
-                    return angular.isDefined(selected_layer.bbox);
-                }
-                /**
-                * @function zoomTo
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} bbox
-                */
-                $scope.zoomTo = function(bbox) {
-                    if (typeof bbox == 'undefined') return;
-                    var b = bbox.split(" ");
-                    var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
-                    var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-                    first_pair = ol.proj.transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-                    second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-                    if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
-                    var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                    OlMap.map.getView().fit(extent, OlMap.map.getSize());
-                }
-                /**
-                * @function getPreviousRecords
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} ds
-                */
-                $scope.getPreviousRecords = function(ds) {
-                    if (ds.start - $scope.dsPaging < 0) {
-                        ds.start = 0;
-                        ds.next = $scope.dsPaging;
-                    } else {
-                        ds.start -= $scope.dsPaging;
-                        ds.next = ds.start + $scope.dsPaging;
+                        return angular.isDefined(selected_layer.bbox);
                     }
-                    $scope.loadDataset(ds);
-                }
-                /**
-                * @function getNextRecords
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} ds
-                */
-                $scope.getNextRecords = function(ds) {
-                    if (ds.next != 0) {
-                        ds.start = Math.floor(ds.next / $scope.dsPaging) * $scope.dsPaging;
-
-                        if (ds.next + $scope.dsPaging > ds.matched) {
-                            ds.next = ds.matched;
+                    /**
+                     * @function zoomTo
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} bbox
+                     */
+                $scope.zoomTo = function(bbox) {
+                        if (typeof bbox == 'undefined') return;
+                        var b = bbox.split(" ");
+                        var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
+                        var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
+                        first_pair = ol.proj.transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
+                        second_pair = ol.proj.transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
+                        if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
+                        var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                        OlMap.map.getView().fit(extent, OlMap.map.getSize());
+                    }
+                    /**
+                     * @function getPreviousRecords
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} ds
+                     */
+                $scope.getPreviousRecords = function(ds) {
+                        if (ds.start - $scope.dsPaging < 0) {
+                            ds.start = 0;
+                            ds.next = $scope.dsPaging;
                         } else {
-                            ds.next += $scope.dsPaging;
+                            ds.start -= $scope.dsPaging;
+                            ds.next = ds.start + $scope.dsPaging;
                         }
                         $scope.loadDataset(ds);
                     }
-                }
-                /**
-                * @function addExtentFeature
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} record
-                * (PRIVATE)
-                */
+                    /**
+                     * @function getNextRecords
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} ds
+                     */
+                $scope.getNextRecords = function(ds) {
+                        if (ds.next != 0) {
+                            ds.start = Math.floor(ds.next / $scope.dsPaging) * $scope.dsPaging;
+
+                            if (ds.next + $scope.dsPaging > ds.matched) {
+                                ds.next = ds.matched;
+                            } else {
+                                ds.next += $scope.dsPaging;
+                            }
+                            $scope.loadDataset(ds);
+                        }
+                    }
+                    /**
+                     * @function addExtentFeature
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} record
+                     * (PRIVATE)
+                     */
                 function addExtentFeature(record) {
                     var attributes = {
                         record: record,
@@ -557,140 +557,140 @@ define(['angular', 'ol', 'map'],
                     extent_layer.getSource().addFeatures([new_feature]);
                 }
                 /**
-                * @function setDefaultFeatureStyle
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} style
-                */
+                 * @function setDefaultFeatureStyle
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {unknown} style
+                 */
                 $scope.setDefaultFeatureStyle = function(style) {
-                    default_style = style;
-                }
-                /**
-                * @function showMetadata
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} ds
-                * @param {unknown} layer    
-                */
+                        default_style = style;
+                    }
+                    /**
+                     * @function showMetadata
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} ds
+                     * @param {unknown} layer    
+                     */
                 $scope.showMetadata = function(ds, layer) {
-                    $scope.selected_layer = layer;
-                    $scope.selected_ds = ds;
-                    if (!$scope.$$phase) $scope.$digest();
-                    $("#hs-dialog-area #datasource_selector-metadata-dialog").remove();
-                    var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
-                    $("#hs-dialog-area").append(el)
-                    $compile(el)($scope);
-                }
-                /**
-                * @function layerDownload
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} ds
-                * @param {unknown} layer    
-                */
+                        $scope.selected_layer = layer;
+                        $scope.selected_ds = ds;
+                        if (!$scope.$$phase) $scope.$digest();
+                        $("#hs-dialog-area #datasource_selector-metadata-dialog").remove();
+                        var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
+                    }
+                    /**
+                     * @function layerDownload
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} ds
+                     * @param {unknown} layer    
+                     */
                 $scope.layerDownload = function(ds, layer) {
-                    if (ds.download == true) {
-                        if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1 && layer.url.length > 0) {
-                            return layer.url
+                        if (ds.download == true) {
+                            if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1 && layer.url.length > 0) {
+                                return layer.url
+                            }
                         }
-                    }
 
-                    return "#"
-                }
-                /**
-                * @function layerRDF
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} ds
-                * @param {unknown} layer    
-                */
+                        return "#"
+                    }
+                    /**
+                     * @function layerRDF
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} ds
+                     * @param {unknown} layer    
+                     */
                 $scope.layerRDF = function(ds, layer) {
-                    return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat%23"
-                }
-                /**
-                * @function addLayerToMap
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} ds
-                * @param {unknown} layer    
-                */
+                        return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat%23"
+                    }
+                    /**
+                     * @function addLayerToMap
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} ds
+                     * @param {unknown} layer    
+                     */
                 $scope.addLayerToMap = function(ds, layer) {
-                    if (ds.type == "micka") {
-                        if (layer.trida == 'service') {
-                            if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
-                                if (Core.singleDatasources) {
-                                    $('.dss-tabs a[href="#OWS"]').tab('show')
-                                } else {
-                                    Core.setMainPanel('ows');
-                                }
-                                var link = layer.link;
-                                hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WMS');
-                            } else if ((layer.link.toLowerCase()).indexOf("sparql") > -1) {
-                                var lyr = nonwmsservice.add('sparql', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
-                            } else if (layer.serviceType == 'WFS' || layer.serviceType == 'OGC:WFS' || layer.serviceType == 'download') {
-                                if (Core.singleDatasources) {
-                                    $('.dss-tabs a[href="#OWS"]').tab('show')
-                                } else {
-                                    Core.setMainPanel('ows');
-                                }
-                                var link = layer.link;
-                                hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WFS');
-                            } else if (layer.formats && ["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
-                                switch (layer.formats[0].toLowerCase()) {
-                                    case "kml":
-                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
-                                        break;
-                                    case "json":
-                                    case "geojson":
-                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
-                                        break;
-                                }
+                        if (ds.type == "micka") {
+                            if (layer.trida == 'service') {
+                                if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
+                                    if (Core.singleDatasources) {
+                                        $('.dss-tabs a[href="#OWS"]').tab('show')
+                                    } else {
+                                        Core.setMainPanel('ows');
+                                    }
+                                    var link = layer.link;
+                                    hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WMS');
+                                } else if ((layer.link.toLowerCase()).indexOf("sparql") > -1) {
+                                    var lyr = nonwmsservice.add('sparql', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
+                                } else if (layer.serviceType == 'WFS' || layer.serviceType == 'OGC:WFS' || layer.serviceType == 'download') {
+                                    if (Core.singleDatasources) {
+                                        $('.dss-tabs a[href="#OWS"]').tab('show')
+                                    } else {
+                                        Core.setMainPanel('ows');
+                                    }
+                                    var link = layer.link;
+                                    hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WFS');
+                                } else if (layer.formats && ["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
+                                    switch (layer.formats[0].toLowerCase()) {
+                                        case "kml":
+                                            var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
+                                            break;
+                                        case "json":
+                                        case "geojson":
+                                            var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
+                                            break;
+                                    }
 
-                                Core.setMainPanel('layermanager');
+                                    Core.setMainPanel('layermanager');
+                                } else {
+                                    alert('Service type "' + layer.serviceType + '" not supported.');
+                                }
+                            } else if (layer.trida == 'dataset') {
+                                if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
+                                    switch (layer.formats[0].toLowerCase()) {
+                                        case "kml":
+                                            var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
+                                            break;
+                                        case "json":
+                                        case "geojson":
+                                            var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
+                                            break;
+                                    }
+
+                                    Core.setMainPanel('layermanager');
+                                }
                             } else {
-                                alert('Service type "' + layer.serviceType + '" not supported.');
+                                alert('Datasource type "' + layer.trida + '" not supported.');
                             }
-                        } else if (layer.trida == 'dataset') {
-                            if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
-                                switch (layer.formats[0].toLowerCase()) {
-                                    case "kml":
-                                        var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
-                                        break;
-                                    case "json":
-                                    case "geojson":
-                                        var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
-                                        break;
-                                }
-
-                                Core.setMainPanel('layermanager');
-                            }
-                        } else {
-                            alert('Datasource type "' + layer.trida + '" not supported.');
                         }
                     }
-                }
-                /**
-                * @function highlightComposition
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} composition
-                * @param {unknown} state    
-                */
+                    /**
+                     * @function highlightComposition
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} composition
+                     * @param {unknown} state    
+                     */
                 $scope.highlightComposition = function(composition, state) {
-                    if (typeof composition.feature !== 'undefined')
-                        composition.feature.set('highlighted', state)
-                }
-                /**
-                * @function clear
-                * @memberOf hs.datasource_selector.controller    
-                */
+                        if (typeof composition.feature !== 'undefined')
+                            composition.feature.set('highlighted', state)
+                    }
+                    /**
+                     * @function clear
+                     * @memberOf hs.datasource_selector.controller    
+                     */
                 $scope.clear = function() {
-                    $scope.query.text_filter = "";
-                    $scope.query.title = "";
-                    $scope.query.Subject = "";
-                    $scope.query.keywords = "";
-                    $scope.query.OrganisationName = "";
-                    $scope.query.sortby = "";
-                }
-                /**
-                * @function setOtnKeyword
-                * @memberOf hs.datasource_selector.controller
-                * @param {unknown} theme    
-                */
+                        $scope.query.text_filter = "";
+                        $scope.query.title = "";
+                        $scope.query.Subject = "";
+                        $scope.query.keywords = "";
+                        $scope.query.OrganisationName = "";
+                        $scope.query.sortby = "";
+                    }
+                    /**
+                     * @function setOtnKeyword
+                     * @memberOf hs.datasource_selector.controller
+                     * @param {unknown} theme    
+                     */
                 $scope.setOtnKeyword = function(theme) {
                     $scope.query.Subject = theme;
                     $scope.loadDatasets($scope.datasources);
@@ -699,9 +699,9 @@ define(['angular', 'ol', 'map'],
 
                 $scope.datasources = config.datasources;
                 /**
-                * @function init
-                * @memberOf hs.datasource_selector.controller    
-                */
+                 * @function init
+                 * @memberOf hs.datasource_selector.controller    
+                 */
                 $scope.init = function() {
                     OlMap.map.on('pointermove', function(evt) {
                         var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);

@@ -58,13 +58,13 @@ define(['angular', 'ol'],
                 var positionFeature = new ol.Feature();
 
                 if (Core.isMobile()) {
-                    me.set_center = function () {
+                    me.set_center = function() {
                         OlMap.map.getView().setCenter(me.last_location.latlng);
                     };
 
                     me.geolocation = navigator.geolocation;
 
-                    me.toggleGps = function () {
+                    me.toggleGps = function() {
                         if (me.gpsStatus) {
                             me.stopGpsWatch();
                         } else {
@@ -75,56 +75,56 @@ define(['angular', 'ol'],
                     };
 
 
-                    me.startGpsWatch = function () {
+                    me.startGpsWatch = function() {
                         if (navigator.geolocation) {
                             me.gpsStatus = true;
                             // me.gpsSwitch = 'Stop GPS';
                             me.changed_handler = me.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
                         }
                     };
-                    
-                    me.stopGpsWatch = function () {
+
+                    me.stopGpsWatch = function() {
                         me.gpsStatus = false;
                         // me.gpsSwitch = 'Start GPS';
                         me.geolocation.clearWatch(me.changed_handler);
                         me.changed_handler = null;
                     };
 
-                    var gpsOkCallback = function (position) {
+                    var gpsOkCallback = function(position) {
                         me.accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : '-';
                         me.altitude = position.coords.altitude ? Math.round(position.coords.altitude) : '-';
                         me.heading = position.coords.heading ? position.coords.heading : null;
                         me.speed = position.coords.speed ? Math.round(position.coords.speed * 3.6) : '-';
                         me.last_location = {
-                            "latlng": ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection()),
-                            "geoposition": position
-                        }
-                        // me.last_location.latlng = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection());
+                                "latlng": ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection()),
+                                "geoposition": position
+                            }
+                            // me.last_location.latlng = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection());
                         if (!positionFeature.setGeometry()) {
                             positionFeature.setGeometry(new ol.geom.Point(me.last_location.latlng));
                         } else {
                             positionFeature.getGeometry().setCoordinates(me.last_location.latlng);
                         }
-                        
+
                         if (!accuracyFeature.setGeometry()) {
                             accuracyFeature.setGeometry(new ol.geom.Circle(me.last_location.latlng, position.coords.accuracy));
                         } else {
-                           accuracyFeature.getGeometry().setCenterAndRadius(me.last_location.latlng, me.accuracy);
+                            accuracyFeature.getGeometry().setCenterAndRadius(me.last_location.latlng, me.accuracy);
                         }
 
                         if (me.following) {
                             me.set_center();
                         }
-                        
+
                         lat = position.coords.latitude;
                         lon = position.coords.longitude;
                         trackingDb.transaction(logPosition, errorCB, successCB);
                         db_id++;
-                        
+
                         $rootScope.$broadcast('geolocation.updated');
                     };
 
-                    var gpsFailCallback = function (e) {
+                    var gpsFailCallback = function(e) {
                         var msg = 'Error ' + e.code + ': ' + e.message;
                         console.log(msg);
                     };
@@ -222,7 +222,7 @@ define(['angular', 'ol'],
             if (Core.isMobile()) {
                 $scope.switchGps = service.toggleGps;
 
-                $scope.gpsActive = function (set_to) {
+                $scope.gpsActive = function(set_to) {
                     if (arguments.length === 0) {
                         return service.gpsStatus;
                         console.log('arguments = 0');
@@ -268,7 +268,7 @@ define(['angular', 'ol'],
                 if (!$scope.$$phase) $scope.$digest();
             });
 
-            $scope.$on('geolocation.switched', function (event) {
+            $scope.$on('geolocation.switched', function(event) {
                 service.gpsSwitch = service.gpsStatus ? 'Stop GPS' : 'Start GPS';
                 if (!$scope.$$phase) {
                     $scope.$digest();

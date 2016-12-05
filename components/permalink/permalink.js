@@ -7,20 +7,20 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
     function(angular, social) {
         angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.status_creator', 'hs.compositions'])
             /**
-            * @ngdoc directive
-            * @name hs.permalink.directive
-            * @membeof hs.permalink
-            */
+             * @ngdoc directive
+             * @name hs.permalink.directive
+             * @membeof hs.permalink
+             */
             .directive('hs.permalink.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
                 };
             })
             /**
-            * @ngdoc service
-            * @name hs.permalink.service_url
-            * @membeof hs.permalink
-            */
+             * @ngdoc service
+             * @name hs.permalink.service_url
+             * @membeof hs.permalink
+             */
             .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config',
                 function($rootScope, $location, $window, OlMap, Core, utils, status, compositions, config) {
 
@@ -204,10 +204,10 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                 }
             ])
             /**
-            * @ngdoc controller
-            * @memberof hs.permalink
-            * @name hs.permalink.controller
-            */
+             * @ngdoc controller
+             * @memberof hs.permalink
+             * @name hs.permalink.controller
+             */
             .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare', 'hs.utils.service', 'hs.status_creator.service',
                 function($rootScope, $scope, $http, Core, config, service, socialshare, utils, status_creator) {
 
@@ -215,24 +215,24 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.shareUrlValid = false;
                     service.shareId = null;
                     /**
-                    * @function getEmbedCode
-                    * @memberof hs.permalink.controller
-                    */
+                     * @function getEmbedCode
+                     * @memberof hs.permalink.controller
+                     */
                     $scope.getEmbedCode = function() {
-                        return '<iframe src="' + $scope.embed_url + '" width="1000" height="700"></iframe>';
-                    }
-                    /**
-                    * @function invalidateShareUrl
-                    * @memberof hs.permalink.controller
-                    */
+                            return '<iframe src="' + $scope.embed_url + '" width="1000" height="700"></iframe>';
+                        }
+                        /**
+                         * @function invalidateShareUrl
+                         * @memberof hs.permalink.controller
+                         */
                     $scope.invalidateShareUrl = function() {
-                        $scope.shareUrlValid = false;
-                    }
-                    /**
-                    * @function shareOnSocial
-                    * @memberof hs.permalink.controller
-                    * @param {unknown} provider
-                    */
+                            $scope.shareUrlValid = false;
+                        }
+                        /**
+                         * @function shareOnSocial
+                         * @memberof hs.permalink.controller
+                         * @param {unknown} provider
+                         */
                     $scope.shareOnSocial = function(provider) {
                         $scope.shareProvider = provider;
                         if (!$scope.shareUrlValid) {

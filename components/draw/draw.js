@@ -177,7 +177,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     var requiredPrecision = 20;
 
                     function createPoint(pos) {
-                        var g_feature = pos ? new ol.geom.Point(pos.latlng) : new ol.geom.Point( ol.proj.transform([0, 0], 'EPSG:4326', OlMap.map.getView().getProjection()));
+                        var g_feature = pos ? new ol.geom.Point(pos.latlng) : new ol.geom.Point(ol.proj.transform([0, 0], 'EPSG:4326', OlMap.map.getView().getProjection()));
                         var feature = new ol.Feature({
                             geometry: g_feature
                         });
@@ -192,7 +192,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         if (!pos) {
                             $scope.setCurrentFeature($scope.features[$scope.features.length - 1], false);
                         } else {
-                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1]);                            
+                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1]);
                         }
                     }
 
@@ -488,12 +488,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(olf.get('obs_vgi_id'))) {
                             fd.append('obs_vgi_id', olf.get('obs_vgi_id'));
                         }
-                        
+
                         var method = $http.post;
-                        if(angular.isDefined(olf.get('obs_vgi_id'))) method = $http.put;
+                        if (angular.isDefined(olf.get('obs_vgi_id'))) method = $http.put;
 
                         if (angular.isUndefined(olf.get('obs_vgi_id')) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
-                            method($scope.senslog_url+'/observation?user_name=tester', fd, {
+                            method($scope.senslog_url + '/observation?user_name=tester', fd, {
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined
