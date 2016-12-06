@@ -34,6 +34,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
                 var s = feature.get('http://www.openvoc.eu/poi#categoryWaze');
+                
                 if (typeof s === 'undefined') return;
                 s = s.split("#")[1];
                 return [
@@ -316,7 +317,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
                         url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape("http://api.openweathermap.org/data/2.5/weather?APPID=13b627424cd072290defed4216e92baa&lat=" + lon_lat[1] + "&lon=" + lon_lat[0]);
                     } else {
-                        url = "http://api.openweathermap.org/data/2.5/weather?lat=" + lon_lat[1] + "&lon=" + lon_lat[0];
+                        url = "http://api.openweathermap.org/data/2.5/weather?APPID=13b627424cd072290defed4216e92baa&lat=" + lon_lat[1] + "&lon=" + lon_lat[0];
                     }
 
                     $.ajax({
@@ -339,7 +340,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 var cloud = '<img src="http://openweathermap.org/img/w/{0}.png" alt="{1}"/>{2}'.format(weather.icon, weather.description, weather.description);
                                 var temp_row = 'Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C';
                                 var date_row = $filter('date')(new Date(response.dt * 1000), 'dd.MM.yyyy HH:mm');
-                                content = close_button + '<div style="width:300px"><p><b>' + response.name + '</b><br/><small> at ' + date_row + '</small></p>' + cloud + '<br/>' + temp_row + '<br/>' + wind_row + '<br/>' + to_trip_button + " " + new_point_button + "</div>";
+                                content = '{0}<div style="width:300px"><p><b>{1}&nbsp;<span id="hs-spoi-country-placeholder">{2}</span></b><br/><small> at {3}</small></p>{4}<br/>{5}<br/>{6}<br/>{7} {8}</div>'
+                                    .format(close_button, response.name, $scope.country_last_clicked.countryName, date_row, cloud, temp_row, wind_row, to_trip_button, new_point_button);
                             }
                             angular.element(element).popover({
                                 'placement': 'top',
@@ -361,15 +363,24 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             })
 
                         });
-                        
-                    var latlng = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
-                    $http.get('http://api.geonames.org/extendedFindNearby?lat={0}&lng={1}&username=raitis'.format(latlng[1], latlng[0]))
-                        .then(function(response) {
-                            
-                        });
-
+                    getCountryAtCoordinate(coordinate);
                 });
 
+                function getCountryAtCoordinate(coordinate){
+                    var latlng = ol.proj.transform(coordinate, OlMap.map.getView().getProjection(), 'EPSG:4326');
+                    $scope.country_last_clicked = null;
+                    $http.get('http://api.geonames.org/extendedFindNearby?lat={0}&lng={1}&username=raitis'.format(latlng[1], latlng[0]))
+                        .then(function(response) {
+                            var country_geoname = angular.element('fcl', response.data).filter(function(index) { return angular.element(this).text() === "A"; }).parent();
+                            $scope.country_last_clicked = {
+                                geonameId: country_geoname.find('geonameId').html(),
+                                countryName: country_geoname.find('countryName').html(),
+                                countryCode: country_geoname.find('countryCode').html()
+                            }; 
+                            angular.element('#hs-spoi-country-placeholder').html($scope.country_last_clicked.country);
+                        });
+                }
+                
                 function createLayerSelectorForNewPoi(popup, coordinate) {
                     var possible_layers = [];
                     angular.element("#hs-spoi-new-layer-list").html('');
@@ -381,7 +392,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
                             function layerSelected() {
                                 var layer = $(this).data('layer');
-                                var feature = spoi_editor.addPoi(layer, coordinate);
+                                var feature = spoi_editor.addPoi(layer, coordinate, $scope.country_last_clicked);
                                 popup.setPosition(undefined);
                                 $scope.$broadcast('infopanel.feature_select', feature);
                                 return false;
