@@ -476,14 +476,14 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var cord = ol.proj.transform(olf.getGeometry().getCoordinates(), OlMap.map.getView().getProjection(), 'EPSG:4326');
 
                         var fd = new FormData();
-                        fd.append('timestamp', getCurrentTimestamp());
-                        fd.append('category_id', olf.get('category_id'));
-                        fd.append('description', olf.get('description'));
+                        fd.append('time_stamp', getCurrentTimestamp());
+                        fd.append('category_id', olf.get('category_id') /*|| 0*/);
+                        if (olf.get('description')) fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
                         fd.append('dataset_id', olf.get('dataset_id') || 999);
-                        fd.append('unitId', '1111');
-                        fd.append('media', olf.get('photo'));
+                        fd.append('unit_id', '1111');
+                        if (olf.get('photo')) fd.append('media', olf.get('photo'));
                         fd.append('attributes', JSON.stringify(attributes));
                         if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(olf.get('obs_vgi_id'))) {
                             fd.append('obs_vgi_id', olf.get('obs_vgi_id'));
@@ -491,6 +491,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                         var method = $http.post;
                         if (angular.isDefined(olf.get('obs_vgi_id'))) method = $http.put;
+
+                        var transform = function(data){
+                            return $.param(data);
+                        }
 
                         if (angular.isUndefined(olf.get('obs_vgi_id')) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
                             method($scope.senslog_url + '/observation?user_name=tester', fd, {

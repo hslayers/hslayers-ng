@@ -117,13 +117,13 @@ define(['ol',
                             $scope.$broadcast('senslog.datasets_loaded', response.data);
                             angular.forEach(response.data, function(dataset) {
                                 var source = new ol.source.Vector({
-                                    url: config.senslog_url + '/observation/?user_name=tester&dataset_id=' + dataset.datasetId + '&format=geojson',
+                                    url: config.senslog_url + '/observation/?user_name=tester&dataset_id=' + dataset.dataset_id + '&format=geojson',
                                     format: new ol.format.GeoJSON()
                                 });
-                                source.set('dataset_id', dataset.datasetId);
+                                source.set('dataset_id', dataset.dataset_id);
                                 source.set('senslog_url', config.senslog_url + '/');
                                 var lyr = new ol.layer.Vector({
-                                    title: dataset.datasetName,
+                                    title: dataset.dataset_name,
                                     visible: false,
                                     source: source
                                 })
