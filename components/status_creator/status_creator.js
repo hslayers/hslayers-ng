@@ -353,7 +353,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                     format: layer.get('definition').format
                                 }
                             } else {
-                                json.features = me.serializeFeatures(src.getFeatures());
+                                try {
+                                   json.features = me.serializeFeatures(src.getFeatures());    
+                                } catch(ex) {
+                                }
                             }
                             if (angular.isDefined(src.defOptions)) {
                                 json.defOptions = src.defOptions;
