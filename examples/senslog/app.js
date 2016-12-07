@@ -99,9 +99,21 @@ define(['ol',
                                     "Content-Type": "application/json"
                                 }
                             }).then(function(response) {
-                                debugger;
                                 if (response.statusText == "OK") {
-
+                                    var source = new ol.source.Vector({
+                                        url: config.senslog_url + '/observation/?user_name=tester&dataset_id=' + response.dataset_id + '&format=geojson',
+                                        format: new ol.format.GeoJSON()
+                                    });
+                                    source.set('dataset_id', response.dataset_id);
+                                    source.set('senslog_url', config.senslog_url + '/');
+                                    var lyr = new ol.layer.Vector({
+                                        title: event.targetScope.dataset_name,
+                                        visible: false,
+                                        source: source
+                                    })
+                                    hsmap.map.addLayer(lyr);
+                                    event.targetScope.dataset_name = "";
+                                    event.targetScope.dataset_description = "";
                                 }
                             });
                         }

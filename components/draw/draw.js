@@ -31,12 +31,14 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.current_feature = null;
                 currentFeature = $scope.current_feature;
                 $scope.type = 'Point';
+                $scope.image_type = 'image/jpeg';
                 $scope.layer_to_select = ""; //Which layer to select when the panel is activated. This is set in layer manager when adding a new layer.
 
                 $scope.categories = [];
 
                 var attrs_with_template_tags = ['category_id', 'dataset_id', 'description', 'name'];
                 var attrs_not_editable = ['geometry', 'highlighted', 'attributes', 'sync_pending'];
+                var attrs_dont_send = ['media_count', 'obs_vgi_id', 'time_stamp', 'unit_id', 'time_received', 'dop', 'alt', 'photo', 'photo_src']
 
                 var source;
                 var highlighted_style = function(feature, resolution) {
@@ -230,30 +232,64 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     // pos = Geolocation.last_location; //TODO timestamp is stored in Geolocation.last_location.geolocation.timestamp, it might be a good idea to accept only recent enough positions ---> or wait for the next fix <---.
                 }
 
+                function collectProperties(media, prop) {
+                    var props = [];
+                    angular.forEach(media, function(d) {
+                        props.push(d[prop]);
+                    });
+                    return props;
+                }
+
                 $scope.addPhoto = function() {
                     navigator.camera.getPicture(cameraSuccess, cameraError, {
-                        encodingType: Camera.EncodingType.PNG,
-                        quality: 50,
+                        encodingType: Camera.EncodingType.JPEG,
+                        quality: 25,
                         correctOrientation: true,
                         saveToPhotoAlbum: true
                     });
 
                     function cameraSuccess(imageData) {
                         window.resolveLocalFileSystemURL(imageData, function(fileEntry) {
-                            fileEntry.file(function(file) {
-                                var reader = new FileReader();
-
-                                reader.onloadend = function() {
-                                    var image = new Blob([this.result], {
-                                        type: "image/png"
+                            var fileName = imageData.split("/").slice(-1)[0];
+                            var imgFolder = "media";
+                            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSys) {
+                                fileSys.root.getDirectory(imgFolder, {
+                                    create: true,
+                                    exclusive: false
+                                }, function(directory) {
+                                    fileEntry.moveTo(directory, fileName, function(entry) {
+                                        $scope.current_feature.media.push({
+                                            url: entry.nativeURL,
+                                            image_type: $scope.image_type
+                                        });
+                                        $scope.$apply();
+                                        if (angular.isDefined($scope.current_feature.ol_feature.get('obs_vgi_id'))) localStorage.setItem($scope.current_feature.ol_feature.get('obs_vgi_id'), JSON.stringify($scope.current_feature.media));
+                                    }, function(err) {
+                                        console.log(err);
                                     });
-                                    $scope.current_feature.photo = image;
-                                    $scope.current_feature.photo_src = window.URL.createObjectURL(image);
-                                    $scope.$apply();
-                                };
-
-                                reader.readAsArrayBuffer(file);
+                                }, function(err) {
+                                    console.log(err);
+                                });
+                            }, function(err) {
+                                console.log(err);
                             });
+
+                            // fileEntry.file(function(file) {
+                            //     var reader = new FileReader();
+
+                            //     reader.onloadend = function() {
+                            //         image = new Blob([this.result], {
+                            //             type: $scope.image_type
+                            //         });
+                            //         $scope.current_feature.photo = image;
+                            //         $scope.$apply();
+
+                            //         window.image = image;
+                            //         console.log(image, this.result);
+                            //     };
+
+                            //     reader.readAsArrayBuffer(file);
+                            // });
                         });
 
                         // $scope.current_feature.photo_src = imageData;
@@ -296,6 +332,39 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 //Fill feature container object, because we cant edit attributes in OL feature directly
                 function fillFeatureContainer(cf, olf) {
                     cf.extra_attributes = [];
+                    // if (angular.isDefined(olf.get('obs_vgi_id')) && localStorage.getItem(olf.get('obs_vgi_id'))) {
+                    //     cf.media = JSON.parse(localStorage.getItem(olf.get('obs_vgi_id')));
+                    //     // TODO: store media info also with information about their origin dataset and (maybe?) senslog url.
+                    //     // TODO: store media info in local storage every time media array is changed.
+                    // } else {
+                    //     cf.media = [];
+                    // }
+                    cf.media = [];
+                    // cf.media = (typeof olf.get(media) !== "undefined") ? olf.get(media) : [];
+                    if (angular.isDefined(olf.get('media_count')) && angular.isDefined(olf.get('obs_vgi_id')) && olf.get('media_count')) {
+                        var props = collectProperties(cf.media, 'media_id');
+                        $http.get($scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media?user_name=tester").then(function(response) {
+                            angular.forEach(response.data, function(media) {
+                                if (props.indexOf(media.media_id) == -1) {
+                                    cf.media.push({
+                                        media_id: media.media_id,
+                                        url: $scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media/" + media.media_id + "?user_name=tester",
+                                        thumbnail_url: $scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media/" + media.media_id + "/thumbnail?user_name=tester",
+                                        image_type: $scope.image_type
+                                    });
+                                } else {
+                                    var pos = props.indexOf(media.media_id);
+                                    // TODO: check also if the file is available/valid to prevent missing images.
+                                    if (cf.media[pos].media_id == media.media_id) {
+                                        var med = cf.media[pos];
+                                        med.url = (angular.isDefined(med.url) && med.url.split("/")[0] == "file:") ? med.url : $scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media/" + media.media_id + "?user_name=tester";
+                                        med.thumbnail_url = (angular.isDefined(med.thumbnail_url) && med.thumbnail_url.split("/")[0] == "file:") ? med.thumbnail_url : $scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media/" + media.media_id + "/thumbnail?user_name=tester";
+                                        med.image_type = (angular.isDefined(med.image_type)) ? med.image_type : $scope.image_type;
+                                    }
+                                }
+                            });
+                        });
+                    }
                     angular.forEach(olf.getKeys(), function(key) {
                         if (attrs_not_editable.indexOf(key) == -1) {
                             cf[key] = olf.get(key);
@@ -333,19 +402,35 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.saveFeature = function() {
                     var cf = $scope.current_feature;
                     var olf = cf.ol_feature;
+                    var pic = cf.media[cf.media.length - 1];
+                    if (pic.url.split("/")[0] == "file:") {
+                        window.resolveLocalFileSystemURL(pic.url, function(fileEntry) {
+                            fileEntry.file(function(file) {
+                                var reader = new FileReader();
+                                reader.onloadend = function() {
+                                    image = new Blob([this.result], {
+                                        type: pic.image_type
+                                    });
+                                    olf.set('photo', image);
+                                    olf.set('image_type', pic.image_type);
+                                    console.log(image, this.result, olf.get('photo'));
+                                    $scope.sync();
+                                }
+                                reader.readAsArrayBuffer(file);
+                            });
+                        });
+                    } else {
+                        $scope.sync();
+                    }
                     olf.set('name', cf.name);
                     olf.set('description', cf.description);
                     olf.set('category_id', cf.category_id);
                     olf.set('dataset_id', cf.dataset_id);
-                    olf.set('photo', cf.photo);
-                    olf.set('photo_src', cf.photo_src)
                     olf.set('sync_pending', cf.dataset_id);
                     angular.forEach(cf.extra_attributes, function(attr) {
                         olf.set(attr.name, attr.value);
                     });
                     $scope.is_unsaved = false;
-
-                    $scope.sync();
                 }
 
                 $scope.setUnsaved = function() {
@@ -388,9 +473,19 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     });
                 }
 
+                function deleteVgiObservation(olf) {
+                    $http.delete($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=tester').then(function(response) {
+                            console.log(response);
+                        });
+                }
+
                 $scope.removeFeature = function(feature) {
                     if (confirm("Really delete the feature?")) {
-                        if ($scope.current_feature == feature) {
+                        var cf = $scope.current_feature;
+                        var olf = cf.ol_feature;
+                        if (cf == feature && angular.isDefined(olf.get('obs_vgi_id'))) {
+                            deleteVgiObservation(olf);
+                        } else if (cf == feature) {
                             deselectCurrentFeature();
                         }
                         $scope.features.splice($scope.features.indexOf(feature), 1);
@@ -471,7 +566,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var olf = feature.ol_feature;
                         var attributes = {};
                         angular.forEach(olf.getKeys(), function(key) {
-                            if (attrs_not_editable.indexOf(key) == -1 && key != 'category_id' && key != 'description' && key != 'dataset_id') {
+                            if (attrs_not_editable.indexOf(key) == -1 && attrs_dont_send.indexOf(key) == -1 && key != 'category_id' && key != 'description' && key != 'dataset_id') {
                                 attributes[key] = olf.get(key);
                             }
                         });
@@ -485,34 +580,74 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         fd.append('lat', cord[1]);
                         fd.append('dataset_id', olf.get('dataset_id') || 999);
                         fd.append('unit_id', '1111');
-                        if (olf.get('photo')) fd.append('media', olf.get('photo'));
-                        fd.append('attributes', JSON.stringify(attributes));
+                        // TODO: hand only the last image to the form data object?
+                        if (olf.get('photo')) {
+                            fd.append('media', olf.get('photo'));
+                            fd.append('media_type', olf.get('image_type'));
+                        }
+
+                        if (!angular.equals(attributes, {})) fd.append('attributes', JSON.stringify(attributes));
                         if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(olf.get('obs_vgi_id'))) {
                             fd.append('obs_vgi_id', olf.get('obs_vgi_id'));
                         }
 
-                        var method = $http.post;
-                        if (angular.isDefined(olf.get('obs_vgi_id'))) method = $http.put;
-
-                        var transform = function(data){
-                            return $.param(data);
-                        }
-
-                        if (angular.isUndefined(olf.get('obs_vgi_id')) || (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) { //INSERT
-                            method($scope.senslog_url + '/observation?user_name=tester', fd, {
+                        function insertVgiObservation(olf, fd) {
+                            // TODO: if there is more than one new media, upload all of them one by one.
+                            $http.post($scope.senslog_url + '/observation?user_name=tester', fd, {
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined
                                 },
                                 olf: olf
                             }).then(function(response) {
-                                if (response.statusText == "OK") {
+                                if(response.statusText == "OK") {
                                     var olf = response.config.olf;
                                     olf.set('sync_pending', false);
-                                    if (angular.isUndefined(olf.get('obs_vgi_id')))
-                                        olf.set('obs_vgi_id', parseInt(response.data));
+                                    if (angular.isUndefined(olf.get('obs_vgi_id'))) olf.set('obs_vgi_id', parseInt(response.data.obs_vgi_id));
+                                    if (response.data.media_id) {
+                                        var media = olf.get('media');
+                                        var props = collectProperties(media, 'media_id');
+                                        if (props.indexOf(response.data.media_id) == -1) {
+                                            var med = media[props.indexOf(undefined)] // Bad implementation, rewrite to check against local FILE_URL
+                                            med.media_id = response.data.media_id;
+                                            med.url = (angular.isDefined(med.url) && med.url.split("/")[0] == "file:") ? med.url : $scope.senslog_url + "/observation/" + response.data.obs_vgi_id + "/media/" + response.data.media_id + "?user_name=tester";
+                                            med.thumbnail_url = (angular.isDefined(med.thumbnail_url) && med.thumbnail_url.split("/")[0] == "file:") ? med.thumbnail_url : $scope.senslog_url + "/observation/" + response.data.obs_vgi_id + "/media/" + response.data.media_id + "/thumbnail?user_name=tester";
+                                        }
+                                    }
                                 }
                             });
+                        }
+
+                        function updateVgiObservation(olf, fd) {
+                            // TODO: if there is more than one new media, upload all of them one by one.
+                            $http.put($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=tester', fd, {
+                                transformRequest: angular.identity,
+                                headers: {
+                                    'Content-Type': undefined
+                                },
+                                olf: olf
+                            }).then(function(response) {
+                                if(response.statusText == "OK") {
+                                    var olf = response.config.olf;
+                                    olf.set('sync_pending', false);
+                                    if (response.data.media_id) {
+                                        var media = olf.get('media');
+                                        var props = collectProperties(media, 'media_id');
+                                        if (props.indexOf(response.data.media_id) == -1) {
+                                            var med = media[props.indexOf(undefined)] // Bad implementation, rewrite to check against local FILE_URL
+                                            med.media_id = response.data.media_id;
+                                            med.url = (angular.isDefined(med.url) && med.url.split("/")[0] == "file:") ? med.url : $scope.senslog_url + "/observation/" + response.data.obs_vgi_id + "/media/" + response.data.media_id + "?user_name=tester";
+                                            med.thumbnail_url = (angular.isDefined(med.thumbnail_url) && med.thumbnail_url.split("/")[0] == "file:") ? med.thumbnail_url : $scope.senslog_url + "/observation/" + response.data.obs_vgi_id + "/media/" + response.data.media_id + "/thumbnail?user_name=tester";
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
+                        if (angular.isUndefined(olf.get('obs_vgi_id')) && (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) {
+                            insertVgiObservation(olf, fd);
+                        } else if (angular.isDefined(olf.get('obs_vgi_id')) && (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) {
+                            updateVgiObservation(olf, fd);
                         }
                     })
                 }

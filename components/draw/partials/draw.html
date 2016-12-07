@@ -73,12 +73,12 @@
 
                 <!-- Photo -->
                 <!-- <div class="form-group" ng-if="Core.isMobile()"> -->
-                <div class="form-group" ng-if="Core.isMobile() && current_feature.photo_src">
+                <div class="form-group" ng-if="Core.isMobile() && current_feature.media">
                     <label translate>Photo</label>
                     <!-- <span>{{current_feature.photo_src}}</span> -->
                     <!-- <input type="file" class="form-control" ng-model="current_feature.photo" ng-change="setUnsaved()" style="display: none"> -->
                     <!-- <img data-ng-src="data:image/PNG;base64,{{photo}}" style="width: 100%"></img> -->
-                    <img ng-show="current_feature.photo_src" ng-src="{{current_feature.photo_src}}" style="width: 100%"></img>
+                    <img ng-repeat="image in current_feature.media" ng-show="current_feature.media" ng-src="{{ image.url }}" style="width: 100%"></img>
                 </div>
                 
                 <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false" aria-controls="hs-more-attributes">

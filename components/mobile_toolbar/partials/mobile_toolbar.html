@@ -1,32 +1,32 @@
 <div class="toolbar-buttons"><!-- 
 
     menu switch
-     --><button class="menu-item menu-switch btn btn-default btn-mobile" type="button" ng-click="togglePanelspace()"><!-- 
-         --><i class="glyphicon menu-icon glyphicon-menu-hamburger"></i><!-- 
-     --></button><!--
+    --><button class="menu-item menu-switch btn btn-default btn-mobile" type="button" ng-click="togglePanelspace()"><!-- 
+        --><i class="glyphicon menu-icon glyphicon-menu-hamburger"></i><!-- 
+    --></button><!--
 
-     search bar switch
-     --><button type="button" class="menu-item btn btn-default btn-mobile"  title="Search for a place" ng-if="Core.exists('hs.toolbar.controller')" onclick="$('#toolbar').toggleClass('show');$('.locate-mobile').addClass('ol-collapsed')"><!-- 
-         --><i class="glyphicon icon-search"></i><!-- 
-     --></button><!--
+    search bar switch
+    --><button type="button" class="menu-item btn btn-default btn-mobile"  title="Search for a place" ng-if="Core.exists('hs.toolbar.controller')" onclick="$('#toolbar').toggleClass('show');$('.locate-mobile').addClass('ol-collapsed')"><!-- 
+        --><i class="glyphicon icon-search"></i><!-- 
+    --></button><!--
 
-     layermanager switch
-     --><button type="button" class="menu-item btn btn-default btn-mobile" title="Layer manager" ng-if="Core.exists('hs.layermanager.controller')" ng-click="[setMainPanel('layermanager'),togglePanelspace()]"><!-- 
-         --><i class="glyphicon icon-layers"></i><!-- 
-     --></button><!--
+    layermanager switch
+    --><button type="button" class="menu-item btn btn-default btn-mobile" title="Layer manager" ng-if="Core.exists('hs.layermanager.controller')" ng-click="[setMainPanel('layermanager'),togglePanelspace()]"><!-- 
+        --><i class="glyphicon icon-layers"></i><!-- 
+    --></button><!--
 
-     compositions switch
-     --><button type="button" class="menu-item btn btn-default btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('compositions')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"><!-- 
-         --><i class="glyphicon icon-map"></i><!-- 
-     --></button><!-- 
+    compositions switch
+    --><button type="button" class="menu-item btn btn-default btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('compositions')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"><!-- 
+        --><i class="glyphicon icon-map"></i><!-- 
+    --></button><!-- 
 
-     draw switch
-     --><!-- <button type="button" class="menu-item btn btn-default btn-mobile" title="Draw new features" ng-if="Core.exists('hs.draw.controller')" ng-click="[setMainPanel('draw'),togglePanelspace()]"> --><!-- 
-         --><!-- <i class="glyphicon glyphicon-flag"></i> --><!-- 
-     --><!-- </button> --><!-- 
+    draw switch
+    --><button type="button" class="menu-item btn btn-default btn-mobile" title="Draw new features" ng-if="Core.exists('hs.draw.controller') && Core.panelEnabled('draw')" ng-click="[setMainPanel('draw'),togglePanelspace()]"><!-- 
+        --><i class="glyphicon glyphicon-flag"></i><!-- 
+    --></button><!-- 
 
     geolocation switch
     --><button class="menu-item btn btn-default btn-mobile ol-has-tooltip blocate" type="button"><!--
-         --><i class="glyphicon icon-navigation"></i><!-- 
-     --></button><!-- 
- --></div>
+        --><i class="glyphicon icon-navigation"></i><!-- 
+    --></button><!-- 
+--></div>
