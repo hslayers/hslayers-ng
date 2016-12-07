@@ -20,6 +20,7 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                                 setTimeout(function() {
                                     scope.Core.updateMapSize();
                                 }, 0)
+                                scope.$emit('sidebar_change', scope.Core.sidebarExpanded);
                             }, true
                         )
                     }

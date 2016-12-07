@@ -59,7 +59,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             }
                         });
                     };
-
+                    
                 }
             ]).service("hs.query.service_infopanel", ['$rootScope',
                 function($rootScope) {
@@ -75,7 +75,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         setGroups: function(j) {
                             me.groups = j;
                             $rootScope.$broadcast('infopanel.updated');
-                        }
+                        },
+                        enabled: true
                     };
 
                     return me;
@@ -97,14 +98,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 selector.getFeatures().on('add', function(e) {
                     //if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
-                    if (!Core.current_panel_queryable) return;
+                    if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
                     $scope.$broadcast('infopanel.feature_selected', e.element, selector);
                     if (e.element.get('hs_notqueryable')) return;
                     getFeatureAttributes(e.element);
                 });
 
                 selector.getFeatures().on('remove', function(e) {
-                    if (!Core.current_panel_queryable) return;
+                    if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
                     InfoPanelService.setAttributes([]);
                     $scope.$broadcast('infopanel.feature_deselected', e.element);
                 })
@@ -431,7 +432,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
                     $scope.$emit('map_clicked', evt);
-                    if (!Core.current_panel_queryable) return;
+                    if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
                     $("#invisible_popup").contents().find('body').html('');
                     $("#invisible_popup").height(200).width(200);

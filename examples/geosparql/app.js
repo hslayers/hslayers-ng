@@ -265,8 +265,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             infopanel_template: hsl_path + 'examples/geosparql/infopanel.html'
         });
 
-        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', '$sce', '$http', 'config', 'hs.trip_planner.service', 'hs.permalink.service_url', 'hs.utils.service', 'spoi_editor',
-            function($scope, $compile, $filter, Core, OlMap, $sce, $http, config, trip_planner_service, permalink, utils, spoi_editor) {
+        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', '$sce', '$http', 'config', 'hs.trip_planner.service', 'hs.permalink.service_url', 'hs.utils.service', 'spoi_editor', 'hs.query.service_infopanel',
+            function($scope, $compile, $filter, Core, OlMap, $sce, $http, config, trip_planner_service, permalink, utils, spoi_editor, infopanel_service) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -474,6 +474,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.editDropdownVisible = spoi_editor.editDropdownVisible;
                 $scope.editTextboxVisible = spoi_editor.editTextboxVisible;
                 $scope.saveSpoiChanges = spoi_editor.saveSpoiChanges;
+                
+                $scope.$on('sidebar_change', function(event, expanded) {
+                    infopanel_service.enabled = expanded;
+                })
+                
             }
         ]).filter('usrFrSpoiAttribs', ['spoi_editor', function(spoi_editor) {
             return spoi_editor.filterAttribs;
