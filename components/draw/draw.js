@@ -363,9 +363,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 }
 
                 $scope.clearAll = function() {
-                    $scope.features = [];
-                    source.clear();
-                    if (!$scope.$$phase) $scope.$digest();
+                    if(confirm("Really clear all features?")){
+                        $scope.features = [];
+                        source.clear();
+                        if (!$scope.$$phase) $scope.$digest();
+                    }
                 }
 
                 $("#hs-more-attributes").on('shown.bs.collapse', function() {
