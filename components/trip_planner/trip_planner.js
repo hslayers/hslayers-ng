@@ -85,11 +85,22 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                             });
                     },
                     removeWaypoint: function(wp) {
+                        var prev_index = me.waypoints.indexOf(wp) - 1;
+                        if (prev_index > -1 && me.waypoints[prev_index].routes.length > 0) {
+                            angular.forEach(me.waypoints[prev_index].routes, function(route) {
+                                    angular.forEach(me.scopes, function(scope) {
+                                    if (angular.isDefined(scope.routeRemoved)) scope.routeRemoved(route);
+                                    })
+                            });
+                            me.waypoints[prev_index].routes = [];
+                        }
+                            
                         angular.forEach(me.scopes, function(scope) {
                             angular.forEach(wp.routes, function(route) {
                                 if (angular.isDefined(scope.routeRemoved)) scope.routeRemoved(route);
-                            })
-                        })
+                            });
+                            scope.waypointRemoved(wp);
+                        });
                         me.waypoints.splice(me.waypoints.indexOf(wp), 1);
                         me.storeWaypoints();
                         me.calculateRoutes();
@@ -235,6 +246,12 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                 $scope.routeRemoved = function(feature) {
                     try {
                         source.removeFeature(feature);
+                    } catch (ex) {}
+                }
+                
+                $scope.waypointRemoved = function(wp) {
+                    try {
+                        source.removeFeature(wp.feature);
                     } catch (ex) {}
                 }
 
