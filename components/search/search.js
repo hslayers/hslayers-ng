@@ -6,6 +6,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
     function(angular, ol) {
         angular.module('hs.search', ['hs.map', 'hs.styles'])
+            /**
+            * @memberof hs.search
+            * @ngdoc directive
+            * @name hs.search.directiveSearchinput
+            * @description Add search input template to page, with automatic change event and clear button
+            */
             .directive('hs.search.directiveSearchinput', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchinput.html?bust=' + gitsha,
@@ -14,7 +20,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
                     }
                 };
-
+                /**
+                * @memberof hs.search
+                * @ngdoc directive
+                * @name hs.search.directiveSearchresults
+                * @description Add search results template to page
+                */
             }]).directive('hs.search.directiveSearchresults', ['$window', function($window) {
                 return {
                     templateUrl: hsl_path + 'components/search/partials/searchresults.html?bust=' + gitsha,
@@ -23,6 +34,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
                     }
                 };
+                /**
+                * @memberof hs.search
+                * @ngdoc service
+                * @name hs.search.service
+                * @description Provides geolocation search request from site selected in config (geonames/sdi4apps) and pass response to handler on success
+                */
             }]).service('hs.search.service', ['$http', 'hs.utils.service', 'config',
                 function($http, utils, config) {
                     this.xhr = null;
@@ -48,7 +65,11 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     var me = this;
                 }
             ])
-
+        /**
+         * @memberof hs.search
+         * @ngdoc controller
+         * @name hs.search.controller
+         */
         .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service', 'config',
             function($scope, Core, OlMap, SearchService, $log, permalink, styles, config) {
                 var map = OlMap.map;
@@ -57,6 +78,11 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
                 $scope.search_results_layer = null;
 
+                /**
+                 * Initialization of search state
+                 * @memberof hs.search.controller
+                 * @function init 
+                 */
                 $scope.init = function() {
                     $scope.query = "";
                     $scope.results = [];
@@ -68,11 +94,22 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     }
                 }
 
+                /**
+                 * Handler of search input, request search service and display results div
+                 * @memberof hs.search.controller
+                 * @function queryChanged 
+                 */
                 $scope.queryChanged = function() {
                     SearchService.request($scope.query);
                     $("#searchresults").show();
                 }
 
+                /**
+                 * Zoom map to selected result from results list
+                 * @memberof hs.search.controller
+                 * @function zoomTo 
+                 * @param {object} result Selected result 
+                 */
                 $scope.zoomTo = function(result) {
                     $scope.fcode_zoom_map = {
                         'PPLA': 12,
@@ -107,6 +144,11 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     $scope.results = [];
                 }
 
+                 /**
+                 * Remove previous search and search results
+                 * @memberof hs.search.controller
+                 * @function clear 
+                 */
                 $scope.clear = function() {
                     $scope.results = [];
                     $scope.query = '';
@@ -114,7 +156,13 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     if ($scope.search_results_layer) map.getLayers().remove($scope.search_results_layer);
                     $scope.search_results_layer = null;
                 }
-
+                
+                /**
+                 * Handler for receiving results of search request, sends results to correct parser
+                 * @memberof hs.search.controller
+                 * @function searchResultsReceived
+                 * @param {object} response Result of search request
+                 */
                 SearchService.searchResultsReceived = function(response) {
                     $("#searchresults").show();
                     $scope.clearvisible = true;
@@ -127,6 +175,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
+                /**
+                 * Result parser of results from Geonames service
+                 * @memberof hs.search.controller
+                 * @function parseGeomnamesResults
+                 * @param {object} response Result of search request
+                 */
                 function parseGeomnamesResults(response) {
                     $scope.results = response.geonames;
                     angular.forEach($scope.results, function(result) {
@@ -140,6 +194,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     });
                 }
 
+                /**
+                 * Result parser of results from OpenApi service
+                 * @memberof hs.search.controller
+                 * @function parseOpenApiResults
+                 * @param {object} response Result of search request
+                 */
                 function parseOpenApiResults(response) {
                     $scope.results = response.data;
                     angular.forEach($scope.results, function(result) {
@@ -154,6 +214,11 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     });
                 }
 
+                /**
+                 * Add search results layer to map and clean old results if exist
+                 * @memberof hs.search.controller
+                 * @function createCurrentPointLayer
+                 */
                 $scope.createCurrentPointLayer = function() {
                     if ($scope.search_results_layer) {
                         $scope.search_results_layer.getSource().clear();
@@ -168,6 +233,13 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     map.addLayer($scope.search_results_layer);
                 }
 
+                /**
+                 * Set property highlighted of result to state
+                 * @memberof hs.search.controller
+                 * @function highlightResult
+                 * @param {object} result
+                 * @param {string} state
+                 */
                 $scope.highlightResult = function(result, state) {
                     if (angular.isDefined(result.feature))
                         result.feature.set('highlighted', state)
