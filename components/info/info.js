@@ -6,6 +6,12 @@ define(['angular', 'map', 'core', 'updateMeta', 'permalink'],
 
     function(angular) {
         angular.module('hs.info', ['hs.map', 'hs.core', 'updateMeta'])
+            /**
+            * @memberof hs.info
+            * @ngdoc directive
+            * @name hs.info.directive
+            * @description Add info panel template to the app
+            */
             .directive('hs.info.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/info/partials/info.html?bust=' + gitsha
@@ -13,6 +19,12 @@ define(['angular', 'map', 'core', 'updateMeta', 'permalink'],
                 };
             })
 
+        /**
+        * @memberof hs.info
+        * @ngdoc controller
+        * @name hs.info.controller
+        * @description Contain mainly listeners for compositions/layer loading
+        */
         .controller('hs.info.controller', ['$rootScope', '$scope', '$timeout', 'Core',
             function($rootScope, $scope, $timeout, Core) {
                 $scope.Core = Core;
@@ -93,6 +105,11 @@ define(['angular', 'map', 'core', 'updateMeta', 'permalink'],
                     if (!$scope.$$phase) $scope.$digest();
                 });
 
+                /**
+                 * Test if composition is loaded
+                 * @memberof hs.info.controller
+                 * @function compositionLoaded 
+                 */
                 $scope.compositionLoaded = function() {
                     return angular.isDefined($scope.composition_title);
                 }
