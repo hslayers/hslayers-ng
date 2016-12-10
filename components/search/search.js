@@ -45,7 +45,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     this.xhr = null;
                     this.request = function(query) {
                         var url = null;
-                        if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
+                        if (angular.isUndefined(config.search_provider) || config.search_provider == 'y') {
                             url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
                         } else if (config.search_provider == 'sdi4apps_openapi') {
                             url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
@@ -168,7 +168,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     $scope.clearvisible = true;
                     $scope.createCurrentPointLayer();
                     if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
-                        parseGeomnamesResults(response);
+                        parseGeonamesResults(response);
                     } else if (config.search_provider == 'sdi4apps_openapi') {
                         parseOpenApiResults(response);
                     }
@@ -178,10 +178,10 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                 /**
                  * Result parser of results from Geonames service
                  * @memberof hs.search.controller
-                 * @function parseGeomnamesResults
+                 * @function parseGeonamesResults
                  * @param {object} response Result of search request
                  */
-                function parseGeomnamesResults(response) {
+                function parseGeonamesResults(response) {
                     $scope.results = response.geonames;
                     angular.forEach($scope.results, function(result) {
                         var src = $scope.search_results_layer.getSource();
