@@ -45,7 +45,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     this.xhr = null;
                     this.request = function(query) {
                         var url = null;
-                        if (angular.isUndefined(config.search_provider) || config.search_provider == 'y') {
+                        if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
                             url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
                         } else if (config.search_provider == 'sdi4apps_openapi') {
                             url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
