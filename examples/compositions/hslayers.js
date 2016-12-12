@@ -11,6 +11,7 @@ require.config({
     urlArgs: 'bust=' + gitsha,
     paths: {
         toolbar: hsl_path + 'components/toolbar/toolbar',
+        //ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
