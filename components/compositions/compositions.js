@@ -649,6 +649,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     $cookies.remove('hs_layers');
                 }
                 
+                /**
+                * @memberof hs.compositions.controller
+                * @function generateScreenshotForAll
+                */
                 $scope.generateScreenshotForAll = function(){
                     hsMap.map.getView().setCenter([0, 0]);
                     hsMap.map.getView().setZoom(2); 
@@ -662,8 +666,14 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     
                 }
                 
+                //When layers are loaded fast, use this to stop timer for loading next composition
                 var screenshotTimeout = null;
                 
+                 /**
+                * @memberof hs.compositions.controller
+                * @function processScreenshotQueue
+                * (PRIVATE)
+                */
                 function processScreenshotQueue(){
                     var record = $scope.screenshot_queue.pop();
                     if(console) console.log(record);
@@ -675,6 +685,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 }
                 
+                
+                /**
+                * @memberof hs.compositions.controller
+                * @function generateThumbnail
+                * (PRIVATE)
+                */
                 function generateThumbnail($scope) {
                     hsMap.map.once('postcompose', function(event) {
                         var canvas = event.context.canvas;
@@ -710,6 +726,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     if (!$scope.$$phase) $scope.$digest();
                 });
                 
+                /**
+                * @memberof hs.compositions.controller
+                * @function generateThumbnail
+                * (PRIVATE)
+                */
                 function makeScreenshotAndStore(){
                     generateThumbnail($scope);
                     $http.post('/compositions/store', {
