@@ -399,7 +399,71 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             OlMap.map.renderSync();
                         }
                     }
-                };
+                    return json;
+                },
+
+                serializeFeatures: function(features) {
+                    var f = new ol.format.GeoJSON();
+                    return f.writeFeatures(features);
+                },
+
+                generateUuid: utils.generateUuid,
+                generateThumbnail: function($element, $scope) {
+                    if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink') {
+                        $element.attr("crossOrigin", "Anonymous");
+                        OlMap.map.once('postcompose', function(event) {
+                            var canvas = event.context.canvas;
+                            var canvas2 = document.createElement("canvas");
+                            var width = 256,
+                                height = 256;
+                            canvas2.style.width = width + "px";
+                            canvas2.style.height = height + "px";
+                            canvas2.width = width;
+                            canvas2.height = height;
+                            var ctx2 = canvas2.getContext("2d");
+                            ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
+                            $element.attr('src', canvas2.toDataURL('image/png'));
+                            this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
+                            $element.width(width).height(height);
+                        }, $scope);
+                        OlMap.map.renderSync();
+                    }
+                }
+            };
+
+            $window.addEventListener('beforeunload', function(event) {
+                var data = {}
+                var layers = []
+                angular.forEach(OlMap.map.getLayers(), function(layer) {
+                    if (layer.get('saveState')) {
+                        layers.push(me.layer2json(layer));
+                    }
+                })
+                data.layers = layers;
+                $cookies.put('hs_layers', JSON.stringify(data));
+            });
+            return me;
+        }])
+
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
+            function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
+                $scope.layers = [];
+                $scope.id = '';
+                $scope.thumbnail = null;
+                $scope.panel_name = 'status_creator';
+                $scope.current_composition_title = '';
+                $scope.config = config;
+
+                $scope.getCurrentExtent = function() {
+                    var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
+                    var pair1 = [b[0], b[1]]
+                    var pair2 = [b[2], b[3]];
+                    var cur_proj = OlMap.map.getView().getProjection().getCode();
+                    pair1 = ol.proj.transform(pair1, cur_proj, 'EPSG:4326');
+                    pair2 = ol.proj.transform(pair2, cur_proj, 'EPSG:4326');
+                    $scope.bbox = [pair1[0].toFixed(2), pair1[1].toFixed(2), pair2[0].toFixed(2), pair2[1].toFixed(2)];
+                    if (!$scope.$$phase) $scope.$digest();
+                }
 
                 $window.addEventListener('beforeunload', function(event) {
                     var data = {}

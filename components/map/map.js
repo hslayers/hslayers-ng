@@ -146,7 +146,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     image.getImage().src = utils.proxify(decodeURIComponent(src, false));
                 })
                 lyr.getSource().on('imageloadstart', function(img) {
-                    if (angular.isDefined(img.image.src_)) 
+                    if (angular.isDefined(img.image.src_)) //This works on with debug version of OpenLayers
                         img.image.src_ = utils.proxify(decodeURIComponent(img.image.src_), false);
                 }, me);
             }
