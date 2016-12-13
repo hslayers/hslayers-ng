@@ -654,6 +654,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 * @function generateScreenshotForAll
                 */
                 $scope.generateScreenshotForAll = function(){
+                    window.resizeTo(1024, 768);
                     hsMap.map.getView().setCenter([0, 0]);
                     hsMap.map.getView().setZoom(2); 
                     $scope.page_size = 10000;
@@ -695,8 +696,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     hsMap.map.once('postcompose', function(event) {
                         var canvas = event.context.canvas;
                         var canvas2 = document.createElement("canvas");
-                        var width = 512,
-                            height = 512;
+                        var width = 256,
+                            height = 256;
                         canvas2.style.width = width + "px";
                         canvas2.style.height = height + "px";
                         canvas2.width = width;
