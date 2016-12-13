@@ -625,7 +625,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                      */
                 $scope.layerIsStyleable = function(layer) {
                         if (typeof layer == 'undefined') return false;
-                        if (layer instanceof ol.layer.Vector && layer.getSource().styleAble) return true;
+                        if (layer instanceof ol.layer.Vector /*&& layer.getSource().styleAble*/) return true;
                         return false;
                     }
                     /**
@@ -708,6 +708,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         if (layer.get('dimensions') && angular.isObject(layer.get('dimensions').time)) {
                             var metadata = {};
                             var value = layer.get('dimensions').time.values;
+                            if (angular.isArray(value)) value = value[0];
                             value = value.replace(/\s*/g, "");
 
                             if (value.search("/") > -1) {

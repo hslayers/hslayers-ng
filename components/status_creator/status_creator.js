@@ -354,9 +354,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                 }
                             } else {
                                 try {
-                                   json.features = me.serializeFeatures(src.getFeatures());    
-                                } catch(ex) {
-                                }
+                                    json.features = me.serializeFeatures(src.getFeatures());
+                                } catch (ex) {}
                             }
                             if (angular.isDefined(src.defOptions)) {
                                 json.defOptions = src.defOptions;
@@ -414,6 +413,41 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 });
                 return me;
             }])
+
+        .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
+                function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
+                    $scope.layers = [];
+                    $scope.id = '';
+                    $scope.thumbnail = null;
+                    $scope.panel_name = 'status_creator';
+                    $scope.current_composition_title = '';
+                    $scope.config = config;
+
+                    $scope.getCurrentExtent = function() {
+                        var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
+                        var pair1 = [b[0], b[1]]
+                        var pair2 = [b[2], b[3]];
+                        var cur_proj = OlMap.map.getView().getProjection().getCode();
+                        pair1 = ol.proj.transform(pair1, cur_proj, 'EPSG:4326');
+                        pair2 = ol.proj.transform(pair2, cur_proj, 'EPSG:4326');
+                        $scope.bbox = [pair1[0].toFixed(2), pair1[1].toFixed(2), pair2[0].toFixed(2), pair2[1].toFixed(2)];
+                        if (!$scope.$$phase) $scope.$digest();
+                    }
+
+                    $window.addEventListener('beforeunload', function(event) {
+                        var data = {}
+                        var layers = []
+                        angular.forEach(OlMap.map.getLayers(), function(layer) {
+                            if (layer.get('saveState')) {
+                                layers.push(me.layer2json(layer));
+                            }
+                        })
+                        data.layers = layers;
+                        $cookies.put('hs_layers', JSON.stringify(data));
+                    });
+                    return me;
+                }
+            ])
             /**
              * @ngdoc controller
              * @name hs.status_creator.controller

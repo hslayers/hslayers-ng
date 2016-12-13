@@ -26,6 +26,9 @@ Clone the repository where your webserver can access it using [git][git]:
 
 ```
 git clone git@github.com:hslayers/hslayers-ng.git
+or
+git clone https://github.com/hslayers/hslayers-ng.git
+
 cd hslayers-ng/
 ```
 

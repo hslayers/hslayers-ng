@@ -6,12 +6,23 @@ define(['angular', 'ol', 'map', 'utils'],
 
     function(angular, ol) {
         angular.module('hs.legend', ['hs.map', 'hs.utils'])
+            /**
+             * @memberof hs.legend
+             * @ngdoc directive
+             * @name hs.legend.directive
+             * @description Add legend html template to the app
+             */
             .directive('hs.legend.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/legend/partials/legend.html?bust=' + gitsha
                 };
             })
 
+        /**
+         * @memberof hs.legend
+         * @ngdoc controller
+         * @name hs.legend.controller
+         */
         .controller('hs.legend.controller', ['$scope', 'hs.map.service', 'hs.utils.service',
             function($scope, OlMap, utils) {
                 var map = OlMap.map;
@@ -21,6 +32,13 @@ define(['angular', 'ol', 'map', 'utils'],
 
                 $scope.layers = [];
 
+                /**
+                 * (PRIVATE) Generate url to legend of WMS service
+                 * memberof hs.legend.controller
+                 * function getLegendUrl
+                 * @param {string} source_url Url of sevice
+                 * @param {string} layer_name Name of layer for request
+                 */
                 function getLegendUrl(source_url, layer_name) {
                     if (source_url.indexOf('proxy4ows') > -1) {
                         var params = utils.getParamsFromUrl(source_url);
@@ -30,6 +48,12 @@ define(['angular', 'ol', 'map', 'utils'],
                     return source_url;
                 }
 
+                /**
+                 * Add selected layer to the list of layers in legend (with event listener to display/hide legend item when layer visibility change)
+                 * memberof hs.legend.controller
+                 * function addLayerToLegends
+                 * @param {object} layer Layer to add legend for 
+                 */
                 $scope.addLayerToLegends = function(layer) {
                     if (layer.getSource() instanceof ol.source.TileWMS || layer.getSource() instanceof ol.source.ImageWMS) {
                         var sub_layers = layer.getSource().getParams().LAYERS.split(",");
@@ -78,6 +102,8 @@ define(['angular', 'ol', 'map', 'utils'],
 
                 /*
                  * Generates URL for requesting the legend
+                 * memberof hs.legend.controller
+                 * function getWmsLayerLegendUrl
                  * @param {string} wms_url - WMS service url
                  * @param {string} layer_name - Name of the sub-layer
                  */
@@ -85,6 +111,12 @@ define(['angular', 'ol', 'map', 'utils'],
                     return wms_url + (wms_url.indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image%2Fpng";
                 }
 
+                /*
+                 * Remove selected layer from legend items
+                 * memberof hs.legend.controller
+                 * function removeLayerFromLegends
+                 * @param {object} layer Layer to remove from legend
+                 */
                 $scope.removeLayerFromLegends = function(layer) {
                     for (var i = 0; i < $scope.layers.length; i++) {
                         if ($scope.layers[i].layer == layer) {
@@ -94,10 +126,22 @@ define(['angular', 'ol', 'map', 'utils'],
                     }
                 }
 
+                /*
+                 * Refresh listeners
+                 * memberof hs.legend.controller
+                 * function refresh
+                 */
                 $scope.refresh = function() {
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
+                /*
+                 * Test if layer has legend
+                 * memberof hs.legend.controller
+                 * function hasLegend
+                 * @param {object} layer Layer to test
+                 * @param {string} type Type of layer 
+                 */
                 $scope.hasLegend = function(layer, type) {
                     if (layer.type == type && layer.lyr.getVisible()) return true;
                     if (layer.type == type && layer.lyr.getVisible()) return true;

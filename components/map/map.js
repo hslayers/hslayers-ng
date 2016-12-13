@@ -142,8 +142,12 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     return utils.proxify(decodeURIComponent(tile_url_function(b, c, d)));
                 });
             } else {
+                lyr.getSource().setImageLoadFunction(function(image, src) {
+                    image.getImage().src = utils.proxify(decodeURIComponent(src, false));
+                })
                 lyr.getSource().on('imageloadstart', function(img) {
-                    if (angular.isDefined(img.image.src_)) img.image.src_ = utils.proxify(decodeURIComponent(img.image.src_), false);
+                    if (angular.isDefined(img.image.src_)) //This works on with debug version of OpenLayers
+                        img.image.src_ = utils.proxify(decodeURIComponent(img.image.src_), false);
                 }, me);
             }
         }
