@@ -34,7 +34,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
                 var s = feature.get('http://www.openvoc.eu/poi#categoryWaze');
-                
+
                 if (typeof s === 'undefined') return;
                 s = s.split("#")[1];
                 return [
@@ -366,21 +366,23 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     getCountryAtCoordinate(coordinate);
                 });
 
-                function getCountryAtCoordinate(coordinate){
+                function getCountryAtCoordinate(coordinate) {
                     var latlng = ol.proj.transform(coordinate, OlMap.map.getView().getProjection(), 'EPSG:4326');
                     $scope.country_last_clicked = null;
                     $http.get('http://api.geonames.org/extendedFindNearby?lat={0}&lng={1}&username=raitis'.format(latlng[1], latlng[0]))
                         .then(function(response) {
-                            var country_geoname = angular.element('fcl', response.data).filter(function(index) { return angular.element(this).text() === "A"; }).parent();
+                            var country_geoname = angular.element('fcl', response.data).filter(function(index) {
+                                return angular.element(this).text() === "A";
+                            }).parent();
                             $scope.country_last_clicked = {
                                 geonameId: country_geoname.find('geonameId').html(),
                                 countryName: country_geoname.find('countryName').html(),
                                 countryCode: country_geoname.find('countryCode').html()
-                            }; 
+                            };
                             angular.element('#hs-spoi-country-placeholder').html($scope.country_last_clicked.country);
                         });
                 }
-                
+
                 function createLayerSelectorForNewPoi(popup, coordinate) {
                     var possible_layers = [];
                     angular.element("#hs-spoi-new-layer-list").html('');
@@ -474,11 +476,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.editDropdownVisible = spoi_editor.editDropdownVisible;
                 $scope.editTextboxVisible = spoi_editor.editTextboxVisible;
                 $scope.saveSpoiChanges = spoi_editor.saveSpoiChanges;
-                
+
                 $scope.$on('sidebar_change', function(event, expanded) {
                     infopanel_service.enabled = expanded;
                 })
-                
+
             }
         ]).filter('usrFrSpoiAttribs', ['spoi_editor', function(spoi_editor) {
             return spoi_editor.filterAttribs;

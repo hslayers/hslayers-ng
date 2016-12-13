@@ -7,11 +7,11 @@ define(['angular', 'ol', 'map', 'utils'],
     function(angular, ol) {
         angular.module('hs.legend', ['hs.map', 'hs.utils'])
             /**
-            * @memberof hs.legend
-            * @ngdoc directive
-            * @name hs.legend.directive
-            * @description Add legend html template to the app
-            */
+             * @memberof hs.legend
+             * @ngdoc directive
+             * @name hs.legend.directive
+             * @description Add legend html template to the app
+             */
             .directive('hs.legend.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/legend/partials/legend.html?bust=' + gitsha
@@ -19,10 +19,10 @@ define(['angular', 'ol', 'map', 'utils'],
             })
 
         /**
-        * @memberof hs.legend
-        * @ngdoc controller
-        * @name hs.legend.controller
-        */
+         * @memberof hs.legend
+         * @ngdoc controller
+         * @name hs.legend.controller
+         */
         .controller('hs.legend.controller', ['$scope', 'hs.map.service', 'hs.utils.service',
             function($scope, OlMap, utils) {
                 var map = OlMap.map;

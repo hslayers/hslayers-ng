@@ -7,13 +7,13 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
     function(angular, ol, SparqlJson, social) {
         var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms', 'hs.compositions.config_parsers'])
-            
-            /**
-            * @memberof hs.compositions
-            * @name hs.compositions.directive
-            * @ngdoc directive
-            */
-            .directive('hs.compositions.directive', function() {
+
+        /**
+         * @memberof hs.compositions
+         * @name hs.compositions.directive
+         * @ngdoc directive
+         */
+        .directive('hs.compositions.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
                     link: function(scope, element) {
@@ -25,10 +25,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 };
             })
             /**
-            * @memberof hs.compositions
-            * @name hs.compositions.overwriteDialogDirective
-            * @ngdoc directive
-            */
+             * @memberof hs.compositions
+             * @name hs.compositions.overwriteDialogDirective
+             * @ngdoc directive
+             */
             .directive('hs.compositions.overwriteDialogDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html?bust=' + gitsha,
@@ -37,45 +37,45 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 };
             })
-        /**
-        * @memberof hs.compositions
-        * @name hs.compositions.deleteDialogDirective
-        * @ngdoc directive
-        */
-        .directive('hs.compositions.deleteDialogDirective', function() {
-            return {
-                templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html?bust=' + gitsha,
-                link: function(scope, element, attrs) {
-                    $('#composition-delete-dialog').modal('show');
-                }
-            };
-        })
-        /**
-        * @memberof hs.compositions
-        * @name hs.compositions.shareDialogDirective
-        * @ngdoc directive
-        */
-        .directive('hs.compositions.shareDialogDirective', function() {
-            return {
-                templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html?bust=' + gitsha,
-                link: function(scope, element, attrs) {
-                    $('#composition-share-dialog').modal('show');
-                }
-            };
-        })
-        /**
-        * @memberof hs.compositions
-        * @name hs.compositions.infoDialogDirective
-        * @ngdoc directive
-        */
-        .directive('hs.compositions.infoDialogDirective', function() {
-            return {
-                templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html?bust=' + gitsha,
-                link: function(scope, element, attrs) {
-                    $('#composition-info-dialog').modal('show');
-                }
-            };
-        })
+            /**
+             * @memberof hs.compositions
+             * @name hs.compositions.deleteDialogDirective
+             * @ngdoc directive
+             */
+            .directive('hs.compositions.deleteDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html?bust=' + gitsha,
+                    link: function(scope, element, attrs) {
+                        $('#composition-delete-dialog').modal('show');
+                    }
+                };
+            })
+            /**
+             * @memberof hs.compositions
+             * @name hs.compositions.shareDialogDirective
+             * @ngdoc directive
+             */
+            .directive('hs.compositions.shareDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html?bust=' + gitsha,
+                    link: function(scope, element, attrs) {
+                        $('#composition-share-dialog').modal('show');
+                    }
+                };
+            })
+            /**
+             * @memberof hs.compositions
+             * @name hs.compositions.infoDialogDirective
+             * @ngdoc directive
+             */
+            .directive('hs.compositions.infoDialogDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html?bust=' + gitsha,
+                    link: function(scope, element, attrs) {
+                        $('#composition-info-dialog').modal('show');
+                    }
+                };
+            })
 
         .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', 'hs.compositions.config_parsers.service',
             function(hsMap, config, Core, $rootScope, utils, nonWmsService, configParsers) {
@@ -85,6 +85,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     utils: utils,
                     current_composition_title: "",
                     load: function(url, overwrite, callback, pre_parse) {
+                        me.current_composition_url = url; 
                         url = url.replace('&amp;', '&');
                         url = utils.proxify(url);
                         $.ajax({
@@ -217,23 +218,23 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 $scope.use_callback_for_edit = false; //Used for opening Edit panel from the list of compositions
 
                 /**
-                * @memberof hs.compositions.controller
-                * @function getPreviousCompositions
-                */
+                 * @memberof hs.compositions.controller
+                 * @function getPreviousCompositions
+                 */
                 $scope.getPreviousCompositions = function() {
-                    if ($scope.compStart - $scope.page_size < 0) {
-                        $scope.compStart = 0;
-                        $scope.compNext = $scope.page_size;
-                    } else {
-                        $scope.compStart -= $scope.page_size;
-                        $scope.compNext = $scope.compStart + $scope.page_size;
+                        if ($scope.compStart - $scope.page_size < 0) {
+                            $scope.compStart = 0;
+                            $scope.compNext = $scope.page_size;
+                        } else {
+                            $scope.compStart -= $scope.page_size;
+                            $scope.compNext = $scope.compStart + $scope.page_size;
+                        }
+                        $scope.loadCompositions();
                     }
-                    $scope.loadCompositions();
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function getNextCompositions
-                */
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function getNextCompositions
+                     */
                 $scope.getNextCompositions = function() {
                     if ($scope.compNext != 0) {
                         $scope.compStart = Math.floor($scope.compNext / $scope.page_size) * $scope.page_size;
@@ -246,16 +247,16 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         $scope.loadCompositions();
                     }
                 }
-                
+
                 function getMapExtent() {
                     //
                 }
 
                 var ajax_req = null;
                 /**
-                * @memberof hs.compositions.controller
-                * @function loadCompositions
-                */
+                 * @memberof hs.compositions.controller
+                 * @function loadCompositions
+                 */
                 $scope.loadCompositions = function() {
                     var cur_map_size = hsMap.map.getSize();
                     var cur_map_extent = angular.isDefined(cur_map_size) ? hsMap.map.getView().calculateExtent(cur_map_size) : [0, 0, 100, 100];
@@ -325,123 +326,123 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
 
                 $scope.loadStatusManagerCompositions = function(bbox) {
-                    var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url;
-                    var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? '&q=' + encodeURIComponent('*' + $scope.query.title + '*') : '';
-                    url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=' + $scope.sort_by_attr_for_statusmanager;
-                    url = utils.proxify(url);
-                    ajax_req = $.ajax({
-                            url: url,
-                            cache: false
-                        })
-                        .done(function(response) {
-                            if (angular.isUndefined($scope.compositions)) {
-                                $scope.compositions = [];
-                                $scope.compositionsCount = 0;
-                            }
-                            ajax_req = null;
-                            angular.forEach(response.results, function(record) {
-                                var found = false;
-                                angular.forEach($scope.compositions, function(composition) {
-                                    if (composition.id == record.id) {
-                                        if (angular.isDefined(record.edit)) composition.editable = record.edit;
-                                        found = true;
-                                    }
-                                })
-                                if (!found) {
-                                    record.editable = false;
-                                    if (angular.isDefined(record.edit)) record.editable = record.edit;
-                                    if (angular.isUndefined(record.link)) {
-                                        record.link = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=load&id=' + record.id;
-                                    }
-                                    if (angular.isUndefined(record.thumbnail)) {
-                                        record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
-                                    }
-                                    var attributes = {
-                                        record: record,
-                                        hs_notqueryable: true,
-                                        highlighted: false
-                                    }
-                                    attributes.geometry = ol.geom.Polygon.fromExtent(composition_parser.parseExtent(record.extent));
-                                    record.feature = new ol.Feature(attributes);
-                                    extent_layer.getSource().addFeatures([record.feature]);
-                                    if (record) {
-                                        $scope.compositions.push(record);
-                                        $scope.compositionsCount = $scope.compositionsCount + 1;
-                                    }
+                        var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url;
+                        var text_filter = $scope.query && angular.isDefined($scope.query.title) && $scope.query.title != '' ? '&q=' + encodeURIComponent('*' + $scope.query.title + '*') : '';
+                        url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + text_filter + '&start=0&limit=1000&sort=' + $scope.sort_by_attr_for_statusmanager;
+                        url = utils.proxify(url);
+                        ajax_req = $.ajax({
+                                url: url,
+                                cache: false
+                            })
+                            .done(function(response) {
+                                if (angular.isUndefined($scope.compositions)) {
+                                    $scope.compositions = [];
+                                    $scope.compositionsCount = 0;
                                 }
-                            });
-                            if (!$scope.$$phase) $scope.$digest();
-                        })
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function miniFilterChanged
-                */
+                                ajax_req = null;
+                                angular.forEach(response.results, function(record) {
+                                    var found = false;
+                                    angular.forEach($scope.compositions, function(composition) {
+                                        if (composition.id == record.id) {
+                                            if (angular.isDefined(record.edit)) composition.editable = record.edit;
+                                            found = true;
+                                        }
+                                    })
+                                    if (!found) {
+                                        record.editable = false;
+                                        if (angular.isDefined(record.edit)) record.editable = record.edit;
+                                        if (angular.isUndefined(record.link)) {
+                                            record.link = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=load&id=' + record.id;
+                                        }
+                                        if (angular.isUndefined(record.thumbnail)) {
+                                            record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
+                                        }
+                                        var attributes = {
+                                            record: record,
+                                            hs_notqueryable: true,
+                                            highlighted: false
+                                        }
+                                        attributes.geometry = ol.geom.Polygon.fromExtent(composition_parser.parseExtent(record.extent));
+                                        record.feature = new ol.Feature(attributes);
+                                        extent_layer.getSource().addFeatures([record.feature]);
+                                        if (record) {
+                                            $scope.compositions.push(record);
+                                            $scope.compositionsCount = $scope.compositionsCount + 1;
+                                        }
+                                    }
+                                });
+                                if (!$scope.$$phase) $scope.$digest();
+                            })
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function miniFilterChanged
+                     */
                 $scope.mineFilterChanged = function() {
-                    if (angular.isDefined($scope.query.editable) && $scope.query.editable == false) delete $scope.query.editable;
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function filterChanged
-                */
+                        if (angular.isDefined($scope.query.editable) && $scope.query.editable == false) delete $scope.query.editable;
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function filterChanged
+                     */
                 $scope.filterChanged = function() {
-                    $scope.compStart = 0;
-                    $scope.compNext = $scope.page_size;
-                    $scope.loadCompositions();
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function confirmDelete
-                * @param {unknown} composition
-                */
+                        $scope.compStart = 0;
+                        $scope.compNext = $scope.page_size;
+                        $scope.loadCompositions();
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function confirmDelete
+                     * @param {unknown} composition
+                     */
                 $scope.confirmDelete = function(composition) {
-                    $scope.compositionToDelete = composition;
-                    if (!$scope.$$phase) $scope.$digest();
-                    $("#hs-dialog-area #composition-delete-dialog").remove();
-                    var el = angular.element('<div hs.compositions.delete_dialog_directive></span>');
-                    $("#hs-dialog-area").append(el)
-                    $compile(el)($scope);
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function delete
-                * @param {unknown} composition
-                */
+                        $scope.compositionToDelete = composition;
+                        if (!$scope.$$phase) $scope.$digest();
+                        $("#hs-dialog-area #composition-delete-dialog").remove();
+                        var el = angular.element('<div hs.compositions.delete_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function delete
+                     * @param {unknown} composition
+                     */
                 $scope.delete = function(composition) {
-                    var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
-                    url = utils.proxify(url);
-                    ajax_req = $.ajax({
-                            url: url
-                        })
-                        .done(function(response) {
-                            $rootScope.$broadcast('compositions.composition_deleted', composition.id);
-                            $scope.loadCompositions();
-                            $("#hs-dialog-area #composition-delete-dialog").remove();
-                        })
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function edit
-                * @param {unknown} composition
-                */
+                        var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
+                        url = utils.proxify(url);
+                        ajax_req = $.ajax({
+                                url: url
+                            })
+                            .done(function(response) {
+                                $rootScope.$broadcast('compositions.composition_deleted', composition.id);
+                                $scope.loadCompositions();
+                                $("#hs-dialog-area #composition-delete-dialog").remove();
+                            })
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function edit
+                     * @param {unknown} composition
+                     */
                 $scope.edit = function(composition) {
-                    $scope.use_callback_for_edit = true;
-                    $scope.loadComposition(composition);
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function callbackForEdit
-                * (PRIVATE)
-                */
+                        $scope.use_callback_for_edit = true;
+                        $scope.loadComposition(composition);
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function callbackForEdit
+                     * (PRIVATE)
+                     */
                 function callbackForEdit() {
                     Core.openStatusCreator();
                 }
                 /**
-                * @memberof hs.compositions.controller
-                * @function highlightComposition
-                * @param {unknown} composition
-                * @param {unknown} state
-                */
+                 * @memberof hs.compositions.controller
+                 * @function highlightComposition
+                 * @param {unknown} composition
+                 * @param {unknown} state
+                 */
                 $scope.highlightComposition = function(composition, state) {
                     if (angular.isDefined(composition.feature))
                         composition.feature.set('highlighted', state)
@@ -511,119 +512,119 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 });
 
                 $scope.shareComposition = function(record) {
-                    var compositionUrl = (Core.isMobile() && config.permalinkLocation ? (config.permalinkLocation.origin + config.permalinkLocation.pathname) : ($location.protocol() + "://" + location.host + location.pathname)) + "?composition=" + encodeURIComponent(record.link);
-                    var shareId = utils.generateUuid();
-                    var metadata = {};
-                    $.ajax({
-                        url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
-                        cache: false,
-                        method: 'POST',
-                        async: false,
-                        data: JSON.stringify({
-                            request: 'socialShare',
-                            id: shareId,
-                            url: encodeURIComponent(compositionUrl),
-                            title: record.title,
-                            description: record.abstract,
-                            image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg'
-                        }),
-                        success: function(j) {
-                            $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId
-                            }).success(function(data, status, headers, config) {
-                                $scope.shareUrl = data.id;
-                            }).error(function(data, status, headers, config) {
-                                console.log('Error creating short Url');
-                            });
-                        }
-                    })
+                        var compositionUrl = (Core.isMobile() && config.permalinkLocation ? (config.permalinkLocation.origin + config.permalinkLocation.pathname) : ($location.protocol() + "://" + location.host + location.pathname)) + "?composition=" + encodeURIComponent(record.link);
+                        var shareId = utils.generateUuid();
+                        var metadata = {};
+                        $.ajax({
+                            url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
+                            cache: false,
+                            method: 'POST',
+                            async: false,
+                            data: JSON.stringify({
+                                request: 'socialShare',
+                                id: shareId,
+                                url: encodeURIComponent(compositionUrl),
+                                title: record.title,
+                                description: record.abstract,
+                                image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg'
+                            }),
+                            success: function(j) {
+                                $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                                    longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId
+                                }).success(function(data, status, headers, config) {
+                                    $scope.shareUrl = data.id;
+                                }).error(function(data, status, headers, config) {
+                                    console.log('Error creating short Url');
+                                });
+                            }
+                        })
 
-                    $scope.shareTitle = record.title;
-                    $scope.shareDescription = record.abstract;
-                    if (!$scope.$$phase) $scope.$digest();
-                    $("#hs-dialog-area #composition-share-dialog").remove();
-                    var el = angular.element('<div hs.compositions.share_dialog_directive></span>');
-                    $("#hs-dialog-area").append(el)
-                    $compile(el)($scope);
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function detailComposition
-                * @param {unknown} record
-                */
-                $scope.detailComposition = function(record) {
-                    $scope.info = composition_parser.loadInfo(record.link);
-                    $scope.info.thumbnail = record.thumbnail;
-                    if (!$scope.$$phase) $scope.$digest();
-                    $("#hs-dialog-area #composition-info-dialog").remove();
-                    var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
-                    $("#hs-dialog-area").append(el)
-                    $compile(el)($scope);
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function loadComposition
-                * @param {unknown} record
-                */
-                $scope.loadComposition = function(record) {
-                    var url = record.link;
-                    var title = record.title;
-                    if (composition_parser.composition_edited == true) {
-                        var dialog_id = '#composition-overwrite-dialog';
-                        $scope.composition_to_be_loaded = url;
-                        $scope.composition_name_to_be_loaded = title;
-                        if ($("#hs-dialog-area " + dialog_id).length == 0) {
-                            var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
-                            $("#hs-dialog-area").append(el);
-                            $compile(el)($scope);
-                        } else {
-                            $(dialog_id).modal('show');
-                        }
-                    } else {
-                        composition_parser.load(url, true, $scope.use_callback_for_edit ? callbackForEdit : null);
+                        $scope.shareTitle = record.title;
+                        $scope.shareDescription = record.abstract;
+                        if (!$scope.$$phase) $scope.$digest();
+                        $("#hs-dialog-area #composition-share-dialog").remove();
+                        var el = angular.element('<div hs.compositions.share_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
                     }
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function overwrite
-                */
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function detailComposition
+                     * @param {unknown} record
+                     */
+                $scope.detailComposition = function(record) {
+                        $scope.info = composition_parser.loadInfo(record.link);
+                        $scope.info.thumbnail = record.thumbnail;
+                        if (!$scope.$$phase) $scope.$digest();
+                        $("#hs-dialog-area #composition-info-dialog").remove();
+                        var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function loadComposition
+                     * @param {unknown} record
+                     */
+                $scope.loadComposition = function(record) {
+                        var url = record.link;
+                        var title = record.title;
+                        if (composition_parser.composition_edited == true) {
+                            var dialog_id = '#composition-overwrite-dialog';
+                            $scope.composition_to_be_loaded = url;
+                            $scope.composition_name_to_be_loaded = title;
+                            if ($("#hs-dialog-area " + dialog_id).length == 0) {
+                                var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
+                                $("#hs-dialog-area").append(el);
+                                $compile(el)($scope);
+                            } else {
+                                $(dialog_id).modal('show');
+                            }
+                        } else {
+                            composition_parser.load(url, true, $scope.use_callback_for_edit ? callbackForEdit : null);
+                        }
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function overwrite
+                     */
                 $scope.overwrite = function() {
-                    composition_parser.load($scope.composition_to_be_loaded, true, $scope.use_callback_for_edit ? callbackForEdit : null);
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function add
-                */
+                        composition_parser.load($scope.composition_to_be_loaded, true, $scope.use_callback_for_edit ? callbackForEdit : null);
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function add
+                     */
                 $scope.add = function() {
-                    composition_parser.load($scope.composition_to_be_loaded, false, $scope.use_callback_for_edit ? callbackForEdit : null);
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function save
-                */
+                        composition_parser.load($scope.composition_to_be_loaded, false, $scope.use_callback_for_edit ? callbackForEdit : null);
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function save
+                     */
                 $scope.save = function() {
-                    Core.openStatusCreator();
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function setSortAttribute
-                * @param {unknown} attribute
-                */
+                        Core.openStatusCreator();
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function setSortAttribute
+                     * @param {unknown} attribute
+                     */
                 $scope.setSortAttribute = function(attribute) {
-                    $scope.sort_by = attribute;
-                    var sort_map = {
-                        bbox: '[{"property":"bbox","direction":"ASC"}]',
-                        title: '[{"property":"title","direction":"ASC"}]',
-                        date: '[{"property":"date","direction":"ASC"}]'
-                    };
-                    $scope.sort_by_attr_for_statusmanager = encodeURIComponent(sort_map[attribute]);
-                    $scope.loadCompositions();
-                }
-                /**
-                * @memberof hs.compositions.controller
-                * @function toggleKeywords
-                */
-                //$scope.loadCompositions();
+                        $scope.sort_by = attribute;
+                        var sort_map = {
+                            bbox: '[{"property":"bbox","direction":"ASC"}]',
+                            title: '[{"property":"title","direction":"ASC"}]',
+                            date: '[{"property":"date","direction":"ASC"}]'
+                        };
+                        $scope.sort_by_attr_for_statusmanager = encodeURIComponent(sort_map[attribute]);
+                        $scope.loadCompositions();
+                    }
+                    /**
+                     * @memberof hs.compositions.controller
+                     * @function toggleKeywords
+                     */
+                    //$scope.loadCompositions();
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }
@@ -648,50 +649,50 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                     $cookies.remove('hs_layers');
                 }
-                
+
                 /**
-                * @memberof hs.compositions.controller
-                * @function generateScreenshotForAll
-                */
-                $scope.generateScreenshotForAll = function(){
+                 * @memberof hs.compositions.controller
+                 * @function generateScreenshotForAll
+                 */
+                $scope.generateScreenshotForAll = function() {
                     window.resizeTo(1024, 768);
                     hsMap.map.getView().setCenter([0, 0]);
-                    hsMap.map.getView().setZoom(2); 
+                    hsMap.map.getView().setZoom(2);
                     $scope.page_size = 10000;
                     $http.delete('/compositions/store', {});
                     $scope.loadCompositions();
-                    setTimeout(function(){
-                        $scope.screenshot_queue = $scope.compositions; 
+                    setTimeout(function() {
+                        $scope.screenshot_queue = $scope.compositions;
                         screenshotTimeout = setTimeout(processScreenshotQueue, 5000);
                     }, 2000);
-                    
+
                 }
-                
+
                 //When layers are loaded fast, use this to stop timer for loading next composition
                 var screenshotTimeout = null;
-                
-                 /**
-                * @memberof hs.compositions.controller
-                * @function processScreenshotQueue
-                * (PRIVATE)
-                */
-                function processScreenshotQueue(){
+
+                /**
+                 * @memberof hs.compositions.controller
+                 * @function processScreenshotQueue
+                 * (PRIVATE)
+                 */
+                function processScreenshotQueue() {
                     var record = $scope.screenshot_queue.pop();
-                    if(console) console.log(record);
+                    if (console) console.log(record);
                     composition_parser.composition_edited = false;
-                    if(angular.isDefined(record)) {
+                    if (angular.isDefined(record)) {
                         composition_parser.id = record.id;
                         composition_parser.load(record.link, true);
                         screenshotTimeout = setTimeout(processScreenshotQueue, 5000);
                     }
                 }
-                
-                
+
+
                 /**
-                * @memberof hs.compositions.controller
-                * @function generateThumbnail
-                * (PRIVATE)
-                */
+                 * @memberof hs.compositions.controller
+                 * @function generateThumbnail
+                 * (PRIVATE)
+                 */
                 function generateThumbnail($scope) {
                     hsMap.map.once('postcompose', function(event) {
                         var canvas = event.context.canvas;
@@ -705,36 +706,37 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         var ctx2 = canvas2.getContext("2d");
                         ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
                         this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
-                      }, $scope);
+                    }, $scope);
                     hsMap.map.renderSync();
                 }
-                
+
                 $scope.$on('layermanager.layer_loaded', function(event, layer) {
-                    if(angular.isUndefined($scope.screenshot_queue) ||  $scope.screenshot_queue.length==0) return;  
+                    if (angular.isUndefined($scope.screenshot_queue) || $scope.screenshot_queue.length == 0) return;
                     var all_loaded = true;
-                    angular.forEach(hsMap.map.getLayers(), function(lyr){
-                        if(lyr.get('from_composition') && !lyr.getSource().loaded){
+                    angular.forEach(hsMap.map.getLayers(), function(lyr) {
+                        if (lyr.get('from_composition') && !lyr.getSource().loaded) {
                             all_loaded = false;
                         }
                     });
-                    if (all_loaded){
+                    if (all_loaded) {
                         console.log('all_loaded');
                         makeScreenshotAndStore();
                         clearTimeout(screenshotTimeout);
                         processScreenshotQueue();
-                        
+
                     }
                     if (!$scope.$$phase) $scope.$digest();
                 });
-                
+
                 /**
-                * @memberof hs.compositions.controller
-                * @function generateThumbnail
-                * (PRIVATE)
-                */
-                function makeScreenshotAndStore(){
+                 * @memberof hs.compositions.controller
+                 * @function generateThumbnail
+                 * (PRIVATE)
+                 */
+                function makeScreenshotAndStore() {
                     generateThumbnail($scope);
                     $http.post('/compositions/store', {
+                        url: composition_parser.current_composition_url,
                         title: composition_parser.current_composition_title,
                         id: composition_parser.id,
                         json: composition_parser.current_composition,

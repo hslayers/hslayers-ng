@@ -448,7 +448,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 }
 
                 $scope.clearAll = function() {
-                    if(confirm("Really clear all features?")){
+                    if (confirm("Really clear all features?")) {
                         $scope.features = [];
                         source.clear();
                         if (!$scope.$$phase) $scope.$digest();
@@ -475,8 +475,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                 function deleteVgiObservation(olf) {
                     $http.delete($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=tester').then(function(response) {
-                            console.log(response);
-                        });
+                        console.log(response);
+                    });
                 }
 
                 $scope.removeFeature = function(feature) {
@@ -574,7 +574,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                         var fd = new FormData();
                         fd.append('time_stamp', getCurrentTimestamp());
-                        fd.append('category_id', olf.get('category_id') /*|| 0*/);
+                        fd.append('category_id', olf.get('category_id') /*|| 0*/ );
                         if (olf.get('description')) fd.append('description', olf.get('description'));
                         fd.append('lon', cord[0]);
                         fd.append('lat', cord[1]);
@@ -600,7 +600,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 },
                                 olf: olf
                             }).then(function(response) {
-                                if(response.statusText == "OK") {
+                                if (response.statusText == "OK") {
                                     var olf = response.config.olf;
                                     olf.set('sync_pending', false);
                                     if (angular.isUndefined(olf.get('obs_vgi_id'))) olf.set('obs_vgi_id', parseInt(response.data.obs_vgi_id));
@@ -627,7 +627,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 },
                                 olf: olf
                             }).then(function(response) {
-                                if(response.statusText == "OK") {
+                                if (response.statusText == "OK") {
                                     var olf = response.config.olf;
                                     olf.set('sync_pending', false);
                                     if (response.data.media_id) {

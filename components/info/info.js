@@ -7,11 +7,11 @@ define(['angular', 'map', 'core', 'updateMeta', 'permalink'],
     function(angular) {
         angular.module('hs.info', ['hs.map', 'hs.core', 'updateMeta'])
             /**
-            * @memberof hs.info
-            * @ngdoc directive
-            * @name hs.info.directive
-            * @description Add info panel template to the app
-            */
+             * @memberof hs.info
+             * @ngdoc directive
+             * @name hs.info.directive
+             * @description Add info panel template to the app
+             */
             .directive('hs.info.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/info/partials/info.html?bust=' + gitsha
@@ -20,11 +20,11 @@ define(['angular', 'map', 'core', 'updateMeta', 'permalink'],
             })
 
         /**
-        * @memberof hs.info
-        * @ngdoc controller
-        * @name hs.info.controller
-        * @description Contain mainly listeners for compositions/layer loading
-        */
+         * @memberof hs.info
+         * @ngdoc controller
+         * @name hs.info.controller
+         * @description Contain mainly listeners for compositions/layer loading
+         */
         .controller('hs.info.controller', ['$rootScope', '$scope', '$timeout', 'Core',
             function($rootScope, $scope, $timeout, Core) {
                 $scope.Core = Core;

@@ -7,11 +7,11 @@ define(['angular'],
     function(angular) {
         angular.module('hs.print', [])
             /**
-            * @memberof hs.print
-            * @ngdoc directive
-            * @name hs.print.directive
-            * @description Add print dialog template to the app
-            */
+             * @memberof hs.print
+             * @ngdoc directive
+             * @name hs.print.directive
+             * @description Add print dialog template to the app
+             */
             .directive('hs.print.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/print/partials/printdialog.html?bust=' + gitsha
@@ -19,10 +19,10 @@ define(['angular'],
             })
 
         /**
-        * @memberof hs.print
-        * @ngdoc controller
-        * @name hs.print.controller
-        */
+         * @memberof hs.print
+         * @ngdoc controller
+         * @name hs.print.controller
+         */
         .controller('hs.print.controller', ['$scope',
             function($scope) {
                 $scope.title = "";

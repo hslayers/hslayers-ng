@@ -7,11 +7,11 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
     function(angular) {
         angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies'])
             /**
-            * @memberof hs.sidebar
-            * @ngdoc directive
-            * @name hs.sidebar.directive
-            * @description Add sidebar template to app, listeners for sidebar width changes are embed in directive
-            */
+             * @memberof hs.sidebar
+             * @ngdoc directive
+             * @name hs.sidebar.directive
+             * @description Add sidebar template to app, listeners for sidebar width changes are embed in directive
+             */
             .directive('hs.sidebar.directive', ['$compile', function($compile) {
                 return {
                     templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html?bust=' + gitsha,
@@ -34,10 +34,10 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
             }])
 
         /**
-        * @memberof hs.sidebar
-        * @ngdoc controller
-        * @name hs.sidebar.controller
-        */
+         * @memberof hs.sidebar
+         * @ngdoc controller
+         * @name hs.sidebar.controller
+         */
         .controller('hs.sidebar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window', '$cookies',
             function($scope, OlMap, Core, bus, $window, $cookies) {
                 $scope.Core = Core;

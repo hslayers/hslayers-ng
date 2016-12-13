@@ -59,7 +59,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             }
                         });
                     };
-                    
+
                 }
             ]).service("hs.query.service_infopanel", ['$rootScope',
                 function($rootScope) {

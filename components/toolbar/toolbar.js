@@ -7,11 +7,11 @@ define(['angular', 'map', 'core', 'permalink'],
     function(angular) {
         angular.module('hs.toolbar', ['hs.map', 'hs.core'])
             /**
-            * @memberof hs.toolbar
-            * @ngdoc directive
-            * @name hs.toolbar.directive
-            * @description Add toolbar to map (search field, full map button a measure button)
-            */
+             * @memberof hs.toolbar
+             * @ngdoc directive
+             * @name hs.toolbar.directive
+             * @description Add toolbar to map (search field, full map button a measure button)
+             */
             .directive('hs.toolbar.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/toolbar/partials/toolbar.html?bust=' + gitsha
@@ -19,10 +19,10 @@ define(['angular', 'map', 'core', 'permalink'],
             })
 
         /**
-            * @memberof hs.toolbar
-            * @ngdoc controller
-            * @name hs.toolbar.controller
-            */
+         * @memberof hs.toolbar
+         * @ngdoc controller
+         * @name hs.toolbar.controller
+         */
         .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window',
             function($scope, OlMap, Core, bus, $window) {
                 $scope.Core = Core;

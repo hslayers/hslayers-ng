@@ -71,8 +71,7 @@ define(['angular', 'ol', 'core'],
                     })
 
                     var query = ['INSERT DATA { GRAPH <http://www.sdi4apps.eu/poi_changes.rdf> {', lines.join('.'), '}}'].join('\n');
-                    $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
-                        )
+                    $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
                         .then(function(response) {
                             angular.forEach(attributes, function(a) {
                                 if (angular.isDefined(a.changed) && a.changed) {
@@ -93,9 +92,9 @@ define(['angular', 'ol', 'core'],
                     });
                     return filtered;
                 };
-                
-                function addPoi(layer, coordinate, country_last_clicked){
-                    var identifier = 'http://www.sdi4apps.eu/new_poi/'+ utils.generateUuid();
+
+                function addPoi(layer, coordinate, country_last_clicked) {
+                    var identifier = 'http://www.sdi4apps.eu/new_poi/' + utils.generateUuid();
                     var attrs = {
                         geometry: new ol.geom.Point(coordinate),
                         'http://purl.org/dc/elements/1.1/identifier': identifier,
@@ -106,8 +105,8 @@ define(['angular', 'ol', 'core'],
                         'http://purl.org/dc/elements/1.1/source': "",
                         'http://purl.org/dc/elements/1.1/right': "http://opendatacommons.org/licenses/odbl/1.0/",
                         'http://www.openvoc.eu/poi#openingHours': ""
-                    };                  
-                    
+                    };
+
                     var lines = [];
                     lines.push('<{0}> <http://purl.org/dc/elements/1.1/identifier> "{0}"'.format(identifier));
                     var format = new ol.format.WKT();
@@ -124,11 +123,9 @@ define(['angular', 'ol', 'core'],
                     var now = new Date();
                     lines.push('<{0}> <http://purl.org/dc/terms/1.1/created> "{1}"'.format(identifier, now.toISOString()));
                     var query = ['prefix virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> INSERT DATA { GRAPH <http://www.sdi4apps.eu/poi_changes.rdf> {', lines.join('.'), '}}'].join('\n');
-                    $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
-                        )
-                        .then(function(response) {
-                        });
-                        
+                    $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
+                        .then(function(response) {});
+
                     attrs[layer.getSource().options.category_field] = layer.get('category');
                     var feature = new ol.Feature(attrs);
                     layer.getSource().addFeatures([feature]);
@@ -174,7 +171,7 @@ define(['angular', 'ol', 'core'],
                     editDropdownVisible: editDropdownVisible,
                     editTextboxVisible: editTextboxVisible,
                     addPoi: addPoi,
-                    getSpoiCategories:getSpoiCategories
+                    getSpoiCategories: getSpoiCategories
                 }
                 return me;
             }
