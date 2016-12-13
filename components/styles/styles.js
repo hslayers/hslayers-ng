@@ -258,11 +258,36 @@ define(['angular', 'ol'],
                 $scope.$watch('service.layer', updateHasVectorFeatures);
 
                 function updateHasVectorFeatures() {
+                    if (service.layer == null) return;
+                    var src = service.layer.getSource();
                     if (angular.isUndefined(service.layer) || service.layer == null) return;
-                    $scope.hasLine = service.layer.getSource().hasLine;
-                    $scope.hasPoly = service.layer.getSource().hasPoly;
-                    $scope.hasPoint = service.layer.getSource().hasPoint;
+                    if(angular.isUndefined(src.hasLine)) 
+                        calculateHasLinePointPoly(src);
+                    $scope.hasLine = src.hasLine;
+                    $scope.hasPoly = src.hasPoly;
+                    $scope.hasPoint = src.hasPoint;
                     $scope.layerTitle = service.layer.get('title');
+                }
+                
+                function calculateHasLinePointPoly(src){
+                        src.hasLine = false;
+                        src.hasPoly = false;
+                        src.hasPoint = false;
+                        angular.forEach(src.getFeatures(), function(f) {
+                            if (f.getGeometry()) {
+                                switch (f.getGeometry().getType()) {
+                                    case 'LineString' || 'MultiLineString':
+                                        src.hasLine = true;
+                                        break;
+                                    case 'Polygon' || 'MultiPolygon':
+                                        src.hasPoly = true;
+                                        break;
+                                    case 'Point' || 'MultiPoint':
+                                        src.hasPoint = true;
+                                        break;
+                                }
+                            }
+                        })   
                 }
 
                 $scope.$watch('fillcolor', $scope.save);

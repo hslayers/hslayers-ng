@@ -625,7 +625,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                      */
                 $scope.layerIsStyleable = function(layer) {
                         if (typeof layer == 'undefined') return false;
-                        if (layer instanceof ol.layer.Vector && layer.getSource().styleAble) return true;
+                        if (layer instanceof ol.layer.Vector /*&& layer.getSource().styleAble*/) return true;
                         return false;
                     }
                     /**
