@@ -1,27 +1,30 @@
 /**
- * @namespace hs.routing
+ * @namespace hs.tracking
  * @memberOf hs
  */
-define(['angular',
-    'ol',
-    's4a',
-    'dc',
-    'map',
-    'core'
-], function(angular,
-    ol,
-    s4a) {
-    angular.module('hs.tracking', ['hs.map', 'hs.core'])
+define(['angular','ol','s4a','dc','map','core'], 
+    
+    function(angular, ol, s4a) {
+        angular.module('hs.tracking', ['hs.map', 'hs.core'])
+        
+        /**
+         * @memberof hs.tracking
+         * @ngdoc directive
+         * @name hs.tracking.directive
+         * @description Add tracking panel html template to the map
+         */
         .directive('hs.tracking.directive', function() {
             return {
                 templateUrl: hsl_path + 'components/tracking/partials/tracking.html?bust=' + gitsha
             };
         })
 
-    .controller('hs.tracking.controller', [
-        '$scope',
-        'hs.map.service',
-        'Core',
+    /**
+     * @memberof hs.tracking
+     * @ngdoc controller
+     * @name hs.tracking.controller
+     */
+    .controller('hs.tracking.controller', ['$scope', 'hs.map.service', 'Core',
         function($scope, OlMap, Core) {
 
             // Set the instance of the OpenAPI that s4a.js
@@ -76,10 +79,10 @@ define(['angular',
             });
 
             /**
-             * Add feature to source of vector layer
-             * 
+             * (PRIVATE) Add feature to source of vector layer
+             * @function addFeature
+             * @memberof hs.tracking.controller
              * @param {type} lonLatArray
-             * @returns {undefined}
              */
             var addFeature = function(lonLatArray) {
                 var feature = new ol.Feature({
@@ -92,7 +95,8 @@ define(['angular',
 
             /**
              * Load positions and observations from SensLog
-             * 
+             * @function loadValues
+             * @memberof hs.tracking.controller
              */
             var loadValues = function() {
                 SensLog.getLastPosition(3, 'sdi4apps').then(function(res) {
@@ -129,49 +133,44 @@ define(['angular',
                                 });
 
                                 // Digest scope if not already doing so
-                                if (!$scope.$$phase) {
-                                    $scope.$digest();
-                                }
-
+                                if (!$scope.$$phase) $scope.$digest();
+                                
                             });
                     }
                 });
             };
 
             /**
-             * Run when clicking start tracking button
-             * 
+             * Run when clicking start tracking button, load values in defined interval
+             * @function startTracking
+             * @memberof hs.tracking.controller
              */
             $scope.startTracking = function() {
                 $scope.isTracking = true;
                 loadValues();
-                if (!$scope.$$phase) {
-                    $scope.$digest();
-                }
+                if (!$scope.$$phase) $scope.$digest();
                 trackingInterval = setInterval(function() {
                     loadValues();
-                    if (!$scope.$$phase) {
-                        $scope.$digest();
-                    }
+                    if (!$scope.$$phase) $scope.$digest();
                 }, 5000);
             };
 
             /**
-             * Run when clicking stop tracking button
-             * 
+             * Run when clicking stop tracking button, cleans tracking
+             * @function stopTracking
+             * @memberof hs.tracking.controller 
              */
             $scope.stopTracking = function() {
                 $scope.isTracking = false;
                 clearInterval(trackingInterval);
                 $scope.clearAll();
-                if (!$scope.$$phase) {
-                    $scope.$digest();
-                }
+                if (!$scope.$$phase) $scope.$digest();
             };
 
             /**
              * Clears points from map and observations from table
-             * 
+             * @function clearAll
+             * @memberof hs.tracking.controller
              */
             $scope.clearAll = function() {
                 gjSrc.clear();
@@ -180,7 +179,8 @@ define(['angular',
 
             /**
              * Function to be run when tracking is activated
-             * 
+             * @function activate
+             * @memberof hs.tracking.controller
              */
             $scope.activate = function() {
                 map.addLayer(gjLyr);
@@ -188,7 +188,8 @@ define(['angular',
 
             /**
              * Function to be run when tracking is deactivated
-             * 
+             * @function deactivate
+             * @memberof hs.tracking.controller
              */
             $scope.deactivate = function() {
                 map.removeLayer(gjLyr);

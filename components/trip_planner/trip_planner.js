@@ -6,12 +6,24 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
 
     function(angular, ol) {
         angular.module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
+            /**
+            * @memberof hs.trip_planner
+            * @ngdoc directive
+            * @name hs.trip_planner.directive
+            * @description Add trip planner panel html template to the map
+            */
             .directive('hs.tripPlanner.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/trip_planner/partials/trip_planner.html?bust=' + gitsha
                 };
             })
 
+        /**
+        * @memberof hs.trip_planner
+        * @ngdoc service
+        * @name hs.trip_planner.service
+        * @description Service managing trip planning functions - loading, adding, storing, removing waypoints and calculating route
+        */
         .service("hs.trip_planner.service", ['Core', 'hs.map.service', 'hs.utils.service', '$http', 'hs.permalink.service_url',
             function(Core, OlMap, utils, $http, permalink) {
                 var me = {
@@ -152,12 +164,23 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
             }
         ])
 
+        /**
+        * @memberof hs.trip_planner
+        * @ngdoc directive
+        * @name hs.tripPlanner.toolbarButtonDirective
+        * @description Add trip planner button html template to the map
+        */
         .directive('hs.tripPlanner.toolbarButtonDirective', function() {
             return {
                 templateUrl: hsl_path + 'components/trip_planner/partials/toolbar_button_directive.html?bust=' + gitsha
             };
         })
 
+        /**
+        * @memberof hs.trip_planner
+        * @ngdoc controller
+        * @name hs.trip_planner.controller
+        */
         .controller('hs.trip_planner.controller', ['$scope', 'hs.map.service', 'Core', 'hs.trip_planner.service',
             function($scope, OlMap, Core, service) {
                 var map = OlMap.map;
@@ -198,6 +221,12 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                 service.scopes.push($scope);
                 var timer;
 
+                /**
+                 * Handler of adding waypoint in connected service
+                 * @memberof hs.trip_planner.controller
+                 * @function waypointAdded 
+                 * @param {object} wp Waypoint ojbect, with lat, lon and routes array
+                 */
                 $scope.waypointAdded = function(wp) {
                     var f = new ol.Feature({
                         geometry: new ol.geom.Point(ol.proj.transform([wp.lon, wp.lat], 'EPSG:4326', OlMap.map.getView().getProjection().getCode())),
@@ -224,6 +253,12 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                     }, f);
                 }
 
+                /**
+                 * (PRIVATE) Remove routes from selected waypoint
+                 * @memberof hs.trip_planner.controller
+                 * @function removeRoutesForWaypoint 
+                 * @param {object} wp Waypoint to remove routes
+                 */
                 function removeRoutesForWaypoint(wp) {
                     angular.forEach(wp.routes, function(r) {
                         $scope.routeRemoved(r);
@@ -231,6 +266,11 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                     wp.routes = [];
                 }
 
+                /**
+                 * Clear all waypoints from service and layer
+                 * @memberof hs.trip_planner.controller
+                 * @function clearAll 
+                 */
                 $scope.clearAll = function() {
                     $scope.service.waypoints = [];
                     source.clear();
@@ -239,22 +279,47 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
 
                 OlMap.map.addInteraction(modify);
 
+                /**
+                 * Handler of adding computed route to layer
+                 * @memberof hs.trip_planner.controller
+                 * @function routeAdded 
+                 * @param {GeoJSON} feature Route to add
+                 */
                 $scope.routeAdded = function(feature) {
                     source.addFeatures(feature);
                 }
 
+                /**
+                 * Remove selected route from source
+                 * @memberof hs.trip_planner.controller
+                 * @function routeRemoved 
+                 * @param {object} feature Route feature to remove
+                 */
                 $scope.routeRemoved = function(feature) {
                     try {
                         source.removeFeature(feature);
                     } catch (ex) {}
                 }
 
+                /**
+                 * Remove selected waypoint from source
+                 * @memberof hs.trip_planner.controller
+                 * @function waypointRemoved
+                 * @param {object} wp Waypoint feature to remove
+                 */
                 $scope.waypointRemoved = function(wp) {
                     try {
                         source.removeFeature(wp.feature);
                     } catch (ex) {}
                 }
 
+                /**
+                 * Remove selected waypoint from source
+                 * @memberof hs.trip_planner.controller
+                 * @function toggleEdit
+                 * @param {object} waypoint 
+                 * @param {unknown} e 
+                 */
                 $scope.toggleEdit = function(waypoint, e) {
                     waypoint.name_editing = !waypoint.name_editing;
                     $scope.service.storeWaypoints();
