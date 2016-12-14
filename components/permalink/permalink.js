@@ -355,6 +355,15 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         status_creator.generateThumbnail($('#hs-permalink-thumbnail'), $scope);
 
                     });
+                    
+                    $scope.$on('compositions.composition_loaded', function(event, data) {
+                        if(angular.isDefined(data.data)){
+                            data = data.data;
+                            $scope.title = data.title;
+                            if(config.social_hashtag) $scope.title += ' ' + config.social_hashtag;
+                            $scope.abstract = data.abstract;
+                        }
+                    })
 
                     $scope.$emit('scope_loaded', "Permalink");
                 }

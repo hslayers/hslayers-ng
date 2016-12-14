@@ -65,6 +65,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "url": 'http://foodie-dev.wirelessinfo.cz'
                 },
             },
+            social_hashtag: 'via @opentnet',
             //compositions_catalogue_url: '/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
             //compositions_catalogue_url: 'http://erra.ccss.cz/php/metadata/csw/index.php',
             //status_manager_url: '/wwwlibs/statusmanager2/index.php',
