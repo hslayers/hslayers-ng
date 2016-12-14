@@ -7,8 +7,20 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
     function(angular, ol, SparqlJson, social) {
         var module = angular.module('hs.compositions.config_parsers', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms'])
+            /**
+            * @memberof hs.compositions
+            * @ngdoc service
+            * @name hs.compositions.config_parsers.service
+            * @description TODO
+            */
             .service('hs.compositions.config_parsers.service', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', function(OlMap, config, Core, $rootScope, utils, nonWmsService) {
                 var me = {
+                    /**
+                    * TODO
+                    * @memberof hs.compositions.config_parsers.service
+                    * @function createWmsLayer 
+                    * @param {TODO} lyr_def
+                    */
                     createWmsLayer: function(lyr_def) {
                         var source_class = lyr_def.singleTile ? ol.source.ImageWMS : ol.source.TileWMS;
                         var layer_class = lyr_def.singleTile ? ol.layer.Image : ol.layer.Tile;
@@ -53,6 +65,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         return new_layer;
 
                     },
+                    /**
+                    * TODO
+                    * @memberof hs.compositions.config_parsers.service
+                    * @function createSparqlLayer 
+                    * @param {TODO} lyr_def
+                    */
                     createSparqlLayer: function(lyr_def) {
                         var url = decodeURIComponent(lyr_def.protocol.url);
                         var definition = {};
@@ -79,7 +97,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         });
                         lyr.setVisible(lyr_def.visibility);
                     },
-
+                    /**
+                    * TODO
+                    * @memberof hs.compositions.config_parsers.service
+                    * @function parseStyle 
+                    * @param {TODO} j
+                    */
                     parseStyle: function(j) {
                         var style_json = {};
                         if (angular.isDefined(j.fill)) {
@@ -129,7 +152,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         }
                         return new ol.style.Style(style_json);
                     },
-
+                    /**
+                    * TODO
+                    * @memberof hs.compositions.config_parsers.service
+                    * @function createVectorLayer 
+                    * @param {TODO} lyr_def
+                    */
                     createVectorLayer: function(lyr_def) {
                         var format = "";
                         if (angular.isDefined(lyr_def.protocol)) {
