@@ -214,6 +214,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.embed_code = "";
                     $scope.shareUrlValid = false;
                     service.shareId = null;
+                    $scope.new_share = false;
                     /**
                      * @function getEmbedCode
                      * @memberof hs.permalink.controller
@@ -236,7 +237,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.shareOnSocial = function(provider) {
                         $scope.shareProvider = provider;
                         if (!$scope.shareUrlValid) {
-                            if (service.shareId == null) service.shareId = utils.generateUuid();
+                            if (service.shareId == null || $scope.new_share) service.shareId = utils.generateUuid();
                             $.ajax({
                                 url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
                                 cache: false,
