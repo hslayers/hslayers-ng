@@ -742,7 +742,6 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                  * @function generateScreenshotForAll
                  */
                 $scope.generateScreenshotForAll = function() {
-                    window.resizeTo(1024, 768);
                     hsMap.map.getView().setCenter([0, 0]);
                     hsMap.map.getView().setZoom(2);
                     $scope.page_size = 10000;
@@ -750,6 +749,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     $scope.loadCompositions();
                     setTimeout(function() {
                         $scope.screenshot_queue = $scope.compositions;
+                        opener.setTotal($scope.screenshot_queue.length); 
                         screenshotTimeout = setTimeout(processScreenshotQueue, 5000);
                     }, 2000);
 
@@ -767,6 +767,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     var record = $scope.screenshot_queue.pop();
                     if (console) console.log(record);
                     composition_parser.composition_edited = false;
+                    if(opener && opener.progresNotif) opener.progresNotif($scope.screenshot_queue.length); 
                     if (angular.isDefined(record)) {
                         composition_parser.id = record.id;
                         composition_parser.load(record.link, true);
