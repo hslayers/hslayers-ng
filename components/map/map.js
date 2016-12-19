@@ -6,7 +6,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
     angular.module('hs.map', ['hs'])
 
     /**
-     * @class hs.map.service
+     * @ngdoc service
+     * @name hs.map.service
      * @memberOf hs.map
      * @param {object} config - Application configuration
      * @description Service for containing and initializing map object
@@ -48,8 +49,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
         /**
          * @function findLayerByTitle
-         * @memberOf hs.map.OlMap
-         * @param {string} title - title of the layer which was specified as a option when creating the layer
+         * @memberOf hs.map.service (Olmap)
+         * @param {string} title Title of the layer which was specified as a option when creating the layer
          * @description Finds a layer by its title and returns the last one if multiple are found
          */
         this.findLayerByTitle = function(title) {
@@ -73,6 +74,12 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             undefinedHTML: '&nbsp;'
         });
 
+        /**
+         * @function repopulateLayers
+         * @memberOf hs.map.service (Olmap)
+         * @param {object} visible_layers List of layers, which should be visible. When not specified, all layers get visible.
+         * @description Read all layers from app config to the map
+         */
         this.repopulateLayers = function(visible_layers) {
             if (angular.isDefined(config.box_layers)) {
                 angular.forEach(config.box_layers, function(box) {
@@ -93,6 +100,11 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             }
         }
 
+        /**
+         * @function reset
+         * @memberOf hs.map.service (Olmap)
+         * @description Reset map to state configured in app config (reload all layers and set default view)
+         */
         this.reset = function() {
             var to_be_removed = [];
             me.map.getLayers().forEach(function(lyr) {
@@ -134,6 +146,13 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             return lyr.getVisible();
         }
 
+        /**
+         * @function proxifyLayerLoader
+         * @memberOf hs.map.service (Olmap)
+         * @param {Ol.layer} lyr Layer to proxify
+         * @param {Boolean} tiled Info if layer is tiled
+         * @description Proxify layer loader
+         */
         this.proxifyLayerLoader = function(lyr, tiled) {
             var src = lyr.getSource();
             if (tiled) {
@@ -152,6 +171,11 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
     }])
 
+    /**
+     * @ngdoc directive
+     * @name hs.map.directive
+     * @memberOf hs.map
+     */
     .directive('hs.map.directive', ['Core', function(Core) {
         return {
             templateUrl: hsl_path + 'components/map/partials/map.html?bust=' + gitsha,
@@ -161,6 +185,11 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         };
     }])
 
+    /**
+     * @ngdoc controller
+     * @name hs.map.controller
+     * @memberOf hs.map
+     */
     .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.service_url', 'Core',
         function($scope, OlMap, config, permalink, Core) {
             var map = OlMap.map;
@@ -168,10 +197,10 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             /**
              * @function moveToAndZoom
              * @memberOf hs.map.controller
-             * @param {number} x -
-             * @param {number} y -
-             * @param {number} zoom -
-             * @description Move map and zoom to specified coordiante/zoom level
+             * @param {number} x X coordinate of new center
+             * @param {number} y Y coordinate of new center
+             * @param {number} zoom New zoom level
+             * @description Move map and zoom to specified coordinate/zoom level
              */
             $scope.moveToAndZoom = function(x, y, zoom) {
                 var view = OlMap.map.getView();
@@ -193,7 +222,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
              * @function setTargetDiv
              * @memberOf hs.map.controller
              * @description Sets div element of the map
-             * @param {string} div_id - ID pf the container element
+             * @param {string} div_id ID pf the container element
              * @returns {ol.Map}
              */
             $scope.setTargetDiv = function(div_id) {
@@ -202,13 +231,18 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
             /**
              * @function findLayerByTitle
-             * @memberOf hs.map.OlMap
+             * @memberOf hs.map.controller
              * @param {string} title - title of the layer which was specified as a option when creating the layer
              * @description Finds a layer by its title and returns the last one if multiple are found
              * @link hs.map.OlMap.findLayerByTitle
              */
             $scope.findLayerByTitle = OlMap.findLayerByTitle;
 
+            /**
+             * @function findLayerByTitle
+             * @memberOf hs.map.controller
+             * @description Unfinished
+             */
             $scope.showFeaturesWithAttrHideRest = function(source, attribute, value, attr_to_change, invisible_value, visible_value) {
 
             }

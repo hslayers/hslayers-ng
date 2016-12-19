@@ -6,6 +6,12 @@ define(['angular', 'ol'],
 
     function(angular, ol) {
         angular.module('hs.geolocation', ['hs.map'])
+            /**
+            * @memberof hs.geolocation
+            * @ngdoc directive
+            * @name hs.geolocation.directive
+            * @description Add geolocation tracking panel html template to map, add event listeners through link
+            */
             .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core', function(OlMap, Geolocation, Core) {
                 return {
                     templateUrl: Core.isMobile() ? hsl_path + 'components/geolocation/partials/geolocation_cordova.html?bust=' + gitsha : hsl_path + 'components/geolocation/partials/geolocation.html?bust=' + gitsha,
@@ -33,12 +39,24 @@ define(['angular', 'ol'],
                     replace: true
                 };
             }])
-
+        
+        /**
+        * @memberof hs.geolocation
+        * @ngdoc service
+        * @name hs.geolocation.service
+        * @description Contains geolocation services, for mobile version through navigator.geolocation API, for classic version through OpenLayers ol.Geolocation class
+        */
         .service('hs.geolocation.service', ['hs.map.service', '$rootScope', '$log', 'Core',
             function(OlMap, $rootScope, $log, Core) {
                 var me = {
                     following: false,
                     geolocation: null,
+                    /**
+                    * Set visibility of position layer on the map
+                    * @memberof hs.geolocation.service
+                    * @function toggleFeatures
+                    * @param {Boolean} visible Visibility of position layer (true/false)
+                    */
                     toggleFeatures: function(visible) {
                         var src = me.position_layer.getSource();
                         if (visible) {
@@ -58,12 +76,22 @@ define(['angular', 'ol'],
                 var positionFeature = new ol.Feature();
 
                 if (Core.isMobile()) {
+                    /**
+                    * (Only for Mobile) Center map on last location
+                    * @memberof hs.geolocation.service
+                    * @function set_center
+                    */
                     me.set_center = function() {
                         OlMap.map.getView().setCenter(me.last_location.latlng);
                     };
 
                     me.geolocation = navigator.geolocation;
 
+                    /**
+                    * (Only for Mobile) Toggle (Start/Stop) GPS tracking, set display of position layer accordingly 
+                    * @memberof hs.geolocation.service
+                    * @function toggleGps
+                    */
                     me.toggleGps = function() {
                         if (me.gpsStatus) {
                             me.stopGpsWatch();
@@ -74,7 +102,11 @@ define(['angular', 'ol'],
                         $rootScope.$broadcast('geolocation.switched');
                     };
 
-
+                    /**
+                    * (Only for Mobile) Start GPS tracking if possible, initialize Ol.geolocation handler
+                    * @memberof hs.geolocation.service
+                    * @function startGpsWatch
+                    */
                     me.startGpsWatch = function() {
                         if (navigator.geolocation) {
                             me.gpsStatus = true;
@@ -83,6 +115,11 @@ define(['angular', 'ol'],
                         }
                     };
 
+                    /**
+                    * (Only for Mobile) Stop GPS tracking and clears handlers
+                    * @memberof hs.geolocation.service
+                    * @function stopGpsWatch
+                    */
                     me.stopGpsWatch = function() {
                         me.gpsStatus = false;
                         // me.gpsSwitch = 'Start GPS';
@@ -90,6 +127,12 @@ define(['angular', 'ol'],
                         me.changed_handler = null;
                     };
 
+                    /**
+                    * (PRIVATE) (Only for Mobile) Callback for handling successful location response, update location variables
+                    * @memberof hs.geolocation.service
+                    * @function gpsOkCallback
+                    * @param {object} position Position object
+                    */
                     var gpsOkCallback = function(position) {
                         me.accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : '-';
                         me.altitude = position.coords.altitude ? Math.round(position.coords.altitude) : '-';
@@ -124,6 +167,12 @@ define(['angular', 'ol'],
                         $rootScope.$broadcast('geolocation.updated');
                     };
 
+                    /**
+                    * (PRIVATE) (Only for Mobile) Callback for handling geolocation error
+                    * @memberof hs.geolocation.service
+                    * @function gpsFailCallback
+                    * @param {object} e Position fail object
+                    */
                     var gpsFailCallback = function(e) {
                         var msg = 'Error ' + e.code + ': ' + e.message;
                         console.log(msg);
@@ -138,7 +187,12 @@ define(['angular', 'ol'],
                     me.geolocation = new ol.Geolocation({
                         projection: OlMap.map.getView().getProjection()
                     });
-
+                    
+                    /**
+                    * (Only for Desktop) Change handler of ol.Geolocation object (for desktop use)
+                    * @memberof hs.geolocation.service
+                    * @function changed_handler
+                    */
                     me.changed_handler = function() {
                         if (!me.geolocation.getTracking()) return;
 
@@ -212,7 +266,14 @@ define(['angular', 'ol'],
 
                 return me;
             }
-        ]).controller('hs.geolocation.controller', ['$scope', 'hs.geolocation.service', 'hs.map.service', 'Core', function($scope, service, OlMap, Core) {
+        ])
+        
+        /**
+        * @memberof hs.geolocation
+        * @name hs.geolocation.controller
+        * @ngdoc controller
+        */
+        .controller('hs.geolocation.controller', ['$scope', 'hs.geolocation.service', 'hs.map.service', 'Core', function($scope, service, OlMap, Core) {
             $scope.speed = null;
             $scope.alt = null;
             $scope.altitudeAccuracy = null;
@@ -221,7 +282,13 @@ define(['angular', 'ol'],
 
             if (Core.isMobile()) {
                 $scope.switchGps = service.toggleGps;
-
+                
+                /**
+                * Tracking info/starter, without argument return tracking status. With argument start tracking for mobile, with argument "True" start tracking for desktop 
+                * @memberof hs.geolocation.controller
+                * @function gpsActive
+                * @param {Boolean} set_to Optional argument
+                */
                 $scope.gpsActive = function(set_to) {
                     if (arguments.length === 0) {
                         return service.gpsStatus;
@@ -232,6 +299,7 @@ define(['angular', 'ol'],
                     }
                 };
             } else {
+                //Same as above, but for desktop version
                 $scope.gpsActive = function(set_to) {
                     if (arguments.length == 0)
                         return service.geolocation.getTracking();
@@ -241,10 +309,21 @@ define(['angular', 'ol'],
                 };
             }
 
+            /**
+            * Return which geolocation provider is currently used (Geolocation API / ol.Geolocation)
+            * @memberof hs.geolocation.controller
+            * @function getGeolocationProvider
+            */
             $scope.getGeolocationProvider = function() {
                 return service.geolocation;
             };
 
+            /**
+            * State manager of following function. Without arguments returns following state in Boolean. With argument change following state.
+            * @memberof hs.geolocation.controller
+            * @function following
+            * @param {Boolean} set_to Optional - Desired following state
+            */
             $scope.following = function(set_to) {
                 if (arguments.length == 0)
                     return service.following;
@@ -256,6 +335,12 @@ define(['angular', 'ol'],
                 }
             };
 
+            /**
+            * Change style of location layer
+            * @memberof hs.geolocation.controller
+            * @function setFeatureStyle
+            * @param {ol.style.Style} style New style of location layer 
+            */
             $scope.setFeatureStyle = function(style) {
                 return service.style = style;
             }
@@ -270,9 +355,7 @@ define(['angular', 'ol'],
 
             $scope.$on('geolocation.switched', function(event) {
                 service.gpsSwitch = service.gpsStatus ? 'Stop GPS' : 'Start GPS';
-                if (!$scope.$$phase) {
-                    $scope.$digest();
-                }
+                if (!$scope.$$phase) $scope.$digest();
             });
 
             $scope.$emit('scope_loaded', "Geolocation");
