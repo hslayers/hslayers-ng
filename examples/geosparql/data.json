@@ -1,15 +1,15 @@
 {
 	"popular_categories": {
-		"amenity.atm": "ATM",
-		"amenity.bank": "Bank",
-		"amenity.cafe": "Cafe",
-		"amenity.fast_food": "Fast food",
-		"amenity.pub": "Pub",
-		"amenity.restaurant": "Restaurant",
-		"tourism.hotel": "Hotel",
-		"shop.supermarket": "Supermarket",
-		"tourism.information": "Information",
-		"tourism.camp_site": "Camp Site"
+		"http://gis.zcu.cz/SPOI/Ontology#atm": "ATM",
+		"http://gis.zcu.cz/SPOI/Ontology#bank": "Bank",
+		"http://gis.zcu.cz/SPOI/Ontology#cafe": "Cafe",
+		"http://gis.zcu.cz/SPOI/Ontology#fast_food": "Fast food",
+		"http://gis.zcu.cz/SPOI/Ontology#pub": "Pub",
+		"http://gis.zcu.cz/SPOI/Ontology#restaurant": "Restaurant",
+		"http://gis.zcu.cz/SPOI/Ontology#hotel": "Hotel",
+		"http://gis.zcu.cz/SPOI/Ontology#supermarket": "Supermarket",
+		"http://gis.zcu.cz/SPOI/Ontology#information": "Information",
+		"http://gis.zcu.cz/SPOI/Ontology#camp_site": "Camp Site"
 	},
 	"http://www.openvoc.eu/poi#categoryOSM": {
 		"amenity.atm": "ATM",

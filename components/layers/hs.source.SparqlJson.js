@@ -141,6 +141,11 @@ define(function(require) {
                                         var b = updates_response.results.bindings[i];
                                         objects[b.o.value][b.attr.value] = b.value.value;
                                     }
+                                    if(typeof options.category != 'undefined'){
+                                        for(var i in objects){
+                                            objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] = options.category;
+                                        }
+                                    }    
 
                                     this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                                     this.set('loaded', true);
@@ -156,7 +161,11 @@ define(function(require) {
                                 }
                                 objects[b.o.value][b.p.value] = b.s.value;
                             }
-
+                            if(typeof options.category != 'undefined'){
+                                for(var i in objects){
+                                    objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] = options.category;
+                                }
+                            }    
                             this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                             this.styleAble = true;
                             this.hasPoint = true;

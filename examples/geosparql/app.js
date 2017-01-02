@@ -33,7 +33,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
-                var s = feature.get('http://www.openvoc.eu/poi#categoryWaze');
+                var s = feature.get('http://www.sdi4apps.eu/poi/#mainCategory');
 
                 if (typeof s === 'undefined') return;
                 s = s.split("#")[1];
@@ -54,9 +54,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
         var styleOSM = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
-                var s = feature.get('http://www.openvoc.eu/poi#categoryOSM');
+                var s = feature.get('http://www.sdi4apps.eu/poi/#mainCategory');
                 if (typeof s === 'undefined') return;
-                s = s.split(".")[1];
+                s = s.split("#")[1];
                 return [
                     new ol.style.Style({
                         image: new ol.style.Icon({
@@ -419,21 +419,28 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 });
 
                 var hr_mappings;
-                $http({
+                var list_loaded = {dynamic_categories: false, static_categories: false};
+                function checkListLoaded(){
+                    if(list_loaded.dynamic_categories && list_loaded.static_categories)
+                        OlMap.reset();
+                }
+                   
+                 $http({
                     method: 'GET',
-                    url: 'data.json',
+                    url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=SELECT+DISTINCT+%3Fmain+%3Flabel%0D%0AFROM+%3Chttp%3A%2F%2Fwww.sdi4apps.eu%2Fpoi_categories.rdf%3E%0D%0AWHERE+%7B%3Fsubs+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23subClassOf%3E+%3Fmain.+%3Fmain+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23label%3E+%3Flabel%7D+%0D%0AORDER+BY+%3Fmain+&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
                     cache: false
                 }).then(function successCallback(response) {
-                    hr_mappings = response.data;
-                    spoi_editor.init(hr_mappings);
-                    angular.forEach(hr_mappings["http://www.openvoc.eu/poi#categoryWaze"], function(name, category) {
-                        var new_lyr = new ol.layer.Vector({
+                    angular.forEach(response.data.results.bindings, function(x){
+                         var category = x.main.value;
+                         var name = x.label.value;
+                         var new_lyr = new ol.layer.Vector({
                             title: " " + name,
                             source: new SparqlJson({
                                 geom_attribute: '?geom',
-                                url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                                updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                                category_field: 'http://www.openvoc.eu/poi#categoryWaze',
+                                url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> FROM <http://www.sdi4apps.eu/poi_categories.rdf> WHERE { ?o <http://www.openvoc.eu/poi#class> ?sub. ?sub <http://www.w3.org/2000/01/rdf-schema#subClassOf> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                                updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_categories.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#class> ?sub. ?sub <http://www.w3.org/2000/01/rdf-schema#subClassOf> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                                //category_field: 'http://www.openvoc.eu/poi#class',
+                                category: category,
                                 projection: 'EPSG:3857'
                                     //feature_loaded: function(feature){feature.set('hstemplate', 'hs.geosparql_directive')}
                             }),
@@ -445,27 +452,41 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 //maxResolution: 38
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
-                    })
+                    });
+                    list_loaded.dynamic_categories = true;
+                    checkListLoaded();
+                })
+                
+                
+                $http({
+                    method: 'GET',
+                    url: 'data.json',
+                    cache: false
+                }).then(function successCallback(response) {
+                    hr_mappings = response.data;
+                    spoi_editor.init(hr_mappings);
                     angular.forEach(hr_mappings.popular_categories, function(name, category) {
                         var new_lyr = new ol.layer.Vector({
                             title: " " + name,
                             source: new SparqlJson({
                                 geom_attribute: '?geom',
-                                url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + category + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                                updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryOSM> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + category + '"). ') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
-                                category_field: 'http://www.openvoc.eu/poi#categoryOSM',
+                                url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> FROM <http://www.sdi4apps.eu/poi_categories.rdf> WHERE { ?o <http://www.openvoc.eu/poi#class>  <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). ') + '<extent>' + encodeURIComponent('?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                                updates_url: 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?date ?attr ?value FROM <http://www.sdi4apps.eu/poi.rdf> FROM <http://www.sdi4apps.eu/poi_categories.rdf> FROM <http://www.sdi4apps.eu/poi_changes.rdf> WHERE { ?o <http://www.openvoc.eu/poi#class> <' + category + '>. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false).') + '<extent>' + encodeURIComponent(' ?o <http://purl.org/dc/elements/1.1/identifier> ?id. ?c <http://www.sdi4apps.eu/poi_changes/poi_id> ?id. ?c <http://purl.org/dc/terms/1.1/created> ?date. ?c <http://www.sdi4apps.eu/poi_changes/attribute_set> ?attr_set. ?attr_set ?attr ?value } ORDER BY ?o ?date ?attr ?value') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                                //category_field: 'http://www.openvoc.eu/poi#class',
+                                category: category,
                                 projection: 'EPSG:3857'
                             }),
                             style: styleOSM,
                             visible: false,
                             path: 'Popular Categories',
-                            minResolution: 1,
-                            maxResolution: 38,
+                            //minResolution: 1,
+                            //maxResolution: 38,
                             category: category
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
                     })
-                    OlMap.reset();
+                    list_loaded.static_categories = true;
+                    checkListLoaded();
                 })
 
                 $scope.getSpoiCategories = spoi_editor.getSpoiCategories;
