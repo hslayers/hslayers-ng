@@ -4,6 +4,14 @@
  */
 define(['angular', 'ol', 'utils'],
     function(angular, ol) {
+    
+        /**
+        * (PRIVATE) Select format for WFS service
+        * @function getPreferedFormat
+        * @param {Array} formats List of formats avaiable for service
+        * @param {String} preferedFormats List of prefered formats for output 
+        * @returns {String} Either one of prefered formats or first first avaiable format  
+        */
         var getPreferedFormat = function(formats, preferedFormats) {
             for (i = 0; i < preferedFormats.length; i++) {
                 if (formats.indexOf(preferedFormats[i]) > -1) {
@@ -13,6 +21,12 @@ define(['angular', 'ol', 'utils'],
             return formats[0];
         }
 
+        /**
+        * (PRIVATE) Replace Urls in text by anchor html tag with url
+        * @function addAnchors
+        * @param {String} url String to look for Urls
+        * @returns {String} Text with added anchors 
+        */
         var addAnchors = function(url) {
             if (!url) return null;
             var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
@@ -21,7 +35,8 @@ define(['angular', 'ol', 'utils'],
 
         angular.module('hs.ows.wmts', ['hs.utils'])
             /**
-             * @class hs.ows.wmts.resampleDialogDirective
+             * @name hs.ows.wmts.resampleDialogDirective
+             * @ngdoc directive
              * @memberOf hs.ows.wmts
              * @description Directive for displaying warning dialog about resampling (proxying) wmts service
              */
@@ -33,6 +48,12 @@ define(['angular', 'ol', 'utils'],
                     }
                 };
             })
+            /**
+             * @name hs.ows.wmts.capabilitiesErrorDirective
+             * @ngdoc directive
+             * @memberOf hs.ows.wmts
+             * @description Directive for displaying dialog about getCapabilities request error
+             */
             .directive('hs.ows.wmts.capabilitiesErrorDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html?bust=' + gitsha,
@@ -43,7 +64,8 @@ define(['angular', 'ol', 'utils'],
             })
 
         /**
-         * @class hs.ows.wmts.service_capabilities
+         * @name hs.ows.wmts.service_capabilities
+         * @ngdoc service
          * @memberOf hs.ows.wmts
          * @description Service for GetCapabilities requests to wmts
          */
@@ -51,6 +73,13 @@ define(['angular', 'ol', 'utils'],
             function($http, OlMap, utils) {
                 var me = this;
 
+                /**
+                * Get WMTS service location without parameters from url string
+                * @memberof hs.ows.wmts.service_capabilities
+                * @function getPathFromUrl
+                * @param {String} str Url string to parse
+                * @returns {String} WMTS service Url
+                */
                 this.getPathFromUrl = function(str) {
                     if (str.indexOf('?') > -1)
                         return str.substring(0, str.indexOf("?"));
@@ -58,6 +87,13 @@ define(['angular', 'ol', 'utils'],
                         return str;
                 };
 
+                /**
+                * Create WMTS parameter string from parameter object 
+                * @memberof hs.ows.wmts.service_capabilities
+                * @function param2String
+                * @param {Object} obj Object with stored WNS service parameters
+                * @returns {String} Parameter string or empty string if no object given 
+                */
                 this.params2String = function(obj) {
                     return obj ? Object.keys(obj).map(function(key) {
                         var val = obj[key];
@@ -71,7 +107,14 @@ define(['angular', 'ol', 'utils'],
                         return encodeURIComponent(key) + '=' + encodeURIComponent(val);
                     }).join('&') : '';
                 };
-
+                
+                /**
+                * Parse added service url and sends GetCapabalities request to WMTS service
+                * @memberof hs.ows.wmts.service_capabilities
+                * @function requestGetCapabilities
+                * @param {String} service_url Raw Url localization of service
+                * @returns {Promise Object} Response to GetCapabalities request
+                */
                 this.requestGetCapabilities = function(service_url) {
                     service_url = service_url.replace('&amp;', '&');
                     var params = utils.getParamsFromUrl(service_url);
@@ -93,6 +136,13 @@ define(['angular', 'ol', 'utils'],
                     return promise;
                 };
 
+                /**
+                * Load all layers of selected service to the map
+                * @memberof hs.ows.wmts.service_capabilities
+                * @function service2layers
+                * @param {String} capabilities_xml Xml response of GetCapabilities of selected service
+                * @returns {Ol.tayer.tile collection} List of layers from service
+                */
                 this.service2layers = function(capabilities_xml) {
                     var parser = new ol.format.wmtsCapabilities();
                     var caps = parser.read(capabilities_xml);
@@ -138,11 +188,25 @@ define(['angular', 'ol', 'utils'],
                     return tmp;
                 }
 
+                /**
+                * (DEPRECATED ?)
+                * @memberof hs.ows.wms.service_capabilities
+                * @function getUrl
+                * @param {} url
+                * @param {} use_proxy
+                */
                 this.getUrl = function(url, use_proxy) {
                     if (typeof use_proxy == 'undefined' || !use_proxy) return url;
                     else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent(url) + '&owsService=wmts';
                 }
 
+                /**
+                * Test if current map projection is in supported projection list
+                * @memberof hs.ows.wms.service_capabilities
+                * @function currentProjectionSupported
+                * @param {Array} srss List of supported projections
+                * @returns {Boolean} True if map projection is in list, otherwise false
+                */
                 this.currentProjectionSupported = function(srss) {
                     var found = false;
                     angular.forEach(srss, function(val) {
@@ -155,11 +219,19 @@ define(['angular', 'ol', 'utils'],
         ])
 
         /**
-         * @class hs.ows.wmts.service_layer_producer
+         * @name hs.ows.wmts.service_layer_producer
          * @memberOf hs.ows.wmts
+         * @ngdoc service
          * @description Service for querying what layers are available in a wmts and adding them to map
          */
         .service("hs.ows.wmts.service_layer_producer", ['hs.map.service', 'hs.ows.wmts.service_capabilities', function(OlMap, srv_caps) {
+            /**
+            * Add service and its layers to project TODO
+            * @memberof hs.ows.wms.service_layer_producer
+            * @function addService
+            * @param {String} url Service url
+            * @param {} box TODO
+            */
             this.addService = function(url, box) {
                 srv_caps.requestGetCapabilities(url, function(resp) {
                     var ol_layers = srv_caps.service2layers(resp);
@@ -172,7 +244,8 @@ define(['angular', 'ol', 'utils'],
         }])
 
         /**
-         * @class hs.ows.wmts.controller
+         * @name hs.ows.wmts.controller
+         * @ngdoc controller
          * @memberOf hs.ows.wmts
          * @description Controller for displaying and setting parameters for wmts and its layers, which will be added to map afterwards
          */

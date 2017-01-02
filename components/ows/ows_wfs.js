@@ -5,6 +5,13 @@
 define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
     function(angular, ol, WfsSource, WFSCapabilities) {
 
+        /**
+        * (PRIVATE) Select format for WFS service
+        * @function getPreferedFormat
+        * @param {Array} formats List of formats avaiable for service
+        * @param {String} preferedFormats List of prefered formats for output 
+        * @returns {String} Either one of prefered formats or first first avaiable format  
+        */
         var getPreferedFormat = function(formats, preferedFormats) {
             for (i = 0; i < preferedFormats.length; i++) {
                 if (formats.indexOf(preferedFormats[i]) > -1) {
@@ -14,6 +21,12 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
             return formats[0];
         }
 
+        /**
+        * (PRIVATE) Replace Urls in text by anchor html tag with url
+        * @function addAnchors
+        * @param {String} url String to look for Urls
+        * @returns {String} Text with added anchors 
+        */
         var addAnchors = function(url) {
             if (!url) return null;
             var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
@@ -21,6 +34,13 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
         }
 
         angular.module('hs.ows.wfs', ['hs.utils'])
+        
+            /**
+            * @name hs.ows.wfs.capabalitiesErrorDirective
+            * @ngdoc directive
+            * @memberOf hs.ows.wfs
+            * @description Display GetCapabilities error dialog template
+            */
             .directive('hs.ows.wfs.capabilitiesErrorDirective', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html?bust=' + gitsha,
@@ -31,14 +51,22 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
             })
 
         /**
-         * @class hs.ows.wfs.service_capabilities
+         * @name hs.ows.wfs.service_capabilities
+         * @ngdoc service
          * @memberOf hs.ows.wfs
-         * @description Service for GetCapabilities requests to Wms
+         * @description Service for GetCapabilities requests to WFS
          */
-        .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service',
-            function($http, OlMap, utils) {
+        .service("hs.ows.wfs.service_capabilities", ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope',
+            function($http, OlMap, utils, $rootScope) {
                 var me = this;
 
+                /**
+                * Get WFS service location without parameters from url string
+                * @memberof hs.ows.wfs.service_capabilities
+                * @function getPathFromUrl
+                * @param {String} str Url string to parse
+                * @returns {String} WFS service Url without params
+                */
                 this.getPathFromUrl = function(str) {
                     if (str.indexOf('?') > -1)
                         return str.substring(0, str.indexOf("?"));
@@ -46,6 +74,13 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                         return str;
                 };
 
+                /**
+                * Create WFS parameter string from parameter object 
+                * @memberof hs.ows.wfs.service_capabilities
+                * @function param2String
+                * @param {Object} obj Object with stored WFS service parameters
+                * @returns {String} Parameter string or empty string if no object given 
+                */
                 this.params2String = function(obj) {
                     return obj ? Object.keys(obj).map(function(key) {
                         var val = obj[key];
@@ -60,6 +95,13 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                     }).join('&') : '';
                 };
 
+                /**
+                * Parse added service url and sends request GetCapabalities to WFS service
+                * @memberof hs.ows.wfs.service_capabilities
+                * @function requestGetCapabilities
+                * @param {String} service_url Raw Url localization of service
+                * @returns {Promise Object} Response to GetCapabalities request
+                */
                 this.requestGetCapabilities = function(service_url) {
                     service_url = service_url.replace('&amp;', '&');
                     me.service_url = service_url;
@@ -82,6 +124,13 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                     return promise;
                 };
 
+                /**
+                * Test if current map projection is in supported projection list
+                * @memberof hs.ows.wfs.service_capabilities
+                * @function currentProjectionSupported
+                * @param {Array} srss List of supported projections
+                * @returns {Boolean} True if map projection is in list, otherwise false
+                */
                 this.currentProjectionSupported = function(srss) {
                     var found = false;
                     angular.forEach(srss, function(val) {
@@ -90,6 +139,13 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                     return found;
                 }
 
+                /**
+                * (DEPRECATED ?)
+                * @memberof hs.ows.wfs.service_capabilities
+                * @function getUrl
+                * @param {} url
+                * @param {} use_proxy
+                */
                 this.getUrl = function(url, use_proxy) {
                     if (typeof use_proxy == 'undefined' || !use_proxy) return url;
                     else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent(url) + '&owsService=WMS';
@@ -98,7 +154,8 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
         ])
 
         /**
-         * @class hs.ows.wfs.controller
+         * @name hs.ows.wfs.controller
+         * @ngdoc controller
          * @memberOf hs.ows.wfs
          * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
          */
@@ -169,12 +226,12 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                             recurse(layer)
                         });
                     }
-                    /**
-                     * @function tryAddLayers
-                     * @memberOf hs.ows.wfs.controller
-                     * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
-                     * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
-                     */
+                /**
+                 * @function tryAddLayers
+                 * @memberOf hs.ows.wfs.controller
+                 * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
+                 * @param {boolean} checked - Add all available layers or only checked ones. Checked=false=all
+                 */
                 $scope.tryAddLayers = function(checked) {
                     $scope.add_all = checked;
                     $scope.addLayers(checked);
@@ -185,7 +242,7 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                  * @function addLayers
                  * @memberOf hs.ows.wfs.controller
                  * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-                 * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+                 * @param {boolean} checked - Add all available layers or olny checked ones. Checked=false=all
                  */
                 $scope.addLayers = function(checked) {
                     var recurse = function(layer) {
@@ -214,12 +271,9 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                  * @param {Object} layer capabilities layer object
                  * @param {String} layerName layer name in the map
                  * @param {String} folder name
-                 * @param {String} imageFormat
-                 * @param {String} queryFormat
-                 * @param {Boolean} singleTile
-                 * @param {OpenLayers.Size} tileSize
-                 * @param {OpenLayers.Projection} crs of the layer
-                 * @description Add selected layer to map
+                 * @param {String} outputFormat
+                 * @param {OpenLayers.Projection} srs of the layer
+                 * (PRIVATE) Add selected layer to map???
                  */
                 var addLayer = function(layer, layerName, folder, outputFormat, srs) {
                     if (console) console.log(layer);

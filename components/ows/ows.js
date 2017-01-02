@@ -7,11 +7,22 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
 
     function(angular) {
         var ows = angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.wmts', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])
+            /**
+            * @memberof hs.ows
+            * @ngdoc directive
+            * @name hs.ows.directive
+            * @description Add core ows panel html template to the map (Select source format and connect to source)
+            */
             .directive('hs.ows.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/ows/partials/ows.html?bust=' + gitsha
                 };
             })
+            /**
+            * @memberof hs.ows
+            * @ngdoc controller
+            * @name hs.ows.controller
+            */
             .controller('hs.ows.controller', ['$scope', '$injector', 'hs.ows.wms.service_capabilities', 'hs.ows.wmts.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service', 'config',
                 function($scope, $injector, srv_wms_caps, srv_wmts_caps, OlMap, permalink, Core, nonwmsservice, config) {
                     var map = OlMap.map;
@@ -27,11 +38,23 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
                     $scope.image_formats = [];
                     $scope.query_formats = [];
                     $scope.tile_size = 512;
+                    /**
+                    * Connect to service of specified Url and Type
+                    * @memberof hs.ows.controller
+                    * @function setUrlAndConnect
+                    * @param {String} url Url of requested service
+                    * @param {String} type Type of requested service
+                    */
                     $scope.setUrlAndConnect = function(url, type) {
                         $scope.url = url;
                         $scope.type = type;
                         $scope.connect();
                     }
+                    /**
+                    * Get capabalitires of selected OGC service and show details in app
+                    * @memberof hs.ows.controller
+                    * @function connect
+                    */
                     $scope.connect = function() {
                         $('.ows-capabilities').slideDown();
                         switch ($scope.type.toLowerCase()) {
@@ -51,7 +74,13 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
                                 break;
                         }
                     };
-
+                    
+                    /**
+                    * Change detail panel template according to selected type
+                    * @memberof hs.ows.controller
+                    * @function templateByType
+                    * @return {String} template Path to correct type template
+                    */
                     /**TODO: move variables out of this function. Call $scope.connected = false when template change */
                     $scope.templateByType = function() {
                         var template;
@@ -82,6 +111,12 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
                         return template;
                     };
 
+                    /**
+                    * Test if currently selected type is service or file
+                    * @memberof hs.ows.controller
+                    * @function isService
+                    * @returns {Boolean} boolean True for service, false for file
+                    */
                     $scope.isService = function() {
                         if (["kml", "geojson", "json"].indexOf($scope.type.toLowerCase()) > -1) {
                             return false;
@@ -90,12 +125,23 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
                         }
                     }
 
+                    /**
+                    * Clear Url and hide details
+                    * @memberof hs.ows.controller
+                    * @function clear
+                    */
                     $scope.clear = function() {
                         $scope.url = '';
                         $('.ows-capabilities').slideUp();
                         $scope.showDetails = false;
                     }
 
+                    /**
+                    * (PRIVATE) Zoom to selected vector layer
+                    * @memberof hs.ows.controller
+                    * @function zoomToVectorLayer
+                    * @param {ol.Layer} lyr New layer
+                    */
                     function zoomToVectorLayer(lyr) {
                         Core.setMainPanel('layermanager');
                         lyr.getSource().on('change', function() { //Event needed because features are loaded asynchronously

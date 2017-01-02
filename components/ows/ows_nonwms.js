@@ -1,12 +1,34 @@
+/**
+ * @namespace hs.ows.nonwms
+ * @memberOf hs
+ */
 define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
 
     function(angular, ol, SparqlJson, WfsSource) {
         angular.module('hs.ows.nonwms', ['hs.styles'])
 
+        /**
+        * @memberof hs.ows.nonwms
+        * @ngdoc service
+        * @name hs.ows.nonwms.service
+        * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
+        */
         .service('hs.ows.nonwms.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http',
             function(config, $rootScope, OlMap, styles, utils, $http) {
                 me = this;
 
+                /**
+                * Load nonwms OWS data and create layer
+                * @memberof hs.ows.controller
+                * @function add
+                * @param {String} type Type of data to load (supports Kml, Geojson, Wfs and Sparql) 
+                * @param {String} url Url of data/service localization
+                * @param {String} title Title of new layer
+                * @param {String} abstract Abstract of new layer
+                * @param {Boolean} extract_styles Extract styles 
+                * @param {String} srs EPSG code of selected projection (eg. "EPSG:4326")
+                * @param {Object} options Other options  
+                */
                 me.add = function(type, url, title, abstract, extract_styles, srs, options) {
                     var format;
                     var definition = {};
@@ -235,12 +257,22 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
             }
         ])
 
+        /**
+        * @memberof hs.ows.nonwms
+        * @ngdoc controller
+        * @name hs.ows.nonwms.controller
+        */
         .controller('hs.ows.nonwms.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.ows.nonwms.service', 'Core',
             function($scope, OlMap, styles, service, Core) {
                 $scope.srs = 'EPSG:3857';
                 $scope.title = "";
                 $scope.extract_styles = false;
 
+                /**
+                * Handler for adding nonwms service, file in template.
+                * @memberof hs.ows.nonwms.controller
+                * @function add
+                */
                 $scope.add = function() {
                     service.add($scope.type, $scope.url, $scope.title, $scope.abstract, $scope.extract_styles, $scope.srs);
                     Core.setMainPanel('layermanager');
