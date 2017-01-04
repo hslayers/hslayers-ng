@@ -8,7 +8,9 @@ define(['angular', 'ol', 'core'],
 
         .service("spoi_editor", ['Core', 'hs.utils.service', '$sce', 'hs.query.service_infopanel', '$http',
             function(Core, utils, $sce, info_panel_service, $http) {
-                var hr_mappings;
+                var hr_mappings = {};
+                //Atributes which are displayed without clicking 'For developer' button
+                var frnly_attribs = ['http://www.openvoc.eu/poi#categoryWaze', 'http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://www.opengis.net/ont/geosparql#sfWithin', 'http://www.w3.org/2004/02/skos/core#exactMatch', 'http://www.w3.org/2000/01/rdf-schema#seeAlso', 'http://xmlns.com/foaf/0.1/homepage', 'http://purl.org/dc/terms/1.1/created']
 
                 function attrToEnglish(name) {
                     var hr_names = {
@@ -20,8 +22,7 @@ define(['angular', 'ol', 'core'],
                         'http://www.openvoc.eu/poi#access': 'Access: ',
                         'http://www.openvoc.eu/poi#accessibility': 'Accessibility: ',
                         'http://www.openvoc.eu/poi#internetAccess': 'Internet Acces: ',
-                        'http://www.openvoc.eu/poi#categoryWaze': 'Category: ',
-                        'http://www.openvoc.eu/poi#categoryOSM': 'Subcategory: ',
+                        'http://www.openvoc.eu/poi#class': 'Category: ',
                         'http://xmlns.com/foaf/0.1/homepage': 'Homepage: ',
                         'http://www.w3.org/2000/01/rdf-schema#seeAlso': 'More info: ',
                         'http://www.w3.org/2004/02/skos/core#exactMatch': 'More info: ',
@@ -84,7 +85,6 @@ define(['angular', 'ol', 'core'],
 
                 function filterAttribs(items) {
                     var filtered = [];
-                    var frnly_attribs = ['http://www.openvoc.eu/poi#categoryWaze', 'http://www.openvoc.eu/poi#categoryOSM', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://www.opengis.net/ont/geosparql#sfWithin', 'http://www.w3.org/2004/02/skos/core#exactMatch', 'http://www.w3.org/2000/01/rdf-schema#seeAlso', 'http://xmlns.com/foaf/0.1/homepage', 'http://purl.org/dc/terms/1.1/created']
                     angular.forEach(items, function(item) {
                         if (frnly_attribs.indexOf(item.name) > -1) {
                             filtered.push(item);
@@ -93,7 +93,7 @@ define(['angular', 'ol', 'core'],
                     return filtered;
                 };
 
-                function addPoi(layer, coordinate, country_last_clicked) {
+                function addPoi(layer, coordinate, country_last_clicked, category) {
                     var identifier = 'http://www.sdi4apps.eu/new_poi/' + utils.generateUuid();
                     var attrs = {
                         geometry: new ol.geom.Point(coordinate),
@@ -104,7 +104,8 @@ define(['angular', 'ol', 'core'],
                         'http://purl.org/dc/elements/1.1/publisher': "SPOI (http://sdi4apps.eu/spoi)",
                         'http://purl.org/dc/elements/1.1/source': "",
                         'http://purl.org/dc/elements/1.1/right': "http://opendatacommons.org/licenses/odbl/1.0/",
-                        'http://www.openvoc.eu/poi#openingHours': ""
+                        'http://www.openvoc.eu/poi#openingHours': "",
+                        'http://www.sdi4apps.eu/poi/#mainCategory':  layer.get('category') //For choosing the icon
                     };
 
                     var lines = [];
@@ -112,7 +113,7 @@ define(['angular', 'ol', 'core'],
                     var format = new ol.format.WKT();
                     var wkt = format.writeGeometry(attrs.geometry.clone().transform('EPSG:3857', 'EPSG:4326'));
                     lines.push('<{0}> <http://www.opengis.net/ont/geosparql#asWKT> "{1}"^^virtrdf:Geometry'.format(identifier, wkt));
-                    lines.push('<{0}> <{1}> <{2}>'.format(identifier, layer.getSource().options.category_field, layer.get('category')));
+                    lines.push('<{0}> <{1}> <{2}>'.format(identifier, layer.getSource().options.category_field, category));
                     lines.push('<{0}> <http://purl.org/dc/elements/1.1/title> "New point"'.format(identifier));
                     lines.push('<{0}> <http://www.w3.org/2000/01/rdf-schema#label> "New point"'.format(identifier));
                     lines.push('<{0}> <http://purl.org/dc/elements/1.1/publisher> "SPOI (http://sdi4apps.eu/spoi)"'.format(identifier));
@@ -126,7 +127,7 @@ define(['angular', 'ol', 'core'],
                     $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
                         .then(function(response) {});
 
-                    attrs[layer.getSource().options.category_field] = layer.get('category');
+                    attrs[layer.getSource().options.category_field] = category;
                     var feature = new ol.Feature(attrs);
                     layer.getSource().addFeatures([feature]);
                     return feature;
@@ -145,7 +146,11 @@ define(['angular', 'ol', 'core'],
                 }
 
                 function editDropdownVisible(attribute) {
-                    return attribute.is_editing && angular.isDefined(getSpoiCategories(attribute.name));
+                    return attribute.is_editing && angular.isDefined(getSpoiDropdownItems(attribute.name)) && (attribute.name.indexOf('#class')<=0);
+                }
+                
+                function editCategoryDropdownVisible(attribute) {
+                    return attribute.is_editing && angular.isDefined(getSpoiCategories()) && (attribute.name.indexOf('#class')>0);
                 }
 
                 function editTextboxVisible(attribute) {
@@ -156,8 +161,26 @@ define(['angular', 'ol', 'core'],
                     hr_mappings = hr_map
                 }
 
-                function getSpoiCategories(group) {
+                function getSpoiCategories() {
+                    return hr_mappings.category_hierarchy;
+                }
+                
+                function getSpoiDropdownItems(group) {
                     return hr_mappings[group];
+                }
+                
+                function registerCategory(main_category, main_label, sub_category, sub_label){
+                    var json_sub_category = {};
+                    json_sub_category[sub_category] = sub_label;
+                    var json_main_category = {};
+                    json_main_category[main_category] = json_sub_category;
+                    var o = {"http://www.openvoc.eu/poi#class": {}, "category_hierarchy": json_main_category};
+                    o["http://www.openvoc.eu/poi#class"][sub_category] = sub_label;
+                    hr_mappings = angular.merge({}, hr_mappings, o);
+                }
+                
+                function getCategoryHierarchy(){
+                    return hr_mappings.category_hierarchy;
                 }
 
                 var me = {
@@ -169,9 +192,13 @@ define(['angular', 'ol', 'core'],
                     startEdit: startEdit,
                     attributesHaveChanged: attributesHaveChanged,
                     editDropdownVisible: editDropdownVisible,
+                    editCategoryDropdownVisible: editCategoryDropdownVisible,
+                    getSpoiDropdownItems: getSpoiDropdownItems,
                     editTextboxVisible: editTextboxVisible,
                     addPoi: addPoi,
-                    getSpoiCategories: getSpoiCategories
+                    getSpoiCategories: getSpoiCategories,
+                    registerCategory: registerCategory,
+                    getCategoryHierarchy: getCategoryHierarchy
                 }
                 return me;
             }

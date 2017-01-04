@@ -22,8 +22,13 @@
             <span class="hs-spoi-feature-info">{{attrToEnglish(attribute.name)}} <span ng-bind-html="makeHumanReadable(attribute)"></span></span>
             <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)"><i class="glyphicon glyphicon-edit"></i></button></div>  
             <input class="form-control" ng-show="editTextboxVisible(attribute)" ng-change="attribute.changed = true" ng-model="attribute.value"/>
+            <select class="form-control hs-spoi-feature-info" ng-show="editCategoryDropdownVisible(attribute)" ng-model="attribute.value" ng-change="attribute.changed = true"> 
+                <optgroup ng-repeat="(key, group) in getSpoiCategories()" label="{{splitAddress(key)}}">
+                     <option ng-repeat="(key2, value) in group" ng-selected="key2==attribute.value" value="{{key2}}">{{value}} ({{key2}})</option>
+                </optgroup>
+            </select>
             <select class="form-control hs-spoi-feature-info" ng-show="editDropdownVisible(attribute)" ng-model="attribute.value" ng-change="attribute.changed = true"> 
-                <option ng-repeat="(key, value) in getSpoiCategories(attribute.name)" ng-selected="key==attribute.value" value="{{key}}">{{value}} ({{key}})</option>
+               <option ng-repeat="(key2, value) in getSpoiDropdownItems(attribute.name)" ng-selected="key2==attribute.value" value="{{key2}}">{{value}} ({{key2}})</option>
             </select>
         </div>
         <!-- Coordinates -->
