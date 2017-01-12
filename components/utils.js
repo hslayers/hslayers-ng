@@ -6,7 +6,8 @@ define(['angular', 'app'], function(angular, app) {
     angular.module('hs.utils', ['hs'])
 
     /**
-     * @class hs.utils.service
+     * @ngdoc service
+     * @name hs.utils.service
      * @memberOf hs.utils
      * @param {object} config - Application configuration
      * @description Service for containing various utility functions
@@ -14,6 +15,14 @@ define(['angular', 'app'], function(angular, app) {
     .service('hs.utils.service', ['config', function(config) {
         var me = this;
 
+        /**
+        * @function proxify
+        * @memberof hs.utils.service
+        * @params {String} url Url to proxify
+        * @params {Boolean} toEncoding Optional parameter if UTF-8 encoding shouldn´t be used for non-image Urls.         
+        * @returns {String} Encoded Url with path to script 
+        * Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
+        */
         this.proxify = function(url, toEncoding) {
             toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
             var outUrl = url;
@@ -28,12 +37,26 @@ define(['angular', 'app'], function(angular, app) {
             return outUrl;
         }
 
+        /**
+        * @function parseXexString
+        * @memberof hs.utils.service
+        * @params {String} hex 
+        * @returns {Array} 
+        * DEPRECATED?
+        */
         this.parseHexString = function(hex) {
             for (var bytes = [], c = 0; c < hex.length; c += 2)
                 bytes.push(parseInt(hex.substr(c, 2), 16));
             return bytes;
         }
 
+        /**
+        * @function createHexString
+        * @memberof hs.utils.service
+        * @params {Array} bytes 
+        * @returns {String} 
+        * DEPRECATED?
+        */
         this.createHexString = function(bytes) {
             for (var hex = [], i = 0; i < bytes.length; i++) {
                 hex.push((bytes[i] >>> 4).toString(16));
@@ -42,6 +65,13 @@ define(['angular', 'app'], function(angular, app) {
             return hex.join("");
         }
 
+        /**
+        * @function getParamsFromUrl
+        * @memberof hs.utils.service
+        * @params {String} str Url to parse for paramameters 
+        * @returns {Object} Object with parameter key-value pairs 
+        * Parse parameters and their values from Url string with Querry string
+        */
         this.getParamsFromUrl = function(str) {
             if (typeof str !== 'string') {
                 return {};
@@ -74,6 +104,13 @@ define(['angular', 'app'], function(angular, app) {
             }, {});
         };
 
+        /**
+        * @function paramsToUrl
+        * @memberof hs.utils.service
+        * @params {Object} array Parameter object with parameter key-value pairs 
+        * @returns {String} Joined encoded Url query string
+        * Create encoded Url string from Parameter array
+        */
         this.paramsToURL = function(array) {
             var pairs = [];
             for (var key in array)
@@ -83,6 +120,12 @@ define(['angular', 'app'], function(angular, app) {
             return pairs.join('&');
         }
 
+        /**
+        * @function generateUuid
+        * @memberof hs.utils.service
+        * @returns {String} Random uuid 
+        * Generate randomized uuid
+        */
         this.generateUuid = function() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 var r = Math.random() * 16 | 0,
@@ -150,12 +193,12 @@ define(['angular', 'app'], function(angular, app) {
                 });
             };
         }
-        
+
         if (!String.prototype.capitalizeFirstLetter) {
             String.prototype.capitalizeFirstLetter = function() {
                 return this.charAt(0).toUpperCase() + this.slice(1);
             }
         }
-
+        
     }])
 })

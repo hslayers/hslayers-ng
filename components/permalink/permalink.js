@@ -10,6 +10,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
              * @ngdoc directive
              * @name hs.permalink.directive
              * @membeof hs.permalink
+             * @description Display Embed map and share panel in the aplication. Panel contains Iframe code or Url links for current map or possibility to share map on social networks (Facebook, Twitter, Google+) with title and abstract.
              */
             .directive('hs.permalink.directive', function() {
                 return {
@@ -20,6 +21,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
              * @ngdoc service
              * @name hs.permalink.service_url
              * @membeof hs.permalink
+             * @description 
              */
             .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config',
                 function($rootScope, $location, $window, OlMap, Core, utils, status, compositions, config) {
@@ -31,6 +33,13 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     me.permalinkLayers = "";
                     me.added_layers = [];
                     me.params = [];
+                    
+                    /**
+                    * @function update
+                    * @memberof hs.permalink.service_url
+                    * @params {Object} e Event changing map state
+                    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
+                    */
                     me.update = function(e) {
                         var view = OlMap.map.getView();
                         me.id = status.generateUuid();
@@ -62,7 +71,13 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             path: me.current_url
                         }, "any", window.location.origin + me.current_url);
                     };
-
+                    
+                    /**
+                    * @function getPermalinkUrl
+                    * @memberof hs.permalink.service_url
+                    * @returns {String} Permalink url
+                    * Create permalink Url to map
+                    */
                     me.getPermalinkUrl = function() {
                         var stringLayers = (JSON.stringify(me.permalinkLayers));
                         stringLayers = stringLayers.substring(1, stringLayers.length - 1);
@@ -73,6 +88,12 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         }
                     }
 
+                    /**
+                    * @function getEmbededUrl
+                    * @memberof hs.permalink.service_url
+                    * @returns {String} Embeded url
+                    * Create Url for embeded version of map
+                    */
                     me.getEmbededUrl = function() {
                         var stringLayers = (JSON.stringify(me.permalinkLayers));
                         stringLayers = stringLayers.substring(1, stringLayers.length - 1);
@@ -100,6 +121,13 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         return embedUrl + utils.paramsToURL(params);
                     }
 
+                    /**
+                    * @function parse
+                    * @memberof hs.permalink.service_url
+                    * @params {String} str Parameter string to parse
+                    * @returns {Object} Parsed parameter object
+                    * Parse parameter string from Url into key-value(s) pairs
+                    */
                     me.parse = function(str) {
                         if (typeof str !== 'string') {
                             return {};
@@ -133,6 +161,11 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         }, {});
                     };
 
+                    /**
+                    * @function parsePermalinkLayers
+                    * @memberof hs.permalink.service_url
+                    * Load layers received through permalink to map
+                    */
                     me.parsePermalinkLayers = function() {
                         var layersUrl = utils.proxify(me.getParamValue('permalink'));
                         $.ajax({
@@ -155,6 +188,14 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             })
 
                     }
+                    
+                    /**
+                    * @function stringify
+                    * @memberof hs.permalink.service_url
+                    * @params {Object} obj Parameter object to stringify
+                    * @returns {String} Encoded parameter string or "" if no parameter object is given
+                    * Create encoded parameter string from parameter object
+                    */
                     me.stringify = function(obj) {
                         return obj ? Object.keys(obj).map(function(key) {
                             var val = obj[key];
@@ -168,6 +209,14 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             return encodeURIComponent(key) + '=' + encodeURIComponent(val);
                         }).join('&') : '';
                     };
+                    
+                    /**
+                    * @function push
+                    * @memberof hs.permalink.service_url
+                    * @params {Object key} key Key name for pushed parameter
+                    * @params {Object value} new_value Value for pushed parameter
+                    * Push new key-value pair into paramater object and update Url string with new params
+                    */
                     me.push = function(key, new_value) {
                         me.params[key] = new_value;
                         var new_params_string = me.stringify(me.params);
@@ -176,6 +225,13 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         me.current_url = me.pathname + '?' + new_params_string;
                     };
 
+                    /**
+                    * @function getParamValue
+                    * @memberof hs.permalink.service_url
+                    * @params {String} param Param to get current value
+                    * @returns {String} Current value for requested param or null if param doesn´t exist
+                    * Find current param value from Url
+                    */
                     me.getParamValue = function(param) {
                         var tmp = me.parse(location.search);
                         if (tmp[param]) return tmp[param];
@@ -215,25 +271,32 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.shareUrlValid = false;
                     service.shareId = null;
                     $scope.new_share = false;
+                    
                     /**
                      * @function getEmbedCode
                      * @memberof hs.permalink.controller
+                     * @returns {String} Iframe tag with src attribute on embed Url and default width and height (1000x700px)
+                     * Create Iframe tag for embeded map
                      */
                     $scope.getEmbedCode = function() {
                             return '<iframe src="' + $scope.embed_url + '" width="1000" height="700"></iframe>';
                         }
-                        /**
-                         * @function invalidateShareUrl
-                         * @memberof hs.permalink.controller
-                         */
+                    
+                    /**
+                     * @function invalidateShareUrl
+                     * @memberof hs.permalink.controller
+                    * Set share Url state invalid
+                    */
                     $scope.invalidateShareUrl = function() {
                             $scope.shareUrlValid = false;
                         }
-                        /**
-                         * @function shareOnSocial
-                         * @memberof hs.permalink.controller
-                         * @param {unknown} provider
-                         */
+                    
+                    /**
+                     * @function shareOnSocial
+                     * @memberof hs.permalink.controller
+                     * @param {String} provider Social network provider for sharing
+                     * Create share post on selected social network
+                     */
                     $scope.shareOnSocial = function(provider) {
                         $scope.shareProvider = provider;
                         if (!$scope.shareUrlValid) {

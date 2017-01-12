@@ -6,11 +6,25 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
     function(angular, ol) {
         angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
+            
+            /**
+            * @ngdoc directive
+            * @name hs.query.directiveInfopanel
+            * @memberOf hs.query
+            * @description Display Infopanel with query results
+            */
             .directive('hs.query.directiveInfopanel', ['config', function(config) {
                 return {
                     templateUrl: config.infopanel_template || hsl_path + 'components/query/partials/infopanel.html?bust=' + gitsha
                 };
             }])
+        
+            /**
+            * @ngdoc directive
+            * @name hs.query.infovalue
+            * @memberOf hs.query
+            * @description 
+            */
             .directive('hs.query.infovalue', ['$compile', function($compile) {
 
                 function link(scope, element, attrs) {
@@ -46,9 +60,24 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     link: link
                 };
             }])
+        
+            /**
+            * @ngdoc service
+            * @name hs.query.service_getwmsfeatureinfo
+            * @memberOf hs.query
+            * @description Service for handling WMS GetFeatureInfo requests 
+            */
             .service('hs.query.service_getwmsfeatureinfo', ['hs.utils.service',
                 function(utils) {
-                    this.request = function(url, info_format, coordinate) {
+                    /**
+                    * @function request
+                    * @memberOf hs.query.service_getwmsfeatureinfo
+                    * @params {String} url Complete Url of GetFeatureInfo request
+                    * @params {String} info_format Expected info_format, necessary for automated response handling
+                    * @params {Ol.coordinate} coordinate Coordinate of feature to Get info
+                    * Send GetFeatureInfo request to selected url and push response data on success to response handler.
+                    */
+                    this.request = function(url, info_format, coordinate) {                    
                         var req_url = utils.proxify(url);
                         var me = this;
                         $.ajax({
@@ -61,17 +90,37 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     };
 
                 }
-            ]).service("hs.query.service_infopanel", ['$rootScope',
+            ])
+        
+            /**
+            * @ngdoc service
+            * @name hs.query.service_infopanel
+            * @memberOf hs.query
+            * @description Keep and update information for displaying inside Info Panel. Use two variables for storing - groups (for classic info from WMS or vectors) and attributes (tool spcific info, e.g. lodexplorer)
+            */
+            .service("hs.query.service_infopanel", ['$rootScope',
                 function($rootScope) {
                     var me = {
                         //Used for tool specific info, such as lodexplorer region names and values
                         attributes: [],
                         //Used for getfeatureinfo. There exists a seperate group for each feature which is found at the specific coordinates
                         groups: [],
+                        /**
+                        * @function setAttributes
+                        * @memberof hs.query.service_infopanel
+                        * @params {Object} j New content
+                        * Rewrite content of attributes variable with passed data
+                        */
                         setAttributes: function(j) {
                             me.attributes = j;
                             $rootScope.$broadcast('infopanel.updated');
                         },
+                        /**
+                        * @function setGroups
+                        * @memberof hs.query.service_infopanel
+                        * @params {Object} j New content
+                        * Rewrite content of groups variable with passed data
+                        */
                         setGroups: function(j) {
                             me.groups = j;
                             $rootScope.$broadcast('infopanel.updated');
@@ -83,6 +132,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 }
             ])
 
+        /**
+        * @ngdoc controller
+        * @name hs.query.controller
+        * @memberOf hs.query
+        */
         .controller('hs.query.controller', ['$scope', 'hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
                 var map = OlMap.map;
@@ -95,6 +149,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 });
 
                 var vectors_selected = false;
+                
                 selector.getFeatures().on('add', function(e) {
                     //if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
@@ -110,6 +165,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     $scope.$broadcast('infopanel.feature_deselected', e.element);
                 })
 
+                /**
+                * @function getFeatureAttributes
+                * @memberOf hs.query.controller
+                * @params {Object} feature Selected feature from map
+                * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
+                */
                 var getFeatureAttributes = function(feature) {
                     if (!Core.current_panel_queryable) return;
                     var attributes = [];
@@ -165,6 +226,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     vectors_selected = true;
                 }
 
+                /**
+                * @function featureInfoReceived
+                * @memberOf hs.query.service_getwmsfeatureinfo
+                * @params {Object} response Response of GetFeatureInfoRequest
+                * @params {String} info_format Format of GetFeatureInfoResponse
+                * @params {String} url Url of request 
+                * @params {Ol.coordinate object} coordinate Coordinate of request
+                * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
+                */
                 WmsGetFeatureInfo.featureInfoReceived = function(response, info_format, url, coordinate) {
                     /* Maybe this will work in future OL versions
                      *
@@ -248,6 +318,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     }
                 }
 
+                /**
+                * @function fillIframeAndResize
+                * @memberOf hs.query.controller
+                * @params {JQuery object} $iframe Selected element to fill
+                * @params {TODO} response TODO
+                * @params {Boolean} append Whether add html code to element (true) or complety replace element content (false)
+                * (PRIVATE) Fill popover iframe with correct content a resize element to fit content (with maximal size 720 x 700 px)
+                */
                 function fillIframeAndResize($iframe, response, append) {
                     if (append)
                         $iframe.contents().find('body').append(response);
@@ -264,6 +342,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                 var popup = null;
 
+                /**
+                * @function createFeatureInfoPopupIfNeeded
+                * @memberOf hs.query.controller
+                * @params {Object} coordinate Position for displaying popup
+                * (PRIVATE) (re)Create popup Overlay for displaying Info.
+                */
                 function createFeatureInfoPopupIfNeeded(coordinate) {
                     if ($('.getfeatureinfo_popup').length > 0) {
                         $(popup.getElement()).popover('destroy');
@@ -293,6 +377,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     popup.setPosition(coordinate);
                 }
 
+                /**
+                * @function panIntoView
+                * @memberOf hs.query.controller
+                * @params {Object} coord
+                * (PRIVATE) Move view to fit popup into view.
+                */
                 function panIntoView(coord) {
                     var popSize = {
                             width: $("#invisible_popup").width() + 40,
@@ -340,11 +430,24 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 $scope.InfoPanelService = InfoPanelService;
 
                 //Example: displayGroupWithAttributes({name: "My group", attributes: [{name:"foo", value:"bar"}]
+                /**
+                * @function displayGroupWithAttributes
+                * @memberOf hs.query.controller
+                * @params {Object} group Data to add into attributes
+                * Add passed data into InfoPanel service attribute variable
+                */
                 $scope.displayGroupWithAttributes = function(group) {
                     InfoPanelService.groups.push(group);
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
+                /**
+                * @function showCoordinate
+                * @memberOf hs.query.controller
+                * @params {Ol.coordinate} coordinate Coordinate of click
+                * @params {Boolean} clear Choice if rewrite group variable (true) or append to group variable (false)
+                * Add Coordinate data of querried point into InfoPanel service Group variable
+                */
                 $scope.showCoordinate = function(coordinate, clear) {
                     point_clicked.setCoordinates(coordinate, 'XY');
                     var groups = clear ? [] : InfoPanelService.groups;
@@ -361,6 +464,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     InfoPanelService.setGroups(groups);
                 }
 
+                /**
+                * @function isLayerQueriable
+                * @memberOf hs.query.controller
+                * @params {Ol.layer} layer Layer to test
+                * (PRIVATE) Test if selected layer is Queriable (Possible for TileWMS and ImageWMS ol.source) 
+                */
                 var isLayerQueriable = function(layer) {
                     if (layer instanceof ol.layer.Tile &&
                         layer.getSource() instanceof ol.source.TileWMS &&
@@ -371,6 +480,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     return false;
                 }
 
+                /**
+                * @function queryWmsLayer
+                * @memberOf hs.query.controller
+                * @params {Ol.Layer} layer Layer to Query
+                * @params {Ol.coordinate} coordinate
+                * Get FeatureInfo from WMS queriable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
+                */
                 $scope.queryWmsLayer = function(layer, coordinate) {
                     if (isLayerQueriable(layer)) {
                         var source = layer.getSource();
@@ -388,10 +504,20 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     }
                 }
 
+                /**
+                * @function activateFeatureQueries
+                * @memberOf hs.query.controller
+                * Activate query interaction on the map
+                */
                 $scope.activateFeatureQueries = function() {
                     map.addInteraction(selector);
                 }
 
+                /**
+                * @function clearInfoPanel
+                * @memberOf hs.query.controller
+                * Clears saved data for infopanel
+                */
                 $scope.clearInfoPanel = function() {
                     InfoPanelService.attributes = [];
                     InfoPanelService.setGroups([]);
@@ -403,6 +529,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (!$scope.$$phase) $scope.$digest();
                 });
 
+                /**
+                * @function createCurrentPointLayer
+                * @memberOf hs.query.controller
+                * Create new point layer for storing queried point, clean old layer and add it to map    
+                */
                 $scope.createCurrentPointLayer = function() {
                     if (lyr) map.getLayers().remove(lyr);
                     lyr = new ol.layer.Vector({
