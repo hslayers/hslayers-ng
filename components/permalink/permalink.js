@@ -118,7 +118,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             params.hsl_path = embedHsl_Path;
                         if (angular.isDefined(me.pathname + window.hsl_app) && angular.isDefined(window.hsl_app))
                             params.hsl_app = me.pathname + window.hsl_app;
-                        return embedUrl + utils.paramsToURL(params);
+                        return embedUrl + '&'+ utils.paramsToURLWoEncode(params);
                     }
 
                     /**

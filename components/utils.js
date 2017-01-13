@@ -119,6 +119,22 @@ define(['angular', 'app'], function(angular, app) {
                     pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(array[key]));
             return pairs.join('&');
         }
+        
+        /**
+        * @function paramsToUrl
+        * @memberof hs.utils.service
+        * @params {Object} array Parameter object with parameter key-value pairs 
+        * @returns {String} Joined encoded Url query string
+        * Create encoded Url string from Parameter array
+        */
+        this.paramsToURLWoEncode = function(array) {
+            var pairs = [];
+            for (var key in array)
+                if (array.hasOwnProperty(key))
+
+                    pairs.push(key + '=' + array[key]);
+            return pairs.join('&');
+        }
 
         /**
         * @function generateUuid
