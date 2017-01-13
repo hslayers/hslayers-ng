@@ -208,8 +208,8 @@ msgid "Embed map"
 msgstr "Carte incorporée"
 
 #: components/info/partials/info.html:7
-msgid "Empty map"
-msgstr "Carte vide"
+msgid "New map"
+msgstr "Carte nouvelle"
 
 #: components/lodexplorer/partials/lodexplorer.html:2
 msgid "Eurostat explorer"

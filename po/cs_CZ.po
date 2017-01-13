@@ -207,8 +207,8 @@ msgid "Embed map"
 msgstr "Kód pro vložení mapy"
 
 #: components/info/partials/info.html:7
-msgid "Empty map"
-msgstr "Prázdná mapa"
+msgid "New map"
+msgstr "Nová mapa"
 
 #: components/lodexplorer/partials/lodexplorer.html:2
 msgid "Eurostat explorer"

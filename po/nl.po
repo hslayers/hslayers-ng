@@ -206,8 +206,8 @@ msgid "Embed map"
 msgstr "Embed kaart"
 
 #: components/info/partials/info.html:7
-msgid "Empty map"
-msgstr "lege kaart"
+msgid "New map"
+msgstr "Nieuwe kaart"
 
 #: components/lodexplorer/partials/lodexplorer.html:2
 msgid "Eurostat explorer"
