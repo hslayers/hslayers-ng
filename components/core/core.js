@@ -103,6 +103,12 @@ require.config({
 define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
     function(angular, proj4) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
+            /**
+            * @ngdoc service
+            * @name Core
+            * @memberOf hs.core
+            * @description Core service of HSL, keeps important app-level settings.
+            */
             .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache',
                 function($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache) {
                     var me = {
@@ -121,6 +127,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         panel_enabled: {},
                         _exist_cache: {},
                         current_panel_queryable: false,
+                        /**
+                         * @function setMainPanel
+                         * @memberOf Core
+                         * @param {String} which New panel to activate
+                         * @param {Boolean} by_gui Whether function call came as result of GUI action
+                         * @param {Boolean} queryable If map should be queryable with new mainpanel
+                         * Sets new main panel (Active panel when sidebar is in expanded mode). Change GUI and queryable status of map
+                         */
                         setMainPanel: function(which, by_gui, queryable) {
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
@@ -139,10 +153,22 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
+                        /**
+                         * @function setDefaultPanel
+                         * @memberOf Core
+                         * @param {String} which Panel to be default
+                         * Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
+                         */
                         setDefaultPanel: function(which) {
                             me.defaultPanel = which;
                             me.setMainPanel(which);
                         },
+                        /**
+                         * @function updateMapSize
+                         * @memberOf Core
+                         * @param {} open ?UNUSED
+                         * Change size of map element in application. Size should be rest of window width next to sidebar
+                         */
                         updateMapSize: function(open) {
                             var w = angular.element($window);
                             var map = $("#map");
@@ -154,7 +180,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             OlMap.map.updateSize();
                         },
-
+                        /**
+                         * @function panelVisible
+                         * @memberOf Core
+                         * @param {String} which 
+                         * @param {Angular scope} scope 
+                         * TODO
+                         */
                         panelVisible: function(which, scope) {
                             if (angular.isDefined(scope))
                                 if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
@@ -165,10 +197,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                          * @function panelEnabled
-                         * @memberOf hs.core.Core
-                         * @description Gets and sets whether a panel is visible in the sidebar so it can be hidden even though the panels controller is loaded.
-                         * @param {String} which - Panel name
-                         * @param {Boolean} which - Status of the panel
+                         * @memberOf Core
+                         * @param {String} which Panel name
+                         * @param {Boolean} status Expected status of the panel
+                         * Gets and sets whether a panel is visible in the sidebar so it can be hidden even though the panels controller is loaded.
                          */
                         panelEnabled: function(which, status) {
                             if (typeof status == 'undefined') {
@@ -179,6 +211,11 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             } else
                                 me.panel_enabled[which] = status;
                         },
+                        /**
+                         * @function hidePanels
+                         * @memberOf Core
+                         * Hide panels Deprecated?
+                         */
                         hidePanels: function() {
                             me.mainpanel = '';
                             me.sidebarLabels = true;
@@ -188,6 +225,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (!$rootScope.$$phase) $rootScope.$digest();
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
+                        /**
+                         * @function closePanel
+                         * @memberOf Core
+                         * @param {String} which Panel name of panel to close
+                         * Close selected panel. Resolve unpinned panels and new main panel in relevance to app settings. 
+                         */
                         closePanel: function(which) {
                             if (which.unpinned) {
                                 which.drag_panel.appendTo($(which.original_container));
@@ -213,6 +256,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
 
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
+                        /**
+                         * @function exists
+                         * @memberOf Core
+                         * @param {String} controllerName Controler to test
+                         * Test if selected controller is defined in application. 
+                         */
                         exists: function(controllerName) {
                             if (angular.isDefined(me._exist_cache[controllerName])) return true;
                             if (typeof window[controllerName] == 'function') {
@@ -228,6 +277,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 return t;
                             }
                         },
+                        /**
+                         * @function fullScreenMap
+                         * @memberOf Core
+                         * @param {String} element Element to resize while going fullscreen
+                         * Utility function for initialization of app
+                         */
                         fullScreenMap: function(element) {
                             var w = angular.element($window);
                             w.bind('resize', function() {
@@ -242,6 +297,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             });
                             w.resize();
                         },
+                        /**
+                         * @function setLanguage
+                         * @memberOf Core
+                         * @param {String} lang Language to select 
+                         * Set current active language for translating. (Currently cs and nl options supported).
+                         */
                         setLanguage: function(lang) {
                             switch (lang) {
                                 case "cs_CZ":
@@ -253,6 +314,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             gettextCatalog.setCurrentLanguage(lang);
                         },
+                        /**
+                         * @function getAllScopes
+                         * @memberOf Core
+                         * @returns {Array} Array of all active Angular Scopes of app
+                         * Get all scopes defined in app
+                         */
                         getAllScopes: function() {
                             var getScopes = function(root) {
                                 var scopes = [];
@@ -274,26 +341,55 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             return getScopes($rootScope);
                         },
+                        /**
+                         * @function openStatusCreator
+                         * @memberOf Core
+                         * TODO
+                         */
                         openStatusCreator: function() {
                             //me.panel_statuses.status_creator = true;
                             hslayers_api.gui.StatusCreator.open();
                         },
+                        /**
+                         * @function searchVisible
+                         * @memberOf Core
+                         * @param {booelan} is New status of search panel
+                         * @returns {Boolean} Current status of Search panel
+                         * Test visibility state of search panel. If optional argument is given, change status of search panel.
+                         */
                         searchVisible: function(is) {
                             if (arguments.length > 0) {
                                 me.panel_statuses['search'] = is;
                             }
                             return me.panel_statuses['search']
                         },
+                        /**
+                         * @function isAuthorized
+                         * @memberOf Core
+                         * @returns {Boolean} Check result - true for authorized user
+                         * Do authorization check of User
+                         */
                         isAuthorized: function() {
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
                             }
                             return false;
                         },
+                        /**
+                         * @function resetMap
+                         * @memberOf Core
+                         * Do complete reset of map (view, layers) according to app config
+                         */
                         resetMap: function() {
                             OlMap.reset();
                             $rootScope.$broadcast('core.map_reset', {});
                         },
+                        /**
+                         * @function isMobile
+                         * @memberOf Core
+                         * @returns {String} Returns "mobile" or ""
+                         * Test if screen of used device is mobile type (current breakdown is screen width 800px)
+                         */
                         isMobile: function() {
                             if (screen.width < 800) {
                                 return "mobile";

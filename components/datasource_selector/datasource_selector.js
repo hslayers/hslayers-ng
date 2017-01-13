@@ -9,6 +9,7 @@ define(['angular', 'ol', 'map'],
              * @ngdoc directive
              * @name hs.datasource_selector.directive
              * @memberOf hs.datasource_selector
+             * @description Display Datasource selector panel in app. Panel contains datasource types switcher and loaded list of datas. 
              */
             .directive('hs.datasourceSelector.directive', function() {
                 return {
@@ -218,11 +219,12 @@ define(['angular', 'ol', 'map'],
                 })
 
                 $scope.datasets = null;
+                
                 /**
                  * @function loadDatasets
                  * @memberOf hs.datasource_selector.controller
-                 * @param {unknown} datasets
-                 * @description Directive for displaying metadata about data source
+                 * @param {Object} datasets List of datasources for datasets load
+                 * Get datasources and loads datasets for each (uses loadDataset)
                  */
                 $scope.loadDatasets = function(datasets) {
                         $scope.datasets = datasets;
@@ -232,21 +234,25 @@ define(['angular', 'ol', 'map'],
                             $scope.loadDataset($scope.datasets[ds]);
                         }
                     }
-                    /**
-                     * @function fillCodesets
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} datasets
-                     */
+                
+                /**
+                 * @function fillCodesets
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} datasets Input datasources
+                 * Download codelists for all "micka" type datasources from Url specified in app config.
+                 */
                 $scope.fillCodesets = function(datasets) {
                         for (var ds in datasets) {
                             $scope.fillCodeset($scope.datasets[ds]);
                         }
                     }
-                    /**
-                     * @function fillCodeset
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} ds
-                     */
+                
+                /**
+                 * @function fillCodeset
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} ds Single datasource
+                 * Download code-list for micka type source from Url specifiead in app config.
+                 */
                 $scope.fillCodeset = function(ds) {
                         switch (ds.type) {
                             case "micka":
@@ -294,10 +300,12 @@ define(['angular', 'ol', 'map'],
                                 break;
                         }
                     }
-                    /**
-                     * @function advancesMickaTypeChanged
-                     * @memberOf hs.datasource_selector.controller
-                     */
+                
+                /**
+                 * @function advancesMickaTypeChanged
+                 * @memberOf hs.datasource_selector.controller
+                 * Sets Micka source level types according to current query type (service/appilication). Deprecated?
+                 */
                 $scope.advancedMickaTypeChanged = function() {
                         if (typeof $scope.micka_ds == 'undefined') return;
                         if (typeof $scope.micka_ds.code_lists == 'undefined') return;
@@ -310,10 +318,12 @@ define(['angular', 'ol', 'map'],
                                 break;
                         }
                     }
-                    /**
-                     * @function openMickaAdvancedSearch
-                     * @memberOf hs.datasource_selector.controller
-                     */
+                
+                /**
+                 * @function openMickaAdvancedSearch
+                 * @memberOf hs.datasource_selector.controller
+                 * Opens Micka Advanced Search dialog, might pass current search string.
+                 */
                 $scope.openMickaAdvancedSearch = function() {
                     if ($('#ds-advanced-micka').length == 0) {
                         var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></div>');
@@ -333,12 +343,14 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.suggestion_config = {};
+                
                 /**
                  * @function showSuggestions
                  * @memberOf hs.datasource_selector.controller
-                 * @param {unknown} input
-                 * @param {unknown} param
-                 * @param {unknown} field
+                 * @param {String} input Suggestion class type name (e.g. "Organisation Name")
+                 * @param {String} param Suggestion paramater of Micka service (e.g. "org")
+                 * @param {String} field Expected property name in response object (e.g. "value")
+                 * Shows suggestions dialog and edits suggestion config.
                  */
                 $scope.showSuggestions = function(input, param, field) {
                     $scope.suggestion_config = {
@@ -359,9 +371,11 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.suggestions = [];
+                
                 /**
                  * @function suggestionFilterChanged
                  * @memberOf hs.datasource_selector.controller
+                 * Send suggestion request to Micka CSW server and parse response
                  */
                 $scope.suggestionFilterChanged = function() {
                         if (typeof $scope.suggestion_ajax != 'undefined') $scope.suggestion_ajax.abort();
@@ -378,19 +392,23 @@ define(['angular', 'ol', 'map'],
                             }
                         });
                     }
-                    /**
-                     * @function addSuggestion
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} text
-                     */
+                
+                /**
+                 * @function addSuggestion
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {String} text Selected property value from suggestions
+                 * Save suggestion into Query object
+                 */
                 $scope.addSuggestion = function(text) {
                         $scope.query[$scope.suggestion_config.input] = text;
                     }
-                    /**
-                     * @function loadDataset
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} ds
-                     */
+                
+                /**
+                 * @function loadDataset
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} ds Configuration of selected datasource (from app config)
+                 * Loads datasets metadata from selected source (CSW server). Currently supports only "Micka" type of source. Use all query params (search text, bbox, params.., sorting, paging, start) 
+                 */
                 $scope.loadDataset = function(ds) {
                         switch (ds.type) {
                             case "micka":
@@ -450,12 +468,13 @@ define(['angular', 'ol', 'map'],
                                 break;
                         }
                     }
-                    /**
-                     * @function param2Query
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} which
-                     * (PRIVATE)
-                     */
+                
+                /**
+                 * @function param2Query
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {String} which Parameter name to parse
+                 * (PRIVATE) Parse query parameter into encoded key value pair. 
+                 */
                 function param2Query(which) {
                     if (typeof $scope.query[which] != 'undefined') {
                         if (which == 'type' && $scope.query[which] == 'data') {
@@ -471,19 +490,23 @@ define(['angular', 'ol', 'map'],
                         }
                     }
                 }
+                
                 /**
                  * @function isZoomable
                  * @memberOf hs.datasource_selector.controller
-                 * @param {unknown} selected_layer
+                 * @param {unknown} selected_layer TODO
+                 * Test if it possible to zoom to layer overview (bbox has to be defined in metadata of selected layer)
                  */
                 $scope.isZoomable = function(selected_layer) {
                         return angular.isDefined(selected_layer.bbox);
                     }
-                    /**
-                     * @function zoomTo
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} bbox
-                     */
+                
+                /**
+                 * @function zoomTo
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {String} bbox Bounding box of selected layer
+                 * ZoomTo / MoveTo to selected layer overview
+                 */
                 $scope.zoomTo = function(bbox) {
                         if (typeof bbox == 'undefined') return;
                         var b = bbox.split(" ");
@@ -495,11 +518,13 @@ define(['angular', 'ol', 'map'],
                         var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                         OlMap.map.getView().fit(extent, OlMap.map.getSize());
                     }
-                    /**
-                     * @function getPreviousRecords
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} ds
-                     */
+                
+                /**
+                 * @function getPreviousRecords
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} ds Selected datasource
+                 * Loads previous records of datasets from selected datasource (based on number of results per page and current start)
+                 */
                 $scope.getPreviousRecords = function(ds) {
                         if (ds.start - $scope.dsPaging < 0) {
                             ds.start = 0;
@@ -510,11 +535,13 @@ define(['angular', 'ol', 'map'],
                         }
                         $scope.loadDataset(ds);
                     }
-                    /**
-                     * @function getNextRecords
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} ds
-                     */
+                
+                /**
+                 * @function getNextRecords
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} ds Selected datasource
+                 * Loads next records of datasets from selected datasource (based on number of results per page and current start)
+                 */
                 $scope.getNextRecords = function(ds) {
                         if (ds.next != 0) {
                             ds.start = Math.floor(ds.next / $scope.dsPaging) * $scope.dsPaging;
@@ -527,12 +554,13 @@ define(['angular', 'ol', 'map'],
                             $scope.loadDataset(ds);
                         }
                     }
-                    /**
-                     * @function addExtentFeature
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} record
-                     * (PRIVATE)
-                     */
+                
+                /**
+                 * @function addExtentFeature
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} record Record of one dataset from Get Records response
+                 * (PRIVATE) Create extent features for displaying extent of loaded dataset records in map
+                 */
                 function addExtentFeature(record) {
                     var attributes = {
                         record: record,
@@ -556,20 +584,24 @@ define(['angular', 'ol', 'map'],
                     record.feature = new_feature;
                     extent_layer.getSource().addFeatures([new_feature]);
                 }
+                
                 /**
                  * @function setDefaultFeatureStyle
                  * @memberOf hs.datasource_selector.controller
-                 * @param {unknown} style
+                 * @param {Ol.style.Style} style New style
+                 * Change default style to selected style (default style currently UNUSED)
                  */
                 $scope.setDefaultFeatureStyle = function(style) {
                         default_style = style;
                     }
-                    /**
-                     * @function showMetadata
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} ds
-                     * @param {unknown} layer    
-                     */
+                
+                /**
+                 * @function showMetadata
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} ds Datasource of selected layer
+                 * @param {Object} layer Metadata record of selected layer
+                 * Show metadata record dialog window for selected layer.
+                 */
                 $scope.showMetadata = function(ds, layer) {
                         $scope.selected_layer = layer;
                         $scope.selected_ds = ds;
@@ -579,36 +611,43 @@ define(['angular', 'ol', 'map'],
                         $("#hs-dialog-area").append(el)
                         $compile(el)($scope);
                     }
-                    /**
-                     * @function layerDownload
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} ds
-                     * @param {unknown} layer    
-                     */
+                
+                /**
+                 * @function layerDownload
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} ds Datasource of selected layer
+                 * @param {Object} layer Metadata record of selected layer
+                 * @returns {String} Download url of layer if possible 
+                 * Test if layer of selected record is downloadable (KML and JSON files, with direct url) and gives Url.
+                 */
                 $scope.layerDownload = function(ds, layer) {
                         if (ds.download == true) {
                             if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1 && layer.url.length > 0) {
                                 return layer.url
                             }
                         }
-
                         return "#"
                     }
-                    /**
-                     * @function layerRDF
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} ds
-                     * @param {unknown} layer    
-                     */
+                
+                /**
+                 * @function layerRDF
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} ds Datasource of selected layer
+                 * @param {Object} layer Metadata record of selected layer
+                 * @returns {String} URL to record file
+                 * Get URL for RDF-DCAT record of selected layer
+                 */
                 $scope.layerRDF = function(ds, layer) {
                         return ds.url + "?request=GetRecordById&id=" + layer.id + "&outputschema=http://www.w3.org/ns/dcat%23"
                     }
-                    /**
-                     * @function addLayerToMap
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} ds
-                     * @param {unknown} layer    
-                     */
+                
+                /**
+                 * @function addLayerToMap
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {Object} ds Datasource of selected layer
+                 * @param {Object} layer Metadata record of selected layer
+                 * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
+                 */
                 $scope.addLayerToMap = function(ds, layer) {
                         if (ds.type == "micka") {
                             if (layer.trida == 'service') {
@@ -664,20 +703,24 @@ define(['angular', 'ol', 'map'],
                             }
                         }
                     }
-                    /**
-                     * @function highlightComposition
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} composition
-                     * @param {unknown} state    
-                     */
+                
+                /**
+                 * @function highlightComposition
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {unknown} composition
+                 * @param {Boolean} state Desired visual state of composition (True = highlighted, False = normal)
+                 * Change visual apperance of composition overview in map between highlighted and normal
+                 */
                 $scope.highlightComposition = function(composition, state) {
                         if (typeof composition.feature !== 'undefined')
                             composition.feature.set('highlighted', state)
                     }
-                    /**
-                     * @function clear
-                     * @memberOf hs.datasource_selector.controller    
-                     */
+                
+                /**
+                 * @function clear
+                 * @memberOf hs.datasource_selector.controller
+                 * Clear query variable
+                 */
                 $scope.clear = function() {
                         $scope.query.text_filter = "";
                         $scope.query.title = "";
@@ -686,11 +729,13 @@ define(['angular', 'ol', 'map'],
                         $scope.query.OrganisationName = "";
                         $scope.query.sortby = "";
                     }
-                    /**
-                     * @function setOtnKeyword
-                     * @memberOf hs.datasource_selector.controller
-                     * @param {unknown} theme    
-                     */
+                
+                /**
+                 * @function setOtnKeyword
+                 * @memberOf hs.datasource_selector.controller
+                 * @param {String} theme Selected Otn theme keyword 
+                 * Select Otn Keyword as query subject (used with dropdown list in Gui)
+                 */
                 $scope.setOtnKeyword = function(theme) {
                     $scope.query.Subject = theme;
                     $scope.loadDatasets($scope.datasources);
@@ -698,9 +743,11 @@ define(['angular', 'ol', 'map'],
                 }
 
                 $scope.datasources = config.datasources;
+                
                 /**
                  * @function init
-                 * @memberOf hs.datasource_selector.controller    
+                 * @memberOf hs.datasource_selector.controller
+                 * Initialization of datasource module
                  */
                 $scope.init = function() {
                     OlMap.map.on('pointermove', function(evt) {
