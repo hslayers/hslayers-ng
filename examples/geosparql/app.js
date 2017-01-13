@@ -368,7 +368,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
                 function getCountryAtCoordinate(coordinate) {
                     var latlng = ol.proj.transform(coordinate, OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    $scope.country_last_clicked = null;
+                    delete $scope.country_last_clicked;
                     $http.get('http://api.geonames.org/extendedFindNearby?lat={0}&lng={1}&username=raitis'.format(latlng[1], latlng[0]))
                         .then(function(response) {
                             var country_geoname = angular.element('fcl', response.data).filter(function(index) {
