@@ -6,18 +6,36 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
     function(angular, ol) {
         angular.module('hs.draw', ['hs.map', 'hs.core', 'hs.utils'])
+            /**
+            * @name hs.draw.directive
+            * @ngdoc directive
+            * @memberof hs.draw
+            * @description Display draw feature panel in map. Panel contains active layer selector, geometry selector and information editor for new features.
+            */
             .directive('hs.draw.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/draw/partials/draw.html?bust=' + gitsha
                 };
             })
 
+        /**
+        * @name hs.draw.toolbarButtonDirective
+        * @ngdoc directive
+        * @memberof hs.draw
+        * @description Display draw toolbar button in map
+        */
         .directive('hs.draw.toolbarButtonDirective', function() {
             return {
                 templateUrl: hsl_path + 'components/draw/partials/toolbar_button_directive.html?bust=' + gitsha
             };
         })
 
+        /**
+        * @name hs.draw.controller
+        * @ngdoc controller
+        * @memberof hs.draw
+        * @description Controller for draw
+        */
         .controller('hs.draw.controller', ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.status_creator.service', 'config',
             function($scope, OlMap, Core, Geolocation, $http, utils, $timeout, status_creator, config) {
                 var map = OlMap.map;
@@ -65,6 +83,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                 $scope.drawable_layers = [];
 
+                /**
+                 * @function changeLayer
+                 * @memberOf hs.draw.controller
+                 * Change active layer for drawing and restart drawing interaction.
+                 */
                 $scope.changeLayer = function() {
                     angular.forEach(map.getLayers(), function(layer) {
                         if ($scope.selected_layer == layer.get('title')) {
@@ -77,6 +100,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
 
+                /**
+                 * @function changeLayer
+                 * @memberOf hs.draw.controller
+                 * (PRIVATE) Refill features list
+                 */
                 function fillFeatureList() {
                     deselectCurrentFeature();
                     $scope.features = [];
@@ -94,6 +122,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
 
+                /**
+                 * @function changeLayer
+                 * @memberOf hs.draw.controller
+                 * (PRIVATE) Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
+                 */
                 function addInteraction() {
                     draw = new ol.interaction.Draw({
                         source: source,
@@ -155,10 +188,21 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     });
                 }
 
+                /**
+                 * @function setType 
+                 * @memberOf hs.draw.controller
+                 * @params {} what
+                 * DUPLICATE?
+                 */
                 $scope.setType = function(what) {
                     $scope.type = what;
                 }
 
+                /**
+                 * @function stop
+                 * @memberOf hs.draw.controller
+                 * Stops current drawing and deactive draw and modify interaction (they are still enable).
+                 */
                 $scope.stop = function() {
                     try {
                         if (draw.getActive()) draw.finishDrawing();
@@ -168,6 +212,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     modify.setActive(false);
                 }
 
+                /**
+                 * @function changeLayer
+                 * @memberOf hs.draw.controller
+                 * Start new drawing interaction
+                 */
                 $scope.start = function() {
                     try {
                         if (draw.getActive()) draw.finishDrawing();
@@ -175,6 +224,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     draw.setActive(true);
                 }
 
+                /**
+                 * @function newPointFromGps
+                 * @memberOf hs.draw.controller
+                 * Get position for GPS point with minimal required precion (currently 20 m)
+                 */
                 $scope.newPointFromGps = function() {
                     var requiredPrecision = 20;
 
@@ -232,6 +286,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     // pos = Geolocation.last_location; //TODO timestamp is stored in Geolocation.last_location.geolocation.timestamp, it might be a good idea to accept only recent enough positions ---> or wait for the next fix <---.
                 }
 
+                /**
+                 * @function collectProperties
+                 * @memberOf hs.draw.controller
+                 * @params {} media
+                 * @params {} prop
+                 * TODO
+                 */
                 function collectProperties(media, prop) {
                     var props = [];
                     angular.forEach(media, function(d) {
@@ -240,6 +301,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     return props;
                 }
 
+                /**
+                 * @function addPhoto
+                 * @memberOf hs.draw.controller
+                 * Create photo from system camera and save it in media folder.
+                 */
                 $scope.addPhoto = function() {
                     navigator.camera.getPicture(cameraSuccess, cameraError, {
                         encodingType: Camera.EncodingType.JPEG,
@@ -300,13 +366,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     }
                 }
 
-
                 /**
                  * @function setCurrentFeature
                  * @memberOf hs.draw.controller
-                 * @description Opens list of feature attributes 
-                 * @param {object} feature - Wrapped feature to edit or view
-                 * @param {number} index - Used to position the detail panel after layers li element
+                 * @param {Object} feature Selected feature to set as current
+                 * @param {Boolean} zoom_to_feature If map should zoom on selected feature (true/false), optional
+                 * Set current feature to work with from created features list (editing etc)
                  */
                 $scope.setCurrentFeature = function(feature, zoom_to_feature) {
                     if ($scope.current_feature == feature) {
@@ -329,6 +394,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     return false;
                 }
 
+                /**
+                 * @function fillFeatureContainer
+                 * @memberOf hs.draw.controller
+                 * @param {Object} cf Current active feature
+                 * @param {Ol.feature} olf Ol feature (geometry part of cf)
+                 * (PRIVATE) Fill current feature container object, because we cant edit attributes in OL feature directly
+                 */
                 //Fill feature container object, because we cant edit attributes in OL feature directly
                 function fillFeatureContainer(cf, olf) {
                     cf.extra_attributes = [];
@@ -391,6 +463,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     });
                 }
 
+                /**
+                 * @function zoomToFeature
+                 * @memberOf hs.draw.controller
+                 * @param {Ol.feature} olf Feature to zoom to 
+                 * (PRIVATE) Zoom to selected feature (center for point, fit view for other types)
+                 */
                 function zoomToFeature(olf) {
                     if (olf.getGeometry().getType() == 'Point') {
                         map.getView().setCenter(olf.getGeometry().getCoordinates());
@@ -399,6 +477,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     }
                 }
 
+                /**
+                 * @function saveFeature
+                 * @memberOf hs.draw.controller
+                 * Saves current features atributtes
+                 */
                 $scope.saveFeature = function() {
                     var cf = $scope.current_feature;
                     var olf = cf.ol_feature;
@@ -433,20 +516,41 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     $scope.is_unsaved = false;
                 }
 
+                /**
+                 * @function setUnsaved
+                 * @memberOf hs.draw.controller
+                 * Set current work state as unsaved
+                 */
                 $scope.setUnsaved = function() {
                     $scope.is_unsaved = true;
                 }
 
+                /**
+                 * @function cancelChanes
+                 * @memberOf hs.draw.controller
+                 * Reset changes done to feature without saving
+                 */
                 $scope.cancelChanges = function() {
                     $scope.is_unsaved = false;
                     $scope.current_feature = null;
                 }
 
+                /**
+                 * @function setType
+                 * @memberOf hs.draw.controller
+                 * @param {String} type Type of feature to set (Point / Linestring / Polygon) 
+                 * Change current type of geometry for new features
+                 */
                 $scope.setType = function(type) {
                     $scope.type = type;
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
+                /**
+                 * @function clearAll
+                 * @memberOf hs.draw.controller
+                 * Delete all created features if confirmed
+                 */
                 $scope.clearAll = function() {
                     if (confirm("Really clear all features?")) {
                         $scope.features = [];
@@ -462,6 +566,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     }, 500);
                 });
 
+                /**
+                 * @function addUserDefinedAttr
+                 * @memberOf hs.draw.controller
+                 * Add user defined attribute to current feature and expand menu if collapsed
+                 */
                 $scope.addUserDefinedAttr = function() {
                     $scope.current_feature.extra_attributes.push({
                         name: "New attribute",
@@ -473,12 +582,24 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     });
                 }
 
+                /**
+                 * @function deleteVgiObservation
+                 * @memberOf hs.draw.controller
+                 * @param {Ol.feature} olf Ol feature part of selected feature
+                 * (PRIVATE) Delete VGI observation from remote senslog server
+                 */
                 function deleteVgiObservation(olf) {
                     $http.delete($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=tester').then(function(response) {
                         console.log(response);
                     });
                 }
 
+                /**
+                 * @function removeFeature
+                 * @memberOf hs.draw.controller
+                 * @param {Object} feature Selected feature to remove 
+                 * Remove selected feature from created features list and from map
+                 */
                 $scope.removeFeature = function(feature) {
                     if (confirm("Really delete the feature?")) {
                         var cf = $scope.current_feature;
@@ -497,6 +618,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     }
                 }
 
+                /**
+                 * @function deleteCurrentFeature
+                 * @memberOf hs.draw.controller
+                 * (PRIVATE) Deselect currently selected feature, feauture stays inactive until it is selected again.
+                 */
                 function deselectCurrentFeature() {
                     if (angular.isObject($scope.current_feature)) {
                         $(".hs-dr-editpanel").insertAfter($('.hs-dr-featurelist'));
@@ -507,6 +633,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     $scope.current_feature = null;
                 }
 
+                /**
+                 * @function setFeatureStyle
+                 * @memberOf hs.draw.controller
+                 * @param {Ol.style.style} new_style
+                 * DEPRACATED? vector undefined
+                 */
                 $scope.setFeatureStyle = function(new_style) {
                     style = new_style;
                     vector.setStyle(new_style);
@@ -518,10 +650,20 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     addInteraction();
                 });
 
+                /**
+                 * @function activateDrawing
+                 * @memberOf hs.draw.controller
+                 * Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
+                 */
                 $scope.activateDrawing = function() {
                     addInteraction();
                 }
 
+                /**
+                 * @function deactivateDrawing
+                 * @memberOf hs.draw.controller
+                 * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
+                 */
                 $scope.deactivateDrawing = function() {
                     map.removeInteraction(draw);
                     map.removeInteraction(modify);
@@ -542,6 +684,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     }
                 });
 
+                /**
+                 * @function fillDrawableLayersList
+                 * @memberOf hs.draw.controller
+                 * (PRIVATE) Finds all layers in app which are drawable
+                 */
                 function fillDrawableLayersList() {
                     $scope.drawable_layers = [];
                     angular.forEach(map.getLayers(), function(layer) {
@@ -556,11 +703,21 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
 
+                /**
+                 * @function getCurrentTimestamp
+                 * @memberOf hs.draw.controller
+                 * (PRIVATE) Get current timestamp
+                 */
                 function getCurrentTimestamp() {
                     var d = new Date();
                     return d.toISOString();
                 }
 
+                /**
+                 * @function sync
+                 * @memberOf hs.draw.controller
+                 * Sync created points with Senslog server
+                 */
                 $scope.sync = function() {
                     angular.forEach($scope.features, function(feature) {
                         var olf = feature.ol_feature;
@@ -652,6 +809,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
 
+                /**
+                 * @function setLayerToSelect
+                 * @memberOf hs.draw.controller
+                 * @params {} layer 
+                 *
+                 */
                 $scope.setLayerToSelect = function(layer) {
                     $scope.layer_to_select = layer;
                 }

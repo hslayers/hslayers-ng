@@ -4,8 +4,14 @@
  */
 define(['angular'],
     function(angular) {
-        angular.module('hs.drag', []).
-        directive('hs.draggable', ['$document', '$window', 'config', function($document, $window, config) {
+        angular.module('hs.drag', [])
+        /**
+        * @name hs.draggable
+        * @ngdoc directive
+        * @memberof hs.drag
+        * @description Directive which allows dragging of application element
+        */
+        .directive('hs.draggable', ['$document', '$window', 'config', function($document, $window, config) {
             return function(scope, element, attr) {
 
                 function isPanel() {
