@@ -184,8 +184,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                          * @function panelVisible
                          * @memberOf Core
                          * @param {String} which 
-                         * @param {Angular scope} scope 
-                         * TODO
+                         * @param {$scope} scope 
+                         * @description Todo
                          */
                         panelVisible: function(which, scope) {
                             if (angular.isDefined(scope))
@@ -344,7 +344,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         /**
                          * @function openStatusCreator
                          * @memberOf Core
-                         * TODO
+                         * @description TODO
                          */
                         openStatusCreator: function() {
                             //me.panel_statuses.status_creator = true;

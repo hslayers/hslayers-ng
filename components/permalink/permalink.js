@@ -21,7 +21,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
              * @ngdoc service
              * @name hs.permalink.service_url
              * @membeof hs.permalink
-             * @description 
+             * @description Service responsible for creating permalink URLs. Mantain parameters information about map
              */
             .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config',
                 function($rootScope, $location, $window, OlMap, Core, utils, status, compositions, config) {

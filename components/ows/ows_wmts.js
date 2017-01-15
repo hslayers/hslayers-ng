@@ -113,7 +113,7 @@ define(['angular', 'ol', 'utils'],
                 * @memberof hs.ows.wmts.service_capabilities
                 * @function requestGetCapabilities
                 * @param {String} service_url Raw Url localization of service
-                * @returns {Promise Object} Response to GetCapabalities request
+                * @returns {Promise} Promise object -  Response to GetCapabalities request
                 */
                 this.requestGetCapabilities = function(service_url) {
                     service_url = service_url.replace('&amp;', '&');
@@ -141,7 +141,7 @@ define(['angular', 'ol', 'utils'],
                 * @memberof hs.ows.wmts.service_capabilities
                 * @function service2layers
                 * @param {String} capabilities_xml Xml response of GetCapabilities of selected service
-                * @returns {Ol.tayer.tile collection} List of layers from service
+                * @returns {Ol.collection} List of layers from service
                 */
                 this.service2layers = function(capabilities_xml) {
                     var parser = new ol.format.wmtsCapabilities();

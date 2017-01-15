@@ -23,7 +23,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
             * @ngdoc directive
             * @name hs.query.infovalue
             * @memberOf hs.query
-            * @description 
+            * @description Todo
             */
             .directive('hs.query.infovalue', ['$compile', function($compile) {
 

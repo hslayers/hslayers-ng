@@ -100,7 +100,7 @@ define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
                 * @memberof hs.ows.wfs.service_capabilities
                 * @function requestGetCapabilities
                 * @param {String} service_url Raw Url localization of service
-                * @returns {Promise Object} Response to GetCapabalities request
+                * @returns {Promise} Promise object -  Response to GetCapabalities request
                 */
                 this.requestGetCapabilities = function(service_url) {
                     service_url = service_url.replace('&amp;', '&');
