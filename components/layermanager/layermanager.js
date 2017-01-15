@@ -8,7 +8,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
          * @name hs.layermanager.directive
          * @ngdoc directive
          * @memberOf hs.layermanager
-         * @description Directive for displaying layer manager panel
+         * @description Display layer manager panel in map. Contain filter, baselayers, overlay container and settings pane for active layer.
          */
         .directive('hs.layermanager.directive', function() {
             return {
@@ -19,6 +19,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
          * @memberOf hs.layermanager
          * @ngdoc directive
          * @name hs.layermanager.layerlistDirective
+         * @description Directive for displaying layerlist. Contains layers ordering logic.
          */
         .directive('hs.layermanager.layerlistDirective', ['$compile', function($compile) {
             return {
@@ -67,7 +68,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
 
                         scope.$on('layermanager.updated', sortLayersByPosition);
                         /**
-                         * (PRIVATE)
+                         * (PRIVATE) Sort layers by computed position
                          * @function sortLayersByPosition
                          * @memberOf hs.layermanager.layerlistDirective
                          */
@@ -93,10 +94,10 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             };
         }])
         /**
-         * @class hs.layermanager.removeAllDialogDirective
+         * @name hs.layermanager.removeAllDialogDirective
          * @ngdoc directive
          * @memberOf hs.layermanager
-         * @description Directive for displaying warning dialog about resampling (proxying) wms service
+         * @description Display warning dialog about removing all layers
          */
         .directive('hs.layermanager.removeAllDialogDirective', function() {
             return {
@@ -160,11 +161,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 var map = OlMap.map;
                 var cur_layer_opacity = 1;
                 /**
-                 * (PRIVATE)
+                 * (PRIVATE) Prepare URL for GetLegendGraphic WMS request
                  * @function getLegendUrl
                  * @memberOf hs.layermanager.controller
-                 * @param {unknown} source_url
-                 * @param {unknown} layer_name
+                 * @param {String} source_url Url of WMS server
+                 * @param {String} layer_name Name of layer to get graphic
+                 * @returns {String} Full Url for request
                  */
                 function getLegendUrl(source_url, layer_name) {
                     if (source_url.indexOf('proxy4ows') > -1) {
@@ -178,7 +180,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * (PRIVATE)
                  * @function layerAdded
                  * @memberOf hs.layermanager.controller
-                 * @description Callback function for layer adding
+                 * @description Callback function for layer adding for layers shown in manager. Edit layer to enable addition to layer manager .
                  * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
                  */
                 function layerAdded(e) {
@@ -252,10 +254,10 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     $scope.$emit('compositions.composition_edited');
                 };
                 /**
-                 * (PRIVATE)
+                 * (PRIVATE) Get title of selected layer
                  * @function getLayerTitle
                  * @memberOf hs.layermanager.controller
-                 * @param {unknown} layer
+                 * @param {Ol.layer} layer Selected layer
                  */
                 function getLayerTitle(layer) {
                     if (angular.isDefined(layer.get('title'))) {
@@ -265,10 +267,10 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     }
                 }
                 /**
-                 * (PRIVATE)
+                 * (PRIVATE) Get date format of time data based on time unit property
                  * @function getDateFormatForTimeSlider
                  * @memberOf hs.layermanager.controller
-                 * @param {unknown} time_unit
+                 * @param {String} time_unit
                  */
                 function getDateFormatForTimeSlider(time_unit) {
                     switch (time_unit) {
@@ -282,11 +284,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     }
                 }
                 /**
-                 * (PRIVATE)
+                 * (PRIVATE) Set time intervals for WMS-T (WMS with time support)
                  * @function setLayerTimeSliderIntervals
                  * @memberOf hs.layermanager.controller
-                 * @param {unknown} new_layer
-                 * @param {unknown} metadata
+                 * @param {Object} new_layer Layer to set time intervals
+                 * @param {Object} metadata Time dimension metadata for layer
                  */
                 function setLayerTimeSliderIntervals(new_layer, metadata) {
                     switch (new_layer.time_unit) {
@@ -311,8 +313,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * (PRIVATE)
                  * @function populateFolders
                  * @memberOf hs.layermanager.controller
-                 * @description Take path property of layer and add it to layer managers folder structure
-                 * @param {ol.Layer} lyr - Layer
+                 * @description Place layer into layer manager folder structure based on path property of layer
+                 * @param {ol.Layer} lyr Layer to add into layer folder
                  */
                 function populateFolders(lyr) {
                     if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
@@ -346,12 +348,18 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     }
                 }
 
+                /**
+                 * @function populateFolders
+                 * @memberOf hs.layermanager.controller
+                 * @description Place layer into layer manager folder structure based on path property of layer
+                 * @param {ol.Layer} lyr Layer to add into layer folder
+                 */
                 $scope.populateFolders = populateFolders;
                 /**
                  * (PRIVATE)
                  * @function layerRemoved
                  * @memberOf hs.layermanager.controller
-                 * @description Callback function for layer removing
+                 * @description Callback function for removing layer. Clean layers variables
                  * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
                  */
                 function layerRemoved(e) {
@@ -381,9 +389,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 /**
                  * @function changeLayerVisibility
                  * @memberOf hs.layermanager.controller
-                 * @description Callback function to set layers visibility
-                 * @param {object} $event - Info about the event and checkbox being clicked on
-                 * @param {object} layer - Wrapped ol.Layer
+                 * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible 
+                 * @param {Boolean} visibility Visibility layer should have
+                 * @param {Object} layer Selected layer - wrapped layer object (layer.layer expected)
                  */
                 $scope.changeLayerVisibility = function(visibility, layer) {
                         layer.layer.setVisible(visibility);
@@ -398,13 +406,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             })
                         }
                     }
-                    /**
-                     * @function changeBaseLayerVisibility
-                     * @memberOf hs.layermanager.controller
-                     * @description Callback function to set layers visibility
-                     * @param {object} $event - Info about the event and checkbox being clicked on
-                     * @param {object} layer - Wrapped ol.Layer
-                     */
+                /**
+                 * @function changeBaseLayerVisibility
+                 * @memberOf hs.layermanager.controller
+                 * @description Change visibility of baselayers, only one baselayer may be visible, might also set all baselayers invisible 
+                 * @param {object} $event Info about the event and checkbox being clicked on
+                 * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
+                 */
                 $scope.changeBaseLayerVisibility = function($event, layer) {
                         if ($scope.baselayersVisible == true) {
                             if ($event) {
@@ -443,13 +451,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             }
                         }
                     }
-                    /**
-                     * @function setCurrentLayer
-                     * @memberOf hs.layermanager.controller
-                     * @description Opens detailed view for manipulating layer and viewing metadata
-                     * @param {object} layer - Wrapped layer to edit or view
-                     * @param {number} index - Used to position the detail panel after layers li element
-                     */
+                /**
+                 * @function setCurrentLayer
+                 * @memberOf hs.layermanager.controller
+                 * @description Opens detailed panel for manipulating selected layer and viewing metadata
+                 * @param {object} layer Selected layer to edit or view - Wrapped layer object 
+                 * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
+                 */
                 $scope.setCurrentLayer = function(layer, index) {
                         if ($scope.currentlayer == layer) {
                             $scope.currentlayer = null;
@@ -464,35 +472,36 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         }
                         return false;
                     }
-                    /**
-                     * @function setOpacity
-                     * @memberOf hs.layermanager.controller
-                     * @description Set layers opacity and emits compositionchanged
-                     * @param {object} layer - Layer on which is opacity set
-                     */
-                $scope.setLayerOpacity = function(layer, opacity) {
+                /**
+                 * @function setLayerOpacity
+                 * @memberOf hs.layermanager.controller
+                 * @description Set selected layers opacity and emits "compositionchanged"
+                 * @param {Ol.layer} layer Selected layer
+                 */
+                $scope.setLayerOpacity = function(layer) {
                         layer.setOpacity($scope.cur_layer_opacity);
                         $scope.$emit('compositions.composition_edited');
                         return false;
                     }
-                    /**
-                     * @function removeLayer
-                     * @memberOf hs.layermanager.controller
-                     * @description Removes layer from map
-                     * @param {object} layer
-                     */
+                /**
+                 * @function removeLayer
+                 * @memberOf hs.layermanager.controller
+                 * @description Removes layer from map object
+                 * @param {Ol.layer} layer Layer to remove
+                 */
                 $scope.removeLayer = function(layer) {
                         map.removeLayer(layer);
                     }
-                    /**
-                     * @function dragged
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} event
-                     * @param {unknown} index
-                     * @param {unknown} item
-                     * @param {unknown} type
-                     * @param {unknown} external            
-                     */
+                /** 
+                 * @function dragged
+                 * @memberOf hs.layermanager.controller
+                 * @param {unknow} event
+                 * @param {unknown} index
+                 * @param {unknown} item
+                 * @param {unknown} type
+                 * @param {unknown} external
+                 * Callback for dnd-drop event (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop). 
+                 */
                 $scope.dragged = function(event, index, item, type, external) {
                         if ($scope.layer_titles.indexOf(item) < index) index--; //Must take into acount that this item will be removed and list will shift
                         var to_title = $scope.layer_titles[index];
@@ -511,21 +520,21 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         updateLayerOrder();
                         $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
                     }
-                    /**
-                     * (PRIVATE) Layers are ordered by "position" property in the gui and this function sets it
-                     * @function updateLayerOrder
-                     * @memberOf hs.layermanager.controller            
-                     */
+                /**
+                 * (PRIVATE) Update "position" property of layers, so layers could be correctly ordered in GUI
+                 * @function updateLayerOrder
+                 * @memberOf hs.layermanager.controller            
+                 */
                 function updateLayerOrder() {
                     angular.forEach($scope.layers, function(my_layer) {
                         my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));
                     })
                 }
                 /**
-                 * (PRIVATE)
+                 * (PRIVATE) Get position of selected layer in map layer order
                  * @function getMyLayerPosition
                  * @memberOf hs.layermanager.controller
-                 * @param {unknown} layer
+                 * @param {Ol.layer} layer Selected layer 
                  */
                 function getMyLayerPosition(layer) {
                     var pos = null;
@@ -540,8 +549,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 /**
                  * @function zoomToLayer
                  * @memberOf hs.layermanager.controller
-                 * @description Tries to read the BoundingBox property of layer or getExtent() of its source and zooms to it
-                 * @param {object} layer
+                 * @description Zoom to selected layer (layer extent). Get extent from bounding box property, getExtent() function or from BoundingBox property of GetCapabalities request (for WMS layer)
+                 * @param {Ol.layer} layer Selected layer
                  */
                 $scope.zoomToLayer = function(layer) {
                         var extent = null;
@@ -577,12 +586,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         if (extent != null)
                             map.getView().fit(extent, map.getSize());
                     }
-                    /**
-                     * (PRIVATE)
-                     * @function getExtentFromBoundingBoxAttribute
-                     * @memberOf hs.layermanager.controller
-                     * @param {object} layer
-                     */
+                /**
+                 * (PRIVATE) Get transformated extent from layer "BoundingBox" property
+                 * @function getExtentFromBoundingBoxAttribute
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 */
                 function getExtentFromBoundingBoxAttribute(layer) {
                     var extent = null;
                     var bbox = layer.get("BoundingBox");
@@ -608,7 +617,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @function layerIsZoomable
                  * @memberOf hs.layermanager.controller
                  * @description Determines if layer has BoundingBox defined as its metadata or is a Vector layer. Used for setting visibility of 'Zoom to ' button
-                 * @param {object} layer
+                 * @param {Ol.layer} layer Selected layer
                  */
                 $scope.layerIsZoomable = function(layer) {
                         if (typeof layer == 'undefined') return false;
@@ -617,22 +626,23 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         if (layer.getSource().getExtent && layer.getSource().getExtent() && !ol.extent.isEmpty(layer.getSource().getExtent())) return true;
                         return false;
                     }
-                    /**
-                     * @function layerIsStyleable
-                     * @memberOf hs.layermanager.controller
-                     * @description Determines if layer is a Vector layer and styleable. Used for allowing styling
-                     * @param {object} layer
-                     */
+                /**
+                 * @function layerIsStyleable
+                 * @memberOf hs.layermanager.controller
+                 * @description Determines if layer is a Vector layer and styleable. Used for allowing styling
+                 * @param {Ol.layer} layer Selected layer
+                 */
                 $scope.layerIsStyleable = function(layer) {
                         if (typeof layer == 'undefined') return false;
                         if (layer instanceof ol.layer.Vector /*&& layer.getSource().styleAble*/) return true;
                         return false;
                     }
-                    /**
-                     * @function parseInterval
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} interval
-                     */
+                /**
+                 * @function parseInterval
+                 * @memberOf hs.layermanager.controller
+                 * @param {String} interval Interval time string
+                 * @description Parse interval string to get interval in Date format
+                 */
                 $scope.parseInterval = function(interval) {
                         var dateComponent;
                         var timeComponent;
@@ -695,11 +705,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         var step = new Date(year, month, day, hour, minute, second, 0);
                         return step - zero;
                     }
-                    /**
-                     * @function layerIsWmsT
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} layer_container
-                     */
+                /**
+                 * @function layerIsWmsT
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.collection} layer_container Container object of layer (layer_container.layer expected)
+                 * @return {Boolean} True for WMS layer with time support
+                 * Test if WMS layer have time support (WMS-T). WMS layer has to have dimensions_time or dimension property, function converts dimension to dimensions_time
+                 */
                 $scope.layerIsWmsT = function(layer_container) {
                         if (angular.isUndefined(layer_container) || layer_container == null) return false;
                         var layer = layer_container.layer;
@@ -733,22 +745,23 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         }
                         return false;
                     }
-                    /**
-                     * @function styleLayer
-                     * @memberOf hs.layermanager.controller
-                     * @param {object} layer
-                     */
+                /**
+                 * @function styleLayer
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Display styler panel for selected layer, so user can change its style
+                 */
                 $scope.styleLayer = function(layer) {
                         styler.layer = layer;
                         Core.setMainPanel('styler');
                     }
-                    /**
-                     * @function removeAllLayers
-                     * @memberOf hs.layermanager.controller
-                     * @description Removes all layers which don't have 'removable' attribute set to false
-                     * @param {unknown} confirmed
-                     * @param {unknown} loadComp
-                     */
+                /**
+                 * @function removeAllLayers
+                 * @memberOf hs.layermanager.controller
+                 * @description Removes all layers which don't have 'removable' attribute set to false. If removal wasn´t confirmed display dialog first. Might reload composition again
+                 * @param {Boolean} confirmed Whether removing was confirmed (by user/code), (true for confirmed, left undefined for not)
+                 * @param {Boolean} loadComp Whether composition should be loaded again (true = reload composition, false = remove without reloading)
+                 */
                 $scope.removeAllLayers = function(confirmed, loadComp) {
                         if (typeof confirmed == 'undefined') {
                             if ($("#hs-dialog-area #hs-remove-all-dialog").length == 0) {
@@ -774,11 +787,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             $rootScope.$broadcast('compositions.load_composition', $scope.composition_id);
                         }
                     }
-                    /**
-                     * @function isLayerQueryable
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} layer_container
-                     */
+                /**
+                 * @function isLayerQueryable
+                 * @memberOf hs.layermanager.controller
+                 * @param {object} layer_container Selected layer - wrapped in layer object
+                 * @description Test if layer is queryable (WMS layer with Info format)
+                 */
                 $scope.isLayerQueryable = function(layer_container) {
                         var layer = layer_container.layer;
                         if (layer instanceof ol.layer.Tile &&
@@ -789,11 +803,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             layer.getSource().getParams().INFO_FORMAT) return true;
                         return false;
                     }
-                    /**
-                     * @function isLayerWMS
-                     * @memberOf hs.layermanager.controller
-                     * @param {object} layer
-                     */
+                /**
+                 * @function isLayerWMS
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Test if layer is WMS layer
+                */
                 $scope.isLayerWMS = function(layer) {
                         if (layer instanceof ol.layer.Tile &&
                             (layer.getSource() instanceof ol.source.TileWMS)) return true;
@@ -801,12 +816,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             layer.getSource() instanceof ol.source.ImageWMS) return true;
                         return false;
                     }
-                    /**
-                     * @function activateTheme
-                     * @memberOf hs.layermanager.controller
-                     * @description Show a particular groups layers, hide allthe rest
-                     * @param {ol.layer.Group} theme - Group layer to activate
-                     */
+                /**
+                 * @function activateTheme
+                 * @memberOf hs.layermanager.controller
+                 * @description Show a particular groups layers, hide allthe rest
+                 * @param {ol.layer.Group} theme Group layer to activate
+                 */
                 $scope.activateTheme = function(theme) {
                         if ($scope.active_box) $scope.active_box.set('active', false);
                         $scope.active_box = theme;
@@ -819,11 +834,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             });
                         });
                     }
-                    /**
-                     * @function setLayerTime
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} currentlayer
-                     */
+                /**
+                 * @function setLayerTime
+                 * @memberOf hs.layermanager.controller
+                 * @param {object} currentlayer Selected layer 
+                 * @description Update layer time parameter
+                 */
                 $scope.setLayerTime = function(currentlayer) {
                         var dimensions_time = currentlayer.layer.get('dimensions_time') || currentlayer.layer.dimensions_time;
                         var d = new Date(dimensions_time.timeInterval[0]);
@@ -850,45 +866,50 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         });
                         $rootScope.$broadcast('layermanager.layer_time_changed', currentlayer.layer, d.toISOString());
                     }
-                    /**
-                     * @function dateToNonUtc
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} d
-                     */
+                /**
+                 * @function dateToNonUtc
+                 * @memberOf hs.layermanager.controller
+                 * @param {Date} d Date to convert
+                 * @description Convert date to non Utc format
+                 */
                 $scope.dateToNonUtc = function(d) {
                         if (angular.isUndefined(d)) return;
                         var noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
                         return noutc;
                     }
-                    /**
-                     * @function toggleLayerRename
-                     * @memberOf hs.layermanager.controller
-                     */
+                /**
+                 * @function toggleLayerRename
+                 * @memberOf hs.layermanager.controller
+                 * @description Toogle layer rename control on panel (through layer rename variable)
+                 */
                 $scope.toggleLayerRename = function() {
                         $scope.layer_renamer_visible = !$scope.layer_renamer_visible;
                     }
-                    /**
-                     * @function setTitle
-                     * @memberOf hs.layermanager.controller
-                     */
+                /**
+                 * @function setTitle
+                 * @memberOf hs.layermanager.controller
+                 * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
+                 */
                 $scope.setTitle = function() {
                         $scope.currentlayer.layer.set('title', $scope.currentlayer.title);
                     }
-                    /**
-                     * @function hasBoxLayers
-                     * @memberOf hs.layermanager.controller
-                     */
+                /**
+                 * @function hasBoxLayers
+                 * @memberOf hs.layermanager.controller
+                 * @description Test if box layers are loaded
+                */
                 $scope.hasBoxLayers = function() {
                         for (vari = 0; i < $scope.box_layers.length; i++) {
                             if ($scope.box_layers[i].img) return true;
                         }
                         return false;
                     }
-                    /**
-                     * @function isLayerInResolutionInterval
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} lyr
-                     */
+                /**
+                 * @function isLayerInResolutionInterval
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} lyr Selected layer
+                 * @description Test if layer (WMS) resolution is within map interval 
+                 */
                 $scope.isLayerInResolutionInterval = function(lyr) {
                         var src = lyr.getSource();
                         if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
@@ -905,11 +926,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
 
                         }
                     }
-                    /**
-                     * @function isScaleVisible
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} layer
-                     */
+                /**
+                 * @function isScaleVisible
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Test if layer has min and max relolution set
+                 */
                 $scope.isScaleVisible = function(layer) {
                         if (typeof layer == 'undefined') return false;
                         layer.minResolutionValid = false;
@@ -930,22 +952,23 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             return false;
                         }
                     }
-                    /**
-                     * @function setLayerResolution
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} layer
-                     */
+                /**
+                 * @function setLayerResolution
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Set max and min resolution for selected layer (with layer params changed in gui)
+                */
                 $scope.setLayerResolution = function(layer) {
                         if (typeof layer == 'undefined') return false;
                         layer.setMinResolution(layer.minResolution);
                         layer.setMaxResolution(layer.maxResolution);
                     }
-                    /**
-                     * @function loadingEvents
-                     * @memberOf hs.layermanager.controller
-                     * @description Events for checking if layer is being loaded or is loaded
-                     * @param {ol.layer} layer - layer which is being added
-                     */
+                /**
+                 * @function loadingEvents
+                 * @memberOf hs.layermanager.controller
+                 * @description Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
+                 * @param {ol.layer} layer Layer which is being added
+                 */
                 $scope.loadingEvents = function(layer) {
                         var source = layer.getSource()
                         source.loadCounter = 0;
@@ -1005,26 +1028,29 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             });
                         }
                     }
-                    /**
-                     * @function layerLoaded
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} layer
-                     */
+                /**
+                 * @function layerLoaded
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Test if selected layer is loaded in map
+                 */
                 $scope.layerLoaded = function(layer) {
                         return layer.getSource().loaded
                     }
-                    /**
-                     * @function layerValid
-                     * @memberOf hs.layermanager.controller
-                     * @param {unknown} lyr
-                     */
+                /**
+                 * @function layerValid
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Test if selected layer is valid (true for invalid)
+                 */
                 $scope.layerValid = function(layer) {
                         return layer.getSource().error;
                     }
-                    /**
-                     * @function addDrawingLayer
-                     * @memberOf hs.layermanager.controller
-                     */
+                /**
+                 * @function addDrawingLayer
+                 * @memberOf hs.layermanager.controller
+                 * @description Create new vector layer for drawing features by user 
+                 */
                 $scope.addDrawingLayer = function() {
                     var source = new ol.source.Vector();
                     source.styleAble = true;
