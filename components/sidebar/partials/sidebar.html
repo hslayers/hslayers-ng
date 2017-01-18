@@ -63,8 +63,8 @@
         
         
         <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.permalink.controller')  && Core.panelEnabled('permalink') && Core.embededEnabled" ng-click="setMainPanel('permalink')" ng-class="{active: Core.mainpanel == 'permalink'}">
-            <span class="menu-icon glyphicon icon-htmlfile" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Embed map'|translate}}"></span>
-            <span class="sidebar-item-title" translate>Embed map</span>
+            <span class="menu-icon glyphicon icon-share-alt" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Share map'|translate}}"></span>
+            <span class="sidebar-item-title" translate>Share map</span>
         </a>
 
         <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.status_creator.controller') && Core.panelEnabled('status_creator')" ng-click="Core.openStatusCreator()" ng-class="{active: Core.mainpanel == 'status_creator'}">
