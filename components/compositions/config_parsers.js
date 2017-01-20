@@ -11,15 +11,16 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
             * @memberof hs.compositions
             * @ngdoc service
             * @name hs.compositions.config_parsers.service
-            * @description TODO
+            * @description Service for parsing object definition which are invalid for direct use as layers
             */
             .service('hs.compositions.config_parsers.service', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', function(OlMap, config, Core, $rootScope, utils, nonWmsService) {
                 var me = {
                     /**
-                    * TODO
+                    * Parse defintion object to create WMS Ol.layer (source = ol.source.ImageWMS / ol.source.TileWMS)
                     * @memberof hs.compositions.config_parsers.service
                     * @function createWmsLayer 
-                    * @param {TODO} lyr_def
+                    * @param {Object} lyr_def Layer definition object
+                    * @returns {ol.layer.Image|ol.layer.Tile} Complete definition of WMS layer
                     */
                     createWmsLayer: function(lyr_def) {
                         var source_class = lyr_def.singleTile ? ol.source.ImageWMS : ol.source.TileWMS;
@@ -66,10 +67,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
                     },
                     /**
-                    * TODO
+                    * Parse defintion object to create Sparql layer 
                     * @memberof hs.compositions.config_parsers.service
                     * @function createSparqlLayer 
-                    * @param {TODO} lyr_def
+                    * @param {Object} lyr_def Layer definition object
                     */
                     createSparqlLayer: function(lyr_def) {
                         var url = decodeURIComponent(lyr_def.protocol.url);
@@ -98,10 +99,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         lyr.setVisible(lyr_def.visibility);
                     },
                     /**
-                    * TODO
+                    * Parse style definiton object to create valid Style object 
                     * @memberof hs.compositions.config_parsers.service
                     * @function parseStyle 
-                    * @param {TODO} j
+                    * @param {Object} j Style definition object
+                    * @returns {ol.style.Style} Valid Ol style object
                     */
                     parseStyle: function(j) {
                         var style_json = {};
@@ -153,10 +155,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         return new ol.style.Style(style_json);
                     },
                     /**
-                    * TODO
+                    * Parse defintion object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
                     * @memberof hs.compositions.config_parsers.service
                     * @function createVectorLayer 
-                    * @param {TODO} lyr_def
+                    * @param {Object} lyr_def Layer definition object
+                    * @returns {ol.layer.Vector|function} Either valid vector layer or function for creation of other supported vector file types)
                     */
                     createVectorLayer: function(lyr_def) {
                         var format = "";

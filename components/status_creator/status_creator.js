@@ -10,6 +10,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @ngdoc directive
              * @name hs.statusCreator.directive
              * @memberof hs.status_creator
+             * @description Display Save map (composition) dialog
              */
             .directive('hs.statusCreator.directive', function() {
                 return {
@@ -23,6 +24,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @ngdoc directive
              * @name hs.statusCreator.directiveForm
              * @memberof hs.status_creator
+             * @description Display advanced form to collect information (metadata) about saved composition
              */
             .directive('hs.statusCreator.directiveForm', function() {
                 return {
@@ -36,6 +38,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @ngdoc directive
              * @name hs.statusCreator.directiveSimpleform
              * @memberof hs.status_creator
+             * @description Display simple form to collect information (metadata) about saved composition
              */
             .directive('hs.statusCreator.directiveSimpleform', function() {
                 return {
@@ -49,6 +52,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @ngdoc directive
              * @name hs.statusCreator.directivePanel
              * @memberof hs.status_creator
+             * @description Display Save map panel in app (base directive, extended by forms)
              */
             .directive('hs.statusCreator.directivePanel', function() {
                 return {
@@ -62,6 +66,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @ngdoc directive
              * @name hs.statusCreator.resultDialogDirective
              * @memberof hs.status_creator
+             * @description Display dialog about result of saving to status manager operation
              */
             .directive('hs.statusCreator.resultDialogDirective', function() {
                 return {
@@ -75,6 +80,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @ngdoc directive
              * @name hs.statusCreator.saveDialogDirective
              * @memberof hs.status_creator
+             * @description Display saving dialog (confirmation of saving, overwriting, selection of name)
              */
             .directive('hs.statusCreator.saveDialogDirective', function() {
                 return {
@@ -88,6 +94,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @ngdoc directive
              * @name hs.statusCreator.focusName
              * @memberof hs.status_creator
+             * @description UNUSED?
              */
             .directive('hs.statusCreator.focusName', function($timeout) {
                 return {
@@ -107,9 +114,18 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @ngdoc service
              * @name hs.status_creator.service
              * @memberof hs.status_creator
+             * @description Service for converting composition and composition data into JSON object which can be saved on server
              */
             .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', function(OlMap, Core, utils, $window, $cookies) {
                 var me = {
+                    /**
+                    * Create Json object which stores information about composition, user, map state and map layers (including layer data)
+                    * @memberof hs.status_creator.service
+                    * @function map2json
+                    * @param {Ol.map} map Selected map object
+                    * @param {$scope} $scope Angular scope from which function is called
+                    * @returns {Object} JSON object with all required map composition metadata
+                    */
                     map2json: function(map, $scope) {
                         var groups = {};
                         angular.forEach($scope.groups, function(g) {
@@ -173,11 +189,12 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     },
 
                     /**
-                     * Converts map layers into a JSON object.
+                     * Converts map layers into a JSON object. If $scope is defined, stores only layers checked in form
                      * Uses layer2json().
-                     *
+                     * @memberof hs.status_creator.service
+                     * @function layer2json
                      * @param {Array} layers Map layers that should be converted
-                     * @param {Boolean} saveAll Whether all the layer attributes should be saved
+                     * @param {$scope} $scope Angular scope from which function is called
                      * @returns {Array} JSON object representing the layers
                      */
                     layers2json: function(layers, $scope) {
@@ -206,10 +223,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     /**
                      * Converts map layer from Layer object to text in JSON notation.
                      *
-                     * Syntactic sugar for layer2json()
-                     *
+                     * Syntactic sugar for layer2json() UNUSED?
+                     * @memberof hs.status_creator.service
+                     * @function layer2string
                      * @param {Object} layer Layer to be converted
-                     * @param {Boolean} Whether to use pretty notation
+                     * @param {Boolean} pretty Whether to use pretty notation
                      * @returns {String} Text in JSON notation representing the layer
                      */
                     layer2string: function(layer, pretty) {
@@ -218,6 +236,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         return text;
                     },
 
+                    /**
+                     * Convert layer style object into JSON object, partial function of layer2style (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
+                     * @memberof hs.status_creator.service
+                     * @function serializeStyle
+                     * @param {ol.style.Style} s Style to convert
+                     * @returns {Object} Converted JSON object for style
+                     */
                     serializeStyle: function(s) {
                         var o = {};
                         if (typeof s.getFill() != 'undefined' && s.getFill() != null)
@@ -264,10 +289,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     },
 
                     /**
-                     * Converts map layer into a JSON object.
-                     *
-                     * Layer properties covered:  CLASS_NAME, name, url, params,
-                     *                            group, displayInLayerSwitcher, visibility,
+                     * Converts map layer into a JSON object (only for ol.layer.Layer)                   
+                     * Layer properties covered:  (CLASS_NAME), name, url, params,
+                     *                            group, displayInLayerSwitcher, *visibility, *opacity
                      *                            attribution, transitionEffect,
                      *                             isBaseLayer, minResolution,
                      *                            maxResolution, minScale, maxScale, metadata,
@@ -277,9 +301,9 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                      *
                      * The layer index is not covered, as we assume
                      * that it is corresponding to the layers order.
-                     *
+                     * @memberof hs.status_creator.service
+                     * @function layer2json
                      * @param {Object} layer Map layer that should be converted
-                     * @param {Boolean} saveAll Whether all the layer attributes should be saved. Sometimes we want to save network traffic and save completely only the foreign layers, in such a case set saveAll to false.
                      * @returns {Object} JSON object representing the layer
                      */
                     layer2json: function(layer) {
@@ -370,12 +394,33 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         return json;
                     },
 
+                    /**
+                     * Convert feature array to GeoJSON string
+                     * @memberof hs.status_creator.service
+                     * @function serializeFeatures
+                     * @param {Array} features Array of features
+                     * @returns {String} GeoJSON string
+                     */
                     serializeFeatures: function(features) {
                         var f = new ol.format.GeoJSON();
                         return f.writeFeatures(features);
                     },
 
+                    /**
+                     * Generate random Uuid
+                     * @memberof hs.status_creator.service
+                     * @function generateUuid
+                     * @returns {String} Random Uuid in string format
+                     */
                     generateUuid: utils.generateUuid,
+                    
+                    /**
+                     * Create thumbnail of map view and save it into selected element
+                     * @memberof hs.status_creator.service
+                     * @function generateThumbnail
+                     * @param {$element} $element Selected element
+                     * @param {$scope} $scope Angular scope from which function was called
+                     */
                     generateThumbnail: function($element, $scope) {
                         if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink') {
                             $element.attr("crossOrigin", "Anonymous");
@@ -413,7 +458,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                 });
                 return me;
             }])
-
+//DUPLICATE?
         .controller('hs.status_creator.controller', ['$scope', '$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$compile', '$cookies',
                 function($scope, $rootScope, OlMap, Core, status_creator, config, $compile, $cookies) {
                     $scope.layers = [];
@@ -462,6 +507,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $scope.current_composition_title = '';
                     $scope.config = config;
                     /**
+                     * Get current extent of map, transform it into EPSG:4326 and save it into controller model
                      * @function getCurrentExtent
                      * @memberof hs.status_creator.controller
                      */
@@ -475,10 +521,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             $scope.bbox = [pair1[0].toFixed(2), pair1[1].toFixed(2), pair2[0].toFixed(2), pair2[1].toFixed(2)];
                             if (!$scope.$$phase) $scope.$digest();
                         }
-                        /**
-                         * @function next
-                         * @memberof hs.status_creator.controller
-                         */
+                    /**
+                     * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
+                     * @function next
+                     * @memberof hs.status_creator.controller
+                     */
                     $scope.next = function() {
                             if ($('a[href=#author]').parent().hasClass('active')) {
                                 var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope)));
@@ -503,10 +550,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                     $('.stc-tabs li:eq(2) a').tab('show');
                             }
                         }
-                        /**
-                         * @function showResultDialog
-                         * @memberof hs.status_creator.controller
-                         */
+                    /**
+                     * Show dialog about result of saving operation
+                     * @function showResultDialog
+                     * @memberof hs.status_creator.controller
+                     */
                     $scope.showResultDialog = function() {
                             if ($("#hs-dialog-area #status-creator-result-dialog").length == 0) {
                                 var el = angular.element('<div hs.status_creator.result_dialog_directive></span>');
@@ -517,10 +565,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             }
                             if (!$scope.$$phase) $scope.$digest();
                         }
-                        /**
-                         * @function confirmSave
-                         * @memberof hs.status_creator.controller
-                         */
+                    /**
+                     * Test if current composition can be saved (User permission, Free title of composition) and a) proceed with saving; b) display advanced save dialog; c) show result dialog, with fail message
+                     * @function confirmSave
+                     * @memberof hs.status_creator.controller
+                     */
                     $scope.confirmSave = function() {
                             $scope.title = this.title;
                             $scope.abstract = this.abstract;
@@ -558,19 +607,21 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                 }
                             })
                         }
-                        /**
-                         * @function selectNewTitle
-                         * @memberof hs.status_creator.controller
-                         */
+                    /**
+                     * Callback for saving with new title 
+                     * @function selectNewTitle
+                     * @memberof hs.status_creator.controller
+                     */
                     $scope.selectNewTitle = function() {
                             $scope.title = $scope.guessedTitle;
                             $scope.changeTitle = true;
                         }
-                        /**
-                         * @function save
-                         * @memberof hs.status_creator.controller
-                         * @param {unknown} save_as_new
-                         */
+                    /**
+                     * Save composition data on server, display result dialog
+                     * @function save
+                     * @memberof hs.status_creator.controller
+                     * @param {Boolean} save_as_new Whether save as new composition on server (new id) or overwrite previous one
+                     */
                     $scope.save = function(save_as_new) {
                             if (save_as_new || $scope.id == '') $scope.id = status_creator.generateUuid();
                             $.ajax({
@@ -612,10 +663,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                 }
                             })
                         }
-                        /**
-                         * @function open
-                         * @memberof hs.status_creator.controller
-                         */
+                    /**
+                     * Initialization of Status Creator from outside of component
+                     * @function open
+                     * @memberof hs.status_creator.controller
+                     */
                     $scope.open = function() {
                             $scope.layers = [];
                             $scope.getCurrentExtent();
@@ -636,10 +688,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             //$('#status-creator-dialog').modal('show');
                             $scope.loadUserDetails();
                         }
-                        /**
-                         * @function fillGroups
-                         * @memberof hs.status_creator.controller
-                         */
+                    /**
+                     * Send getGroups request to status manager server and process response
+                     * @function fillGroups
+                     * @memberof hs.status_creator.controller
+                     */
                     $scope.fillGroups = function() {
                             $scope.groups = [];
                             if (config.advancedForm) {
@@ -679,10 +732,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                 });
                             }
                         }
-                        /**
-                         * @function loadUserDetails
-                         * @memberof hs.status_creator.controller
-                         */
+                    /**
+                     * Get User info from server and call callback (setUserDetail)
+                     * @function loadUserDetails
+                     * @memberof hs.status_creator.controller
+                     */
                     $scope.loadUserDetails = function() {
                         $.ajax({
                             url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=getuserinfo",
@@ -690,9 +744,10 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         });
                     };
                     /**
+                     * Process user info into controller model, so they can be used in Save composition forms
                      * @function setUserDetails
                      * @memberof hs.status_creator.controller
-                     * @param {unknown} user
+                     * @param {Object} user User object
                      */
                     $scope.setUserDetails = function(user) {
                         if (user && user.success == true) {

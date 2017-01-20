@@ -12,7 +12,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
          * @memberof hs.compositions
          * @name hs.compositions.directive
          * @ngdoc directive
-         * @description Add composition panel to the map
+         * @description Add composition panel to the map, consist of filtering function, keyword, list of compositions with their functions and composition pager
          */
         .directive('hs.compositions.directive', function() {
                 return {
@@ -29,7 +29,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
              * @memberof hs.compositions
              * @name hs.compositions.overwriteDialogDirective
              * @ngdoc directive
-             * @description Display dialog window for situation, when new composition is to be loaded while there are unsaved changes in old composition
+             * @description Display dialog window for situation, when new composition is to be loaded while there are unsaved changes in old composition 
              */
             .directive('hs.compositions.overwriteDialogDirective', function() {
                 return {
@@ -43,7 +43,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
              * @memberof hs.compositions
              * @name hs.compositions.deleteDialogDirective
              * @ngdoc directive
-             * @description Display dialog window for confiriming of deletation of selected composition
+             * @description Display dialog window for confiriming deletion of selected composition
              */
             .directive('hs.compositions.deleteDialogDirective', function() {
                 return {
@@ -71,7 +71,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
              * @memberof hs.compositions
              * @name hs.compositions.infoDialogDirective
              * @ngdoc directive
-             * @description Display dialog of composition info
+             * @description Display dialog of composition info (name, abstract, thumbnail, extent, layers)
              */
             .directive('hs.compositions.infoDialogDirective', function() {
                 return {
@@ -96,13 +96,13 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     utils: utils,
                     current_composition_title: "",                 
                     /**
-                    * TODO
+                    * Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
                     * @memberof hs.compositions.service_parser
                     * @function load 
-                    * @param {TODO} url
-                    * @param {TODO} overwrite
-                    * @param {TODO} callback
-                    * @param {TODO} pre_parse
+                    * @param {String} url Url of selected composition
+                    * @param {Boolean} overwrite Whether overwrite current composition in map - remove all layers from maps which originate from composition (if not pasted, it counts as "true")
+                    * @param {Function} callback Optional function which should be called when composition is successfully loaded
+                    * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
                     */
                     load: function(url, overwrite, callback, pre_parse) {
                         me.current_composition_url = url; 
@@ -149,7 +149,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             })
                     },
                     /**
-                    * TODO
+                    * Remove all layers gained from composition from map 
                     * @memberof hs.compositions.service_parser
                     * @function removeCompositionLayers 
                     */
@@ -164,10 +164,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         }
                     },
                     /**
-                    * TODO
+                    * Send Ajax request to selected server to gain information about composition
                     * @memberof hs.compositions.service_parser
                     * @function loadInfo
-                    * @param {TODO} url
+                    * @param {String} url Url to composition info
+                    * @returns {Object} Object containing composition info
                     */
                     loadInfo: function(url) {
                         var info = {};
@@ -184,10 +185,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         return info;
                     },
                     /**
-                    * TODO
+                    * Parse input coords (Bounding box) in EPSG:4326 and transform them to map projection
                     * @memberof hs.compositions.service_parser
                     * @function parseExtent
-                    * @param {TODO} b
+                    * @param {String|Array} b Bounding box to parse (Expected coords order: X1, Y1, X2, Y2; in string separator should be space " ")
+                    * @returns {Array} Transformated extent coords (Order: X1, Y1, X2, Y2)
                     */
                     parseExtent: function(b) {
                         if (typeof b == 'string')
@@ -199,10 +201,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                     },
                     /**
-                    * TODO
+                    * Parse composition object to extract individual layers
                     * @memberof hs.compositions.service_parser
                     * @function jsonToLayers
-                    * @param {TODO} j
+                    * @param {Object} j Composition object with Layers
+                    * @returns {Array} Individual layer object in array
                     */
                     jsonToLayers: function(j) {
                         var layers = [];
@@ -215,10 +218,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 };
                 /**
-                * TODO
+                * Select correct layer parser for input data based on layer "className" property
                 * @memberof hs.compositions.service_parser
                 * @function jsonToLayer
-                * @param {TODO} lyr_def
+                * @param {Object} lyr_def Layer to be created
+                * @returns {Function} Corect parser function to create layer (from config_parsers service)
                 */
                 me.jsonToLayer = function(lyr_def) {
                     switch (lyr_def.className) {
@@ -268,7 +272,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 $scope.use_callback_for_edit = false; //Used for opening Edit panel from the list of compositions
 
                 /**
-                 * Load Previous list of compositions
+                 * Load previous list of compositions to display on pager (based on composition entry number per page, default 15)
                  * @memberof hs.compositions.controller
                  * @function getPreviousCompositions
                  */
@@ -284,7 +288,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
                 
                 /**
-                 * Load next list of compositions
+                 * Load next list of compositions to display on pager (based on composition entry number per page, default 15)
                  * @memberof hs.compositions.controller
                  * @function getNextCompositions
                  */
@@ -302,12 +306,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
 
                 function getMapExtent() {
-                    //
+                    //UNUSED?
                 }
 
                 var ajax_req = null;
                 /**
-                 * Loads list of compositions acording to current parameters values
+                 * Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map 
                  * @memberof hs.compositions.controller
                  * @function loadCompositions
                  */
@@ -435,20 +439,20 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             })
                     }
                 
-                    /**
-                     * Handler of "Only mine" filter change
-                     * @memberof hs.compositions.controller
-                     * @function miniFilterChanged
-                     */
+                /**
+                 * Handler of "Only mine" filter change, delete editable variable if needed
+                 * @memberof hs.compositions.controller
+                 * @function miniFilterChanged
+                 */
                 $scope.mineFilterChanged = function() {
                         if (angular.isDefined($scope.query.editable) && $scope.query.editable == false) delete $scope.query.editable;
                     }
 
-                    /**
-                     * Handler of changing filter, reload compositions from start again
-                     * @memberof hs.compositions.controller
-                     * @function filterChanged
-                     */
+                /**
+                 * Reload compositions from first again, handler of changing filter
+                 * @memberof hs.compositions.controller
+                 * @function filterChanged
+                 */
                 $scope.filterChanged = function() {
                             $scope.compStart = 0;
                             $scope.compNext = $scope.page_size;
@@ -456,7 +460,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         }
                 
                     /**
-                     * Display delete dialog
+                     * Display delete dialog of composition 
                      * @memberof hs.compositions.controller
                      * @function confirmDelete
                      * @param {object} composition Composition selected for deletion
@@ -471,7 +475,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 
                     /**
-                     * Delete selected composition from project
+                     * Delete selected composition from project (including deletion from composition server, useful for user created compositions)
                      * @memberof hs.compositions.controller
                      * @function delete
                      * @param {object} composition Composition to delete
@@ -501,7 +505,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     }
                 
                     /**
-                     * Open Status Creator pane
+                     * (PRIVATE) Callback for load composition function, open Status Creator panel
                      * @memberof hs.compositions.controller
                      * @function callbackForEdit
                      */
@@ -510,7 +514,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
                 
                 /**
-                 * Highlight (or dim) composition
+                 * Highlight (or dim) composition, toogle visual state of composition extent on map
                  * @memberof hs.compositions.controller
                  * @function highlightComposition
                  * @param {object} composition Composition to highlight
@@ -627,7 +631,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         $compile(el)($scope);
                     }
                     /**
-                     * Display composition info dialog
+                     * Load info about composition through service and display composition info dialog
                      * @memberof hs.compositions.controller
                      * @function detailComposition
                      * @param {object} record Composition to show details
@@ -642,7 +646,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         $compile(el)($scope);
                     }
                     /**
-                     * TODO
+                     * Load selected composition in map, if current composition was edited display Ovewrite dialog
                      * @memberof hs.compositions.controller
                      * @function loadComposition
                      * @param {object} record Composition to be loaded
@@ -666,7 +670,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         }
                     }
                     /**
-                     * TODO
+                     * Load new composition (with service_parser Load function) without saving old composition
                      * @memberof hs.compositions.controller
                      * @function overwrite
                      */
@@ -674,7 +678,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         composition_parser.load($scope.composition_to_be_loaded, true, $scope.use_callback_for_edit ? callbackForEdit : null);
                     }
                     /**
-                     * TODO
+                     * Load new composition (with service_parser Load function) and merge it with old composition
                      * @memberof hs.compositions.controller
                      * @function add
                      */
@@ -682,7 +686,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         composition_parser.load($scope.composition_to_be_loaded, false, $scope.use_callback_for_edit ? callbackForEdit : null);
                     }
                     /**
-                     * TODO
+                     * Open Save composition panel for saving old composition
                      * @memberof hs.compositions.controller
                      * @function save
                      */
@@ -690,10 +694,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         Core.openStatusCreator();
                     }
                     /**
-                     * TODO
+                     * Set sort attribute for sorting composition list and reload compositions 
                      * @memberof hs.compositions.controller
                      * @function setSortAttribute
-                     * @param {unknown} attribute
+                     * @param {String} attribute Attribute by which compositions should be sorted (expected values: bbox, title, date)
                      */
                 $scope.setSortAttribute = function(attribute) {
                         $scope.sort_by = attribute;
@@ -705,12 +709,13 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         $scope.sort_by_attr_for_statusmanager = encodeURIComponent(sort_map[attribute]);
                         $scope.loadCompositions();
                     }
-                    /**
-                     * TODO
-                     * @memberof hs.compositions.controller
-                     * @function toggleKeywords
-                     */
+                    
                     //$scope.loadCompositions();
+                /**
+                 * Toogle keywords panel on compositions panel
+                 * @memberof hs.compositions.controller
+                 * @function toggleKeywords
+                 */
                 $scope.toggleKeywords = function() {
                     $(".keywords-panel").slideToggle();
                 }
@@ -737,7 +742,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
 
                 /**
-                 * TODO
+                 * TODO UNUSED?
                  * @memberof hs.compositions.controller
                  * @function generateScreenshotForAll
                  */
@@ -818,7 +823,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
                 /**
                  * @memberof hs.compositions.controller
-                 * @function generateThumbnail
+                 * @function makeScreenshotAndStore
                  * (PRIVATE) TODO
                  */
                 function makeScreenshotAndStore() {
