@@ -34,8 +34,8 @@ define(['angular', 'map', 'core', 'permalink'],
                  * @function setMainPanel
                  * @param {string} which
                  */
-                $scope.setMainPanel = function(which) {
-                    Core.setMainPanel(which, true);
+                $scope.setMainPanel = function(which, by_gui, queryable) {
+                    Core.setMainPanel(which, by_gui, queryable);
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
