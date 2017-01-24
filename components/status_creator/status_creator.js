@@ -198,7 +198,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     getCurrentBaseLayer: function(map){
                         var current_base_layer = null;
                         angular.forEach(map.getLayers().getArray(), function(lyr){
-                            if ((angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) && lyr.get('base') == true && layer.getVisible()) {
+                            if ((angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) && lyr.get('base') == true && lyr.getVisible()) {
                                 current_base_layer = {
                                     title: lyr.get('title')
                                 };
