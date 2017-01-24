@@ -47,7 +47,7 @@ define(['angular', 'ol', 'map', 'core'],
 
 
                 /**
-                 * Handler of pointer movement, compute live results of measuring
+                 * (PRIVATE) Handler of pointer movement, compute live results of measuring
                  * @memberof hs.measure.controller
                  * @function mouseMoveHandler 
                  * @param {Event} evt
@@ -55,39 +55,79 @@ define(['angular', 'ol', 'map', 'core'],
                 var mouseMoveHandler = function(evt) {
                     if ($scope.sketch) {
                         var output;
-                        var val = 0;
+
                         for (var i = 0; i < $scope.sketch.length; i++) {
                             var geom = $scope.sketch[i].getGeometry();
                             if (geom instanceof ol.geom.Polygon) {
-                                val += geom.getArea();
+                                output = addMultiple(formatArea(geom),output);
                             } else if (geom instanceof ol.geom.LineString) {
-                                val += geom.getLength();
+                                output = addMultiple(formatLength(geom),output);
                             }
                         }
-                        if (geom instanceof ol.geom.Polygon) {
-                            output = formatArea(geom);
-                        } else if (geom instanceof ol.geom.LineString) {
-                            output = formatLength(geom);
-                        }
+
                         $scope.measurements[$scope.current_measurement] = output;
                         if (!$scope.$$phase) $scope.$digest();
                     }
                 };
 
+                /**
+                 * (PRIVATE) Add two measure results for multiple shape mode to display joined result
+                 * @memberof hs.measure.controller
+                 * @function addMultiple 
+                 * @param {object} val1 Output of new object
+                 * @param {object} val2 Old value
+                 */
+                var addMultiple = function(val1, val2) {
+                    if (val2 == undefined) return val1;
+                    var unit = val1.unit;
+                    var type = val1.type;
+                    if (val1.unit == val2.unit) {
+                        var value = Math.round((val1.size + val2.size) * 100) / 100;
+                        if (unit == "m" && type == "length" && value > 1000) {
+                            value = Math.round(value / 1000 * 100) / 100;
+                            unit = "km";
+                        }
+                        else if (unit == "m" && type == "area" && value > 10000) {
+                            value = Math.round(value / 1000000 * 100) / 100;
+                            unit = "km";
+                        }
+                    }
+                    else {
+                        var arr = [val1, val2];
+                        for (var i= 0; i < arr.length; i++) {
+                            if (arr[i].unit == "m") {
+                                type == "length" ? arr[i].size /= 1000 : arr[i].size /= 1000000;
+                            }
+                        }
+                        var value = Math.round((arr[0].size + arr[1].size) * 100) / 100;
+                        unit = "km";
+                    }
+                    var output = {
+                        size: value,
+                        type: type,
+                        unit: unit
+                    };
+                    return output;
+                };
+                
                 $scope.multiple_shape_mode = false;
                 $(document).keyup(function(e) {
                     if (e.which == 17) {
+                        if ($scope.multiple_shape_mode == true) {
+                            drawReset();   
+                        }
                         $scope.multiple_shape_mode = !$scope.multiple_shape_mode;
                         $scope.$digest();
                     }
                 });
 
                 var draw; // global so we can remove it later
+                var active; //temporary watcher if user is currently drawing - for clearing, think OL should have tool for this?
 
                 /**
-                 * Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
-                 * memberof hs.measure.controller
-                 * function addInteraction
+                 * (PRIVATE) Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
+                 * @memberof hs.measure.controller
+                 * @function addInteraction
                  */
                 function addInteraction() {
                     var type = ($scope.type == 'area' ? 'Polygon' : 'LineString');
@@ -101,8 +141,16 @@ define(['angular', 'ol', 'map', 'core'],
                         function(evt) {
                             $("#toolbar").fadeOut();
                             // set sketch
-                            if ($scope.multiple_shape_mode)
+                            if ($scope.multiple_shape_mode) {
+                                if (!Array.isArray($scope.sketch)) {
+                                    $scope.sketch = [];
+                                    $scope.measurements.push({
+                                        size: 0,
+                                        unit: ""
+                                    });
+                                }
                                 $scope.sketch.push(evt.feature);
+                            }
                             else {
                                 $scope.sketch = [evt.feature];
                                 $scope.measurements.push({
@@ -111,19 +159,22 @@ define(['angular', 'ol', 'map', 'core'],
                                 });
                             }
                             $scope.current_measurement = $scope.measurements.length - 1;
+                            active = true;
                         }, this);
 
                     draw.on('drawend',
                         function(evt) {
                             $("#toolbar").fadeIn();
+                            active = false;
                         }, this);
                 }
 
                 var wgs84Sphere = new ol.Sphere(6378137);
 
                 /**
-                 * Compute and format line length with correct units (m/km)
+                 * (PRIVATE) Compute and format line length with correct units (m/km)
                  * @memberof hs.measure.controller
+                 * @function formatLength
                  * @param {ol.geom.LineString} line
                  * @return {object} numeric length of line with used units
                  */
@@ -156,8 +207,9 @@ define(['angular', 'ol', 'map', 'core'],
                 };
 
                 /**
-                 * Compute and format polygon area with correct units (m/km)
+                 * (PRIVATE) Compute and format polygon area with correct units (m/km)
                  * @memberof hs.measure.controller
+                 * @function formatArea
                  * @param {ol.geom.Polygon} polygon
                  * @return {object} area of polygon with used units
                  */
@@ -197,12 +249,13 @@ define(['angular', 'ol', 'map', 'core'],
                 }
 
                 /**
-                 * Clear current drawing
+                 * Clear current drawings
                  * @memberof hs.measure.controller
                  * @function clearAll
-                 * @description Reset sketch and measurement to start new drawing
+                 * @description Reset sketch and all measurements to start new drawing
                  */
                 $scope.clearAll = function() {
+                    if (active) draw.finishDrawing();
                     $scope.measurements = [];
                     source.clear();
                     $scope.sketch = null;
@@ -222,10 +275,20 @@ define(['angular', 'ol', 'map', 'core'],
 
                 $scope.$watch('type', function() {
                     if (Core.mainpanel != 'measure') return;
-                    map.removeInteraction(draw);
-                    addInteraction();
+                    drawReset();
                 });
-
+                
+                /**
+                 * (PRIVATE) Restart interaction and nullify sketch, measure parameter change callback
+                 * @memberof hs.measure.controller
+                 * @function drawReset
+                 */
+                function drawReset() {
+                    map.removeInteraction(draw);
+                    $scope.sketch = null;
+                    addInteraction();
+                }
+                
                 /**
                  * Activate measuring function
                  * @memberof hs.measure.controller
@@ -255,6 +318,13 @@ define(['angular', 'ol', 'map', 'core'],
                         $scope.deactivateMeasuring();
                     }
                 });
+                
+                //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
+                if (Core.mainpanel=="measure") {
+                    Core.current_panel_queryable=false;
+                    $scope.activateMeasuring();
+                }
+                
                 $scope.$emit('scope_loaded', "Measure");
             }
         ]);
