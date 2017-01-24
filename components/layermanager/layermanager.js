@@ -198,7 +198,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                                 sub_layers[i] = getLegendUrl(layer.getSource().getUrl(), sub_layers[i]);
                         }
                     }
-                    if (layer.get('base') != true) {
+                    //if (layer.get('base') != true) {
                         layer.on('change:visible', function(e) {
                             for (var i = 0; i < $scope.layers.length; i++) {
                                 if ($scope.layers[i].layer == e.target) {
@@ -208,7 +208,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             }
                             if (!$scope.$$phase) $scope.$digest();
                         })
-                    }
+                    //}
 
                     if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
                     var new_layer = {
