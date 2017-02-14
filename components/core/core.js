@@ -127,6 +127,11 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         panel_enabled: {},
                         _exist_cache: {},
                         current_panel_queryable: false,
+                        size:{
+                            height: config.maxHeight || "100%",
+                            width: config.maxWidth || "100%",    
+                        },
+                        fullScreenMode: config.fullScreenMode || false,
                         /**
                          * @function setMainPanel
                          * @memberOf Core
@@ -166,18 +171,18 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         /**
                          * @function updateMapSize
                          * @memberOf Core
-                         * @param {} open ?UNUSED
                          * Change size of map element in application. Size should be rest of window width next to sidebar
                          */
-                        updateMapSize: function(open) {
-                            var w = angular.element($window);
+                        updateMapSize: function() {
+                            var element = $("hs");
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
-                            if (w.width() != sidebarElem.width()) {
-                                map.width(w.width() - sidebarElem.width());
+                            if (element.width() != sidebarElem.width()) {
+                                map.width(element.width() - sidebarElem.width());
                             } else {
-                                map.width(w.width());
+                                map.width(element.width());
                             }
+                            
                             OlMap.map.updateSize();
                         },
                         /**
@@ -277,25 +282,51 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 return t;
                             }
                         },
+                        //Old function temporaly left in code, so all examples works before functionality is finalized
                         /**
                          * @function fullScreenMap
                          * @memberOf Core
-                         * @param {String} element Element to resize while going fullscreen
-                         * Utility function for initialization of app
+                         * @param {Object} element Element to resize while going fullscreen
+                         * Utility function for initialization of app, when app take whole window
                          */
                         fullScreenMap: function(element) {
-                            var w = angular.element($window);
-                            w.bind('resize', function() {
+                            $("html").css('overflow', 'hidden');
+                            $("html").css('height', '100%');
+                            $('body').css('height', '100%');
+                            me.appSize(element);
+                        },
+                        /**
+                        * @function appSize
+                        * @memberOf Core
+                        * @param {Object} element App angular element
+                        * Set right size of app in page, starts event listeners for events which lead to changing app size (window resizing, change of app settings)
+                        */
+                        appSize: function(element) {
+                            if (!me.setDefaultPanel) {
                                 $("html").css('overflow', 'hidden');
                                 $("html").css('height', '100%');
                                 $('body').css('height', '100%');
-                                element[0].style.height = w.height() + "px";
-                                element[0].style.width = w.width() + "px";
-                                $("#map").height(w.height());
-                                me.updateMapSize();
-                                OlMap.map.updateSize();
+                            }
+                            var w = angular.element($window);
+                            changeSize(w,element);
+                            w.resize(function(){
+                                changeSize(w,element);
                             });
-                            w.resize();
+                            $rootScope.$on("Core_sizeChanged",function(){
+                                changeSize(w,element);
+                            });
+                        },
+                        /**
+                        * @function changeSizeConfig
+                        * @memberOf Core
+                        * @param {String} newHeight New height setting for app (Pixel or percentage value e.g. '960px'/'100%')
+                        * @param {String} newWidth New width setting for app (Pixel or percentage value e.g. '960px'/'100%')
+                        * Change max height and width of app element 
+                        */
+                        changeSizeConfig: function(newHeight, newWidth) {
+                            me.size.height = newHeight;
+                            me.size.width = newWidth;
+                            $rootScope.$broadcast("Core_sizeChanged");
                         },
                         /**
                          * @function setLanguage
@@ -421,7 +452,52 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             window.proj4 = proj4
                         });
                     }
-
+                    
+                    /**
+                     * @function getSize
+                     * @memberOf Core
+                     * @params {Object} w Angular object containing window, to get window size
+                     * @params {Object} maxSize Maximum configured size of App element
+                     * @returns {Object} Computed size of element
+                     * (PRIVATE) Transform configured Size of app element to pixel numbers, checks if window is not smaller than app element
+                     */
+                    function getSize(w, maxSize) {
+                        var size = {};
+                        if (maxSize.height.indexOf("%") > -1) {
+                            size.height = Math.round( w.height() / 100 * maxSize.height.slice(0,-1)); 
+                        }
+                        else {
+                            if (maxSize.height.slice(0,-2) < w.height()) 
+                                size.height = maxSize.height.slice(0,-2);
+                            else 
+                                size.height = w.height();    
+                        }
+                        if (maxSize.width.indexOf("%") > -1) {
+                            size.width = Math.round( w.width() / 100 * maxSize.width.slice(0,-1));
+                        }
+                        else {
+                            if (maxSize.width.slice(0,-2) < w.width()) 
+                                size.width = maxSize.width.slice(0,-2);
+                            else 
+                                size.width = w.width();    
+                        }
+                        return size;
+                    };
+                    /**
+                     * @function changeSize
+                     * @memberOf Core
+                     * @params {Object} w Angular object containing window, to get window size
+                     * @params {Object} element Angular object containing app element
+                     * (PRIVATE) Helper function for changing app size
+                     */
+                    function changeSize(w,element) {
+                        var size = getSize(w,me.size);
+                        element[0].style.height = size.height + "px";
+                        element[0].style.width = size.width + "px";
+                        $("#map").height(size.height);
+                        me.updateMapSize();
+                        OlMap.map.updateSize();
+                    }
                     return me;
                 },
 
