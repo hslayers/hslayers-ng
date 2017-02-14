@@ -198,17 +198,24 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                                 sub_layers[i] = getLegendUrl(layer.getSource().getUrl(), sub_layers[i]);
                         }
                     }
-                    if (layer.get('base') != true) {
+                    //if (layer.get('base') != true) {
                         layer.on('change:visible', function(e) {
-                            for (var i = 0; i < $scope.layers.length; i++) {
+                             for (var i = 0; i < $scope.layers.length; i++) {
                                 if ($scope.layers[i].layer == e.target) {
                                     $scope.layers[i].visible = e.target.getVisible();
                                     break;
                                 }
                             }
+                            for (var i = 0; i < $scope.baselayers.length; i++) {
+                                if ($scope.baselayers[i].layer == e.target) {
+                                    $scope.baselayers[i].active = e.target.getVisible();
+                                } else {
+                                    $scope.baselayers[i].active = false;            
+                                }
+                            }
                             if (!$scope.$$phase) $scope.$digest();
                         })
-                    }
+                    //}
 
                     if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
                     var new_layer = {

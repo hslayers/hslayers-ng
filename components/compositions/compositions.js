@@ -126,8 +126,14 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     for (var i = 0; i < layers.length; i++) {
                                         hsMap.map.addLayer(layers[i]);
                                     }
-
-
+                                    
+                                    if(angular.isObject(response.data.current_base_layer)){
+                                        hsMap.map.getLayers().forEach(function(lyr) {
+                                            if (lyr.get('title') == response.data.current_base_layer.title)
+                                                lyr.setVisible(true);
+                                        });
+                                    }
+                                    
                                     if (config.open_lm_after_comp_loaded) {
                                         Core.setMainPanel('layermanager');
                                     }

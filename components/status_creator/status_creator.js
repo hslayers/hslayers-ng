@@ -184,8 +184,27 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         var layers = map.getLayers().getArray();
 
                         json.layers = me.layers2json(layers, $scope);
-
+                        json.current_base_layer = me.getCurrentBaseLayer(map);
                         return json;
+                    },
+                    
+                    /**
+                    * Returns object about current selected base layer
+                    * @memberof hs.status_creator.service
+                    * @function getCurrentBaseLayer
+                    * @param {Ol.map} map Selected map object
+                    * @returns {Object} Returns object with current current selected base layers title as attribute
+                    */
+                    getCurrentBaseLayer: function(map){
+                        var current_base_layer = null;
+                        angular.forEach(map.getLayers().getArray(), function(lyr){
+                            if ((angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) && lyr.get('base') == true && lyr.getVisible()) {
+                                current_base_layer = {
+                                    title: lyr.get('title')
+                                };
+                            }
+                        })
+                        return current_base_layer;
                     },
 
                     /**
