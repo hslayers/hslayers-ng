@@ -6,6 +6,12 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
     function(ol, dc) {
         var module = angular.module('hs.lodexplorer', ['hs.drag', 'hs.map', 'hs.query', 'hs.core'])
+            /**
+            * @memberof hs.lodexplorer
+            * @ngdoc directive
+            * @name hs.lodexplorer.directive
+            * @description TODO
+            */
             .directive('hs.lodexplorer.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/lodexplorer/partials/lodexplorer.html?bust=' + gitsha,
@@ -13,23 +19,53 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
                     }
                 };
-            }).service("hs.lodexplorer.service_sparqllog", [
+            })
+        
+            /**
+            * @memberof hs.lodexplorer
+            * @ngdoc service
+            * @name hs.lodexplorer.service_sparqllog
+            * @description TODO
+            */
+            .service("hs.lodexplorer.service_sparqllog", [
                 function() {
                     var me = {
                         logs: []
                     };
                     return me;
                 }
-            ]).directive('hs.lodexplorer.directiveSparqllogdialog', function() {
+            ])
+            
+            /**
+            * @memberof hs.lodexplorer
+            * @ngdoc directive
+            * @name hs.lodexplorer.directiveSparqllogdialog
+            * @description TODO
+            */
+            .directive('hs.lodexplorer.directiveSparqllogdialog', function() {
                 return {
                     templateUrl: hsl_path + 'components/lodexplorer/partials/sparqllogdialog.html?bust=' + gitsha,
                 };
-            }).controller('hs.lodexplorer.controller_sparqllogdialog', ['$scope', 'hs.lodexplorer.service_sparqllog',
+            })
+        
+            /**
+            * @memberof hs.lodexplorer
+            * @ngdoc controller
+            * @name hs.lodexplorer.controller_sparqllogdialog
+            * @description TODO
+            */
+            .controller('hs.lodexplorer.controller_sparqllogdialog', ['$scope', 'hs.lodexplorer.service_sparqllog',
                 function($scope, SparqlLogService) {
                     $scope.sparql_log = SparqlLogService.logs;
                 }
             ])
 
+        /**
+        * @memberof hs.lodexplorer
+        * @ngdoc controller
+        * @name hs.lodexplorer.controller
+        * @description TODO
+        */
         .controller('hs.lodexplorer.controller', ['$scope', 'hs.map.service', 'hs.query.service_infopanel', 'hs.lodexplorer.service_sparqllog', 'Core',
             function($scope, OlMap, InfoPanelService, SparqlLogService, Core) {
                 var lyr = null;
@@ -61,6 +97,12 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                     }
                 ]
 
+                /**
+                 * @function setSources
+                 * @memberOf hs.lodexplorer.controller
+                 * @params {Unknown} sources
+                 * @description TODO
+                 */
                 $scope.setSources = function(sources) {
                     $scope.sources = sources;
                     if (!$scope.$$phase) $scope.$digest();
@@ -68,6 +110,13 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
 
                 $scope.groupings = [];
 
+                /**
+                 * @function styleFunction
+                 * @memberOf hs.lodexplorer.controller
+                 * @params {Unknown} feature
+                 * @params {Unknown} resolution
+                 * @description TODO
+                 */
                 $scope.styleFunction = function(feature, resolution) {
                     if (Number.MIN_VALUE != feature.gradient_value) {
                         return [new ol.style.Style({
@@ -90,6 +139,14 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                     }
                 }
 
+                /**
+                 * @function rainbow
+                 * @memberOf hs.lodexplorer.controller
+                 * @params {Unknown} numOfSteps
+                 * @params {Unknown} step
+                 * @params {Unknown} opacity
+                 * @description TODO
+                 */
                 $scope.rainbow = function(numOfSteps, step, opacity) {
                     // based on http://stackoverflow.com/a/7419630
                     // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
@@ -118,6 +175,12 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                     return (c);
                 }
 
+                /**
+                 * @function chooseSource
+                 * @memberOf hs.lodexplorer.controller
+                 * @params {Unknown} source
+                 * @description TODO
+                 */
                 $scope.chooseSource = function(source) {
                     var sparql = ["SELECT DISTINCT ?classif",
                         "FROM <" + source + ">",
@@ -139,6 +202,13 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                 }
 
                 var from_list = "";
+                
+                /**
+                 * @function classifsDownloaded
+                 * @memberOf hs.lodexplorer.controller
+                 * @params {Unknown} j
+                 * @description (PRIVATE) TODO
+                 */
                 var classifsDownloaded = function(j) {
                     $scope.classifs_loaded = true;
                     var unique_classifs = {};
@@ -166,6 +236,12 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                     });
                 }
 
+                /**
+                 * @function propertiesDownloaded
+                 * @memberOf hs.lodexplorer.controller
+                 * @params {Unknown} j
+                 * @description (PRIVATE) TODO
+                 */
                 var propertiesDownloaded = function(j) {
                     var tmp = j.results.bindings;
                     var groups = {};
@@ -185,6 +261,12 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                     display();
                 }
 
+                /**
+                 * @function display
+                 * @memberOf hs.lodexplorer.controller
+                 * @params {Unknown} j
+                 * @description (PRIVATE) TODO
+                 */
                 var display = function(j) {
                     var filter = "";
                     $scope.loading = true;
@@ -248,6 +330,12 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
                     });
                 }
 
+                /**
+                 * @function dataDownloaded
+                 * @memberOf hs.lodexplorer.controller
+                 * @params {Unknown} j
+                 * @description (PRIVATE) TODO
+                 */
                 var dataDownloaded = function(j) {
                     var max = Number.MIN_VALUE;
                     var min = Number.MAX_VALUE;

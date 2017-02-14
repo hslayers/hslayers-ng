@@ -29,11 +29,22 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                 var me = {
                     waypoints: [],
                     scopes: [],
+                    /**
+                    * Refresh scopes phase
+                    * @memberof hs.trip_planner.service
+                    * @function digestScopes 
+                    */
                     digestScopes: function() {
                         angular.forEach(me.scopes, function(scope) {
                             if (!scope.$$phase) scope.$digest();
                         })
                     },
+                    /**
+                    * Load selected trip data from plan4all server and calculate routes
+                    * @memberof hs.trip_planner.service
+                    * @function loadWaypoints
+                    * @params {String} uuid Identifier of selected trip
+                    */
                     loadWaypoints: function(uuid) {
                         $("meta[property=og\\:title]").attr("content", 'test');
                         var trip_url = '<http://www.sdi4apps.eu/trips.rdf#' + uuid + '>';
@@ -50,6 +61,13 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                                 me.calculateRoutes();
                             });
                     },
+                    /**
+                    * Add waypoint to waypoint list and recalculate route
+                    * @memberof hs.trip_planner.service
+                    * @function addWaypoint
+                    * @param {Number} lon Longitude number (part of Ol.coordinate Array)
+                    * @param {Number} lat Latitude number (part of Ol.coordinate Array)
+                    */
                     addWaypoint: function(lon, lat) {
                         if (permalink.getParamValue('trip') == null) {
                             me.trip = utils.generateUuid();
@@ -71,6 +89,11 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                         me.calculateRoutes();
                         me.digestScopes();
                     },
+                    /**
+                    * Store current waypoints on remote Plan4All server if possible
+                    * @memberof hs.trip_planner.service
+                    * @function storeWaypoints 
+                    */
                     storeWaypoints: function() {
                         if (permalink.getParamValue('trip_editable') == null) return;
                         var waypoints = [];
@@ -96,6 +119,12 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                                 console.log(response);
                             });
                     },
+                    /**
+                    * Remove selected waypoint from trip
+                    * @memberof hs.trip_planner.service
+                    * @function removeWaypoint
+                    * @param {Object} wp Waypoint object to remove
+                    */
                     removeWaypoint: function(wp) {
                         var prev_index = me.waypoints.indexOf(wp) - 1;
                         if (prev_index > -1 && me.waypoints[prev_index].routes.length > 0) {
@@ -118,6 +147,11 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                         me.calculateRoutes();
                         me.digestScopes();
                     },
+                    /**
+                    * Calculate routes between stored waypoints
+                    * @memberof hs.trip_planner.service
+                    * @function calculateRoutes 
+                    */
                     calculateRoutes: function() {
                         for (var i = 0; i < me.waypoints.length - 1; i++) {
                             var wpf = me.waypoints[i];

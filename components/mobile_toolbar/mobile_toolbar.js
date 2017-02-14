@@ -6,8 +6,20 @@ define(['angular', 'map', 'core', 'permalink'],
 
     function(angular) {
         angular.module('hs.mobile_toolbar', ['hs.map', 'hs.core'])
+            /**
+            * @memberof hs.mobile_toolbar
+            * @ngdoc service
+            * @name hs.mobile_toolbar.service
+            * @description TODO
+            */
             .service('hs.mobile_toolbar.service', ['Core',
                 function(Core) {
+                    /**
+                    * @function togglePanelspace
+                    * @memberOf hs.mobile_toolbar.service
+                    * @params {} to_state
+                    * @description (PRIVATE) TODO
+                    */
                     function togglePanelspace(to_state) {
                         if (angular.isDefined(to_state)) {
                             me.panelspace0pened = to_state;
@@ -31,12 +43,24 @@ define(['angular', 'map', 'core', 'permalink'],
                     return me;
                 }
             ])
+            /**
+            * @memberof hs.mobile_toolbar
+            * @ngdoc directive
+            * @name hs.mobile_toolbar.directive
+            * @description TODO
+            */
             .directive('hs.mobileToolbar.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/mobile_toolbar/partials/mobile_toolbar.html?bust=' + gitsha
                 };
             })
 
+        /**
+        * @memberof hs.mobile_toolbar
+        * @ngdoc controller
+        * @name hs.mobile_toolbar.controller
+        * @description TODO
+        */
         .controller('hs.mobile_toolbar.controller', ['$scope', 'hs.mobile_toolbar.service', 'Core', '$window',
             function($scope, service, Core, $window) {
                 $scope.Core = Core;
@@ -44,6 +68,12 @@ define(['angular', 'map', 'core', 'permalink'],
                 $scope.Core.sidebarExpanded = service.panelspace0pened;
                 $scope.service = service;
 
+                /**
+                 * @function setMainPanel
+                 * @memberOf hs.mobile_toolbar.controller
+                 * @params {} which
+                 * @description TODO
+                 */
                 $scope.setMainPanel = function(which) {
                     Core.setMainPanel(which, false);
                     if (!$scope.$$phase) $scope.$digest();

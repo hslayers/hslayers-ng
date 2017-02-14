@@ -25,6 +25,13 @@ define(['angular', 'ol', 'dc', 'map'],
         }
 
         var module = angular.module('hs.feature_crossfilter', ['hs.map', 'hs.core'])
+        
+            /**
+            * @memberof hs.feature_crossfilter
+            * @ngdoc directive
+            * @name hs.featureCrossfilter.directive
+            * @description TODO
+            */
             .directive('hs.featureCrossfilter.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/feature_crossfilter/partials/f_crossfilter.html?bust=' + gitsha,
@@ -33,6 +40,13 @@ define(['angular', 'ol', 'dc', 'map'],
                     }
                 };
             })
+        
+            /**
+            * @memberof hs.feature_crossfilter
+            * @ngdoc service
+            * @name hs.featureCrossfilter.service
+            * @description TODO
+            */
             .service('hs.feature_crossfilter.service', [function() {
                 var me = {
                     makeCrossfilterDimensions: function(source, attributes) {
@@ -58,6 +72,13 @@ define(['angular', 'ol', 'dc', 'map'],
                 };
                 return me;
             }])
+            
+            /**
+            * @memberof hs.feature_crossfilter
+            * @ngdoc controller
+            * @name hs.featureCrossfilter.controller
+            * @description TODO
+            */
             .controller('hs.feature_crossfilter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_crossfilter.service', 'config',
                 function($scope, OlMap, Core, service, config) {
                     var map = OlMap.map;
@@ -67,6 +88,11 @@ define(['angular', 'ol', 'dc', 'map'],
                     $scope.loading = false;
                     $scope.groupings = [];
 
+                    /**
+                    * @function createConfiguredCharts
+                    * @memberOf hs.featureCrossfilter.controller
+                    * @description TODO
+                    */
                     $scope.createConfiguredCharts = function() {
                         $scope.loading = true;
                         for (var g in $scope.groupings) $scope.groupings[g].dirty = true;

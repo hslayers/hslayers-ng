@@ -1,11 +1,18 @@
 /**
- * @namespace hs.search
+ * @namespace hs.styles
  * @memberOf hs
  */
 define(['angular', 'ol'],
 
     function(angular, ol) {
         angular.module('hs.styles', ['hs.map'])
+            /**
+            * DEPRECATED?
+            * @memberof hs.styles
+            * @ngdoc service
+            * @name hs.styles.service
+            * @description Service with definition of basic styles used througout HS-LayersNG
+            */
             .service("hs.styles.service", ['$http',
                 function($http) {
                     this.pin_white_blue = new ol.style.Style({
@@ -59,13 +66,25 @@ define(['angular', 'ol'],
                     var me = this;
                 }
             ])
-
+        
+        /**
+        * @memberof hs.styles
+        * @ngdoc directive
+        * @name hs.styler.directive
+        * @description Display styling menu for layer
+        */
         .directive('hs.styler.directive', function() {
             return {
                 templateUrl: hsl_path + 'components/styles/partials/styler.html?bust=' + gitsha
             };
         })
 
+        /**
+        * @memberof hs.styles
+        * @ngdoc directive
+        * @name hs.styler.colorDirective
+        * @description Display color selector for styling menu
+        */
         .directive('hs.styler.colorDirective', function() {
             return {
 
@@ -142,12 +161,23 @@ define(['angular', 'ol'],
             };
         })
 
+        /**
+        * @memberof hs.styles
+        * @ngdoc service
+        * @name hs.styler.service
+        * @description Contain current styled layer
+        */
         .service("hs.styler.service", [
             function() {
                 this.layer = null;
             }
         ])
 
+        /**
+        * @memberof hs.styles
+        * @ngdoc controller
+        * @name hs.styler.controller
+        */
         .controller('hs.styler.controller', ['$scope', 'hs.styler.service', '$sce', 'Core',
             function($scope, service, $sce, Core) {
                 $scope.service = service;
@@ -166,6 +196,11 @@ define(['angular', 'ol'],
                 $scope.radius = 5;
                 $scope.linewidth = 2;
                 $scope.iconlinewidth = 2;
+                /**
+                 * @function save
+                 * @memberOf hs.styler.controller
+                 * @description Get current style variables value and style current layer accordingly
+                 */
                 $scope.save = function() {
                     if (service.layer == null) return;
                     var style_json = {};
@@ -226,6 +261,12 @@ define(['angular', 'ol'],
                     }
                 }
 
+                /**
+                 * @function iconSelected
+                 * @memberOf hs.styler.controller
+                 * @param {String} i Icon name
+                 * @description Load selected SVG icon from folder and use it for layer
+                 */
                 $scope.iconSelected = function(i) {
                     $.ajax({
                         url: $scope.hsl_path + 'components/styles/img/svg/' + i,
@@ -237,9 +278,13 @@ define(['angular', 'ol'],
                             $scope.save()
                         }
                     });
-
                 }
 
+                /**
+                 * @function colorIcon
+                 * @memberOf hs.styler.controller
+                 * @description Change colors of selected icon based on user input. Decode modifyied icon into Base-64
+                 */
                 function colorIcon() {
                     var $b =
                         $('.hs-styler-selected-icon-box path');
@@ -249,6 +294,12 @@ define(['angular', 'ol'],
                     $scope.serialized_icon = 'data:image/svg+xml;base64,' + window.btoa($('.hs-styler-selected-icon-box').html());
                 }
 
+                /**
+                 * @function setImageType
+                 * @memberOf hs.styler.controller
+                 * @params {String} t New image type
+                 * @description Change image type for point geometry and redraw style
+                 */
                 $scope.setImageType = function(t) {
                     $scope.imagetype = t;
                     $scope.save();
@@ -257,6 +308,11 @@ define(['angular', 'ol'],
                 $scope.$watch('linecolor', $scope.save);
                 $scope.$watch('service.layer', updateHasVectorFeatures);
 
+                /**
+                 * @function updateHasVectorFeatures
+                 * @memberOf hs.styler.controller
+                 * @description (PRIVATE) Get geometry type and title for selected layer
+                 */
                 function updateHasVectorFeatures() {
                     if (service.layer == null) return;
                     var src = service.layer.getSource();
@@ -269,6 +325,11 @@ define(['angular', 'ol'],
                     $scope.layerTitle = service.layer.get('title');
                 }
                 
+                /**
+                 * @function calculateHasLinePointPoly
+                 * @memberOf hs.styler.controller
+                 * @description (PRIVATE) Calculate vector type if not specified in layer metadata
+                 */
                 function calculateHasLinePointPoly(src){
                         src.hasLine = false;
                         src.hasPoly = false;

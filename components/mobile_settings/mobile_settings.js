@@ -6,12 +6,24 @@ define(['angular', 'core'],
 
     function(angular) {
         angular.module('hs.mobile_settings', ['hs.core'])
+            /**
+            * @memberof hs.mobile_settings
+            * @ngdoc directive
+            * @name hs.mobileSettings.directive
+            * @description TODO
+            */
             .directive('hs.mobileSettings.directive', function() {
                 return {
                     templateUrl: hsl_path + 'components/mobile_settings/partials/mobile_settings.html?bust=' + gitsha
                 };
             })
 
+        /**
+        * @memberof hs.mobile_settings
+        * @ngdoc controller
+        * @name hs.mobile_settings.controller
+        * @description TODO
+        */
         .controller('hs.mobile_settings.controller', ['$scope', 'config', 'Core', 'hs.map.service', '$window',
             function($scope, config, Core, OlMap, $window) {
                 $scope.Core = Core;
@@ -20,6 +32,11 @@ define(['angular', 'core'],
                 $scope.originalHostnames = $.extend({}, config.hostname);
                 $scope.hostnames = config.hostname;
 
+                /**
+                 * @function addHostname
+                 * @memberOf hs.mobile_settings.controller
+                 * @description TODO
+                 */
                 $scope.addHostname = function() {
                     if ($scope.userHostname) {
                         config.hostname["user"] = {
@@ -37,19 +54,40 @@ define(['angular', 'core'],
                     }
                 }
 
+                /**
+                 * @function deleteHostname
+                 * @memberOf hs.mobile_settings.controller
+                 * @description TODO
+                 */
                 $scope.deleteHostname = function() {
                     delete $scope.hostnames[this.hostname.type];
                     $scope.deleteRow(settingsDb, this.hostname.type);
                 }
 
+                /**
+                 * @function preFill
+                 * @memberOf hs.mobile_settings.controller
+                 * @description TODO
+                 */
                 $scope.preFill = function() {
                     $scope.userHostname = !$scope.userHostname ? "http://" : $scope.userHostname;
                 }
 
+                /**
+                 * @function removePreFill
+                 * @memberOf hs.mobile_settings.controller
+                 * @description TODO
+                 */
                 $scope.removePreFill = function() {
                     $scope.userHostname = $scope.userHostname == "http://" ? "" : $scope.userHostname;
                 }
 
+                /**
+                 * @function initSettings
+                 * @memberOf hs.mobile_settings.controller
+                 * @params {Unknown} db
+                 * @description TODO
+                 */
                 $scope.initSettings = function(db) {
                     if (console) {
                         console.log("Populating hostnames database.");
@@ -71,6 +109,12 @@ define(['angular', 'core'],
                     });
                 }
 
+                /**
+                 * @function loadSettingsFromDb
+                 * @memberOf hs.mobile_settings.controller
+                 * @params {unknown} tx
+                 * @description TODO
+                 */
                 $scope.loadSettingsFromDb = function(tx) {
                     dbHostnames = {};
                     tx.executeSql('SELECT * FROM Hostnames', [], function(tx, results) {
@@ -87,6 +131,13 @@ define(['angular', 'core'],
                     });
                 }
 
+                /**
+                 * @function deleteRow
+                 * @memberOf hs.mobile_settings.controller
+                 * @params {Unknown} db
+                 * @params {Unknown} type
+                 * @description TODO
+                 */
                 $scope.deleteRow = function(db, type) {
                     db.transaction(function(tx) {
                         tx.executeSql('DELETE FROM Hostnames WHERE type = ?', [type]);

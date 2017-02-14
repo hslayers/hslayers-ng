@@ -43,6 +43,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
             }]).service('hs.search.service', ['$http', 'hs.utils.service', 'config',
                 function($http, utils, config) {
                     this.xhr = null;
+                    /**
+                     * Send geolocation request to Geolocation server
+                     * @memberof hs.search.controller
+                     * @function request
+                     * @params {String} query 
+                     */
                     this.request = function(query) {
                         var url = null;
                         if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
