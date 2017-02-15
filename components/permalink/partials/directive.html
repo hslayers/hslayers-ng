@@ -9,20 +9,20 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="permalink-embed" class="control-label" translate>Embed code</label>
-                <textarea  class="form-control" style="height: 200px" id = "permalink-embed" ng-model="embed_code"></textarea>
+                <textarea  class="form-control" style="height: 80px" id = "permalink-embed" ng-model="embed_code"></textarea>
                 <br/>
             </div>
 
             <div class="form-group">
                 <label for="pure-link" class="control-label" translate>Share pure map</label>
                 <a ng-href="{{embed_url}}" target="_blank" id = "pure-link">{{embed_url}}</a>
-                <br/>
+                <p><sub class="text-danger">*Shares only map for embedding the map</sub></p>
             </div>
-
+            <br/>
             <div class="form-group">
                 <label for="permalink-link" class="control-label" translate>Permalink</label>
                 <a ng-href="{{permalink_url}}" target="_blank" id = "permalink-link">{{permalink_url}}</a>
-                <br/>
+                <p><sub class="text-danger">*Shares map with all portal and functionalities</sub></p>
             </div>
             <hr />
             <fieldset>
@@ -38,11 +38,6 @@
                     <textarea class="form-control" id="hs-prmlnk-abstract" placeholder="{{'Fill in descriptive text about map'|translate}}" ng-change="invalidateShareUrl()" ng-model="abstract">
                     </textarea>
             </div>
-            
-             <div class="form-group">
-                <label for="hs-permalink-thumbnail" class="control-label" translate>Thumbnail</label>
-                <img id="hs-permalink-thumbnail" class="img-thumbnail" alt="Thumbnail" width="256" height="256">
-            </div>
 
             <div class="form-group">
                 <div class="form-group">
@@ -57,6 +52,11 @@
                 <button class="btn btn-default" href="#" ng-click="shareOnSocial('google')">
                     <i class="icon-googleplus"></i> Google
                 </button>
+            </div>
+            
+            <div class="form-group">
+                <label for="hs-permalink-thumbnail" class="control-label" translate>Thumbnail</label>
+                <img id="hs-permalink-thumbnail" class="img-thumbnail" alt="Thumbnail" width="256" height="256">
             </div>
             </fieldset>
         </div>
