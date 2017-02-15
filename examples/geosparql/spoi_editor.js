@@ -79,7 +79,6 @@ define(['angular', 'ol', 'core'],
                                     delete a.changed;
                                 }
                             })
-                            if (!$scope.$$phase) $scope.$digest();
                         });
                 }
 
