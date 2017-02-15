@@ -30,6 +30,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 }
             };
         }]);
+        
+        module.directive('hs.advancedInfopanelDirective', function() {
+            return {
+                templateUrl: 'advanced_info.html?bust=' + gitsha,
+                link: function(scope, element, attrs) {
+                    $('#advanced-info-dialog').modal('show');
+                }
+            };
+        });
 
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
@@ -273,6 +282,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('ows', false);
+                $scope.InfoPanelService = infopanel_service;
 
 
                 $scope.$on("scope_loaded", function(event, args) {
@@ -514,6 +524,13 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     list_loaded.static_categories = true;
                     checkListLoaded();
                 })
+                
+                $scope.showDeveloperInfo = function(){
+                    $("#hs-dialog-area #advanced-info-dialog").remove();
+                    var el = angular.element('<div hs.advanced_infopanel_directive></div>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
+                }
 
                 $scope.getSpoiCategories = spoi_editor.getSpoiCategories;
                 $scope.makeHumanReadable = spoi_editor.makeHumanReadable;

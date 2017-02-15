@@ -103,7 +103,7 @@ define(['angular', 'ol', 'core'],
                         'http://www.opengis.net/ont/geosparql#sfWithin': 'http://www.geonames.org/' + country_last_clicked.geonameId,
                         'http://purl.org/dc/elements/1.1/publisher': "SPOI (http://sdi4apps.eu/spoi)",
                         'http://purl.org/dc/elements/1.1/source': "",
-                        'http://purl.org/dc/elements/1.1/right': "http://opendatacommons.org/licenses/odbl/1.0/",
+                        'http://purl.org/dc/elements/1.1/rights': "http://opendatacommons.org/licenses/odbl/1.0/",
                         'http://www.openvoc.eu/poi#openingHours': "",
                         'http://www.sdi4apps.eu/poi/#mainCategory':  layer.get('category') //For choosing the icon
                     };
@@ -118,7 +118,7 @@ define(['angular', 'ol', 'core'],
                     lines.push('<{0}> <http://www.w3.org/2000/01/rdf-schema#label> "New point"'.format(identifier));
                     lines.push('<{0}> <http://purl.org/dc/elements/1.1/publisher> "SPOI (http://sdi4apps.eu/spoi)"'.format(identifier));
                     lines.push('<{0}> <http://purl.org/dc/elements/1.1/source> ""'.format(identifier));
-                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/right> "http://opendatacommons.org/licenses/odbl/1.0/"'.format(identifier));
+                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/rights> "http://opendatacommons.org/licenses/odbl/1.0/"'.format(identifier));
                     lines.push('<{0}> <http://www.openvoc.eu/poi#openingHours> ""'.format(identifier));
                     lines.push('<{0}> <http://www.opengis.net/ont/geosparql#sfWithin> "http://www.geonames.org/{1}"'.format(identifier, country_last_clicked.geonameId));
                     var now = new Date();
@@ -154,7 +154,7 @@ define(['angular', 'ol', 'core'],
                 }
 
                 function editTextboxVisible(attribute) {
-                    return attribute.is_editing && angular.isUndefined(getSpoiCategories(attribute.name));
+                    return attribute.is_editing;
                 }
 
                 function init(hr_map) {

@@ -634,7 +634,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         $scope.shareDescription = record.abstract;
                         if (!$scope.$$phase) $scope.$digest();
                         $("#hs-dialog-area #composition-share-dialog").remove();
-                        var el = angular.element('<div hs.compositions.share_dialog_directive></span>');
+                        var el = angular.element('<div hs.compositions.share_dialog_directive></div>');
                         $("#hs-dialog-area").append(el)
                         $compile(el)($scope);
                     }
