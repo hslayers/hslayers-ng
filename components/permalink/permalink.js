@@ -322,6 +322,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                         socialshare.share({
                                             'provider': $scope.shareProvider,
                                             'attrs': {
+                                                'socialshareText': $scope.title,
                                                 'socialshareUrl': $scope.share_url,
                                                 'socialsharePopupHeight': 600,
                                                 'socialsharePopupWidth': 500
@@ -337,6 +338,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             socialshare.share({
                                 'provider': provider,
                                 'attrs': {
+                                    'socialshareText': $scope.title,
                                     'socialshareUrl': $scope.share_url,
                                     'socialsharePopupHeight': 600,
                                     'socialsharePopupWidth': 500

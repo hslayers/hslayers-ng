@@ -629,6 +629,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         })
 
                         $scope.shareTitle = record.title;
+                        if(config.social_hashtag && $scope.shareTitle.indexOf(config.social_hashtag) <= 0) $scope.shareTitle += ' ' + config.social_hashtag;
+                    
                         $scope.shareDescription = record.abstract;
                         if (!$scope.$$phase) $scope.$digest();
                         $("#hs-dialog-area #composition-share-dialog").remove();
