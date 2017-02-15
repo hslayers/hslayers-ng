@@ -107,8 +107,8 @@ define(['angular', 'ol', 'map'],
          * @name hs.datasource_selector.controller
          * @description Controller for datasource_selector
          */
-        .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config', 'hs.utils.service', 'hs.ows.nonwms.service',
-            function($scope, OlMap, Core, $compile, config, utils, nonwmsservice) {
+                .controller('hs.datasource_selector.controller', ['$scope', 'hs.map.service', 'Core', '$compile', 'config', 'hs.utils.service', 'hs.ows.nonwms.service', '$http',
+            function($scope, OlMap, Core, $compile, config, utils, nonwmsservice, $http) {
                 $scope.query = {
                     text_filter: '',
                     title: '',
@@ -122,70 +122,16 @@ define(['angular', 'ol', 'map'],
                 $scope.selected_layer = null;
                 $scope.filter = {};
                 $scope.filter.byExtent = true;
-                $scope.otn_keywords = [{
-                    title: "Air traffic & transportation",
-                    source: "Gemet"
-                }, {
-                    title: "Commercial traffic",
-                    source: "Gemet"
-                }, {
-                    title: "Commuter traffic",
-                    source: "Gemet"
-                }, {
-                    title: "Rail traffic & transport",
-                    source: "Gemet"
-                }, {
-                    title: "Car traffic & transport",
-                    source: "Gemet"
-                }, {
-                    title: "Bike traffic & transport",
-                    source: "Gemet"
-                }, {
-                    title: "Public transport",
-                    source: "Gemet"
-                }, {
-                    title: "Traffic control",
-                    source: "Gemet"
-                }, {
-                    title: "Water transportation",
-                    source: "Gemet"
-                }, {
-                    title: "Freight traffic & transport",
-                    source: "Gemet"
-                }, {
-                    title: "Passenger transport",
-                    source: "Gemet"
-                }, {
-                    title: "Multimodal transport",
-                    source: "Other"
-                }, {
-                    title: "Nature & environment",
-                    source: "Waze"
-                }, {
-                    title: "Professional & public services",
-                    source: "Waze"
-                }, {
-                    title: "Shopping & services",
-                    source: "Waze"
-                }, {
-                    title: "Food & drink",
-                    source: "Waze"
-                }, {
-                    title: "Culture & entertainment",
-                    source: "Waze"
-                }, {
-                    title: "Lodging",
-                    source: "Waze"
-                }, {
-                    title: "Car services",
-                    source: "Waze"
-                }, {
-                    title: "Outdoor",
-                    source: "Waze"
-                }, {
-                    title: "Other services",
-                    source: "Waze"
-                }];
+                
+                $http({
+                    method: 'GET',
+                    url: utils.proxify('http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66')
+                }).then(function successCallback(response) {
+                    $scope.otn_keywords = [{title: '-'}];
+                    angular.forEach(response.data.result.tags, function(tag){
+                        $scope.otn_keywords.push({title: tag.name});
+                    })
+                });
 
                 var map = OlMap.map;
                 var extent_layer = new ol.layer.Vector({
@@ -737,6 +683,7 @@ define(['angular', 'ol', 'map'],
                  * Select Otn Keyword as query subject (used with dropdown list in Gui)
                  */
                 $scope.setOtnKeyword = function(theme) {
+                    if (theme == '-') theme = '';
                     $scope.query.Subject = theme;
                     $scope.loadDatasets($scope.datasources);
                     return false;
