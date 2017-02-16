@@ -127,11 +127,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         panel_enabled: {},
                         _exist_cache: {},
                         current_panel_queryable: false,
-                        size:{
-                            height: config.maxHeight || "100%",
-                            width: config.maxWidth || "100%",    
-                        },
-                        fullScreenMode: config.fullScreenMode || false,
+                        maxSize: {height: "100%",width:"100%"},
                         puremapApp: false,
                         /**
                          * @function setMainPanel
@@ -181,9 +177,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (element.width() != sidebarElem.width()) {
                                 map.width(element.width() - sidebarElem.width());
                             } else {
-                                map.width(element.width());
+                                map.width(0);
                             }
-                            
                             OlMap.map.updateSize();
                         },
                         /**
@@ -284,6 +279,24 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                         },
                         //Old function temporaly left in code, so all examples works before functionality is finalized
+                        //init()
+                        init: function(element, value) {
+                            if (typeof(value)==undefined || Array.isArray(value)) {
+                                if (Array.isArray(value)) {
+                                    me.changeSizeConfig(value[1],value[0]);
+                                }
+                                me.fullScreenMap(element);
+                            }
+                            else if (value == "parent") {
+                                me.appSize(element,element.parent());
+                            }
+                            else if (value.slice(0,1) === "#") {
+                                me.appSize(element,$(value));
+                            }
+                            else {
+                                if (console) console.log("Bad init input.");
+                            }
+                        },
                         /**
                          * @function fullScreenMap
                          * @memberOf Core
@@ -294,7 +307,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $("html").css('overflow', 'hidden');
                             $("html").css('height', '100%');
                             $('body').css('height', '100%');
-                            me.appSize(element);
+                            var w = angular.element($window);
+                            me.appSize(element, w);
                         },
                         /**
                         * @function appSize
@@ -302,19 +316,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @param {Object} element App angular element
                         * Set right size of app in page, starts event listeners for events which lead to changing app size (window resizing, change of app settings)
                         */
-                        appSize: function(element) {
-                            if (!me.setDefaultPanel) {
-                                $("html").css('overflow', 'hidden');
-                                $("html").css('height', '100%');
-                                $('body').css('height', '100%');
-                            }
+                        appSize: function(element, container) {
+                            changeSize(element, container);
                             var w = angular.element($window);
-                            changeSize(w,element);
                             w.resize(function(){
-                                changeSize(w,element);
+                                changeSize(element, container);
                             });
                             $rootScope.$on("Core_sizeChanged",function(){
-                                changeSize(w,element);
+                                changeSize(element, container);
                             });
                         },
                         /**
@@ -325,8 +334,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * Change max height and width of app element 
                         */
                         changeSizeConfig: function(newHeight, newWidth) {
-                            me.size.height = newHeight;
-                            me.size.width = newWidth;
+                            me.maxSize.height = newHeight;
+                            me.maxSize.width = newWidth;
                             $rootScope.$broadcast("Core_sizeChanged");
                         },
                         /**
@@ -465,22 +474,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     function getSize(w, maxSize) {
                         var size = {};
                         if (maxSize.height.indexOf("%") > -1) {
-                            size.height = Math.round( w.height() / 100 * maxSize.height.slice(0,-1)); 
-                        }
-                        else {
-                            if (maxSize.height.slice(0,-2) < w.height()) 
-                                size.height = maxSize.height.slice(0,-2);
-                            else 
-                                size.height = w.height();    
-                        }
-                        if (maxSize.width.indexOf("%") > -1) {
+                            size.height = Math.round( w.height() / 100 * maxSize.height.slice(0,-1));
                             size.width = Math.round( w.width() / 100 * maxSize.width.slice(0,-1));
                         }
                         else {
-                            if (maxSize.width.slice(0,-2) < w.width()) 
-                                size.width = maxSize.width.slice(0,-2);
-                            else 
-                                size.width = w.width();    
+                            maxSize.height.indexOf("px") > -1 ? size.height = maxSize.height.slice(0,-2) : size.height = maxSize.height;
+                            if (size.height < w.height()) size.height = w.height();
+                            maxSize.width.indexOf("px") > -1 ? size.width = maxSize.width.slice(0,-2) : size.width = maxSize.width;
+                            if (size.width < w.width()) size.width = w.width();
                         }
                         return size;
                     };
@@ -491,13 +492,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                      * @params {Object} element Angular object containing app element
                      * (PRIVATE) Helper function for changing app size
                      */
-                    function changeSize(w,element) {
-                        var size = getSize(w,me.size);
+                    function changeSize(element,container) {
+                        var size = getSize(container,me.maxSize);
                         element[0].style.height = size.height + "px";
                         element[0].style.width = size.width + "px";
                         $("#map").height(size.height);
                         me.updateMapSize();
-                        OlMap.map.updateSize();
                     }
                     return me;
                 },
