@@ -92,33 +92,12 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     * @function getEmbededUrl
                     * @memberof hs.permalink.service_url
                     * @returns {String} Embeded url
-                    * Create Url for embeded version of map
+                    * Create Url for PureMap version of map
                     */
                     me.getEmbededUrl = function() {
-                        var stringLayers = (JSON.stringify(me.permalinkLayers));
-                        stringLayers = stringLayers.substring(1, stringLayers.length - 1);
-                        if (window.hsl_path.includes("../")) {
-                            var embedHsl_Path = me.pathname + window.hsl_path;
-                            var embedUrl = window.location.origin + me.pathname + window.hsl_path + "components/permalink/app/" + "?" + me.param_string;
-                        } else if (Core.isMobile() && config.permalinkLocation) {
-                            me.pathname = config.permalinkLocation.pathname;
-                            var embedHsl_Path = config.permalinkLocation.hsl_path;
-                            var embedUrl = config.permalinkLocation.origin + config.permalinkLocation.hsl_path + "components/permalink/app/" + "?" + me.param_string;
-                        } else {
-                            var embedHsl_Path = window.hsl_path;
-                            var embedUrl = window.location.origin + window.hsl_path + "components/permalink/app/" + "?" + me.param_string;
-                        }
-
-                        var params = {
-                            permalink: encodeURIComponent(stringLayers)
-                        };
-                        if (angular.isDefined(window.hsl_config))
-                            params.config = window.hsl_config;
-                        if (angular.isDefined(embedHsl_Path))
-                            params.hsl_path = embedHsl_Path;
-                        if (angular.isDefined(me.pathname + window.hsl_app) && angular.isDefined(window.hsl_app))
-                            params.hsl_app = me.pathname + window.hsl_app;
-                        return embedUrl + '&'+ utils.paramsToURLWoEncode(params);
+                        var params = {};
+                        params.puremap = "true";
+                        return me.getPermalinkUrl() + "&" + utils.paramsToURLWoEncode(params);
                     }
 
                     /**

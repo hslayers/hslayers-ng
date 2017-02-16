@@ -132,6 +132,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             width: config.maxWidth || "100%",    
                         },
                         fullScreenMode: config.fullScreenMode || false,
+                        puremapApp: false,
                         /**
                          * @function setMainPanel
                          * @memberOf Core
@@ -432,7 +433,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
 
                     $templateCache.removeAll();
 
-                    if (me.exists('hs.sidebar.controller')) {
+                    if (me.exists('hs.sidebar.controller') /*&& me.puremapApp != true*/) {
                         me.sidebarExpanded = true;
                     }
 

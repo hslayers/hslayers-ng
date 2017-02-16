@@ -168,6 +168,21 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         }
 
         //map.addControl(mousePositionControl);
+        /**
+         * @function puremap
+         * @memberOf hs.map.service (Olmap)
+         * @description Clean interactions and zoom from map to get pure map
+         */
+        this.puremap = function() {
+            var interactions = this.map.getInteractions();
+            var controls = this.map.getControls();
+            angular.forEach(interactions, function(interaction){
+                me.map.removeInteraction(interaction);
+            })
+            angular.forEach(controls, function(control){
+                me.map.removeControl(control);
+            })
+        }
 
     }])
 
@@ -266,6 +281,10 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
                 if (permalink.getParamValue('permalink')) {
                     permalink.parsePermalinkLayers();
+                }
+                if (permalink.getParamValue("puremap")) {
+                    Core.puremapApp = true;
+                    OlMap.puremap();
                 }
                 $scope.setTargetDiv("map");
             }
