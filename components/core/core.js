@@ -175,7 +175,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                          * Change size of map element in application. Size should be rest of window width next to sidebar
                          */
                         updateMapSize: function() {
-                            var element = $("hs");
+                            var element = $("div[hs]");
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
                             if (element.width() != sidebarElem.width()) {
