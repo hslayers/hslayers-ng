@@ -26,7 +26,7 @@ define(['angular', 'app'], function(angular, app) {
         this.proxify = function(url, toEncoding) {
             toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
             var outUrl = url;
-            if (url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) {
+            if ((url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) || getPortFromUrl(url) != window.location.port) {
                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
 
                     outUrl = "/cgi-bin/hsproxy.cgi?";
@@ -35,6 +35,18 @@ define(['angular', 'app'], function(angular, app) {
                 }
             }
             return outUrl;
+        }
+
+         /**
+        * @function getPortFromUrl
+        * @memberof hs.utils.service
+        * @params {String} url Url for which to determine port number 
+        * @returns {String} 
+        */
+        function getPortFromUrl(url){
+            var link = document.createElement('a');
+            link.setAttribute('href', url);
+            return link.port;
         }
 
         /**
