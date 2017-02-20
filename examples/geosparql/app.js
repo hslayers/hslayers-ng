@@ -482,9 +482,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 style: style,
                                 visible: false,
                                 path: 'Points of interest',
-                                category: category
-                                    //minResolution: 1,
-                                    //maxResolution: 38
+                                category: category,
+                                minResolution: 1,
+                                maxResolution: 38
                             });
                             config.box_layers[1].getLayers().insertAt(0, new_lyr);
                         }
@@ -515,8 +515,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             style: styleOSM,
                             visible: false,
                             path: 'Popular Categories',
-                            //minResolution: 1,
-                            //maxResolution: 38,
+                            minResolution: 1,
+                            maxResolution: 38,
                             category: category
                         });
                         config.box_layers[1].getLayers().insertAt(0, new_lyr);
