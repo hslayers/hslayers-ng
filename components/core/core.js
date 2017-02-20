@@ -174,7 +174,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             var element = $("div[hs]");
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
-                            if (element.width() != sidebarElem.width()) {
+                            if (element.width() > sidebarElem.width()) {
                                 map.width(element.width() - sidebarElem.width());
                             } else {
                                 map.width(0);
