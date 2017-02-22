@@ -415,6 +415,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 var $ul = $('<ul></ul>');
                                 $ul.addClass('dropdown-menu');
                                 $li.append($ul);
+                                $li.click(function(){
+                                    $('.dropdown-submenu .dropdown-menu').hide();
+                                    $ul.show();
+                                })
                                 angular.forEach(spoi_editor.getCategoryHierarchy()[category], function(sub_category_label, sub_category) {
                                     var $li_subcategory = $('<li><a href="#">' + sub_category_label.capitalizeFirstLetter() + '</a></li>');
                                     $li_subcategory.data('layer', layer);
