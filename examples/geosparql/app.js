@@ -448,6 +448,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                         src.options.url = '';
                 });
 
+                spoi_editor.init();
                 var hr_mappings;
                 var list_loaded = {dynamic_categories: false, static_categories: false};
                 function checkListLoaded(){
@@ -500,7 +501,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     cache: false
                 }).then(function successCallback(response) {
                     hr_mappings = response.data;
-                    spoi_editor.init(hr_mappings);
+                    spoi_editor.extendMappings(hr_mappings);
                     angular.forEach(hr_mappings.popular_categories, function(name, category) {
                         var new_lyr = new ol.layer.Vector({
                             title: " " + name,

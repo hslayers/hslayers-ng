@@ -156,8 +156,8 @@ define(['angular', 'ol', 'core'],
                     return attribute.is_editing;
                 }
 
-                function init(hr_map) {
-                    hr_mappings = hr_map
+                function init() {
+                    hr_mappings = {};
                 }
 
                 function getSpoiCategories() {
@@ -181,9 +181,14 @@ define(['angular', 'ol', 'core'],
                 function getCategoryHierarchy(){
                     return hr_mappings.category_hierarchy;
                 }
+                
+                function extendMappings(x){
+                    hr_mappings = angular.merge({}, hr_mappings, x);
+                }
 
                 var me = {
                     init: init,
+                    extendMappings: extendMappings,
                     attrToEnglish: attrToEnglish,
                     makeHumanReadable: makeHumanReadable,
                     saveSpoiChanges: saveSpoiChanges,
