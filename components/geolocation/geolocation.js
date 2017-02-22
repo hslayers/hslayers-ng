@@ -79,9 +79,9 @@ define(['angular', 'ol'],
                     /**
                     * (Only for Mobile) Center map on last location
                     * @memberof hs.geolocation.service
-                    * @function set_center
+                    * @function setCenter
                     */
-                    me.set_center = function() {
+                    me.setCenter = function() {
                         OlMap.map.getView().setCenter(me.last_location.latlng);
                     };
 
@@ -156,12 +156,12 @@ define(['angular', 'ol'],
                         }
 
                         if (me.following) {
-                            me.set_center();
+                            me.setCenter();
                         }
 
                         lat = position.coords.latitude;
                         lon = position.coords.longitude;
-                        trackingDb.transaction(logPosition, errorCB, successCB);
+                        if (typeof trackingDb != 'undefined') trackingDb.transaction(logPosition, errorCB, successCB);
                         db_id++;
 
                         $rootScope.$broadcast('geolocation.updated');
