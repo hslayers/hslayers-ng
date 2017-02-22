@@ -10,7 +10,7 @@ define(['angular', 'ol', 'core'],
             function(Core, utils, $sce, info_panel_service, $http) {
                 var hr_mappings = {};
                 //Atributes which are displayed without clicking 'For developer' button
-                var frnly_attribs = ['http://www.openvoc.eu/poi#categoryWaze', 'http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://www.opengis.net/ont/geosparql#sfWithin', 'http://www.w3.org/2004/02/skos/core#exactMatch', 'http://www.w3.org/2000/01/rdf-schema#seeAlso', 'http://xmlns.com/foaf/0.1/homepage', 'http://purl.org/dc/terms/1.1/created']
+                var frnly_attribs = ['http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://xmlns.com/foaf/0.1/homepage']
 
                 function attrToEnglish(name) {
                     var hr_names = {
@@ -169,12 +169,16 @@ define(['angular', 'ol', 'core'],
                 }
                 
                 function registerCategory(main_category, main_label, sub_category, sub_label){
-                    var json_sub_category = {};
-                    json_sub_category[sub_category] = sub_label;
-                    var json_main_category = {};
-                    json_main_category[main_category] = json_sub_category;
-                    var o = {"http://www.openvoc.eu/poi#class": {}, "category_hierarchy": json_main_category};
+                    var o = {"http://www.openvoc.eu/poi#class": {}};
+                    if(main_category != null){
+                        var json_sub_category = {};
+                        json_sub_category[sub_category] = sub_label;
+                        var json_main_category = {};
+                        json_main_category[main_category] = json_sub_category;   
+                        o["category_hierarchy"] = json_main_category;
+                    }
                     o["http://www.openvoc.eu/poi#class"][sub_category] = sub_label;
+                    o["http://www.openvoc.eu/poi#class"][main_category] = main_label;
                     hr_mappings = angular.merge({}, hr_mappings, o);
                 }
                 

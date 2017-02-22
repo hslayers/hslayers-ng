@@ -132,105 +132,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     })
                 ],
             }), new ol.layer.Group({
-                'img': 'bicycle-128.png',
-                title: 'Tourist info',
-                layers: [
-                    new ol.layer.Vector({
-                        title: "Cycling routes Plzen",
-                        source: new ol.source.Vector({
-                            format: geoJsonFormat,
-                            loader: function(extent, resolution, projection) {
-                                var that = this;
-                                $.ajax({
-                                    url: 'http://ng.hslayers.org/examples/geosparql/plzensky_kraj.geojson',
-                                    success: function(data) {
-                                        that.addFeatures(geoJsonFormat.readFeatures(data));
-                                    }
-                                });
-                            },
-                            strategy: ol.loadingstrategy.all
-                        }),
-                        style: route_style,
-                        visible: false,
-                        path: 'Roads/Additional Cycling routes'
-                    }),
-                    new ol.layer.Vector({
-                        title: "Cycling routes Zemgale",
-                        source: new ol.source.Vector({
-                            format: geoJsonFormat,
-                            loader: function(extent, resolution, projection) {
-                                var that = this;
-                                $.ajax({
-                                    url: 'http://ng.hslayers.org/examples/geosparql/zemgale.geojson',
-                                    success: function(data) {
-                                        that.addFeatures(geoJsonFormat.readFeatures(data));
-                                    }
-                                });
-                            },
-                            strategy: ol.loadingstrategy.all
-                        }),
-                        style: route_style,
-                        visible: false,
-                        path: 'Roads/Additional Cycling routes'
-                    }),
-                    new ol.layer.Vector({
-                        title: "Tour de LatEst",
-                        source: new ol.source.Vector({
-                            format: geoJsonFormat,
-                            loader: function(extent, resolution, projection) {
-                                var that = this;
-                                $.ajax({
-                                    url: 'http://ng.hslayers.org/examples/geosparql/teourdelatest.geojson',
-                                    success: function(data) {
-                                        that.addFeatures(geoJsonFormat.readFeatures(data));
-                                    }
-                                });
-                            },
-                            strategy: ol.loadingstrategy.all
-                        }),
-                        style: route_style,
-                        visible: false,
-                        path: 'Roads/Additional Cycling routes'
-                    }),
-                    new ol.layer.Vector({
-                        title: "A1: the Vltava left-bank cycle route",
-                        source: new ol.source.Vector({
-                            format: geoJsonFormat,
-                            loader: function(extent, resolution, projection) {
-                                var that = this;
-                                $.ajax({
-                                    url: 'http://ng.hslayers.org/examples/geosparql/prague.geojson',
-                                    success: function(data) {
-                                        that.addFeatures(geoJsonFormat.readFeatures(data));
-                                    }
-                                });
-                            },
-                            strategy: ol.loadingstrategy.all
-                        }),
-                        style: route_style,
-                        visible: false,
-                        path: 'Roads/Additional Cycling routes'
-                    }),
-                    new ol.layer.Image({
-                        title: "Forest roads",
-                        BoundingBox: [{
-                            crs: "EPSG:3857",
-                            extent: [1405266, 6146786, 2073392, 6682239]
-                        }],
-                        source: new ol.source.ImageWMS({
-                            url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/ovnis/sdi4aps_forest_roads.map',
-                            params: {
-                                LAYERS: 'forest_roads,haul_roads',
-                                INFO_FORMAT: "application/vnd.ogc.gml",
-                                FORMAT: "image/png; mode=8bit"
-                            },
-                            crossOrigin: null
-                        }),
-                        visible: false,
-                        path: 'Roads/Additional Cycling routes'
-                    })
-                ]
-            }), new ol.layer.Group({
                 'img': 'partly_cloudy.png',
                 title: 'Weather',
                 layers: [new ol.layer.Tile({
@@ -456,8 +357,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 var hr_mappings;
                 var list_loaded = {dynamic_categories: false, static_categories: false};
                 function checkListLoaded(){
-                    if(list_loaded.dynamic_categories && list_loaded.static_categories)
+                    if(list_loaded.dynamic_categories && list_loaded.static_categories){
+                        if(console) console.info('Load spoi layers');
                         OlMap.reset();
+                    }
                 }
                  var q = encodeURIComponent('SELECT DISTINCT ?main ?label ?subs ?sublabel FROM <http://www.sdi4apps.eu/poi_categories.rdf> WHERE {?subs <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?main. ?main <http://www.w3.org/2000/01/rdf-schema#label> ?label. ?subs <http://www.w3.org/2000/01/rdf-schema#label> ?sublabel} ORDER BY ?main ');  
 
@@ -504,9 +407,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     url: 'data.json',
                     cache: false
                 }).then(function successCallback(response) {
-                    hr_mappings = response.data;
+                    var hr_mappings = response.data;
                     spoi_editor.extendMappings(hr_mappings);
                     angular.forEach(hr_mappings.popular_categories, function(name, category) {
+                        spoi_editor.registerCategory(null, null, category, name);
                         var new_lyr = new ol.layer.Vector({
                             title: " " + name,
                             source: new SparqlJson({
