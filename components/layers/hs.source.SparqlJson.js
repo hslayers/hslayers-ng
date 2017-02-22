@@ -28,6 +28,19 @@ define(function(require) {
         var c = "rgba(" + ~~(r * 235) + "," + ~~(g * 235) + "," + ~~(b * 235) + ", " + opacity + ")";
         return (c);
     }
+    
+    function registerCategoryForStatistics(feature_object, options, feature){
+        if (feature_object[options.category_field]) {
+            if (typeof category_map[feature_object[options.category_field]] === 'undefined') {
+                category_map[feature_object[options.category_field]] = {
+                    id: category_id,
+                    name: feature_object[options.category_field]
+                };
+                category_id++;
+            }
+            feature.category_id = category_map[feature_object[options.category_field]].id;
+        }
+    }
 
     function loadFeatures(objects, src, options, occupied_xy, category_map, category_id) {
         var features = [];
@@ -43,16 +56,7 @@ define(function(require) {
                     if (typeof occupied_xy[coord] !== 'undefined') continue;
                     objects[key].geometry = new ol.geom.Point(coord);
                     var feature = new ol.Feature(objects[key]);
-                    if (objects[key][options.category_field]) {
-                        if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
-                            category_map[objects[key][options.category_field]] = {
-                                id: category_id,
-                                name: objects[key][options.category_field]
-                            };
-                            category_id++;
-                        }
-                        feature.category_id = category_map[objects[key][options.category_field]].id;
-                    }
+                    registerCategoryForStatistics(objects[key], options, feature);
                     occupied_xy[coord] = true;
                     features.push(feature);
                 }
@@ -66,16 +70,7 @@ define(function(require) {
 
                 if (typeof occupied_xy[coord] !== 'undefined') continue;
                 var feature = new ol.Feature(objects[key]);
-                if (objects[key][options.category_field]) {
-                    if (typeof category_map[objects[key][options.category_field]] === 'undefined') {
-                        category_map[objects[key][options.category_field]] = {
-                            id: category_id,
-                            name: objects[key][options.category_field]
-                        };
-                        category_id++;
-                    }
-                    feature.category_id = category_map[objects[key][options.category_field]].id;
-                }
+                registerCategoryForStatistics(objects[key], options, feature);
                 occupied_xy[coord] = true;
                 features.push(feature);
             }
