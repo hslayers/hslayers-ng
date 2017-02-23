@@ -186,6 +186,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('ows', false);
+                Core.panelEnabled('status_creator', false);
                 $scope.InfoPanelService = infopanel_service;
 
 
