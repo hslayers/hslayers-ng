@@ -16,8 +16,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             'hs.ows',
             'gettext',
             'hs.compositions',
-            'hs.info',
-            'hs.trip_planner',
+             'hs.trip_planner',
             'spoi_editor'
         ]);
 
@@ -100,12 +99,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                         source: new ol.source.OSM(),
                         title: "OpenStreetMap",
                         base: true,
-                        visible: false,
+                        visible: true,
                         path: 'Roads'
                     }),
                     new ol.layer.Tile({
                         title: "OpenCycleMap",
-                        visible: true,
+                        visible: false,
                         base: true,
                         source: new ol.source.OSM({
                             url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
