@@ -10,7 +10,7 @@ define(['angular', 'ol', 'core'],
             function(Core, utils, $sce, info_panel_service, $http) {
                 var hr_mappings = {};
                 //Atributes which are displayed without clicking 'For developer' button
-                var frnly_attribs = ['http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://xmlns.com/foaf/0.1/homepage']
+                var frnly_attribs = ['http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://xmlns.com/foaf/0.1/homepage', 'http://www.openvoc.eu/poi#openingHours', 'http://www.openvoc.eu/poi#internetAccess','http://www.openvoc.eu/poi#accessibility', 'http://www.openvoc.eu/poi#address']
 
                 function attrToEnglish(name) {
                     var hr_names = {
@@ -27,7 +27,8 @@ define(['angular', 'ol', 'core'],
                         'http://www.w3.org/2000/01/rdf-schema#seeAlso': 'More info: ',
                         'http://www.w3.org/2004/02/skos/core#exactMatch': 'More info: ',
                         'http://purl.org/dc/terms/1.1/created': 'Created: ',
-                        'http://www.opengis.net/ont/geosparql#sfWithin': 'Country: '
+                        'http://www.opengis.net/ont/geosparql#sfWithin': 'Country: ',
+                        'http://www.w3.org/2000/01/rdf-schema#comment': 'Comments: '
                     }
                     return hr_names[name];
                 }
@@ -189,6 +190,10 @@ define(['angular', 'ol', 'core'],
                 function extendMappings(x){
                     hr_mappings = angular.merge({}, hr_mappings, x);
                 }
+                
+                function getFriendlyAttribs(){
+                    return frnly_attribs;
+                }
 
                 var me = {
                     init: init,
@@ -206,7 +211,8 @@ define(['angular', 'ol', 'core'],
                     addPoi: addPoi,
                     getSpoiCategories: getSpoiCategories,
                     registerCategory: registerCategory,
-                    getCategoryHierarchy: getCategoryHierarchy
+                    getCategoryHierarchy: getCategoryHierarchy,
+                    getFriendlyAttribs: getFriendlyAttribs
                 }
                 return me;
             }

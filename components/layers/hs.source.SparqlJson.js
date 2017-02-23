@@ -29,7 +29,7 @@ define(function(require) {
         return (c);
     }
     
-    function registerCategoryForStatistics(feature_object, options, feature){
+    function registerCategoryForStatistics(feature_object, options, feature, category_map, category_id){
         if (feature_object[options.category_field]) {
             if (typeof category_map[feature_object[options.category_field]] === 'undefined') {
                 category_map[feature_object[options.category_field]] = {
@@ -56,7 +56,7 @@ define(function(require) {
                     if (typeof occupied_xy[coord] !== 'undefined') continue;
                     objects[key].geometry = new ol.geom.Point(coord);
                     var feature = new ol.Feature(objects[key]);
-                    registerCategoryForStatistics(objects[key], options, feature);
+                    registerCategoryForStatistics(objects[key], options, feature, category_map, category_id);
                     occupied_xy[coord] = true;
                     features.push(feature);
                 }
@@ -70,7 +70,7 @@ define(function(require) {
 
                 if (typeof occupied_xy[coord] !== 'undefined') continue;
                 var feature = new ol.Feature(objects[key]);
-                registerCategoryForStatistics(objects[key], options, feature);
+                registerCategoryForStatistics(objects[key], options, feature, category_map, category_id);
                 occupied_xy[coord] = true;
                 features.push(feature);
             }
@@ -85,6 +85,18 @@ define(function(require) {
             }
         }
         return features;
+    }
+    
+    function extendAttributes(options, objects){
+        if(typeof options.extend_with_attribs != 'undefined'){
+            for(var attr_i in options.extend_with_attribs){
+                for(var i in objects){
+                    if (typeof objects[i][options.extend_with_attribs[attr_i]] == 'undefined'){
+                        objects[i][options.extend_with_attribs[attr_i]] = '';
+                    }
+                }
+            }
+        } 
     }
 
     return function(options) {
@@ -141,7 +153,7 @@ define(function(require) {
                                             objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] = options.category;
                                         }
                                     }    
-
+                                    extendAttributes(options, objects);
                                     this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                                     this.set('loaded', true);
                                 })
@@ -160,7 +172,8 @@ define(function(require) {
                                 for(var i in objects){
                                     objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] = options.category;
                                 }
-                            }    
+                            }  
+                            extendAttributes(options, objects);
                             this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                             this.styleAble = true;
                             this.hasPoint = true;
