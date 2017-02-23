@@ -11,7 +11,8 @@ define(['angular', 'ol', 'core'],
                 var hr_mappings = {};
                 //Atributes which are displayed without clicking 'For developer' button
                 var frnly_attribs = ['http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://xmlns.com/foaf/0.1/homepage', 'http://www.openvoc.eu/poi#openingHours', 'http://www.openvoc.eu/poi#internetAccess','http://www.openvoc.eu/poi#accessibility', 'http://www.openvoc.eu/poi#address']
-
+                var not_editable_attrs = ['poi_id', 'http://www.opengis.net/ont/geosparql#sfWithin', 'http://purl.org/dc/elements/1.1/identifier', 'http://purl.org/dc/elements/1.1/publisher', 'http://purl.org/dc/terms/1.1/created', 'http://www.w3.org/2004/02/skos/core#exactMatch', 'http://www.sdi4apps.eu/poi/#mainCategory', 'http://www.w3.org/2002/07/owl#sameAs']
+                
                 function attrToEnglish(name) {
                     var hr_names = {
                         'http://xmlns.com/foaf/0.1/mbox': 'E-mail: ',
@@ -194,6 +195,10 @@ define(['angular', 'ol', 'core'],
                 function getFriendlyAttribs(){
                     return frnly_attribs;
                 }
+                
+                function getNotQueriableAttrs(){
+                    return not_editable_attrs;
+                }
 
                 var me = {
                     init: init,
@@ -212,7 +217,8 @@ define(['angular', 'ol', 'core'],
                     getSpoiCategories: getSpoiCategories,
                     registerCategory: registerCategory,
                     getCategoryHierarchy: getCategoryHierarchy,
-                    getFriendlyAttribs: getFriendlyAttribs
+                    getFriendlyAttribs: getFriendlyAttribs,
+                    getNotQueriableAttrs: getNotQueriableAttrs
                 }
                 return me;
             }

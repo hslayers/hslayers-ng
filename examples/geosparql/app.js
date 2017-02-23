@@ -446,6 +446,12 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     $("#hs-dialog-area").append(el)
                     $compile(el)($scope);
                 }
+                
+                $scope.attributeEditorMode = function(attribute){
+                    if($scope.editTextboxVisible(attribute)) return 1;
+                    else if($sce.valueOf(attribute.value).indexOf('http')==-1)  return 2;
+                    else if($sce.valueOf(attribute.value).indexOf('http')>-1)  return 3;
+                }
 
                 $scope.getSpoiCategories = spoi_editor.getSpoiCategories;
                 $scope.makeHumanReadable = spoi_editor.makeHumanReadable;
@@ -457,7 +463,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.saveSpoiChanges = spoi_editor.saveSpoiChanges;
                 $scope.editCategoryDropdownVisible = spoi_editor.editCategoryDropdownVisible;
                 $scope.getSpoiDropdownItems = spoi_editor.getSpoiDropdownItems;
-
+                $scope.getNotQueriableAttrs = spoi_editor.getNotQueriableAttrs;
+                
                 $scope.$on('sidebar_change', function(event, expanded) {
                     infopanel_service.enabled = expanded;
                 })

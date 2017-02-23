@@ -16,8 +16,9 @@
                 </span>
                 <table class="table">
                     <tr ng-repeat="attribute in InfoPanelService.attributes | orderBy : name">
-                        <td><b translate>{{attribute.name}}</b></td> 
-                        <td ng-show="!editTextboxVisible(attribute)" ng-bind-html="attribute.value"></td>
+                        <td><b translate><a href="{{attribute.name}}" target="_blank">{{attribute.name}}</a></b></td> 
+                        <td ng-show="attributeEditorMode(attribute)==2" ng-bind-html="attribute.value"></td>
+                        <td ng-show="attributeEditorMode(attribute)==3"><a href="{{attribute.value}}" target="_blank">{{attribute.value}}</a></td>
                         <td ng-show="editTextboxVisible(attribute)"><input class="form-control"  ng-change="attribute.changed = true" ng-model="attribute.value"/>
                             <button type="button" class="btn btn-primary" ng-show="attribute.changed" ng-click="saveSpoiChanges(InfoPanelService.attributes)">
                                 <translate>Save changes</translate>
@@ -25,7 +26,7 @@
                         <td>
                             
                         <td>
-                            <button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)">
+                            <button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)" ng-if="getNotQueriableAttrs().indexOf(attribute.name)==-1">
                                 <i class="glyphicon glyphicon-edit"></i>
                             </button>
                         </td>
