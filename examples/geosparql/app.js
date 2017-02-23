@@ -463,7 +463,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.saveSpoiChanges = spoi_editor.saveSpoiChanges;
                 $scope.editCategoryDropdownVisible = spoi_editor.editCategoryDropdownVisible;
                 $scope.getSpoiDropdownItems = spoi_editor.getSpoiDropdownItems;
-                $scope.getNotQueriableAttrs = spoi_editor.getNotQueriableAttrs;
+                $scope.getNotEditableAttrs = spoi_editor.getNotEditableAttrs;
                 
                 $scope.$on('sidebar_change', function(event, expanded) {
                     infopanel_service.enabled = expanded;

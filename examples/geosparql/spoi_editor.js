@@ -196,7 +196,7 @@ define(['angular', 'ol', 'core'],
                     return frnly_attribs;
                 }
                 
-                function getNotQueriableAttrs(){
+                function getNotEditableAttrs(){
                     return not_editable_attrs;
                 }
 
@@ -218,7 +218,7 @@ define(['angular', 'ol', 'core'],
                     registerCategory: registerCategory,
                     getCategoryHierarchy: getCategoryHierarchy,
                     getFriendlyAttribs: getFriendlyAttribs,
-                    getNotQueriableAttrs: getNotQueriableAttrs
+                    getNotEditableAttrs: getNotEditableAttrs
                 }
                 return me;
             }
