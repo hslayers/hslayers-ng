@@ -102,9 +102,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 function($rootScope) {
                     var me = {
                         //Used for tool specific info, such as lodexplorer region names and values
-                        attributes: [],
+                        attributes:[],
                         //Used for getfeatureinfo. There exists a seperate group for each feature which is found at the specific coordinates
                         groups: [],
+                        //Used for coordinates so they can easily be placed as last in template
+                        coordinates: [],
                         /**
                         * @function setAttributes
                         * @memberof hs.query.service_infopanel
@@ -125,10 +127,17 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             me.groups = j;
                             $rootScope.$broadcast('infopanel.updated');
                         },
-                        enabled: true,
-                        logGroups: function() {
-                            console.log(me.groups);
-                        }
+                        /**
+                        * @function setGroups
+                        * @memberof hs.query.service_infopanel
+                        * @params {Object} j New content
+                        * Rewrite content of groups variable with passed data
+                        */
+                        setCoordinates: function(j) {
+                            me.coordinates = j;
+                            $rootScope.$broadcast('infopanel.updated');
+                        },
+                        enabled: true
                     };
 
                     return me;
@@ -167,6 +176,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 selector.getFeatures().on('remove', function(e) {
                     if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
                     InfoPanelService.setAttributes([]);
+                    vectors_selected = false;
                     $scope.$broadcast('infopanel.feature_deselected', e.element);
                 })
 
@@ -226,12 +236,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     })
                     var layer = feature.getLayer(map);
                     var layerName = layer.get("title") || layer.get("name");
-                    $scope.displayGroupWithAttributes({name: layerName, attributes: attributes});
-                    Core.setMainPanel("info");
-                    //InfoPanelService.setAttributes(attributes);
-                    InfoPanelService.feature = feature;
-                    
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
+                    if (layer instanceof ol.layer.Vector) {
+                        $scope.displayGroupWithAttributes({name: layerName, attributes: attributes});    
+                    }
+                    else {
+                        InfoPanelService.setAttributes(attributes);
+                    }
+                    InfoPanelService.feature = feature;
                     vectors_selected = true;
                 }
 
@@ -360,7 +372,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         createPopup();
                         $(".getfeatureinfo_popup").contents().find('body').html($("#invisible_popup").contents().find('body').html());
                         popup.setPosition(coordinate);
-                        InfoPanelService.logGroups();
                     }
                 }
               
@@ -441,23 +452,21 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 * @function showCoordinate
                 * @memberOf hs.query.controller
                 * @params {Ol.coordinate} coordinate Coordinate of click
-                * @params {Boolean} clear Choice if rewrite group variable (true) or append to group variable (false)
                 * Add Coordinate data of querried point into InfoPanel service Group variable
                 */
-                $scope.showCoordinate = function(coordinate, clear) {
+                $scope.showCoordinate = function(coordinate) {
                     point_clicked.setCoordinates(coordinate, 'XY');
-                    var groups = clear ? [] : InfoPanelService.groups;
-                    groups.push({
+                    var coords = {
                         name: "Coordinates",
-                        attributes: [{
+                        projections: [{
                             "name": "EPSG:4326",
                             "value": ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'))
                         }, {
                             "name": "EPSG:3857",
                             "value": ol.coordinate.createStringXY(7)(coordinate)
                         }]
-                    });
-                    InfoPanelService.setGroups(groups);
+                    };
+                    InfoPanelService.setCoordinates(coords);
                 }
 
                 /**
@@ -518,6 +527,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 $scope.clearInfoPanel = function() {
                     InfoPanelService.attributes = [];
                     InfoPanelService.setGroups([]);
+                    InfoPanelService.setCoordinates([]);
                 }
 
                 $scope.activateFeatureQueries();
@@ -561,15 +571,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 map.on('singleclick', function(evt) {
                     $scope.$emit('map_clicked', evt);
                     if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
-                    if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
                     $("#invisible_popup").contents().find('body').html('');
                     $("#invisible_popup").height(200).width(200);
-                    $scope.showCoordinate(evt.coordinate, !vectors_selected);//Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
+                    if (!vectors_selected) $scope.clearInfoPanel();
+                    $scope.showCoordinate(evt.coordinate);
+                    if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
                     infoCounter = 0;
                     map.getLayers().forEach(function(layer) {
                         $scope.queryWmsLayer(layer, evt.coordinate)
                     });
-                    vectors_selected = false;
                 });
                 $scope.$emit('scope_loaded', "Query");
             }
