@@ -6,9 +6,9 @@
         </button>
     </div>
     <div class="panel-body">
-        <table class="table table-compact" ng-repeat="group in InfoPanelService.groups | orderBy : name">
-            <tr><th>{{group.name}}</th></tr>
-            <tr ng-repeat="attribute in group.attributes | orderBy : name">
+        <table class="table table-compact" ng-repeat="group in InfoPanelService.groups | orderBy : 'name'">
+            <tr><th colspan="2">{{group.name}}</th></tr>
+            <tr ng-repeat="attribute in group.attributes | orderBy : 'name'">
                 <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' class="first-col" class="first-col"></td>
                 <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col"></td>
             </tr>
