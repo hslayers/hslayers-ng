@@ -220,7 +220,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         };
                     })
                     Core.setMainPanel("info");
-                    InfoPanelService.setAttributes(attributes);
+                    //InfoPanelService.setAttributes(attributes);
                     InfoPanelService.feature = feature;
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
                     vectors_selected = true;
@@ -314,6 +314,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             });
                             popup.setPosition(coordinate);
                             panIntoView(coordinate);
+                            $(popup.getElement()).off('shown.bs.popover');
                         })
                     }
                 }
@@ -332,12 +333,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     else
                         $iframe.contents().find('body').html(response);
                     var tmp_width = $iframe.contents().innerWidth();
-                    if (tmp_width > 700) tmp_width = 700;
-                    $iframe.width(tmp_width + 20);
+                    if (tmp_width > $("#map").width() - 60 ) tmp_width = $("#map").width() - 60;
+                    $iframe.width(tmp_width);
                     if ($iframe.width() == 20) $iframe.width(270);
                     var tmp_height = $iframe.contents().innerHeight();
                     if (tmp_height > 700) tmp_height = 700;
-                    $iframe.height(tmp_height + 20);
+                    $iframe.height(tmp_height);
                 }
 
                 var popup = null;
@@ -385,33 +386,31 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 */
                 function panIntoView(coord) {
                     var popSize = {
-                            width: $("#invisible_popup").width() + 40,
-                            height: $("#invisible_popup").height() + 70
+                            width: $(".getfeatureinfo_popup").width(),
+                            height: $(".getfeatureinfo_popup").height() + 70
                         },
                         mapSize = OlMap.map.getSize();
-
-                    var tailHeight = 20,
-                        tailOffsetLeft = 60,
-                        tailOffsetRight = popSize.width - tailOffsetLeft,
-                        popOffset = popup.getOffset(),
+                    
+                    var tailHeight = 20;
+                    var border = popSize.width / 2;
+                    
+                    var popOffset = popup.getOffset(),
                         popPx = OlMap.map.getPixelFromCoordinate(coord);
-
-                    var fromLeft = (popPx[0] - tailOffsetLeft),
-                        fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
-
+                    
+                    var leftOverflow = popPx[0] - border,
+                        rightOverflow = mapSize[0] - (popPx[0] + border);
+                    
                     var fromTop = popPx[1] - popSize.height + popOffset[1],
                         fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
-
+                    
                     var center = OlMap.map.getView().getCenter(),
                         curPx = OlMap.map.getPixelFromCoordinate(center),
                         newPx = curPx.slice();
-
-                    if (fromRight < 0) {
-                        newPx[0] -= fromRight;
-                    } else if (fromLeft < 0) {
-                        newPx[0] += fromLeft;
+                    
+                    if (leftOverflow < 0) {
+                        newPx[0] += (leftOverflow - 10);
                     }
-
+                    
                     if (fromTop < 0) {
                         newPx[1] += fromTop;
                     } else if (fromBottom < 0) {
@@ -421,8 +420,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (newPx[0] !== curPx[0] || newPx[1] !== curPx[1]) {
                         OlMap.map.getView().setCenter(OlMap.map.getCoordinateFromPixel(newPx));
                     }
-
-                    return OlMap.map.getView().getCenter();
+                    
+                    return;
 
                 };
 
