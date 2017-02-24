@@ -244,6 +244,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                     //                    var x2js = new X2JS();
                     //                  var json = x2js.xml_str2json(response);
+                    infoCounter--;
                     var something_updated = false;
                     if (info_format.indexOf("xml") > 0 || info_format.indexOf("gml") > 0) {
                         $("featureMember", response).each(function() {
@@ -305,20 +306,48 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (info_format.indexOf("html") > 0) {
                         if (response.length <= 1) return;
                         fillIframeAndResize($("#invisible_popup"), response, true);
-                        createFeatureInfoPopupIfNeeded(coordinate);
-                        $(popup.getElement()).popover('show');
-                        $(popup.getElement()).on('shown.bs.popover', function() {
-                            fillIframeAndResize($('.getfeatureinfo_popup'), $("#invisible_popup").contents().find('body').html(), false);
-                            $('.close', popup.getElement().nextElementSibling).click(function() {
-                                $(popup.getElement()).popover('hide');
-                            });
-                            popup.setPosition(coordinate);
-                            panIntoView(coordinate);
-                            $(popup.getElement()).off('shown.bs.popover');
-                        })
+                    }
+                    if (infoCounter === 0) {
+                        createPopup();
+                        $(".getfeatureinfo_popup").contents().find('body').html($("#invisible_popup").contents().find('body').html());
+                        popup.setPosition(coordinate);
                     }
                 }
-
+              
+                /**
+                * @function createFeatureInfoPopupIfNeeded
+                * @memberOf hs.query.controller
+                * (PRIVATE) (re)Create popup Overlay for displaying Info.
+                */
+                function createPopup() {
+                    if ($('.getfeatureinfo_popup').length > 0) {
+                        $(popup.getElement()).remove();
+                        OlMap.map.removeOverlay(popup);
+                    }
+                    var popupContainer = document.createElement("div");
+                    popupContainer.className = "ol-popup";
+                    popupContainer.id = "infopopup";
+                    document.getElementsByTagName('body')[0].appendChild(popupContainer);
+                    popup = new ol.Overlay({
+                        element: popupContainer,
+                        autoPan: true,
+                        autoPanAnimation: {
+                            duration: 250
+                        }
+                    });
+                    var close_button = '<button type="button" class="close" id="popup-closer"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
+                    var width = $("#invisible_popup").width();
+                    var height = $("#invisible_popup").height();
+                    var content = close_button + '<iframe class="getfeatureinfo_popup" width=' + width + ' height=' + height + ' style="border:0"></iframe>';
+                    $(popup.getElement()).html(content);
+                    OlMap.map.addOverlay(popup);
+                    $("#popup-closer").click(function(){
+                        this.blur();
+                        $(popup.getElement()).remove();
+                        OlMap.map.removeOverlay(popup);
+                        return false;
+                    });
+                }
                 /**
                 * @function fillIframeAndResize
                 * @memberOf hs.query.controller
@@ -342,89 +371,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 }
 
                 var popup = null;
-
-                /**
-                * @function createFeatureInfoPopupIfNeeded
-                * @memberOf hs.query.controller
-                * @params {Object} coordinate Position for displaying popup
-                * (PRIVATE) (re)Create popup Overlay for displaying Info.
-                */
-                function createFeatureInfoPopupIfNeeded(coordinate) {
-                    if ($('.getfeatureinfo_popup').length > 0) {
-                        $(popup.getElement()).popover('destroy');
-                        OlMap.map.removeOverlay(popup);
-                    }
-                    var pop_div = document.createElement('div');
-                    var element, content;
-                    var width = $("#invisible_popup").width();
-                    var height = $("#invisible_popup").height();
-                    var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
-
-                    document.getElementsByTagName('body')[0].appendChild(pop_div);
-                    popup = new ol.Overlay({
-                        element: pop_div,
-                        positioning: 'bottom-center'
-                    });
-                    element = popup.getElement();
-                    OlMap.map.addOverlay(popup);
-                    content = close_button + '<iframe class="getfeatureinfo_popup" width=' + width + ' height=' + height + ' style="border:0"></iframe>';
-                    $(element).popover({
-                        'placement': 'top',
-                        'animation': true,
-                        'html': true,
-                        'content': content
-                    });
-                    $(element).popover('show');
-                    popup.setPosition(coordinate);
-                }
-
-                /**
-                * @function panIntoView
-                * @memberOf hs.query.controller
-                * @params {Object} coord
-                * (PRIVATE) Move view to fit popup into view.
-                */
-                function panIntoView(coord) {
-                    var popSize = {
-                            width: $(".getfeatureinfo_popup").width(),
-                            height: $(".getfeatureinfo_popup").height() + 70
-                        },
-                        mapSize = OlMap.map.getSize();
-                    
-                    var tailHeight = 20;
-                    var border = popSize.width / 2;
-                    
-                    var popOffset = popup.getOffset(),
-                        popPx = OlMap.map.getPixelFromCoordinate(coord);
-                    
-                    var leftOverflow = popPx[0] - border,
-                        rightOverflow = mapSize[0] - (popPx[0] + border);
-                    
-                    var fromTop = popPx[1] - popSize.height + popOffset[1],
-                        fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
-                    
-                    var center = OlMap.map.getView().getCenter(),
-                        curPx = OlMap.map.getPixelFromCoordinate(center),
-                        newPx = curPx.slice();
-                    
-                    if (leftOverflow < 0) {
-                        newPx[0] += (leftOverflow - 10);
-                    }
-                    
-                    if (fromTop < 0) {
-                        newPx[1] += fromTop;
-                    } else if (fromBottom < 0) {
-                        newPx[1] -= fromBottom;
-                    }
-
-                    if (newPx[0] !== curPx[0] || newPx[1] !== curPx[1]) {
-                        OlMap.map.getView().setCenter(OlMap.map.getCoordinateFromPixel(newPx));
-                    }
-                    
-                    return;
-
-                };
-
+                var infoCounter = 0;
 
                 $scope.InfoPanelService = InfoPanelService;
 
@@ -497,6 +444,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         if (url) {
                             if (console) console.log(url);
                             if (source.getParams().INFO_FORMAT.indexOf('xml') > 0 || source.getParams().INFO_FORMAT.indexOf('html') > 0 || source.getParams().INFO_FORMAT.indexOf('gml') > 0) {
+                                infoCounter++;
                                 WmsGetFeatureInfo.request(url, source.getParams().INFO_FORMAT, coordinate);
                             }
                         }
@@ -566,7 +514,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
                     $("#invisible_popup").contents().find('body').html('');
                     $("#invisible_popup").height(200).width(200);
-                    $scope.showCoordinate(evt.coordinate, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
+                    $scope.showCoordinate(evt.coordinate, !vectors_selected);//Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
+                    infoCounter = 0;
                     map.getLayers().forEach(function(layer) {
                         $scope.queryWmsLayer(layer, evt.coordinate)
                     });
