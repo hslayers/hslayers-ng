@@ -125,7 +125,10 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             me.groups = j;
                             $rootScope.$broadcast('infopanel.updated');
                         },
-                        enabled: true
+                        enabled: true,
+                        logGroups: function() {
+                            console.log(me.groups);
+                        }
                     };
 
                     return me;
@@ -139,6 +142,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         */
         .controller('hs.query.controller', ['$scope', 'hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
+
+                getLayerInit();
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);
                 var lyr = null;
@@ -219,13 +224,57 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             attributes.push(obj)
                         };
                     })
+                    var layer = feature.getLayer(map);
+                    var layerName = layer.get("title") || layer.get("name");
+                    $scope.displayGroupWithAttributes({name: layerName, attributes: attributes});
                     Core.setMainPanel("info");
-                    InfoPanelService.setAttributes(attributes);
+                    //InfoPanelService.setAttributes(attributes);
                     InfoPanelService.feature = feature;
+                    
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
                     vectors_selected = true;
                 }
 
+                /**
+                * @function getLayerInit
+                * @memberOf hs.query.controller
+                * (PRIVATE) Add getLayer to ol.Feature prototype, so we can get name of layer, selected feature came from
+                */
+                function getLayerInit() {
+                    //Prototype to getLayerName of selected Feature. See> http://stackoverflow.com/questions/31297721/how-to-get-a-layer-from-a-feature-in-openlayers-3
+                    ol.Feature.prototype.getLayer = function (map) {
+                        var this_ = this,
+                            layer_, layersToLookFor = [];
+                        var check = function (layer) {
+                            var source = layer.getSource();
+                            if (source instanceof ol.source.Vector) {
+                                var features = source.getFeatures();
+                                if (features.length > 0) {
+                                    layersToLookFor.push({
+                                        layer: layer,
+                                        features: features
+                                    });
+                                }
+                            }
+                        };
+                        map.getLayers().forEach(function (layer) {
+                            if (layer instanceof ol.layer.Group) {
+                                layer.getLayers().forEach(check);
+                            } else {
+                                check(layer);
+                            }
+                        });
+                        layersToLookFor.forEach(function (obj) {
+                            var found = obj.features.some(function (feature) {
+                                return this_ === feature;
+                            });
+                            if (found) {
+                                layer_ = obj.layer;
+                            }
+                        });
+                        return layer_;
+                    };
+                }
                 /**
                 * @function featureInfoReceived
                 * @memberOf hs.query.service_getwmsfeatureinfo
@@ -311,6 +360,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         createPopup();
                         $(".getfeatureinfo_popup").contents().find('body').html($("#invisible_popup").contents().find('body').html());
                         popup.setPosition(coordinate);
+                        InfoPanelService.logGroups();
                     }
                 }
               
@@ -526,3 +576,5 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         ]);
 
     })
+
+
