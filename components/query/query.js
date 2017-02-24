@@ -220,7 +220,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         };
                     })
                     Core.setMainPanel("info");
-                    //InfoPanelService.setAttributes(attributes);
+                    InfoPanelService.setAttributes(attributes);
                     InfoPanelService.feature = feature;
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
                     vectors_selected = true;
