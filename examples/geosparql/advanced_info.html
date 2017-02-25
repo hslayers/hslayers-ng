@@ -14,12 +14,7 @@
                             <td><b translate><a href="{{attribute.name}}" target="_blank">{{attribute.name}}</a></b></td> 
                             <td ng-show="attributeEditorMode(attribute)==2" ng-bind-html="attribute.value"></td>
                             <td ng-show="attributeEditorMode(attribute)==3"><a href="{{attribute.value}}" target="_blank">{{attribute.value}}</a></td>
-                            <td ng-show="editTextboxVisible(attribute)"><input class="form-control"  ng-change="attribute.changed = true" ng-model="attribute.value"/>
-                                <button type="button" class="btn btn-primary" ng-show="attribute.changed" ng-click="saveSpoiChanges(group.attributes)">
-                                    <translate>Save changes</translate>
-                                </button>
-                            <td>
-                                
+                            <td ng-show="editTextboxVisible(attribute)"><input class="form-control"  ng-change="attribute.changed = true" ng-model="attribute.value"/></td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)" ng-if="getNotEditableAttrs().indexOf(attribute.name)==-1">
                                     <i class="glyphicon glyphicon-edit"></i>
@@ -27,9 +22,17 @@
                             </td>
                         </tr>    
                     </table>
+                 
+                    
                 </div>
             </div>
             <div class="modal-footer" id="stc-footer">
+                <button ng-repeat="group in InfoPanelService.groups | orderBy : name" type="button" class="btn btn-primary" ng-show="attributesHaveChanged(group.attributes)" ng-click="saveSpoiChanges(group.attributes)">
+                    <translate>Save changes</translate>
+                </button>
+                <button ng-repeat="group in InfoPanelService.groups | orderBy : name" type="button" class="btn btn-primary" ng-show="attributesHaveChanged(group.attributes)" ng-click="cancelSpoiChanges(group.attributes)">
+                    <translate>Cancel</translate>
+                </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" translate="">Close</button>
             </div>
         </div>

@@ -256,7 +256,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     if (!show_location_weather) return;
                     var on_features = false;
                     angular.forEach(data.frameState.skippedFeatureUids, function(k) {
-                        //on_features = true;
+                        on_features = true;
                     });
                     if (on_features) return;
                     getWeatherInfo(data.coordinate);
@@ -474,6 +474,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.editDropdownVisible = spoi_editor.editDropdownVisible;
                 $scope.editTextboxVisible = spoi_editor.editTextboxVisible;
                 $scope.saveSpoiChanges = spoi_editor.saveSpoiChanges;
+                $scope.cancelSpoiChanges = spoi_editor.cancelSpoiChanges;
                 $scope.editCategoryDropdownVisible = spoi_editor.editCategoryDropdownVisible;
                 $scope.getSpoiDropdownItems = spoi_editor.getSpoiDropdownItems;
                 $scope.getNotEditableAttrs = spoi_editor.getNotEditableAttrs;

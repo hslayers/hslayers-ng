@@ -83,6 +83,16 @@ define(['angular', 'ol', 'core'],
                             })
                         });
                 }
+                
+                function cancelSpoiChanges(attributes) {
+                    angular.forEach(attributes, function(a) {
+                        if (angular.isDefined(a.changed) && a.changed) {
+                           a.value = a.original_value;
+                           a.changed = false;
+                           a.is_editing = false;
+                        }
+                    });
+                }
 
                 function filterAttribs(items) {
                     var filtered = [];
@@ -135,6 +145,8 @@ define(['angular', 'ol', 'core'],
                 }
 
                 function startEdit(attribute, x) {
+                    if (angular.isUndefined(attribute.changed) || !attribute.changed) 
+                        attribute.original_value = attribute.value;
                     attribute.is_editing = !(angular.isDefined(attribute.is_editing) && attribute.is_editing);
                 }
 
@@ -206,6 +218,7 @@ define(['angular', 'ol', 'core'],
                     attrToEnglish: attrToEnglish,
                     makeHumanReadable: makeHumanReadable,
                     saveSpoiChanges: saveSpoiChanges,
+                    cancelSpoiChanges: cancelSpoiChanges,
                     filterAttribs: filterAttribs,
                     startEdit: startEdit,
                     attributesHaveChanged: attributesHaveChanged,

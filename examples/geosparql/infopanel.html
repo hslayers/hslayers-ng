@@ -39,9 +39,11 @@
             
             <div class="container-fluid">
             
-                <button type="button" class="btn btn-primary" ng-show="attributesHaveChanged(InfoPanelService.attributes)" ng-click="saveSpoiChanges(InfoPanelService.attributes)"><translate>Save changes</translate></button>
-
-                <button class="btn btn-info" ng-click="showDeveloperInfo()">For developers</button>
+                <button type="button" class="btn btn-primary" ng-show="attributesHaveChanged(group.attributes)" ng-click="saveSpoiChanges(group.attributes)"><translate>Save</translate></button>
+                <button type="button" class="btn btn-primary" ng-show="attributesHaveChanged(group.attributes)" ng-click="cancelSpoiChanges(group.attributes)"><translate>Cancel</translate></button>
+                <p>
+                    <button class="btn btn-info" ng-click="showDeveloperInfo()">Advanced view</button>
+                </p>
             </div>
         </div>
         <!-- Coordinates -->
