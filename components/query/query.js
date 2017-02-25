@@ -244,6 +244,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         InfoPanelService.setAttributes(attributes);
                     }
                     InfoPanelService.feature = feature;
+                    map.removeLayer(lyr);
+                    map.addLayer(lyr);
                     vectors_selected = true;
                 }
 
@@ -552,7 +554,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         }),
                         show_in_manager: false
                     });
-                    map.addLayer(lyr);
                 }
 
                 $scope.$on('layermanager.updated', function(event, data) {
@@ -565,6 +566,17 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     selector.getFeatures().push(feature);
                 })
 
+                $scope.$on('core.mainpanel_changed', function(event, closed) {
+                    if (angular.isDefined(closed) && closed.panel_name == "info") {
+                        if ($('.getfeatureinfo_popup').length > 0) {
+                            $(popup.getElement()).remove();
+                            OlMap.map.removeOverlay(popup);
+                        }
+                        selector.getFeatures().clear();
+                        if (lyr) map.getLayers().remove(lyr);
+                    }    
+                });
+                
                 $scope.createCurrentPointLayer();
 
                 //For wms layers use this to get the features at mouse coordinates
@@ -573,7 +585,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
                     $("#invisible_popup").contents().find('body').html('');
                     $("#invisible_popup").height(200).width(200);
-                    if (!vectors_selected) $scope.clearInfoPanel();
+                    if (!vectors_selected) {
+                        $scope.clearInfoPanel();
+                        map.removeLayer(lyr);
+                        map.addLayer(lyr); 
+                    }
                     $scope.showCoordinate(evt.coordinate);
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
                     infoCounter = 0;

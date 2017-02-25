@@ -260,7 +260,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
 
                             }
 
-                            $rootScope.$broadcast('core.mainpanel_changed');
+                            $rootScope.$broadcast('core.mainpanel_changed',which);
                         },
                         /**
                          * @function exists
