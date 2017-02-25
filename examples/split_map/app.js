@@ -110,7 +110,7 @@ define(['ol',
                             var ctx = evt.context;
                             ctx.save();
                             var dpi = window.devicePixelRatio;
-                            if (evt.currentTarget.get('split_group') == 1) {
+                            if (evt.target.get('split_group') == 1) {
                                 ctx.save();
                                 ctx.beginPath();
                                 ctx.rect(0, 0, $scope.split_x * dpi, 20 * dpi);
@@ -125,7 +125,7 @@ define(['ol',
                                 ctx.stroke();
                                 ctx.restore();
                             }
-                            if (evt.currentTarget.get('split_group') == 2) {
+                            if (evt.target.get('split_group') == 2) {
                                 ctx.save();
                                 ctx.beginPath();
                                 ctx.rect($scope.split_x * dpi, 0 * dpi, ctx.canvas.width * dpi - $scope.split_x * dpi, 20 * dpi);
@@ -141,13 +141,13 @@ define(['ol',
                                 ctx.restore();
                             }
                             ctx.beginPath();
-                            var title = evt.currentTarget.get('title');
+                            var title = evt.target.get('title');
                             //Set clip rectangle and draw red outline for splitter
-                            if (evt.currentTarget.get('split_group') == 1) {
+                            if (evt.target.get('split_group') == 1) {
                                 ctx.rect(0 * dpi, 20 * dpi, $scope.split_x * dpi, $scope.split_y * dpi - 20 * dpi);
                                 ctx.font = '14pt Calibri';
                                 ctx.fillText(title, ($scope.split_x - ctx.measureText(title).width - 5) * dpi, 15 * dpi);
-                            } else if (evt.currentTarget.get('split_group') == 2) {
+                            } else if (evt.target.get('split_group') == 2) {
                                 ctx.moveTo($scope.split_x * dpi, 20 * dpi);
                                 ctx.lineTo(ctx.canvas.width * dpi, 20 * dpi);
                                 ctx.lineTo(ctx.canvas.width * dpi, ctx.canvas.height * dpi);
