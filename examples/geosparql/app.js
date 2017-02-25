@@ -39,6 +39,24 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             };
         });
 
+        
+        module.directive('hs.pointPopupDirective', function() {
+            return {
+                templateUrl: 'pointpopup.html?bust=' + gitsha,
+                link: function(scope, element, attrs) {
+                    var container = document.getElementById('popup');
+                    scope.popup = new ol.Overlay({
+                        element: container,
+                        autoPan: true,
+                        autoPanAnimation: {
+                            duration: 250
+                        }
+                    });
+                    scope.addPopupToMap();
+                }
+            };
+        });
+         
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
                 var s = feature.get('http://www.sdi4apps.eu/poi/#mainCategory');
@@ -89,84 +107,90 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 })
             })]
         };
+        
+        var base_layer_group = new ol.layer.Group({
+            'img': 'osm.png',
+            title: 'Base layer',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "OpenStreetMap",
+                    base: true,
+                    visible: true,
+                    path: 'Roads'
+                }),
+                new ol.layer.Tile({
+                    title: "OpenCycleMap",
+                    visible: false,
+                    base: true,
+                    source: new ol.source.OSM({
+                        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+                    }),
+                    path: 'Roads'
+                }),
+                new ol.layer.Tile({
+                    title: "MTBMap",
+                    visible: false,
+                    base: true,
+                    source: new ol.source.XYZ({
+                        url: 'http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png'
+                    }),
+                    path: 'Roads'
+                }),
+                new ol.layer.Tile({
+                    title: "OwnTiles",
+                    visible: false,
+                    base: true,
+                    source: new ol.source.XYZ({
+                        url: 'http://ct37.sdi4apps.eu/map/{z}/{x}/{y}.png'
+                    }),
+                    path: 'Roads'
+                })
+            ],
+        });
+        
+        var tourist_layer_group = new ol.layer.Group({
+            title: 'Touristic',
+            layers: []
+        });
+        
+        var weather_layer_group = new ol.layer.Group({
+            'img': 'partly_cloudy.png',
+            title: 'Weather',
+            layers: [new ol.layer.Tile({
+                    title: "OpenWeatherMap cloud cover",
+                    source: new ol.source.XYZ({
+                        url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
+                    }),
+                    visible: false,
+                    opacity: 0.7,
+                    path: 'Weather info'
+                }),
+                new ol.layer.Tile({
+                    title: "OpenWeatherMap precipitation",
+                    source: new ol.source.XYZ({
+                        url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
+                    }),
+                    visible: false,
+                    opacity: 0.7,
+                    path: 'Weather info'
+                }),
+                new ol.layer.Tile({
+                    title: "OpenWeatherMap temperature",
+                    source: new ol.source.XYZ({
+                        url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
+                    }),
+                    visible: false,
+                    opacity: 0.7,
+                    path: 'Weather info'
+                })
+            ]
+        })
 
         var geoJsonFormat = new ol.format.GeoJSON;
         module.value('config', {
             search_provider: 'sdi4apps_openapi',
-            box_layers: [new ol.layer.Group({
-                'img': 'osm.png',
-                title: 'Base layer',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM(),
-                        title: "OpenStreetMap",
-                        base: true,
-                        visible: true,
-                        path: 'Roads'
-                    }),
-                    new ol.layer.Tile({
-                        title: "OpenCycleMap",
-                        visible: false,
-                        base: true,
-                        source: new ol.source.OSM({
-                            url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                        }),
-                        path: 'Roads'
-                    }),
-                    new ol.layer.Tile({
-                        title: "MTBMap",
-                        visible: false,
-                        base: true,
-                        source: new ol.source.XYZ({
-                            url: 'http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png'
-                        }),
-                        path: 'Roads'
-                    }),
-                    new ol.layer.Tile({
-                        title: "OwnTiles",
-                        visible: false,
-                        base: true,
-                        source: new ol.source.XYZ({
-                            url: 'http://ct37.sdi4apps.eu/map/{z}/{x}/{y}.png'
-                        }),
-                        path: 'Roads'
-                    })
-                ],
-            }), new ol.layer.Group({
-                title: 'Touristic',
-                layers: []}),
-            new ol.layer.Group({
-                'img': 'partly_cloudy.png',
-                title: 'Weather',
-                layers: [new ol.layer.Tile({
-                        title: "OpenWeatherMap cloud cover",
-                        source: new ol.source.XYZ({
-                            url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
-                        }),
-                        visible: false,
-                        opacity: 0.7,
-                        path: 'Weather info'
-                    }),
-                    new ol.layer.Tile({
-                        title: "OpenWeatherMap precipitation",
-                        source: new ol.source.XYZ({
-                            url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
-                        }),
-                        visible: false,
-                        opacity: 0.7,
-                        path: 'Weather info'
-                    }),
-                    new ol.layer.Tile({
-                        title: "OpenWeatherMap temperature",
-                        source: new ol.source.XYZ({
-                            url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
-                        }),
-                        visible: false,
-                        opacity: 0.7,
-                        path: 'Weather info'
-                    })
-                ]
-            })],
+            box_layers: [base_layer_group, tourist_layer_group, weather_layer_group],
             crossfilterable_layers: [{
                 layer_ix: 2,
                 attributes: ["http://gis.zcu.cz/poi#category_osm"]
@@ -211,86 +235,64 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
                 $scope.$on('infopanel.updated', function(event) {});
 
-                var pop_div = document.createElement('div');
-                                
-                var popup = new ol.Overlay({
-                    element: pop_div,
-                    autoPan: true
-                });
+                var el = angular.element('<div hs.point_popup_directive></div>');
+                $("#hs-dialog-area").append(el)
+                $compile(el)($scope);
                 
-                $scope.$on('map.loaded', function(){  
-                    document.getElementsByTagName('body')[0].appendChild(pop_div);
-                    OlMap.map.addOverlay(popup);
-                });
-                 
-               
+                //Which ever comes first - map.laoded event or popup directives link function - add the overlay.
+                function addPopupToMap(){
+                    if(angular.isDefined($scope.popup) && angular.isUndefined($scope.popup.added)) {
+                        OlMap.map.addOverlay($scope.popup);
+                        $scope.popup.added = true;
+                    }
+                }
+                
+                $scope.addPopupToMap = addPopupToMap;
+                
+                $scope.$on('map.loaded', $scope.addPopupToMap);
 
                 var show_location_weather = true;
                 $scope.$on('map_clicked', function(event, data) {
                     if (!show_location_weather) return;
                     var on_features = false;
                     angular.forEach(data.frameState.skippedFeatureUids, function(k) {
-                        on_features = true;
+                        //on_features = true;
                     });
                     if (on_features) return;
-                    var coordinate = data.coordinate;
-                    var lon_lat = ol.proj.transform(
-                        coordinate, 'EPSG:3857', 'EPSG:4326');
-                    var url = '';
-                    if (typeof use_proxy === 'undefined' || use_proxy === true) {
-                        url = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape("http://api.openweathermap.org/data/2.5/weather?APPID=13b627424cd072290defed4216e92baa&lat=" + lon_lat[1] + "&lon=" + lon_lat[0]);
-                    } else {
-                        url = "http://api.openweathermap.org/data/2.5/weather?APPID=13b627424cd072290defed4216e92baa&lat=" + lon_lat[1] + "&lon=" + lon_lat[0];
-                    }
-
-                    $.ajax({
-                            url: url
-                        })
-                        .done(function(response) {
-                            if (console) console.log(response);
-                            var element = popup.getElement();
-
-                            var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-                                coordinate, 'EPSG:3857', 'EPSG:4326'));
-                            angular.element(element).popover('destroy');
-                            var to_trip_button = '<button class="hs-spoi-point-to-trip btn btn-default">Add to trip</button>';
-                            var new_point_button = '<div class="btn-group"><button type="button" class="hs-spoi-new-poi btn btn-default dropdown-toggle" data-toggle="dropdown">Add to map  <span class="caret"></span></button><ul id="hs-spoi-new-layer-list" class="dropdown-menu"><li><a href="#">Action</a></li></ul></div>';
-                            var content = 'No weather info<br/>' + to_trip_button + new_point_button;
-                            if (response.weather) {
-                                var wind_row = 'Wind: {0}m/s {1}'.format(response.wind.speed, (response.wind.gust ? ' Gust: {0}m/s'.format(response.wind.gust) : ''));
-                                var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
-                                var weather = response.weather[0];
-                                var cloud = '<img src="http://openweathermap.org/img/w/{0}.png" alt="{1}"/>{2}'.format(weather.icon, weather.description, weather.description);
-                                var temp_row = 'Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C';
-                                var date_row = $filter('date')(new Date(response.dt * 1000), 'dd.MM.yyyy HH:mm');
-                                var country;
-                                if(angular.isDefined($scope.country_last_clicked)) 
-                                    country = $scope.country_last_clicked.countryName;
-                                content = '{0}<div style="width:300px"><p><b>{1}&nbsp;<span id="hs-spoi-country-placeholder">{2}</span></b><br/><small> at {3}</small></p>{4}<br/>{5}<br/>{6}<br/>{7} {8}</div>'
-                                    .format(close_button, response.name, country, date_row, cloud, temp_row, wind_row, to_trip_button, new_point_button);
-                            }
-                            angular.element(element).popover({
-                                'placement': 'top',
-                                'animation': false,
-                                'html': true,
-                                'content': content
-                            });
-
-                            popup.setPosition(coordinate);
-                            angular.element(element).popover('show');
-                            angular.element('.close', element.nextElementSibling).click(function() {
-                                angular.element(element).popover('hide');
-                                //show_location_weather = false;
-                            });
-                            createLayerSelectorForNewPoi(popup, coordinate);
-                            angular.element('.hs-spoi-point-to-trip', element.nextElementSibling).click(function() {
-                                trip_planner_service.addWaypoint(lon_lat[0], lon_lat[1]);
-                                return false;
-                            })
-
-                        });
-                    getCountryAtCoordinate(coordinate);
+                    getWeatherInfo(data.coordinate);
+                    getCountryAtCoordinate(data.coordinate);
                 });
+                
+                function getWeatherInfo(coordinate){
+                    var lon_lat = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+                    $scope.lon_lat = lon_lat;
+                    var url = utils.proxify("http://api.openweathermap.org/data/2.5/weather?APPID=13b627424cd072290defed4216e92baa&lat=" + lon_lat[1] + "&lon=" + lon_lat[0]);
+                    $http({
+                        method: 'GET',
+                        url: url,
+                        cache: false
+                    }).then(function successCallback(response) {
+                        $scope.popup.setPosition(coordinate);
+                        createLayerSelectorForNewPoi(coordinate);
+                        if (response.data.weather) {
+                            $scope.weather_info = response.data;
+                            $scope.weather_info.date_row =  $filter('date')(new Date(response.data.dt * 1000), 'dd.MM.yyyy HH:mm');
+                            $scope.weather_info.temp_row = (response.data.main.temp - 273.15).toFixed(1);
+                        } else {
+                            $scope.weather_info = null;
+                        }
+                    });   
+                }
+        
+                $scope.hidePopup = function(){
+                    $scope.popup.setPosition(undefined);
+                    return false;
+                }
+                
+                $scope.addToTrip = function(){
+                    trip_planner_service.addWaypoint($scope.lon_lat[0], $scope.lon_lat[1]);
+                    return false;
+                }
 
                 function getCountryAtCoordinate(coordinate) {
                     var latlng = ol.proj.transform(coordinate, OlMap.map.getView().getProjection(), 'EPSG:4326');
@@ -312,15 +314,15 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 function layerSelected() {
                     var layer = $(this).data('layer');
                     var feature = spoi_editor.addPoi(layer, $(this).data('coordinate'), $scope.country_last_clicked, $(this).data('sub_category'));
-                    popup.setPosition(undefined);
+                    $scope.popup.setPosition(undefined);
                     $scope.$broadcast('infopanel.feature_select', feature);
                     return false;
                 }
 
-                function createLayerSelectorForNewPoi(popup, coordinate) {
+                function createLayerSelectorForNewPoi(coordinate) {
                     var possible_layers = [];
                     angular.element("#hs-spoi-new-layer-list").html('');
-                    angular.forEach(config.box_layers[1].getLayers(), function(layer) {
+                    angular.forEach(tourist_layer_group.getLayers(), function(layer) {
                         if (layer.getVisible()) {
                             possible_layers.push(layer);
                             var $li = $('<li><a href="#">' + layer.get('title') + '</a></li>');
@@ -410,7 +412,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 minResolution: 1,
                                 maxResolution: 38
                             });
-                            config.box_layers[1].getLayers().insertAt(0, new_lyr);
+                            tourist_layer_group.getLayers().insertAt(0, new_lyr);
                         }
                     });
                     list_loaded.dynamic_categories = true;
@@ -445,7 +447,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             maxResolution: 38,
                             category: category
                         });
-                        config.box_layers[1].getLayers().insertAt(0, new_lyr);
+                        tourist_layer_group.getLayers().insertAt(0, new_lyr);
                     })
                     list_loaded.static_categories = true;
                     checkListLoaded();
