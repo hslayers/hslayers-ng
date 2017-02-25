@@ -256,8 +256,11 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 var cloud = '<img src="http://openweathermap.org/img/w/{0}.png" alt="{1}"/>{2}'.format(weather.icon, weather.description, weather.description);
                                 var temp_row = 'Temperature: ' + (response.main.temp - 273.15).toFixed(1) + ' °C';
                                 var date_row = $filter('date')(new Date(response.dt * 1000), 'dd.MM.yyyy HH:mm');
+                                var country;
+                                if(angular.isDefined($scope.country_last_clicked)) 
+                                    country = $scope.country_last_clicked.countryName;
                                 content = '{0}<div style="width:300px"><p><b>{1}&nbsp;<span id="hs-spoi-country-placeholder">{2}</span></b><br/><small> at {3}</small></p>{4}<br/>{5}<br/>{6}<br/>{7} {8}</div>'
-                                    .format(close_button, response.name, $scope.country_last_clicked.countryName, date_row, cloud, temp_row, wind_row, to_trip_button, new_point_button);
+                                    .format(close_button, response.name, country, date_row, cloud, temp_row, wind_row, to_trip_button, new_point_button);
                             }
                             angular.element(element).popover({
                                 'placement': 'top',
