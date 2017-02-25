@@ -50,6 +50,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                         image: new ol.style.Icon({
                             anchor: [0.5, 1],
                             src: 'symbolsWaze/' + s + '.svg',
+                            size: [30, 35],
                             crossOrigin: 'anonymous'
                         })
                     })
@@ -70,6 +71,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                         image: new ol.style.Icon({
                             anchor: [0.5, 1],
                             src: 'symbols/' + s + '.svg',
+                            size: [30, 35],
                             crossOrigin: 'anonymous'
                         })
                     })
