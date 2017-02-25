@@ -184,7 +184,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 map.width(element.width());
                             }
                             
-                            OlMap.map.updateSize();
+                            if(angular.isDefined(OlMap.map)) OlMap.map.updateSize();
                         },
                         /**
                          * @function panelVisible
@@ -497,7 +497,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         element[0].style.width = size.width + "px";
                         $("#map").height(size.height);
                         me.updateMapSize();
-                        OlMap.map.updateSize();
+                        if(OlMap.map) OlMap.map.updateSize();
                     }
                     return me;
                 },

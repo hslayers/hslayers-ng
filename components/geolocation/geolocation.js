@@ -72,169 +72,176 @@ define(['angular', 'ol'],
                     }
                 };
 
+                
                 var accuracyFeature = new ol.Feature();
                 var positionFeature = new ol.Feature();
+                
+                $rootScope.$on('map.loaded', function(){
+                    init();
+                });
 
-                if (Core.isMobile()) {
-                    /**
-                    * (Only for Mobile) Center map on last location
-                    * @memberof hs.geolocation.service
-                    * @function setCenter
-                    */
-                    me.setCenter = function() {
-                        OlMap.map.getView().setCenter(me.last_location.latlng);
-                    };
+                function init(){
+                    if (Core.isMobile()) {
+                        /**
+                        * (Only for Mobile) Center map on last location
+                        * @memberof hs.geolocation.service
+                        * @function setCenter
+                        */
+                        me.setCenter = function() {
+                            OlMap.map.getView().setCenter(me.last_location.latlng);
+                        };
 
-                    me.geolocation = navigator.geolocation;
+                        me.geolocation = navigator.geolocation;
 
-                    /**
-                    * (Only for Mobile) Toggle (Start/Stop) GPS tracking, set display of position layer accordingly 
-                    * @memberof hs.geolocation.service
-                    * @function toggleGps
-                    */
-                    me.toggleGps = function() {
-                        if (me.gpsStatus) {
-                            me.stopGpsWatch();
-                        } else {
-                            me.startGpsWatch();
-                        }
-                        me.toggleFeatures(me.gpsStatus);
-                        $rootScope.$broadcast('geolocation.switched');
-                    };
-
-                    /**
-                    * (Only for Mobile) Start GPS tracking if possible, initialize Ol.geolocation handler
-                    * @memberof hs.geolocation.service
-                    * @function startGpsWatch
-                    */
-                    me.startGpsWatch = function() {
-                        if (navigator.geolocation) {
-                            me.gpsStatus = true;
-                            // me.gpsSwitch = 'Stop GPS';
-                            me.changed_handler = me.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
-                        }
-                    };
-
-                    /**
-                    * (Only for Mobile) Stop GPS tracking and clears handlers
-                    * @memberof hs.geolocation.service
-                    * @function stopGpsWatch
-                    */
-                    me.stopGpsWatch = function() {
-                        me.gpsStatus = false;
-                        // me.gpsSwitch = 'Start GPS';
-                        me.geolocation.clearWatch(me.changed_handler);
-                        me.changed_handler = null;
-                    };
-
-                    /**
-                    * (PRIVATE) (Only for Mobile) Callback for handling successful location response, update location variables
-                    * @memberof hs.geolocation.service
-                    * @function gpsOkCallback
-                    * @param {object} position Position object
-                    */
-                    var gpsOkCallback = function(position) {
-                        me.accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : '-';
-                        me.altitude = position.coords.altitude ? Math.round(position.coords.altitude) : '-';
-                        me.heading = position.coords.heading ? position.coords.heading : null;
-                        me.speed = position.coords.speed ? Math.round(position.coords.speed * 3.6) : '-';
-                        me.last_location = {
-                                "latlng": ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection()),
-                                "geoposition": position
+                        /**
+                        * (Only for Mobile) Toggle (Start/Stop) GPS tracking, set display of position layer accordingly 
+                        * @memberof hs.geolocation.service
+                        * @function toggleGps
+                        */
+                        me.toggleGps = function() {
+                            if (me.gpsStatus) {
+                                me.stopGpsWatch();
+                            } else {
+                                me.startGpsWatch();
                             }
-                            // me.last_location.latlng = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection());
-                        if (!positionFeature.setGeometry()) {
-                            positionFeature.setGeometry(new ol.geom.Point(me.last_location.latlng));
-                        } else {
-                            positionFeature.getGeometry().setCoordinates(me.last_location.latlng);
+                            me.toggleFeatures(me.gpsStatus);
+                            $rootScope.$broadcast('geolocation.switched');
+                        };
+
+                        /**
+                        * (Only for Mobile) Start GPS tracking if possible, initialize Ol.geolocation handler
+                        * @memberof hs.geolocation.service
+                        * @function startGpsWatch
+                        */
+                        me.startGpsWatch = function() {
+                            if (navigator.geolocation) {
+                                me.gpsStatus = true;
+                                // me.gpsSwitch = 'Stop GPS';
+                                me.changed_handler = me.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
+                            }
+                        };
+
+                        /**
+                        * (Only for Mobile) Stop GPS tracking and clears handlers
+                        * @memberof hs.geolocation.service
+                        * @function stopGpsWatch
+                        */
+                        me.stopGpsWatch = function() {
+                            me.gpsStatus = false;
+                            // me.gpsSwitch = 'Start GPS';
+                            me.geolocation.clearWatch(me.changed_handler);
+                            me.changed_handler = null;
+                        };
+
+                        /**
+                        * (PRIVATE) (Only for Mobile) Callback for handling successful location response, update location variables
+                        * @memberof hs.geolocation.service
+                        * @function gpsOkCallback
+                        * @param {object} position Position object
+                        */
+                        var gpsOkCallback = function(position) {
+                            me.accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : '-';
+                            me.altitude = position.coords.altitude ? Math.round(position.coords.altitude) : '-';
+                            me.heading = position.coords.heading ? position.coords.heading : null;
+                            me.speed = position.coords.speed ? Math.round(position.coords.speed * 3.6) : '-';
+                            me.last_location = {
+                                    "latlng": ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection()),
+                                    "geoposition": position
+                                }
+                                // me.last_location.latlng = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection());
+                            if (!positionFeature.setGeometry()) {
+                                positionFeature.setGeometry(new ol.geom.Point(me.last_location.latlng));
+                            } else {
+                                positionFeature.getGeometry().setCoordinates(me.last_location.latlng);
+                            }
+
+                            if (!accuracyFeature.setGeometry()) {
+                                accuracyFeature.setGeometry(new ol.geom.Circle(me.last_location.latlng, position.coords.accuracy));
+                            } else {
+                                accuracyFeature.getGeometry().setCenterAndRadius(me.last_location.latlng, me.accuracy);
+                            }
+
+                            if (me.following) {
+                                me.setCenter();
+                            }
+
+                            lat = position.coords.latitude;
+                            lon = position.coords.longitude;
+                            if (typeof trackingDb != 'undefined') trackingDb.transaction(logPosition, errorCB, successCB);
+                            db_id++;
+
+                            $rootScope.$broadcast('geolocation.updated');
+                        };
+
+                        /**
+                        * (PRIVATE) (Only for Mobile) Callback for handling geolocation error
+                        * @memberof hs.geolocation.service
+                        * @function gpsFailCallback
+                        * @param {object} e Position fail object
+                        */
+                        var gpsFailCallback = function(e) {
+                            var msg = 'Error ' + e.code + ': ' + e.message;
+                            console.log(msg);
+                        };
+
+                        var gpsOptions = {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 100000
+                        };
+                    } else {
+                        me.geolocation = new ol.Geolocation({
+                            projection: OlMap.map.getView().getProjection()
+                        });
+                        
+                        /**
+                        * (Only for Desktop) Change handler of ol.Geolocation object (for desktop use)
+                        * @memberof hs.geolocation.service
+                        * @function changed_handler
+                        */
+                        me.changed_handler = function() {
+                            if (!me.geolocation.getTracking()) return;
+
+                            me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
+                            me.altitude = me.geolocation.getAltitude() ? me.geolocation.getAltitude() + ' [m]' : '-';
+                            me.altitudeAccuracy = me.geolocation.getAltitudeAccuracy() ? '+/- ' + me.geolocation.getAltitudeAccuracy() + ' [m]' : '';
+                            me.heading = me.geolocation.getHeading() ? me.geolocation.getHeading() : null;
+                            me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
+                            me.last_location = {
+                                "latlng": me.geolocation.getPosition(),
+                                "geoposition": me.geolocation
+                            }
+                            console.log(me.last_location);
+                            if (me.geolocation.getPosition()) {
+                                var p = me.geolocation.getPosition();
+                                $log.info(p);
+                                if (!positionFeature.getGeometry())
+                                    positionFeature.setGeometry(new ol.geom.Point(p));
+                                else
+                                    positionFeature.getGeometry().setCoordinates(p);
+                                if (me.following)
+                                    OlMap.map.getView().setCenter(p);
+                            }
+                            if (me.heading) OlMap.map.getView().setRotation(me.heading);
+                            $rootScope.$broadcast('geolocation.updated');
                         }
 
-                        if (!accuracyFeature.setGeometry()) {
-                            accuracyFeature.setGeometry(new ol.geom.Circle(me.last_location.latlng, position.coords.accuracy));
-                        } else {
-                            accuracyFeature.getGeometry().setCenterAndRadius(me.last_location.latlng, me.accuracy);
-                        }
+                        me.geolocation.on('change', me.changed_handler);
 
-                        if (me.following) {
-                            me.setCenter();
-                        }
+                        // handle geolocation error.
+                        me.geolocation.on('error', function(error) {
+                            var info = document.getElementById('info');
+                            info.innerHTML = error.message;
+                            info.style.display = '';
+                        });
+                        //var track = new ol.dom.Input(document.getElementById('track'));
+                        //track.bindTo('checked', geolocation, 'tracking');
 
-                        lat = position.coords.latitude;
-                        lon = position.coords.longitude;
-                        if (typeof trackingDb != 'undefined') trackingDb.transaction(logPosition, errorCB, successCB);
-                        db_id++;
-
-                        $rootScope.$broadcast('geolocation.updated');
-                    };
-
-                    /**
-                    * (PRIVATE) (Only for Mobile) Callback for handling geolocation error
-                    * @memberof hs.geolocation.service
-                    * @function gpsFailCallback
-                    * @param {object} e Position fail object
-                    */
-                    var gpsFailCallback = function(e) {
-                        var msg = 'Error ' + e.code + ': ' + e.message;
-                        console.log(msg);
-                    };
-
-                    var gpsOptions = {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 100000
-                    };
-                } else {
-                    me.geolocation = new ol.Geolocation({
-                        projection: OlMap.map.getView().getProjection()
-                    });
-                    
-                    /**
-                    * (Only for Desktop) Change handler of ol.Geolocation object (for desktop use)
-                    * @memberof hs.geolocation.service
-                    * @function changed_handler
-                    */
-                    me.changed_handler = function() {
-                        if (!me.geolocation.getTracking()) return;
-
-                        me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
-                        me.altitude = me.geolocation.getAltitude() ? me.geolocation.getAltitude() + ' [m]' : '-';
-                        me.altitudeAccuracy = me.geolocation.getAltitudeAccuracy() ? '+/- ' + me.geolocation.getAltitudeAccuracy() + ' [m]' : '';
-                        me.heading = me.geolocation.getHeading() ? me.geolocation.getHeading() : null;
-                        me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
-                        me.last_location = {
-                            "latlng": me.geolocation.getPosition(),
-                            "geoposition": me.geolocation
-                        }
-                        console.log(me.last_location);
-                        if (me.geolocation.getPosition()) {
-                            var p = me.geolocation.getPosition();
-                            $log.info(p);
-                            if (!positionFeature.getGeometry())
-                                positionFeature.setGeometry(new ol.geom.Point(p));
-                            else
-                                positionFeature.getGeometry().setCoordinates(p);
-                            if (me.following)
-                                OlMap.map.getView().setCenter(p);
-                        }
-                        if (me.heading) OlMap.map.getView().setRotation(me.heading);
-                        $rootScope.$broadcast('geolocation.updated');
+                        me.geolocation.on('change:accuracyGeometry', function() {
+                            accuracyFeature.set('geometry', me.geolocation.accuracyGeometry);
+                        });
+                        //accuracyFeature.bindTo('geometry', me.geolocation, 'accuracyGeometry');
                     }
-
-                    me.geolocation.on('change', me.changed_handler);
-
-                    // handle geolocation error.
-                    me.geolocation.on('error', function(error) {
-                        var info = document.getElementById('info');
-                        info.innerHTML = error.message;
-                        info.style.display = '';
-                    });
-                    //var track = new ol.dom.Input(document.getElementById('track'));
-                    //track.bindTo('checked', geolocation, 'tracking');
-
-                    me.geolocation.on('change:accuracyGeometry', function() {
-                        accuracyFeature.set('geometry', me.geolocation.accuracyGeometry);
-                    });
-                    //accuracyFeature.bindTo('geometry', me.geolocation, 'accuracyGeometry');
                 }
 
                 me.style = new ol.style.Style({

@@ -11,43 +11,44 @@
         <div class="panel-body">
     
         <!-- Feature Name -->
-        <div class="hs-spoi-title" ng-repeat="attribute in InfoPanelService.attributes | filter: {name: 'http://purl.org/dc/elements/1.1/title'}">
-            <h3 class="hs-spoi-feature-info">{{makeHumanReadable(attribute)}}</h3>
-            <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)"><i class="glyphicon glyphicon-edit"></i></button></div>          
-            <input class="form-control" ng-show="attribute.is_editing" ng-change="attribute.changed = true" ng-model="attribute.value"/>
-        </div>
-        <br>
-        <!-- User friendly attributes -->
-        <div ng-repeat="attribute in InfoPanelService.attributes | usrFrSpoiAttribs" class="featureInfo">
-            <span class="hs-spoi-feature-info">{{attrToEnglish(attribute.name)}} <span ng-bind-html="makeHumanReadable(attribute)"></span></span>
-            <div class="hs-spoi-item-controls">
-                <button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)">
-                    <i class="glyphicon glyphicon-edit"></i>
-                </button>
-            </div>  
-            <input class="form-control" ng-show="editTextboxVisible(attribute)" ng-change="attribute.changed = true" ng-model="attribute.value"/>
-            <select class="form-control hs-spoi-feature-info" ng-show="editCategoryDropdownVisible(attribute)" ng-model="attribute.value" ng-change="attribute.changed = true"> 
-                <optgroup ng-repeat="(key, group) in getSpoiCategories()" label="{{splitAddress(key)}}">
-                     <option ng-repeat="(key2, value) in group" ng-selected="key2==attribute.value" value="{{key2}}">{{value}} ({{key2}})</option>
-                </optgroup>
-            </select>
-            <select class="form-control hs-spoi-feature-info" ng-show="editDropdownVisible(attribute)" ng-model="attribute.value" ng-change="attribute.changed = true"> 
-               <option ng-repeat="(key2, value) in getSpoiDropdownItems(attribute.name)" ng-selected="key2==attribute.value" value="{{key2}}">{{value}} ({{key2}})</option>
-            </select>
+        <div class="hs-spoi-feature-info" ng-repeat="group in InfoPanelService.groups | orderBy : name">
+            <div class="hs-spoi-title" ng-repeat="attribute in group.attributes | filter: {name: 'http://purl.org/dc/elements/1.1/title'}">
+                <h3 class="hs-spoi-feature-info">{{makeHumanReadable(attribute)}}</h3>
+                <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)"><i class="glyphicon glyphicon-edit"></i></button></div>          
+                <input class="form-control" ng-show="attribute.is_editing" ng-change="attribute.changed = true" ng-model="attribute.value"/>
+            </div>
+            <br>
+            <!-- User friendly attributes -->
+            <div ng-repeat="attribute in group.attributes | usrFrSpoiAttribs" class="featureInfo">
+                <span class="hs-spoi-feature-info">{{attrToEnglish(attribute.name)}} <span ng-bind-html="makeHumanReadable(attribute)"></span></span>
+                <div class="hs-spoi-item-controls">
+                    <button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                </div>  
+                <input class="form-control" ng-show="editTextboxVisible(attribute)" ng-change="attribute.changed = true" ng-model="attribute.value"/>
+                <select class="form-control hs-spoi-feature-info" ng-if="editCategoryDropdownVisible(attribute)" ng-model="attribute.value" ng-change="attribute.changed = true"> 
+                    <optgroup ng-repeat="(key, group) in getSpoiCategories()" label="{{splitAddress(key)}}">
+                        <option ng-repeat="(key2, value) in group" ng-selected="key2==attribute.value" value="{{key2}}">{{value}} ({{key2}})</option>
+                    </optgroup>
+                </select>
+                <select class="form-control hs-spoi-feature-info" ng-if="editDropdownVisible(attribute)" ng-model="attribute.value" ng-change="attribute.changed = true"> 
+                    <option ng-repeat="(key2, value) in getSpoiDropdownItems(attribute.name)" ng-selected="key2==attribute.value" value="{{key2}}">{{value}} ({{key2}})</option>
+                </select>
+            </div>
+            
+            <div class="container-fluid">
+            
+                <button type="button" class="btn btn-primary" ng-show="attributesHaveChanged(InfoPanelService.attributes)" ng-click="saveSpoiChanges(InfoPanelService.attributes)"><translate>Save changes</translate></button>
+
+                <button class="btn btn-info" ng-click="showDeveloperInfo()">For developers</button>
+            </div>
         </div>
         <!-- Coordinates -->
         <div class="featureInfo">
-          <span class="hs-spoi-feature-info" ng-repeat="group in InfoPanelService.groups | orderBy : name">
-            <span translate>Coordinates: </span>
-             <span ng-repeat="attribute in group.attributes | orderBy : name"  ng-show="$first">
-             <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col italic"></span><br>
-          </span><br>
+            <span translate>{{InfoPanelService.coordinates.name}}: </span>
+             <div ng-repeat="projection in InfoPanelService.coordinates.projections | orderBy : name" ng-bind-html="projection.value" class="italic"></div>
+          <br>
         </div>
         
-        <div class="container-fluid">
-            
-            <button type="button" class="btn btn-primary" ng-show="attributesHaveChanged(InfoPanelService.attributes)" ng-click="saveSpoiChanges(InfoPanelService.attributes)"><translate>Save changes</translate></button>
-
-            <button class="btn btn-info" ng-click="showDeveloperInfo()">For developers</button>
-        </div>
     </div>

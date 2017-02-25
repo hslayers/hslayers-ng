@@ -1,7 +1,7 @@
 'use strict';
 
 var hsl_path = '../../';
-var gitsha; $.ajax({
+var gitsha = Math.random(); $.ajax({
     type: "GET",
     dataType: 'text',
     url: hsl_path + 'gitsha.js',

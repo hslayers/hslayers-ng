@@ -216,25 +216,32 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         if (tmp[param]) return tmp[param];
                         else return null;
                     };
-                    if (url_generation) {
-                        var timer = null;
-                        $rootScope.$on('map.extent_changed', function(event, data, b) {
-                            me.update(event)
-                            if (Core.mainpanel == 'permalink') {
-                                $rootScope.$broadcast('browserurl.updated');
-                            }
-                        });
-                        OlMap.map.getLayers().on("add", function(e) {
-                            var layer = e.element;
-                            if (layer.get('show_in_manager') != null && layer.get('show_in_manager') == false) return;
-                            layer.on('change:visible', function(e) {
-                                if (timer != null) clearTimeout(timer);
-                                timer = setTimeout(function() {
-                                    me.update(e)
-                                }, 1000);
-                            })
-                        });
+                    
+                    function init(){
+                        if (url_generation) {
+                            var timer = null;
+                            $rootScope.$on('map.extent_changed', function(event, data, b) {
+                                me.update(event)
+                                if (Core.mainpanel == 'permalink') {
+                                    $rootScope.$broadcast('browserurl.updated');
+                                }
+                            });
+                            OlMap.map.getLayers().on("add", function(e) {
+                                var layer = e.element;
+                                if (layer.get('show_in_manager') != null && layer.get('show_in_manager') == false) return;
+                                layer.on('change:visible', function(e) {
+                                    if (timer != null) clearTimeout(timer);
+                                    timer = setTimeout(function() {
+                                        me.update(e)
+                                    }, 1000);
+                                })
+                            });
+                        }
                     }
+                    
+                    $rootScope.$on('map.loaded', function(){
+                       init();
+                    });
                     return me;
                 }
             ])

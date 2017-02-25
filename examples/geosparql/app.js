@@ -49,7 +49,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     new ol.style.Style({
                         image: new ol.style.Icon({
                             anchor: [0.5, 1],
-                            src: 'symbolsWaze/' + s + '.svg',
+                            src: 'symbolsWaze/' + s + '.png',
                             size: [30, 35],
                             crossOrigin: 'anonymous'
                         })
@@ -70,7 +70,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     new ol.style.Style({
                         image: new ol.style.Icon({
                             anchor: [0.5, 1],
-                            src: 'symbols/' + s + '.svg',
+                            src: 'symbols/' + s + '.png',
                             size: [30, 35],
                             crossOrigin: 'anonymous'
                         })
@@ -212,11 +212,18 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.$on('infopanel.updated', function(event) {});
 
                 var pop_div = document.createElement('div');
-                document.getElementsByTagName('body')[0].appendChild(pop_div);
+                                
                 var popup = new ol.Overlay({
-                    element: pop_div
+                    element: pop_div,
+                    autoPan: true
                 });
-                OlMap.map.addOverlay(popup);
+                
+                $scope.$on('map.loaded', function(){  
+                    document.getElementsByTagName('body')[0].appendChild(pop_div);
+                    OlMap.map.addOverlay(popup);
+                });
+                 
+               
 
                 var show_location_weather = true;
                 $scope.$on('map_clicked', function(event, data) {

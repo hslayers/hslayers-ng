@@ -213,8 +213,11 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                         ol.format.TopoJSON
                     ]
                 });
-
-                OlMap.map.addInteraction(dragAndDrop);
+                
+                $rootScope.$on('map.loaded', function(){
+                    OlMap.map.addInteraction(dragAndDrop);
+                });
+                
                 dragAndDrop.on('addfeatures', function(event) {
                     var f = new ol.format.GeoJSON();
                     //TODO Saving to statusmanager should probably be done with statusmanager component throught events
