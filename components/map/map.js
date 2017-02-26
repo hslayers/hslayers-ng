@@ -35,8 +35,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             
             me.map.on('moveend', function(e) {
                 extentChanged(e);
-            });
-            
+            });           
+           
             angular.forEach(me.interactions, function(value, key) {
                 me.map.addInteraction(value);
             });
@@ -296,7 +296,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     Core.puremapApp = true;
                     OlMap.puremap();
                 }
-                $scope.setTargetDiv("map");
             }
 
             $scope.init();
