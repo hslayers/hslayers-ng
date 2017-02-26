@@ -409,7 +409,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 visible: false,
                                 path: 'Points of interest',
                                 category: category,
-                                minResolution: 1,
                                 maxResolution: 38
                             });
                             tourist_layer_group.getLayers().insertAt(0, new_lyr);
@@ -443,7 +442,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             style: styleOSM,
                             visible: false,
                             path: 'Popular Categories',
-                            minResolution: 1,
                             maxResolution: 38,
                             category: category
                         });
