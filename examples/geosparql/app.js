@@ -333,6 +333,9 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 var $ul = $('<ul></ul>');
                                 $ul.addClass('dropdown-menu');
                                 $li.append($ul);
+                                if($('.hs-spoi-new-poi').offset().left+331 > $('div[hs]').width()-$('.panelspace').width()){
+                                    $ul.addClass('to_left');
+                                }
                                 $li.click(function(){
                                     $('.dropdown-submenu .dropdown-menu').hide();
                                     $ul.show();

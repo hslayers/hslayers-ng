@@ -944,6 +944,10 @@ button.hs_draw_new_extended  {width: 172px}
     border-radius: 0 6px 6px 6px;
 }
 
+.dropdown-submenu>.dropdown-menu.to_left{
+    left: -100%;
+    margin-left: 1px;
+}
 
 .dropdown-submenu>a:after {
     display: block;
