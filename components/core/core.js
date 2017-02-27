@@ -127,11 +127,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         panel_enabled: {},
                         _exist_cache: {},
                         current_panel_queryable: false,
-                        size:{
-                            height: config.maxHeight || "100%",
-                            width: config.maxWidth || "100%",    
-                        },
-                        fullScreenMode: config.fullScreenMode || false,
+                        hsSize: {height: "100%",width: "100%"},
                         puremapApp: false,
                         /**
                          * @function setMainPanel
@@ -178,12 +174,11 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             var element = $("div[hs]");
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
-                            if (element.width() != sidebarElem.width()) {
+                            if (element.width() > sidebarElem.width()) {
                                 map.width(element.width() - sidebarElem.width());
                             } else {
-                                map.width(element.width());
+                                map.width(0);
                             }
-                            
                             if(angular.isDefined(OlMap.map)) OlMap.map.updateSize();
                         },
                         /**
@@ -283,7 +278,28 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 return t;
                             }
                         },
-                        //Old function temporaly left in code, so all examples works before functionality is finalized
+                        /**
+                        * @function init
+                        * @memberOf Core
+                        * @params {Object} element HS layers element gained from directive link
+                        * @params {Array|String} value Type of initialization, possible options: (undefined - full window app, "self" - size of hs element setted by css, only pixel values, "parent" - take size from parent element, "id" - ID of another element from which size should be taken, if its direct parent element, parent option is recommended)
+                        * @description Universal function for initialization of directive with main HSLayers template and setting correct size to it. Take all posible inputs and switch to correct application size setter. Turn on all neceserary event listeners for resizing HSLayers element.
+                        */
+                        init: function(element, value) {
+                            if (typeof(value) == undefined) {
+                                me.fullScreenMap(element);
+                            }
+                            else if (value == "self") {
+                                me.appSize(element,element);
+                            }
+                            else if (value == "parent") {
+                                me.appSize(element,element.parent());
+                            }
+                            else {
+                                var id = "#" + value;
+                                me.appSize(element,$(id));
+                            }
+                        },
                         /**
                          * @function fullScreenMap
                          * @memberOf Core
@@ -294,28 +310,48 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $("html").css('overflow', 'hidden');
                             $("html").css('height', '100%');
                             $('body').css('height', '100%');
-                            me.appSize(element);
+                            var w = angular.element($window);
+                            me.appSize(element, w);
                         },
                         /**
                         * @function appSize
                         * @memberOf Core
-                        * @param {Object} element App angular element
+                        * @param {Object} element HS element, for which size is set
+                        * @param {Object} container Base element for resizing, either element or window object
                         * Set right size of app in page, starts event listeners for events which lead to changing app size (window resizing, change of app settings)
                         */
-                        appSize: function(element) {
-                            if (!me.setDefaultPanel) {
-                                $("html").css('overflow', 'hidden');
-                                $("html").css('height', '100%');
-                                $('body').css('height', '100%');
-                            }
+                        appSize: function(element, container) {
+                            me.changeSize(element, container);
                             var w = angular.element($window);
-                            changeSize(w,element);
                             w.resize(function(){
-                                changeSize(w,element);
+                                me.changeSize(element, container);
                             });
                             $rootScope.$on("Core_sizeChanged",function(){
-                                changeSize(w,element);
+                                me.changeSize(element, container);
                             });
+                            $(function() { //onload checker for cases when bootstrap css change box-sizing property
+                                me.changeSize(element, container);
+                            });
+                        },
+                         /**
+                         * @function changeSize
+                         * @memberOf Core
+                         * @params {Object} element Angular object containing app element
+                         * @params {Object} container Base element object, to get requested size
+                         * Check current size of containing element and change setting of HS element
+                         */
+                        changeSize: function(element,container) {
+                            if (element === container && me.hsSize.height.indexOf("%") > -1) {
+                                var size = getSize(element.parent(),me.hsSize); 
+                            }
+                            else {
+                                var size = getSize(container,me.hsSize);    
+                            }
+                            var size = getSize(container,me.hsSize);
+                            element[0].style.height = size.height + "px";
+                            element[0].style.width = size.width + "px";
+                            $("#map").height(size.height);
+                            me.updateMapSize();
                         },
                         /**
                         * @function changeSizeConfig
@@ -325,8 +361,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * Change max height and width of app element 
                         */
                         changeSizeConfig: function(newHeight, newWidth) {
-                            me.size.height = newHeight;
-                            me.size.width = newWidth;
+                            me.hsSize.height = newHeight;
+                            me.hsSize.width = newWidth;
                             $rootScope.$broadcast("Core_sizeChanged");
                         },
                         /**
@@ -457,33 +493,26 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                     /**
                      * @function getSize
                      * @memberOf Core
-                     * @params {Object} w Angular object containing window, to get window size
+                     * @params {Object} container Container element to get maximum avaible size for app element
                      * @params {Object} maxSize Maximum configured size of App element
                      * @returns {Object} Computed size of element
                      * (PRIVATE) Transform configured Size of app element to pixel numbers, checks if window is not smaller than app element
                      */
-                    function getSize(w, maxSize) {
+                    function getSize(container, maxSize) {
                         var size = {};
                         if (maxSize.height.indexOf("%") > -1) {
-                            size.height = Math.round( w.height() / 100 * maxSize.height.slice(0,-1)); 
+                            size.height = Math.round( container.height() / 100 * maxSize.height.slice(0,-1));
+                            size.width = Math.round( container.width() / 100 * maxSize.width.slice(0,-1));
                         }
                         else {
-                            if (maxSize.height.slice(0,-2) < w.height()) 
-                                size.height = maxSize.height.slice(0,-2);
-                            else 
-                                size.height = w.height();    
-                        }
-                        if (maxSize.width.indexOf("%") > -1) {
-                            size.width = Math.round( w.width() / 100 * maxSize.width.slice(0,-1));
-                        }
-                        else {
-                            if (maxSize.width.slice(0,-2) < w.width()) 
-                                size.width = maxSize.width.slice(0,-2);
-                            else 
-                                size.width = w.width();    
+                            maxSize.height.indexOf("px") > -1 ? size.height = maxSize.height.slice(0,-2) : size.height = maxSize.height;
+                            if (size.height < container.height()) size.height = container.height();
+                            maxSize.width.indexOf("px") > -1 ? size.width = maxSize.width.slice(0,-2) : size.width = maxSize.width;
+                            if (size.width < container.width()) size.width = container.width();
                         }
                         return size;
                     };
+
                     /**
                      * @function changeSize
                      * @memberOf Core
