@@ -21,6 +21,33 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         
             /**
             * @ngdoc directive
+            * @name hs.query.popupDirective
+            * @memberOf hs.query
+            * @description Display Popup window with html results from GetFeatureInfo requests
+            */
+            .directive('hs.query.popupDirective', function() {
+                return {
+                    templateUrl: hsl_path + 'components/query/partials/infopopup.html?bust=' + gitsha,
+                    link: function(scope, element, attrs) {
+                        var container = document.getElementById('info-popup');
+                        scope.popup = new ol.Overlay({
+                            element: container,
+                            autoPan: true,
+                            autoPanAnimation: {
+                                duration: 250
+                            }
+                        });
+                        scope.addPopupToMap();
+                        var iframe = document.getElementById('getfeatureinfo-popup');
+                        scope.$watch('popupContent', function () {
+                          iframe.contentDocument.body.innerHTML = scope.popupContent;
+                        });
+                    }
+                };
+            })
+        
+            /**
+            * @ngdoc directive
             * @name hs.query.infovalue
             * @memberOf hs.query
             * @description Todo
@@ -149,8 +176,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         * @name hs.query.controller
         * @memberOf hs.query
         */
-        .controller('hs.query.controller', ['$scope', 'hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce',
-            function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
+        .controller('hs.query.controller', ['$scope', '$compile','hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce',
+            function($scope, $compile, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
 
                 getLayerInit();
                 var map = OlMap.map;
@@ -163,6 +190,33 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 });
 
                 var vectors_selected = false;
+                
+                var el = angular.element('<div hs.query.popup_directive></div>');
+                $("#hs-dialog-area").append(el)
+                $compile(el)($scope);
+                
+                //Which ever comes first - map.laoded event or popup directives link function - add the overlay.
+                /**
+                * @function addPopupToMap
+                * @memberOf hs.query.controller
+                * Add popup overlay to HS map object when possible
+                */
+                $scope.addPopupToMap = function(){
+                    if(angular.isDefined($scope.popup) && angular.isUndefined($scope.popup.added)) {
+                        OlMap.map.addOverlay($scope.popup);
+                        $scope.popup.added = true;
+                    }
+                }
+                
+                $scope.popupContent = "";
+                $scope.popupSize = {};
+                
+                $scope.$on('map.loaded', $scope.addPopupToMap);
+                
+                $scope.hidePopup = function(){
+                    $scope.popup.setPosition(undefined);
+                    return false;
+                }
                 
                 selector.getFeatures().on('add', function(e) {
                     //if (e.element.getKeys().length == 1) e.target.remove(e.element);
@@ -371,45 +425,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         fillIframeAndResize($("#invisible_popup"), response, true);
                     }
                     if (infoCounter === 0) {
-                        createPopup();
-                        $(".getfeatureinfo_popup").contents().find('body').html($("#invisible_popup").contents().find('body').html());
-                        popup.setPosition(coordinate);
+                        $scope.$apply( function(){
+                            $scope.popupSize.width = $("#invisible_popup").width();
+                            $scope.popupSize.height = $("#invisible_popup").height() + 20;
+                            $scope.popupContent = $("#invisible_popup").contents().find('body').html();
+                            $scope.popup.setPosition(coordinate);
+                        });
                     }
-                }
-              
-                /**
-                * @function createFeatureInfoPopupIfNeeded
-                * @memberOf hs.query.controller
-                * (PRIVATE) (re)Create popup Overlay for displaying Info.
-                */
-                function createPopup() {
-                    if ($('.getfeatureinfo_popup').length > 0) {
-                        $(popup.getElement()).remove();
-                        OlMap.map.removeOverlay(popup);
-                    }
-                    var popupContainer = document.createElement("div");
-                    popupContainer.className = "ol-popup";
-                    popupContainer.id = "infopopup";
-                    document.getElementsByTagName('body')[0].appendChild(popupContainer);
-                    popup = new ol.Overlay({
-                        element: popupContainer,
-                        autoPan: true,
-                        autoPanAnimation: {
-                            duration: 250
-                        }
-                    });
-                    var close_button = '<button type="button" class="close" id="popup-closer"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
-                    var width = $("#invisible_popup").width();
-                    var height = $("#invisible_popup").height();
-                    var content = close_button + '<iframe class="getfeatureinfo_popup" width=' + width + ' height=' + height + ' style="border:0"></iframe>';
-                    $(popup.getElement()).html(content);
-                    OlMap.map.addOverlay(popup);
-                    $("#popup-closer").click(function(){
-                        this.blur();
-                        $(popup.getElement()).remove();
-                        OlMap.map.removeOverlay(popup);
-                        return false;
-                    });
                 }
                 /**
                 * @function fillIframeAndResize
@@ -427,13 +449,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     var tmp_width = $iframe.contents().innerWidth();
                     if (tmp_width > $("#map").width() - 60 ) tmp_width = $("#map").width() - 60;
                     $iframe.width(tmp_width);
-                    if ($iframe.width() == 20) $iframe.width(270);
+                    if ($iframe.width() == 20) tmp_width = 270;
                     var tmp_height = $iframe.contents().innerHeight();
                     if (tmp_height > 700) tmp_height = 700;
                     $iframe.height(tmp_height);
                 }
-
-                var popup = null;
+                
                 var infoCounter = 0;
 
                 $scope.InfoPanelService = InfoPanelService;
@@ -568,10 +589,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                 $scope.$on('core.mainpanel_changed', function(event, closed) {
                     if (angular.isDefined(closed) && closed.panel_name == "info") {
-                        if ($('.getfeatureinfo_popup').length > 0) {
-                            $(popup.getElement()).remove();
-                            OlMap.map.removeOverlay(popup);
-                        }
+                        $scope.hidePopup();
                         selector.getFeatures().clear();
                         if (lyr) map.getLayers().remove(lyr);
                     }    
@@ -602,5 +620,3 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         ]);
 
     })
-
-
