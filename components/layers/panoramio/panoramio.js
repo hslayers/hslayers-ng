@@ -10,9 +10,9 @@ define(['angular', 'ol', 'app', 'map'],
         angular.module('hs.panoramio', ['hs', 'hs.map'])
 
         /**
-         * @class hs.panoramio.directive
+         * @name hs.panoramio.directive
+         * @ngdoc directive
          * @memberOf hs.panoramio
-         * @param {hs.panoramio.service} service
          * @description Directive for formating the attribute table when clicking on a feature (thumbnail). Will be used by the 'query' module
          */
         .directive('hs.panoramio.directive', ['hs.panoramio.service', function(service) {
@@ -99,10 +99,9 @@ define(['angular', 'ol', 'app', 'map'],
         }])
 
         /**
-         * @class hs.panoramio.service
+         * @name hs.panoramio.service
+         * @ngdoc service
          * @memberOf hs.panoramio
-         * @param {hs.map.OlMap} OlMap - Service for containing map object
-         * @param {object} config - Configuration with default layers to which the new panoramio layer will be added. It is later iterated and added to map.
          * @description Service for querying and displaying panoramio pictures
          */
         .service("hs.panoramio.service", ['hs.map.service', 'config', '$rootScope',
@@ -343,7 +342,6 @@ define(['angular', 'ol', 'app', 'map'],
 
                 $rootScope.$on('map.loaded', function(){
                     var map = OlMap.map;
-                    console.log(map);
                     me.init();
                 });
             }
