@@ -1006,6 +1006,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                                 source.loadTotal += 1;
                                 if (source.loaded == true) {
                                     source.loaded = false;
+                                    source.set('loaded', false);
                                     $rootScope.$broadcast('layermanager.layer_loading', layer)
                                     if (!$scope.$$phase) $scope.$digest();
                                 }
@@ -1015,6 +1016,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                                 source.loadCounter -= 1;
                                 if (source.loadCounter == 0) {
                                     source.loaded = true;
+                                    source.set('loaded', true);
                                     $rootScope.$broadcast('layermanager.layer_loaded', layer)
 
                                     if (!$scope.$$phase) $scope.$digest();
@@ -1028,6 +1030,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                                 }
                                 if (source.loadCounter == 0) {
                                     source.loaded = true;
+                                    source.set('loaded', true);
                                     $rootScope.$broadcast('layermanager.layer_loaded', layer)
 
                                     if (!$scope.$$phase) $scope.$digest();

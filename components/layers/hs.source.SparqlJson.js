@@ -103,6 +103,7 @@ define(function(require) {
         var category_map = {};
         var category_id = 0;
         var occupied_xy = {};
+        var ajax_handle = null;
         var src = new ol.source.Vector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
@@ -121,11 +122,18 @@ define(function(require) {
                 p = p.replace("<extent>", s_extent);
                 if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
+                if(console && typeof src.get('geoname') != 'undefined') console.log('Get ', src.get('geoname'));
+                if(ajax_handle != null){
+                    debugger;
+                }
+                ajax_handle = 
                 $.ajax({
                         url: p,
                         context: this
                     })
                     .done(function(response) {
+                        ajax_handle = null;
+                        if(console && typeof this.get('geoname') != 'undefined') console.log('Finish ', this.get('geoname'));
                         if (this.options.updates_url) {
                             var updates_query = this.options.updates_url;
                             updates_query = updates_query.replace("<extent>", s_extent);
@@ -156,6 +164,8 @@ define(function(require) {
                                     extendAttributes(options, objects);
                                     this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                                     this.set('loaded', true);
+                                    this.set('last_feature_count', Object.keys(objects).length);
+                                    this.dispatchEvent('imageloadend');
                                 })
                         } else {
                             var objects = {};
@@ -178,6 +188,8 @@ define(function(require) {
                             this.styleAble = true;
                             this.hasPoint = true;
                             this.set('loaded', true);
+                            this.set('last_feature_count', Object.keys(objects).length);
+                            this.dispatchEvent('imageloadend');
                         }
                     })
             },
