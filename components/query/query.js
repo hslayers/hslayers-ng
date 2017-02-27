@@ -112,6 +112,9 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             cache: false,
                             success: function(response) {
                                 me.featureInfoReceived(response, info_format, url, coordinate)
+                            },
+                            error: function() {
+                                me.featureInfoError()
                             }
                         });
                     };
@@ -344,6 +347,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     };
                 }
                 /**
+                * @function featureInfoError
+                * @memberOf hs.query.service_getwmsfeatureinfo
+                * @description Error callback to decrease infoCounter
+                */
+                WmsGetFeatureInfo.featureInfoError = function() {
+                    infoCounter--;
+                }
+                /**
                 * @function featureInfoReceived
                 * @memberOf hs.query.service_getwmsfeatureinfo
                 * @params {Object} response Response of GetFeatureInfoRequest
@@ -425,6 +436,10 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         fillIframeAndResize($("#invisible_popup"), response, true);
                     }
                     if (infoCounter === 0) {
+                        if ($("#invisible_popup").width() == 0) {
+                            $scope.hidePopup();
+                            return false;
+                        }
                         $scope.$apply( function(){
                             $scope.popupSize.width = $("#invisible_popup").width();
                             $scope.popupSize.height = $("#invisible_popup").height() + 20;
@@ -437,7 +452,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 * @function fillIframeAndResize
                 * @memberOf hs.query.controller
                 * @params {JQuery object} $iframe Selected element to fill
-                * @params {TODO} response TODO
+                * @params {TODO} response Data which should fill iframe (HTML string)
                 * @params {Boolean} append Whether add html code to element (true) or complety replace element content (false)
                 * (PRIVATE) Fill popover iframe with correct content a resize element to fit content (with maximal size 720 x 700 px)
                 */
@@ -449,14 +464,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     var tmp_width = $iframe.contents().innerWidth();
                     if (tmp_width > $("#map").width() - 60 ) tmp_width = $("#map").width() - 60;
                     $iframe.width(tmp_width);
-                    if ($iframe.width() == 20) tmp_width = 270;
                     var tmp_height = $iframe.contents().innerHeight();
                     if (tmp_height > 700) tmp_height = 700;
                     $iframe.height(tmp_height);
                 }
                 
                 var infoCounter = 0;
-
+                
                 $scope.InfoPanelService = InfoPanelService;
 
                 //Example: displayGroupWithAttributes({name: "My group", attributes: [{name:"foo", value:"bar"}]
@@ -602,12 +616,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     $scope.$emit('map_clicked', evt);
                     if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
                     $("#invisible_popup").contents().find('body').html('');
-                    $("#invisible_popup").height(200).width(200);
+                    $("#invisible_popup").height(0).width(0);
                     if (!vectors_selected) {
                         $scope.clearInfoPanel();
                         map.removeLayer(lyr);
                         map.addLayer(lyr); 
                     }
+                    $scope.hidePopup();//temporaly hide popup when there is delay to download response
                     $scope.showCoordinate(evt.coordinate);
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
                     infoCounter = 0;
