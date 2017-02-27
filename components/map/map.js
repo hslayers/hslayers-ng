@@ -13,12 +13,38 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
      * @description Service for containing and initializing map object
      */
     .service('hs.map.service', ['config', '$rootScope', 'hs.utils.service', function(config, $rootScope, utils) {
-        this.map = new ol.Map({
-            target: 'map',
-            interactions: [],
-            view: jQuery.extend(true, {}, config.default_view)
-        });
-
+        this.init = function(){
+            me.map = new ol.Map({
+                target: 'map',
+                interactions: [],
+                view: config.default_view
+            });
+            
+            function extentChanged(e){
+                if (timer != null) clearTimeout(timer);
+                timer = setTimeout(function() {
+                    $rootScope.$broadcast('map.extent_changed', e.element, me.map.getView().calculateExtent(me.map.getSize()));
+                }, 500);   
+            }
+            me.map.getView().on('change:center', function(e) {
+                extentChanged(e);
+            });
+            me.map.getView().on('change:resolution', function(e) {
+                extentChanged(e);
+            });
+            
+            me.map.on('moveend', function(e) {
+                extentChanged(e);
+            });           
+           
+            angular.forEach(me.interactions, function(value, key) {
+                me.map.addInteraction(value);
+            });
+            //me.map.addControl(new ol.control.ZoomSlider());
+            me.map.addControl(new ol.control.ScaleLine());
+            $rootScope.$broadcast('map.loaded');
+        }
+        
         this.duration = 400;
 
         this.interactions = {
@@ -36,6 +62,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             }),
             'PinchRotate': new ol.interaction.PinchRotate(),
             'PinchZoom': new ol.interaction.PinchZoom({
+                constrainResolution: true,
                 duration: this.duration
             }),
             'DragPan': new ol.interaction.DragPan({
@@ -64,11 +91,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             return tmp;
         }
 
-        angular.forEach(this.interactions, function(value, key) {
-            me.map.addInteraction(value);
-        });
-        //me.map.addControl(new ol.control.ZoomSlider());
-        me.map.addControl(new ol.control.ScaleLine());
         var mousePositionControl = new ol.control.MousePosition({
             coordinateFormat: ol.coordinate.createStringXY(4),
             undefinedHTML: '&nbsp;'
@@ -112,23 +134,11 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             });
             while (to_be_removed.length > 0) me.map.removeLayer(to_be_removed.shift());
             me.repopulateLayers(null);
-            me.map.setView(jQuery.extend(true, {}, config.default_view));
+            me.map.setView(config.default_view);
         }
 
         var timer;
-        me.map.getView().on('change:center', function(e) {
-            if (timer != null) clearTimeout(timer);
-            timer = setTimeout(function() {
-                $rootScope.$broadcast('map.extent_changed', e.element);
-            }, 500);
-        });
-        me.map.getView().on('change:resolution', function(e) {
-            if (timer != null) clearTimeout(timer);
-            timer = setTimeout(function() {
-                $rootScope.$broadcast('map.extent_changed', e.element, me.map.getView().calculateExtent(me.map.getSize()));
-            }, 500);
-        });
-
+       
         /**
          * @function isLayerVisibleInPermalink
          * @memberOf hs.map.controller.init
@@ -207,8 +217,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
      */
     .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.service_url', 'Core',
         function($scope, OlMap, config, permalink, Core) {
-            var map = OlMap.map;
-
+            var map = OlMap.map;           
             /**
              * @function moveToAndZoom
              * @memberOf hs.map.controller
@@ -268,6 +277,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
              * @description Syntactic sugar for initialization
              */
             $scope.init = function() {
+                OlMap.init();
                 if (permalink.getParamValue('visible_layers')) {
                     OlMap.visible_layers = permalink.getParamValue('visible_layers').split(';');
                 }
@@ -286,7 +296,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     Core.puremapApp = true;
                     OlMap.puremap();
                 }
-                $scope.setTargetDiv("map");
             }
 
             $scope.init();

@@ -1,0 +1,23 @@
+<div id="popup" class="ol-popup">
+    <button type="button" class="close" ng-click="hidePopup()">
+        <span aria-hidden="true">×</span>
+        <span class="sr-only" translate>Close</span>
+    </button>
+    <div id="popup-content">
+        <div ng-show="weather_info!=null">
+            <b>{{weather_info.name}}&nbsp;<span id="hs-spoi-country-placeholder">{{country_last_clicked.countryName}}</span></b>
+            <p><br/><small> at {{weather_info.date_row}}</small></p>
+            <img src="http://openweathermap.org/img/w/{{weather_info.weather[0].icon}}.png" alt="{{weather_info.weather[0].description}}"/>{{weather_info.weather[0].description}}<br/>
+            Temperature: {{weather_info.temp_row}} °C<br/>
+            Wind: {{weather_info.wind.speed}}m/s {{response.wind.gust ? ' Gust: {0}m/s'.format(response.wind.gust) : ''}}<br/>
+        </div>
+        <div ng-show="weather_info==null">
+            No weather info<br/>
+        </div>
+        <button class="hs-spoi-point-to-trip btn btn-default">Add to trip</button>
+        <div class="btn-group">
+            <button type="button" class="hs-spoi-new-poi btn btn-default dropdown-toggle" data-toggle="dropdown">Add to map  <span class="caret"></span></button>
+            <ul id="hs-spoi-new-layer-list" class="dropdown-menu"><li><a href="#">Action</a></li></ul>
+        </div>
+    </div>
+</div>

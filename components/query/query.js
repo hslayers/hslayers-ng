@@ -102,9 +102,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 function($rootScope) {
                     var me = {
                         //Used for tool specific info, such as lodexplorer region names and values
-                        attributes: [],
+                        attributes:[],
                         //Used for getfeatureinfo. There exists a seperate group for each feature which is found at the specific coordinates
                         groups: [],
+                        //Used for coordinates so they can easily be placed as last in template
+                        coordinates: [],
                         /**
                         * @function setAttributes
                         * @memberof hs.query.service_infopanel
@@ -125,6 +127,16 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             me.groups = j;
                             $rootScope.$broadcast('infopanel.updated');
                         },
+                        /**
+                        * @function setGroups
+                        * @memberof hs.query.service_infopanel
+                        * @params {Object} j New content
+                        * Rewrite content of groups variable with passed data
+                        */
+                        setCoordinates: function(j) {
+                            me.coordinates = j;
+                            $rootScope.$broadcast('infopanel.updated');
+                        },
                         enabled: true
                     };
 
@@ -139,6 +151,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         */
         .controller('hs.query.controller', ['$scope', 'hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce',
             function($scope, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
+
+                getLayerInit();
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);
                 var lyr = null;
@@ -162,6 +176,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 selector.getFeatures().on('remove', function(e) {
                     if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
                     InfoPanelService.setAttributes([]);
+                    vectors_selected = false;
                     $scope.$broadcast('infopanel.feature_deselected', e.element);
                 })
 
@@ -219,13 +234,61 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                             attributes.push(obj)
                         };
                     })
-                    Core.setMainPanel("info");
-                    InfoPanelService.setAttributes(attributes);
-                    InfoPanelService.feature = feature;
+                    var layer = feature.getLayer(map);
+                    var layerName = layer.get("title") || layer.get("name");
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
+                    if (layer instanceof ol.layer.Vector) {
+                        $scope.displayGroupWithAttributes({name: layerName, attributes: attributes});    
+                    }
+                    else {
+                        InfoPanelService.setAttributes(attributes);
+                    }
+                    InfoPanelService.feature = feature;
+                    map.removeLayer(lyr);
+                    map.addLayer(lyr);
                     vectors_selected = true;
                 }
 
+                /**
+                * @function getLayerInit
+                * @memberOf hs.query.controller
+                * (PRIVATE) Add getLayer to ol.Feature prototype, so we can get name of layer, selected feature came from
+                */
+                function getLayerInit() {
+                    //Prototype to getLayerName of selected Feature. See> http://stackoverflow.com/questions/31297721/how-to-get-a-layer-from-a-feature-in-openlayers-3
+                    ol.Feature.prototype.getLayer = function (map) {
+                        var this_ = this,
+                            layer_, layersToLookFor = [];
+                        var check = function (layer) {
+                            var source = layer.getSource();
+                            if (source instanceof ol.source.Vector) {
+                                var features = source.getFeatures();
+                                if (features.length > 0) {
+                                    layersToLookFor.push({
+                                        layer: layer,
+                                        features: features
+                                    });
+                                }
+                            }
+                        };
+                        map.getLayers().forEach(function (layer) {
+                            if (layer instanceof ol.layer.Group) {
+                                layer.getLayers().forEach(check);
+                            } else {
+                                check(layer);
+                            }
+                        });
+                        layersToLookFor.forEach(function (obj) {
+                            var found = obj.features.some(function (feature) {
+                                return this_ === feature;
+                            });
+                            if (found) {
+                                layer_ = obj.layer;
+                            }
+                        });
+                        return layer_;
+                    };
+                }
                 /**
                 * @function featureInfoReceived
                 * @memberOf hs.query.service_getwmsfeatureinfo
@@ -244,6 +307,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
 
                     //                    var x2js = new X2JS();
                     //                  var json = x2js.xml_str2json(response);
+                    infoCounter--;
                     var something_updated = false;
                     if (info_format.indexOf("xml") > 0 || info_format.indexOf("gml") > 0) {
                         $("featureMember", response).each(function() {
@@ -305,19 +369,48 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (info_format.indexOf("html") > 0) {
                         if (response.length <= 1) return;
                         fillIframeAndResize($("#invisible_popup"), response, true);
-                        createFeatureInfoPopupIfNeeded(coordinate);
-                        $(popup.getElement()).popover('show');
-                        $(popup.getElement()).on('shown.bs.popover', function() {
-                            fillIframeAndResize($('.getfeatureinfo_popup'), $("#invisible_popup").contents().find('body').html(), false);
-                            $('.close', popup.getElement().nextElementSibling).click(function() {
-                                $(popup.getElement()).popover('hide');
-                            });
-                            popup.setPosition(coordinate);
-                            panIntoView(coordinate);
-                        })
+                    }
+                    if (infoCounter === 0) {
+                        createPopup();
+                        $(".getfeatureinfo_popup").contents().find('body').html($("#invisible_popup").contents().find('body').html());
+                        popup.setPosition(coordinate);
                     }
                 }
-
+              
+                /**
+                * @function createFeatureInfoPopupIfNeeded
+                * @memberOf hs.query.controller
+                * (PRIVATE) (re)Create popup Overlay for displaying Info.
+                */
+                function createPopup() {
+                    if ($('.getfeatureinfo_popup').length > 0) {
+                        $(popup.getElement()).remove();
+                        OlMap.map.removeOverlay(popup);
+                    }
+                    var popupContainer = document.createElement("div");
+                    popupContainer.className = "ol-popup";
+                    popupContainer.id = "infopopup";
+                    document.getElementsByTagName('body')[0].appendChild(popupContainer);
+                    popup = new ol.Overlay({
+                        element: popupContainer,
+                        autoPan: true,
+                        autoPanAnimation: {
+                            duration: 250
+                        }
+                    });
+                    var close_button = '<button type="button" class="close" id="popup-closer"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
+                    var width = $("#invisible_popup").width();
+                    var height = $("#invisible_popup").height();
+                    var content = close_button + '<iframe class="getfeatureinfo_popup" width=' + width + ' height=' + height + ' style="border:0"></iframe>';
+                    $(popup.getElement()).html(content);
+                    OlMap.map.addOverlay(popup);
+                    $("#popup-closer").click(function(){
+                        this.blur();
+                        $(popup.getElement()).remove();
+                        OlMap.map.removeOverlay(popup);
+                        return false;
+                    });
+                }
                 /**
                 * @function fillIframeAndResize
                 * @memberOf hs.query.controller
@@ -332,100 +425,16 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     else
                         $iframe.contents().find('body').html(response);
                     var tmp_width = $iframe.contents().innerWidth();
-                    if (tmp_width > 700) tmp_width = 700;
-                    $iframe.width(tmp_width + 20);
+                    if (tmp_width > $("#map").width() - 60 ) tmp_width = $("#map").width() - 60;
+                    $iframe.width(tmp_width);
                     if ($iframe.width() == 20) $iframe.width(270);
                     var tmp_height = $iframe.contents().innerHeight();
                     if (tmp_height > 700) tmp_height = 700;
-                    $iframe.height(tmp_height + 20);
+                    $iframe.height(tmp_height);
                 }
 
                 var popup = null;
-
-                /**
-                * @function createFeatureInfoPopupIfNeeded
-                * @memberOf hs.query.controller
-                * @params {Object} coordinate Position for displaying popup
-                * (PRIVATE) (re)Create popup Overlay for displaying Info.
-                */
-                function createFeatureInfoPopupIfNeeded(coordinate) {
-                    if ($('.getfeatureinfo_popup').length > 0) {
-                        $(popup.getElement()).popover('destroy');
-                        OlMap.map.removeOverlay(popup);
-                    }
-                    var pop_div = document.createElement('div');
-                    var element, content;
-                    var width = $("#invisible_popup").width();
-                    var height = $("#invisible_popup").height();
-                    var close_button = '<button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only" translate>Close</span></button>';
-
-                    document.getElementsByTagName('body')[0].appendChild(pop_div);
-                    popup = new ol.Overlay({
-                        element: pop_div,
-                        positioning: 'bottom-center'
-                    });
-                    element = popup.getElement();
-                    OlMap.map.addOverlay(popup);
-                    content = close_button + '<iframe class="getfeatureinfo_popup" width=' + width + ' height=' + height + ' style="border:0"></iframe>';
-                    $(element).popover({
-                        'placement': 'top',
-                        'animation': true,
-                        'html': true,
-                        'content': content
-                    });
-                    $(element).popover('show');
-                    popup.setPosition(coordinate);
-                }
-
-                /**
-                * @function panIntoView
-                * @memberOf hs.query.controller
-                * @params {Object} coord
-                * (PRIVATE) Move view to fit popup into view.
-                */
-                function panIntoView(coord) {
-                    var popSize = {
-                            width: $("#invisible_popup").width() + 40,
-                            height: $("#invisible_popup").height() + 70
-                        },
-                        mapSize = OlMap.map.getSize();
-
-                    var tailHeight = 20,
-                        tailOffsetLeft = 60,
-                        tailOffsetRight = popSize.width - tailOffsetLeft,
-                        popOffset = popup.getOffset(),
-                        popPx = OlMap.map.getPixelFromCoordinate(coord);
-
-                    var fromLeft = (popPx[0] - tailOffsetLeft),
-                        fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
-
-                    var fromTop = popPx[1] - popSize.height + popOffset[1],
-                        fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
-
-                    var center = OlMap.map.getView().getCenter(),
-                        curPx = OlMap.map.getPixelFromCoordinate(center),
-                        newPx = curPx.slice();
-
-                    if (fromRight < 0) {
-                        newPx[0] -= fromRight;
-                    } else if (fromLeft < 0) {
-                        newPx[0] += fromLeft;
-                    }
-
-                    if (fromTop < 0) {
-                        newPx[1] += fromTop;
-                    } else if (fromBottom < 0) {
-                        newPx[1] -= fromBottom;
-                    }
-
-                    if (newPx[0] !== curPx[0] || newPx[1] !== curPx[1]) {
-                        OlMap.map.getView().setCenter(OlMap.map.getCoordinateFromPixel(newPx));
-                    }
-
-                    return OlMap.map.getView().getCenter();
-
-                };
-
+                var infoCounter = 0;
 
                 $scope.InfoPanelService = InfoPanelService;
 
@@ -445,23 +454,21 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 * @function showCoordinate
                 * @memberOf hs.query.controller
                 * @params {Ol.coordinate} coordinate Coordinate of click
-                * @params {Boolean} clear Choice if rewrite group variable (true) or append to group variable (false)
                 * Add Coordinate data of querried point into InfoPanel service Group variable
                 */
-                $scope.showCoordinate = function(coordinate, clear) {
+                $scope.showCoordinate = function(coordinate) {
                     point_clicked.setCoordinates(coordinate, 'XY');
-                    var groups = clear ? [] : InfoPanelService.groups;
-                    groups.push({
+                    var coords = {
                         name: "Coordinates",
-                        attributes: [{
+                        projections: [{
                             "name": "EPSG:4326",
                             "value": ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'))
                         }, {
                             "name": "EPSG:3857",
                             "value": ol.coordinate.createStringXY(7)(coordinate)
                         }]
-                    });
-                    InfoPanelService.setGroups(groups);
+                    };
+                    InfoPanelService.setCoordinates(coords);
                 }
 
                 /**
@@ -498,6 +505,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         if (url) {
                             if (console) console.log(url);
                             if (source.getParams().INFO_FORMAT.indexOf('xml') > 0 || source.getParams().INFO_FORMAT.indexOf('html') > 0 || source.getParams().INFO_FORMAT.indexOf('gml') > 0) {
+                                infoCounter++;
                                 WmsGetFeatureInfo.request(url, source.getParams().INFO_FORMAT, coordinate);
                             }
                         }
@@ -521,6 +529,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                 $scope.clearInfoPanel = function() {
                     InfoPanelService.attributes = [];
                     InfoPanelService.setGroups([]);
+                    InfoPanelService.setCoordinates([]);
                 }
 
                 $scope.activateFeatureQueries();
@@ -545,7 +554,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                         }),
                         show_in_manager: false
                     });
-                    map.addLayer(lyr);
                 }
 
                 $scope.$on('layermanager.updated', function(event, data) {
@@ -558,23 +566,41 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     selector.getFeatures().push(feature);
                 })
 
+                $scope.$on('core.mainpanel_changed', function(event, closed) {
+                    if (angular.isDefined(closed) && closed.panel_name == "info") {
+                        if ($('.getfeatureinfo_popup').length > 0) {
+                            $(popup.getElement()).remove();
+                            OlMap.map.removeOverlay(popup);
+                        }
+                        selector.getFeatures().clear();
+                        if (lyr) map.getLayers().remove(lyr);
+                    }    
+                });
+                
                 $scope.createCurrentPointLayer();
 
                 //For wms layers use this to get the features at mouse coordinates
                 map.on('singleclick', function(evt) {
                     $scope.$emit('map_clicked', evt);
                     if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
-                    if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0) Core.setMainPanel("info");
                     $("#invisible_popup").contents().find('body').html('');
                     $("#invisible_popup").height(200).width(200);
-                    $scope.showCoordinate(evt.coordinate, !vectors_selected); //Clear the previous content if no vector feature was selected, because otherwise it would already be cleared there
+                    if (!vectors_selected) {
+                        $scope.clearInfoPanel();
+                        map.removeLayer(lyr);
+                        map.addLayer(lyr); 
+                    }
+                    $scope.showCoordinate(evt.coordinate);
+                    if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
+                    infoCounter = 0;
                     map.getLayers().forEach(function(layer) {
                         $scope.queryWmsLayer(layer, evt.coordinate)
                     });
-                    vectors_selected = false;
                 });
                 $scope.$emit('scope_loaded', "Query");
             }
         ]);
 
     })
+
+

@@ -10,8 +10,9 @@ define(['angular', 'ol', 'core'],
             function(Core, utils, $sce, info_panel_service, $http) {
                 var hr_mappings = {};
                 //Atributes which are displayed without clicking 'For developer' button
-                var frnly_attribs = ['http://www.openvoc.eu/poi#categoryWaze', 'http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://www.opengis.net/ont/geosparql#sfWithin', 'http://www.w3.org/2004/02/skos/core#exactMatch', 'http://www.w3.org/2000/01/rdf-schema#seeAlso', 'http://xmlns.com/foaf/0.1/homepage', 'http://purl.org/dc/terms/1.1/created']
-
+                var frnly_attribs = ['http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://xmlns.com/foaf/0.1/homepage', 'http://www.openvoc.eu/poi#openingHours', 'http://www.openvoc.eu/poi#internetAccess','http://www.openvoc.eu/poi#accessibility', 'http://www.openvoc.eu/poi#address']
+                var not_editable_attrs = ['poi_id', 'http://www.opengis.net/ont/geosparql#sfWithin', 'http://purl.org/dc/elements/1.1/identifier', 'http://purl.org/dc/elements/1.1/publisher', 'http://purl.org/dc/terms/1.1/created', 'http://www.w3.org/2004/02/skos/core#exactMatch', 'http://www.sdi4apps.eu/poi/#mainCategory', 'http://www.w3.org/2002/07/owl#sameAs']
+                
                 function attrToEnglish(name) {
                     var hr_names = {
                         'http://xmlns.com/foaf/0.1/mbox': 'E-mail: ',
@@ -27,7 +28,8 @@ define(['angular', 'ol', 'core'],
                         'http://www.w3.org/2000/01/rdf-schema#seeAlso': 'More info: ',
                         'http://www.w3.org/2004/02/skos/core#exactMatch': 'More info: ',
                         'http://purl.org/dc/terms/1.1/created': 'Created: ',
-                        'http://www.opengis.net/ont/geosparql#sfWithin': 'Country: '
+                        'http://www.opengis.net/ont/geosparql#sfWithin': 'Country: ',
+                        'http://www.w3.org/2000/01/rdf-schema#comment': 'Comments: '
                     }
                     return hr_names[name];
                 }
@@ -81,6 +83,16 @@ define(['angular', 'ol', 'core'],
                             })
                         });
                 }
+                
+                function cancelSpoiChanges(attributes) {
+                    angular.forEach(attributes, function(a) {
+                        if (angular.isDefined(a.changed) && a.changed) {
+                           a.value = a.original_value;
+                           a.changed = false;
+                           a.is_editing = false;
+                        }
+                    });
+                }
 
                 function filterAttribs(items) {
                     var filtered = [];
@@ -133,6 +145,8 @@ define(['angular', 'ol', 'core'],
                 }
 
                 function startEdit(attribute, x) {
+                    if (angular.isUndefined(attribute.changed) || !attribute.changed) 
+                        attribute.original_value = attribute.value;
                     attribute.is_editing = !(angular.isDefined(attribute.is_editing) && attribute.is_editing);
                 }
 
@@ -156,8 +170,8 @@ define(['angular', 'ol', 'core'],
                     return attribute.is_editing;
                 }
 
-                function init(hr_map) {
-                    hr_mappings = hr_map
+                function init() {
+                    hr_mappings = {};
                 }
 
                 function getSpoiCategories() {
@@ -169,24 +183,42 @@ define(['angular', 'ol', 'core'],
                 }
                 
                 function registerCategory(main_category, main_label, sub_category, sub_label){
-                    var json_sub_category = {};
-                    json_sub_category[sub_category] = sub_label;
-                    var json_main_category = {};
-                    json_main_category[main_category] = json_sub_category;
-                    var o = {"http://www.openvoc.eu/poi#class": {}, "category_hierarchy": json_main_category};
+                    var o = {"http://www.openvoc.eu/poi#class": {}};
+                    if(main_category != null){
+                        var json_sub_category = {};
+                        json_sub_category[sub_category] = sub_label;
+                        var json_main_category = {};
+                        json_main_category[main_category] = json_sub_category;   
+                        o["category_hierarchy"] = json_main_category;
+                    }
                     o["http://www.openvoc.eu/poi#class"][sub_category] = sub_label;
+                    o["http://www.openvoc.eu/poi#class"][main_category] = main_label;
                     hr_mappings = angular.merge({}, hr_mappings, o);
                 }
                 
                 function getCategoryHierarchy(){
                     return hr_mappings.category_hierarchy;
                 }
+                
+                function extendMappings(x){
+                    hr_mappings = angular.merge({}, hr_mappings, x);
+                }
+                
+                function getFriendlyAttribs(){
+                    return frnly_attribs;
+                }
+                
+                function getNotEditableAttrs(){
+                    return not_editable_attrs;
+                }
 
                 var me = {
                     init: init,
+                    extendMappings: extendMappings,
                     attrToEnglish: attrToEnglish,
                     makeHumanReadable: makeHumanReadable,
                     saveSpoiChanges: saveSpoiChanges,
+                    cancelSpoiChanges: cancelSpoiChanges,
                     filterAttribs: filterAttribs,
                     startEdit: startEdit,
                     attributesHaveChanged: attributesHaveChanged,
@@ -197,7 +229,9 @@ define(['angular', 'ol', 'core'],
                     addPoi: addPoi,
                     getSpoiCategories: getSpoiCategories,
                     registerCategory: registerCategory,
-                    getCategoryHierarchy: getCategoryHierarchy
+                    getCategoryHierarchy: getCategoryHierarchy,
+                    getFriendlyAttribs: getFriendlyAttribs,
+                    getNotEditableAttrs: getNotEditableAttrs
                 }
                 return me;
             }

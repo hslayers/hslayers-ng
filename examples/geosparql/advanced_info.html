@@ -8,31 +8,31 @@
                 </h4>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                <span ng-repeat="group in InfoPanelService.groups | orderBy : name">
-                    <span ng-repeat="attribute in group.attributes | orderBy : name">
-                        <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}'  class="first-col attributeName"></span>
-                        <span hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col attributeValue"></span><br/>
-                    </span>
-                </span>
-                <table class="table">
-                    <tr ng-repeat="attribute in InfoPanelService.attributes | orderBy : name">
-                        <td><b translate>{{attribute.name}}</b></td> 
-                        <td ng-show="!editTextboxVisible(attribute)" ng-bind-html="attribute.value"></td>
-                        <td ng-show="editTextboxVisible(attribute)"><input class="form-control"  ng-change="attribute.changed = true" ng-model="attribute.value"/>
-                            <button type="button" class="btn btn-primary" ng-show="attribute.changed" ng-click="saveSpoiChanges(InfoPanelService.attributes)">
-                                <translate>Save changes</translate>
-                            </button>
-                        <td>
-                            
-                        <td>
-                            <button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)">
-                                <i class="glyphicon glyphicon-edit"></i>
-                            </button>
-                        </td>
-                    </tr>    
-                </table>
+                <div ng-repeat="group in InfoPanelService.groups | orderBy : name">
+                    <table class="table">
+                        <tr ng-repeat="attribute in group.attributes | orderBy : name">
+                            <td><b translate><a href="{{attribute.name}}" target="_blank">{{attribute.name}}</a></b></td> 
+                            <td ng-show="attributeEditorMode(attribute)==2" ng-bind-html="attribute.value"></td>
+                            <td ng-show="attributeEditorMode(attribute)==3"><a href="{{attribute.value}}" target="_blank">{{attribute.value}}</a></td>
+                            <td ng-show="editTextboxVisible(attribute)"><input class="form-control"  ng-change="attribute.changed = true" ng-model="attribute.value"/></td>
+                            <td>
+                                <button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)" ng-if="getNotEditableAttrs().indexOf(attribute.name)==-1">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </button>
+                            </td>
+                        </tr>    
+                    </table>
+                 
+                    
+                </div>
             </div>
             <div class="modal-footer" id="stc-footer">
+                <button ng-repeat="group in InfoPanelService.groups | orderBy : name" type="button" class="btn btn-primary" ng-show="attributesHaveChanged(group.attributes)" ng-click="saveSpoiChanges(group.attributes)">
+                    <translate>Save changes</translate>
+                </button>
+                <button ng-repeat="group in InfoPanelService.groups | orderBy : name" type="button" class="btn btn-primary" ng-show="attributesHaveChanged(group.attributes)" ng-click="cancelSpoiChanges(group.attributes)">
+                    <translate>Cancel</translate>
+                </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" translate="">Close</button>
             </div>
         </div>

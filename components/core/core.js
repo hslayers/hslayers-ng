@@ -179,7 +179,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             } else {
                                 map.width(0);
                             }
-                            OlMap.map.updateSize();
+                            if(angular.isDefined(OlMap.map)) OlMap.map.updateSize();
                         },
                         /**
                          * @function panelVisible
@@ -255,7 +255,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
 
                             }
 
-                            $rootScope.$broadcast('core.mainpanel_changed');
+                            $rootScope.$broadcast('core.mainpanel_changed',which);
                         },
                         /**
                          * @function exists
@@ -513,6 +513,21 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         return size;
                     };
 
+                    /**
+                     * @function changeSize
+                     * @memberOf Core
+                     * @params {Object} w Angular object containing window, to get window size
+                     * @params {Object} element Angular object containing app element
+                     * (PRIVATE) Helper function for changing app size
+                     */
+                    function changeSize(w,element) {
+                        var size = getSize(w,me.size);
+                        element[0].style.height = size.height + "px";
+                        element[0].style.width = size.width + "px";
+                        $("#map").height(size.height);
+                        me.updateMapSize();
+                        if(OlMap.map) OlMap.map.updateSize();
+                    }
                     return me;
                 },
 

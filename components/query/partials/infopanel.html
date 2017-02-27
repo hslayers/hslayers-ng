@@ -6,17 +6,19 @@
         </button>
     </div>
     <div class="panel-body">
-        <table class="table table-compact" ng-repeat="group in InfoPanelService.groups | orderBy : name">
-            <tr><th>{{group.name}}</th></tr>
-            <tr ng-repeat="attribute in group.attributes | orderBy : name">
+        <table class="table table-compact" ng-repeat="group in InfoPanelService.groups | orderBy : 'name'">
+            <tr><th colspan="2">{{group.name}}</th></tr>
+            <tr ng-repeat="attribute in group.attributes | orderBy : 'name'">
                 <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' class="first-col" class="first-col"></td>
                 <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col"></td>
             </tr>
         </table>
-        <table class="table table-striped" style="table-layout:fixed">
+        <table class="table table-striped" style="table-layout:fixed" ng-show="InfoPanelService.attributes.length > 0">
             <tr ng-repeat="attribute in InfoPanelService.attributes | orderBy : name"><td class="first-col">{{attribute.name}}</td><td class="second-col" ng-bind-html="attribute.value"></td></tr>
-        <!--  <tr><td>EPSG:900913</td><td>2560935 6409590</td></tr>
-            <tr><td>GPS</td><td>49°47'15.7"N 23°00'19"E</td></tr>-->
+        </table>
+        <table class="table table-striped" style="table-layout:fixed">
+            <tr><th colspan="2">{{InfoPanelService.coordinates.name}}</th></tr>
+            <tr ng-repeat="projection in InfoPanelService.coordinates.projections | orderBy : name"><td class="first-col">{{projection.name}}</td><td class="second-col" ng-bind-html="projection.value"></td></tr>
         </table>
     </div>
     <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>

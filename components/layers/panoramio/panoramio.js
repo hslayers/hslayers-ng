@@ -1,3 +1,4 @@
+//PANORAMIO SERVICE CANCELLED !!! NOT WORKING NOW
 /**
  * @namespace hs.panoramio
  * @memberOf hs
@@ -9,9 +10,9 @@ define(['angular', 'ol', 'app', 'map'],
         angular.module('hs.panoramio', ['hs', 'hs.map'])
 
         /**
-         * @class hs.panoramio.directive
+         * @name hs.panoramio.directive
+         * @ngdoc directive
          * @memberOf hs.panoramio
-         * @param {hs.panoramio.service} service
          * @description Directive for formating the attribute table when clicking on a feature (thumbnail). Will be used by the 'query' module
          */
         .directive('hs.panoramio.directive', ['hs.panoramio.service', function(service) {
@@ -98,15 +99,14 @@ define(['angular', 'ol', 'app', 'map'],
         }])
 
         /**
-         * @class hs.panoramio.service
+         * @name hs.panoramio.service
+         * @ngdoc service
          * @memberOf hs.panoramio
-         * @param {hs.map.OlMap} OlMap - Service for containing map object
-         * @param {object} config - Configuration with default layers to which the new panoramio layer will be added. It is later iterated and added to map.
          * @description Service for querying and displaying panoramio pictures
          */
         .service("hs.panoramio.service", ['hs.map.service', 'config', '$rootScope',
             function(OlMap, config, $rootScope) {
-                var map = OlMap.map;
+                
                 var src = new ol.source.Vector();
                 var csrc = new ol.source.Cluster({
                     distance: 90,
@@ -114,7 +114,7 @@ define(['angular', 'ol', 'app', 'map'],
                 });
                 var lyr = null;
                 var me = this;
-                var view = OlMap.map.getView();
+                //var view = OlMap.map.getView();
                 var wkt_format = new ol.format.WKT();
                 var timer = null;
 
@@ -208,6 +208,7 @@ define(['angular', 'ol', 'app', 'map'],
                  * @description Requests the most popular images for current extent from Panoramio API. The number of items returned depends on the screen size.
                  */
                 this.update = function() {
+                    var map = OlMap.map;
                     if (typeof map.getSize() == 'undefined') return;
                     var b = ol.proj.transformExtent(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'); // bounds
                     var limit = Math.floor($(map.getViewport()).width() * $(map.getViewport()).height() / 22280 * 1.2);
@@ -339,7 +340,10 @@ define(['angular', 'ol', 'app', 'map'],
                     me.update()
                 }
 
-                this.init();
+                $rootScope.$on('map.loaded', function(){
+                    var map = OlMap.map;
+                    me.init();
+                });
             }
         ])
 
