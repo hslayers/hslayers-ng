@@ -169,7 +169,10 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
 
                     if (permalink.getParamValue('geojson_to_connect')) {
                         var url = permalink.getParamValue('geojson_to_connect');
-                        var lyr = nonwmsservice.add('geojson', url, title, abstract, false, 'EPSG:4326');
+                        var type = 'geojson';
+                        if(url.indexOf('gpx')>0) type='gpx';
+                        if(url.indexOf('kml')>0) type='kml';
+                        var lyr = nonwmsservice.add(type, url, title, abstract, false, 'EPSG:4326');
                         zoomToVectorLayer(lyr);
                     }
 

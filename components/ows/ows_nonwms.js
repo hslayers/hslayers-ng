@@ -49,6 +49,10 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                             });
                             definition.format = "ol.format.KML";
                             break;
+                         case "gpx":
+                            format = new ol.format.GPX();
+                            definition.format = "ol.format.GPX";
+                            break;
                         case "geojson":
                             format = new ol.format.GeoJSON();
                             definition.format = "ol.format.GeoJSON";
