@@ -117,6 +117,8 @@ define(['angular', 'ol'],
                             if (navigator.geolocation) {
                                 me.gpsStatus = true;
                                 // me.gpsSwitch = 'Stop GPS';
+                                if(me.changed_handler!=null)
+                                    me.geolocation.clearWatch(me.changed_handler);
                                 me.changed_handler = me.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
                             }
                         };
@@ -181,12 +183,24 @@ define(['angular', 'ol'],
                         */
                         var gpsFailCallback = function(e) {
                             var msg = 'Error ' + e.code + ': ' + e.message;
-                            console.log(msg);
+                            if(console) console.log(msg);
+                            if(me.gpsStatus){
+                                if(e.message == 'Timeout expired'){
+                                    if(console) console.log('Removing the timeout setting');
+                                    gpsOptions.timeout = 10000;
+                                    if(me.changed_handler!=null)
+                                        me.geolocation.clearWatch(me.changed_handler);
+                                }
+                                setTimeout(function(){
+                                    me.changed_handler  = me.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions); 
+                                    if(console) console.log('Try again..');
+                                },  5000);
+                            }
                         };
 
                         var gpsOptions = {
                             enableHighAccuracy: true,
-                            timeout: 10000,
+                            timeout: 5000, //10 secs
                             maximumAge: 100000
                         };
                     } else {
@@ -336,9 +350,13 @@ define(['angular', 'ol'],
                     return service.following;
                 else {
                     service.following = set_to;
-                    console.log(service.last_location);
-                    if (set_to) OlMap.map.getView().setCenter(service.last_location.latlng);
-                    if (Core.isMobile()) service.changed_handler();
+                    if(console) console.log(service.last_location);
+                    if(angular.isDefined(service.last_location)){
+                        if (set_to) OlMap.map.getView().setCenter(service.last_location.latlng);
+                        if (Core.isMobile()) service.changed_handler();
+                    } else {
+                        if(console) console.log('last location not defined');
+                    }
                 }
             };
 
