@@ -179,8 +179,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
         * @name hs.query.controller
         * @memberOf hs.query
         */
-        .controller('hs.query.controller', ['$scope', '$compile','hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce',
-            function($scope, $compile, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce) {
+        .controller('hs.query.controller', ['$scope', '$compile','hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce', '$rootScope',
+            function($scope, $compile, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce, $rootScope) {
 
                 getLayerInit();
                 var map = OlMap.map;
@@ -225,7 +225,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     //if (e.element.getKeys().length == 1) e.target.remove(e.element);
                     InfoPanelService.groups = []; // We can do this, because collection add is called before singleclick event
                     if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
-                    $scope.$broadcast('infopanel.feature_selected', e.element, selector);
+                    $rootScope.$broadcast('infopanel.feature_selected', e.element, selector);
                     if (e.element.get('hs_notqueryable')) return;
                     getFeatureAttributes(e.element);
                 });
@@ -234,7 +234,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     if (!Core.current_panel_queryable || !InfoPanelService.enabled) return;
                     InfoPanelService.setAttributes([]);
                     vectors_selected = false;
-                    $scope.$broadcast('infopanel.feature_deselected', e.element);
+                    $rootScope.$broadcast('infopanel.feature_deselected', e.element);
                 })
 
                 /**
