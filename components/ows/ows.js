@@ -23,8 +23,8 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
             * @ngdoc controller
             * @name hs.ows.controller
             */
-            .controller('hs.ows.controller', ['$scope', '$injector', 'hs.ows.wms.service_capabilities', 'hs.ows.wmts.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service', 'config',
-                function($scope, $injector, srv_wms_caps, srv_wmts_caps, OlMap, permalink, Core, nonwmsservice, config) {
+            .controller('hs.ows.controller', ['$scope', '$injector', 'hs.ows.wms.service_capabilities', 'hs.ows.wmts.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service', 'config', '$rootScope',
+                function($scope, $injector, srv_wms_caps, srv_wmts_caps, OlMap, permalink, Core, nonwmsservice, config, $rootScope) {
                     var map = OlMap.map;
                     if (window.allowWFS2) {
                         srv_wfs_caps = $injector.get('hs.ows.wfs.service_capabilities');
@@ -154,7 +154,7 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
                         var wms = permalink.getParamValue('wms_to_connect');
                         Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                         $scope.setUrlAndConnect(wms, 'WMS');
-                        if (Core.singleDatasources) $('.dss-tabs a[href="#OWS"]').tab('show');
+                        $rootScope.$broadcast('ows.wms_connecting');
                     }
 
                     if (permalink.getParamValue('wfs_to_connect') && window.allowWFS2) {

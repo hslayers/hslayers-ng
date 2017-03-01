@@ -114,6 +114,7 @@ define(['ol', 'sidebar', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query',
                 $scope.Core = Core;
                 $scope.Core.sidebarRight = false;
                 //$scope.Core.sidebarToggleable = false;
+                Core.singleDatasources = true;
                 $scope.Core.sidebarButtons = true;
                 $scope.Core.setDefaultPanel('layermanager');
                 $scope.$on('infopanel.updated', function(event) {});

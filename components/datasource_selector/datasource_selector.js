@@ -122,6 +122,15 @@ define(['angular', 'ol', 'map'],
                 $scope.selected_layer = null;
                 $scope.filter = {};
                 $scope.filter.byExtent = true;
+                $scope.wms_connecting = false;
+                
+                $scope.$on('ows.wms_connecting', function(){
+                    $scope.wms_connecting = true;
+                });
+                
+                $scope.datasetSelect = function(){
+                    $scope.wms_connecting = false;
+                }
                 
                 $http({
                     method: 'GET',
