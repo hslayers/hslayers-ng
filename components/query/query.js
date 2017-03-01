@@ -294,7 +294,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     var layer = feature.getLayer(map);
                     var layerName = layer.get("title") || layer.get("name");
                     if (groups_added) InfoPanelService.setGroups(InfoPanelService.groups);
-                    if (layer instanceof ol.layer.Vector) {
+                    if (layer instanceof ol.layer.Vector && attributes.length > -1) {
                         $scope.displayGroupWithAttributes({name: layerName, attributes: attributes});    
                     }
                     else {
