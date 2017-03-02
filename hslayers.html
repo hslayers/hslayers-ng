@@ -8,7 +8,7 @@
     <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight && !Core.puremapApp, 'sb-left': !Core.sidebarRight && !Core.puremapApp}">
         <div class="page-content">
             <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
-            <div hs.toolbar.directive ng-controller="hs.toolbar.controller" ng-if="Core.exists('hs.toolbar.controller') && !Core.puremapApp"></div>
+            <div hs.toolbar.directive ng-controller="hs.toolbar.controller" ng-if="Core.exists('hs.toolbar.controller') && !Core.puremapApp" ng-show="!Core.smallWidth || !Core.sidebarExpanded"></div>
 
             <div class="gui-overlay" ng-if="!Core.puremapApp">
 
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="hs-info-container">
+                <div id="hs-info-container" ng-hide="Core.smallWidth && Core.sidebarExpanded">
                     <div id="hs-info-area">
                         <div hs.info.directive ng-controller="hs.info.controller" ng-if="Core.exists('hs.info.controller')"></div>
                     </div>

@@ -123,6 +123,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         sidebarButtons: true,
                         singleDatasources: false,
                         embededEnabled: true,
+                        smallWidth: false,
                         panel_statuses: {},
                         panel_enabled: {},
                         _exist_cache: {},
@@ -180,6 +181,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 map.width(0);
                             }
                             if(angular.isDefined(OlMap.map)) OlMap.map.updateSize();
+                            map.width() < 368 ? me.smallWidth = true : me.smallWidth = false;
+                            if (!$rootScope.$$phase) $rootScope.$digest();
                         },
                         /**
                          * @function panelVisible
