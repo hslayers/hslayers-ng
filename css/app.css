@@ -766,6 +766,10 @@ div#hs-info-container {
     width: calc(100% - 48px);
 }
 
+.sb-right div#hs-info-container {
+    margin-left: 2px;
+}
+
 div#hs-info-composition-image > span {
     line-height: 100px;
     width: 100px;
@@ -801,7 +805,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
         width: 300px;
     }
 
-    .open div#hs-info-container {
+    .open.sb-left div#hs-info-container {
         margin-left: 300px;
         width: calc(100% - 300px);
     }
