@@ -327,7 +327,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @param {Object} container Base element for resizing, either element or window object
                         * Set right size of app in page, starts event listeners for events which lead to changing app size (window resizing, change of app settings)
                         */
-                        appSize: function(element, container) {;
+                        appSize: function(element, container) {
                             me.changeSize(element, container);
                             var w = angular.element($window);
                             w.resize(function(){
