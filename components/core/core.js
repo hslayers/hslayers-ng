@@ -175,9 +175,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             var element = $("div[hs]");
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
-                            if (element.width() > sidebarElem.width()) {
+                            if (me.puremapApp) {
+                                map.width(element.width());
+                            }
+                            else if (element.width() > sidebarElem.width()) {
                                 map.width(element.width() - sidebarElem.width());
-                            } else {
+                            } 
+                            else {
                                 map.width(0);
                             }
                             if(angular.isDefined(OlMap.map)) OlMap.map.updateSize();
@@ -323,7 +327,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @param {Object} container Base element for resizing, either element or window object
                         * Set right size of app in page, starts event listeners for events which lead to changing app size (window resizing, change of app settings)
                         */
-                        appSize: function(element, container) {
+                        appSize: function(element, container) {;
                             me.changeSize(element, container);
                             var w = angular.element($window);
                             w.resize(function(){
