@@ -823,7 +823,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     }
 
     .sb-right.open #map {
-        margin-left:300px;
+        margin-left:0px;
     }
 
     div#sidebar ~ div#panelplace {
