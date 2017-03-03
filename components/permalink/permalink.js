@@ -217,6 +217,11 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         else return null;
                     };
                     
+                    /**
+                    * @function init
+                    * @memberof hs.permalink.service_url
+                    * Function for service initialization when map object is ready
+                    */
                     function init(){
                         if (url_generation) {
                             var timer = null;
@@ -260,7 +265,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     $scope.shareLink = "permalink";
                     
                     /**
-                     * @function getEmbedCode
+                     * @function updateEmbedCode
                      * @memberof hs.permalink.controller
                      * @returns {String} Iframe tag with src attribute on embed Url and default width and height (1000x700px)
                      * Create Iframe tag for embeded map
@@ -269,6 +274,12 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             $scope.embedCode = '<iframe src="' + $scope.selectShareUrl() + '" width="1000" height="700"></iframe>';
                         }
                     
+                    /**
+                     * @function selectShareUrl
+                     * @memberof hs.permalink.controller
+                     * @returns {String} Right share Url
+                     * Select right share Url based on shareLink property (either Permalink Url or PureMap url)
+                     */
                     $scope.selectShareUrl = function() {
                         var shareUrl = "";
                         if ($scope.shareLink == "permalink") {
@@ -281,8 +292,8 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     }
                     
                     /**
-                     * @function invalidateShareUrl
-                     * @memberof hs.permalink.controller
+                    * @function invalidateShareUrl
+                    * @memberof hs.permalink.controller
                     * Set share Url state invalid
                     */
                     $scope.invalidateShareUrl = function() {
