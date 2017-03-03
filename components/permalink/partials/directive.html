@@ -7,26 +7,45 @@
     </div>
     <div class="panel-body">
         <div class="panel-body">
+            
             <div class="form-group">
-                <label for="permalink-embed" class="control-label" translate>Embed code</label>
-                <textarea  class="form-control" style="height: 80px" id = "permalink-embed" ng-model="embed_code"></textarea>
-                <br/>
-            </div>
-
-            <div class="form-group">
-                <label for="pure-link" class="control-label" translate>Share pure map</label>
-                <a ng-href="{{embed_url}}" target="_blank" id = "pure-link">{{embed_url}}</a>
-                <p><sub class="text-danger">*Shares only map for embedding the map</sub></p>
+                <label for="pure-map-link" class="control-label" translate>Share pure map</label>
+                <a ng-href="{{pureMapUrl}}" target="_blank" id = "pure-map-link">{{pureMapUrl}}</a>
+                <p><sub class="text-danger">*Shares only map as picture</sub></p>
             </div>
             <br/>
             <div class="form-group">
                 <label for="permalink-link" class="control-label" translate>Permalink</label>
-                <a ng-href="{{permalink_url}}" target="_blank" id = "permalink-link">{{permalink_url}}</a>
-                <p><sub class="text-danger">*Shares map with all portal and functionalities</sub></p>
+                <a ng-href="{{permalinkUrl}}" target="_blank" id = "permalink-link">{{permalinkUrl}}</a>
+                <p><sub class="text-danger">*Shares map with all portal functionalities</sub></p>
             </div>
+            <hr/>
+            
+            <fieldset class="form-group">
+                <h4 for="share-link" translate>Link for embed/social share</h4>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="share-link" value="puremap" ng-model="shareLink" ng-click="updateEmbedCode()">
+                    Pure map
+                  </label>
+                </div>
+                <div class="form-check">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="share-link" value="permalink" ng-model="shareLink" ng-click="updateEmbedCode()" checked>
+                    Permalink
+                  </label>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <label for="permalink-embed" class="control-label" translate>Embed code</label>
+                <textarea  class="form-control" style="height: 80px" id = "permalink-embed" ng-model="embedCode"></textarea>
+                <br/>
+            </div>
+
             <hr />
+            
             <fieldset>
-            <h3>Share on social network</h3>
+            <h4>Share on social network</h4>
             <div class="form-group">
                 <label for="hs-prmlnk-title" class="control-label" translate>Name</label>
                     <input type="text" class="form-control" id="hs-prmlnk-title" placeholder="{{'Fill in name'|translate}}" ng-change="invalidateShareUrl()" ng-model="title" />

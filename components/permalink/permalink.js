@@ -89,12 +89,12 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     }
 
                     /**
-                    * @function getEmbededUrl
+                    * @function getPureMapUrl
                     * @memberof hs.permalink.service_url
                     * @returns {String} Embeded url
                     * Create Url for PureMap version of map
                     */
-                    me.getEmbededUrl = function() {
+                    me.getPureMapUrl = function() {
                         var params = {};
                         params.puremap = "true";
                         return me.getPermalinkUrl() + "&" + utils.paramsToURLWoEncode(params);
@@ -250,13 +250,14 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
              * @memberof hs.permalink
              * @name hs.permalink.controller
              */
-            .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare', 'hs.utils.service', 'hs.status_creator.service',
-                function($rootScope, $scope, $http, Core, config, service, socialshare, utils, status_creator) {
+            .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare', 'hs.utils.service', 'hs.status_creator.service', '$q',
+                function($rootScope, $scope, $http, Core, config, service, socialshare, utils, status_creator, $q) {
 
-                    $scope.embed_code = "";
+                    $scope.embedCode = "";
                     $scope.shareUrlValid = false;
                     service.shareId = null;
                     $scope.new_share = false;
+                    $scope.shareLink = "permalink";
                     
                     /**
                      * @function getEmbedCode
@@ -264,9 +265,20 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                      * @returns {String} Iframe tag with src attribute on embed Url and default width and height (1000x700px)
                      * Create Iframe tag for embeded map
                      */
-                    $scope.getEmbedCode = function() {
-                            return '<iframe src="' + $scope.embed_url + '" width="1000" height="700"></iframe>';
+                    $scope.updateEmbedCode = function() {
+                            $scope.embedCode = '<iframe src="' + $scope.selectShareUrl() + '" width="1000" height="700"></iframe>';
                         }
+                    
+                    $scope.selectShareUrl = function() {
+                        var shareUrl = "";
+                        if ($scope.shareLink == "permalink") {
+                            shareUrl = $scope.permalinkUrl; 
+                        }
+                        else {
+                            shareUrl = $scope.pureMapUrl;
+                        }
+                        return shareUrl; 
+                    }
                     
                     /**
                      * @function invalidateShareUrl
@@ -295,7 +307,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 data: JSON.stringify({
                                     request: 'socialShare',
                                     id: service.shareId,
-                                    url: encodeURIComponent($scope.embededUrl),
+                                    url: encodeURIComponent($scope.selectShareUrl()),
                                     title: $scope.title,
                                     description: $scope.abstract,
                                     image: $scope.thumbnail
@@ -372,26 +384,28 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
 
                             $scope.shareUrlValid = false;
 
-                            $scope.embededUrl = service.getEmbededUrl();
-                            $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                longUrl: $scope.embededUrl
-                            }).success(function(data, status, headers, config) {
-                                $scope.embed_url = data.id;
-                                $scope.embed_code = $scope.getEmbedCode();
-                            }).error(function(data, status, headers, config) {
-                                console.log('Error creating short Url');
-                                $scope.embed_url = $scope.embededUrl;
-                                $scope.embed_code = $scope.getEmbedCode();
-                            });
+                            $q.all([
+                                $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                                    longUrl: service.getPureMapUrl()
+                                }).success(function(data, status, headers, config) {
+                                    $scope.pureMapUrl = data.id;
+                                }).error(function(data, status, headers, config) {
+                                    console.log('Error creating short Url');
+                                    $scope.pureMapUrl = service.getPureMapUrl();
+                                }),
 
-                            $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                longUrl: service.getPermalinkUrl()
-                            }).success(function(data, status, headers, config) {
-                                $scope.permalink_url = data.id;
-                            }).error(function(data, status, headers, config) {
-                                console.log('Error creating short Url');
-                                $scope.permalink_url = service.getPermalinkUrl();
+                                $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                                    longUrl: service.getPermalinkUrl()
+                                }).success(function(data, status, headers, config) {
+                                    $scope.permalinkUrl = data.id;
+                                }).error(function(data, status, headers, config) {
+                                    console.log('Error creating short Url');
+                                    $scope.permalinkUrl = service.getPermalinkUrl();
+                                }),
+                            ]).then(function() {
+                                $scope.updateEmbedCode();
                             });
+                            
                         }
                         if (!$scope.$$phase) $scope.$digest();
                     })
