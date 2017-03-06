@@ -407,7 +407,8 @@ button.but-title-sm {
 }
 
 .thumbnail {
-    height: 62px
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 .ol-attribution {

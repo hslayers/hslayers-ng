@@ -9,7 +9,7 @@
         </button>
     </div>
     <div class="panel-body hs-lm-panel">
-        <div class="row nav nav-pills" ng-show="hasBoxImages()">
+        <div class="nav nav-pills" ng-show="hasBoxImages()">
             <div ng-repeat="box in box_layers"  class="col-xs-2 col-md-2 active" style="padding-right: 2px; padding-left: 2px;">
                 <a href="#" ng-class="{ 'thumbnail': true, 'alert-info': box.get('active')}" title="{{box.get('title')}}" ng-click="activateTheme(box)">
                     <img ng-src="{{box.get('img')}}" alt="{{box.get('title')}}">
