@@ -906,7 +906,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @description Test if box layers are loaded
                 */
                 $scope.hasBoxLayers = function() {
-                        for (vari = 0; i < $scope.box_layers.length; i++) {
+                        for (var i = 0; i < $scope.box_layers.length; i++) {
                             if ($scope.box_layers[i].img) return true;
                         }
                         return false;
