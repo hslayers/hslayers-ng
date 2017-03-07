@@ -240,7 +240,8 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
 
                 var vector = new ol.layer.Vector({
                     source: source,
-                    style: style
+                    style: style,
+                    title: 'Travel route'
                 });
 
                 var movable_features = new ol.Collection();
@@ -249,8 +250,12 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                     features: movable_features
                 });
 
-                OlMap.map.addLayer(vector);
-
+                if(angular.isUndefined(OlMap.map))
+                    $scope.$on('map.loaded', function(){
+                        OlMap.map.addLayer(vector);
+                    });
+                else
+                    OlMap.map.addLayer(vector);
                 $scope.service = service;
                 service.scopes.push($scope);
                 var timer;
@@ -345,6 +350,38 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                     try {
                         source.removeFeature(wp.feature);
                     } catch (ex) {}
+                }
+                
+                
+                /**
+                 * Format waypoint route distance in a human friendly way
+                 * @memberof hs.trip_planner.controller
+                 * @function formatDistance
+                 * @param {float} wp Wayoint
+                 */
+                $scope.formatDistance = function(wp){
+                    if(wp.routes.length < 1) return '';
+                    var distance = wp.routes[0].get('distance');
+                    if (typeof distance == 'undefined')
+                        return '';
+                    else
+                        return parseFloat(distance).toFixed(2) + 'km';
+                }
+                
+                 /**
+                 * Get the total distance for all waypoint routes
+                 * @memberof hs.trip_planner.controller
+                 * @function totalDistance
+                 */
+                $scope.totalDistance  = function(){
+                    var tmp = 0;
+                    angular.forEach($scope.service.waypoints, function(wp){
+                     if(wp.routes.length>0){
+                      tmp+=parseFloat(wp.routes[0].get('distance'));   
+                     }
+                    }
+                    )
+                    return tmp.toFixed(2) + 'km';
                 }
 
                 /**

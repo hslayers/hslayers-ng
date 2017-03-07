@@ -15,11 +15,16 @@
                 <a href="#" ng-click="toggleEdit(waypoint)" ng-show="!waypoint.name_editing">{{waypoint.name}}</a> 
                 <input ng-model="waypoint.name" class="form-control hs-waypoint-name" ng-show="waypoint.name_editing" focus-if="waypoint.name_editing" ng-blur="toggleEdit(waypoint)"/>
                 <img ng-show="waypoint.loading" ng-src="{{ajax_loader}}"/>   
+                {{ formatDistance(waypoint) }}
                 <span class="pull-right">
                     <button type="button" class="btn btn-default btn-xs glyphicon glyphicon-trash" ng-click="service.removeWaypoint(waypoint);">
                     </button>
                 <span>
             </li>
         </ul>
+        <dl class="dl-horizontal">
+            <dt>Total distance: </dt>
+            <dd>{{totalDistance()}}</dd>
+        </dl>
     </div>
 </div>

@@ -151,6 +151,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
         
         var tourist_layer_group = new ol.layer.Group({
             title: 'Touristic',
+            'img': 'bicycle-128.png',
             layers: []
         });
         
@@ -285,6 +286,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 
                 $scope.addToTrip = function(){
                     trip_planner_service.addWaypoint($scope.lon_lat[0], $scope.lon_lat[1]);
+                    Core.setMainPanel('trip_planner');
                     return false;
                 }
 
@@ -315,6 +317,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 
                 $scope.$on('infopanel.feature_selected', function(event, feature) {
                     $scope.lon_lat = ol.proj.transform(feature.getGeometry().flatCoordinates, 'EPSG:3857', 'EPSG:4326');
+                    Core.setMainPanel("info", false);
                 });
 
                 function createLayerSelectorForNewPoi(coordinate) {
