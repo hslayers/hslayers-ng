@@ -17,7 +17,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             me.map = new ol.Map({
                 target: 'map',
                 interactions: [],
-                view: config.default_view
+                view: config.default_view,
+                pixelRatio: Math.max(2, ol.has.DEVICE_PIXEL_RATIO)
             });
             
             function extentChanged(e){
