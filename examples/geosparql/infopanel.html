@@ -16,6 +16,9 @@
                 <h3 class="hs-spoi-feature-info">{{makeHumanReadable(attribute)}}</h3>
                 <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)"><i class="glyphicon glyphicon-edit"></i></button></div>          
                 <input class="form-control" ng-show="attribute.is_editing" ng-change="attribute.changed = true" ng-model="attribute.value"/>
+                <p>
+                    <button class="hs-spoi-point-to-trip btn btn-default" ng-click="addToTrip()">Add to trip</button>
+                </p>
             </div>
             <br>
             <!-- User friendly attributes -->

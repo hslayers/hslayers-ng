@@ -312,6 +312,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     $scope.$broadcast('infopanel.feature_select', feature);
                     return false;
                 }
+                
+                $scope.$on('infopanel.feature_selected', function(event, feature) {
+                    $scope.lon_lat = ol.proj.transform(feature.getGeometry().flatCoordinates, 'EPSG:3857', 'EPSG:4326');
+                });
 
                 function createLayerSelectorForNewPoi(coordinate) {
                     var possible_layers = [];
