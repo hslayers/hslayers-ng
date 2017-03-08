@@ -78,9 +78,16 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
              */
             .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service', 'config',
                 function($scope, Core, OlMap, SearchService, $log, permalink, styles, config) {
-                    var map = OlMap.map;
+                    var map;
                     var point_clicked = new ol.geom.Point([0, 0]);
                     var format = new ol.format.WKT();
+                    
+                    if (angular.isDefined(OlMap.map))
+                        map = OlMap.map;
+                    else
+                        scope.$on('map.loaded', function(){
+                            map = OlMap.map;
+                        });
 
                     $scope.search_results_layer = null;
 
