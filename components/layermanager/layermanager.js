@@ -64,6 +64,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             for (var i = 0; i < scope.filtered_layers.length; i++) {
                                 scope.layer_titles.push(scope.filtered_layers[i].title);
                             }
+                            
                         }
 
                         scope.$on('layermanager.updated', sortLayersByPosition);
@@ -154,6 +155,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 $scope.layer_renamer_visible = false;
                 $scope.folders = {
                     hsl_path: '',
+                    coded_path: '0-',
                     layers: [],
                     sub_folders: [],
                     indent: 0
@@ -340,7 +342,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                                     indent: i,
                                     layers: [],
                                     name: parts[i],
-                                    hsl_path: curfolder.hsl_path + (curfolder.hsl_path != '' ? '/' : '') + parts[i]
+                                    hsl_path: curfolder.hsl_path + (curfolder.hsl_path != '' ? '/' : '') + parts[i],
+                                    coded_path: curfolder.coded_path + curfolder.sub_folders.length + '-'
                                 };
                                 curfolder.sub_folders.push(new_folder);
                                 curfolder = new_folder;
@@ -465,7 +468,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @param {object} layer Selected layer to edit or view - Wrapped layer object 
                  * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
                  */
-                $scope.setCurrentLayer = function(layer, index) {
+                $scope.setCurrentLayer = function(layer, index, path) {
                         if ($scope.currentlayer == layer) {
                             $scope.currentlayer = null;
                         } else {
@@ -474,7 +477,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                                 $scope.currentlayer.time = new Date(layer.layer.getSource().getParams().TIME);
                                 $scope.currentlayer.date_increment = $scope.currentlayer.time.getTime();
                             }
-                            $(".layerpanel").insertAfter($("#layer-" + index));
+                            $(".layerpanel").insertAfter($("#layer" + path + index));
                             $scope.cur_layer_opacity = layer.layer.getOpacity();
                         }
                         return false;
@@ -906,8 +909,10 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @description Test if box layers are loaded
                 */
                 $scope.hasBoxImages = function() {
-                        for (var i = 0; i < $scope.box_layers.length; i++) {
-                            if ($scope.box_layers[i].get('img')) return true;
+                        if (angular.isDefined($scope.box_layers)) {
+                            for (var i = 0; i < $scope.box_layers.length; i++) {
+                                if ($scope.box_layers[i].get('img')) return true;
+                            }
                         }
                         return false;
                     }
