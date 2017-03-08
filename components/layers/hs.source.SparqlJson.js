@@ -154,7 +154,17 @@ define(function(require) {
                                     }
                                     for (var i = 0; i < updates_response.results.bindings.length; i++) {
                                         var b = updates_response.results.bindings[i];
-                                        objects[b.o.value][b.attr.value] = b.value.value;
+                                        var attribute_name = b.attr.value;
+                                        //Because photos can be more than one
+                                        if(typeof objects[b.o.value][attribute_name] != 'undefined' && attribute_name == 'http://xmlns.com/foaf/0.1/depiction') {
+                                            for(var try_i = 1; try_i < 20; try_i++){
+                                                if (typeof objects[b.o.value][attribute_name+try_i] == 'undefined') {
+                                                    attribute_name = attribute_name+try_i;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        objects[b.o.value][attribute_name] = b.value.value;
                                     }
                                     if(typeof options.category != 'undefined'){
                                         for(var i in objects){

@@ -10,7 +10,7 @@ define(['angular', 'ol', 'core'],
             function(Core, utils, $sce, info_panel_service, $http) {
                 var hr_mappings = {};
                 //Atributes which are displayed without clicking 'For developer' button
-                var frnly_attribs = ['http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://xmlns.com/foaf/0.1/homepage', 'http://www.openvoc.eu/poi#openingHours', 'http://www.openvoc.eu/poi#internetAccess','http://www.openvoc.eu/poi#accessibility', 'http://www.openvoc.eu/poi#address']
+                var frnly_attribs = ['http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://xmlns.com/foaf/0.1/homepage', 'http://xmlns.com/foaf/0.1/depiction', 'http://www.openvoc.eu/poi#openingHours', 'http://www.openvoc.eu/poi#internetAccess','http://www.openvoc.eu/poi#accessibility', 'http://www.openvoc.eu/poi#address']
                 var not_editable_attrs = ['poi_id', 'http://www.opengis.net/ont/geosparql#sfWithin', 'http://purl.org/dc/elements/1.1/identifier', 'http://purl.org/dc/elements/1.1/publisher', 'http://purl.org/dc/terms/1.1/created', 'http://www.w3.org/2004/02/skos/core#exactMatch', 'http://www.sdi4apps.eu/poi/#mainCategory', 'http://www.w3.org/2002/07/owl#sameAs']
                 
                 function attrToEnglish(name) {
@@ -29,7 +29,8 @@ define(['angular', 'ol', 'core'],
                         'http://www.w3.org/2004/02/skos/core#exactMatch': 'More info: ',
                         'http://purl.org/dc/terms/1.1/created': 'Created: ',
                         'http://www.opengis.net/ont/geosparql#sfWithin': 'Country: ',
-                        'http://www.w3.org/2000/01/rdf-schema#comment': 'Comments: '
+                        'http://www.w3.org/2000/01/rdf-schema#comment': 'Comments: ',
+                        'http://xmlns.com/foaf/0.1/depiction': 'Photo: '
                     }
                     return hr_names[name];
                 }
@@ -38,11 +39,14 @@ define(['angular', 'ol', 'core'],
                     var value = $sce.valueOf(attribute.value);
                     var name = $sce.valueOf(attribute.name);
                     if (angular.isUndefined(hr_mappings[name])) {
-                        if (value.indexOf('http:') == 0) {
-                            return $sce.trustAsHtml('<a href="' + value + '">' + value + '</a>');
-                        } else {
-                            return value;
-                        }
+                        if (name.indexOf('depiction')>0){
+                            return $sce.trustAsHtml('<a target="_blank" href="' + value + '"><img src="' + value + '" class="img-thumbnail"/></a>');
+                        } else 
+                            if (value.indexOf('http:') == 0) {
+                                return $sce.trustAsHtml('<a href="' + value + '">' + value + '</a>');
+                            } else {
+                                return value;
+                            }
                     }
                     if (angular.isDefined(hr_mappings[name][value])) return hr_mappings[name][value];
                     else return attribute.value;
@@ -97,7 +101,7 @@ define(['angular', 'ol', 'core'],
                 function filterAttribs(items) {
                     var filtered = [];
                     angular.forEach(items, function(item) {
-                        if (frnly_attribs.indexOf(item.name) > -1) {
+                        if (frnly_attribs.indexOf(item.name) > -1 || item.name.indexOf('depiction')>0) {
                             filtered.push(item);
                         }
                     });
@@ -106,6 +110,7 @@ define(['angular', 'ol', 'core'],
 
                 function addPoi(layer, coordinate, country_last_clicked, category) {
                     var identifier = 'http://www.sdi4apps.eu/new_poi/' + utils.generateUuid();
+                    me.id = identifier;
                     var attrs = {
                         geometry: new ol.geom.Point(coordinate),
                         'http://purl.org/dc/elements/1.1/identifier': identifier,

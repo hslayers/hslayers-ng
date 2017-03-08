@@ -16,7 +16,10 @@ require.config({
         core: hsl_path + 'components/core/core',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         trip_planner: hsl_path + 'components/trip_planner/trip_planner',
-        spoi_editor: hsl_path + 'examples/geosparql/spoi_editor'
+        spoi_editor: hsl_path + 'examples/geosparql/spoi_editor',
+        dmuploader: 'http://app.hslayers.org/rdf_upload/bower_components/dmuploader',
+        danidemo: 'http://danielm.herokuapp.com/demos/dnd/js/demo.min',
+        upload: hsl_path + 'examples/geosparql/upload'
     },
     shim: {
         d3: {

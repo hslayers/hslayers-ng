@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info', 'trip_planner', 'spoi_editor'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'map', 'ows', 'query', 'search', 'permalink', 'measure', 'legend', 'bootstrap', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info', 'trip_planner', 'spoi_editor', 'upload'],
 
     function(angular, ol, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
@@ -17,7 +17,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             'gettext',
             'hs.compositions',
              'hs.trip_planner',
-            'spoi_editor'
+            'spoi_editor',
+            'hs.upload'
         ]);
 
         module.directive('hs', ['Core', function(Core) {
@@ -216,7 +217,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.InfoPanelService = infopanel_service;
 
 
-                $scope.$on("scope_loaded", function(event, args) {
+                $scope.$on("scope_loaded", function(event, args, arg2) {
                     if (args == 'Sidebar') {
                         var el = angular.element('<div hs.trip_planner.directive hs.draggable ng-controller="hs.trip_planner.controller" ng-if="Core.exists(\'hs.trip_planner.controller\')" ng-show="Core.panelVisible(\'trip_planner\', this)"></div>');
                         angular.element('#panelplace').append(el);
@@ -318,6 +319,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 
                 $scope.$on('infopanel.feature_selected', function(event, feature) {
                     $scope.lon_lat = ol.proj.transform(feature.getGeometry().flatCoordinates, 'EPSG:3857', 'EPSG:4326');
+                    spoi_editor.id = feature.get('http://purl.org/dc/elements/1.1/identifier');
                     Core.setMainPanel("info", false);
                 });
 
@@ -458,7 +460,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 
                 function getMaxResolution(category){
                     var default_res = 38;
-                    console.log(category);
+                    //console.log(category);
                     if(category == 'http://gis.zcu.cz/SPOI/Ontology#transportation')
                         default_res = 4;
                     if(category == 'http://gis.zcu.cz/SPOI/Ontology#other')
@@ -490,6 +492,10 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     if($scope.editTextboxVisible(attribute)) return 1;
                     else if($sce.valueOf(attribute.value).indexOf('http')==-1)  return 2;
                     else if($sce.valueOf(attribute.value).indexOf('http')>-1)  return 3;
+                }
+                
+                $scope.toggleUploadPhoto = function(){
+                    $scope.upload_visible = !$scope.upload_visible;
                 }
 
                 $scope.getSpoiCategories = spoi_editor.getSpoiCategories;
