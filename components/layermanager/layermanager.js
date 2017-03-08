@@ -81,7 +81,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             scope.generateLayerTitlesArray();
                         }
 
-                        scope.generateLayerTitlesArray();
+                        sortLayersByPosition();
 
                         if (angular.isUndefined(contentsLinker)) {
                             contentsLinker = $compile(contents);
@@ -269,6 +269,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     };
 
                     if (layer.getVisible() && layer.get("base")) $scope.baselayer = getLayerTitle(layer);
+                    updateLayerOrder();
                     $rootScope.$broadcast('layermanager.updated', layer);
                     $scope.$emit('compositions.composition_edited');
                 };
