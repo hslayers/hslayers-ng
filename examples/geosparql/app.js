@@ -190,7 +190,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
 
         var geoJsonFormat = new ol.format.GeoJSON;
         module.value('config', {
-            search_provider: 'sdi4apps_openapi',
+            search_provider: ['sdi4apps_openapi', 'geonames'],
             box_layers: [base_layer_group, tourist_layer_group, weather_layer_group],
             crossfilterable_layers: [{
                 layer_ix: 2,

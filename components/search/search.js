@@ -42,7 +42,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                  */
             }]).service('hs.search.service', ['$http', 'hs.utils.service', 'config',
                 function($http, utils, config) {
-                    this.xhr = null;
+                    this.xhr = {};
                     /**
                      * Send geolocation request to Geolocation server
                      * @memberof hs.search.controller
@@ -51,22 +51,33 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      */
                     this.request = function(query) {
                         var url = null;
-                        if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
-                            url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
-                        } else if (config.search_provider == 'sdi4apps_openapi') {
-                            url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
-                        }
-
-                        url = utils.proxify(url);
-                        if (me.xhr !== null) me.xhr.abort();
-                        me.xhr = $.ajax({
-                            url: url,
-                            cache: false,
-                            success: function(r) {
-                                me.searchResultsReceived(r);
-                                me.xhr = null
+                        var providers = [];
+                        
+                        if (angular.isUndefined(config.search_provider))
+                            providers = ['geonames'];
+                        else if(typeof config.search_provider == 'string')
+                            providers = [config.search_provider]
+                        else if(angular.isObject(config.search_provider)) 
+                            providers = config.search_provider;
+                        
+                        angular.forEach(providers, function(provider){
+                            if (provider == 'geonames') {
+                                url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
+                            } else if (provider == 'sdi4apps_openapi') {
+                                url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
                             }
-                        });
+                            url = utils.proxify(url);
+                            if (angular.isDefined(me.xhr[provider]) && me.xhr[provider] !== null) me.xhr[provider].abort();
+                            me.xhr[provider] = $.ajax({
+                                url: url,
+                                cache: false,
+                                provider: provider,
+                                success: function(r) {
+                                    me.searchResultsReceived(r, this.provider);
+                                    me.xhr[this.provider] = null
+                                }
+                            });
+                        })
                     };
                     var me = this;
                 }
@@ -81,11 +92,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     var map;
                     var point_clicked = new ol.geom.Point([0, 0]);
                     var format = new ol.format.WKT();
+                    $scope.providers = {};
                     
                     if (angular.isDefined(OlMap.map))
                         map = OlMap.map;
                     else
-                        scope.$on('map.loaded', function(){
+                        $scope.$on('map.loaded', function(){
                             map = OlMap.map;
                         });
 
@@ -141,9 +153,9 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                             'LK': 13
                         };
                         $scope.createCurrentPointLayer();
-                        if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
+                        if (result.provider_name == 'geonames') {
                             coordinate = ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection());
-                        } else if (config.search_provider == 'sdi4apps_openapi') {
+                        } else if (result.provider_name == 'sdi4apps_openapi') {
                             var g_feature = format.readFeature(result.FullGeom.toUpperCase());
                             coordinate = (g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection())).getCoordinates();
                         }
@@ -154,7 +166,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         } else {
                             map.getView().setZoom(10);
                         }
-                        $scope.results = [];
+                        $scope.clear();
                     }
 
                     /**
@@ -163,7 +175,9 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @function clear 
                      */
                     $scope.clear = function() {
-                        $scope.results = [];
+                        angular.forEach($scope.providers, function(provider){
+                            provider.results = [];
+                        });
                         $scope.query = '';
                         $scope.clearvisible = false;
                         if ($scope.search_results_layer) map.getLayers().remove($scope.search_results_layer);
@@ -175,15 +189,19 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @memberof hs.search.controller
                      * @function searchResultsReceived
                      * @param {object} response Result of search request
+                     * @param {string} provider Which provider sent the search results
                      */
-                    SearchService.searchResultsReceived = function(response) {
+                    SearchService.searchResultsReceived = function(response, provider_name) {
                         $("#searchresults").show();
                         $scope.clearvisible = true;
                         $scope.createCurrentPointLayer();
-                        if (angular.isUndefined(config.search_provider) || config.search_provider == 'geonames') {
-                            parseGeonamesResults(response);
-                        } else if (config.search_provider == 'sdi4apps_openapi') {
-                            parseOpenApiResults(response);
+                        if (angular.isUndefined($scope.providers[provider_name]))
+                            $scope.providers[provider_name] = {results: [], name: provider_name};
+                        provider = $scope.providers[provider_name];
+                        if (provider_name == 'geonames') {
+                            parseGeonamesResults(response, provider);
+                        } else if (provider_name == 'sdi4apps_openapi') {
+                            parseOpenApiResults(response, provider);
                         }
                         if (!$scope.$$phase) $scope.$digest();
                     }
@@ -193,11 +211,17 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @memberof hs.search.controller
                      * @function parseGeonamesResults
                      * @param {object} response Result of search request
+                     * @param {object} provider Which provider sent the search results
                      */
-                    function parseGeonamesResults(response) {
-                        $scope.results = response.geonames;
-                        angular.forEach($scope.results, function(result) {
-                            var src = $scope.search_results_layer.getSource();
+                    function parseGeonamesResults(response, provider) {
+                        provider.results = response.geonames;
+                        generateGeonamesFeatures(provider);
+                    }
+                    
+                    function generateGeonamesFeatures(provider){
+                        var src = $scope.search_results_layer.getSource();
+                        angular.forEach(provider.results, function(result) {
+                            result.provider_name = provider.name;
                             var feature = new ol.Feature({
                                 geometry: new ol.geom.Point(ol.proj.transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', map.getView().getProjection())),
                                 record: result
@@ -212,12 +236,18 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @memberof hs.search.controller
                      * @function parseOpenApiResults
                      * @param {object} response Result of search request
+                     * @param {object} provider Which provider sent the search results
                      */
-                    function parseOpenApiResults(response) {
-                        $scope.results = response.data;
-                        angular.forEach($scope.results, function(result) {
+                    function parseOpenApiResults(response, provider) {
+                        provider.results = response.data;
+                        generateOpenApiFeatures(provider);
+                    }
+                    
+                    function generateOpenApiFeatures(provider){
+                        angular.forEach(provider.results, function(result) {
                             var g_feature = format.readFeature(result.FullGeom.toUpperCase());
                             var src = $scope.search_results_layer.getSource();
+                            result.provider_name = provider.name;
                             var feature = new ol.Feature({
                                 geometry: g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection()),
                                 record: result
@@ -242,6 +272,13 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                             source: new ol.source.Vector({}),
                             style: styles.pin_white_blue_highlight,
                             show_in_manager: false
+                        });
+                        angular.forEach($scope.providers, function(provider){
+                            if (provider.name == 'geonames') {
+                                generateGeonamesFeatures(provider);
+                            } else if (provider.name == 'sdi4apps_openapi') {
+                                generateOpenApiFeatures(provider);
+                            }
                         });
                         map.addLayer($scope.search_results_layer);
                     }
