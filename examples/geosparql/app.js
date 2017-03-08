@@ -256,6 +256,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     if (on_features) return;
                     getWeatherInfo(data.coordinate);
                     getCountryAtCoordinate(data.coordinate);
+                    console.log(OlMap.map.getView().getResolution());
                 });
                 
                 function getWeatherInfo(coordinate){
@@ -413,7 +414,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                                 visible: false,
                                 path: 'Points of interest',
                                 category: category,
-                                maxResolution: 38
+                                maxResolution: getMaxResolution(category)
                             });
                             tourist_layer_group.getLayers().insertAt(0, new_lyr);
                         }
@@ -446,7 +447,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                             style: styleOSM,
                             visible: false,
                             path: 'Popular Categories',
-                            maxResolution: 38,
+                            maxResolution: getMaxResolution(category),
                             category: category
                         });
                         tourist_layer_group.getLayers().insertAt(0, new_lyr);
@@ -454,6 +455,29 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     list_loaded.static_categories = true;
                     checkListLoaded();
                 })
+                
+                function getMaxResolution(category){
+                    var default_res = 38;
+                    console.log(category);
+                    if(category == 'http://gis.zcu.cz/SPOI/Ontology#transportation')
+                        default_res = 4;
+                    if(category == 'http://gis.zcu.cz/SPOI/Ontology#other')
+                        default_res = 19;
+                    if(category == 'http://gis.zcu.cz/SPOI/Ontology#outdoor')
+                        default_res = 160;
+                    if(category == 'http://gis.zcu.cz/SPOI/Ontology#car_service')
+                        default_res = 20;
+                    if(category == 'http://gis.zcu.cz/SPOI/Ontology#natural_feature')
+                        default_res = 160;
+                    if(category == 'http://gis.zcu.cz/SPOI/Ontology#camp_site')
+                        default_res = 310;
+                    if(category == 'http://gis.zcu.cz/SPOI/Ontology#lodging')
+                        default_res = 160;
+                    if(category == 'http://gis.zcu.cz/SPOI/Ontology#information')
+                        default_res = 160;
+                    
+                    return default_res;
+                }
                 
                 $scope.showDeveloperInfo = function(){
                     $("#hs-dialog-area #advanced-info-dialog").remove();
