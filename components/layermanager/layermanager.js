@@ -90,6 +90,16 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         contentsLinker(scope, function(clonedElement) {
                             iElement.append(clonedElement);
                         });
+                    
+                        /**
+                         * Callback for dragged event so event can be injected with correct layer titles layer 
+                         * @function dragged
+                         * @memberOf hs.layermanager.layerlistDirective
+                         */
+                        scope.dragged = function(event, index, item, type, external) {
+                            var titles = scope.layer_titles;
+                            scope.draggedCont(event, index, item, type, external,titles);
+                        }
                     };
                 }
             };
@@ -510,11 +520,12 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @param {unknown} item
                  * @param {unknown} type
                  * @param {unknown} external
-                 * Callback for dnd-drop event (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop). 
+                 * @param {Array} layerTitles Array of layer titles of group in which layer should be moved in other position
+                 * Callback for dnd-drop event to change layer position in layer manager structure (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop). 
                  */
-                $scope.dragged = function(event, index, item, type, external) {
-                        if ($scope.layer_titles.indexOf(item) < index) index--; //Must take into acount that this item will be removed and list will shift
-                        var to_title = $scope.layer_titles[index];
+                $scope.draggedCont = function(event, index, item, type, external, layerTitles) {
+                        if (layerTitles.indexOf(item) < index) index--; //Must take into acount that this item will be removed and list will shift
+                        var to_title = layerTitles[index];
                         var to_index = null;
                         var item_index = null;
                         var layers = OlMap.map.getLayers();
@@ -522,7 +533,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         for (var i = 0; i < layers.getLength(); i++) {
                             if (layers.item(i).get('title') == to_title) to_index = i;
                             if (layers.item(i).get('title') == item) item_index = i;
-                            if (index > $scope.layer_titles.length) to_index = i + 1; //If dragged after the last item
+                            if (index > layerTitles.length) to_index = i + 1; //If dragged after the last item
                         }
                         var item_layer = layers.item(item_index);
                         map.getLayers().removeAt(item_index);
