@@ -370,6 +370,45 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 }
 
                 /**
+                 * (PRIVATE)
+                 * @function cleanFolders
+                 * @memberOf hs.layermanager.controller
+                 * @description Remove layer from layer folder a clean empty folders
+                 * @param {ol.Layer} lyr Layer to remove from layer folder
+                 */
+                function cleanFolders(lyr) {
+                    if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
+                        var path = lyr.get('path');
+                        var parts = path.split('/');
+                        var curfolder = $scope.folders;
+                        for (var i = 0; i < parts.length; i++) {
+                            angular.forEach(curfolder.sub_folders, function(folder) {
+                                if (folder.name == parts[i])
+                                    curfolder = folder;
+                            })   
+                        }
+                        curfolder.layers.splice(curfolder.layers.indexOf(lyr),1);
+                        for (var i = parts.length; i > 0; i--) {
+                            if (curfolder.layers.length == 0 && curfolder.sub_folders.length == 0) {
+                                var newfolder = $scope.folders;
+                                if (i > 1) {
+                                    for (var j = 0; j < i-1; j++) {
+                                        angular.forEach(newfolder.sub_folders, function(folder) {
+                                            if (folder.name == parts[j])
+                                                newfolder = folder;
+                                        })
+                                    }
+                                }
+                                newfolder.sub_folders.splice(newfolder.sub_folders.indexOf(curfolder),1);
+                                curfolder = newfolder;
+                            }
+                            else break;
+                        }
+                    } else {
+                        $scope.folders.layers.splice($scope.folders.layers.indexOf(lyr), 1);
+                    }    
+                }
+                /**
                  * @function populateFolders
                  * @memberOf hs.layermanager.controller
                  * @description Place layer into layer manager folder structure based on path property of layer
@@ -384,6 +423,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
                  */
                 function layerRemoved(e) {
+                    cleanFolders(e.element);
                     if (angular.isObject($scope.currentlayer) && ($scope.currentlayer.layer == e.element)) {
                         $(".layerpanel").insertAfter($('.hs-lm-mapcontentlist'));
                         $scope.currentlayer = null;
