@@ -366,6 +366,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                     $(".dropdown-toggle").dropdown();
                 }
 
+                /* Not really used anymore
                 $scope.$on('feature_crossfilter_filtered', function(event, data) {
                     var lyr = OlMap.findLayerByTitle('Specific points of interest');
                     var src = lyr.getSource();
@@ -375,7 +376,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                         src.options.url = 'http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent('SELECT ?o ?p ?s FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?o <http://www.openvoc.eu/poi#categoryWaze> ?filter_categ. ?o <http://www.opengis.net/ont/geosparql#asWKT> ?geom. FILTER(isBlank(?geom) = false). FILTER (str(?filter_categ) = "' + data + '"). ') + '<extent>' + encodeURIComponent('	?o ?p ?s } ORDER BY ?o') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                     } else
                         src.options.url = '';
-                });
+                });*/
 
                 spoi_editor.init();
                 var hr_mappings;
