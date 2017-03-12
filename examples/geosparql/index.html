@@ -15,6 +15,10 @@
     <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
     <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../../bower_components/requirejs/require.js"></script>        
-    <script src="hslayers.js"></script> 
+    <script>
+        var script = document.createElement('script');
+        script.src = 'hslayers.js?r='+Math.random();
+        document.head.appendChild(script);
+    </script> 
 </body>
 </html>
