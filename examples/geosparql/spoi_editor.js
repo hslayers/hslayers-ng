@@ -111,6 +111,7 @@ define(['angular', 'ol', 'core'],
                 function addPoi(layer, coordinate, country_last_clicked, category) {
                     var identifier = 'http://www.sdi4apps.eu/new_poi/' + utils.generateUuid();
                     me.id = identifier;
+                    var now = new Date();
                     var attrs = {
                         geometry: new ol.geom.Point(coordinate),
                         'http://purl.org/dc/elements/1.1/identifier': identifier,
@@ -120,9 +121,15 @@ define(['angular', 'ol', 'core'],
                         'http://purl.org/dc/elements/1.1/publisher': "SPOI (http://sdi4apps.eu/spoi)",
                         'http://purl.org/dc/elements/1.1/source': "",
                         'http://purl.org/dc/elements/1.1/rights': "http://opendatacommons.org/licenses/odbl/1.0/",
-                        'http://www.openvoc.eu/poi#openingHours': "",
-                        'http://www.sdi4apps.eu/poi/#mainCategory':  layer.get('category') //For choosing the icon
+                        'http://www.sdi4apps.eu/poi/#mainCategory':  layer.get('category'), //For choosing the icon,
+                        'http://purl.org/dc/terms/1.1/created': now.toISOString()
+                        
                     };
+                    angular.forEach(frnly_attribs, function(default_attrib){
+                        if(angular.isUndefined(attrs[default_attrib])){
+                            attrs[default_attrib] = "";
+                        }
+                    })
 
                     var lines = [];
                     lines.push('<{0}> <http://purl.org/dc/elements/1.1/identifier> "{0}"'.format(identifier));
@@ -130,15 +137,12 @@ define(['angular', 'ol', 'core'],
                     var wkt = format.writeGeometry(attrs.geometry.clone().transform('EPSG:3857', 'EPSG:4326'));
                     lines.push('<{0}> <http://www.opengis.net/ont/geosparql#asWKT> "{1}"^^virtrdf:Geometry'.format(identifier, wkt));
                     lines.push('<{0}> <{1}> <{2}>'.format(identifier, layer.getSource().options.category_field, category));
-                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/title> "New point"'.format(identifier));
-                    lines.push('<{0}> <http://www.w3.org/2000/01/rdf-schema#label> "New point"'.format(identifier));
-                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/publisher> "SPOI (http://sdi4apps.eu/spoi)"'.format(identifier));
-                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/source> ""'.format(identifier));
-                    lines.push('<{0}> <http://purl.org/dc/elements/1.1/rights> "http://opendatacommons.org/licenses/odbl/1.0/"'.format(identifier));
-                    lines.push('<{0}> <http://www.openvoc.eu/poi#openingHours> ""'.format(identifier));
-                    lines.push('<{0}> <http://www.opengis.net/ont/geosparql#sfWithin> "http://www.geonames.org/{1}"'.format(identifier, country_last_clicked.geonameId));
-                    var now = new Date();
-                    lines.push('<{0}> <http://purl.org/dc/terms/1.1/created> "{1}"'.format(identifier, now.toISOString()));
+                    angular.forEach(attrs, function(value, attr){
+                        //Geometry has different name in virtuoso, mainCategory is calculated on client side, but depiction is either valid url or doesnt exist in data at all
+                        if(attr != 'geometry' && attr != layer.getSource().options.category_field && attr != 'http://www.sdi4apps.eu/poi/#mainCategory' && attr != 'http://xmlns.com/foaf/0.1/depiction') {
+                            lines.push('<{0}> <{1}> "{2}"'.format(identifier, attr, value));
+                        }
+                    });
                     var query = ['prefix virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> INSERT DATA { GRAPH <http://www.sdi4apps.eu/poi_changes.rdf> {', lines.join('.'), '}}'].join('\n');
                     $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
                         .then(function(response) {});
