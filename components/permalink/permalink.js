@@ -311,7 +311,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         if (!$scope.shareUrlValid) {
                             if (service.shareId == null || $scope.new_share) service.shareId = utils.generateUuid();
                             $.ajax({
-                                url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
+                                url: (getHostName() + config.status_manager_url),
                                 cache: false,
                                 method: 'POST',
                                 async: false,
@@ -325,7 +325,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 }),
                                 success: function(j) {
                                     $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                        longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + service.shareId
+                                        longUrl: getHostname() + config.status_manager_url + "?request=socialshare&id=" + service.shareId
                                     }).success(function(data, status, headers, config) {
                                         $scope.share_url = data.id;
                                         socialshare.share({
@@ -357,11 +357,18 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
 
 
                     }
+                    
+                    function getHostname(){
+                        if(angular.isDefined(config.hostname))
+                            return config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url);
+                        else
+                            return "";
+                    }
 
                     $scope.$on('core.mainpanel_changed', function(event) {
                         if (Core.mainpanel == 'permalink') {
                             service.update();
-                            var status_url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                            var status_url = getHostname() + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
                             if (service.added_layers.length > 0) {
                                 $.ajax({
                                     url: status_url,
