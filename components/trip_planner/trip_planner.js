@@ -396,6 +396,10 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                     $scope.service.storeWaypoints();
                     waypoint.feature.set('highlighted', waypoint.name_editing);
                 }
+                
+                $scope.prevPanel = function(){
+                    Core.setMainPanel('info');
+                }
 
                 $scope.$on('core.mainpanel_changed', function(event) {
 

@@ -9,7 +9,7 @@
         <button class="btn btn-default" style="float:right" ng-click="clearAll()" translate>Clear</button>
         <ul class="list-group">
             <li class="list-group-item clearfix active">
-                <span translate=""><span class="ng-scope">Waypoints</span></span>
+                <span ><button class="btn btn-default btn-sm" ng-click="prevPanel()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>&nbsp;<span class="ng-scope" translate>Waypoints</span></span>
             </li>
             <li ng-repeat="waypoint in service.waypoints" class="list-group-item">
                 <a href="#" ng-click="toggleEdit(waypoint)" ng-show="!waypoint.name_editing">{{waypoint.name}}</a> 
