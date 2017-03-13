@@ -442,11 +442,30 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     $scope.$emit('compositions.composition_edited');
                 };
 
-                $scope.box_layers = config.box_layers;
+                /**
+                 * @function boxLayersInit
+                 * @memberOf hs.layermanager.controller
+                 * @description Initilaze box layers and their starting active state
+                 */
+                function boxLayersInit() {
+                    if (angular.isDefined(config.box_layers)) {
+                        $scope.box_layers = config.box_layers;
+                        angular.forEach($scope.box_layers, function(box){
+                            var visible = false;
+                            var baseVisible = false;
+                            angular.forEach(box.get('layers'), function(layer){
+                                if (layer.get('visible') == true && layer.get('base') == true) baseVisible = true;
+                                else if (layer.get('visible') == true) visible = true;    
+                            });
+                            box.set('active',baseVisible ? baseVisible : visible);
+                        });
+                    }
+                }
+                
+                boxLayersInit();
                 $scope.layers = [];
                 $scope.baselayers = [];
                 $scope.baselayersVisible = true;
-                $scope.active_box = null;
                 /**
                  * @function changeLayerVisibility
                  * @memberOf hs.layermanager.controller
@@ -890,15 +909,20 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @param {ol.layer.Group} theme Group layer to activate
                  */
                 $scope.activateTheme = function(theme) {
-                        if ($scope.active_box) $scope.active_box.set('active', false);
-                        $scope.active_box = theme;
-                        theme.set('active', true);
-                        angular.forEach($scope.box_layers, function(box) {
-                            box.setVisible(box == theme);
-                            angular.forEach(box.get('layers'), function(lyr) {
-                                if (lyr.get('base') == true) return;
-                                lyr.setVisible(box.getVisible());
-                            });
+                        var switchOn = true;
+                        if (theme.get('active') == true) switchOn = false;
+                        theme.set('active', switchOn);
+                        var baseSwitched = false;
+                        theme.setVisible(switchOn);
+                        angular.forEach(theme.get('layers'), function(layer) {
+                            if (layer.get('base') == true && !baseSwitched) {
+                                $scope.changeBaseLayerVisibility();
+                                baseSwitched = true;
+                            }
+                            else if (layer.get('base') == true) return;
+                            else {
+                                layer.setVisible(switchOn);
+                            }
                         });
                     }
                 /**
