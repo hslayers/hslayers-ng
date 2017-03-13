@@ -244,9 +244,12 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         }
                     }
                     
-                    $rootScope.$on('map.loaded', function(){
-                       init();
-                    });
+                    if(angular.isDefined(OlMap.map))
+                        init()
+                    else
+                        $rootScope.$on('map.loaded', function(){
+                            init();
+                        });
                     return me;
                 }
             ])

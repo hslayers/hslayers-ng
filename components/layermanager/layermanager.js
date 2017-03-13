@@ -1137,22 +1137,33 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     Core.setMainPanel('draw', false, false);
                 }
 
-                OlMap.map.getLayers().forEach(function(lyr) {
-                    layerAdded({
-                        element: lyr
-                    });
-                });
                 var timer;
-                OlMap.map.getView().on('change:resolution', function(e) {
-                    if (timer != null) clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        for (var i = 0; i < $scope.layers.length; i++) {
-                            $scope.layers[i].grayed = $scope.isLayerInResolutionInterval($scope.layers[i].layer);
-                        }
-                        if (!$scope.$$phase) $scope.$digest();
-                    }, 500);
-                });
-
+                
+                function init(){
+                    OlMap.map.getLayers().forEach(function(lyr) {
+                        layerAdded({
+                            element: lyr
+                        });
+                    });
+                    
+                    OlMap.map.getView().on('change:resolution', function(e) {
+                        if (timer != null) clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            for (var i = 0; i < $scope.layers.length; i++) {
+                                $scope.layers[i].grayed = $scope.isLayerInResolutionInterval($scope.layers[i].layer);
+                            }
+                            if (!$scope.$$phase) $scope.$digest();
+                        }, 500);
+                    });
+                }
+                
+                if(angular.isDefined(OlMap.map))
+                    init()
+                else 
+                    $rootScope.$on('map.loaded', function(){
+                        init();
+                    });
+                
                 $scope.$on('compositions.composition_loaded', function(event, data) {
                     if (angular.isUndefined(data.error)) {
                         if (angular.isDefined(data.data) && angular.isDefined(data.data.id)) {
