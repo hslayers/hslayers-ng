@@ -470,22 +470,24 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 /**
                  * @function changeBaseLayerVisibility
                  * @memberOf hs.layermanager.controller
-                 * @description Change visibility of baselayers, only one baselayer may be visible, might also set all baselayers invisible 
-                 * @param {object} $event Info about the event and checkbox being clicked on
+                 * @description Change visibility (on/off) of baselayers, only one baselayer may be visible 
+                 * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
                  * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
                  */
                 $scope.changeBaseLayerVisibility = function($event, layer) {
                         if ($scope.baselayersVisible == true) {
                             if ($event) {
                                 for (var i = 0; i < $scope.baselayers.length; i++) {
-                                    if ($scope.baselayers[i] != layer) {
-                                        $scope.baselayers[i].layer.setVisible(false);
-                                        $scope.baselayers[i].visible = false;
-                                        $scope.baselayers[i].active = false;
-                                    } else {
+                                    $scope.baselayers[i].layer.setVisible(false);
+                                    $scope.baselayers[i].visible = false;
+                                    $scope.baselayers[i].active = false;
+                                }
+                                for (var i = 0; i < $scope.baselayers.length; i++) {
+                                    if ($scope.baselayers[i] == layer) {
                                         $scope.baselayers[i].layer.setVisible(true);
                                         $scope.baselayers[i].visible = true;
                                         $scope.baselayers[i].active = true;
+                                        break;
                                     }
                                 }
                             } else {
@@ -501,15 +503,18 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                                     if ($scope.baselayers[i] != layer) {
                                         $scope.baselayers[i].active = false;
                                     }
+                                    else {
+                                        $scope.baselayers[i].layer.setVisible(true);
+                                    }
                                 }
                             } else {
-                                $scope.baselayersVisible = true;
                                 for (var i = 0; i < $scope.baselayers.length; i++) {
-                                    if ($scope.baselayers[i].active == true) {
+                                    if ($scope.baselayers[i].visible == true) {
                                         $scope.baselayers[i].layer.setVisible(true);
                                     }
                                 }
                             }
+                            $scope.baselayersVisible = true;
                         }
                     }
                 /**
