@@ -212,17 +212,21 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     }
                     //if (layer.get('base') != true) {
                         layer.on('change:visible', function(e) {
-                             for (var i = 0; i < $scope.layers.length; i++) {
-                                if ($scope.layers[i].layer == e.target) {
-                                    $scope.layers[i].visible = e.target.getVisible();
-                                    break;
+                            if (layer.get('base') != true) {
+                                for (var i = 0; i < $scope.layers.length; i++) {
+                                    if ($scope.layers[i].layer == e.target) {
+                                        $scope.layers[i].visible = e.target.getVisible();
+                                        break;
+                                    }
                                 }
                             }
-                            for (var i = 0; i < $scope.baselayers.length; i++) {
-                                if ($scope.baselayers[i].layer == e.target) {
-                                    $scope.baselayers[i].active = e.target.getVisible();
-                                } else {
-                                    $scope.baselayers[i].active = false;            
+                            else {
+                                for (var i = 0; i < $scope.baselayers.length; i++) {
+                                    if ($scope.baselayers[i].layer == e.target) {
+                                        $scope.baselayers[i].active = e.target.getVisible();
+                                    } else {
+                                        $scope.baselayers[i].active = false;            
+                                    }
                                 }
                             }
                             if (!$scope.$$phase) $scope.$digest();
