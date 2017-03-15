@@ -124,7 +124,6 @@ define(function(require) {
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
                 if(console && typeof src.get('geoname') != 'undefined') console.log('Get ', src.get('geoname'));
                 if(ajax_handle != null){
-                    debugger;
                 }
                 ajax_handle = 
                 $.ajax({

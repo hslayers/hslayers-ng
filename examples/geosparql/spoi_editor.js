@@ -72,13 +72,14 @@ define(['angular', 'ol', 'core'],
                     var attribute_set_id = 'http://www.sdi4apps.eu/poi_changes/attributes_' + utils.generateUuid();
                     lines.push('<' + change_id + '> <http://www.sdi4apps.eu/poi_changes/poi_id> <' + identifier + '>');
                     lines.push('<' + change_id + '> <http://purl.org/dc/terms/1.1/created> "' + n + '"^^xsd:dateTime');
+                    lines.push('<' + change_id + '> <http://www.sdi4apps.eu/poi_changes/status> "unchecked"');
                     lines.push('<' + change_id + '> <http://www.sdi4apps.eu/poi_changes/attribute_set> <' + attribute_set_id + '>');
                     angular.forEach(changes, function(a) {
                         lines.push('<' + attribute_set_id + '> <' + a.attribute + '> "' + a.value + '"');
                     })
 
                     var query = ['INSERT DATA { GRAPH <http://www.sdi4apps.eu/poi_changes.rdf> {', lines.join('.'), '}}'].join('\n');
-                    $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
+                    $http.get('http://data.plan4all.eu/sparql_spoi?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
                         .then(function(response) {
                             angular.forEach(attributes, function(a) {
                                 if (angular.isDefined(a.changed) && a.changed) {
@@ -122,8 +123,8 @@ define(['angular', 'ol', 'core'],
                         'http://purl.org/dc/elements/1.1/source': "",
                         'http://purl.org/dc/elements/1.1/rights': "http://opendatacommons.org/licenses/odbl/1.0/",
                         'http://www.sdi4apps.eu/poi/#mainCategory':  layer.get('category'), //For choosing the icon,
-                        'http://purl.org/dc/terms/1.1/created': now.toISOString()
-                        
+                        'http://purl.org/dc/terms/1.1/created': now.toISOString(),
+                        'http://www.sdi4apps.eu/poi_changes/status': "unchecked"
                     };
                     angular.forEach(frnly_attribs, function(default_attrib){
                         if(angular.isUndefined(attrs[default_attrib])){
@@ -144,7 +145,7 @@ define(['angular', 'ol', 'core'],
                         }
                     });
                     var query = ['prefix virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> INSERT DATA { GRAPH <http://www.sdi4apps.eu/poi_changes.rdf> {', lines.join('.'), '}}'].join('\n');
-                    $http.get('http://data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
+                    $http.get('http://data.plan4all.eu/sparql_spoi?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
                         .then(function(response) {});
 
                     attrs[layer.getSource().options.category_field] = category;
