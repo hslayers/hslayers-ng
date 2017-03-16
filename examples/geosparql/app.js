@@ -152,7 +152,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
         
         var tourist_layer_group = new ol.layer.Group({
             title: 'Touristic',
-            'img': 'bicycle-128.png',
+            'img': 'POIs.png',
             layers: []
         });
         
