@@ -215,8 +215,8 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
         * @ngdoc controller
         * @name hs.trip_planner.controller
         */
-        .controller('hs.trip_planner.controller', ['$scope', 'hs.map.service', 'Core', 'hs.trip_planner.service',
-            function($scope, OlMap, Core, service) {
+        .controller('hs.trip_planner.controller', ['$scope', 'hs.map.service', 'Core', 'hs.trip_planner.service', 'config',
+            function($scope, OlMap, Core, service, config) {
                 var map = OlMap.map;
                 $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
 
@@ -254,8 +254,15 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
                     $scope.$on('map.loaded', function(){
                         OlMap.map.addLayer(vector);
                     });
-                else
+                else {
+                    if(console) console.log('add trip layer');
                     OlMap.map.addLayer(vector);
+                }
+                
+                if(angular.isUndefined(config.default_layers))
+                    config.default_layers = [];
+                config.default_layers.push(vector);
+                
                 $scope.service = service;
                 service.scopes.push($scope);
                 var timer;

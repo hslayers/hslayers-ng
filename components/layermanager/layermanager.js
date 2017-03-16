@@ -170,7 +170,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     sub_folders: [],
                     indent: 0
                 };
-                var map = OlMap.map;
+                var map;
                 var cur_layer_opacity = 1;
                 /**
                  * (PRIVATE) Prepare URL for GetLegendGraphic WMS request
@@ -234,6 +234,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     //}
 
                     if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
+                    if(console) console.log(layer.get('title'), layer.getVisible());
                     var new_layer = {
                         title: getLayerTitle(layer),
                         layer: layer,
@@ -1173,6 +1174,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 var timer;
                 
                 function init(){
+                    map = OlMap.map;
                     OlMap.map.getLayers().forEach(function(lyr) {
                         layerAdded({
                             element: lyr
@@ -1188,6 +1190,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             if (!$scope.$$phase) $scope.$digest();
                         }, 500);
                     });
+                    
+                    map.getLayers().on("add", layerAdded);
+                    map.getLayers().on("remove", layerRemoved);
                 }
                 
                 if(angular.isDefined(OlMap.map))
@@ -1221,8 +1226,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     if (!$scope.$$phase) $scope.$digest();
                 });
 
-                map.getLayers().on("add", layerAdded);
-                map.getLayers().on("remove", layerRemoved);
                 $scope.$emit('scope_loaded', "LayerManager");
             }
         ]);
