@@ -103,7 +103,6 @@ define(function(require) {
         var category_map = {};
         var category_id = 0;
         var occupied_xy = {};
-        var ajax_handle = null;
         var src = new ol.source.Vector({
             format: new ol.format.GeoJSON(),
             loader: function(extent, resolution, projection) {
@@ -123,24 +122,29 @@ define(function(require) {
                 if (options.hsproxy)
                     p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
                 if(console && typeof src.get('geoname') != 'undefined') console.log('Get ', src.get('geoname'));
-                if(ajax_handle != null){
-                }
-                ajax_handle = 
+                if(console) console.log(s_extent);
+                this.loadCounter += 1;
+                this.loadTotal += 1;
                 $.ajax({
                         url: p,
                         context: this
                     })
                     .done(function(response) {
-                        ajax_handle = null;
-                        if(console && typeof this.get('geoname') != 'undefined') console.log('Finish ', this.get('geoname'));
+                        if(console) 
+                            console.log('Finish ', this.get('geoname'), response.results.bindings.length);
+                        src.loadCounter -= 1;
                         if (this.options.updates_url) {
                             var updates_query = this.options.updates_url;
                             updates_query = updates_query.replace("<extent>", s_extent);
+                            src.loadCounter += 1;
+                            src.loadTotal += 1;
                             $.ajax({
                                     url: updates_query,
                                     context: this
                                 })
                                 .done(function(updates_response) {
+                                     if(console && typeof this.get('geoname') != 'undefined') 
+                                        console.log('Finish updates ', this.get('geoname'), response.results.bindings.length, updates_response.results.bindings.length);
                                     var objects = {};
                                     for (var i = 0; i < response.results.bindings.length; i++) {
                                         var b = response.results.bindings[i];
@@ -171,10 +175,15 @@ define(function(require) {
                                         }
                                     }    
                                     extendAttributes(options, objects);
+                                    if(console) 
+                                    console.log('Add features', objects);
                                     this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
-                                    this.set('loaded', true);
+                                    src.loadCounter -= 1;
                                     this.set('last_feature_count', Object.keys(objects).length);
-                                    this.dispatchEvent('imageloadend');
+                                    if (src.loadCounter == 0) {
+                                        this.set('loaded', true);
+                                        this.dispatchEvent('imageloadend');
+                                    }
                                 })
                         } else {
                             var objects = {};
@@ -196,9 +205,12 @@ define(function(require) {
                             this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                             this.styleAble = true;
                             this.hasPoint = true;
-                            this.set('loaded', true);
+                            src.loadCounter -= 1;
                             this.set('last_feature_count', Object.keys(objects).length);
-                            this.dispatchEvent('imageloadend');
+                            if (src.loadCounter == 0) {
+                                this.set('loaded', true);
+                                this.dispatchEvent('imageloadend');
+                            }
                         }
                     })
             },
@@ -214,6 +226,8 @@ define(function(require) {
             },
             projection: options.projection
         });
+        src.loadCounter = 0;
+        src.loadTotal = 0;    
         src.options = options;
         src.legend_categories = category_map;
         return src;
