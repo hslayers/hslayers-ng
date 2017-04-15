@@ -1,0 +1,17 @@
+<div class="header">
+    <i class="glyphicon glyphicon-triangle-left" ng-click="previous()"></i>
+    <span>{{month.format("MMMM, YYYY")}}</span>
+    <i class="glyphicon glyphicon-triangle-right" ng-click="next()"></i>
+</div>
+<div class="week names">
+    <span class="day">Ne</span>
+    <span class="day">Po</span>
+    <span class="day">Út</span>
+    <span class="day">St</span>
+    <span class="day">Ct</span>
+    <span class="day">Pá</span>
+    <span class="day">So</span>
+</div>
+<div class="week" ng-repeat="week in weeks">
+    <span class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }" ng-click="select(day)" ng-repeat="day in week.days">{{day.number}}</span>
+</div>
