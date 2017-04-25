@@ -142,7 +142,8 @@ define(['angular', 'ol', 'map'],
                     })
                 });
 
-                var map = OlMap.map;
+                var map;
+                
                 var extent_layer = new ol.layer.Vector({
                     title: "Datasources extents",
                     show_in_manager: false,
@@ -706,6 +707,7 @@ define(['angular', 'ol', 'map'],
                  * Initialization of datasource module
                  */
                 $scope.init = function() {
+                    map = OlMap.map;
                     OlMap.map.on('pointermove', function(evt) {
                         var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                         var something_done = false;
@@ -743,8 +745,7 @@ define(['angular', 'ol', 'map'],
                         extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
                     });
                 }
-
-                $scope.init();
+                $scope.$on('map.loaded', $scope.init);
             }
         ]);
 
