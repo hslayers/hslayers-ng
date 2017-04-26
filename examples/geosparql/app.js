@@ -162,7 +162,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             layers: [new ol.layer.Tile({
                     title: "OpenWeatherMap cloud cover",
                     source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png"
+                        url: "http://{a-c}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png?appid=13b627424cd072290defed4216e92baa"
                     }),
                     visible: false,
                     opacity: 0.7,
@@ -171,7 +171,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 new ol.layer.Tile({
                     title: "OpenWeatherMap precipitation",
                     source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png"
+                        url: "http://{a-c}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png?appid=13b627424cd072290defed4216e92baa"
                     }),
                     visible: false,
                     opacity: 0.7,
@@ -180,7 +180,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 new ol.layer.Tile({
                     title: "OpenWeatherMap temperature",
                     source: new ol.source.XYZ({
-                        url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png"
+                        url: "http://{a-c}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png?appid=13b627424cd072290defed4216e92baa"
                     }),
                     visible: false,
                     opacity: 0.7,
