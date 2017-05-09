@@ -17,6 +17,7 @@ require.config({
   // Karma serves files under /base, which is the basePath from your config file
   baseUrl: '/base',
   paths: {
+    'angularjs-socialshare': 'bower_components/angularjs-socialshare/dist/angular-socialshare',
     compositions: 'components/compositions/compositions',
     measure: 'components/measure/measure',
     app: 'examples/datasources/app',
@@ -54,6 +55,7 @@ require.config({
     ows:  'components/ows/ows',
     'ows.wms':  'components/ows/ows_wms',
     'ows.nonwms':  'components/ows/ows_nonwms',
+    'ows.wmts':  'components/ows/ows_wmts',
     'ows.wmsprioritized':  'components/ows/ows_wmsprioritized',
     query:  'components/query/query',
     search:  'components/search/search',
@@ -69,9 +71,10 @@ require.config({
     translations:  'components/translations/js/translations',
     datasource_selector: 'components/datasource_selector/datasource_selector',
     'angular-mocks': 'bower_components/angular-mocks/angular-mocks',
-    WfsSource: hsl_path + 'components/layers/hs.source.Wfs',
-    'ows.wfs': hsl_path + 'components/ows/ows_wfs'
-      
+    WfsSource: 'components/layers/hs.source.Wfs',
+    'ows.wfs': 'components/ows/ows_wfs',
+    config_parsers: 'components/compositions/config_parsers',
+    'dragdroplists': 'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists'
 },
   shim: {
     'angular': {'exports': 'angular'},

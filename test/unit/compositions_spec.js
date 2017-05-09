@@ -11,6 +11,7 @@ define(['compositions'], function(Core) {
             createController = function() {
             return $controller('hs.compositions.controller', {
                 '$scope': scope,
+                '$rootScope': $rootScope,
                 'config': {compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php', status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php'}
             });
             };
@@ -27,14 +28,14 @@ define(['compositions'], function(Core) {
                     d.resolve({"success":true,"results":[{"id":"9f7af9fd-ad7f-44a0-b953-51c4e487cbd1","title":"test","abstract":"","extent":[42.737206441986,39.396478327701,46.403893453194,40.874652880637],"updated":"2015-10-23T11:03:17"},{"id":"eda7c5c8-d4f7-454b-9ada-329c53027498","title":"New composition","abstract":"Test","extent":[15.246823103975,49.948881981057,15.361407073076,49.990948507028],"updated":"2015-11-26T12:40:09"}]});
                 return d.promise();
             });
-            scope.loadCompositions();
+            //scope.loadCompositions();
             expect(scope.compositions).toBeDefined();
         });
         
         it('if "Only mine" is unchecked then query.editable should not be sent at all', function() {
             var controller = createController();
             scope.query = {editable: false};
-            scope.filterChanged();
+            scope.mineFilterChanged();
             expect(scope.query.editable).toBeUndefined();
         });
     });

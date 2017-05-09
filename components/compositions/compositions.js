@@ -530,26 +530,47 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     if (angular.isDefined(composition.feature))
                         composition.feature.set('highlighted', state)
                 }
-
-                hsMap.map.on('pointermove', function(evt) {
-                    var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
-                    var something_done = false;
-                    $(extent_layer.getSource().getFeatures()).each(function() {
-                        if (this.get("record").highlighted) {
-                            this.get("record").highlighted = false;
-                            something_done = true;
-                        }
-                    });
-                    if (features.length) {
-                        $(features).each(function() {
-                            if (!this.get("record").highlighted) {
-                                this.get("record").highlighted = true;
+                
+                function init(){
+                    hsMap.map.on('pointermove', function(evt) {
+                        var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
+                        var something_done = false;
+                        $(extent_layer.getSource().getFeatures()).each(function() {
+                            if (this.get("record").highlighted) {
+                                this.get("record").highlighted = false;
                                 something_done = true;
                             }
-                        })
+                        });
+                        if (features.length) {
+                            $(features).each(function() {
+                                if (!this.get("record").highlighted) {
+                                    this.get("record").highlighted = true;
+                                    something_done = true;
+                                }
+                            })
+                        }
+                        if (something_done && !$scope.$$phase) $scope.$digest();
+                    });
+                    
+                    if (angular.isDefined($cookies.get('hs_layers')) && window.permalinkApp != true) {
+                        var data = $cookies.get('hs_layers');
+                        var layers = composition_parser.jsonToLayers(JSON.parse(data));
+                        for (var i = 0; i < layers.length; i++) {
+                            hsMap.map.addLayer(layers[i]);
+                        }
+                        $cookies.remove('hs_layers');
                     }
-                    if (something_done && !$scope.$$phase) $scope.$digest();
-                });
+                    
+                    hsMap.map.addLayer(extent_layer);
+                }
+                
+                
+                if(angular.isDefined(hsMap.map))
+                    init()
+                else 
+                    $rootScope.$on('map.loaded', function(){
+                        init();
+                    });              
 
                 var extent_layer = new ol.layer.Vector({
                     title: "Composition extents",
@@ -567,8 +588,6 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         })]
                     }
                 });
-
-                hsMap.map.addLayer(extent_layer);
 
                 $rootScope.$on('compositions.composition_edited', function(event) {
                     composition_parser.composition_edited = true;
@@ -739,15 +758,6 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     composition_parser.composition_loaded = null;
                     composition_parser.composition_edited = false;
                 });
-
-                if (angular.isDefined($cookies.get('hs_layers')) && window.permalinkApp != true) {
-                    var data = $cookies.get('hs_layers');
-                    var layers = composition_parser.jsonToLayers(JSON.parse(data));
-                    for (var i = 0; i < layers.length; i++) {
-                        hsMap.map.addLayer(layers[i]);
-                    }
-                    $cookies.remove('hs_layers');
-                }
 
                 $scope.$emit('scope_loaded', "Compositions");
                 $rootScope.$on('core.mainpanel_changed', function(event) {

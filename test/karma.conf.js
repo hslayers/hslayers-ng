@@ -6,12 +6,16 @@ module.exports = function(config) {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '../',
-
+    plugins: [
+        'karma-chrome-launcher',
+        'karma-jasmine',
+        'karma-requirejs'
+    ],
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine', 'requirejs'],
-
+    
 
     // list of files / patterns to load in the browser
     files: [
@@ -21,8 +25,10 @@ module.exports = function(config) {
       {pattern:'bower_components/angular-gettext/dist/angular-gettext.js', included: false},
       {pattern:'bower_components/bootstrap/dist/js/bootstrap.min.js', included: false},
       {pattern:'bower_components/angular-sanitize/angular-sanitize.js', included: false},
+      {pattern:'bower_components/angularjs-socialshare/dist/angular-socialshare.js', included: false},
       {pattern:'bower_components/angular-cookies/angular-cookies.js', included: false},
       {pattern:'bower_components/d3/d3.min.js', included: false},
+      {pattern:'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js', included: false},
       'test/test-main.js',
       {pattern: 'test/unit/**/*.js', included: false},
       {pattern: 'components/**/*.js', included: false},
