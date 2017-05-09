@@ -10,7 +10,7 @@
     </div>
     <div class="panel-body hs-lm-panel">
         <div class="nav nav-pills" ng-show="hasBoxImages()">
-            <div ng-repeat="box in box_layers"  class="col-xs-2 col-md-2 active" style="padding-right: 2px; padding-left: 2px;">
+            <div ng-repeat="box in data.box_layers"  class="col-xs-2 col-md-2 active" style="padding-right: 2px; padding-left: 2px;">
                 <a href="#" ng-class="{ 'thumbnail': true, 'alert-info': box.get('active')}" title="{{box.get('title')}}" ng-click="activateTheme(box)">
                     <img ng-src="{{box.get('img')}}" alt="{{box.get('title')}}">
                 </a>
@@ -22,10 +22,10 @@
             <li class="list-group-item hs-lm-header clearfix active">
                 <span translate>Baselayers</span>
                 <span class="pull-right">
-                    <button type="button" class="btn btn-xs btn-default" ng-click="changeBaseLayerVisibility()"><i class="glyphicon" ng-class="baselayersVisible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
+                    <button type="button" class="btn btn-xs btn-default" ng-click="changeBaseLayerVisibility()"><i class="glyphicon" ng-class="data.baselayersVisible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
                 </span>
             </li>
-            <li class="list-group-item hs-lm-item" ng-repeat="layer in baselayers | orderBy:'name'" ng-click="changeBaseLayerVisibility($event, layer)" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}" >
+            <li class="list-group-item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'" ng-click="changeBaseLayerVisibility($event, layer)" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}" >
                 <span ng-if="layer.active" ng-class="layer.grayed ? 'text-muted': ''"><strong>{{layer.title}}</strong></span>
                 <span ng-if="!layer.active" ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</span>
                 <span class="pull-right" ng-show="layer.active || hovering" ng-style="hovering && !layer.active && {'opacity':'0.5'}">
@@ -43,7 +43,7 @@
                     </button>
                 </span>
             </li>
-            <ul class="list-group hs-lm-layerlist" ng-repeat="value in folders.sub_folders | orderBy:'name' ">
+            <ul class="list-group hs-lm-layerlist" ng-repeat="value in data.folders.sub_folders | orderBy:'name' ">
                 <li class="list-group-item active">
                     <span>{{value.name}}</span>
                 </li>
