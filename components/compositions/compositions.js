@@ -532,6 +532,23 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 }
                 
                 function init(){
+                    extent_layer = new ol.layer.Vector({
+                        title: "Composition extents",
+                        show_in_manager: false,
+                        source: new ol.source.Vector(),
+                        style: function(feature, resolution) {
+                            return [new ol.style.Style({
+                                stroke: new ol.style.Stroke({
+                                    color: '#005CB6',
+                                    width: feature.get('highlighted') ? 4 : 1
+                                }),
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(0, 0, 255, 0.01)'
+                                })
+                            })]
+                        }
+                    });
+                                    
                     hsMap.map.on('pointermove', function(evt) {
                         var features = extent_layer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                         var something_done = false;
@@ -564,6 +581,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     hsMap.map.addLayer(extent_layer);
                 }
                 
+                var extent_layer;
                 
                 if(angular.isDefined(hsMap.map))
                     init()
@@ -571,23 +589,6 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     $rootScope.$on('map.loaded', function(){
                         init();
                     });              
-
-                var extent_layer = new ol.layer.Vector({
-                    title: "Composition extents",
-                    show_in_manager: false,
-                    source: new ol.source.Vector(),
-                    style: function(feature, resolution) {
-                        return [new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: '#005CB6',
-                                width: feature.get('highlighted') ? 4 : 1
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0, 0, 255, 0.01)'
-                            })
-                        })]
-                    }
-                });
 
                 $rootScope.$on('compositions.composition_edited', function(event) {
                     composition_parser.composition_edited = true;
