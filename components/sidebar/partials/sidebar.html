@@ -7,7 +7,7 @@
             <span class="sidebar-item-title" translate>Map Compositions</span>
         </a>
 
-        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.layermanager.controller')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
+        <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.layermanager.controller') && Core.panelEnabled('layermanager')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
             <i class="menu-icon glyphicon icon-layers" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Manage and style your layers in composition'|translate}}"></i>
             <span class="sidebar-item-title" translate>Manage and Style Layers</span>
         </a>
