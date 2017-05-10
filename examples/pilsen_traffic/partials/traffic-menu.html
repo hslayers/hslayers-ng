@@ -5,7 +5,17 @@
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="trafficMenu">
-        <li ng-repeat="item in items"><a>{{item}}</a>
+        <li ng-repeat="item in items">
+            <label class="checkbox"  ng-click="trafficLayerChanged(item, $event); $event.stopPropagation();">
+                <input type="checkbox" ng-model="item.check">
+                <i class="menu-icon pull-right glyphicon icon-random" data-toggle="tooltip" data-container="body" data-placement="auto"></i>
+                <span>{{item.label}}</span>
+                
+            </label>
+        </li>
+        <li class="container-button">
+            <div class="col-xs-6" ng-click="setAll(true);$event.stopPropagation();" ng-class="isAll(true) ? 'traffic-disable' : ''">Označit vše</div>
+            <div class="col-xs-6" ng-click="setAll(false);$event.stopPropagation();" ng-class="isAll(false) ? 'traffic-disable' : ''">Odznačit vše</div>
         </li>
     </ul>
 </div>

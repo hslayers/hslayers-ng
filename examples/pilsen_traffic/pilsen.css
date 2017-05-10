@@ -1,3 +1,23 @@
+.ol-zoom {
+    top: 20px !important;
+    right: 20px !important;
+    background-color: transparent !important;
+}
+
+.ol-zoom button {
+    display: inline-block !important;
+    width: 38px !important;
+    height: 38px !important;
+    background-color: #fff !important;
+    border-radius: 0px !important;
+    color: #000 !important;
+    border: 1px solid black;
+    font-size: 150% !important;
+    font-weight: bold !important;
+    box-shadow: 2px 2px 1px #4b4b4b;
+    margin-left: 5px !important;
+}
+
 .left-top {
     position: absolute;
     top: 20px;
@@ -41,6 +61,7 @@
     border-radius: 0px;
     box-shadow: 2px 2px 1px #4b4b4b;
     cursor: pointer;
+    padding: 0px;
 }
 
 .left-top .dropdown-menu li:hover {
@@ -53,4 +74,56 @@
 
 .left-top .dropdown-menu .selected {
     background-color: #acacac;
+}
+
+.left-top .dropdown-menu .checkbox {
+    margin: 0px;
+    padding: 5px;
+    min-height: 40px;
+    width: 100%;
+    display: block;
+    vertical-align: top;
+    line-height: 30px;
+}
+
+.left-top .dropdown-menu .checkbox span {
+    vertical-align: top;
+    line-height: 30px;
+}
+
+.left-top .dropdown-menu .checkbox input,i{
+    position: relative;
+    margin: 5px;
+    height: 20px;
+    width: 20px;
+}
+
+.left-top .dropdown-menu .container-button {
+    width: 100%;
+    margin: 0px;
+}
+
+.left-top .dropdown-menu .container-button > div {
+    margin: 0px;
+    padding: 5px;
+    min-width: 0px;
+    border-top: 1px solid #adadad;
+    text-align: center;
+    font-weight: bold;
+}
+
+.left-top .dropdown-menu .container-button > div:hover {
+    background-color: #adadad;
+}
+
+.left-top .dropdown-menu .container-button > div:first-child {
+    border-right: 1px solid #adadad;
+}
+
+.left-top .dropdown-menu .container-button .traffic-disable {
+    color: #747474;
+}
+
+.left-top .dropdown-menu .container-button .traffic-disable:hover {
+    background-color: #fff;
 }

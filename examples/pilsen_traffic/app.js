@@ -75,8 +75,40 @@ define(['ol',
       
             var controller = ['$scope', function ($scope) {
                 
-                $scope.items = ["Události", "Uzavírky", "Stupně provozu", "Kamery"];
+                $scope.trafficLayerChanged = function(item,e) {
+                    if (e.target.tagName != "INPUT") return;
+                    toggleLayer(item);
+                }
                 
+                $scope.items = [{
+                    "label": "Události"
+                }, {
+                    "label": "Uzavírky"
+                }, {
+                    "label": "Stupně provozu"
+                }];
+                
+                $scope.items.forEach(function(item){
+                    if (angular.isUndefined(item.check)) item.check = false;
+                })
+                
+                $scope.setAll = function(value) {
+                    $scope.items.forEach(function(item){
+                        item.check = value; 
+                        toggleLayer(item);
+                    });
+                }
+                
+                $scope.isAll = function(value) {
+                    for (var i = 0; i < $scope.items.length; i++) {
+                        if ($scope.items[i].check != value) return false;
+                    }
+                    return true;
+                }
+                
+                function toggleLayer(item) {
+                    //item.check === true ? addlayer : removelayer;
+                }
             }];
 
             return {
