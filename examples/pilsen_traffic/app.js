@@ -57,12 +57,55 @@ define(['ol',
                 }
             };
         });
+    
+        module.directive('hs.topmenu', function() {
+            return {
+                templateUrl: 'partials/top-menu.html?bust=' + gitsha
+            };
+        });
+    
+        module.directive('hs.basemapmenu', function() {
+            return {
+                templateUrl: 'partials/basemap-menu.html?bust=' + gitsha,
+                controller: 'hs.layermanager.controller'
+            };
+        });
+    
+        module.directive('hs.trafficmenu', function () {
+      
+            var controller = ['$scope', function ($scope) {
+                
+                $scope.items = ["Události", "Uzavírky", "Stupně provozu", "Kamery"];
+                
+            }];
+
+            return {
+                restrict: 'A',
+                controller: controller,
+                templateUrl: 'partials/traffic-menu.html?bust=' + gitsha
+            };
+          });
 
         module.value('config', {
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "Base layer",
+                    base: true
+                }),
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "OSM1",
+                    base: true
+                }),
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "OSM2",
+                    base: true
+                }),
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "OSM3",
                     base: true
                 })
             ],
@@ -84,9 +127,9 @@ define(['ol',
                     }
 
                     if (args == 'Sidebar') {
-                        var el = angular.element('<div hs.pilsentraffic.directive ng-controller="hs.pilsentraffic.controller" ng-if="Core.exists(\'hs.pilsentraffic.controller\')" ng-show="Core.panelVisible(\'pilsentraffic\', this)"></div>');
+                        var el = angular.element('<div id="test3" hs.pilsentraffic.directive ng-controller="hs.pilsentraffic.controller" ng-if="Core.exists(\'hs.pilsentraffic.controller\')" ng-show="Core.panelVisible(\'pilsentraffic\', this)"></div>');
                         angular.element('#panelplace').append(el);
-                        $compile(el)($scope);
+                        $compile(el)($scope);                        
 
                         var toolbar_button = angular.element('<div hs.pilsentraffic.toolbar_button_directive></div>');
                         angular.element('.sidebar-list').append(toolbar_button);
@@ -112,6 +155,17 @@ define(['ol',
                     }
                 });
 
+                function addTopbar() {
+                    var el = angular.element('<div hs.topmenu></div>');
+                    angular.element(".gui-overlay").append(el);
+                    $compile(el)($scope);
+                }
+                
+                angular.element(document).ready(function () {
+                    addTopbar();
+                });
+                
+                
                 $scope.showDeveloperInfo = function() {
                     $("#hs-dialog-area #advanced-info-dialog").remove();
                     var el = angular.element('<div hs.advanced_infopanel_directive></div>');
@@ -482,6 +536,7 @@ define(['ol',
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('status_creator', false);
                 Core.panelEnabled('permalink', false);
+                Core.panelEnabled('layermanager', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
             }

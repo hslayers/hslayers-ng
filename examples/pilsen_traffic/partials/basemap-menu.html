@@ -1,0 +1,11 @@
+<div class="dropdown pull-left" style="">
+    <button class="btn btn-default dropdown-toggle" type="button" id="basemapMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <i class="menu-icon glyphicon icon-layers" data-toggle="tooltip" data-container="body" data-placement="auto" title="Vyberte podkladovou mapu"></i>
+        Změnit mapu
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="basemapMenu">
+        <li ng-repeat="layer in data.baselayers" ng-class="layer.active ? 'selected': ''"><a ng-click="changeBaseLayerVisibility($event, layer)">{{layer.title}}</a>
+        </li>
+    </ul>
+</div>
