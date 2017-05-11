@@ -148,8 +148,8 @@ define(['ol',
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout',
-            function($scope, Core, $compile, hsmap, $timeout) {
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 
+            function($scope, Core, $compile, hsmap, $timeout, $http, utils) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
@@ -209,8 +209,45 @@ define(['ol',
                         $scope.timeline.goTo(1);
                     }, 200);
                 }
+                
+                
+                var data = {
+                        'title': {
+                            'text': {
+                                'headline': 'Časová osa dopravních staveb v Plzni',
+                                'text': ''
+                            }
+                        },
+                        'events': []
+                };
+                        
+                 $http({
+                    method: 'GET',
+                    url: utils.proxify('http://otn-caramba.rhcloud.com/get_roadworks/'),
+                    cache: false
+                }).then(function (response) {
+                    response.data.forEach(function(item){
+                        var froms = item.dates[0].split('-');
+                        var tos = item.dates[1].split('-');
+                       data.events.push({
+                            'start_date': {
+                                'year': froms[0],
+                                'month': froms[1],
+                                'day': froms[2]
+                            },
+                            'end_date': {
+                                'year': tos[0],
+                                'month': tos[1],
+                                'day': tos[2]
+                            },
+                            'text': {
+                                'headline': item.name,
+                                'text': item.description
+                            }}); 
+                    })
+                })
 
-                    var data = {
+                    var data_old = {
                         'title': {
                             'media': {
                                 'url': 'images/input.png',
@@ -548,9 +585,9 @@ define(['ol',
                     };
                     
                 $scope.options = {
-                    debug: true,
+                    debug: false,
                     timenav_position: 'top',
-                    language: 'en',
+                    language: 'cz',
                     data: data
                 };
 
