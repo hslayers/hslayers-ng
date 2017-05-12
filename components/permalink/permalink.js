@@ -314,7 +314,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         if (!$scope.shareUrlValid) {
                             if (service.shareId == null || $scope.new_share) service.shareId = utils.generateUuid();
                             $.ajax({
-                                url: (getHostName() + config.status_manager_url),
+                                url: (getHostname() + config.status_manager_url),
                                 cache: false,
                                 method: 'POST',
                                 async: false,
