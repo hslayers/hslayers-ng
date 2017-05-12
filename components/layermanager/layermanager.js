@@ -903,8 +903,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
      * @memberOf hs.layermanager
      * @description Controller for management of deafult HSLayers layer manager template
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log', 'hs.ows.wms.service_capabilities', 'hs.status_creator.service', 'hs.layermanager.service', 'hs.layermanager.WMSTservice',
-        function ($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log, srv_wms_caps, status_creator, layManService, WMST) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log', 'hs.ows.wms.service_capabilities', 'hs.status_creator.service', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.utils.layerUtilsService',
+        function ($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log, srv_wms_caps, status_creator, layManService, WMST, layerUtils) {
 
             $scope.Core = Core;
             $scope.layer_renamer_visible = false;
@@ -1068,13 +1068,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @description Determines if layer has BoundingBox defined as its metadata or is a Vector layer. Used for setting visibility of 'Zoom to ' button
              * @param {Ol.layer} layer Selected layer
              */
-            $scope.layerIsZoomable = function (layer) {
-                if (typeof layer == 'undefined') return false;
-                if (layer.get("BoundingBox")) return true;
-                if ($scope.isLayerWMS(layer)) return true;
-                if (layer.getSource().getExtent && layer.getSource().getExtent() && !ol.extent.isEmpty(layer.getSource().getExtent())) return true;
-                return false;
-            }
+            $scope.layerIsZoomable = layerUtils.layerIsZoomable;
 
             /**
              * @function layerIsStyleable
@@ -1082,11 +1076,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @description Determines if layer is a Vector layer and styleable. Used for allowing styling
              * @param {Ol.layer} layer Selected layer
              */
-            $scope.layerIsStyleable = function (layer) {
-                if (typeof layer == 'undefined') return false;
-                if (layer instanceof ol.layer.Vector /*&& layer.getSource().styleAble*/ ) return true;
-                return false;
-            }
+            $scope.layerIsStyleable = layerUtils.layerIsStyleable;
 
             /**
              * @function styleLayer
@@ -1131,29 +1121,17 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @param {object} layer_container Selected layer - wrapped in layer object
              * @description Test if layer is queryable (WMS layer with Info format)
              */
-            $scope.isLayerQueryable = function (layer_container) {
-                var layer = layer_container.layer;
-                if (layer instanceof ol.layer.Tile &&
-                    (layer.getSource() instanceof ol.source.TileWMS) &&
-                    layer.getSource().getParams().INFO_FORMAT) return true;
-                if (layer instanceof ol.layer.Image &&
-                    layer.getSource() instanceof ol.source.ImageWMS &&
-                    layer.getSource().getParams().INFO_FORMAT) return true;
-                return false;
+            $scope.isLayerQueryable = function(layer_container) {
+                layerUtils.isLayerQueryable(layer_container.layer);
             }
+            
             /**
              * @function isLayerWMS
              * @memberOf hs.layermanager.controller
              * @param {Ol.layer} layer Selected layer
              * @description Test if layer is WMS layer
              */
-            $scope.isLayerWMS = function (layer) {
-                if (layer instanceof ol.layer.Tile &&
-                    (layer.getSource() instanceof ol.source.TileWMS)) return true;
-                if (layer instanceof ol.layer.Image &&
-                    layer.getSource() instanceof ol.source.ImageWMS) return true;
-                return false;
-            }
+            $scope.isLayerWMS = layerUtils.isLayerWMS;
 
             /**
              * @function dateToNonUtc
@@ -1263,18 +1241,16 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @param {Ol.layer} layer Selected layer
              * @description Test if selected layer is loaded in map
              */
-            $scope.layerLoaded = function (layer) {
-                return layer.getSource().loaded
-            }
+            $scope.layerLoaded = layerUtils.layerLoaded;
+            
             /**
              * @function layerValid
              * @memberOf hs.layermanager.controller
              * @param {Ol.layer} layer Selected layer
              * @description Test if selected layer is valid (true for invalid)
              */
-            $scope.layerValid = function (layer) {
-                return layer.getSource().error;
-            }
+            $scope.layerValid = layerUtils.layerInvalid;
+            
             /**
              * @function addDrawingLayer
              * @memberOf hs.layermanager.controller

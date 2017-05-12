@@ -229,4 +229,92 @@ define(['angular', 'app'], function(angular, app) {
         }
         
     }])
+    
+    /**
+     * @ngdoc service
+     * @name hs.utils.layerUtilsService
+     * @memberOf hs.utils
+     * @param {object} config - Application configuration
+     * @description Service containing varius functions for testing layer functionalities
+     */
+    .service('hs.utils.layerUtilsService', ['config', function(config) {
+        var me = this;
+        
+        /**
+         * @function layerIsZoomable
+         * @memberOf hs.utils.layerUtilsService
+         * @description Determines if layer has BoundingBox defined as its metadata or is a Vector layer.
+         * @param {Ol.layer} layer Selected layer
+         */
+        this.layerIsZoomable = function (layer) {
+            if (typeof layer == 'undefined') return false;
+            if (layer.get("BoundingBox")) return true;
+            if (me.isLayerWMS(layer)) return true;
+            if (layer.getSource().getExtent && layer.getSource().getExtent() && !ol.extent.isEmpty(layer.getSource().getExtent())) return true;
+            return false;
+        }
+
+        /**
+         * @function layerIsStyleable
+         * @memberOf hs.utils.layerUtilsService
+         * @description Determines if layer is a Vector layer and therefore styleable
+         * @param {Ol.layer} layer Selected layer
+         */
+        this.layerIsStyleable = function (layer) {
+            if (typeof layer == 'undefined') return false;
+            if (layer instanceof ol.layer.Vector /*&& layer.getSource().styleAble*/ ) return true;
+            return false;
+        }
+
+        /**
+         * @function isLayerQueryable
+         * @memberOf hs.utils.layerUtilsService
+         * @param {Ol.layer} layer Selected layer
+         * @description Test if layer is queryable (WMS layer with Info format)
+         */
+        this.isLayerQueryable = function (layer) {
+            if (layer instanceof ol.layer.Tile &&
+                (layer.getSource() instanceof ol.source.TileWMS) &&
+                layer.getSource().getParams().INFO_FORMAT) return true;
+            if (layer instanceof ol.layer.Image &&
+                layer.getSource() instanceof ol.source.ImageWMS &&
+                layer.getSource().getParams().INFO_FORMAT) return true;
+            return false;
+        }
+        /**
+         * @function isLayerWMS
+         * @memberOf hs.utils.layerUtilsService
+         * @param {Ol.layer} layer Selected layer
+         * @description Test if layer is WMS layer
+         */
+        this.isLayerWMS = function (layer) {
+            if (layer instanceof ol.layer.Tile &&
+                (layer.getSource() instanceof ol.source.TileWMS)) return true;
+            if (layer instanceof ol.layer.Image &&
+                layer.getSource() instanceof ol.source.ImageWMS) return true;
+            return false;
+        }
+
+        /**
+         * @function layerLoaded
+         * @memberOf hs.utils.layerUtilsService
+         * @param {Ol.layer} layer Selected layer
+         * @description Test if selected layer is loaded in map
+         */
+        this.layerLoaded = function (layer) {
+            return layer.getSource().loaded
+        }
+        
+        /**
+         * @function layerInvalid
+         * @memberOf hs.utils.layerUtilsService
+         * @param {Ol.layer} layer Selected layer
+         * @description Test if selected layer is not invalid (true for invalid)
+         */
+        this.layerInvalid = function (layer) {
+            return layer.getSource().error;
+        }
+            
+        
+    }])
 })
