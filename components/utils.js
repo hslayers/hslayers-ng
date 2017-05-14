@@ -1,6 +1,8 @@
 /**
- * @namespace hs.map
- * @memberOf hs
+ * @ngdoc module
+ * @module hs.utils
+ * @name hs.utils
+ * @description Utility module which contains few utility functions.
  */
 define(['angular', 'app'], function(angular, app) {
     angular.module('hs.utils', ['hs'])
@@ -8,20 +10,21 @@ define(['angular', 'app'], function(angular, app) {
     /**
      * @ngdoc service
      * @name hs.utils.service
-     * @memberOf hs.utils
+     * @module hs.utils
      * @param {object} config - Application configuration
-     * @description Service for containing various utility functions
+     * @description Service for containing various utility functions used throughout HSL modules. 
+     * Add few utility functions and also enrich some data types with additional functions (mainly Date and String).
      */
     .service('hs.utils.service', ['config', function(config) {
         var me = this;
-
         /**
-        * @function proxify
-        * @memberof hs.utils.service
-        * @params {String} url Url to proxify
-        * @params {Boolean} toEncoding Optional parameter if UTF-8 encoding shouldn´t be used for non-image Urls.         
-        * @returns {String} Encoded Url with path to script 
-        * Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
+        * @ngdoc method
+        * @name hs.utils.service#proxify
+        * @public
+        * @param {String} url Url to proxify
+        * @param {Boolean} toEncoding Optional parameter if UTF-8 encoding shouldn´t be used for non-image Urls.         
+        * @returns {String} Encoded Url with path to hsproxy.cgi script  
+        * @description Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
         */
         this.proxify = function(url, toEncoding) {
             toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
@@ -36,38 +39,32 @@ define(['angular', 'app'], function(angular, app) {
             }
             return outUrl;
         }
-
-         /**
-        * @function getPortFromUrl
-        * @memberof hs.utils.service
-        * @params {String} url Url for which to determine port number 
-        * @returns {String} 
+        /**
+        * @ngdoc method
+        * @name hs.utils.service#getPortFromUrl
+        * @private
+        * @param {String} url Url for which to determine port number        
+        * @returns {String} Port number  
         */
         function getPortFromUrl(url){
             var link = document.createElement('a');
             link.setAttribute('href', url);
             return link.port;
         }
-
         /**
-        * @function parseXexString
-        * @memberof hs.utils.service
-        * @params {String} hex 
-        * @returns {Array} 
-        * DEPRECATED?
+        * @ngdoc method
+        * @name hs.utils.service#parseHexString
+        * @deprecated
         */
         this.parseHexString = function(hex) {
             for (var bytes = [], c = 0; c < hex.length; c += 2)
                 bytes.push(parseInt(hex.substr(c, 2), 16));
             return bytes;
         }
-
         /**
-        * @function createHexString
-        * @memberof hs.utils.service
-        * @params {Array} bytes 
-        * @returns {String} 
-        * DEPRECATED?
+        * @ngdoc method
+        * @name hs.utils.service#createHexString
+        * @deprecated
         */
         this.createHexString = function(bytes) {
             for (var hex = [], i = 0; i < bytes.length; i++) {
@@ -76,13 +73,13 @@ define(['angular', 'app'], function(angular, app) {
             }
             return hex.join("");
         }
-
         /**
-        * @function getParamsFromUrl
-        * @memberof hs.utils.service
-        * @params {String} str Url to parse for paramameters 
-        * @returns {Object} Object with parameter key-value pairs 
-        * Parse parameters and their values from Url string with Querry string
+        * @ngdoc method
+        * @name hs.utils.service#getParamsFromUrl
+        * @public
+        * @param {String} str Url to parse for parameters 
+        * @returns {Object} Object with parsed parameters as properties
+        * @description Parse parameters and their values from Url string
         */
         this.getParamsFromUrl = function(str) {
             if (typeof str !== 'string') {
@@ -115,13 +112,13 @@ define(['angular', 'app'], function(angular, app) {
                 return ret;
             }, {});
         };
-
         /**
-        * @function paramsToUrl
-        * @memberof hs.utils.service
-        * @params {Object} array Parameter object with parameter key-value pairs 
+        * @ngdoc method
+        * @name hs.utils.service#paramsToUrl
+        * @public
+        * @param {Object} array Parameter object with parameter key-value pairs 
         * @returns {String} Joined encoded Url query string
-        * Create encoded Url string from Parameter array
+        * @description Create encoded Url string from object with parameters
         */
         this.paramsToURL = function(array) {
             var pairs = [];
@@ -131,13 +128,13 @@ define(['angular', 'app'], function(angular, app) {
                     pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(array[key]));
             return pairs.join('&');
         }
-        
         /**
-        * @function paramsToUrl
-        * @memberof hs.utils.service
-        * @params {Object} array Parameter object with parameter key-value pairs 
-        * @returns {String} Joined encoded Url query string
-        * Create encoded Url string from Parameter array
+        * @ngdoc method
+        * @name hs.utils.service#paramsToUrlWoEncode
+        * @public
+        * @param {Object} array Parameter object with parameter key-value pairs 
+        * @returns {String} Joined Url query string
+        * @description Create Url string from object with parameters without encoding
         */
         this.paramsToURLWoEncode = function(array) {
             var pairs = [];
@@ -147,12 +144,12 @@ define(['angular', 'app'], function(angular, app) {
                     pairs.push(key + '=' + array[key]);
             return pairs.join('&');
         }
-
         /**
-        * @function generateUuid
-        * @memberof hs.utils.service
-        * @returns {String} Random uuid 
-        * Generate randomized uuid
+        * @ngdoc method
+        * @name hs.utils.service#generateUuid
+        * @public        
+        * @returns {String} Random uuid
+        * @description Generate randomized uuid
         */
         this.generateUuid = function() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -233,7 +230,7 @@ define(['angular', 'app'], function(angular, app) {
     /**
      * @ngdoc service
      * @name hs.utils.layerUtilsService
-     * @memberOf hs.utils
+     * @module hs.utils
      * @param {object} config - Application configuration
      * @description Service containing varius functions for testing layer functionalities
      */
@@ -241,10 +238,11 @@ define(['angular', 'app'], function(angular, app) {
         var me = this;
         
         /**
-         * @function layerIsZoomable
-         * @memberOf hs.utils.layerUtilsService
-         * @description Determines if layer has BoundingBox defined as its metadata or is a Vector layer.
+         * @ngdoc method
+         * @name hs.utils.layerUtilsService#layerIsZoomable
          * @param {Ol.layer} layer Selected layer
+         * @returns {Boolean} True for layer with BoundingBox property, for WMS layer or for layer, which has source with extent
+         * @description Determines if layer have properties needed for Zoom to layer function.
          */
         this.layerIsZoomable = function (layer) {
             if (typeof layer == 'undefined') return false;
@@ -255,10 +253,11 @@ define(['angular', 'app'], function(angular, app) {
         }
 
         /**
-         * @function layerIsStyleable
-         * @memberOf hs.utils.layerUtilsService
-         * @description Determines if layer is a Vector layer and therefore styleable
+         * @ngdoc method
+         * @name hs.utils.layerUtilsService#layerIsStyleable
          * @param {Ol.layer} layer Selected layer
+         * @returns {Boolean} True for ol.layer.Vector 
+         * @description Determines if layer is a Vector layer and therefore styleable
          */
         this.layerIsStyleable = function (layer) {
             if (typeof layer == 'undefined') return false;
@@ -267,9 +266,10 @@ define(['angular', 'app'], function(angular, app) {
         }
 
         /**
-         * @function isLayerQueryable
-         * @memberOf hs.utils.layerUtilsService
+         * @ngdoc method
+         * @name hs.utils.layerUtilsService#isLayerQueryable
          * @param {Ol.layer} layer Selected layer
+         * @returns {Boolean} True for ol.layer.Tile and ol.layer.Image with INFO_FORMAT in params
          * @description Test if layer is queryable (WMS layer with Info format)
          */
         this.isLayerQueryable = function (layer) {
@@ -282,9 +282,10 @@ define(['angular', 'app'], function(angular, app) {
             return false;
         }
         /**
-         * @function isLayerWMS
-         * @memberOf hs.utils.layerUtilsService
+         * @ngdoc method
+         * @name hs.utils.layerUtilsService#isLayerWMS
          * @param {Ol.layer} layer Selected layer
+         * @returns {Boolean} True for ol.layer.Tile and ol.layer.Image
          * @description Test if layer is WMS layer
          */
         this.isLayerWMS = function (layer) {
@@ -296,20 +297,22 @@ define(['angular', 'app'], function(angular, app) {
         }
 
         /**
-         * @function layerLoaded
-         * @memberOf hs.utils.layerUtilsService
+         * @ngdoc method
+         * @name hs.utils.layerUtilsService#layerLoaded
          * @param {Ol.layer} layer Selected layer
-         * @description Test if selected layer is loaded in map
+         * @returns {Boolean} True loaded / False not (fully) loaded
+         * @description Test if layers source is loaded 
          */
         this.layerLoaded = function (layer) {
             return layer.getSource().loaded
         }
         
         /**
-         * @function layerInvalid
-         * @memberOf hs.utils.layerUtilsService
+         * @ngdoc method
+         * @name hs.utils.layerUtilsService#layerInvalid
          * @param {Ol.layer} layer Selected layer
-         * @description Test if selected layer is not invalid (true for invalid)
+         * @returns {Boolean} True invalid, false valid source
+         * @description Test if layers source is validly loaded (!true for invalid)
          */
         this.layerInvalid = function (layer) {
             return layer.getSource().error;

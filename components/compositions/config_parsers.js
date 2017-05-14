@@ -1,6 +1,7 @@
 /**
- * @namespace hs.compositions
- * @memberOf hs
+ * @ngdoc module
+ * @module hs.compositions.config_parsers
+ * @name hs.compositions.config_parsers
  */
 
 define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonwms'],
@@ -8,7 +9,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
     function(angular, ol, SparqlJson, social) {
         var module = angular.module('hs.compositions.config_parsers', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms'])
             /**
-            * @memberof hs.compositions
+            * @module hs.compositions.config_parsers
             * @ngdoc service
             * @name hs.compositions.config_parsers.service
             * @description Service for parsing object definition which are invalid for direct use as layers
@@ -16,11 +17,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
             .service('hs.compositions.config_parsers.service', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', function(OlMap, config, Core, $rootScope, utils, nonWmsService) {
                 var me = {
                     /**
-                    * Parse defintion object to create WMS Ol.layer (source = ol.source.ImageWMS / ol.source.TileWMS)
-                    * @memberof hs.compositions.config_parsers.service
-                    * @function createWmsLayer 
+                    * @ngdoc method
+                    * @name hs.compositions.config_parsers.service#createWmsLayer 
+                    * @public
                     * @param {Object} lyr_def Layer definition object
-                    * @returns {ol.layer.Image|ol.layer.Tile} Complete definition of WMS layer
+                    * @returns {Object} Ol WMS layer
+                    * @description Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
                     */
                     createWmsLayer: function(lyr_def) {
                         var source_class = lyr_def.singleTile ? ol.source.ImageWMS : ol.source.TileWMS;
@@ -67,10 +69,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
                     },
                     /**
-                    * Parse defintion object to create Sparql layer 
-                    * @memberof hs.compositions.config_parsers.service
-                    * @function createSparqlLayer 
+                    * @ngdoc method
+                    * @name hs.compositions.config_parsers.service#createSparqlLayer
+                    * @public
                     * @param {Object} lyr_def Layer definition object
+                    * @description  Parse definition object to create Sparql layer
                     */
                     createSparqlLayer: function(lyr_def) {
                         var url = decodeURIComponent(lyr_def.protocol.url);
@@ -99,11 +102,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         lyr.setVisible(lyr_def.visibility);
                     },
                     /**
-                    * Parse style definiton object to create valid Style object 
-                    * @memberof hs.compositions.config_parsers.service
-                    * @function parseStyle 
+                    * @ngdoc method
+                    * @name hs.compositions.config_parsers.service#parseStyle
+                    * @public
                     * @param {Object} j Style definition object
                     * @returns {ol.style.Style} Valid Ol style object
+                    * @description Parse style definition object to create valid Style
                     */
                     parseStyle: function(j) {
                         var style_json = {};
@@ -155,11 +159,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         return new ol.style.Style(style_json);
                     },
                     /**
-                    * Parse defintion object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
-                    * @memberof hs.compositions.config_parsers.service
-                    * @function createVectorLayer 
+                    * @ngdoc method
+                    * @name hs.compositions.config_parsers.service#createVectorLayer
+                    * @public
                     * @param {Object} lyr_def Layer definition object
                     * @returns {ol.layer.Vector|function} Either valid vector layer or function for creation of other supported vector file types)
+                    * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
                     */
                     createVectorLayer: function(lyr_def) {
                         var format = "";
