@@ -20,7 +20,7 @@ define(['angular', 'ol', 'app', 'map', 'core'],
                         }
                     });
                     me.listScopes = function() {
-                        var scopes = Core.getAllScopes();
+                        var scopes = getAllScopes();
                         var tmp = {};
                         for (var i = 0; i < scopes.length; i++) {
                             if (scopes[i].scope_name) {
@@ -71,7 +71,33 @@ define(['angular', 'ol', 'app', 'map', 'core'],
 
                     window.hslayers_api = me;
 
+                    /**
+                    * @ngdoc method
+                    * @name Api#getAllScopes 
+                    * @private
+                    * @returns {Array} Array of all active Angular Scopes of app
+                    * @description Get all scopes defined in app
+                    */
+                    function getAllScopes() {
+                        var getScopes = function(root) {
+                            var scopes = [];
 
+                            function visit(scope) {
+                                scopes.push(scope);
+                            }
+
+                            function traverse(scope) {
+                                visit(scope);
+                                if (scope.$$nextSibling)
+                                    traverse(scope.$$nextSibling);
+                                if (scope.$$childHead)
+                                    traverse(scope.$$childHead);
+                            }
+                            traverse(root);
+                            return scopes;
+                        }
+                        return getScopes($rootScope);
+                    }
                 }
             ])
 

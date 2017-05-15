@@ -3,8 +3,10 @@
  */
 
 /**
- * @namespace hs.core
- * @memberOf hs
+ * @ngdoc module
+ * @module hs.core
+ * @name hs.core
+ * @description Core module for whole HSLayers-NG. Contain paths to all other HS modules and dependencies (therefore it is not needed to specify them in hslayers.js file). Core module consists of Core service which keeps some app-level settings and mantain app size and panel statuses.
  */
 require.config({
     paths: {
@@ -104,40 +106,171 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
     function(angular, proj4) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
             /**
-            * @ngdoc service
-            * @name Core
-            * @memberOf hs.core
-            * @description Core service of HSL, keeps important app-level settings.
-            */
+             * @module hs.core
+             * @name Core
+             * @ngdoc service
+             * @description Core service of HSL and Core module, keeps important app-level settings.
+             */
             .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache',
                 function($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache) {
                     var me = {
+                        /**
+                        * @ngdoc property
+                        * @name Core#config
+                        * @public
+                        * @type {Object} 
+                        * @description Service shortcut to config module defined by app.js for application
+                        */
                         config: config,
+                        /**
+                        * @ngdoc property
+                        * @name Core#scopes_registered
+                        * @public
+                        * @type {Array} 
+                        * @description DEPRECATED?
+                        */
                         scopes_registered: [],
+                        /**
+                        * @ngdoc property
+                        * @name Core#mainpanel
+                        * @public
+                        * @type {String} null 
+                        * @description Storage of current main panel (panel which is opened). When {@link Core#defaultPanel defaultPanel} is specified, main panel is set to it during Core initialization.
+                        */
                         mainpanel: "",
+                        /**
+                        * @ngdoc property
+                        * @name Core#defaultPanel
+                        * @public
+                        * @type {String} null 
+                        * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed). 
+                        */
                         defaultPanel: "",
+                        /**
+                        * @ngdoc property
+                        * @name Core#sidebarExpanded
+                        * @public
+                        * @type {Boolean} false 
+                        * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
+                        */
                         sidebarExpanded: false,
+                        /**
+                        * @ngdoc property
+                        * @name Core#sidebarRight
+                        * @public
+                        * @type {Boolean} true 
+                        * @description Side on which sidebar will be shown (true - right side of map, false - left side of map)
+                        */
                         sidebarRight: true,
+                        /**
+                        * @ngdoc property
+                        * @name Core#sidebarLabels
+                        * @public
+                        * @type {Boolean} true 
+                        * @description DEPRECATED? (labels display is done with CSS classes)
+                        */
                         sidebarLabels: true,
+                        /**
+                        * @ngdoc property
+                        * @name Core#sidebarToggleable
+                        * @public
+                        * @type {Boolean} true 
+                        * @description Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
+                        */
                         sidebarToggleable: true,
+                        /**
+                        * @ngdoc property
+                        * @name Core#sidebarButtons
+                        * @public
+                        * @type {Boolean} true 
+                        * @description DEPRECATED?
+                        */
                         sidebarButtons: true,
+                        /**
+                        * @ngdoc property
+                        * @name Core#singleDatasources
+                        * @public
+                        * @type {Boolean} false 
+                        * @description If true, datasource can be added to app only through Datasource selector panel (in GUI)
+                        */
                         singleDatasources: false,
+                        /**
+                        * @ngdoc property
+                        * @name Core#embededEnabled
+                        * @public
+                        * @type {Boolean} true 
+                        * @description If map can be shared as embeded frame
+                        */
                         embededEnabled: true,
+                        /**
+                        * @ngdoc property
+                        * @name Core#smallWidth
+                        * @public
+                        * @type {Boolean} false 
+                        * @description Helper property for showing some button on smaller screens
+                        */
                         smallWidth: false,
+                        /**
+                        * @ngdoc property
+                        * @name Core#panel_statuses
+                        * @public
+                        * @type {Object} 
+                        * @description DEPRACATED?
+                        */
                         panel_statuses: {},
+                        /**
+                        * @ngdoc property
+                        * @name Core#panel_enabled
+                        * @public
+                        * @type {Object}  
+                        * @description DEPRACATED?
+                        */
                         panel_enabled: {},
+                        /**
+                        * @ngdoc property
+                        * @name Core#_exist_cache
+                        * @public
+                        * @type {Object}  
+                        * @description DEPRECATED?
+                        */
                         _exist_cache: {},
+                        /**
+                        * @ngdoc property
+                        * @name Core#current_panel_queryable
+                        * @public
+                        * @type {Boolean} false 
+                        * @description Keep queryable status of current panel
+                        */
                         current_panel_queryable: false,
+                        /**
+                        * @ngdoc property
+                        * @name Core#hsSize
+                        * @public
+                        * @type {Object} 
+                        * @description Size (height and width) of hs ng-app (stored in px or %). 
+                        * Example
+                         * ```
+                         * {height: "100%", width: "100%"}
+                         * ```
+                        */
                         hsSize: {height: "100%",width: "100%"},
+                        /**
+                        * @ngdoc property
+                        * @name Core#puremapApp
+                        * @public
+                        * @type {Boolean} false 
+                        * @description If app is running in puremapApp mode
+                        */
                         puremapApp: false,
                         /**
-                         * @function setMainPanel
-                         * @memberOf Core
-                         * @param {String} which New panel to activate
-                         * @param {Boolean} by_gui Whether function call came as result of GUI action
-                         * @param {Boolean} queryable If map should be queryable with new mainpanel
-                         * Sets new main panel (Active panel when sidebar is in expanded mode). Change GUI and queryable status of map
-                         */
+                        * @ngdoc method
+                        * @name Core#setMainPanel 
+                        * @public
+                        * @param {String} which New panel to activate (panel name)
+                        * @param {Boolean} by_gui Whether function call came as result of GUI action
+                        * @param {Boolean} queryable If map should be queryable with new mainpanel. When parameter ommited, map enable queries.
+                        * @description Sets new main panel (Panel displayed in expanded sidebar). Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
+                        */
                         setMainPanel: function(which, by_gui, queryable) {
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
@@ -154,23 +287,32 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             else
                                 me.current_panel_queryable = queryable;
                             if (!$rootScope.$$phase) $rootScope.$digest();
+                            /**
+                            * @ngdoc event
+                            * @name Core#core.mainpanel_changed
+                            * @eventType broadcast on $rootScope
+                            * @description Fires when current mainpanel change - toggle, change of opened panel
+                            */
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         /**
-                         * @function setDefaultPanel
-                         * @memberOf Core
-                         * @param {String} which Panel to be default
-                         * Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
-                         */
+                        * @ngdoc method
+                        * @name Core#setDefaultPanel 
+                        * @public
+                        * @param {String} which New panel to be default (specify panel name)
+                        * @description Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
+                        */
                         setDefaultPanel: function(which) {
                             me.defaultPanel = which;
                             me.setMainPanel(which);
                         },
                         /**
-                         * @function updateMapSize
-                         * @memberOf Core
-                         * Change size of map element in application. Size should be rest of window width next to sidebar
-                         */
+                        * @ngdoc method
+                        * @name Core#updateMapSize 
+                        * @public
+                        * @param {String} which New panel to be default (specify panel name)
+                        * @description Change size of map element in application. Size should be rest of window width next to sidebar
+                        */
                         updateMapSize: function() {
                             var element = $("div[hs]");
                             var map = $("#map");
@@ -189,12 +331,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (!$rootScope.$$phase) $rootScope.$digest();
                         },
                         /**
-                         * @function panelVisible
-                         * @memberOf Core
-                         * @param {String} which 
-                         * @param {$scope} scope 
-                         * @description Todo
-                         */
+                        * @ngdoc method
+                        * @name Core#panelVisible 
+                        * @public
+                        * @param {String} which Name of panel to test
+                        * @param {$scope} scope Angular scope of panels controller (optional, needed for test of unpinned panels)
+                        * @returns {Boolean} Panel opened/closed status
+                        * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
+                        */
                         panelVisible: function(which, scope) {
                             if (angular.isDefined(scope))
                                 if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
@@ -204,12 +348,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             return me.mainpanel == which || (angular.isDefined(scope) && scope.unpinned);
                         },
                         /**
-                         * @function panelEnabled
-                         * @memberOf Core
-                         * @param {String} which Panel name
-                         * @param {Boolean} status Expected status of the panel
-                         * Gets and sets whether a panel is visible in the sidebar so it can be hidden even though the panels controller is loaded.
-                         */
+                        * @ngdoc method
+                        * @name Core#panelEnabled 
+                        * @public
+                        * @param {String} which Selected panel (panel name)
+                        * @param {Boolean} status Visibility status of panel to set
+                        * @returns {Boolean} Panel enabled/disabled status for getter function
+                        * @description Get or set panel visibility in sidebar. When panel is disabled it means that it's not displayed in sidebar (it can be opened programmaticaly) but it's functionality is running. Use with status parameter as setter.
+                        */
                         panelEnabled: function(which, status) {
                             if (typeof status == 'undefined') {
                                 if (angular.isDefined(me.panel_enabled[which]))
@@ -220,10 +366,11 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 me.panel_enabled[which] = status;
                         },
                         /**
-                         * @function hidePanels
-                         * @memberOf Core
-                         * Hide panels Deprecated?
-                         */
+                        * @ngdoc method
+                        * @name Core#hidePanels 
+                        * @public
+                        * @description Close opened panel programmaticaly. If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels. Cannot resolve unpinned panels.
+                        */
                         hidePanels: function() {
                             me.mainpanel = '';
                             me.sidebarLabels = true;
@@ -234,11 +381,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.mainpanel_changed');
                         },
                         /**
-                         * @function closePanel
-                         * @memberOf Core
-                         * @param {String} which Panel name of panel to close
-                         * Close selected panel. Resolve unpinned panels and new main panel in relevance to app settings. 
-                         */
+                        * @ngdoc method
+                        * @name Core#closePanel 
+                        * @public
+                        * @param {Object} which Panel to close (panel scope)
+                        * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
+                        */
                         closePanel: function(which) {
                             if (which.unpinned) {
                                 which.drag_panel.appendTo($(which.original_container));
@@ -265,11 +413,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$broadcast('core.mainpanel_changed',which);
                         },
                         /**
-                         * @function exists
-                         * @memberOf Core
-                         * @param {String} controllerName Controler to test
-                         * Test if selected controller is defined in application. 
-                         */
+                        * @ngdoc method
+                        * @name Core#exists 
+                        * @public
+                        * @param {String} controllerName Controler to test (angular name of controller)
+                        * @returns {Boolean} Controller existence
+                        * @description Test if selected panel controller is defined in application.
+                        */
                         exists: function(controllerName) {
                             if (angular.isDefined(me._exist_cache[controllerName])) return true;
                             if (typeof window[controllerName] == 'function') {
@@ -286,11 +436,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                         },
                         /**
-                        * @function init
-                        * @memberOf Core
+                        * @ngdoc method
+                        * @name Core#init 
+                        * @public
                         * @params {Object} element HS layers element gained from directive link
                         * @params {Array|String} value Type of initialization, possible options: (undefined - full window app, "self" - size of hs element setted by css, only pixel values, "parent" - take size from parent element, "id" - ID of another element from which size should be taken, if its direct parent element, parent option is recommended)
-                        * @description Universal function for initialization of directive with main HSLayers template and setting correct size to it. Take all posible inputs and switch to correct application size setter. Turn on all neceserary event listeners for resizing HSLayers element.
+                        * @description Universal function for initialization of HSLayers template and setting correct size to it. Take all posible inputs and switch to correct application size setter. Turn on all neceserary event listeners for resizing HSLayers element.
                         */
                         init: function(element, value) {
                             if (typeof(value) == undefined) {
@@ -308,11 +459,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                         },
                         /**
-                         * @function fullScreenMap
-                         * @memberOf Core
-                         * @param {Object} element Element to resize while going fullscreen
-                         * Utility function for initialization of app, when app take whole window
-                         */
+                        * @ngdoc method
+                        * @name Core#fullScreenMap 
+                        * @public
+                        * @param {Object} element Element to resize while going fullscreen
+                        * @description Utility function for initialization of app, when app take whole window
+                        */
                         fullScreenMap: function(element) {
                             $("html").css('overflow', 'hidden');
                             $("html").css('height', '100%');
@@ -321,11 +473,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             me.appSize(element, w);
                         },
                         /**
-                        * @function appSize
-                        * @memberOf Core
+                        * @ngdoc method
+                        * @name Core#appSize 
+                        * @public
                         * @param {Object} element HS element, for which size is set
-                        * @param {Object} container Base element for resizing, either element or window object
-                        * Set right size of app in page, starts event listeners for events which lead to changing app size (window resizing, change of app settings)
+                        * @param {Object} container Base containing element for resizing, either element or window object
+                        * @description Set right size of app in page, starts event listeners for events which lead to changing app size (window resizing, change of app settings)
                         */
                         appSize: function(element, container) {
                             me.changeSize(element, container);
@@ -340,13 +493,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 me.changeSize(element, container);
                             });
                         },
-                         /**
-                         * @function changeSize
-                         * @memberOf Core
-                         * @params {Object} element Angular object containing app element
-                         * @params {Object} container Base element object, to get requested size
-                         * Check current size of containing element and change setting of HS element
-                         */
+                        /**
+                        * @ngdoc method
+                        * @name Core#changeSize 
+                        * @public
+                        * @params {Object} element Angular object containing app element
+                        * @params {Object} container Base element object, to get requested size
+                        * @description Check current size of containing element and change setting of HS element
+                        */
                         changeSize: function(element,container) {
                             if (element === container && me.hsSize.height.indexOf("%") > -1) {
                                 var size = getSize(element.parent(),me.hsSize); 
@@ -361,23 +515,31 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             me.updateMapSize();
                         },
                         /**
-                        * @function changeSizeConfig
-                        * @memberOf Core
+                        * @ngdoc method
+                        * @name Core#changeSizeConfig
+                        * @public
                         * @param {String} newHeight New height setting for app (Pixel or percentage value e.g. '960px'/'100%')
                         * @param {String} newWidth New width setting for app (Pixel or percentage value e.g. '960px'/'100%')
-                        * Change max height and width of app element 
+                        * @description Change max height and width of app element (when app width is set by JS)
                         */
                         changeSizeConfig: function(newHeight, newWidth) {
                             me.hsSize.height = newHeight;
                             me.hsSize.width = newWidth;
+                            /**
+                            * @ngdoc event
+                            * @name Core#Core_sizeChanged
+                            * @eventType broadcast on $rootScope
+                            * @description Fires when height/width settings are changed
+                            */
                             $rootScope.$broadcast("Core_sizeChanged");
                         },
                         /**
-                         * @function setLanguage
-                         * @memberOf Core
-                         * @param {String} lang Language to select 
-                         * Set current active language for translating. (Currently cs and nl options supported).
-                         */
+                        * @ngdoc method
+                        * @name Core#setLanguage 
+                        * @public
+                        * @param {String} lang Language to select
+                        * @description Set current active language for translating. (Currently cs and nl options supported).
+                        */
                         setLanguage: function(lang) {
                             switch (lang) {
                                 case "cs_CZ":
@@ -390,48 +552,23 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             gettextCatalog.setCurrentLanguage(lang);
                         },
                         /**
-                         * @function getAllScopes
-                         * @memberOf Core
-                         * @returns {Array} Array of all active Angular Scopes of app
-                         * Get all scopes defined in app
-                         */
-                        getAllScopes: function() {
-                            var getScopes = function(root) {
-                                var scopes = [];
-
-                                function visit(scope) {
-                                    scopes.push(scope);
-                                }
-
-                                function traverse(scope) {
-                                    visit(scope);
-                                    if (scope.$$nextSibling)
-                                        traverse(scope.$$nextSibling);
-                                    if (scope.$$childHead)
-                                        traverse(scope.$$childHead);
-                                }
-
-                                traverse(root);
-                                return scopes;
-                            }
-                            return getScopes($rootScope);
-                        },
-                        /**
-                         * @function openStatusCreator
-                         * @memberOf Core
-                         * @description TODO
-                         */
+                        * @ngdoc method
+                        * @name Core#openStatusCreator 
+                        * @public
+                        * @description Open status creator panel
+                        */
                         openStatusCreator: function() {
                             //me.panel_statuses.status_creator = true;
                             hslayers_api.gui.StatusCreator.open();
                         },
                         /**
-                         * @function searchVisible
-                         * @memberOf Core
-                         * @param {booelan} is New status of search panel
-                         * @returns {Boolean} Current status of Search panel
-                         * Test visibility state of search panel. If optional argument is given, change status of search panel.
-                         */
+                        * @ngdoc method
+                        * @name Core#searchVisible 
+                        * @public
+                        * @param {booelan} is New status of search panel
+                        * @returns {Boolean} Current status of Search panel
+                        * @description DEPRECATED?
+                        */
                         searchVisible: function(is) {
                             if (arguments.length > 0) {
                                 me.panel_statuses['search'] = is;
@@ -439,11 +576,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             return me.panel_statuses['search']
                         },
                         /**
-                         * @function isAuthorized
-                         * @memberOf Core
-                         * @returns {Boolean} Check result - true for authorized user
-                         * Do authorization check of User
-                         */
+                        * @ngdoc method
+                        * @name Core#isAuthorized 
+                        * @public
+                        * @returns {Boolean} Check result - true for authorized user
+                        * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
+                        */
                         isAuthorized: function() {
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
@@ -451,20 +589,28 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             return false;
                         },
                         /**
-                         * @function resetMap
-                         * @memberOf Core
-                         * Do complete reset of map (view, layers) according to app config
-                         */
+                        * @ngdoc method
+                        * @name Core#resetMap
+                        * @public
+                        * @description Do complete reset of map (view, layers) according to app config
+                        */
                         resetMap: function() {
                             OlMap.reset();
+                            /**
+                            * @ngdoc event
+                            * @name Core#core.map_reset
+                            * @eventType broadcast on $rootScope
+                            * @description Fires when map completely reset
+                            */
                             $rootScope.$broadcast('core.map_reset', {});
                         },
                         /**
-                         * @function isMobile
-                         * @memberOf Core
-                         * @returns {String} Returns "mobile" or ""
-                         * Test if screen of used device is mobile type (current breakdown is screen width 800px)
-                         */
+                        * @ngdoc method
+                        * @name Core#isMobile 
+                        * @public
+                        * @returns {String} Returns "mobile" or ""
+                        * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
+                        */
                         isMobile: function() {
                             if (screen.width < 800) {
                                 return "mobile";
@@ -496,37 +642,40 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             window.proj4 = proj4
                         });
                     }
-                    
                     /**
-                     * @function getSize
-                     * @memberOf Core
-                     * @params {Object} container Container element to get maximum avaible size for app element
-                     * @params {Object} maxSize Maximum configured size of App element
-                     * @returns {Object} Computed size of element
-                     * (PRIVATE) Transform configured Size of app element to pixel numbers, checks if window is not smaller than app element
-                     */
-                    function getSize(container, maxSize) {
+                    * @ngdoc method
+                    * @name Core#getSize
+                    * @private
+                    * @params {Object} container Container element to get maximum avaible size for app element
+                    * @params {Object} maxSize Maximum configured size of App element
+                    * @params {Boolean} overflow If computed app size can overflow browser window (default is true)
+                    * @returns {Object} Computed size of element
+                    * @description Transform configured Size of app element to pixel numbers, optionally checks if window is not smaller than app settings
+                    */
+                    function getSize(container, maxSize, overflow) {
                         var size = {};
+                        if (typeof overflow == "undefined") overflow = true;
                         if (maxSize.height.indexOf("%") > -1) {
                             size.height = Math.round( container.height() / 100 * maxSize.height.slice(0,-1));
                             size.width = Math.round( container.width() / 100 * maxSize.width.slice(0,-1));
                         }
                         else {
                             maxSize.height.indexOf("px") > -1 ? size.height = maxSize.height.slice(0,-2) : size.height = maxSize.height;
-                            if (size.height < container.height()) size.height = container.height();
+                            if (size.height < container.height() && !(overflow)) size.height = container.height();
                             maxSize.width.indexOf("px") > -1 ? size.width = maxSize.width.slice(0,-2) : size.width = maxSize.width;
-                            if (size.width < container.width()) size.width = container.width();
+                            if (size.width < container.width() && !(overflow)) size.width = container.width();
                         }
                         return size;
                     };
 
                     /**
-                     * @function changeSize
-                     * @memberOf Core
-                     * @params {Object} w Angular object containing window, to get window size
-                     * @params {Object} element Angular object containing app element
-                     * (PRIVATE) Helper function for changing app size
-                     */
+                    * @ngdoc method
+                    * @name Core#changeSize 
+                    * @public
+                    * @params {Object} w Angular object containing window, to get window size
+                    * @params {Object} element Angular object containing app element
+                    * @description Helper function for changing app size
+                    */
                     function changeSize(w,element) {
                         var size = getSize(w,me.size);
                         element[0].style.height = size.height + "px";
