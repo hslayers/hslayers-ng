@@ -1,18 +1,27 @@
 /**
- * @namespace hs.map
- * @memberOf hs
+ * @ngdoc module
+ * @module hs.map
+ * @name hs.map
+ * @description Module containing service and controller for main map object (ol.Map).
  */
 define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, ol) {
     angular.module('hs.map', ['hs'])
 
     /**
-     * @ngdoc service
+     * @module hs.map
      * @name hs.map.service
-     * @memberOf hs.map
-     * @param {object} config - Application configuration
-     * @description Service for containing and initializing map object
+     * @ngdoc service
+     * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file), and basic set of {@link hs.map.service#interactions interactions}.
      */
     .service('hs.map.service', ['config', '$rootScope', 'hs.utils.service', function(config, $rootScope, utils) {
+        //timer variable for extent change event
+        var timer;
+        /**
+        * @ngdoc method
+        * @name hs.map.service#init
+        * @public
+        * @description Initialization function for HSLayers map object. Initialize map with basic interaction, scale line and watcher for map view changes. When default controller is used, its called automaticaly, otherwise its must be called before other modules dependent on map object are loaded.
+        */
         this.init = function(){
             me.map = new ol.Map({
                 target: 'map',
@@ -23,6 +32,12 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             function extentChanged(e){
                 if (timer != null) clearTimeout(timer);
                 timer = setTimeout(function() {
+                    /**
+                    * @ngdoc event
+                    * @name hs.map.service#map.extent_changed
+                    * @eventType broadcast on $rootScope
+                    * @description Fires when map extent change (move, zoom, resize). Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
+                    */
                     $rootScope.$broadcast('map.extent_changed', e.element, me.map.getView().calculateExtent(me.map.getSize()));
                 }, 500);   
             }
@@ -42,11 +57,31 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             });
             //me.map.addControl(new ol.control.ZoomSlider());
             me.map.addControl(new ol.control.ScaleLine());
+            /**
+            * @ngdoc event
+            * @name hs.map.service#map.loaded
+            * @eventType broadcast on $rootScope
+            * @description Fires when map is loaded (so other map dependent modules can proceed)
+            */
             $rootScope.$broadcast('map.loaded');
         }
         
+        /**
+        * @ngdoc property
+        * @name hs.map.service#duration
+        * @public
+        * @type {Number} 400
+        * @description Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
+        */
         this.duration = 400;
 
+        /**
+        * @ngdoc property
+        * @name hs.map.service#interactions
+        * @public
+        * @type {Object} 
+        * @description Set of default map interactions used in HSLayers ({@link http://openlayers.org/en/latest/apidoc/ol.interaction.DoubleClickZoom.html DoubleClickZoom},{@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardPan.html KeyboardPan}, {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardZoom.html KeyboardZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.MouseWheelZoom.html MouseWheelZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchRotate.html PinchRotate} , {@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchZoom.html PinchZoom}, {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragPan.html DragPan},{@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragZoom.html DragZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragRotate.html DragRotate} )
+        */
         this.interactions = {
             'DoubleClickZoom': new ol.interaction.DoubleClickZoom({
                 duration: this.duration
@@ -72,14 +107,22 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             'DragRotate': new ol.interaction.DragRotate()
         }
 
+        //Mouse position control, currently not used
+        var mousePositionControl = new ol.control.MousePosition({
+            coordinateFormat: ol.coordinate.createStringXY(4),
+            undefinedHTML: '&nbsp;'
+        });
+        
         var me = this;
 
         /**
-         * @function findLayerByTitle
-         * @memberOf hs.map.service (Olmap)
-         * @param {string} title Title of the layer which was specified as a option when creating the layer
-         * @description Finds a layer by its title and returns the last one if multiple are found
-         */
+        * @ngdoc method
+        * @name hs.map.service#findLayerByTitle
+        * @public
+        * @param {string} title Title of the layer (from layer creation)
+        * @returns {Ol.layer} Ol.layer object
+        * @description Find layer object by title of layer
+        */
         this.findLayerByTitle = function(title) {
 
 
@@ -91,22 +134,18 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             return tmp;
         }
 
-        var mousePositionControl = new ol.control.MousePosition({
-            coordinateFormat: ol.coordinate.createStringXY(4),
-            undefinedHTML: '&nbsp;'
-        });
-
         /**
-         * @function repopulateLayers
-         * @memberOf hs.map.service (Olmap)
-         * @param {object} visible_layers List of layers, which should be visible. When not specified, all layers get visible.
-         * @description Read all layers from app config to the map
-         */
+        * @ngdoc method
+        * @name hs.map.service#repopulateLayers
+        * @public
+        * @param {object} visible_layers List of layers, which should be visible. 
+        * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
+        */
         this.repopulateLayers = function(visible_layers) {
             if (angular.isDefined(config.box_layers)) {
                 angular.forEach(config.box_layers, function(box) {
                     angular.forEach(box.get('layers'), function(lyr) {
-                        lyr.setVisible(me.isLayerVisibleInPermalink(lyr, me.visible_layers));
+                        lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                         lyr.manuallyAdded = false;
                         me.map.addLayer(lyr);
                     });
@@ -115,7 +154,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
             if (angular.isDefined(config.default_layers)) {
                 angular.forEach(config.default_layers, function(lyr) {
-                    lyr.setVisible(me.isLayerVisibleInPermalink(lyr, me.visible_layers));
+                    lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                     lyr.manuallyAdded = false;
                     me.map.addLayer(lyr);
                 });
@@ -123,10 +162,11 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         }
 
         /**
-         * @function reset
-         * @memberOf hs.map.service (Olmap)
-         * @description Reset map to state configured in app config (reload all layers and set default view)
-         */
+        * @ngdoc method
+        * @name hs.map.service#reset
+        * @public
+        * @description Reset map to state configured in app config (reload all layers and set default view)
+        */
         this.reset = function() {
             var to_be_removed = [];
             me.map.getLayers().forEach(function(lyr) {
@@ -134,10 +174,18 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             });
             while (to_be_removed.length > 0) me.map.removeLayer(to_be_removed.shift());
             me.repopulateLayers(null);
+            me.resetView();
+        }
+        
+        /**
+        * @ngdoc method
+        * @name hs.map.service#resetView
+        * @public
+        * @description Reset map view to view configured in app config 
+        */
+        this.resetView = function() {
             me.map.setView(config.default_view);
         }
-
-        var timer;
        
         /**
          * @function isLayerVisibleInPermalink
@@ -145,7 +193,16 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
          * @param {ol.Layer} lyr - Layer for which to determine visibility
          * @description Finds out if layer is set as visible in URL (permalink)
          */
-        this.isLayerVisibleInPermalink = function(lyr, visible_layers) {
+        /**
+        * @ngdoc method
+        * @name hs.map.service#isLayerVisible
+        * @public
+        * @param {ol.Layer} lyr Layer for which to determine visibility
+        * @param {Array} visible_layers Layers which should be programmticaly visible
+        * @returns {Boolean} Detected visibility of layer
+        * @description Determine if layer is visible, either by its visibility status in map, or by its being in visible_layers group
+        */
+        this.isLayerVisible = function(lyr, visible_layers) {
             if (visible_layers) {
                 var found = false;
                 angular.forEach(visible_layers, function(vlyr) {
@@ -157,12 +214,13 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         }
 
         /**
-         * @function proxifyLayerLoader
-         * @memberOf hs.map.service (Olmap)
-         * @param {Ol.layer} lyr Layer to proxify
-         * @param {Boolean} tiled Info if layer is tiled
-         * @description Proxify layer loader
-         */
+        * @ngdoc method
+        * @name hs.map.service#proxifyLayerLoader
+        * @public
+        * @param {Ol.layer} lyr Layer to proxify
+        * @param {Boolean} tiled Info if layer is tiled
+        * @description Proxify layer loader to work with layers from other sources than app
+        */
         this.proxifyLayerLoader = function(lyr, tiled) {
             var src = lyr.getSource();
             if (tiled) {
@@ -179,10 +237,11 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
 
         //map.addControl(mousePositionControl);
         /**
-         * @function puremap
-         * @memberOf hs.map.service (Olmap)
-         * @description Clean interactions and zoom from map to get pure map
-         */
+        * @ngdoc method
+        * @name hs.map.service#puremap
+        * @public
+        * @description Clean interactions and zoom from map to get pure map
+        */
         this.puremap = function() {
             var interactions = this.map.getInteractions();
             var controls = this.map.getControls();
@@ -193,13 +252,39 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 me.map.removeControl(control);
             })
         }
+        
+        /**
+        * @ngdoc method
+        
+        * @public
+        * @param {number} x X coordinate of new center
+        * @param {number} y Y coordinate of new center
+        * @param {number} zoom New zoom level
+        * @description Move map and zoom to specified coordinate/zoom level
+        */
+        this.moveToAndZoom = function(x, y, zoom) {
+            var view = me.map.getView();
+            view.setCenter([x, y]);
+            view.setZoom(zoom);
+        }
+        
+        /**
+        * @ngdoc method
+        * @name hs.map.service#getMap
+        * @public
+        * @description Get ol.map object from service
+        */
+        this.getMap = function() {
+            return OlMap.map;
+        }
 
     }])
 
     /**
-     * @ngdoc directive
+     * @module hs.map
      * @name hs.map.directive
-     * @memberOf hs.map
+     * @ngdoc directive
+     * @description Map directive, for map template (not needed for map itself, but other components which might be displayed in map window, e.g. {@link hs.geolocation.directive geolocation})
      */
     .directive('hs.map.directive', ['Core', function(Core) {
         return {
@@ -211,71 +296,49 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
     }])
 
     /**
-     * @ngdoc controller
+     * @module hs.map
      * @name hs.map.controller
-     * @memberOf hs.map
+     * @ngdoc controller
+     * @description Main controller of default HSLayers map, initialize map service when default HSLayers template is used
      */
     .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.service_url', 'Core',
         function($scope, OlMap, config, permalink, Core) {
+            
             var map = OlMap.map;           
+            
             /**
-             * @function moveToAndZoom
-             * @memberOf hs.map.controller
-             * @param {number} x X coordinate of new center
-             * @param {number} y Y coordinate of new center
-             * @param {number} zoom New zoom level
-             * @description Move map and zoom to specified coordinate/zoom level
-             */
-            $scope.moveToAndZoom = function(x, y, zoom) {
-                var view = OlMap.map.getView();
-                view.setCenter([x, y]);
-                view.setZoom(zoom);
-            }
-
-            /**
-             * @function getMap
-             * @memberOf hs.map.controller
-             * @description Gets OpenLayers map object
-             * @returns {ol.Map}
-             */
-            $scope.getMap = function() {
-                return OlMap.map;
-            }
-
-            /**
-             * @function setTargetDiv
-             * @memberOf hs.map.controller
-             * @description Sets div element of the map
-             * @param {string} div_id ID pf the container element
-             * @returns {ol.Map}
-             */
+            * @ngdoc method
+            * @name hs.map.controller#setTargetDiv
+            * @public
+            * @description Sets div element of the map
+            * @param {string} div_id ID pf the container element
+            * @returns {ol.Map} 
+            */
             $scope.setTargetDiv = function(div_id) {
                 OlMap.map.setTarget(div_id);
             }
 
             /**
-             * @function findLayerByTitle
-             * @memberOf hs.map.controller
-             * @param {string} title - title of the layer which was specified as a option when creating the layer
-             * @description Finds a layer by its title and returns the last one if multiple are found
-             * @link hs.map.OlMap.findLayerByTitle
-             */
+            * @ngdoc method
+            * @name hs.map.controller#findLayerByTitle
+            * @public
+            * @param {string} title Title of the layer (from layer creation)
+            * @returns {Ol.layer} Ol.layer object
+            * @description Find layer object by title of layer 
+            */
             $scope.findLayerByTitle = OlMap.findLayerByTitle;
 
-            /**
-             * @function findLayerByTitle
-             * @memberOf hs.map.controller
-             * @description Unfinished
-             */
+            //
             $scope.showFeaturesWithAttrHideRest = function(source, attribute, value, attr_to_change, invisible_value, visible_value) {
 
             }
 
             /**
-             * @function init
-             * @memberOf hs.map.controller
-             * @description Syntactic sugar for initialization
-             */
+            * @ngdoc method
+            * @name hs.map.controller#init
+            * @public
+            * @description Initialization of map object, initialize map and map state from permalink.
+            */
             $scope.init = function() {
                 OlMap.init();
                 if (permalink.getParamValue('visible_layers')) {
@@ -286,7 +349,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 hs_y = permalink.getParamValue('hs_y');
                 hs_z = permalink.getParamValue('hs_z');
                 if (hs_x && hs_x != 'NaN' && hs_y && hs_y != 'NaN' && hs_z && hs_z != 'NaN') {
-                    $scope.moveToAndZoom(parseFloat(hs_x), parseFloat(hs_y), parseInt(hs_z));
+                    OlMap.moveToAndZoom(parseFloat(hs_x), parseFloat(hs_y), parseInt(hs_z));
                 }
 
                 if (permalink.getParamValue('permalink')) {
