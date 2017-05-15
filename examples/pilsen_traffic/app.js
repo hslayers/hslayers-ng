@@ -123,22 +123,26 @@ define(['ol',
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "Base layer",
-                    base: true
+                    base: true,
+                    visible: true
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "OSM1",
-                    base: true
+                    base: true,
+                    visible: false
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "OSM2",
-                    base: true
+                    base: true,
+                    visible: false
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "OSM3",
-                    base: true
+                    base: true,
+                    visible: false
                 })
             ],
             default_view: new ol.View({
