@@ -22,7 +22,7 @@
             <hr/>
             
             <fieldset class="form-group">
-                <h4 for="share-link" translate>Link for embed/social share</h4>
+                <h4 for="share-link" translate>Link for <span ng-show="Core.embededEnabled">embed/</span>social share</h4>
                 <div class="form-check">
                   <label class="form-check-label">
                     <input type="radio" class="form-check-input" name="share-link" value="puremap" ng-model="shareLink" ng-click="updateEmbedCode()">
@@ -36,7 +36,7 @@
                   </label>
                 </div>
             </fieldset>
-            <div class="form-group">
+            <div class="form-group" ng-show="Core.embededEnabled">
                 <label for="permalink-embed" class="control-label" translate>Embed code</label>
                 <textarea  class="form-control" style="height: 80px" id = "permalink-embed" ng-model="embedCode"></textarea>
                 <br/>
