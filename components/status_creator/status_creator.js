@@ -455,8 +455,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                                 canvas2.height = height;
                                 var ctx2 = canvas2.getContext("2d");
                                 ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
-                                $element.attr('src', canvas2.toDataURL('image/png'));
-                                this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
+                                try {
+                                    $element.attr('src', canvas2.toDataURL('image/png'));
+                                    this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
+                                }
+                                catch(e) {
+                                    $element.attr('src', hsl_path + 'components/status_creator/notAvailable.png');
+                                }
                                 $element.width(width).height(height);
                             }, $scope);
                             OlMap.map.renderSync();

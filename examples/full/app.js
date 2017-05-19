@@ -72,7 +72,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                                     INFO_FORMAT: undefined,
                                     FORMAT: "image/png; mode=8bit"
                                 },
-                                crossOrigin: null
+                                crossOrigin: "anonymous"
                             }),
                         }),
                         new ol.layer.Tile({
@@ -85,7 +85,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                                     FORMAT: "image/png",
                                     ABSTRACT: "Plastic waste in Ilida municipality"
                                 },
-                                crossOrigin: null
+                                crossOrigin: "anonymous"
                             }),
                             path: 'Ilida Thematic Data',
                             visible: true,
@@ -101,7 +101,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                                     INFO_FORMAT: 'text/html',
                                     FORMAT: "image/png"
                                 },
-                                crossOrigin: null
+                                crossOrigin: "anonymous"
                             }),
                             path: 'Kojčice',
                             visible: true,
@@ -117,7 +117,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                                     INFO_FORMAT: 'text/html',
                                     FORMAT: "image/png"
                                 },
-                                crossOrigin: null
+                                crossOrigin: "anonymous"
                             }),
                             path: 'Kojčice',
                             visible: true,
@@ -133,7 +133,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                                     INFO_FORMAT: 'text/html',
                                     FORMAT: "image/png"
                                 },
-                                crossOrigin: null
+                                crossOrigin: "anonymous"
                             }),
                             path: 'Kojčice',
                             visible: true,
@@ -149,7 +149,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
                                     INFO_FORMAT: 'text/html',
                                     FORMAT: "image/png"
                                 },
-                                crossOrigin: null
+                                crossOrigin: "anonymous"
                             }),
                             path: 'Kojčice',
                             visible: true,
