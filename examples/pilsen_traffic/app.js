@@ -212,7 +212,7 @@ define(['ol',
                                     visible: false,
                                     source: new ol.source.WMTS((options))
                                 });
-                                map.addLayer(newLayer);
+                                map.getLayers().insertAt(0,newLayer);
                             });    
                         });
                     }
