@@ -5,10 +5,6 @@
 define(['angular', 'moment'],
     function(angular, moment) {
     angular.module('hs.calendar', [])
-        
-    .controller("calendarDemo", function($scope) {
-        $scope.day = moment();
-    })
     
     .directive("calendar", function() {
         return {

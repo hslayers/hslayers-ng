@@ -156,6 +156,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 angular.forEach(config.default_layers, function(lyr) {
                     lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                     lyr.manuallyAdded = false;
+                    if(lyr.getSource() instanceof ol.source.ImageWMS)
+                        me.proxifyLayerLoader(lyr, false);  
                     me.map.addLayer(lyr);
                 });
             }

@@ -2,9 +2,11 @@
  * @namespace hs.pilsentraffic
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'core', 'styles'],
+define(['angular', 'ol', 'moment', 'map', 'core', 'styles'],
 
-    function(angular, ol) {
+    function(angular, ol, moment) {
+        var time_layer_title = 'Intenzita dopravy v Plzni - květen 2017';
+
         angular.module('hs.pilsentraffic', ['hs.core', 'hs.map', 'hs.styles'])
 
         .directive('hs.pilsentraffic.directive', function() {
@@ -42,10 +44,56 @@ define(['angular', 'ol', 'map', 'core', 'styles'],
                     return me;
                 }
             ])
-            .controller('hs.pilsentraffic.controller', ['$scope', 'hs.map.service', '$http', 'Core', 'config', 'hs.pilsentraffic.service', 'hs.styles.service', '$timeout',
-                function($scope, OlMap, $http, Core, config, service, styles, $timeout) {
+            .controller('hs.pilsentraffic.controller', ['$scope', 'hs.map.service', '$http', 'Core', 'config', 'hs.pilsentraffic.service', 'hs.styles.service', '$timeout', '$rootScope', 'hs.layermanager.WMSTservice', 'hs.layermanager.service',
+                function($scope, hsmap, $http, Core, config, service, styles, $timeout, $rootScope, time_service, lm_service) {
                     $scope.units = [];
-                    var map = OlMap.map;
+                    var map = hsmap.map;
+                    
+                    var roadworks_layer = config.default_layers[4];
+                    var hs_roadworks_layer = null;
+                    
+                    $scope.current_date = new Date();                  
+
+                    $scope.day = moment();
+                
+                    $scope.$watch('day', function() {
+                        $scope.current_date.setYear($scope.day.year());
+                        $scope.current_date.setMonth($scope.day.month());
+                        $scope.current_date.setDate($scope.day.day());
+                        updateTimeLayer();
+                    });
+                    
+                    $scope.setCurrentTime = function(current_hour){
+                        $scope.current_hour = current_hour;
+                        $scope.current_date.setHours($scope.current_hour);
+                        updateTimeLayer()
+                    }
+                    
+                    function getRoadworksLayer(){
+                        hs_roadworks_layer = lm_service.getLayerByTitle(time_layer_title);
+                        $scope.current_date = new Date(hs_roadworks_layer.min_time);
+                        $scope.current_hour = 8;
+                        var now = new Date();
+                        var hours = now.getHours();
+                        if(hours<8) hours = 8;
+                        if(hours>22) hours = 22;
+                        $scope.setCurrentTime(hours);
+                    }
+                    
+                    if(angular.isUndefined(lm_service.getLayerByTitle(time_layer_title)))
+                        $rootScope.$on('layermanager.updated', function(data, layer) {
+                            if(hs_roadworks_layer == null && layer.get('title') == time_layer_title){
+                                getRoadworksLayer()
+                            }
+                        })
+                    else
+                        getRoadworksLayer();
+                    
+                    
+                    function updateTimeLayer(){
+                        hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
+                        time_service.setLayerTime(hs_roadworks_layer); 
+                    }
                     
                     $scope.$emit('scope_loaded', "PilsenTraffic");
                 }

@@ -285,6 +285,24 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 $rootScope.$broadcast('layermanager.updated', layer);
                 $rootScope.$broadcast('compositions.composition_edited');
             };
+            
+            
+            /**
+             * (PRIVATE) Get layer by its title
+             * @function getLayerByTitle
+             * @memberOf hs.layermanager.service
+             * @param {Object} Hslayers layer
+             */
+            function getLayerByTitle(title) {
+                var tmp;
+                angular.forEach(me.data.layers, function(layer){
+                    if(layer.title == title) tmp = layer;
+                })
+                return tmp;
+            }
+            
+            me.getLayerByTitle = getLayerByTitle;
+
 
             /**
              * (PRIVATE) Get title of selected layer

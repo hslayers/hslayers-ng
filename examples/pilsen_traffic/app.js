@@ -1,7 +1,6 @@
 'use strict';
 
 define(['ol',
-        'moment',
         'sidebar',
         //'toolbar',
         'layermanager',
@@ -19,7 +18,7 @@ define(['ol',
         'calendar',
         'ngtimeline'
     ],
-    function(ol, moment) {
+    function(ol) {
         var module = angular.module('hs', [
             //'hs.toolbar',
             'hs.layermanager',
@@ -35,7 +34,7 @@ define(['ol',
             'hs.calendar',
             'ngTimeline'
         ]);
-
+        
         module.directive(
             'hs', [
                 'hs.map.service', 'Core',
@@ -143,23 +142,46 @@ define(['ol',
                     title: "OSM3",
                     base: true,
                     visible: false
+                }),
+                new ol.layer.Image({
+                    title: 'Intenzita dopravy v Plzni - květen 2017',
+                    source: new ol.source.ImageWMS({
+                        url: 'http://gis.lesprojekt.cz/wms/transport/intenzity_dopravy_v_plzni',
+                        params: {
+                            LAYERS: 'may',
+                            INFO_FORMAT: 'text/html',
+                            FORMAT: "image/png",
+                            "TIME": "2017-05-01T00:00:00.000Z"
+                        },
+                        crossOrigin: "anonymous"
+                    }),
+                     "dimensions":{
+                        "time": {
+                            "name":"time",
+                            "units":"ISO8601",
+                            "unitSymbol":null,
+                            "default":"2017-05-01T00:00:00",
+                            "nearestValue":false,
+                            "values":"2017-05-01T00:00:00/2017-05-31T00:00:00/PT1H"
+                        }
+                    },
+                    visible: true
                 })
             ],
             default_view: new ol.View({
-                center: ol.proj.transform([6.1319, 49.6116], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                center: [1488449.247038074, 6404351.20261046],
                 zoom: 13,
                 units: "m"
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 
-            function($scope, Core, $compile, hsmap, $timeout, $http, utils) {
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 'config',
+            function($scope, Core, $compile, hsmap, $timeout, $http, utils, config) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Map') {
-
                     }
 
                     if (args == 'Sidebar') {
@@ -267,12 +289,10 @@ define(['ol',
                     })
                 });
 
-
-
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('status_creator', false);
                 Core.panelEnabled('permalink', false);
-                Core.panelEnabled('layermanager', false);
+                //Core.panelEnabled('layermanager', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
             }
