@@ -4,6 +4,10 @@
  */
 define(['angular', 'moment'],
     function(angular, moment) {
+    moment.locale('cs', {
+        months : 'leden_únor_březen_duben_květen_červen_červenec_srpen_září_říjen_listopad_prosinec'.split('_'),
+        monthsShort : 'led_úno_bře_dub_kvě_čvn_čvc_srp_zář_říj_lis_pro'.split('_')
+    })
     angular.module('hs.calendar', [])
     
     .directive("calendar", function() {
