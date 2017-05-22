@@ -1,14 +1,16 @@
 /**
- * @namespace hs.layermanager
- * @memberOf hs
+ * @ngdoc module
+ * @module hs.layermanager
+ * @name hs.layermanager
+ * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
 define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'status_creator'], function (angular, app, map, ol) {
     angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator'])
         /**
+         * @module hs.layermanager
          * @name hs.layermanager.directive
          * @ngdoc directive
-         * @memberOf hs.layermanager
-         * @description Display layer manager panel in map. Contain filter, baselayers, overlay container and settings pane for active layer.
+         * @description Display default HSLayers layer manager panel in application. Contain filter, baselayers, overlay container and settings pane for active layer.
          */
         .directive('hs.layermanager.directive', function () {
             return {
@@ -16,10 +18,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             };
         })
         /**
-         * @memberOf hs.layermanager
-         * @ngdoc directive
+         * @module hs.layermanager
          * @name hs.layermanager.layerlistDirective
-         * @description Directive for displaying layerlist. Contains layers ordering logic.
+         * @ngdoc directive
+         * @description Directive for displaying list of layers in default HSLayers manager template. Every directive instance contain one folder of folder stucture. For every layer displays current information notes and on click opens layer options panel. Every directive instance is automatically refresh when layermanager.updated fires.
+         * Directive has access to contollers data object.
          */
         .directive('hs.layermanager.layerlistDirective', ['$compile', function ($compile) {
             return {
@@ -29,18 +32,34 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     var contentsLinker;
 
                     return function (scope, iElement) {
-
+                        
+                        /**
+                        * @ngdoc property
+                        * @name hs.layermanager.layerlistDirective#layer_titles
+                        * @public
+                        * @type {Array} 
+                        * @description List of layer titles for current folder structure level. List is always ordered in order which should be used in template.
+                        */
                         scope.layer_titles = [];
 
+                        /**
+                        * @ngdoc property
+                        * @name hs.layermanager.layerlistDirective#obj
+                        * @public
+                        * @type {Object} 
+                        * @description Container for folder object of current folder instance. Either full folders object or its subset based on hierarchy place of directive
+                        */
                         if (scope.value == null) {
                             scope.obj = scope.data.folders;
                         } else {
                             scope.obj = scope.value;
                         }
+                        
                         /**
-                         * (PRIVATE) This function will be called whenever map layers change and folder contents need to be updated
-                         * @function filterLayers
-                         * @memberOf hs.layermanager.layerlistDirective
+                         * @ngdoc method
+                         * @name hs.layermanager.layerlistDirective#filterLayers
+                         * @private
+                         * @description Filters layers, and return only belonging to folder hiearchy level of directive
                          */
                         function filterLayers() {
                             var tmp = [];
@@ -53,25 +72,34 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                             return tmp;
                         }
 
-                        scope.filtered_layers = filterLayers();
                         /**
-                         * Dragdroplist cant handle complex OL objects, so we are creating a compact list of layer titles only
-                         * @function generateLayerTitlesArray
-                         * @memberOf hs.layermanager.layerlistDirective
+                        * @ngdoc property
+                        * @name hs.layermanager.layerlistDirective#filtered_layers
+                        * @public
+                        * @type {Array} 
+                        * @description List of layers which belong to folder hierarchy level of directive instance
+                        */
+                        scope.filtered_layers = filterLayers();
+                        
+                        /**
+                         * @ngdoc method
+                         * @name hs.layermanager.layerlistDirective#filtered_layers
+                         * @public
+                         * @description Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects cant be used because DragDropList functionality can handle only simple structures.
                          */
                         scope.generateLayerTitlesArray = function () {
                             scope.layer_titles = [];
                             for (var i = 0; i < scope.filtered_layers.length; i++) {
                                 scope.layer_titles.push(scope.filtered_layers[i].title);
                             }
-
                         }
 
                         scope.$on('layermanager.updated', sortLayersByPosition);
                         /**
-                         * (PRIVATE) Sort layers by computed position
-                         * @function sortLayersByPosition
-                         * @memberOf hs.layermanager.layerlistDirective
+                         * @ngdoc method
+                         * @name hs.layermanager.layerlistDirective#sortLayersByPosition
+                         * @private
+                         * @description Sort layers by computed position
                          */
                         function sortLayersByPosition() {
                             scope.filtered_layers = filterLayers();
@@ -92,23 +120,31 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         });
 
                         /**
-                         * Callback for dragged event so event can be injected with correct layer titles layer 
-                         * @function dragged
-                         * @memberOf hs.layermanager.layerlistDirective
+                         * @ngdoc method
+                         * @name hs.layermanager.layerlistDirective#dragged
+                         * @public
+                         * @description Callback for dragged event so event can be injected with correct layer titles list needed for correct recalculation.
                          */
                         scope.dragged = function (event, index, item, type, external) {
-                            var titles = scope.layer_titles;
-                            scope.draggedCont(event, index, item, type, external, titles);
+                            scope.draggedCont(event, index, item, type, external, scope.layer_titles);
                         }
+                        
                     };
                 }
             };
                 }])
         /**
+         * @module hs.layermanager
          * @name hs.layermanager.removeAllDialogDirective
          * @ngdoc directive
-         * @memberOf hs.layermanager
-         * @description Display warning dialog about removing all layers
+         * @description Display warning dialog (modal) about removing all layers, in default opened when remove all layers function is used. Have option to remove all active layers, reload default composition of app or to cancel action.
+         * When used in current version of HS Layers, it is recommended to append this modal directive to #hs-dialog-area element and compile scope.
+         * Example
+            * ```
+            * var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
+            * $("#hs-dialog-area").append(el)
+            * $compile(el)($scope);
+            * ```
          */
         .directive('hs.layermanager.removeAllDialogDirective', function () {
             return {
@@ -119,10 +155,10 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             };
         })
         /**
-         * @ngdoc directive
+         * @module hs.layermanager
          * @name hs.layermanager.folderDirective
-         * @memberOf hs.layermanager
-         * @description Directive for displaying folder. Used recursively
+         * @ngdoc directive
+         * @description Directive for displaying folder structure in default HS layers template. Used recursively to build full folder structure if it is created in layer manager. Single instance shows layers and subfolders of its position in folder structure.
          */
         .directive('hs.layermanager.folderDirective', ['$compile', function ($compile) {
             return {
@@ -132,10 +168,25 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                     var contentsLinker;
 
                     return function (scope, iElement) {
+                        /**
+                         * @ngdoc method
+                         * @name hs.layermanager.folderDirective#folderVisible
+                         * @public
+                         * @param {Object} obj Folder object of current hiearchy 
+                         * @returns {Boolean} True if subfolders exists
+                         * @description Find if current folder has any subfolder
+                         */
                         scope.folderVisible = function (obj) {
                             return obj.sub_folders.length > 0;
                         }
 
+                        /**
+                        * @ngdoc property
+                        * @name hs.layermanager.folderDirective#obj
+                        * @public
+                        * @type {Object} 
+                        * @description Container for folder object of current folder instance. Either full folders object or its subset based on hierarchy place of directive
+                        */
                         if (scope.value == null) {
                             scope.obj = "-";
                         } else {
@@ -154,17 +205,37 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             };
             }])
     /**
-     * @memberOf hs.layermanager
-     * @ngdoc service
+     * @module hs.layermanager
      * @name hs.layermanager.service
+     * @ngdoc service
      * @description Service for core layers management. Maintain layer management structures and connect layer manager with map.Automatically update manager when layer is added or removed from map.
      */
     .service("hs.layermanager.service", ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'config', 'hs.layermanager.WMSTservice',
                 function ($rootScope, OlMap, Core, utils, config, WMST) {
             var me = {};
 
+            /**
+            * @ngdoc property
+            * @name hs.layermanager.service#data
+            * @public
+            * @type {Object} 
+            * @description Containg object for all properties which are shared with controllers.
+            */
             me.data = {};
 
+            /**
+            * @ngdoc property
+            * @name hs.layermanager.service.data#folders
+            * @public
+            * @type {Object} 
+            * @description Folders object for structure of layers. Each level contain 5 properties:
+            * hsl_path {String}: Worded path to folder position in folders hiearchy. 
+            * coded_path {String}: Path encoded in numbers
+            * layers {Array}: List of layers for current folder
+            * sub_folders {Array}: List of subfolders for current folder
+            * indent {Number}: Hiearchy level for current folder
+            * name {String}: Optional - only from indent 1, base folder is not named
+            */
             me.data.folders = {
                 hsl_path: '',
                 coded_path: '0-',
@@ -173,19 +244,42 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 indent: 0
             };
 
+            /**
+            * @ngdoc property
+            * @name hs.layermanager.service.data#layers
+            * @public
+            * @type {Array} 
+            * @description List of all layers (overlay layers, baselayers are excluded) loaded in layer manager.
+            */
             me.data.layers = [];
+            /**
+            * @ngdoc property
+            * @name hs.layermanager.service.data#baselayers
+            * @public
+            * @type {Array} 
+            * @description List of all baselayers loaded in layer manager.
+            */
             me.data.baselayers = [];
+            /**
+            * @ngdoc property
+            * @name hs.layermanager.service.data#baselayersVisible
+            * @public
+            * @type {Boolean} 
+            * @description Store if baselayers are visible (more precisely one of baselayers)
+            */
             me.data.baselayersVisibile = true;
 
+            //Property for pointer to main map object
             var map;
 
             /**
-             * (PRIVATE) Prepare URL for GetLegendGraphic WMS request
-             * @function getLegendUrl
-             * @memberOf hs.layermanager.service
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @private
              * @param {String} source_url Url of WMS server
-             * @param {String} layer_name Name of layer to get graphic
-             * @returns {String} Full Url for request
+             * @param {String} layer_name Name of layer to get graphic legend
+             * @returns {Boolean} Full Url for request
+             * @description Prepare URL for GetLegendGraphic WMS request, expect wms version 1.3.0 and sld version 1.1.0
              */
             function getLegendUrl(source_url, layer_name) {
                 if (source_url.indexOf('proxy4ows') > -1) {
@@ -197,11 +291,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             }
 
             /**
-             * (PRIVATE)
-             * @function layerAdded
-             * @memberOf hs.layermanager.service
-             * @description Callback function for layer adding for layers shown in manager. Edit layer to enable addition to layer manager .
-             * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
+             * @ngdoc method
+             * @name hs.layermanager.service#layerAdded
+             * @private
+             * @param {ol.CollectionEvent} e Event object emited by Ol add layer event
+             * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (show_in_manager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
              */
             function layerAdded(e) {
                 var layer = e.element;
@@ -242,6 +336,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
 
                 if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
                 if (console) console.log(layer.get('title'), layer.getVisible());
+                /**
+                * @ngdoc property
+                * @name hs.layermanager.service#layer
+                * @private
+                * @type {Object} 
+                * @description Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
+                */
                 var new_layer = {
                     title: getLayerTitle(layer),
                     layer: layer,
@@ -305,10 +406,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
 
 
             /**
-             * (PRIVATE) Get title of selected layer
-             * @function getLayerTitle
-             * @memberOf hs.layermanager.service
-             * @param {Ol.layer} layer Selected layer
+             * @ngdoc method
+             * @name hs.layermanager.service#getLayerTitle
+             * @private
+             * @param {Ol.layer} Layer to get layer title
+             * @returns {String} Layer title or "Void"
+             * @description Get title of selected layer
+             * Move to utils?
              */
             function getLayerTitle(layer) {
                 if (angular.isDefined(layer.get('title'))) {
@@ -319,11 +423,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             }
 
             /**
-             * (PRIVATE)
-             * @function populateFolders
-             * @memberOf hs.layermanager.service
-             * @description Place layer into layer manager folder structure based on path property of layer
-             * @param {ol.Layer} lyr Layer to add into layer folder
+             * @ngdoc method
+             * @name hs.layermanager.service#populateFolders
+             * @private
+             * @param {Object} lyr Layer to add into folder structure
+             * @description Place layer into layer manager folder structure based on path property hsl-path of layer
              */
             function populateFolders(lyr) {
                 if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
@@ -359,11 +463,11 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             }
 
             /**
-             * (PRIVATE)
-             * @function cleanFolders
-             * @memberOf hs.layermanager.service
-             * @description Remove layer from layer folder a clean empty folders
+             * @ngdoc method
+             * @name hs.layermanager.service#cleanFolders
+             * @private
              * @param {ol.Layer} lyr Layer to remove from layer folder
+             * @description Remove layer from layer folder structure a clean empty folder
              */
             function cleanFolders(lyr) {
                 if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
@@ -404,6 +508,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @description Callback function for removing layer. Clean layers variables
              * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
              */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
+             */
             function layerRemoved(e) {
                 cleanFolders(e.element);
                 for (var i = 0; i < me.data.layers.length; i++) {
@@ -427,6 +539,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @memberOf hs.layermanager.service
              * @description Initilaze box layers and their starting active state
              */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
+             */
             function boxLayersInit() {
                 if (angular.isDefined(config.box_layers)) {
                     me.data.box_layers = config.box_layers;
@@ -449,6 +569,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @param {Boolean} visibility Visibility layer should have
              * @param {Object} layer Selected layer - wrapped layer object (layer.layer expected)
              */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
+             */
             me.changeLayerVisibility = function (visibility, layer) {
                 layer.layer.setVisible(visibility);
                 layer.visible = visibility;
@@ -468,6 +596,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @description Change visibility (on/off) of baselayers, only one baselayer may be visible 
              * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
              * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
+             */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
              */
             me.changeBaseLayerVisibility = function ($event, layer) {
                 if (me.data.baselayersVisible == true) {
@@ -517,6 +653,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @function updateLayerOrder
              * @memberOf hs.layermanager.service            
              */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
+             */
             me.updateLayerOrder = function () {
                 angular.forEach(me.data.layers, function (my_layer) {
                     my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));
@@ -527,6 +671,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @function getMyLayerPosition
              * @memberOf hs.layermanager.service
              * @param {Ol.layer} layer Selected layer 
+             */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
              */
             function getMyLayerPosition(layer) {
                 var pos = null;
@@ -545,6 +697,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @memberOf hs.layermanager.service
                  * @description Remove all layers from map 
                  */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
+             */
             me.removeAllLayers = function () {
                 var to_be_removed = [];
                 OlMap.map.getLayers().forEach(function (lyr) {
@@ -562,6 +722,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @memberOf hs.layermanager.service
              * @description Show all layers of particular layer group (when groups are defined)
              * @param {ol.layer.Group} theme Group layer to activate
+             */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
              */
             me.activateTheme = function (theme) {
                 var switchOn = true;
@@ -585,6 +753,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @memberOf hs.layermanager.service
              * @description Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
              * @param {ol.layer} layer Layer which is being added
+             */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
              */
             function loadingEvents(layer) {
                 var source = layer.getSource()
@@ -652,6 +828,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @param {Ol.layer} lyr Selected layer
              * @description Test if layer (WMS) resolution is within map interval 
              */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
+             */
             me.isLayerInResolutionInterval = function (lyr) {
                 var src = lyr.getSource();
                 if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
@@ -676,6 +860,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @function init
              * @memberOf hs.layermanager.service
              * @description Initialization of needed controllers, run when map object is available 
+             */
+            /**
+             * @ngdoc method
+             * @name hs.layermanager.service#getLegendUrl
+             * @public
+             * @param {Object}
+             * @returns {Boolean}
+             * @description 
              */
             function init() {
                 map = OlMap.map;
@@ -715,9 +907,9 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
     ])
 
     /**
-     * @memberOf hs.layermanager
-     * @ngdoc service
+     * @module hs.layermanager
      * @name hs.layermanager.WMSTservice
+     * @ngdoc service
      * @description Service for management of time (WMS) layers
      */
     .service("hs.layermanager.WMSTservice", ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'config',
@@ -916,13 +1108,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             ])
 
     /**
-     * @ngdoc controller
+     * @module hs.layermanager
      * @name hs.layermanager.controller
-     * @memberOf hs.layermanager
+     * @ngdoc controller
      * @description Controller for management of deafult HSLayers layer manager template
      */
-    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', '$log', 'hs.ows.wms.service_capabilities', 'hs.status_creator.service', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.utils.layerUtilsService',
-        function ($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, $log, srv_wms_caps, status_creator, layManService, WMST, layerUtils) {
+    .controller('hs.layermanager.controller', ['$scope', 'hs.map.service', 'config', '$rootScope', 'Core', '$compile', 'hs.utils.service', 'hs.styler.service', 'hs.ows.wms.service_capabilities', 'hs.status_creator.service', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.utils.layerUtilsService',
+        function ($scope, OlMap, config, $rootScope, Core, $compile, utils, styler, srv_wms_caps, status_creator, layManService, WMST, layerUtils) {
 
             $scope.Core = Core;
             $scope.layer_renamer_visible = false;
@@ -1117,7 +1309,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             $scope.removeAllLayers = function (confirmed, loadComp) {
                 if (typeof confirmed == 'undefined') {
                     if ($("#hs-dialog-area #hs-remove-all-dialog").length == 0) {
-                        var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></span>');
+                        var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
                         $("#hs-dialog-area").append(el)
                         $compile(el)($scope);
                     } else {

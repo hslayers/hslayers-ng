@@ -175,8 +175,15 @@ define(['ol',
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 'config',
-            function($scope, Core, $compile, hsmap, $timeout, $http, utils, config) {
+        module.controller('mapReset', ['$scope', 'hs.map.service',
+            function($scope, map) {
+                $scope.resetView = function() {
+                    map.resetView();
+                }
+        }]);
+    
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 
+            function($scope, Core, $compile, hsmap, $timeout, $http, utils) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
