@@ -119,25 +119,13 @@ define(['ol',
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Base layer",
+                    title: "Černobílá",
                     base: true,
                     visible: true
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "OSM1",
-                    base: true,
-                    visible: false
-                }),
-                new ol.layer.Tile({
-                    source: new ol.source.OSM(),
-                    title: "OSM2",
-                    base: true,
-                    visible: false
-                }),
-                new ol.layer.Tile({
-                    source: new ol.source.OSM(),
-                    title: "OSM3",
+                    title: "Jednoduchá",
                     base: true,
                     visible: false
                 }),
@@ -187,6 +175,46 @@ define(['ol',
 
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Map') {
+                        var map = hsmap.map;
+                        var parser = new ol.format.WMTSCapabilities();
+                        
+                        var layers = [
+                            {
+                                capUrl: 'http://geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx?service=WMTS&request=GetCapabilities',
+                                layer: 'zm',
+                                matrixSet: 'wgs84:pseudomercator:epsg:3857',
+                                title: "Základní mapy (ČUZK)"
+                            },
+                            {
+                                capUrl: 'http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities',
+                                layer: 'orto',
+                                matrixSet: 'wgs84:pseudomercator:epsg:3857',
+                                title: "Letecká (ČUZK)"
+                            }
+                        ];
+                        
+                        layers.forEach(function(layer){
+                            fetch(layer.capUrl).then(function (response) {
+                                return response.text();
+                            }).then(function (text) {
+                                var result = parser.read(text);
+                                var options = ol.source.WMTS.optionsFromCapabilities(result, {
+                                    layer: layer.layer,
+                                    matrixSet: layer.matrixSet
+                                });
+                                for (var i = 0; i < options.urls.length; i++) {
+                                    options.crossOrigin = "anonymous";
+                                    options.attributions = "Podkladová data © ČÚZK";
+                                }
+                                var newLayer = new ol.layer.Tile({
+                                    title: layer.title,
+                                    base: true,
+                                    visible: false,
+                                    source: new ol.source.WMTS((options))
+                                });
+                                map.addLayer(newLayer);
+                            });    
+                        });
                     }
 
                     if (args == 'Sidebar') {
@@ -203,7 +231,7 @@ define(['ol',
                 });
 
                 $scope.$on('layermanager.updated', function(data, layer) {
-                    if (layer.get('base') == true) {
+                    if (layer.get('base') == true  && layer.get("title") == "Černobílá") {
                         //Grayscale map
                         layer.on('postcompose', function(event) {
                             var context = event.context;
