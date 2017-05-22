@@ -59,7 +59,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles'],
                     $scope.$watch('day', function() {
                         $scope.current_date.setYear($scope.day.year());
                         $scope.current_date.setMonth($scope.day.month());
-                        $scope.current_date.setDate($scope.day.day());
+                        $scope.current_date.setDate($scope.day.date());
+                        console.log($scope.day, $scope.current_date);
                         updateTimeLayer();
                     });
                     

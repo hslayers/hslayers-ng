@@ -6,7 +6,6 @@ define(['ol',
         'layermanager',
         'query',
         'search',
-        'print',
         'permalink',
         'measure',
         'bootstrap',
@@ -23,7 +22,6 @@ define(['ol',
             //'hs.toolbar',
             'hs.layermanager',
             'hs.query',
-            'hs.print',
             'hs.permalink',
             'hs.geolocation',
             'hs.api',
@@ -299,7 +297,7 @@ define(['ol',
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('status_creator', false);
                 Core.panelEnabled('permalink', false);
-                //Core.panelEnabled('layermanager', false);
+                Core.panelEnabled('layermanager', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
             }
