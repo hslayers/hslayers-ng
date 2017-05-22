@@ -146,12 +146,19 @@ define(['ol',
                 })
             ],
             default_view: new ol.View({
-                center: ol.proj.transform([6.1319, 49.6116], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                center: ol.proj.transform([13.372951, 49.749884], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 13,
                 units: "m"
             })
         });
 
+        module.controller('mapReset', ['$scope', 'hs.map.service',
+            function($scope, map) {
+                $scope.resetView = function() {
+                    map.resetView();
+                }
+        }]);
+    
         module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 
             function($scope, Core, $compile, hsmap, $timeout, $http, utils) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
