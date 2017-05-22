@@ -45,7 +45,7 @@ calendar > div.header > i.fa-angle-right {
 }
 calendar > div.header > span {
   float: left;
-  width:  calc(100% - 40px);
+  width:  calc(100% - 62px);
   font-weight: bold;
   text-transform: uppercase;
   box-sizing: border-box;
