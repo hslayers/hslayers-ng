@@ -110,6 +110,10 @@ div#content-wrapper:not(.open) .left-top {
     background-color: #acacac;
 }
 
+.left-top .dropdown-menu li a {
+    padding: 3px 10px;
+}
+
 .left-top .dropdown-menu .selected {
     background-color: #acacac;
 }
@@ -129,7 +133,7 @@ div#content-wrapper:not(.open) .left-top {
     line-height: 30px;
 }
 
-.left-top .dropdown-menu .checkbox input,i{
+.left-top .dropdown-menu .checkbox input, .left-top .dropdown-menu .checkbox input i{
     position: relative;
     margin: 5px;
     height: 20px;

@@ -45,15 +45,15 @@ calendar > div.header > i.fa-angle-right {
 }
 calendar > div.header > span {
   float: left;
-  width:  calc(100% - 62px);
+  width:  calc(100% - 80px);
   font-weight: bold;
   text-transform: uppercase;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  padding-left: 50px;
-  margin-left: -40px;
+  padding-left: 25px;
+  margin-left: 0px;
   text-align: center;
-  padding-right: 40px;
+  padding-right: 25px;
   color: inherit;
 }
 calendar > div.week {
