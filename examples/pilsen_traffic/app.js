@@ -129,6 +129,18 @@ define(['ol',
                     base: true,
                     visible: false
                 }),
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Základní mapy (ČUZK)",
+                    base: true,
+                    visible: false
+                }),
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                    title: "Letecká (ČUZK)",
+                    base: true,
+                    visible: false
+                }),
                 new ol.layer.Image({
                     title: 'Intenzita dopravy v Plzni - květen 2017',
                     source: new ol.source.ImageWMS({
@@ -206,6 +218,7 @@ define(['ol',
                                     options.crossOrigin = "anonymous";
                                     options.attributions = "Podkladová data © ČÚZK";
                                 }
+                                /*
                                 var newLayer = new ol.layer.Tile({
                                     title: layer.title,
                                     base: true,
@@ -213,6 +226,10 @@ define(['ol',
                                     source: new ol.source.WMTS((options))
                                 });
                                 map.getLayers().insertAt(0,newLayer);
+                                */
+                                var newLayer = hsmap.findLayerByTitle(layer.title);
+                                var source = new ol.source.WMTS((options));
+                                newLayer.setSource(source);
                             });    
                         });
                     }
