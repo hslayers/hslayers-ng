@@ -2,11 +2,13 @@
 
 var hsl_path = '../../';
 
-var gitsha = $.ajax({
+var gitsha = Math.random(); $.ajax({
     type: "GET",
-    url: hsl_path + 'gitsha.js?t=' + Date.now(),
-    async: false
-}).responseText;
+    dataType: 'text',
+    url: hsl_path + 'gitsha.js',
+    async: false,
+    success: function(r){gitsha = r}
+});
 
 require.config({
     urlArgs: 'bust=' + gitsha,
