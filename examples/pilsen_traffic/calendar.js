@@ -19,7 +19,7 @@ define(['angular', 'moment'],
 
                 var start = scope.selected.clone();
                 start.date(1);
-                _removeTime(start.day(0));
+                _removeTime(start.day(1));
 
                 _buildMonth(scope, start, scope.month);
 
@@ -44,7 +44,7 @@ define(['angular', 'moment'],
         };
         
         function _removeTime(date) {
-            return date.day(0).hour(0).minute(0).second(0).millisecond(0);
+            return date.day(1).hour(0).minute(0).second(0).millisecond(0);
         }
 
         function _buildMonth(scope, start, month) {
