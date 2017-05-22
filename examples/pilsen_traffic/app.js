@@ -309,7 +309,11 @@ define(['ol',
                 $scope.options = {
                     debug: false,
                     timenav_position: 'top',
+                    timenav_height_percentage: 70,
+                    timenav_mobile_height_percentage: 80,
                     language: 'cz',
+                    dragging: true,
+                    start_at_slide: 1,
                     data: data
                 };
 
