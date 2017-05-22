@@ -26,7 +26,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             me.map = new ol.Map({
                 target: 'map',
                 interactions: [],
-                view: config.default_view
+                view: cloneView(config.default_view)
             });
             
             function extentChanged(e){
@@ -64,6 +64,17 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             * @description Fires when map is loaded (so other map dependent modules can proceed)
             */
             $rootScope.$broadcast('map.loaded');
+        }
+        
+        //clone View to not overwrite deafult
+        function cloneView(template) {
+            var view = new ol.View({
+                center: template.getCenter(),
+                zoom: template.getZoom(),
+                projection: template.getProjection(),
+                rotation: template.getRotation()
+            });
+            return view;
         }
         
         /**
@@ -184,7 +195,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         * @description Reset map view to view configured in app config 
         */
         this.resetView = function() {
-            me.map.setView(config.default_view);
+            me.map.setView(cloneView(config.default_view));
         }
        
         /**
