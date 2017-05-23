@@ -97,11 +97,14 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     }
                     
                     function shareSocial(provider){
+                        var url = permalink_service.getPermalinkUrl();
                         socialshare.share({
                             'provider': provider,
                             'attrs': {
                                 'socialshareText': getTitle(),
-                                'socialshareUrl': permalink_service.getPermalinkUrl(),
+                                'socialshareSubject': getTitle(),
+                                'socialshareBody': getDescription(url),
+                                'socialshareUrl': url,
                                 'socialsharePopupHeight': 600,
                                 'socialsharePopupWidth': 500
                             }
@@ -130,13 +133,15 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         doc.setFontSize(30);
                         doc.text(55, 25, getTitle());
                         doc.addImage(imgData, 'PNG', 10, 20);
-                        console.log(imgData);
-
                         doc.save('a4.pdf')
                     }
                     
                     function getTitle(){
                         return 'Mapa intenzity dopravy v Plzni';
+                    }
+                    
+                    function getDescription(url){
+                        return 'Předpokládaná dopravní situace v Plzni dne xx.xx.2017 v 10:00.%0D%0A' + encodeURIComponent(url);
                     }
                     
                     $scope.printPdf = printPdf;
