@@ -100,7 +100,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         socialshare.share({
                             'provider': provider,
                             'attrs': {
-                                'socialshareText': 'Mapa intenzity dopravy v Plzni',
+                                'socialshareText': getTitle(),
                                 'socialshareUrl': permalink_service.getPermalinkUrl(),
                                 'socialsharePopupHeight': 600,
                                 'socialsharePopupWidth': 500
@@ -108,6 +108,38 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         })
                     }
                     
+                    function printPdf(){
+                        var doc = new jsPDF({orientation: 'landscape'})
+                        var imgData = '';
+                        
+                        hsmap.map.once('postcompose', function(event) {
+                            var canvas = event.context.canvas;
+                            var canvas2 = document.createElement("canvas");
+                            var width = 1044,
+                                height = 668;
+                            canvas2.style.width = width + "px";
+                            canvas2.style.height = height + "px";
+                            canvas2.width = width;
+                            canvas2.height = height;
+                            var ctx2 = canvas2.getContext("2d");
+                            ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
+                            imgData = canvas2.toDataURL('image/png', 0.8);
+                        }, $scope);
+                        hsmap.map.renderSync();
+
+                        doc.setFontSize(30);
+                        doc.text(55, 25, getTitle());
+                        doc.addImage(imgData, 'PNG', 10, 20);
+                        console.log(imgData);
+
+                        doc.save('a4.pdf')
+                    }
+                    
+                    function getTitle(){
+                        return 'Mapa intenzity dopravy v Plzni';
+                    }
+                    
+                    $scope.printPdf = printPdf;
                     $scope.shareSocial = shareSocial;
                     
                     $scope.$emit('scope_loaded', "PilsenTraffic");
