@@ -119,19 +119,19 @@ define(['ol',
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Černobílá",
+                    title: "Černobílá (OSM)",
                     base: true,
                     visible: true
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Jednoduchá",
+                    title: "Základní (OSM)",
                     base: true,
                     visible: false
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Základní mapy (ČUZK)",
+                    title: "Základní (ČUZK)",
                     base: true,
                     visible: false
                 }),
@@ -195,7 +195,7 @@ define(['ol',
                                 capUrl: 'http://geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx?service=WMTS&request=GetCapabilities',
                                 layer: 'zm',
                                 matrixSet: 'wgs84:pseudomercator:epsg:3857',
-                                title: "Základní mapy (ČUZK)"
+                                title: "Základní (ČUZK)"
                             },
                             {
                                 capUrl: 'http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities',
@@ -218,15 +218,6 @@ define(['ol',
                                     options.crossOrigin = "anonymous";
                                     options.attributions = "Podkladová data © ČÚZK";
                                 }
-                                /*
-                                var newLayer = new ol.layer.Tile({
-                                    title: layer.title,
-                                    base: true,
-                                    visible: false,
-                                    source: new ol.source.WMTS((options))
-                                });
-                                map.getLayers().insertAt(0,newLayer);
-                                */
                                 var newLayer = hsmap.findLayerByTitle(layer.title);
                                 var source = new ol.source.WMTS((options));
                                 newLayer.setSource(source);
@@ -248,7 +239,7 @@ define(['ol',
                 });
 
                 $scope.$on('layermanager.updated', function(data, layer) {
-                    if (layer.get('base') == true  && layer.get("title") == "Černobílá") {
+                    if (layer.get('base') == true  && layer.get("title") == "Černobílá (OSM)") {
                         //Grayscale map
                         layer.on('postcompose', function(event) {
                             var context = event.context;
