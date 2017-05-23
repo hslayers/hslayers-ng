@@ -174,3 +174,19 @@ div#content-wrapper:not(.open) .left-top {
 .tl-timemarker .tl-timemarker-timespan {display: none}
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {color: #333}
 .tl-attribution {display: none}
+
+#roadwork-info-dialog dt {
+    width: 120px;
+}
+
+#roadwork-info-dialog dd {
+    margin-left: 130px;
+}
+
+#roadwork-info-dialog .modal-body {
+    padding: 0px;
+}
+
+#roadwork-info-dialog dd, #roadwork-info-dialog dd {
+    margin-bottom: 5px;
+}

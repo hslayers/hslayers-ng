@@ -16,10 +16,9 @@
             </div>
             <h4>Dopravní stavby ve zvoleném dnu</h4>
             <div class="list-group">
-                <a href="#" class="list-group-item">
-                    Uzavirka Mikulašska
+                <a ng-repeat="work in roadworklist" href="#" class="list-group-item" ng-click="showRoadworkInfo(work)">
+                    {{work.headline}}
                 </a>
-                <a href="#" class="list-group-item">Most Generala Pattona</a>
             </div>
             <button class="btn btn-default" ng-click="showDeveloperInfo()">Zobrazit časovou osu staveb</button>
             <h4>Sdílení mapy</h4>

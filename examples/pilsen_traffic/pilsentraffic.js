@@ -21,10 +21,18 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
             };
         })
 
+        .directive('hs.pilsentraffic.roadworkInfoDirective', function() {
+            return {
+                templateUrl: 'partials/roadwork_info.html?bust=' + gitsha,
+                link: function(scope, element, attrs) {
+                    $('#roadwork-info-dialog').modal('show');
+                }
+            };
+        })
 
-        .service("hs.pilsentraffic.service", ['Core', 'hs.utils.service',
-                function(Core, utils) {
-                    var me = {
+        .service("hs.pilsentraffic.service", ['Core', 'hs.utils.service','$http',
+                function(Core, utils, $http) {
+                   var me = {
                         /*
                         getUnits: function() {
                             var url = null;
@@ -39,13 +47,52 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                                 }
                             });
                         }*/
+                        
+                        
                     };
 
+                    me.roadworksData = [];
+                    
+                    me.getRoadworksData = function() {
+                        $http({
+                            method: 'GET',
+                            url: utils.proxify('http://otn-caramba.rhcloud.com/get_roadworks/'),
+                            cache: false
+                        }).then(function (response) {
+                            response.data.forEach(function(item){
+                                var froms = item.dates[0].split('-');
+                                var tos = item.dates[1].split('-');
+                                me.roadworksData.push({
+                                    startDate: new Date(froms[0], froms[1]-1, froms[2]),
+                                    endDate: new Date(tos[0], tos[1]-1, tos[2]),
+                                    headline: item.name,
+                                    description: item.description,
+                                    location: item.location,
+                                    detour: item.detour,
+                                    id: item.id
+                                });
+                            })
+                        });
+                    }
+                    
+                    me.getDayData = function(day) {
+                        if (me.roadworksData.length < 1) return false;
+                        var list = [];
+                        me.roadworksData.forEach(function(roadwork){
+                            if (day >= roadwork.startDate && day <= roadwork.endDate) {
+                                list.push(roadwork);
+                            };
+                        });
+                        return list;
+                    }
+                    
+                    me.getRoadworksData();
+                    
                     return me;
                 }
             ])
-            .controller('hs.pilsentraffic.controller', ['$scope', 'hs.map.service', '$http', 'Core', 'config', 'hs.pilsentraffic.service', 'hs.styles.service', '$timeout', '$rootScope', 'hs.layermanager.WMSTservice', 'hs.layermanager.service', 'Socialshare', 'hs.permalink.service_url', 
-                function($scope, hsmap, $http, Core, config, service, styles, $timeout, $rootScope, time_service, lm_service, socialshare, permalink_service) {
+            .controller('hs.pilsentraffic.controller', ['$scope', 'hs.map.service', '$http', 'Core', 'config', 'hs.pilsentraffic.service', 'hs.styles.service', '$timeout', '$rootScope', 'hs.layermanager.WMSTservice', 'hs.layermanager.service', 'Socialshare', 'hs.permalink.service_url', '$compile',
+                function($scope, hsmap, $http, Core, config, service, styles, $timeout, $rootScope, time_service, lm_service, socialshare, permalink_service, $compile) {
                     $scope.units = [];
                     var map = hsmap.map;
                     
@@ -55,6 +102,9 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     $scope.current_date = new Date();                  
 
                     $scope.day = moment();
+                    
+                    $scope.roadworklist = [];
+                    $scope.roadwork;
                 
                     $scope.$watch('day', function() {
                         $scope.current_date.setYear($scope.day.year());
@@ -95,6 +145,28 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
                         time_service.setLayerTime(hs_roadworks_layer); 
                     }
+                    
+                    $scope.updateWorklist = function() {
+                        var data = service.getDayData($scope.current_date);
+                        if (!data) {
+                            $timeout(function(){
+                                $scope.updateWorklist();
+                            },500);
+                            return;
+                        }
+                        $scope.roadworklist = data; 
+                        if (!$scope.$$phase) $scope.$digest();
+                    }
+                    
+                    $scope.showRoadworkInfo = function(roadwork) {
+                        $scope.roadwork = roadwork;
+                        $("#hs-dialog-area #roadwork-info-dialog").remove();
+                        var el = angular.element('<div hs.pilsentraffic.roadwork-info-directive></div>');
+                        $("#hs-dialog-area").append(el);
+                        $compile(el)($scope);
+                    }
+                    
+                    $scope.updateWorklist();
                     
                     function shareSocial(provider){
                         var url = permalink_service.getPermalinkUrl();
