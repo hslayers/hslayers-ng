@@ -105,7 +105,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize'],
                     * Send GetFeatureInfo request to selected url and push response data on success to response handler.
                     */
                     this.request = function(url, info_format, coordinate) {                    
-                        var req_url = utils.proxify(url);
+                        var req_url = utils.proxify(url, true);
                         var me = this;
                         $.ajax({
                             url: req_url,
