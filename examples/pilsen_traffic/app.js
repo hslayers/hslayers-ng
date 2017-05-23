@@ -280,6 +280,7 @@ define(['ol',
                     $timeout(function () {
                         $scope.timeline.setData(data);
                         $scope.timeline.goTo(1);
+                        $('.tl-slide-content').width(870);
                     }, 200);
                 }
                 
