@@ -112,6 +112,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $scope.current_date.setDate($scope.day.date());
                         console.log($scope.day, $scope.current_date);
                         updateTimeLayer();
+                        $scope.updateWorklist();
                     });
                     
                     $scope.setCurrentTime = function(current_hour){
