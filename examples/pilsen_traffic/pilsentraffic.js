@@ -169,13 +169,14 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     $scope.updateWorklist();
                     
+                    $scope.permalink_visible = false;
                     function showPermalink(){
                         var url = permalink_service.getPermalinkUrl();
                         $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
                             longUrl: url
                         }).success(function(data, status, headers, config) {
                             $scope.share_url = data.id;
-                            $scope.permalink_visible = true;
+                            $scope.permalink_visible = !$scope.permalink_visible;
                             setTimeout(function(){
                                 $("#hs-permalink").focus(function() { $(this).select(); } );
                                 $("#hs-permalink").focus();
