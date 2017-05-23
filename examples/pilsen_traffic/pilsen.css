@@ -173,3 +173,4 @@ div#content-wrapper:not(.open) .left-top {
 .tl-timemarker {color: #000}
 .tl-timemarker .tl-timemarker-timespan {display: none}
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {color: #333}
+.tl-attribution {display: none}
