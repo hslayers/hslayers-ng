@@ -2,12 +2,12 @@
  * @namespace hs.pilsentraffic
  * @memberOf hs
  */
-define(['angular', 'ol', 'moment', 'map', 'core', 'styles'],
+define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialshare', 'permalink'],
 
     function(angular, ol, moment) {
         var time_layer_title = 'Intenzita dopravy v Plzni - květen 2017';
 
-        angular.module('hs.pilsentraffic', ['hs.core', 'hs.map', 'hs.styles'])
+        angular.module('hs.pilsentraffic', ['hs.core', 'hs.map', 'hs.styles', '720kb.socialshare', 'hs.permalink'])
 
         .directive('hs.pilsentraffic.directive', function() {
             return {
@@ -44,8 +44,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles'],
                     return me;
                 }
             ])
-            .controller('hs.pilsentraffic.controller', ['$scope', 'hs.map.service', '$http', 'Core', 'config', 'hs.pilsentraffic.service', 'hs.styles.service', '$timeout', '$rootScope', 'hs.layermanager.WMSTservice', 'hs.layermanager.service',
-                function($scope, hsmap, $http, Core, config, service, styles, $timeout, $rootScope, time_service, lm_service) {
+            .controller('hs.pilsentraffic.controller', ['$scope', 'hs.map.service', '$http', 'Core', 'config', 'hs.pilsentraffic.service', 'hs.styles.service', '$timeout', '$rootScope', 'hs.layermanager.WMSTservice', 'hs.layermanager.service', 'Socialshare', 'hs.permalink.service_url', 
+                function($scope, hsmap, $http, Core, config, service, styles, $timeout, $rootScope, time_service, lm_service, socialshare, permalink_service) {
                     $scope.units = [];
                     var map = hsmap.map;
                     
@@ -95,6 +95,20 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles'],
                         hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
                         time_service.setLayerTime(hs_roadworks_layer); 
                     }
+                    
+                    function shareSocial(provider){
+                        socialshare.share({
+                            'provider': provider,
+                            'attrs': {
+                                'socialshareText': 'Mapa intenzity dopravy v Plzni',
+                                'socialshareUrl': permalink_service.getPermalinkUrl(),
+                                'socialsharePopupHeight': 600,
+                                'socialsharePopupWidth': 500
+                            }
+                        })
+                    }
+                    
+                    $scope.shareSocial = shareSocial;
                     
                     $scope.$emit('scope_loaded', "PilsenTraffic");
                 }

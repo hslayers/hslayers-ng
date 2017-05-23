@@ -25,11 +25,10 @@
             <h4>Sdílení mapy</h4>
             <div class="btn-group btn-group-justified" role="group" aria-label="...">
                 <a type="button" title="Sdílet mapu" class="btn btn-default"><i class="icon-link"></i></a>
-                <a type="button" title="Vytisknout mapu" class="btn btn-default"><i class="icon-print"></i></a>
-                <a type="button" title="Sdílet na Twitteru" class="btn btn-default"><i class="icon-twitter"></i></a>
-                <a type="button" title="Sdílet na Facebooku" class="btn btn-default"><i class="icon-facebook"></i></a>
-                <a type="button" title="Sdílet na G+" class="btn btn-default"><i class="icon-googleplus"></i></a>
-                <a type="button" title="Odeslat e-mailem" class="btn btn-default"><i class="icon-emailalt"></i></a>
+                <a type="button" title="Sdílet na Twitteru" class="btn btn-default" ng-click="shareSocial('twitter')"><i class="icon-twitter"></i></a>
+                <a type="button" title="Sdílet na Facebooku" class="btn btn-default" ng-click="shareSocial('facebook')"><i class="icon-facebook"></i></a>
+                <a type="button" title="Sdílet na G+" class="btn btn-default" ng-click="shareSocial('google')"><i class="icon-googleplus"></i></a>
+                <a type="button" title="Odeslat e-mailem" class="btn btn-default" ng-click="shareSocial('email')"><i class="icon-emailalt"></i></a>
             </div>
         </div>
     </div>
