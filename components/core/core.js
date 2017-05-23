@@ -186,6 +186,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description DEPRECATED?
                         */
                         sidebarButtons: true,
+                        classicSidebar:true,
                         /**
                         * @ngdoc property
                         * @name Core#singleDatasources

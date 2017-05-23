@@ -433,8 +433,8 @@ button.but-title-sm {
     box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
     background-color: white;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow-x: visible;
+    overflow-y: visible;
     padding-left: 0;
     padding-right: 0;
     pointer-events: auto;
@@ -583,6 +583,31 @@ a.sidebar-main {
     display:none;
 }
 
+#mini-sidebar {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: calc(50% - 20px);
+    left: -40px;
+    z-index: 1000;
+    
+}
+
+#mini-sidebar a {
+    background-color: #fff;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    border-right-width: 0px;
+}
+
+.minisidebar-panel {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+div#content-wrapper:not(.open) .minisidebar-wrapper {
+    width: 1px !important;
+}
 
 /*************/
 /** TOOLBAR **/

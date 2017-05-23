@@ -32,6 +32,33 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                     }
                 };
             }])
+        
+            /**
+             * @memberof hs.sidebar
+             * @ngdoc directive
+             * @name hs.sidebar.directive
+             * @description Add sidebar template to app, listeners for sidebar width changes are embed in directive
+             */
+            .directive('hs.minisidebar.directive', ['$compile', function($compile) {
+                return {
+                    templateUrl: hsl_path + 'components/sidebar/partials/minisidebar.html?bust=' + gitsha,
+                    link: function(scope, element, attrs) {
+                        if (angular.isDefined(scope.Core.config.createExtraMenu))
+                            scope.Core.config.createExtraMenu($compile, scope, element);
+                        scope.$watch(
+                            function() {
+                                return [scope.Core.sidebarExpanded, angular.element('.panelspace').width()]
+                            },
+                            function(value) {
+                                setTimeout(function() {
+                                    scope.Core.updateMapSize();
+                                }, 0)
+                                scope.$emit('sidebar_change', scope.Core.sidebarExpanded);
+                            }, true
+                        )
+                    }
+                };
+            }])
 
         /**
          * @memberof hs.sidebar
