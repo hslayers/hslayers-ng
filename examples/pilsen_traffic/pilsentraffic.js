@@ -168,19 +168,40 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     $scope.updateWorklist();
                     
+                    function showPermalink(){
+                        var url = permalink_service.getPermalinkUrl();
+                        $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                            longUrl: url
+                        }).success(function(data, status, headers, config) {
+                            $scope.share_url = data.id;
+                            $scope.permalink_visible = true;
+                            setTimeout(function(){
+                                $("#hs-permalink").focus(function() { $(this).select(); } );
+                                $("#hs-permalink").focus();
+                            }, 400);
+                        })
+                    }
+                    
                     function shareSocial(provider){
                         var url = permalink_service.getPermalinkUrl();
-                        socialshare.share({
-                            'provider': provider,
-                            'attrs': {
-                                'socialshareText': getTitle(),
-                                'socialshareSubject': getTitle(),
-                                'socialshareBody': getDescription(url),
-                                'socialshareUrl': url,
-                                'socialsharePopupHeight': 600,
-                                'socialsharePopupWidth': 500
-                            }
-                        })
+                        $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                            longUrl: url
+                        }).success(function(data, status, headers, config) {
+                            $scope.share_url = data.id;
+                            socialshare.share({
+                                'provider': provider,
+                                'attrs': {
+                                    'socialshareText': getTitle(),
+                                    'socialshareSubject': getTitle(),
+                                    'socialshareBody': getDescription($scope.share_url),
+                                    'socialshareUrl': $scope.share_url,
+                                    'socialsharePopupHeight': 600,
+                                    'socialsharePopupWidth': 500
+                                }
+                            })
+                        }).error(function(data, status, headers, config) {
+                            if(console) console.log('Error creating short Url');
+                        });  
                     }
                     
                     function printPdf(){
@@ -218,6 +239,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     $scope.printPdf = printPdf;
                     $scope.shareSocial = shareSocial;
+                    $scope.showPermalink = showPermalink;
                     
                     $scope.$emit('scope_loaded', "PilsenTraffic");
                 }
