@@ -52,7 +52,7 @@ define(['ol',
                 link: function(scope, element, attrs) {
                     var possible_height = $(window).height() * 0.85;
                     $('#advanced-info-dialog .modal-body').css('overflow-y', 'auto'); 
-                    $('#advanced-info-dialog .modal-body').css('max-height', );
+                    $('#advanced-info-dialog .modal-body').css('max-height', possible_height);
                     $('timeline').attr('height', possible_height);
                     $('#advanced-info-dialog').modal('show');
                     element.find('.modal-body').append('<timeline control="timeline" height="'+(possible_height - 50)+'" options="options"></timeline>');
