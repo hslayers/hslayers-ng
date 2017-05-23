@@ -192,3 +192,4 @@ div#content-wrapper:not(.open) .left-top {
 }
 
 input[type="range"] {padding: 0}
+#timeline-diag-body {overflow-y:auto}
