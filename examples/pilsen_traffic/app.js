@@ -190,6 +190,7 @@ define(['ol',
             function($scope, Core, $compile, hsmap, $timeout, $http, utils) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+                Core.classicSidebar = false;
 
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Map') {
