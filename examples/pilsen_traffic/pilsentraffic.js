@@ -121,6 +121,18 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         updateTimeLayer()
                     }
                     
+                    $scope.nextDay = function() {
+                        var day = moment($scope.day);
+                        day.date(day.date()+1);
+                        $scope.$broadcast('day.changed',day);
+                    }
+                    
+                    $scope.previousDay = function() {
+                        var day = moment($scope.day);
+                        day.date(day.date()-1);
+                        $scope.$broadcast('day.changed',day);
+                    }
+                    
                     function getRoadworksLayer(){
                         hs_roadworks_layer = lm_service.getLayerByTitle(time_layer_title);
                         $scope.current_date = new Date(hs_roadworks_layer.min_time);

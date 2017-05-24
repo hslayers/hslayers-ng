@@ -10,9 +10,9 @@
             </div>
            
             <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <a type="button" class="btn btn-default" style=" width: .4%;"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style=" width: .4%;" ng-click="previousDay()"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a>
                 <a type="button" class="btn btn-default" disabled style="cursor: default"><button class="btn btn-primary"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></button><span style="font-size: 17px; margin-left: 0.5em">{{("0"+current_hour).slice(-2)}}:00</span></a>
-                <a type="button" class="btn btn-default" style="width: .4%;"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style="width: .4%;" ng-click="nextDay()"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a>
             </div>
             <h4>Dopravní stavby ve zvoleném dnu</h4>
             <div class="list-group">

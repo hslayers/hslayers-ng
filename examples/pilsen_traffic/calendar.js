@@ -28,7 +28,7 @@ define(['angular', 'moment'],
                 _buildMonth(scope, start, scope.month);
 
                 scope.select = function(day) {
-                    scope.selected = day.date;  
+                    scope.selected = day.date;
                 };
 
                 scope.next = function() {
@@ -44,6 +44,12 @@ define(['angular', 'moment'],
                     scope.month.month(scope.month.month()-1);
                     _buildMonth(scope, previous, scope.month);
                 };
+                
+                scope.$on('day.changed',function(e,day){
+                    var wrapper = {};
+                    wrapper.date = day;
+                    scope.select(wrapper);
+                });
             }
         };
         
