@@ -7,8 +7,8 @@
 
 .ol-zoom button {
     display: inline-block !important;
-    width: 38px !important;
-    height: 38px !important;
+    width: 36px !important;
+    height: 36px !important;
     background-color: #fff !important;
     border-radius: 0px !important;
     color: #000 !important;
@@ -16,13 +16,13 @@
     font-size: 150% !important;
     font-weight: bold !important;
     box-shadow: 2px 2px 1px #4b4b4b;
-    margin-left: 5px !important;
+    margin-left: 0px !important;
     margin-top: 0px !important;
 }
 
 #reset-button {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     background-color: #fff;
     border-radius: 0px;
     color: #000;
@@ -44,21 +44,15 @@
     padding-left: 20px;
     padding-right: 10px;
     display: inline-block;
-    width: calc(100% - 501px);
+    width: calc(100% - 481px);
 }
 
 .open .left-top {
-    width: calc(100% - 501px);
+    width: calc(100% - 481px);
 }
 
 div#content-wrapper:not(.open) .left-top {
-    width: calc(100% - 100px);
-}
-
-@media (max-width: 767px) {
-    .open .left-top {
-        width: calc(100% - 401px);
-    }
+    width: calc(100% - 80px);
 }
 
 .right-top {
@@ -176,6 +170,36 @@ div#content-wrapper:not(.open) .left-top {
     background-color: #fff;
 }
 
+/* Top buttons media queries */
+
+@media (max-width: 767px) {
+    .open .left-top {
+        width: calc(100% - 381px);
+    }
+}
+
+@media (max-width: 658px) {
+    .ol-zoom {
+        right: 10px !important;
+        bottom: 4.2em !important;
+        top: auto !important;
+    }
+    
+    .open .left-top {
+        width: calc(100% - 281px);
+    }
+    
+    div#content-wrapper:not(.open) .left-top {
+        width: calc(100% - 0px);
+    }
+    
+    #reset-button {float: left;}
+    
+    .left-top .dropdown {
+        margin-bottom: 10px;
+    }
+}
+
 .tl-timemarker {color: #000}
 .tl-timemarker .tl-timemarker-timespan {display: none}
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {color: #333}
@@ -199,3 +223,15 @@ div#content-wrapper:not(.open) .left-top {
 
 input[type="range"] {padding: 0}
 #timeline-diag-body {overflow-y:auto}
+
+/* Attribution and scaleline */
+.ol-attribution {
+    bottom: 0px !important;
+    right: 0px !important;
+    height: 1.5em !important;
+}
+
+.ol-scale-line {
+    bottom: 2.0em !important;
+    background-color: #adadad !important;
+}

@@ -9,7 +9,7 @@ define(['ol',
         'permalink',
         'measure',
         'bootstrap',
-        'geolocation',
+        //'geolocation',
         'api',
         'drag',
         'compositions',
@@ -23,7 +23,7 @@ define(['ol',
             'hs.layermanager',
             'hs.query',
             'hs.permalink',
-            'hs.geolocation',
+            //'hs.geolocation',
             'hs.api',
             'hs.sidebar',
             'hs.drag',
@@ -196,6 +196,11 @@ define(['ol',
                     if (args == 'Map') {
                         var map = hsmap.map;
                         var parser = new ol.format.WMTSCapabilities();
+                        
+                        map.getControls().forEach(function(control){
+                            if (control instanceof ol.control.Attribution)
+                                control.setCollapsible(false);    
+                        });
                         
                         var layers = [
                             {
