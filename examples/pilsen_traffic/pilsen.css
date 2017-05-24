@@ -236,3 +236,6 @@ input[type="range"] {padding: 0}
 }
 
 .tl-timenav-slider-background{pointer-events: none;}
+.tl-timeaxis-tick {cursor: pointer; }
+.tl-timeaxis-minor .tl-timeaxis-tick:hover {background-color:#FFD2D2}
+.tl-timeaxis-minor .tl-timeaxis-tick:hover span {text-decoration: underline;}
