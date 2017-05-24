@@ -319,6 +319,12 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         return getDescriptionWoUrl() + '%0D%0A' + encodeURIComponent(url);
                     }
                     
+                    $rootScope.$on('layermanager.layer_loaded', function(e, layer){
+                        if(layer.get('title') == time_layer_title)
+                            $scope.layers_loading = layer.getSource().loadCounter;
+                    });
+                    
+                    
                     $scope.printPdf = printPdf;
                     $scope.shareSocial = shareSocial;
                     $scope.showPermalink = showPermalink;

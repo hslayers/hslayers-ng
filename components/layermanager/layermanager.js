@@ -771,11 +771,13 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 if (layer instanceof ol.layer.Image) {
                     source.on('imageloadstart', function (event) {
                         source.loaded = false;
+                        source.loadCounter += 1;
                         $rootScope.$broadcast('layermanager.layer_loading', layer);
                         if (!$rootScope.$$phase) $rootScope.$digest();
                     });
                     source.on('imageloadend', function (event) {
                         source.loaded = true;
+                        source.loadCounter -= 1;
                         $rootScope.$broadcast('layermanager.layer_loaded', layer);
                         if (!$rootScope.$$phase) $rootScope.$digest();
                     });
