@@ -15,7 +15,7 @@
     border: 1px solid #adadad !important;
     font-size: 150% !important;
     font-weight: bold !important;
-    box-shadow: 2px 2px 1px #4b4b4b;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
     margin-left: 0px !important;
     margin-top: 0px !important;
 }
@@ -29,7 +29,7 @@
     border: 1px solid #adadad;
     font-size: 150%;
     font-weight: bold;
-    box-shadow: 2px 2px 1px #4b4b4b;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
     padding: 6px;
     float: right;
 }
@@ -73,7 +73,7 @@ div#content-wrapper:not(.open) .left-top {
 .left-top .dropdown-toggle {
     position: relative;
     border-radius: 0px;
-    box-shadow: 2px 2px 1px #4b4b4b; 
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4); 
 }
 
 .left-top .dropdown-toggle i {
@@ -97,7 +97,7 @@ div#content-wrapper:not(.open) .left-top {
     width: 100%;
     margin-top: 0px;
     border-radius: 0px;
-    box-shadow: 2px 2px 1px #4b4b4b;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
     cursor: pointer;
     padding: 0px;
 }
