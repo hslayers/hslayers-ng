@@ -20,7 +20,7 @@
         <meta property="og:title" content="Intenzita dopravy v Plzni" />
         <meta property="og:type" content="map" />
         <meta property="og:url" content="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
-        <meta property="og:image" content="social-thumbnail.png" />
+        <meta property="og:image" content="<?php echo "http://$_SERVER[HTTP_HOST]" . explode('?', $_SERVER["REQUEST_URI"])[0] . "social-thumbnail.png"; ?>" />
         <meta property="og:description" content="Předpokládaná dopravní situace v Plzni dne xx.xx.2017 v 10:00." />
     </head>
     <body >
