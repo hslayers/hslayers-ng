@@ -20,10 +20,11 @@
                 </div>
 
 
-                <div class="panelspace" ng-class="{'labels': Core.sidebarLabels, 'buttons': Core.sidebarButtons}">
+                <div class="panelspace" ng-class="{'labels': Core.sidebarLabels, 'buttons': Core.sidebarButtons, 'minisidebar-wrapper':!Core.classicSidebar}">
                     <div class="panelspace-wrapper">
-                        <div id="sidebar" hs.sidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
-                        <div id="panelplace">
+                        <div id="sidebar" hs.sidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="Core.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
+                        <div id="mini-sidebar" hs.minisidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="!Core.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
+                        <div id="panelplace" ng-class="{'minisidebar-panel':!Core.classicSidebar}">
                             <div hs.layermanager.directive          hs.draggable ng-controller="hs.layermanager.controller" ng-show="Core.panelVisible('layermanager', this)"></div>
                             <div hs.legend.directive                hs.draggable ng-controller="hs.legend.controller" ng-if="Core.exists('hs.legend.controller')" ng-show="Core.panelVisible('legend', this)"></div>
                             <div hs.ows.directive                   hs.draggable ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources" ng-show="Core.panelVisible('ows', this)"></div>
