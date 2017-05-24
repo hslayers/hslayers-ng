@@ -33,6 +33,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     me.permalinkLayers = "";
                     me.added_layers = [];
                     me.params = [];
+                    me.customParams = {};
                     
                     /**
                     * @function update
@@ -67,6 +68,9 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         me.push('hs_y', view.getCenter()[1]);
                         me.push('hs_z', view.getZoom());
                         me.push('visible_layers', visible_layers.join(";"));
+                        for (var cP in me.customParams) {
+                            me.push(cP,me.customParams[cP]);
+                        }
                         window.history.pushState({
                             path: me.current_url
                         }, "any", window.location.origin + me.current_url);
@@ -217,6 +221,17 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         else return null;
                     };
                     
+                    var paramTimer = null;
+                    me.updateCustomParams = function(params) {
+                        for (param in params) {
+                            me.customParams[param] = params[param];
+                        }
+                        if (paramTimer != null) clearTimeout(paramTimer);
+                        paramTimer = setTimeout(function() {
+                            me.update()
+                        }, 1000);
+                    }
+                    
                     /**
                     * @function init
                     * @memberof hs.permalink.service_url
@@ -226,7 +241,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         if (url_generation) {
                             var timer = null;
                             $rootScope.$on('map.extent_changed', function(event, data, b) {
-                                me.update(event)
+                                me.update()
                                 if (Core.mainpanel == 'permalink') {
                                     $rootScope.$broadcast('browserurl.updated');
                                 }
@@ -237,7 +252,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 layer.on('change:visible', function(e) {
                                     if (timer != null) clearTimeout(timer);
                                     timer = setTimeout(function() {
-                                        me.update(e)
+                                        me.update()
                                     }, 1000);
                                 })
                             });
