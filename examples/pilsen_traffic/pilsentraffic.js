@@ -234,21 +234,52 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         hsmap.map.once('postcompose', function(event) {
                             var canvas = event.context.canvas;
                             var canvas2 = document.createElement("canvas");
-                            var width = 1044,
-                                height = 668;
+                            var width = 700,
+                                height = 500;
                             canvas2.style.width = width + "px";
                             canvas2.style.height = height + "px";
                             canvas2.width = width;
                             canvas2.height = height;
                             var ctx2 = canvas2.getContext("2d");
-                            ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
-                            imgData = canvas2.toDataURL('image/png', 0.8);
+                            ctx2.fillStyle = '#eeeeee';
+                            ctx2.fillRect(0, 0, width ,height);
+                            ctx2.drawImage(canvas, canvas.width / 2 - width / 2, canvas.height / 2 - height / 2, width, height, 0, 0, width, height);
+                            imgData = canvas2.toDataURL('image/png', 1);
                         }, $scope);
                         hsmap.map.renderSync();
+      
+                        //********** Draw the roadworks list
+                        var text_canvas = document.createElement("canvas");
+                        var text_canvas_dimensions = 1000;
+                        text_canvas.style.width = text_canvas_dimensions + "px";
+                        text_canvas.style.height = text_canvas_dimensions + "px";
+                        text_canvas.width = text_canvas_dimensions;
+                        text_canvas.height = text_canvas_dimensions;
+                            
+                        var tctx = text_canvas.getContext("2d");
 
-                        doc.setFontSize(30);
-                        doc.text(55, 25, getTitle());
-                        doc.addImage(imgData, 'PNG', 10, 20);
+                        tctx.fillStyle = 'black';
+                        tctx.font="22pt Verdana";
+                        tctx.fillText(getDescriptionWoUrl(), 5, 30);
+                        var text_pixels = text_canvas.toDataURL('image/png', 1);
+                        doc.addImage(text_pixels, 'PNG', 10, 5);
+                        
+                        var y = 25;
+                        tctx.clearRect(0, 0, 500 ,500);
+                                                        
+                        tctx.fillStyle = 'black';
+                        tctx.font="14pt Verdana";
+                        
+                        angular.forEach($scope.roadworklist, function(work){
+                            tctx.fillText(work.headline, 5, y);
+                            y += 40;
+                        })
+                        
+                        text_pixels = text_canvas.toDataURL('image/png', 1);
+                        doc.addImage(text_pixels, 'PNG', 10, 40);
+                        
+                        //********** Draw map
+                        doc.addImage(imgData, 'PNG', 100, 40);
                         doc.save('a4.pdf')
                     }
                     
@@ -256,8 +287,12 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         return 'Mapa intenzity dopravy v Plzni';
                     }
                     
+                    function getDescriptionWoUrl(){
+                        return 'Předpokládaná dopravní situace v Plzni dne xx.xx.2017 v 10:00.';
+                    }
+                    
                     function getDescription(url){
-                        return 'Předpokládaná dopravní situace v Plzni dne xx.xx.2017 v 10:00.%0D%0A' + encodeURIComponent(url);
+                        return getDescriptionWoUrl() + '%0D%0A' + encodeURIComponent(url);
                     }
                     
                     $scope.printPdf = printPdf;
