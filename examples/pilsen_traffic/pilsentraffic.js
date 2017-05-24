@@ -262,7 +262,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         tctx.font="22pt Verdana";
                         tctx.fillText(getDescriptionWoUrl(), 5, 30);
                         var text_pixels = text_canvas.toDataURL('image/png', 1);
-                        doc.addImage(text_pixels, 'PNG', 10, 5);
+                        doc.addImage(text_pixels, 'PNG', 10, 20);
                         
                         var y = 25;
                         tctx.clearRect(0, 0, 500 ,500);
@@ -288,7 +288,11 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     }
                     
                     function getDescriptionWoUrl(){
-                        return 'Předpokládaná dopravní situace v Plzni dne xx.xx.2017 v 10:00.';
+                        return 'Předpokládaná dopravní situace v Plzni dne ' + lead(service.day.day()) + '.' + lead(service.day.month() + 1) + '.' + service.day.year() + ' v ' + lead($scope.current_hour) + ':00.';
+                    }
+                    
+                    function lead(what){
+                        return ("0"+what).slice(-2)   
                     }
                     
                     function getDescription(url){
