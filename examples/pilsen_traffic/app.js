@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol',
+define(['ol','moment',
         'sidebar',
         //'toolbar',
         'layermanager',
@@ -17,7 +17,7 @@ define(['ol',
         'calendar',
         'ngtimeline'
     ],
-    function(ol) {
+    function(ol, moment) {
         var module = angular.module('hs', [
             //'hs.toolbar',
             'hs.layermanager',
@@ -186,8 +186,8 @@ define(['ol',
                 }
         }]);
     
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 
-            function($scope, Core, $compile, hsmap, $timeout, $http, utils) {
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 'hs.pilsentraffic.service', '$rootScope',
+            function($scope, Core, $compile, hsmap, $timeout, $http, utils, pilsen_service, $rootScope) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.classicSidebar = false;
@@ -287,6 +287,13 @@ define(['ol',
                         $scope.timeline.setData(data);
                         $scope.timeline.goTo(1);
                         $('.tl-slide-content').width(870);
+                        angular.forEach($scope.timeline._timenav.timeaxis.minor_ticks, function(minor_tick){
+                            $(minor_tick.tick).click(function(){
+                                console.log(minor_tick);
+                                pilsen_service.day.set('month', minor_tick.date.data.date_obj.getMonth());
+                                $rootScope.$broadcast('date_changed');
+                            })
+                        })
                     }, 200);
                 }
                 

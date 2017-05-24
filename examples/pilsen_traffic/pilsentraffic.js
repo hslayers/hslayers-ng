@@ -86,6 +86,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         return list;
                     }
                     
+                    me.day = moment();
+                    
                     me.getRoadworksData();
                     
                     return me;
@@ -101,19 +103,25 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     $scope.current_date = new Date();                  
 
-                    $scope.day = moment();
+                    $scope.service = service;
                     
                     $scope.roadworklist = [];
                     $scope.roadwork;
                 
-                    $scope.$watch('day', function() {
-                        $scope.current_date.setYear($scope.day.year());
-                        $scope.current_date.setMonth($scope.day.month());
-                        $scope.current_date.setDate($scope.day.date());
-                        console.log($scope.day, $scope.current_date);
+                    $rootScope.$on('date_changed', function(){
+                        dateChanged()
+                    })
+                    
+                    function dateChanged(){
+                        $scope.current_date.setYear(service.day.year());
+                        $scope.current_date.setMonth(service.day.month());
+                        $scope.current_date.setDate(service.day.date());
+                        if(console) console.log(service.day, service.current_date);
                         updateTimeLayer();
-                        $scope.updateWorklist();
-                    });
+                        $scope.updateWorklist();   
+                    }
+                                   
+                    $scope.$watch(function(){return service.day}, dateChanged);
                     
                     $scope.setCurrentTime = function(current_hour){
                         $scope.current_hour = current_hour;

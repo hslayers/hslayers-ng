@@ -224,7 +224,6 @@ div#content-wrapper:not(.open) .left-top {
 input[type="range"] {padding: 0}
 #timeline-diag-body {overflow-y:auto}
 
-/* Attribution and scaleline */
 .ol-attribution {
     bottom: 0px !important;
     right: 0px !important;
@@ -235,3 +234,5 @@ input[type="range"] {padding: 0}
     bottom: 2.0em !important;
     background-color: #adadad !important;
 }
+
+.tl-timenav-slider-background{pointer-events: none;}
