@@ -19,7 +19,7 @@
         <!-- Open Graph data -->
         <meta property="og:title" content="Intenzita dopravy v Plzni" />
         <meta property="og:type" content="map" />
-        <meta property="og:url" content="http://www.example.com/" />
+        <meta property="og:url" content="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
         <meta property="og:image" content="social-thumbnail.png" />
         <meta property="og:description" content="Předpokládaná dopravní situace v Plzni dne xx.xx.2017 v 10:00." />
     </head>
