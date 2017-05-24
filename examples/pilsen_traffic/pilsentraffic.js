@@ -119,7 +119,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         if(console) console.log(service.day, service.current_date);
                         updateTimeLayer();
                         $scope.$broadcast('day.changed', service.day);
-                        $scope.updateWorklist();   
+                        $scope.updateWorklist();
+                        updateUrlDateTime();
                     }
                                    
                     $scope.$watch(function(){return service.day}, dateChanged);
@@ -127,7 +128,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     $scope.setCurrentTime = function(current_hour){
                         $scope.current_hour = current_hour;
                         $scope.current_date.setHours($scope.current_hour);
-                        updateTimeLayer()
+                        updateTimeLayer();
+                        updateUrlDateTime();
                     }
                     
                     $scope.nextDay = function() {
@@ -151,6 +153,24 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         //if(hours<8) hours = 8;
                         //if(hours>22) hours = 22;
                         $scope.setCurrentTime(hours);
+                    }
+                    
+                    function updateUrlDateTime() {
+                        var params = {};
+                        params.year = $scope.current_date.getFullYear();
+                        params.month = $scope.current_date.getMonth();
+                        params.date = $scope.current_date.getDate();
+                        params.hour = $scope.current_hour;
+                        permalink_service.updateCustomParams(params);
+                    }
+                    
+                    function initFromLink() {
+                        var day = moment(service.day);
+                        service.day.year(permalink_service.getParamValue('year'));
+                        service.day.month(permalink_service.getParamValue('month'));
+                        service.day.date(permalink_service.getParamValue('date'));
+                        dateChanged();
+                        $scope.setCurrentTime(permalink_service.getParamValue('hour'));
                     }
                     
                     if(angular.isUndefined(lm_service.getLayerByTitle(time_layer_title)))
@@ -302,6 +322,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     $scope.printPdf = printPdf;
                     $scope.shareSocial = shareSocial;
                     $scope.showPermalink = showPermalink;
+                    
+                    if (permalink_service.getParamValue('year')) initFromLink();
                     
                     $scope.$emit('scope_loaded', "PilsenTraffic");
                 }
