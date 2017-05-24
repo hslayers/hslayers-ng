@@ -118,6 +118,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $scope.current_date.setDate(service.day.date());
                         if(console) console.log(service.day, service.current_date);
                         updateTimeLayer();
+                        $scope.$broadcast('day.changed', service.day);
                         $scope.updateWorklist();   
                     }
                                    
@@ -130,13 +131,13 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     }
                     
                     $scope.nextDay = function() {
-                        var day = moment($scope.day);
+                        var day = moment(service.day);
                         day.date(day.date()+1);
                         $scope.$broadcast('day.changed',day);
                     }
                     
                     $scope.previousDay = function() {
-                        var day = moment($scope.day);
+                        var day = moment(service.day);
                         day.date(day.date()-1);
                         $scope.$broadcast('day.changed',day);
                     }

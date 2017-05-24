@@ -29,6 +29,11 @@ define(['angular', 'moment'],
 
                 scope.select = function(day) {
                     scope.selected = day.date;
+                    var start = scope.selected.clone();
+                    start.date(1);
+                    _removeTime(start.day(1));
+                    scope.month = scope.selected.clone();
+                    _buildMonth(scope, start, scope.month);
                 };
 
                 scope.next = function() {
