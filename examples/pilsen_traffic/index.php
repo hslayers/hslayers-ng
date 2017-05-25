@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="../../bower_components/TimelineJS3/compiled/css/timeline.css">
         <link rel="stylesheet" type="text/css" href="pilsen.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+        <script src="https://use.fontawesome.com/700d55ca16.js"></script>
         
         <?php if (isset($_GET['year'])) { ?>
         <meta name="description" content="Předpokládaná dopravní situace v Plzni dne <?php echo "$date.$month.$year v $hour"; ?>:00." />
