@@ -289,6 +289,7 @@ define(['ol','moment',
                             pilsen_service.day.set('date', minor_tick.date.data.date_obj.getDate());
                             pilsen_service.day.set('year', minor_tick.date.data.date_obj.getYear());
                             $rootScope.$broadcast('date_changed');
+                            $('#advanced-info-dialog').modal('hide');
                         }
                         angular.forEach($scope.timeline._timenav.timeaxis.minor_ticks, function(minor_tick){
                             $(minor_tick.tick).click(function(){
