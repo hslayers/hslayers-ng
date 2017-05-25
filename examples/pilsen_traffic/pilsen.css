@@ -179,25 +179,41 @@ div#content-wrapper:not(.open) .left-top {
 }
 
 @media (max-width: 658px) {
-    .ol-zoom {
-        right: 10px !important;
-        bottom: 4.2em !important;
-        top: auto !important;
-    }
-    
-    .open .left-top {
-        width: calc(100% - 281px);
-    }
-    
     div#content-wrapper:not(.open) .left-top {
-        width: calc(100% - 0px);
+        width: calc(100% - 80px);
     }
-    
-    #reset-button {float: left;}
     
     .left-top .dropdown {
         margin-bottom: 10px;
     }
+    
+    .left-top div {
+        min-width: 80px;
+    }
+    
+    .left-top .dropdown i {
+        margin-right: 0px;
+    }
+    
+    .top-button-text {
+        display: none;
+    }
+}
+
+@media (max-width: 566px) {
+    .ol-zoom {
+        left: 20px !important;
+        top: 110px !important;
+    }
+    
+    .ol-zoom button {
+        display: block !important;
+        margin: 0px !important;
+    }
+    
+    .left-top > * {width: 100px;}
+    
+    #reset-button {float: left;}
 }
 
 .tl-timemarker {color: #000}
