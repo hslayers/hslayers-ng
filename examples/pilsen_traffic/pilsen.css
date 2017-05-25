@@ -52,11 +52,11 @@
     padding-left: 20px;
     padding-right: 10px;
     display: inline-block;
-    width: calc(100% - 481px);
+    width: calc(100% - 401px);
 }
 
 .open .left-top {
-    width: calc(100% - 481px);
+    width: calc(100% - 401px);
 }
 
 div#content-wrapper:not(.open) .left-top {
@@ -182,7 +182,7 @@ div#content-wrapper:not(.open) .left-top {
 
 @media (max-width: 767px) {
     .open .left-top {
-        width: calc(100% - 381px);
+        width: calc(100% - 401px);
     }
 }
 
