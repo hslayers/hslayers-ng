@@ -239,5 +239,5 @@ input[type="range"] {padding: 0}
 .tl-timeaxis-tick {cursor: pointer; }
 .tl-timeaxis-minor .tl-timeaxis-tick:hover {background-color:#FFD2D2}
 .tl-timeaxis-minor .tl-timeaxis-tick:hover span {text-decoration: underline;}
-.hs-p-loading_count {margin-right: 10px}
+.hs-p-loading_count {position: absolute; left: 20px; top: 15px}
 .hs-p-loading_count span {margin-left:-17px}
