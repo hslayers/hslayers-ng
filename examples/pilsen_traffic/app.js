@@ -283,18 +283,36 @@ define(['ol','moment',
                     $("#hs-dialog-area").append(el)
                     $compile(el)($scope);
                     
+                    function listenOnTimelineClicks(){
+                        function setCurrentDate(minor_tick){
+                            pilsen_service.day.set('month', minor_tick.date.data.date_obj.getMonth());
+                            pilsen_service.day.set('date', minor_tick.date.data.date_obj.getDate());
+                            pilsen_service.day.set('year', minor_tick.date.data.date_obj.getYear());
+                            $rootScope.$broadcast('date_changed');
+                        }
+                        angular.forEach($scope.timeline._timenav.timeaxis.minor_ticks, function(minor_tick){
+                            $(minor_tick.tick).click(function(){
+                                setCurrentDate(minor_tick);
+                            })
+                        })
+                        angular.forEach($scope.timeline._timenav.timeaxis.major_ticks, function(minor_tick){
+                            $(minor_tick.tick).click(function(){
+                                setCurrentDate(minor_tick);
+                            })
+                        })
+                    }
+                    
                     $timeout(function () {
                         $scope.timeline.setData(data);
                         $scope.timeline.goTo(1);
                         $('.tl-slide-content').width(870);
-                        angular.forEach($scope.timeline._timenav.timeaxis.minor_ticks, function(minor_tick){
-                            $(minor_tick.tick).click(function(){
-                                console.log(minor_tick);
-                                pilsen_service.day.set('month', minor_tick.date.data.date_obj.getMonth());
-                                $rootScope.$broadcast('date_changed');
-                            })
-                        })
+                        $('.tl-menubar-button').click(function () {
+                            $timeout(function () {listenOnTimelineClicks()}, 500);
+                        });
+                        listenOnTimelineClicks();
                     }, 200);
+                    
+                    
                 }
                 
                 
