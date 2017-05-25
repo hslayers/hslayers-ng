@@ -338,10 +338,12 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                                                         
                         tctx.fillStyle = 'black';
                         tctx.font="14pt Verdana";
-                        
+                        tctx.fillText('Probíhající dopravní stavby:', 5, y);
+                        y += 40;
+                        tctx.font="12pt Verdana";
                         angular.forEach($scope.roadworklist, function(work){
                             tctx.fillText(work.headline, 5, y);
-                            y += 40;
+                            y += 37;
                         })
                         
                         text_pixels = text_canvas.toDataURL('image/png', 1);
