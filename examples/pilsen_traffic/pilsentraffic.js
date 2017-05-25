@@ -101,6 +101,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     var roadworks_layer = config.default_layers[4];
                     var hs_roadworks_layer = null;
                     
+                    $scope.animating = false;
+                    
                     $scope.current_date = new Date();                  
 
                     $scope.service = service;
@@ -187,6 +189,39 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
                         time_service.setLayerTime(hs_roadworks_layer); 
                     }
+                    
+                    function updateTimeLayerForAnimation(){
+                        
+                        $scope.current_date.setHours(parseInt($scope.current_hour) + 1);
+                        hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
+                        time_service.setLayerTime(hs_roadworks_layer); 
+                    }
+                    
+                    $scope.toggleAnimation = function() {
+                        $scope.animating = !$scope.animating;
+                        playHour();
+                    }
+                    
+                    function playHour() {
+                        if ($scope.current_hour >= 23) {
+                            $scope.animating = false;
+                            if ($scope.$$phase) $scope.$digest();
+                        }
+                        if (!$scope.animating) return;
+                        updateTimeLayerForAnimation();
+                        var animationInterval = null;
+                        animationInterval = setInterval(function(){
+                            if ($scope.layers_loading == 0) intervalCallback();
+                        },100);
+                        
+                        function intervalCallback(){
+                            clearInterval(animationInterval);
+                            $scope.setCurrentTime(parseInt($scope.current_hour) + 1);
+                            setTimeout(function(){
+                                playHour();
+                            },1000);
+                        }
+                    }  
                     
                     $scope.updateWorklist = function() {
                         var data = service.getDayData($scope.current_date);
@@ -318,6 +353,11 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     function getDescription(url){
                         return getDescriptionWoUrl() + '%0D%0A' + encodeURIComponent(url);
                     }
+                    
+                    $rootScope.$on('layermanager.layer_loading', function(e, layer){
+                        if(layer.get('title') == time_layer_title)
+                            $scope.layers_loading = layer.getSource().loadCounter;
+                    });
                     
                     $rootScope.$on('layermanager.layer_loaded', function(e, layer){
                         if(layer.get('title') == time_layer_title)
