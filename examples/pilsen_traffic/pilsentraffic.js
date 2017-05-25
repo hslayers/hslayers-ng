@@ -198,6 +198,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     }
                     
                     $scope.toggleAnimation = function() {
+                        if ($scope.current_hour >= 23) return;
                         $scope.animating = !$scope.animating;
                         playHour();
                     }
@@ -205,7 +206,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     function playHour() {
                         if ($scope.current_hour >= 23) {
                             $scope.animating = false;
-                            if ($scope.$$phase) $scope.$digest();
+                            if (!$scope.$$phase) $scope.$digest();
                         }
                         if (!$scope.animating) return;
                         updateTimeLayerForAnimation();
