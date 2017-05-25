@@ -114,11 +114,20 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         dateChanged()
                     })
                     
+                    var linkInit = false;
+                    
                     function dateChanged(){
                         $scope.current_date.setYear(service.day.year());
                         $scope.current_date.setMonth(service.day.month());
                         $scope.current_date.setDate(service.day.date());
                         if(console) console.log(service.day, service.current_date);
+                        if (!linkInit) {
+                            var now = new Date();
+                            if ($scope.current_date.toDateString() == now.toDateString()) {
+                                $scope.current_hour = now.getHours();
+                            }
+                            else $scope.current_hour = 8;
+                        }
                         updateTimeLayer();
                         $scope.$broadcast('day.changed', service.day);
                         $scope.updateWorklist();
@@ -167,6 +176,10 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     }
                     
                     function initFromLink() {
+                        linkInit = true;
+                        setTimeout(function(){
+                            linkInit = false;    
+                        },2000);
                         var day = moment(service.day);
                         service.day.year(permalink_service.getParamValue('year'));
                         service.day.month(permalink_service.getParamValue('month'));
