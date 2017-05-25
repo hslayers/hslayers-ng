@@ -287,7 +287,7 @@ define(['ol','moment',
                         function setCurrentDate(minor_tick){
                             pilsen_service.day.set('month', minor_tick.date.data.date_obj.getMonth());
                             pilsen_service.day.set('date', minor_tick.date.data.date_obj.getDate());
-                            pilsen_service.day.set('year', minor_tick.date.data.date_obj.getYear());
+                            pilsen_service.day.set('year', minor_tick.date.data.date_obj.getFullYear());
                             $rootScope.$broadcast('date_changed');
                             $('#advanced-info-dialog').modal('hide');
                         }
@@ -301,6 +301,7 @@ define(['ol','moment',
                                 setCurrentDate(minor_tick);
                             })
                         })
+                        $('.tl-timeaxis-tick-hidden').removeClass('tl-timeaxis-tick-hidden');
                     }
                     
                     $timeout(function () {
