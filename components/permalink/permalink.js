@@ -6,6 +6,14 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
 
     function(angular, social) {
         angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.status_creator', 'hs.compositions'])
+        
+            .config(['$locationProvider', function($locationProvider) {
+                $locationProvider.html5Mode({
+                    enabled: true,
+                    requireBase: false
+                });
+            }])
+            
             /**
              * @ngdoc directive
              * @name hs.permalink.directive
@@ -25,16 +33,16 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
              */
             .service("hs.permalink.service_url", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config',
                 function($rootScope, $location, $window, OlMap, Core, utils, status, compositions, config) {
-
+                    
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
                     me.current_url = "";
                     me.permalinkLayers = "";
                     me.added_layers = [];
-                    me.params = [];
+                    me.params = {};
                     me.customParams = {};
-                    
+                        
                     /**
                     * @function update
                     * @memberof hs.permalink.service_url
@@ -71,10 +79,9 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         for (var cP in me.customParams) {
                             me.push(cP,me.customParams[cP]);
                         }
-                        window.history.pushState({
-                            path: me.current_url
-                        }, "any", window.location.origin + me.current_url);
+                        $location.search(me.params);
                     };
+                    
                     
                     /**
                     * @function getPermalinkUrl
