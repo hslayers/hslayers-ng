@@ -8,7 +8,7 @@ calendar {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   background: white;
-  width: 300px;
+  width: 100%;
   border: solid 1px #CCC;
   margin-bottom: 10px;
 }
