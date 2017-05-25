@@ -166,7 +166,7 @@ define(['ol','moment',
                             "unitSymbol":null,
                             "default":"2017-05-01T00:00:00",
                             "nearestValue":false,
-                            "values":"2017-05-01T00:00:00/2017-05-31T00:00:00/PT1H"
+                            "values":"2017-01-01T00:00:00/2099-12-31T00:00:00/PT1H"
                         }
                     },
                     visible: true
