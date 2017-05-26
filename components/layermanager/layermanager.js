@@ -1078,7 +1078,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @param {object} currentlayer Selected layer 
              * @description Update layer time parameter
              */
-            me.setLayerTime = function (currentlayer) {
+            me.setLayerTime = function (currentlayer, application_specific_timezone_offset) {
                 var dimensions_time = currentlayer.layer.get('dimensions_time') || currentlayer.layer.dimensions_time;
                 var d = new Date(dimensions_time.timeInterval[0]);
                 switch (currentlayer.time_unit) {
@@ -1099,6 +1099,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                 }
 
                 currentlayer.time = d;
+                if(angular.isDefined(application_specific_timezone_offset))
+                    d.setTime( d.getTime() + application_specific_timezone_offset*3600*1000);
                 currentlayer.layer.getSource().updateParams({
                     'TIME': d.toISOString()
                 });

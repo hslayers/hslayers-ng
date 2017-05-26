@@ -200,14 +200,14 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     function updateTimeLayer(){
                         hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
-                        time_service.setLayerTime(hs_roadworks_layer); 
+                        time_service.setLayerTime(hs_roadworks_layer, +2); 
                     }
                     
                     function updateTimeLayerForAnimation(){
                         
                         $scope.current_date.setHours(parseInt($scope.current_hour) + 1);
                         hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
-                        time_service.setLayerTime(hs_roadworks_layer); 
+                        time_service.setLayerTime(hs_roadworks_layer, +2); 
                     }
                     
                     $scope.toggleAnimation = function() {
