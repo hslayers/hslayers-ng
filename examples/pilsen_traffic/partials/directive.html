@@ -9,7 +9,7 @@
                  <span style="font-size: 12px; float: left">00:00</span><span style="font-size: 12px; float: right">23:00</span>
             </div>
            
-            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group btn-group-justified" id="calendar-player" role="group" aria-label="...">
                 <a type="button" class="btn btn-default" style=" width: .4%;" ng-click="previousDay()"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a>
                 <a type="button" class="btn btn-default" disabled style="cursor: default">
                     <span class="hs-p-loading_count" ng-show="layers_loading>0">
@@ -30,10 +30,10 @@
                 </a>
             </div>
             <div class="center-block">
-                <button class="btn btn-default center-block" ng-click="showDeveloperInfo()">Zobrazit časovou osu staveb</button>
+                <button class="btn btn-default center-block" ng-click="showDeveloperInfo()" id="show-timeline">Zobrazit časovou osu staveb</button>
             </div>
             <h4>Sdílení mapy</h4>
-            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group btn-group-justified share-group" role="group" aria-label="...">
                 <a type="button" title="Sdílet mapu" class="btn btn-default" ng-click="showPermalink()"><i class="icon-link"></i></a>
                 <a type="button" title="Vytisknout mapu" class="btn btn-default" ng-click="printPdf()"><i class="fa fa-file-pdf-o"></i></a>
                 <a type="button" title="Sdílet na Twitteru" class="btn btn-default" ng-click="shareSocial('twitter')"><i class="icon-twitter"></i></a>

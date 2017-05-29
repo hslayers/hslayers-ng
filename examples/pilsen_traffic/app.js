@@ -383,6 +383,11 @@ define(['ol','moment',
                     start_at_slide: 1,
                     data: data
                 };
+                
+                $scope.isAir = function(layerTitle) {
+                    console.log(layerTitle);
+                    return layerTitle == "Letecká (ČUZK)";
+                }
 
                 $scope.$on('layermanager.layer_time_changed', function(evt, layer, d) {
                     angular.forEach(hsmap.map.getLayers(), function(other_layer) {
