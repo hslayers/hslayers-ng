@@ -235,6 +235,25 @@ define(['ol','moment',
                                 newLayer.setSource(source);
                             });    
                         });
+                        
+                        // Cursor change, based on https://stackoverflow.com/questions/26022029/how-to-change-the-cursor-on-hover-in-openlayers-3 modified for Image layer
+                        var target = map.getTarget();
+                        var jTarget = typeof target === "string" ? $("#" + target) : $(target);
+                        
+                        map.on('pointermove', function(evt) {
+                            var hit = false;
+                            map.forEachLayerAtPixel(evt.pixel, function(layer, pixel) {
+                                hit = true;
+                            },undefined, function(layer) {
+                                return layer instanceof ol.layer.Image;
+                            });
+                            if (hit) {
+                                jTarget.css("cursor", "pointer");
+                            } else {
+                                jTarget.css("cursor", "");
+                            }
+                            
+                        });
                     }
 
                     if (args == 'Sidebar') {
