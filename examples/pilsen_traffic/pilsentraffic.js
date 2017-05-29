@@ -29,6 +29,13 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                 }
             };
         })
+        
+        .directive('hs.pilsentraffic.legend', function() {
+            return {
+                templateUrl: 'partials/legend.html?bust=' + gitsha,
+                controller: 'hs.pilsentraffic.controller'
+            };
+        })
 
         .service("hs.pilsentraffic.service", ['Core', 'hs.utils.service','$http',
                 function(Core, utils, $http) {
@@ -386,6 +393,24 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     $scope.showPermalink = showPermalink;
                     
                     if (permalink_service.getParamValue('year')) initFromLink();
+                    
+                    
+                    $scope.legendVisible = false;
+                    $scope.toggleLegend = function(bool){
+                        if ($(".legend").length == 0) createLegend();
+                        $scope.legendVisible = bool;
+                        if (!$scope.$$phase) $scope.$digest();
+                    }
+                    
+                    $timeout(function(){
+                        $scope.toggleLegend(false);
+                    },500);
+                    
+                    function  createLegend() {
+                        var el = angular.element('<div hs.pilsentraffic.legend></div>');
+                        $("#hs-dialog-area").append(el);
+                        $compile(el)($scope);
+                    }
                     
                     $scope.$emit('scope_loaded', "PilsenTraffic");
                 }

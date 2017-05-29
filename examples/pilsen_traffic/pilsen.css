@@ -267,3 +267,21 @@ input[type="range"] {padding: 0}
 .hs-p-loading_count {position: absolute; left: 5px; top: 15px}
 .hs-p-loading_count span {margin-left:-17px}
 .tl-message-full {display: none}
+
+.links {margin-top: 10px;}
+
+.legend {
+    width: 400px;
+    z-index: 1000;
+    background-color: #fff;
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+}
+.legend div {
+    padding: 10px;
+}
+.legend img {
+    width: 100%;
+    height: 100%;
+}
