@@ -1009,22 +1009,17 @@ button.hs_draw_new_extended  {width: 172px}
     border-radius: 6px 0 6px 6px;
 }
 
-/* Info Popup - taken from OL Popup example*/
 .ol-popup {
+    display: none;
     position: absolute;
     background-color: white;
-    -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-    padding: 15px;
-    border-radius: 10px;
+    padding: 15px 25px 15px 15px;
     border: 1px solid #cccccc;
     bottom: 12px;
     left: -50px;
-    min-width: 280px;
 }
 
-.ol-popup:after,
-.ol-popup:before {
+.ol-popup:after, .ol-popup:before {
     top: 100%;
     border: solid transparent;
     content: " ";
@@ -1047,3 +1042,41 @@ button.hs_draw_new_extended  {width: 172px}
     left: 48px;
     margin-left: -11px;
 }
+
+.ol-popup-content {
+    min-width: 170px;
+    max-height: 200px;
+    overflow-x: auto;
+}
+
+.ol-popup-closer {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 150%;
+    padding: 0 4px;
+    color: gray;
+    text-decoration: none;
+}
+
+.ol-popup-closer:after {
+    content: "\2716";
+}
+
+.ol-popup div.infoResult {
+    min-width: 130px;
+}
+
+.ol-popup div.infoResult p {
+    padding: 0.1em;
+    margin: 0;
+}
+
+.ol-popup-content h3 {
+    margin: 0.25em 0;
+}
+
+.ol-popup.marker {
+    margin-bottom: 30px;
+}
+

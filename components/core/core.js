@@ -57,6 +57,7 @@ require.config({
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
         utils: hsl_path + 'components/utils',
         WFSCapabilities: requirejs.s.contexts._.config.paths.WFSCapabilities || hsl_path + 'components/format/hs.format.WFSCapabilities',
+        olPopup: requirejs.s.contexts._.config.paths.olPopup || hsl_path + 'components/format/ol.popup',
         WfsSource: requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs',
         routing: hsl_path + 'components/routing/routing',
         tracking: hsl_path + 'components/tracking/tracking',
