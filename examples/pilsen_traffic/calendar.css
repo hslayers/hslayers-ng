@@ -15,7 +15,7 @@ calendar {
 calendar > div.header {
   float: left;
   width: 100%;
-  background: #2875C7;
+  background: #1FA22E;
   height: 40px;
   color: white;
 }
@@ -84,16 +84,16 @@ calendar > div.week > span.day:first-child {
   border-left: none;
 }
 calendar > div.week > span.day.today {
-  background: #E3F2FF;
+  background: #a3d9aa;
 }
 calendar > div.week > span.day.different-month {
   color: #C0C0C0;
 }
 calendar > div.week > span.day.selected {
-  background: #2875C7;
+  background: #1FA22E;
   color: white;
 }
 calendar > div.week.names > span {
-  color: #2875C7;
+  color: #1FA22E;
   font-weight: bold;
 }

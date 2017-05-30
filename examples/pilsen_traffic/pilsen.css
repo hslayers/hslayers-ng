@@ -140,9 +140,13 @@ div#content-wrapper:not(.open) .left-top {
     padding: 3px 10px;
 }
 
-.left-top .dropdown-menu .selected {background-color: #444;}
 .left-top .dropdown-menu .air {background-color: #fff;}
 .left-top .dropdown-menu .air a {color: #000;}
+.left-top .dropdown-menu .selected {
+    background-color: #444;
+    color: #fff !important;
+}
+
 
 .left-top .dropdown-menu .checkbox {
     margin: 0px;
@@ -291,10 +295,71 @@ input[type="range"] {padding: 0}
 .panel-default > .panel-heading {
     background-color: #000 !important;
     color: #fff !important;
+    border-radius: 0px !important;
 }
 .panel-default > .panel-body {
     background-color: #eee !important;
     height: 100% !important;
+}
+
+#time-range input[type=range]{
+    -webkit-appearance: none;
+    background-color: #eee;
+    border: none;
+}
+#time-range input[type=range]::-webkit-slider-runnable-track {
+    height: 5px;
+    background: #a2a2a2;
+    border: none;
+    border-radius: 3px;
+}
+#time-range input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    background-color: #1FA22E;
+    margin-top: -5px;
+}
+
+#time-range input[type=range]::-moz-range-track {
+    height: 5px;
+    background: #a2a2a2;
+    border: none;
+    border-radius: 3px;
+}
+#time-range input[type=range]::-moz-range-thumb {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    background-color: #1FA22E;
+    margin-top: -5px;
+}
+
+#time-range input[type=range]::-ms-track {
+    height: 5px;  
+    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+    background: transparent; 
+    /*leave room for the larger thumb to overflow with a transparent border */
+    border-color: transparent;
+    border-width: 6px 0;
+    /*remove default tick marks*/
+    color: transparent;
+}
+#time-range input[type=range]::-ms-fill-lower {
+    background: #a2a2a2;
+    border-radius: 3px;
+}
+#time-range input[type=range]::-ms-fill-upper {
+    background: #a2a2a2;
+    border-radius: 3px;
+}
+#time-range input[type=range]::-ms-thumb {
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    background-color: #1FA22E;
+    margin-top: -5px;
 }
 
 #calendar-player > a {
@@ -306,6 +371,7 @@ input[type="range"] {padding: 0}
     border-radius: 0px;
     border-width: 0px;
 }
+#calendar-player button:hover {background-color: #1a8126;}
 
 #show-timeline {
     border-width: 0px;
@@ -321,7 +387,8 @@ input[type="range"] {padding: 0}
     border-width: 0px;
     background-color: transparent;
 }
-.share-group > a:hover {background-color: #1FA22E;}
+.share-group > a:hover {background-color:  transparent;}
+.share-group > a:hover > i {color: #1FA22E;}
 
 .links {margin-top: 10px;}
 

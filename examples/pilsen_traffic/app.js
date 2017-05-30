@@ -385,7 +385,6 @@ define(['ol','moment',
                 };
                 
                 $scope.isAir = function(layerTitle) {
-                    console.log(layerTitle);
                     return layerTitle == "Letecká (ČUZK)";
                 }
 
