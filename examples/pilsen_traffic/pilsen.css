@@ -421,3 +421,31 @@ input[type="range"] {padding: 0}
 }
 .close span {color: white;} 
 .close {color: white !important;     opacity: 0.4 !important;}
+
+.popup-headline {
+    padding: 0px !important;
+    border-width: 0px !important;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4) !important;
+}
+.popup-headline .ol-popup-content {
+    max-height: 400px !important;
+    overflow-x: hidden !important;
+    width: 400px !important;
+}
+.popup-headline .popup-body {
+    overflow-x: auto;
+    padding: 10px;
+}
+.popup-headline .popup-header {
+    background-color: #000;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+}
+.popup-headline .popup-title {
+    margin: 0px;
+}
+.traffic-table{width: 100%;}
+.traffic-table th{width: 33%;}
+.traffic-table td{width: 66%;}
+.popup-headline .ol-popup-closer {color: #fff !important;}

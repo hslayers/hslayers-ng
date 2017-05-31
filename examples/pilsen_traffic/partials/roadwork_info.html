@@ -1,26 +1,33 @@
-<div class="modal" id="roadwork-info-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">
-                    <translate>Uzavírka</translate>
-                </h4>
-            </div>
-            <div class="modal-body" style="max-height:800px; overflow-y:auto">
-                <dl class="dl-horizontal">
-                    <dt>Název:</dt>
-                    <dd>{{roadwork.headline}}</dd>
-                    <dt>Datum:</dt>
-                    <dd>{{roadwork.startDate.toLocaleDateString()}} - {{roadwork.endDate.toLocaleDateString()}}</dd>
-                    <dt>Úsek:</dt>
-                    <dd>{{roadwork.location}}</dd>
-                    <dt>Rozsah:</dt>
-                    <dd>{{roadwork.description}}</dd>
-                    <dt>Objízdná trasa:</dt>
-                    <dd>{{roadwork.detour}}</dd>
-                </dl>
-            </div>
-        </div>
+<div id="roadwork-info">
+    <div class="popup-header">
+        <h4 class="popup-title">
+            <translate>Uzavírka</translate>
+        </h4>
+    </div>
+    <div class="popup-body">
+        <table class="traffic-table roadworks">
+            <tbody>
+                <tr>
+                    <th>Název:</th>
+                    <td>{{roadwork.headline}}</td>
+                </tr>
+                <tr>
+                    <th>Datum:</th>
+                    <td>{{roadwork.startDate.toLocaleDateString()}} - {{roadwork.endDate.toLocaleDateString()}}</td>
+                </tr>
+                <tr>
+                    <th>Úsek:</th>
+                    <td>{{roadwork.location}}</td>
+                </tr>
+                <tr>
+                    <th>Rozsah:</th>
+                    <td>{{roadwork.description}}</td>
+                </tr>
+                <tr>
+                    <th>Objízdná trasa:</th>
+                    <td>{{roadwork.detour}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

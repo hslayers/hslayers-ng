@@ -76,6 +76,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                                     description: item.description,
                                     location: item.location,
                                     detour: item.detour,
+                                    coordinate: item.geom.coordinates,
                                     id: item.id
                                 });
                             })
@@ -258,10 +259,9 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     $scope.showRoadworkInfo = function(roadwork) {
                         $scope.roadwork = roadwork;
-                        $("#hs-dialog-area #roadwork-info-dialog").remove();
-                        var el = angular.element('<div hs.pilsentraffic.roadwork-info-directive></div>');
-                        $("#hs-dialog-area").append(el);
-                        $compile(el)($scope);
+                        setTimeout(function(){
+                            createPopup(roadwork);
+                        },100);
                     }
                     
                     $scope.updateWorklist();
@@ -394,6 +394,21 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     if (permalink_service.getParamValue('year')) initFromLink();
                     
+                    /*Popups*/
+                    function initInfoDirective(){
+                        var el = angular.element('<div hs.pilsentraffic.roadwork-info-directive></div>');
+                        $("#hs-dialog-area").append(el)
+                        $compile(el)($scope);
+                    } 
+                    
+                    initInfoDirective();
+                    
+                    function createPopup(roadwork){
+                        var popup = new ol.Overlay.Popup({insertFirst: false});
+                        hsmap.map.addOverlay(popup);
+                        popup.getElement().className += " popup-headline";
+                        popup.show(ol.proj.transform(roadwork.coordinate, 'EPSG:4326', 'EPSG:3857'), $('#roadwork-info').html());
+                    }
                     
                     $scope.legendVisible = false;
                     $scope.toggleLegend = function(bool){
