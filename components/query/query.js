@@ -76,14 +76,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                     * @params {Ol.coordinate} coordinate Coordinate of feature to Get info
                     * Send GetFeatureInfo request to selected url and push response data on success to response handler.
                     */
-                    this.request = function(url, info_format, coordinate) {                    
+                    this.request = function(url, info_format, coordinate, layer) {                    
                         var req_url = utils.proxify(url, true);
                         var me = this;
                         $.ajax({
                             url: req_url,
                             cache: false,
                             success: function(response) {
-                                me.featureInfoReceived(response, info_format, url, coordinate)
+                                me.featureInfoReceived(response, info_format, url, coordinate, layer)
                             },
                             error: function() {
                                 me.featureInfoError()
@@ -314,7 +314,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                 * @params {Ol.coordinate object} coordinate Coordinate of request
                 * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
                 */
-                WmsGetFeatureInfo.featureInfoReceived = function(response, info_format, url, coordinate) {
+                WmsGetFeatureInfo.featureInfoReceived = function(response, info_format, url, coordinate, layer) {
                     /* Maybe this will work in future OL versions
                      *
                      * var format = new ol.format.GML();
@@ -392,6 +392,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                             return false;
                         }
                         $scope.$apply( function(){
+                            if (layer.get('popupClass') != undefined ) popup.getElement().className = "ol-popup " + layer.get('popupClass');
+                            else popup.getElement().className = "ol-popup";
                             popup.show(coordinate, $("#invisible_popup").contents().find('body').html())
                         });
                     }
@@ -489,7 +491,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                             if (console) console.log(url);
                             if (source.getParams().INFO_FORMAT.indexOf('xml') > 0 || source.getParams().INFO_FORMAT.indexOf('html') > 0 || source.getParams().INFO_FORMAT.indexOf('gml') > 0) {
                                 infoCounter++;
-                                WmsGetFeatureInfo.request(url, source.getParams().INFO_FORMAT, coordinate);
+                                WmsGetFeatureInfo.request(url, source.getParams().INFO_FORMAT, coordinate, layer);
                             }
                         }
                     }
