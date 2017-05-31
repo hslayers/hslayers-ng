@@ -169,7 +169,8 @@ define(['ol','moment',
                             "values":"2017-01-01T00:00:00/2099-12-31T00:00:00/PT1H"
                         }
                     },
-                    visible: true
+                    visible: true,
+                    popupClass: "popup-headline"
                 })
             ],
             default_view: new ol.View({
