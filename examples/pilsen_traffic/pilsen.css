@@ -11,6 +11,7 @@
     right: 20px !important;
     background-color: transparent !important;
     padding: 0px !important;
+    pointer-events: none !important;
 }
 
 .ol-zoom button {
@@ -26,6 +27,7 @@
     box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
     margin-left: 0px !important;
     margin-top: 0px !important;
+    pointer-events: auto !important;
 }
 .ol-zoom button:hover {
     background-color: #444 !important;
@@ -460,6 +462,7 @@ input[type="range"] {padding: 0}
     padding: 0px !important;
     border-width: 0px !important;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.4) !important;
+    z-index: 10000;
 }
 .popup-headline .ol-popup-content {
     max-height: 400px !important;
