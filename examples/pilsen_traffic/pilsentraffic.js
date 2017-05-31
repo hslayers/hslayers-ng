@@ -407,7 +407,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         var popup = new ol.Overlay.Popup({insertFirst: false});
                         hsmap.map.addOverlay(popup);
                         popup.getElement().className += " popup-headline";
-                        popup.show(ol.proj.transform(roadwork.coordinate, 'EPSG:4326', 'EPSG:3857'), $('#roadwork-info').html());
+                        popup.show(ol.proj.transform(roadwork.coordinate, 'EPSG:4326', 'EPSG:3857'), $('#roadwork-info-offline').html());
                     }
                     
                     $scope.legendVisible = false;
