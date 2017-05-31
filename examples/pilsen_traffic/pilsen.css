@@ -30,6 +30,14 @@
 .ol-zoom button:hover {
     background-color: #444 !important;
 }
+.air .ol-zoom button {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+.air .ol-zoom button:hover {
+    background-color: #444 !important;
+    color: #fff !important;
+}
 
 #reset-button {
     width: 36px;
@@ -47,6 +55,14 @@
 #reset-button:hover {
     background-color: #444;
 }
+.air #reset-button {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+.air #reset-button:hover {
+    background-color: #444 !important;
+    color: #fff !important;
+}
 
 .left-top button{
     border: 1px solid #000;
@@ -54,6 +70,14 @@
     color: #fff;
 }
 .left-top button:hover, .left-top button:active, .left-top button:focus, .left-top button:visited{
+    background-color: #444 !important;
+    color: #fff !important;
+}
+.air .left-top button {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+.air .left-top button:hover {
     background-color: #444 !important;
     color: #fff !important;
 }
@@ -130,8 +154,14 @@ div#content-wrapper:not(.open) .left-top {
 .left-top .dropdown-menu li {background-color: #000;}
 .left-top .dropdown-menu li a {color: #fff;}
 .left-top .dropdown-menu li:hover {background-color: #444;}
-
 .left-top .dropdown-menu li:hover a {
+    background-color: #444;
+    color: #fff;
+}
+.air .left-top .dropdown-menu li {background-color: #fff;}
+.air .left-top .dropdown-menu li a {color: #000;}
+.air .left-top .dropdown-menu li:hover {background-color: #444;}
+.air .left-top .dropdown-menu li:hover a {
     background-color: #444;
     color: #fff;
 }
@@ -140,8 +170,6 @@ div#content-wrapper:not(.open) .left-top {
     padding: 3px 10px;
 }
 
-.left-top .dropdown-menu .air {background-color: #fff;}
-.left-top .dropdown-menu .air a {color: #000;}
 .left-top .dropdown-menu .selected {
     background-color: #444;
     color: #fff !important;

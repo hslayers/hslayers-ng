@@ -5,7 +5,7 @@
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="basemapMenu">
-        <li ng-repeat="layer in data.baselayers" ng-class="{'selected': layer.active, 'air': isAir(layer.title)}"><a ng-click="changeBaseLayerVisibility($event, layer)">{{layer.title}}</a>
+        <li ng-repeat="layer in data.baselayers" ng-class="{'selected': layer.active}"><a ng-click="changeBaseLayerVisibility($event, layer)">{{layer.title}}</a>
         </li>
     </ul>
 </div>

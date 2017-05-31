@@ -67,12 +67,28 @@ define(['ol','moment',
             };
         });
     
-        module.directive('hs.basemapmenu', function() {
+        module.directive('hs.basemapmenu', ['hs.layermanager.service', function(layman) {
+            
+            function link(scope,element,attrs) {
+                scope.data = layman.data;
+                
+                scope.changeBaseLayerVisibility = function($event,layer) {
+                    var pageWrap = $("#content-wrapper");
+                    if (layer.title == "Letecká (ČUZK)") {
+                        pageWrap.addClass('air');
+                    }
+                    else {
+                        pageWrap.removeClass('air');
+                    }
+                    layman.changeBaseLayerVisibility($event,layer);
+                }
+            }
+            
             return {
                 templateUrl: 'partials/basemap-menu.html?bust=' + gitsha,
-                controller: 'hs.layermanager.controller'
+                link: link
             };
-        });
+        }]);
     
         module.directive('hs.trafficmenu', function () {
       
@@ -384,10 +400,6 @@ define(['ol','moment',
                     start_at_slide: 1,
                     data: data
                 };
-                
-                $scope.isAir = function(layerTitle) {
-                    return layerTitle == "Letecká (ČUZK)";
-                }
 
                 $scope.$on('layermanager.layer_time_changed', function(evt, layer, d) {
                     angular.forEach(hsmap.map.getLayers(), function(other_layer) {
