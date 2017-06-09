@@ -487,3 +487,7 @@ input[type="range"] {padding: 0}
 .traffic-table th{width: 33%;}
 .traffic-table td{width: 66%;}
 .popup-headline .ol-popup-closer {color: #fff !important;}
+
+.tl-timeaxis .tl-timeaxis-content-container .tl-timeaxis-major .tl-timeaxis-tick:before {
+    line-height: 8px;
+}
