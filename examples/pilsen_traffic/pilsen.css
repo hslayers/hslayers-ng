@@ -491,3 +491,33 @@ input[type="range"] {padding: 0}
 .tl-timeaxis .tl-timeaxis-content-container .tl-timeaxis-major .tl-timeaxis-tick:before {
     line-height: 8px;
 }
+
+.tl-menubar {
+    left: 16px;
+}
+
+.tl-slidenav-previous, .tl-slidenav-next {
+    margin-top: -38px;
+}
+
+
+
+.tl-slidenav-previous .tl-slidenav-title, .tl-slidenav-next .tl-slidenav-title {
+    filter: alpha(opacity=100);
+    -khtml-opacity: 1;
+    -moz-opacity: 1;
+    opacity: 1;
+}
+
+
+.tl-slidenav-previous .tl-slidenav-description, .tl-slidenav-next .tl-slidenav-description {
+    filter: alpha(opacity=50);
+    -khtml-opacity: .5;
+    -moz-opacity: .5;
+    opacity: .5;
+}
+
+.tl-timemarker.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {
+    color: white;
+}
+
