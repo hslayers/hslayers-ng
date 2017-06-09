@@ -134,8 +134,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                             if ($scope.current_date.toDateString() == now.toDateString()) {
                                 $scope.current_hour = now.getHours();
                             }
-                            else $scope.current_hour = 8;
                         }
+                        $scope.current_date.setHours($scope.current_hour);
                         updateTimeLayer();
                         $scope.$broadcast('day.changed', service.day);
                         $scope.updateWorklist();
