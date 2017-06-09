@@ -129,17 +129,17 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $scope.current_date.setMonth(service.day.month());
                         $scope.current_date.setDate(service.day.date());
                         if(console) console.log(service.day, service.current_date);
-                        if (!linkInit) {
+                        /*if (!linkInit) { //At the moment this code doesnt let forward/backward hours thats why I commented it out. Correct me if im wrong. Raitis
                             var now = new Date();
                             if ($scope.current_date.toDateString() == now.toDateString()) {
                                 $scope.current_hour = now.getHours();
+                                $scope.current_date.setHours($scope.current_hour);
                             }
-                        }
+                        }*/
                         $scope.current_date.setHours($scope.current_hour);
                         updateTimeLayer();
                         $scope.$broadcast('day.changed', service.day);
                         $scope.updateWorklist();
-                        updateUrlDateTime();
                     }
                                    
                     $scope.$watch(function(){return service.day}, dateChanged);
@@ -148,19 +148,42 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $scope.current_hour = current_hour;
                         $scope.current_date.setHours($scope.current_hour);
                         updateTimeLayer();
-                        updateUrlDateTime();
                     }
                     
                     $scope.nextDay = function() {
-                        var day = moment(service.day);
-                        day.date(day.date()+1);
-                        $scope.$broadcast('day.changed',day);
+                        incrementCurrentDay(1);
                     }
                     
                     $scope.previousDay = function() {
+                        incrementCurrentDay(-1);
+                    }
+                    
+                    function incrementCurrentDay(offset){
                         var day = moment(service.day);
-                        day.date(day.date()-1);
+                        day.date(day.date()+offset);
                         $scope.$broadcast('day.changed',day);
+                    }
+                    
+                    $scope.nextHour = function() {
+                        $scope.current_date.setHours($scope.current_date.getHours() + 1);
+                        $scope.current_hour = $scope.current_date.getHours();
+                        updateTimeLayer();
+                        calculatePureDateForServiceFromCurrent();
+                        incrementCurrentDay(0);
+                    }
+
+                    function calculatePureDateForServiceFromCurrent(){
+                        service.day.year($scope.current_date.getFullYear());
+                        service.day.month($scope.current_date.getMonth());
+                        service.day.date($scope.current_date.getDate());
+                    }
+                    
+                    $scope.previousHour = function() {
+                        $scope.current_date.setHours($scope.current_date.getHours() - 1);
+                        $scope.current_hour = $scope.current_date.getHours();
+                        updateTimeLayer();
+                        calculatePureDateForServiceFromCurrent();
+                        incrementCurrentDay(0);
                     }
                     
                     function getRoadworksLayer(){
@@ -209,10 +232,10 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     function updateTimeLayer(){
                         hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
                         time_service.setLayerTime(hs_roadworks_layer, -2); 
+                        updateUrlDateTime();
                     }
                     
                     function updateTimeLayerForAnimation(){
-                        
                         $scope.current_date.setHours(parseInt($scope.current_hour) + 1);
                         hs_roadworks_layer.date_increment =  $scope.current_date.getTime() - $scope.current_date.getTimezoneOffset() * 60000;
                         time_service.setLayerTime(hs_roadworks_layer, -2); 
