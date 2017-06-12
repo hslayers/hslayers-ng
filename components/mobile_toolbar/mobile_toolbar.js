@@ -36,6 +36,7 @@ define(['angular', 'map', 'core', 'permalink'],
                         }
                         $(".panelspace, #toolbar, #map, #menu").toggleClass("panelspace-opened", me.panelspace0pened);
                     }
+
                     var me = {
                         panelspace0pened: false,
                         togglePanelspace: togglePanelspace
@@ -80,6 +81,7 @@ define(['angular', 'map', 'core', 'permalink'],
                 }
 
                 $scope.togglePanelspace = service.togglePanelspace;
+                togglePanelspace = service.togglePanelspace;
                 $scope.$emit('scope_loaded', "Mobile Toolbar");
             }
 

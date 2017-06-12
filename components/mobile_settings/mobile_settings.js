@@ -30,7 +30,9 @@ define(['angular', 'core'],
                 configDebug = config;
                 $scope.settingsDb = settingsDb;
                 $scope.originalHostnames = $.extend({}, config.hostname);
-                $scope.hostnames = config.hostname;
+                $scope.hostnames = config.hostnames;
+                config.hostname["default"] = config.hostnames[0];
+                $scope.selectedHostname = config.hostnames[0].title;
 
                 /**
                  * @function addHostname
@@ -54,13 +56,22 @@ define(['angular', 'core'],
                     }
                 }
 
+                $scope.changeHostname = function() {
+                    console.log(this, $scope.hostname);
+                    angular.forEach($scope.hostnames, function(hostname){
+                        if ($scope.selectedHostname == hostname.title) {
+                            config.hostname[hostname.type] = hostname;
+                        }
+                    });
+                }
+
                 /**
                  * @function deleteHostname
                  * @memberOf hs.mobile_settings.controller
                  * @description TODO
                  */
                 $scope.deleteHostname = function() {
-                    delete $scope.hostnames[this.hostname.type];
+                    delete $scope.hostname[this.hostname.type];
                     $scope.deleteRow(settingsDb, this.hostname.type);
                 }
 
@@ -91,17 +102,17 @@ define(['angular', 'core'],
                 $scope.initSettings = function(db) {
                     if (console) {
                         console.log("Populating hostnames database.");
-                        console.log($scope.hostnames);
+                        console.log($scope.hostname);
                         console.log(config.hostname);
                         console.log(settingsDb);
-                        config.hostname = $.extend({}, $scope.originalHostnames);
+                        // config.hostname = $.extend({}, $scope.originalHostnames);
                     }
-                    $scope.hostnames = config.hostname;
+                    $scope.hostname = config.hostname;
 
                     db.transaction(function(tx) {
                         tx.executeSql('DROP TABLE IF EXISTS Hostnames', [], console.log("Dropping hostnames table."));
                         tx.executeSql('CREATE TABLE IF NOT EXISTS Hostnames (title unique, type, editable, url)', [], console.log("Creating hostnames table."));
-                        $.each($scope.hostnames, function(key, value) {
+                        $.each($scope.hostname, function(key, value) {
                             tx.executeSql('INSERT INTO Hostnames VALUES (?,?,?,?)', [value.title, value.type, value.editable, value.url]);
                         });
                     }, function() {
@@ -151,7 +162,7 @@ define(['angular', 'core'],
                 }, function() {
                     if (Object.keys(dbHostnames)[0]) {
                         config.hostname = dbHostnames;
-                        $scope.hostnames = config.hostname;
+                        $scope.hostname = config.hostname;
                         console.log("Loading settings from memory.");
                     }
                 });

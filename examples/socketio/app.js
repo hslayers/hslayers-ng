@@ -56,7 +56,7 @@ define(['ol',
                     title: 'Editable vector layer',
                     visibility: true,
                     source: new ol.source.Vector({
-                        url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/observations/select?user_name=tester&format=geojson',
+                        url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/observations/select?user_name=' + config.user_name + '&format=geojson',
                         senslog_url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi/',
                         format: new ol.format.GeoJSON()
                     })
@@ -67,7 +67,8 @@ define(['ol',
                 center: ol.proj.transform([6.1319, 49.6116], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 13,
                 units: "m"
-            })
+            }),
+            user_name: tester
         });
 
         module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'hs.rtserver.service',

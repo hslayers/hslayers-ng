@@ -9,7 +9,16 @@
         </button>
     </div>
     <div class="panel-body">
-    	<ul class="list-group hostnames">
+        <div class="hs-settings-hostname" style="padding: 10px 15px">
+            <div class="hs-settings-hostname-title">Data source</div>
+            <select class="form-control" id="hs-settings-hostname" ng-model="selectedHostname" ng-change="changeHostname()" style="margin-bottom: 5px">
+                <option ng-repeat="host in hostnames" ng-selected="selectedHostname==host.title" value="{{ host.title }}">{{ host.title }}</option>
+            </select>
+            <div class="hs-settings-hostname-title">{{ hostname.default.title }}</div>
+            <div class="hs-settings-hostname-url">{{ hostname.default.url }}</div>
+        </div>
+
+<!--     	<ul class="list-group hostnames">
     		<li ng-repeat="hostname in hostnames" class="list-group-item" ng-class="hostname.editable ? 'editable' : ''">
                 <div class="hs-settings-hostname-title">{{ hostname.title }}</div>
     			<div class="hs-settings-hostname-url">{{ hostname.url }}</div>
@@ -19,6 +28,6 @@
     	<form id="hs-settings-hostname" ng-submit="addHostname()">
             <input type="text" class="form-control" ng-model="userHostname" ng-click="preFill()" ng-blur="removePreFill()" placeholder="User hostname">
             <input type="submit" class="form-submit" name="Add">
-    	</form>
+    	</form> -->
     </div>
 </div>

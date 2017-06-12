@@ -73,12 +73,12 @@
 
                 <!-- Photo -->
                 <!-- <div class="form-group" ng-if="Core.isMobile()"> -->
-                <div class="form-group" ng-if="current_feature.media">
+                <div class="form-group" ng-if="current_feature.media.length">
                     <label translate>Photo</label>
                     <!-- <span>{{current_feature.photo_src}}</span> -->
                     <!-- <input type="file" class="form-control" ng-model="current_feature.photo" ng-change="setUnsaved()" style="display: none"> -->
                     <!-- <img data-ng-src="data:image/PNG;base64,{{photo}}" style="width: 100%"></img> -->
-                    <img ng-repeat="image in current_feature.media" ng-show="current_feature.media" ng-src="{{ image.url }}" style="width: 100%"></img>
+                    <img ng-repeat="image in current_feature.media | orderBy:'-media_id' track by $index" ng-show="current_feature.media" ng-src="{{ image.url?image.url:image.thumbnail_url }}" style="width: 100%"></img>
                 </div>
                 
                 <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false" aria-controls="hs-more-attributes">
@@ -101,7 +101,7 @@
                     <i class="glyphicon glyphicon-camera"></i>
                 </button>
                 
-                <button class="btn btn-primary" ng-click="saveFeature()">Save</button>
+                <button class="btn btn-primary" ng-click="saveFeature(true)">Save</button>
                 <button class="btn btn-default" ng-click="cancelChanges()" ng-show="is_unsaved==true">Cancel</button>
                 <!-- Footer -->
                 </form>

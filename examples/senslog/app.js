@@ -60,7 +60,8 @@ define(['ol',
                 zoom: 13,
                 units: "m"
             }),
-            senslog_url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi'
+            senslog_url: 'http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi',
+            user_name: 'tester'
         });
 
         module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'config', '$http',
@@ -89,7 +90,7 @@ define(['ol',
                         }
                         event.targetScope.addSenslogDataset = function() {
                             $http({
-                                url: config.senslog_url + '/dataset/?user_name=tester',
+                                url: config.senslog_url + '/dataset/?user_name=' + config.user_name,
                                 method: 'POST',
                                 data: {
                                     dataset_name: event.targetScope.dataset_name,
@@ -101,7 +102,7 @@ define(['ol',
                             }).then(function(response) {
                                 if (response.statusText == "OK") {
                                     var source = new ol.source.Vector({
-                                        url: config.senslog_url + '/observation/?user_name=tester&dataset_id=' + response.dataset_id + '&format=geojson',
+                                        url: config.senslog_url + '/observation/?user_name=' + config.user_name + '&dataset_id=' + response.dataset_id + '&format=geojson',
                                         format: new ol.format.GeoJSON()
                                     });
                                     source.set('dataset_id', response.dataset_id);
@@ -121,15 +122,15 @@ define(['ol',
                     }
                     if (args == 'Map') {
 
-                        $http.get(config.senslog_url + '/category/?user_name=tester').then(function(response) {
+                        $http.get(config.senslog_url + '/category/?user_name=' + config.user_name).then(function(response) {
                             $scope.$broadcast('senslog.categories_loaded', response.data);
                         });
 
-                        $http.get(config.senslog_url + '/dataset/?user_name=tester').then(function(response) {
+                        $http.get(config.senslog_url + '/dataset/?user_name=' + config.user_name).then(function(response) {
                             $scope.$broadcast('senslog.datasets_loaded', response.data);
                             angular.forEach(response.data, function(dataset) {
                                 var source = new ol.source.Vector({
-                                    url: config.senslog_url + '/observation/?user_name=tester&dataset_id=' + dataset.dataset_id + '&format=geojson',
+                                    url: config.senslog_url + '/observation/?user_name=' + config.user_name + '&dataset_id=' + dataset.dataset_id + '&format=geojson',
                                     format: new ol.format.GeoJSON()
                                 });
                                 source.set('dataset_id', dataset.dataset_id);

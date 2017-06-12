@@ -43,11 +43,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 var modify;
                 var selector;
                 var current_feature_collection = new ol.Collection();
+                var newObsId = 0;
 
                 $scope.senslog_url = config.senslog_url; //http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
                 $scope.features = [];
                 $scope.current_feature = null;
-                currentFeature = $scope.current_feature;
                 $scope.type = 'Point';
                 $scope.image_type = 'image/jpeg';
                 $scope.layer_to_select = ""; //Which layer to select when the panel is activated. This is set in layer manager when adding a new layer.
@@ -56,7 +56,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                 var attrs_with_template_tags = ['category_id', 'dataset_id', 'description', 'name'];
                 var attrs_not_editable = ['geometry', 'highlighted', 'attributes', 'sync_pending'];
-                var attrs_dont_send = ['media_count', 'obs_vgi_id', 'time_stamp', 'unit_id', 'time_received', 'dop', 'alt', 'photo', 'photo_src']
+                var attrs_dont_send = ['media_count', 'obs_vgi_id', 'time_stamp', 'unit_id', 'time_received', 'dop', 'alt', 'media']
 
                 var source;
                 var highlighted_style = function(feature, resolution) {
@@ -100,15 +100,23 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     })
                 }
 
-                /**
-                 * @function changeLayer
-                 * @memberOf hs.draw.controller
-                 * (PRIVATE) Refill features list
-                 */
+                function downloadFile(url, success) {
+                    var xhr = new XMLHttpRequest(); 
+                    xhr.open('GET', url, true); 
+                    xhr.responseType = "blob";
+                    xhr.onreadystatechange = function () { 
+                        if (xhr.readyState == 4) {
+                            if (success) success(xhr.response);
+                        }
+                    };
+                    xhr.send(null);
+                }
+
                 function fillFeatureList() {
                     deselectCurrentFeature();
                     $scope.features = [];
                     angular.forEach(source.getFeatures(), function(feature) {
+                        if (angular.isDefined(feature.get('obs_vgi_id')) && feature.get('obs_vgi_id') >= newObsId) newObsId = feature.get('obs_vgi_id') + 1;
                         if (angular.isUndefined(feature.getId())) {
                             feature.setId(utils.generateUuid());
                         }
@@ -117,9 +125,127 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             uuid: feature.getId(),
                             ol_feature: feature,
                             name: feature.get('name') || (angular.isDefined(feature.get('attributes')) ? feature.get('attributes').name : undefined),
+                            media: [],
                             time_stamp: feature.get('time_stamp') || getCurrentTimestamp()
                         });
-                    })
+                        if (feature.get("media_count") && feature.get("obs_vgi_id")) {
+                            $http.get($scope.senslog_url + "/observation/" + feature.get("obs_vgi_id") + "/media?user_name=" + config.user_name).then(function(response) {
+                                let media = [];
+                                if (Core.isMobile()) {
+                                    var portalFolder = config.hostname.default.url.split("/").slice(-1)[0];
+                                    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSys) {
+                                        fileSys.root.getDirectory(portalFolder, {
+                                            create: true,
+                                            exclusive: false
+                                        }, function(portalDir) {
+                                            portalDir.getDirectory("media", {
+                                                create: true,
+                                                exclusive: false
+                                            }, function(mediaDir) {
+                                                mediaDir.getDirectory(String(feature.get("obs_vgi_id")), {
+                                                    create: true,
+                                                    exclusive: false
+                                                }, function(obsDir) {
+                                                    let dirReader = obsDir.createReader();
+                                                    let getEntries = function() {
+                                                        dirReader.readEntries(function(results) {
+                                                            angular.forEach(response.data, function(r) {
+                                                                var synced = false;
+                                                                var thumb = false;
+                                                                var med = null;
+                                                                if (results.length) {
+                                                                    angular.forEach(results, function(x) {
+                                                                        if (!x.isDirectory && x.name.split(".")[0] == r.media_id) {
+                                                                            synced = true;
+                                                                        } else if (x.name.split(".")[0] == r.media_id + "_thumb") {
+                                                                            synced = true;
+                                                                            thumb = true;
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                if (synced) {
+                                                                    media.push({
+                                                                        media_id: r.media_id,
+                                                                        url: !thumb ? obsDir.nativeURL + r.media_id + ".jpg" : undefined,
+                                                                        thumbnail_url: thumb ? obsDir.nativeURL + r.media_id + "_thumb.jpg" : undefined,
+                                                                        image_type: r.mediaDatatype,
+                                                                        synced: synced
+                                                                    });
+                                                                    
+                                                                    // angular.forEach($scope.features, function(f) {
+                                                                    //     if (f.ol_feature.get('obs_vgi_id') == feature.get('obs_vgi_id')) {
+                                                                    //         f.media.push(med);
+                                                                    //         $scope.$apply();
+                                                                    //         return;
+                                                                    //     }
+                                                                    // });
+                                                                } else {
+                                                                    downloadFile($scope.senslog_url + "/observation/" + feature.get("obs_vgi_id") + "/media/" + r.media_id + "/thumbnail?user_name=" + config.user_name, function(data) {
+                                                                        obsDir.getFile(r.media_id+"_thumb.jpg", {
+                                                                            create: true
+                                                                        }, function(file) {
+                                                                            file.createWriter(function(fileWriter){
+                                                                                fileWriter.write(data);
+                                                                            });
+
+                                                                            media.push({
+                                                                                media_id: r.media_id,
+                                                                                thumbnail_url: file.nativeURL,
+                                                                                image_type: r.mediaDatatype,
+                                                                                synced: true
+                                                                            });
+                                                                    
+                                                                            // angular.forEach($scope.features, function(f) {
+                                                                            //     if (f.ol_feature.get('obs_vgi_id') == feature.get('obs_vgi_id')) {
+                                                                            //         f.media.push(med);
+                                                                            //         $scope.$apply();
+                                                                            //         return;
+                                                                            //     }
+                                                                            // });
+                                                                        });
+                                                                    });
+                                                                }
+
+                                                            });
+                                                        }, function(error) {
+                                                            console.log(error);
+                                                        });
+                                                    };
+                                                    getEntries();
+                                                }, function(err) {
+                                                    console.log(err);
+                                                });
+                                            }, function(err) {
+                                                console.log(err);
+                                            });
+                                        }, function(err) {
+                                            console.log(err);
+                                        });
+                                    }, function(err) {
+                                        console.log(err);
+                                    });
+                                } else {
+                                    angular.forEach(response.data, function(r) {
+                                        media.push({
+                                            media_id: r.media_id,
+                                            url: $scope.senslog_url + "/observation/" + feature.get("obs_vgi_id") + "/media/" + r.media_id + "?user_name=" + config.user_name,
+                                            thumbnail_url: $scope.senslog_url + "/observation/" + feature.get("obs_vgi_id") + "/media/" + r.media_id + "/thumbnail?user_name=" + config.user_name,
+                                            image_type: r.mediaDatatype
+                                        });
+                                    });
+                                }
+
+                                angular.forEach($scope.features, function(f) {
+                                    if (f.ol_feature.get('obs_vgi_id') == feature.get('obs_vgi_id')) {
+                                        f.media = media;
+                                        // $scope.$apply();
+                                        return;
+                                    }
+                                });
+                            });
+                        }
+                    });
                 }
 
                 /**
@@ -156,6 +282,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 uuid: evt.feature.getId(),
                                 ol_feature: evt.feature,
                                 time_stamp: getCurrentTimestamp(),
+                                category_id: $scope.categories[0].category_id,
                                 dataset_id: source.get('dataset_id')
                             });
                             if (!$scope.$$phase) $scope.$digest();
@@ -175,6 +302,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     selector.getFeatures().on('add', function(e) {
                         angular.forEach($scope.features, function(container_feature) {
                             if (container_feature.ol_feature == e.element) {
+                                $scope.saveFeature();
                                 deselectCurrentFeature();
                                 $scope.setCurrentFeature(container_feature, false);
                                 if (!$scope.$$phase) $scope.$digest();
@@ -207,6 +335,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     try {
                         if (draw.getActive()) draw.finishDrawing();
                     } catch (ex) {}
+                    $scope.saveFeature();
                     deselectCurrentFeature();
                     draw.setActive(false);
                     modify.setActive(false);
@@ -238,26 +367,33 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             geometry: g_feature
                         });
                         source.addFeature(feature);
-                        $scope.features.push({
+                        var f = {
                             type: $scope.type,
+                            uuid: utils.generateUuid(),
                             ol_feature: feature,
-                            time_stamp: getCurrentTimestamp()
-                        });
+                            time_stamp: getCurrentTimestamp(),
+                            media: [],
+                            category_id: $scope.categories[0].category_id,
+                            dataset_id: source.get('dataset_id')
+                        };
+                        $scope.features.push(f);
                         if ($scope.is_unsaved) return;
                         if (!$scope.$$phase) $scope.$digest();
                         if (!pos) {
-                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], false);
+                            $scope.setCurrentFeature(f, false);
                         } else {
-                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1]);
+                            $scope.setCurrentFeature(f);
                         }
+                        return f;
                     }
 
                     function waitForFix() {
+                        var newPoint = null;
                         if (!Geolocation.gpsStatus) {
                             Geolocation.toggleGps();
-                            createPoint();
+                            newPoint = createPoint();
                         } else {
-                            createPoint(Geolocation.last_location);
+                            newPoint = createPoint(Geolocation.last_location);
                         }
 
                         window.plugins.toast.showWithOptions({
@@ -268,11 +404,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         });
 
                         var stopWaiting = $scope.$on('geolocation.updated', function(event) {
-                            console.log(Geolocation.last_location.geoposition.coords.accuracy);
                             if (Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision) {
                                 var g_feature = new ol.geom.Point(Geolocation.last_location.latlng);
-                                console.log($scope.current_feature.ol_feature.geometry);
-                                $scope.current_feature.ol_feature.geometry = g_feature;
+                                newPoint.ol_feature.setGeometry(g_feature);
+                                zoomToFeature(newPoint.ol_feature);
                                 stopWaiting();
                             }
                         });
@@ -283,7 +418,6 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     } else {
                         waitForFix();
                     }
-                    // pos = Geolocation.last_location; //TODO timestamp is stored in Geolocation.last_location.geolocation.timestamp, it might be a good idea to accept only recent enough positions ---> or wait for the next fix <---.
                 }
 
                 /**
@@ -317,48 +451,136 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                     function cameraSuccess(imageData) {
                         window.resolveLocalFileSystemURL(imageData, function(fileEntry) {
                             var fileName = imageData.split("/").slice(-1)[0];
-                            var imgFolder = "media";
+                            // var portalFolder = "media";
+                            var portalFolder = config.hostname.default.url.split("/").slice(-1)[0];
                             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSys) {
-                                fileSys.root.getDirectory(imgFolder, {
+                                var obsId = angular.isDefined($scope.current_feature.ol_feature.get('obs_vgi_id')) ? $scope.current_feature.ol_feature.get('obs_vgi_id') : -1;
+                                var isNew = true;
+                                // var hasDir = false;
+
+                                fileSys.root.getDirectory(portalFolder, {
                                     create: true,
                                     exclusive: false
-                                }, function(directory) {
-                                    fileEntry.moveTo(directory, fileName, function(entry) {
-                                        $scope.current_feature.media.push({
-                                            url: entry.nativeURL,
-                                            image_type: $scope.image_type
-                                        });
-                                        $scope.$apply();
-                                        if (angular.isDefined($scope.current_feature.ol_feature.get('obs_vgi_id'))) localStorage.setItem($scope.current_feature.ol_feature.get('obs_vgi_id'), JSON.stringify($scope.current_feature.media));
-                                    }, function(err) {
-                                        console.log(err);
+                                }, function(portalDir) {
+                                    portalDir.getDirectory("media", {
+                                        create: true,
+                                        exclusive: false
+                                    }, function(mediaDir) {
+                                        let dirReader = mediaDir.createReader();
+                                        let getEntries = function() {
+                                            dirReader.readEntries(function(results) {
+                                                if (results.length) {
+                                                    angular.forEach(results, function(x) {
+                                                        if (x.isDirectory && angular.isDefined($scope.current_feature.ol_feature.get('obs_vgi_id')) && x.name == $scope.current_feature.ol_feature.get('obs_vgi_id')) {
+                                                            isNew = false;
+                                                            obsId = $scope.current_feature.ol_feature.get('obs_vgi_id');
+                                                        } else if (isNew && x.isDirectory && x.name >= obsId) {
+                                                            obsId = parseInt(x.name) + 1;
+                                                        }
+                                                    });
+                                                }
+                                            }, function(error) {
+                                                console.log(error);
+                                            });
+                                        };
+                                        getEntries();
+                                        
+                                        if (isNew) {
+                                            // assign temporary obsVgiId and move to temp directory
+                                            mediaDir.getDirectory("temp", {
+                                                create: true,
+                                                exclusive: false
+                                            }, function(tempDir) {
+                                                obsId = angular.isDefined($scope.current_feature.ol_feature.get('temp_obs_id')) ? $scope.current_feature.ol_feature.get('temp_obs_id') : obsId;
+                                                let dirReader = tempDir.createReader();
+                                                let getEntries = function() {
+                                                    dirReader.readEntries(function(results) {
+                                                        if (results.length) {
+                                                            angular.forEach(results, function(x) {
+                                                                if (x.isDirectory && angular.isDefined($scope.current_feature.ol_feature.get('temp_obs_id')) && x.name == $scope.current_feature.ol_feature.get('temp_obs_id')) {
+                                                                    obsId = $scope.current_feature.ol_feature.get('temp_obs_id');
+                                                                    isNew = false;
+                                                                } else if (isNew && x.isDirectory && x.name >= obsId) {
+                                                                    obsId = parseInt(x.name) + 1;
+                                                                }
+                                                            });
+                                                        }
+                                                    }, function(error) {
+                                                        console.log(error);
+                                                    });
+                                                };
+                                                getEntries();
+                                                $scope.current_feature.ol_feature.set('temp_obs_id', obsId);
+                                                tempDir.getDirectory(String(obsId), {
+                                                    create: true,
+                                                    exclusive: false
+                                                }, function(obsDir) {
+                                                    let mediaReader = obsDir.createReader();
+                                                    let lastMediaId = 0;
+
+                                                    angular.forEach($scope.current_feature.media, function(m) {
+                                                        if (m.media_id >= lastMediaId) {
+                                                            lastMediaId = m.media_id + 1;
+                                                        }
+                                                    });
+
+                                                    fileEntry.moveTo(obsDir, lastMediaId + ".jpg", function(entry) {
+                                                        $scope.current_feature.media.push({
+                                                            url: entry.nativeURL,
+                                                            image_type: $scope.image_type,
+                                                            media_id: lastMediaId,
+                                                            synced: false
+                                                        });
+                                                        $scope.$apply();
+                                                    });
+                                                })
+                                            })
+                                        } else {
+                                            mediaDir.getDirectory(String(obsId), {
+                                                create: true,
+                                                exclusive: false
+                                            }, function(obsDir) {
+                                                obsDir.getDirectory("temp", {
+                                                    create: true,
+                                                    exclusive: false
+                                                }, function(tempDir) {
+                                                    let mediaReader = tempDir.createReader();
+                                                    let lastMediaId = 0;
+                                                    let getEntries = function() {
+                                                        mediaReader.readEntries(function(results) {
+                                                            if (results.length) {
+                                                                var x;
+                                                                angular.forEach(results, function(x) {
+                                                                    if (!x.isDirectory && x.name.split("_")[0].split(".")[0] >= lastMediaId) {
+                                                                        lastMediaId = x.name.split("_")[0].split(".")[0] + 1;
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                    }
+                                                    getEntries();
+                                                    fileEntry.moveTo(tempDir, lastMediaId + ".jpg", function(entry) {
+                                                        $scope.current_feature.media.push({
+                                                            url: entry.nativeURL,
+                                                            image_type: $scope.image_type,
+                                                            synced: false
+                                                        });
+                                                        $scope.$apply();
+                                                    }, function(err) {
+                                                        console.log(err);
+                                                    });
+                                                });
+                                            });
+                                        }
                                     });
                                 }, function(err) {
                                     console.log(err);
                                 });
+
                             }, function(err) {
                                 console.log(err);
                             });
-
-                            // fileEntry.file(function(file) {
-                            //     var reader = new FileReader();
-
-                            //     reader.onloadend = function() {
-                            //         image = new Blob([this.result], {
-                            //             type: $scope.image_type
-                            //         });
-                            //         $scope.current_feature.photo = image;
-                            //         $scope.$apply();
-
-                            //         window.image = image;
-                            //         console.log(image, this.result);
-                            //     };
-
-                            //     reader.readAsArrayBuffer(file);
-                            // });
                         });
-
-                        // $scope.current_feature.photo_src = imageData;
                     }
 
                     function cameraError(error) {
@@ -375,8 +597,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                  */
                 $scope.setCurrentFeature = function(feature, zoom_to_feature) {
                     if ($scope.current_feature == feature) {
+                        $scope.saveFeature();
                         deselectCurrentFeature();
                     } else {
+                        if (angular.isObject($scope.current_feature)) $scope.saveFeature();
                         deselectCurrentFeature();
                         $scope.current_feature = feature;
                         $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + feature.uuid));
@@ -404,39 +628,6 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 //Fill feature container object, because we cant edit attributes in OL feature directly
                 function fillFeatureContainer(cf, olf) {
                     cf.extra_attributes = [];
-                    // if (angular.isDefined(olf.get('obs_vgi_id')) && localStorage.getItem(olf.get('obs_vgi_id'))) {
-                    //     cf.media = JSON.parse(localStorage.getItem(olf.get('obs_vgi_id')));
-                    //     // TODO: store media info also with information about their origin dataset and (maybe?) senslog url.
-                    //     // TODO: store media info in local storage every time media array is changed.
-                    // } else {
-                    //     cf.media = [];
-                    // }
-                    cf.media = [];
-                    // cf.media = (typeof olf.get(media) !== "undefined") ? olf.get(media) : [];
-                    if (angular.isDefined(olf.get('media_count')) && angular.isDefined(olf.get('obs_vgi_id')) && olf.get('media_count')) {
-                        var props = collectProperties(cf.media, 'media_id');
-                        $http.get($scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media?user_name=tester").then(function(response) {
-                            angular.forEach(response.data, function(media) {
-                                if (props.indexOf(media.media_id) == -1) {
-                                    cf.media.push({
-                                        media_id: media.media_id,
-                                        url: $scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media/" + media.media_id + "?user_name=tester",
-                                        thumbnail_url: $scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media/" + media.media_id + "/thumbnail?user_name=tester",
-                                        image_type: $scope.image_type
-                                    });
-                                } else {
-                                    var pos = props.indexOf(media.media_id);
-                                    // TODO: check also if the file is available/valid to prevent missing images.
-                                    if (cf.media[pos].media_id == media.media_id) {
-                                        var med = cf.media[pos];
-                                        med.url = (angular.isDefined(med.url) && med.url.split("/")[0] == "file:") ? med.url : $scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media/" + media.media_id + "?user_name=tester";
-                                        med.thumbnail_url = (angular.isDefined(med.thumbnail_url) && med.thumbnail_url.split("/")[0] == "file:") ? med.thumbnail_url : $scope.senslog_url + "/observation/" + olf.get('obs_vgi_id') + "/media/" + media.media_id + "/thumbnail?user_name=tester";
-                                        med.image_type = (angular.isDefined(med.image_type)) ? med.image_type : $scope.image_type;
-                                    }
-                                }
-                            });
-                        });
-                    }
                     angular.forEach(olf.getKeys(), function(key) {
                         if (attrs_not_editable.indexOf(key) == -1) {
                             cf[key] = olf.get(key);
@@ -482,37 +673,20 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                  * @memberOf hs.draw.controller
                  * Saves current features atributtes
                  */
-                $scope.saveFeature = function() {
+                $scope.saveFeature = function(sync) {
                     var cf = $scope.current_feature;
                     var olf = cf.ol_feature;
-                    var pic = cf.media[cf.media.length - 1];
-                    if (pic.url.split("/")[0] == "file:") {
-                        window.resolveLocalFileSystemURL(pic.url, function(fileEntry) {
-                            fileEntry.file(function(file) {
-                                var reader = new FileReader();
-                                reader.onloadend = function() {
-                                    image = new Blob([this.result], {
-                                        type: pic.image_type
-                                    });
-                                    olf.set('photo', image);
-                                    olf.set('image_type', pic.image_type);
-                                    console.log(image, this.result, olf.get('photo'));
-                                    $scope.sync();
-                                }
-                                reader.readAsArrayBuffer(file);
-                            });
-                        });
-                    } else {
-                        $scope.sync();
-                    }
+                    olf.set('media', angular.isDefined(cf.media) ? cf.media : []);
                     olf.set('name', cf.name);
                     olf.set('description', cf.description);
                     olf.set('category_id', cf.category_id);
                     olf.set('dataset_id', cf.dataset_id);
-                    olf.set('sync_pending', cf.dataset_id);
+                    // olf.set('sync_pending', cf.dataset_id);
+                    olf.set('sync_pending', true);
                     angular.forEach(cf.extra_attributes, function(attr) {
                         olf.set(attr.name, attr.value);
                     });
+                    if (sync == true) $scope.sync();
                     $scope.is_unsaved = false;
                 }
 
@@ -589,7 +763,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                  * (PRIVATE) Delete VGI observation from remote senslog server
                  */
                 function deleteVgiObservation(olf) {
-                    $http.delete($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=tester').then(function(response) {
+                    $http.delete($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=' + config.user_name).then(function(response) {
                         console.log(response);
                     });
                 }
@@ -697,7 +871,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             if (layer == $scope.layer_to_select) {
                                 $scope.selected_layer = layer.get('title');
                                 source = layer.getSource();
-                                fillFeatureList();
+                                // fillFeatureList();
                             }
                         }
                     })
@@ -733,15 +907,12 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         fd.append('time_stamp', getCurrentTimestamp());
                         fd.append('category_id', olf.get('category_id') /*|| 0*/ );
                         if (olf.get('description')) fd.append('description', olf.get('description'));
-                        fd.append('lon', cord[0]);
-                        fd.append('lat', cord[1]);
+                        fd.append('lon', cord[0].toFixed(2)); // MEDIATODO: restrict to n decimal places
+                        fd.append('lat', cord[1].toFixed(2));
                         fd.append('dataset_id', olf.get('dataset_id') || 999);
-                        fd.append('unit_id', '1111');
-                        // TODO: hand only the last image to the form data object?
-                        if (olf.get('photo')) {
-                            fd.append('media', olf.get('photo'));
-                            fd.append('media_type', olf.get('image_type'));
-                        }
+                        if (config.uuid) fd.append('uuid', config.uuid);
+                        if (config.unit_id) fd.append('unit_id', config.unit_id);
+                        var media = olf.get('media');
 
                         if (!angular.equals(attributes, {})) fd.append('attributes', JSON.stringify(attributes));
                         if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(olf.get('obs_vgi_id'))) {
@@ -749,8 +920,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         }
 
                         function insertVgiObservation(olf, fd) {
-                            // TODO: if there is more than one new media, upload all of them one by one.
-                            $http.post($scope.senslog_url + '/observation?user_name=tester', fd, {
+                            $http.post($scope.senslog_url + '/observation?user_name=' + config.user_name, fd, {
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined
@@ -761,23 +931,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                     var olf = response.config.olf;
                                     olf.set('sync_pending', false);
                                     if (angular.isUndefined(olf.get('obs_vgi_id'))) olf.set('obs_vgi_id', parseInt(response.data.obs_vgi_id));
-                                    if (response.data.media_id) {
-                                        var media = olf.get('media');
-                                        var props = collectProperties(media, 'media_id');
-                                        if (props.indexOf(response.data.media_id) == -1) {
-                                            var med = media[props.indexOf(undefined)] // Bad implementation, rewrite to check against local FILE_URL
-                                            med.media_id = response.data.media_id;
-                                            med.url = (angular.isDefined(med.url) && med.url.split("/")[0] == "file:") ? med.url : $scope.senslog_url + "/observation/" + response.data.obs_vgi_id + "/media/" + response.data.media_id + "?user_name=tester";
-                                            med.thumbnail_url = (angular.isDefined(med.thumbnail_url) && med.thumbnail_url.split("/")[0] == "file:") ? med.thumbnail_url : $scope.senslog_url + "/observation/" + response.data.obs_vgi_id + "/media/" + response.data.media_id + "/thumbnail?user_name=tester";
-                                        }
-                                    }
+                                    if (angular.isDefined(olf.get('temp_obs_id'))) olf.unset('temp_obs_id');
+                                    sendVgiMedia(olf, media);
                                 }
                             });
                         }
-
                         function updateVgiObservation(olf, fd) {
-                            // TODO: if there is more than one new media, upload all of them one by one.
-                            $http.put($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=tester', fd, {
+                            $http.put($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=' + config.user_name, fd, {
                                 transformRequest: angular.identity,
                                 headers: {
                                     'Content-Type': undefined
@@ -787,16 +947,63 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 if (response.statusText == "OK") {
                                     var olf = response.config.olf;
                                     olf.set('sync_pending', false);
-                                    if (response.data.media_id) {
-                                        var media = olf.get('media');
-                                        var props = collectProperties(media, 'media_id');
-                                        if (props.indexOf(response.data.media_id) == -1) {
-                                            var med = media[props.indexOf(undefined)] // Bad implementation, rewrite to check against local FILE_URL
-                                            med.media_id = response.data.media_id;
-                                            med.url = (angular.isDefined(med.url) && med.url.split("/")[0] == "file:") ? med.url : $scope.senslog_url + "/observation/" + response.data.obs_vgi_id + "/media/" + response.data.media_id + "?user_name=tester";
-                                            med.thumbnail_url = (angular.isDefined(med.thumbnail_url) && med.thumbnail_url.split("/")[0] == "file:") ? med.thumbnail_url : $scope.senslog_url + "/observation/" + response.data.obs_vgi_id + "/media/" + response.data.media_id + "/thumbnail?user_name=tester";
-                                        }
-                                    }
+                                }
+                            });
+                        }
+
+                        function sendVgiMedia(olf, media) {
+                            angular.forEach(media, function(m) {
+                                if (!m.synced) {
+                                    var data = new FormData();
+                                    window.resolveLocalFileSystemURL(m.url, function(fileEntry) {
+                                        fileEntry.file(function(file) {
+                                            var reader = new FileReader();
+                                            reader.onloadend = function () {
+                                                image = new Blob([this.result], {
+                                                    type: m.image_type
+                                                });
+                                                data.append("media", image);
+                                                data.append("media_type", m.image_type);
+
+                                                $http.post($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '/media/?user_name=' + config.user_name, data, {
+                                                    transformRequest: angular.identity,
+                                                    headers: {
+                                                        'Content-Type': undefined
+                                                    },
+                                                    olf: olf
+                                                }).then(function(response) {
+                                                    if (response.statusText == "OK") {
+                                                        // update mediaId of the media and move it to synced filesystem location
+                                                        m.media_id = response.data.media_id;
+                                                        var obsId = olf.get("obs_vgi_id");
+                                                        var portalFolder = config.hostname.default.url.split("/").slice(-1)[0];
+                                                        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSys) {
+                                                            fileSys.root.getDirectory(portalFolder + "/media/", {
+                                                                create: false,
+                                                                exclusive: false
+                                                            }, function(mediaDir) {
+                                                                mediaDir.getDirectory(String(obsId), {
+                                                                    create: true,
+                                                                    exclusive: false
+                                                                }, function(obsDir) {
+                                                                    window.resolveLocalFileSystemURL(m.url, function(fileEntry) {
+                                                                        fileEntry.moveTo(obsDir, m.media_id + ".jpg", function(entry) {
+                                                                            m.synced = true;
+                                                                            m.url = entry.nativeURL;
+                                                                            $scope.$apply();
+                                                                        }, function(err) {
+                                                                            console.log(err);
+                                                                        });
+                                                                    });
+                                                                });
+                                                            });
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            reader.readAsArrayBuffer(file);
+                                        });
+                                    });
                                 }
                             });
                         }
@@ -805,6 +1012,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             insertVgiObservation(olf, fd);
                         } else if (angular.isDefined(olf.get('obs_vgi_id')) && (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending'))) {
                             updateVgiObservation(olf, fd);
+                            sendVgiMedia(olf, media);
                         }
                     })
                 }
@@ -825,6 +1033,10 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
 
                 $scope.$on('senslog.datasets_loaded', function(event, datasets) {
                     $scope.datasets = datasets;
+                })
+
+                $scope.$on('senslog.dataset_added', function(event, dataset) {
+                    $scope.datasets.push(dataset);
                 })
 
                 $scope.sync();
