@@ -235,10 +235,10 @@ define(['ol','moment',
                         ];
                         
                         layers.forEach(function(layer){
-                            fetch(layer.capUrl).then(function (response) {
-                                return response.text();
-                            }).then(function (text) {
-                                var result = parser.read(text);
+                            $.ajax({
+                                url: layer.capUrl
+                            }).done(function(response) {
+                                var result = parser.read(response);
                                 var options = ol.source.WMTS.optionsFromCapabilities(result, {
                                     layer: layer.layer,
                                     matrixSet: layer.matrixSet
@@ -250,7 +250,7 @@ define(['ol','moment',
                                 var newLayer = hsmap.findLayerByTitle(layer.title);
                                 var source = new ol.source.WMTS((options));
                                 newLayer.setSource(source);
-                            });    
+                            });
                         });
                         
                         // Cursor change, based on https://stackoverflow.com/questions/26022029/how-to-change-the-cursor-on-hover-in-openlayers-3 modified for Image layer
