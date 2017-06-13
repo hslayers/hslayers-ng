@@ -30,12 +30,37 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
             };
         })
         
-        .directive('hs.pilsentraffic.legend', function() {
+        .directive('hs.pilsentraffic.legend', ['hs.pilsentraffic.service', function(service) {
+            function link(scope,element,attrs) {
+                scope.data = service.data;
+                
+                scope.toggleLegend = function(bool) {
+                    scope.data.legendVisible = bool;
+                    if (bool) scope.data.helpVisible = false;
+                }
+            }
+            
             return {
                 templateUrl: 'partials/legend.html?bust=' + gitsha,
-                controller: 'hs.pilsentraffic.controller'
+                link: link
             };
-        })
+        }])
+        
+        .directive('hs.pilsentraffic.help', ['hs.pilsentraffic.service', function(service) {
+            function link(scope,element,attrs) {
+                scope.data = service.data;
+                
+                scope.toggleHelp = function(bool) {
+                    scope.data.helpVisible = bool;
+                    if (bool) scope.data.legendVisible = false;
+                }
+            }
+            
+            return {
+                templateUrl: 'partials/help.html?bust=' + gitsha,
+                link: link
+            };
+        }])
 
         .service("hs.pilsentraffic.service", ['Core', 'hs.utils.service','$http',
                 function(Core, utils, $http) {
@@ -58,6 +83,11 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         
                     };
 
+                    me.data = {};
+                    
+                    me.data.legendVisible = false;
+                    me.data.helpVisible = false;
+                    
                     me.roadworksData = [];
                     
                     me.getRoadworksData = function() {
@@ -444,19 +474,17 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         if (angular.isDefined(source) && source != "inside"  && angular.isDefined(popup)) popup.hide();
                     })
                     
-                    $scope.legendVisible = false;
-                    $scope.toggleLegend = function(bool){
-                        if ($(".legend").length == 0) createLegend();
-                        $scope.legendVisible = bool;
-                        if (!$scope.$$phase) $scope.$digest();
-                    }
-                    
                     $timeout(function(){
-                        $scope.toggleLegend(false);
+                        createLegend();
+                        createHelp();
                     },500);
-                    
-                    function  createLegend() {
+                    function createLegend() {
                         var el = angular.element('<div hs.pilsentraffic.legend></div>');
+                        $("#hs-dialog-area").append(el);
+                        $compile(el)($scope);
+                    }
+                    function createHelp() {
+                        var el = angular.element('<div hs.pilsentraffic.help></div>');
                         $("#hs-dialog-area").append(el);
                         $compile(el)($scope);
                     }
