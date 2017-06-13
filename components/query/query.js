@@ -394,7 +394,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                         $scope.$apply( function(){
                             if (layer.get('popupClass') != undefined ) popup.getElement().className = "ol-popup " + layer.get('popupClass');
                             else popup.getElement().className = "ol-popup";
-                            popup.show(coordinate, $("#invisible_popup").contents().find('body').html())
+                            popup.show(coordinate, $("#invisible_popup").contents().find('body').html());
+                            $rootScope.$broadcast('popupOpened','hs.query');
                         });
                     }
                 }
@@ -580,6 +581,10 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                         $scope.queryWmsLayer(layer, evt.coordinate)
                     });
                 });
+                
+                $scope.$on('popupOpened', function(e,source){
+                    if (angular.isDefined(source) && source != "hs.query" && angular.isDefined(popup)) popup.hide();
+                })
                 
                 $scope.$emit('scope_loaded', "Query");
             }

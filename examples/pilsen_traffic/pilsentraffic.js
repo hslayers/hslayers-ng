@@ -283,7 +283,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     $scope.showRoadworkInfo = function(roadwork) {
                         $scope.roadwork = roadwork;
                         setTimeout(function(){
-                            createPopup(roadwork);
+                            showPopup(roadwork);
                         },100);
                     }
                     
@@ -426,12 +426,23 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     initInfoDirective();
                     
-                    function createPopup(roadwork){
-                        var popup = new ol.Overlay.Popup({insertFirst: false});
+                    var popup;
+                    
+                    function showPopup(roadwork){
+                        if (angular.isUndefined(popup)) createPopup();
+                        popup.show(ol.proj.transform(roadwork.coordinate, 'EPSG:4326', 'EPSG:3857'), $('#roadwork-info-offline').html());
+                        $rootScope.$broadcast('popupOpened','inside');
+                    }
+                    
+                    function createPopup(){
+                        popup = new ol.Overlay.Popup();
                         hsmap.map.addOverlay(popup);
                         popup.getElement().className += " popup-headline";
-                        popup.show(ol.proj.transform(roadwork.coordinate, 'EPSG:4326', 'EPSG:3857'), $('#roadwork-info-offline').html());
                     }
+                    
+                    $scope.$on('popupOpened', function(e,source){
+                        if (angular.isDefined(source) && source != "inside"  && angular.isDefined(popup)) popup.hide();
+                    })
                     
                     $scope.legendVisible = false;
                     $scope.toggleLegend = function(bool){
