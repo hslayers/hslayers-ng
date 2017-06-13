@@ -578,7 +578,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
                     infoCounter = 0;
                     map.getLayers().forEach(function(layer) {
-                        $scope.queryWmsLayer(layer, evt.coordinate)
+                        if (layer.get('queryFilter') != undefined) {
+                            var filter = layer.get('queryFilter');
+                            if (filter(map, layer, evt.pixel)) $scope.queryWmsLayer(layer, evt.coordinate);
+                        }
+                        else $scope.queryWmsLayer(layer, evt.coordinate);
                     });
                 });
                 
