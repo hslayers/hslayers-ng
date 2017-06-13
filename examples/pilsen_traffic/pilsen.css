@@ -459,6 +459,14 @@ input[type="range"] {padding: 0}
 .close span {color: white;} 
 .close {color: white !important;     opacity: 0.4 !important;}
 
+.ol-popup {
+    bottom: 20px !important;
+}
+.ol-popup:after {
+    border-top-color: #000 !important;
+    border-width: 20px !important;
+    margin-left: -18px !important;
+}
 .popup-headline {
     padding: 0px !important;
     border-width: 0px !important;
