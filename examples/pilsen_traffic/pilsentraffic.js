@@ -97,11 +97,11 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                             cache: false
                         }).then(function (response) {
                             response.data.forEach(function(item){
-                                var froms = item.dates[0].split('-');
-                                var tos = item.dates[1].split('-');
+                                var froms = item.dates[0].split('.');
+                                var tos = item.dates[1].split('.');
                                 me.roadworksData.push({
-                                    startDate: new Date(froms[0], froms[1]-1, froms[2]),
-                                    endDate: new Date(tos[0], tos[1]-1, tos[2]),
+                                    startDate: new Date(froms[2], froms[1]-1, froms[0]),
+                                    endDate: new Date(tos[2], tos[1]-1, tos[0]),
                                     headline: item.name,
                                     description: item.description,
                                     location: item.location,
@@ -109,7 +109,9 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                                     coordinate: item.geom.coordinates,
                                     id: item.id
                                 });
+                                
                             })
+                            console.log(me.roadworksData);
                         });
                     }
                     

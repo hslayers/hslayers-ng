@@ -381,18 +381,18 @@ define(['ol','moment',
                     cache: false
                 }).then(function (response) {
                     response.data.forEach(function(item){
-                        var froms = item.dates[0].split('-');
-                        var tos = item.dates[1].split('-');
+                        var froms = item.dates[0].split('.');
+                        var tos = item.dates[1].split('.');
                        data.events.push({
                             'start_date': {
-                                'year': froms[0],
+                                'year': froms[2],
                                 'month': froms[1],
-                                'day': froms[2]
+                                'day': froms[0]
                             },
                             'end_date': {
-                                'year': tos[0],
+                                'year': tos[2],
                                 'month': tos[1],
-                                'day': tos[2]
+                                'day': tos[0]
                             },
                             'text': {
                                 'headline': item.name,
