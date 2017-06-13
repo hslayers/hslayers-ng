@@ -10,20 +10,20 @@
             </div>
            
             <div class="btn-group btn-group-justified" id="calendar-player" role="group" aria-label="...">
-                <a type="button" class="btn btn-default" style=" width: .3%;" ng-click="previousDay()"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a>
-                <a type="button" class="btn btn-default" style=" width: .3%;" ng-click="previousHour()"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style=" width: .3%;" ng-click="previousDay()" title="Předchozí den"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style=" width: .3%;" ng-click="previousHour()" title="Předchozí hodina"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a>
                 <a type="button" class="btn btn-default" disabled style="cursor: default">
                     <span class="hs-p-loading_count" ng-show="layers_loading>0">
                         <img src="../../img/ajax-loader.gif"/>
                         <span>{{layers_loading}}</span>
                     </span>
-                    <button class="btn btn-primary" ng-click="toggleAnimation()">
+                    <button class="btn btn-primary" ng-click="toggleAnimation()" title="{{ animating ? 'Zastavit animaci' : 'Spustit animaci'}}">
                         <span class="glyphicon glyphicon-play" aria-hidden="true" ng-hide="animating"></span><span class="glyphicon glyphicon-pause" aria-hidden="true" ng-show="animating"></span>
                     </button>
                     <span style="font-size: 17px; margin-left: 0.5em">{{("0"+current_hour).slice(-2)}}:00</span>
                 </a>
-                <a type="button" class="btn btn-default" style="width: .3%;" ng-click="nextHour()"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></a>
-                <a type="button" class="btn btn-default" style="width: .3%;" ng-click="nextDay()"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style="width: .3%;" ng-click="nextHour()" title="Následující hodina"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style="width: .3%;" ng-click="nextDay()" title="Následující den"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a>
             </div>
             <h4>Dopravní stavby ve zvoleném dnu</h4>
             <div class="list-group">

@@ -416,6 +416,9 @@ input[type="range"] {padding: 0}
     border-radius: 0px;
     border-width: 0px;
 }
+#calendar-player > a.btn {padding: 6px;}
+#calendar-player > a.btn > span.glyphicon-backward{left: -2px;}
+#calendar-player > a.btn > span.glyphicon-forward{left: 2px;}
 #calendar-player button:hover {background-color: #1a8126;}
 
 #show-timeline {
