@@ -202,7 +202,8 @@ define(['ol','moment',
                 center: [1488449.247038074, 6404351.20261046],
                 zoom: 13,
                 units: "m"
-            })
+            }),
+            showQueryPoint: false
         });
 
         module.controller('mapReset', ['$scope', 'hs.map.service',

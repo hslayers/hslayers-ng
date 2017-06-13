@@ -151,13 +151,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
         * @name hs.query.controller
         * @memberOf hs.query
         */
-        .controller('hs.query.controller', ['$scope', '$compile','hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce', '$rootScope',
-            function($scope, $compile, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce, $rootScope) {
+        .controller('hs.query.controller', ['$scope', '$compile','hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce', '$rootScope', 'config',
+            function($scope, $compile, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce, $rootScope, config) {
 
                 getLayerInit();
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);
                 var lyr = null;
+                
+                $scope.showQueryPoint = angular.isDefined(config.showQueryPoint) ? config.showQueryPoint : true;
 
                 //For vector layers use this to get the selected features
                 var selector = new ol.interaction.Select({
@@ -540,6 +542,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                         }),
                         show_in_manager: false
                     });
+                    lyr.setVisible($scope.showQueryPoint);
                 }
 
                 $scope.$on('layermanager.updated', function(event, data) {
