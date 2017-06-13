@@ -186,7 +186,16 @@ define(['ol','moment',
                         }
                     },
                     visible: true,
-                    popupClass: "popup-headline"
+                    popupClass: "popup-headline",
+                    queryFilter: function(map, lyr, pixel){
+                        var hit = false;
+                        map.forEachLayerAtPixel(pixel, function(layer, pixel) {
+                            if (lyr == layer) hit = true;
+                        },undefined, function(layer) {
+                            return layer instanceof ol.layer.Image;
+                        });
+                        return hit;
+                    }
                 })
             ],
             default_view: new ol.View({
