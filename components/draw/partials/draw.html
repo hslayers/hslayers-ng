@@ -15,19 +15,16 @@
             </select>
         </div>
         
-        <div class="btn-group center-block" style="margin-left: auto; margin-right: auto; width: 150px;">
-            <button class="btn btn-default ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate><i class="icon-pin"></i></button>
-            <button class="btn btn-default ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate><i class="icon-polygonlasso"></i></button>
-            <button class="btn btn-default ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate>  <i class="icon-line"></i></button>
+        <div class="btn-group center-block"><!-- 
+             --><button class="btn btn-default ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate><i class="icon-pin"></i></button><!-- 
+             --><button class="btn btn-default ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate><i class="icon-polygonlasso"></i></button><!-- 
+             --><button class="btn btn-default ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate>  <i class="icon-line"></i></button>
         </div>
-        <br/><br/>
-        <div class="btn-group center-block hs-draw-new-buttons">
-            <button class="btn btn-default ng-class:{hs_draw_new_extended: type!='Point'}" ng-click="start()" translate>New</button>
-            <button class="btn btn-default" ng-show="type=='Point'" ng-click="newPointFromGps()" translate>New GPS</button>
-            <button class="btn btn-default btn-danger" ng-click="clearAll()" translate>Clear</button>
+        <div class="btn-group center-block hs-draw-new-buttons"><!-- 
+             --><button class="btn btn-default ng-class:{hs_draw_new_extended: type!='Point'}" ng-click="start()" translate>New</button><!-- 
+             --><button class="btn btn-default" ng-show="type=='Point' && Core.isMobile()" ng-click="newPointFromGps()" translate>New GPS</button><!-- 
+             --><button class="btn btn-default btn-danger" ng-click="clearAll()" translate>Clear</button>
         </div>
-        
-        <br/><br/>
     
         <ul class="list-group hs-dr-featurelist">
             <li ng-repeat="feature in features | orderBy:'-time_stamp' track by $index" id="hs-dr-feature-{{feature.uuid}}" ng-click="setCurrentFeature(feature)" ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)" ng-class="{active : current_feature == feature}" class="list-group-item hs-dr-item">

@@ -285,8 +285,9 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                                 category_id: $scope.categories[0].category_id,
                                 dataset_id: source.get('dataset_id')
                             });
-                            if (!$scope.$$phase) $scope.$digest();
-                            $scope.setCurrentFeature($scope.features[$scope.features.length - 1], false);
+                            $timeout(function(){
+                                $scope.setCurrentFeature($scope.features[$scope.features.length - 1], false);
+                            })
                         }, this);
 
                     draw.on('drawend',
@@ -366,10 +367,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         var feature = new ol.Feature({
                             geometry: g_feature
                         });
+                        feature.setId(utils.generateUuid());
                         source.addFeature(feature);
                         var f = {
                             type: $scope.type,
-                            uuid: utils.generateUuid(),
+                            uuid: feature.getId(),
                             ol_feature: feature,
                             time_stamp: getCurrentTimestamp(),
                             media: [],
@@ -377,13 +379,13 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                             dataset_id: source.get('dataset_id')
                         };
                         $scope.features.push(f);
-                        if ($scope.is_unsaved) return;
-                        if (!$scope.$$phase) $scope.$digest();
-                        if (!pos) {
-                            $scope.setCurrentFeature(f, false);
-                        } else {
-                            $scope.setCurrentFeature(f);
-                        }
+                        $timeout(function(){
+                            if (!pos) {
+                                $scope.setCurrentFeature(f, false);
+                            } else {
+                                $scope.setCurrentFeature(f);
+                            }
+                        });
                         return f;
                     }
 
@@ -603,9 +605,11 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         if (angular.isObject($scope.current_feature)) $scope.saveFeature();
                         deselectCurrentFeature();
                         $scope.current_feature = feature;
+                        console.log(feature);
                         $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + feature.uuid));
                         $('#panelplace').animate({
-                            scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
+                            // scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
+                            scrollTop: $('#panelplace').scrollTop() + $("#hs-dr-feature-" + feature.uuid).offset().top
                         }, 500);
                         //$(".hs-dr-editpanel").get(0).scrollIntoView();
                         var olf = $scope.current_feature.ol_feature;

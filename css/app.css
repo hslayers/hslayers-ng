@@ -165,7 +165,7 @@ li.hs-lm-item, li.hs-comp-item, li.hs-dr-item {
     cursor: pointer;
     border-left: 0;
     border-right: 0;
-    border-bottom: 0;
+    /*border-bottom: 0;*/
 }
 
 li.hs-comp-item {
@@ -951,10 +951,26 @@ ul[dnd-list] li.selected {
     display: inline;
 }
 
+.center-block {
+    text-align: center;
+    margin-bottom: 10px;
+}
 
-.hs-draw-new-buttons {margin-bottom:10px; margin-left: auto; margin-right: auto; width: 262px;}
-.hs-draw-new-buttons button {width: 86.5px}
-button.hs_draw_new_extended  {width: 172px}
+.btn-group>.btn {
+    float: initial;
+}
+
+.hs-draw-new-buttons button {
+    max-width: 86.5px
+}
+
+button.hs_draw_new_extended {
+    width: 172px
+}
+
+.panel.hs-dr-editpanel {
+    margin-bottom: 0;
+}
 
 /* Sub menu component */
 
