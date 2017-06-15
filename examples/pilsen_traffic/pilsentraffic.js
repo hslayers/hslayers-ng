@@ -431,7 +431,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     }
                     
                     function getDescriptionWoUrl(){
-                        return 'Předpokládaná dopravní situace v Plzni dne ' + lead(service.day.day()) + '.' + lead(service.day.month() + 1) + '.' + service.day.year() + ' v ' + lead($scope.current_hour) + ':00.';
+                        return 'Předpokládaná dopravní situace v Plzni dne ' + lead(service.day.date()) + '.' + lead(service.day.month() + 1) + '.' + service.day.year() + ' v ' + lead($scope.current_hour) + ':00.';
                     }
                     
                     function lead(what){
