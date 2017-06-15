@@ -1,4 +1,4 @@
-<div class="legend" ng-show="legendVisible">
+<div class="legend trafficModal" ng-show="data.legendVisible">
     <div class="modal-header">
         <button type="button" class="close" ng-click="toggleLegend(false)"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
         <h4 class="modal-title">
@@ -6,6 +6,16 @@
         </h4>
     </div>
     <div class="modal-body">
-        <img src="http://gis.lesprojekt.cz/wms/transport/intenzity_dopravy_v_plzni?version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;sld_version=1.1.0&amp;layer=may&amp;format=image/png&amp;STYLE=default">
+        <h4>Stupeň plynulosti dopravy</h4>
+        <div class="media row" ng-repeat="content in legendContent track by $index" ng-class="{bottomBorder: $index == 4, 'legend-text-double': $index > 5}">
+            <div class="media-left media-middle">
+                <a href="#">
+                    <img class="media-object legend-image" ng-src="img/legend{{$index}}.png" alt="">
+                </a>
+            </div>
+            <div class="media-body">
+                <span class="legend-text">{{content}}</span>
+            </div>
+        </div>
     </div>
 </div>

@@ -38,6 +38,17 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     scope.data.legendVisible = bool;
                     if (bool) scope.data.helpVisible = false;
                 }
+                
+                scope.legendContent = [
+                    "1 - jízda plynulá, provoz jednotlivých vozidel",
+                    "2 - jízda plynulá, malé skupiny vozidel",
+                    "3 - provoz plynulý, rychlost nižší než maximální",
+                    "4 - tvoří se kolony vozidel, rychlost výrazně snížena",
+                    "5 - dopravní kolaps, vozidla stojí nebo pomalu popojíždějí",
+                    "počet vozidel na daném úseku komunikace za hodinu",
+                    "úplná uzavírka",
+                    "částečná uzavírka"
+                ];
             }
             
             return {
@@ -111,7 +122,6 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                                 });
                                 
                             })
-                            console.log(me.roadworksData);
                         });
                     }
                     

@@ -408,25 +408,42 @@ input[type="range"] {padding: 0}
     bottom: 40px;
     left: 20px;
     max-height: 66%;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
 }
-.trafficModal div {padding: 10px;}
-.trafficModal  > div.modal-header {
-    height: 3em;
+.trafficModal > div {padding: 10px;}
+.trafficModal > div > div {
+    width: 100%;
+    margin-left: 0px;
 }
+.trafficModal  > div.modal-header {height: 3em;}
 .trafficModal  > div.modal-body {
     overflow: auto;
     max-height: calc(66vh - 3em);
 }
-.trafficModal img {
-    width: 100%;
-    height: 100%;
+.trafficModal .close {
+    font-size: 26px !important;
+    color: #fff !important;
+    opacity: 1 !important;
+    font-weight: normal !important;
 }
+.trafficModal .close:hover {
+    text-decoration: underline;
+}
+.bottomBorder {
+    padding-bottom: 10px;
+    border-bottom-style: dotted;
+    border-bottom-width: 1px;
+    border-bottom-color: #000;
+}
+
+.legend .legend-image {width: 4rem;}
+.legend .legend-text {font-size: 1em;}
+.legend-text-double {line-height: 3em;}
+
 .modal-header {
     background-color: black;
     color: white;
 }
-.close span {color: white;} 
-.close {color: white !important;     opacity: 0.4 !important;}
 
 .ol-popup {bottom: 20px !important;}
 .ol-popup:after {
