@@ -1,0 +1,157 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+
+#: examples/pilsen_traffic/partials/advanced_info.html:7
+msgid "Časová osa staveb"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/advanced_info.html:5
+#: examples/pilsen_traffic/partials/help.html:3
+#: examples/pilsen_traffic/partials/legend.html:3
+msgid "Close"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/calendar.html:10
+msgid "Čt"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/roadwork_info.html:15
+msgid "Datum:"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:2
+msgid "Dopravní situace"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:28
+msgid "Dopravní stavby ve zvoleném dnu"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:48
+#: examples/pilsen_traffic/partials/legend.html:5
+msgid "Legenda"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:49
+#: examples/pilsen_traffic/partials/help.html:5
+msgid "Nápověda"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:26
+msgid "Následující den"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:25
+msgid "Následující hodina"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/roadwork_info.html:11
+msgid "Název:"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/calendar.html:13
+msgid "Ne"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:50
+msgid "O projektu"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/roadwork_info.html:27
+msgid "Objízdná trasa:"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/top-menu.html:5
+msgid "Obnovit mapu"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/roadwork_info.html:16
+msgid "Od {{roadwork.startDate.toCzechDateString()}} do {{roadwork.endDate.toCzechDateString()}}"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:44
+msgid "Odeslat e-mailem"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/calendar.html:11
+msgid "Pá"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/calendar.html:7
+msgid "Po"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:13
+msgid "Předchozí den"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:14
+msgid "Předchozí hodina"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/roadwork_info.html:23
+msgid "Rozsah:"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:37
+msgid "Sdílení mapy"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:39
+msgid "Sdílet mapu"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:42
+msgid "Sdílet na Facebooku"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:43
+msgid "Sdílet na G+"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:41
+msgid "Sdílet na Twitteru"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/calendar.html:12
+msgid "So"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/calendar.html:9
+msgid "St"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/legend.html:9
+msgid "Stupeň plynulosti dopravy"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/roadwork_info.html:19
+msgid "Úsek:"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/calendar.html:8
+msgid "Út"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/roadwork_info.html:4
+msgid "Uzavírka"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/basemap-menu.html:3
+msgid "Vyberte podkladovou mapu"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:40
+msgid "Vytisknout mapu"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/basemap-menu.html:4
+msgid "Změnit mapu"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/directive.html:35
+msgid "Zobrazit časovou osu staveb"
+msgstr ""
