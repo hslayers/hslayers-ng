@@ -164,6 +164,12 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         dateChanged()
                     })
                     
+                    function rangeContains(date){
+                        return date.isSameOrAfter($scope.$parent.min_date) &&  date.isSameOrBefore($scope.$parent.max_date);
+                    }
+                    
+                    $scope.rangeContains = rangeContains;
+                    
                     var linkInit = false;
                     
                     function dateChanged(){

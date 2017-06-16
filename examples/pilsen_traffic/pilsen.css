@@ -507,3 +507,7 @@ input[type="range"] {padding: 0}
 .tl-timemarker.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {
     color: white;
 }
+
+calendar > div.week > span.day.grayed {
+    color: #C0C0C0;
+}
