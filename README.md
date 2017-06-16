@@ -271,8 +271,10 @@ grunt nggettext_compile
 ```
 It will generate components/translations/js/translations.js or examples/pilsen_traffic/translations.js files.
 
-translations.js which contains the strings and also translating functionality is loaded by default like any other angular module from components/translations/js/translations.js in Core module. To have it use your own generated translations.js file override the path in hslayers.js file.
-
+translations.js which contains the strings and also translating functionality is loaded by default like any other angular module from components/translations/js/translations.js in Core module. To have it use your own generated translations.js file override the path in hslayers.js file:
+```
+translations: hsl_path + 'examples/pilsen_traffic/translations' 
+```
 ## Updating Angular
 
 You can update the tool dependencies by running:
