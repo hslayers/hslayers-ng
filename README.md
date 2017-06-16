@@ -257,6 +257,18 @@ npm run protractor
 This script will execute the end-to-end tests against the application being hosted on the
 development server.
 
+## Translating
+
+```
+grunt nggettext_extract
+```
+To generate po file template in /po/template.po and for each example eg. examples/pilsen_traffic/template.pot .
+Rename it to *.po, translate, generate mo file and compile it.
+Compiling is done tith 
+```
+grunt nggettext_compile
+```
+it will generate components/translations/js/translations.js or examples/pilsen_traffic/translations.js files.
 
 ## Updating Angular
 

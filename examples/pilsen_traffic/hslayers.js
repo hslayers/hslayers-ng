@@ -30,13 +30,13 @@ require.config({
         app: 'app',
         core: hsl_path + 'components/core/core',
         api: hsl_path + 'components/api/api',
-        translations: hsl_path + 'components/translations/js/translations',
         pilsentraffic: hsl_path + 'examples/pilsen_traffic/pilsentraffic',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         calendar: hsl_path + 'examples/pilsen_traffic/calendar',
         moment: hsl_path + 'node_modules/moment/min/moment.min',
         ngtimeline: hsl_path + 'bower_components/angular-timelinejs3/dist/js/ng-timeline',
-        timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline'
+        timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline',
+        translations: hsl_path + 'examples/pilsen_traffic/translations' 
     },
     shim: {
         d3: {

@@ -7,6 +7,11 @@ module.exports = function(grunt) {
                 files: {
                     'po/template.pot': ['components/**/*.html']
                 }
+            },
+            pilsen_traffic: {
+                files: {
+                    'examples/pilsen_traffic/template.pot': ['examples/pilsen_traffic/**/*.html']
+                }
             }
         },
         nggettext_compile: {
@@ -15,6 +20,11 @@ module.exports = function(grunt) {
               'components/translations/js/translations.js': ['po/*.po']
             }
           },
+          pilsen_traffic: {
+            files: {
+              'examples/pilsen_traffic/translations.js': ['examples/pilsen_traffic/*.po']
+            }
+          }
         },
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
