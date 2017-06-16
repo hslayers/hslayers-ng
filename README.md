@@ -258,17 +258,20 @@ This script will execute the end-to-end tests against the application being host
 development server.
 
 ## Translating
-
+Run 
 ```
 grunt nggettext_extract
 ```
-To generate po file template in /po/template.po and for each example eg. examples/pilsen_traffic/template.pot .
+from terminal to generate po file template in /po/template.po and for each example eg. examples/pilsen_traffic/template.pot .
 Rename it to *.po, translate, generate mo file and compile it.
-Compiling is done tith 
+If you are using specific translations for your app or example merge the global po file into the specific one with msgcat before compiling. 
+Compiling is done with 
 ```
 grunt nggettext_compile
 ```
-it will generate components/translations/js/translations.js or examples/pilsen_traffic/translations.js files.
+It will generate components/translations/js/translations.js or examples/pilsen_traffic/translations.js files.
+
+translations.js which contains the strings and also translating functionality is loaded by default like any other angular module from components/translations/js/translations.js in Core module. To have it use your own generated translations.js file override the path in hslayers.js file.
 
 ## Updating Angular
 
