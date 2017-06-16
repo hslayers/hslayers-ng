@@ -377,11 +377,25 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                             var canvas2 = document.createElement("canvas");
                             var width = 700,
                                 height = 500;
-                            canvas2.style.width = width + "px";
-                            canvas2.style.height = height + "px";
-                            canvas2.width = width;
-                            canvas2.height = height;
+                            
                             var ctx2 = canvas2.getContext("2d");
+                            var devicePixelRatio = window.devicePixelRatio || 1,
+                            backingStoreRatio = ctx2.webkitBackingStorePixelRatio ||
+                                                ctx2.mozBackingStorePixelRatio ||
+                                                ctx2.msBackingStorePixelRatio ||
+                                                ctx2.oBackingStorePixelRatio ||
+                                                ctx2.backingStorePixelRatio || 1,
+
+                            ratio = devicePixelRatio / backingStoreRatio;
+            
+                            canvas2.style.width = (width*ratio) + "px";
+                            canvas2.style.height = (height*ratio) + "px";
+                            canvas2.width = width*ratio;
+                            canvas2.height = height*ratio;
+                            
+                            ctx2.scale(1/ratio, 1/ratio);
+                            width *= ratio;
+                            height *= ratio;
                             ctx2.fillStyle = '#eeeeee';
                             ctx2.fillRect(0, 0, width ,height);
                             ctx2.drawImage(canvas, canvas.width / 2 - width / 2, canvas.height / 2 - height / 2, width, height, 0, 0, width, height);
