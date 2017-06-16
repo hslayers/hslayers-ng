@@ -17,7 +17,7 @@
                         <img src="../../img/ajax-loader.gif"/>
                         <span>{{layers_loading}}</span>
                     </span>
-                    <button class="btn btn-primary" ng-click="toggleAnimation()" title="{{ animating ? 'Zastavit animaci'|translate : 'Spustit animaci'|translate}}">
+                    <button class="btn btn-primary" ng-click="toggleAnimation()" title="{{ animating ? 'Zastavit animaci' : 'Spustit animaci'}}">
                         <span class="glyphicon glyphicon-play" aria-hidden="true" ng-hide="animating"></span><span class="glyphicon glyphicon-pause" aria-hidden="true" ng-show="animating"></span>
                     </button>
                     <span style="font-size: 17px; margin-left: 0.5em">{{("0"+current_hour).slice(-2)}}:00</span>
