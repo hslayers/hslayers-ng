@@ -376,8 +376,8 @@ define(['ol','moment',
                         'events': []
                 };
                 
-                $scope.min_date = moment('2017-05-01');
-                $scope.max_date = moment('2017-05-10');
+                $scope.min_date = moment('2017-04-01');
+                $scope.max_date = moment('2018-11-31');
                         
                 $http({
                     method: 'GET',
