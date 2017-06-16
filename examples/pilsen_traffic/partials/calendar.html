@@ -13,5 +13,5 @@
     <span class="day" translate>Ne</span>
 </div>
 <div class="week" ng-repeat="week in weeks">
-    <span class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }" ng-click="select(day)" ng-repeat="day in week.days">{{day.number}}</span>
+    <span class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected), grayed: !rangeContains(day.date)  }" ng-click="select(day)" ng-repeat="day in week.days">{{day.number}}</span>
 </div>
