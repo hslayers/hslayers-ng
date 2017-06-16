@@ -433,6 +433,16 @@ input[type="range"] {padding: 0}
 .trafficModal .close:hover {
     text-decoration: underline;
 }
+#advanced-info-dialog .close {
+    font-size: 26px !important;
+    color: #fff !important;
+    opacity: 1 !important;
+    font-weight: normal !important;
+}
+#advanced-info-dialog .close:hover {
+    text-decoration: underline;
+}
+
 .bottomBorder {
     padding-bottom: 10px;
     border-bottom-style: dotted;
