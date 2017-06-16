@@ -6,7 +6,7 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="basemapMenu">
         <li ng-repeat="layer in data.baselayers" ng-class="{'selected': layer.active}">
-            <a ng-click="changeBaseLayerVisibility($event, layer)">{{layer.title}}</a>
+            <a ng-click="changeBaseLayerVisibility($event, layer)">{{layer.title | translate}}</a>
         </li>
     </ul>
 </div>

@@ -30,7 +30,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
             };
         })
         
-        .directive('hs.pilsentraffic.legend', ['hs.pilsentraffic.service', function(service) {
+        .directive('hs.pilsentraffic.legend', ['hs.pilsentraffic.service','gettext', function(service, gettext) {
             function link(scope,element,attrs) {
                 scope.data = service.data;
                 
@@ -40,14 +40,14 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                 }
                 
                 scope.legendContent = [
-                    "1 - jízda plynulá, provoz jednotlivých vozidel",
-                    "2 - jízda plynulá, malé skupiny vozidel",
-                    "3 - provoz plynulý, rychlost nižší než maximální",
-                    "4 - tvoří se kolony vozidel, rychlost výrazně snížena",
-                    "5 - dopravní kolaps, vozidla stojí nebo pomalu popojíždějí",
-                    "počet vozidel na daném úseku komunikace za hodinu",
-                    "úplná uzavírka",
-                    "částečná uzavírka"
+                    gettext("1 - jízda plynulá, provoz jednotlivých vozidel"),
+                    gettext("2 - jízda plynulá, malé skupiny vozidel"),
+                    gettext("3 - provoz plynulý, rychlost nižší než maximální"),
+                    gettext("4 - tvoří se kolony vozidel, rychlost výrazně snížena"),
+                    gettext("5 - dopravní kolaps, vozidla stojí nebo pomalu popojíždějí"),
+                    gettext("počet vozidel na daném úseku komunikace za hodinu"),
+                    gettext("úplná uzavírka"),
+                    gettext("částečná uzavírka")
                 ];
             }
             

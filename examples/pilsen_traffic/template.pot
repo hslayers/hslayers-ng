@@ -4,8 +4,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: examples/pilsen_traffic/pilsentraffic.js:43
+msgid "1 - jízda plynulá, provoz jednotlivých vozidel"
+msgstr ""
+
+#: examples/pilsen_traffic/pilsentraffic.js:44
+msgid "2 - jízda plynulá, malé skupiny vozidel"
+msgstr ""
+
+#: examples/pilsen_traffic/pilsentraffic.js:45
+msgid "3 - provoz plynulý, rychlost nižší než maximální"
+msgstr ""
+
+#: examples/pilsen_traffic/pilsentraffic.js:46
+msgid "4 - tvoří se kolony vozidel, rychlost výrazně snížena"
+msgstr ""
+
+#: examples/pilsen_traffic/pilsentraffic.js:47
+msgid "5 - dopravní kolaps, vozidla stojí nebo pomalu popojíždějí"
+msgstr ""
+
 #: examples/pilsen_traffic/partials/advanced_info.html:7
 msgid "Časová osa staveb"
+msgstr ""
+
+#: examples/pilsen_traffic/pilsentraffic.js:50
+msgid "částečná uzavírka"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/translation-helper.html:2
+msgid "Černobílá (OSM)"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/advanced_info.html:5
@@ -33,6 +61,10 @@ msgstr ""
 #: examples/pilsen_traffic/partials/directive.html:51
 #: examples/pilsen_traffic/partials/legend.html:5
 msgid "Legenda"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/translation-helper.html:5
+msgid "Letecká (ČUZK)"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/directive.html:52
@@ -84,6 +116,10 @@ msgstr ""
 msgid "Po"
 msgstr ""
 
+#: examples/pilsen_traffic/pilsentraffic.js:48
+msgid "počet vozidel na daném úseku komunikace za hodinu"
+msgstr ""
+
 #: examples/pilsen_traffic/partials/directive.html:13
 msgid "Předchozí den"
 msgstr ""
@@ -132,6 +168,10 @@ msgstr ""
 msgid "Stupeň plynulosti dopravy"
 msgstr ""
 
+#: examples/pilsen_traffic/pilsentraffic.js:49
+msgid "úplná uzavírka"
+msgstr ""
+
 #: examples/pilsen_traffic/partials/roadwork_info.html:19
 msgid "Úsek:"
 msgstr ""
@@ -150,6 +190,14 @@ msgstr ""
 
 #: examples/pilsen_traffic/partials/directive.html:43
 msgid "Vytisknout mapu"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/translation-helper.html:4
+msgid "Základní (ČUZK)"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/translation-helper.html:3
+msgid "Základní (OSM)"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/directive.html:20

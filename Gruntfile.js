@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             },
             pilsen_traffic: {
                 files: {
-                    'examples/pilsen_traffic/template.pot': ['examples/pilsen_traffic/**/*.html']
+                    'examples/pilsen_traffic/template.pot': ['examples/pilsen_traffic/**/*.html', 'examples/pilsen_traffic/**/*.js']
                 }
             }
         },
