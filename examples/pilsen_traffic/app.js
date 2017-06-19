@@ -376,8 +376,8 @@ define(['ol','moment',
                         'events': []
                 };
                 
-                $scope.min_date = moment('2017-04-01');
-                $scope.max_date = moment('2018-11-31');
+                $scope.min_date = moment('2017-05-01');
+                $scope.max_date = moment('2018-12-31');
                         
                 $http({
                     method: 'GET',
@@ -387,8 +387,9 @@ define(['ol','moment',
                     response.data.forEach(function(item){
                        var froms = item.dates[0].split('.');
                        var tos = item.dates[1].split('.');
-                       if (moment(froms[2]+'-'+froms[1]+'-'+froms[0]).isSameOrBefore($scope.min_date))
-                           $scope.min_date = moment(froms[2]+'-'+froms[1]+'-'+froms[0]);
+                        //Seting bad limit - blocked for now
+                       /*if (moment(froms[2]+'-'+froms[1]+'-'+froms[0]).isSameOrBefore($scope.min_date))
+                           $scope.min_date = moment(froms[2]+'-'+froms[1]+'-'+froms[0]);*/
                        if (moment(tos[2]+'-'+tos[1]+'-'+tos[0]).isSameOrAfter($scope.max_date))
                            $scope.max_date = moment(tos[2]+'-'+tos[1]+'-'+tos[0]);
                        
