@@ -57,7 +57,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
             };
         }])
         
-        .directive('hs.pilsentraffic.help', ['hs.pilsentraffic.service', function(service) {
+        /*.directive('hs.pilsentraffic.help', ['hs.pilsentraffic.service', function(service) {
             function link(scope,element,attrs) {
                 scope.data = service.data;
                 
@@ -71,7 +71,33 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                 templateUrl: 'partials/help.html?bust=' + gitsha,
                 link: link
             };
-        }])
+        }])*/
+        
+        .directive('hs.pilsentraffic.helppanel', function() {
+            function link(scope,element,attrs) {
+                scope.page = 'about';
+                
+                scope.hideHelpPanel = function() {
+                    element.children().first().addClass('panel-help-hidden');
+                }
+                
+                scope.showHelpPanel = function(page) {
+                    if (angular.isDefined(page)) scope.page = page;
+                    element.children().first().removeClass('panel-help-hidden');
+                }
+                
+                scope.setPage = function(page) {
+                    scope.page = page;
+                }
+                
+                scope.hideHelpPanel();
+            }
+            
+            return {
+                templateUrl: 'partials/help-panel.html?bust=' + gitsha,
+                link: link
+            };
+        })
 
         .service("hs.pilsentraffic.service", ['Core', 'hs.utils.service','$http',
                 function(Core, utils, $http) {
@@ -515,9 +541,15 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $("#hs-dialog-area").append(el);
                         $compile(el)($scope);
                     }
-                    function createHelp() {
+                    /*function createHelp() {
                         var el = angular.element('<div hs.pilsentraffic.help></div>');
                         $("#hs-dialog-area").append(el);
+                        $compile(el)($scope);
+                    }*/
+                    
+                    function createHelp() {
+                        var el = angular.element('<div hs.pilsentraffic.helppanel></div>');
+                        $(".gui-overlay").append(el);
                         $compile(el)($scope);
                     }
                     

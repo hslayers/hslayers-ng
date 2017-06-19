@@ -527,3 +527,31 @@ input[type="range"] {padding: 0}
 calendar > div.week > span.day.grayed {
     color: #C0C0C0;
 }
+
+.panel-help {
+    z-index: 1001;
+    width: 600px;
+    max-width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #eee;
+    pointer-events: auto;
+    transition: right 0.6s;
+}
+.panel-help-hidden {
+    right: -600px;
+}
+.panel-help .panel-title {
+    font-size: 20px;
+}
+.panel-help .close {
+    font-size: 26px !important;
+    color: #fff !important;
+    opacity: 1 !important;
+    font-weight: normal !important;
+}
+.panel-help .close:hover {
+    text-decoration: underline;
+}

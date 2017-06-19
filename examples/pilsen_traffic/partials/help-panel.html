@@ -1,0 +1,40 @@
+<div class="panel panel-default panel-help">
+    <div class="panel-heading" ng-if="page=='help'">
+        <span class="panel-title"><translate>Nápověda</translate></span>
+        <button type="button" class="close" ng-click="hideHelpPanel()">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only" translate>Close</span>
+        </button>
+    </div>
+    <div class="panel-heading" ng-if="page=='about'">
+        <span class="panel-title"><translate>O projektu</translate></span>
+        <button type="button" class="close" ng-click="hideHelpPanel()">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only" translate>Close</span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <div class="btn-group panel-help-switch" role="group" aria-label="switch">
+          <button type="button" class="btn btn-default" ng-click="setPage('help')" translate>Nápověda</button>
+          <button type="button" class="btn btn-default" ng-click="setPage('about')" translate>O projektu</button>
+        </div>
+        <div ng-if="page=='help'">
+            <p translate>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam at leo ligula. Nam tempus justo ut erat lacinia lobortis. Aenean eu velit porta, varius urna sed, efficitur nulla. Praesent mattis neque in ultricies porttitor. Aliquam sed tincidunt nibh. Integer cursus sed arcu vel mollis. Nunc tristique est eget enim tincidunt imperdiet. Morbi accumsan risus non lacus bibendum, nec pellentesque orci ultrices.</p>
+
+            <p translate>Cras maximus dui eu risus auctor, ut suscipit neque feugiat. Integer nulla arcu, venenatis posuere egestas ac, dignissim vitae orci. Sed hendrerit purus vel leo tristique, a cursus orci tempus. Sed vel nisl elit. Morbi congue, nibh eget dapibus sagittis, quam nisl egestas tortor, at pharetra justo tortor vitae lacus. Integer sollicitudin quis urna eu maximus. Curabitur sollicitudin sodales pulvinar. Sed vel rutrum augue, nec blandit tortor. Sed sit amet pellentesque nisl, non maximus turpis. Nullam blandit varius quam. Nulla facilisi. In vitae urna ex.</p>
+
+            <p translate>Donec magna neque, elementum et eros quis, tristique lacinia erat. Proin luctus turpis suscipit consequat dignissim. In et ligula et erat venenatis interdum. Mauris id elementum nibh. Fusce non orci ac sem pellentesque sollicitudin ac vitae dui. Donec vitae dapibus leo. Phasellus vitae pretium est. Donec id lacinia neque. Vivamus convallis, odio vel semper efficitur, lorem eros molestie turpis, sed consectetur nisl arcu a mauris. Aenean blandit arcu mi, non sagittis ante elementum et. Nulla sed arcu interdum, tincidunt lacus vel, lacinia felis. Nunc mauris mauris, suscipit id fringilla ac, iaculis in dui. Pellentesque at molestie nisl.</p>
+        </div>
+        <div ng-if="page=='about'">
+            <p translate>Lorem ipsum dolor sit amet, modo vero nec ad, eos ut nostro deseruisse posidonium. Veniam molestie ad eum. Accusam prodesset ex pri, ad modo option cum. Ne everti alterum mandamus ius, vim novum nobis persius id, no modus complectitur mediocritatem mei. Quod epicurei adipisci an vim, te brute verear accommodare mea.</p>
+
+            <p translate>Epicurei gubergren usu no, ei nobis ancillae similique eos. His id tale sensibus, usu clita everti at, qui ei mutat labores moderatius. An vix alii solum vivendum, magna iisque singulis cu sea. Ne nibh delicatissimi usu, in ludus option debitis eum, choro euripidis liberavisse ea vis. Per vidit gloriatur ex, an brute solet electram nec, ne idque corpora quo. Esse brute ne has. Vix eu persius ponderum, mucius adolescens philosophia cu per, mei no cetero animal nusquam.</p>
+
+            <p translate>Postea insolens ei mea, has dolor eruditi maluisset ei, nemore definitionem ei est. Ut quas explicari vix. Vel ex porro eruditi, harum ullamcorper in ius. Ut has solum tractatos iudicabit, stet suscipiantur duo cu. Id omnes animal electram ius, ipsum consequuntur reprehendunt ut nam.</p>
+
+            <p translate>Et nam nulla nobis atomorum. Pro malis delicata explicari et, ut mea facete mandamus, meliore percipitur eos ex. His in omittam evertitur consequuntur. Dolor percipit constituam in mel, pro amet dolorem suscipit id, ut populo veritus vim. Bonorum petentium prodesset nec id, dico graece efficiendi sit id. Sea fabulas laoreet in.</p>
+
+            <p translate>Nibh dolores no per, id illum temporibus vix. Cu mea alii tale. Imperdiet delicatissimi an eum, ad nam elit utinam noluisse, nam ei falli everti. Ne utroque sapientem cotidieque nam. At tamquam iuvaret signiferumque nec.</p>
+        </div>   
+    </div>
+</div>
