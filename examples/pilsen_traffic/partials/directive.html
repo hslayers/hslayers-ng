@@ -1,5 +1,16 @@
 <div class="panel panel-default mainpanel">
     <div class="panel-heading"><h4 translate>Dopravní situace</h4>
+        <div class="dropdown pull-right">
+          <button class="btn btn-default dropdown-toggle language-dropdown" type="button" id="language-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+            <span id="language-title">Čeština</span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" id="language-dropdown-menu" aria-labelledby="language-dropdown">
+            <li><a href="#" ng-click="setLanguage($event,'cs')" ng-class="{'selected-language': currentLanguage=='cs'}">Čeština</a></li>
+            <li><a href="#" ng-click="setLanguage($event,'en')" ng-class="{'selected-language': currentLanguage=='en'}">English</a></li>
+          </ul>
+        </div>
     </div>
     <div class="panel-body">
         <div class="panel-body">

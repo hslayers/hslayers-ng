@@ -555,3 +555,22 @@ calendar > div.week > span.day.grayed {
 .panel-help .close:hover {
     text-decoration: underline;
 }
+
+.panel-heading > * {
+    display: inline-block;
+}
+
+#language-dropdown {
+    color: #fff;
+    background-color: transparent;
+    border-width: 0px;
+    padding-top: 0.7em;
+}
+#language-dropdown:hover {
+    text-decoration: underline; 
+    text-decoration-style: dashed;
+}
+
+#language-dropdown-menu {
+    min-width: 60px;
+}

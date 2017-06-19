@@ -553,6 +553,14 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $compile(el)($scope);
                     }
                     
+                    $scope.currentLanguage = 'cs';
+                    
+                    $scope.setLanguage = function(e,lang){
+                        $("#language-title").html(e.currentTarget.innerHTML);
+                        Core.setLanguage(lang);
+                        $scope.currentLanguage = lang;
+                    }
+                    
                     $scope.$emit('scope_loaded', "PilsenTraffic");
                 }
             ]);
