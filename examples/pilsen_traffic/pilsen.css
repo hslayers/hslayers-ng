@@ -1,4 +1,8 @@
-.panelspace {width: 320px !important;}
+.panelspace {
+    width: 320px !important;
+    max-width: calc(100% - 52px);
+    z-index: 6 !important;
+}
 .panelspace-wrapper {width: 100% !important;}
 
 .ol-zoom {
@@ -87,7 +91,7 @@
     padding-right: 10px;
     display: inline-block;
     width: calc(100% - 401px);
-    z-index: 999;
+    z-index: 3;
 }
 
 .open .left-top {width: calc(100% - 401px);}
