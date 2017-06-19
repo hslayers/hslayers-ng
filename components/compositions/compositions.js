@@ -862,8 +862,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
                 $scope.$emit('scope_loaded', "Compositions");
                 $rootScope.$on('core.mainpanel_changed', function(event) {
-                    extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
-                    if (Core.mainpanel == 'composition_browser') $scope.loadCompositions();
+                    if(angular.isDefined(extent_layer)){
+                        extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
+                        if (Core.mainpanel == 'composition_browser') $scope.loadCompositions();
+                    }
                 });
             }
         ]);
