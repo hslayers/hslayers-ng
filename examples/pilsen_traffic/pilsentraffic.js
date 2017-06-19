@@ -266,8 +266,6 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $scope.current_hour = 8;
                         var now = new Date();
                         var hours = now.getHours();
-                        //if(hours<8) hours = 8;
-                        //if(hours>22) hours = 22;
                         $scope.setCurrentTime(hours);
                     }
                     

@@ -28,6 +28,7 @@ define(['angular', 'moment'],
                 _buildMonth(scope, start, scope.month);
 
                 scope.select = function(day) {
+                    if (!scope.rangeContains(day.date)) return;
                     scope.selected = day.date;
                     var start = scope.selected.clone();
                     start.date(1);
