@@ -264,9 +264,18 @@ input[type="range"] {padding: 0}
     height: 1.5em !important;
 }
 
+
 .ol-scale-line {
     bottom: 2.0em !important;
     background-color: #000 !important;
+}
+.air .ol-scale-line {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+.air .ol-scale-line-inner {
+    color: #000 !important;
+    border-color: #000 !important;
 }
 
 .tl-timenav-slider-background{pointer-events: none;}
@@ -571,6 +580,4 @@ calendar > div.week > span.day.grayed {
     text-decoration-style: dashed;
 }
 
-#language-dropdown-menu {
-    min-width: 60px;
-}
+#language-dropdown-menu {min-width: 60px;}
