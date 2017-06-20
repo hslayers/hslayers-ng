@@ -408,7 +408,9 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     }
                     
                     function printPdf(){
-                        var doc = new jsPDF({orientation: 'landscape'})
+                        var doc = new jsPDF({orientation: 'landscape'});
+                        //doc.internal.scaleFactor = 2.75;
+                        
                         var imgData = '';
                         
                         hsmap.map.once('postcompose', function(event) {
@@ -433,12 +435,15 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                             canvas2.height = height*ratio;
                             
                             ctx2.scale(1/ratio, 1/ratio);
+                            ctx2.imageSmoothingEnabled = false;
+                            
                             width *= ratio;
                             height *= ratio;
-                            ctx2.fillStyle = '#eeeeee';
+                            ctx2.fillStyle = '#ffffff';
                             ctx2.fillRect(0, 0, width ,height);
-                            ctx2.drawImage(canvas, canvas.width / 2 - width / 2, canvas.height / 2 - height / 2, width, height, 0, 0, width, height);
-                            imgData = canvas2.toDataURL('image/png', 1);
+                            ctx2.drawImage(canvas, canvas.width / 2 - width / 2, canvas.height / 2 - height / 2, width, height, 40, 0, width, height);
+                            imgData = canvas2.toDataURL('image/png', 1);                           
+                            $('body').append($('<img src="'+imgData+' ">' ))
                         }, $scope);
                         hsmap.map.renderSync();
       
@@ -451,31 +456,31 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         text_canvas.height = text_canvas_dimensions;
                             
                         var tctx = text_canvas.getContext("2d");
-
+                                             
                         tctx.fillStyle = 'black';
                         tctx.font="22pt Verdana";
-                        tctx.fillText(getDescriptionWoUrl(), 5, 30);
+                        tctx.fillText(getDescriptionWoUrl(), 40, 30);
                         var text_pixels = text_canvas.toDataURL('image/png', 1);
-                        doc.addImage(text_pixels, 'PNG', 10, 20);
+                        doc.addImage(text_pixels, 'PNG', 0, 20);
                         
                         var y = 25;
-                        tctx.clearRect(0, 0, 500 ,500);
+                        tctx.clearRect(0, 0, text_canvas_dimensions ,text_canvas_dimensions);
                                                         
                         tctx.fillStyle = 'black';
                         tctx.font="14pt Verdana";
-                        tctx.fillText('Probíhající dopravní stavby:', 5, y);
+                        tctx.fillText('Probíhající dopravní stavby:', 735, y);
                         y += 40;
                         tctx.font="12pt Verdana";
                         angular.forEach($scope.roadworklist, function(work){
-                            tctx.fillText(work.headline, 5, y);
+                            tctx.fillText(work.headline, 735, y);
                             y += 37;
                         })
                         
                         text_pixels = text_canvas.toDataURL('image/png', 1);
-                        doc.addImage(text_pixels, 'PNG', 10, 40);
+                        doc.addImage(text_pixels, 'PNG', 0, 40);
                         
+                        doc.addImage(imgData, 'png', 0, 40);
                         //********** Draw map
-                        doc.addImage(imgData, 'PNG', 100, 40);
                         doc.save('a4.pdf')
                     }
                     
