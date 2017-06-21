@@ -443,7 +443,6 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                             ctx2.fillRect(0, 0, width ,height);
                             ctx2.drawImage(canvas, canvas.width / 2 - width / 2, canvas.height / 2 - height / 2, width, height, 40, 0, width, height);
                             imgData = canvas2.toDataURL('image/png', 1);                           
-                            $('body').append($('<img src="'+imgData+' ">' ))
                         }, $scope);
                         hsmap.map.renderSync();
       
