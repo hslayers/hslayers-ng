@@ -573,6 +573,19 @@ calendar > div.week > span.day.grayed {
 .panel-heading > * {
     display: inline-block;
 }
+.panel-help .panel-body {
+    overflow: auto;
+    font-size: 16px;
+    height: calc(100% - 50px) !important;
+}
+.panel-help .panel-help-switch {
+    margin-bottom: 1em;
+}
+.panel-help .section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 1em;
+}
 
 #language-dropdown {
     color: #fff;
@@ -586,3 +599,20 @@ calendar > div.week > span.day.grayed {
 }
 
 #language-dropdown-menu {min-width: 60px;}
+
+.table-help {
+  table-layout: fixed;
+  width: 100%;
+}
+.table-help-image {width: 45%;}
+.table-help tr > td:first-child > img {max-width: 100%;}
+.table-help-text {width: 55%;}
+.table-help tr > td:first-child {
+    vertical-align: middle;
+    text-align: center;
+}
+.table-help tr > td:last-child {
+    vertical-align: middle;
+    text-align: left;
+    padding-left: 1em;
+}

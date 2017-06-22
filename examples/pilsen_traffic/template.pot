@@ -42,6 +42,14 @@ msgstr ""
 msgid "Change map"
 msgstr ""
 
+#: examples/pilsen_traffic/partials/help-panel.html:31
+msgid "Choose a date in the calendar. A traffic situation at 8 a.m. on the selected say will be displayed."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:94
+msgid "Click on the 'Timeline of roadworks' to open the timeline overview of roadworks."
+msgstr ""
+
 #: examples/pilsen_traffic/partials/advanced_info.html:5
 #: examples/pilsen_traffic/partials/help-panel.html:13
 #: examples/pilsen_traffic/partials/help-panel.html:6
@@ -50,24 +58,30 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: examples/pilsen_traffic/partials/help-panel.html:60
+msgid ""
+"Colour scheme of the traffic volume levels <br> \r\n"
+"                        1. fluent traffic, individual vehicles passing <br>\r\n"
+"                        2. fluent traffic, small groups of vehicles passing <br>\r\n"
+"                        3. continuous traffic, the circulation speed lower than the allowed maximum <br>\r\n"
+"                        4. traffic jams emerging, circulation speed significantly decreased <br>\r\n"
+"                        5. traffic jam, the vehicles do not move at all or only slowly <br>"
+msgstr ""
+
 #: examples/pilsen_traffic/partials/help-panel.html:24
-msgid "Cras maximus dui eu risus auctor, ut suscipit neque feugiat. Integer nulla arcu, venenatis posuere egestas ac, dignissim vitae orci. Sed hendrerit purus vel leo tristique, a cursus orci tempus. Sed vel nisl elit. Morbi congue, nibh eget dapibus sagittis, quam nisl egestas tortor, at pharetra justo tortor vitae lacus. Integer sollicitudin quis urna eu maximus. Curabitur sollicitudin sodales pulvinar. Sed vel rutrum augue, nec blandit tortor. Sed sit amet pellentesque nisl, non maximus turpis. Nullam blandit varius quam. Nulla facilisi. In vitae urna ex."
+msgid "Consult the expected traffic"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:164
+msgid "Contact"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/roadwork_info.html:15
 msgid "Date:"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/help-panel.html:26
-msgid "Donec magna neque, elementum et eros quis, tristique lacinia erat. Proin luctus turpis suscipit consequat dignissim. In et ligula et erat venenatis interdum. Mauris id elementum nibh. Fusce non orci ac sem pellentesque sollicitudin ac vitae dui. Donec vitae dapibus leo. Phasellus vitae pretium est. Donec id lacinia neque. Vivamus convallis, odio vel semper efficitur, lorem eros molestie turpis, sed consectetur nisl arcu a mauris. Aenean blandit arcu mi, non sagittis ante elementum et. Nulla sed arcu interdum, tincidunt lacus vel, lacinia felis. Nunc mauris mauris, suscipit id fringilla ac, iaculis in dui. Pellentesque at molestie nisl."
-msgstr ""
-
-#: examples/pilsen_traffic/partials/help-panel.html:31
-msgid "Epicurei gubergren usu no, ei nobis ancillae similique eos. His id tale sensibus, usu clita everti at, qui ei mutat labores moderatius. An vix alii solum vivendum, magna iisque singulis cu sea. Ne nibh delicatissimi usu, in ludus option debitis eum, choro euripidis liberavisse ea vis. Per vidit gloriatur ex, an brute solet electram nec, ne idque corpora quo. Esse brute ne has. Vix eu persius ponderum, mucius adolescens philosophia cu per, mei no cetero animal nusquam."
-msgstr ""
-
-#: examples/pilsen_traffic/partials/help-panel.html:35
-msgid "Et nam nulla nobis atomorum. Pro malis delicata explicari et, ut mea facete mandamus, meliore percipitur eos ex. His in omittam evertitur consequuntur. Dolor percipit constituam in mel, pro amet dolorem suscipit id, ut populo veritus vim. Bonorum petentium prodesset nec id, dico graece efficiendi sit id. Sea fabulas laoreet in."
+#: examples/pilsen_traffic/partials/help-panel.html:53
+msgid "Display the information in the map"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/calendar.html:11
@@ -82,17 +96,21 @@ msgstr ""
 msgid "Grayscale (OSM)"
 msgstr ""
 
+#: examples/pilsen_traffic/partials/help-panel.html:39
+msgid "Hit the 'Play' button to auto-play the traffic changes during the selected day."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:139
+msgid "Hit the Twitter, Facebook or Google+ icons to share your current map screen on the social networks."
+msgstr ""
+
 #: examples/pilsen_traffic/partials/directive.html:62
 #: examples/pilsen_traffic/partials/legend.html:5
 msgid "Legend"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/help-panel.html:22
-msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam at leo ligula. Nam tempus justo ut erat lacinia lobortis. Aenean eu velit porta, varius urna sed, efficitur nulla. Praesent mattis neque in ultricies porttitor. Aliquam sed tincidunt nibh. Integer cursus sed arcu vel mollis. Nunc tristique est eget enim tincidunt imperdiet. Morbi accumsan risus non lacus bibendum, nec pellentesque orci ultrices."
-msgstr ""
-
-#: examples/pilsen_traffic/partials/help-panel.html:29
-msgid "Lorem ipsum dolor sit amet, modo vero nec ad, eos ut nostro deseruisse posidonium. Veniam molestie ad eum. Accusam prodesset ex pri, ad modo option cum. Ne everti alterum mandamus ius, vim novum nobis persius id, no modus complectitur mediocritatem mei. Quod epicurei adipisci an vim, te brute verear accommodare mea."
+#: examples/pilsen_traffic/partials/help-panel.html:116
+msgid "Map sharing and printing"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/calendar.html:7
@@ -111,10 +129,6 @@ msgstr ""
 msgid "Next hour"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/help-panel.html:37
-msgid "Nibh dolores no per, id illum temporibus vix. Cu mea alii tale. Imperdiet delicatissimi an eum, ad nam elit utinam noluisse, nam ei falli everti. Ne utroque sapientem cotidieque nam. At tamquam iuvaret signiferumque nec."
-msgstr ""
-
 #: examples/pilsen_traffic/partials/directive.html:42
 msgid "Ongoing roadworks"
 msgstr ""
@@ -131,10 +145,6 @@ msgstr ""
 msgid "Play animation"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/help-panel.html:33
-msgid "Postea insolens ei mea, has dolor eruditi maluisset ei, nemore definitionem ei est. Ut quas explicari vix. Vel ex porro eruditi, harum ullamcorper in ius. Ut has solum tractatos iudicabit, stet suscipiantur duo cu. Id omnes animal electram ius, ipsum consequuntur reprehendunt ut nam."
-msgstr ""
-
 #: examples/pilsen_traffic/partials/directive.html:24
 msgid "Previous day"
 msgstr ""
@@ -145,6 +155,10 @@ msgstr ""
 
 #: examples/pilsen_traffic/partials/directive.html:54
 msgid "Print map"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:47
+msgid "Push the 'Forward' and 'Back' buttons to move to the next/previous hour and to switch to the next/previous day."
 msgstr ""
 
 #: examples/pilsen_traffic/partials/top-menu.html:5
@@ -177,6 +191,22 @@ msgstr ""
 
 #: examples/pilsen_traffic/partials/basemap-menu.html:3
 msgid "Select background map"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:123
+msgid "Select the 'hyperlink' icon to generate a link to share your current map screen."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:131
+msgid "Select the 'PDF' icon to download a PDF file that contains a preview of your current map screen and the list of roadworks operational on the selected date."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:147
+msgid "Select the 'Send by email' icon to send a link to your current map screen by email."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:110
+msgid "Select the month from the timeline to open the map screen with the expected traffic volume on the first day of the selected month at 8:00."
 msgstr ""
 
 #: examples/pilsen_traffic/partials/directive.html:58
@@ -219,6 +249,34 @@ msgstr ""
 msgid "Th"
 msgstr ""
 
+#: examples/pilsen_traffic/partials/help-panel.html:22
+msgid "The 'Traffic volume in Plzen' application displays the expected traffic situation in Plzen in one hour intervals during the period from May 2017 to November 2018. The traffic volume information is derived from the city's traffic model (which is an advanced prediction and thus might be different from the real traffic situation) and takes into account roadworks that are ongoing on the selected day."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:155
+msgid "The 'Traffic volume in Plzen' application was developed by the City of Plzen in collaboration with the <a href=\"http://www.plan4all.eu/\">Plan4All</a> association and the <a href=\"http://opentransportmap.info/\">OpenTransportMap</a> project."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:156
+msgid "The application displays the expected traffic situation in Plzen in one hour intervals during the period from May 2017 to November 2018. The traffic volume information is derived from the city's traffic model (which is an advanced prediction and thus might be different from the real traffic situation) and takes into account roadworks that are ongoing on the selected day. The information about the roadworks are updated quarterly in order to reflect any possible changes in the planning of the roadworks. The timeline presents the duration of roadworks over time and thus makes it easy to learn about the main road constructions in the city in the coming years."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:160
+msgid "The application predicts the traffic volume on a selected day and hour based on the traffic model of the city and currently ongoing roadworks. The calculated traffic volume is calibrated by the street measurements."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:161
+msgid "The traffic model is based on a matrix that calculates the number of vehicles travelling between every two of approx. 180 'traffic generators' located in the city e.g.: urban zones, office districts, shopping malls, industrial zones, university campus, schools etc. The roadworks ongoing on the selected date are taken into account in the calculation as well. After the matrix calculation the counts of vehicles among all the traffic generators are portrayed on the road network, while the ideal (fastest) route together with the capacity of streets and crossroads is taken into account. The resulting traffic volume is subsequently calibrated by the street measurements of vehicles counts at selected locations. In order to display the traffic volume in the dynamic web application, the colour scheme of five colours (from green to red) is used to represent the traffic volume, matching the five traffic volume levels used by the Police (see the Legend). The figures displayed on the road segments represent the expected amount of vehicles on the street per hour."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:162
+msgid "The web application consumes the data in the form of a WMS-t web map service (see <a href=\"http://portal.opengeospatial.org/files/?artifact_id=14416\">specification</a>, annex D). Web service is available for further re-use as open data within the <a href=\"http://opentransportmap.info/\">OpenTransportMap</a> project and on the <a href=\"http://opendata.plzen.eu/\">opendata.plzen.eu</a> portal."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:87
+msgid "Timeline of roadworks"
+msgstr ""
+
 #: examples/pilsen_traffic/partials/directive.html:49
 msgctxt "button"
 msgid "Timeline of roadworks"
@@ -233,12 +291,28 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
+#: examples/pilsen_traffic/partials/help-panel.html:73
+msgid "To consults roadwork details, select the roadwork (1) from the list of roadworks in the right panel or (2) click on the road sign directly in the map."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:102
+msgid "To display information about roadworks, (1) use the green arrows or (2) select the roadwork title from the timeline."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:81
+msgid "To display the traffic volume on a road segment, click on the selected segment in the map. The expected amount of vehicles per hour is displayed directly in the map for the segments where the expected traffic volume level is 2 or higher."
+msgstr ""
+
 #: examples/pilsen_traffic/partials/legend.html:9
 msgid "Traffic intensity level"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/directive.html:2
 msgid "Traffic situation"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:159
+msgid "Traffic volume calculation methodology"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/calendar.html:8
