@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
@@ -15,25 +15,50 @@ module.exports = function(grunt) {
             }
         },
         nggettext_compile: {
-          all: {
-            files: {
-              'components/translations/js/translations.js': ['po/*.po']
+            all: {
+                files: {
+                    'components/translations/js/translations.js': ['po/*.po']
+                }
+            },
+            pilsen_traffic: {
+                files: {
+                    'examples/pilsen_traffic/translations.js': ['examples/pilsen_traffic/*.po']
+                }
             }
-          },
-          pilsen_traffic: {
-            files: {
-              'examples/pilsen_traffic/translations.js': ['examples/pilsen_traffic/*.po']
-            }
-          }
         },
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+            component: {
+                options: 
+                {
+                    mangle: {
+                    reserved: ['angular', '$', 'ol','define','Api']
+                }},
+                files: [{
+                    expand: true,
+                    src: ["components/**/*.js", "!components/**/*.min.js", "!components/translations/js/translations.js", "!components/draw/draw.js"],
+                    dest: 'dist',
+                    cwd: '.',
+                    rename: function (dst, src) {
+                        return src.replace('.js', '.min.js');
+                    }
+                }]
             },
-            build: {
-                src: 'src/<%= pkg.name %>.js',
-                dest: 'build/<%= pkg.name %>.min.js'
+            pilsenTraffic: {
+                options: 
+                {
+                    mangle: {
+                    reserved: ['angular', '$', 'ol','define','Api']
+                }},
+                files: [{
+                    expand: true,
+                    src: ["examples/pilsen_traffic/**/*.js"],
+                    dest: 'dist',
+                    cwd: '.',
+                    rename: function (dst, src) {
+                        return src.replace('.js', '.min.js');
+                    }
+                }]
             }
         },
         "jsbeautifier": {
@@ -60,8 +85,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-angular-gettext');
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.registerTask('default', ['jsbeautifier']);
     grunt.registerTask('git-pre-commit', ['jsbeautifier']);
-    
+
 
 };
