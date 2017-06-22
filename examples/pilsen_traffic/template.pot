@@ -183,7 +183,7 @@ msgstr ""
 msgid "Send by email"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/directive.html:53
+#: examples/pilsen_traffic/partials/directive.html:51
 msgid "Share map"
 msgstr ""
 
@@ -199,8 +199,8 @@ msgstr ""
 msgid "Share on Twitter"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/directive.html:51
-msgid "Sharing map"
+#: examples/pilsen_traffic/partials/directive.html:53
+msgid "Share the current map"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/translation-helper.html:3
@@ -219,13 +219,13 @@ msgstr ""
 msgid "Th"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/advanced_info.html:7
-msgctxt "panelname"
+#: examples/pilsen_traffic/partials/directive.html:49
+msgctxt "button"
 msgid "Timeline of roadworks"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/directive.html:49
-msgctxt "button"
+#: examples/pilsen_traffic/partials/advanced_info.html:7
+msgctxt "panelname"
 msgid "Timeline of roadworks"
 msgstr ""
 
