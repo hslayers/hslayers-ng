@@ -74,7 +74,7 @@ define(['ol','moment',
                 
                 scope.changeBaseLayerVisibility = function($event,layer) {
                     var pageWrap = $("#content-wrapper");
-                    if (layer.title == "Letecká (ČUZK)") {
+                    if (layer.title == "Satellite (ČUZK)") {
                         pageWrap.addClass('air');
                     }
                     else {
@@ -141,25 +141,25 @@ define(['ol','moment',
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Černobílá (OSM)",
+                    title: "Grayscale (OSM)",
                     base: true,
                     visible: true
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Základní (OSM)",
+                    title: "Standard (OSM)",
                     base: true,
                     visible: false
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Základní (ČUZK)",
+                    title: "Base (ČUZK)",
                     base: true,
                     visible: false
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Letecká (ČUZK)",
+                    title: "Satellite (ČUZK)",
                     base: true,
                     visible: false
                 }),
@@ -234,13 +234,13 @@ define(['ol','moment',
                                 capUrl: 'http://geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx?service=WMTS&request=GetCapabilities',
                                 layer: 'zm',
                                 matrixSet: 'wgs84:pseudomercator:epsg:3857',
-                                title: "Základní (ČUZK)"
+                                title: "Base (ČUZK)"
                             },
                             {
                                 capUrl: 'http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities',
                                 layer: 'orto',
                                 matrixSet: 'wgs84:pseudomercator:epsg:3857',
-                                title: "Letecká (ČUZK)"
+                                title: "Satellite (ČUZK)"
                             }
                         ];
                         
@@ -297,7 +297,7 @@ define(['ol','moment',
                 });
 
                 $scope.$on('layermanager.updated', function(data, layer) {
-                    if (layer.get('base') == true  && layer.get("title") == "Černobílá (OSM)") {
+                    if (layer.get('base') == true  && layer.get("title") == "Grayscale (OSM)") {
                         //Grayscale map
                         layer.on('postcompose', function(event) {
                             var context = event.context;
