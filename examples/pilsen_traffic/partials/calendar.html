@@ -4,14 +4,14 @@
     <i class="glyphicon glyphicon-triangle-right" ng-click="next()"></i>
 </div>
 <div class="week names">
-    <span class="day" translate>Po</span>
-    <span class="day" translate>Út</span>
-    <span class="day" translate>St</span>
-    <span class="day" translate>Čt</span>
-    <span class="day" translate>Pá</span>
-    <span class="day" translate>So</span>
-    <span class="day" translate>Ne</span>
+    <span class="day" translate>Mo</span>
+    <span class="day" translate>Tu</span>
+    <span class="day" translate>We</span>
+    <span class="day" translate>Th</span>
+    <span class="day" translate>Fr</span>
+    <span class="day" translate>Sa</span>
+    <span class="day" translate>Su</span>
 </div>
 <div class="week" ng-repeat="week in weeks">
-    <span class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected), grayed: !rangeContains(day.date)  }" ng-click="select(day)" ng-repeat="day in week.days">{{day.number}}</span>
+    <span class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected), grayed: rangeContains(day.date) == false  }" ng-click="select(day)" ng-repeat="day in week.days">{{day.number}}</span>
 </div>

@@ -1,14 +1,14 @@
 <div class="panel panel-default mainpanel">
-    <div class="panel-heading"><h4 translate>Dopravní situace</h4>
+    <div class="panel-heading"><h4 translate>Traffic situation</h4>
         <div class="dropdown pull-right">
           <button class="btn btn-default dropdown-toggle language-dropdown" type="button" id="language-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-            <span id="language-title">Čeština</span>
+            <span id="language-title">Language</span>
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" id="language-dropdown-menu" aria-labelledby="language-dropdown">
-            <li><a href="#" ng-click="setLanguage($event,'cs')" ng-class="{'selected-language': currentLanguage=='cs'}">Čeština</a></li>
-            <li><a href="#" ng-click="setLanguage($event,'en')" ng-class="{'selected-language': currentLanguage=='en'}">English</a></li>
+            <li><a href="#" ng-click="setLanguage('Čeština','cs')" ng-class="{'selected-language': currentLanguage=='cs'}">Čeština</a></li>
+            <li><a href="#" ng-click="setLanguage('English','en')" ng-class="{'selected-language': currentLanguage=='en'}">English</a></li>
           </ul>
         </div>
     </div>
@@ -21,47 +21,47 @@
             </div>
            
             <div class="btn-group btn-group-justified" id="calendar-player" role="group" aria-label="...">
-                <a type="button" class="btn btn-default" style=" width: .3%;" ng-click="previousDay()" title="{{'Předchozí den'|translate}}"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a>
-                <a type="button" class="btn btn-default" style=" width: .3%;" ng-click="previousHour()" title="{{'Předchozí hodina'|translate}}"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style=" width: .3%;" ng-click="previousDay()" title="{{'Previous day'|translate}}"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style=" width: .3%;" ng-click="previousHour()" title="{{'Previous hour'|translate}}"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a>
                 <a type="button" class="btn btn-default" disabled style="cursor: default">
                     <span class="hs-p-loading_count" ng-show="layers_loading>0">
                         <img src="../../img/ajax-loader.gif"/>
                         <span>{{layers_loading}}</span>
                     </span>
-                    <button class="btn btn-primary" ng-click="toggleAnimation()" title="{{'Zastavit animaci'|translate}}" ng-show="animating">
+                    <button class="btn btn-primary" ng-click="toggleAnimation()" title="{{'Pause animation'|translate}}" ng-show="animating">
                         <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
                     </button>
-                    <button class="btn btn-primary" ng-click="toggleAnimation()" title="{{'Spustit animaci'|translate}}"  ng-hide="animating">
+                    <button class="btn btn-primary" ng-click="toggleAnimation()" title="{{'Play animation'|translate}}"  ng-hide="animating">
                         <span class="glyphicon glyphicon-play" aria-hidden="true">
                     </button>
                     <span style="font-size: 17px; margin-left: 0.5em">{{("0"+current_hour).slice(-2)}}:00</span>
                 </a>
-                <a type="button" class="btn btn-default" style="width: .3%;" ng-click="nextHour()" title="{{'Následující hodina'|translate}}"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></a>
-                <a type="button" class="btn btn-default" style="width: .3%;" ng-click="nextDay()" title="{{'Následující den'|translate}}"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style="width: .3%;" ng-click="nextHour()" title="{{'Next hour'|translate}}"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></a>
+                <a type="button" class="btn btn-default" style="width: .3%;" ng-click="nextDay()" title="{{'Next day'|translate}}"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a>
             </div>
-            <h4 translate>Dopravní stavby ve zvoleném dnu</h4>
+            <h4 translate>Ongoing roadworks</h4>
             <div class="list-group">
                 <a ng-repeat="work in roadworklist" href="#" class="list-group-item" ng-click="showRoadworkInfo(work)">
                     {{work.headline}}
                 </a>
             </div>
             <div class="center-block">
-                <button class="btn btn-default center-block" ng-click="showDeveloperInfo()" id="show-timeline" translate>Zobrazit časovou osu staveb</button>
+                <button class="btn btn-default center-block" ng-click="showDeveloperInfo()" id="show-timeline" translate translate-context="button">Timeline of roadworks</button>
             </div>
-            <h4 translate>Sdílení mapy</h4>
+            <h4 translate>Sharing map</h4>
             <div class="btn-group btn-group-justified share-group" role="group" aria-label="...">
-                <a type="button" title="{{'Sdílet mapu'|translate}}" class="btn btn-default" ng-click="showPermalink()"><i class="icon-link"></i></a>
-                <a type="button" title="{{'Vytisknout mapu'|translate}}" class="btn btn-default" ng-click="printPdf()"><i class="fa fa-file-pdf-o"></i></a>
-                <a type="button" title="{{'Sdílet na Twitteru'|translate}}" class="btn btn-default" ng-click="shareSocial('twitter')"><i class="icon-twitter"></i></a>
-                <a type="button" title="{{'Sdílet na Facebooku'|translate}}" class="btn btn-default" ng-click="shareSocial('facebook')"><i class="icon-facebook"></i></a>
-                <a type="button" title="{{'Sdílet na G+'|translate}}" class="btn btn-default" ng-click="shareSocial('google')"><i class="icon-googleplus"></i></a>
-                <a type="button" title="{{'Odeslat e-mailem'|translate}}" class="btn btn-default" ng-click="shareSocial('email')"><i class="icon-emailalt"></i></a>
+                <a type="button" title="{{'Share map'|translate}}" class="btn btn-default" ng-click="showPermalink()"><i class="icon-link"></i></a>
+                <a type="button" title="{{'Print map'|translate}}" class="btn btn-default" ng-click="printPdf()"><i class="fa fa-file-pdf-o"></i></a>
+                <a type="button" title="{{'Share on Twitter'|translate}}" class="btn btn-default" ng-click="shareSocial('twitter')"><i class="icon-twitter"></i></a>
+                <a type="button" title="{{'Share on Facebook'|translate}}" class="btn btn-default" ng-click="shareSocial('facebook')"><i class="icon-facebook"></i></a>
+                <a type="button" title="{{'Share on G+'|translate}}" class="btn btn-default" ng-click="shareSocial('google')"><i class="icon-googleplus"></i></a>
+                <a type="button" title="{{'Send by email'|translate}}" class="btn btn-default" ng-click="shareSocial('email')"><i class="icon-emailalt"></i></a>
             </div>
             <input type="text" class="form-control" id="hs-permalink" ng-show="permalink_visible" ng-value="share_url"/>
             <p class="links">
-                <a class="" href="#" role="button" ng-click="toggleLegend(true)" translate>Legenda</a>
-                <a class="" href="#" role="button" ng-click="showHelpPanel('help')" translate>Nápověda</a>
-                <a class="" href="#" role="button" ng-click="showHelpPanel('about')" translate>O projektu</a>
+                <a class="" href="#" role="button" ng-click="toggleLegend(true)" translate>Legend</a>
+                <a class="" href="#" role="button" ng-click="showHelpPanel('help')" translate>Tutorial</a>
+                <a class="" href="#" role="button" ng-click="showHelpPanel('about')" translate>About</a>
             </p>
         </div>
     </div>

@@ -2,11 +2,11 @@
     <div class="modal-header">
         <button type="button" class="close" ng-click="toggleLegend(false)"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
         <h4 class="modal-title">
-            <translate>Legenda</translate>
+            <translate>Legend</translate>
         </h4>
     </div>
     <div class="modal-body">
-        <h4 translate>Stupeň plynulosti dopravy</h4>
+        <h4 translate>Traffic intensity level</h4>
         <div class="media row" ng-repeat="content in legendContent track by $index" ng-class="{bottomBorder: $index == 4, 'legend-text-double': $index > 5}">
             <div class="media-left media-middle">
                 <a href="#">

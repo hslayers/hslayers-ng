@@ -1,13 +1,13 @@
 <div class="panel panel-default panel-help">
     <div class="panel-heading" ng-if="page=='help'">
-        <span class="panel-title"><translate>Nápověda</translate></span>
+        <span class="panel-title"><translate>Tutorial</translate></span>
         <button type="button" class="close" ng-click="hideHelpPanel()">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
     <div class="panel-heading" ng-if="page=='about'">
-        <span class="panel-title"><translate>O projektu</translate></span>
+        <span class="panel-title"><translate>About</translate></span>
         <button type="button" class="close" ng-click="hideHelpPanel()">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
@@ -15,8 +15,8 @@
     </div>
     <div class="panel-body">
         <div class="btn-group panel-help-switch" role="group" aria-label="switch">
-          <button type="button" class="btn btn-default" ng-click="setPage('help')" translate>Nápověda</button>
-          <button type="button" class="btn btn-default" ng-click="setPage('about')" translate>O projektu</button>
+          <button type="button" class="btn btn-default" ng-click="setPage('help')" translate>Tutorial</button>
+          <button type="button" class="btn btn-default" ng-click="setPage('about')" translate>About</button>
         </div>
         <div ng-if="page=='help'">
             <p translate>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam at leo ligula. Nam tempus justo ut erat lacinia lobortis. Aenean eu velit porta, varius urna sed, efficitur nulla. Praesent mattis neque in ultricies porttitor. Aliquam sed tincidunt nibh. Integer cursus sed arcu vel mollis. Nunc tristique est eget enim tincidunt imperdiet. Morbi accumsan risus non lacus bibendum, nec pellentesque orci ultrices.</p>

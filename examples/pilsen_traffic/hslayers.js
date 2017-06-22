@@ -36,8 +36,8 @@ require.config({
         moment: hsl_path + 'node_modules/moment/min/moment.min',
         ngtimeline: hsl_path + 'bower_components/angular-timelinejs3/dist/js/ng-timeline',
         timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline',
-        //translations: hsl_path + 'examples/pilsen_traffic/translations', Until new translations are made
-        translations: hsl_path + 'components/translations/js/translations'
+        translations: hsl_path + 'examples/pilsen_traffic/translations'
+        //translations: hsl_path + 'components/translations/js/translations'
     },
     shim: {
         d3: {

@@ -40,14 +40,14 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                 }
                 
                 scope.legendContent = [
-                    gettext("1 - jízda plynulá, provoz jednotlivých vozidel"),
-                    gettext("2 - jízda plynulá, malé skupiny vozidel"),
-                    gettext("3 - provoz plynulý, rychlost nižší než maximální"),
-                    gettext("4 - tvoří se kolony vozidel, rychlost výrazně snížena"),
-                    gettext("5 - dopravní kolaps, vozidla stojí nebo pomalu popojíždějí"),
-                    gettext("počet vozidel na daném úseku komunikace za hodinu"),
-                    gettext("úplná uzavírka"),
-                    gettext("částečná uzavírka")
+                    gettext("1 - fluent traffic, individual vehicles passing"),
+                    gettext("2 - fluent traffic, small groups of vehicles passing"),
+                    gettext("3 - continuous traffic, the circulation speed lower than the allowed maximum"),
+                    gettext("4 - traffic jams emerging, circulation speed significantly decreased"),
+                    gettext("5 - traffic jam, the vehicles do not move at all or only slowly"),
+                    gettext("amount of vehicles on the road segment per hour"),
+                    gettext("road closed"),
+                    gettext("partial road closure")
                 ];
             }
             
@@ -566,11 +566,14 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     
                     $scope.currentLanguage = 'cs';
                     
-                    $scope.setLanguage = function(e,lang){
-                        $("#language-title").html(e.currentTarget.innerHTML);
+                    $scope.setLanguage = function(title,lang){
+                        $("#language-title").html(title);
                         Core.setLanguage(lang);
                         $scope.currentLanguage = lang;
                     }
+                    
+                    
+                    $scope.setLanguage('Čeština',$scope.currentLanguage);
                     
                     $scope.$emit('scope_loaded', "PilsenTraffic");
                 }
