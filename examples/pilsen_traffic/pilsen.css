@@ -510,6 +510,7 @@ input[type="range"] {padding: 0}
     width: 50%;
     padding-left: 5px;
 }
+.communication-table tr:first-child > td:last-child {vertical-align: bottom};
 
 .popup-headline .ol-popup-closer {color: #fff !important;}
 
