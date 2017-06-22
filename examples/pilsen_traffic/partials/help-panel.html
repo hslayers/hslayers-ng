@@ -15,8 +15,8 @@
     </div>
     <div class="panel-body">
         <div class="btn-group panel-help-switch" role="group" aria-label="switch">
-          <button type="button" class="btn btn-default" ng-click="setPage('help')" translate>Tutorial</button>
-          <button type="button" class="btn btn-default" ng-click="setPage('about')" translate>About</button>
+          <button type="button" class="btn btn-default" ng-click="setPage('help')" ng-class="{'selected-help': page=='help'}" translate>Tutorial</button>
+          <button type="button" class="btn btn-default" ng-click="setPage('about')" ng-class="{'selected-help': page=='about'}" translate>About</button>
         </div>
         <div ng-if="page=='help'">
             <p translate>The 'Traffic volume in Plzen' application displays the expected traffic situation in Plzen in one hour intervals during the period from May 2017 to November 2018. The traffic volume information is derived from the city's traffic model (which is an advanced prediction and thus might be different from the real traffic situation) and takes into account roadworks that are ongoing on the selected day.</p>
@@ -162,9 +162,9 @@
             <p translate>The web application consumes the data in the form of a WMS-t web map service (see <a href="http://portal.opengeospatial.org/files/?artifact_id=14416">specification</a>, annex D). Web service is available for further re-use as open data within the <a href="http://opentransportmap.info/">OpenTransportMap</a> project and on the <a href="http://opendata.plzen.eu/">opendata.plzen.eu</a> portal.</p>
 
             <h5 class="section-title" translate>Contact</h5>
-            <span>Správa informačních technologií Města Plzně</span>
-            <span><a href="sit@plzen.eu">sit@plzen.eu</a></span>
-            <span><a href="https://www.sitmp.cz/kontakty">https://www.sitmp.cz/kontakty</a></span>
+            <p>Správa informačních technologií Města Plzně</p>
+            <p><a href="sit@plzen.eu">sit@plzen.eu</a></p>
+            <p><a href="https://www.sitmp.cz/kontakty">https://www.sitmp.cz/kontakty</a></p>
         </div>   
     </div>
 </div>

@@ -554,33 +554,35 @@ calendar > div.week > span.day.grayed {
     pointer-events: auto;
     transition: right 0.6s;
 }
-.panel-help-hidden {
-    right: -600px;
-}
-.panel-help .panel-title {
-    font-size: 20px;
-}
+.panel-help-hidden {right: -600px;}
+.panel-help .panel-title {font-size: 20px;}
 .panel-help .close {
     font-size: 26px !important;
     color: #fff !important;
     opacity: 1 !important;
     font-weight: normal !important;
 }
-.panel-help .close:hover {
-    text-decoration: underline;
-}
+.panel-help .close:hover {text-decoration: underline;}
 
-.panel-heading > * {
-    display: inline-block;
-}
+.panel-heading > * {display: inline-block;}
 .panel-help .panel-body {
     overflow: auto;
     font-size: 16px;
     height: calc(100% - 50px) !important;
 }
-.panel-help .panel-help-switch {
-    margin-bottom: 1em;
+.panel-help .panel-help-switch {margin-bottom: 1em;}
+.panel-help .panel-help-switch > button {border-radius: 0px;}
+.panel-help .panel-help-switch > button.selected-help {
+    border-radius: 0px;
+    background-color: #1FA22E;
+    color: #fff;
 }
+.panel-help .panel-help-switch > button:hover {
+    background-color: #1FA22E;
+    opacity: 0.8;
+    color: #fff;
+}
+.panel-help .panel-help-switch > button:focus {outline-width: 0px;}
 .panel-help .section-title {
     font-size: 20px;
     font-weight: bold;
