@@ -41,14 +41,18 @@ define(['angular', 'moment'],
                 
                 scope.next = function() {
                     var next = scope.month.clone();
-                    _removeTime(next.month(next.month()+1)).date(1);
-                    scope.month.month(scope.month.month()+1);
+                    next.month(next.month()+1);
+                    next.date(1);
+                    _removeTime(next.day(1));
+                    scope.month.month(scope.month.month() + 1);
                     _buildMonth(scope, next, scope.month);
                 };
 
                 scope.previous = function() {
                     var previous = scope.month.clone();
-                    _removeTime(previous.month(previous.month()-1).date(1));
+                    previous.month(previous.month()-1)
+                    previous.date(1);
+                    _removeTime(previous.day(1));
                     scope.month.month(scope.month.month()-1);
                     _buildMonth(scope, previous, scope.month);
                 };
