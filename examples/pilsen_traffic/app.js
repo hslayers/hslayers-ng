@@ -409,6 +409,22 @@ define(['ol','moment',
                                 'text': item.description
                             }}); 
                     })
+                    /*
+                    data.events.push({
+                            'start_date': {
+                                'year': 2019,
+                                'month': 1,
+                                'day': 1
+                            },
+                            'end_date': {
+                                'year': 2019,
+                                'month': 3,
+                                'day': 1
+                            },
+                            'text': {
+                                'headline': ' Test' ,
+                                'text': 'asasas' 
+                            }}); */
                 });
                     
                 $scope.options = {
