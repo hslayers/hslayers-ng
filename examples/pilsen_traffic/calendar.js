@@ -71,6 +71,7 @@ define(['angular', 'moment'],
 
         function _buildMonth(scope, start, month) {
             scope.weeks = [];
+            scope.start = moment(start);
             var done = false, date = start.clone(), monthIndex = date.month(), count = 0;
             while (!done) {
                 scope.weeks.push({ days: _buildWeek(date.clone(), month) });
