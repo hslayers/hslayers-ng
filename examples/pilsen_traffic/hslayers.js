@@ -1,6 +1,8 @@
 'use strict';
 
 var hsl_path = '../../';
+if(window.location.hostname.indexOf('intenzitadopravy.plzen.eu')>-1)
+    hsl_path = './';
 
 var gitsha = Math.random(); $.ajax({
     type: "GET",
@@ -30,13 +32,13 @@ require.config({
         app: 'app',
         core: hsl_path + 'components/core/core',
         api: hsl_path + 'components/api/api',
-        pilsentraffic: hsl_path + 'examples/pilsen_traffic/pilsentraffic',
+        pilsentraffic: './pilsentraffic',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
-        calendar: hsl_path + 'examples/pilsen_traffic/calendar',
+        calendar: './calendar',
         moment: hsl_path + 'node_modules/moment/min/moment.min',
         ngtimeline: hsl_path + 'bower_components/angular-timelinejs3/dist/js/ng-timeline',
         timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline',
-        translations: hsl_path + 'examples/pilsen_traffic/translations'
+        translations: './translations'
         //translations: hsl_path + 'components/translations/js/translations'
     },
     shim: {

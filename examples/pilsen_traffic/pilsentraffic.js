@@ -11,13 +11,13 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
 
         .directive('hs.pilsentraffic.directive', function() {
             return {
-                templateUrl: hsl_path + 'examples/pilsen_traffic/partials/directive.html?bust=' + gitsha
+                templateUrl: './partials/directive.html?bust=' + gitsha
             };
         })
 
         .directive('hs.pilsentraffic.toolbarButtonDirective', function() {
             return {
-                templateUrl: hsl_path + 'examples/pilsen_traffic/partials/toolbar_button_directive.html?bust=' + gitsha
+                templateUrl: './partials/toolbar_button_directive.html?bust=' + gitsha
             };
         })
 
