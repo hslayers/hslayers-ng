@@ -498,5 +498,9 @@ msgstr "Nápověda"
 msgid "We"
 msgstr "St"
 
+#: examples/pilsen_traffic/partials/calendar.html:6
+msgid "Apologies, we do not have a traffic prediction for this date. Please select a month between May 2017 and November 2018"
+msgstr "Omlouváme se, pro toto datum nemáme předpověď intenzity dopravy. Zvolte datum v období od 1. května 2017 do 30. listopadu 2018."
+
 #~ msgid "Sharing map"
 #~ msgstr "Sdílení mapu"
