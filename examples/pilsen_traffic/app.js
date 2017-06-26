@@ -343,8 +343,9 @@ define(['ol','moment',
                             })
                         })
                         angular.forEach($scope.timeline._timenav.timeaxis.major_ticks, function(minor_tick){
+                            console.log($scope.timeline);
                             if($.isNumeric($('span', $(minor_tick.tick)).html()))
-                                $('span', $(minor_tick.tick)).html('Led<br/>' + $(minor_tick.tick).html());
+                                $('span', $(minor_tick.tick)).html($scope.timeline._timenav.options.language.date.month_abbr[0]+'<br/>' + $(minor_tick.tick).html());
                             $(minor_tick.tick).click(function(){
                                 setCurrentDate(minor_tick);
                             })

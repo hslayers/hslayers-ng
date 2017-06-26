@@ -538,6 +538,8 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     $scope.setLanguage = function(title,lang){
                         $("#language-title").html(title);
                         Core.setLanguage(lang);
+                        var mapping = {'cs':'cz', 'en':'en'};
+                        $scope.$parent.options.language = mapping[lang];
                         $scope.currentLanguage = lang;
                     }
                      
