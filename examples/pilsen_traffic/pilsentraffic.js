@@ -23,7 +23,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
 
         .directive('hs.pilsentraffic.roadworkInfoDirective', function() {
             return {
-                templateUrl: 'partials/roadwork_info.html?bust=' + gitsha,
+                templateUrl: './partials/roadwork_info.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     $('#roadwork-info-dialog').modal('show');
                 }
@@ -52,26 +52,10 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
             }
             
             return {
-                templateUrl: 'partials/legend.html?bust=' + gitsha,
+                templateUrl: './partials/legend.html?bust=' + gitsha,
                 link: link
             };
         }])
-        
-        /*.directive('hs.pilsentraffic.help', ['hs.pilsentraffic.service', function(service) {
-            function link(scope,element,attrs) {
-                scope.data = service.data;
-                
-                scope.toggleHelp = function(bool) {
-                    scope.data.helpVisible = bool;
-                    if (bool) scope.data.legendVisible = false;
-                }
-            }
-            
-            return {
-                templateUrl: 'partials/help.html?bust=' + gitsha,
-                link: link
-            };
-        }])*/
         
         .directive('hs.pilsentraffic.helppanel', function() {
             function link(scope,element,attrs) {
@@ -94,31 +78,14 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
             }
             
             return {
-                templateUrl: 'partials/help-panel.html?bust=' + gitsha,
+                templateUrl: './partials/help-panel.html?bust=' + gitsha,
                 link: link
             };
         })
 
         .service("hs.pilsentraffic.service", ['Core', 'hs.utils.service','$http',
                 function(Core, utils, $http) {
-                   var me = {
-                        /*
-                        getUnits: function() {
-                            var url = null;
-                            url = "http://portal.sdi4apps.eu/SensLog/DataService?Operation=GetUnits&group=gaiatrons&user=admin";
-                            if (angular.isDefined(me.xhr) && me.xhr !== null) me.xhr.abort();
-                            me.xhr = $.ajax({
-                                url: url,
-                                cache: false,
-                                success: function(r) {
-                                    me.unitsReceived(r);
-                                    me.xhr = null
-                                }
-                            });
-                        }*/
-                        
-                        
-                    };
+                   var me = {};
 
                     me.data = {};
                     

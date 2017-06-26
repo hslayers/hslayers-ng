@@ -48,7 +48,7 @@ define(['ol','moment',
 
         module.directive('hs.advancedInfopanelDirective', ['$compile', function($compile) {
             return {
-                templateUrl: 'partials/advanced_info.html?bust=' + gitsha,
+                templateUrl: './partials/advanced_info.html?bust=' + gitsha,
                 link: function(scope, element, attrs) {
                     var possible_height = $(window).height() * 0.85;
                     $('#advanced-info-dialog .modal-body').css('overflow-y', 'auto'); 
@@ -63,7 +63,7 @@ define(['ol','moment',
     
         module.directive('hs.topmenu', function() {
             return {
-                templateUrl: 'partials/top-menu.html?bust=' + gitsha
+                templateUrl: './partials/top-menu.html?bust=' + gitsha
             };
         });
     
@@ -85,7 +85,7 @@ define(['ol','moment',
             }
             
             return {
-                templateUrl: 'partials/basemap-menu.html?bust=' + gitsha,
+                templateUrl: './partials/basemap-menu.html?bust=' + gitsha,
                 link: link
             };
         }]);
@@ -133,7 +133,7 @@ define(['ol','moment',
             return {
                 restrict: 'A',
                 controller: controller,
-                templateUrl: 'partials/traffic-menu.html?bust=' + gitsha
+                templateUrl: './partials/traffic-menu.html?bust=' + gitsha
             };
           });
 
