@@ -619,3 +619,8 @@ calendar > div.week > span.day.grayed {
     text-align: left;
     padding-left: 1em;
 }
+#table-help-text-legend > p {
+    margin-bottom: 0px;
+    padding-left: 1em; 
+}
+#table-help-text-legend > p:first-child {padding-left: 0px;}

@@ -16,8 +16,16 @@ msgstr ""
 msgid "1 - fluent traffic, individual vehicles passing"
 msgstr "1 - jízda plynulá, provoz jednotlivých vozidel"
 
+#: examples/pilsen_traffic/partials/help-panel.html:62
+msgid "1. fluent traffic, individual vehicles passing"
+msgstr "1 - jízda plynulá, provoz jednotlivých vozidel"
+
 #: examples/pilsen_traffic/pilsentraffic.js:44
 msgid "2 - fluent traffic, small groups of vehicles passing"
+msgstr "2 - jízda plynulá, malé skupiny vozidel"
+
+#: examples/pilsen_traffic/partials/help-panel.html:63
+msgid "2. fluent traffic, small groups of vehicles passing"
 msgstr "2 - jízda plynulá, malé skupiny vozidel"
 
 #: examples/pilsen_traffic/pilsentraffic.js:45
@@ -25,12 +33,25 @@ msgid ""
 "3 - continuous traffic, the circulation speed lower than the allowed maximum"
 msgstr "3 - provoz plynulý, rychlost nižší než maximální"
 
+#: examples/pilsen_traffic/partials/help-panel.html:64
+msgid ""
+"3. continuous traffic, the circulation speed lower than the allowed maximum"
+msgstr "3 - provoz plynulý, rychlost nižší než maximální"
+
 #: examples/pilsen_traffic/pilsentraffic.js:46
 msgid "4 - traffic jams emerging, circulation speed significantly decreased"
 msgstr "4 - tvoří se kolony vozidel, rychlost výrazně snížena"
 
+#: examples/pilsen_traffic/partials/help-panel.html:65
+msgid "4. traffic jams emerging, circulation speed significantly decreased"
+msgstr "4 - tvoří se kolony vozidel, rychlost výrazně snížena"
+
 #: examples/pilsen_traffic/pilsentraffic.js:47
 msgid "5 - traffic jam, the vehicles do not move at all or only slowly"
+msgstr "5 - dopravní kolaps, vozidla stojí nebo pomalu popojíždějí"
+
+#: examples/pilsen_traffic/partials/help-panel.html:66
+msgid "5. traffic jam, the vehicles do not move at all or only slowly"
 msgstr "5 - dopravní kolaps, vozidla stojí nebo pomalu popojíždějí"
 
 #: examples/pilsen_traffic/partials/directive.html:64
@@ -42,6 +63,14 @@ msgstr "O projektu"
 #: examples/pilsen_traffic/pilsentraffic.js:48
 msgid "amount of vehicles on the road segment per hour"
 msgstr "počet vozidel na daném úseku komunikace za hodinu"
+
+#: examples/pilsen_traffic/partials/calendar.html:6
+msgid ""
+"Apologies, we do not have a traffic prediction for this date. Please select "
+"a month between May 2017 and November 2018"
+msgstr ""
+"Omlouváme se, pro toto datum nemáme předpověď intenzity dopravy. Zvolte "
+"datum v období od 1. května 2017 do 30. listopadu 2018"
 
 #: examples/pilsen_traffic/partials/translation-helper.html:4
 msgid "Base (ČUZK)"
@@ -73,35 +102,15 @@ msgstr "Časovou osu staveb otevřete tlačítkem 'Zobrazit časovou osu staveb'
 msgid "Close"
 msgstr "Zavřít"
 
-#: examples/pilsen_traffic/partials/help-panel.html:60
-msgid ""
-"Colour scheme of the traffic volume levels <br> \r\n"
-"                        1. fluent traffic, individual vehicles passing <br>"
-"\r\n"
-"                        2. fluent traffic, small groups of vehicles passing "
-"<br>\r\n"
-"                        3. continuous traffic, the circulation speed lower "
-"than the allowed maximum <br>\r\n"
-"                        4. traffic jams emerging, circulation speed "
-"significantly decreased <br>\r\n"
-"                        5. traffic jam, the vehicles do not move at all or "
-"only slowly <br>"
-msgstr ""
-"Barevné zobrazení stupňů plynulosti dopravy v mapě<br> \n"
-"                        1. jízda plynulá, provoz jednotlivých vozidel<br> \n"
-"                        2. jízda plynulá, malé skupiny vozidel<br> \n"
-"                        3. provoz plynulý, rychlost nižší než "
-"maximální<br> \n"
-"                        4. tvoří se kolony vozidel, rychlost výrazně "
-"snížena<br> \n"
-"                        5. dopravní kolaps, vozidla stojí nebo pomalu "
-"popojíždějí <br>"
+#: examples/pilsen_traffic/partials/help-panel.html:61
+msgid "Colour scheme of the traffic volume levels"
+msgstr "Barevné zobrazení stupňů plynulosti dopravy v mapě"
 
 #: examples/pilsen_traffic/partials/help-panel.html:24
 msgid "Consult the expected traffic"
 msgstr "Prohlížení dopravní situace"
 
-#: examples/pilsen_traffic/partials/help-panel.html:164
+#: examples/pilsen_traffic/partials/help-panel.html:165
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -113,7 +122,7 @@ msgstr "Datum:"
 msgid "Display the information in the map"
 msgstr "Zobrazení informací v mapě"
 
-#: examples/pilsen_traffic/partials/calendar.html:11
+#: examples/pilsen_traffic/partials/calendar.html:12
 msgid "Fr"
 msgstr "Pá"
 
@@ -137,7 +146,7 @@ msgstr ""
 "Stiskněte tlačítko 'Play'. Automaticky se přehraje animace vývoje dopravy "
 "během vybraného dne."
 
-#: examples/pilsen_traffic/partials/help-panel.html:139
+#: examples/pilsen_traffic/partials/help-panel.html:140
 msgid ""
 "Hit the Twitter, Facebook or Google+ icons to share your current map screen "
 "on the social networks."
@@ -150,11 +159,11 @@ msgstr ""
 msgid "Legend"
 msgstr "Legenda"
 
-#: examples/pilsen_traffic/partials/help-panel.html:116
+#: examples/pilsen_traffic/partials/help-panel.html:117
 msgid "Map sharing and printing"
 msgstr "Sdílení a tisk mapy"
 
-#: examples/pilsen_traffic/partials/calendar.html:7
+#: examples/pilsen_traffic/partials/calendar.html:8
 msgid "Mo"
 msgstr "Po"
 
@@ -218,7 +227,7 @@ msgstr "úplná uzavírka"
 msgid "Roadwork"
 msgstr "Uzavírka"
 
-#: examples/pilsen_traffic/partials/calendar.html:12
+#: examples/pilsen_traffic/partials/calendar.html:13
 msgid "Sa"
 msgstr "So"
 
@@ -238,7 +247,7 @@ msgstr "Úsek:"
 msgid "Select background map"
 msgstr "Vyberte podkladovou mapu"
 
-#: examples/pilsen_traffic/partials/help-panel.html:123
+#: examples/pilsen_traffic/partials/help-panel.html:124
 msgid ""
 "Select the 'hyperlink' icon to generate a link to share your current map "
 "screen."
@@ -246,7 +255,7 @@ msgstr ""
 "Zvolte ikonu 'odkaz' pro vygenerování odkazu pro sdílení aktuálního stavu "
 "mapy."
 
-#: examples/pilsen_traffic/partials/help-panel.html:131
+#: examples/pilsen_traffic/partials/help-panel.html:132
 msgid ""
 "Select the 'PDF' icon to download a PDF file that contains a preview of your "
 "current map screen and the list of roadworks operational on the selected "
@@ -255,7 +264,7 @@ msgstr ""
 "Zvolte ikonu 'PDF' pro stažení PDF souboru s náhledem aktuálního stavu mapy "
 "a seznamem dopravních staveb ve vybraném dni."
 
-#: examples/pilsen_traffic/partials/help-panel.html:147
+#: examples/pilsen_traffic/partials/help-panel.html:148
 msgid ""
 "Select the 'Send by email' icon to send a link to your current map screen by "
 "email."
@@ -263,7 +272,7 @@ msgstr ""
 "Zvolte ikonu 'Odeslat e-mailem' pro zaslání odkazu na aktuální stav mapy "
 "emailem."
 
-#: examples/pilsen_traffic/partials/help-panel.html:110
+#: examples/pilsen_traffic/partials/help-panel.html:111
 msgid ""
 "Select the month from the timeline to open the map screen with the expected "
 "traffic volume on the first day of the selected month at 8:00."
@@ -300,7 +309,7 @@ msgstr "Sdílet mapu"
 msgid "Standard (OSM)"
 msgstr "Základní (OSM)"
 
-#: examples/pilsen_traffic/partials/calendar.html:13
+#: examples/pilsen_traffic/partials/calendar.html:14
 msgid "Su"
 msgstr "Ne"
 
@@ -308,7 +317,7 @@ msgstr "Ne"
 msgid "Suggested detour:"
 msgstr "Objízdná trasa:"
 
-#: examples/pilsen_traffic/partials/calendar.html:10
+#: examples/pilsen_traffic/partials/calendar.html:11
 msgid "Th"
 msgstr "Čt"
 
@@ -328,20 +337,21 @@ msgstr ""
 "ten se může od dopravního modelu lišit) a zohledňují dopravní stavby, které "
 "ve zvolený den probíhají."
 
-#: examples/pilsen_traffic/partials/help-panel.html:155
+#: examples/pilsen_traffic/partials/help-panel.html:156
 msgid ""
 "The 'Traffic volume in Plzen' application was developed by the City of Plzen "
-"in collaboration with the <a href=\"http://www.plan4all.eu/\">Plan4All</a> "
-"association and the <a href=\"http://opentransportmap.info/"
-"\">OpenTransportMap</a> project."
+"in collaboration with the <a href=\"http://www.plan4all.eu/\" target=\"_blank"
+"\">Plan4All</a> association and the <a href=\"http://opentransportmap.info/"
+"\" target=\"_blank\">OpenTransportMap</a> project."
 msgstr ""
 "Aplikaci 'Intenzita dopravy v Plzni' vytvořilo Město Plzeň ve spolupráci s "
-"<a href=\"http://www.plan4all.eu/\">Plan4All z.s.</a>. (Plan4All je spin-off "
-"Katedry geomatiky Západočeské univerzity, který sdružuje organizace "
-"spolupracují na rozvoji výsledků dosažených ve výzkumných projektech EU) a "
-"projektem <a href=\"http://opentransportmap.info/\">OpenTransportMap</a>."
+"<a href=\"http://www.plan4all.eu/\" target=\"_blank\">Plan4All z.s.</a>. "
+"(Plan4All je spin-off Katedry geomatiky Západočeské univerzity, který "
+"sdružuje organizace spolupracují na rozvoji výsledků dosažených ve "
+"výzkumných projektech EU) a projektem <a href=\"http://opentransportmap.info/"
+"\" target=\"_blank\">OpenTransportMap</a>."
 
-#: examples/pilsen_traffic/partials/help-panel.html:156
+#: examples/pilsen_traffic/partials/help-panel.html:157
 msgid ""
 "The application displays the expected traffic situation in Plzen in one hour "
 "intervals during the period from May 2017 to November 2018. The traffic "
@@ -365,7 +375,7 @@ msgstr ""
 "usnadňuje tak získání rychlého přehledu o hlavních dopravních stavbách, "
 "které se v Plzni v následujících letech uskuteční."
 
-#: examples/pilsen_traffic/partials/help-panel.html:160
+#: examples/pilsen_traffic/partials/help-panel.html:161
 msgid ""
 "The application predicts the traffic volume on a selected day and hour based "
 "on the traffic model of the city and currently ongoing roadworks. The "
@@ -375,7 +385,7 @@ msgstr ""
 "dopravního modelu Plzně a aktuálních dopravních omezení. Výsledné hodnoty "
 "jsou kalibrovány pomocí skutečně naměřených počtů vozidel."
 
-#: examples/pilsen_traffic/partials/help-panel.html:161
+#: examples/pilsen_traffic/partials/help-panel.html:162
 msgid ""
 "The traffic model is based on a matrix that calculates the number of "
 "vehicles travelling between every two of approx. 180 'traffic generators' "
@@ -407,23 +417,29 @@ msgstr ""
 "barevně znázorněna na škále pěti barev od zelené po tmavě červenou, které "
 "odpovídají pěti stupňům dopravy používaným Policií ČR (viz legenda)."
 
-#: examples/pilsen_traffic/partials/help-panel.html:162
+#: examples/pilsen_traffic/partials/help-panel.html:163
 msgid ""
 "The web application consumes the data in the form of a WMS-t web map service "
-"(see <a href=\"http://portal.opengeospatial.org/files/?"
-"artifact_id=14416\">specification</a>, annex D). Web service is available "
-"for further re-use as open data within the <a href=\"http://opentransportmap."
-"info/\">OpenTransportMap</a> project and on the <a href=\"http://opendata."
-"plzen.eu/\">opendata.plzen.eu</a> portal."
+"(see <a href=\"http://portal.opengeospatial.org/files/?artifact_id=14416\" "
+"target=\"_blank\">specification</a>, annex D). Web service is available for "
+"further re-use as open data within the <a href=\"http://opentransportmap."
+"info/\" target=\"_blank\">OpenTransportMap</a> project and on the <a href="
+"\"http://opendata.plzen.eu/\" target=\"_blank\">opendata.plzen.eu</a> portal."
 msgstr ""
 "Čísla, která se zobrazují u jednotlivých úseků komunikací, představují "
 "očekávané množství vozidel projíždějících daným úsekem za hodinu.\n"
 "Data pro webovou aplikaci jsou poskytována ve formě webové služby WMS-t (<a "
-"href=\"http://portal.opengeospatial.org/files/?"
-"artifact_id=14416\">specifikace</a>, příloha D). Webová služba je k "
-"dispozici pro další využití jako otevřená data v rámci projektu <a href="
-"\"http://opentransportmap.info/\">OpenTransportMap</a> a na portálu <a href="
-"\"http://opendata.plzen.eu/\">opendata.plzen.eu</a>."
+"href=\"http://portal.opengeospatial.org/files/?artifact_id=14416\" target="
+"\"_blank\">specifikace</a>, příloha D). Webová služba je k dispozici pro "
+"další využití jako otevřená data v rámci projektu <a href=\"http://"
+"opentransportmap.info/\" target=\"_blank\">OpenTransportMap</a> a na portálu "
+"<a href=\"http://opendata.plzen.eu/\" target=\"_blank\">opendata.plzen.eu</"
+"a>."
+
+#: examples/pilsen_traffic/partials/advanced_info.html:7
+msgctxt "panelname"
+msgid "Timeline of roadworks"
+msgstr "Časová osa staveb"
 
 #: examples/pilsen_traffic/partials/help-panel.html:87
 msgid "Timeline of roadworks"
@@ -433,11 +449,6 @@ msgstr "Zobrazit časovou osu staveb"
 msgctxt "button"
 msgid "Timeline of roadworks"
 msgstr "Zobrazit časovou osu staveb"
-
-#: examples/pilsen_traffic/partials/advanced_info.html:7
-msgctxt "panelname"
-msgid "Timeline of roadworks"
-msgstr "Časová osa staveb"
 
 #: examples/pilsen_traffic/partials/roadwork_info.html:11
 msgid "Title:"
@@ -453,7 +464,7 @@ msgstr ""
 "dopravních staveb v pravém panelu nebo (2) klikněte na dopravní značku přímo "
 "v mapě."
 
-#: examples/pilsen_traffic/partials/help-panel.html:102
+#: examples/pilsen_traffic/partials/help-panel.html:103
 msgid ""
 "To display information about roadworks, (1) use the green arrows or (2) "
 "select the roadwork title from the timeline."
@@ -480,11 +491,11 @@ msgstr "Stupeň plynulosti dopravy"
 msgid "Traffic situation"
 msgstr "Dopravní situace"
 
-#: examples/pilsen_traffic/partials/help-panel.html:159
+#: examples/pilsen_traffic/partials/help-panel.html:160
 msgid "Traffic volume calculation methodology"
 msgstr "Metodologie výpočtu dopravních intenzit"
 
-#: examples/pilsen_traffic/partials/calendar.html:8
+#: examples/pilsen_traffic/partials/calendar.html:9
 msgid "Tu"
 msgstr "Út"
 
@@ -494,13 +505,23 @@ msgstr "Út"
 msgid "Tutorial"
 msgstr "Nápověda"
 
-#: examples/pilsen_traffic/partials/calendar.html:9
+#: examples/pilsen_traffic/partials/calendar.html:10
 msgid "We"
 msgstr "St"
 
-#: examples/pilsen_traffic/partials/calendar.html:6
-msgid "Apologies, we do not have a traffic prediction for this date. Please select a month between May 2017 and November 2018"
-msgstr "Omlouváme se, pro toto datum nemáme předpověď intenzity dopravy. Zvolte datum v období od 1. května 2017 do 30. listopadu 2018."
+#~ msgid ""
+#~ "Colour scheme of the traffic volume levels <br> \r\n"
+#~ "                        1. fluent traffic, individual vehicles passing "
+#~ "<br>\r\n"
+#~ "                        2. fluent traffic, small groups of vehicles "
+#~ "passing <br>\r\n"
+#~ "                        3. continuous traffic, the circulation speed "
+#~ "lower than the allowed maximum <br>\r\n"
+#~ "                        4. traffic jams emerging, circulation speed "
+#~ "significantly decreased <br>\r\n"
+#~ "                        5. traffic jam, the vehicles do not move at all "
+#~ "or only slowly <br>"
+#~ msgstr "Bla"
 
 #~ msgid "Sharing map"
 #~ msgstr "Sdílení mapu"

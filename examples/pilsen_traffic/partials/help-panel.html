@@ -57,13 +57,13 @@
                     <td class="table-help-image">
                         <img src="img/help4small.png" alt="">
                     </td>
-                    <td class="table-help-text" translate>
-                        Colour scheme of the traffic volume levels <br> 
-                        1. fluent traffic, individual vehicles passing <br>
-                        2. fluent traffic, small groups of vehicles passing <br>
-                        3. continuous traffic, the circulation speed lower than the allowed maximum <br>
-                        4. traffic jams emerging, circulation speed significantly decreased <br>
-                        5. traffic jam, the vehicles do not move at all or only slowly <br>
+                    <td class="table-help-text" id="table-help-text-legend">
+                        <p translate>Colour scheme of the traffic volume levels</p>  
+                        <p translate>1. fluent traffic, individual vehicles passing</p>
+                        <p translate>2. fluent traffic, small groups of vehicles passing</p> 
+                        <p translate>3. continuous traffic, the circulation speed lower than the allowed maximum</p> 
+                        <p translate>4. traffic jams emerging, circulation speed significantly decreased</p> 
+                        <p translate>5. traffic jam, the vehicles do not move at all or only slowly</p> 
                     </td>
                 </tr>
                 <tr>
@@ -153,19 +153,19 @@
 
         </div>
         <div ng-if="page=='about'">
-            <p translate>The 'Traffic volume in Plzen' application was developed by the City of Plzen in collaboration with the <a href="http://www.plan4all.eu/">Plan4All</a> association and the <a href="http://opentransportmap.info/">OpenTransportMap</a> project.</p>
+            <p translate>The 'Traffic volume in Plzen' application was developed by the City of Plzen in collaboration with the <a href="http://www.plan4all.eu/" target="_blank">Plan4All</a> association and the <a href="http://opentransportmap.info/" target="_blank">OpenTransportMap</a> project.</p>
             <p translate>The application displays the expected traffic situation in Plzen in one hour intervals during the period from May 2017 to November 2018. The traffic volume information is derived from the city's traffic model (which is an advanced prediction and thus might be different from the real traffic situation) and takes into account roadworks that are ongoing on the selected day. The information about the roadworks are updated quarterly in order to reflect any possible changes in the planning of the roadworks. The timeline presents the duration of roadworks over time and thus makes it easy to learn about the main road constructions in the city in the coming years.
             </p>
             
             <h5 class="section-title" translate>Traffic volume calculation methodology</h5>
             <p translate>The application predicts the traffic volume on a selected day and hour based on the traffic model of the city and currently ongoing roadworks. The calculated traffic volume is calibrated by the street measurements.</p>
             <p translate>The traffic model is based on a matrix that calculates the number of vehicles travelling between every two of approx. 180 'traffic generators' located in the city e.g.: urban zones, office districts, shopping malls, industrial zones, university campus, schools etc. The roadworks ongoing on the selected date are taken into account in the calculation as well. After the matrix calculation the counts of vehicles among all the traffic generators are portrayed on the road network, while the ideal (fastest) route together with the capacity of streets and crossroads is taken into account. The resulting traffic volume is subsequently calibrated by the street measurements of vehicles counts at selected locations. In order to display the traffic volume in the dynamic web application, the colour scheme of five colours (from green to red) is used to represent the traffic volume, matching the five traffic volume levels used by the Police (see the Legend). The figures displayed on the road segments represent the expected amount of vehicles on the street per hour.</p>
-            <p translate>The web application consumes the data in the form of a WMS-t web map service (see <a href="http://portal.opengeospatial.org/files/?artifact_id=14416">specification</a>, annex D). Web service is available for further re-use as open data within the <a href="http://opentransportmap.info/">OpenTransportMap</a> project and on the <a href="http://opendata.plzen.eu/">opendata.plzen.eu</a> portal.</p>
+            <p translate>The web application consumes the data in the form of a WMS-t web map service (see <a href="http://portal.opengeospatial.org/files/?artifact_id=14416" target="_blank">specification</a>, annex D). Web service is available for further re-use as open data within the <a href="http://opentransportmap.info/" target="_blank">OpenTransportMap</a> project and on the <a href="http://opendata.plzen.eu/" target="_blank">opendata.plzen.eu</a> portal.</p>
 
             <h5 class="section-title" translate>Contact</h5>
             <p>Správa informačních technologií Města Plzně</p>
-            <p><a href="sit@plzen.eu">sit@plzen.eu</a></p>
-            <p><a href="https://www.sitmp.cz/kontakty">https://www.sitmp.cz/kontakty</a></p>
+            <p><a href="mailto:sluzbygis@plzen.eu">sluzbygis@plzen.eu</a></p>
+            <p><a href="https://www.sitmp.cz/kontakty" target="_blank">https://www.sitmp.cz/kontakty</a></p>
         </div>   
     </div>
 </div>
