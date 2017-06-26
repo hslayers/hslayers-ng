@@ -4,6 +4,9 @@ var hsl_path = '../../';
 if(window.location.hostname.indexOf('intenzitadopravy.plzen.eu')>-1)
     hsl_path = './';
 
+var pilsenSite = false;
+if(window.location.hostname.indexOf('intenzitadopravy.plzen.eu')>-1) pilsenSite = true;
+
 var gitsha = Math.random(); $.ajax({
     type: "GET",
     dataType: 'text',
