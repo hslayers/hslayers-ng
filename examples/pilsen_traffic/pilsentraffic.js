@@ -169,6 +169,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $scope.current_date.setYear(service.day.year());
                         $scope.current_date.setMonth(service.day.month());
                         $scope.current_date.setDate(service.day.date());
+                        if ($scope.current_date.getMonth() != service.day.month()) $scope.current_date.setMonth(service.day.month());
                         if(console) console.log(service.day, service.current_date);
                         /*if (!linkInit) { //At the moment this code doesnt let forward/backward hours thats why I commented it out. Correct me if im wrong. Raitis
                             var now = new Date();
