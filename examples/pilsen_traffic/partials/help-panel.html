@@ -13,7 +13,7 @@
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" afkl-image-container>
         <div class="btn-group panel-help-switch" role="group" aria-label="switch">
           <button type="button" class="btn btn-default" ng-click="setPage('help')" ng-class="{'selected-help': page=='help'}" translate>Tutorial</button>
           <button type="button" class="btn btn-default" ng-click="setPage('about')" ng-class="{'selected-help': page=='about'}" translate>About</button>
@@ -26,7 +26,7 @@
             <table class="table table-condensed table-help">
                 <tr>
                     <td class="table-help-image">
-                        <img src="img/help1small.png" alt="">
+                        <div afkl-lazy-image="img/help1s.png , img/help1_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td class="table-help-text" translate>
                        Choose a date in the calendar. A traffic situation at 8 a.m. on the selected say will be displayed.                        
@@ -34,7 +34,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help2small.png" alt="">
+                        <div afkl-lazy-image="img/help2s.png" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td translate>
                        Hit the 'Play' button to auto-play the traffic changes during the selected day.                        
@@ -42,7 +42,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help3small.png" alt="">
+                        <div afkl-lazy-image="img/help3s.png , img/help3_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td translate>
                        Push the 'Forward' and 'Back' buttons to move to the next/previous hour and to switch to the next/previous day.    
@@ -55,7 +55,7 @@
             <table class="table table-condensed table-help">
                 <tr>
                     <td class="table-help-image">
-                        <img src="img/help4small.png" alt="">
+                        <div afkl-lazy-image="img/help4s.png , img/help4_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td class="table-help-text" id="table-help-text-legend">
                         <p translate>Colour scheme of the traffic volume levels</p>  
@@ -68,7 +68,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help5small.png" alt="">
+                        <div afkl-lazy-image="img/help5s.png , img/help5_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td translate>
                        To consults roadwork details, select the roadwork (1) from the list of roadworks in the right panel or (2) click on the road sign directly in the map.                       
@@ -76,7 +76,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help6small.png" alt="">
+                        <div afkl-lazy-image="img/help6s.png , img/help6_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td translate>
                        To display the traffic volume on a road segment, click on the selected segment in the map. The expected amount of vehicles per hour is displayed directly in the map for the segments where the expected traffic volume level is 2 or higher.    
@@ -89,7 +89,7 @@
             <table class="table table-condensed table-help">
                 <tr>
                     <td class="table-help-image">
-                        <img src="img/help7small.png" alt="">
+                        <div afkl-lazy-image="img/help7s.png , img/help7_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td class="table-help-text" translate>
                         Click on the 'Timeline of roadworks' to open the timeline overview of roadworks.
@@ -97,8 +97,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help81small.png" alt="" class="pull-left">
-                        <img src="img/help82small.png" alt="" class="pull-right">
+                        <div afkl-lazy-image="img/help81s.png , img/help81_2x.png 2x" class="afkl-lazy-wrapper pull-left"></div>
+                        <div afkl-lazy-image="img/help82s.png , img/help82_2x.png 2x" class="afkl-lazy-wrapper pull-right"></div>
                     </td>
                     <td translate>
                        To display information about roadworks, (1) use the green arrows or (2) select the roadwork title from the timeline.
@@ -106,7 +106,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help9small.png" alt="">
+                        <div afkl-lazy-image="img/help9s.png , img/help9_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td translate>
                        Select the month from the timeline to open the map screen with the expected traffic volume on the first day of the selected month at 8:00.    
@@ -119,7 +119,7 @@
             <table class="table table-condensed table-help">
                 <tr>
                     <td class="table-help-image">
-                        <img src="img/help10small.png" alt="">
+                        <div afkl-lazy-image="img/help10s.png , img/help10_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td class="table-help-text" translate>
                         Select the 'hyperlink' icon to generate a link to share your current map screen.
@@ -127,7 +127,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help11small.png" alt="">
+                        <div afkl-lazy-image="img/help11s.png , img/help11_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td translate>
                        Select the 'PDF' icon to download a PDF file that contains a preview of your current map screen and the list of roadworks operational on the selected date.
@@ -135,7 +135,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help12small.png" alt="">
+                        <div afkl-lazy-image="img/help12s.png , img/help12_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td translate>
                        Hit the Twitter, Facebook or Google+ icons to share your current map screen on the social networks.
@@ -143,7 +143,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="img/help13small.png" alt="">
+                        <div afkl-lazy-image="img/help13s.png , img/help13_2x.png 2x" class="afkl-lazy-wrapper"></div>
                     </td>
                     <td translate>
                        Select the 'Send by email' icon to send a link to your current map screen by email.

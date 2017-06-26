@@ -26,7 +26,8 @@ require.config({
         moment: hsl_path + 'node_modules/moment/min/moment.min',
         ngtimeline: hsl_path + 'bower_components/angular-timelinejs3/dist/js/ng-timeline',
         timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline',
-        translations: './translations'
+        translations: './translations',
+        lazyimage: hsl_path + 'bower_components/ng-directive-lazy-image/dist/lazy-image'
     },
     shim: {
         d3: {

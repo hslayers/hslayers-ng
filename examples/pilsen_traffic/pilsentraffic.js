@@ -2,12 +2,12 @@
  * @namespace hs.pilsentraffic
  * @memberOf hs
  */
-define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialshare', 'permalink'],
+define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialshare', 'permalink', 'lazyimage'],
 
     function(angular, ol, moment) {
         var time_layer_title = 'Intenzita dopravy v Plzni - květen 2017';
 
-        angular.module('hs.pilsentraffic', ['hs.core', 'hs.map', 'hs.styles', '720kb.socialshare', 'hs.permalink'])
+        angular.module('hs.pilsentraffic', ['hs.core', 'hs.map', 'hs.styles', '720kb.socialshare', 'hs.permalink', 'afkl.lazyImage'])
 
         .directive('hs.pilsentraffic.directive', function() {
             return {

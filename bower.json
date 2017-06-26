@@ -27,6 +27,7 @@
     "ng-focus-if": "^1.0.7",
     "angular-update-meta": "1.9.0",
     "socket.io-client": "^1.4.8",
-    "angular-timelinejs3": "~0.2.3"
+    "angular-timelinejs3": "~0.2.3",
+    "ng-directive-lazy-image": "afkl-lazy-image#^0.3.4"
   }
 }

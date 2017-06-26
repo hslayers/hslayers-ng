@@ -608,7 +608,8 @@ calendar > div.week > span.day.grayed {
   width: 100%;
 }
 .table-help-image {width: 45%;}
-.table-help tr > td:first-child > img {max-width: 100%;}
+.table-help tr > td:first-child > div {max-width: 100%;}
+.table-help tr > td:first-child > div > img {max-width: 100%;}
 .table-help-text {width: 55%;}
 .table-help tr > td:first-child {
     vertical-align: middle;
