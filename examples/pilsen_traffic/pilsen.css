@@ -625,3 +625,4 @@ calendar > div.week > span.day.grayed {
     padding-left: 1em; 
 }
 #table-help-text-legend > p:first-child {padding-left: 0px;}
+.table-help tr > td:first-child > div.img110w > img{max-width: 110px;}
