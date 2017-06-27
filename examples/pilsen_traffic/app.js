@@ -341,7 +341,7 @@ define(['ol','moment',
                             $(minor_tick.tick).click(function(){
                                 setCurrentDate(minor_tick);
                             })
-                            if(minor_tick.date.data.date_obj.getFullYear()>2018 || (minor_tick.date.data.date_obj<new Date('2017-04-01'))){
+                            if(minor_tick.date.data.date_obj>new Date('2018-11-30') || (minor_tick.date.data.date_obj<new Date('2017-04-01'))){
                                  $(minor_tick.tick).hide();
                             }
                         })
@@ -351,7 +351,7 @@ define(['ol','moment',
                             $(minor_tick.tick).click(function(){
                                 setCurrentDate(minor_tick);
                             })
-                            if(minor_tick.date.data.date_obj.getFullYear()>2018 || (minor_tick.date.data.date_obj<new Date('2017-04-01'))){
+                            if(minor_tick.date.data.date_obj>new Date('2018-11-30') || (minor_tick.date.data.date_obj<new Date('2017-04-01'))){
                                  $(minor_tick.tick).hide();
                             }
                         })
