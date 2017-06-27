@@ -541,6 +541,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         var mapping = {'cs':'cz', 'en':'en'};
                         $scope.$parent.options.language = mapping[lang];
                         $scope.currentLanguage = lang;
+                        $scope.$broadcast('language.changed', lang);
                     }
                      
                     $scope.setLanguage('Čeština',$scope.currentLanguage);

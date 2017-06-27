@@ -62,6 +62,12 @@ define(['angular', 'moment'],
                     wrapper.date = day;
                     scope.select(wrapper);
                 });
+
+                
+                scope.$on('language.changed',function(e,lang){
+                    moment.locale(lang);
+                    scope.month.locale(lang);
+                });
             }
         };
         
