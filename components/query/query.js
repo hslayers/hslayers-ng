@@ -490,8 +490,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                             coordinate, viewResolution, source.getProjection() ? source.getProjection() : map.getView().getProjection(), {
                                 'INFO_FORMAT': source.getParams().INFO_FORMAT
                             });
+                        if (typeof layer.get('featureInfoLang')[Core.language] != 'undefined') {
+                            url = url.replace(source.getUrl(),layer.get('featureInfoLang')[Core.language]);
+                        }
                         if (url) {
                             if (console) console.log(url);
+                            
                             if (source.getParams().INFO_FORMAT.indexOf('xml') > 0 || source.getParams().INFO_FORMAT.indexOf('html') > 0 || source.getParams().INFO_FORMAT.indexOf('gml') > 0) {
                                 infoCounter++;
                                 WmsGetFeatureInfo.request(url, source.getParams().INFO_FORMAT, coordinate, layer);
