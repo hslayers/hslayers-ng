@@ -9,7 +9,8 @@
  * @description Core module for whole HSLayers-NG. Contain paths to all other HS modules and dependencies (therefore it is not needed to specify them in hslayers.js file). Core module consists of Core service which keeps some app-level settings and mantain app size and panel statuses.
  */
 if (typeof hslMin != 'undefined') {
-    if (hslMin) hslMin = '.min';
+    if (hslMin == true) hslMin = '.min';
+    else hslMin = '';
 } 
 else hslMin = '';
 
@@ -269,6 +270,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description If app is running in puremapApp mode
                         */
                         puremapApp: false,
+                        language: 'en',
                         /**
                         * @ngdoc method
                         * @name Core#setMainPanel 
@@ -557,6 +559,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                     break;
                             }
                             gettextCatalog.setCurrentLanguage(lang);
+                            me.language = lang;
                         },
                         /**
                         * @ngdoc method
