@@ -97,3 +97,6 @@ calendar > div.week.names > span {
   color: #1FA22E;
   font-weight: bold;
 }
+.date-out-of-range {
+    padding:10px
+}
