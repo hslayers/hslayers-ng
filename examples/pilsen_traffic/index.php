@@ -20,6 +20,14 @@
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
         <script src="https://use.fontawesome.com/700d55ca16.js"></script>
+
+         <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-MGG4VKH');</script>
+        <!-- End Google Tag Manager -->
         
         <?php if (isset($_GET['year'])) { ?>
         <meta name="description" content="Předpokládaná dopravní situace v Plzni dne <?php echo "$date.$month.$year v $hour"; ?>:00." />
@@ -35,6 +43,10 @@
         <?php } ?>
     </head>
     <body >
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGG4VKH"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
         <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
         <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
         <script src="../../bower_components/requirejs/require.js"></script>     
