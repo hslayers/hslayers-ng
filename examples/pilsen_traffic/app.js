@@ -225,15 +225,19 @@ define(['ol','moment',
                                 control.setCollapsible(false);    
                         });
                         
+                        var protocol = 'http:';
+                        if(window.location.protocol)
+                            protocol = window.location.protocol;
+                        
                         var layers = [
                             {
-                                capUrl: 'http://geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx?service=WMTS&request=GetCapabilities',
+                                capUrl: protocol + '//geoportal.cuzk.cz/WMTS_ZM/WMTService.aspx?service=WMTS&request=GetCapabilities',
                                 layer: 'zm',
                                 matrixSet: 'wgs84:pseudomercator:epsg:3857',
                                 title: "Base (ČUZK)"
                             },
                             {
-                                capUrl: 'http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities',
+                                capUrl: protocol + '//geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities',
                                 layer: 'orto',
                                 matrixSet: 'wgs84:pseudomercator:epsg:3857',
                                 title: "Satellite (ČUZK)"
