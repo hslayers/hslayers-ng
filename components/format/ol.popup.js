@@ -1,5 +1,4 @@
-define(function(require) {
-    var ol = require('ol');
+define(['ol'], function (ol) {
     
     /**
      * OpenLayers 3 Popup Overlay.

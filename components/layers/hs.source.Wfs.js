@@ -1,5 +1,4 @@
-define(function(require) {
-    var ol = require('ol');
+define(['ol'], function (ol) {
     return function(options) {
         if (typeof options.version == 'undefined') options.version = '1.0.0';
         if (typeof options.hsproxy == 'undefined') options.hsproxy = true;

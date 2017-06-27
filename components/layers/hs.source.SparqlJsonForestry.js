@@ -1,5 +1,4 @@
-define(function(require) {
-    var ol = require('ol');
+define(['ol'], function (ol) {
     return function(options) {
         var category_map = {};
         var category_id = 0;

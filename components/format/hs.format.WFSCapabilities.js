@@ -1,6 +1,5 @@
-define(function(require) {
+define(['ol'], function (ol) { 
     if (window.allowWFS2) {
-        var ol = require('ol');
         var caps = {};
 
         NAMESPACE_URIS_WFS_ = [

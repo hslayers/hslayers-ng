@@ -1,5 +1,4 @@
-define(function(require) {
-    var ol = require('ol');
+define(['ol'], function (ol) {
     return function(options) {
         var format = new ol.format.GeoJSON();
         var src = new ol.source.Vector({
