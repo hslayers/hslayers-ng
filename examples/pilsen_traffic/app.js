@@ -341,14 +341,19 @@ define(['ol','moment',
                             $(minor_tick.tick).click(function(){
                                 setCurrentDate(minor_tick);
                             })
+                            if(minor_tick.date.data.date_obj.getFullYear()>2018 || minor_tick.date.data.date_obj.getFullYear()<2017){
+                                 $(minor_tick.tick).hide();
+                            }
                         })
                         angular.forEach($scope.timeline._timenav.timeaxis.major_ticks, function(minor_tick){
-                            console.log($scope.timeline);
                             if($.isNumeric($('span', $(minor_tick.tick)).html()))
                                 $('span', $(minor_tick.tick)).html($scope.timeline._timenav.options.language.date.month_abbr[0]+'<br/>' + $(minor_tick.tick).html());
                             $(minor_tick.tick).click(function(){
                                 setCurrentDate(minor_tick);
                             })
+                            if(minor_tick.date.data.date_obj.getFullYear()>2018 || minor_tick.date.data.date_obj.getFullYear()<2017){
+                                 $(minor_tick.tick).hide();
+                            }
                         })
                         $('.tl-timeaxis-tick-hidden').removeClass('tl-timeaxis-tick-hidden');
                     }
