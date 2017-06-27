@@ -4,6 +4,8 @@ var hsl_path = '../../';
 if(window.location.hostname.indexOf('intenzitadopravy.plzen.eu')>-1)
     hsl_path = './';
 
+var hslMin = true;
+
 var pilsenSite = false;
 if(window.location.hostname.indexOf('intenzitadopravy.plzen.eu')>-1) pilsenSite = true;
 
@@ -19,15 +21,20 @@ require.config({
     urlArgs: 'bust=' + gitsha,
     paths: {
         app: 'app',
-        core: hsl_path + 'components/core/core',
+        core: hsl_path + 'components/core/core.min',
         pilsentraffic: './pilsentraffic',
-        ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
+        //ol: hsl_path + 'node_modules/openlayers/dist/ol-debug', //Full
+        ol: hsl_path + 'node_modules/openlayers/dist/ol', //Min
         calendar: './calendar',
+        translations: './translations',
         moment: hsl_path + 'node_modules/moment/min/moment.min',
         ngtimeline: hsl_path + 'bower_components/angular-timelinejs3/dist/js/ng-timeline',
-        timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline',
-        translations: './translations',
-        lazyimage: hsl_path + 'bower_components/ng-directive-lazy-image/dist/lazy-image'
+        //Full
+        //timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline',
+        //lazyimage: hsl_path + 'bower_components/ng-directive-lazy-image/dist/lazy-image',
+        //Min
+        timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline-min',
+        lazyimage: hsl_path + 'bower_components/ng-directive-lazy-image/dist/lazy-image.min'
     },
     shim: {
         d3: {
@@ -42,6 +49,9 @@ require.config({
         },
         ngtimeline: {
             deps: ['timeline']
+        },
+        lazyimage: {
+            deps: ['angular']
         }
     }
 });
