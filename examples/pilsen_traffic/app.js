@@ -251,18 +251,22 @@ define(['ol','moment',
                             $.ajax({
                                 url: layer.capUrl
                             }).done(function(response) {
-                                var result = parser.read(response);
-                                var options = ol.source.WMTS.optionsFromCapabilities(result, {
-                                    layer: layer.layer,
-                                    matrixSet: layer.matrixSet
-                                });
-                                for (var i = 0; i < options.urls.length; i++) {
-                                    options.crossOrigin = "anonymous";
-                                    options.attributions = "Podkladová data © ČÚZK";
-                                }
-                                var newLayer = hsmap.findLayerByTitle(layer.title);
-                                var source = new ol.source.WMTS((options));
-                                newLayer.setSource(source);
+                                try {
+                                    var result = parser.read(response);
+                                    var options = ol.source.WMTS.optionsFromCapabilities(result, {
+                                        layer: layer.layer,
+                                        matrixSet: layer.matrixSet
+                                    });
+                                    for (var i = 0; i < options.urls.length; i++) {
+                                        options.crossOrigin = "anonymous";
+                                        options.attributions = "Podkladová data © ČÚZK";
+                                    }
+                                    var newLayer = hsmap.findLayerByTitle(layer.title);
+                                    var source = new ol.source.WMTS((options));
+                                    newLayer.setSource(source);
+                                } catch(ex){
+                                    if(console) console.log('Some invalid capabilities received', response, ex);
+                                } 
                             });
                         });
                         

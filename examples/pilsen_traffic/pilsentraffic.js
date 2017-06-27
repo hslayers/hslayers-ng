@@ -259,13 +259,17 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         $scope.setCurrentTime(permalink_service.getParamValue('hour'));
                         
                         var maps = permalink_service.getParamValue('visible_layers');
-                        maps = maps.split(';');
-                        maps.forEach(function(map){
-                            if (map == 'Letecká (ČUZK)') {
-                                var pageWrap = $("#content-wrapper");
-                                pageWrap.addClass('air');    
-                            }
-                        })
+                        if(maps) {
+                            maps = maps.split(';');
+                            maps.forEach(function(map){
+                                if (map == 'Letecká (ČUZK)') {
+                                    var pageWrap = $("#content-wrapper");
+                                    pageWrap.addClass('air');    
+                                }
+                            })
+                        } else {
+                            if(console) console.log('Strange!. visible_layers was not available!');
+                        }
                     }
                     
                     if(angular.isUndefined(lm_service.getLayerByTitle(time_layer_title)))
