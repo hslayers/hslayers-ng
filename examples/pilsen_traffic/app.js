@@ -191,6 +191,9 @@ define(['ol','moment',
                             return layer instanceof ol.layer.Image;
                         });
                         return hit;
+                    },
+                    featureInfoLang: {
+                        en: 'http://gis.lesprojekt.cz/wms/transport/plzen_traffic_volumes'
                     }
                 })
             ],
