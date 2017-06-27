@@ -52,7 +52,8 @@ module.exports = function (grunt) {
                 }},
                 files: [{
                     expand: true,
-                    src: ["examples/pilsen_traffic/**/*.js", "!examples/pilsen_traffic/**/*.js"],
+                    src: ["examples/pilsen_traffic/**/*.js", "!examples/pilsen_traffic/**/*.min.js",
+                    "!examples/pilsen_traffic/translations.js"],
                     dest: 'dist',
                     cwd: '.',
                     rename: function (dst, src) {
