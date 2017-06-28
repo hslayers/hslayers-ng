@@ -262,7 +262,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                         if(maps) {
                             maps = maps.split(';');
                             maps.forEach(function(map){
-                                if (map == 'Letecká (ČUZK)') {
+                                if (map == 'Satellite (ČUZK)') {
                                     var pageWrap = $("#content-wrapper");
                                     pageWrap.addClass('air');    
                                 }
