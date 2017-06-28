@@ -80,6 +80,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             me.push(cP,me.customParams[cP]);
                         }
                         $location.search(me.params);
+                        if (!$rootScope.$$phase) $rootScope.$digest();
                     };
                     
                     
