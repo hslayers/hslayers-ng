@@ -267,7 +267,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             * @type {Boolean} 
             * @description Store if baselayers are visible (more precisely one of baselayers)
             */
-            me.data.baselayersVisibile = true;
+            me.data.baselayersVisible = true;
 
             //Property for pointer to main map object
             var map;
