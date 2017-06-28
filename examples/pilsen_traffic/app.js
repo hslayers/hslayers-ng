@@ -255,7 +255,8 @@ define(['ol','moment',
                                     var result = parser.read(response);
                                     var options = ol.source.WMTS.optionsFromCapabilities(result, {
                                         layer: layer.layer,
-                                        matrixSet: layer.matrixSet
+                                        matrixSet: layer.matrixSet,
+                                        projection: "EPSG:3857"
                                     });
                                     for (var i = 0; i < options.urls.length; i++) {
                                         options.crossOrigin = "anonymous";
