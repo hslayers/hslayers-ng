@@ -317,7 +317,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                             $scope.setCurrentTime(parseInt($scope.current_hour) + 1);
                             setTimeout(function(){
                                 playHour();
-                            },1000);
+                            },2000);
                         }
                     }  
                     
