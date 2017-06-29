@@ -162,7 +162,7 @@ define(['ol','moment',
                 new ol.layer.Image({
                     title: 'Intenzita dopravy v Plzni - květen 2017',
                     source: new ol.source.ImageWMS({
-                        url: 'http://gis.lesprojekt.cz/wms/transport/intenzity_dopravy_v_plzni',
+                        url: 'https://intenzitadopravy.plzen.eu/wms-t',
                         params: {
                             LAYERS: 'may',
                             INFO_FORMAT: 'text/html',
