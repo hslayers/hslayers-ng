@@ -308,7 +308,7 @@ define(['ol','moment',
                     if (layer.get('base') == true  && layer.get("title") == "Grayscale (OSM)") {
                         //Grayscale map
                         
-                        if (navigator.appVersion.indexOf("MSIE 10") !== -1)
+                        if (navigator.appVersion.indexOf("MSIE 10") !== -1 || navigator.appVersion.indexOf("MSIE 9") !== -1)
                         {
                             $timeout(IE10compatibility,200);
                             return;
