@@ -212,8 +212,8 @@ define(['ol','moment',
                 }
         }]);
     
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 'hs.pilsentraffic.service', '$rootScope',
-            function($scope, Core, $compile, hsmap, $timeout, $http, utils, pilsen_service, $rootScope) {
+        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', '$timeout', '$http', 'hs.utils.service', 'hs.pilsentraffic.service', '$rootScope', 'hs.layermanager.service',
+            function($scope, Core, $compile, hsmap, $timeout, $http, utils, pilsen_service, $rootScope, layman) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.classicSidebar = false;
@@ -307,6 +307,12 @@ define(['ol','moment',
                 $scope.$on('layermanager.updated', function(data, layer) {
                     if (layer.get('base') == true  && layer.get("title") == "Grayscale (OSM)") {
                         //Grayscale map
+                        
+                        if (navigator.appVersion.indexOf("MSIE 10") !== -1)
+                        {
+                            $timeout(IE10compatibility,200);
+                            return;
+                        }
                         layer.on('postcompose', function(event) {
                             var context = event.context;
                             var canvas = context.canvas;
@@ -319,6 +325,16 @@ define(['ol','moment',
                         });
                     }
                 });
+                
+                function IE10compatibility(){
+                    hsmap.map.removeLayer(hsmap.findLayerByTitle('Grayscale (OSM)'));
+                    var layer;
+                    for (var i = 0; i < layman.data.baselayers.length; i++) {
+                        if (layman.data.baselayers[i].title == 'Standard (OSM)') layer = layman.data.baselayers[i];
+                    }
+                    layman.changeBaseLayerVisibility(true, layer);
+                }
+                
 
                 function addTopbar() {
                     var el = angular.element('<div hs.topmenu></div>');
