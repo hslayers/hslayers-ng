@@ -6,6 +6,13 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
 
     function(angular) {
         angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies'])
+             .service('hs.sidebar.service', ['config', '$rootScope', 'hs.utils.service', function(config, $rootScope, utils) {
+                this.extra_buttons = [];
+                
+                var me = this;
+
+            }])
+             
             /**
              * @memberof hs.sidebar
              * @ngdoc directive
@@ -65,8 +72,8 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
          * @ngdoc controller
          * @name hs.sidebar.controller
          */
-        .controller('hs.sidebar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window', '$cookies',
-            function($scope, OlMap, Core, bus, $window, $cookies) {
+        .controller('hs.sidebar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window', '$cookies', 'hs.sidebar.service',
+            function($scope, OlMap, Core, bus, $window, $cookies, service) {
                 $scope.Core = Core;
                 /**
                  * Set current active panel in sidebar
@@ -83,6 +90,8 @@ define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
                 if (bus.getParamValue('hs_panel')) {
                     $scope.setMainPanel(bus.getParamValue('hs_panel'));
                 }
+                
+                $scope.service = service;
 
                 /**
                  * Toggle sidebar mode between expanded and narrow

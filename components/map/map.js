@@ -29,6 +29,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 view: cloneView(config.default_view)
             });
             
+            me.visible = true;
+            
             function extentChanged(e){
                 if (timer != null) clearTimeout(timer);
                 timer = setTimeout(function() {
@@ -50,8 +52,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             
             me.map.on('moveend', function(e) {
                 extentChanged(e);
-            });           
-           
+            });
+            
             angular.forEach(me.interactions, function(value, key) {
                 me.map.addInteraction(value);
             });
@@ -299,11 +301,15 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
      * @ngdoc directive
      * @description Map directive, for map template (not needed for map itself, but other components which might be displayed in map window, e.g. {@link hs.geolocation.directive geolocation})
      */
-    .directive('hs.map.directive', ['Core', function(Core) {
+    .directive('hs.map.directive', ['Core', '$compile', function(Core, $compile) {
         return {
             templateUrl: hsl_path + 'components/map/partials/map.html?bust=' + gitsha,
-            link: function(scope, element) {
+            link: function(scope, element, attrs) {
                 $(".ol-zoomslider", element).width(28).height(200);
+                if(typeof attrs['ngShow'] == 'undefined') {
+                    attrs.$set('ng-show', 'hs_map.visible');
+                    $compile(element)(scope);
+                }
             }
         };
     }])
@@ -340,6 +346,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             * @description Find layer object by title of layer 
             */
             $scope.findLayerByTitle = OlMap.findLayerByTitle;
+            
+            $scope.hs_map = OlMap;
 
             //
             $scope.showFeaturesWithAttrHideRest = function(source, attribute, value, attr_to_change, invisible_value, visible_value) {

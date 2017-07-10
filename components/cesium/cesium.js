@@ -72,6 +72,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             }
         };
     }])
+    
+    .directive('hs.cesium.toolbarButtonDirective', function() {
+        return {
+            templateUrl: hsl_path + 'components/cesium/partials/toolbar_button_directive.html?bust=' + gitsha
+        };
+    })
 
     /**
      * @module hs.cesium
@@ -79,8 +85,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
      * @ngdoc controller
      * @description 
      */
-    .controller('hs.cesium.controller', ['$scope', 'hs.cesium.service', 'config', 'hs.permalink.service_url', 'Core',
-        function($scope, service, config, permalink, Core) {
+    .controller('hs.cesium.controller', ['$scope', 'hs.cesium.service', 'config', 'hs.permalink.service_url', 'Core', 'hs.map.service', 'hs.sidebar.service', '$timeout',
+        function($scope, service, config, permalink, Core, hs_map, sidebar_service, $timeout) {
             
             var map = service.map;           
             
@@ -93,7 +99,20 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             $scope.init = function() {
                 service.init();
             }
-
+            
+            function toggleCesiumMap(){
+                hs_map.visible = !hs_map.visible;
+                if(hs_map.visible) {
+                    $timeout(function(){
+                    Core.updateMapSize();
+                    }, 0)
+                }
+            }
+            
+            setTimeout(function(){hs_map.visible = false;}, 0);            
+            
+            sidebar_service.extra_buttons.push({title:'3D/2D', icon_class: 'glyphicon glyphicon-globe', click: toggleCesiumMap}); 
+            
             $scope.init();
             $scope.$emit('scope_loaded', "CesiumMap");
         }

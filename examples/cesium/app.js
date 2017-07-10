@@ -2,7 +2,7 @@
 
 define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'cesiumjs'],
 
-    function(ol, toolbar, layermanager, WfsSource, geojson) {
+    function(ol, toolbar, layermanager, geojson) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -44,6 +44,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+                
+                Core.panelEnabled('compositions', false);
+                Core.panelEnabled('status_creator', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
             }
