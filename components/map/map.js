@@ -320,8 +320,8 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
      * @ngdoc controller
      * @description Main controller of default HSLayers map, initialize map service when default HSLayers template is used
      */
-    .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.service_url', 'Core',
-        function($scope, OlMap, config, permalink, Core) {
+    .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.service_url', 'Core', '$rootScope',
+        function($scope, OlMap, config, permalink, Core, $rootScope) {
             
             var map = OlMap.map;           
             
@@ -380,6 +380,42 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                     Core.puremapApp = true;
                     OlMap.puremap();
                 }
+            }
+            
+            /**
+            * @ngdoc method
+            * @name hs.map.controller#onCenterSync
+            * @private
+            * @param {array} data Coordinates in lon/lat and resolution
+            * @description This gets called from Cesium map, to synchronize center and resolution between Ol and Cesium maps
+            */
+            function onCenterSync(event, data) {
+                var transformed_cords = ol.proj.transform([data[0], data[1]], 'EPSG:4326', 'EPSG:3857');
+                OlMap.moveToAndZoom(transformed_cords[0], transformed_cords[1], zoomForResolution(data[2]));
+            }
+            
+            $rootScope.$on('map.sync_center', onCenterSync);
+            
+            /**
+            * @ngdoc method
+            * @name hs.map.controller#zoomForResolution
+            * @private
+            * @param {number} resolution Resolution
+            * @description Calculates zoom level for a given resolution
+            */
+            function zoomForResolution(resolution) {
+                var zoom = 0;
+                resolution = Math.abs(resolution); //Sometimes resolution is under 0. Ratis
+                var r = 156543.03390625; // resolution for zoom 0
+                while (resolution < r) {
+                    console.log(r, resolution);
+                    r /= 2.0;
+                    zoom++;
+                    if (resolution > r) {
+                        return zoom;
+                    }
+                }
+                return zoom; // resolution was greater than 156543.03390625 so return 0
             }
 
             $scope.init();
