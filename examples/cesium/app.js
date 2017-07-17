@@ -36,7 +36,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/olu/european_openlandusemap.map',
                         params: {
-                            LAYERS: 'olu',
+                            LAYERS: 'olu_praha',
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html"
                         },
