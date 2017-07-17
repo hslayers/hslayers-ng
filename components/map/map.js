@@ -408,7 +408,6 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
                 resolution = Math.abs(resolution); //Sometimes resolution is under 0. Ratis
                 var r = 156543.03390625; // resolution for zoom 0
                 while (resolution < r) {
-                    console.log(r, resolution);
                     r /= 2.0;
                     zoom++;
                     if (resolution > r) {

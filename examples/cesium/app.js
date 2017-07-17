@@ -30,11 +30,26 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     source: new ol.source.OSM(),
                     title: "Base layer",
                     base: true
+                }),
+                new ol.layer.Tile({
+                    title: "Open-Land-Use Map (WMS)",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/olu/european_openlandusemap.map',
+                        params: {
+                            LAYERS: 'olu',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html"
+                        },
+                        crossOrigin: null
+                    }),
+                    path: 'Open-Land-Use Map',
+                    visible: true,
+                    opacity: 0.7
                 })
             ],
             default_view: new ol.View({
-                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-                zoom: 4,
+                center: ol.proj.transform([14.479329, 50.035522], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 13,
                 units: "m"
             })
         });

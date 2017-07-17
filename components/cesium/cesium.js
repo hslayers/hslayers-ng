@@ -27,7 +27,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             
             //Widget with OpenStreetMaps imagery provider and Cesium terrain provider hosted by AGI.
             widget = new Cesium.CesiumWidget('cesiumContainer', {
-                imageryProvider : Cesium.createOpenStreetMapImageryProvider(),
+                //imageryProvider : Cesium.createOpenStreetMapImageryProvider(),
+                                             
                 terrainProvider : new Cesium.CesiumTerrainProvider({
                     url : 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
                 }),
@@ -46,7 +47,21 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 sceneMode : Cesium.SceneMode.SCENE3D,
                 mapProjection : new Cesium.WebMercatorProjection()
             });
-                       
+            
+            
+            var ol_ext = config.default_view.calculateExtent(hs_map.map.getSize());
+            var trans_ext = ol.proj.transformExtent(ol_ext, config.default_view.getProjection(), 'EPSG:4326');
+            widget.scene.globe.enableLighting = true;
+            
+            widget.camera.flyTo({
+                destination : Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
+                duration: 0
+            });
+
+            me.widget = widget;
+                        
+            me.repopulateLayers(null);
+            
             widget.camera.moveEnd.addEventListener(function(e) {
                 $rootScope.$broadcast('map.sync_center', getCameraCenterInLngLat());
             });
@@ -58,6 +73,51 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             * @description 
             */
             $rootScope.$broadcast('cesiummap.loaded');
+        }
+        
+        /**
+        * @ngdoc method
+        * @name hs.cesium.service#repopulateLayers
+        * @public
+        * @param {object} visible_layers List of layers, which should be visible. 
+        * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
+        */
+        this.repopulateLayers = function(visible_layers) {
+            if (angular.isDefined(config.box_layers)) {
+                angular.forEach(config.box_layers, function(box) {
+                    angular.forEach(box.get('layers'), function(lyr) {
+                        lyr.setVisible(hs_map.isLayerVisible(lyr, hs_map.visible_layers));
+                        lyr.manuallyAdded = false;
+                        me.map.addLayer(lyr);
+                    });
+                });
+            }
+
+            if (angular.isDefined(config.default_layers)) {
+                angular.forEach(config.default_layers, function(lyr) {
+                    lyr.setVisible(hs_map.isLayerVisible(lyr, hs_map.visible_layers));
+                    lyr.manuallyAdded = false;
+                    if(lyr.getSource() instanceof ol.source.ImageWMS)
+                        me.proxifyLayerLoader(lyr, false);  
+                    var cesium_layer = me.convertOlToCesiumProvider(lyr);
+                    me.widget.imageryLayers.addImageryProvider(cesium_layer);
+                });
+            }
+        }
+        
+        this.convertOlToCesiumProvider = function(ol_lyr){
+            if (ol_lyr.getSource() instanceof ol.source.OSM){
+                return new Cesium.createOpenStreetMapImageryProvider();
+            } else if(ol_lyr.getSource() instanceof ol.source.TileWMS) {
+                var src = ol_lyr.getSource();
+                return new Cesium.WebMapServiceImageryProvider({
+                    url : src.getUrls()[0],
+                    layers : src.getParams().LAYERS,
+                    parameters: src.getParams(),
+                    alpha: 0.7,
+                    proxy: new Cesium.DefaultProxy('/cgi-bin/hsproxy.cgi?url=')
+                })
+            }
         }
         
         /**
@@ -100,6 +160,44 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             const resolution = visibleMapUnits / canvas.clientHeight;
 
             return resolution;
+        };
+        
+        /**
+        * @ngdoc method
+        * @name hs.cesium.service#calcDistanceForResolution
+        * @private
+        * @description Calculates the distance from the ground based on resolution and latitude
+        */
+        function calcDistanceForResolution(resolution, latitude) {
+            const canvas = widget.scene.canvas;
+            const fovy = widget.camera.frustum.fovy;
+            const metersPerUnit = hs_map.map.getView().getProjection().getMetersPerUnit();
+
+            // number of "map units" visible in 2D (vertically)
+            const visibleMapUnits = resolution * canvas.clientHeight;
+
+            // The metersPerUnit does not take latitude into account, but it should
+            // be lower with increasing latitude -- we have to compensate.
+            // In 3D it is not possible to maintain the resolution at more than one point,
+            // so it only makes sense to use the latitude of the "target" point.
+            const relativeCircumference = Math.cos(Math.abs(latitude));
+
+            // how many meters should be visible in 3D
+            const visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
+
+            // distance required to view the calculated length in meters
+            //
+            //  fovy/2
+            //    |\
+            //  x | \
+            //    |--\
+            // visibleMeters/2
+            const requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
+
+            // NOTE: This calculation is not absolutely precise, because metersPerUnit
+            // is a great simplification. It does not take ellipsoid/terrain into account.
+
+            return requiredDistance;
         };
         
         this.getCameraCenterInLngLat = getCameraCenterInLngLat;
