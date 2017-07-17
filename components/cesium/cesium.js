@@ -55,7 +55,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             
             widget.camera.flyTo({
                 destination : Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
-                duration: 0
+                duration: 0.5
             });
 
             me.widget = widget;
