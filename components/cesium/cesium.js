@@ -45,22 +45,28 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     mapProjection: new Cesium.WebMercatorProjection()
                 });
 
-
-                var ol_ext = config.default_view.calculateExtent(hs_map.map.getSize());
-                var trans_ext = ol.proj.transformExtent(ol_ext, config.default_view.getProjection(), 'EPSG:4326');
-                //widget.scene.globe.enableLighting = true;
-
-                widget.camera.flyTo({
-                    destination: Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
-                    duration: 0.5
-                });
-
+                setExtentEqualToOlExtent(config.default_view);
+                
                 me.widget = widget;
 
                 me.repopulateLayers(null);
 
                 widget.camera.moveEnd.addEventListener(function(e) {
-                    $rootScope.$broadcast('map.sync_center', getCameraCenterInLngLat());
+                    if (!hs_map.visible) {
+                        $rootScope.$broadcast('map.sync_center', getCameraCenterInLngLat());
+                    }
+                });
+                
+                hs_map.map.getLayers().on("add", function(e) {
+                    var layer = e.element;
+                   
+                });
+                
+                $rootScope.$on('map.extent_changed', function(event, data, b) {
+                    var view = hs_map.map.getView();
+                    if (hs_map.visible) {
+                        setExtentEqualToOlExtent(view);
+                    }
                 });
 
                 /**
@@ -71,6 +77,41 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                  */
                 $rootScope.$broadcast('cesiummap.loaded');
             }
+            
+            function linkOlLayerToCesiumLayer(ol_layer, cesium_layer){
+                ol_layer.cesium_layer = cesium_layer;
+                ol_layer.on('change:visible', function(e) {
+                    e.target.cesium_layer.show = ol_layer.getVisible();
+                })
+            }
+            
+            function setExtentEqualToOlExtent(view){
+                var ol_ext = view.calculateExtent(hs_map.map.getSize());
+                var trans_ext = ol.proj.transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
+                widget.camera.setView({
+                    destination: Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3])
+                });
+               
+                var ray = widget.camera.getPickRay(new Cesium.Cartesian2(widget.canvas.width / 2, widget.canvas.height / 2));
+                var positionCartesian3 = widget.scene.globe.pick(ray, widget.scene);
+                if(positionCartesian3)
+                {
+                    var instance = new Cesium.GeometryInstance({
+                        geometry : new Cesium.RectangleGeometry({
+                            rectangle : Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
+                            height: Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height,
+                            vertexFormat : Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT
+                        })
+                    });
+
+                    widget.scene.primitives.removeAll();
+                   /* widget.scene.primitives.add(new Cesium.Primitive({
+                        geometryInstances : instance,
+                        appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true})
+                    })); */
+                    widget.camera.moveBackward(Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height);
+                }
+            }
 
             /**
              * @ngdoc method
@@ -80,23 +121,14 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
              * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
              */
             this.repopulateLayers = function(visible_layers) {
-                if (angular.isDefined(config.box_layers)) {
-                    angular.forEach(config.box_layers, function(box) {
-                        angular.forEach(box.get('layers'), function(lyr) {
-                            lyr.setVisible(hs_map.isLayerVisible(lyr, hs_map.visible_layers));
-                            lyr.manuallyAdded = false;
-                            me.map.addLayer(lyr);
-                        });
-                    });
-                }
-
                 if (angular.isDefined(config.default_layers)) {
                     angular.forEach(config.default_layers, function(lyr) {
                         lyr.setVisible(hs_map.isLayerVisible(lyr, hs_map.visible_layers));
                         lyr.manuallyAdded = false;
                         if (lyr.getSource() instanceof ol.source.ImageWMS)
-                            me.proxifyLayerLoader(lyr, false);
+                            hs_map.proxifyLayerLoader(lyr, false);
                         var cesium_layer = me.convertOlToCesiumProvider(lyr);
+                        linkOlLayerToCesiumLayer(lyr, cesium_layer);
                         me.widget.imageryLayers.add(cesium_layer);
                     });
                 }
@@ -134,11 +166,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     var positionCartographic = Cesium.Cartographic.fromCartesian(positionCartesian3);
                     var lngDeg = Cesium.Math.toDegrees(positionCartographic.longitude);
                     var latDeg = Cesium.Math.toDegrees(positionCartographic.latitude);
-                    var carto_position = widget.camera.positionCartographic.clone();
-                    carto_position.height = 0;
-                    var carte_position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto_position);
-                    var _distance = Math.abs(Cesium.Cartesian3.distance(carte_position, widget.camera.position));
-                    position = [lngDeg, latDeg, calcResolutionForDistance(_distance, latDeg)];
+                    position = [lngDeg, latDeg, calcResolutionForDistance(Cesium.Cartographic.fromCartesian(widget.camera.position).height - positionCartographic.height, latDeg)];
                     return position;
                 } else return null;
             }
@@ -159,7 +187,6 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 const relativeCircumference = Math.cos(Math.abs(latitude));
                 const visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
                 const resolution = visibleMapUnits / canvas.clientHeight;
-
                 return resolution;
             };
 

@@ -390,6 +390,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             * @description This gets called from Cesium map, to synchronize center and resolution between Ol and Cesium maps
             */
             function onCenterSync(event, data) {
+                if(angular.isUndefined(data) || data == null) return;
                 var transformed_cords = ol.proj.transform([data[0], data[1]], 'EPSG:4326', 'EPSG:3857');
                 OlMap.moveToAndZoom(transformed_cords[0], transformed_cords[1], zoomForResolution(data[2]));
             }

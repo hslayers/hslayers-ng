@@ -520,7 +520,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             var size = getSize(container,me.hsSize);
                             element[0].style.height = size.height + "px";
                             element[0].style.width = size.width + "px";
-                            $("#map").height(size.height);
+                            $("#map, #cesiumContainer").height(size.height);
                             me.updateMapSize();
                         },
                         /**
@@ -690,7 +690,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         var size = getSize(w,me.size);
                         element[0].style.height = size.height + "px";
                         element[0].style.width = size.width + "px";
-                        $("#map").height(size.height);
+                        $("#map, #cesiumContainer").height(size.height);
                         me.updateMapSize();
                         if(OlMap.map) OlMap.map.updateSize();
                     }

@@ -13,12 +13,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
             'hs.sidebar'
         ]);
 
-        module.directive('hs', ['hs.map.service', 'Core', '$compile', function(OlMap, Core, $compile) {
+        module.directive('hs', ['hs.map.service', 'Core', '$compile', '$timeout', function(OlMap, Core, $compile, $timeout) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullScreenMap(element);
-                    element.append($compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope));
+                    angular.element('.page-content', element).append($compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope));
+                    $timeout(function(){Core.fullScreenMap(element)}, 0);
                 }
             };
         }]);
@@ -26,11 +26,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
 
         module.value('config', {
             default_layers: [
-                new ol.layer.Tile({
+                /*new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "Base layer",
                     base: true
-                }),
+                }),*/
                 new ol.layer.Tile({
                     title: "Open-Land-Use Map (WMS)",
                     source: new ol.source.TileWMS({
