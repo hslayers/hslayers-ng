@@ -13,11 +13,12 @@ if (typeof hslMin != 'undefined') {
     else hslMin = '';
 } 
 else hslMin = '';
+console.log(hslMin);
 
 require.config({
     paths: {
         dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
-        ol: requirejs.s.contexts._.config.paths.ol || hsl_path + 'node_modules/openlayers/dist/ol',
+        ol: requirejs.s.contexts._.config.paths.ol || hsl_path + ((hslMin == '.min') ? 'node_modules/openlayers/dist/ol' : 'node_modules/openlayers/dist/ol-debug'),
 
         angular: hsl_path + 'bower_components/angular/angular' + hslMin,
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize' + hslMin,

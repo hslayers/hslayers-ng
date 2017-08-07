@@ -13,7 +13,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
      * @ngdoc service
      * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file), and basic set of {@link hs.map.service#interactions interactions}.
      */
-    .service('hs.map.service', ['config', '$rootScope', 'hs.utils.service', function(config, $rootScope, utils) {
+    .service('hs.map.service', ['config', '$rootScope', 'hs.utils.service', '$timeout', function(config, $rootScope, utils, $timeout) {
         //timer variable for extent change event
         var timer;
         /**
@@ -258,14 +258,15 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
         * @description Clean interactions and zoom from map to get pure map
         */
         this.puremap = function() {
-            var interactions = this.map.getInteractions();
-            var controls = this.map.getControls();
+            var interactions = me.map.getInteractions();
+            var controls = me.map.getControls();
             angular.forEach(interactions, function(interaction){
                 me.map.removeInteraction(interaction);
             })
             angular.forEach(controls, function(control){
                 me.map.removeControl(control);
             })
+            $timeout(me.puremap, 1000);
         }
         
         /**

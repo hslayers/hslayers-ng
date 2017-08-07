@@ -16,24 +16,26 @@ define(['angular', 'ol'],
                 return {
                     templateUrl: Core.isMobile() ? hsl_path + 'components/geolocation/partials/geolocation_cordova.html?bust=' + gitsha : hsl_path + 'components/geolocation/partials/geolocation.html?bust=' + gitsha,
                     link: function link(scope, element, attrs) {
-                        if (Core.isMobile()) {
-                            element.appendTo($("#menu"));
-                            $('.blocate').click(function() {
-                                $('.locate-mobile').toggleClass('ol-collapsed');
-                                // Rewrite this, ugly implementation.
-                                $('#toolbar').removeClass('show');
-                                if (!Geolocation.gpsStatus && !$('.locate-mobile').hasClass('ol-collapsed')) {
-                                    Geolocation.toggleGps();
-                                    Geolocation.toggleFeatures(true);
-                                }
-                            });
-                        } else {
-                            element.appendTo($(".ol-overlaycontainer-stopevent"));
-                            $('.locate .blocate').click(function() {
-                                $('.locate').toggleClass('ol-collapsed');
-                                Geolocation.geolocation.setTracking(true);
-                                Geolocation.toggleFeatures(!$('.locate').hasClass('ol-collapsed'));
-                            });
+                        if (!Core.puremapApp) {
+                            if (Core.isMobile()) {
+                                element.appendTo($("#menu"));
+                                $('.blocate').click(function() {
+                                    $('.locate-mobile').toggleClass('ol-collapsed');
+                                    // Rewrite this, ugly implementation.
+                                    $('#toolbar').removeClass('show');
+                                    if (!Geolocation.gpsStatus && !$('.locate-mobile').hasClass('ol-collapsed')) {
+                                        Geolocation.toggleGps();
+                                        Geolocation.toggleFeatures(true);
+                                    }
+                                });
+                            } else {
+                                element.appendTo($(".ol-overlaycontainer-stopevent"));
+                                $('.locate .blocate').click(function() {
+                                    $('.locate').toggleClass('ol-collapsed');
+                                    Geolocation.geolocation.setTracking(true);
+                                    Geolocation.toggleFeatures(!$('.locate').hasClass('ol-collapsed'));
+                                });
+                            }
                         }
                     },
                     replace: true

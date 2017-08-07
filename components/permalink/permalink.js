@@ -76,6 +76,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                         me.push('hs_y', view.getCenter()[1]);
                         me.push('hs_z', view.getZoom());
                         me.push('visible_layers', visible_layers.join(";"));
+                        if (Core.puremapApp) me.push('puremap', "true");
                         for (var cP in me.customParams) {
                             me.push(cP,me.customParams[cP]);
                         }
