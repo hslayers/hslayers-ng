@@ -24,11 +24,11 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
              */
             this.init = function() {
                 window.CESIUM_BASE_URL = hsl_path + 'bower_components/cesium.js/dist/';
-
-                widget = new Cesium.CesiumWidget('cesiumContainer', {
-                    terrainProvider: new Cesium.CesiumTerrainProvider({
+                var terrain_provider = new Cesium.CesiumTerrainProvider({
                         url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
-                    }),
+                    });
+                widget = new Cesium.CesiumWidget('cesiumContainer', {
+                    terrainProvider: terrain_provider,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
                     skyBox: new Cesium.SkyBox({
                         sources: {
@@ -56,6 +56,54 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         $rootScope.$broadcast('map.sync_center', getCameraCenterInLngLat());
                     }
                 });
+                
+                var tileset = widget.scene.primitives.add(new Cesium.Cesium3DTileset({
+                    url : 'obj-tiles',
+                    debugShowUrl: true
+                }));
+                //tileset.modelMatrix = Cesium.Matrix4.IDENTITY;
+                
+                
+                tileset.readyPromise.then(function(tileset) {
+                    var boundingSphere = tileset.boundingSphere;
+                    widget.camera.viewBoundingSphere(boundingSphere, new Cesium.HeadingPitchRange(0, -2.0, 0));
+                    widget.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+                    /*
+                    var tiles_loaded = {};
+                    
+                    tileset.tileVisible.addEventListener(function(tile) {
+                            for(i=0; i<tile.content._model._nodeCommands.length;i++){
+                                //Cesium.Matrix4.multiplyByTranslation(tile.content._model._nodeCommands[i].command._modelMatrix, {x:0, y:0, z:300}, tile.content._model._nodeCommands[i].command._modelMatrix);
+                                //tile.content._model._nodeCommands[i].offset = 400;
+                            }
+                            tile.content._model.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+                            return;
+                            var content = tile.content;
+                            var featuresLength = content.featuresLength;
+                            for (var i = 0; i < featuresLength; i+=2) {
+                                content.getFeature(i).color = Cesium.Color.fromRandom();
+                            }    
+                            console.log(featuresLength);
+                            return;
+                            tiles_loaded[tile._contentUrl] = true;
+                            console.log('A tile was unloaded from the cache.');
+                            var cartographic = Cesium.Cartographic.fromCartesian(tile.boundingSphere.center);
+                            var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
+                            var pos = [Cesium.Cartographic.fromDegrees(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude ))];
+                            //var promise = Cesium.sampleTerrain(terrain_provider, 14, pos);
+                           
+                           
+                            
+                            //Cesium.when(promise, function(updatedPositions) {
+                                //var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, updatedPositions[0].height);
+                                //var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+                                //tile.transform = Cesium.Matrix4.fromTranslation(translation);
+                            //});
+                       
+                    });*/
+                });
+                
+                
                 
                 hs_map.map.getLayers().on("add", function(e) {
                     var layer = e.element;

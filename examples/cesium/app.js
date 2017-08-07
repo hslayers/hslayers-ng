@@ -26,11 +26,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
 
         module.value('config', {
             default_layers: [
-                /*new ol.layer.Tile({
+                new ol.layer.Tile({
                     source: new ol.source.OSM(),
                     title: "Base layer",
-                    base: true
-                }),*/
+                    base: true,
+                    visible: false
+                }),
                 new ol.layer.Tile({
                     title: "Open-Land-Use Map (WMS)",
                     source: new ol.source.TileWMS({
