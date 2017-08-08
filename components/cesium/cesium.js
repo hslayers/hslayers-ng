@@ -68,6 +68,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     var boundingSphere = tileset.boundingSphere;
                     widget.camera.viewBoundingSphere(boundingSphere, new Cesium.HeadingPitchRange(0, -2.0, 0));
                     widget.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+                    widget.camera.zoomIn();
                     /*
                     var tiles_loaded = {};
                     
