@@ -119,8 +119,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
              * @ngdoc service
              * @description Core service of HSL and Core module, keeps important app-level settings.
              */
-            .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache',
-                function($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache) {
+            .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout',
+                function($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache, $timeout) {
                     var me = {
                         /**
                         * @ngdoc property
@@ -253,16 +253,16 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         current_panel_queryable: false,
                         /**
                         * @ngdoc property
-                        * @name Core#hsSize
+                        * @name Core#sizeOptions
                         * @public
                         * @type {Object} 
-                        * @description Size (height and width) of hs ng-app (stored in px or %). 
-                        * Example
-                         * ```
-                         * {height: "100%", width: "100%"}
-                         * ```
+                        * @description Hold data for computing app sizes. Shouldnt be modified directly. Holds reference to HS app element and optionally its container.
                         */
-                        hsSize: {height: "100%",width: "100%"},
+                        sizeOptions: {
+                            element: undefined,
+                            windowedMap: undefined,
+                            selector: undefined
+                        },
                         /**
                         * @ngdoc property
                         * @name Core#puremapApp
@@ -315,30 +315,6 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         setDefaultPanel: function(which) {
                             me.defaultPanel = which;
                             me.setMainPanel(which);
-                        },
-                        /**
-                        * @ngdoc method
-                        * @name Core#updateMapSize 
-                        * @public
-                        * @param {String} which New panel to be default (specify panel name)
-                        * @description Change size of map element in application. Size should be rest of window width next to sidebar
-                        */
-                        updateMapSize: function() {
-                            var element = $("div[hs]");
-                            var map = $("#map");
-                            var sidebarElem = $('.panelspace');
-                            if (me.puremapApp) {
-                                map.width(element.width());
-                            }
-                            else if (element.width() > sidebarElem.width()) {
-                                map.width(element.width() - sidebarElem.width());
-                            } 
-                            else {
-                                map.width(0);
-                            }
-                            if(angular.isDefined(OlMap.map)) OlMap.map.updateSize();
-                            map.width() < 368 ? me.smallWidth = true : me.smallWidth = false;
-                            if (!$rootScope.$$phase) $rootScope.$digest();
                         },
                         /**
                         * @ngdoc method
@@ -450,98 +426,132 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @name Core#init 
                         * @public
                         * @params {Object} element HS layers element gained from directive link
-                        * @params {Array|String} value Type of initialization, possible options: (undefined - full window app, "self" - size of hs element setted by css, only pixel values, "parent" - take size from parent element, "id" - ID of another element from which size should be taken, if its direct parent element, parent option is recommended)
-                        * @description Universal function for initialization of HSLayers template and setting correct size to it. Take all posible inputs and switch to correct application size setter. Turn on all neceserary event listeners for resizing HSLayers element.
+                        * @params {Object} options Optional options object when HS app has not CSS sizes declared. Parent property is Boolean type when size should be taken from HS element parent. Element property is string for any Jquery selector (usage of element id is recommended e.g. "#container")
+                        * @description Initialization function for HS layers elements and their sizes. Stores element and container references and sets event listeners for map resizing.
                         */
-                        init: function(element, value) {
-                            if (typeof(value) == undefined) {
-                                me.fullScreenMap(element);
+                        init: function(element, options) {
+                            if (angular.isUndefined(options)) options = {};
+                            if (angular.isDefined(options.windowedMap)) me.sizeOptions.windowedMap = options.windowedMap;
+                            me.sizeOptions.element = element;
+                            
+                            if (angular.isDefined(options.parent)) {
+                                me.sizeOptions.selector = element.parent();
+                                me.initSizeListeners();
+                                me.updateElementSize();
                             }
-                            else if (value == "self") {
-                                me.appSize(element,element);
+                            
+                            else if (angular.isDefined(options.element)) {
+                                me.sizeOptions.selector = $(options.element);
+                                me.initSizeListeners();
+                                me.updateElementSize();
                             }
-                            else if (value == "parent") {
-                                me.appSize(element,element.parent());
-                            }
+                            
                             else {
-                                var id = "#" + value;
-                                me.appSize(element,$(id));
+                                me.initSizeListeners();
+                                me.updateMapSize();
                             }
+                        },
+                        /**
+                        * @ngdoc method
+                        * @name Core#setSizeByContainer 
+                        * @public
+                        * @params {String|Boolean} container New container for size referencing (options - string Jquery selector - see Init function, Boolean 'true' value for parent of HS element)
+                        * @description Change container for HS element.
+                        */
+                        setSizeByContainer: function(container) {
+                            if (container == true) me.sizeOptions.selector = me.sizeOptions.element.parent();
+                            else me.sizeOptions.selector = $(options.element);
+                            me.updateElementSize();
+                        },
+                        /**
+                        * @ngdoc method
+                        * @name Core#setSizeByContainer 
+                        * @public
+                        * @params {Number} height New height of HS element
+                        * @params {Number} width New width of HS element
+                        * @description Change HS element size programmatically (currently accept only integer value of pixels).
+                        */
+                        setSizeByCSS: function(height, width) {
+                            if (angular.isDefined(me.sizeOptions.selector)) me.sizeOptions.selector = undefined;
+                            var element = me.sizeOptions.element;
+                            element.height(height);
+                            element.width(width);
+                            me.updateMapSize();
+                        },
+                        /**
+                        * @ngdoc method
+                        * @name Core#initSizeListeners
+                        * @public
+                        * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application. 
+                        */
+                        initSizeListeners: function() {
+                            var w = angular.element($window);
+                            w.resize(function(){
+                                //$timeout(function(){
+                                //    me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
+                                //},100);//Hack, height of container was changed badly for no aparent reason
+                                me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
+                            });
+                            $rootScope.$on("Core_sizeChanged",function(){
+                                me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
+                            });
+                            $(function() { //onload checker for cases when bootstrap css change box-sizing property
+                                me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
+                            });
+                        },
+                        /**
+                        * @ngdoc method
+                        * @name Core#updateElementSize
+                        * @public
+                        * @description Update HS element size by its container sizes.
+                        */
+                        updateElementSize: function() {
+                            var element = me.sizeOptions.element;
+                            var container = me.sizeOptions.selector;
+                            element.height(container.height());
+                            element.width(container.width());
+                            me.updateMapSize();
+                        },
+                        /**
+                        * @ngdoc method
+                        * @name Core#updateMapSize
+                        * @public
+                        * @description Update map size.
+                        */
+                        updateMapSize: function() {
+                            var container = me.sizeOptions.element;
+                            var map = $("#map");
+                            var sidebarElem = $('.panelspace');
+                            map.height(container.height());
+                            $("#cesiumContainer").height(map.height());
+                            if (me.puremapApp) {
+                                map.width(container.width());
+                            }
+                            else if (container.width() > sidebarElem.outerWidth()) {
+                                map.width(container.width() - sidebarElem.outerWidth());
+                            } 
+                            else {
+                                map.width(0);
+                            }
+                            if(angular.isDefined(OlMap.map)) OlMap.map.updateSize();
+                            map.width() < 368 ? me.smallWidth = true : me.smallWidth = false;
+                            if (!$rootScope.$$phase) $rootScope.$digest();
                         },
                         /**
                         * @ngdoc method
                         * @name Core#fullScreenMap 
                         * @public
-                        * @param {Object} element Element to resize while going fullscreen
-                        * @description Utility function for initialization of app, when app take whole window
+                        * @params {Object} element HS layers element gained from directive link
+                        * @description Helper function for single page HS map applications. Not reccomended, used only for compability reasons and might be removed.
                         */
                         fullScreenMap: function(element) {
                             $("html").css('overflow', 'hidden');
                             $("html").css('height', '100%');
                             $('body').css('height', '100%');
-                            var w = angular.element($window);
-                            me.appSize(element, w);
-                        },
-                        /**
-                        * @ngdoc method
-                        * @name Core#appSize 
-                        * @public
-                        * @param {Object} element HS element, for which size is set
-                        * @param {Object} container Base containing element for resizing, either element or window object
-                        * @description Set right size of app in page, starts event listeners for events which lead to changing app size (window resizing, change of app settings)
-                        */
-                        appSize: function(element, container) {
-                            me.changeSize(element, container);
-                            var w = angular.element($window);
-                            w.resize(function(){
-                                me.changeSize(element, container);
-                            });
-                            $rootScope.$on("Core_sizeChanged",function(){
-                                me.changeSize(element, container);
-                            });
-                            $(function() { //onload checker for cases when bootstrap css change box-sizing property
-                                me.changeSize(element, container);
-                            });
-                        },
-                        /**
-                        * @ngdoc method
-                        * @name Core#changeSize 
-                        * @public
-                        * @params {Object} element Angular object containing app element
-                        * @params {Object} container Base element object, to get requested size
-                        * @description Check current size of containing element and change setting of HS element
-                        */
-                        changeSize: function(element,container) {
-                            if (element === container && me.hsSize.height.indexOf("%") > -1) {
-                                var size = getSize(element.parent(),me.hsSize); 
-                            }
-                            else {
-                                var size = getSize(container,me.hsSize);    
-                            }
-                            var size = getSize(container,me.hsSize);
-                            element[0].style.height = size.height + "px";
-                            element[0].style.width = size.width + "px";
-                            $("#map, #cesiumContainer").height(size.height);
-                            me.updateMapSize();
-                        },
-                        /**
-                        * @ngdoc method
-                        * @name Core#changeSizeConfig
-                        * @public
-                        * @param {String} newHeight New height setting for app (Pixel or percentage value e.g. '960px'/'100%')
-                        * @param {String} newWidth New width setting for app (Pixel or percentage value e.g. '960px'/'100%')
-                        * @description Change max height and width of app element (when app width is set by JS)
-                        */
-                        changeSizeConfig: function(newHeight, newWidth) {
-                            me.hsSize.height = newHeight;
-                            me.hsSize.width = newWidth;
-                            /**
-                            * @ngdoc event
-                            * @name Core#Core_sizeChanged
-                            * @eventType broadcast on $rootScope
-                            * @description Fires when height/width settings are changed
-                            */
-                            $rootScope.$broadcast("Core_sizeChanged");
+                            me.sizeOptions.element = element;
+                            me.sizeOptions.selector = element.parent();
+                            me.initSizeListeners();
+                            me.updateElementSize();
                         },
                         /**
                         * @ngdoc method
@@ -653,48 +663,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             window.proj4 = proj4
                         });
                     }
-                    /**
-                    * @ngdoc method
-                    * @name Core#getSize
-                    * @private
-                    * @params {Object} container Container element to get maximum avaible size for app element
-                    * @params {Object} maxSize Maximum configured size of App element
-                    * @params {Boolean} overflow If computed app size can overflow browser window (default is true)
-                    * @returns {Object} Computed size of element
-                    * @description Transform configured Size of app element to pixel numbers, optionally checks if window is not smaller than app settings
-                    */
-                    function getSize(container, maxSize, overflow) {
-                        var size = {};
-                        if (typeof overflow == "undefined") overflow = true;
-                        if (maxSize.height.indexOf("%") > -1) {
-                            size.height = Math.round( container.height() / 100 * maxSize.height.slice(0,-1));
-                            size.width = Math.round( container.width() / 100 * maxSize.width.slice(0,-1));
-                        }
-                        else {
-                            maxSize.height.indexOf("px") > -1 ? size.height = maxSize.height.slice(0,-2) : size.height = maxSize.height;
-                            if (size.height < container.height() && !(overflow)) size.height = container.height();
-                            maxSize.width.indexOf("px") > -1 ? size.width = maxSize.width.slice(0,-2) : size.width = maxSize.width;
-                            if (size.width < container.width() && !(overflow)) size.width = container.width();
-                        }
-                        return size;
-                    };
-
-                    /**
-                    * @ngdoc method
-                    * @name Core#changeSize 
-                    * @public
-                    * @params {Object} w Angular object containing window, to get window size
-                    * @params {Object} element Angular object containing app element
-                    * @description Helper function for changing app size
-                    */
-                    function changeSize(w,element) {
-                        var size = getSize(w,me.size);
-                        element[0].style.height = size.height + "px";
-                        element[0].style.width = size.width + "px";
-                        $("#map, #cesiumContainer").height(size.height);
-                        me.updateMapSize();
-                        if(OlMap.map) OlMap.map.updateSize();
-                    }
+ 
                     return me;
                 },
 

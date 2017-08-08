@@ -427,6 +427,10 @@ button.but-title-sm {
     font-size: 20px
 }
 
+#content-wrapper {
+    position: relative;
+}
+
 
 /******SIDEBAR****************/
 .panelspace {
