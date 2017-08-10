@@ -33,16 +33,33 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     visible: false
                 }),
                 new ol.layer.Tile({
-                    title: "Open-Land-Use Map (WMS)",
+                    title: "Corine land cover (WMS)",
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/olu/european_openlandusemap.map',
                         params: {
-                            LAYERS: 'olu_praha',
+                            LAYERS: 'corine',
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html"
                         },
                         crossOrigin: null
                     }),
+                    minResolution: 2.388657133911758,
+                    path: 'Open-Land-Use Map',
+                    visible: true,
+                    opacity: 0.7
+                }),
+                new ol.layer.Tile({
+                    title: "Open-Land-Use (WMS)",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/olu/openlandusemap.map',
+                        params: {
+                            LAYERS: 'olu_bbox',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html"
+                        },
+                        crossOrigin: null
+                    }),
+                    maxResolution: 2.388657133911758,
                     path: 'Open-Land-Use Map',
                     visible: true,
                     opacity: 0.7

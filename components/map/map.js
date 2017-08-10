@@ -48,6 +48,7 @@ define(['angular', 'app', 'permalink', 'ol'], function(angular, app, permalink, 
             });
             me.map.getView().on('change:resolution', function(e) {
                 extentChanged(e);
+                console.log(me.map.getView().getResolution());
             });
             
             me.map.on('moveend', function(e) {

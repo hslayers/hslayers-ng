@@ -57,6 +57,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     }
                 });
                 
+                /*
                 var tileset = widget.scene.primitives.add(new Cesium.Cesium3DTileset({
                     url : 'obj-tiles',
                     debugShowUrl: true
@@ -69,41 +70,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     widget.camera.viewBoundingSphere(boundingSphere, new Cesium.HeadingPitchRange(0, -2.0, 0));
                     widget.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
                     widget.camera.zoomIn();
-                    /*
-                    var tiles_loaded = {};
-                    
-                    tileset.tileVisible.addEventListener(function(tile) {
-                            for(i=0; i<tile.content._model._nodeCommands.length;i++){
-                                //Cesium.Matrix4.multiplyByTranslation(tile.content._model._nodeCommands[i].command._modelMatrix, {x:0, y:0, z:300}, tile.content._model._nodeCommands[i].command._modelMatrix);
-                                //tile.content._model._nodeCommands[i].offset = 400;
-                            }
-                            tile.content._model.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
-                            return;
-                            var content = tile.content;
-                            var featuresLength = content.featuresLength;
-                            for (var i = 0; i < featuresLength; i+=2) {
-                                content.getFeature(i).color = Cesium.Color.fromRandom();
-                            }    
-                            console.log(featuresLength);
-                            return;
-                            tiles_loaded[tile._contentUrl] = true;
-                            console.log('A tile was unloaded from the cache.');
-                            var cartographic = Cesium.Cartographic.fromCartesian(tile.boundingSphere.center);
-                            var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
-                            var pos = [Cesium.Cartographic.fromDegrees(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude ))];
-                            //var promise = Cesium.sampleTerrain(terrain_provider, 14, pos);
-                           
-                           
-                            
-                            //Cesium.when(promise, function(updatedPositions) {
-                                //var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, updatedPositions[0].height);
-                                //var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
-                                //tile.transform = Cesium.Matrix4.fromTranslation(translation);
-                            //});
-                       
-                    });*/
                 });
-                
+                */
                 
                 
                 hs_map.map.getLayers().on("add", function(e) {
@@ -190,10 +158,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     });
                 } else if (ol_lyr.getSource() instanceof ol.source.TileWMS) {
                     var src = ol_lyr.getSource();
+                    var params = src.getParams();
+                    params.CRS = 'EPSG:4326'; 
                     return new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider({
                         url: src.getUrls()[0],
                         layers: src.getParams().LAYERS,
-                        parameters: src.getParams(),
+                        parameters: params,
                         proxy: new Cesium.DefaultProxy('/cgi-bin/hsproxy.cgi?url=')
                     }), {
                         alpha: 0.7,
