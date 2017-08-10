@@ -53,7 +53,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/olu/openlandusemap.map',
                         params: {
-                            LAYERS: 'olu_bbox',
+                            LAYERS: 'olu_bbox_srid',
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html"
                         },
