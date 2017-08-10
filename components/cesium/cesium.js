@@ -154,7 +154,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             this.convertOlToCesiumProvider = function(ol_lyr) {
                 if (ol_lyr.getSource() instanceof ol.source.OSM) {
                     return new Cesium.ImageryLayer(Cesium.createOpenStreetMapImageryProvider(), {
-                        show: ol_lyr.getVisible()
+                        show: ol_lyr.getVisible(),
+                        minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15
                     });
                 } else if (ol_lyr.getSource() instanceof ol.source.TileWMS) {
                     var src = ol_lyr.getSource();
@@ -164,10 +165,11 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         url: src.getUrls()[0],
                         layers: src.getParams().LAYERS,
                         parameters: params,
+                        minimumTerrainLevel: params.minimumTerrainLevel || 12,
                         proxy: new Cesium.DefaultProxy('/cgi-bin/hsproxy.cgi?url=')
                     }), {
                         alpha: 0.7,
-                        show: ol_lyr.getVisible()
+                        show: false//ol_lyr.getVisible()
                     })
                 }
             }

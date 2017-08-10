@@ -30,7 +30,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     source: new ol.source.OSM(),
                     title: "Base layer",
                     base: true,
-                    visible: false
+                    visible: true,
+                    minimumTerrainLevel: 15
                 }),
                 new ol.layer.Tile({
                     title: "Corine land cover (WMS)",
@@ -39,7 +40,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         params: {
                             LAYERS: 'corine',
                             FORMAT: "image/png",
-                            INFO_FORMAT: "text/html"
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 9
                         },
                         crossOrigin: null
                     }),
@@ -55,7 +57,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         params: {
                             LAYERS: 'olu_bbox_srid',
                             FORMAT: "image/png",
-                            INFO_FORMAT: "text/html"
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 15
                         },
                         crossOrigin: null
                     }),
