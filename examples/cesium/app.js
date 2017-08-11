@@ -30,7 +30,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     source: new ol.source.OSM(),
                     title: "Base layer",
                     base: true,
-                    visible: true,
+                    visible: false,
                     minimumTerrainLevel: 15
                 }),
                 new ol.layer.Tile({
