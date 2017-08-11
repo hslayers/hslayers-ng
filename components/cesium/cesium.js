@@ -25,8 +25,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             this.init = function() {
                 window.CESIUM_BASE_URL = hsl_path + 'bower_components/cesium.js/dist/';
                 var terrain_provider = new Cesium.CesiumTerrainProvider({
-                        url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
-                    });
+                    //url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
+                    url: 'http://gis.lesprojekt.cz/cts/tilesets/test'
+                });
                 widget = new Cesium.CesiumWidget('cesiumContainer', {
                     terrainProvider: terrain_provider,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
