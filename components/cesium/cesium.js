@@ -170,7 +170,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         proxy: new Cesium.DefaultProxy('/cgi-bin/hsproxy.cgi?url=')
                     }), {
                         alpha: 0.7,
-                        show: false//ol_lyr.getVisible()
+                        show: ol_lyr.getVisible()
                     })
                 }
             }
