@@ -74,6 +74,11 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     }
                 });
                 
+                $rootScope.$on('search.zoom_to_center', function(event, data) {
+                    widget.camera.setView({
+                        destination: Cesium.Cartesian3.fromDegrees(data.coordinate[0], data.coordinate[1], 15000.0)
+                    });
+                })              
                 
                 $rootScope.$on('layermanager.base_layer_visible_changed', function(event, data, b) {
                    if(angular.isDefined(data.type) && data.type == 'terrain'){

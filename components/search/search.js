@@ -87,8 +87,8 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
              * @ngdoc controller
              * @name hs.search.controller
              */
-            .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service', 'config',
-                function($scope, Core, OlMap, SearchService, $log, permalink, styles, config) {
+            .controller('hs.search.controller', ['$scope', 'Core', 'hs.map.service', 'hs.search.service', '$log', 'hs.permalink.service_url', 'hs.styles.service', 'config', '$rootScope',
+                function($scope, Core, OlMap, SearchService, $log, permalink, styles, config, $rootScope) {
                     var map;
                     var point_clicked = new ol.geom.Point([0, 0]);
                     var format = new ol.format.WKT();
@@ -161,11 +161,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         }
                         point_clicked.setCoordinates(coordinate, 'XY');
                         map.getView().setCenter(coordinate);
+                        var zoom_level = 10;
                         if (angular.isDefined(result.fcode) && angular.isDefined($scope.fcode_zoom_map[result.fcode])) {
-                            map.getView().setZoom($scope.fcode_zoom_map[result.fcode]);
-                        } else {
-                            map.getView().setZoom(10);
-                        }
+                            zoom_level = $scope.fcode_zoom_map[result.fcode];
+                        } 
+                        map.getView().setZoom(zoom_level);
+                        $rootScope.$broadcast('search.zoom_to_center', {coordinate: ol.proj.transform(coordinate, map.getView().getProjection(), 'EPSG:4326'), zoom: zoom_level});
                         $scope.clear();
                     }
 

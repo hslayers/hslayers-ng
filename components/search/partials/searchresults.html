@@ -2,6 +2,6 @@
 <div class="list-group" id="searchresults" style="display: block; margin-bottom: 0px">
     <div ng-repeat="provider in providers">
         <a class="list-group-item active" ng-show="provider.results.length>0">Provider: {{provider.name}}</a>
-        <a ng-href='#'  ng-repeat="result in provider.results | limitTo:10" class="list-group-item" ng-click="zoomTo(result)" ng-attr-title="{{result.DisplayDescription}}">{{result.name || result.DisplayTitle}}<small style="color: rgb(148, 143, 143)"><br/>{{result.fcodeName}}</small></a>
+        <a ng-href='#'  ng-repeat="result in provider.results | limitTo:10" class="list-group-item hsl-search-result" ng-click="zoomTo(result)" ng-attr-title="{{result.DisplayDescription}}">{{result.name || result.DisplayTitle}}<small style="color: rgb(148, 143, 143)"><br/>{{result.fcodeName}}</small></a>
     </div>
 </div>
