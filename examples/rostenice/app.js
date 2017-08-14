@@ -18,7 +18,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     angular.element('.page-content', element).append($compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope));
-                    $timeout(function(){Core.fullScreenMap(element)}, 0);
+                    $timeout(function() {
+                        Core.fullScreenMap(element)
+                    }, 0);
                 }
             };
         }]);
@@ -26,10 +28,19 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
 
         module.value('config', {
             terrain_provider: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
+            terrain_providers: [{
+                title: 'Local terrain',
+                url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
+                active: true
+            }, {
+                title: 'SRTM',
+                url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+                active: false
+            }],
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Base layer",
+                    title: "OpenStreetMap",
                     base: true,
                     visible: false,
                     minimumTerrainLevel: 15
@@ -84,11 +95,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     visible: true,
                     opacity: 0.7
                 })
-                
-                
+
+
             ],
             default_view: new ol.View({
-                center: ol.proj.transform([16.8290202,  49.0751890], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                center: ol.proj.transform([16.8290202, 49.0751890], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 15,
                 units: "m"
             })
@@ -99,7 +110,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                
+
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('status_creator', false);
 

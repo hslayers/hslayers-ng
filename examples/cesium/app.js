@@ -26,10 +26,19 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
 
         module.value('config', {
             terrain_provider: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+            terrain_providers: [{
+                title: 'Local terrain',
+                url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
+                active: false
+            }, {
+                title: 'SRTM',
+                url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+                active: true
+            }],
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Base layer",
+                    title: "OpenStreetMap",
                     base: true,
                     visible: false,
                     minimumTerrainLevel: 15
@@ -65,7 +74,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     }),
                     maxResolution: 2.388657133911758,
                     path: 'Open-Land-Use Map',
-                    visible: true,
+                    visible: false,
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({

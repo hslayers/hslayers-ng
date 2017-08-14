@@ -13,7 +13,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
          * @ngdoc service
          * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file).
          */
-        .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', function(config, $rootScope, utils, hs_map) {
+        .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', function(config, $rootScope, utils, hs_map, layer_manager_service) {
             var widget;
 
             /**
@@ -57,22 +57,10 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     }
                 });
                 
-                /*
-                var tileset = widget.scene.primitives.add(new Cesium.Cesium3DTileset({
-                    url : 'obj-tiles',
-                    debugShowUrl: true
-                }));
-                //tileset.modelMatrix = Cesium.Matrix4.IDENTITY;
-                
-                
-                tileset.readyPromise.then(function(tileset) {
-                    var boundingSphere = tileset.boundingSphere;
-                    widget.camera.viewBoundingSphere(boundingSphere, new Cesium.HeadingPitchRange(0, -2.0, 0));
-                    widget.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-                    widget.camera.zoomIn();
-                });
-                */
-                
+                angular.forEach(config.terrain_providers, function(provider){
+                    provider.type = 'terrain';
+                    layer_manager_service.data.baselayers.push(provider);
+                })
                 
                 hs_map.map.getLayers().on("add", function(e) {
                     var layer = e.element;
@@ -85,6 +73,17 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         setExtentEqualToOlExtent(view);
                     }
                 });
+                
+                
+                $rootScope.$on('layermanager.base_layer_visible_changed', function(event, data, b) {
+                   if(angular.isDefined(data.type) && data.type == 'terrain'){
+                        widget.terrainProvider = new Cesium.CesiumTerrainProvider({
+                            url: data.url
+                        });
+                   }
+                });
+                
+                
 
                 /**
                  * @ngdoc event

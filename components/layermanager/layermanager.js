@@ -606,46 +606,56 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @description 
              */
             me.changeBaseLayerVisibility = function ($event, layer) {
-                if (me.data.baselayersVisible == true) {
-                    if ($event) {
-                        for (var i = 0; i < me.data.baselayers.length; i++) {
-                            me.data.baselayers[i].layer.setVisible(false);
-                            me.data.baselayers[i].visible = false;
-                            me.data.baselayers[i].active = false;
-                        }
-                        for (var i = 0; i < me.data.baselayers.length; i++) {
-                            if (me.data.baselayers[i] == layer) {
-                                me.data.baselayers[i].layer.setVisible(true);
-                                me.data.baselayers[i].visible = true;
-                                me.data.baselayers[i].active = true;
-                                break;
+                if(angular.isUndefined(layer) || angular.isDefined(layer.layer)) {
+                    if (me.data.baselayersVisible == true) {
+                        if ($event) {
+                            for (var i = 0; i < me.data.baselayers.length; i++) {
+                                if(me.data.baselayers[i].layer) {
+                                    me.data.baselayers[i].layer.setVisible(false);
+                                    me.data.baselayers[i].visible = false;
+                                    me.data.baselayers[i].active = false;
+                                }
+                            }
+                            for (var i = 0; i < me.data.baselayers.length; i++) {
+                                if (me.data.baselayers[i].layer && me.data.baselayers[i] == layer) {
+                                    me.data.baselayers[i].layer.setVisible(true);
+                                    me.data.baselayers[i].visible = true;
+                                    me.data.baselayers[i].active = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            me.data.baselayersVisible = false;
+                            for (var i = 0; i < me.data.baselayers.length; i++) {
+                                me.data.baselayers[i].layer.setVisible(false);
                             }
                         }
                     } else {
-                        me.data.baselayersVisible = false;
-                        for (var i = 0; i < me.data.baselayers.length; i++) {
-                            me.data.baselayers[i].layer.setVisible(false);
+                        if ($event) {
+                            layer.active = true;
+                            for (var i = 0; i < me.data.baselayers.length; i++) {
+                                if (me.data.baselayers[i] != layer) {
+                                    me.data.baselayers[i].active = false;
+                                } else {
+                                    me.data.baselayers[i].layer.setVisible(true);
+                                }
+                            }
+                        } else {
+                            for (var i = 0; i < me.data.baselayers.length; i++) {
+                                if (me.data.baselayers[i].visible == true) {
+                                    me.data.baselayers[i].layer.setVisible(true);
+                                }
+                            }
                         }
+                        me.data.baselayersVisible = true;
                     }
                 } else {
-                    if ($event) {
-                        layer.active = true;
-                        for (var i = 0; i < me.data.baselayers.length; i++) {
-                            if (me.data.baselayers[i] != layer) {
-                                me.data.baselayers[i].active = false;
-                            } else {
-                                me.data.baselayers[i].layer.setVisible(true);
-                            }
-                        }
-                    } else {
-                        for (var i = 0; i < me.data.baselayers.length; i++) {
-                            if (me.data.baselayers[i].visible == true) {
-                                me.data.baselayers[i].layer.setVisible(true);
-                            }
-                        }
+                    for (var i = 0; i < me.data.baselayers.length; i++) {
+                        if(angular.isDefined(me.data.baselayers[i].type) && me.data.baselayers[i].type == 'terrain')
+                            me.data.baselayers[i].active = me.data.baselayers[i].visible = (me.data.baselayers[i] == layer);
                     }
-                    me.data.baselayersVisible = true;
                 }
+                $rootScope.$broadcast('layermanager.base_layer_visible_changed', layer);
             }
 
             /**
