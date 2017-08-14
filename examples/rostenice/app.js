@@ -25,7 +25,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
 
 
         module.value('config', {
-            terrain_provider: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+            terrain_provider: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
@@ -48,7 +48,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     }),
                     minResolution: 2.388657133911758,
                     path: 'Open-Land-Use Map',
-                    visible: true,
+                    visible: false,
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
@@ -65,7 +65,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     }),
                     maxResolution: 2.388657133911758,
                     path: 'Open-Land-Use Map',
-                    visible: true,
+                    visible: false,
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
@@ -81,7 +81,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         crossOrigin: null
                     }),
                     maxResolution: 2.388657133911758,
-                    visible: false,
+                    visible: true,
                     opacity: 0.7
                 })
                 

@@ -25,8 +25,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             this.init = function() {
                 window.CESIUM_BASE_URL = hsl_path + 'bower_components/cesium.js/dist/';
                 var terrain_provider = new Cesium.CesiumTerrainProvider({
-                    //url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
-                    url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/'
+                    url: config.terrain_provider || 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles' 
                 });
                 widget = new Cesium.CesiumWidget('cesiumContainer', {
                     terrainProvider: terrain_provider,
