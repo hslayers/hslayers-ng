@@ -26,7 +26,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 window.CESIUM_BASE_URL = hsl_path + 'bower_components/cesium.js/dist/';
                 var terrain_provider = new Cesium.CesiumTerrainProvider({
                     //url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
-                    url: 'http://gis.lesprojekt.cz/cts/tilesets/test'
+                    url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/'
                 });
                 widget = new Cesium.CesiumWidget('cesiumContainer', {
                     terrainProvider: terrain_provider,
@@ -100,6 +100,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 ol_layer.cesium_layer = cesium_layer;
                 ol_layer.on('change:visible', function(e) {
                     e.target.cesium_layer.show = ol_layer.getVisible();
+                    /*me.widget.terrainProvider = new Cesium.CesiumTerrainProvider({
+                        url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
+                    })*/
                 })
             }
             

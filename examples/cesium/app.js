@@ -66,10 +66,28 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     path: 'Open-Land-Use Map',
                     visible: true,
                     opacity: 0.7
+                }),
+                new ol.layer.Tile({
+                    title: "Yield potential Rostenice",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
+                        params: {
+                            LAYERS: 'yield_potential',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 14
+                        },
+                        crossOrigin: null
+                    }),
+                    maxResolution: 2.388657133911758,
+                    visible: true,
+                    opacity: 0.7
                 })
+                
+                
             ],
             default_view: new ol.View({
-                center: ol.proj.transform([16.0972290,  49.7981922], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                center: ol.proj.transform([16.8290202,  49.0751890], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 15,
                 units: "m"
             })
