@@ -154,7 +154,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
         .controller('hs.query.controller', ['$scope', '$compile','hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce', '$rootScope', 'config',
             function($scope, $compile, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce, $rootScope, config) {
 
-                //getLayerInit();
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);
                 var lyr = null;
@@ -257,47 +256,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                     map.addLayer(lyr);
                     vectors_selected = true;
                 }
-
-                /**
-                * @function getLayerInit
-                * @memberOf hs.query.controller
-                * (PRIVATE) Add getLayer to ol.Feature prototype, so we can get name of layer, selected feature came from
-                */
-                //function getLayerInit() {
-                    //Prototype to getLayerName of selected Feature. See> http://stackoverflow.com/questions/31297721/how-to-get-a-layer-from-a-feature-in-openlayers-3
-                    /*ol.Feature.prototype.getLayer = function (map) {
-                        var this_ = this,
-                            layer_, layersToLookFor = [];
-                        var check = function (layer) {
-                            var source = layer.getSource();
-                            if (source instanceof ol.source.Vector) {
-                                var features = source.getFeatures();
-                                if (features.length > 0) {
-                                    layersToLookFor.push({
-                                        layer: layer,
-                                        features: features
-                                    });
-                                }
-                            }
-                        };
-                        map.getLayers().forEach(function (layer) {
-                            if (layer instanceof ol.layer.Group) {
-                                layer.getLayers().forEach(check);
-                            } else {
-                                check(layer);
-                            }
-                        });
-                        layersToLookFor.forEach(function (obj) {
-                            var found = obj.features.some(function (feature) {
-                                return this_ === feature;
-                            });
-                            if (found) {
-                                layer_ = obj.layer;
-                            }
-                        });
-                        return layer_;
-                    };
-                }*/
                 /**
                 * @function featureInfoError
                 * @memberOf hs.query.service_getwmsfeatureinfo
