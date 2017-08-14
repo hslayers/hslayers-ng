@@ -154,7 +154,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
         .controller('hs.query.controller', ['$scope', '$compile','hs.map.service', 'hs.query.service_getwmsfeatureinfo', 'hs.query.service_infopanel', 'Core', '$sce', '$rootScope', 'config',
             function($scope, $compile, OlMap, WmsGetFeatureInfo, InfoPanelService, Core, $sce, $rootScope, config) {
 
-                getLayerInit();
+                //getLayerInit();
                 var map = OlMap.map;
                 var point_clicked = new ol.geom.Point([0, 0]);
                 var lyr = null;
@@ -167,7 +167,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                 });
 
                 var vectors_selected = false;
-                
                 
                 var popup = new ol.Overlay.Popup();
                 map.addOverlay(popup);
@@ -264,9 +263,9 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                 * @memberOf hs.query.controller
                 * (PRIVATE) Add getLayer to ol.Feature prototype, so we can get name of layer, selected feature came from
                 */
-                function getLayerInit() {
+                //function getLayerInit() {
                     //Prototype to getLayerName of selected Feature. See> http://stackoverflow.com/questions/31297721/how-to-get-a-layer-from-a-feature-in-openlayers-3
-                    ol.Feature.prototype.getLayer = function (map) {
+                    /*ol.Feature.prototype.getLayer = function (map) {
                         var this_ = this,
                             layer_, layersToLookFor = [];
                         var check = function (layer) {
@@ -298,7 +297,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                         });
                         return layer_;
                     };
-                }
+                }*/
                 /**
                 * @function featureInfoError
                 * @memberOf hs.query.service_getwmsfeatureinfo
@@ -544,9 +543,44 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                                 geometry: point_clicked
                             })]
                         }),
-                        show_in_manager: false
+                        show_in_manager: false,
+                        style: pointClickedStyle
                     });
                     lyr.setVisible($scope.showQueryPoint);
+                }
+                
+                /**
+                * @function pointClickedStyle
+                * @memberOf hs.query.controller
+                * Change querried point style according to project settings   
+                */
+                function pointClickedStyle(feature) {
+                    var defaultStyle = new ol.style.Style({
+                        image: new ol.style.Circle({
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 156, 156, 0.4)'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#cc3333',
+                                width: 1
+                            }),
+                            radius: 5
+                        })
+                    });
+                    
+                    if (angular.isDefined(config.queryPoint)) {
+                        if (config.queryPoint == "hidden") {
+                            defaultStyle.getImage().setRadius(0);
+                            return defaultStyle;                            
+                        }
+                        else if (config.queryPoint == "notWithin") {
+                            if (selector.getFeatures().getLength() > 0) {
+                                defaultStyle.getImage().setRadius(0);
+                                return defaultStyle;
+                            }
+                        }
+                    }
+                    return defaultStyle;
                 }
 
                 $scope.$on('layermanager.updated', function(event, data) {
