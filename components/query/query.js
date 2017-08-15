@@ -447,7 +447,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                             coordinate, viewResolution, source.getProjection() ? source.getProjection() : map.getView().getProjection(), {
                                 'INFO_FORMAT': source.getParams().INFO_FORMAT
                             });
-                        if (typeof layer.get('featureInfoLang')[Core.language] != 'undefined') {
+                        if (angular.isDefined(layer.get('featureInfoLang')) && angular.isDefined(layer.get('featureInfoLang')[Core.language])) {
                             url = url.replace(source.getUrl(),layer.get('featureInfoLang')[Core.language]);
                         }
                         if (url) {
