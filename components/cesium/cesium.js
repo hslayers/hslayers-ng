@@ -34,7 +34,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 var trans_ext = ol.proj.transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
                 var rectangle = Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]);
 
-                Cesium.Camera.DEFAULT_VIEW_FACTOR = -5;
+                Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
                 Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
                 Cesium.BingMapsApi.defaultKey = BING_KEY;
 
@@ -62,9 +62,24 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     mapProjection: new Cesium.WebMercatorProjection()
                 });
                 
-                                
-                setExtentEqualToOlExtent(config.default_view);
+                               
                 me.widget = widget;
+                
+                var instance = new Cesium.GeometryInstance({
+                    geometry : new Cesium.RectangleGeometry({
+                        rectangle : rectangle,
+                        height: 1000,
+                        vertexFormat : Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT
+                    })
+                });
+
+                widget.scene.primitives.removeAll();
+                /*widget.scene.primitives.add(new Cesium.Primitive({
+                    geometryInstances : instance,
+                    appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true})
+                }));*/
+                   
+                   
                 setTimeout(function(){me.repopulateLayers(null);}, 2500);
                 
                 widget.camera.moveEnd.addEventListener(function(e) {
@@ -136,6 +151,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 var positionCartesian3 = widget.scene.globe.pick(ray, widget.scene);
                 if(positionCartesian3)
                 {
+                    /*
                     var instance = new Cesium.GeometryInstance({
                         geometry : new Cesium.RectangleGeometry({
                             rectangle : Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
@@ -145,7 +161,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     });
 
                     widget.scene.primitives.removeAll();
-                   /* widget.scene.primitives.add(new Cesium.Primitive({
+                    widget.scene.primitives.add(new Cesium.Primitive({
                         geometryInstances : instance,
                         appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true})
                     })); */
