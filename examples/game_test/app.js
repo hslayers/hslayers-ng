@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations','moveFeature','vectorLabel'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'moveFeature', 'vectorLabel', 'photoStyle'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -42,7 +42,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         format: new ol.format.GeoJSON(),
                         url: 'data/sidla.geojson'
                     }),
-                    path:"Libe"
+                    path: "Libe"
                 }),
                 new ol.layer.Vector({
                     title: "Horské kóty",
@@ -50,7 +50,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         format: new ol.format.GeoJSON(),
                         url: 'data/koty.geojson'
                     }),
-                    path:"Libe"
+                    path: "Libe"
                 }),
                 new ol.layer.Vector({
                     title: "Vodni plochy",
@@ -58,7 +58,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         format: new ol.format.GeoJSON(),
                         url: 'data/plochy.geojson'
                     }),
-                    path:"Libe"
+                    path: "Libe"
                 }),
                 new ol.layer.Vector({
                     title: "Vodni toky",
@@ -66,7 +66,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         format: new ol.format.GeoJSON(),
                         url: 'data/toky.geojson'
                     }),
-                    path:"Libe"
+                    path: "Libe"
                 }),
                 new ol.layer.Vector({
                     title: "Chraněná území",
@@ -74,7 +74,35 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         format: new ol.format.GeoJSON(),
                         url: 'data/chranene.geojson'
                     }),
-                    path:"Libe"
+                    path: "Libe"
+                }),
+                new ol.layer.Vector({
+                    title: "Frantici",
+                    source: new ol.source.Vector({
+                        url: 'http://viglino.github.io/ol3-ext/examples/data/fond_guerre.geojson',
+                        projection: 'EPSG:3857',
+                        format: new ol.format.GeoJSON()
+                    }),
+                    style: function (feature, resolution) {
+                        return [
+                            new ol.style.Style
+                            ({
+                                image: new ol.style.Photo({
+                                    src: feature.get("img"),
+                                    radius: 20,
+                                    kind: 'square',
+                                    shadow: true,
+                                    onload: function () {
+                                        feature.getLayer(hslayers_api.getMap()).changed();
+                                    },
+                                    stroke: new ol.style.Stroke({
+                                        width: 1,
+                                        color: '#fff'
+                                    })
+                                })
+                            })
+                        ]
+                    }
                 })
             ],
             project_name: 'game_test',
@@ -103,23 +131,23 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "url": 'http://foodie-dev.wirelessinfo.cz'
                 },
             },
-            queryPoint:'notWithin'
+            queryPoint: 'notWithin'
         });
 
-        module.controller('Main', ['$scope', 'Core','hs.game.moveFeatureService','$timeout','hs.map.service','hs.game.vectorLabelService',
-            function ($scope, Core, moveFeature,$timeout,OlMap,VectorLabel) {
+        module.controller('Main', ['$scope', 'Core', 'hs.game.moveFeatureService', '$timeout', 'hs.map.service', 'hs.game.vectorLabelService',
+            function ($scope, Core, moveFeature, $timeout, OlMap, VectorLabel) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                var timer = $timeout(function(){
+                var timer = $timeout(function () {
                     moveFeature.activate({
-                        layers: ['Vodni toky','Sidla','Horské kóty']
+                        layers: ['Vodni toky', 'Sidla', 'Horské kóty', 'Frantici']
                     });
                     VectorLabel.createLabels({
                         layer: OlMap.findLayerByTitle('Sidla'),
                         label: 'NAZEV',
                         strokeColor: '#000',
                         width: 3,
-                        hideMarker:true,
+                        hideMarker: true,
                         textBaseline: 'ideographic'
                     });
                     VectorLabel.createLabels({
@@ -129,7 +157,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         hideMarker: true,
                         textAlign: 'left'
                     });
-                },2000);
+                }, 2000);
             }
         ]);
 

@@ -51,7 +51,7 @@ define(['angular', 'ol', 'map', 'core'],
             
             function selectStyle(feature){
                 var featureStyle = feature.getStyle() || feature.getLayer(OlMap.map).getStyle();
-                if (typeof featureStyle == "function") featureStyle = featureStyle();
+                if (typeof featureStyle == "function") featureStyle = featureStyle(feature);
                 
                 if (angular.isDefined(featureStyle[0])) featureStyle = featureStyle[0];
                 featureStyle = featureStyle.clone();

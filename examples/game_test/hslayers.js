@@ -33,7 +33,8 @@ require.config({
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
         moveFeature: hsl_path + 'examples/game_test/mechanics/moveFeature',
-        vectorLabel: hsl_path + 'examples/game_test/mechanics/vectorLabel'
+        vectorLabel: hsl_path + 'examples/game_test/mechanics/vectorLabel',
+        photoStyle: hsl_path + 'examples/game_test/mechanics/photoStyle'
     },
     shim: {
         d3: {
