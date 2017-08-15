@@ -57,7 +57,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     }),
                     minResolution: 2.388657133911758,
                     path: 'Open-Land-Use Map',
-                    visible: true,
+                    visible: false,
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
@@ -74,7 +74,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     }),
                     maxResolution: 2.388657133911758,
                     path: 'Open-Land-Use Map',
-                    visible: false,
+                    visible: true,
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
@@ -97,8 +97,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 
             ],
             default_view: new ol.View({
-                center: ol.proj.transform([16.8290202,  49.0751890], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-                zoom: 15,
+                center: [1208534.8815206578, 5761821.705531779],
+                zoom: 16,
                 units: "m"
             })
         });

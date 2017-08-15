@@ -15,6 +15,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
          */
         .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', function(config, $rootScope, utils, hs_map, layer_manager_service) {
             var widget;
+            var BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
 
             /**
              * @ngdoc method
@@ -27,6 +28,22 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 var terrain_provider = new Cesium.CesiumTerrainProvider({
                     url: config.terrain_provider || 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles' 
                 });
+                
+                var view = hs_map.map.getView();
+                var ol_ext = view.calculateExtent(hs_map.map.getSize());
+                var trans_ext = ol.proj.transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
+                var rectangle = Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]);
+
+                Cesium.Camera.DEFAULT_VIEW_FACTOR = -5;
+                Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
+                Cesium.BingMapsApi.defaultKey = BING_KEY;
+
+                var bing = new Cesium.BingMapsImageryProvider({
+                    url : 'https://dev.virtualearth.net',
+                    key : 'get-yours-at-https://www.bingmapsportal.com/',
+                    mapStyle : Cesium.BingMapsStyle.AERIAL
+                });
+                
                 widget = new Cesium.CesiumWidget('cesiumContainer', {
                     terrainProvider: terrain_provider,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
@@ -44,13 +61,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     sceneMode: Cesium.SceneMode.SCENE3D,
                     mapProjection: new Cesium.WebMercatorProjection()
                 });
-
-                setExtentEqualToOlExtent(config.default_view);
                 
+                                
+                setExtentEqualToOlExtent(config.default_view);
                 me.widget = widget;
-
-                me.repopulateLayers(null);
-
+                setTimeout(function(){me.repopulateLayers(null);}, 2500);
+                
                 widget.camera.moveEnd.addEventListener(function(e) {
                     if (!hs_map.visible) {
                         $rootScope.$broadcast('map.sync_center', getCameraCenterInLngLat());
