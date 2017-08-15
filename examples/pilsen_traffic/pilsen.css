@@ -5,6 +5,8 @@
 }
 .panelspace-wrapper {width: 100% !important;}
 
+#page-wrapper, #content-wrapper {height: 100% !important;}
+
 .ol-zoom {
     top: 20px !important;
     right: 20px !important;
