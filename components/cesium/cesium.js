@@ -14,7 +14,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
          * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file).
          */
         .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', function(config, $rootScope, utils, hs_map, layer_manager_service) {
-            var widget;
+            var viewer;
             var BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
 
             /**
@@ -44,7 +44,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     mapStyle : Cesium.BingMapsStyle.AERIAL
                 });
                 
-                widget = new Cesium.CesiumWidget('cesiumContainer', {
+                viewer = new Cesium.Viewer('cesiumContainer', {
+                    timeline: false,    
+                    animation: false,
                     terrainProvider: terrain_provider,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
                     skyBox: new Cesium.SkyBox({
@@ -62,8 +64,10 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     mapProjection: new Cesium.WebMercatorProjection()
                 });
                 
+                 viewer.terrainProvider = terrain_provider;
+                
                                
-                me.widget = widget;
+                me.viewer = viewer;
                 
                 var instance = new Cesium.GeometryInstance({
                     geometry : new Cesium.RectangleGeometry({
@@ -73,8 +77,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     })
                 });
 
-                widget.scene.primitives.removeAll();
-                /*widget.scene.primitives.add(new Cesium.Primitive({
+                viewer.scene.primitives.removeAll();
+                /*viewer.scene.primitives.add(new Cesium.Primitive({
                     geometryInstances : instance,
                     appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true})
                 }));*/
@@ -82,7 +86,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                    
                 setTimeout(function(){me.repopulateLayers(null);}, 2500);
                 
-                widget.camera.moveEnd.addEventListener(function(e) {
+                viewer.camera.moveEnd.addEventListener(function(e) {
                     if (!hs_map.visible) {
                         $rootScope.$broadcast('map.sync_center', getCameraCenterInLngLat());
                     }
@@ -106,18 +110,45 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 });
                 
                 $rootScope.$on('search.zoom_to_center', function(event, data) {
-                    widget.camera.setView({
+                    viewer.camera.setView({
                         destination: Cesium.Cartesian3.fromDegrees(data.coordinate[0], data.coordinate[1], 15000.0)
                     });
                 })              
                 
                 $rootScope.$on('layermanager.base_layer_visible_changed', function(event, data, b) {
                    if(angular.isDefined(data.type) && data.type == 'terrain'){
-                        widget.terrainProvider = new Cesium.CesiumTerrainProvider({
+                        viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                             url: data.url
                         });
                    }
                 });
+                               
+                var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+                handler.setInputAction(function(movement) {
+                    var pickRay = viewer.camera.getPickRay(movement.position);
+                    var featuresPromise = viewer.imageryLayers.pickImageryLayerFeatures(pickRay, viewer.scene);
+                    if (!Cesium.defined(featuresPromise)) {
+                        console.log('No features picked.');
+                    } else {
+                        Cesium.when(featuresPromise, function(features) {
+                            
+                            var s = '';
+                            if (features.length > 0) {
+                                for(var i=0; i<features.length; i++){
+                                    s = s + features[i].data + '\n';
+                                }
+                            }
+                            
+                            var iframe = $('.cesium-infoBox-iframe');
+                            setTimeout(function(){
+                                $('.cesium-infoBox-description', iframe.contents()).html(s.replaceAll('\n', '<br/>'));
+                                iframe.height(200);
+                            }, 1000);
+                        });
+                    }
+                }, Cesium.ScreenSpaceEventType.LEFT_DOWN );
+        
+                
                 
                 
 
@@ -134,7 +165,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 ol_layer.cesium_layer = cesium_layer;
                 ol_layer.on('change:visible', function(e) {
                     e.target.cesium_layer.show = ol_layer.getVisible();
-                    /*me.widget.terrainProvider = new Cesium.CesiumTerrainProvider({
+                    /*me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                         url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
                     })*/
                 })
@@ -143,12 +174,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             function setExtentEqualToOlExtent(view){
                 var ol_ext = view.calculateExtent(hs_map.map.getSize());
                 var trans_ext = ol.proj.transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
-                widget.camera.setView({
+                viewer.camera.setView({
                     destination: Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3])
                 });
                
-                var ray = widget.camera.getPickRay(new Cesium.Cartesian2(widget.canvas.width / 2, widget.canvas.height / 2));
-                var positionCartesian3 = widget.scene.globe.pick(ray, widget.scene);
+                var ray = viewer.camera.getPickRay(new Cesium.Cartesian2(viewer.canvas.width / 2, viewer.canvas.height / 2));
+                var positionCartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
                 if(positionCartesian3)
                 {
                     /*
@@ -160,12 +191,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         })
                     });
 
-                    widget.scene.primitives.removeAll();
-                    widget.scene.primitives.add(new Cesium.Primitive({
+                    viewer.scene.primitives.removeAll();
+                    viewer.scene.primitives.add(new Cesium.Primitive({
                         geometryInstances : instance,
                         appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true})
                     })); */
-                    widget.camera.moveBackward(Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height);
+                    viewer.camera.moveBackward(Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height);
                 }
             }
 
@@ -185,7 +216,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                             hs_map.proxifyLayerLoader(lyr, false);
                         var cesium_layer = me.convertOlToCesiumProvider(lyr);
                         linkOlLayerToCesiumLayer(lyr, cesium_layer);
-                        me.widget.imageryLayers.add(cesium_layer);
+                        me.viewer.imageryLayers.add(cesium_layer);
                     });
                 }
             }
@@ -203,6 +234,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     return new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider({
                         url: src.getUrls()[0],
                         layers: src.getParams().LAYERS,
+                        getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                         parameters: params,
                         minimumTerrainLevel: params.minimumTerrainLevel || 12,
                         proxy: new Cesium.DefaultProxy('/cgi-bin/hsproxy.cgi?url=')
@@ -220,13 +252,13 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
              * @description Gets the position the camera is pointing to in lon/lat coordinates and resolution as the third array element
              */
             function getCameraCenterInLngLat() {
-                var ray = widget.camera.getPickRay(new Cesium.Cartesian2(widget.canvas.width / 2, widget.canvas.height / 2));
-                var positionCartesian3 = widget.scene.globe.pick(ray, widget.scene);
+                var ray = viewer.camera.getPickRay(new Cesium.Cartesian2(viewer.canvas.width / 2, viewer.canvas.height / 2));
+                var positionCartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
                 if (positionCartesian3) {
                     var positionCartographic = Cesium.Cartographic.fromCartesian(positionCartesian3);
                     var lngDeg = Cesium.Math.toDegrees(positionCartographic.longitude);
                     var latDeg = Cesium.Math.toDegrees(positionCartographic.latitude);
-                    position = [lngDeg, latDeg, calcResolutionForDistance(Cesium.Cartographic.fromCartesian(widget.camera.position).height - positionCartographic.height, latDeg)];
+                    position = [lngDeg, latDeg, calcResolutionForDistance(Cesium.Cartographic.fromCartesian(viewer.camera.position).height - positionCartographic.height, latDeg)];
                     return position;
                 } else return null;
             }
@@ -239,8 +271,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
              */
             function calcResolutionForDistance(distance, latitude) {
                 // See the reverse calculation (calcDistanceForResolution_) for details
-                const canvas = widget.scene.canvas;
-                const fovy = widget.camera.frustum.fovy;
+                const canvas = viewer.scene.canvas;
+                const fovy = viewer.camera.frustum.fovy;
                 const metersPerUnit = hs_map.map.getView().getProjection().getMetersPerUnit();
 
                 const visibleMeters = 2 * distance * Math.tan(fovy / 2);
@@ -257,8 +289,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
              * @description Calculates the distance from the ground based on resolution and latitude
              */
             function calcDistanceForResolution(resolution, latitude) {
-                const canvas = widget.scene.canvas;
-                const fovy = widget.camera.frustum.fovy;
+                const canvas = viewer.scene.canvas;
+                const fovy = viewer.camera.frustum.fovy;
                 const metersPerUnit = hs_map.map.getView().getProjection().getMetersPerUnit();
 
                 // number of "map units" visible in 2D (vertically)
