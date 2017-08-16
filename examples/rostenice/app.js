@@ -63,6 +63,38 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
+                    title: "Slope (in degrees)",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
+                        params: {
+                            LAYERS: 'slope',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 14
+                        },
+                        crossOrigin: null
+                    }),
+                    maxResolution: 2.388657133911758,
+                    visible: true,
+                    opacity: 0.7
+                }),
+                new ol.layer.Tile({
+                    title: "Slope orientation",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
+                        params: {
+                            LAYERS: 'orientation',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 14
+                        },
+                        crossOrigin: null
+                    }),
+                    maxResolution: 2.388657133911758,
+                    visible: true,
+                    opacity: 0.7
+                }),
+                new ol.layer.Tile({
                     title: "Yield potential Rostenice",
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
