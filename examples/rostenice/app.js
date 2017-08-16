@@ -75,7 +75,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         crossOrigin: null
                     }),
                     maxResolution: 2.388657133911758,
-                    visible: true,
+                    visible: false,
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
@@ -91,7 +91,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         crossOrigin: null
                     }),
                     maxResolution: 2.388657133911758,
-                    visible: true,
+                    visible: false,
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
