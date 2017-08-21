@@ -84,7 +84,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 }));*/
                    
                    
-                setTimeout(function(){me.repopulateLayers(null);}, 2500);
+                setTimeout(function(){me.repopulateLayers(null);}, 3500);
                 
                 viewer.camera.moveEnd.addEventListener(function(e) {
                     if (!hs_map.visible) {

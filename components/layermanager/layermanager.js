@@ -707,14 +707,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                  * @memberOf hs.layermanager.service
                  * @description Remove all layers from map 
                  */
-            /**
-             * @ngdoc method
-             * @name hs.layermanager.service#getLegendUrl
-             * @public
-             * @param {Object}
-             * @returns {Boolean}
-             * @description 
-             */
             me.removeAllLayers = function () {
                 var to_be_removed = [];
                 OlMap.map.getLayers().forEach(function (lyr) {
@@ -732,14 +724,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @memberOf hs.layermanager.service
              * @description Show all layers of particular layer group (when groups are defined)
              * @param {ol.layer.Group} theme Group layer to activate
-             */
-            /**
-             * @ngdoc method
-             * @name hs.layermanager.service#getLegendUrl
-             * @public
-             * @param {Object}
-             * @returns {Boolean}
-             * @description 
              */
             me.activateTheme = function (theme) {
                 var switchOn = true;
@@ -763,14 +747,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @memberOf hs.layermanager.service
              * @description Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
              * @param {ol.layer} layer Layer which is being added
-             */
-            /**
-             * @ngdoc method
-             * @name hs.layermanager.service#getLegendUrl
-             * @public
-             * @param {Object}
-             * @returns {Boolean}
-             * @description 
              */
             function loadingEvents(layer) {
                 var source = layer.getSource()
@@ -840,14 +816,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @param {Ol.layer} lyr Selected layer
              * @description Test if layer (WMS) resolution is within map interval 
              */
-            /**
-             * @ngdoc method
-             * @name hs.layermanager.service#getLegendUrl
-             * @public
-             * @param {Object}
-             * @returns {Boolean}
-             * @description 
-             */
             me.isLayerInResolutionInterval = function (lyr) {
                 var src = lyr.getSource();
                 if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
@@ -864,7 +832,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
 
                 }
             }
-
+           
+            
             var timer;
 
             /**
@@ -872,14 +841,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @function init
              * @memberOf hs.layermanager.service
              * @description Initialization of needed controllers, run when map object is available 
-             */
-            /**
-             * @ngdoc method
-             * @name hs.layermanager.service#getLegendUrl
-             * @public
-             * @param {Object}
-             * @returns {Boolean}
-             * @description 
              */
             function init() {
                 map = OlMap.map;

@@ -81,7 +81,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         crossOrigin: null
                     }),
                     legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/openlandusemap.map&service=WMS&request=GetLegendGraphic&layer=olu_bbox_srid&version=1.3.0&format=image/png&sld_version=1.1.0'],
-                    maxResolution: 2.388657133911758,
+                    maxResolution: 8550,
                     path: 'Open-Land-Use Map',
                     visible: true,
                     opacity: 0.7
@@ -99,7 +99,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         crossOrigin: null
                     }),
                     legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map&service=WMS&request=GetLegendGraphic&layer=yield_potential&version=1.3.0&format=image/png&sld_version=1.1.0'],
-                    maxResolution: 2.388657133911758,
+                    maxResolution: 8550,
                     visible: false,
                     opacity: 0.7
                 })
