@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'cesiumjs'],
+define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs'],
 
     function(ol, toolbar, layermanager, geojson) {
         var module = angular.module('hs', [
@@ -10,7 +10,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
             'hs.search', 'hs.print', 'hs.permalink',
             'hs.geolocation',
             'hs.cesium',
-            'hs.sidebar'
+            'hs.sidebar',
+            'hs.ows'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$compile', '$timeout', function(OlMap, Core, $compile, $timeout) {
@@ -57,6 +58,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         },
                         crossOrigin: null
                     }),
+                    legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/openlandusemap.map&service=WMS&request=GetLegendGraphic&layer=olu_bbox_srid&version=1.3.0&format=image/png&sld_version=1.1.0'],
                     maxResolution: 2.388657133911758,
                     path: 'Open-Land-Use Map',
                     visible: false,
@@ -74,6 +76,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         },
                         crossOrigin: null
                     }),
+                    legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map&service=WMS&request=GetLegendGraphic&layer=slope&version=1.3.0&format=image/png&sld_version=1.1.0'],
                     maxResolution: 2.388657133911758,
                     visible: false,
                     opacity: 0.7
@@ -90,6 +93,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         },
                         crossOrigin: null
                     }),
+                    legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map&service=WMS&request=GetLegendGraphic&layer=orientation&version=1.3.0&format=image/png&sld_version=1.1.0'],
                     maxResolution: 2.388657133911758,
                     visible: false,
                     opacity: 0.7
@@ -106,6 +110,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                         },
                         crossOrigin: null
                     }),
+                    legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map&service=WMS&request=GetLegendGraphic&layer=yield_potential&version=1.3.0&format=image/png&sld_version=1.1.0'],
                     maxResolution: 2.388657133911758,
                     visible: true,
                     opacity: 0.7
