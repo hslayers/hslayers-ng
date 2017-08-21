@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs'],
+define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap', 'datasource_selector'],
 
     function(ol, toolbar, layermanager, geojson) {
         var module = angular.module('hs', [
@@ -8,6 +8,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
             'hs.layermanager',
             'hs.query',
             'hs.search', 'hs.print', 'hs.permalink',
+            'hs.datasource_selector',
             'hs.geolocation',
             'hs.cesium',
             'hs.sidebar',
@@ -118,6 +119,39 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
 
 
             ],
+            project_name: 'erra/map',
+            datasources: [
+                {
+                    title: "Datasets",
+                    url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
+                    language: 'eng',
+                    type: "ckan",
+                    download: true
+                }, {
+                    title: "Services",
+                    url: "http://cat.ccss.cz/csw/",
+                    language: 'eng',
+                    type: "micka",
+                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                }, {
+                    title: "Hub layers",
+                    url: "http://opentnet.eu/php/metadata/csw/",
+                    language: 'eng',
+                    type: "micka",
+                    code_list_url: 'http://opentnet.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                }
+            ],
+            hostname: {
+                "default": {
+                    "title": "Default",
+                    "type": "default",
+                    "editable": false,
+                    "url": getHostname()
+                }
+            },
+            'catalogue_url': "/php/metadata/csw",
+            'compositions_catalogue_url': "/php/metadata/csw",
+            status_manager_url: '/wwwlibs/statusmanager2/index.php',
             default_view: new ol.View({
                 center: ol.proj.transform([16.8290202, 49.0751890], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 15,
@@ -131,7 +165,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
-                Core.panelEnabled('compositions', false);
+                Core.singleDatasources = true;
+                Core.panelEnabled('compositions', true);
                 Core.panelEnabled('status_creator', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
