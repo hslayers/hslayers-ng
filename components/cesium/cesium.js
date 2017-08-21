@@ -165,9 +165,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 ol_layer.cesium_layer = cesium_layer;
                 ol_layer.on('change:visible', function(e) {
                     e.target.cesium_layer.show = ol_layer.getVisible();
-                    /*me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
-                        url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
-                    })*/
+                })
+                ol_layer.on('change:opacity', function(e) {
+                    e.target.cesium_layer.alpha = parseFloat(ol_layer.getOpacity());
                 })
             }
             
