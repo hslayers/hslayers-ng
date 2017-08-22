@@ -100,8 +100,10 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
             width: 1.25
         });
         var olu_style = function(feature, resolution) {
+            var poi_count = feature.get('poi_count');
+            if(poi_count > 30) poi_count = 30;
             var fill = new ol.style.Fill({
-                color: rainbow(30, feature.get('poi_count'), 0.7)
+                color: rainbow(30, poi_count, 0.7)
             });
             return [
                 new ol.style.Style({
