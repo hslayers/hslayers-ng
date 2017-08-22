@@ -431,7 +431,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              */
             function populateFolders(lyr) {
                 if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
-                    var path = lyr.get('path');
+                    var path = lyr.get('path') || '';
                     var parts = path.split('/');
                     var curfolder = me.data.folders;
                     for (var i = 0; i < parts.length; i++) {
