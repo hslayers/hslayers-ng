@@ -185,11 +185,16 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                             for (var i = 0; i < response.results.bindings.length; i++) {
                                 try {
                                     var b = response.results.bindings[i];
-                                    var g_feature = format.readFeature(b.wkt.value.toUpperCase());
-                                    var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', hsMap.map.getView().getProjection());
-                                    var feature = new ol.Feature({geometry: geom_transformed, parcel: b.o.value, use: b.use.value, poi_count: b.poi_count.value});
-                                    features.push(feature);
-                                } catch(ex){}
+                                    if(b.wkt.datatype=="http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.wkt.value.indexOf('e+') == -1 && b.wkt.value.indexOf('e-') == -1){
+                                        var g_feature = format.readFeature(b.wkt.value.toUpperCase());
+                                        var ext = g_feature.getGeometry().getExtent()
+                                        var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', hsMap.map.getView().getProjection());
+                                        var feature = new ol.Feature({geometry: geom_transformed, parcel: b.o.value, use: b.use.value, poi_count: b.poi_count.value});
+                                        features.push(feature);
+                                    }
+                                } catch(ex){
+                                    console.log(ex);
+                                }
                             }
                         spoi_source.clear();
                         spoi_source.addFeatures(features);
