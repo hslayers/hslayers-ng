@@ -31,17 +31,44 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     $('#roadwork-info-dialog').modal('show');
                 }
             };
-        }).directive('description', function() {
+        }).directive('description', ['$compile', 'hs.utils.service', function($compile, utils) {
             return {
                 templateUrl: './description.html?bust=' + gitsha,
-                 scope: {
+                scope: {
                     object: '=',
+                    url: '@'
                 },
                 link: function(scope, element, attrs) {
-                    
+                    scope.describe = function(e, attribute){
+                        if(angular.element(e.target).parent().find('table').length>0){
+                            angular.element(e.target).parent().find('table').remove();
+                        } else {
+                            var table = angular.element('<table class="table table-striped" description object="attribute'+Math.abs(attribute.value.hashCode())+'" url="'+attribute.value+'"></table>');
+                            angular.element(e.target).parent().append(table);
+                            $compile(table)(scope.$parent);
+                        }
+                    }
+                    if(angular.isUndefined(scope.object) && angular.isDefined(attrs.url) && typeof attrs.url == 'string'){
+                        scope.object = {attributes: []};
+                        var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <'+attrs.url+'>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                        $.ajax({
+                            url: utils.proxify(q)
+                        })
+                        .done(function(response) {
+                            if(angular.isUndefined(response.results)) return;
+                            for (var i = 0; i < response.results.bindings.length; i++) {    
+                                var b = response.results.bindings[i];
+                                var short_name = b.p.value;
+                                if(short_name.indexOf('#')>-1) 
+                                    short_name = short_name.split('#')[1];
+                                scope.object.attributes.push({short_name: short_name, value: b.o.value});
+                                if (!scope.$$phase) scope.$apply();
+                            }
+                        })
+                    }
                 }
             };
-        });
+        }]);
         
         var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
@@ -313,7 +340,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     popup = new ol.Overlay.Popup();
                     hsMap.map.addOverlay(popup);
                     popup.getElement().className += " popup-headline";
-                    popup.getElement().style.width = '500px';
+                    popup.getElement().style.width = '600px';
                     popup.getElement().style.height = 'auto';
                 }
                 
