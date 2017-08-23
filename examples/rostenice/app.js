@@ -121,8 +121,24 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     maxResolution: 8550,
                     visible: true,
                     opacity: 0.7
+                }),
+                new ol.layer.Tile({
+                    title: "Machinery tracklines",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
+                        params: {
+                            LAYERS: 'machinery_tracklines_average_slope',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 14
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map&service=WMS&request=GetLegendGraphic&layer=machinery_tracklines_average_slope&version=1.3.0&format=image/png&sld_version=1.1.0'],
+                    maxResolution: 8550,
+                    visible: true,
+                    opacity: 0.8
                 })
-
 
             ],
             project_name: 'erra/map',
