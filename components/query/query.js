@@ -573,6 +573,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                         map.addLayer(lyr); 
                     }
                     popup.hide();
+                    WmsGetFeatureInfo.last_coordinate_clicked = evt.coordinate;
                     $scope.showCoordinate(evt.coordinate);
                     if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
                     infoCounter = 0;

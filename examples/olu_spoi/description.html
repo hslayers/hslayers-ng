@@ -1,0 +1,7 @@
+<tbody>
+    <tr ng-repeat="attribute in object.attributes | orderBy : 'name'">
+        <th>{{attribute.short_name}}:</th>
+        <td>{{attribute.value}}</td>
+    </tr>
+</tbody>
+      

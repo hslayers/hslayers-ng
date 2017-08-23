@@ -22,9 +22,28 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     Core.fullScreenMap(element);
                 }
             };
-        }]);
+        }])
         
-         var style = function(feature, resolution) {
+        .directive('hs.pilsentraffic.roadworkInfoDirective', function() {
+            return {
+                templateUrl: './roadwork_info.html?bust=' + gitsha,
+                link: function(scope, element, attrs) {
+                    $('#roadwork-info-dialog').modal('show');
+                }
+            };
+        }).directive('description', function() {
+            return {
+                templateUrl: './description.html?bust=' + gitsha,
+                 scope: {
+                    object: '=',
+                },
+                link: function(scope, element, attrs) {
+                    
+                }
+            };
+        });
+        
+        var style = function(feature, resolution) {
             if (typeof feature.get('visible') === 'undefined' || feature.get('visible') == true) {
                 var s = feature.get('http://www.sdi4apps.eu/poi/#mainCategory');
 
@@ -136,8 +155,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service',
-            function($scope, Core, InfoPanelService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils ) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service', '$compile', 'hs.query.service_getwmsfeatureinfo', '$sce',
+            function($scope, Core, InfoPanelService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils, $compile, query_service, $sce) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -173,7 +192,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     var bbox = map.getView().calculateExtent(map.getSize());
                     var ext = ol.proj.transformExtent(bbox, 'EPSG:3857', 'EPSG:4326')
                     var extents = ext[0] + ' ' + ext[1] + ', ' +ext[2] + ' ' + ext[3];
-                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('PREFIX geo: <http://www.opengis.net/ont/geosparql#> PREFIX geof: <http://www.opengis.net/def/function/geosparql/> PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> PREFIX poi: <http://www.openvoc.eu/poi#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?o ?use ?wkt (COUNT(*) as ?poi_count) FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?Resource poi:class ?POI_Class . ?Resource geo:asWKT ?Coordinates . FILTER(bif:st_intersects (?Coordinates, ?wkt)). { SELECT ?o ?wkt ?use FROM <http://w3id.org/foodie/olu#> WHERE { ?o geo:hasGeometry ?geometry. ?geometry geo:asWKT ?wkt. FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extents + ')"), ?wkt)). ?o <http://w3id.org/foodie/olu#specificLandUse> ?use. } } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('PREFIX geo: <http://www.opengis.net/ont/geosparql#> PREFIX geof: <http://www.opengis.net/def/function/geosparql/> PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> PREFIX poi: <http://www.openvoc.eu/poi#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?o ?use ?wkt (COUNT(*) as ?poi_count) FROM <http://www.sdi4apps.eu/poi.rdf> WHERE {?Resource geo:asWKT ?Coordinates . FILTER(bif:st_intersects (?Coordinates, ?wkt)). { SELECT ?o ?wkt ?use FROM <http://w3id.org/foodie/olu#> WHERE { ?o geo:hasGeometry ?geometry. ?geometry geo:asWKT ?wkt. FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extents + ')"), ?wkt)). ?o <http://w3id.org/foodie/olu#specificLandUse> ?use. } } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                     
                     spoi_source.set('loaded', false);
                     $.ajax({
@@ -200,8 +219,111 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                         spoi_source.addFeatures(features);
                         spoi_source.set('loaded', true);
                     })
-
                 }
+                
+                /*Popups*/
+                function initInfoDirective(){
+                    var el = angular.element('<div hs.pilsentraffic.roadwork-info-directive></div>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
+                } 
+                
+                initInfoDirective();
+                    
+                var popup;
+                
+                function showPopup(roadwork){
+                    if (angular.isUndefined(popup)) createPopup();
+                    if (!$scope.$$phase) $scope.$apply(); 
+                    var html = $('#roadwork-info-offline')[0];
+                    popup.show(query_service.last_coordinate_clicked, html);
+                    $rootScope.$broadcast('popupOpened','inside');
+                }
+                
+                $scope.showRoadworkInfo = function(roadwork) {
+                    $scope.roadwork = {
+                        id: $sce.trustAsHtml(roadwork.get('parcel')), 
+                        attributes: [],
+                        pois: []
+                    };
+                    describeOlu(roadwork.get('parcel'), function(){
+                        showPopup(roadwork);
+                    });  
+                }
+                
+                function describeOlu(id, callback){
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <'+id+'>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                        $.ajax({
+                            url: utils.proxify(q)
+                        })
+                        .done(function(response) {
+                            if(angular.isUndefined(response.results)) return;
+                            for (var i = 0; i < response.results.bindings.length; i++) {    
+                                var b = response.results.bindings[i];
+                                var short_name = b.p.value;
+                                if(short_name.indexOf('#')>-1) 
+                                    short_name = short_name.split('#')[1];
+                                $scope.roadwork.attributes.push({short_name: short_name, value: b.o.value});
+                            }
+                            getLinksTo(id, callback);
+                        })
+                }
+                
+                function getLinksTo(id, callback){
+                     var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('PREFIX geo: <http://www.opengis.net/ont/geosparql#> PREFIX geof: <http://www.opengis.net/def/function/geosparql/> PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> PREFIX poi: <http://www.openvoc.eu/poi#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT * FROM <http://www.sdi4apps.eu/poi.rdf> WHERE {?poi geo:asWKT ?Coordinates . FILTER(bif:st_intersects (?Coordinates, ?wkt)). { SELECT ?wkt FROM <http://w3id.org/foodie/olu#> WHERE { <'+id+'> geo:hasGeometry ?geometry. ?geometry geo:asWKT ?wkt.} } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                        $.ajax({
+                            url: utils.proxify(q)
+                        })
+                        .done(function(response) {
+                                for (var i = 0; i < response.results.bindings.length; i++) {    
+                                    var b = response.results.bindings[i];
+                                    $scope.roadwork.pois.push({url: b.poi.value});
+                                }
+                                callback();
+                        })
+                }
+                
+                $scope.describePoi = function(poi){
+                    if(angular.isUndefined(poi.expanded)) poi.expanded = false;
+                    poi.expanded = !poi.expanded;
+                    if(poi.expanded) {
+                        var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <'+poi.url+'>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                        $.ajax({
+                            url: utils.proxify(q)
+                        })
+                        .done(function(response) {
+                            if(angular.isUndefined(response.results)) return;
+                            poi.attributes = [];
+                            for (var i = 0; i < response.results.bindings.length; i++) {    
+                                var b = response.results.bindings[i];
+                                var short_name = b.p.value;
+                                if(short_name.indexOf('#')>-1) 
+                                    short_name = short_name.split('#')[1];
+                                poi.attributes.push({short_name: short_name, value: b.o.value});
+                            }
+                            if (!$scope.$$phase) $scope.$apply(); 
+                        })
+                    } else {
+                        if (!$scope.$$phase) $scope.$apply(); 
+                    }
+                    return false;
+                }
+                
+                function createPopup(){
+                    popup = new ol.Overlay.Popup();
+                    hsMap.map.addOverlay(popup);
+                    popup.getElement().className += " popup-headline";
+                    popup.getElement().style.width = '500px';
+                    popup.getElement().style.height = 'auto';
+                }
+                
+                $scope.$on('infopanel.feature_selected', function(event, feature) {
+                    $scope.showRoadworkInfo(feature);
+                })
+                
+                $scope.$on('popupOpened', function(e,source){
+                    if (angular.isDefined(source) && source != "inside"  && angular.isDefined(popup)) popup.hide();
+                })
                 
                 $scope.$on('infopanel.updated', function(event) {
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
