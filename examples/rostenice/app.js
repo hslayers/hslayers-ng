@@ -27,6 +27,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
             };
         }]);
 
+        function getHostname() {
+            var url = window.location.href
+            var urlArr = url.split("/");
+            var domain = urlArr[2];
+            return urlArr[0] + "//" + domain;
+        };
 
         module.value('config', {
             terrain_provider: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
