@@ -329,6 +329,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
                 });
                 
+                Core.setMainPanel('info');
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('status_creator', false);
             }
