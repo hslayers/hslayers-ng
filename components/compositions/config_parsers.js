@@ -30,7 +30,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         var params = lyr_def.params;
                         var legends = [];
                         delete params.REQUEST;
-                        delete params.FORMAT;
+                        //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
                         if (angular.isDefined(lyr_def.legends)) {
                             for (var idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
                                 legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
