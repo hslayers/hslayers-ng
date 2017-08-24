@@ -64,8 +64,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     mapProjection: new Cesium.WebMercatorProjection()
                 });
                 
-                 viewer.terrainProvider = terrain_provider;
-                
+                viewer.terrainProvider = terrain_provider;
                                
                 me.viewer = viewer;
                 
@@ -84,7 +83,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 }));*/
                    
                    
-                setTimeout(function(){me.repopulateLayers(null);}, 3500);
+                setTimeout(function(){
+                    me.repopulateLayers(null);
+                }, 3500);
                 
                 viewer.camera.moveEnd.addEventListener(function(e) {
                     if (!hs_map.visible) {
@@ -97,11 +98,11 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     layer_manager_service.data.baselayers.push(provider);
                 })
                 
-                hs_map.map.getLayers().on("add", function(e) {
-                    var layer = e.element;
-                   
-                });
-                
+                hs_map.map.getLayers().on('add', function(e){
+                    var lyr = e.element;
+                    processOlLayer(lyr);
+                })
+                               
                 $rootScope.$on('map.extent_changed', function(event, data, b) {
                     var view = hs_map.map.getView();
                     if (hs_map.visible) {
@@ -146,12 +147,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                             }, 1000);
                         });
                     }
-                }, Cesium.ScreenSpaceEventType.LEFT_DOWN );
-        
-                
-                
-                
-
+                }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+                       
                 /**
                  * @ngdoc event
                  * @name hs.cesium.service#map.loaded
@@ -199,6 +196,18 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     viewer.camera.moveBackward(Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height);
                 }
             }
+            
+            function processOlLayer(lyr) {
+                lyr.setVisible(hs_map.isLayerVisible(lyr, hs_map.visible_layers) || lyr.getVisible());
+                lyr.manuallyAdded = false;
+                if (lyr.getSource() instanceof ol.source.ImageWMS)
+                    hs_map.proxifyLayerLoader(lyr, false);
+                var cesium_layer = me.convertOlToCesiumProvider(lyr);
+                if(angular.isDefined(cesium_layer)){
+                    linkOlLayerToCesiumLayer(lyr, cesium_layer);
+                    me.viewer.imageryLayers.add(cesium_layer);
+                }
+            }
 
             /**
              * @ngdoc method
@@ -209,16 +218,13 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
              */
             this.repopulateLayers = function(visible_layers) {
                 if (angular.isDefined(config.default_layers)) {
-                    angular.forEach(config.default_layers, function(lyr) {
-                        lyr.setVisible(hs_map.isLayerVisible(lyr, hs_map.visible_layers));
-                        lyr.manuallyAdded = false;
-                        if (lyr.getSource() instanceof ol.source.ImageWMS)
-                            hs_map.proxifyLayerLoader(lyr, false);
-                        var cesium_layer = me.convertOlToCesiumProvider(lyr);
-                        linkOlLayerToCesiumLayer(lyr, cesium_layer);
-                        me.viewer.imageryLayers.add(cesium_layer);
-                    });
+                    angular.forEach(config.default_layers, processOlLayer);
                 }
+                //Some layers might be loaded from cookies before cesium service was called
+                angular.forEach(hs_map.map.getLayers(), function(lyr){
+                    if(angular.isUndefined(lyr.cesium_layer))
+                        processOlLayer(lyr);
+                });
             }
 
             this.convertOlToCesiumProvider = function(ol_lyr) {
@@ -231,6 +237,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     var src = ol_lyr.getSource();
                     var params = src.getParams();
                     params.CRS = 'EPSG:4326'; 
+                    params.FROMCRS = 'EPSG:4326'; 
                     return new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider({
                         url: src.getUrls()[0],
                         layers: src.getParams().LAYERS,
@@ -242,6 +249,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         alpha: 0.7,
                         show: ol_lyr.getVisible()
                     })
+                } else {
+                    console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
                 }
             }
 
