@@ -236,6 +236,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 } else if (ol_lyr.getSource() instanceof ol.source.TileWMS) {
                     var src = ol_lyr.getSource();
                     var params = src.getParams();
+                    params.VERSION = '1.1.1';
                     params.CRS = 'EPSG:4326'; 
                     params.FROMCRS = 'EPSG:4326'; 
                     return new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider({
