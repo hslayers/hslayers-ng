@@ -20,11 +20,41 @@ define(['angular'],
 
         /**
          * @memberof hs.print
+         * @ngdoc service
+         * @name hs.print.service
+         */
+        .service('hs.print.service', ['$timeout', 
+            function($timeout) {
+                var me = {};
+                /**
+                 * @memberof hs.print.service
+                 * @function print
+                 * @public
+                 * @params {String} title 
+                 * @description Basic print implementation
+                 */
+                me.print = function(title) {
+                    var canvas = canvas = document.getElementsByTagName("canvas")[0];
+                    var img = canvas.toDataURL("image/png");
+                    var win = window.open();
+                    var html = "<html><head></head><body><h2>" + title + "</h2><br><img src='" + img + "'/></body></html>";
+                    win.document.write(html);
+                    $timeout(function(){
+                        win.print();
+                        win.location.reload();
+                    },250);
+                }
+                
+                return me;
+            }])
+        
+        /**
+         * @memberof hs.print
          * @ngdoc controller
          * @name hs.print.controller
          */
-        .controller('hs.print.controller', ['$scope',
-            function($scope) {
+        .controller('hs.print.controller', ['$scope','hs.print.service',
+            function($scope, PrintS) {
                 $scope.title = "";
 
                 /**
@@ -44,12 +74,7 @@ define(['angular'],
                  * @function print 
                  */
                 $scope.print = function() {
-                    var canvas = canvas = document.getElementsByTagName("canvas")[0];
-                    var win = window.open();
-                    win.document.write("<h2>" + $scope.title + "</h2>");
-                    win.document.write("<br><img src='" + canvas.toDataURL() + "'/>");
-                    win.print();
-                    win.location.reload();
+                    PrintS.print($scope.title);
                 }
 
                 $scope.$emit('scope_loaded', "Print");
