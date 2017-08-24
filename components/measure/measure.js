@@ -18,46 +18,124 @@ define(['angular', 'ol', 'map', 'core'],
                 templateUrl: hsl_path + 'components/measure/partials/measure.html?bust=' + gitsha
             };
         })
-
         /**
          * @memberof hs.measure
-         * @ngdoc controller
-         * @name hs.measure.controller
+         * @ngdoc service
+         * @name hs.measure.service
          */
-        .controller('hs.measure.controller', ['$scope', 'hs.map.service', 'Core',
-            function($scope, OlMap, Core) {
-
-                var map = OlMap.map;
-
-                var source = new ol.source.Vector({});
-                var style = new ol.style.Style({
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 255, 255, 0.2)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#ffcc33',
-                        width: 2
+        .service('hs.measure.service', ['$rootScope','hs.map.service',
+            function($rootScope,OlMap){
+                var me = this;
+                
+                var map;
+                
+                if (angular.isDefined(OlMap.map)) map = OlMap.map;
+                else $rootScope.$on('map_loaded', function(){
+                    map = OlMap.map;
+                });
+                
+                this.draw;
+                
+                this.measureVector = new ol.layer.Vector({
+                    source: new ol.source.Vector(),
+                    style: new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#ffcc33',
+                            width: 2
+                        })
                     })
                 });
-
-                var vector = new ol.layer.Vector({
-                    source: source,
-                    style: style
-                });
-
+                
+                this.data = {};
+                
+                this.data.measurements = [];
+                
+                this.data.multipleShapeMode = false;
+                
+                this.sketch = {};
+                
+                this.currentMeasurement;
+                
+                /**
+                 * @memberof hs.measure.service
+                 * @function switchMultipleMode
+                 * @public
+                 * @param {Boolean} mode Optional parameter if multiple shape mode should be enabled 
+                 * @description Enable/disable multiple shape mode for measuring (switch without parameter)
+                 */
+                this.switchMultipleMode = function(mode) {
+                    if (angular.isDefined(mode)) me.data.multipleShapeMode = mode;
+                    else me.data.multipleShapeMode = !me.data.multipleShapeMode;
+                }
+                
+                /**
+                 * @memberof hs.measure.service
+                 * @function changeMeasureParams
+                 * @public
+                 * @param {String} type Geometry type of measurement ('area' for polygon, 'line' for linestring) 
+                 * @description Change geometry type of measurement without deleting of old ones
+                 */
+                this.changeMeasureParams = function(type) {
+                    map.removeInteraction(me.draw);
+                    me.sketch = null;
+                    addInteraction(type);
+                }
+                
+                /**
+                 * @memberof hs.measure.service
+                 * @function clearMeasurement
+                 * @public
+                 * @description Clear all measurements and restart measuring
+                 */
+                this.clearMeasurement = function() {
+                    me.draw.setActive(false);
+                    me.data.measurements.length = 0;
+                    me.measureVector.getSource().clear();
+                    me.sketch = null;
+                    me.draw.setActive(true);
+                }
+                
+                /**
+                 * @memberof hs.measure.service
+                 * @function activateMeasuring
+                 * @public
+                 * @param {Boolean} mode Optional parameter, Geometry type of measurement ('area' for polygon, 'line' for linestring) Line is default
+                 * @description Start measuring interaction in app
+                 */
+                this.activateMeasuring = function(type) {
+                    map.addLayer(me.measureVector);
+                    $(map.getViewport()).on('mousemove', mouseMoveHandler);
+                    addInteraction(type);
+                }
 
                 /**
-                 * (PRIVATE) Handler of pointer movement, compute live results of measuring
-                 * @memberof hs.measure.controller
-                 * @function mouseMoveHandler 
-                 * @param {Event} evt
+                 * @memberof hs.measure.service
+                 * @function deactivateMeasuring
+                 * @public
+                 * @description Stop measuring interaction in app
+                 */
+                this.deactivateMeasuring = function() {
+                    $(map.getViewport()).off('mousemove');
+                    map.removeInteraction(me.draw);
+                    map.removeLayer(me.measureVector);
+                }
+                
+                /**
+                 * @memberof hs.measure.service
+                 * @function mouseMoveHandler
+                 * @private
+                 * @param {Object} evt Callback param for mouse move event
+                 * @description Callback for mouse move event, compute live measurement results
                  */
                 var mouseMoveHandler = function(evt) {
-                    if ($scope.sketch) {
+                    if (me.sketch) {
                         var output;
 
-                        for (var i = 0; i < $scope.sketch.length; i++) {
-                            var geom = $scope.sketch[i].getGeometry();
+                        for (var i = 0; i < me.sketch.length; i++) {
+                            var geom = me.sketch[i].getGeometry();
                             if (geom instanceof ol.geom.Polygon) {
                                 output = addMultiple(formatArea(geom),output);
                             } else if (geom instanceof ol.geom.LineString) {
@@ -65,17 +143,18 @@ define(['angular', 'ol', 'map', 'core'],
                             }
                         }
 
-                        $scope.measurements[$scope.current_measurement] = output;
-                        if (!$scope.$$phase) $scope.$digest();
+                        me.data.measurements[me.currentMeasurement] = output;
+                        if (!$rootScope.$$phase) $rootScope.$digest();
                     }
                 };
 
                 /**
-                 * (PRIVATE) Add two measure results for multiple shape mode to display joined result
-                 * @memberof hs.measure.controller
+                 * @memberof hs.measure.service
                  * @function addMultiple 
+                 * @private
                  * @param {object} val1 Output of new object
                  * @param {object} val2 Old value
+                 * @description Add two measure results for multiple shape mode to display joined result
                  */
                 var addMultiple = function(val1, val2) {
                     if (val2 == undefined) return val1;
@@ -110,78 +189,64 @@ define(['angular', 'ol', 'map', 'core'],
                     return output;
                 };
                 
-                $scope.multiple_shape_mode = false;
-                $(document).keyup(function(e) {
-                    if (e.which == 17) {
-                        if ($scope.multiple_shape_mode == true) {
-                            drawReset();   
-                        }
-                        $scope.multiple_shape_mode = !$scope.multiple_shape_mode;
-                        $scope.$digest();
-                    }
-                });
-
-                var draw; // global so we can remove it later
-                var active; //temporary watcher if user is currently drawing - for clearing, think OL should have tool for this?
-
                 /**
-                 * (PRIVATE) Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
-                 * @memberof hs.measure.controller
+                 * @memberof hs.measure.service
                  * @function addInteraction
+                 * @private
+                 * @param {Boolean} type Geometry type
+                 * @description Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
                  */
-                function addInteraction() {
-                    var type = ($scope.type == 'area' ? 'Polygon' : 'LineString');
-                    draw = new ol.interaction.Draw({
-                        source: source,
-                        type: /** @type {ol.geom.GeometryType} */ (type)
+                function addInteraction(type) {
+                    var drawType = (type == 'area' ? 'Polygon' : 'LineString');
+                    me.draw = new ol.interaction.Draw({
+                        source: me.measureVector.getSource(),
+                        type: /** @type {ol.geom.GeometryType} */ (drawType)
                     });
-                    map.addInteraction(draw);
+                    map.addInteraction(me.draw);
 
-                    draw.on('drawstart',
+                    me.draw.on('drawstart',
                         function(evt) {
-                            $("#toolbar").fadeOut();
-                            // set sketch
-                            if ($scope.multiple_shape_mode) {
-                                if (!Array.isArray($scope.sketch)) {
-                                    $scope.sketch = [];
-                                    $scope.measurements.push({
+                            $rootScope.$broadcast('measure.drawStart');
+                            if (me.data.multipleShapeMode) {
+                                if (!Array.isArray(me.sketch)) {
+                                    me.sketch = [];
+                                    me.data.measurements.push({
                                         size: 0,
                                         unit: ""
                                     });
                                 }
-                                $scope.sketch.push(evt.feature);
+                                me.sketch.push(evt.feature);
                             }
                             else {
-                                $scope.sketch = [evt.feature];
-                                $scope.measurements.push({
+                                me.sketch = [evt.feature];
+                                me.data.measurements.push({
                                     size: 0,
                                     unit: ""
                                 });
                             }
-                            $scope.current_measurement = $scope.measurements.length - 1;
-                            active = true;
-                        }, this);
+                            me.currentMeasurement = me.data.measurements.length - 1;
+                        });
 
-                    draw.on('drawend',
+                    me.draw.on('drawend',
                         function(evt) {
-                            $("#toolbar").fadeIn();
-                            active = false;
-                        }, this);
+                            $rootScope.$broadcast('measure.drawEnd');
+                        });
                 }
-
+                
                 var wgs84Sphere = new ol.Sphere(6378137);
-
+                
                 /**
-                 * (PRIVATE) Compute and format line length with correct units (m/km)
-                 * @memberof hs.measure.controller
+                 * @memberof hs.measure.service
                  * @function formatLength
+                 * @private
                  * @param {ol.geom.LineString} line
                  * @return {object} numeric length of line with used units
+                 * @description Compute and format line length with correct units (m/km)
                  */
                 var formatLength = function(line) {
                     var length = 0;
                     var coordinates = line.getCoordinates();
-                    var sourceProj = OlMap.map.getView().getProjection();
+                    var sourceProj = map.getView().getProjection();
 
 
                     for (var i = 0, ii = coordinates.length - 1; i < ii; ++i) {
@@ -207,14 +272,15 @@ define(['angular', 'ol', 'map', 'core'],
                 };
 
                 /**
-                 * (PRIVATE) Compute and format polygon area with correct units (m/km)
-                 * @memberof hs.measure.controller
+                 * @memberof hs.measure.service
                  * @function formatArea
+                 * @private
                  * @param {ol.geom.Polygon} polygon
                  * @return {object} area of polygon with used units
+                 * @description Compute and format polygon area with correct units (m2/km2)
                  */
                 var formatArea = function(polygon) {
-                    var sourceProj = OlMap.map.getView().getProjection();
+                    var sourceProj = map.getView().getProjection();
                     var geom = /** @type {ol.geom.Polygon} */ (polygon.clone().transform(sourceProj, 'EPSG:4326'));
                     var coordinates = geom.getLinearRing(0).getCoordinates();
                     area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
@@ -232,97 +298,78 @@ define(['angular', 'ol', 'map', 'core'],
                     }
                     return output;
                 };
+            }
+        ])
+        /**
+         * @memberof hs.measure
+         * @ngdoc controller
+         * @name hs.measure.controller
+         */
+        .controller('hs.measure.controller', ['$scope', 'hs.map.service', 'Core', 'hs.measure.service',
+            function($scope, OlMap, Core, Measure) {
+                $scope.data = Measure.data;
 
-                $scope.measurements = [];
-                $scope.current_measurement = {};
+                $(document).keyup(function(e) {
+                    if (e.which == 17) {
+                        Measure.switchMultipleMode();
+                        if (!$scope.$$phase) $scope.$digest();
+                    }
+                });
+
+                $scope.$on('measure.drawStart', function(){
+                    $("#toolbar").fadeOut();
+                });
+                
+                $scope.$on('measure.drawEnd', function(){
+                    $("#toolbar").fadeIn();
+                });
+
                 $scope.type = 'distance';
 
                 /**
-                 * Set type of current measurment 
                  * @memberof hs.measure.controller
                  * @function setType
+                 * @public
                  * @param {string} type type of measure to use, should be "area" or "distance"
+                 * @return {object} area of polygon with used units
+                 * @description Set type of current measurment
                  */
                 $scope.setType = function(type) {
                     $scope.type = type;
+                    Measure.switchMeasureType(type);
                     if (!$scope.$$phase) $scope.$digest();
                 }
 
                 /**
-                 * Clear current drawings
                  * @memberof hs.measure.controller
                  * @function clearAll
+                 * @public
+                 * @param {string} type type of measure to use, should be "area" or "distance"
+                 * @return {object} area of polygon with used units
                  * @description Reset sketch and all measurements to start new drawing
                  */
                 $scope.clearAll = function() {
-                    if (active) draw.finishDrawing();
-                    $scope.measurements = [];
-                    source.clear();
-                    $scope.sketch = null;
+                    Measure.clearMeasurement();
                     if (!$scope.$$phase) $scope.$digest();
-                }
-
-                /**
-                 * Change style of drawing in the map
-                 * @memberof hs.measure.controller
-                 * @function setFeatureStyle
-                 * @param {Array|Object} new_style Ol.style object for vector
-                 */
-                $scope.setFeatureStyle = function(new_style) {
-                    style = new_style;
-                    vector.setStyle(new_style);
                 }
 
                 $scope.$watch('type', function() {
                     if (Core.mainpanel != 'measure') return;
-                    drawReset();
+                    Measure.changeMeasureParams($scope.type);
                 });
-                
-                /**
-                 * (PRIVATE) Restart interaction and nullify sketch, measure parameter change callback
-                 * @memberof hs.measure.controller
-                 * @function drawReset
-                 */
-                function drawReset() {
-                    map.removeInteraction(draw);
-                    $scope.sketch = null;
-                    addInteraction();
-                }
-                
-                /**
-                 * Activate measuring function
-                 * @memberof hs.measure.controller
-                 * @function activateMeasuring
-                 */
-                $scope.activateMeasuring = function() {
-                    map.addLayer(vector);
-                    $(map.getViewport()).on('mousemove', mouseMoveHandler);
-                    addInteraction();
-                }
-
-                /**
-                 * Deactivate measuring function
-                 * @memberof hs.measure.controller
-                 * @function deactivateMeasuring
-                 */
-                $scope.deactivateMeasuring = function() {
-                    $(map.getViewport()).off('mousemove');
-                    map.removeInteraction(draw);
-                    map.removeLayer(vector);
-                }
 
                 $scope.$on('core.mainpanel_changed', function(event) {
                     if (Core.mainpanel == 'measure') {
-                        $scope.activateMeasuring();
+                        Measure.activateMeasuring($scope.type);
                     } else {
-                        $scope.deactivateMeasuring();
+                        Measure.deactivateMeasuring();
                     }
                 });
                 
                 //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
                 if (Core.mainpanel=="measure") {
                     Core.current_panel_queryable=false;
-                    $scope.activateMeasuring();
+                    Measure.activateMeasuring($scope.type);
                 }
                 
                 $scope.$emit('scope_loaded', "Measure");
