@@ -37,6 +37,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     var url_generation = true;
                     //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
                     var me = {};
+                    me.shareId = null;
                     me.current_url = "";
                     me.permalinkLayers = "";
                     me.added_layers = [];
@@ -278,65 +279,74 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                 }
             ])
             /**
-             * @ngdoc controller
-             * @memberof hs.permalink
-             * @name hs.permalink.controller
+             * @ngdoc service
+             * @name hs.permalink.shareService
+             * @membeof hs.permalink
+             * @description Service responsible for sharing background. Mantain correct sharing links on the fly
              */
-            .controller('hs.permalink.controller', ['$rootScope', '$scope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare', 'hs.utils.service', 'hs.status_creator.service', '$q',
-                function($rootScope, $scope, $http, Core, config, service, socialshare, utils, status_creator, $q) {
-
-                    $scope.embedCode = "";
-                    $scope.shareUrlValid = false;
-                    service.shareId = null;
-                    $scope.new_share = false;
-                    $scope.shareLink = "permalink";
-                    
+            .service('hs.permalink.shareService', ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.service_url', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q',
+                function($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q) {
+                    me.data = {};
+                    me.data.pureMapUrl = "";
+                    me.data.permalinkUrl = "";
+                    me.data.shareLink = "permalink";
+                    me.data.embedCode = "";
+                    me.data.shareUrlValid = false;
+                    me.data.title = "";
+                    me.data.abstract = "";
                     /**
-                     * @function updateEmbedCode
-                     * @memberof hs.permalink.controller
-                     * @returns {String} Iframe tag with src attribute on embed Url and default width and height (1000x700px)
-                     * Create Iframe tag for embeded map
+                     * @memberof permalink.shareService
+                     * @function getEmbedCode
+                     * @public
+                     * @description Get correct Embed code with correct share link type
                      */
-                    $scope.updateEmbedCode = function() {
-                            $scope.embedCode = '<iframe src="' + $scope.selectShareUrl() + '" width="1000" height="700"></iframe>';
-                        }
-                    
-                    /**
-                     * @function selectShareUrl
-                     * @memberof hs.permalink.controller
-                     * @returns {String} Right share Url
-                     * Select right share Url based on shareLink property (either Permalink Url or PureMap url)
-                     */
-                    $scope.selectShareUrl = function() {
-                        var shareUrl = "";
-                        if ($scope.shareLink == "permalink") {
-                            shareUrl = $scope.permalinkUrl; 
-                        }
-                        else {
-                            shareUrl = $scope.pureMapUrl;
-                        }
-                        return shareUrl; 
+                    me.getEmbedCode = function() {
+                        me.data.embedCode = '<iframe src="' + me.getShareUrl() + '" width="1000" height="700"></iframe>';
+                        if (!$rootScope.$$phase) $rootScope.$digest();
+                        return me.data.embedCode;
                     }
-                    
                     /**
-                    * @function invalidateShareUrl
-                    * @memberof hs.permalink.controller
-                    * Set share Url state invalid
-                    */
-                    $scope.invalidateShareUrl = function() {
-                            $scope.shareUrlValid = false;
-                        }
-                    
-                    /**
-                     * @function shareOnSocial
-                     * @memberof hs.permalink.controller
-                     * @param {String} provider Social network provider for sharing
-                     * Create share post on selected social network
+                     * @memberof permalink.shareService
+                     * @function getShareUrl
+                     * @public
+                     * @return {String} Share URL
+                     * @description Get correct share Url based on app choice
                      */
-                    $scope.shareOnSocial = function(provider) {
-                        $scope.shareProvider = provider;
-                        if (!$scope.shareUrlValid) {
-                            if (service.shareId == null || $scope.new_share) service.shareId = utils.generateUuid();
+                    me.getShareUrl = function () {
+                        if (me.data.shareLink == "permalink") return me.data.permalinkUrl;
+                        else if (me.data.shareLink == "puremap") return me.data.pureMapUrl;
+                    }
+                    /**
+                     * @memberof permalink.shareService
+                     * @function setShareType
+                     * @public
+                     * @params {String} link Share type to set (permalink/puremap)
+                     * @description Set share typ and refresh embed code
+                     */
+                    me.setShareType = function(link) {
+                        me.data.shareLink = link;
+                        me.getEmbedCode();
+                    }
+                    /**
+                     * @memberof permalink.shareService
+                     * @function invalidateShareUrl
+                     * @public
+                     * @description Make current share url invalid for social sharing
+                     */
+                    me.invalidateShareUrl = function() {
+                        me.data.shareUrlValid = false;
+                    }
+                    /**
+                     * @memberof permalink.shareService
+                     * @function shareOnSocial
+                     * @public
+                     * @params {String} provider Social share provider (twitter/facebook/google)
+                     * @params {Boolean} newShare If new share record on server should be created 
+                     * @description Share map on social network
+                     */
+                    me.shareOnSocial = function(provider, newShare) {
+                        if (!me.data.shareUrlValid) {
+                            if (serviceURL.shareId == null || newShare) serviceURL.shareId = utils.generateUuid();
                             $.ajax({
                                 url: (getHostname() + config.status_manager_url),
                                 cache: false,
@@ -344,27 +354,27 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 async: false,
                                 data: JSON.stringify({
                                     request: 'socialShare',
-                                    id: service.shareId,
-                                    url: encodeURIComponent($scope.selectShareUrl()),
-                                    title: $scope.title,
-                                    description: $scope.abstract,
-                                    image: $scope.thumbnail
+                                    id: serviceURL.shareId,
+                                    url: encodeURIComponent(me.getShareUrl()),
+                                    title: me.data.title,
+                                    description: me.data.abstract,
+                                    image: me.data.thumbnail
                                 }),
                                 success: function(j) {
                                     $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                        longUrl: getHostname() + config.status_manager_url + "?request=socialshare&id=" + service.shareId
+                                        longUrl: getHostname() + config.status_manager_url + "?request=socialshare&id=" + serviceURL.shareId
                                     }).success(function(data, status, headers, config) {
-                                        $scope.share_url = data.id;
+                                        var shareUrl = data.id;
                                         socialshare.share({
-                                            'provider': $scope.shareProvider,
+                                            'provider': provider,
                                             'attrs': {
-                                                'socialshareText': $scope.title,
-                                                'socialshareUrl': $scope.share_url,
+                                                'socialshareText': me.data.title,
+                                                'socialshareUrl': shareUrl,
                                                 'socialsharePopupHeight': 600,
                                                 'socialsharePopupWidth': 500
                                             }
                                         })
-                                        $scope.shareUrlValid = true;
+                                        me.data.shareUrlValid = true;
                                     }).error(function(data, status, headers, config) {
                                         console.log('Error creating short Url');
                                     });
@@ -374,49 +384,84 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             socialshare.share({
                                 'provider': provider,
                                 'attrs': {
-                                    'socialshareText': $scope.title,
-                                    'socialshareUrl': $scope.share_url,
+                                    'socialshareText': me.data.title,
+                                    'socialshareUrl': me.getShareUrl(),
                                     'socialsharePopupHeight': 600,
                                     'socialsharePopupWidth': 500
                                 }
                             })
                         }
-
-
                     }
-                    
+                    /**
+                     * @memberof permalink.shareService
+                     * @function generateThumbnail
+                     * @public
+                     * @params {Object} $element
+                     * @description Generate thumbnail of current map and save it to variable and selected element
+                     */
+                    me.generateThumbnail = function($element) {
+                        if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink') {
+                            $element.attr("crossOrigin", "Anonymous");
+                            OlMap.map.once('postcompose', function(event) {
+                                var myCanvas = document.getElementById('my_canvas_id');
+                                var canvas = event.context.canvas;
+                                var canvas2 = document.createElement("canvas");
+                                var width = 256,
+                                    height = 256;
+                                canvas2.style.width = width + "px";
+                                canvas2.style.height = height + "px";
+                                canvas2.width = width;
+                                canvas2.height = height;
+                                var ctx2 = canvas2.getContext("2d");
+                                ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
+                                try {
+                                    $element.attr('src', canvas2.toDataURL('image/png'));
+                                    this.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
+                                }
+                                catch(e) {
+                                    $element.attr('src', hsl_path + 'components/status_creator/notAvailable.png');
+                                }
+                                $element.width(width).height(height);
+                            }, me);
+                            OlMap.map.renderSync();
+                        }
+                    }
+                    /**
+                     * @memberof permalink.shareService
+                     * @function getHostname
+                     * @private
+                     */
                     function getHostname(){
                         if(angular.isDefined(config.hostname))
                             return config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url);
                         else
                             return "";
                     }
-
-                    $scope.$on('core.mainpanel_changed', function(event) {
+                    
+                    $rootScope.$on('core.mainpanel_changed', function(event) {
                         if (Core.mainpanel == 'permalink') {
-                            service.update();
+                            serviceURL.update();
                             var status_url = getHostname() + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
-                            if (service.added_layers.length > 0) {
+                            if (serviceURL.added_layers.length > 0) {
                                 $.ajax({
                                     url: status_url,
                                     cache: false,
                                     method: 'POST',
                                     dataType: "json",
                                     data: JSON.stringify({
-                                        data: service.added_layers,
+                                        data: serviceURL.added_layers,
                                         permalink: true,
-                                        id: service.id,
+                                        id: serviceURL.id,
                                         project: config.project_name,
                                         request: "save"
                                     }),
                                     success: function(j) {
-                                        service.permalinkLayers = status_url + "?request=load&id=" + service.id;
+                                        serviceURL.permalinkLayers = status_url + "?request=load&id=" + serviceURL.id;
                                         $rootScope.$broadcast('browserurl.updated');
 
                                     },
                                     error: function() {
                                         console.log('Error saving permalink layers.');
-                                        $scope.success = false;
                                     }
                                 })
                             } else {
@@ -424,57 +469,124 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             }
                         }
                     });
-                    $scope.$on('browserurl.updated', function() {
+                    
+                    $rootScope.$on('browserurl.updated', function() {
                         if (Core.mainpanel == "permalink") {
 
-                            $scope.shareUrlValid = false;
+                            me.data.shareUrlValid = false;
 
                             $q.all([
                                 $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                    longUrl: service.getPureMapUrl()
+                                    longUrl: serviceURL.getPureMapUrl()
                                 }).success(function(data, status, headers, config) {
-                                    $scope.pureMapUrl = data.id;
+                                    me.data.pureMapUrl = data.id;
                                 }).error(function(data, status, headers, config) {
                                     console.log('Error creating short Url');
-                                    $scope.pureMapUrl = service.getPureMapUrl();
+                                    me.data.pureMapUrl = serviceURL.getPureMapUrl();
                                 }),
 
                                 $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                    longUrl: service.getPermalinkUrl()
+                                    longUrl: serviceURL.getPermalinkUrl()
                                 }).success(function(data, status, headers, config) {
-                                    $scope.permalinkUrl = data.id;
+                                    me.data.permalinkUrl = data.id;
                                 }).error(function(data, status, headers, config) {
                                     console.log('Error creating short Url');
-                                    $scope.permalinkUrl = service.getPermalinkUrl();
+                                    me.data.permalinkUrl = serviceURL.getPermalinkUrl();
                                 }),
                             ]).then(function() {
-                                $scope.updateEmbedCode();
+                                me.getEmbedCode();
                             });
                             
                         }
-                        if (!$scope.$$phase) $scope.$digest();
+                        if (!$rootScope.$$phase) $rootScope.$digest();
                     })
-
-                    $scope.$on('core.mainpanel_changed', function(event) {
+                    
+                    $rootScope.$on('core.mainpanel_changed', function(event) {
                         if (Core.mainpanel == 'permalink') {
-                            status_creator.generateThumbnail($('#hs-permalink-thumbnail'), $scope);
+                            OlMap.map.once('postrender', function(){
+                                me.generateThumbnail($('#hs-permalink-thumbnail'));
+                            });
                         }
                     });
 
 
-                    $scope.$on('map.extent_changed', function(event, data, b) {
-                        status_creator.generateThumbnail($('#hs-permalink-thumbnail'), $scope);
+                    $rootScope.$on('map.extent_changed', function(event) {
+                        OlMap.map.once('postrender', function(){
+                            me.generateThumbnail($('#hs-permalink-thumbnail'));
+                        });
 
                     });
                     
-                    $scope.$on('compositions.composition_loaded', function(event, data) {
+                    $rootScope.$on('compositions.composition_loaded', function(event, data) {
                         if(angular.isDefined(data.data)){
                             data = data.data;
-                            $scope.title = data.title;
-                            if(config.social_hashtag) $scope.title += ' ' + config.social_hashtag;
-                            $scope.abstract = data.abstract;
+                            me.data.title = data.title;
+                            if(config.social_hashtag) me.data.title += ' ' + config.social_hashtag;
+                            me.data.abstract = data.abstract;
                         }
                     })
+                    
+                    return me;
+                }])
+            /**
+             * @ngdoc controller
+             * @memberof hs.permalink
+             * @name hs.permalink.controller
+             */
+            .controller('hs.permalink.controller', ['$scope', 'hs.permalink.service_url', 'hs.permalink.shareService',
+                function($scope, service, ShareService) {
+
+                    $scope.data = ShareService.data;   
+                    $scope.new_share = false;
+                    
+                    /**
+                     * @function updateEmbedCode
+                     * @memberof hs.permalink.controller
+                     * @returns {String} Iframe tag with src attribute on embed Url and default width and height (1000x700px)
+                     * @description Create Iframe tag for embeded map
+                     */
+                    $scope.updateEmbedCode = function() {
+                            return ShareService.getEmbedCode();
+                        }
+                    
+                    /**
+                     * @function getShareUrl
+                     * @memberof hs.permalink.controller
+                     * @returns {String} Right share Url
+                     * @description Select right share Url based on shareLink property (either Permalink Url or PureMap url)
+                     */
+                    $scope.getShareUrl = function() {
+                        return ShareService.getShareUrl(); 
+                    }
+                    
+                    /**
+                     * @function setShareType
+                     * @memberof hs.permalink.controller
+                     * @returns {String} type
+                     * @description 
+                     */
+                    $scope.setShareType = function(type) {
+                        ShareService.setShareType(type);
+                    }
+                    
+                    /**
+                    * @function invalidateShareUrl
+                    * @memberof hs.permalink.controller
+                    * @description Set share Url state invalid
+                    */
+                    $scope.invalidateShareUrl = function() {
+                            ShareService.invalidateShareUrl();
+                        }
+                    
+                    /**
+                     * @function shareOnSocial
+                     * @memberof hs.permalink.controller
+                     * @param {String} provider Social network provider for sharing
+                     * @description Create share post on selected social network
+                     */
+                    $scope.shareOnSocial = function(provider) {
+                        ShareService.shareOnSocial(provider,$scope.new_share);
+                    }
 
                     $scope.$emit('scope_loaded', "Permalink");
                 }
