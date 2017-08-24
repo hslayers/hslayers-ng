@@ -202,6 +202,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 lyr.manuallyAdded = false;
                 if (lyr.getSource() instanceof ol.source.ImageWMS)
                     hs_map.proxifyLayerLoader(lyr, false);
+                if (lyr.getSource() instanceof ol.source.TileWMS)
+                    hs_map.proxifyLayerLoader(lyr, true);
                 var cesium_layer = me.convertOlToCesiumProvider(lyr);
                 if(angular.isDefined(cesium_layer)){
                     linkOlLayerToCesiumLayer(lyr, cesium_layer);

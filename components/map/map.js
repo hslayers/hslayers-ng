@@ -211,6 +211,8 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                     lyr.manuallyAdded = false;
                     if (lyr.getSource() instanceof ol.source.ImageWMS)
                         me.proxifyLayerLoader(lyr, false);
+                    if (lyr.getSource() instanceof ol.source.TileWMS)
+                        me.proxifyLayerLoader(lyr, true);
                     me.map.addLayer(lyr);
                 });
             }
@@ -281,7 +283,9 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
             if (tiled) {
                 var tile_url_function = src.getTileUrlFunction() || src.tileUrlFunction();
                 src.setTileUrlFunction(function (b, c, d) {
-                    return utils.proxify(decodeURIComponent(tile_url_function(b, c, d)));
+                    var url = tile_url_function(b, c, d);
+                    if(url.indexOf('proxy') == -1) url = decodeURIComponent(url);
+                    return utils.proxify(url);
                 });
             } else {
                 lyr.getSource().setImageLoadFunction(function (image, src) {
