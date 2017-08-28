@@ -163,6 +163,25 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                 })
             ];
         }
+        
+        var main_road_olu_style = function(feature, resolution) {
+            var use = feature.get('use');
+            if(use > 30) use = 30;
+            var fill = new ol.style.Fill({
+                color: rainbow(30, use, 0.7)
+            });
+            return [
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        fill: fill,
+                        stroke: stroke,
+                        radius: 5
+                    }),
+                    fill: fill,
+                    stroke: stroke
+                })
+            ];
+        }
        
         var mercatorProjection = ol.proj.get('EPSG:900913');
 
@@ -196,11 +215,12 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                 });
 
                 var spoi_source =  new ol.source.Vector();
+                var highway_spois_source =  new ol.source.Vector();
             
                 function createPoiLayers() {
                     
                      var new_lyr = new ol.layer.Vector({
-                        title: "Land use parcels",
+                        title: "Land use parcels (color by poi count)",
                         source: spoi_source,
                         style: olu_style,
                         visible: true,
@@ -208,12 +228,26 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     });
                      
                     config.default_layers.push(new_lyr);
+                    
+                    var new_lyr2 = new ol.layer.Vector({
+                        title: "Parcels with Pois near main roads (color by land use class)",
+                        source: highway_spois_source,
+                        style: main_road_olu_style,
+                        visible: true,
+                        //maxResolution: 4.48657133911758
+                    });
+                     
+                    config.default_layers.push(new_lyr2);
                 }
                 
                 createPoiLayers();
              
                 function extentChanged(){
-                    console.log('Resolution', map.getView().getResolution());
+                    getOlus();
+                    getMainRoadPois();
+                }
+                
+                function getOlus(){
                     if(map.getView().getResolution() > 2.48657133911758) return;
                     var format = new ol.format.WKT();
                     var bbox = map.getView().calculateExtent(map.getSize());
@@ -245,6 +279,41 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                         spoi_source.clear();
                         spoi_source.addFeatures(features);
                         spoi_source.set('loaded', true);
+                    })
+                }
+                
+                 function getMainRoadPois(){
+                    //if(map.getView().getResolution() > 4.48657133911758) return;
+                    var format = new ol.format.WKT();
+                    var bbox = map.getView().calculateExtent(map.getSize());
+                    var ext = ol.proj.transformExtent(bbox, 'EPSG:3857', 'EPSG:4326')
+                    var extents = ext[0] + ' ' + ext[1] + ', ' +ext[2] + ' ' + ext[3];
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('PREFIX geo: <http://www.opengis.net/ont/geosparql#> PREFIX geof: <http://www.opengis.net/def/function/geosparql/> PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> PREFIX poi: <http://www.openvoc.eu/poi#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX otm: <http://w3id.org/foodie/otm#> PREFIX olu: <http://w3id.org/foodie/olu#> SELECT DISTINCT ?olu ?hilucs ?source ?municode ?specificLandUse ?coordinatesOLU FROM <http://w3id.org/foodie/olu#> WHERE { ?olu a olu:LandUse . ?olu geo:hasGeometry ?geometry . ?olu olu:hilucsLandUse ?hilucs . ?olu olu:geometrySource ?source . OPTIONAL {?olu olu:municipalCode ?municode} . OPTIONAL {?olu olu:specificLandUse ?specificLandUse} . ?geometry geo:asWKT ?coordinatesOLU . FILTER(bif:st_within(?coordinatesPOIa,?coordinatesOLU)). { SELECT DISTINCT ?Resource, ?Label, ?coordinatesPOIa FROM <http://www.sdi4apps.eu/poi.rdf> WHERE { ?Resource rdfs:label ?Label . ?Resource a <http://gis.zcu.cz/SPOI/Ontology#lodging> . ?Resource geo:asWKT ?coordinatesPOIa . FILTER(bif:st_within(?coordinatesPOIa,?coordinatesOTM,0.00045)) . { SELECT ?coordinatesOTM FROM <http://w3id.org/foodie/otm#> WHERE { ?roadlink a otm:RoadLink . ?roadlink otm:roadName ?name. ?roadlink otm:functionalRoadClass ?class. ?roadlink otm:centerLineGeometry ?geometry . ?geometry geo:asWKT ?coordinatesOTM . FILTER(bif:st_intersects (?coordinatesOTM, bif:st_geomFromText("BOX(' + extents + ')"))) . FILTER(STRSTARTS(STR(?class),"firstClass") ) . } } } } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    
+                    highway_spois_source.set('loaded', false);
+                    $.ajax({
+                        url: utils.proxify(q)
+                    })
+                    .done(function(response) {
+                            if(angular.isUndefined(response.results)) return;
+                            var features = [];
+                            for (var i = 0; i < response.results.bindings.length; i++) {
+                                try {
+                                    var b = response.results.bindings[i];
+                                    if(b.coordinatesOLU.datatype=="http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.coordinatesOLU.value.indexOf('e+') == -1 && b.coordinatesOLU.value.indexOf('e-') == -1){
+                                        var g_feature = format.readFeature(b.coordinatesOLU.value.toUpperCase());
+                                        var ext = g_feature.getGeometry().getExtent()
+                                        var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', hsMap.map.getView().getProjection());
+                                        var feature = new ol.Feature({geometry: geom_transformed, parcel: b.olu.value, use: b.specificLandUse.value, poi_count: 30});
+                                        features.push(feature);
+                                    }
+                                } catch(ex){
+                                    console.log(ex);
+                                }
+                            }
+                        highway_spois_source.clear();
+                        highway_spois_source.addFeatures(features);
+                        highway_spois_source.set('loaded', true);
                     })
                 }
                 
