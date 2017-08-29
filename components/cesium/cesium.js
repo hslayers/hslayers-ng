@@ -245,6 +245,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         url: src.getUrls()[0],
                         layers: src.getParams().LAYERS,
                         getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
+                        enablePickFeatures: true,
                         parameters: params,
                         minimumTerrainLevel: params.minimumTerrainLevel || 12,
                         proxy: new Cesium.DefaultProxy('/cgi-bin/hsproxy.cgi?url=')
