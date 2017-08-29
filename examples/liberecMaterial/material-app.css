@@ -1,0 +1,38 @@
+.md-scroll-mask{
+    display: none !important;
+}
+
+.map-floating-gui {
+    position:absolute;
+    top: 0;
+    left 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 991;
+}
+.map-floating-gui > * {
+    pointer-events: auto;
+}
+
+.left-side-panel-button {
+    position: absolute;
+    top: 1em;
+    margin: 0;
+    min-width: 2em;
+}
+
+.map-tool-panel {
+    position: absolute;
+    top: 4em;
+    margin-left: 1em;
+    min-width: 2em;
+    min-height: 8em;
+    background-color: rgba(240, 240, 240, 0.5);
+}
+.map-tool-panel:hover {
+    background-color: rgb(240, 240, 240);
+}
+.map-tool-panel > .md-button {
+    margin: 0;
+}
