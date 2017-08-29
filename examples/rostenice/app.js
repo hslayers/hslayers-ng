@@ -26,6 +26,18 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 }
             };
         }]);
+        
+        module.directive('hs.aboutproject', function() {
+            function link(scope,element,attrs) {
+                setTimeout(function(){
+                    $('#about-dialog').modal('show');
+                }, 1500);
+            }           
+            return {
+                templateUrl: './about.html?bust=' + gitsha,
+                link: link
+            };
+        });
 
         function getHostname() {
             var url = window.location.href
@@ -192,6 +204,13 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 Core.panelEnabled('status_creator', false);
 
                 $scope.$on('infopanel.updated', function(event) {});
+                
+                function createAboutDialog() {
+                    var el = angular.element('<div hs.aboutproject></div>');
+                    $("#hs-dialog-area").append(el);
+                    $compile(el)($scope);
+                }
+                createAboutDialog();
             }
         ]);
 
