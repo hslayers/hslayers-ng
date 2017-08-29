@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'matCore','matSearch'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -15,13 +15,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.sidebar',
             'ngMaterial',
             'hs.material.core',
-            'hs.material.search',
-            'hs.material.mainToolbar',
-            'hs.material.bottomToolbar',
-            'hs.material.sidepanel',
-            'hs.material.addLayer',
-            'hs.material.basemap',
-            'hs.material.layerManager'
+            'hs.material.search'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$timeout', function (OlMap, Core, $timeout) {
@@ -58,66 +52,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         wrapX: false
                     }),
                     title: "Base layer",
-                    base: true,
-                    img: "http://holywatersf.com/images/contact/google-map.png"
-                }),
-                new ol.layer.Tile({
-                    title: "OpenCycleMap",
-                    visible: false,
-                    base: true,
-                    source: new ol.source.OSM({
-                        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                    }),
-                    img: "http://holywatersf.com/images/contact/google-map.png"
-                }),
-                new ol.layer.Tile({
-                    title: "Satellite",
-                    visible: false,
-                    base: true,
-                    source: new ol.source.XYZ({
-                        url: 'http://api.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmFpdGlzYmUiLCJhIjoiY2lrNzRtbGZnMDA2bXZya3Nsb2Z4ZGZ2MiJ9.g1T5zK-bukSbJsOypONL9g'
-                    }),
-                    img: "http://holywatersf.com/images/contact/google-map.png",
-                    removeable: true
-                }),
-                new ol.layer.Vector({
-                    title: "Sídla",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/sidla.geojson'
-                    }),
-                    path: "Libe"
-                }),
-                new ol.layer.Vector({
-                    title: "Horské kóty",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/koty.geojson'
-                    }),
-                    path: "Libe"
-                }),
-                new ol.layer.Vector({
-                    title: "Vodni plochy",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/plochy.geojson'
-                    }),
-                    path: "Libe"
-                }),
-                new ol.layer.Vector({
-                    title: "Vodni toky",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/toky.geojson'
-                    }),
-                    path: ""
-                }),
-                new ol.layer.Vector({
-                    title: "Chraněná území",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/chranene.geojson'
-                    })
+                    base: true
                 })
             ],
             project_name: 'Material',
@@ -146,10 +81,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "url": 'http://foodie-dev.wirelessinfo.cz'
                 },
             },
-            queryPoint: 'notWithin',
-            mainToolbar: {
-                addLayer: true
-            }
+            queryPoint: 'notWithin'
         });
 
         module.controller('Main', ['$scope', 'Core',
@@ -158,10 +90,6 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 $scope.Core = Core;
             }
         ]);
-
-        module.config(function($mdThemingProvider) {
-            $mdThemingProvider.theme('selected-basemap').backgroundPalette('deep-purple').dark();
-          });
 
         return module;
     });

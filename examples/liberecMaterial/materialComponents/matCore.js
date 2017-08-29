@@ -7,12 +7,6 @@ console.log(hslMin);
 require.config({
     paths: {
         matSearch: hsl_path + 'examples/liberecMaterial/materialComponents/matSearch',
-        mainToolbar: hsl_path + 'examples/liberecMaterial/materialComponents/mainToolbar',
-        bottomToolbar: hsl_path + 'examples/liberecMaterial/materialComponents/bottomToolbar',
-        sidepanel: hsl_path + 'examples/liberecMaterial/materialComponents/sidepanel',
-        matAddLayer: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/addLayer',
-        matBasemap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/basemap',
-        matLayerManager: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/layerManager',
     },
     shim: {},
     priority: []

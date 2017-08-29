@@ -9,7 +9,7 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 3;
+    z-index: 991;
 }
 .map-floating-gui > * {
     pointer-events: auto;
@@ -35,62 +35,4 @@
 }
 .map-tool-panel > .md-button {
     margin: 0;
-}
-
-.main-toolbar {
-    position: absolute;
-    top: 2em;
-    right: 2em;
-    max-width: 40vw;
-    background-color: rgba(240, 240, 240, 0.7);
-}
-.main-toolbar:hover {
-    background-color: rgb(240, 240, 240);
-}
-.main-toolbar .md-button {
-    min-width: 40px;
-    margin-right: 0px;
-}
-.main-toolbar .md-button:last-child {
-    margin-right: 8px;
-}
-
-.bottom-toolbar {
-    position: absolute;
-    bottom: 2em;
-    right: 2em;
-    max-width: 40vw;
-    background-color: rgba(240, 240, 240, 0.7);
-}
-.bottom-toolbar:hover {
-    background-color: rgb(240, 240, 240);
-}
-.bottom-toolbar > .md-button {
-    min-width: 32px;
-    margin: 4px;
-    margin-right: 0px;
-}
-.bottom-toolbar > .md-button:last-child {
-    margin-right: 4px;
-}
-
-.sidenav-panel,.sidenav-panel > *{
-    height: 100%;
-}
-.panel-close-button{
-    position: absolute;
-    top: 0.2em;
-    right: 0.5em;
-    color: #000;
-    z-index: 10;
-}
-.selected-basemap{
-    background-color: #CCCCCC;
-}
-.basemap-card:focus{
-    outline-width: 0px;
-}
-
-.layer-toolbar > .md-button {
-    margin: 0px;
 }
