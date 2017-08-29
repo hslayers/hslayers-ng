@@ -230,6 +230,20 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             }
 
             this.convertOlToCesiumProvider = function(ol_lyr) {
+                
+                    function MyProxy(proxy) {
+                        this.proxy = proxy;
+                    }
+
+                    MyProxy.prototype.getURL = function(resource) {
+                        var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
+                        if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45')>-1) {
+                            return  this.proxy + '';
+                        }
+                        return this.proxy + prefix + encodeURIComponent(resource);
+                    };
+    
+    
                 if (ol_lyr.getSource() instanceof ol.source.OSM) {
                     return new Cesium.ImageryLayer(Cesium.createOpenStreetMapImageryProvider(), {
                         show: ol_lyr.getVisible(),
@@ -247,8 +261,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                         enablePickFeatures: true,
                         parameters: params,
+                        getFeatureInfoParameters: {VERSION: '1.1.1', CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326'},
                         minimumTerrainLevel: params.minimumTerrainLevel || 12,
-                        proxy: new Cesium.DefaultProxy('/cgi-bin/hsproxy.cgi?url=')
+                        proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=')
                     }), {
                         alpha: 0.7,
                         show: ol_lyr.getVisible()
