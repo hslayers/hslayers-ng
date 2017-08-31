@@ -239,6 +239,13 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
                         if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45')>-1) {
                             return  this.proxy + '';
+                        } else {
+                            var params = utils.getParamsFromUrl(resource);
+                            var bbox = params.bbox.split(',');
+                            var dist = Math.sqrt( Math.pow((bbox[0]-bbox[2]), 2) + Math.pow((bbox[1]-bbox[3]), 2) );
+                            if(dist>1){
+                                 return  this.proxy + '';
+                            }
                         }
                         return this.proxy + prefix + encodeURIComponent(resource);
                     };
