@@ -53,7 +53,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
                 active: true
             }, {
-                title: 'SRTM',
+                title: 'EU-DEM',
                 url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
                 active: false
             }],
