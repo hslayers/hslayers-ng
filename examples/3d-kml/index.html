@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>HS Layers</title>
+  <meta name="description" content="This application visualises the Open Land Use dataset on top of the EU-DEM terrain model in a perspective view. Displaying the data in 3D environment helps the user to explore an area of interest in more natural way than a traditional map. Moreover, the user can explore other datasets (such as OTM or SPOI) or even add a web map service of his choice (as long as the WMS is in WGS84 coordinate system) to make custom 3D mash-ups. The technical details can be found here.
+
+The application was developed by the DataBio project team, for the purposes of the  INSPIRE HACK 2017. 
+">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <style>
+  </style>
+</head>
+<body >
+    <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/requirejs/require.js"></script>      
+    <script src="hslayers.js"></script> 
+</body>
+</html>
