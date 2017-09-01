@@ -206,8 +206,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     hs_map.proxifyLayerLoader(lyr, true);
                 var cesium_layer = me.convertOlToCesiumProvider(lyr);
                 if(angular.isDefined(cesium_layer)){
-                    linkOlLayerToCesiumLayer(lyr, cesium_layer);
-                    me.viewer.imageryLayers.add(cesium_layer);
+                    if(cesium_layer instanceof Cesium.ImageryLayer) {
+                        linkOlLayerToCesiumLayer(lyr, cesium_layer);
+                        me.viewer.imageryLayers.add(cesium_layer);
+                    } else if(cesium_layer.then) {
+                        me.viewer.dataSources.add(cesium_layer);
+                    }
                 }
             }
 
@@ -275,7 +279,16 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         alpha: 0.7,
                         show: ol_lyr.getVisible()
                     })
-                } else {
+                }  else if (ol_lyr.getSource() instanceof ol.source.Vector) { 
+                    if (ol_lyr.getSource().getFormat() instanceof ol.format.KML){
+                        return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(),
+                            {
+                                camera: viewer.scene.camera,
+                                canvas: viewer.scene.canvas,
+                                clampToGround: ol_lyr.getSource().get('clampToGround') || true
+                            })
+                    }
+                }else {
                     console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
                 }
             }
