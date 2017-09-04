@@ -152,7 +152,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
-                    title: "Compound vegetation index (CTI)",
+                    title: "Compound topographic index (CTI)",
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
                         params: {
