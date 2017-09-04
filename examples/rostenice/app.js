@@ -135,6 +135,40 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
+                    title: "Normalized difference vegetation index (NDVI) ",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
+                        params: {
+                            LAYERS: 'ndvi_rostenice',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 14
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map&service=WMS&request=GetLegendGraphic&layer=ndvi_rostenice&version=1.3.0&format=image/png&sld_version=1.1.0'],
+                    maxResolution: 8550,
+                    visible: false,
+                    opacity: 0.7
+                }),
+                new ol.layer.Tile({
+                    title: "Compound vegetation index (CTI)",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
+                        params: {
+                            LAYERS: 'cti_rostenice',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 14
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map&service=WMS&request=GetLegendGraphic&layer=cti_rostenice&version=1.3.0&format=image/png&sld_version=1.1.0'],
+                    maxResolution: 8550,
+                    visible: false,
+                    opacity: 0.7
+                }),
+                new ol.layer.Tile({
                     title: "Machinery tracklines",
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
