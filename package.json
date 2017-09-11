@@ -44,6 +44,10 @@
     "protractor": "protractor test/protractor-conf.js"
   },
   "dependencies": {
+    "angular-animate": "^1.5.0",
+    "angular-aria": "^1.5.0",
+    "angular-material": "^1.1.4",
+    "angular-messages": "^1.5.0",
     "moment": "^2.18.1"
   }
 }

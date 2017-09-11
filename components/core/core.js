@@ -22,6 +22,10 @@ require.config({
 
         angular: hsl_path + 'bower_components/angular/angular' + hslMin,
         'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize' + hslMin,
+        'ngAnimate': hsl_path + 'node_modules/angular-animate/angular-animate' + hslMin,
+        'ngAria': hsl_path + 'node_modules/angular-aria/angular-aria' + hslMin,
+        'ngMessages': hsl_path + 'node_modules/angular-messages/angular-messages' + hslMin,
+        'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
         'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext' + hslMin,
         'angularjs-socialshare': hsl_path + 'bower_components/angularjs-socialshare/dist/angular-socialshare' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || hsl_path + 'bower_components/bootstrap/dist/js/bootstrap' + hslMin,
@@ -80,6 +84,11 @@ require.config({
         'angular': {
             'exports': 'angular'
         },
+        'ngAnimate': ['angular'],
+        'ngAria': ['angular'],
+        'ngMaterial': {
+            deps: ['ngAnimate', 'ngAria']
+        },
         'angularjs-socialshare': {
             deps: ['angular']
         },
@@ -110,9 +119,9 @@ require.config({
     ]
 });
 
-define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
+define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
     function(angular, proj4) {
-        angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
+        angular.module('hs.core', ['hs.map', 'ngMaterial', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
             /**
              * @module hs.core
              * @name Core

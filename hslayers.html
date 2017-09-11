@@ -1,18 +1,48 @@
 <link rel="stylesheet" ng-href="{{hsl_path}}bower_components/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" ng-href="{{hsl_path}}node_modules/openlayers/css/ol.css" type="text/css">
+<link rel="stylesheet" ng-href="{{hsl_path}}node_modules/angular-material/angular-material.css" type="text/css">
 <link href="//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.css" rel="stylesheet">
 <link rel="stylesheet" ng-href="{{hsl_path}}css/whhg-font/css/whhg.css"/>
+<!-- Roboto Draft -->
+<!-- <link href='https://fonts.googleapis.com/css?family=RobotoDraft:400,500,700,400italic' rel='stylesheet' type='text/css'> -->
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css"> -->
+<link rel="stylesheet" type="text/css" href="css/mobile.css">
 <link rel="stylesheet" ng-href="{{hsl_path}}css/app.css"/>
 
+<div layout="column" style="height:100%;" ng-controller="hs.layout.controller">
+    <div hs.md-toolbar.directive></div>
+    <section flex layout="row">
+        <div hs.md-sidenav.directive></div>
+        <div flex id="map-container">
+            <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
+            <div class="map-floating-gui" id="gui">
+                
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!-- 
 <div id="page-wrapper">
     <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight && !Core.puremapApp, 'sb-left': !Core.sidebarRight && !Core.puremapApp}">
         <div class="page-content">
             <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
-            <div hs.toolbar.directive ng-controller="hs.toolbar.controller" ng-if="Core.exists('hs.toolbar.controller') && !Core.puremapApp" ng-show="!Core.smallWidth || !Core.sidebarExpanded"></div>
+            <! - -  <div hs.toolbar.directive ng-controller="hs.toolbar.controller" ng-if="Core.exists('hs.toolbar.controller') && !Core.puremapApp" ng-show="!Core.smallWidth || !Core.sidebarExpanded"></div>  - - >
 
             <div class="gui-overlay" ng-if="!Core.puremapApp">
+                
+                <div ng-controller="hs.layout.controller as layout" layout="column" layout-fill>
+                    <md-toolbar hs.toolbar.directive></md-toolbar>
+                    <! - -  <section layout="row" flex>
+                        <md-sidenav hs.sidebar.directive class="md-sidenav-left" md-component-id="left" md-whiteframe="4" mg-is-locked-open="$mdMedia('get-md')"></md-sidenav>
+                    </section>  - - >
+                </div>
 
-                <div class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar.controller') && Core.exists('hs.search.controller')">
+                <! - -  <div class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar.controller') && Core.exists('hs.search.controller')">
                     <div>
                         <div hs.search.directive_searchinput></div>
                         <div hs.search.directive_searchresults></div>
@@ -44,18 +74,21 @@
                             <div hs.customhtml.directive                                                            ng-if="Core.exists('hs.customhtml.controller')"></div>
                         </div>
                     </div>
-                </div>
-                <div id="hs-info-container" ng-hide="Core.smallWidth && Core.sidebarExpanded">
+                </div>  - - >
+                <! - -  <div id="hs-info-container" ng-hide="Core.smallWidth && Core.sidebarExpanded">
                     <div id="hs-info-area">
                         <div hs.info.directive ng-controller="hs.info.controller" ng-if="Core.exists('hs.info.controller')"></div>
                     </div>
-                </div>
+                </div>  - - >
             </div>
+
+            <div hs.floating_action_button.directive ng-controller="hs.floating_action_button.controller" ng-show="Core.isMobile()" class="fixed-action-btn click-to-toggle" ng-if="Core.exists('hs.floating_action_button.controller')"></div>
 
             <div id="hs-dialog-area">
                 <div hs.lodexplorer.directive_sparqllogdialog ng-controller="hs.lodexplorer.controller_sparqllogdialog"  ng-if="Core.exists('SparqlLogDialog')"></div>
-                <!--<div hs.status_creator.directive ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div>-->
+                <! - - <div hs.status_creator.directive ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div> - - >
             </div>
         </div>
     </div>
 </div>
+ -->

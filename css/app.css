@@ -86,6 +86,10 @@ div.mainpanel:not(.hs-stc-mainpanel) > div.panel-body {
     background: none !important;
 }
 
+.gui-overlay * {
+    pointer-events: initial;
+}
+
 .hs-filter {
     border-left:0;
     border-right:0;

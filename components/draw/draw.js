@@ -406,6 +406,7 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         });
 
                         var stopWaiting = $scope.$on('geolocation.updated', function(event) {
+                            console.log(event, Geolocation.last_location);
                             if (Geolocation.last_location.geoposition.coords.accuracy < requiredPrecision) {
                                 var g_feature = new ol.geom.Point(Geolocation.last_location.latlng);
                                 newPoint.ol_feature.setGeometry(g_feature);
@@ -605,10 +606,8 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                         if (angular.isObject($scope.current_feature)) $scope.saveFeature();
                         deselectCurrentFeature();
                         $scope.current_feature = feature;
-                        console.log(feature);
                         $(".hs-dr-editpanel").insertAfter($("#hs-dr-feature-" + feature.uuid));
                         $('#panelplace').animate({
-                            // scrollTop: $('#panelplace').scrollTop() + $(".hs-dr-editpanel").offset().top
                             scrollTop: $('#panelplace').scrollTop() + $("#hs-dr-feature-" + feature.uuid).offset().top
                         }, 500);
                         //$(".hs-dr-editpanel").get(0).scrollIntoView();
@@ -781,18 +780,89 @@ define(['angular', 'ol', 'map', 'core', 'utils'],
                 $scope.removeFeature = function(feature) {
                     if (confirm("Really delete the feature?")) {
                         var cf = $scope.current_feature;
-                        var olf = cf.ol_feature;
-                        if (cf == feature && angular.isDefined(olf.get('obs_vgi_id'))) {
-                            deleteVgiObservation(olf);
-                        } else if (cf == feature) {
-                            deselectCurrentFeature();
+                        var olf = feature.ol_feature;
+                        if (feature == cf) deselectCurrentFeature();
+                        if (angular.isDefined(olf.get('obs_vgi_id'))) {
+                            $http.delete($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=' + config.user_name).then(function(response) {
+                                window.plugins.toast.showWithOptions({
+                                    message: "Feature deleted.",
+                                    position: "bottom"
+                                });
+                                console.log(response);
+                                var featureId = feature.ol_feature.getId();
+                                $scope.features.splice($scope.features.indexOf(feature), 1);
+                                source.removeFeature(feature.ol_feature);
+                                $scope.$emit('feature_deleted', {
+                                    layer: $scope.selected_layer,
+                                    feature_id: featureId
+                                });
+                            }, function(response) {
+                                window.plugins.toast.showWithOptions({
+                                    message: "Feature not deleted.",
+                                    duration: 4000,
+                                    position: "bottom",
+                                    styling: {
+                                        backgroundColor: '#FF2F2F',
+                                        textColor: 'FFFFFF'
+                                    }
+                                });
+                            });
+                        } else {
+                            var featureId = feature.ol_feature.getId();
+                            $scope.features.splice($scope.features.indexOf(feature), 1);
+                            source.removeFeature(feature.ol_feature);
+                            window.plugins.toast.showWithOptions({
+                                message: "Feature deleted.",
+                                position: "bottom"
+                            });
+                            $scope.$emit('feature_deleted', {
+                                layer: $scope.selected_layer,
+                                feature_id: featureId
+                            });
                         }
-                        $scope.features.splice($scope.features.indexOf(feature), 1);
-                        source.removeFeature(feature.ol_feature);
-                        $scope.$emit('feature_deleted', {
-                            layer: $scope.selected_layer,
-                            feature_id: feature.ol_feature.getId()
-                        });
+
+                        // if (cf == feature && angular.isDefined(olf.get('obs_vgi_id'))) {
+                        //     deselectCurrentFeature();
+                        //     $http.delete($scope.senslog_url + '/observation/' + olf.get('obs_vgi_id') + '?user_name=' + config.user_name).then(function(response) {
+                        //         window.plugins.toast.showWithOptions({
+                        //             message: "Feature deleted.",
+                        //             postion: "bottom"
+                        //         });
+                        //         console.log(response);
+                        //         var featureId = feature.ol_feature.getId();
+                        //         $scope.features.splice($scope.features.indexOf(feature), 1);
+                        //         source.removeFeature(feature.ol_feature);
+                        //         $scope.$emit('feature_deleted', {
+                        //             layer: $scope.selected_layer,
+                        //             feature_id: featureId
+                        //         });
+                        //     }, function(response) {
+                        //         window.plugins.toast.showWithOptions({
+                        //             message: "Feature not deleted.",
+                        //             duration: 4000,
+                        //             postion: "bottom",
+                        //             styling: {
+                        //                 backgroundColor: '#FF2F2F',
+                        //                 textColor: 'FFFFFF'
+                        //             }
+                        //         });
+                        //     });
+                        //     // deleteVgiObservation(olf);
+                        // } else if (cf == feature) {
+                        //     deselectCurrentFeature();
+                        //     window.plugins.toast.showWithOptions({
+                        //             message: "Feature deleted.",
+                        //             postion: "bottom"
+                        //         });
+                        //         console.log(response);
+                        //         var featureId = feature.ol_feature.getId();
+                        //         $scope.features.splice($scope.features.indexOf(feature), 1);
+                        //         source.removeFeature(feature.ol_feature);
+                        //         $scope.$emit('feature_deleted', {
+                        //             layer: $scope.selected_layer,
+                        //             feature_id: featureId
+                        //         });
+                        // }
                     }
                 }
 
