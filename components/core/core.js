@@ -36,6 +36,7 @@ require.config({
         'ngAria': hsl_path + 'node_modules/angular-aria/angular-aria' + hslMin,
         'ngMessages': hsl_path + 'node_modules/angular-messages/angular-messages' + hslMin,
         'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
+        'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
         'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
         'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
