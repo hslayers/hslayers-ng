@@ -1138,3 +1138,11 @@ html, body {
 #sidenav-swipe-overlay.closed {
     width: 15px;
 }
+
+[ng-swipe-left], [ng-swipe-left] *, [ng-swipe-right], [ng-swipe-right] * {
+    touch-action: pan-y;
+}
+
+[ng-swipe-up], [ng-swipe-up] *, [ng-swipe-down], [ng-swipe-down] * {
+    touch-action: pan-x;
+}

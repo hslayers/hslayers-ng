@@ -2,10 +2,10 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-define(['angular', 'core'],
+define(['angular', 'core', 'swipe'],
 
     function(angular) {
-        angular.module('hs.layout', ['hs.core'])
+        angular.module('hs.layout', ['hs.core', 'swipe'])
             /**
             * @memberof hs.mdSidenav
             * @ngdoc directive
