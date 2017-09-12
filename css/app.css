@@ -1105,3 +1105,36 @@ button.hs_draw_new_extended {
 }
 
 .hsl-search-result{z-index: 2}
+
+/**************/
+/** MATERIAL **/
+/**************/
+
+html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.app {
+    height: 100%;
+}
+
+.swipe-overlay {
+    /*pointer-events: none;*/
+    overflow: hidden;
+    position: absolute;
+    z-index: 999;
+}
+
+#sidenav-swipe-overlay {
+    height: 100%;
+}
+
+#sidenav-swipe-overlay.opened {
+    width: 0;
+}
+
+#sidenav-swipe-overlay.closed {
+    width: 15px;
+}

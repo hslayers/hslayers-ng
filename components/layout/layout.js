@@ -30,26 +30,51 @@ define(['angular', 'core'],
                 };
             })
 
-        /**
-        * @memberof hs.layout
-        * @ngdoc controller
-        * @name hs.layout.controller
-        * @description TODO
-        */
-        .controller('hs.layout.controller', ['$scope', '$window', 'Core', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav',
-            function($scope, $window, Core, OlMap, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav) {
-                $scope.Core = Core;
-                $scope.$on('scope_loaded', function() {
-                    $("#loading-logo").remove();
-                });
+            .directive('hs.swipeArea.directive', function() {
+                return {
+                    templateUrl: hsl_path + 'components/layout/partials/swipe-area.html?bust=' + gitsha
+                };
+            })
 
-                $scope.toggleLeftSidenav = function() {
-                    $mdSidenav('sidenav-left').toggle();
-                    console.log("Sidenav toggled.");
+            /**
+            * @memberof hs.layout
+            * @ngdoc controller
+            * @name hs.layout.controller
+            * @description TODO
+            */
+            .controller('hs.layout.controller', ['$scope', '$window', 'Core', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu',
+                function($scope, $window, Core, OlMap, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu) {
+                    $scope.Core = Core;
+                    $scope.$on('scope_loaded', function() {
+                        $("#loading-logo").remove();
+                    });
+                    $scope.swipeOverlayStatus = false;
+
+                    $scope.openLeftSidenav = function() {
+                        $mdSidenav('sidenav-left').open()
+                        .then(function() {
+                            $scope.swipeOverlayStatus = true;
+                        });
+                    }
+
+                    $scope.closeLeftSidenav = function() {
+                        $mdSidenav('sidenav-left').close();
+                    }
+
+                    $mdSidenav('sidenav-left', true).then(function(){
+                        $mdSidenav('sidenav-left').onClose(function() {
+                            $scope.swipeOverlayStatus = false;
+                        });
+                    });
+
+                    $scope.$emit('scope_loaded', "Layout");
                 }
 
-                $scope.$emit('scope_loaded', "Layout");
-            }
+            ])
 
-        ]);
+            .service('hs.layout.service', ['$scope', '$window', 'Core', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu',
+                function($scope, $window, Core, OlMap, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu) {
+                    
+                }
+            ]);
     })
