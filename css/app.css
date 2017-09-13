@@ -1114,6 +1114,9 @@ html, body {
     margin: 0;
     height: 100%;
     width: 100%;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: initial;
+    line-height: initial;
 }
 
 .app {
@@ -1139,10 +1142,16 @@ html, body {
     width: 15px;
 }
 
-[ng-swipe-left], [ng-swipe-left] *, [ng-swipe-right], [ng-swipe-right] * {
-    touch-action: pan-y;
+md-list-item > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item > md-icon:first-child:not(.md-avatar-icon), md-list-item > md-icon.md-secondary:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon.md-secondary:not(.md-avatar-icon) {
+    line-height: initial;
+    margin-top: 10px;
+    margin-bottom: 12px;
 }
 
-[ng-swipe-up], [ng-swipe-up] *, [ng-swipe-down], [ng-swipe-down] * {
-    touch-action: pan-x;
+md-icon > span, md-icon > span.glyphicon {
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -100%);
+    font-size: initial;
 }

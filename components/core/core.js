@@ -85,10 +85,17 @@ require.config({
         'angular': {
             'exports': 'angular'
         },
-        'ngAnimate': ['angular'],
-        'ngAria': ['angular'],
+        'ngAnimate': {
+            deps: ['angular']
+        },
+        'ngAria': {
+            deps: ['angular']
+        },
         'ngMaterial': {
             deps: ['ngAnimate', 'ngAria']
+        },
+        'swipe': {
+            deps: ['angular']
         },
         'angularjs-socialshare': {
             deps: ['angular']
