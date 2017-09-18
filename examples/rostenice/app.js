@@ -49,9 +49,13 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
         module.value('config', {
             terrain_provider: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
             terrain_providers: [{
-                title: 'Local terrain',
+                title: 'Local surface model',
                 url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
                 active: true
+            }, {
+                title: 'Local terrain model',
+                url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmr5g/',
+                active: false
             }, {
                 title: 'EU-DEM',
                 url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
