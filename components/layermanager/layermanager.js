@@ -262,6 +262,14 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             me.data.baselayers = [];
             /**
             * @ngdoc property
+            * @name hs.layermanager.service.data#terrainlayers
+            * @public
+            * @type {Array} 
+            * @description List of all cesium terrain layers loaded in layer manager.
+            */
+            me.data.terrainlayers = [];
+            /**
+            * @ngdoc property
             * @name hs.layermanager.service.data#baselayersVisible
             * @public
             * @type {Boolean} 
@@ -597,14 +605,6 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
              * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
              * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
              */
-            /**
-             * @ngdoc method
-             * @name hs.layermanager.service#getLegendUrl
-             * @public
-             * @param {Object}
-             * @returns {Boolean}
-             * @description 
-             */
             me.changeBaseLayerVisibility = function ($event, layer) {
                 if(angular.isUndefined(layer) || angular.isDefined(layer.layer)) {
                     if (me.data.baselayersVisible == true) {
@@ -654,6 +654,21 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         if(angular.isDefined(me.data.baselayers[i].type) && me.data.baselayers[i].type == 'terrain')
                             me.data.baselayers[i].active = me.data.baselayers[i].visible = (me.data.baselayers[i] == layer);
                     }
+                }
+                $rootScope.$broadcast('layermanager.base_layer_visible_changed', layer);
+            }
+            
+            /**
+             * @function changeBaseLayerVisibility
+             * @memberOf hs.layermanager.service
+             * @description Change visibility (on/off) of baselayers, only one baselayer may be visible 
+             * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
+             * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
+             */
+            me.changeTerrainLayerVisibility = function ($event, layer) {
+                for (var i = 0; i < me.data.terrainlayers.length; i++) {
+                    if(angular.isDefined(me.data.terrainlayers[i].type) && me.data.terrainlayers[i].type == 'terrain')
+                        me.data.terrainlayers[i].active = me.data.terrainlayers[i].visible = (me.data.terrainlayers[i] == layer);
                 }
                 $rootScope.$broadcast('layermanager.base_layer_visible_changed', layer);
             }
@@ -1101,6 +1116,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             $scope.changeLayerVisibility = layManService.changeLayerVisibility;
 
             $scope.changeBaseLayerVisibility = layManService.changeBaseLayerVisibility;
+            $scope.changeTerrainLayerVisibility = layManService.changeTerrainLayerVisibility;
 
             $scope.activateTheme = layManService.activateTheme;
 
