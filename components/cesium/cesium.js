@@ -95,7 +95,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 
                 angular.forEach(config.terrain_providers, function(provider){
                     provider.type = 'terrain';
-                    layer_manager_service.data.baselayers.push(provider);
+                    layer_manager_service.data.terrainlayers.push(provider);
                 })
                 
                 hs_map.map.getLayers().on('add', function(e){
