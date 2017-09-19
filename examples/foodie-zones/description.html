@@ -1,0 +1,8 @@
+<tbody>
+    <tr ng-repeat="attribute in object.attributes | orderBy : 'name'">
+        <th>{{attribute.short_name}}:</th>
+        <td ng-if="attribute.value.indexOf('http')==-1">{{attribute.value}}</td>
+        <td ng-if="attribute.value.indexOf('http')>-1"><a ng-click="describe($event, attribute)" href="#">{{attribute.value}}</a></td>
+    </tr>
+</tbody>
+      
