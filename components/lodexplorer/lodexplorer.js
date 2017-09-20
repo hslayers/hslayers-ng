@@ -66,8 +66,8 @@ define(['ol', 'dc', 'map', 'query', 'core', 'drag'],
         * @name hs.lodexplorer.controller
         * @description TODO
         */
-        .controller('hs.lodexplorer.controller', ['$scope', 'hs.map.service', 'hs.query.service_infopanel', 'hs.lodexplorer.service_sparqllog', 'Core',
-            function($scope, OlMap, InfoPanelService, SparqlLogService, Core) {
+        .controller('hs.lodexplorer.controller', ['$scope', 'hs.map.service', 'hs.lodexplorer.service_sparqllog', 'Core',
+            function($scope, OlMap, SparqlLogService, Core) {
                 var lyr = null;
                 var map = OlMap.map;
                 var interval_chart = dc.barChart("#dc-magnitude-chart", "filtered");

@@ -90,7 +90,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                                 image: new ol.style.Photo({
                                     src: feature.get("img"),
                                     radius: 20,
-                                    kind: 'square',
+                                    kind: 'round',
+                                    crop: true,
                                     shadow: true,
                                     onload: function () {
                                         feature.getLayer(hslayers_api.getMap()).changed();
@@ -130,8 +131,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "editable": true,
                     "url": 'http://foodie-dev.wirelessinfo.cz'
                 },
-            },
-            queryPoint: 'notWithin'
+            }//,
+            //queryPoint: 'notWithin'
         });
 
         module.controller('Main', ['$scope', 'Core', 'hs.game.moveFeatureService', '$timeout', 'hs.map.service', 'hs.game.vectorLabelService',

@@ -221,14 +221,14 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'config',
-            function($scope, Core, InfoPanelService, config) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'config',
+            function($scope, Core, QueryService, config) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
-                $scope.$on('infopanel.updated', function(event) {
-                    if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
+                $scope.$on('query.dataUpdated', function(event) {
+                    if (console) console.log('Attributes', QueryService.data.attributes, 'Groups', QueryService.data.groups);
                 });
 
                 if (typeof MashupPlatform !== 'undefined')

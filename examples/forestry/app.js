@@ -252,8 +252,8 @@ define(['ol', 'dc', 'sidebar', 'layermanager', 'SparqlJsonForestry', 'query', 's
             })
         });
 
-        module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 'hs.query.service_infopanel',
-            function($scope, $filter, Core, OlMap, InfoPanelService) {
+        module.controller('Main', ['$scope', '$filter', 'Core', 'hs.map.service', 
+            function($scope, $filter, Core, OlMap) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
