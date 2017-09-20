@@ -1,0 +1,20 @@
+<div id="zone-info-offline">
+    <div class="popup-header">
+        <h4 class="popup-title">
+            <translate>Management Zone</translate>
+        </h4>
+    </div>
+    <div class="popup-body">
+        <table class="table table-striped" description object="zone"></table>
+        <h4>Intersecting objects</h4>
+        <table class="table">
+            <tbody>
+                <tr ng-repeat="poi in zone.links">
+                    <td><a ng-click="$event.preventDefault(); describePoi(poi)" ng-href="#">{{poi.url}}</a>
+                        <table class="table table-striped" description object="poi" ng-show="poi.expanded"></table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
