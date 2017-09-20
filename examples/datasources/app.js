@@ -107,8 +107,8 @@ define(['ol', 'sidebar', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query',
                 //,datasource_selector: {allow_add: false}
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.map.service',
-            function($scope, Core, InfoPanelService, OlMap) {
+        module.controller('Main', ['$scope', 'Core', 'hs.map.service',
+            function($scope, Core, OlMap) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -117,7 +117,6 @@ define(['ol', 'sidebar', 'toolbar', 'layermanager', 'WfsSource', 'map', 'query',
                 Core.singleDatasources = true;
                 $scope.Core.sidebarButtons = true;
                 $scope.Core.setDefaultPanel('layermanager');
-                $scope.$on('infopanel.updated', function(event) {});
             }
         ]);
 

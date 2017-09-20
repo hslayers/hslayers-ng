@@ -163,16 +163,16 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'WfsSource', 'sidebar', 'map
             }]
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser', 'config',
-            function($scope, Core, InfoPanelService, composition_parser, config) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser', 'config',
+            function($scope, Core, QueryService, composition_parser, config) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.sidebarRight = false;
                 Core.singleDatasources = true;
                 //Core.embededEnabled = false;
-                $scope.$on('infopanel.updated', function(event) {
-                    if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
+                $scope.$on('query.dataUpdated', function(event) {
+                    if (console) console.log('Attributes', QueryService.data.attributes, 'Groups', QueryService.data.groups);
                 });
             }
         ]);

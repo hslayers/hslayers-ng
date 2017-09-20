@@ -84,15 +84,15 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             }
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser',
-            function($scope, Core, InfoPanelService, composition_parser) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser',
+            function($scope, Core, QueryService, composition_parser) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.setMainPanel('composition_browser');
                 //composition_parser.load('http://www.whatstheplan.eu/wwwlibs/statusmanager2/index.php?request=load&id=972cd7d1-e057-417b-96a7-e6bf85472b1e');
-                $scope.$on('infopanel.updated', function(event) {
-                    if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
+                $scope.$on('query.dataUpdated', function(event) {
+                    if (console) console.log('Attributes', QueryService.data.attributes, 'Groups', QueryService.data.groups);
                 });
             }
         ]);

@@ -205,8 +205,8 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
             infopanel_template: hsl_path + 'examples/geosparql/infopanel.html'
         });
 
-        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', '$sce', '$http', 'config', 'hs.trip_planner.service', 'hs.permalink.service_url', 'hs.utils.service', 'spoi_editor', 'hs.query.service_infopanel',
-            function($scope, $compile, $filter, Core, OlMap, $sce, $http, config, trip_planner_service, permalink, utils, spoi_editor, infopanel_service) {
+        module.controller('Main', ['$scope', '$compile', '$filter', 'Core', 'hs.map.service', '$sce', '$http', 'config', 'hs.trip_planner.service', 'hs.permalink.service_url', 'hs.utils.service', 'spoi_editor', 'hs.query.baseService',
+            function($scope, $compile, $filter, Core, OlMap, $sce, $http, config, trip_planner_service, permalink, utils, spoi_editor, queryService) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -214,8 +214,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('ows', false);
                 Core.panelEnabled('status_creator', false);
-                $scope.InfoPanelService = infopanel_service;
-
+                $scope.queryData = queryService.data;
 
                 $scope.$on("scope_loaded", function(event, args, arg2) {
                     if (args == 'Sidebar') {
@@ -248,7 +247,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.$on('map.loaded', $scope.addPopupToMap);
 
                 var show_location_weather = true;
-                $scope.$on('map_clicked', function(event, data) {
+                $scope.$on('queryClicked', function(event, data) {
                     if (!show_location_weather) return;
                     var on_features = false;
                     angular.forEach(data.frameState.skippedFeatureUids, function(k) {
@@ -513,7 +512,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'SparqlJson', 'sidebar', 'ma
                 $scope.getNotEditableAttrs = spoi_editor.getNotEditableAttrs;
                 
                 $scope.$on('sidebar_change', function(event, expanded) {
-                    infopanel_service.enabled = expanded;
+                    queryService.enabled = expanded;
                 })
                 
                 function splitAddress(url){

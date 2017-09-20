@@ -9,7 +9,7 @@
         <div class="panel-body">
     
         <!-- Feature Name -->
-        <div class="panel-body" ng-repeat="group in InfoPanelService.groups | orderBy : name">
+        <div class="panel-body" ng-repeat="group in queryData.groups | orderBy : name">
             <div class="hs-spoi-title" ng-repeat="attribute in group.attributes | filter: {name: 'http://purl.org/dc/elements/1.1/title'}">
                 <h3 class="hs-spoi-feature-info">{{makeHumanReadable(attribute)}}</h3>
                 <div class="hs-spoi-item-controls"><button type="button" class="btn btn-xs btn-default" ng-click="startEdit(attribute)"><i class="glyphicon glyphicon-edit"></i></button></div>          
@@ -53,8 +53,8 @@
         </div>
         <!-- Coordinates -->
         <div class="featureInfo">
-            <span translate>{{InfoPanelService.coordinates.name}}: </span>
-             <div ng-repeat="projection in InfoPanelService.coordinates.projections | orderBy : name" ng-bind-html="projection.value" class="italic"></div>
+            <span translate>{{queryData.coordinates.name}}: </span>
+             <div ng-repeat="projection in queryData.coordinates.projections | orderBy : name" ng-bind-html="projection.value" class="italic"></div>
           <br>
         </div>
         

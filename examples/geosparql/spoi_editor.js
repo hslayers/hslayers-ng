@@ -6,8 +6,8 @@ define(['angular', 'ol', 'core'],
     function(angular, ol) {
         angular.module('spoi_editor', ['hs.core'])
 
-        .service("spoi_editor", ['Core', 'hs.utils.service', '$sce', 'hs.query.service_infopanel', '$http',
-            function(Core, utils, $sce, info_panel_service, $http) {
+        .service("spoi_editor", ['Core', 'hs.utils.service', '$sce', 'hs.query.baseService', '$http',
+            function(Core, utils, $sce, queryService, $http) {
                 var hr_mappings = {};
                 //Atributes which are displayed without clicking 'For developer' button
                 var frnly_attribs = ['http://www.openvoc.eu/poi#class', 'http://www.w3.org/2000/01/rdf-schema#comment', 'http://xmlns.com/foaf/0.1/mbox', 'http://www.openvoc.eu/poi#fax', 'http://xmlns.com/foaf/0.1/homepage', 'http://xmlns.com/foaf/0.1/depiction', 'http://www.openvoc.eu/poi#openingHours', 'http://www.openvoc.eu/poi#internetAccess','http://www.openvoc.eu/poi#accessibility', 'http://www.openvoc.eu/poi#address']
@@ -61,7 +61,7 @@ define(['angular', 'ol', 'core'],
                                 attribute: a.name,
                                 value: $sce.valueOf(a.value)
                             });
-                            info_panel_service.feature.set(a.name, $sce.valueOf(a.value));
+                            queryService.feature.set(a.name, $sce.valueOf(a.value));
                         }
                         if (a.name == 'http://purl.org/dc/elements/1.1/identifier') identifier = $sce.valueOf(a.value);
                     })

@@ -6,8 +6,8 @@ define(['angular', 'core', 'danidemo', 'dmuploader', 'spoi_editor'],
         function(angular) {
             angular.module('hs.upload', ['hs.core', 'spoi_editor'])
 
-                .directive('hs.upload.directive', ['Core', 'hs.utils.service', 'hs.query.service_infopanel', '$http', 'spoi_editor',
-                        function(Core, utils, info_panel_service, $http, spoi_editor) {
+                .directive('hs.upload.directive', ['Core', 'hs.utils.service', '$http', 'spoi_editor',
+                        function(Core, utils, $http, spoi_editor) {
                              return {
                                 templateUrl: 'upload.html',
                                 scope:{
