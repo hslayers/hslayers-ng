@@ -145,37 +145,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
             color: '#3399CC',
             width: 1.25
         });
-        var olu_style = function(feature, resolution) {
-            var crop = feature.get('crop').split('/');
-            crop = crop[crop.length-1];
-            var fill = new ol.style.Fill({
-                color: rainbow(30, crop, 0.7)
-            });
-            return [
-                new ol.style.Style({
-                    image: new ol.style.Circle({
-                    fill: fill,
-                    stroke: stroke,
-                    radius: 5
-                    }),
-                    text: new ol.style.Text({
-                        font: '12px helvetica,sans-serif',
-                        text: feature.get('crop description') + '\n'+feature.get('management zone').split('core/')[1],
-                        fill: new ol.style.Fill({
-                            color: '#000'
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: '#fff',
-                            width: 3
-                        })
-                    })
-                    ,
-                    fill: fill,
-                    stroke: stroke
-                })
-            ];
-        }
-       
+              
         var mercatorProjection = ol.proj.get('EPSG:900913');
 
         module.value('config', {
@@ -201,30 +171,202 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                 $scope.Core = Core;
                 Core.sidebarExpanded = false;
                 var map;
+                var zones_source =  new ol.source.Vector();
+                var olus_source =  new ol.source.Vector();
+                var spoi_source =  new ol.source.Vector();
                 
                 $rootScope.$on('map.loaded', function(){
                     map = hsMap.map;
-                    getOlus();
+                    getZones();
+                    map.on('moveend', extentChanged);
                 });
-
-                var spoi_source =  new ol.source.Vector();
-            
-                function createPoiLayers() {
+                
+                function extentChanged(){
+                    getOlus();
+                    getPois();
+                }
+                
+                function getOlus(){
+                    if(map.getView().getResolution() > 2.48657133911758) return;
+                    var format = new ol.format.WKT();
+                    var bbox = map.getView().calculateExtent(map.getSize());
+                    var ext = ol.proj.transformExtent(bbox, 'EPSG:3857', 'EPSG:4326')
+                    var extents = ext[0] + ' ' + ext[1] + ', ' +ext[2] + ' ' + ext[3];
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
+                    PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
+                    PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
+                    PREFIX poi: <http://www.openvoc.eu/poi#> 
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+                    SELECT ?o ?wkt ?use 
+                        FROM <http://w3id.org/foodie/olu#> 
+                        WHERE { ?o geo:hasGeometry ?geometry. 
+                            ?geometry geo:asWKT ?wkt. 
+                            FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(${extents})"), ?wkt)). 
+                            ?o <http://w3id.org/foodie/olu#specificLandUse> ?use. 
+                        }   
+                    `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                     
-                     var new_lyr = new ol.layer.Vector({
-                        title: "Management zones colored by crop type",
-                        source: spoi_source,
-                        style: olu_style,
+                    olus_source.set('loaded', false);
+                    $.ajax({
+                        url: utils.proxify(q)
+                    })
+                    .done(function(response) {
+                            if(angular.isUndefined(response.results)) return;
+                            var features = [];
+                            for (var i = 0; i < response.results.bindings.length; i++) {
+                                try {
+                                    var b = response.results.bindings[i];
+                                    if(b.wkt.datatype=="http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.wkt.value.indexOf('e+') == -1 && b.wkt.value.indexOf('e-') == -1){
+                                        var g_feature = format.readFeature(b.wkt.value.toUpperCase());
+                                        var ext = g_feature.getGeometry().getExtent()
+                                        var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', hsMap.map.getView().getProjection());
+                                        var feature = new ol.Feature({geometry: geom_transformed, parcel: b.o.value, use: b.use.value});
+                                        features.push(feature);
+                                    }
+                                } catch(ex){
+                                    console.log(ex);
+                                }
+                            }
+                        olus_source.clear();
+                        olus_source.addFeatures(features);
+                        olus_source.set('loaded', true);
+                    })
+                }
+                
+                 function getPois(){
+                    if(map.getView().getResolution() > 2.48657133911758) return;
+                    var format = new ol.format.WKT();
+                    var bbox = map.getView().calculateExtent(map.getSize());
+                    var ext = ol.proj.transformExtent(bbox, 'EPSG:3857', 'EPSG:4326')
+                    var extents = ext[0] + ' ' + ext[1] + ', ' +ext[2] + ' ' + ext[3];
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
+                    PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
+                    PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
+                    PREFIX poi: <http://www.openvoc.eu/poi#> 
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+                    SELECT ?poi ?wkt ?sub ?label FROM <http://www.sdi4apps.eu/poi.rdf> 
+                    WHERE {?poi geo:asWKT ?wkt . 
+                        FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(${extents})"), ?wkt)).
+                        ?poi <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?sub. 
+                        ?sub <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?categ.
+                        ?poi <http://www.w3.org/2000/01/rdf-schema#label> ?label
+                    }`) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    
+                    spoi_source.set('loaded', false);
+                    $.ajax({
+                        url: utils.proxify(q)
+                    })
+                    .done(function(response) {
+                            if(angular.isUndefined(response.results)) return;
+                            var features = [];
+                            for (var i = 0; i < response.results.bindings.length; i++) {
+                                try {
+                                    var b = response.results.bindings[i];
+                                    if(b.wkt.datatype=="http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.wkt.value.indexOf('e+') == -1 && b.wkt.value.indexOf('e-') == -1){
+                                        var g_feature = format.readFeature(b.wkt.value.toUpperCase());
+                                        var ext = g_feature.getGeometry().getExtent()
+                                        var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', hsMap.map.getView().getProjection());
+                                        var feature = new ol.Feature({geometry: geom_transformed, poi: b.poi.value, category: b.sub.value, label: b.label.value});
+                                        features.push(feature);
+                                    }
+                                } catch(ex){
+                                    console.log(ex);
+                                }
+                            }
+                        spoi_source.clear();
+                        spoi_source.addFeatures(features);
+                        spoi_source.set('loaded', true);
+                    })
+                }
+           
+                function createLayers() {
+                                        
+                    
+                    config.default_layers.push(new ol.layer.Vector({
+                        title: "Open land use parcels",
+                        source: olus_source,
+                        style: function(feature, resolution) {
+                            var use = feature.get('use').split('/');
+                            use = use[use.length-1];
+                            return [
+                                new ol.style.Style({
+                                    stroke: new ol.style.Stroke({
+                                        color: rainbow(350, use, 0.8),
+                                        width: 2
+                                    })
+                                })
+                            ];
+                        },
                         visible: true
-                    });
-                     
-                    config.default_layers.push(new_lyr);
+                    }));
+
+                    config.default_layers.push(new ol.layer.Vector({
+                        title: "Management zones colored by crop type",
+                        source: zones_source,
+                        style: function(feature, resolution) {
+                            var crop = feature.get('crop').split('/');
+                            crop = crop[crop.length-1];
+                            var fill = new ol.style.Fill({
+                                color: rainbow(30, crop, 0.7)
+                            });
+                            return [
+                                new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                    fill: fill,
+                                        stroke: stroke,
+                                        radius: 5
+                                    }),
+                                    text: new ol.style.Text({
+                                        font: '12px helvetica,sans-serif',
+                                        text: feature.get('crop description') + '\n'+feature.get('management zone').split('core/')[1],
+                                        fill: new ol.style.Fill({
+                                            color: '#000'
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: '#fff',
+                                            width: 3
+                                        })
+                                    })
+                                    ,
+                                    fill: fill,
+                                    stroke: stroke
+                                })
+                            ];
+                        },
+                        visible: true
+                    }));
+                    
+                    config.default_layers.push(new ol.layer.Vector({
+                        title: "Points of interest",
+                        source: spoi_source,
+                        style: function(feature, resolution) {
+                            var s = feature.get('category');
+                            if (typeof s === 'undefined') return;
+                            s = s.split("#")[1];
+                            var allowed = 'archaeological_site.png  artwork.png  bank.png      cafe.png       car_wash.png  fast_food.png  hotel.png        library.png   other.png    place_of_worship.png  restaurant.png   viewpoint.png     zoo.png arts_centre.png          atm.png      bus_stop.png  camp_site.png  dentist.png   fountain.png   information.png  memorial.png  parking.png  pub.png              supermarket.png  waste_basket.png';
+                            if(allowed.indexOf(s + '.png')>-1)
+                                s = 'symbols/' + s + '.png';
+                            else
+                                s = 'symbols/other.png'
+                            return [
+                                new ol.style.Style({
+                                    image: new ol.style.Icon({
+                                        anchor: [0.5, 1],
+                                        src: s,
+                                        size: [30, 35],
+                                        crossOrigin: 'anonymous'
+                                    })
+                                })
+                            ]
+                        },
+                        visible: true
+                    }));
                     
                 }
                 
-                createPoiLayers();
+                createLayers();
                 
-                function getOlus(){
+                function getZones(){
                     //if(map.getView().getResolution() > 2.48657133911758) return;
                     var format = new ol.format.WKT();
                     var bbox = map.getView().calculateExtent(map.getSize());
@@ -254,7 +396,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                         ?amount iso19103:value ?amount_value .
                         }`) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                     
-                    spoi_source.set('loaded', false);
+                    zones_source.set('loaded', false);
                     $.ajax({
                         url: utils.proxify(q)
                     })
@@ -282,9 +424,9 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                                     console.log(ex);
                                 }
                             }
-                        spoi_source.clear();
-                        spoi_source.addFeatures(features);
-                        spoi_source.set('loaded', true);
+                        zones_source.clear();
+                        zones_source.addFeatures(features);
+                        zones_source.set('loaded', true);
                     })
                 }
                 
@@ -304,17 +446,22 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     if (angular.isUndefined(popup)) createPopup();
                     if (!$scope.$$phase) $scope.$apply(); 
                     var html = $('#zone-info-offline')[0];
-                    popup.show(WmsService.last_coordinate_clicked, html);
+                    popup.show(QueryService.last_coordinate_clicked, html);
                     $rootScope.$broadcast('popupOpened','inside');
                 }
                 
-                $scope.showzoneInfo = function(zone) {
+                $scope.showInfo = function(zone) {
+                    var id, obj_type;
+                    if(zone.get('management zone')) {id = zone.get('management zone'); obj_type = 'Management Zone'}
+                    if(zone.get('poi')) {id = zone.get('poi'); obj_type = 'Point of interest'}
+                    if(zone.get('parcel')) {id = zone.get('parcel'); obj_type = 'Land use parcel'}
                     $scope.zone = {
-                        id: $sce.trustAsHtml(zone.get('management zone')), 
+                        id: $sce.trustAsHtml(), 
                         attributes: [],
-                        links: []
+                        links: [],
+                        obj_type : obj_type
                     };
-                    describeOlu(zone.get('management zone'), function(){
+                    describeOlu(id, function(){
                         showPopup(zone);
                     });  
                 }
@@ -386,7 +533,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                 }
                 
                 $scope.$on('infopanel.feature_selected', function(event, feature) {
-                    $scope.showzoneInfo(feature);
+                    $scope.showInfo(feature);
                 })
                 
                 $scope.$on('popupOpened', function(e,source){
