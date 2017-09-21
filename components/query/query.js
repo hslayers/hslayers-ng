@@ -95,6 +95,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                             dataCleared = false;
                             me.currentQuery = (Math.random() + 1).toString(36).substring(7);
                             getCoordinate(evt.coordinate);
+                            me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
                             $rootScope.$broadcast('queryClicked', evt);
                         });
                     }

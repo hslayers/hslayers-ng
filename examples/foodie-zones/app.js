@@ -194,8 +194,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service', '$compile', 'hs.query.service_getwmsfeatureinfo', '$sce',
-            function($scope, Core, QueryService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils, $compile, query_service, $sce) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service', '$compile', 'hs.query.wmsService', '$sce',
+            function($scope, Core, QueryService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils, $compile, WmsService, $sce) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -304,7 +304,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     if (angular.isUndefined(popup)) createPopup();
                     if (!$scope.$$phase) $scope.$apply(); 
                     var html = $('#zone-info-offline')[0];
-                    popup.show(query_service.last_coordinate_clicked, html);
+                    popup.show(WmsService.last_coordinate_clicked, html);
                     $rootScope.$broadcast('popupOpened','inside');
                 }
                 
