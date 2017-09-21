@@ -194,8 +194,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.service_infopanel', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service', '$compile', 'hs.query.service_getwmsfeatureinfo', '$sce',
-            function($scope, Core, InfoPanelService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils, $compile, query_service, $sce) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service', '$compile', 'hs.query.service_getwmsfeatureinfo', '$sce',
+            function($scope, Core, QueryService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils, $compile, query_service, $sce) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -393,8 +393,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                     if (angular.isDefined(source) && source != "inside"  && angular.isDefined(popup)) popup.hide();
                 })
                 
-                $scope.$on('infopanel.updated', function(event) {
-                    if (console) console.log('Attributes', InfoPanelService.attributes, 'Groups', InfoPanelService.groups);
+                $scope.$on('query.dataUpdated', function(event) {
+                    if (console) console.log('Attributes',  QueryService.data.attributes, 'Groups', QueryService.data.groups);
                 });
                 
                 Core.setMainPanel('info');
