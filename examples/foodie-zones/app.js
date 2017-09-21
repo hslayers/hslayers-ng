@@ -234,7 +234,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
                 }
                 
                  function getPois(){
-                    if(map.getView().getResolution() > 2.48657133911758) return;
+                    if(map.getView().getResolution() > 8.48657133911758) return;
                     var format = new ol.format.WKT();
                     var bbox = map.getView().calculateExtent(map.getSize());
                     var ext = ol.proj.transformExtent(bbox, 'EPSG:3857', 'EPSG:4326')
