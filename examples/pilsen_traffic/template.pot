@@ -77,7 +77,6 @@ msgstr ""
 #: examples/pilsen_traffic/partials/advanced_info.html:5
 #: examples/pilsen_traffic/partials/help-panel.html:13
 #: examples/pilsen_traffic/partials/help-panel.html:6
-#: examples/pilsen_traffic/partials/help.html:3
 #: examples/pilsen_traffic/partials/legend.html:3
 msgid "Close"
 msgstr ""
@@ -133,10 +132,6 @@ msgstr ""
 
 #: examples/pilsen_traffic/partials/calendar.html:8
 msgid "Mo"
-msgstr ""
-
-#: examples/pilsen_traffic/partials/help.html:5
-msgid "Nápověda"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/directive.html:40
@@ -276,7 +271,7 @@ msgid "The 'Traffic volume in Plzen' application was developed by the City of Pl
 msgstr ""
 
 #: examples/pilsen_traffic/partials/help-panel.html:157
-msgid "The application displays the expected traffic situation in Plzen in one hour intervals during the period from May 2017 to November 2018. The traffic volume information is derived from the city's traffic model (which is an advanced prediction and thus might be different from the real traffic situation) and takes into account roadworks that are ongoing on the selected day. The information about the roadworks are updated quarterly in order to reflect any possible changes in the planning of the roadworks. The timeline presents the duration of roadworks over time and thus makes it easy to learn about the main road constructions in the city in the coming years."
+msgid "The application displays the expected traffic situation in Plzen in one hour intervals during the period from May 2017 to November 2018. The traffic volume information is derived from the city's traffic model (which is an advanced prediction and thus might be different from the real traffic situation) and takes into account roadworks that are ongoing on the selected day. The information about the roadworks are updated quarterly in order to reflect any possible changes in the planning of the roadworks. <a ng-click=\"showDeveloperInfo();\" style=\"cursor:pointer;\">Timeline of roadworks</a>The timeline presents the duration of roadworks over time and thus makes it easy to learn about the main road constructions in the city in the coming years."
 msgstr ""
 
 #: examples/pilsen_traffic/partials/help-panel.html:161
@@ -291,12 +286,12 @@ msgstr ""
 msgid "The web application consumes the data in the form of a WMS-t web map service (see <a href=\"http://portal.opengeospatial.org/files/?artifact_id=14416\" target=\"_blank\">specification</a>, annex D). Web service is available for further re-use as open data within the <a href=\"http://opentransportmap.info/\" target=\"_blank\">OpenTransportMap</a> project and on the <a href=\"http://opendata.plzen.eu/\" target=\"_blank\">opendata.plzen.eu</a> portal."
 msgstr ""
 
-#: examples/pilsen_traffic/partials/advanced_info.html:7
-msgctxt "panelname"
+#: examples/pilsen_traffic/partials/help-panel.html:87
 msgid "Timeline of roadworks"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/help-panel.html:87
+#: examples/pilsen_traffic/partials/advanced_info.html:7
+msgctxt "panelname"
 msgid "Timeline of roadworks"
 msgstr ""
 

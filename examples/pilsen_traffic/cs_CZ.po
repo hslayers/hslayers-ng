@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.3\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: examples/pilsen_traffic/pilsentraffic.js:43
@@ -97,7 +97,6 @@ msgstr "Časovou osu staveb otevřete tlačítkem 'Zobrazit časovou osu staveb'
 #: examples/pilsen_traffic/partials/advanced_info.html:5
 #: examples/pilsen_traffic/partials/help-panel.html:13
 #: examples/pilsen_traffic/partials/help-panel.html:6
-#: examples/pilsen_traffic/partials/help.html:3
 #: examples/pilsen_traffic/partials/legend.html:3
 msgid "Close"
 msgstr "Zavřít"
@@ -166,10 +165,6 @@ msgstr "Sdílení a tisk mapy"
 #: examples/pilsen_traffic/partials/calendar.html:8
 msgid "Mo"
 msgstr "Po"
-
-#: examples/pilsen_traffic/partials/help.html:5
-msgid "Nápověda"
-msgstr "Tutorial"
 
 #: examples/pilsen_traffic/partials/directive.html:40
 msgid "Next day"
@@ -359,9 +354,11 @@ msgid ""
 "advanced prediction and thus might be different from the real traffic "
 "situation) and takes into account roadworks that are ongoing on the selected "
 "day. The information about the roadworks are updated quarterly in order to "
-"reflect any possible changes in the planning of the roadworks. The timeline "
-"presents the duration of roadworks over time and thus makes it easy to learn "
-"about the main road constructions in the city in the coming years."
+"reflect any possible changes in the planning of the roadworks. <a ng-click="
+"\"showDeveloperInfo();\" style=\"cursor:pointer;\">Timeline of roadworks</"
+"a>The timeline presents the duration of roadworks over time and thus makes "
+"it easy to learn about the main road constructions in the city in the coming "
+"years."
 msgstr ""
 "Aplikace modeluje mimořádné situace v dopravě, jakými jsou například zúžení "
 "nebo uzavírky komunikací, a předpovídá tak dopad těchto staveb na dopravu ve "
@@ -370,10 +367,11 @@ msgstr ""
 "zobrazit dopad těchto dopravních omezení na intenzitu dopravy v Plzni pro "
 "období od května 2017 do listopadu 2018. Informace o dopravních stavbách "
 "jsou aktualizovány ve čtvrtletních intervalech, aby co nejpřesněji reagovaly "
-"na případné změny v termínech staveb. 'Časová osa staveb' graficky "
-"znázorňuje dobu trvání jednotlivých dopravních omezení a usnadňuje tak "
-"získání rychlého přehledu o hlavních dopravních stavbách, které se v Plzni v "
-"následujících letech uskuteční."
+"na případné změny v termínech staveb.  <a ng-click=\"showDeveloperInfo();\" "
+"style=\"cursor:pointer;\">'Časová osa staveb'</a> graficky znázorňuje dobu "
+"trvání jednotlivých dopravních omezení a usnadňuje tak získání rychlého "
+"přehledu o hlavních dopravních stavbách, které se v Plzni v následujících "
+"letech uskuteční."
 
 #: examples/pilsen_traffic/partials/help-panel.html:161
 msgid ""
@@ -436,14 +434,14 @@ msgstr ""
 "<a href=\"http://opendata.plzen.eu/\" target=\"_blank\">opendata.plzen.eu</"
 "a>."
 
+#: examples/pilsen_traffic/partials/help-panel.html:87
+msgid "Timeline of roadworks"
+msgstr "Zobrazit časovou osu staveb"
+
 #: examples/pilsen_traffic/partials/advanced_info.html:7
 msgctxt "panelname"
 msgid "Timeline of roadworks"
 msgstr "Časová osa staveb"
-
-#: examples/pilsen_traffic/partials/help-panel.html:87
-msgid "Timeline of roadworks"
-msgstr "Zobrazit časovou osu staveb"
 
 #: examples/pilsen_traffic/partials/directive.html:49
 msgctxt "button"
@@ -508,6 +506,9 @@ msgstr "Nápověda"
 #: examples/pilsen_traffic/partials/calendar.html:10
 msgid "We"
 msgstr "St"
+
+#~ msgid "Nápověda"
+#~ msgstr "Tutorial"
 
 #~ msgid ""
 #~ "Colour scheme of the traffic volume levels <br> \r\n"
