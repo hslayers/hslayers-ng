@@ -28,7 +28,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
         module.directive('hs.aboutproject', function() {
             function link(scope,element,attrs) {
                 setTimeout(function(){
-                    $('#about-dialog').modal('show');
+                    //$('#about-dialog').modal('show');
                 }, 1500);
             }           
             return {
