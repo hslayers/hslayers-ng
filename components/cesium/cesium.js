@@ -249,15 +249,16 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     }
 
                     MyProxy.prototype.getURL = function(resource) {
+                        var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + hsl_path + 'img/blank.png';
                         var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
                         if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45')>-1) {
-                            return  this.proxy + '';
+                            return  blank_url;
                         } else {
                             var params = utils.getParamsFromUrl(resource);
                             var bbox = params.bbox.split(',');
                             var dist = Math.sqrt( Math.pow((bbox[0]-bbox[2]), 2) + Math.pow((bbox[1]-bbox[3]), 2) );
                             if(dist>1){
-                                 return  this.proxy + '';
+                                 return blank_url;
                             }
                         }
                         return this.proxy + prefix + encodeURIComponent(resource);
