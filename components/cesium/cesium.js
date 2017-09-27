@@ -198,20 +198,26 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             }
             
             function processOlLayer(lyr) {
-                lyr.setVisible(hs_map.isLayerVisible(lyr, hs_map.visible_layers) || lyr.getVisible());
-                lyr.manuallyAdded = false;
-                if (lyr.getSource() instanceof ol.source.ImageWMS)
-                    hs_map.proxifyLayerLoader(lyr, false);
-                if (lyr.getSource() instanceof ol.source.TileWMS)
-                    hs_map.proxifyLayerLoader(lyr, true);
-                var cesium_layer = me.convertOlToCesiumProvider(lyr);
-                if(angular.isDefined(cesium_layer)){
-                    if(cesium_layer instanceof Cesium.ImageryLayer) {
-                        linkOlLayerToCesiumLayer(lyr, cesium_layer);
-                        me.viewer.imageryLayers.add(cesium_layer);
-                    } else if(cesium_layer.then) {
-                        me.viewer.dataSources.add(cesium_layer);
-                    }
+                if(lyr instanceof ol.layer.Group){
+                    angular.forEach(lyr.layers, function(sub_lyr){
+                        processOlLayer(sub_lyr);
+                    })
+                } else {
+                    lyr.setVisible(hs_map.isLayerVisible(lyr, hs_map.visible_layers) || lyr.getVisible());
+                    lyr.manuallyAdded = false;
+                    if (lyr.getSource() instanceof ol.source.ImageWMS)
+                        hs_map.proxifyLayerLoader(lyr, false);
+                    if (lyr.getSource() instanceof ol.source.TileWMS)
+                        hs_map.proxifyLayerLoader(lyr, true);
+                    var cesium_layer = me.convertOlToCesiumProvider(lyr);
+                    if(angular.isDefined(cesium_layer)){
+                        if(cesium_layer instanceof Cesium.ImageryLayer) {
+                            linkOlLayerToCesiumLayer(lyr, cesium_layer);
+                            me.viewer.imageryLayers.add(cesium_layer);
+                        } else if(cesium_layer.then) {
+                            me.viewer.dataSources.add(cesium_layer);
+                        }
+                    }    
                 }
             }
 
@@ -225,6 +231,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
             this.repopulateLayers = function(visible_layers) {
                 if (angular.isDefined(config.default_layers)) {
                     angular.forEach(config.default_layers, processOlLayer);
+                }
+                if (angular.isDefined(config.box_layers)) {
+                    angular.forEach(config.box_layers, processOlLayer);
                 }
                 //Some layers might be loaded from cookies before cesium service was called
                 angular.forEach(hs_map.map.getLayers(), function(lyr){
