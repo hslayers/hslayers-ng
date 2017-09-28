@@ -48,6 +48,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     timeline: false,    
                     animation: false,
                     terrainProvider: terrain_provider,
+                    terrainExaggeration : config.terrainExaggeration || 1.0,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
                     skyBox: new Cesium.SkyBox({
                         sources: {
