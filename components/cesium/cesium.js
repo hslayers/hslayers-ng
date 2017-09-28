@@ -261,6 +261,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                                  return blank_url;
                             }
                         }
+                        resource = resource.replaceAll('fromcrs', 'FROMCRS');
+                        if(resource.indexOf('proxy4ows')>-1) return resource;
                         return this.proxy + prefix + encodeURIComponent(resource);
                     };
     
