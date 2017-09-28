@@ -885,7 +885,71 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                          path: 'NDVI',
                          visible: false,
                          opacity: 0.5
-                        })
+                        }),
+                     new ol.layer.Tile({
+                            title: "Výnosový potenciál",
+                            source: new ol.source.TileWMS({
+                                url: 'http://foodie-data.wirelessinfo.cz/geoserver-hsl/kojcice/wms?',
+                                params: {
+                                    LAYERS: 'kojcice_vynospot_5m_poly',
+                                    //INFO_FORMAT: undefined,
+                                    INFO_FORMAT: 'text/html',
+                                    FORMAT: "image/png"
+                                },
+                                crossOrigin: null
+                            }),
+                            path: 'Kojčice',
+                            visible: false,
+                            opacity: 0.5
+                        }),
+                        new ol.layer.Tile({
+                            title: "Aplikační pásma dle výnosového potenciálu",
+                            source: new ol.source.TileWMS({
+                                url: 'http://foodie-data.wirelessinfo.cz/geoserver-hsl/kojcice/wms?',
+                                params: {
+                                    LAYERS: 'kojcice_vra_n1_pole_viper',
+                                    //INFO_FORMAT: undefined,
+                                    INFO_FORMAT: 'text/html',
+                                    FORMAT: "image/png"
+                                },
+                                crossOrigin: null
+                            }),
+                            path: 'Kojčice',
+                            visible: false,
+                            opacity: 0.3
+                        }),
+                        new ol.layer.Tile({
+                            title: "Půdní typ",
+                            source: new ol.source.TileWMS({
+                                url: 'http://foodie-data.wirelessinfo.cz/geoserver-hsl/kojcice/wms?',
+                                params: {
+                                    LAYERS: 'pudni_typy_verze3',
+                                    //INFO_FORMAT: undefined,
+                                    INFO_FORMAT: 'text/html',
+                                    FORMAT: "image/png"
+                                },
+                                crossOrigin: null
+                            }),
+                            path: 'Kojčice',
+                            visible: true,
+                            opacity: 0.5
+                        }),
+                        new ol.layer.Tile({
+                            title: "LPIS",
+                            source: new ol.source.TileWMS({
+                                url: 'http://foodie-data.wirelessinfo.cz/geoserver-hsl/kojcice/wms?',
+                                params: {
+                                    LAYERS: 'lpis_zdkojcice',
+                                    //INFO_FORMAT: undefined,
+                                    INFO_FORMAT: 'text/html',
+                                    FORMAT: "image/png"
+                                },
+                                crossOrigin: null
+                            }),
+                            path: 'Kojčice',
+                            visible: false,
+                            opacity: 0.5
+                        }),
             ],
             project_name: 'erra/map',
             datasources: [
