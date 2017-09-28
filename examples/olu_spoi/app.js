@@ -196,7 +196,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'ma
             //project_name: 'hslayers',
             default_view: new ol.View({
                 center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-                zoom: 5,
+                zoom: 16,
                 units: "m"
             })
         });
