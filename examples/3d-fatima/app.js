@@ -51,6 +51,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
                 active: true
             }],
+            terrainExaggeration: 1,
             default_layers: [
                         new ol.layer.Tile({
                             source: new ol.source.OSM(),
