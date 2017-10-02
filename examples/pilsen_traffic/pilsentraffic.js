@@ -97,7 +97,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angularjs-socialsha
                     me.getRoadworksData = function() {
                         $http({
                             method: 'GET',
-                            url: utils.proxify('http://otn-caramba.rhcloud.com/get_roadworks/'),
+                            url: utils.proxify('http://gis.lesprojekt.cz/get_roadworks.json'),
                             cache: false
                         }).then(function (response) {
                             response.data.forEach(function(item){
