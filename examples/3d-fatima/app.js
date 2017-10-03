@@ -894,6 +894,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                                 params: {
                                     LAYERS: 'kojcice_vynospot_5m_poly',
                                     //INFO_FORMAT: undefined,
+                                    TRANSPARENT: true,
                                     INFO_FORMAT: 'text/html',
                                     FORMAT: "image/png"
                                 },
@@ -911,6 +912,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                                     LAYERS: 'kojcice_vra_n1_pole_viper',
                                     //INFO_FORMAT: undefined,
                                     INFO_FORMAT: 'text/html',
+                                    TRANSPARENT: true,
                                     FORMAT: "image/png"
                                 },
                                 crossOrigin: null
@@ -927,7 +929,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                                     LAYERS: 'pudni_typy_verze3',
                                     //INFO_FORMAT: undefined,
                                     INFO_FORMAT: 'text/html',
-                                    FORMAT: "image/png"
+                                    FORMAT: "image/png",
+                                    TRANSPARENT: true,
                                 },
                                 crossOrigin: null
                             }),
@@ -943,6 +946,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                                     LAYERS: 'lpis_zdkojcice',
                                     //INFO_FORMAT: undefined,
                                     INFO_FORMAT: 'text/html',
+                                    TRANSPARENT: true,
                                     FORMAT: "image/png"
                                 },
                                 crossOrigin: null
