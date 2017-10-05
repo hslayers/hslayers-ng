@@ -1,0 +1,50 @@
+<md-content ng-controller="hs.material.layermanager.controller">
+    <md-toolbar class="md-hue-3">
+        <h1 class="md-toolbar-tools">Layer manager</h1>
+    </md-toolbar>
+    <md-content layout-fill>
+        <md-list layout-fill>
+            <md-list-item ng-class="{'md-line-2' : layer.expanded}" ng-repeat="layer in data.layers" ng-click="changeLayerVisibility(!layer.visible,layer)"
+                layout-fill>
+                <div layout="column" class="md-list-item-text" layout-fill>
+                    <div layout="row" layout-fill layout-align="start center">
+                        <md-checkbox flex="none" ng-checked="layer.visible" aria-label="Layer visibility" ng-click="$event.stopPropagation();changeLayerVisibility(!layer.visible,layer);" style="margin-bottom:0px;">
+                        </md-checkbox>
+                        <span md-truncate flex>{{layer.title}}</span>
+                        <md-button flex="nogrow" class="md-icon-button md-primary" aria-label="Settings" ng-click="$event.stopPropagation();expandLayer(layer)">
+                            <md-icon ng-show="!layer.expanded">expand_more</md-icon>
+                            <md-icon ng-show="layer.expanded">expand_less</md-icon>
+                        </md-button>
+                    </div>
+                    <div layout="row" layout-align="space-around center" layout-wrap class="layer-toolbar" ng-show="layer.expanded">
+                        <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings">
+                            <md-icon>font_download</md-icon>
+                            <md-tooltip md-direction="down">Rename layer</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-accent md-hue-2" aria-label="Settings">
+                            <md-icon>color_lens</md-icon>
+                            <md-tooltip md-direction="down">Style layer</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="Settings">
+                            <md-icon>info</md-icon>
+                            <md-tooltip md-direction="down">About layer</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-warn md-hue-1" aria-label="Settings">
+                            <md-icon>delete</md-icon>
+                            <md-tooltip md-direction="down">Remove layer</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings">
+                            <md-icon>arrow_upward</md-icon>
+                            <md-tooltip md-direction="down">Move layer upward</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings">
+                            <md-icon>arrow_downward</md-icon>
+                            <md-tooltip md-direction="down">Move layer downward</md-tooltip>
+                        </md-button>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</md-content>
