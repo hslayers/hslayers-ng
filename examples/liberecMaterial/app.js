@@ -118,6 +118,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         format: new ol.format.GeoJSON(),
                         url: 'data/chranene.geojson'
                     })
+<<<<<<< HEAD
                 }),
                 new ol.layer.Tile({
                     title: "Sídelní, hospodářské a kulturni objekty",
@@ -133,7 +134,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     path: 'WMS',
                     visible: true,
                     opacity: 0.8
-                }),
+                })
+>>>>>>> c3a46fdf503d98fe426609a2c0b4b047be7e1658
             ],
             project_name: 'Material',
             default_view: new ol.View({

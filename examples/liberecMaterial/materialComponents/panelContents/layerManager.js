@@ -2,9 +2,15 @@
  * @namespace hs.material.search
  * @memberOf hs
  */
+<<<<<<< HEAD
 define(['angular', 'ol','ngMaterial'],
 
     function(angular, ol, ngMaterial) {
+=======
+define(['angular', 'ngMaterial'],
+
+    function(angular, ol) {
+>>>>>>> c3a46fdf503d98fe426609a2c0b4b047be7e1658
         angular.module('hs.material.layerManager', ['ngMaterial'])
             
             .directive('hs.material.layermanager.directive', function() {
