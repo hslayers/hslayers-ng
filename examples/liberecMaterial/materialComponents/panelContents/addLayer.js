@@ -2,9 +2,9 @@
  * @namespace hs.material.search
  * @memberOf hs
  */
-define(['angular', 'ngMaterial'],
+define(['angular', 'ol','ngMaterial'],
 
-    function(angular, ol) {
+    function(angular, ol, ngMaterial) {
         angular.module('hs.material.addLayer', ['ngMaterial'])
             
             .directive('hs.material.addlayer.directive', function() {

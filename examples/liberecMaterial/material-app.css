@@ -94,3 +94,13 @@
 .layer-toolbar > .md-button {
     margin: 0px;
 }
+
+.divider-layer{
+    border-top: 1px solid #C5C5C5;
+}
+.divider-strong {
+    border-color: #8F8F8F;
+}
+.divider-light {
+    border-color: #B1B1B1;
+}
