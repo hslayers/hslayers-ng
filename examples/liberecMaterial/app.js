@@ -118,7 +118,22 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         format: new ol.format.GeoJSON(),
                         url: 'data/chranene.geojson'
                     })
-                })
+                }),
+                new ol.layer.Tile({
+                    title: "Sídelní, hospodářské a kulturni objekty",
+                    source: new ol.source.TileWMS({
+                        url: 'http://geoportal.cuzk.cz/WMS_ZABAGED_PUB/WMService.aspx',
+                        params: {
+                            LAYERS: 'Sidelni__hospodarske_a_kulturni_objekty',
+                            INFO_FORMAT: undefined,
+                            FORMAT: "image/png"
+                        },
+                        crossOrigin: "anonymous"
+                    }),
+                    path: 'WMS',
+                    visible: true,
+                    opacity: 0.8
+                }),
             ],
             project_name: 'Material',
             default_view: new ol.View({

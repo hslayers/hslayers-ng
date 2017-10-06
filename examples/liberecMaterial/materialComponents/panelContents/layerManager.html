@@ -4,45 +4,89 @@
     </md-toolbar>
     <md-content layout-fill>
         <md-list layout-fill>
-            <md-list-item ng-class="{'md-line-2' : layer.expanded}" ng-repeat="layer in data.layers" ng-click="changeLayerVisibility(!layer.visible,layer)"
+            <md-list-item class="md-line-2" ng-repeat="layer in data.layers | orderBy:layerOrder:true" ng-click="changeLayerVisibility(!layer.visible,layer)"
                 layout-fill>
                 <div layout="column" class="md-list-item-text" layout-fill>
                     <div layout="row" layout-fill layout-align="start center">
-                        <md-checkbox flex="none" ng-checked="layer.visible" aria-label="Layer visibility" ng-click="$event.stopPropagation();changeLayerVisibility(!layer.visible,layer);" style="margin-bottom:0px;">
+                        <md-checkbox flex="none" ng-checked="layer.visible" aria-label="Layer visibility" ng-click="$event.stopPropagation();changeLayerVisibility(!layer.visible,layer);"
+                            style="margin-bottom:0px;">
                         </md-checkbox>
+                        <md-button class="md-icon-button" ng-show="isLayerType(layer.layer,'wms')">
+                            <md-icon class="md-accent md-hue-2" >image</md-icon>
+                            <md-tooltip md-direction="down">Image layer</md-tooltip>
+                        </md-button>
+                        <md-button class="md-icon-button" ng-show="isLayerType(layer.layer,'point')">
+                            <md-icon class="md-accent md-hue-3" >bubble_chart</md-icon>
+                            <md-tooltip md-direction="down">Point features</md-tooltip>
+                        </md-button>
+                        <md-button class="md-icon-button" ng-show="isLayerType(layer.layer,'line')">
+                            <md-icon class="md-accent md-hue-3" >show_chart</md-icon>
+                            <md-tooltip md-direction="down">Line features</md-tooltip>
+                        </md-button>
+                        <md-button class="md-icon-button" ng-show="isLayerType(layer.layer,'polygon')">
+                            <md-icon class="md-accent md-hue-3" >crop_5_4</md-icon>
+                            <md-tooltip md-direction="down">Polygon features</md-tooltip>
+                        </md-button>
                         <span md-truncate flex>{{layer.title}}</span>
-                        <md-button flex="nogrow" class="md-icon-button md-primary" aria-label="Settings" ng-click="$event.stopPropagation();expandLayer(layer)">
-                            <md-icon ng-show="!layer.expanded">expand_more</md-icon>
-                            <md-icon ng-show="layer.expanded">expand_less</md-icon>
+                    </div>
+                    <div layout="row" layout-align="space-around center" layout-wrap class="layer-toolbar">
+                        <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="Settings" ng-click="$event.stopPropagation();expandInfo(layer,!layer.expandInfo);">
+                            <md-icon>info</md-icon>
+                            <md-tooltip md-direction="down">About layer</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-primary md-hue-3" aria-label="Settings" ng-click="changePosition(layer,true, $event)">
+                            <md-icon>arrow_upward</md-icon>
+                            <md-tooltip md-direction="down">Move layer upward, SHIFT-click to top</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-primary md-hue-3" aria-label="Settings" ng-click="changePosition(layer,false, $event)">
+                            <md-icon>arrow_downward</md-icon>
+                            <md-tooltip md-direction="down">Move layer downward, SHIFT-click to bottom</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings" ng-click="$event.stopPropagation();expandSettings(layer,!layer.expandSettings);">
+                            <md-icon>settings</md-icon>
+                            <md-tooltip md-direction="down">Layer options</md-tooltip>
+                        </md-button>
+                        <md-button layout-fill class="md-icon-button md-warn md-hue-1" aria-label="Settings" ng-click="$event.stopPropagation();showRemoveLayerDiag($event, layer)">
+                            <md-icon>delete</md-icon>
+                            <md-tooltip md-direction="down">Remove layer</md-tooltip>
                         </md-button>
                     </div>
-                    <div layout="row" layout-align="space-around center" layout-wrap class="layer-toolbar" ng-show="layer.expanded">
+                    <div layout="column" class="divider-layer" layout-fill layout-align="center center" ng-if="layer.expandSettings || layer.expandInfo">
+                        <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings" ng-click="$event.stopPropagation();expandSettings(layer,false);expandInfo(layer,false);">
+                            <md-icon>arrow_drop_up</md-icon>
+                            <md-tooltip md-direction="down">Hide</md-tooltip>
+                        </md-button>
+                    </div>
+                    <div layout="column" layout-align="start start" layout-wrap class="layer-toolbar" ng-if="layer.expandSettings">
+                        <md-input-container layout-fill class="md-block">
+                            <label>Layer name</label>
+                            <input ng-model="layer.title" ng-change="setProp(layer.layer,'title',layer.title);">
+                        </md-input-container>
+                        <md-input-container layout-fill class="md-block">    
+                            <label>Layer Opacity</label>
+                            <md-slider min="0" max="1" step="0.01" ng-model="layer.opacity" ng-change="setOpacity(layer);"></md-slider>
+                        </md-input-container>
+                        <!--Resolution setting for layer - unsatisfying behaviour currently
+                        <div layout-fill>
+                            <label>Layout Resolution</label>
+                                <md-input-container>
+                                  <label>From</label>
+                                  <input ng-model="layer.maxResolution" type="number" max="layer.maxResolutionLimit" min="layer.minResolution" ng-change="updateResolution(layer)">
+                                </md-input-container>
+                          
+                                <md-input-container>
+                                  <label>To</label>
+                                  <input ng-model="layer.minResolution" type="number" max="layer.maxResolution" min="layer.minResolutionLimit" ng-change="updateResolution(layer)">
+                                </md-input-container>
+                              </div>-->
+                    </div>
+                    <div layout="column" layout-align="space-around center" layout-wrap class="layer-toolbar" ng-if="layer.expandInfo">
                         <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings">
                             <md-icon>font_download</md-icon>
                             <md-tooltip md-direction="down">Rename layer</md-tooltip>
                         </md-button>
-                        <md-button layout-fill class="md-icon-button md-accent md-hue-2" aria-label="Settings">
-                            <md-icon>color_lens</md-icon>
-                            <md-tooltip md-direction="down">Style layer</md-tooltip>
-                        </md-button>
-                        <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="Settings">
-                            <md-icon>info</md-icon>
-                            <md-tooltip md-direction="down">About layer</md-tooltip>
-                        </md-button>
-                        <md-button layout-fill class="md-icon-button md-warn md-hue-1" aria-label="Settings">
-                            <md-icon>delete</md-icon>
-                            <md-tooltip md-direction="down">Remove layer</md-tooltip>
-                        </md-button>
-                        <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings">
-                            <md-icon>arrow_upward</md-icon>
-                            <md-tooltip md-direction="down">Move layer upward</md-tooltip>
-                        </md-button>
-                        <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings">
-                            <md-icon>arrow_downward</md-icon>
-                            <md-tooltip md-direction="down">Move layer downward</md-tooltip>
-                        </md-button>
                     </div>
-                    <md-divider ng-if="!$last"></md-divider>
+                    <md-divider class="divider-strong" ng-if="!$last"></md-divider>
                 </div>
             </md-list-item>
         </md-list>

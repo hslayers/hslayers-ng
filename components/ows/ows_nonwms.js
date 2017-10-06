@@ -64,7 +64,6 @@ define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
                             definition.format = "hs.format.Sparql";
                             break;
                     }
-
                     if (definition.format == 'hs.format.Sparql') {
                         src = new SparqlJson({
                             geom_attribute: '?geom',

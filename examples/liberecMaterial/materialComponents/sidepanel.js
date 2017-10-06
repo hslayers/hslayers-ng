@@ -1,5 +1,5 @@
 define(['angular', 'core', 'ngMaterial'],
-    function (angular) {
+    function (angular, core, ngMaterial) {
         angular.module('hs.material.sidepanel', ['hs.core'])
             .directive('hs.material.sidepanel.panelright.directive', function () {
                 return {
