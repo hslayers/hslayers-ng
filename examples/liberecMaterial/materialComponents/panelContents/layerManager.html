@@ -12,23 +12,24 @@
                             style="margin-bottom:0px;">
                         </md-checkbox>
                         <md-button class="md-icon-button" ng-show="isLayerType(layer.layer,'wms')">
-                            <md-icon class="md-accent md-hue-2" >image</md-icon>
+                            <md-icon class="md-accent md-hue-2">image</md-icon>
                             <md-tooltip md-direction="down">Image layer</md-tooltip>
                         </md-button>
                         <md-button class="md-icon-button" ng-show="isLayerType(layer.layer,'point')">
-                            <md-icon class="md-accent md-hue-3" >bubble_chart</md-icon>
+                            <md-icon class="md-accent md-hue-3">bubble_chart</md-icon>
                             <md-tooltip md-direction="down">Point features</md-tooltip>
                         </md-button>
                         <md-button class="md-icon-button" ng-show="isLayerType(layer.layer,'line')">
-                            <md-icon class="md-accent md-hue-3" >show_chart</md-icon>
+                            <md-icon class="md-accent md-hue-3">show_chart</md-icon>
                             <md-tooltip md-direction="down">Line features</md-tooltip>
                         </md-button>
                         <md-button class="md-icon-button" ng-show="isLayerType(layer.layer,'polygon')">
-                            <md-icon class="md-accent md-hue-3" >crop_5_4</md-icon>
+                            <md-icon class="md-accent md-hue-3">crop_5_4</md-icon>
                             <md-tooltip md-direction="down">Polygon features</md-tooltip>
                         </md-button>
                         <span md-truncate flex>{{layer.title}}</span>
                     </div>
+                    <!--Button toolbar-->
                     <div layout="row" layout-align="space-around center" layout-wrap class="layer-toolbar">
                         <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="Settings" ng-click="$event.stopPropagation();expandInfo(layer,!layer.expandInfo);">
                             <md-icon>info</md-icon>
@@ -51,22 +52,105 @@
                             <md-tooltip md-direction="down">Remove layer</md-tooltip>
                         </md-button>
                     </div>
+                    <!-- expand divider-->
                     <div layout="column" class="divider-layer" layout-fill layout-align="center center" ng-if="layer.expandSettings || layer.expandInfo">
                         <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings" ng-click="$event.stopPropagation();expandSettings(layer,false);expandInfo(layer,false);">
                             <md-icon>arrow_drop_up</md-icon>
                             <md-tooltip md-direction="down">Hide</md-tooltip>
                         </md-button>
                     </div>
+                    <!-- layer settings -->
                     <div layout="column" layout-align="start start" layout-wrap class="layer-toolbar" ng-if="layer.expandSettings">
+                        <!-- title -->
                         <md-input-container layout-fill class="md-block">
                             <label>Layer name</label>
                             <input ng-model="layer.title" ng-change="setProp(layer.layer,'title',layer.title);">
                         </md-input-container>
-                        <md-input-container layout-fill class="md-block">    
+                        <!-- opacity -->
+                        <md-input-container layout-fill class="md-block">
                             <label>Layer Opacity</label>
                             <md-slider min="0" max="1" step="0.01" ng-model="layer.opacity" ng-change="setOpacity(layer);"></md-slider>
                         </md-input-container>
-                        <!--Resolution setting for layer - unsatisfying behaviour currently
+                        <!-- style -->
+                        <label>Layer Style</label>
+                        <div ng-show="layer.layer.getSource().hasPoly">
+                            <div md-color-picker ng-model="layer.style.fillColor" label="Fill" ng-change="saveStyle(layer)" icon="format_color_fill"
+                                type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
+                        </div>
+                        <div ng-show="layer.layer.getSource().hasLine || layer.layer.getSource().hasPoly">
+                            <div md-color-picker ng-model="layer.style.lineColor" label="Stroke" ng-change="saveStyle(layer)" icon="brush" type="1" md-color-sliders="false"
+                                md-color-history="false" md-color-default-tab="1"></div>
+                            <md-input-container layout-fill class="md-block">
+                                <label>Width</label>
+                                <md-slider min="0" max="40" step="0.1" ng-model="layer.style.lineWidth" ng-change="saveStyle(layer);"></md-slider>
+                            </md-input-container>
+                        </div>
+                        <div layout-fill ng-show="layer.layer.getSource().hasPoint">
+                            <md-tabs md-no-pagination="true" md-no-ink="true" md-stretch-tabs="always" md-dynamic-height="true">
+                                <md-tab id="Circle" md-on-select="changePointType(layer,'Circle')">
+                                    <md-tab-label>
+                                        <md-icon>brightness_1</md-icon>
+                                        <md-tooltip md-direction="down">Circle</md-tooltip>
+                                    </md-tab-label>
+                                    <md-tab-body>
+                                        <div md-color-picker ng-model="layer.style.pointFill" label="Fill" ng-change="saveStyle(layer)" icon="format_color_fill"
+                                            type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
+                                        <div md-color-picker ng-model="layer.style.pointStroke" label="Stroke" ng-change="saveStyle(layer)" icon="brush" type="1"
+                                            md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
+                                        <label>Stroke width</label>
+                                        <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="saveStyle(layer);"></md-slider>
+                                        <label>Radius</label>
+                                        <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius" ng-change="saveStyle(layer);"></md-slider>
+
+                                    </md-tab-body>
+                                </md-tab>
+                                <md-tab id="Polygon" md-on-select="changePointType(layer,'Polygon')">
+                                    <md-tab-label>
+                                        <md-icon>stop</md-icon>
+                                        <md-tooltip md-direction="down">Polygon</md-tooltip>
+                                    </md-tab-label>
+                                    
+                                    <md-tab-body>
+                                            <label>Sides number</label>
+                                            <md-slider min="3" max="10" step="1" ng-model="layer.style.pointPoints" ng-change="saveStyle(layer);"></md-slider>
+                                            <div md-color-picker ng-model="layer.style.pointFill" label="Fill" ng-change="saveStyle(layer)" icon="format_color_fill"
+                                            type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
+                                        <div md-color-picker ng-model="layer.style.pointStroke" label="Stroke" ng-change="saveStyle(layer)" icon="brush" type="1"
+                                            md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
+                                        <label>Stroke width</label>
+                                        <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="saveStyle(layer);"></md-slider>
+                                        <label>Rotation</label>
+                                        <md-slider min="0" max="1.57" step="0.01" ng-model="layer.style.rotation" ng-change="saveStyle(layer);"></md-slider>
+                                        <label>Radius</label>
+                                        <md-slider min="0" max="40" ng-model="layer.style.radius" ng-change="saveStyle(layer);"></md-slider>
+                                    </md-tab-body>
+                                </md-tab>
+                                <md-tab id="Star" md-on-select="changePointType(layer,'Star')">
+                                    <md-tab-label>
+                                        <md-icon>star</md-icon>
+                                        <md-tooltip md-direction="down">Star</md-tooltip>
+                                    </md-tab-label>
+                                    <md-tab-body>
+                                            <label>Sides number</label>
+                                            <md-slider min="3" max="20" step="1" ng-model="layer.style.pointPoints" ng-change="saveStyle(layer);"></md-slider>
+                                            <div md-color-picker ng-model="layer.style.pointFill" label="Fill" ng-change="saveStyle(layer)" icon="format_color_fill"
+                                            type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
+                                        <div md-color-picker ng-model="layer.style.pointStroke" label="Stroke" ng-change="saveStyle(layer)" icon="brush" type="1"
+                                            md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
+                                        <label>Stroke width</label>
+                                        <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="saveStyle(layer);"></md-slider>
+                                        <label>Rotation</label>
+                                        <md-slider min="0" max="1.57" step="0.01" ng-model="layer.style.rotation" ng-change="saveStyle(layer);"></md-slider>
+                                        <label>Outer radius</label>
+                                        <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius" ng-change="saveStyle(layer);"></md-slider>
+                                        <label>Inner radius</label>
+                                        <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius2" ng-change="saveStyle(layer);"></md-slider>
+                                    </md-tab-body>
+                                </md-tab>
+                            </md-tabs>
+                        </div>
+
+                        <!--Resolution setting for layer - unsatisfying behaviour currently 
                         <div layout-fill>
                             <label>Layout Resolution</label>
                                 <md-input-container>

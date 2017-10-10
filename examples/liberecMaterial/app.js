@@ -1,6 +1,9 @@
 'use strict';
+require(['tinycolor'], function(tinycolor) {
+    window.tinycolor = tinycolor;
+});
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -14,6 +17,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'gettext',
             'hs.sidebar',
             'ngMaterial',
+            'mdColorPicker',
             'hs.material.core',
             'hs.material.search',
             'hs.material.mainToolbar',
@@ -118,7 +122,6 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                         format: new ol.format.GeoJSON(),
                         url: 'data/chranene.geojson'
                     })
-<<<<<<< HEAD
                 }),
                 new ol.layer.Tile({
                     title: "Sídelní, hospodářské a kulturni objekty",
@@ -135,7 +138,6 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     visible: true,
                     opacity: 0.8
                 })
->>>>>>> c3a46fdf503d98fe426609a2c0b4b047be7e1658
             ],
             project_name: 'Material',
             default_view: new ol.View({

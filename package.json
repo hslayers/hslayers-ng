@@ -47,6 +47,8 @@
   "dependencies": {
     "angular-animate": "1.4.14",
     "angular-aria": "1.4.14",
-    "moment": "^2.18.1"
+    "md-color-picker": "^0.2.6",
+    "moment": "^2.18.1",
+    "tinycolor2": "^1.4.1"
   }
 }
