@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function(ol, toolbar, layermanager, geojson) {
+    function(ol, toolbar, layermanager, geojson, pois) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -88,7 +88,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                             LAYERS: 'olu_bbox_srid',
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html",
-                            minimumTerrainLevel: 15
+                            minimumTerrainLevel: 15,
+                            VERSION: '1.1.1',
+                            CRS: 'EPSG:4326', 
+                            FROMCRS: 'EPSG:4326' 
                         },
                         crossOrigin: null
                     }),
@@ -114,7 +117,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     maxResolution: 8550,
                     visible: false,
                     opacity: 0.7
-                })
+                }),
+                pois.createPoiLayer()
             ],
             project_name: 'erra/map',
             datasources: [
@@ -150,22 +154,34 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
             'compositions_catalogue_url': "/php/metadata/csw",
             status_manager_url: '/wwwlibs/statusmanager2/index.php',
             default_view: new ol.View({
-                center: [1208534.8815206578, 5761821.705531779],
+                center: ol.proj.transform([1208534.8815206578, 5761821.705531779], 'EPSG:3857', 'EPSG:4326'),
                 zoom: 16,
-                units: "m"
+                units: "m",
+                projection: 'EPSG:4326'
             })
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config',
-            function($scope, $compile, $element, Core, OlMap, config) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service',
+            function($scope, $compile, $element, Core, hs_map, config, $rootScope, utils) {
+                var map;
+                
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                
+                                
                 Core.singleDatasources = true;
                 Core.panelEnabled('compositions', true);
                 Core.panelEnabled('status_creator', false);
                 $scope.Core.setDefaultPanel('layermanager');
+                
+                $rootScope.$on('map.loaded', function(){
+                    map = hs_map.map;
+                    //map.on('moveend', extentChanged);
+                });
+                
+                $rootScope.$on('map.sync_center', function(e, center, bounds){
+                    pois.getPois(map, utils, bounds);
+                })               
                  
                 function createAboutDialog() {
                     var el = angular.element('<div hs.aboutproject></div>');

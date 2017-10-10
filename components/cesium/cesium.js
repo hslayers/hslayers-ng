@@ -69,30 +69,68 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                                
                 me.viewer = viewer;
                 
-                var instance = new Cesium.GeometryInstance({
-                    geometry : new Cesium.RectangleGeometry({
-                        rectangle : rectangle,
-                        height: 1000,
-                        vertexFormat : Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT
-                    })
-                });
-
-                viewer.scene.primitives.removeAll();
-                /*viewer.scene.primitives.add(new Cesium.Primitive({
-                    geometryInstances : instance,
-                    appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true})
-                }));*/
-                   
                    
                 setTimeout(function(){
                     me.repopulateLayers(null);
                 }, 3500);
                 
+                function cornerToDegrees(d){
+                    return [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).longitude),       
+                        Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).latitude)];                   
+                }
+                
                 viewer.camera.moveEnd.addEventListener(function(e) {
                     if (!hs_map.visible) {
-                        $rootScope.$broadcast('map.sync_center', getCameraCenterInLngLat());
+                        var r = viewRectangle(viewer);
+                        var rect = [Cesium.Math.toDegrees(r.west), Cesium.Math.toDegrees(r.north), Cesium.Math.toDegrees(r.east), Cesium.Math.toDegrees(r.south)];
+                        var center = getCameraCenterInLngLat();
+                        var camera_over = [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).longitude),       Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).latitude)];
+                        
+                        if(center==null) return;
+                        var top_left = cornerToDegrees(getCornerCoord(new Cesium.Cartesian2(0,0), new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height)));
+                        var top_right = cornerToDegrees(getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width,0), new Cesium.Cartesian2(0, viewer.canvas.height)));
+                        var bot_left = cornerToDegrees(getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height), new Cesium.Cartesian2(0,0) ));
+                        var bot_right = cornerToDegrees(getCornerCoord(new Cesium.Cartesian2(0, viewer.canvas.height), new Cesium.Cartesian2(viewer.canvas.width,0)));
+                        
+                        function clamp(p){
+                            if(Math.abs(p[0] - center[0])>0.05)
+                                p[0] = center[0] + (p[0] - center[0]) * (0.05 / Math.abs(p[0] - center[0]));
+                            if(Math.abs(p[1] - center[1])>0.05)
+                                p[1] = center[1] + (p[1] - center[1]) * (0.05 / Math.abs(p[1] - center[1]));
+                            return p
+                        }              
+                        top_left = clamp(top_left);
+                        top_right = clamp(top_right);
+                        bot_left = clamp(bot_left);
+                        bot_right = clamp(bot_right);                   
+                        /* addPointPrimitive(top_left);addPointPrimitive(top_right); addPointPrimitive(bot_left); addPointPrimitive(bot_right); */
+                        
+                        $rootScope.$broadcast('map.sync_center', center, [top_left, top_right, bot_left, bot_right]);
                     }
                 });
+                
+                function addPointPrimitive(p){
+                    var instance2 = new Cesium.GeometryInstance({
+                        geometry : new Cesium.CircleGeometry({
+                            center : Cesium.Cartesian3.fromDegrees(p[0], p[1], 300, viewer.scene.globe.ellipsoid),
+                            radius: 10,
+                            height: 200,
+                            vertexFormat : Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT
+                        })
+                    });
+
+                    viewer.scene.primitives.add(new Cesium.Primitive({
+                        geometryInstances : instance2,
+                        appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true, material:  new Cesium.Material({
+                            fabric : {
+                                type : 'Color',
+                                uniforms : {
+                                    color : new Cesium.Color(0.0, 0.0, 1.0, 1.0)
+                                }
+                            }
+                        })})
+                    }))
+                }
                 
                 angular.forEach(config.terrain_providers, function(provider){
                     provider.type = 'terrain';
@@ -159,6 +197,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 $rootScope.$broadcast('cesiummap.loaded');
             }
             
+            function serializeVectorLayerToGeoJson(ol_source){
+                var f = new ol.format.GeoJSON();
+                var json = f.writeFeaturesObject(ol_source.getFeatures());
+                return json;
+            }
+            
             function linkOlLayerToCesiumLayer(ol_layer, cesium_layer){
                 ol_layer.cesium_layer = cesium_layer;
                 ol_layer.on('change:visible', function(e) {
@@ -168,6 +212,89 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                     e.target.cesium_layer.alpha = parseFloat(ol_layer.getOpacity());
                 })
             }
+            
+            function linkOlSourceToCesiumDatasource(ol_source, cesium_layer){
+                ol_source.cesium_layer = cesium_layer;
+                ol_source.on('features:loaded', function(e) {
+                    if(e.target.cesium_layer) {
+                        e.target.cesium_layer.entities.removeAll();
+                        var promise = e.target.cesium_layer.load(serializeVectorLayerToGeoJson(ol_source), 
+                            {
+                                camera: viewer.scene.camera,
+                                canvas: viewer.scene.canvas,
+                                clampToGround: true
+                            });
+                        promise.then(function(dataSource) {
+                             viewer.dataSources.add(dataSource);
+
+                            //Get the array of entities
+                            var entities = dataSource.entities.values;
+
+                            var colorHash = {};
+                            for (var i = 0; i < entities.length; i++) {
+                                //For each entity, create a random color based on the state name.
+                                //Some states have multiple entities, so we store the color in a
+                                //hash so that we use the same color for the entire state.
+                                var entity = entities[i];
+                                var name = entity.name;
+                                var s = entity.properties.category.getValue();
+                                if (typeof s === 'undefined') return;
+                                s = s.split("#")[1];
+                                var allowed = 'archaeological_site.png  artwork.png  bank.png      cafe.png       car_wash.png  fast_food.png  hotel.png        library.png   other.png    place_of_worship.png  restaurant.png   viewpoint.png     zoo.png arts_centre.png          atm.png      bus_stop.png  camp_site.png  dentist.png   fountain.png   information.png  memorial.png  parking.png  pub.png              supermarket.png  waste_basket.png';
+                                if(allowed.indexOf(s + '.png')>-1)
+                                    s = '../foodie-zones/symbols/' + s + '.png';
+                                else
+                                    s = '../foodie-zones/symbols/other.png';
+                                //entity.billboard.size = Cesium.Cartesian3.distance(viewer.camera.position, entity.position.getValue());
+                                entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
+                                entity.billboard.image = s;
+                            }
+                        })
+                    }
+                })
+            }
+            
+            function getCornerCoord(startCoordinates, endCoordinates) {
+                
+                var coordinate = viewer.scene.camera.pickEllipsoid(startCoordinates, this.ellipsoid);
+                
+                // Translate coordinates
+                var x1 = startCoordinates.x;
+                var y1 = startCoordinates.y;
+                var x2 = endCoordinates.x;
+                var y2 = endCoordinates.y;
+                // Define differences and error check
+                var dx = Math.abs(x2 - x1);
+                var dy = Math.abs(y2 - y1);
+                var sx = (x1 < x2) ? 1 : -1;
+                var sy = (y1 < y2) ? 1 : -1;
+                var err = dx - dy;
+                
+                coordinate = viewer.scene.camera.pickEllipsoid({x:x1, y:y1}, this.ellipsoid);
+                if(coordinate) {
+                    return coordinate;
+                }
+                
+                // Main loop
+                while (!((x1 == x2) && (y1 == y2))) {
+                var e2 = err << 1;
+                if (e2 > -dy) {
+                    err -= dy;
+                    x1 += sx;
+                }
+                if (e2 < dx) {
+                    err += dx;
+                    y1 += sy;
+                }
+                
+                coordinate = viewer.scene.camera.pickEllipsoid({x:x1, y:y1}, this.ellipsoid);
+                    if(coordinate) {
+                        return coordinate;
+                    }
+                }
+                return;
+            }
+
             
             function setExtentEqualToOlExtent(view){
                 var ol_ext = view.calculateExtent(hs_map.map.getSize());
@@ -215,8 +342,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                         if(cesium_layer instanceof Cesium.ImageryLayer) {
                             linkOlLayerToCesiumLayer(lyr, cesium_layer);
                             me.viewer.imageryLayers.add(cesium_layer);
-                        } else if(cesium_layer.then) {
+                        } else {
                             me.viewer.dataSources.add(cesium_layer);
+                            linkOlSourceToCesiumDatasource(lyr.getSource(), cesium_layer);
                         }
                     }    
                 }
@@ -300,6 +428,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                                 canvas: viewer.scene.canvas,
                                 clampToGround: ol_lyr.getSource().get('clampToGround') || true
                             })
+                    } else {
+                        var new_source = new Cesium.GeoJsonDataSource(ol_lyr.get('title'));
+                        return new_source;
                     }
                 }else {
                     console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
@@ -334,7 +465,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 // See the reverse calculation (calcDistanceForResolution_) for details
                 const canvas = viewer.scene.canvas;
                 const fovy = viewer.camera.frustum.fovy;
-                const metersPerUnit = hs_map.map.getView().getProjection().getMetersPerUnit();
+                const metersPerUnit = ol.proj.get('EPSG:3857').getMetersPerUnit();
 
                 const visibleMeters = 2 * distance * Math.tan(fovy / 2);
                 const relativeCircumference = Math.cos(Math.abs(latitude));
@@ -379,6 +510,23 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function(angular, Cesium, per
                 // is a great simplification. It does not take ellipsoid/terrain into account.
 
                 return requiredDistance;
+            };
+            
+            function inView(_position, _viewer) {
+                try {
+                    var camera = _viewer.scene.camera;
+                    var frustum = camera.frustum;
+                    var cullingVolume = frustum.computeCullingVolume(camera.position, camera.direction, camera.up);
+                    return cullingVolume.computeVisibility(new Cesium.BoundingSphere(_position, 0.0)) === Cesium.Intersect.INSIDE;
+                } catch (e) {
+                    console.log(e);
+                    return false;
+                }
+            };
+            
+            function viewRectangle(_viewer) {
+                var ellipsoid = _viewer.scene.globe.ellipsoid;
+                return _viewer.scene.camera.computeViewRectangle(ellipsoid);
             };
 
             this.getCameraCenterInLngLat = getCameraCenterInLngLat;
