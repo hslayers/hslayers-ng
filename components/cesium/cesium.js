@@ -1,10 +1,17 @@
+
+require.config({
+    paths: {
+        hs_cesium_camera: hsl_path + 'components/cesium/camera' + hslMin,
+    }
+})
+
 /**
  * @ngdoc module
  * @module hs.cesium
  * @name hs.cesium
  * @description Module containing cesium map
  */
-define(['angular', 'cesiumjs', 'permalink', 'ol'], function (angular, Cesium, permalink, ol) {
+define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function (angular, Cesium, permalink, ol, HsCsCamera) {
     angular.module('hs.cesium', ['hs'])
 
         /**
@@ -68,44 +75,20 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function (angular, Cesium, pe
                 viewer.terrainProvider = terrain_provider;
 
                 me.viewer = viewer;
+                HsCsCamera.init(viewer, hs_map);
 
 
                 setTimeout(function () {
                     me.repopulateLayers(null);
                 }, 3500);
 
-                function cornerToDegrees(d) {
-                    return [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).longitude),
-                    Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).latitude)];
-                }
-
                 viewer.camera.moveEnd.addEventListener(function (e) {
                     if (!hs_map.visible) {
-                        var r = viewRectangle(viewer);
-                        var rect = [Cesium.Math.toDegrees(r.west), Cesium.Math.toDegrees(r.north), Cesium.Math.toDegrees(r.east), Cesium.Math.toDegrees(r.south)];
-                        var center = getCameraCenterInLngLat();
-                        var camera_over = [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).longitude), Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).latitude)];
-
-                        if (center == null) return;
-                        var top_left = cornerToDegrees(getCornerCoord(new Cesium.Cartesian2(0, 0), new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height)));
-                        var top_right = cornerToDegrees(getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width, 0), new Cesium.Cartesian2(0, viewer.canvas.height)));
-                        var bot_left = cornerToDegrees(getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height), new Cesium.Cartesian2(0, 0)));
-                        var bot_right = cornerToDegrees(getCornerCoord(new Cesium.Cartesian2(0, viewer.canvas.height), new Cesium.Cartesian2(viewer.canvas.width, 0)));
-
-                        function clamp(p) {
-                            if (Math.abs(p[0] - center[0]) > 0.05)
-                                p[0] = center[0] + (p[0] - center[0]) * (0.05 / Math.abs(p[0] - center[0]));
-                            if (Math.abs(p[1] - center[1]) > 0.05)
-                                p[1] = center[1] + (p[1] - center[1]) * (0.05 / Math.abs(p[1] - center[1]));
-                            return p
-                        }
-                        top_left = clamp(top_left);
-                        top_right = clamp(top_right);
-                        bot_left = clamp(bot_left);
-                        bot_right = clamp(bot_right);
+                        var center = HsCsCamera.getCameraCenterInLngLat();
+                        if (center == null) return; //Not looking on the map but in the sky
+                        var viewport = HsCsCamera.getViewportPolygon();
                         /* addPointPrimitive(top_left);addPointPrimitive(top_right); addPointPrimitive(bot_left); addPointPrimitive(bot_right); */
-
-                        $rootScope.$broadcast('map.sync_center', center, [top_left, top_right, bot_left, bot_right]);
+                        $rootScope.$broadcast('map.sync_center', center, viewport);
                     }
                 });
 
@@ -147,7 +130,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function (angular, Cesium, pe
                 $rootScope.$on('map.extent_changed', function (event, data, b) {
                     var view = hs_map.map.getView();
                     if (hs_map.visible) {
-                        setExtentEqualToOlExtent(view);
+                        HsCsCamera.setExtentEqualToOlExtent(view);
                     }
                 });
 
@@ -217,113 +200,23 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function (angular, Cesium, pe
 
             function linkOlSourceToCesiumDatasource(ol_source, cesium_layer) {
                 ol_source.cesium_layer = cesium_layer;
+                syncFeatures(ol_source);
                 ol_source.on('features:loaded', function (e) {
                     if (e.target.cesium_layer) {
-                        e.target.cesium_layer.entities.removeAll();
-                        var promise = e.target.cesium_layer.load(serializeVectorLayerToGeoJson(ol_source),
-                            {
-                                camera: viewer.scene.camera,
-                                canvas: viewer.scene.canvas,
-                                clampToGround: true
-                            });
-                        promise.then(function (dataSource) {
-                            viewer.dataSources.add(dataSource);
-
-                            //Get the array of entities
-                            var entities = dataSource.entities.values;
-
-                            var colorHash = {};
-                            for (var i = 0; i < entities.length; i++) {
-                                //For each entity, create a random color based on the state name.
-                                //Some states have multiple entities, so we store the color in a
-                                //hash so that we use the same color for the entire state.
-                                var entity = entities[i];
-                                var name = entity.name;
-                                var s = entity.properties.category.getValue();
-                                if (typeof s === 'undefined') return;
-                                s = s.split("#")[1];
-                                var allowed = 'archaeological_site.png  artwork.png  bank.png      cafe.png       car_wash.png  fast_food.png  hotel.png        library.png   other.png    place_of_worship.png  restaurant.png   viewpoint.png     zoo.png arts_centre.png          atm.png      bus_stop.png  camp_site.png  dentist.png   fountain.png   information.png  memorial.png  parking.png  pub.png              supermarket.png  waste_basket.png';
-                                if (allowed.indexOf(s + '.png') > -1)
-                                    s = '../foodie-zones/symbols/' + s + '.png';
-                                else
-                                    s = '../foodie-zones/symbols/other.png';
-                                //entity.billboard.size = Cesium.Cartesian3.distance(viewer.camera.position, entity.position.getValue());
-                                entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
-                                entity.billboard.image = s;
-                            }
-                        })
+                        syncFeatures(e.target);
                     }
                 })
             }
 
-            function getCornerCoord(startCoordinates, endCoordinates) {
-
-                var coordinate = viewer.scene.camera.pickEllipsoid(startCoordinates, this.ellipsoid);
-
-                // Translate coordinates
-                var x1 = startCoordinates.x;
-                var y1 = startCoordinates.y;
-                var x2 = endCoordinates.x;
-                var y2 = endCoordinates.y;
-                // Define differences and error check
-                var dx = Math.abs(x2 - x1);
-                var dy = Math.abs(y2 - y1);
-                var sx = (x1 < x2) ? 1 : -1;
-                var sy = (y1 < y2) ? 1 : -1;
-                var err = dx - dy;
-
-                coordinate = viewer.scene.camera.pickEllipsoid({ x: x1, y: y1 }, this.ellipsoid);
-                if (coordinate) {
-                    return coordinate;
-                }
-
-                // Main loop
-                while (!((x1 == x2) && (y1 == y2))) {
-                    var e2 = err << 1;
-                    if (e2 > -dy) {
-                        err -= dy;
-                        x1 += sx;
-                    }
-                    if (e2 < dx) {
-                        err += dx;
-                        y1 += sy;
-                    }
-
-                    coordinate = viewer.scene.camera.pickEllipsoid({ x: x1, y: y1 }, this.ellipsoid);
-                    if (coordinate) {
-                        return coordinate;
-                    }
-                }
-                return;
-            }
-
-
-            function setExtentEqualToOlExtent(view) {
-                var ol_ext = view.calculateExtent(hs_map.map.getSize());
-                var trans_ext = ol.proj.transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
-                viewer.camera.setView({
-                    destination: Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3])
-                });
-
-                var ray = viewer.camera.getPickRay(new Cesium.Cartesian2(viewer.canvas.width / 2, viewer.canvas.height / 2));
-                var positionCartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
-                if (positionCartesian3) {
-                    /*
-                    var instance = new Cesium.GeometryInstance({
-                        geometry : new Cesium.RectangleGeometry({
-                            rectangle : Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
-                            height: Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height,
-                            vertexFormat : Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT
-                        })
+            function syncFeatures(ol_source) {
+                ol_source.cesium_layer.entities.removeAll();
+                var promise = ol_source.cesium_layer.load(serializeVectorLayerToGeoJson(ol_source),
+                    {
+                        camera: viewer.scene.camera,
+                        canvas: viewer.scene.canvas,
+                        clampToGround: true
                     });
-
-                    viewer.scene.primitives.removeAll();
-                    viewer.scene.primitives.add(new Cesium.Primitive({
-                        geometryInstances : instance,
-                        appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true})
-                    })); */
-                    viewer.camera.moveBackward(Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height);
-                }
+                promise.then(ol_source.cesiumStyler)
             }
 
             function processOlLayer(lyr) {
@@ -438,99 +331,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol'], function (angular, Cesium, pe
                 }
             }
 
-            /**
-             * @ngdoc method
-             * @name hs.cesium.service#getCameraCenterInLngLat
-             * @private
-             * @description Gets the position the camera is pointing to in lon/lat coordinates and resolution as the third array element
-             */
-            function getCameraCenterInLngLat() {
-                var ray = viewer.camera.getPickRay(new Cesium.Cartesian2(viewer.canvas.width / 2, viewer.canvas.height / 2));
-                var positionCartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
-                if (positionCartesian3) {
-                    var positionCartographic = Cesium.Cartographic.fromCartesian(positionCartesian3);
-                    var lngDeg = Cesium.Math.toDegrees(positionCartographic.longitude);
-                    var latDeg = Cesium.Math.toDegrees(positionCartographic.latitude);
-                    position = [lngDeg, latDeg, calcResolutionForDistance(Cesium.Cartographic.fromCartesian(viewer.camera.position).height - positionCartographic.height, latDeg)];
-                    return position;
-                } else return null;
-            }
 
-            /**
-             * @ngdoc method
-             * @name hs.cesium.service#calcResolutionForDistance
-             * @private
-             * @description Calculates the resolution for a given distance from the ground and latitude
-             */
-            function calcResolutionForDistance(distance, latitude) {
-                // See the reverse calculation (calcDistanceForResolution_) for details
-                const canvas = viewer.scene.canvas;
-                const fovy = viewer.camera.frustum.fovy;
-                const metersPerUnit = ol.proj.get('EPSG:3857').getMetersPerUnit();
-
-                const visibleMeters = 2 * distance * Math.tan(fovy / 2);
-                const relativeCircumference = Math.cos(Math.abs(latitude));
-                const visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
-                const resolution = visibleMapUnits / canvas.clientHeight;
-                return resolution;
-            };
-
-            /**
-             * @ngdoc method
-             * @name hs.cesium.service#calcDistanceForResolution
-             * @private
-             * @description Calculates the distance from the ground based on resolution and latitude
-             */
-            function calcDistanceForResolution(resolution, latitude) {
-                const canvas = viewer.scene.canvas;
-                const fovy = viewer.camera.frustum.fovy;
-                const metersPerUnit = hs_map.map.getView().getProjection().getMetersPerUnit();
-
-                // number of "map units" visible in 2D (vertically)
-                const visibleMapUnits = resolution * canvas.clientHeight;
-
-                // The metersPerUnit does not take latitude into account, but it should
-                // be lower with increasing latitude -- we have to compensate.
-                // In 3D it is not possible to maintain the resolution at more than one point,
-                // so it only makes sense to use the latitude of the "target" point.
-                const relativeCircumference = Math.cos(Math.abs(latitude));
-
-                // how many meters should be visible in 3D
-                const visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
-
-                // distance required to view the calculated length in meters
-                //
-                //  fovy/2
-                //    |\
-                //  x | \
-                //    |--\
-                // visibleMeters/2
-                const requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
-
-                // NOTE: This calculation is not absolutely precise, because metersPerUnit
-                // is a great simplification. It does not take ellipsoid/terrain into account.
-
-                return requiredDistance;
-            };
-
-            function inView(_position, _viewer) {
-                try {
-                    var camera = _viewer.scene.camera;
-                    var frustum = camera.frustum;
-                    var cullingVolume = frustum.computeCullingVolume(camera.position, camera.direction, camera.up);
-                    return cullingVolume.computeVisibility(new Cesium.BoundingSphere(_position, 0.0)) === Cesium.Intersect.INSIDE;
-                } catch (e) {
-                    console.log(e);
-                    return false;
-                }
-            };
-
-            function viewRectangle(_viewer) {
-                var ellipsoid = _viewer.scene.globe.ellipsoid;
-                return _viewer.scene.camera.computeViewRectangle(ellipsoid);
-            };
-
-            this.getCameraCenterInLngLat = getCameraCenterInLngLat;
+            this.getCameraCenterInLngLat = HsCsCamera.getCameraCenterInLngLat;
 
             var me = this;
 
