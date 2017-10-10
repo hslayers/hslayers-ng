@@ -1,6 +1,9 @@
 'use strict';
+require(['tinycolor'], function(tinycolor) {
+    window.tinycolor = tinycolor;
+});
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -14,6 +17,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'gettext',
             'hs.sidebar',
             'ngMaterial',
+            'mdColorPicker',
             'hs.material.core',
             'hs.material.search',
             'hs.material.mainToolbar',
@@ -60,80 +64,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     title: "Base layer",
                     base: true,
                     img: "http://holywatersf.com/images/contact/google-map.png"
-                }),
-                new ol.layer.Tile({
-                    title: "OpenCycleMap",
-                    visible: false,
-                    base: true,
-                    source: new ol.source.OSM({
-                        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                    }),
-                    img: "http://holywatersf.com/images/contact/google-map.png"
-                }),
-                new ol.layer.Tile({
-                    title: "Satellite",
-                    visible: false,
-                    base: true,
-                    source: new ol.source.XYZ({
-                        url: 'http://api.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmFpdGlzYmUiLCJhIjoiY2lrNzRtbGZnMDA2bXZya3Nsb2Z4ZGZ2MiJ9.g1T5zK-bukSbJsOypONL9g'
-                    }),
-                    img: "http://holywatersf.com/images/contact/google-map.png",
-                    removeable: true
-                }),
-                new ol.layer.Vector({
-                    title: "Sídla",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/sidla.geojson'
-                    }),
-                    path: "Libe"
-                }),
-                new ol.layer.Vector({
-                    title: "Horské kóty",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/koty.geojson'
-                    }),
-                    path: "Libe"
-                }),
-                new ol.layer.Vector({
-                    title: "Vodni plochy",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/plochy.geojson'
-                    }),
-                    path: "Libe"
-                }),
-                new ol.layer.Vector({
-                    title: "Vodni toky",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/toky.geojson'
-                    }),
-                    path: ""
-                }),
-                new ol.layer.Vector({
-                    title: "Chraněná území",
-                    source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON(),
-                        url: 'data/chranene.geojson'
-                    })
-                }),
-                new ol.layer.Tile({
-                    title: "Sídelní, hospodářské a kulturni objekty",
-                    source: new ol.source.TileWMS({
-                        url: 'http://geoportal.cuzk.cz/WMS_ZABAGED_PUB/WMService.aspx',
-                        params: {
-                            LAYERS: 'Sidelni__hospodarske_a_kulturni_objekty',
-                            INFO_FORMAT: undefined,
-                            FORMAT: "image/png"
-                        },
-                        crossOrigin: "anonymous"
-                    }),
-                    path: 'WMS',
-                    visible: true,
-                    opacity: 0.8
-                }),
+                })
             ],
             project_name: 'Material',
             default_view: new ol.View({
@@ -173,10 +104,6 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 $scope.Core = Core;
             }
         ]);
-
-        module.config(function($mdThemingProvider) {
-            $mdThemingProvider.theme('selected-basemap').backgroundPalette('deep-purple').dark();
-          });
 
         return module;
     });
