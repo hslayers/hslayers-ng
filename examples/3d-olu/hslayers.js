@@ -30,7 +30,8 @@ require.config({
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
         cesium: hsl_path + 'components/cesium/cesium',
-        cesiumjs: hsl_path + '/bower_components/cesium.js/dist/Cesium'
+        cesiumjs: hsl_path + '/bower_components/cesium.js/dist/Cesium',
+        pois: 'poi'
     },
     shim: {
         cesiumjs: {
