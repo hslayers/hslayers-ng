@@ -26,26 +26,32 @@ define(['angular', 'core', 'ngMaterial'],
                             "layerManager": {
                                 id: "layerManager",
                                 status: false,
-                                controller: 'hs.material.layermanager.controller',
-                                directive: 'hs.material.layermanager.directive'
+                                directive: 'hs.material.layermanager.directive',
+                                controller: 'hs.material.layermanager.controller'
                             },
                             "basemap": {
                                 id: "basemap",
                                 status: false,
-                                controller: 'hs.material.basemap.controller',
-                                directive: 'hs.material.basemap.directive'
+                                directive: 'hs.material.basemap.directive',
+                                controller: 'hs.material.basemap.controller'
                             },
                             "addLayer": {
                                 id: "addLayer",
                                 status: false,
-                                controller: 'hs.material.addlayer.controller',
-                                directive: 'hs.material.addlayer.directive'
+                                directive: 'hs.material.addlayer.directive',
+                                controller: 'hs.material.addlayer.controller'
                             },
                             "shareMap": {
                                 id: "shareMap",
                                 status: false,
-                                controller: 'hs.material.sharemap.controller',
-                                directive: 'hs.material.sharemap.directive'
+                                directive: 'hs.material.sharemap.directive',
+                                controller: 'hs.material.sharemap.controller'
+                            },
+                            "measure": {
+                                id: "measure",
+                                status: false,
+                                directive: 'hs.material.measure.directive',
+                                controller: 'hs.material.measure.controller'
                             }
                         },
                         activeDirective: undefined

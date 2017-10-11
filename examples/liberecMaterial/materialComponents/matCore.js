@@ -12,7 +12,8 @@ require.config({
         matAddLayer: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/addLayer',
         matBasemap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/basemap',
         matLayerManager: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/layerManager',
-        matShareMap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/shareMap'
+        matShareMap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/shareMap',
+        matMeasure: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/matMeasure'
     },
     shim: {},
     priority: []
