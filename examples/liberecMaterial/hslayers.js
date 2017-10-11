@@ -18,6 +18,8 @@ require.config({
         ngMaterial: hsl_path + 'node_modules/angular-material/angular-material',
         tinycolor: hsl_path + 'node_modules/tinycolor2/tinycolor',
         mdColorPicker: hsl_path + 'node_modules/md-color-picker/dist/mdColorPicker',
+        clipboard: hsl_path + 'node_modules/clipboard/dist/clipboard',
+        ngclipboard: hsl_path + 'node_modules/ngclipboard/dist/ngclipboard',
         matCore: hsl_path + 'examples/liberecMaterial/materialComponents/matCore'
     },
     shim: {
@@ -26,7 +28,8 @@ require.config({
         'ngMaterial': {
              deps: ['ngAnimate', 'ngAria']
         },
-        'mdColorPicker': ['tinycolor']
+        'mdColorPicker': ['tinycolor'],
+        'ngclipboard': ['clipboard']
     }
 });
 

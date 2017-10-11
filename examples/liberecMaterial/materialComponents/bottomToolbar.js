@@ -25,7 +25,7 @@ define(['angular', 'ol','ngMaterial'],
                             show: (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.measure)) ? config.bottomToolbar.measure : true
                         },
                         {
-                            item: 'share',
+                            item: 'shareMap',
                             tooltip: 'Share map',
                             icon: 'share',
                             show: (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.share)) ? config.bottomToolbar.share : true

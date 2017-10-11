@@ -252,9 +252,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                             var timer = null;
                             $rootScope.$on('map.extent_changed', function(event, data, b) {
                                 me.update()
-                                if (Core.mainpanel == 'permalink') {
-                                    $rootScope.$broadcast('browserurl.updated');
-                                }
+                                $rootScope.$broadcast('browserurl.updated');
                             });
                             OlMap.map.getLayers().on("add", function(e) {
                                 var layer = e.element;
@@ -262,7 +260,8 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                                 layer.on('change:visible', function(e) {
                                     if (timer != null) clearTimeout(timer);
                                     timer = setTimeout(function() {
-                                        me.update()
+                                        me.update();
+                                        $rootScope.$broadcast('browserurl.updated');
                                     }, 1000);
                                 })
                             });
@@ -400,7 +399,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                      * @description Generate thumbnail of current map and save it to variable and selected element
                      */
                     me.generateThumbnail = function($element) {
-                        if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink') {
+                        if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink' || Core.mainpanel == 'shareMap') {
                             $element.attr("crossOrigin", "Anonymous");
                             OlMap.map.once('postcompose', function(event) {
                                 var myCanvas = document.getElementById('my_canvas_id');
@@ -471,7 +470,7 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
                     });
                     
                     $rootScope.$on('browserurl.updated', function() {
-                        if (Core.mainpanel == "permalink") {
+                        if (Core.mainpanel == "permalink" || Core.mainpanel == "shareMap") {
 
                             me.data.shareUrlValid = false;
 

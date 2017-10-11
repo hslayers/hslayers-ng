@@ -10,8 +10,8 @@ define(['angular', 'core', 'ngMaterial'],
                 };
             })
 
-            .service('hs.material.sidepanel.service', ['$rootScope', 'config', '$mdSidenav', '$interval', '$compile',
-            function ($rootScope, config, $mdSidenav, $interval, $compile) {
+            .service('hs.material.sidepanel.service', ['$rootScope', 'config', '$mdSidenav', '$interval', '$compile', 'Core',
+            function ($rootScope, config, $mdSidenav, $interval, $compile, Core) {
                 var me = this;
 
                 me.data = {
@@ -40,6 +40,12 @@ define(['angular', 'core', 'ngMaterial'],
                                 status: false,
                                 controller: 'hs.material.addlayer.controller',
                                 directive: 'hs.material.addlayer.directive'
+                            },
+                            "shareMap": {
+                                id: "shareMap",
+                                status: false,
+                                controller: 'hs.material.sharemap.controller',
+                                directive: 'hs.material.sharemap.directive'
                             }
                         },
                         activeDirective: undefined
@@ -76,6 +82,7 @@ define(['angular', 'core', 'ngMaterial'],
                         me.data[id].directives[me.data[id].activeDirective].status = false;
                         me.data[id].activeDirective = undefined;
                     }
+                    Core.setMainPanel('none',false,true);
                 }
 
                 $rootScope.$on('menuButtonClicked', function(e,id){
@@ -83,6 +90,7 @@ define(['angular', 'core', 'ngMaterial'],
                     me.data['sidenav-right'].directives[id].status = true;
                     me.data['sidenav-right'].activeDirective = id;
                     me.openSidenav('sidenav-right');
+                    Core.setMainPanel(id,false,true);
                     if (!$rootScope.$$phase) $rootScope.$digest();
                 })
 
