@@ -2,8 +2,11 @@
 require(['tinycolor'], function(tinycolor) {
     window.tinycolor = tinycolor;
 });
+require(['clipboard'], function(clipboard) {
+    window.Clipboard = clipboard;
+  });
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -18,6 +21,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.sidebar',
             'ngMaterial',
             'mdColorPicker',
+            'ngclipboard',
             'hs.material.core',
             'hs.material.search',
             'hs.material.mainToolbar',
@@ -25,7 +29,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.material.sidepanel',
             'hs.material.addLayer',
             'hs.material.basemap',
-            'hs.material.layerManager'
+            'hs.material.layerManager',
+            'hs.material.shareMap'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$timeout', function (OlMap, Core, $timeout) {
@@ -94,7 +99,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             },
             queryPoint: 'notWithin',
             mainToolbar: {
-                addLayer: true
+                addLayer: false
             }
         });
 
