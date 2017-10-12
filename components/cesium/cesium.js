@@ -330,6 +330,10 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                             })
                     } else {
                         var new_source = new Cesium.GeoJsonDataSource(ol_lyr.get('title'));
+                        ol_lyr.cesium_layer = new_source; //link to cesium layer will be set also for OL layers source object, when this function returns.
+                        ol_lyr.on('change:visible', function (e) {
+                            e.target.cesium_layer.show = ol_lyr.getVisible();
+                        })
                         return new_source;
                     }
                 } else {
