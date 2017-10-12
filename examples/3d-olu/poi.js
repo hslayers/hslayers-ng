@@ -2,7 +2,19 @@ define(['ol'],
 
     function (ol) {
         var spoi_source = new ol.source.Vector();
-        
+        var $scope;
+        var $compile;
+
+        function entityClicked(entity){
+            $scope.showInfo(entity);
+            if($('#zone-info-dialog').length>0){
+                angular.element('#zone-info-dialog').parent().remove();
+            }
+            var el = angular.element('<div hs.foodiezones.info-directive></div>');
+            $("#hs-dialog-area").append(el);
+            $compile(el)($scope);
+        }
+
         spoi_source.cesiumStyler = function (dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
@@ -18,6 +30,7 @@ define(['ol'],
                     s = '../foodie-zones/symbols/other.png';
                 entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
                 entity.billboard.image = s;
+                entity.onclick = entityClicked
             }
         }
 
@@ -95,6 +108,10 @@ define(['ol'],
                     },
                     visible: true
                 })
+            },
+            init: function(_$scope, _$compile){
+                $scope = _$scope;
+                $compile = _$compile;
             }
         }
     }

@@ -151,10 +151,16 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
                 handler.setInputAction(function (movement) {
                     var pickRay = viewer.camera.getPickRay(movement.position);
+                    var pickedObject = viewer.scene.pick(movement.position);
                     var featuresPromise = viewer.imageryLayers.pickImageryLayerFeatures(pickRay, viewer.scene);
+                    if(pickedObject && pickedObject.id && pickedObject.id.onclick){
+                        pickedObject.id.onclick(pickedObject.id);
+                        return;
+                    }
                     if (!Cesium.defined(featuresPromise)) {
                         console.log('No features picked.');
                     } else {
+                        
                         Cesium.when(featuresPromise, function (features) {
 
                             var s = '';

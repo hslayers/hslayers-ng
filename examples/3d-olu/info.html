@@ -1,0 +1,26 @@
+<div class="modal" id="zone-info-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <h4>
+                    <translate>{{zone.obj_type}}</translate>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <img src="../../img/ajax-loader.gif" ng-if="zone.attributes.length==0"/>
+                <table class="table table-striped" description object="zone"></table>
+                <!-- <h4>Intersecting objects</h4>
+                <table class="table">
+                    <tbody>
+                        <tr ng-repeat="poi in zone.links">
+                            <td><a ng-click="$event.preventDefault(); describePoi(poi)" ng-href="#">{{poi.url}}</a>
+                                <table class="table table-striped" description object="poi" ng-show="poi.expanded"></table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> -->
+            </div>
+        </div>
+    </div>
+</div>
