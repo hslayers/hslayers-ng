@@ -13,7 +13,8 @@ require.config({
         matBasemap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/basemap',
         matLayerManager: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/layerManager',
         matShareMap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/shareMap',
-        matMeasure: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/matMeasure'
+        matMeasure: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/matMeasure',
+        matQuery: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/queryResult'
     },
     shim: {},
     priority: []
@@ -22,36 +23,15 @@ require.config({
 define(['angular', 'core', 'ngMaterial'],
     function (angular, core, ngMaterial) {
         angular.module('hs.material.core', ['hs.core'])
-            .controller("MatCore", ['$scope', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$mdSidenav', '$interval',
-                function ($scope, $window, OlMap, gettextCatalog, config, $templateCache, $timeout, $mdSidenav, $interval) {
-                    $scope.closeSidenav = function (id) {
-                        $scope.sidenavStatus[id] = false;
-                        mapSizeInterval();
-                    }
-                    $scope.openSidenav = function (id) {
-                        $scope.sidenavStatus[id] = true;
-                        mapSizeInterval();
-                    }
-                    $scope.toogleSidenav = function (id) {
-                        $scope.sidenavStatus[id] = !$scope.sidenavStatus[id];
-                        mapSizeInterval();
-                    }
-                    $scope.sidenavStatus = {
-                        "sidenav-left": true
-                    };
-                    $scope.sidenavProp = {
-                        "sidenav-left": {
-                            title: "Infopanel"
-                        }
-                    }
-                    $scope.isSidenavOpened = function (id) {
-                        return $scope.sidenavStatus[id];
+            .controller("MatCore", ['$scope', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$mdSidenav', '$interval', 'hs.material.sidepanel.service',
+                function ($scope, $window, OlMap, gettextCatalog, config, $templateCache, $timeout, $mdSidenav, $interval, Sidenav) {
+
+                    $scope.toogleSidenav = function(id){
+                        Sidenav.toogleSidenav(id);
                     }
 
-                    function mapSizeInterval() {
-                        $interval(function () {
-                            $scope.$emit('Core_sizeChanged');
-                        }, 20, 40);
+                    $scope.isSidenavOpened = function(id){
+                        return Sidenav.isSidenavOpened(id);
                     }
 
                     $scope.changeZoom = function (zoomIn) {

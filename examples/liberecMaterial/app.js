@@ -6,7 +6,7 @@ require(['clipboard'], function(clipboard) {
     window.Clipboard = clipboard;
   });
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap', 'matMeasure'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'compositions', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap', 'matMeasure', 'matQuery'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -17,6 +17,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.search', 'hs.measure',
             'hs.core', 'hs.permalink',
             'hs.api',
+            'hs.compositions',
             'gettext',
             'hs.sidebar',
             'ngMaterial',
@@ -31,7 +32,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.material.basemap',
             'hs.material.layerManager',
             'hs.material.shareMap',
-            'hs.material.measure'
+            'hs.material.measure',
+            'hs.material.query'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$timeout', function (OlMap, Core, $timeout) {
@@ -100,14 +102,16 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             },
             queryPoint: 'notWithin',
             mainToolbar: {
-                addLayer: false
+                addLayer: true
             }
         });
 
-        module.controller('Main', ['$scope', 'Core',
-            function ($scope, Core) {
+        module.controller('Main', ['$scope', 'Core', 'hs.compositions.service',
+            function ($scope, Core, Compo) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
+                Core.setMainPanel("",true);
+                //Compo.loadComposition("http://www.opentransportnet.eu/wwwlibs/statusmanager2/index.php?request=load&id=219e90c6-ba6d-43a4-8dd6-3ea84f2730c4", false);
             }
         ]);
 

@@ -18,21 +18,13 @@
     </md-toolbar>
 
     <section flex layout="row">
-        <md-sidenav class="md-sidenav-left" md-component-id="sidenav-left" md-whiteframe="4" md-is-locked-open="isSidenavOpened('sidenav-left')" md-disable-backdrop="true">
-
-            <md-toolbar class="md-hue-2">
-                <h1 class="md-toolbar-tools">{{sidenavProp['sidenav-left'].title}}</h1>
-
-            </md-toolbar>
-            <md-content layout-padding>
-                BlaBla BlaBla
-            </md-content>
-
-        </md-sidenav>
+        <hs.material.sidepanel.panelleft.directive></hs.material.sidepanel.panelleft.directive>
         <div flex id="map-container" style="width:100%;position:relative;">
             <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
 
             <div class="map-floating-gui" id="gui">
+                
+                <!--
                 <md-button class="md-raised md-hue-3 left-side-panel-button" ng-click="toogleSidenav('sidenav-left')" ng-show="!isSidenavOpened('sidenav-left')">
                     <md-tooltip md-direction="right">Show panel</md-tooltip>
                     <md-icon>chevron_right</md-icon>
@@ -40,7 +32,7 @@
                 <md-button class="md-raised md-hue-3 left-side-panel-button" ng-click="toogleSidenav('sidenav-left')" ng-show="isSidenavOpened('sidenav-left')">
                     <md-tooltip md-direction="right">Hide panel</md-tooltip>
                     <md-icon>chevron_left</md-icon>
-                </md-button>
+                </md-button>-->
 
                 <md-whiteframe layout="column" layout-align="center center" layout-wrap class="md-whiteframe-4dp map-tool-panel">
                     <md-button class="md-icon-button md-primary" aria-label="Zoom in map" ng-click="changeZoom(true)">
@@ -72,5 +64,6 @@
             </div>
         </div>
         <hs.material.sidepanel.panelright.directive></hs.material.sidepanel.panelright.directive>
+        <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
     </section>
 </div>

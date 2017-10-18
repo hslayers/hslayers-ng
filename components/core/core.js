@@ -600,7 +600,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         */
                         openStatusCreator: function() {
                             //me.panel_statuses.status_creator = true;
-                            hslayers_api.gui.StatusCreator.open();
+                            if (angular.isDefined(hslayers_api.gui.StatusCreator))hslayers_api.gui.StatusCreator.open();
                         },
                         /**
                         * @ngdoc method

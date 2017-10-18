@@ -34,22 +34,41 @@ define(['angular', 'ol','ngMaterial'],
                             item: 'addLayer',
                             tooltip: 'Add layer to map',
                             icon: 'add box',
-                            show:  (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.addLayer)) ? config.mainToolbar.addLayer : false
+                            show:  (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.addLayer)) ? config.mainToolbar.addLayer : false,
+                            menu: [
+                                {
+                                    item: 'addWMS',
+                                    icon: 'image',
+                                    text: 'WMS Layer'
+                                },
+                                {
+                                    item: 'addWMS',
+                                    text: 'WFS Layer'
+                                },
+                                {
+                                    item: 'addWMS',
+                                    icon: 'file_download',
+                                    text: 'Local file'
+                                },
+                            ]
                         }
                     ];
 
                     $scope.buttonClicked = function(button) {
                         $scope.$emit('menuButtonClicked', button);
-                        console.log("sendo");
+                    }
+
+                    $scope.openMenu = function($mdmenu, ev){
+                        $mdMenu.open(ev);
+                    }
+
+                    $scope.checkMenu = function(button){
+                        return angular.isDefined(button.menu) ? true : false;
                     }
 
                     if (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.customButton)) {
                         
                     }
-
-                    /*
-                        config.mainToolbar.buttonStatus.xxx
-                    */
 
                     $scope.$emit('scope_loaded', "MainToolbar");
                 }

@@ -42,8 +42,10 @@ define(['angular', 'ol','ngMaterial'],
                     $scope.$on('core.mainpanel_changed', function(event) {
                         if (Core.mainpanel == 'measure') {
                             Measure.activateMeasuring($scope.type);
+                            Core.current_panel_queryable = false;
                         } else {
                             Measure.deactivateMeasuring();
+                            Core.current_panel_queryable = true;
                         }
                     });
 
