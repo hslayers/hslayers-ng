@@ -53,7 +53,6 @@ define(['angular', 'ol','ngMaterial'],
 
                     $scope.buttonClicked = function(button) {
                         $scope.$emit('menuButtonClicked', button);
-                        console.log("sendo");
                     }
 
                     if (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.customButton)) {
