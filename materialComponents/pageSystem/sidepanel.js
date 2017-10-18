@@ -19,6 +19,15 @@ define(['angular', 'core', 'ngMaterial'],
                 };
             })
 
+            .directive('hs.material.sidepanel.panelleft.directive', function () {
+                return {
+                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/leftPanel.html?bust=' + gitsha,
+                    link: function (scope, element) {
+
+                    }
+                };
+            })
+
             .service('hs.material.sidepanel.service', ['$rootScope', 'config', '$mdSidenav', '$interval', '$compile', 'Core',
             function ($rootScope, config, $mdSidenav, $interval, $compile, Core) {
                 var me = this;
@@ -79,6 +88,23 @@ define(['angular', 'core', 'ngMaterial'],
                                 status: false,
                                 directive: 'hs.material.datasourcebrowser.directive',
                                 controller: 'hs.material.datasourcebrowser.controller'
+                            }
+                        },
+                        activeDirective: undefined
+                    },
+                    'sidenav-left': {
+                        status: false,
+                        content: {
+                            title: "Default",
+                            innerHtml: "<p>pokus</p>",
+                            status: false
+                        },
+                        directives: {
+                            "query": {
+                                id: "query",
+                                status: false,
+                                directive: 'hs.material.query.directive',
+                                controller: 'hs.material.query.controller'
                             }
                         },
                         activeDirective: undefined

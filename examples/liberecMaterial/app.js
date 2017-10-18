@@ -184,7 +184,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 multi: true
             },
             mainToolbar: {
-                addLayer: false
+                addLayer: true
             }
         });
 
