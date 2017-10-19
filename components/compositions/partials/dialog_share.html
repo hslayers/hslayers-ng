@@ -4,27 +4,27 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">
-                    <translate>Share map </translate> {{shareTitle}}
+                    <translate>Share map </translate> {{data.shareTitle}}
                 </h4>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="row">
                     <div class="col-md-3"><b translate>Abstract</b></div>
-                    <div class="col-md-9">{{shareDescription}}</div>
+                    <div class="col-md-9">{{data.shareDescription}}</div>
                 </div>
                 <div class="row">
                     <div class="col-md-3"><b translate>URL</b></div>
-                    <div class="col-md-9"><a href="{{shareUrl}}">{{shareUrl}}</a></div>
+                    <div class="col-md-9"><a href="{{data.shareUrl}}">{{data.shareUrl}}</a></div>
                 </div>
             </div>
             <div class="modal-footer" id="stc-footer">
-                <button class="btn btn-default" href="#" socialshare socialshare-provider="twitter" socialshare-text="{{shareTitle}}" socialshare-hashtags="map, gis" socialshare-url="{{shareUrl}}">
+                <button class="btn btn-default" href="#" socialshare socialshare-provider="twitter" socialshare-text="{{data.shareTitle}}" socialshare-hashtags="map, gis" socialshare-url="{{data.shareUrl}}">
                     <i class="icon-twitter"></i> Twitter
                 </button>
-                <button class="btn btn-default" socialshare socialshare-provider="facebook" socialshare-text="{{shareTitle}}" socialshare-description="{{shareDescription}}" socialshare-url="{{shareUrl}}">
+                <button class="btn btn-default" socialshare socialshare-provider="facebook" socialshare-text="{{data.shareTitle}}" socialshare-description="{{data.shareDescription}}" socialshare-url="{{data.shareUrl}}">
                     <i class="icon-facebook"></i> Facebook
                 </button>
-                <button class="btn btn-default" socialshare socialshare-provider="google" socialshare-url="{{shareUrl}}">
+                <button class="btn btn-default" socialshare socialshare-provider="google" socialshare-url="{{data.shareUrl}}">
                     <i class="icon-googleplus"></i> Google
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" translate="">Close</button>

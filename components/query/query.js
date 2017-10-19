@@ -73,6 +73,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                             })]
                         }),
                         show_in_manager: false,
+                        removable: false,
                         style: pointClickedStyle
                     });
 
