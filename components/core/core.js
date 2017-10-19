@@ -13,7 +13,7 @@ if (typeof hslMin != 'undefined') {
     else hslMin = '';
 } 
 else hslMin = '';
-console.log(hslMin);
+if(console) console.log(hslMin);
 
 require.config({
     paths: {
