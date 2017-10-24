@@ -604,6 +604,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
                         */
                         isAuthorized: function() {
+                            if(!angular.isDefined(window.getLRUser)) 
+                                console.warn('window.getLRUser function needs to be defined, which usually comes from liferay.');
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
                             }
