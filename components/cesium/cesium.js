@@ -185,7 +185,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                  * @eventType broadcast on $rootScope
                  * @description 
                  */
-                $rootScope.$broadcast('cesiummap.loaded');
+                $rootScope.$broadcast('cesiummap.loaded', viewer);
             }
 
             function serializeVectorLayerToGeoJson(ol_source) {

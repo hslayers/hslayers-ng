@@ -1,0 +1,106 @@
+define(['ol'],
+
+    function (ol) {
+        var olu_source = new ol.source.Vector();
+        var $scope;
+        var $compile;
+
+        function entityClicked(entity){
+            $scope.showInfo(entity);
+            if($('#zone-info-dialog').length>0){
+                angular.element('#zone-info-dialog').parent().remove();
+            }
+            var el = angular.element('<div hs.foodiezones.info-directive></div>');
+            $("#hs-dialog-area").append(el);
+            $compile(el)($scope);
+        }
+
+        olu_source.cesiumStyler = function (dataSource) {
+            var entities = dataSource.entities.values;
+            for (var i = 0; i < entities.length; i++) {
+                var entity = entities[i];
+                var name = entity.properties.label;
+                var s = entity.properties.use.getValue();
+                switch(s){
+                    case "17":
+                        entity.polygon.material = Cesium.Color.WHITE.withAlpha(0.2);
+                        break;
+                    case "13":
+                        entity.polygon.material = Cesium.Color.RED.withAlpha(0.2);
+                        entity.polygon.outline = false;
+                        break;
+                    case "27":
+                        entity.polygon.material = Cesium.Color.GREEN.withAlpha(0.4);
+                        //entity.polygon.outline = false;
+                        break;
+                    default:
+                        entity.polygon.material = Cesium.Color.GREEN.withAlpha(0.1);
+                        
+                }
+                //entity.onclick = entityClicked
+            }
+        }
+
+        return {
+            getOlus: function (map, utils, c) {
+                if (map.getView().getResolution() > 8.48657133911758) return;
+                var format = new ol.format.WKT();
+                var ver_off = 0.0004;
+                var extents = `POLYGON ((${c[0]-0.001} ${c[1]-ver_off}, ${c[0]-0.001} ${c[1]+ver_off}, ${c[0]+0.001} ${c[1]+ver_off}, ${c[0]+0.001} ${c[1]-ver_off}))`;
+                var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
+                PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
+                PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+                SELECT ?o ?wkt ?use 
+                FROM <http://w3id.org/foodie/olu#> 
+                WHERE { ?o geo:hasGeometry ?geometry. 
+                    ?geometry geo:asWKT ?wkt. 
+                    FILTER(bif:st_intersects(bif:st_geomfromtext("${extents}"), ?wkt)).
+                    ?o <http://w3id.org/foodie/olu#specificLandUse> ?use. 
+                    FILTER(?use!="17"^^xsd:string)
+                }`) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+
+                olu_source.set('loaded', false);
+                $.ajax({
+                    url: utils.proxify(q)
+                })
+                    .done(function (response) {
+                        if (angular.isUndefined(response.results)) return;
+                        var features = [];
+                        for (var i = 0; i < response.results.bindings.length; i++) {
+                            try {
+                                var b = response.results.bindings[i];
+                                if (b.wkt.datatype == "http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.wkt.value.indexOf('e+') == -1 && b.wkt.value.indexOf('e-') == -1) {
+                                    if(olu_source.getFeatureById(b.o.value)==null){
+                                        var g_feature = format.readFeature(b.wkt.value.toUpperCase());
+                                        var ext = g_feature.getGeometry().getExtent()
+                                        var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection());
+                                        var feature = new ol.Feature({ geometry: geom_transformed, olu: b.o.value, use: b.use.value });
+                                        feature.setId(b.o.value);
+                                        features.push(feature);
+                                    }
+                                }
+                            } catch (ex) {
+                                console.log(ex);
+                            }
+                        }
+                        //olu_source.clear();
+                        olu_source.addFeatures(features);
+                        olu_source.set('loaded', true);
+                        olu_source.dispatchEvent('features:loaded', olu_source);
+                    })
+            },
+            createOluLayer: function () {
+                return new ol.layer.Vector({
+                    title: "Open land use parcels",
+                    source: olu_source,
+                    visible: true
+                })
+            },
+            init: function(_$scope, _$compile){
+                $scope = _$scope;
+                $compile = _$compile;
+            }
+        }
+    }
+)
