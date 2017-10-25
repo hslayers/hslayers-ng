@@ -5,9 +5,9 @@ define(['ol'],
         var $scope;
         var $compile;
 
-        function entityClicked(entity){
+        function entityClicked(entity) {
             $scope.showInfo(entity);
-            if($('#zone-info-dialog').length>0){
+            if ($('#zone-info-dialog').length > 0) {
                 angular.element('#zone-info-dialog').parent().remove();
             }
             var el = angular.element('<div hs.foodiezones.info-directive></div>');
@@ -30,6 +30,25 @@ define(['ol'],
                     s = '../foodie-zones/symbols/other.png';
                 entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
                 entity.billboard.image = s;
+                switch (entity.properties.category.getValue()) {
+                    case 'http://gis.zcu.cz/SPOI/Ontology#peak':
+                    case 'http://gis.zcu.cz/SPOI/Ontology#village':
+                        entity.label = new Cesium.LabelGraphics({
+                            text: entity.properties.label,
+                            font: '14px Helvetica',
+                            fillColor: Cesium.Color.WHITE,
+                            outlineColor: Cesium.Color.BLACK,
+                            showBackground: true,
+                            outlineWidth: 4,
+                            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                            pixelOffset: new Cesium.Cartesian2(0, -36),
+                            scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
+                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                        });
+                        break;
+                    default:
+                }
                 entity.onclick = entityClicked
             }
         }
@@ -109,7 +128,7 @@ define(['ol'],
                     visible: true
                 })
             },
-            init: function(_$scope, _$compile){
+            init: function (_$scope, _$compile) {
                 $scope = _$scope;
                 $compile = _$compile;
             }
