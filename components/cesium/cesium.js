@@ -179,6 +179,29 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     }
                 }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
 
+   
+                handler.setInputAction(function (movement) {
+                    var pickRay = viewer.camera.getPickRay(movement.position);
+                    var pickedObject = viewer.scene.pick(movement.position);
+
+                    if (viewer.scene.pickPositionSupported) {
+                        if (viewer.scene.mode === Cesium.SceneMode.SCENE3D) {
+                            var cartesian = viewer.scene.pickPosition(movement.position);
+                            if (Cesium.defined(cartesian)) {
+                                var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                                var longitudeString = Cesium.Math.toDegrees(cartographic.longitude);
+                                var latitudeString = Cesium.Math.toDegrees(cartographic.latitude);
+                                $rootScope.$emit('cesium_position_clicked', [longitudeString, latitudeString]);
+                            }
+                        }
+                    }
+                    if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
+                        pickedObject.id.onRightClick(pickedObject.id);
+                        return;
+                    }
+
+                }, Cesium.ScreenSpaceEventType.RIGHT_DOWN);
+
                 /**
                  * @ngdoc event
                  * @name hs.cesium.service#map.loaded

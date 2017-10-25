@@ -193,9 +193,37 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                 var viewer;
                 var pos_lon_lat = [15.059050160013555, 50.776750405293804];
                 var position = Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1], 412.0);
+                var pick_rectangle;
+                var pick_rectangle_primitive;
+
+                function createPickRectanglePrimitive() {
+                    pick_rectangle = new Cesium.GeometryInstance({
+                        geometry: new Cesium.RectangleGeometry({
+                            rectangle: Cesium.Rectangle.fromDegrees(pos_lon_lat[0] - 0.0001, pos_lon_lat[1] - 0.0001, pos_lon_lat[0] + 0.0001, pos_lon_lat[1] + 0.0002)
+                        }),
+                        id: 'rectangle2',
+                        attributes: {
+                            color: new Cesium.ColorGeometryInstanceAttribute(0.0, 1.0, 1.0, 0.5)
+                        }
+                    });
+                    pick_rectangle_primitive = viewer.scene.primitives.add(new Cesium.GroundPrimitive({
+                        geometryInstances: pick_rectangle,
+                        allowPicking: true,
+                        releaseGeometryInstances: false
+                    }));
+                }
+
+                $rootScope.$on('cesium_position_clicked', function (event, lon_lat) {
+                    pos_lon_lat[0] = lon_lat[0]; 
+                    pos_lon_lat[1] = lon_lat[1];
+                    calculateAltitude()
+                });
 
                 $rootScope.$on('cesiummap.loaded', function (event, _viewer) {
                     viewer = _viewer;
+                    viewer.scene.globe.depthTestAgainstTerrain = true;
+                   
+
                     var scene = viewer.scene;
 
                     character = viewer.entities.add({
@@ -203,38 +231,36 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                             uri: 'Cesium_Man.gltf',
                             scale: 2
                         },
-                        position: new Cesium.CallbackProperty(function(){
+                        position: new Cesium.CallbackProperty(function () {
                             return position
                         }, false),
                     });
-                    Cesium.when(character.readyPromise).then(function(model) {
+                    Cesium.when(character.readyPromise).then(function (model) {
                         model.activeAnimations.addAll({
-                            loop : Cesium.ModelAnimationLoop.REPEAT,
-                            speedup : 2,
+                            loop: Cesium.ModelAnimationLoop.REPEAT,
+                            speedup: 2,
                         });
                     });
-                  
+
                     setInterval(calculateAltitude, 5000);
                     setInterval(positionCharacter, 60);
                     viewer.trackedEntity = character;
                 });
 
                 function positionCharacter() {
-                    pos_lon_lat[0]+=0.000002;
+                    pos_lon_lat[0] += 0.000002;
                     position = Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1], pos_lon_lat[2]);
                 }
 
                 function calculateAltitude() {
-                    var terrainProvider = new Cesium.CesiumTerrainProvider({
-                        url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
-                    });
                     var positions = [
                         Cesium.Cartographic.fromDegrees(pos_lon_lat[0], pos_lon_lat[1])
                     ];
-                    var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider,  positions);
+                    var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, positions);
                     Cesium.when(promise, function (updatedPositions) {
                         pos_lon_lat[2] = updatedPositions[0].height;
                         position = Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1], pos_lon_lat[2]);
+                        createPickRectanglePrimitive();
                         olus.getOlus(map, utils, pos_lon_lat);
                     });
                 }
