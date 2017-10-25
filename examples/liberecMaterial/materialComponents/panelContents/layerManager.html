@@ -72,12 +72,12 @@
                             <md-slider min="0" max="1" step="0.01" ng-model="layer.opacity" ng-change="setOpacity(layer);"></md-slider>
                         </md-input-container>
                         <!-- style -->
-                        <label>Layer Style</label>
-                        <div ng-show="layer.layer.getSource().hasPoly">
+                        <label ng-if="layer.layer.getSource().styleAble">Layer Style</label>
+                        <div ng-if="layer.layer.getSource().hasPoly">
                             <div md-color-picker ng-model="layer.style.fillColor" label="Fill" ng-change="saveStyle(layer)" icon="format_color_fill"
                                 type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
                         </div>
-                        <div ng-show="layer.layer.getSource().hasLine || layer.layer.getSource().hasPoly">
+                        <div ng-if="layer.layer.getSource().hasLine || layer.layer.getSource().hasPoly">
                             <div md-color-picker ng-model="layer.style.lineColor" label="Stroke" ng-change="saveStyle(layer)" icon="brush" type="1" md-color-sliders="false"
                                 md-color-history="false" md-color-default-tab="1"></div>
                             <md-input-container layout-fill class="md-block">
@@ -85,7 +85,7 @@
                                 <md-slider min="0" max="40" step="0.1" ng-model="layer.style.lineWidth" ng-change="saveStyle(layer);"></md-slider>
                             </md-input-container>
                         </div>
-                        <div layout-fill ng-show="layer.layer.getSource().hasPoint">
+                        <div layout-fill ng-if="layer.layer.getSource().hasPoint">
                             <md-tabs md-no-pagination="true" md-no-ink="true" md-stretch-tabs="always" md-dynamic-height="true">
                                 <md-tab id="Circle" md-on-select="changePointType(layer,'Circle')">
                                     <md-tab-label>

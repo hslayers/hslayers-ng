@@ -61,6 +61,12 @@ define(['angular', 'core', 'ngMaterial'],
                                 status: false,
                                 directive: 'hs.material.measure.directive',
                                 controller: 'hs.material.measure.controller'
+                            },
+                            "composition": {
+                                id: "composition",
+                                status: false,
+                                directive: 'hs.material.composition.directive',
+                                controller: 'hs.material.composition.controller'
                             }
                         },
                         activeDirective: undefined

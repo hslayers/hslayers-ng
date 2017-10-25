@@ -98,6 +98,8 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
             });
             //me.map.addControl(new ol.control.ZoomSlider());
             me.map.addControl(new ol.control.ScaleLine());
+
+            me.repopulateLayers();
             /**
              * @ngdoc event
              * @name hs.map.service#map.loaded
@@ -451,11 +453,10 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
              * @description Initialization of map object, initialize map and map state from permalink.
              */
             $scope.init = function () {
-                OlMap.init();
                 if (permalink.getParamValue('visible_layers')) {
                     OlMap.visible_layers = permalink.getParamValue('visible_layers').split(';');
                 }
-                OlMap.repopulateLayers();
+                OlMap.init();  
                 hs_x = permalink.getParamValue('hs_x');
                 hs_y = permalink.getParamValue('hs_y');
                 hs_z = permalink.getParamValue('hs_z');

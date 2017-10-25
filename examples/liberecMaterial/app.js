@@ -6,7 +6,7 @@ require(['clipboard'], function(clipboard) {
     window.Clipboard = clipboard;
   });
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'compositions', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap', 'matMeasure', 'matQuery'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'compositions', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap', 'matMeasure', 'matQuery', 'matComposition'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -33,7 +33,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.material.layerManager',
             'hs.material.shareMap',
             'hs.material.measure',
-            'hs.material.query'
+            'hs.material.query',
+            'hs.material.composition'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$timeout', function (OlMap, Core, $timeout) {
@@ -164,15 +165,18 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "title": "Compositions catalogue",
                     "type": "compositions_catalogue",
                     "editable": true,
-                    "url": 'http://foodie-dev.wirelessinfo.cz'
+                    "url": 'http://opentnet.eu'
                 },
                 "status_manager": {
                     "title": "Status manager",
                     "type": "status_manager",
                     "editable": true,
-                    "url": 'http://foodie-dev.wirelessinfo.cz'
+                    "url": 'http://opentnet.eu'
                 },
             },
+            'catalogue_url': caturl || '/php/metadata/csw/',
+            'compositions_catalogue_url': caturl || '/php/metadata/csw/',
+            status_manager_url: '/wwwlibs/statusmanager/index.php',
             queryPoint: 'notWithin',
             mainToolbar: {
                 addLayer: true

@@ -5,7 +5,7 @@
 .map-floating-gui {
     position:absolute;
     top: 0;
-    left 0;
+    left: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
@@ -103,4 +103,21 @@
 }
 .divider-light {
     border-color: #B1B1B1;
+}
+
+/* Composition panel tweaks*/
+.composition md-input-container {
+    margin: 2px 0px;
+}
+.composition md-list-item._md-button-wrap > div.md-button:first-child {
+    padding: 0px;
+}
+.composition md-input-container .md-errors-spacer {
+    min-height: 0px;
+}
+.composition .md-button.md-icon-button {
+    margin: 0px;
+}
+.composition > md-content:first-child {
+    margin-top: 6px;
 }
