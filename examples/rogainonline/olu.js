@@ -4,10 +4,10 @@ define(['ol'],
         var olu_source = new ol.source.Vector();
         var $scope;
         var $compile;
-
-        function entityClicked(entity){
+        var greenery = ["27", "10", "19"];
+        function entityClicked(entity) {
             $scope.showInfo(entity);
-            if($('#zone-info-dialog').length>0){
+            if ($('#zone-info-dialog').length > 0) {
                 angular.element('#zone-info-dialog').parent().remove();
             }
             var el = angular.element('<div hs.foodiezones.info-directive></div>');
@@ -19,34 +19,48 @@ define(['ol'],
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
+                if (entity.styled) continue;
                 var name = entity.properties.label;
                 var s = entity.properties.use.getValue();
-                switch(s){
-                    case "17":
-                        entity.polygon.material = Cesium.Color.WHITE.withAlpha(0.2);
-                        break;
-                    case "13":
-                        entity.polygon.material = Cesium.Color.RED.withAlpha(0.2);
-                        entity.polygon.outline = false;
-                        break;
-                    case "27":
-                        entity.polygon.material = Cesium.Color.GREEN.withAlpha(0.4);
-                        //entity.polygon.outline = false;
-                        break;
-                    default:
-                        entity.polygon.material = Cesium.Color.GREEN.withAlpha(0.1);
-                        
-                }
+                entity.polygon.outline = false;
+                if (greenery.indexOf(s) > -1)
+                    entity.polygon.material = Cesium.Color.GREEN.withAlpha(0.4);
+                else
+                    switch (s) {
+                        case "17":
+                            entity.polygon.material = Cesium.Color.WHITE.withAlpha(0.2);
+                            break;
+                        case "13":
+                            entity.polygon.material = new Cesium.Color(0.9, 0.1725490, 0.149019, 0.2);
+                            break;
+                        default:
+                            entity.polygon.material = new Cesium.Color(1, 1, 1, 0.09);
+
+                    }
+                entity.styled = true;
                 //entity.onclick = entityClicked
             }
         }
 
-        return {
+        var me = {
             getOlus: function (map, utils, c) {
-                if (map.getView().getResolution() > 8.48657133911758) return;
+
+
                 var format = new ol.format.WKT();
-                var ver_off = 0.0004;
-                var extents = `POLYGON ((${c[0]-0.001} ${c[1]-ver_off}, ${c[0]-0.001} ${c[1]+ver_off}, ${c[0]+0.001} ${c[1]+ver_off}, ${c[0]+0.001} ${c[1]-ver_off}))`;
+                var ver_off = 0.002;
+                var hor_off = 0.002;
+                var ol_extent = [c[0] - hor_off, c[1] - ver_off, c[0] + hor_off, c[1] + ver_off];
+                console.log('remove ol features', (new Date()).getTime()); window.lasttime = (new Date()).getTime();
+                olu_source.getFeatures().forEach(function (feature) {
+                    if (!feature.getGeometry().intersectsExtent(ol_extent)) {
+                        var format = new ol.format.WKT();
+                        //console.log('Removing feature ', feature.getId());
+                        //console.log(format.writeGeometry(feature.getGeometry()), format.writeGeometry(ol.geom.Polygon.fromExtent(ol_extent)));
+                        olu_source.removeFeature(feature);
+                    }
+                })
+                console.log('done', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                var extents = `POLYGON ((${c[0] - hor_off} ${c[1] - ver_off}, ${c[0] - hor_off} ${c[1] + ver_off}, ${c[0] + hor_off} ${c[1] + ver_off}, ${c[0] + hor_off} ${c[1] - ver_off}, ${c[0] - hor_off} ${c[1] - ver_off}))`;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
                 PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
@@ -66,12 +80,13 @@ define(['ol'],
                 })
                     .done(function (response) {
                         if (angular.isUndefined(response.results)) return;
+                        console.log('got it', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                         var features = [];
                         for (var i = 0; i < response.results.bindings.length; i++) {
                             try {
                                 var b = response.results.bindings[i];
                                 if (b.wkt.datatype == "http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.wkt.value.indexOf('e+') == -1 && b.wkt.value.indexOf('e-') == -1) {
-                                    if(olu_source.getFeatureById(b.o.value)==null){
+                                    if (olu_source.getFeatureById(b.o.value) == null) {
                                         var g_feature = format.readFeature(b.wkt.value.toUpperCase());
                                         var ext = g_feature.getGeometry().getExtent()
                                         var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection());
@@ -87,6 +102,7 @@ define(['ol'],
                         //olu_source.clear();
                         olu_source.addFeatures(features);
                         olu_source.set('loaded', true);
+                        console.log('ol features added', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                         olu_source.dispatchEvent('features:loaded', olu_source);
                     })
             },
@@ -97,10 +113,23 @@ define(['ol'],
                     visible: true
                 })
             },
-            init: function(_$scope, _$compile){
+            getOluUnder: function (cord) {
+                var features = olu_source.getFeaturesAtCoordinate(cord);
+                return features.map((f) => f.get('use'));
+            },
+            getSpeed: function (cord) {
+                var speed = 0.0002;
+                me.getOluUnder(cord).forEach(function (use) {
+                    if (use == '13') speed = 0;
+                    if (greenery.indexOf(use) > -1) speed = 0.00015;
+                });
+                return speed;
+            },
+            init: function (_$scope, _$compile) {
                 $scope = _$scope;
                 $compile = _$compile;
             }
         }
+        return me;
     }
 )
