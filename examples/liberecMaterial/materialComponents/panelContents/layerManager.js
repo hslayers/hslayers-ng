@@ -133,6 +133,7 @@ define(['angular', 'ol','ngMaterial'],
                         var layer = wrapper.layer;
                         var source = layer.getSource();
                         wrapper.style = {};
+                        if (angular.isUndefined(layer.getStyle)) return;
                         var style = layer.getStyle();
                         if (typeof style == 'function') style = style(source.getFeatures()[0]);
                         if (typeof style == 'object') style = style[0];

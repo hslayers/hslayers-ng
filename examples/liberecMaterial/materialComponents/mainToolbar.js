@@ -51,6 +51,12 @@ define(['angular', 'ol','ngMaterial'],
                                     text: 'Local file'
                                 },
                             ]
+                        },
+                        {
+                            item: 'composition',
+                            tooltip: 'Browse map compositions',
+                            icon: 'view_list',
+                            show:  (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.addLayer)) ? config.mainToolbar.addLayer : false
                         }
                     ];
 
