@@ -159,7 +159,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         return;
                     }
                     if (!Cesium.defined(featuresPromise)) {
-                        console.log('No features picked.');
+                        if(console) console.log('No features picked.');
                     } else {
 
                         Cesium.when(featuresPromise, function (features) {
@@ -214,7 +214,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
 
             function serializeVectorLayerToGeoJson(ol_source) {
                 var f = new ol.format.GeoJSON();
-                console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                //console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 var features = ol_source.getFeatures();
                 features.forEach(function (feature) {
                     if (typeof ol_source.cesium_layer.entities.getById(feature.getId()) != 'undefined') {
@@ -223,22 +223,22 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         //console.log('New feadure', feature.getId())
                     }
                 });
-                console.log('start removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                //console.log('start removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 var to_remove = [];
                 ol_source.cesium_layer.entities.values.forEach(function (entity) {
                     if (ol_source.getFeatureById(entity.id) == null) {
                         to_remove.push(entity.id);
                     }
                 })
-                console.log('removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                //console.log('removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 while (to_remove.length > 0) {
                     var id = to_remove.pop();
                     //console.log('Didnt find OL feature ', id);
                     ol_source.cesium_layer.entities.removeById(id);
                 }
-                console.log('revoved. serializing',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                //console.log('revoved. serializing',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 var json = f.writeFeaturesObject(features);
-                console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                //console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 //ol_source.cesium_layer.entities.removeAll();
                 return json;
             }
@@ -265,7 +265,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
 
             function syncFeatures(ol_source) {
                 var tmp_source = new Cesium.GeoJsonDataSource('tmp');
-                console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 var promise = tmp_source.load(serializeVectorLayerToGeoJson(ol_source),
                     {
                         camera: viewer.scene.camera,
@@ -273,7 +273,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         clampToGround: true
                     });
                 promise.then(function (source) {
-                    console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                    //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                     source.entities.values.forEach(function (entity) {
                         try {
                             if(typeof ol_source.cesium_layer.entities.getById(entity.id) == 'undefined'){
@@ -281,12 +281,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                                 ol_source.cesium_layer.entities.add(entity);
                             }
                         } catch(ex){
-                            console.error(ex.toString())
+                            if(console) console.error(ex.toString())
                         }                       
                     })
-                    console.log('added to real layer',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                    //console.log('added to real layer',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                     ol_source.cesiumStyler(ol_source.cesium_layer)
-                    console.log('styling done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                    //console.log('styling done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 })
             }
 
@@ -402,7 +402,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         return new_source;
                     }
                 } else {
-                    console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
+                    if(console) console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
                 }
             }
 

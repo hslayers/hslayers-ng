@@ -50,7 +50,7 @@ define(['ol'],
                 var ver_off = 0.002;
                 var hor_off = 0.002;
                 var ol_extent = [c[0] - hor_off, c[1] - ver_off, c[0] + hor_off, c[1] + ver_off];
-                console.log('remove ol features', (new Date()).getTime()); window.lasttime = (new Date()).getTime();
+                //console.log('remove ol features', (new Date()).getTime()); window.lasttime = (new Date()).getTime();
                 olu_source.getFeatures().forEach(function (feature) {
                     if (!feature.getGeometry().intersectsExtent(ol_extent)) {
                         var format = new ol.format.WKT();
@@ -59,7 +59,7 @@ define(['ol'],
                         olu_source.removeFeature(feature);
                     }
                 })
-                console.log('done', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                //console.log('done', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 var extents = `POLYGON ((${c[0] - hor_off} ${c[1] - ver_off}, ${c[0] - hor_off} ${c[1] + ver_off}, ${c[0] + hor_off} ${c[1] + ver_off}, ${c[0] + hor_off} ${c[1] - ver_off}, ${c[0] - hor_off} ${c[1] - ver_off}))`;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
@@ -80,7 +80,7 @@ define(['ol'],
                 })
                     .done(function (response) {
                         if (angular.isUndefined(response.results)) return;
-                        console.log('got it', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                        //console.log('got it', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                         var features = [];
                         for (var i = 0; i < response.results.bindings.length; i++) {
                             try {
@@ -96,13 +96,13 @@ define(['ol'],
                                     }
                                 }
                             } catch (ex) {
-                                console.log(ex);
+                                //console.log(ex);
                             }
                         }
                         //olu_source.clear();
                         olu_source.addFeatures(features);
                         olu_source.set('loaded', true);
-                        console.log('ol features added', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                        //console.log('ol features added', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                         olu_source.dispatchEvent('features:loaded', olu_source);
                     })
             },
