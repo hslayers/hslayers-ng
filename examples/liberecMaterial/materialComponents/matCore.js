@@ -15,7 +15,8 @@ require.config({
         matLayerManager: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/layerManager',
         matShareMap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/shareMap',
         matMeasure: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/matMeasure',
-        matQuery: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/queryResult'
+        matQuery: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/queryResult',
+        matComposition: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/composition'
     },
     shim: {},
     priority: []
