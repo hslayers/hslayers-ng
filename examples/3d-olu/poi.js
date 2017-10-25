@@ -32,6 +32,18 @@ define(['ol'],
                 entity.billboard.image = s;
                 switch (entity.properties.category.getValue()) {
                     case 'http://gis.zcu.cz/SPOI/Ontology#peak':
+                        entity.label = new Cesium.LabelGraphics({
+                            text: entity.properties.label,
+                            font: '18px Helvetica',
+                            fillColor: Cesium.Color.WHITE,
+                            outlineColor: new Cesium.Color(0.64, 0.1725490, 0.749019, 0.9),
+                            outlineWidth: 2,
+                            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                            pixelOffset: new Cesium.Cartesian2(0, -36),
+                            scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
+                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                        }); break;
                     case 'http://gis.zcu.cz/SPOI/Ontology#village':
                         entity.label = new Cesium.LabelGraphics({
                             text: entity.properties.label,
@@ -39,14 +51,12 @@ define(['ol'],
                             fillColor: Cesium.Color.WHITE,
                             outlineColor: Cesium.Color.BLACK,
                             showBackground: true,
-                            outlineWidth: 4,
-                            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                            style: Cesium.LabelStyle.FILL,
                             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                             pixelOffset: new Cesium.Cartesian2(0, -36),
                             scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
                             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                        });
-                        break;
+                        }); break;
                     default:
                 }
                 entity.onclick = entityClicked
