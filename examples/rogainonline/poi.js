@@ -41,7 +41,7 @@ define(['ol'],
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
-                var extents = `POLYGON ((${prepareCords(rect[0])}, ${prepareCords(rect[1])}, ${prepareCords(rect[2])}, ${prepareCords(rect[3])}))`;
+                var extents = `POLYGON ((${prepareCords(rect[0])}, ${prepareCords(rect[1])}, ${prepareCords(rect[2])}, ${prepareCords(rect[3])}, ${prepareCords(rect[0])}, ${prepareCords(rect[1])}))`;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
                 PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
