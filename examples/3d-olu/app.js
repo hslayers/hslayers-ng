@@ -166,6 +166,23 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'sidebar', 'query', 
                     visible: false,
                     opacity: 0.7
                 }),
+                 new ol.layer.Tile({
+                    title: "Road segments of Open Transport Map vizualized by their average daily traffic volumes",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/wms/transport/open_transport_map',
+                        params: {
+                            LAYERS: 'roads__traffic_volumes',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            minimumTerrainLevel: 12
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://gis.lesprojekt.cz/wms/transport/open_transport_map?service=WMS&request=GetLegendGraphic&layer=roads__traffic_volumes&version=1.3.0&format=image/png&sld_version=1.1.0'],
+                    maxResolution: 8550,
+                    visible: false,
+                    opacity: 0.7
+                }),
                 pois.createPoiLayer()
             ],
             project_name: 'erra/map',
