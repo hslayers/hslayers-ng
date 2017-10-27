@@ -634,7 +634,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
                             }
-                            return false;
+                            return true;
                         },
                         /**
                         * @ngdoc method
