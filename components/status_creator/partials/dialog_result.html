@@ -8,8 +8,8 @@
                 </h4>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                    <div translate class="alert alert-success" ng-show="success">Successfuly saved to status manager</div>
-                    <div translate class="alert alert-danger" ng-show="success==false">Failed to save to status manager</div>
+                    <div translate class="alert alert-success" ng-show="statusData.success">Successfuly saved to status manager</div>
+                    <div translate class="alert alert-danger" ng-show="!statusData.success">Failed to save to status manager</div>
             </div>
             <div class="modal-footer" id="stc-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" translate>Close</button>
