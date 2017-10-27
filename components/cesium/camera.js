@@ -53,11 +53,11 @@ define(['ol', 'cesiumjs'],
                 var center = [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).longitude), Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).latitude)];
                 var top_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(0, 0), new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height)));
                 var top_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width, 0), new Cesium.Cartesian2(0, viewer.canvas.height)));
-                var bot_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height), new Cesium.Cartesian2(0, 0)));
-                var bot_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(0, viewer.canvas.height), new Cesium.Cartesian2(viewer.canvas.width, 0)));
+                var bot_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width+100, viewer.canvas.height+100), new Cesium.Cartesian2(0, 0)));
+                var bot_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(-100, viewer.canvas.height+100), new Cesium.Cartesian2(viewer.canvas.width, 0)));
 
                 function clamp(p) {
-                    var max_dist = 0.10;
+                    var max_dist = 0.13;
                     if (Math.abs(p[0] - center[0]) > max_dist)
                         p[0] = center[0] + (p[0] - center[0]) * (max_dist / Math.abs(p[0] - center[0]));
                     if (Math.abs(p[1] - center[1]) > max_dist)

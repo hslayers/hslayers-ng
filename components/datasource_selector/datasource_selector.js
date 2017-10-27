@@ -745,7 +745,12 @@ define(['angular', 'ol', 'map'],
                         extent_layer.setVisible(Core.panelVisible($scope.panel_name, $scope));
                     });
                 }
-                $scope.$on('map.loaded', $scope.init);
+                if(angular.isDefined(OlMap.map))
+                    $scope.init()
+                else 
+                    $scope.$on('map.loaded', function(){
+                        $scope.init();
+                    });  
             }
         ]);
 

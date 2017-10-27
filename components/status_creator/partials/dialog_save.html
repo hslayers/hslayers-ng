@@ -12,11 +12,11 @@
                     You are atempting to save map changes to
                 </div>
                 <div>
-                    <b>{{title}}</b>
+                    <b>{{compoData.title}}</b>
                 </div>
-                <div ng-if="!titleFree && hasPermission && !changeTitle">
+                <div ng-if="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle">
                     <div translate>
-                        Do you really want to overwrite <b>{{title}}</b>?
+                        Do you really want to overwrite <b>{{compoData.title}}</b>?
                     </div>
                     <p>
                         <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" ng-click="save()" translate>Yes, save</button>
@@ -26,22 +26,22 @@
                     </p>
                 </div>
 
-                <div ng-if="!titleFree && hasPermission && changeTitle">
+                <div ng-if="!statusData.titleFree && statusData.hasPermission && statusData.changeTitle">
                     <div translate>
                         Select new name for map.
                     </div>
                     <p>
-                        <input type="text" class="form-control" id="hs-stc-title" ng-model="$parent.title" />
+                        <input type="text" class="form-control" id="hs-stc-title" ng-model="compoData.title" />
                     </p>
                     <p>
                         <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" ng-click="save(true)" translate>Save</button>
                     </p>
                 </div>
 
-                <div ng-if="!titleFree || !hasPermission">
+                <div ng-if="!statusData.titleFree || !statusData.hasPermission">
                     <div>
-                        <p translate ng-if="!hasPermission">You don't have sufficient rights to do so. Maybe the session has ended?</p>
-                        <p translate ng-if="!titleFree">Use a different name to save the map.</p>
+                        <p translate ng-if="!statusData.hasPermission">You don't have sufficient rights to do so. Maybe the session has ended?</p>
+                        <p translate ng-if="!statusData.titleFree">Use a different name to save the map.</p>
                     </div>
                     <p>
                         <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" ng-click="focusTitle()" translate>OK</button>

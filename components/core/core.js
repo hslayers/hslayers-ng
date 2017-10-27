@@ -579,8 +579,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Open status creator panel
                         */
                         openStatusCreator: function() {
-                            //me.panel_statuses.status_creator = true;
-                            if (angular.isDefined(hslayers_api.gui.StatusCreator))hslayers_api.gui.StatusCreator.open();
+                            $rootScope.$broadcast('StatusCreator.open');
                         },
                         /**
                         * @ngdoc method
@@ -604,6 +603,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
                         */
                         isAuthorized: function() {
+                            if(!angular.isDefined(window.getLRUser) && angular.isUndefined(me.missingLRFunctionsWarned)){
+                                if(console) console.warn('window.getLRUser function needs to be defined, which usually comes from liferay.');
+                                me.missingLRFunctionsWarned = true;
+                            } 
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
                             }

@@ -69,7 +69,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     }),
                     // Show Columbus View map with Web Mercator projection
                     sceneMode: Cesium.SceneMode.SCENE3D,
-                    mapProjection: new Cesium.WebMercatorProjection()
+                    mapProjection: new Cesium.WebMercatorProjection(),
+                    shadows: true
                 });
 
                 viewer.terrainProvider = terrain_provider;
@@ -158,7 +159,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         return;
                     }
                     if (!Cesium.defined(featuresPromise)) {
-                        console.log('No features picked.');
+                        if(console) console.log('No features picked.');
                     } else {
 
                         Cesium.when(featuresPromise, function (features) {
@@ -179,18 +180,66 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     }
                 }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
 
+
+                handler.setInputAction(function (movement) {
+                    var pickRay = viewer.camera.getPickRay(movement.position);
+                    var pickedObject = viewer.scene.pick(movement.position);
+
+                    if (viewer.scene.pickPositionSupported) {
+                        if (viewer.scene.mode === Cesium.SceneMode.SCENE3D) {
+                            var cartesian = viewer.scene.pickPosition(movement.position);
+                            if (Cesium.defined(cartesian)) {
+                                var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                                var longitudeString = Cesium.Math.toDegrees(cartographic.longitude);
+                                var latitudeString = Cesium.Math.toDegrees(cartographic.latitude);
+                                $rootScope.$emit('cesium_position_clicked', [longitudeString, latitudeString]);
+                            }
+                        }
+                    }
+                    if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
+                        pickedObject.id.onRightClick(pickedObject.id);
+                        return;
+                    }
+
+                }, Cesium.ScreenSpaceEventType.RIGHT_DOWN);
+
                 /**
                  * @ngdoc event
                  * @name hs.cesium.service#map.loaded
                  * @eventType broadcast on $rootScope
                  * @description 
                  */
-                $rootScope.$broadcast('cesiummap.loaded');
+                $rootScope.$broadcast('cesiummap.loaded', viewer);
             }
 
             function serializeVectorLayerToGeoJson(ol_source) {
                 var f = new ol.format.GeoJSON();
-                var json = f.writeFeaturesObject(ol_source.getFeatures());
+                //console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                var features = ol_source.getFeatures();
+                features.forEach(function (feature) {
+                    if (typeof ol_source.cesium_layer.entities.getById(feature.getId()) != 'undefined') {
+                        features.splice(features.indexOf(feature), 1);
+                    } else {
+                        //console.log('New feadure', feature.getId())
+                    }
+                });
+                //console.log('start removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                var to_remove = [];
+                ol_source.cesium_layer.entities.values.forEach(function (entity) {
+                    if (ol_source.getFeatureById(entity.id) == null) {
+                        to_remove.push(entity.id);
+                    }
+                })
+                //console.log('removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                while (to_remove.length > 0) {
+                    var id = to_remove.pop();
+                    //console.log('Didnt find OL feature ', id);
+                    ol_source.cesium_layer.entities.removeById(id);
+                }
+                //console.log('revoved. serializing',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                var json = f.writeFeaturesObject(features);
+                //console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                //ol_source.cesium_layer.entities.removeAll();
                 return json;
             }
 
@@ -215,14 +264,30 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
             }
 
             function syncFeatures(ol_source) {
-                ol_source.cesium_layer.entities.removeAll();
-                var promise = ol_source.cesium_layer.load(serializeVectorLayerToGeoJson(ol_source),
+                var tmp_source = new Cesium.GeoJsonDataSource('tmp');
+                //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                var promise = tmp_source.load(serializeVectorLayerToGeoJson(ol_source),
                     {
                         camera: viewer.scene.camera,
                         canvas: viewer.scene.canvas,
                         clampToGround: true
                     });
-                promise.then(ol_source.cesiumStyler)
+                promise.then(function (source) {
+                    //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                    source.entities.values.forEach(function (entity) {
+                        try {
+                            if(typeof ol_source.cesium_layer.entities.getById(entity.id) == 'undefined'){
+                                //console.log('Adding', entity.id);
+                                ol_source.cesium_layer.entities.add(entity);
+                            }
+                        } catch(ex){
+                            if(console) console.error(ex.toString())
+                        }                       
+                    })
+                    //console.log('added to real layer',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                    ol_source.cesiumStyler(ol_source.cesium_layer)
+                    //console.log('styling done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                })
             }
 
             function processOlLayer(lyr) {
@@ -337,7 +402,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         return new_source;
                     }
                 } else {
-                    console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
+                    if(console) console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
                 }
             }
 

@@ -15,36 +15,36 @@
                                 <div role="tabpanel" class="tab-pane active" id="context">
                                     <form>
                                         <div class="form-group">
-                                            <label for="stc-title" class="control-label" translate="">Title</label> <input type="text" class="form-control" id="stc-title" ng-model="$parent.title" />
+                                            <label for="stc-title" class="control-label" translate="">Title</label> <input type="text" class="form-control" id="stc-title" ng-model="compoData.title" />
                                         </div>
                                         <div class="form-group">
                                             <label for="stc-abstract" class="control-label" translate="">Abstract</label> 
-                                            <textarea class="form-control" id="stc-abstract" ng-model="$parent.abstract">
+                                            <textarea class="form-control" id="stc-abstract" ng-model="compoData.abstract">
 </textarea>
                                         </div>
                                         <div class="form-group">
-                                            <label for="stc-keywords" class="control-label" translate="">Keywords</label> <input type="text" class="form-control" id="stc-keywords" ng-model="$parent.keywords" />
+                                            <label for="stc-keywords" class="control-label" translate="">Keywords</label> <input type="text" class="form-control" id="stc-keywords" ng-model="compoData.keywords" />
                                         </div>
                                     </form>
                                     <form class="form">
                                         <label for="stc-extent1" class="control-label" translate="">Extent</label>
                                         <div class="row stc-extent-row">
                                             <div class="form-group col-sm-3">
-                                                <input type="text" class="form-control" id="stc-extent1" ng-model="bbox[0]" />
+                                                <input type="text" class="form-control" id="stc-extent1" ng-model="compoData.bbox[0]" />
                                             </div>
                                             <div class="form-group col-sm-3">
-                                                <input type="text" class="form-control" id="stc-extent2" ng-model="bbox[1]" />
+                                                <input type="text" class="form-control" id="stc-extent2" ng-model="compoData.bbox[1]" />
                                             </div>
                                             <div class="form-group col-sm-3">
-                                                <input type="text" class="form-control" id="stc-extent3" ng-model="bbox[2]" />
+                                                <input type="text" class="form-control" id="stc-extent3" ng-model="compoData.bbox[2]" />
                                             </div>
                                             <div class="form-group col-sm-3">
-                                                <input type="text" class="form-control" id="stc-extent4" ng-model="bbox[3]" />
+                                                <input type="text" class="form-control" id="stc-extent4" ng-model="compoData.bbox[3]" />
                                             </div>
                                         </div><button type="button" class="btn btn-default" ng-click="getCurrentExtent()" translate="">Use current map extent</button>
                                     </form><label for="stc-layerlist" class="control-label" translate="">Layers</label>
                                     <ul class="list-group" id="stc-layerlist">
-                                        <li ng-repeat="layer in layers | filter:query" id="layer-{{$index}}" class="list-group-item">
+                                        <li ng-repeat="layer in compoData.layers | filter:query" id="layer-{{$index}}" class="list-group-item">
                                             <a href="#">{{layer.title}}</a> <input type="checkbox" class="layer-checked" ng-model="layer.checked" />
                                         </li>
                                     </ul>
@@ -52,44 +52,44 @@
                                  <div role="tabpanel" class="tab-pane" id="access">
                                      <table class="table table-condensed" id="stc-access">
                                         <tr><th></th><th translate>Read</th><th translate>Write</th></tr>
-                                        <tr ng-repeat="g in groups">
+                                        <tr ng-repeat="g in statusData.groups">
                                             <td>{{g.roleTitle || g.roleName}}:</td><td><input type="checkbox" class="form-control" ng-model="g.r" /></td><td><input type="checkbox" class="form-control" ng-model="g.w" /></td>
                                         </tr>
                                     </table>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="author">
                                     <div class="form-group">
-                                        <label for="stc-name" class="control-label" translate="">Person</label> <input type="text" class="form-control" id="stc-name" ng-model="$parent.name" />
+                                        <label for="stc-name" class="control-label" translate="">Person</label> <input type="text" class="form-control" id="stc-name" ng-model="userData.name" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-organization" class="control-label" translate="">Organization</label> <input type="text" class="form-control" id="stc-organization" ng-model="$parent.organization" />
+                                        <label for="stc-organization" class="control-label" translate="">Organization</label> <input type="text" class="form-control" id="stc-organization" ng-model="userData.organization" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-position" class="control-label" translate="">Position</label> <input type="text" class="form-control" id="stc-position" ng-model="$parent.position" />
+                                        <label for="stc-position" class="control-label" translate="">Position</label> <input type="text" class="form-control" id="stc-position" ng-model="userData.position" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-address" class="control-label" translate="">Address</label> <input type="text" class="form-control" id="stc-address" ng-model="$parent.address" />
+                                        <label for="stc-address" class="control-label" translate="">Address</label> <input type="text" class="form-control" id="stc-address" ng-model="userData.address" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-city" class="control-label" translate="">City</label> <input type="text" class="form-control" id="stc-city" ng-model="$parent.city" />
+                                        <label for="stc-city" class="control-label" translate="">City</label> <input type="text" class="form-control" id="stc-city" ng-model="userData.city" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-state" class="control-label" translate="">State</label> <input type="text" class="form-control" id="stc-state" ng-model="$parent.state" />
+                                        <label for="stc-state" class="control-label" translate="">State</label> <input type="text" class="form-control" id="stc-state" ng-model="userData.state" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-postalcode" class="control-label" translate="">Postal code</label> <input type="text" class="form-control" id="stc-postalcode" ng-model="$parent.postalcode" />
+                                        <label for="stc-postalcode" class="control-label" translate="">Postal code</label> <input type="text" class="form-control" id="stc-postalcode" ng-model="userData.postalcode" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-country" class="control-label" translate="">Country</label> <input type="text" class="form-control" id="stc-country" ng-model="$parent.country" />
+                                        <label for="stc-country" class="control-label" translate="">Country</label> <input type="text" class="form-control" id="stc-country" ng-model="userData.country" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-phone" class="control-label" translate="">Phone</label> <input type="text" class="form-control" id="stc-phone" ng-model="$parent.phone" />
+                                        <label for="stc-phone" class="control-label" translate="">Phone</label> <input type="text" class="form-control" id="stc-phone" ng-model="userData.phone" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-email" class="control-label" translate="">E-mail</label> <input type="text" class="form-control" id="stc-email" ng-model="$parent.email" />
+                                        <label for="stc-email" class="control-label" translate="">E-mail</label> <input type="text" class="form-control" id="stc-email" ng-model="userData.email" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="stc-url" class="control-label">WWW</label> <input type="text" class="form-control" id="stc-url" ng-model="$parent.url" />
+                                        <label for="stc-url" class="control-label">WWW</label> <input type="text" class="form-control" id="stc-url" ng-model="userData.url" />
                                     </div>
                                 </div>
                             </div>

@@ -5,9 +5,9 @@ define(['ol'],
         var $scope;
         var $compile;
 
-        function entityClicked(entity) {
+        function entityClicked(entity){
             $scope.showInfo(entity);
-            if ($('#zone-info-dialog').length > 0) {
+            if($('#zone-info-dialog').length>0){
                 angular.element('#zone-info-dialog').parent().remove();
             }
             var el = angular.element('<div hs.foodiezones.info-directive></div>');
@@ -30,35 +30,6 @@ define(['ol'],
                     s = '../foodie-zones/symbols/other.png';
                 entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
                 entity.billboard.image = s;
-                switch (entity.properties.category.getValue()) {
-                    case 'http://gis.zcu.cz/SPOI/Ontology#peak':
-                        entity.label = new Cesium.LabelGraphics({
-                            text: entity.properties.label,
-                            font: '18px Helvetica',
-                            fillColor: Cesium.Color.WHITE,
-                            outlineColor: new Cesium.Color(0.64, 0.1725490, 0.749019, 0.9),
-                            outlineWidth: 2,
-                            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            pixelOffset: new Cesium.Cartesian2(0, -36),
-                            scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
-                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                        }); break;
-                    case 'http://gis.zcu.cz/SPOI/Ontology#village':
-                        entity.label = new Cesium.LabelGraphics({
-                            text: entity.properties.label,
-                            font: '14px Helvetica',
-                            fillColor: Cesium.Color.WHITE,
-                            outlineColor: Cesium.Color.BLACK,
-                            showBackground: true,
-                            style: Cesium.LabelStyle.FILL,
-                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            pixelOffset: new Cesium.Cartesian2(0, -36),
-                            scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
-                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                        }); break;
-                    default:
-                }
                 entity.onclick = entityClicked
             }
         }
@@ -71,7 +42,6 @@ define(['ol'],
                     return c.toString().replaceAll(',', ' ')
                 }
                 var extents = `POLYGON ((${prepareCords(rect[0])}, ${prepareCords(rect[1])}, ${prepareCords(rect[2])}, ${prepareCords(rect[3])}, ${prepareCords(rect[0])}, ${prepareCords(rect[1])}))`;
-                //console.log(extents);
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
                 PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
@@ -103,7 +73,7 @@ define(['ol'],
                                     features.push(feature);
                                 }
                             } catch (ex) {
-                                if(console) console.log(ex);
+                                console.log(ex);
                             }
                         }
                         spoi_source.clear();
@@ -139,7 +109,7 @@ define(['ol'],
                     visible: true
                 })
             },
-            init: function (_$scope, _$compile) {
+            init: function(_$scope, _$compile){
                 $scope = _$scope;
                 $compile = _$compile;
             }
