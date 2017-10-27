@@ -599,8 +599,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @description Open status creator panel
                         */
                         openStatusCreator: function() {
-                            //me.panel_statuses.status_creator = true;
-                            if (angular.isDefined(hslayers_api.gui.StatusCreator))hslayers_api.gui.StatusCreator.open();
+                            $rootScope.$broadcast('StatusCreator.open');
                         },
                         /**
                         * @ngdoc method
@@ -631,7 +630,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
                             }
-                            return false;
+                            return true;
                         },
                         /**
                         * @ngdoc method
