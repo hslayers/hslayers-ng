@@ -67,6 +67,12 @@ define(['angular', 'core', 'ngMaterial'],
                                 status: false,
                                 directive: 'hs.material.composition.directive',
                                 controller: 'hs.material.composition.controller'
+                            },
+                            "statusCreator": {
+                                id: "statusCreator",
+                                status: false,
+                                directive: 'hs.material.statuscreator.directive',
+                                controller: 'hs.material.statuscreator.controller'
                             }
                         },
                         activeDirective: undefined
