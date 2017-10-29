@@ -2,7 +2,7 @@
         <form>
           <md-toolbar>
             <div class="md-toolbar-tools">
-              <h2>Delete composition {{compositionToDelete.title}}</h2>
+              <h2><translate>Delete composition {{compositionToDelete.title}}</translate></h2>
               <span flex></span>
               <md-button class="md-icon-button" ng-click="closeDialog()">
                 <md-icon>close</md-icon>
@@ -11,17 +11,17 @@
           </md-toolbar>
           <md-dialog-content layout-padding layout="column" style="max-width:800px;max-height:810px; ">
             <p class="md-body-2" translate>
-                    <translate>Do you want to delete map</translate> {{compositionToDelete.title}}
+                Do you want to delete map {{compositionToDelete.title}}
             </p>
           </md-dialog-content>
       
           <md-dialog-actions layout="row">
             <span flex></span>
                 <md-button class="md-warn md-raised" ng-click="delete(compositionToDelete);closeDialog();">
-                        Delete
+                    <translate>Remove</translate>
                 </md-button>
                 <md-button ng-click="closeDialog()">
-                        Cancel
+                    <translate>Cancel</translate>
                 </md-button>
           </md-dialog-actions>
         </form>

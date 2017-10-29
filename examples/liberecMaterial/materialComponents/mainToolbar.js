@@ -15,46 +15,46 @@ define(['angular', 'ol','ngMaterial'],
                     }
                 };
             })
-            .controller('hs.material.mainToolbar.controller', ['$scope', 'config', 
-                function($scope, config) {
+            .controller('hs.material.mainToolbar.controller', ['$scope', 'config', 'gettext',
+                function($scope, config, gettext) {
                     $scope.buttons = [
                         {
                             item: 'basemap',
-                            tooltip: 'Change map basemap',
+                            tooltip: gettext('Change map basemap'),
                             icon: 'map',
                             show: (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.basemap)) ? config.mainToolbar.basemap : true
                         },
                         {
                             item: 'layerManager',
-                            tooltip: 'Manage your layers',
+                            tooltip: gettext('Manage your layers'),
                             icon: 'layers',
                             show: (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.layerManager)) ? config.mainToolbar.layerManager : true
                         },
                         {
                             item: 'addLayer',
-                            tooltip: 'Add layer to map',
+                            tooltip: gettext('Add layer to map'),
                             icon: 'add box',
                             show:  (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.addLayer)) ? config.mainToolbar.addLayer : false,
                             menu: [
                                 {
                                     item: 'addWMS',
                                     icon: 'image',
-                                    text: 'WMS Layer'
+                                    text: gettext('WMS Layer')
                                 },
                                 {
                                     item: 'addWMS',
-                                    text: 'WFS Layer'
+                                    text: gettext('WFS Layer')
                                 },
                                 {
                                     item: 'addWMS',
                                     icon: 'file_download',
-                                    text: 'Local file'
+                                    text: gettext('Local file')
                                 },
                             ]
                         },
                         {
                             item: 'composition',
-                            tooltip: 'Browse map compositions',
+                            tooltip: gettext('Browse map compositions'),
                             icon: 'view_list',
                             show:  (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.addLayer)) ? config.mainToolbar.addLayer : false
                         }
