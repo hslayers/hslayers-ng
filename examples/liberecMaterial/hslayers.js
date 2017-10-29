@@ -20,7 +20,8 @@ require.config({
         mdColorPicker: hsl_path + 'node_modules/md-color-picker/dist/mdColorPicker',
         clipboard: hsl_path + 'node_modules/clipboard/dist/clipboard',
         ngclipboard: hsl_path + 'node_modules/ngclipboard/dist/ngclipboard',
-        matCore: hsl_path + 'examples/liberecMaterial/materialComponents/matCore'
+        matCore: hsl_path + 'examples/liberecMaterial/materialComponents/matCore',
+        translations: './translations',
     },
     shim: {
         'ngAnimate': ['angular'],

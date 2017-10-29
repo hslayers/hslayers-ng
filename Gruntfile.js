@@ -12,6 +12,11 @@ module.exports = function (grunt) {
                 files: {
                     'examples/pilsen_traffic/template.pot': ['examples/pilsen_traffic/**/*.html', 'examples/pilsen_traffic/**/*.js']
                 }
+            },
+            material: {
+                files: {
+                    'examples/liberecMaterial/template.pot': ['examples/liberecMaterial/**/*.html', 'examples/liberecMaterial/**/*.js']
+                }
             }
         },
         nggettext_compile: {
@@ -23,6 +28,11 @@ module.exports = function (grunt) {
             pilsen_traffic: {
                 files: {
                     'examples/pilsen_traffic/translations.js': ['examples/pilsen_traffic/*.po']
+                }
+            },
+            material: {
+                files: {
+                    'examples/liberecMaterial/translations.js': ['examples/liberecMaterial/*.po']
                 }
             }
         },

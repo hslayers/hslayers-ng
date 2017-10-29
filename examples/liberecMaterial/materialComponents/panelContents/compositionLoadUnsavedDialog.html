@@ -2,7 +2,7 @@
     <form>
       <md-toolbar>
         <div class="md-toolbar-tools">
-          <h2>Open composition {{compositionToLoad.title}}</h2>
+          <h2><translate>Open composition {{compositionToLoad.title}}</translate></h2>
           <span flex></span>
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon>close</md-icon>
@@ -24,16 +24,16 @@
       <md-dialog-actions layout="row">
         <span flex></span>
             <md-button class="md-primary md-raised" ng-click="overwrite();closeDialog();">
-                    Continue without saving
+                    <translate>Continue without saving</translate>
             </md-button>
             <md-button class="md-primary md-hue-2 md-raised" ng-click="add();closeDialog();">
-                    Merge compositions
+                <translate>Merge compositions</translate>
             </md-button>
             <md-button ng-show="!Core.isAuthorized()" class="md-accent md-raised" ng-click="save();closeDialog();">
-                    Save changes first
+                <translate>Save changes first</translate>
             </md-button>
             <md-button ng-click="closeDialog()">
-                    Cancel
+                <translate>Cancel</translate>
             </md-button>
       </md-dialog-actions>
     </form>

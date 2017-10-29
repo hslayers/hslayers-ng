@@ -15,37 +15,43 @@ define(['angular', 'ol','ngMaterial'],
                     }
                 };
             })
-            .controller('hs.material.bottomToolbar.controller', ['$scope', 'config', 
-                function($scope, config) {
+            .controller('hs.material.bottomToolbar.controller', ['$scope', 'config', 'gettext', 
+                function($scope, config, gettext) {
                     $scope.buttons = [
                         {
+                            item: 'statusCreator',
+                            tooltip: gettext('Save map'),
+                            icon: 'save',
+                            show:  (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.info)) ? config.bottomToolbar.info : true
+                        },
+                        {
                             item: 'measure',
-                            tooltip: 'Measure on map',
+                            tooltip: gettext('Measure on map'),
                             icon: 'timeline',
                             show: (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.measure)) ? config.bottomToolbar.measure : true
                         },
                         {
                             item: 'shareMap',
-                            tooltip: 'Share map',
+                            tooltip: gettext('Share map'),
                             icon: 'share',
                             show: (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.share)) ? config.bottomToolbar.share : true
                         },
                         {
                             item: 'print',
-                            tooltip: 'Print map',
+                            tooltip: gettext('Print map'),
                             icon: 'print',
                             show:  (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.print)) ? config.bottomToolbar.print : true
                         },
                         ,
                         {
                             item: 'help',
-                            tooltip: 'App help',
+                            tooltip: gettext('App help'),
                             icon: 'help',
                             show: (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.help)) ? config.bottomToolbar.help : true
                         },
                         {
                             item: 'info',
-                            tooltip: 'App info',
+                            tooltip: gettext('App info'),
                             icon: 'info',
                             show:  (angular.isDefined(config.bottomToolbar) && angular.isDefined(config.bottomToolbar.info)) ? config.bottomToolbar.info : true
                         }

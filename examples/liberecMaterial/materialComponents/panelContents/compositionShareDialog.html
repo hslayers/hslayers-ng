@@ -2,7 +2,7 @@
     <form>
       <md-toolbar>
         <div class="md-toolbar-tools">
-          <h2>Share composition {{data.shareTitle}}</h2>
+          <h2 translate>Share composition {{data.shareTitle}}</h2>
           <span flex></span>
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon>close</md-icon>
@@ -11,7 +11,7 @@
       </md-toolbar>
       <md-dialog-content layout-padding layout="column" style="max-width:800px;max-height:810px; ">
             <div layout="row">
-                    <p flex="25" class="md-body-2">Abstract</p>
+                    <p flex="25" class="md-body-2" translate>Abstract</p>
                     <p flex="75" class="md-body-1">{{data.shareDescription}}</p>
                 </div>
                 <div layout="row">

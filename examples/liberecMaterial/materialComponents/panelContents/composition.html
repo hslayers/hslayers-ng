@@ -1,29 +1,29 @@
 <md-content layout="column" style="max-height:100%;" class="composition">
 
     <md-toolbar class="md-hue-3" flex="none">
-        <h1 class="md-toolbar-tools">Compositions
+        <h1 class="md-toolbar-tools"><translate>Compositions</translate>
             <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
         </h1>
     </md-toolbar>
     <md-content class="md-padding" flex>
         <div layout="row">
             <md-input-container flex="60">
-                <label>Filter</label>
+                <label translate>Filter</label>
                 <input name="query" ng-model="query.title" ng-change="filterChanged()">
             </md-input-container>
 
             <md-input-container flex="40">
-                <label>Sort by</label>
+                <label translate>Sort by</label>
                 <md-select name="sort" ng-model="sortBy" ng-change="setSortAttribute()">
-                    <md-option value="bbox">Bounding box</md-option>
-                    <md-option value="title">Title</md-option>
-                    <md-option value="date">Date</md-option>
+                    <md-option value="bbox"><translate>Bounding box</translate></md-option>
+                    <md-option value="title"><translate>Title</translate></md-option>
+                    <md-option value="date"><translate>Date</translate></md-option>
                 </md-select>
             </md-input-container>
         </div>
         <md-input-container class="md-block">
             <md-checkbox name="bboxFilter" ng-model="filterByExtent">
-                Filter by map extent
+                <translate>Filter by map extent</translate>
             </md-checkbox>
         </md-input-container>
         <md-list>
@@ -38,13 +38,13 @@
         <div layout="row" layout-align="space-around center">
             <md-button ng-disabled="compStart == 0" class="md-icon-button" ng-click='getPreviousCompositions()'>
                     <md-icon class="md-primary md-hue-2">chevron_left</md-icon>
-                    <md-tooltip md-direction="up">Previous composition list</md-tooltip>
+                    <md-tooltip md-direction="up" translate>Previous composition list</md-tooltip>
             </md-button>
-            <span ng-show="compNext != 0">Composition {{compStart + 1}} - {{compNext}}</span>
-            <span ng-show="compNext == 0">Composition {{compStart + 1}} - {{data.compositionsCount}}</span>
+            <span ng-show="compNext != 0" translate>Composition {{compStart + 1}} - {{compNext}}</span>
+            <span ng-show="compNext == 0" translate>Composition {{compStart + 1}} - {{data.compositionsCount}}</span>
             <md-button ng-disabled="compNext == 0" class="md-icon-button" ng-click='getNextCompositions()'>
                 <md-icon class="md-primary md-hue-2">chevron_right</md-icon>
-                <md-tooltip md-direction="up">Next composition page</md-tooltip>
+                <md-tooltip md-direction="up" translate>Next composition page</md-tooltip>
             </md-button>
         </div>
 
