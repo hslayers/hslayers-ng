@@ -428,7 +428,7 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                      * @param {$scope} $scope Angular scope from which function was called
                      */
                     generateThumbnail: function ($element, localThis) {
-                        if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink') {
+                        if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink' || Core.mainpanel == "statusCreator") {
                             $element.attr("crossOrigin", "Anonymous");
                             OlMap.map.once('postcompose', function (event) {
                                 var myCanvas = document.getElementById('my_canvas_id');
@@ -567,8 +567,13 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                      * @memberof hs.status_creator.controller
                      */
                     me.open = function () {
+                        Core.setMainPanel('status_creator', true);
+                        me.refresh();
+                    };
+                    me.refresh = function(){
                         me.compoData.layers = [];
                         me.compoData.bbox = me.getCurrentExtent();
+                        //debugger;
                         OlMap.map.getLayers().forEach(function (lyr) {
                             if ((angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) && (lyr.get('base') != true)) {
                                 me.compoData.layers.push({
@@ -582,9 +587,8 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                             return a.layer.get('position') - b.layer.get('position')
                         });
                         me.fillGroups();
-                        Core.setMainPanel('status_creator', true);
                         me.loadUserDetails();
-                    };
+                    }
                     /**
                  * Send getGroups request to status manager server and process response
                  * @function fillGroups
@@ -704,13 +708,17 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                         }
                     });
 
-                    $rootScope.$on('core.map_reset', function (event, data) {
+                    me.resetCompoData = function() {
                         me.compoData.id = me.compoData.abstract = me.compoData.title = me.compoData.currentCompositionTitle = me.compoData.keywords = me.compoData.currentComposition = '';
+                    }
+
+                    $rootScope.$on('core.map_reset', function (event, data) {
+                        me.resetCompoData();
                     });
 
                     $rootScope.$on('core.mainpanel_changed', function (event) {
-                        if (Core.mainpanel == 'status_creator') {
-                            me.compoData.bbox = me.getCurrentExtent();
+                        if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'statusCreator') {
+                            me.refresh();
                             status_creator.generateThumbnail($('#hs-stc-thumbnail'), me.compoData);
                         }
                     });
@@ -718,7 +726,6 @@ define(['angular', 'ol', 'map', 'ngcookies'],
                     $rootScope.$on('map.extent_changed', function (event) {
                         me.compoData.bbox = me.getCurrentExtent();
                         status_creator.generateThumbnail($('#hs-stc-thumbnail'), me.compoData);
-
                     });
 
                     return me;

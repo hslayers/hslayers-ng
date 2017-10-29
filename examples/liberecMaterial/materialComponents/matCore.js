@@ -15,7 +15,8 @@ require.config({
         matShareMap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/shareMap',
         matMeasure: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/matMeasure',
         matQuery: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/queryResult',
-        matComposition: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/composition'
+        matComposition: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/composition',
+        matStatusCreator: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/statusCreator'
     },
     shim: {},
     priority: []

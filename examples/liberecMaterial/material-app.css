@@ -121,3 +121,24 @@
 .composition > md-content:first-child {
     margin-top: 6px;
 }
+
+/* Animation */
+.hs-fade, .hs-fade > * {
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+}
+.hs-fade.ng-hide, .hs-fade.ng-hide > *  {
+    opacity:0;
+  }
+
+  /*Status manager */
+  .no-margin-bottom md-input-container {
+      margin-bottom: 0px;
+  }
+  .no-margin-bottom md-input-container .md-errors-spacer {
+      min-height: 0px;
+  }
+  .status-creator .md-inline-form md-checkbox {
+      margin: 10px 0px;
+  }
+  
