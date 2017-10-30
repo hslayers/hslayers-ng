@@ -6,7 +6,7 @@ require(['clipboard'], function(clipboard) {
     window.Clipboard = clipboard;
   });
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'compositions', 'angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap', 'matMeasure', 'matQuery', 'matComposition', 'matStatusCreator'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'compositions', 'ows','angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap', 'matMeasure', 'matQuery', 'matComposition', 'matStatusCreator'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -18,6 +18,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.core', 'hs.permalink',
             'hs.api',
             'hs.compositions',
+            'hs.ows',
             'gettext',
             'hs.sidebar',
             'ngMaterial',

@@ -44,12 +44,12 @@ define(['angular', 'core', 'ngMaterial'],
                                 directive: 'hs.material.basemap.directive',
                                 controller: 'hs.material.basemap.controller'
                             },
-                            /*"addLayer": {
-                                id: "addLayer",
+                            "addLayerWebservice": {
+                                id: "addLayerWebservice",
                                 status: false,
-                                directive: 'hs.material.addlayer.directive',
-                                controller: 'hs.material.addlayer.controller'
-                            },*/
+                                directive: 'hs.material.addlayerwebservice.directive',
+                                controller: 'hs.material.addlayerwebservice.controller'
+                            },
                             "shareMap": {
                                 id: "shareMap",
                                 status: false,

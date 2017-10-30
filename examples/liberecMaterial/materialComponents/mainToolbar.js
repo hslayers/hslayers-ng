@@ -37,16 +37,16 @@ define(['angular', 'ol','ngMaterial'],
                             show:  (angular.isDefined(config.mainToolbar) && angular.isDefined(config.mainToolbar.addLayer)) ? config.mainToolbar.addLayer : false,
                             menu: [
                                 {
-                                    item: 'addWMS',
+                                    item: 'addLayerWebservice',
                                     icon: 'image',
                                     text: gettext('WMS Layer')
                                 },
                                 {
-                                    item: 'addWMS',
+                                    item: 'addLayerWebservice',
                                     text: gettext('WFS Layer')
                                 },
                                 {
-                                    item: 'addWMS',
+                                    item: 'addLayerVector',
                                     icon: 'file_download',
                                     text: gettext('Local file')
                                 },
