@@ -1,0 +1,24 @@
+<md-whiteframe layout="row" layout-align="center center" layout-wrap class="md-whiteframe-4dp main-toolbar">
+    <md-content ng-repeat='button in buttons'>
+        <md-button ng-if="!checkMenu(button)" class="md-primary" aria-label="{{button.tooltip}}" ng-click='buttonClicked(button.item)'
+            ng-show='button.show'>
+            <md-icon md-menu-origin>{{button.icon}}</md-icon>
+            <md-tooltip md-direction="down">{{button.tooltip | translate}}</md-tooltip>
+
+        </md-button>
+        <md-menu ng-if="checkMenu(button)" md-position-mode="target-right target">
+            <md-button class="md-primary md-icon-button" ng-click='$mdMenu.open($event)'>
+                <md-icon md-menu-origin>{{button.icon}}</md-icon>
+                <md-tooltip md-direction="down">{{button.tooltip | translate}}</md-tooltip>
+            </md-button>
+            <md-menu-content>
+                <md-menu-item ng-repeat="menu in button.menu">
+                    <md-button class="md-primary" ng-click="buttonClicked(menu.item)">
+                        <md-icon>{{menu.icon}}</md-icon>
+                        {{menu.text | translate}}
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+    </md-content>
+</md-whiteframe>

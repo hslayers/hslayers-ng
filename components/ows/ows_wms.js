@@ -247,112 +247,66 @@ define(['angular', 'ol', 'utils'],
             }
         }])
 
-        /**
-         * @name hs.ows.wms.controller
-         * @ngdoc controller
-         * @memberOf hs.ows.wms
-         * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
-         */
-        .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', '$compile', '$rootScope', 'hs.utils.service', '$timeout',
-            function($scope, OlMap, srv_caps, Core, $compile, $rootScope, utils, $timeout) {
-                $scope.use_resampling = false;
-                $scope.utils = utils;
-                $scope.use_tiles = true;
-                $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
-                $scope.register_metadata = true;
+        .service('hs.ows.wms.addLayerService', ['$rootScope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core',
+            function($rootScope, OlMap, WmsCapsService, Core){
+                var me = this;
 
-                $scope.capabilitiesReceived = function(response) {
+                this.data = {
+                    useResampling: false,
+                    useTiles: true,
+                    mapProjection: undefined,
+                    registerMetadata: true,
+                    tileSize: 512
+                };
+
+                this.capabilitiesReceived = function(response) {
                     try {
                         var parser = new ol.format.WMSCapabilities();
-                        $scope.capabilities = parser.read(response);
-                        var caps = $scope.capabilities;
-                        $scope.title = caps.Service.Title;
-                        $scope.description = addAnchors(caps.Service.Abstract);
-                        $scope.version = caps.Version || caps.version;
-                        $scope.image_formats = caps.Capability.Request.GetMap.Format;
-                        $scope.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
-                        $scope.exceptions = caps.Capability.Exception;
-                        $scope.srss = [];
+                        var caps = parser.read(response);
+                        me.data.mapProjection = OlMap.map.getView().getProjection().getCode().toUpperCase();
+                        me.data.title = caps.Service.Title;
+                        me.data.description = addAnchors(caps.Service.Abstract);
+                        me.data.version = caps.Version || caps.version;
+                        me.data.image_formats = caps.Capability.Request.GetMap.Format;
+                        me.data.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
+                        me.data.exceptions = caps.Capability.Exception;
+                        me.data.srss = [];
                         if (angular.isDefined(caps.Capability.Layer.CRS)) {
-                            $scope.srss = caps.Capability.Layer.CRS;
+                            me.data.srss = caps.Capability.Layer.CRS;
                         } else {
                             $("Capability>Layer>SRS", response).each(function() {
-                                $scope.srss.push(this.innerHTML);
+                                me.data.srss.push(this.innerHTML);
                             });
                         }
-                        if ($scope.srss.indexOf('CRS:84') > -1) $scope.srss.splice($scope.srss.indexOf('CRS:84'), 1);
+                        if (me.data.srss.indexOf('CRS:84') > -1) me.data.srss.splice(me.data.srss.indexOf('CRS:84'), 1);
 
-                        if (srv_caps.currentProjectionSupported($scope.srss))
-                            $scope.srs = $scope.srss.indexOf(OlMap.map.getView().getProjection().getCode()) > -1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
-                        else if ($scope.srss.indexOf('EPSG:4326') > -1) {
-                            $scope.srs = 'EPSG:4326';
+                        if (WmsCapsService.currentProjectionSupported(me.data.srss))
+                            me.data.srs = me.data.srss.indexOf(OlMap.map.getView().getProjection().getCode()) > -1 ? OlMap.map.getView().getProjection().getCode() : OlMap.map.getView().getProjection().getCode().toLowerCase();
+                        else if (me.data.srss.indexOf('EPSG:4326') > -1) {
+                            me.data.srs = 'EPSG:4326';
                         } else
-                            $scope.srs = $scope.srss[0];
-                        $scope.srsChanged();
+                            me.data.srs = me.data.srss[0];
+                        me.srsChanged();
+                        me.data.services = caps.Capability.Layer;
 
-                        $scope.services = caps.Capability.Layer;
-
-                        $scope.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
-                        $scope.image_format = getPreferedFormat($scope.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
-                        $scope.query_format = getPreferedFormat($scope.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
-                    } catch (e) {
-                        if (console) console.log(e);
-                        $scope.error = e.toString();
-                        $("#hs-dialog-area #ows-wms-capabilities-error").remove();
-                        var el = angular.element('<div hs.ows.wms.capabilities_error_directive></span>');
-                        $("#hs-dialog-area").append(el)
-                        $compile(el)($scope);
-                        //throw "WMS Capabilities parsing problem";
+                        me.data.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
+                        me.data.image_format = getPreferedFormat(me.data.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
+                        me.data.query_format = getPreferedFormat(me.data.query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
+                        $rootScope.$broadcast('wmsCapsParsed');
                     }
-                };
-
-                $scope.$on('ows.capabilities_received', function(event, response) {
-                    $scope.capabilitiesReceived(response.data);
-                });
-
-                $scope.srsChanged = function() {
-                    $scope.resample_warning = !srv_caps.currentProjectionSupported($scope.srss);
+                    catch (e) {
+                        $rootScope.$broadcast('wmsCapsParseError',e);
+                    }
                 }
 
-                /**
-                 * @function selectAllLayers
-                 * @memberOf hs.ows.wms.controller
-                 * @description Select all layers from service.
-                 */
-                $scope.selectAllLayers = function() {
-                        var recurse = function(layer) {
-                            layer.checked = true;
+                $rootScope.$on('ows.capabilities_received', function(event, response) {
+                    me.capabilitiesReceived(response.data);
+                });
 
-                            angular.forEach(layer.Layer, function(sublayer) {
-                                recurse(sublayer)
-                            })
-                        }
-                        angular.forEach($scope.services.Layer, function(layer) {
-                            recurse(layer)
-                        });
-                    }
-                    /**
-                     * @function tryAddLayers
-                     * @memberOf hs.ows.wms.controller
-                     * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
-                     * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
-                     */
-                $scope.tryAddLayers = function(checked) {
-                    $scope.add_all = checked;
-                    $scope.addLayers(checked);
-                    return; //http://redmine.ccss.cz/issues/5224
-                    if (!srv_caps.currentProjectionSupported($scope.srss) && $scope.use_resampling == false) {
-                        if ($("#hs-dialog-area #ows-wms-resample-dialog").length == 0) {
-                            var el = angular.element('<div hs.ows.wms.resample_dialog_directive></span>');
-                            $("#hs-dialog-area").append(el)
-                            $compile(el)($scope);
-                        } else {
-                            $('#ows-wms-resample-dialog').modal('show');
-                        }
-                    } else {
-                        $scope.addLayers(checked);
-                    }
-                };
+                me.srsChanged = function() {
+                    me.data.resample_warning = !WmsCapsService.currentProjectionSupported([me.data.srs]);
+                    if (!$rootScope.$$phase) $rootScope.$digest();
+                }
 
                 /**
                  * @function addLayers
@@ -360,29 +314,29 @@ define(['angular', 'ol', 'utils'],
                  * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
                  * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
                  */
-                $scope.addLayers = function(checked) {
+                me.addLayers = function(checked){
                     var recurse = function(layer) {
                         if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
                             addLayer(
                                 layer,
                                 layer.Title.replace(/\//g, "&#47;"),
-                                $scope.folder_name,
-                                $scope.image_format,
-                                $scope.query_format,
-                                $scope.single_tile,
-                                $scope.tile_size,
-                                $scope.srs
+                                me.data.folder_name,
+                                me.data.image_format,
+                                me.data.query_format,
+                                me.data.single_tile,
+                                me.data.tile_size,
+                                me.data.srs
                             );
 
                         angular.forEach(layer.Layer, function(sublayer) {
                             recurse(sublayer)
                         })
                     }
-                    angular.forEach($scope.services.Layer, function(layer) {
+                    angular.forEach(me.data.services.Layer, function(layer) {
                         recurse(layer)
                     });
                     Core.setMainPanel('layermanager');
-                };
+                }
 
                 /**
                  * @function addLayer
@@ -397,9 +351,7 @@ define(['angular', 'ol', 'utils'],
                  * @param {OpenLayers.Projection} crs of the layer
                  * @description Add selected layer to map
                  */
-                var addLayer = function(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
-                    if (console) console.log(layer);
-
+                function addLayer(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
                     var attributions = [];
                     if (layer.Attribution) {
                         attributions = [new ol.Attribution({
@@ -409,7 +361,7 @@ define(['angular', 'ol', 'utils'],
                     var layer_class = ol.layer.Tile;
                     var source_class = ol.source.TileWMS;
 
-                    if (!$scope.use_tiles) {
+                    if (!me.data.use_tiles) {
                         layer_class = ol.layer.Image;
                         source_class = ol.source.ImageWMS;
                     }
@@ -421,7 +373,7 @@ define(['angular', 'ol', 'utils'],
                             boundingbox = layer.EX_GeographicBoundingBox;
                         }
                     } else {
-                        if ($scope.map_projection != srs) {
+                        if (me.data.map_projection != srs) {
                             boundingbox = layer.LatLonBoundingBox;
                         }
                     }
@@ -438,16 +390,16 @@ define(['angular', 'ol', 'utils'],
                     var new_layer = new layer_class({
                         title: layerName,
                         source: new source_class({
-                            url: srv_caps.getUrl($scope.getMapUrl, !srv_caps.currentProjectionSupported($scope.srss)),
+                            url: WmsCapsService.getUrl(me.data.getMapUrl, !WmsCapsService.currentProjectionSupported(me.data.srss)),
                             attributions: attributions,
-                            projection: $scope.crs || $scope.srs,
+                            projection: me.data.crs || me.data.srs,
                             styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                             params: {
                                 LAYERS: layer.Name,
                                 INFO_FORMAT: (layer.queryable ? query_format : undefined),
-                                FORMAT: $scope.image_format,
-                                FROMCRS: $scope.srs,
-                                VERSION: $scope.version
+                                FORMAT: me.data.image_format,
+                                FROMCRS: me.data.srs,
+                                VERSION: me.data.version
                             },
                             crossOrigin: 'anonymous'
                         }),
@@ -458,14 +410,51 @@ define(['angular', 'ol', 'utils'],
                         abstract: layer.Abstract,
                         MetadataURL: layer.MetadataURL,
                         BoundingBox: boundingbox,
-                        path: $scope.path,
+                        path: me.data.path,
                         dimensions: dimensions,
                         legends: legends
                     });
-                    OlMap.proxifyLayerLoader(new_layer, $scope.use_tiles);
+                    OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
                     OlMap.map.addLayer(new_layer);
                 }
 
+                return me;
+            }])
+        /**
+         * @name hs.ows.wms.controller
+         * @ngdoc controller
+         * @memberOf hs.ows.wms
+         * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
+         */
+        .controller('hs.ows.wms.controller', ['$scope', 'hs.map.service', 'Core', 'hs.ows.wms.addLayerService',
+            function($scope, OlMap, Core, LayService) {
+                $scope.data = LayService.data;
+
+                /**
+                 * @function selectAllLayers
+                 * @memberOf hs.ows.wms.controller
+                 * @description Select all layers from service.
+                 */
+                $scope.selectAllLayers = function() {
+                        var recurse = function(layer) {
+                            layer.checked = true;
+
+                            angular.forEach(layer.Layer, function(sublayer) {
+                                recurse(sublayer)
+                            })
+                        }
+                        angular.forEach($scope.data.services.Layer, function(layer) {
+                            recurse(layer)
+                        });
+                    }
+
+                $scope.addLayers = function(checked){
+                    LayService.addLayers(checked);
+                }
+
+                $scope.srsChanged = function(){
+                    LayService.srsChanged();
+                }
 
                 $scope.hasNestedLayers = function(layer) {
                     return typeof layer.Layer !== 'undefined';

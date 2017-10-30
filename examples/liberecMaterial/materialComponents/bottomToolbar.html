@@ -1,0 +1,6 @@
+<md-whiteframe layout="row" layout-align="center center" layout-wrap class="md-whiteframe-4dp bottom-toolbar">
+    <md-button ng-repeat='button in buttons' class="md-primary" aria-label="{{button.tooltip}}" ng-click='buttonClicked(button.item)' ng-show='button.show'>
+        <md-icon>{{button.icon}}</md-icon>
+        <md-tooltip md-direction="top">{{button.tooltip | translate}}</md-tooltip>
+    </md-button>
+</md-whiteframe>

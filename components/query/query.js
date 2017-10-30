@@ -245,6 +245,30 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                          */
                         var updated = false;
                         if (infoFormat.indexOf("xml") > 0 || infoFormat.indexOf("gml") > 0) {
+                            var features = response.getElementsByTagName('gml:featureMember') ||
+                            response.getElementsByTagName('featureMember');
+                            angular.forEach(features, function(feature){
+                                var layerName = layer.get("title") || layer.get("name");
+                                var layers = feature.getElementsByTagName('Layer');
+                                angular.forEach(layers, function(layer){
+                                    var featureName = layer.attributes[0].nodeValue;
+                                    var attrs = layer.getElementsByTagName('Attribute');
+                                    var attributes = [];
+                                    angular.forEach(attrs, function(attr){
+                                        attributes.push({
+                                            "name": attr.attributes[0].nodeValue,
+                                            "value": attr.innerHTML
+                                        });
+                                        updated = true;
+                                    })
+                                    var group = {
+                                        layer: layerName,
+                                        name: featureName,
+                                        attributes: attributes
+                                    };
+                                    Base.setData(group, 'groups');
+                                })
+                            });
                             $("featureMember", response).each(function () {
                                 var feature = $(this)[0].firstChild;
                                 var group = {
@@ -261,7 +285,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                                         updated = true;
                                     }
                                 }
-                                if (updated) Base.set(group, 'groups');
+                                if (updated) Base.setData(group, 'groups');
                             });
                             $("msGMLOutput", response).each(function () {
                                 for (var layer_i in $(this)[0].children) {
@@ -287,7 +311,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                                                     updated = true;
                                                 }
                                             }
-                                            if (updated) Base.set(group, 'groups');
+                                            if (updated) Base.setData(group, 'groups');
                                         }
 
                                     }
@@ -363,12 +387,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                     });
 
                 }])
-            .service('hs.query.vectorService', ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service',
-                function ($rootScope, Base, $sce, OlMap) {
+            .service('hs.query.vectorService', ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 'config',
+                function ($rootScope, Base, $sce, OlMap, Config) {
                     var me = this;
 
                     this.selector = new ol.interaction.Select({
-                        condition: ol.events.condition.click
+                        condition: ol.events.condition.click,
+                        multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false
                     });
                     $rootScope.$broadcast('vectorSelectorCreated',me.selector);
 
@@ -386,15 +411,23 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                         $rootScope.$broadcast('vectorQuery.featureSelected', e.element, me.selector);
                         //deprecated
                         $rootScope.$broadcast('infopanel.feature_selected', e.element, me.selector);
-                        getFeatureAttributes(e.element);
+                        var features = me.selector.getFeatures().getArray();
+                        angular.forEach(features, function(feature){
+                            getFeatureAttributes(feature);
+                        });
                     });
 
                     me.selector.getFeatures().on('remove', function (e) {
+                        Base.clearData();
                         if (!Base.queryActive) return;
                         Base.data.attributes.length = 0;
                         $rootScope.$broadcast('vectorQuery.featureDelected', e.element);
                         //deprecated
                         $rootScope.$broadcast('infopanel.feature_deselected', e.element);
+                        var features = me.selector.getFeatures().getArray();
+                        angular.forEach(features, function(feature){
+                            getFeatureAttributes(feature);
+                        });
                     });
 
                     /**
@@ -449,8 +482,10 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                             };
                         })
                         var layer = feature.getLayer(OlMap.map);
+                        if (angular.isUndefined(layer) ||angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager')===false) return;
                         var layerName = layer.get("title") || layer.get("name");
                         var group = {
+                            layer: layerName,
                             name: "Feature",
                             attributes: attributes
                         };

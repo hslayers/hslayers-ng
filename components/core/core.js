@@ -433,19 +433,19 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (angular.isUndefined(options)) options = {};
                             if (angular.isDefined(options.windowedMap)) me.sizeOptions.windowedMap = options.windowedMap;
                             me.sizeOptions.element = element;
+                            if (angular.isDefined(options.innerElement)) 
+                                me.sizeOptions.innerElement = $(options.innerElement);
                             
                             if (angular.isDefined(options.parent)) {
                                 me.sizeOptions.selector = element.parent();
                                 me.initSizeListeners();
                                 me.updateElementSize();
                             }
-                            
                             else if (angular.isDefined(options.element)) {
                                 me.sizeOptions.selector = $(options.element);
                                 me.initSizeListeners();
                                 me.updateElementSize();
                             }
-                            
                             else {
                                 me.initSizeListeners();
                                 me.updateMapSize();
@@ -519,7 +519,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Update map size.
                         */
                         updateMapSize: function() {
-                            var container = me.sizeOptions.element;
+                            var container = angular.isDefined(me.sizeOptions.innerElement) ? me.sizeOptions.innerElement : me.sizeOptions.element;
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
                             map.height(container.height());
@@ -527,7 +527,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (me.puremapApp) {
                                 map.width(container.width());
                             }
-                            else if (container.width() > sidebarElem.outerWidth()) {
+                            else if (container.width() > sidebarElem.outerWidth() || sidebarElem.length === 0) {
                                 map.width(container.width() - sidebarElem.outerWidth());
                             } 
                             else {

@@ -143,7 +143,10 @@ define(['angular', 'ol', 'map', 'core'],
                             }
                         }
 
+
                         me.data.measurements[me.currentMeasurement] = output;
+                        if (me.data.measurements[me.currentMeasurement])
+                        me.data.measurements[me.currentMeasurement].geom = me.sketch;
                         if (!$rootScope.$$phase) $rootScope.$digest();
                     }
                 };

@@ -1,0 +1,83 @@
+<md-content class="status-creator" layout="column" style="max-height:100%;">
+    <md-toolbar class="md-hue-3" flex="none">
+        <h1 class="md-toolbar-tools" translate>Save map</h1>
+    </md-toolbar>
+    <md-content class="md-padding" flex>
+        <div layout="column" class="md-inline-form">
+            <md-input-container>
+                <label translate>Name</label>
+                <input required md-maxlength="30" ng-model="compoData.title">
+            </md-input-container>
+            <md-input-container>
+                <label translate>Abstract</label>
+                <textarea name="bio" ng-model="compoData.abstract" md-maxlength="600" placeholder="{{'Fill in descriptive text about map'|translate}}"></textarea>
+            </md-input-container>
+            <md-content>
+                <md-switch ng-model="thumbnailVisible" aria-label="Thumbnail switch">
+                    <translate>Show thumbnail</translate>
+                </md-switch>
+                <div class="hs-fade" ng-show="thumbnailVisible">
+                    <label for="hs-stc-thumbnail" translate>Thumbnail</label>
+                    <img id="hs-stc-thumbnail" class="img-thumbnail" alt="Composition thumbnail" width="256" height="256" ng-show="thumbnailVisible">
+                </div>
+
+            </md-content>
+            <div flex-gt-sm="50">
+                <md-checkbox ng-repeat="g in statusData.groups" ng-model="g.r" aria-label="Make public">
+                    <translate>Make public</translate>
+                </md-checkbox>
+            </div>
+            <md-content>
+                <md-switch ng-model="showExpanded" aria-label="Thumbnail switch">
+                    <translate>Advanced options</translate>
+                </md-switch>
+                <div class="hs-fade" ng-show="showExpanded" layout-fill>
+                    <md-input-container>
+                        <label translate>Keywords</label>
+                        <textarea name="keywords" ng-model="compoData.keywords" md-maxlength="200" placeholder="{{'Fill keywords'|translate}}"></textarea>
+                    </md-input-container>
+                    <div layout-fill class="no-margin-bottom">
+                        <span class="md-body-2" translate>Extent</span>
+                        <div layout="column" layout-align="center center">
+                            <div layout="row" layout-align="space-around center">
+                                <md-input-container flex="30">
+                                    <label translate>North</label>
+                                    <input ng-model="compoData.bbox[3]">
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="space-around center">
+                                <md-input-container flex="20">
+                                    <label translate>West</label>
+                                    <input ng-model="compoData.bbox[2]">
+                                </md-input-container>
+                                <md-input-container flex="20">
+                                    <label translate>East</label>
+                                    <input ng-model="compoData.bbox[0]">
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="space-around center">
+                                <md-input-container flex="30">
+                                    <label translate>South</label>
+                                    <input ng-model="compoData.bbox[1]">
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <md-button ng-click="getCurrentExtent();" translate>Use map extent</md-button>
+                    </div>
+                    <div layout-fill layout="column">
+                        <span class="md-body-2">Layers</span>
+                        <md-checkbox ng-repeat="layer in compoData.layers" ng-model="layer.checked" aria-label="Make public">
+                            {{layer.title}}
+                            <md-divider></md-divider>
+                        </md-checkbox>
+
+                    </div>
+                </div>
+            </md-content>
+            <md-divider></md-divider>
+            <md-content layout-padding layout="row" layout-align="space-around center">
+                <md-button class="md-raised" ng-click="reset();" translate>Reset</md-button>
+                <md-button class="md-raised md-accent" ng-disabled="!compoData.title" ng-click="confirmSave();" translate>Save</md-button>
+            </md-content>
+    </md-content>
+</md-content>

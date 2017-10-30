@@ -1,0 +1,36 @@
+<md-dialog>
+    <form>
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2 translate>Share composition {{data.shareTitle}}</h2>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="closeDialog()">
+            <md-icon>close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-dialog-content layout-padding layout="column" style="max-width:800px;max-height:810px; ">
+            <div layout="row">
+                    <p flex="25" class="md-body-2" translate>Abstract</p>
+                    <p flex="75" class="md-body-1">{{data.shareDescription}}</p>
+                </div>
+                <div layout="row">
+                    <p flex="25" class="md-body-2">URL</p>
+                    <p flex="75" class="md-body-1"><a href="{{data.shareUrl}}">{{data.shareUrl}}</a></p>
+                </div>
+      </md-dialog-content>
+  
+      <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button socialshare socialshare-provider="twitter" socialshare-text="{{data.shareTitle}}" socialshare-hashtags="map, gis" socialshare-url="{{data.shareUrl}}" ng-click="closeDialog();">
+                Twitter
+            </md-button>
+            <md-button socialshare socialshare-provider="facebook" socialshare-text="{{data.shareTitle}}" socialshare-description="{{data.shareDescription}}" socialshare-url="{{data.shareUrl}}" ng-click="closeDialog();">
+                Facebook
+            </md-button>
+            <md-button socialshare socialshare-provider="google" socialshare-url="{{data.shareUrl}}" ng-click="closeDialog();">
+                Google+
+            </md-button>
+      </md-dialog-actions>
+    </form>
+  </md-dialog>

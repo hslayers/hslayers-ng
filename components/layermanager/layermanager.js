@@ -536,6 +536,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
                         me.data.baselayers.splice(i, 1);
                     }
                 }
+                me.updateLayerOrder();
                 $rootScope.$broadcast('layermanager.updated', e.element);
                 $rootScope.$broadcast('layer.removed', e.element);
                 $rootScope.$broadcast('compositions.composition_edited');
