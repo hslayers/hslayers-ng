@@ -387,13 +387,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                     });
 
                 }])
-            .service('hs.query.vectorService', ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service',
-                function ($rootScope, Base, $sce, OlMap) {
+            .service('hs.query.vectorService', ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 'config',
+                function ($rootScope, Base, $sce, OlMap, Config) {
                     var me = this;
 
                     this.selector = new ol.interaction.Select({
                         condition: ol.events.condition.click,
-                        multi: true
+                        multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false
                     });
                     $rootScope.$broadcast('vectorSelectorCreated',me.selector);
 
