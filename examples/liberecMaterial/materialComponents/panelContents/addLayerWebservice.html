@@ -1,0 +1,106 @@
+<md-content layout="column" style="max-height:100%;" class="addLayer">
+
+    <md-toolbar class="md-hue-3" flex="none">
+        <h1 class="md-toolbar-tools">
+            <translate>Add webservice</translate>
+        </h1>
+    </md-toolbar>
+    <md-content class="md-padding" flex>
+        <form name="WebServiceUrl">
+            <div layout="row">
+                <md-input-container flex="80">
+                    <label translate>Service url</label>
+                    <input name="url" ng-model="url" ng-change="urlChanged()">
+                </md-input-container>
+                <md-button flex="20" ng-show="showAdvanced" class="md-icon-button md-accent" ng-click="clear();">
+                    <md-icon>refresh</md-icon>
+                    <md-tooltip md-direction="down" translate>New service</md-tooltip>
+                </md-button>
+            </div>
+            <div layout="row" ng-show="url.length > 0 && !showAdvanced">
+                <md-input-container flex="40">
+                    <label translate>Service</label>
+                    <md-select name="sort" ng-model="type" ng-change="setSortAttribute()">
+                        <md-option ng-repeat="type in types" value="{{type}}">
+                            <translate>{{type}}</translate>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <span flex></span>
+                <md-button flex="40" class="md-raised" ng-disabled="type.length === 0 || !WebServiceUrl.url.$valid" ng-click="connect();"
+                    translate>Connect</md-button>
+            </div>
+        </form>
+        <div layout="row" layout-sm="column" layout-align="space-around" ng-show="loading">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <form name="WebServiceDetail" ng-show="showAdvanced" layout-fill layout="column">
+            <md-divider></md-divider>
+            <md-input-container>
+                <label translate>Image format</label>
+                <md-select name="image_format" ng-model="data.image_format">
+                    <md-option ng-repeat="format in data.image_formats" value="{{format}}">
+                        <translate>{{format}}</translate>
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label translate>Query format</label>
+                <md-select name="query_format" ng-model="data.query_format">
+                    <md-option ng-repeat="format in data.query_formats" value="{{format}}">
+                        <translate>{{format}}</translate>
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label translate>CRS</label>
+                <md-select name="crs" ng-model="data.srs" ng-change="srsChanged()">
+                    <md-option ng-repeat="srs in data.srss | limitTo: 50" value="{{srs}}">
+                        <translate>{{srs}}</translate>
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <p class="md-body-2 md-warn" ng-show="data.resample_warning" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
+            <div flex-gt-sm="50">
+                <md-checkbox ng-model="data.use_tiles" aria-label="Tile usage">
+                    <translate>Use tiles</translate>
+                </md-checkbox>
+            </div>
+            <p class="md-body-2 md-warn" ng-show="!data.use_tiles" translate>Consider using tiles. Some servers has restricted max size of picture.</p>
+            <div flex-gt-sm="50">
+                <md-checkbox ng-model="data.register_metadata" aria-label="Register metadata">
+                    <translate>Register metadata</translate>
+                </md-checkbox>
+            </div>
+            <md-divider></md-divider>
+            <h5>Layers {{data.services.Title}}</h5>
+            <div layout="row">
+                <md-button flex="40" class="md-raised" ng-click="selectAllLayers()" translate>Select All Layers</md-button>
+                <md-button flex="40" class="md-raised" ng-click="addLayers(true)" translate>Add to map</md-button>
+            </div>
+            <div ng-repeat="layer in data.services.Layer">
+                <md-checkbox ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" aria-label="Make public">
+                    {{layer.Title}}
+                    <md-divider></md-divider>
+                </md-checkbox>
+                <h6>{{layer.Title}}</h6>
+                <div ng-if="hasNestedLayers(layer)">
+                    <div ng-repeat="sublayer in layer.Layer">
+                        <md-checkbox ng-model="sublayer.checked" ng-if="!hasNestedLayers(sublayer)" aria-label="Make public">
+                            {{sublayer.Title}}
+                            <md-divider></md-divider>
+                        </md-checkbox>
+                        <div ng-if="hasNestedLayers(sublayer)">
+                            <div ng-repeat="sublayer2 in sublayer.Layer">
+                                <md-checkbox ng-model="sublayer2.checked" ng-if="!hasNestedLayers(sublayer2)" aria-label="Make public">
+                                    {{sublayer2.Title}}
+                                    <md-divider></md-divider>
+                                </md-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </md-content>
+</md-content>
