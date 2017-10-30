@@ -3,8 +3,8 @@
     <div class="form-group">
         <label for="image_format" class="capabilities_label col-sm-4 control-label" translate>Image format</label>
         <div class="capabilities_input col-sm-8">
-            <select class="form-control" ng-model="image_format">
-                <option ng-repeat="i in image_formats">{{i}}</option>
+            <select class="form-control" ng-model="data.image_format">
+                <option ng-repeat="i in data.image_formats">{{i}}</option>
             </select>
         </div>      
     </div>
@@ -12,60 +12,60 @@
     <div class="form-group">
         <label class="capabilities_label col-sm-4 control-label" translate>Query format</label>
         <div class="capabilities_input col-sm-8">
-            <select class="form-control" ng-model="query_format">
-                <option ng-repeat="i in query_formats">{{i}}</option>
+            <select class="form-control" ng-model="data.query_format">
+                <option ng-repeat="i in data.query_formats">{{i}}</option>
             </select>
         </div>      
     </div>
 
-    <div class="form-group" ng-show="srs.toUpperCase() != map_projection">
+    <div class="form-group" ng-show="data.srs.toUpperCase() != data.map_projection">
         <label class="capabilities_label col-sm-4 control-label">SRS</label>
         <div class="capabilities_input col-sm-8">
-            <select class="form-control" ng-model="srs" ng-change="srsChanged()">
-                <option ng-repeat="i in srss | limitTo: 50">{{i}}</option>
+            <select class="form-control" ng-model="data.srs" ng-change="srsChanged()">
+                <option ng-repeat="i in data.srss | limitTo: 50">{{i}}</option>
             </select>
         </div>      
     </div>
 
-    <p class="col-sm-12 alert alert-danger" ng-show="resample_warning" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
+    <p class="col-sm-12 alert alert-danger" ng-show="data.resample_warning" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
 
     <div class="form-group">
          <div class="capabilities_input col-sm-8">
-            <label class="capabilities_label control-label" translate> <input type="checkbox" ng-model="use_tiles"/> Use tiles</label>
+            <label class="capabilities_label control-label" translate> <input type="checkbox" ng-model="data.use_tiles"/> Use tiles</label>
         </div>
     </div>
 
-    <p class="col-sm-12 alert alert-warning" ng-show="!use_tiles" translate>Consider using tiles. Some servers has restricted max size of picture.</p>
+    <p class="col-sm-12 alert alert-warning" ng-show="!data.use_tiles" translate>Consider using tiles. Some servers has restricted max size of picture.</p>
 
 
     <div class="form-group">
         <label class="capabilities_label col-sm-4 control-label" translate>Tile size</label>
         <div class="capabilities_input col-sm-8">
-            <input class="form-control" ng-model="tile_size"/>
+            <input class="form-control" ng-model="data.tile_size"/>
         </div>      
     </div>
 
     <div class="form-group">
         <label class="capabilities_label col-sm-4 control-label" translate>Folder name</label>
         <div class="capabilities_input col-sm-8">
-            <input class="form-control" ng-model="path"/>
+            <input class="form-control" ng-model="data.path"/>
         </div>      
     </div>
     
     <div class="form-group">
         <div class="capabilities_input col-sm-8">
-            <label class="capabilities_label control-label" translate> <input type="checkbox" ng-model="register_metadata"/> Register metadata</label>
+            <label class="capabilities_label control-label" translate> <input type="checkbox" ng-model="data.register_metadata"/> Register metadata</label>
         </div>
     </div>
     
     <hr/>
     <ul class="list-group">
         <li class="list-group-item hs-ows-layerlistheading clearfix">
-            <div>{{services.Title}}</div>
+            <div>{{data.services.Title}}</div>
             <button class="btn btn-primary" ng-click="selectAllLayers()" translate>Select All Layers</button>
-            <button class="btn btn-primary pull-right" ng-click="tryAddLayers(true)"><i class="glyphicon glyphicon-plus"></i></button>
+            <button class="btn btn-primary pull-right" ng-click="addLayers(true)"><i class="glyphicon glyphicon-plus"></i></button>
         </li>
-        <li ng-repeat="layer in services.Layer" class="list-group-item clearfix">
+        <li ng-repeat="layer in data.services.Layer" class="list-group-item clearfix">
             <div>
                 <input type="checkbox" class="layer-checked" ng-model="layer.checked" ng-if="!hasNestedLayers(layer)" /> {{layer.Title}}
             </div>
