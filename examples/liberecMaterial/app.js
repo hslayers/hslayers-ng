@@ -161,21 +161,16 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "title": "Default",
                     "type": "default",
                     "editable": false,
-                    "url": 'http://youth.sdi4apps.eu'
-                },
-                "compositions_catalogue": {
-                    "title": "Compositions catalogue",
-                    "type": "compositions_catalogue",
-                    "editable": true,
-                    "url": 'http://opentnet.eu'
-                },
-                "status_manager": {
-                    "title": "Status manager",
-                    "type": "status_manager",
-                    "editable": true,
-                    "url": 'http://opentnet.eu'
-                },
+                    "url": 'http://atlas.kraj-lbc.cz'
+                }
             },
+            datasources: [{
+                title: "Catalogue",
+                url: "/php/metadata/csw/",
+                language: 'eng',
+                type: "micka",
+                code_list_url: '/php/metadata/util/codelists.php?_dc=1440156028103&language=cze&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+            }],
             'catalogue_url': caturl || '/php/metadata/csw/',
             'compositions_catalogue_url': caturl || '/php/metadata/csw/',
             status_manager_url: '/wwwlibs/statusmanager/index.php',
