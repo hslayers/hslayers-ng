@@ -32,7 +32,8 @@ require.config({
         cesium: hsl_path + 'components/cesium/cesium',
         cesiumjs: hsl_path + '/bower_components/cesium.js/dist/Cesium',
         pois: 'poi',
-        olus: 'olu'
+        olus: 'olu',
+        stations: 'stations'
     },
     shim: {
         cesiumjs: {
