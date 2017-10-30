@@ -180,6 +180,9 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'compositions_catalogue_url': caturl || '/php/metadata/csw/',
             status_manager_url: '/wwwlibs/statusmanager/index.php',
             queryPoint: 'notWithin',
+            query: {
+                multi: true
+            },
             mainToolbar: {
                 addLayer: true
             }
