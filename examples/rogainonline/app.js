@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, layermanager, geojson, pois, olus) {
+    function (ol, toolbar, layermanager, geojson, pois, olus, stations) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -99,8 +99,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                     visible: false,
                     minimumTerrainLevel: 15
                 }),
-                pois.createPoiLayer(),
-                olus.createOluLayer()
+                //pois.createPoiLayer(),
+                olus.createOluLayer(),
+                stations.createLayer()
             ],
             default_view: new ol.View({
                 center: ol.proj.transform([1208534.8815206578, 5761821.705531779], 'EPSG:3857', 'EPSG:4326'),
@@ -129,6 +130,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
 
                 pois.init($scope, $compile);
                 olus.init($scope, $compile);
+                stations.init($scope, $compile);
 
 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
@@ -140,7 +142,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                     $("#hs-dialog-area").append(el);
                     $compile(el)($scope);
                 }
-                //createAboutDialog();
+
+                createAboutDialog();
+                $scope.createNewMap = function (){
+                    stations.createStations(map, utils, pos_lon_lat);
+                }
 
                 $scope.showInfo = function (entity) {
                     var id, obj_type;
@@ -194,13 +200,16 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                 var pos_lon_lat = [15.05895482842926, 50.77674947558131];
                 var position = Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1], 412.0);
                 var pick_rectangle;
-                var pick_rectangle_primitive;
+                var pick_rectangle_primitive = null;
                 var target_position = null;
                 var orientation = [0, 0];
                 var orientation_property;
                 var last_time = 0;
 
                 function createPickRectanglePrimitive() {
+                    if(pick_rectangle_primitive!=null){
+                        viewer.scene.primitives.remove(pick_rectangle_primitive);
+                    }
                     pick_rectangle = new Cesium.GeometryInstance({
                         geometry: new Cesium.CircleGeometry({
                             center: Cesium.Cartesian3.fromDegrees(target_position[0], target_position[1]),
@@ -220,6 +229,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
 
                 $rootScope.$on('cesium_position_clicked', function (event, lon_lat) {
                     target_position = lon_lat;
+                    console.log('click');
                     createPickRectanglePrimitive();
                     calculateAltitude()
                 });
@@ -256,6 +266,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                             uri: 'Cesium_Man.gltf',
                             scale: 2
                         },
+                        billboard: {image: '../foodie-zones/symbols/other.png'},
                         position: position_property,
                         orientation: orientation_property
                     });
@@ -264,15 +275,17 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                             loop: Cesium.ModelAnimationLoop.REPEAT,
                             speedup: 2,
                         });
-                       
+
                     });
 
                     function tick(timestamp) {
-                        var time_ellapsed = timestamp - last_time;
-                        positionCharacter(time_ellapsed);
-                        calculateAltitude();
-                        updMap()
-                        last_time = timestamp;
+                        if(timestamp){
+                            var time_ellapsed = timestamp - last_time;
+                            positionCharacter(time_ellapsed);
+                            calculateAltitude();
+                            updMap()
+                            last_time = timestamp;
+                        }
                         Cesium.requestAnimationFrame(tick);
                     }
                     tick();
@@ -284,28 +297,32 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                     Cesium.when(promise, function (updatedPositions) {
                         pos_lon_lat[2] = updatedPositions[0].height;
                         viewer.camera.flyTo({
-                            destination : Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1] - 0.0005, pos_lon_lat[2] + 60),
-                            orientation : {
-                                heading : Cesium.Math.toRadians(0.0),
-                                pitch : Cesium.Math.toRadians(-45.0),
-                                roll : 0.0
+                            destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1] + 0.0005, pos_lon_lat[2] + 60),
+                            orientation: {
+                                heading: Cesium.Math.toRadians(180.0),
+                                pitch: Cesium.Math.toRadians(-45.0),
+                                roll: 0.0
                             }
                         })
                     });
                 });
 
                 var next_speed = 0.0002;
+                var current_speed = 0.0;
                 function positionCharacter(time_ellapsed) {
-                    var speed = next_speed * time_ellapsed / 1000.0;
+                    current_speed += (next_speed - current_speed)  * 0.3 * (time_ellapsed / 1000.0);
+                    var speed = current_speed * time_ellapsed / 1000.0;
                     if (target_position != null) {
                         var diff = { x: target_position[0] - pos_lon_lat[0], y: target_position[1] - pos_lon_lat[1] };
                         if (Math.sqrt(diff.x * diff.x + diff.y * diff.y) < speed) {
                             target_position = null;
+                            current_speed = 0;
                             return;
                         }
                         //Hen going straight to north or south, half of speed must be canceled because there are 90 latitude degrees but 180 longitude
                         var degree_canceler = Math.abs(Math.sin(Math.atan2(diff.y, diff.x)));
                         normalize(diff, speed - (0.5 * speed * degree_canceler));
+                        console.log((speed * 100000).toFixed(2));
                         var new_position = [pos_lon_lat[0] + diff.x, pos_lon_lat[1] + diff.y];
                         next_speed = olus.getSpeed(new_position);
                         if (next_speed > 0) {
@@ -313,6 +330,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'sidebar', '
                             pos_lon_lat[0] = new_position[0];
                             pos_lon_lat[1] = new_position[1];
                             position = Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1], pos_lon_lat[2]);
+                        } else {
+                            current_speed = 0;
                         }
                     }
                 }
