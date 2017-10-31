@@ -47,14 +47,9 @@ define(['angular', 'ol','ngMaterial'],
                                 },
                                 {
                                     item: 'addLayerVector',
-                                    icon: 'file_upload',
+                                    icon: 'file_download',
                                     text: gettext('Local file')
                                 },
-                                {
-                                    item: 'datasourceBrowser',
-                                    icon: 'cloud_upload',
-                                    text: gettext('Web catalogue')
-                                }
                             ]
                         },
                         {
