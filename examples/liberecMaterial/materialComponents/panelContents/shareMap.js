@@ -9,7 +9,7 @@ define(['angular', 'ol','ngMaterial', 'ngclipboard'],
             
             .directive('hs.material.sharemap.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/sharemap.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/shareMap.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }
