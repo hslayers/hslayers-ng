@@ -3,7 +3,7 @@
         <h1 class="md-toolbar-tools" translate>Share map</h1>
     </md-toolbar>
     <md-content class="md-padding" flex>
-        <div layout="row" layout-align="center center" layout-margin layout-wrap>
+        <div layout="row" layout-align="center center" layout-fill>
             <md-icon flex="nogrow">link</md-icon>
             <a ng-href="{{data.permalinkUrl}}" target="_blank" id="permalink-link">{{data.permalinkUrl}}</a>
             <md-button class="md-icon-button" ngclipboard data-clipboard-text="{{data.permalinkUrl}}" ngclipboard-success="onClipSuccess(e);" ngclipboard-error="onClipError(e);">

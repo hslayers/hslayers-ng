@@ -5,22 +5,24 @@ if (typeof hslMin != 'undefined') {
 
 require.config({
     paths: {
-        matSearch: hsl_path + 'examples/liberecMaterial/materialComponents/matSearch',
-        mainToolbar: hsl_path + 'examples/liberecMaterial/materialComponents/mainToolbar',
-        bottomToolbar: hsl_path + 'examples/liberecMaterial/materialComponents/bottomToolbar',
-        sidepanel: hsl_path + 'examples/liberecMaterial/materialComponents/sidepanel',
-        matAddLayer: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/addLayer',
-        matBasemap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/basemap',
-        matLayerManager: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/layerManager',
-        matShareMap: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/shareMap',
-        matMeasure: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/matMeasure',
-        matQuery: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/queryResult',
-        matComposition: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/composition',
-        matStatusCreator: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/statusCreator'
+        matSearch: hsl_path + 'materialComponents/pageSystem/matSearch',
+        mainToolbar: hsl_path + 'materialComponents/pageSystem/mainToolbar',
+        bottomToolbar: hsl_path + 'materialComponents/pageSystem/bottomToolbar',
+        sidepanel: hsl_path + 'materialComponents/pageSystem/sidepanel',
+        matAddLayer: hsl_path + 'materialComponents/panelContents/addLayer',
+        matBasemap: hsl_path + 'materialComponents/panelContents/basemap',
+        matLayerManager: hsl_path + 'materialComponents/panelContents/layerManager',
+        matShareMap: hsl_path + 'materialComponents/panelContents/shareMap',
+        matMeasure: hsl_path + 'materialComponents/panelContents/matMeasure',
+        matQuery: hsl_path + 'materialComponents/panelContents/queryResult',
+        matComposition: hsl_path + 'materialComponents/panelContents/composition',
+        matStatusCreator: hsl_path + 'materialComponents/panelContents/statusCreator'
     },
     shim: {},
     priority: []
 });
+
+console.log(hsl_path + 'materialComponents/pageSystem/matSearch');
 
 define(['angular', 'core', 'ngMaterial'],
     function (angular, core, ngMaterial) {

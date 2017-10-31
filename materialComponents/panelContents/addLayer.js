@@ -5,7 +5,7 @@ define(['angular', 'ol','ngMaterial', 'ows.wms'],
             
             .directive('hs.material.addlayer.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/addLayer.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/panelContents/addLayer.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }
@@ -13,7 +13,7 @@ define(['angular', 'ol','ngMaterial', 'ows.wms'],
             })
             .directive('hs.material.addlayerwebservice.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/addLayerWebservice.html?bust=' + gitsha
+                    templateUrl: hsl_path + 'materialComponents/panelContents/addLayerWebservice.html?bust=' + gitsha
                 };
             })
             .controller('hs.material.addlayerwebservice.controller', ['$scope', 'config', 'hs.ows.wms.service_capabilities', 'hs.ows.wms.addLayerService',

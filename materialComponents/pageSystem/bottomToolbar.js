@@ -9,7 +9,7 @@ define(['angular', 'ol','ngMaterial'],
             
             .directive('hs.material.bottomtoolbar.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/bottomToolbar.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/pageSystem/bottomToolbar.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }

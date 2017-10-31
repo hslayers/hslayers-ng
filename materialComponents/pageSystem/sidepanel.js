@@ -3,7 +3,7 @@ define(['angular', 'core', 'ngMaterial'],
         angular.module('hs.material.sidepanel', ['hs.core'])
             .directive('hs.material.sidepanel.panelright.directive', function () {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/rightPanel.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/pageSystem/rightPanel.html?bust=' + gitsha,
                     link: function (scope, element) {
 
                     }
@@ -12,7 +12,7 @@ define(['angular', 'core', 'ngMaterial'],
 
             .directive('hs.material.sidepanel.panelleft.directive', function () {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/leftPanel.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/pageSystem/leftPanel.html?bust=' + gitsha,
                     link: function (scope, element) {
 
                     }

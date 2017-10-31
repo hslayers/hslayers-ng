@@ -9,7 +9,7 @@ define(['angular', 'ol', 'ngMaterial', 'ngAnimate'],
 
             .directive('hs.material.statuscreator.directive', function () {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/statusCreator.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/panelContents/statusCreator.html?bust=' + gitsha,
                     link: function (scope, element) {
 
                     }

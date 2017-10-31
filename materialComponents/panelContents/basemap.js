@@ -9,7 +9,7 @@ define(['angular', 'ol','ngMaterial'],
             
             .directive('hs.material.basemap.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/basemap.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/panelContents/basemap.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }

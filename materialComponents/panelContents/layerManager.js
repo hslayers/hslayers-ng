@@ -9,7 +9,7 @@ define(['angular', 'ol','ngMaterial'],
             
             .directive('hs.material.layermanager.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/layerManager.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/panelContents/layerManager.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }

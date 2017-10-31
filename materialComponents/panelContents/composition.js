@@ -9,7 +9,7 @@ define(['angular', 'ol', 'ngMaterial'],
 
             .directive('hs.material.composition.directive', function () {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/composition.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/panelContents/composition.html?bust=' + gitsha,
                     link: function (scope, element) {
 
                     }

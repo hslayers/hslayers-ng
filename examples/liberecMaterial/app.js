@@ -1,4 +1,5 @@
 'use strict';
+//hack - modules not loaded correctly with require
 require(['tinycolor'], function(tinycolor) {
     window.tinycolor = tinycolor;
 });
@@ -41,7 +42,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
 
         module.directive('hs', ['hs.map.service', 'Core', '$timeout', function (OlMap, Core, $timeout) {
             return {
-                templateUrl: 'skeleton.html',
+                templateUrl: hsl_path + 'materialComponents/skeleton.html',
                 link: function (scope, element) {
                     Core.init(element, {
                         innerElement: '#map-container'

@@ -9,7 +9,7 @@ define(['angular', 'ol','ngMaterial'],
             
             .directive('hs.material.search.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/matSearch.html?bust=' + gitsha,
+                    templateUrl: hsl_path + 'materialComponents/pageSystem/matSearch.html?bust=' + gitsha,
                     link: function(scope, element) {
 
                     }
