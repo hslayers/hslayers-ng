@@ -122,7 +122,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
         module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce',
             function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce) {
                 var map;
-                var viewer;               
+                var viewer;
                 var last_time = 0;
                 var last_hud_updated = 0;
 
@@ -133,9 +133,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 Core.panelEnabled('status_creator', false);
                 $scope.Core.setDefaultPanel('layermanager');
                 $scope.time_remaining = new Date(0, 1, 0, 6, 30, 0, 0);
-                $scope.points_collected = 0;            
+                $scope.points_collected = 0;
                 pois.init($scope, $compile);
-                stations.init($scope, $compile);             
+                stations.init($scope, $compile);
 
                 function createAboutDialog() {
                     var el = angular.element('<div hs.aboutproject></div>');
@@ -149,7 +149,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     $compile(el)($scope);
                 }
 
-                function disableRightMouse(scene){
+                function disableRightMouse(scene) {
                     var screenSpaceEventHandler = viewer.screenSpaceEventHandler;
                     screenSpaceEventHandler.setInputAction(function () {
                         scene.screenSpaceCameraController.enableZoom = false;
@@ -178,7 +178,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (last_time - last_hud_updated < 1000) return;
                     last_hud_updated = last_time;
                     if (!$scope.$$phase) $scope.$apply();
-                }              
+                }
 
                 createAboutDialog();
                 createHud();
@@ -190,7 +190,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     var pos_lon_lat = character.currentPos();
                     stations.createStations(map, utils, pos_lon_lat);
                     viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0]+0.0001 * 14, pos_lon_lat[1] + 0.0006 * 18, pos_lon_lat[2] + 60 * 18),
+                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0] + 0.0001 * 14, pos_lon_lat[1] + 0.0006 * 18, pos_lon_lat[2] + 60 * 18),
                         orientation: {
                             heading: Cesium.Math.toRadians(180.0),
                             pitch: Cesium.Math.toRadians(-45.0),
@@ -221,7 +221,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
                     //pois.getPois(map, utils, bounds);
                 })
-               
+
                 $scope.$on('infopanel.updated', function (event) { });
             }
         ]);
