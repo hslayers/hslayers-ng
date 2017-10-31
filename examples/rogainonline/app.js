@@ -246,7 +246,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         },
                         billboard: {
                             image: 'runner.png',
-                            pixelOffset: new Cesium.Cartesian2(0, -36), scaleByDistance: new Cesium.NearFarScalar(100, 0.01, 500, 0.1),
+                            pixelOffset: new Cesium.Cartesian2(0, -6), scaleByDistance: new Cesium.NearFarScalar(100, 0.01, 500, 0.1),
                         },
                         position: position_property,
                         orientation: orientation_property
