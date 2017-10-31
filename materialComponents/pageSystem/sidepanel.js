@@ -19,15 +19,6 @@ define(['angular', 'core', 'ngMaterial'],
                 };
             })
 
-            .directive('hs.material.sidepanel.panelleft.directive', function () {
-                return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/leftPanel.html?bust=' + gitsha,
-                    link: function (scope, element) {
-
-                    }
-                };
-            })
-
             .service('hs.material.sidepanel.service', ['$rootScope', 'config', '$mdSidenav', '$interval', '$compile', 'Core',
             function ($rootScope, config, $mdSidenav, $interval, $compile, Core) {
                 var me = this;

@@ -2,6 +2,7 @@ if (typeof hslMin != 'undefined') {
     if (hslMin == true) hslMin = '.min';
     else hslMin = '';
 } else hslMin = '';
+console.log(hslMin);
 
 require.config({
     paths: {
@@ -16,8 +17,7 @@ require.config({
         matMeasure: hsl_path + 'materialComponents/panelContents/matMeasure',
         matQuery: hsl_path + 'materialComponents/panelContents/queryResult',
         matComposition: hsl_path + 'materialComponents/panelContents/composition',
-        matStatusCreator: hsl_path + 'materialComponents/panelContents/statusCreator',
-        matDatasource: hsl_path + 'materialComponents/panelContents/datasourceBrowser'
+        matStatusCreator: hsl_path + 'materialComponents/panelContents/statusCreator'
     },
     shim: {},
     priority: []
@@ -26,7 +26,7 @@ require.config({
 console.log(hsl_path + 'materialComponents/pageSystem/matSearch');
 
 define(['angular', 'core', 'ngMaterial'],
-    function (angular, core, ngMaterial) {
+    function (angular) {
         angular.module('hs.material.core', ['hs.core'])
             .controller("MatCore", ['$scope', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$mdSidenav', '$interval', 'hs.material.sidepanel.service',
                 function ($scope, $window, OlMap, gettextCatalog, config, $templateCache, $timeout, $mdSidenav, $interval, Sidenav) {

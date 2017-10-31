@@ -9,7 +9,7 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 3;
+    z-index: 991;
 }
 .map-floating-gui > * {
     pointer-events: auto;
@@ -120,44 +120,4 @@
 }
 .composition > md-content:first-child {
     margin-top: 6px;
-}
-
-/* Animation */
-.hs-fade, .hs-fade > * {
-    -webkit-transition:all linear 0.5s;
-    transition:all linear 0.5s;
-}
-.hs-fade.ng-hide, .hs-fade.ng-hide > *  {
-    opacity:0;
-  }
-
-  /*Status manager */
-  .no-margin-bottom md-input-container {
-      margin-bottom: 0px;
-  }
-  .no-margin-bottom md-input-container .md-errors-spacer {
-      min-height: 0px;
-  }
-  .status-creator .md-inline-form md-checkbox {
-      margin: 10px 0px;
-  }
-
-/*No margins under inputs - compact view */
-*.input-compact {
-    margin-bottom: 3px;
-}
-*.input-compact .md-errors-spacer {
-    min-height: 0px;
-}
-
-*.input-compact2 {
-    margin-bottom: 6px;
-}
-
-/*Compact icons*/
-*.icon-compact, *.icon-compact > *, .md-button.md-icon-button.icon-compact {
-    padding: 2px;
-    height: 28px;
-    margin: 0px;
-    width: 28px;
 }
