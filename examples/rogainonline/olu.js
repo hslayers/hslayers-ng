@@ -9,7 +9,7 @@ define(['ol'],
         var last_map_calculated = 0;
         var map;
         var utils;
-        
+
         function entityClicked(entity) {
             $scope.showInfo(entity);
             if ($('#zone-info-dialog').length > 0) {

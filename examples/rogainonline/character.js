@@ -117,10 +117,10 @@ define(['cesium'],
             acceleration_started_at = last_time;
             acceleration_start_speed = current_speed;
             next_speed = olus.getSpeed(pos_lon_lat);
-            createPickRectanglePrimitive()
+            createTargetPrimitive()
         }
 
-        function createPickRectanglePrimitive() {
+        function createTargetPrimitive() {
             if (pick_rectangle_primitive != null) {
                 viewer.scene.primitives.remove(pick_rectangle_primitive);
             }
