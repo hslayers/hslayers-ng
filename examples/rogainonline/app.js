@@ -167,6 +167,14 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     $scope.points_collected = 0;
                     $scope.time_remaining = new Date(0, 1, 0, 6, 30, 0, 0);
                     stations.createStations(map, utils, pos_lon_lat);
+                    viewer.camera.flyTo({
+                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0]+0.0001 * 14, pos_lon_lat[1] + 0.0006 * 18, pos_lon_lat[2] + 60 * 18),
+                        orientation: {
+                            heading: Cesium.Math.toRadians(180.0),
+                            pitch: Cesium.Math.toRadians(-45.0),
+                            roll: 0.0
+                        }
+                    })
                 }
 
                 var character;
@@ -308,7 +316,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         //Hen going straight to north or south, half of speed must be canceled because there are 90 latitude degrees but 180 longitude
                         var degree_canceler = Math.abs(Math.sin(Math.atan2(diff.y, diff.x)));
                         normalize(diff, speed - (0.5 * speed * degree_canceler));
-                        var secs_km = (350 / (speed * 100000.0)).toFixed(0);
+                        var secs_km = (400 / (speed * 100000.0)).toFixed(0);
                         $scope.min_km = Math.floor(secs_km / 60) + ':' + (secs_km % 60 < 10 ? '0' : '') + (secs_km % 60);
                         var new_position = [pos_lon_lat[0] + diff.x, pos_lon_lat[1] + diff.y];
                         next_speed = olus.getSpeed(new_position);
