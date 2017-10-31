@@ -19,22 +19,27 @@ define(['ol'],
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
-                entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
-                entity.billboard.image = '../foodie-zones/symbols/other.png';
-                entity.label = new Cesium.LabelGraphics({
-                    text: entity.properties.label,
-                    font: '14px Helvetica',
-                    fillColor: Cesium.Color.WHITE,
-                    outlineColor: new Cesium.Color(0.1, 0.1, 0.1, 0.9),
-                    outlineWidth: 2,
-                    showBackground: true,
-                    style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                    verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                    pixelOffset: new Cesium.Cartesian2(0, -30),
-                    scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
-                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                });
+                styleEntity(entity);
             }
+        }
+
+        function styleEntity(entity) {
+            entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
+            var picture = entity.properties.visited.getValue() ? 'viewpoint' : 'other';
+            entity.billboard.image = `../foodie-zones/symbols/${picture}.png`;
+            entity.label = new Cesium.LabelGraphics({
+                text: entity.properties.label,
+                font: '14px Helvetica',
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: new Cesium.Color(0.1, 0.1, 0.1, 0.9),
+                outlineWidth: 2,
+                showBackground: true,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                pixelOffset: new Cesium.Cartesian2(0, -30),
+                scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
+                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+            });
         }
 
         return {
@@ -52,7 +57,13 @@ define(['ol'],
                         }
                     }
                     if (!found_close) {
-                        var feature = new ol.Feature({ geometry: new ol.geom.Point([try_pnt.x, try_pnt.y]), label: (20 + Math.random() * 79).toFixed(0) });
+                        var points = Math.floor((20 + Math.random() * 79));
+                        var feature = new ol.Feature({
+                            geometry: new ol.geom.Point([try_pnt.x, try_pnt.y]),
+                            label: points.toFixed(0),
+                            points: points,
+                            visited: false
+                        });
                         features.push(feature);
                         points_added++;
                     }
@@ -68,6 +79,17 @@ define(['ol'],
                     source: source,
                     visible: true
                 })
+            },
+            checkAtCoords: function (coords) {
+                var collected = 0.0;
+                source.cesium_layer.entities.values.forEach(function (entity) {
+                    if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 5 && entity.properties.visited.getValue() == false) {
+                        entity.properties.visited.setValue(true);
+                        styleEntity(entity);
+                        collected = Math.floor(entity.properties.points.getValue() / 10);
+                    }
+                });
+                return collected;
             },
             init: function (_$scope, _$compile) {
                 $scope = _$scope;

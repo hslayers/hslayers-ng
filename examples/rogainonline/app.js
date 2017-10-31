@@ -1,17 +1,15 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 'sidebar', 'query', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap'],
 
     function (ol, toolbar, layermanager, geojson, pois, olus, stations) {
         var module = angular.module('hs', [
-            'hs.toolbar',
             'hs.layermanager',
             'hs.query',
-            'hs.search', 'hs.print', 'hs.permalink',
+            'hs.print', 'hs.permalink',
             'hs.geolocation',
             'hs.cesium',
-            'hs.sidebar',
-            'hs.ows'
+            'hs.sidebar'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$compile', '$timeout', function (OlMap, Core, $compile, $timeout) {
@@ -35,6 +33,16 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 link: link
             };
         });
+
+        module.directive('hs.hud', function () {
+            return {
+                templateUrl: './hud.html?bust=' + gitsha,
+                link: function (scope, element, attrs) {
+
+                }
+            };
+        })
+
 
         module.directive('hs.foodiezones.infoDirective', function () {
             return {
@@ -123,6 +131,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 Core.panelEnabled('compositions', true);
                 Core.panelEnabled('status_creator', false);
                 $scope.Core.setDefaultPanel('layermanager');
+                $scope.time_remaining = new Date(0, 1, 0, 6, 30, 0, 0);
+                $scope.points_collected = 0;
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
@@ -143,55 +153,20 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     $compile(el)($scope);
                 }
 
+                function createHud() {
+                    var el = angular.element('<div hs.hud></div>');
+                    $(".page-content").append(el);
+                    $compile(el)($scope);
+                }
+
                 createAboutDialog();
+                createHud();
+
                 $scope.createNewMap = function () {
+                    $scope.game_started = true;
+                    $scope.points_collected = 0;
+                    $scope.time_remaining = new Date(0, 1, 0, 6, 30, 0, 0);
                     stations.createStations(map, utils, pos_lon_lat);
-                }
-
-                $scope.showInfo = function (entity) {
-                    var id, obj_type;
-                    if (entity.properties.olu) { id = entity.properties.olu.getValue(); obj_type = 'Land use parcel' }
-                    $scope.zone = {
-                        id: $sce.trustAsHtml(),
-                        attributes: [],
-                        links: [],
-                        obj_type: obj_type
-                    };
-                    describeOlu(id, function () {
-                        if (!$scope.$$phase) $scope.$apply();
-                    });
-                }
-
-                function describeOlu(id, callback) {
-                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <' + id + '>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
-                    $.ajax({
-                        url: utils.proxify(q)
-                    })
-                        .done(function (response) {
-                            if (angular.isUndefined(response.results)) return;
-                            for (var i = 0; i < response.results.bindings.length; i++) {
-                                var b = response.results.bindings[i];
-                                var short_name = b.p.value;
-                                if (short_name.indexOf('#') > -1)
-                                    short_name = short_name.split('#')[1];
-                                $scope.zone.attributes.push({ short_name: short_name, value: b.o.value });
-                            }
-                            getLinksTo(id, callback);
-                        })
-                }
-
-                function getLinksTo(id, callback) {
-                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('PREFIX geo: <http://www.opengis.net/ont/geosparql#> PREFIX geof: <http://www.opengis.net/def/function/geosparql/> PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> PREFIX poi: <http://www.openvoc.eu/poi#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT * WHERE {?obj <http://www.opengis.net/ont/geosparql#hasGeometry> ?obj_geom. ?obj_geom geo:asWKT ?Coordinates . FILTER(bif:st_intersects (?Coordinates, ?wkt)). { SELECT ?wkt WHERE { <' + id + '> geo:hasGeometry ?geometry. ?geometry geo:asWKT ?wkt.} } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
-                    $.ajax({
-                        url: utils.proxify(q)
-                    })
-                        .done(function (response) {
-                            for (var i = 0; i < response.results.bindings.length; i++) {
-                                var b = response.results.bindings[i];
-                                $scope.zone.links.push({ url: b.obj.value });
-                            }
-                            callback();
-                        })
                 }
 
                 var character;
@@ -236,6 +211,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     calculateAltitude()
                 });
 
+                var position_property;
                 $rootScope.$on('cesiummap.loaded', function (event, _viewer) {
                     viewer = _viewer;
                     viewer.scene.globe.depthTestAgainstTerrain = true;
@@ -251,7 +227,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
 
                     var scene = viewer.scene;
-                    var position_property = new Cesium.CallbackProperty(function () {
+                    position_property = new Cesium.CallbackProperty(function () {
                         return Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1], pos_lon_lat[2])
                     }, false);
                     orientation_property = new Cesium.CallbackProperty(function () {
@@ -268,8 +244,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                             uri: 'Cesium_Man.gltf',
                             scale: 2
                         },
-                        billboard: { image: 'runner.png', 
-                            pixelOffset: new Cesium.Cartesian2(5, -66), scaleByDistance: new Cesium.NearFarScalar(100, 0.01, 500, 0.1), },
+                        billboard: {
+                            image: 'runner.png',
+                            pixelOffset: new Cesium.Cartesian2(0, -36), scaleByDistance: new Cesium.NearFarScalar(100, 0.01, 500, 0.1),
+                        },
                         position: position_property,
                         orientation: orientation_property
                     });
@@ -277,9 +255,14 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     function tick(timestamp) {
                         if (timestamp) {
                             var time_ellapsed = timestamp - last_time;
+                            if ($scope.game_started) {
+                                $scope.time_remaining -= time_ellapsed * 24;
+                            }
+
                             positionCharacter(time_ellapsed, timestamp);
                             calculateAltitude();
-                            updMap()
+                            updMap();
+                            updHud();
                             last_time = timestamp;
                         }
                         Cesium.requestAnimationFrame(tick);
@@ -312,7 +295,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (accelerating_for > 3000) accelerating_for = 3000;
                     current_speed = acceleration_start_speed + (next_speed - acceleration_start_speed) * accelerating_for / 3000;
                     var speed = current_speed * time_ellapsed / 1000.0;
-                    if (speed>0) {
+                    if (speed > 0) {
                         var diff = { x: target_position[0] - pos_lon_lat[0], y: target_position[1] - pos_lon_lat[1] };
                         if (Math.sqrt(diff.x * diff.x + diff.y * diff.y) < speed) {
                             //target_position = null;
@@ -325,16 +308,18 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         //Hen going straight to north or south, half of speed must be canceled because there are 90 latitude degrees but 180 longitude
                         var degree_canceler = Math.abs(Math.sin(Math.atan2(diff.y, diff.x)));
                         normalize(diff, speed - (0.5 * speed * degree_canceler));
-                        console.log((speed * 100000).toFixed(2));
+                        var secs_km = (350 / (speed * 100000.0)).toFixed(0);
+                        $scope.min_km = Math.floor(secs_km / 60) + ':' + (secs_km % 60 < 10 ? '0' : '') + (secs_km % 60);
                         var new_position = [pos_lon_lat[0] + diff.x, pos_lon_lat[1] + diff.y];
                         next_speed = olus.getSpeed(new_position);
                         if (next_speed > 0) {
                             orientation = [diff.x, diff.y];
                             pos_lon_lat[0] = new_position[0];
                             pos_lon_lat[1] = new_position[1];
+                            $scope.points_collected += stations.checkAtCoords(Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1], 0));
                         } else {
                             current_speed = 0.0;
-                            acceleration_start_speed=0.0;
+                            acceleration_start_speed = 0.0;
                         }
                     }
                 }
@@ -357,6 +342,13 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         olus.getOlus(map, utils, pos_lon_lat);
                         last_position_loaded = [pos_lon_lat[0], pos_lon_lat[1]];
                     }
+                }
+
+                var last_hud_updated = 0;
+                function updHud() {
+                    if (last_time - last_hud_updated < 1000) return;
+                    last_hud_updated = last_time;
+                    if (!$scope.$$phase) $scope.$apply();
                 }
 
                 var last_altitude_calculated = 0;

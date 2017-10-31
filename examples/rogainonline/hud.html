@@ -1,0 +1,36 @@
+<div style="position: absolute; left: 10%; top:0px; z-index: 100">
+    <link href="https://fonts.googleapis.com/css?family=Lato:700" rel="stylesheet">
+    <style>
+        .hsr-speed,
+        .hsr-timer,
+        .hsr-points {
+            font-family: 'Lato', sans-serif;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+            margin-right:15px;
+        }
+
+        .hsr-speed {
+            font-size: 20pt;
+            color: #b3b09e;
+        }
+
+        .hsr-timer {
+            font-size: 30pt;
+            color: #ffe200;
+        }
+
+        .hsr-points {
+            font-size: 20pt;
+            color: #2fb336;
+        }
+    </style>
+    <span class="hsr-speed">
+        {{min_km}} min/km
+    </span>
+    <span class="hsr-timer">
+        {{time_remaining|date:'hh:mm:ss'}}
+    </span>
+    <span class="hsr-points">
+        {{points_collected}} points
+    </span>
+</div>
