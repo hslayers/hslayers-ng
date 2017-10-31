@@ -82,12 +82,6 @@ define(['angular', 'core', 'ngMaterial'],
                                 status: false,
                                 directive: 'hs.material.statuscreator.directive',
                                 controller: 'hs.material.statuscreator.controller'
-                            },
-                            "datasourceBrowser": {
-                                id: "datasourceBrowser",
-                                status: false,
-                                directive: 'hs.material.datasourcebrowser.directive',
-                                controller: 'hs.material.datasourcebrowser.controller'
                             }
                         },
                         activeDirective: undefined

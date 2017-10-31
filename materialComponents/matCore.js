@@ -17,8 +17,7 @@ require.config({
         matMeasure: hsl_path + 'materialComponents/panelContents/matMeasure',
         matQuery: hsl_path + 'materialComponents/panelContents/queryResult',
         matComposition: hsl_path + 'materialComponents/panelContents/composition',
-        matStatusCreator: hsl_path + 'materialComponents/panelContents/statusCreator',
-        matDatasource: hsl_path + 'materialComponents/panelContents/datasourceBrowser'
+        matStatusCreator: hsl_path + 'materialComponents/panelContents/statusCreator'
     },
     shim: {},
     priority: []
