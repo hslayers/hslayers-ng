@@ -5,6 +5,11 @@ define(['ol'],
         var $scope;
         var $compile;
         var greenery = ["27", "10", "19"];
+        var last_position_loaded = [0, 0];
+        var last_map_calculated = 0;
+        var map;
+        var utils;
+        
         function entityClicked(entity) {
             $scope.showInfo(entity);
             if ($('#zone-info-dialog').length > 0) {
@@ -43,9 +48,16 @@ define(['ol'],
         }
 
         var me = {
-            getOlus: function (map, utils, c) {
-
-
+            updMap: function (timestamp, pos_lon_lat) {
+                if (timestamp - last_map_calculated < 500) return;
+                last_map_calculated = timestamp;
+                var diff = { x: pos_lon_lat[0] - last_position_loaded[0], y: pos_lon_lat[1] - last_position_loaded[1] };
+                if (last_map_calculated == [0, 0] || Math.sqrt(diff.x * diff.x + diff.y * diff.y) > 0.002 * 0.8) {
+                    me.getOlus(pos_lon_lat);
+                    last_position_loaded = [pos_lon_lat[0], pos_lon_lat[1]];
+                }
+            },
+            getOlus: function (c) {
                 var format = new ol.format.WKT();
                 var ver_off = 0.002;
                 var hor_off = 0.002;
@@ -125,9 +137,11 @@ define(['ol'],
                 });
                 return speed;
             },
-            init: function (_$scope, _$compile) {
+            init: function (_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
                 $compile = _$compile;
+                map = _map;
+                utils = _utils;
             }
         }
         return me;
