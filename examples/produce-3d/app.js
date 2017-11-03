@@ -80,6 +80,7 @@ define(['angular', 'ol', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layerma
                     wrapX: false
                 }),
                 title: "Base layer",
+                visible: false,
                 base: true
             })],
             //project_name: 'hslayers',
