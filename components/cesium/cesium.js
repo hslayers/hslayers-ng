@@ -57,6 +57,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 viewer = new Cesium.Viewer('cesiumContainer', {
                     timeline: false,
                     animation: false,
+                    infoBox: typeof config.cesiumInfoBox !='undefined' ? config.cesiumInfoBox : true,
                     terrainProvider: terrain_provider,
                     terrainExaggeration: config.terrainExaggeration || 1.0,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets

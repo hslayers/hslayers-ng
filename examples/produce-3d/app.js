@@ -75,6 +75,7 @@ define(['angular', 'ol', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layerma
             }]);
 
         module.value('config', {
+            cesiumInfoBox: false,
             default_layers: [new ol.layer.Tile({
                 source: new ol.source.OSM({
                     wrapX: false
@@ -106,11 +107,14 @@ define(['angular', 'ol', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layerma
                 $rootScope.$on('map.loaded', function () {
                     map = hsMap.map;
                     olus.init($scope, $compile, map, utils);
-                    zones.init($scope, $compile, map, utils);
                     pois.init($scope, $compile);
-                    zones.get();
                     map.on('moveend', extentChanged);
                 });
+
+                $rootScope.$on('cesiummap.loaded', function (event, _viewer) {
+                    zones.init($scope, $compile, map, utils, _viewer);
+                    zones.get();
+                })
 
                 function extentChanged() {
                     olus.get();

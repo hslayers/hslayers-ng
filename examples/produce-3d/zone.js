@@ -6,6 +6,7 @@ define(['ol'],
         var $compile;
         var map;
         var utils;
+        var viewer;
 
         var stroke = new ol.style.Stroke({
             color: '#3399CC',
@@ -32,19 +33,40 @@ define(['ol'],
                 crop = parseInt(crop[crop.length - 1]);
                 entity.polygon.outline = false;
                 entity.polygon.material = new Cesium.Color.fromCssColorString(utils.rainbow(30, crop, 0.7));
+                var cbp = new Cesium.CallbackProperty(function () {
+                    return this.entity.properties.height || 0
+                }, false);
+                var cbpex = new Cesium.CallbackProperty(function () {
+                    return (this.entity.properties.height || 0) + this.entity.properties.numerical_amount/100
+                }, false);
+                entity.polygon.extrudedHeight = cbpex;
+                cbp.entity = entity;
+                cbpex.entity = entity;
+                entity.polygon.height = cbp;
                 entity.styled = true;
-                entity.label = new Cesium.LabelGraphics({
-                    text:  entity.properties['crop description'].getValue() + '\n' + entity.properties['management zone'].getValue().split('core/')[1],
+                var polyPositions = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions;
+                var polyCenter = Cesium.BoundingSphere.fromPoints(polyPositions).center;
+                polyCenter = Cesium.Ellipsoid.WGS84.scaleToGeodeticSurface(polyCenter);
+                entity.position = polyCenter;
+                var cartoPos = Cesium.Cartographic.fromCartesian(polyCenter);
+                cartoPos.entity = entity;
+                var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, [
+                    cartoPos
+                ]);
+                Cesium.when(promise, function (updatedPositions) {
+                    updatedPositions[0].entity.properties.height = updatedPositions[0].height;
+                });
+                entity.label = {
+                    text: entity.properties['crop description'].getValue() + '\n' + entity.properties['management zone'].getValue().split('core/')[1],
                     font: '18px Helvetica',
-                    fillColor: Cesium.Color.WHITE,
-                    outlineColor: new Cesium.Color(0.64, 0.1725490, 0.749019, 0.9),
-                    outlineWidth: 2,
-                    style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                    showBackground: true,
+                    horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
                     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                    pixelOffset: new Cesium.Cartesian2(0, -36),
-                    //scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
+                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(10.0, 8000.0),
+                    disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                    scaleByDistance: new Cesium.NearFarScalar(50, 1, 20000, 0.0),
                     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                }); 
+                };
                 entity.onclick = entityClicked
             }
         }
@@ -101,7 +123,8 @@ define(['ol'],
                                         'crop family': b.crop_family.value,
                                         'management zone': b.z.value,
                                         'production date': b.prod_date.value,
-                                        amount: parseFloat(b.amount_value.value) + ' ' + b.amount_unit.value
+                                        amount: parseFloat(b.amount_value.value) + ' ' + b.amount_unit.value,
+                                        numerical_amount: parseFloat(b.amount_value.value) 
                                     });
                                     features.push(feature);
                                 }
@@ -152,28 +175,12 @@ define(['ol'],
                     },
                 })
             },
-            describeZone: function (id, callback) {
-                var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <' + id + '>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
-                $.ajax({
-                    url: utils.proxify(q)
-                })
-                    .done(function (response) {
-                        if (angular.isUndefined(response.results)) return;
-                        for (var i = 0; i < response.results.bindings.length; i++) {
-                            var b = response.results.bindings[i];
-                            var short_name = b.p.value;
-                            if (short_name.indexOf('#') > -1)
-                                short_name = short_name.split('#')[1];
-                            $scope.zone.attributes.push({ short_name: short_name, value: b.o.value });
-                        }
-                        $scope.getLinksTo(id, callback);
-                    })
-            },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function (_$scope, _$compile, _map, _utils, _viewer) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;
                 utils = _utils;
+                viewer = _viewer;
             }
         }
         return me;
