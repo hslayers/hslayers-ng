@@ -37,7 +37,7 @@ define(['ol'],
                     return this.entity.properties.height || 0
                 }, false);
                 var cbpex = new Cesium.CallbackProperty(function () {
-                    return (this.entity.properties.height || 0) + this.entity.properties.numerical_amount/100
+                    return (this.entity.properties.height || 0) + this.entity.properties.numerical_amount / 100
                 }, false);
                 entity.polygon.extrudedHeight = cbpex;
                 cbp.entity = entity;
@@ -124,7 +124,7 @@ define(['ol'],
                                         'management zone': b.z.value,
                                         'production date': b.prod_date.value,
                                         amount: parseFloat(b.amount_value.value) + ' ' + b.amount_unit.value,
-                                        numerical_amount: parseFloat(b.amount_value.value) 
+                                        numerical_amount: parseFloat(b.amount_value.value)
                                     });
                                     features.push(feature);
                                 }
