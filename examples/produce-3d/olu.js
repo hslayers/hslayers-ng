@@ -6,6 +6,7 @@ define(['ol'],
         var $compile;
         var map;
         var utils;
+        var olus_lyr;
 
         function entityClicked(entity) {
             $scope.showInfo(entity);
@@ -33,7 +34,7 @@ define(['ol'],
 
         var me = {
             get: function () {
-                if (map.getView().getResolution() > 2.48657133911758) return;
+                if (map.getView().getResolution() > 2.48657133911758 || olus_lyr.getVisible()==false) return;
                 var format = new ol.format.WKT();
                 var bbox = map.getView().calculateExtent(map.getSize());
                 var ext = bbox;
@@ -80,10 +81,10 @@ define(['ol'],
                     })
             },
             createOluLayer: function () {
-                return new ol.layer.Vector({
+                olus_lyr = new ol.layer.Vector({
                     title: "Open land use parcels",
                     source: olus_source,
-                    visible: true,
+                    visible: false,
                     style: function (feature, resolution) {
                         var use = feature.get('use').split('/');
                         use = use[use.length - 1];
@@ -96,7 +97,8 @@ define(['ol'],
                             })
                         ];
                     }
-                })
+                });
+                return olus_lyr;
             },
             init: function (_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
