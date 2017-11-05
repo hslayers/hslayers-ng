@@ -126,6 +126,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 var last_time = 0;
                 var last_hud_updated = 0;
                 var zero_date = new Date(0, 1, 0, 0, 0, 0, 0);
+                var full_date = new Date(0, 1, 0, 6, 30, 0, 0);
+                var time_game_started;
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -167,7 +169,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (timestamp) {
                         var time_ellapsed = timestamp - last_time;
                         if ($scope.game_started) {
-                            $scope.time_remaining -= time_ellapsed * 24;
+                            $scope.time_remaining =  full_date - (timestamp - time_game_started) * 24;
                             if($scope.time_remaining <= zero_date ){
                                 $scope.game_started = false;
                                 $scope.time_remaining = zero_date;
@@ -182,7 +184,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 function updHud() {
-                    if (last_time - last_hud_updated < 1000) return;
+                    if (last_time - last_hud_updated < 500) return;
                     last_hud_updated = last_time;
                     if (!$scope.$$phase) $scope.$apply();
                 }
@@ -193,7 +195,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.createNewMap = function () {
                     $scope.game_started = true;
                     $scope.points_collected = 0;
-                    $scope.time_remaining = new Date(0, 1, 0, 6, 30, 0, 0);
+                    time_game_started = last_time;
                     var pos_lon_lat = character.currentPos();
                     stations.createStations(map, utils, pos_lon_lat);
                     viewer.camera.flyTo({
