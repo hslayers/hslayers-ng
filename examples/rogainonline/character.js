@@ -59,7 +59,7 @@ define(['cesium'],
                 //Hen going straight to north or south, half of speed must be canceled because there are 90 latitude degrees but 180 longitude
                 var degree_canceler = Math.abs(Math.sin(Math.atan2(diff.y, diff.x)));
                 normalize(diff, speed - (0.5 * speed * degree_canceler));
-                var secs_km = (400 / (speed * 100000.0)).toFixed(0);
+                var secs_km = (900 / (speed * 100000.0)).toFixed(0);
                 $scope.min_km = Math.floor(secs_km / 60) + ':' + (secs_km % 60 < 10 ? '0' : '') + (secs_km % 60);
                 var new_position = [pos_lon_lat[0] + diff.x, pos_lon_lat[1] + diff.y];
                 next_speed = olus.getSpeed(new_position);
