@@ -125,13 +125,16 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 var viewer;
                 var last_time = 0;
                 var last_hud_updated = 0;
+                var zero_date = new Date(0, 1, 0, 0, 0, 0, 0);
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.singleDatasources = true;
-                Core.panelEnabled('compositions', true);
+                Core.panelEnabled('compositions', false);
                 Core.panelEnabled('status_creator', false);
+                Core.panelEnabled('print', false);
                 $scope.Core.setDefaultPanel('layermanager');
+                Core.sidebarExpanded = false;
                 $scope.time_remaining = new Date(0, 1, 0, 6, 30, 0, 0);
                 $scope.points_collected = 0;
                 pois.init($scope, $compile);
@@ -165,6 +168,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         var time_ellapsed = timestamp - last_time;
                         if ($scope.game_started) {
                             $scope.time_remaining -= time_ellapsed * 24;
+                            if($scope.time_remaining <= zero_date ){
+                                $scope.game_started = false;
+                                $scope.time_remaining = zero_date;
+                            }
                         }
 
                         character.positionCharacter(time_ellapsed, timestamp);
@@ -206,7 +213,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
-                    olus.init($scope, $compile, map, utils);
                 });
 
                 $rootScope.$on('cesiummap.loaded', function (event, _viewer) {
@@ -215,6 +221,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     scene.globe.depthTestAgainstTerrain = true;
                     disableRightMouse(scene);
                     character.init($scope, $compile, olus, viewer, stations);
+                    olus.init($scope, $compile, map, utils, _viewer);
                     tick();
                 });
 

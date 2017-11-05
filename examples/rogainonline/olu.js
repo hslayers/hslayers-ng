@@ -36,7 +36,29 @@ define(['ol'],
                             entity.polygon.material = Cesium.Color.WHITE.withAlpha(0.2);
                             break;
                         case "13":
-                            entity.polygon.material = new Cesium.Color(0.9, 0.1725490, 0.149019, 0.2);
+                            entity.polygon.material = new Cesium.Color(0.9, 0.1725490, 0.149019, 0.4);
+                            var cbp = new Cesium.CallbackProperty(function () {
+                                return this.entity.properties.height || 0
+                            }, false);
+                            var cbpex = new Cesium.CallbackProperty(function () {
+                                return (this.entity.properties.height || 0) + 5.0
+                            }, false);
+                            entity.polygon.extrudedHeight = cbpex;
+                            cbp.entity = entity;
+                            cbpex.entity = entity;
+                            entity.polygon.height = cbp;
+                            var polyPositions = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions;
+                            var polyCenter = Cesium.BoundingSphere.fromPoints(polyPositions).center;
+                            polyCenter = Cesium.Ellipsoid.WGS84.scaleToGeodeticSurface(polyCenter);
+                            entity.position = polyCenter;
+                            var cartoPos = Cesium.Cartographic.fromCartesian(polyCenter);
+                            cartoPos.entity = entity;
+                            var promise = Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, [
+                                cartoPos
+                            ]);
+                            Cesium.when(promise, function (updatedPositions) {
+                                updatedPositions[0].entity.properties.height = updatedPositions[0].height;
+                            });
                             break;
                         default:
                             entity.polygon.material = new Cesium.Color(1, 1, 1, 0.09);
@@ -137,11 +159,12 @@ define(['ol'],
                 });
                 return speed;
             },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function (_$scope, _$compile, _map, _utils, _viewer) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;
                 utils = _utils;
+                viewer = _viewer;
             }
         }
         return me;
