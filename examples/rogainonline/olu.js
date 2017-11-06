@@ -113,7 +113,7 @@ define(['ol'],
 
                 olu_source.set('loaded', false);
                 $.ajax({
-                    url: utils.proxify(q)
+                    url: q
                 })
                     .done(function (response) {
                         if (angular.isUndefined(response.results)) return;
@@ -171,7 +171,7 @@ define(['ol'],
                 } LIMIT 1`) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
                 $.ajax({
-                    url: utils.proxify(q),
+                    url: q,
                     async: false
                 })
                     .done(function (response) {
