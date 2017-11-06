@@ -36,7 +36,7 @@ define(['ol'],
                             entity.polygon.material = Cesium.Color.WHITE.withAlpha(0.2);
                             break;
                         case "13":
-                            entity.polygon.material = new Cesium.Color(0.9, 0.1725490, 0.149019, 0.4);
+                            entity.polygon.material = new Cesium.Color(1, 162 / 255, 140 / 255, 1);
                             var cbp = new Cesium.CallbackProperty(function () {
                                 return this.entity.properties.height || 0
                             }, false);
@@ -70,19 +70,22 @@ define(['ol'],
         }
 
         var me = {
+            visionDistance: function(){
+                return 0.0004;
+            },
             updMap: function (timestamp, pos_lon_lat) {
-                if (timestamp - last_map_calculated < 500) return;
+                if (timestamp - last_map_calculated < 400) return;
                 last_map_calculated = timestamp;
                 var diff = { x: pos_lon_lat[0] - last_position_loaded[0], y: pos_lon_lat[1] - last_position_loaded[1] };
-                if (last_map_calculated == [0, 0] || Math.sqrt(diff.x * diff.x + diff.y * diff.y) > 0.002 * 0.8) {
+                if (last_map_calculated == [0, 0] || Math.sqrt(diff.x * diff.x + diff.y * diff.y) > me.visionDistance() * 0.7) {
                     me.getOlus(pos_lon_lat);
                     last_position_loaded = [pos_lon_lat[0], pos_lon_lat[1]];
                 }
             },
             getOlus: function (c) {
                 var format = new ol.format.WKT();
-                var ver_off = 0.002;
-                var hor_off = 0.002;
+                var ver_off = me.visionDistance();
+                var hor_off = me.visionDistance();
                 var ol_extent = [c[0] - hor_off, c[1] - ver_off, c[0] + hor_off, c[1] + ver_off];
                 //console.log('remove ol features', (new Date()).getTime()); window.lasttime = (new Date()).getTime();
                 olu_source.getFeatures().forEach(function (feature) {
@@ -150,6 +153,31 @@ define(['ol'],
             getOluUnder: function (cord) {
                 var features = olu_source.getFeaturesAtCoordinate(cord);
                 return features.map((f) => f.get('use'));
+            },
+            buildingExistsAtCoordinate: function (c) {
+                var point = `POINT (${c.x} ${c.y})`;
+                var tmp_result = false;
+                var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
+                PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
+                PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+                SELECT ?o 
+                FROM <http://w3id.org/foodie/olu#> 
+                WHERE { ?o geo:hasGeometry ?geometry. 
+                    ?geometry geo:asWKT ?wkt. 
+                    FILTER(bif:st_intersects(bif:st_geomfromtext("${point}"), ?wkt)).
+                    ?o <http://w3id.org/foodie/olu#specificLandUse> ?use. 
+                    FILTER(?use="13"^^xsd:string)
+                } LIMIT 1`) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+
+                $.ajax({
+                    url: utils.proxify(q),
+                    async: false
+                })
+                    .done(function (response) {
+                        tmp_result = response.results.bindings.length > 0
+                    })
+                return tmp_result;
             },
             getSpeed: function (cord) {
                 var speed = 0.0002;
