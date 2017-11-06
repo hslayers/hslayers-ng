@@ -3,20 +3,26 @@
     <style>
         .hsr-speed,
         .hsr-timer,
-        .hsr-points {
+        .hsr-points, .hsr-penalty {
             font-family: 'Lato', sans-serif;
             text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-            margin-right:15px;
         }
 
         .hsr-speed {
             font-size: 1.5em;
             color: #b3b09e;
+            margin-right: 15px;
         }
 
         .hsr-timer {
             font-size: 2em;
             color: #ffe200;
+            margin-right: 15px;
+        }
+
+        .hsr-penalty {
+            font-size: 1.5em;
+            color: #ff0000;
         }
 
         .hsr-points {
@@ -31,12 +37,15 @@
         {{time_remaining|date:'HH:mm:ss'}}
     </span>
     <span class="hsr-points">
-        {{points_collected}} points
+        {{points_collected}}</span><span class="hsr-penalty" ng-show="time_penalty>0">
+        -{{time_penalty}}
+    </span><span class="hsr-points"> points
     </span>
     <div class="well" ng-show="game_state=='planning'">
         <h3>Planning mode</h3>
-        <p>Right click on map to draw a draft route of around 20km. <br/>
-            Planned <strong>{{(total_distance / 1000).toFixed(1)}}</strong> km</p>
+        <p>Right click on map to draw a draft route of around 20km.
+            <br/> Planned
+            <strong>{{(total_distance / 1000).toFixed(1)}}</strong> km</p>
         <br/>
         <button class="btn btn-primary" ng-click="donePlanning()">Done planning</button>
     </div>

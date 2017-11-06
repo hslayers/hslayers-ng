@@ -132,15 +132,15 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
             })
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce',
-            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', '$timeout',
+            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce, $timeout) {
                 var map;
                 var viewer;
                 var last_time = 0;
                 var last_hud_updated = 0;
-                var zero_date = new Date(0, 1, 0, 0, 0, 0, 0, 1);
-                var full_date = new Date(0, 1, 0, 4, 30, 0, 0);
-                var running_start_date = new Date(0, 1, 0, 4, 0, 0, 0);
+                var zero_date = new Date(2000, 1, 0, 0, 0, 0, 0, 1);
+                var full_date = new Date(2000, 1, 0, 4, 30, 0, 0);
+                var running_start_date = new Date(2000, 1, 0, 4, 0, 0, 0);
                 var time_game_started;
                 var last_measure_pick;
 
@@ -152,11 +152,13 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 Core.panelEnabled('print', false);
                 $scope.Core.setDefaultPanel('layermanager');
                 Core.sidebarExpanded = false;
-                $scope.time_remaining = new Date(0, 1, 0, 4, 30, 0, 0);
+                $scope.time_remaining = new Date(2000, 1, 0, 4, 30, 0, 0);
                 $scope.points_collected = 0;
                 pois.init($scope, $compile);
                 stations.init($scope, $compile, olus);
                 $scope.game_state = '';
+                $scope.time_penalty = 0;
+                $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
 
                 function createAboutDialog() {
                     var el = angular.element('<div hs.aboutproject></div>');
@@ -192,8 +194,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                                 playGo();
                             }
                             if ($scope.time_remaining <= zero_date) {
-                                $scope.game_started = false;
                                 $scope.time_remaining = zero_date;
+                                $scope.time_penalty = Math.ceil((zero_date - (full_date - (timestamp - time_game_started) * 10)) / 60000);
                             }
                         }
 
@@ -215,15 +217,19 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 $scope.createNewMap = function (hours) {
                     $scope.game_started = true;
-                    $scope.points_collected = 0;
-                    full_date = new Date(0, 1, 0, hours, 30, 0, 0);
-                    running_start_date = new Date(0, 1, 0, hours, 0, 0, 0);
-                    time_game_started = last_time;
-                    stations.createStations(map, utils, character.currentPos(), function () {
-                        $scope.game_state = 'planning';
-                        last_measure_pick = character.currentPos();
-                        flyToWholeMapView();
-                    });
+                    $scope.game_state = 'generating';
+                    if (!$scope.$$phase) $scope.$apply();
+                    $timeout(function(){
+                        $scope.points_collected = 0;
+                        full_date = new Date(2000, 1, 0, hours, 30, 0, 0);
+                        running_start_date = new Date(2000, 1, 0, hours, 0, 0, 0);
+                        time_game_started = last_time;
+                        stations.createStations(map, utils, character.currentPos(), function () {
+                            $scope.game_state = 'planning';
+                            last_measure_pick = character.currentPos();
+                            flyToWholeMapView();
+                        });
+                    }, 0)
                 }
 
                 function flyToWholeMapView() {
@@ -310,6 +316,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     var el = angular.element('<div hs.enddialog></div>');
                     $("#hs-dialog-area").append(el);
                     $compile(el)($scope);
+                    $scope.game_started = false;
                     var audio = new Audio('fanfare.mp3');
                     audio.play();
                 }

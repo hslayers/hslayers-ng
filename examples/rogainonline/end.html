@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <h1>
-                    You earned <strong>{{points_collected}} points.</strong>
+                    You earned <strong>{{points_collected - time_penalty}}</strong> points with {{time_remaining|date:'HH:mm:ss'}} remaining.
                 </h1>
                 <p>
                     <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(4)">New 4h game</button>
