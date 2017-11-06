@@ -58,7 +58,7 @@ define(['cesium'],
                     speed = 0.0;
                     return;
                 }
-                //Hen going straight to north or south, half of speed must be canceled because there are 90 latitude degrees but 180 longitude
+                //When going straight to north or south, half of speed must be canceled because there are 90 latitude degrees but 180 longitude
                 var degree_canceler = Math.abs(Math.sin(Math.atan2(diff.y, diff.x)));
                 normalize(diff, speed - (0.5 * speed * degree_canceler));
                 var secs_km = 1000 / (current_speed / olus.maxSpeed()) / 4.;
@@ -121,6 +121,7 @@ define(['cesium'],
             next_speed = olus.getSpeed(pos_lon_lat);
             createTargetPrimitive();
             runningaudio.play();
+            olus.directionChanged(true);
         }
 
         function createTargetPrimitive() {
@@ -145,6 +146,7 @@ define(['cesium'],
         }
 
         return {
+            getTargetPosition: function(){return target_position},
             positionCharacter,
             changeTargetPosition,
             currentPos: function () { return pos_lon_lat },

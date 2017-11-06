@@ -5,10 +5,13 @@ define(['ol'],
         var $scope;
         var $compile;
         var greenery = ["27", "19"];
-        var last_position_loaded = [0, 0];
+        var last_position_loaded = null;
         var last_map_calculated = 0;
         var map;
         var utils;
+        var direction_changed = false;
+        var character;
+        var view_sector = null;
 
         function entityClicked(entity) {
             $scope.showInfo(entity);
@@ -72,18 +75,54 @@ define(['ol'],
             }
         }
 
+        function createViewSector(pnts) {
+            if (view_sector != null)
+                viewer.scene.primitives.remove(view_sector);
+            var rectangleInstance = new Cesium.GeometryInstance({
+                geometry: new Cesium.PolygonGeometry({
+                    polygonHierarchy: new Cesium.PolygonHierarchy(Cesium.Cartesian3.fromDegreesArray(pnts))
+                }),
+                attributes: {
+                    color: new Cesium.ColorGeometryInstanceAttribute(0.0, .6, .8, 0.3)
+                }
+            });
+            view_sector = viewer.scene.primitives.add(new Cesium.GroundPrimitive({
+                geometryInstances: rectangleInstance
+            }));
+        }
+
+        function generateViewSectorPoints(c) {
+            var target = character.getTargetPosition();
+            if (target == null) return;
+            var head_rad = Math.atan2(target[0] - c[0], target[1] - c[1]);
+            var view_distance = 0.001;
+            var pnts = [c[0], c[1]];
+            for (var a = - Math.PI / 6; a < + Math.PI / 6; a += + Math.PI / 24) {
+                pnts.push(c[0] + Math.sin(head_rad + a) * view_distance * 1.5);
+                pnts.push(c[1] + Math.cos(head_rad + a) * view_distance)
+            };
+            pnts.push(c[0]);
+            pnts.push(c[1]);
+            return pnts;
+        }
+
         var me = {
-            visionDistance: function(){
-                return 0.0005;
+            visionDistance: function () {
+                return 0.0006;
             },
-            maxSpeed: function(){
+            maxSpeed: function () {
                 return 0.0004;
             },
+            directionChanged: function (v) {
+                if (v) direction_changed = true;
+                return direction_changed;
+            },
             updMap: function (timestamp, pos_lon_lat) {
-                if (timestamp - last_map_calculated < 400) return;
+                if (timestamp - last_map_calculated < 300) return;
                 last_map_calculated = timestamp;
+                if (last_position_loaded == null) last_position_loaded = [pos_lon_lat[0] - 0.001, pos_lon_lat[1] - 0.001];
                 var diff = { x: pos_lon_lat[0] - last_position_loaded[0], y: pos_lon_lat[1] - last_position_loaded[1] };
-                if (last_map_calculated == [0, 0] || Math.sqrt(diff.x * diff.x + diff.y * diff.y) > me.visionDistance() * 0.7) {
+                if (last_map_calculated == 0 || Math.sqrt(diff.x * diff.x + diff.y * diff.y) > me.visionDistance() * 0.5 || me.directionChanged()) {
                     me.getOlus(pos_lon_lat);
                     last_position_loaded = [pos_lon_lat[0], pos_lon_lat[1]];
                 }
@@ -92,18 +131,20 @@ define(['ol'],
                 var format = new ol.format.WKT();
                 var ver_off = me.visionDistance();
                 var hor_off = me.visionDistance();
-                var ol_extent = [c[0] - hor_off, c[1] - ver_off, c[0] + hor_off, c[1] + ver_off];
-                //console.log('remove ol features', (new Date()).getTime()); window.lasttime = (new Date()).getTime();
+                var pnts = generateViewSectorPoints(c);
+                direction_changed = false;
+                createViewSector(pnts);
+
                 olu_source.getFeatures().forEach(function (feature) {
-                    if (!feature.getGeometry().intersectsExtent(ol_extent)) {
-                        var format = new ol.format.WKT();
-                        //console.log('Removing feature ', feature.getId());
-                        //console.log(format.writeGeometry(feature.getGeometry()), format.writeGeometry(ol.geom.Polygon.fromExtent(ol_extent)));
-                        olu_source.removeFeature(feature);
-                    }
+                    feature.set('flaged', true);
                 })
                 //console.log('done', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-                var extents = `POLYGON ((${c[0] - hor_off} ${c[1] - ver_off}, ${c[0] - hor_off} ${c[1] + ver_off}, ${c[0] + hor_off} ${c[1] + ver_off}, ${c[0] + hor_off} ${c[1] - ver_off}, ${c[0] - hor_off} ${c[1] - ver_off}))`;
+                var spnts = '';
+                for (var i = 0; i < pnts.length; i++) {
+                    spnts += pnts[i].toString() + ' ';
+                    if (i % 2 == 1 && i != pnts.length - 1) spnts += ', ';
+                };
+                var extents = `POLYGON ((${spnts}))`;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
                 PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
@@ -133,9 +174,11 @@ define(['ol'],
                                         var g_feature = format.readFeature(b.wkt.value.toUpperCase());
                                         var ext = g_feature.getGeometry().getExtent()
                                         var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection());
-                                        var feature = new ol.Feature({ geometry: geom_transformed, olu: b.o.value, use: b.use.value });
+                                        var feature = new ol.Feature({ geometry: geom_transformed, olu: b.o.value, use: b.use.value, flaged: false });
                                         feature.setId(b.o.value);
                                         features.push(feature);
+                                    } else {
+                                        olu_source.getFeatureById(b.o.value).set('flaged', false);
                                     }
                                 }
                             } catch (ex) {
@@ -144,6 +187,9 @@ define(['ol'],
                         }
                         //olu_source.clear();
                         olu_source.addFeatures(features);
+                        olu_source.getFeatures().forEach(function (feature) {
+                            if (feature.get('flaged') == true) olu_source.removeFeature(feature);
+                        })
                         olu_source.set('loaded', true);
                         //console.log('ol features added', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                         olu_source.dispatchEvent('features:loaded', olu_source);
@@ -198,12 +244,13 @@ define(['ol'],
                 });
                 return speed;
             },
-            init: function (_$scope, _$compile, _map, _utils, _viewer) {
+            init: function (_$scope, _$compile, _map, _utils, _viewer, _character) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;
                 utils = _utils;
                 viewer = _viewer;
+                character = _character;
             }
         }
         return me;
