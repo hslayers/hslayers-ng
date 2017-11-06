@@ -71,6 +71,9 @@ define(['ol'],
 
         var me = {
             visionDistance: function(){
+                return 0.0005;
+            },
+            maxSpeed: function(){
                 return 0.0004;
             },
             updMap: function (timestamp, pos_lon_lat) {
@@ -180,10 +183,10 @@ define(['ol'],
                 return tmp_result;
             },
             getSpeed: function (cord) {
-                var speed = 0.0002;
+                var speed = me.maxSpeed();
                 me.getOluUnder(cord).forEach(function (use) {
                     if (use == '13') speed = 0;
-                    if (greenery.indexOf(use) > -1) speed = 0.00015;
+                    if (greenery.indexOf(use) > -1) speed = me.maxSpeed() / 2.0;
                 });
                 return speed;
             },
