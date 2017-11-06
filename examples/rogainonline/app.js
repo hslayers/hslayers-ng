@@ -126,8 +126,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 var last_time = 0;
                 var last_hud_updated = 0;
                 var zero_date = new Date(0, 1, 0, 0, 0, 0, 0);
-                var full_date = new Date(0, 1, 0, 6, 30, 0, 0);
+                var full_date = new Date(0, 1, 0, 4, 30, 0, 0);
+                var running_start_date = new Date(0, 1, 0, 4, 0, 0, 0);
                 var time_game_started;
+                var last_measure_pick;
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -137,10 +139,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 Core.panelEnabled('print', false);
                 $scope.Core.setDefaultPanel('layermanager');
                 Core.sidebarExpanded = false;
-                $scope.time_remaining = new Date(0, 1, 0, 6, 30, 0, 0);
+                $scope.time_remaining = new Date(0, 1, 0, 4, 30, 0, 0);
                 $scope.points_collected = 0;
                 pois.init($scope, $compile);
                 stations.init($scope, $compile, olus);
+                $scope.game_state = '';
+
 
                 function createAboutDialog() {
                     var el = angular.element('<div hs.aboutproject></div>');
@@ -169,8 +173,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (timestamp) {
                         var time_ellapsed = timestamp - last_time;
                         if ($scope.game_started) {
-                            $scope.time_remaining =  full_date - (timestamp - time_game_started) * 24;
-                            if($scope.time_remaining <= zero_date ){
+                            $scope.time_remaining = full_date - (timestamp - time_game_started) * 10;
+                            if ($scope.time_remaining <= running_start_date) {
+                                $scope.game_state = 'running';
+                            }
+                            if ($scope.time_remaining <= zero_date) {
                                 $scope.game_started = false;
                                 $scope.time_remaining = zero_date;
                             }
@@ -198,8 +205,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     time_game_started = last_time;
                     var pos_lon_lat = character.currentPos();
                     stations.createStations(map, utils, pos_lon_lat);
+                    $scope.game_state = 'planning';
+                    last_measure_pick = character.currentPos();
                     viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0] + stations.getMapWidth() / 0.016 * 0.0001 * 14, pos_lon_lat[1] + stations.getMapWidth() / 0.016 * 0.0006  * 14, pos_lon_lat[2] + stations.getMapWidth() / 0.016 * 60 * 18),
+                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0] + stations.getMapWidth() / 0.016 * 0.0001 * 14, pos_lon_lat[1] + stations.getMapWidth() / 0.016 * 0.0006 * 14, pos_lon_lat[2] + stations.getMapWidth() / 0.016 * 60 * 18),
                         orientation: {
                             heading: Cesium.Math.toRadians(180.0),
                             pitch: Cesium.Math.toRadians(-45.0),
@@ -210,8 +219,37 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 $rootScope.$on('cesium_position_clicked', function (event, lon_lat) {
                     console.log('click');
-                    character.changeTargetPosition(lon_lat, last_time);
+                    if (last_measure_pick == null)
+                        last_measure_pick = character.currentPos();
+                    if ($scope.game_state == 'running') {
+                        character.changeTargetPosition(lon_lat, last_time);
+                    }
+                    if ($scope.game_state == 'planning') {
+                        addMeasurementPosition(lon_lat);
+                    }
                 });
+
+                $scope.total_distance = 0;
+                var planning_line_segments = [];
+                function addMeasurementPosition(lon_lat) {
+                    var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(last_measure_pick[0], last_measure_pick[1]), Cesium.Cartesian3.fromDegrees(lon_lat[0], lon_lat[1]));
+                    $scope.total_distance += distance;
+                    var rectangleInstance = new Cesium.GeometryInstance({
+                        geometry: new Cesium.CorridorGeometry({
+                            positions: Cesium.Cartesian3.fromDegreesArray([last_measure_pick[0], last_measure_pick[1], lon_lat[0], lon_lat[1]]),
+                            width: 5
+                        }),
+                        attributes: {
+                            color: new Cesium.ColorGeometryInstanceAttribute(0.9, .2, .2, 0.8)
+                        }
+                    });
+                    var line = viewer.scene.primitives.add(new Cesium.GroundPrimitive({
+                        geometryInstances: rectangleInstance
+                    }));
+                    line.distance = distance;
+                    planning_line_segments.push(line);
+                    last_measure_pick = lon_lat;
+                }
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;

@@ -33,4 +33,7 @@
     <span class="hsr-points">
         {{points_collected}} points
     </span>
+    <span class="hsr-points" ng-show="game_state=='planning'">
+        Planned {{(total_distance / 1000).toFixed(1)}} km
+    </span>
 </div>
