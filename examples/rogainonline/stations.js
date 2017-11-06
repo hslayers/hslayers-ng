@@ -56,11 +56,11 @@ define(['ol'],
         }
 
         function getMapWidth() {
-            return 0.032;
+            return 0.052;
         }
         return {
             getMapWidth: getMapWidth,
-            createStations: function (map, utils, c) {
+            createStations: function (map, utils, c, callback) {
                 var points_added = 0;
                 var features = [];
                 for (i = 1; i < 1000; i++) {
@@ -81,6 +81,7 @@ define(['ol'],
                 source.addFeatures(features);
                 source.set('loaded', true);
                 source.dispatchEvent('features:loaded', source);
+                callback();
             },
             createLayer: function () {
                 return new ol.layer.Vector({
@@ -94,6 +95,8 @@ define(['ol'],
                 source.cesium_layer.entities.values.forEach(function (entity) {
                     if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 5 && entity.properties.visited.getValue() == false) {
                         entity.properties.visited.setValue(true);
+                        var audio = new Audio('collectcoin.mp3');
+                        audio.play();
                         styleEntity(entity);
                         collected = Math.floor(entity.properties.points.getValue() / 10);
                     }

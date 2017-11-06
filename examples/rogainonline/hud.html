@@ -1,4 +1,4 @@
-<div style="position: absolute; left: 10%; top:0px; z-index: 100">
+<div style="position: absolute; left: 10px; top:0px; z-index: 100">
     <link href="https://fonts.googleapis.com/css?family=Lato:700" rel="stylesheet">
     <style>
         .hsr-speed,
@@ -10,17 +10,17 @@
         }
 
         .hsr-speed {
-            font-size: 20pt;
+            font-size: 1.5em;
             color: #b3b09e;
         }
 
         .hsr-timer {
-            font-size: 30pt;
+            font-size: 2em;
             color: #ffe200;
         }
 
         .hsr-points {
-            font-size: 20pt;
+            font-size: 1.5em;
             color: #2fb336;
         }
     </style>
@@ -33,7 +33,11 @@
     <span class="hsr-points">
         {{points_collected}} points
     </span>
-    <span class="hsr-points" ng-show="game_state=='planning'">
-        Planned {{(total_distance / 1000).toFixed(1)}} km
-    </span>
+    <div class="well" ng-show="game_state=='planning'">
+        <h3>Planning mode</h3>
+        <p>Right click on map to draw a draft route of around 20km. <br/>
+            Planned <strong>{{(total_distance / 1000).toFixed(1)}}</strong> km</p>
+        <br/>
+        <button class="btn btn-primary" ng-click="donePlanning()">Done planning</button>
+    </div>
 </div>
