@@ -34,6 +34,19 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
             };
         });
 
+
+        module.directive('hs.enddialog', function () {
+            function link(scope, element, attrs) {
+                setTimeout(function () {
+                    $('#end-dialog').modal('show');
+                }, 1500);
+            }
+            return {
+                templateUrl: './end.html?bust=' + gitsha,
+                link: link
+            };
+        });
+
         module.directive('hs.hud', function () {
             return {
                 templateUrl: './hud.html?bust=' + gitsha,
@@ -288,10 +301,17 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     $scope.game_started = true;
                     $scope.game_state = 'running';
                     time_game_started = last_time;
-                    debugger;
                     full_date = running_start_date;
                     playGo();
                     character.flyToInitialLocation();
+                }
+
+                $scope.endGame = function(){
+                    var el = angular.element('<div hs.enddialog></div>');
+                    $("#hs-dialog-area").append(el);
+                    $compile(el)($scope);
+                    var audio = new Audio('fanfare.mp3');
+                    audio.play();
                 }
             }
         ]);

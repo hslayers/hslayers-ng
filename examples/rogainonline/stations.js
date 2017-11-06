@@ -5,6 +5,7 @@ define(['ol'],
         var $scope;
         var $compile;
         var olus;
+        var anything_collected = false;
 
         function entityClicked(entity) {
             $scope.showInfo(entity);
@@ -62,7 +63,14 @@ define(['ol'],
             getMapWidth: getMapWidth,
             createStations: function (map, utils, c, callback) {
                 var points_added = 0;
-                var features = [];
+                source.clear();
+                var features = [new ol.Feature({
+                    geometry: new ol.geom.Point([c[0], c[1]]),
+                    label: 'START / FINISH',
+                    points: 0,
+                    start: true,
+                    visited: false
+                })];
                 for (i = 1; i < 1000; i++) {
                     var try_pnt = { x: c[0] - getMapWidth() / 2.0 + Math.random() * getMapWidth(), y: c[1] - getMapWidth() / 2.0 + Math.random() * getMapWidth() * 9.0 / 16.0 };
                     if (!olus.buildingExistsAtCoordinate(try_pnt) && !stationExistsAtCoordinate(try_pnt, features)) {
@@ -94,11 +102,20 @@ define(['ol'],
                 var collected = 0.0;
                 source.cesium_layer.entities.values.forEach(function (entity) {
                     if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 5 && entity.properties.visited.getValue() == false) {
-                        entity.properties.visited.setValue(true);
-                        var audio = new Audio('collectcoin.mp3');
-                        audio.play();
-                        styleEntity(entity);
-                        collected = Math.floor(entity.properties.points.getValue() / 10);
+                        if(entity.properties.start){
+                            if(anything_collected){
+                                entity.properties.visited.setValue(true);
+                                anything_collected = false;
+                                $scope.endGame();
+                            }
+                        } else {
+                            entity.properties.visited.setValue(true);
+                            var audio = new Audio('collectcoin.mp3');
+                            audio.play();
+                            anything_collected = true;
+                            styleEntity(entity);
+                            collected = Math.floor(entity.properties.points.getValue() / 10);
+                        }
                     }
                 });
                 return collected;

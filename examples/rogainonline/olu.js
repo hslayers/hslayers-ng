@@ -94,7 +94,7 @@ define(['ol'],
         function generateViewSectorPoints(c) {
             var target = character.getTargetPosition();
             if (target == null) return;
-            var head_rad = Math.atan2(target[0] - c[0], target[1] - c[1]);
+            var head_rad = Math.atan2((target[0] - c[0])/2, target[1] - c[1]);
             var view_distance = 0.001;
             var pnts = [c[0], c[1]];
             for (var a = - Math.PI / 6; a < + Math.PI / 6; a += + Math.PI / 24) {
