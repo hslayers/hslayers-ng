@@ -4,7 +4,7 @@ define(['ol'],
         var olu_source = new ol.source.Vector();
         var $scope;
         var $compile;
-        var greenery = ["27", "10", "19"];
+        var greenery = ["27", "19"];
         var last_position_loaded = [0, 0];
         var last_map_calculated = 0;
         var map;
@@ -36,7 +36,7 @@ define(['ol'],
                             entity.polygon.material = Cesium.Color.WHITE.withAlpha(0.2);
                             break;
                         case "10":
-                            entity.polygon.material = Cesium.Color.BLUE.withAlpha(0.8);
+                            entity.polygon.material = Cesium.Color.BLUE.withAlpha(0.4);
                             break;
                         case "13":
                             entity.polygon.material = new Cesium.Color(1, 162 / 255, 140 / 255, 1);
