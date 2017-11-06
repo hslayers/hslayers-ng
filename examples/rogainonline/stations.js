@@ -28,7 +28,7 @@ define(['ol'],
         function styleEntity(entity) {
             entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
             var picture = entity.properties.visited.getValue() ? 'viewpoint' : 'other';
-            entity.billboard.image = `../foodie-zones/symbols/${picture}.png`;
+            entity.billboard.image = entity.properties.start ? 'triangle-outline-64.png' : `../foodie-zones/symbols/${picture}.png`;
             entity.label = new Cesium.LabelGraphics({
                 text: entity.properties.label,
                 font: '14px Helvetica',
@@ -38,7 +38,7 @@ define(['ol'],
                 showBackground: true,
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                pixelOffset: new Cesium.Cartesian2(0, -20),
+                pixelOffset: new Cesium.Cartesian2(0, entity.properties.start ? -40 : -20),
                 scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
             });
@@ -48,7 +48,7 @@ define(['ol'],
             var found_close = false;
             for (j = 0; j < features.length; j++) {
                 var diff = { x: features[j].getGeometry().getCoordinates()[0] - try_pnt.x, y: features[j].getGeometry().getCoordinates()[1] - try_pnt.y };
-                if (Math.sqrt(diff.x * diff.x + diff.y * diff.y) < 0.001) {
+                if (Math.sqrt(diff.x * diff.x + diff.y * diff.y) < 0.003) {
                     found_close = true;
                     break;
                 }

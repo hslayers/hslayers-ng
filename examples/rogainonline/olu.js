@@ -234,11 +234,14 @@ define(['ol'],
             getSpeed: function (cord) {
                 var speed = me.maxSpeed();
                 me.getOluUnder(cord).forEach(function (use) {
-                    if (use == '13' || use == '10') {
+                    if (use == '13') {
                         speed = 0;
                         var audio = new Audio('oof.mp3');
                         audio.volume = .5;
                         audio.play();
+                    }
+                    if (use == '10') {
+                        speed = me.maxSpeed() / 6.0;
                     }
                     if (greenery.indexOf(use) > -1) speed = me.maxSpeed() / 2.0;
                 });
