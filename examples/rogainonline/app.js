@@ -273,7 +273,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     scene.globe.depthTestAgainstTerrain = true;
                     disableRightMouse(scene);
                     character.init($scope, $compile, olus, viewer, stations);
-                    olus.init($scope, $compile, map, utils, _viewer);
+                    olus.init($scope, $compile, map, utils, _viewer, character);
                     tick();
                 });
 
