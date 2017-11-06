@@ -19,7 +19,8 @@ define(['cesium'],
         var stations;
         var last_altitude_calculated = 0;
         var last_position_altitude = [0, 0];
-
+        var runningaudio = new Audio('running2.mp3');
+        
         function normalize(point, scale) {
             var norm = Math.sqrt(point.x * point.x + point.y * point.y);
             if (norm != 0) { // as3 return 0,0 for a point of zero length
@@ -45,6 +46,7 @@ define(['cesium'],
             var accelerating_for = (timestamp - acceleration_started_at);
             if (accelerating_for > 3000) accelerating_for = 3000;
             current_speed = acceleration_start_speed + (next_speed - acceleration_start_speed) * accelerating_for / 3000;
+            runningaudio.volume = current_speed / olus.maxSpeed() / 2.0;
             var speed = current_speed * time_ellapsed / 1000.0;
             if (speed > 0) {
                 var diff = { x: target_position[0] - pos_lon_lat[0], y: target_position[1] - pos_lon_lat[1] };
@@ -85,7 +87,7 @@ define(['cesium'],
             Cesium.when(promise, function (updatedPositions) {
                 pos_lon_lat[2] = updatedPositions[0].height;
                 viewer.camera.flyTo({
-                    destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1] + 0.0005, pos_lon_lat[2] + 60),
+                    destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1] + 0.0005 * 4, pos_lon_lat[2] + 60*4),
                     orientation: {
                         heading: Cesium.Math.toRadians(180.0),
                         pitch: Cesium.Math.toRadians(-45.0),
@@ -117,7 +119,8 @@ define(['cesium'],
             acceleration_started_at = last_time;
             acceleration_start_speed = current_speed;
             next_speed = olus.getSpeed(pos_lon_lat);
-            createTargetPrimitive()
+            createTargetPrimitive();
+            runningaudio.play();
         }
 
         function createTargetPrimitive() {
@@ -145,6 +148,7 @@ define(['cesium'],
             positionCharacter,
             changeTargetPosition,
             currentPos: function () { return pos_lon_lat },
+            flyToInitialLocation: flyToInitialLocation,
             init: function (_$scope, _$compile, _olus, _viewer, _stations) {
                 $scope = _$scope;
                 $compile = _$compile;
@@ -166,6 +170,10 @@ define(['cesium'],
                     orientation: orientation_property
                 });
                 flyToInitialLocation();
+                runningaudio.addEventListener('ended', function() {
+                    this.currentTime = 0;
+                    this.play();
+                }, false);
             }
         }
     }

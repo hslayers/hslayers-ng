@@ -35,6 +35,9 @@ define(['ol'],
                         case "17":
                             entity.polygon.material = Cesium.Color.WHITE.withAlpha(0.2);
                             break;
+                        case "10":
+                            entity.polygon.material = Cesium.Color.BLUE.withAlpha(0.8);
+                            break;
                         case "13":
                             entity.polygon.material = new Cesium.Color(1, 162 / 255, 140 / 255, 1);
                             var cbp = new Cesium.CallbackProperty(function () {
@@ -185,7 +188,12 @@ define(['ol'],
             getSpeed: function (cord) {
                 var speed = me.maxSpeed();
                 me.getOluUnder(cord).forEach(function (use) {
-                    if (use == '13') speed = 0;
+                    if (use == '13' || use == '10') {
+                        speed = 0;
+                        var audio = new Audio('oof.mp3');
+                        audio.volume = .5;
+                        audio.play();
+                    }
                     if (greenery.indexOf(use) > -1) speed = me.maxSpeed() / 2.0;
                 });
                 return speed;

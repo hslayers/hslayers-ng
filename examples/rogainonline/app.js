@@ -174,8 +174,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         var time_ellapsed = timestamp - last_time;
                         if ($scope.game_started) {
                             $scope.time_remaining = full_date - (timestamp - time_game_started) * 10;
-                            if ($scope.time_remaining <= running_start_date) {
+                            if ($scope.time_remaining <= running_start_date && $scope.game_state == 'planning') {
                                 $scope.game_state = 'running';
+                                character.flyToInitialLocation();
+                                playGo();
                             }
                             if ($scope.time_remaining <= zero_date) {
                                 $scope.game_started = false;
@@ -203,10 +205,15 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     $scope.game_started = true;
                     $scope.points_collected = 0;
                     time_game_started = last_time;
+                    stations.createStations(map, utils, character.currentPos(), function () {
+                        $scope.game_state = 'planning';
+                        last_measure_pick = character.currentPos();
+                        flyToWholeMapView();
+                    });
+                }
+
+                function flyToWholeMapView() {
                     var pos_lon_lat = character.currentPos();
-                    stations.createStations(map, utils, pos_lon_lat);
-                    $scope.game_state = 'planning';
-                    last_measure_pick = character.currentPos();
                     viewer.camera.flyTo({
                         destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0] + stations.getMapWidth() / 0.016 * 0.0001 * 14, pos_lon_lat[1] + stations.getMapWidth() / 0.016 * 0.0006 * 14, pos_lon_lat[2] + stations.getMapWidth() / 0.016 * 60 * 18),
                         orientation: {
@@ -251,6 +258,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     last_measure_pick = lon_lat;
                 }
 
+                function playGo() {
+                    var audio = new Audio('go.mp3');
+                    audio.play();
+                }
+
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
                 });
@@ -270,6 +282,15 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 })
 
                 $scope.$on('infopanel.updated', function (event) { });
+
+                $scope.donePlanning = function () {
+                    $scope.game_started = true;
+                    $scope.game_state = 'running';
+                    time_game_started = last_time;
+                    full_date = running_start_date;
+                    playGo();
+                    character.flyToInitialLocation();
+                }
             }
         ]);
 
