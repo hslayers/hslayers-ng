@@ -125,7 +125,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 var viewer;
                 var last_time = 0;
                 var last_hud_updated = 0;
-                var zero_date = new Date(0, 1, 0, 0, 0, 0, 0);
+                var zero_date = new Date(0, 1, 0, 0, 0, 0, 0, 1);
                 var full_date = new Date(0, 1, 0, 4, 30, 0, 0);
                 var running_start_date = new Date(0, 1, 0, 4, 0, 0, 0);
                 var time_game_started;
@@ -144,7 +144,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 pois.init($scope, $compile);
                 stations.init($scope, $compile, olus);
                 $scope.game_state = '';
-
 
                 function createAboutDialog() {
                     var el = angular.element('<div hs.aboutproject></div>');
@@ -201,9 +200,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 createAboutDialog();
                 createHud();
 
-                $scope.createNewMap = function () {
+                $scope.createNewMap = function (hours) {
                     $scope.game_started = true;
                     $scope.points_collected = 0;
+                    full_date = new Date(0, 1, 0, hours, 30, 0, 0);
+                    running_start_date = new Date(0, 1, 0, hours, 0, 0, 0);
                     time_game_started = last_time;
                     stations.createStations(map, utils, character.currentPos(), function () {
                         $scope.game_state = 'planning';
@@ -287,6 +288,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     $scope.game_started = true;
                     $scope.game_state = 'running';
                     time_game_started = last_time;
+                    debugger;
                     full_date = running_start_date;
                     playGo();
                     character.flyToInitialLocation();
