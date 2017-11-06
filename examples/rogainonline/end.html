@@ -1,16 +1,16 @@
-<div class="modal" id="about-dialog"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" data-backdrop="static" id="end-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
                 <h4 class="modal-title">
-                    <translate>Rogaining RPG</translate>
+                    <translate>Congratulations finisher!</translate>
                 </h4>
             </div>
             <div class="modal-body">
-                <p>
-                    This is a game which simulates a rogaining (orienteering) competition. <br/>The objective is to visit as many stations as possible in a fixed amount of time. You get different amount of points for each station. <br/>This application visualises the <a href="http://sdi4apps.eu/open_land_use/" target="_blank">Open Land Use</a> dataset on top of the EU-DEM terrain model in a perspective view.
-                </p>
+                <h1>
+                    You earned <strong>{{points_collected}} points.</strong>
+                </h1>
                 <p>
                     <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(4)">New 4h game</button>
                     <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(2)">New 2h game</button>
