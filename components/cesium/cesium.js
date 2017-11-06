@@ -74,8 +74,11 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     // Show Columbus View map with Web Mercator projection
                     sceneMode: Cesium.SceneMode.SCENE3D,
                     mapProjection: new Cesium.WebMercatorProjection(),
-                    shadows: true
+                    shadows: false,
+                    targetFrameRate: 30
                 });
+
+                viewer.scene.debugShowFramesPerSecond = true;
 
                 viewer.terrainProvider = terrain_provider;
 

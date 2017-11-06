@@ -4,6 +4,7 @@ define(['ol'],
         var source = new ol.source.Vector();
         var $scope;
         var $compile;
+        var olus;
 
         function entityClicked(entity) {
             $scope.showInfo(entity);
@@ -36,27 +37,35 @@ define(['ol'],
                 showBackground: true,
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                pixelOffset: new Cesium.Cartesian2(0, -30),
-                scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
+                pixelOffset: new Cesium.Cartesian2(0, -20),
+                scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
             });
         }
 
+        function stationExistsAtCoordinate(try_pnt, features) {
+            var found_close = false;
+            for (j = 0; j < features.length; j++) {
+                var diff = { x: features[j].getGeometry().getCoordinates()[0] - try_pnt.x, y: features[j].getGeometry().getCoordinates()[1] - try_pnt.y };
+                if (Math.sqrt(diff.x * diff.x + diff.y * diff.y) < 0.001) {
+                    found_close = true;
+                    break;
+                }
+            }
+            return found_close
+        }
+
+        function getMapWidth() {
+            return 0.032;
+        }
         return {
+            getMapWidth: getMapWidth,
             createStations: function (map, utils, c) {
                 var points_added = 0;
                 var features = [];
                 for (i = 1; i < 1000; i++) {
-                    var try_pnt = { x: c[0] - 0.008 + Math.random() * 0.016, y: c[1] - 0.008 + Math.random() * 0.016 };
-                    var found_close = false;
-                    for (j = 0; j < features.length; j++) {
-                        var diff = { x: features[j].getGeometry().getCoordinates()[0] - try_pnt.x, y: features[j].getGeometry().getCoordinates()[1] - try_pnt.y };
-                        if (Math.sqrt(diff.x * diff.x + diff.y * diff.y) < 0.001) {
-                            found_close = true;
-                            break;
-                        }
-                    }
-                    if (!found_close) {
+                    var try_pnt = { x: c[0] - getMapWidth() / 2.0 + Math.random() * getMapWidth(), y: c[1] - getMapWidth() / 2.0 + Math.random() * getMapWidth() * 9.0 / 16.0 };
+                    if (!olus.buildingExistsAtCoordinate(try_pnt) && !stationExistsAtCoordinate(try_pnt, features)) {
                         var points = Math.floor((20 + Math.random() * 79));
                         var feature = new ol.Feature({
                             geometry: new ol.geom.Point([try_pnt.x, try_pnt.y]),
@@ -67,7 +76,7 @@ define(['ol'],
                         features.push(feature);
                         points_added++;
                     }
-                    if (points_added > 50) break;
+                    if (points_added >= 50) break;
                 }
                 source.addFeatures(features);
                 source.set('loaded', true);
@@ -91,9 +100,10 @@ define(['ol'],
                 });
                 return collected;
             },
-            init: function (_$scope, _$compile) {
+            init: function (_$scope, _$compile, _olus) {
                 $scope = _$scope;
                 $compile = _$compile;
+                olus = _olus;
             }
         }
     }

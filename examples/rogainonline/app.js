@@ -140,7 +140,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.time_remaining = new Date(0, 1, 0, 6, 30, 0, 0);
                 $scope.points_collected = 0;
                 pois.init($scope, $compile);
-                stations.init($scope, $compile);
+                stations.init($scope, $compile, olus);
 
                 function createAboutDialog() {
                     var el = angular.element('<div hs.aboutproject></div>');
@@ -199,7 +199,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     var pos_lon_lat = character.currentPos();
                     stations.createStations(map, utils, pos_lon_lat);
                     viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0] + 0.0001 * 14, pos_lon_lat[1] + 0.0006 * 18, pos_lon_lat[2] + 60 * 18),
+                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0] + stations.getMapWidth() / 0.016 * 0.0001 * 14, pos_lon_lat[1] + stations.getMapWidth() / 0.016 * 0.0006  * 14, pos_lon_lat[2] + stations.getMapWidth() / 0.016 * 60 * 18),
                         orientation: {
                             heading: Cesium.Math.toRadians(180.0),
                             pitch: Cesium.Math.toRadians(-45.0),
