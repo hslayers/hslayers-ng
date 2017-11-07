@@ -26,19 +26,20 @@ define(['ol'],
         }
 
         function styleEntity(entity) {
-            entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 15000, 0.0);
+            entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 20000, 0.0);
             var picture = entity.properties.visited.getValue() ? 'viewpoint' : 'other';
             entity.billboard.image = entity.properties.start ? 'triangle-outline-64.png' : `../foodie-zones/symbols/${picture}.png`;
             entity.label = new Cesium.LabelGraphics({
                 text: entity.properties.label,
-                font: '14px Helvetica',
+                font: '18px "Lato", sans-serif',
                 fillColor: Cesium.Color.WHITE,
                 outlineColor: new Cesium.Color(0.1, 0.1, 0.1, 0.9),
                 outlineWidth: 2,
                 showBackground: true,
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                pixelOffset: new Cesium.Cartesian2(0, entity.properties.start ? -40 : -20),
+                pixelOffset: new Cesium.Cartesian2(0, entity.properties.start ? -40 : -30),
+                pixelOffsetScaleByDistance : new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
             });
