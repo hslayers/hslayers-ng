@@ -93,6 +93,7 @@ define(['ol'],
                    ?z <http://www.opengis.net/ont/geosparql#hasGeometry> ?geom.
                    ?geom <http://www.opengis.net/ont/geosparql#asWKT> ?wkt.
                    ?prod foodie-es:productionTypeManagementZone ?z.
+                   ?z foodie-es:managementZoneName ?zone_name.
                    ?crop foodie:description ?crop_desc .
                    ?crop foodie:family ?crop_family .
                    ?crop foodie:genus ?crop_genus .
@@ -108,7 +109,7 @@ define(['ol'],
 
                 zones_source.set('loaded', false);
                 $.ajax({
-                    url: utils.proxify(q)
+                    url: q
                 })
                     .done(function (response) {
                         if (angular.isUndefined(response.results)) return;
@@ -126,7 +127,9 @@ define(['ol'],
                                         'crop description': b.crop_desc.value,
                                         'crop family': b.crop_family.value,
                                         'management zone': b.z.value,
+                                        'prod': b.prod.value,
                                         'production date': b.prod_date.value,
+                                        'zone_name': b.zone_name.value,
                                         amount: parseFloat(b.amount_value.value) + ' ' + b.amount_unit.value,
                                         numerical_amount: parseFloat(b.amount_value.value)
                                     });
