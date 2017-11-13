@@ -43,12 +43,14 @@ define(['ol'],
                             break;
                         case "13":
                             entity.polygon.material = new Cesium.Color(1, 162 / 255, 140 / 255, 1);
-                            var cbp = new Cesium.CallbackProperty(function () {
+                            function fillHeight() {
                                 return this.entity.properties.height || 0
-                            }, false);
-                            var cbpex = new Cesium.CallbackProperty(function () {
+                            }
+                            var cbp = new Cesium.CallbackProperty(fillHeight, false);
+                            function fillExtrudedHeight() {
                                 return (this.entity.properties.height || 0) + 5.0
-                            }, false);
+                            }
+                            var cbpex = new Cesium.CallbackProperty(fillExtrudedHeight, false);
                             entity.polygon.extrudedHeight = cbpex;
                             cbp.entity = entity;
                             cbpex.entity = entity;
@@ -64,6 +66,8 @@ define(['ol'],
                             ]);
                             Cesium.when(promise, function (updatedPositions) {
                                 updatedPositions[0].entity.properties.height = updatedPositions[0].height;
+                                updatedPositions[0].entity.polygon.extrudedHeight.setCallback(fillExtrudedHeight, true);
+                                updatedPositions[0].entity.polygon.height.setCallback(fillHeight, true);
                             });
                             break;
                         default:
