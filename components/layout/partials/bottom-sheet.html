@@ -1,4 +1,4 @@
-<md-bottom-sheet hs.bottom-sheet-scroll ng-class="Core.mainpanel">
+<md-bottom-sheet ng-class="Core.mainpanel">
 	<div hs.layermanager.directive          ng-controller="hs.layermanager.controller" ng-if="Core.exists('hs.layermanager.controller')" ng-show="Core.panelVisible('layermanager', this)"></div>
 	<div hs.legend.directive                ng-controller="hs.legend.controller" ng-if="Core.exists('hs.legend.controller')" ng-show="Core.panelVisible('legend', this)"></div>
 	<div hs.ows.directive                   ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources" ng-show="Core.panelVisible('ows', this)"></div>
