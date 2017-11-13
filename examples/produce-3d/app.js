@@ -56,7 +56,7 @@ define(['angular', 'ol', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layerma
                             scope.object = { attributes: [] };
                             var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <' + attrs.url + '>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                             $.ajax({
-                                url: utils.proxify(q)
+                                url: q
                             })
                                 .done(function (response) {
                                     if (angular.isUndefined(response.results)) return;
