@@ -1142,6 +1142,14 @@ html, body {
     width: 15px;
 }
 
+md-icon.fab {
+    transition: 0.3s;
+}
+
+md-icon.fab.opened {
+    transform: rotate(135deg) scale(1.15);
+}
+
 md-list-item > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item > md-icon:first-child:not(.md-avatar-icon), md-list-item > md-icon.md-secondary:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon.md-secondary:not(.md-avatar-icon) {
     line-height: initial;
     margin-top: 10px;
@@ -1154,4 +1162,27 @@ md-icon > span, md-icon > span.glyphicon {
     margin-right: -50%;
     transform: translate(-50%, -100%);
     font-size: initial;
+}
+
+.map-floating-gui {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.md-fab.geolocation {
+
+}
+
+md-icon.geolocation.off {
+    /*color: rgb(117, 117, 117);*/
+}
+
+md-icon.geolocation.searching {
+    color: rgb(177, 234, 241);
+}
+
+md-icon.geolocation.on {
+    color: rgb(2, 168, 243);
 }

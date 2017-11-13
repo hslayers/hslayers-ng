@@ -122,6 +122,7 @@ define(['angular', 'ol'],
                                 if(me.changed_handler!=null)
                                     me.geolocation.clearWatch(me.changed_handler);
                                 me.changed_handler = me.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
+                                $rootScope.$broadcast('geolocation.started');
                             }
                         };
 
@@ -135,6 +136,7 @@ define(['angular', 'ol'],
                             // me.gpsSwitch = 'Start GPS';
                             me.geolocation.clearWatch(me.changed_handler);
                             me.changed_handler = null;
+                            $rootScope.$broadcast('geolocation.stopped');
                         };
 
                         /**

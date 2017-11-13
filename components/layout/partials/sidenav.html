@@ -1,5 +1,5 @@
-<md-sidenav class="md-sidenav-left" md-component-id="sidenav-left" md-whiteframe="4">
-    <md-content ng-swipe-left="closeLeftSidenav()">
+<md-sidenav class="md-sidenav-left" md-component-id="sidenav-left" md-whiteframe="4" ng-swipe-left="closeLeftSidenav()">
+    <md-content>
         <md-list flex>
             <!-- <md-list-item>
                 <div class="user-view">
@@ -10,97 +10,82 @@
                 </div>
             </md-list-item> -->
 
-            <md-list-item ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('compositions')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('compositions')" ng-click="openBottomSheet('compositions')">
                 <md-icon md-icon-set="material-icons" title="{{'List available map compositions'|translate}}">map</md-icon>
                 <p translate>Map Compositions</p>
-                <div style="display:none" hs.compositions.directive ng-controller="hs.compositions.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.layermanager.controller') && Core.panelEnabled('layermanager')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.layermanager.controller') && Core.panelEnabled('layermanager')" ng-click="openBottomSheet('layermanager')">
                 <md-icon md-icon-set="material-icons" title="{{'Manage and style your layers in composition'|translate}}">layers</md-icon>
                 <p translate>Manage and Style Layers</p>
-                <div style="display:none" hs.layermanager.directive ng-controller="hs.layermanager.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.legend.controller')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.legend.controller')" ng-click="openBottomSheet('legend')">
                 <md-icon md-icon-set="material-icons" title="{{'Display map legend'|translate}}">format_list_bulleted</md-icon>
                 <p translate>Legend</p>
-                <div style="display:none" hs.legend.directive ng-controller="hs.legend.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="openBottomSheet('datasource_selector')">
                 <md-icon md-icon-set="material-icons" title="{{'Select data or services for your map composition'|translate}}">dns</md-icon>
                 <p ng-if="!Core.singleDatasources" translate>Datasource Selector</p>
                 <p ng-if="Core.singleDatasources" translate>Add layers</p>
-                <div style="display:none" hs.datasource_selector.directive ng-controller="hs.datasource_selector.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources && Core.panelEnabled('ows')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources && Core.panelEnabled('ows')" ng-click="openBottomSheet('ows')">
                 <md-icon md-icon-set="material-icons" title="{{'Add external data'|translate}}">library_add</md-icon>
                 <p translate>Add external data</p>
-                <div style="display:none" hs.ows.directive ng-controller="hs.ows.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-click="openBottomSheet('feature_crossfilter')">
                 <md-icon md-icon-set="material-icons" title="Crossfilter">filter_list</md-icon>
                 <p translate>Filter features</p>
-                <div style="display:none" hs.feature_crossfilter.directive ng-controller="hs.feature_crossfilter.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="openBottomSheet('measure')">
                 <md-icon md-icon-set="material-icons" title="{{'Measure distance or area at map'|translate}}">straighten</md-icon>
                 <p translate>Measurements</p>
-                <div style="display:none" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.lodexplorer.controller')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.lodexplorer.controller')" ng-click="openBottomSheet('lodexplorer')">
                 <md-icon>
                     <span class="glyphicon icon-sharedhosting"></span>
                 </md-icon>
                 <p translate>Eurostat explorer</p>
-                <div style="display:none" hs.lodexplorer.directive ng-controller="hs.lodexplorer.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.routing.controller')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.routing.controller')" ng-click="openBottomSheet('routing')">
                 <md-icon md-icon-set="material-icons">directions</md-icon>
                 <p translate>Routing</p>
-                <div style="display:none" hs.routing.directive ng-controller="hs.routing.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.tracking.controller')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.tracking.controller')" ng-click="openBottomSheet('tracking')">
                 <md-icon md-icon-set="material-icons">track_changes</md-icon>
                 <p translate>Tracking</p>
-                <div style="display:none" hs.tracking.directive ng-controller="hs.tracking.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.draw.controller')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.draw.controller')" ng-click="openBottomSheet('draw')">
                 <md-icon md-icon-set="material-icons">add_location</md-icon>
                 <p translate>Draw new features</p>
-                <div style="display:none" hs.draw.directive ng-controller="hs.draw.controller" class="collapsible-body"></div>
             </md-list-item>
             
-            <md-list-item ng-if="Core.exists('hs.print.controller')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.print.controller')" ng-click="openBottomSheet('print')">
                 <md-icon md-icon-set="material-icons" title="{{'Print map'|translate}}">print</md-icon>
                 <p translate>Print</p>
-                <div style="display:none" hs.print.directive ng-controller="hs.print.controller" class="collapsible-body"></div>
             </md-list-item>
             
-            <md-list-item ng-if="Core.exists('hs.permalink.controller') && Core.panelEnabled('permalink')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.permalink.controller') && Core.panelEnabled('permalink')" ng-click="openBottomSheet('permalink')">
                 <md-icon md-icon-set="material-icons" title="{{'Share map'|translate}}">share</md-icon>
                 <p translate>Share map</p>
-                <div style="display:none" hs.permalink.directive ng-controller="hs.permalink.controller" class="collapsible-body"></div>
             </md-list-item>
 
             <md-list-item ng-if="Core.exists('hs.status_creator.controller') && Core.panelEnabled('status_creator')" ng-click="Core.openStatusCreator()">
                 <md-icon md-icon-set="material-icons" title="{{'Save content of map to composition'||translate}}">save</md-icon>
                 <p translate>Save composition</p>
-                <div style="display:none" hs.status_creator.directive ng-controller="hs.status_creator.controller" class="collapsible-body"></div>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.mobile_settings.controller') && Core.panelEnabled('mobile_settings')" ng-click="console.log('Button clicked.');">
+            <md-list-item ng-if="Core.exists('hs.mobile_settings.controller') && Core.panelEnabled('mobile_settings')" ng-click="openBottomSheet('mobile_settings')">
                 <md-icon md-icon-set="material-icons" title="{{'Specify application user settings'||translate}}">settings</md-icon>
                 <p translate>Application settings</p>
-                <div style="display:none" hs.mobile_settings.directive ng-controller="hs.mobile_settings.controller" class="collapsible-body"></div>
             </md-list-item>
             
             <md-list-item ng-repeat="but in service.extra_buttons" ng-click="but.click()" ng-class="{'active': but.isActive()}" ng-click="console.log('Button clicked.');">
@@ -108,7 +93,6 @@
                     <span class.icon_class"></span>
                 </md-icon>
                 <p translate>{{but.title}}</p>
-                <div style="display:none" class="collapsible-body"></div>
             </md-list-item>
         </md-list>
     </md-content>

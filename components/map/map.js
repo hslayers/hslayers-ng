@@ -63,6 +63,9 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
          */
         this.init = function () {
             me.map = new ol.Map({
+                controls: ol.control.defaults({
+                    zoom: false
+                }),
                 target: 'map',
                 interactions: [],
                 view: cloneView(config.default_view)
@@ -98,7 +101,7 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                 me.map.addInteraction(value);
             });
             //me.map.addControl(new ol.control.ZoomSlider());
-            me.map.addControl(new ol.control.ScaleLine());
+            // me.map.addControl(new ol.control.ScaleLine());
             /**
              * @ngdoc event
              * @name hs.map.service#map.loaded
