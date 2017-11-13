@@ -33,12 +33,14 @@ define(['ol'],
                 crop = parseInt(crop[crop.length - 1]);
                 entity.polygon.outline = false;
                 entity.polygon.material = new Cesium.Color.fromCssColorString(utils.rainbow(30, crop, 0.7));
-                var cbp = new Cesium.CallbackProperty(function () {
-                    return this.entity.properties.height || 0
-                }, false);
-                var cbpex = new Cesium.CallbackProperty(function () {
+                function fillExtrudedHeight() {
                     return (this.entity.properties.height || 0) + this.entity.properties.numerical_amount / 100
-                }, false);
+                }
+                function fillHeight() {
+                    return this.entity.properties.height || 0
+                }
+                var cbp = new Cesium.CallbackProperty(fillHeight, false);
+                var cbpex = new Cesium.CallbackProperty(fillExtrudedHeight, false);
                 entity.polygon.extrudedHeight = cbpex;
                 cbp.entity = entity;
                 cbpex.entity = entity;
@@ -55,6 +57,8 @@ define(['ol'],
                 ]);
                 Cesium.when(promise, function (updatedPositions) {
                     updatedPositions[0].entity.properties.height = updatedPositions[0].height;
+                    updatedPositions[0].entity.polygon.height.setCallback(fillHeight, true);
+                    updatedPositions[0].entity.polygon.extrudedHeight.setCallback(fillExtrudedHeight, true);
                 });
                 entity.label = {
                     text: entity.properties['crop description'].getValue() + '\n' + entity.properties['management zone'].getValue().split('core/')[1],
