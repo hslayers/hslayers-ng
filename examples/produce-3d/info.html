@@ -9,6 +9,12 @@
             </div>
             <div class="modal-body">
                 <img src="../../img/ajax-loader.gif" ng-if="zone.attributes.length==0"/>
+                <div class="row" ng-repeat="attribute in zone.special_attributes">
+                    <div class="col-md-3"><b translate>{{attribute.short_name}}:</b></div>
+                    <div class="col-md-9" ng-if="attribute.value.indexOf('http')==-1">{{attribute.value}}</div>
+                    <div class="col-md-9" ng-if="attribute.value.indexOf('http')>-1"><a ng-click="describe($event, attribute)" href="#">{{attribute.value}}</a></div>
+                </div>
+                <h4 ng-if="zone.special_attributes.length>0 && zone.attributes.length>0" style="margin-top: 2em">More data</h4>
                 <table class="table table-striped" description object="zone"></table>
                 <h4>Intersecting objects</h4>
                 <table class="table">

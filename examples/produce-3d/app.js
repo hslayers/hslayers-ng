@@ -129,25 +129,47 @@ define(['angular', 'ol', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layerma
                 config.default_layers.push(pois.createPoiLayer());
 
                 $scope.showInfo = function (zone) {
-                    var id, obj_type;
-                    if (zone.properties['management zone']) { id = zone.properties['management zone'].getValue(); obj_type = 'Management Zone' }
-                    if (zone.properties.poi) { id = zone.properties.poi.getValue(); obj_type = 'Point of interest' }
-                    if (zone.properties.parcel) { id = zone.properties.parcel.getValue(); obj_type = 'Land use parcel' }
-                    $scope.zone = {
-                        id: $sce.trustAsHtml(),
-                        attributes: [],
-                        links: [],
-                        obj_type: obj_type
-                    };
-                    describe(id, function () {
+                    var id, obj_type, links_to_id;
+                    function scopeApply() {
                         if (!$scope.$$phase) $scope.$apply();
-                    });
+                    }
+                    function clear() {
+                        $scope.zone = {
+                            id: $sce.trustAsHtml(),
+                            attributes: [],
+                            special_attributes: [],
+                            links: [],
+                            obj_type: obj_type
+                        };
+                    }
+                    if (zone.properties['prod']) {
+                        id = zone.properties['prod'].getValue();
+                        obj_type = 'Management Zone';
+                        links_to_id = zone.properties['management zone'].getValue();
+                        clear();
+                        describeZone(zone, scopeApply, links_to_id);
+                    }
+                    if (zone.properties.poi) {
+                        id = zone.properties.poi.getValue();
+                        obj_type = 'Point of interest';
+                        links_to_id = id;
+                        clear();
+                        describe(id, scopeApply, links_to_id);
+                    }
+                    if (zone.properties.parcel) {
+                        id = zone.properties.parcel.getValue();
+                        obj_type = 'Land use parcel';
+                        links_to_id = id;
+                        clear();
+                        describe(id, scopeApply, links_to_id);
+                    }
                 }
 
-                function describe(id, callback) {
+                function describe(id, callback, links_to_id) {
+                    if (typeof links_to_id == 'undefined') links_to_id = id;
                     var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <' + id + '>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                     $.ajax({
-                        url: utils.proxify(q)
+                        url: q
                     })
                         .done(function (response) {
                             if (angular.isUndefined(response.results)) return;
@@ -158,14 +180,38 @@ define(['angular', 'ol', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layerma
                                     short_name = short_name.split('#')[1];
                                 $scope.zone.attributes.push({ short_name: short_name, value: b.o.value });
                             }
-                            $scope.getLinksTo(id, callback);
+                            $scope.getLinksTo(links_to_id, callback);
+                        })
+                }
+
+                function describeZone(zone, callback, links_to_id) {
+                    if (typeof links_to_id == 'undefined') links_to_id = id;
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <' + zone.properties['prod'].getValue() + '>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    $scope.zone.special_attributes.push({ short_name: 'Management zone', value: zone.properties.zone_name.getValue() });
+                    $scope.zone.special_attributes.push({ short_name: 'Crop', value: zone.properties['crop description'].getValue() });
+                    $scope.zone.special_attributes.push({ short_name: 'Production amount', value: zone.properties.amount.getValue() });
+                    $.ajax({
+                        url: q
+                    })
+                        .done(function (response) {
+                            if (angular.isUndefined(response.results)) return;
+                            
+                            for (var i = 0; i < response.results.bindings.length; i++) {
+                                var b = response.results.bindings[i];
+                                var short_name = b.p.value;
+                                if (short_name.indexOf('#') > -1)
+                                    short_name = short_name.split('#')[1];
+                                $scope.zone.attributes.push({ short_name: short_name, value: b.o.value });
+                            }
+
+                            $scope.getLinksTo(links_to_id, callback);
                         })
                 }
 
                 $scope.getLinksTo = function (id, callback) {
                     var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('PREFIX geo: <http://www.opengis.net/ont/geosparql#> PREFIX geof: <http://www.opengis.net/def/function/geosparql/> PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> PREFIX poi: <http://www.openvoc.eu/poi#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT * WHERE {?obj <http://www.opengis.net/ont/geosparql#hasGeometry> ?obj_geom. ?obj_geom geo:asWKT ?Coordinates . FILTER(bif:st_intersects (?Coordinates, ?wkt)). { SELECT ?wkt WHERE { <' + id + '> geo:hasGeometry ?geometry. ?geometry geo:asWKT ?wkt.} } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                     $.ajax({
-                        url: utils.proxify(q)
+                        url: q
                     })
                         .done(function (response) {
                             for (var i = 0; i < response.results.bindings.length; i++) {
