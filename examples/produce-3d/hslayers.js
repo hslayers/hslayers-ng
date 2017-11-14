@@ -36,7 +36,8 @@ require.config({
         cesiumjs: hsl_path + '/bower_components/cesium.js/dist/Cesium',
         pois: 'poi',
         olus: 'olu',
-        zones: 'zone'
+        zones: 'zone',
+        moment: hsl_path + 'node_modules/moment/min/moment.min'
     },
     shim: {
         d3: {

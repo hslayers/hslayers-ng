@@ -2,25 +2,44 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only" translate="">Close</span>
+                </button>
                 <h4>
                     <translate>{{zone.obj_type}}</translate>
                 </h4>
             </div>
             <div class="modal-body">
-                <img src="../../img/ajax-loader.gif" ng-if="zone.attributes.length==0"/>
-                <div class="row" ng-repeat="attribute in zone.special_attributes">
-                    <div class="col-md-3"><b translate>{{attribute.short_name}}:</b></div>
-                    <div class="col-md-9" ng-if="attribute.value.indexOf('http')==-1">{{attribute.value}}</div>
-                    <div class="col-md-9" ng-if="attribute.value.indexOf('http')>-1"><a ng-click="describe($event, attribute)" href="#">{{attribute.value}}</a></div>
+                <img src="../../img/ajax-loader.gif" ng-if="zone.attributes.length==0" />
+                <div class="row">
+                    <div class="col-sm-4 col-md-3">
+                        <img ng-src="{{zone.image}}" class="img-thumbnail" alt="Image of produced crop" />
+                    </div>
+                    <div class="col-sm-8 col-md-9">
+                        <div class="row" ng-repeat="attribute in zone.special_attributes">
+                            <div class="col-md-3">
+                                <b translate>{{attribute.short_name}}:</b>
+                            </div>
+                            <div class="col-md-9" ng-if="attribute.value.indexOf('http')==-1">
+                                <a ng-if="attribute.short_name == 'Crop'" target="_blank" ng-href="{{zone.crop_dbpedia}}">{{attribute.value}}</a>
+                                <span ng-if="attribute.short_name != 'Crop'">{{attribute.value}}</span>
+                            </div>
+                            <div class="col-md-9" ng-if="attribute.value.indexOf('http')>-1">
+                                <a ng-click="describe($event, attribute)" href="#">{{attribute.value}}</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <h4 ng-if="zone.special_attributes.length>0 && zone.attributes.length>0" style="margin-top: 2em">More data</h4>
                 <table class="table table-striped" description object="zone"></table>
                 <h4>Intersecting objects</h4>
                 <table class="table">
                     <tbody>
                         <tr ng-repeat="poi in zone.links">
-                            <td><a ng-click="$event.preventDefault(); describePoi(poi)" ng-href="#">{{poi.url}}</a>
+                            <td>
+                                <a ng-click="$event.preventDefault(); describePoi(poi)" ng-href="#">{{poi.url}}</a>
                                 <table class="table table-striped" description object="poi" ng-show="poi.expanded"></table>
                             </td>
                         </tr>
