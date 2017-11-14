@@ -87,7 +87,9 @@ define(['ol'],
                    PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#>  PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
                    PREFIX foodie-es: <http://foodie-cloud.com/model/foodie-es#>
                    prefix iso19103: <http://def.seegrid.csiro.au/isotc211/iso19103/2005/basic#> 
-                   SELECT * FROM <http://w3id.org/foodie/core/es#> WHERE {
+                   SELECT * 
+                   FROM <http://w3id.org/foodie/core/es#> 
+                   FROM <http://w3id.org/foodie/core/es-mappings#> WHERE {
                    ?z a foodie:ManagementZone. 
                    ?z foodie:cropSpecies ?crop.
                    ?z <http://www.opengis.net/ont/geosparql#hasGeometry> ?geom.
@@ -99,9 +101,15 @@ define(['ol'],
                    ?crop foodie:genus ?crop_genus .
                    ?crop foodie:species ?crop_species .
                    ?crop foodie:variety ?crop_variety .
+                   ?crop <http://schema.org/image> ?image.
                    ?prod foodie-es:productionTypeManagementZone ?mzone .
                    ?prod a foodie:ProductionType .
+                   ?crop <http://www.w3.org/2002/07/owl#sameAs> ?species_same_as.
+                   filter contains(str(?species_same_as), "http://dbpedia.org").     
                    ?prod foodie:productionDate ?prod_date .
+                   ?prod foodie-es:productionTypeCampaignType ?campaign_type.
+                   ?campaign_type foodie-es:campaignBegin ?campaign_begin.
+                   ?campaign_type foodie-es:campaignEnd ?campaign_end.
                    ?prod foodie:productionAmount ?amount .
                    ?amount iso19103:uom ?amount_unit .
                    ?amount iso19103:value ?amount_value .
@@ -127,7 +135,11 @@ define(['ol'],
                                         'crop description': b.crop_desc.value,
                                         'crop family': b.crop_family.value,
                                         'management zone': b.z.value,
-                                        'prod': b.prod.value,
+                                        prod: b.prod.value,
+                                        image: b.image.value,
+                                        campaign_begin: b.campaign_begin.value,
+                                        campaign_end: b.campaign_end.value,
+                                        crop_dbpedia: b.species_same_as.value,
                                         'production date': b.prod_date.value,
                                         'zone_name': b.zone_name.value,
                                         amount: parseFloat(b.amount_value.value) + ' ' + b.amount_unit.value,

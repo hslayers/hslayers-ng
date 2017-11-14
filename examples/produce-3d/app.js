@@ -1,8 +1,8 @@
 'use strict';
 
-define(['angular', 'ol', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'compositions', 'status_creator', 'ows', 'cesium', 'cesiumjs'],
+define(['angular', 'ol', 'moment', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layermanager', 'SparqlJson', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'compositions', 'status_creator', 'ows', 'cesium', 'cesiumjs'],
 
-    function (angular, ol, olus, zones, pois, sidebar, toolbar, layermanager, SparqlJson) {
+    function (angular, ol, moment, olus, zones, pois, sidebar, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -187,15 +187,18 @@ define(['angular', 'ol', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layerma
                 function describeZone(zone, callback, links_to_id) {
                     if (typeof links_to_id == 'undefined') links_to_id = id;
                     var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <' + zone.properties['prod'].getValue() + '>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    $scope.zone.image = zone.properties.image.getValue();
+                    $scope.zone.crop_dbpedia = zone.properties.crop_dbpedia.getValue();
                     $scope.zone.special_attributes.push({ short_name: 'Management zone', value: zone.properties.zone_name.getValue() });
                     $scope.zone.special_attributes.push({ short_name: 'Crop', value: zone.properties['crop description'].getValue() });
                     $scope.zone.special_attributes.push({ short_name: 'Production amount', value: zone.properties.amount.getValue() });
+                    $scope.zone.special_attributes.push({ short_name: 'Campaign', value: moment(zone.properties.campaign_begin.getValue()).format('MMMM Do YYYY') + ' - ' + moment(zone.properties.campaign_end.getValue()).format('MMMM Do YYYY') });
                     $.ajax({
                         url: q
                     })
                         .done(function (response) {
                             if (angular.isUndefined(response.results)) return;
-                            
+
                             for (var i = 0; i < response.results.bindings.length; i++) {
                                 var b = response.results.bindings[i];
                                 var short_name = b.p.value;
