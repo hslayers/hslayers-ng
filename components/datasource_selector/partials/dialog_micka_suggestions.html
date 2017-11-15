@@ -11,19 +11,19 @@
                 <form>
                     <div class="form-group">
                         <label ng-attr-for="ds-sug-filter" class="control-label" translate>Filter</label> 
-                        <input type="text" id="ds-sug-filter" class="form-control" ng-change="DS.suggestionFilterChanged()" ng-model="data.suggestionFilter">
+                        <input type="text" id="ds-sug-filter" class="form-control" ng-change="suggestionFilterChanged()" ng-model="suggestion_filter">
                     </div>
                 </form>
-                <ul ng-repeat="ds in data.datasets" class="list-group">
-                    <img ng-src="{{ajax_loader}}" ng-show="DS.suggestionAjax && DS.suggestionAjax.readyState != 4"/>
-                    <li ng-show='data.suggestions.length == 0' class='list-group-item' translate>No results</li>
-                    <li ng-repeat="suggestion in data.suggestions | limitTo:10" ng-class="'list-group-item'">
+                <ul ng-repeat="ds in datasets" class="list-group">
+                    <img ng-src="{{ajax_loader}}" ng-show="suggestion_ajax && suggestion_ajax.readyState != 4"/>
+                    <li ng-show='suggestions.length == 0' class='list-group-item' translate>No results</li>
+                    <li ng-repeat="suggestion in suggestions | limitTo:10" ng-class="'list-group-item'">
                         <b class="list-group-item-heading">
                             <a 
                             href="#" 
-                            ng-click="DS.addSuggestion(suggestion[data.suggestionConfig.field])" 
+                            ng-click="addSuggestion(suggestion[suggestion_config.field])" 
                             data-dismiss="modal">
-                                {{suggestion[data.suggestionConfig.field]}} <span ng-show="{{suggestion.count !== undefined}}">({{suggestion.count}})</span>
+                                {{suggestion[suggestion_config.field]}} <span ng-show="{{suggestion.count !== undefined}}">({{suggestion.count}})</span>
                             </a>
                         </b>
                         <p style="clear:both; margin: 0px;"></p>
