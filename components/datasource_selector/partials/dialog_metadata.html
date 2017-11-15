@@ -7,15 +7,15 @@
                     <translate>Metadata for</translate> {{selected_layer.title}}
                 </h4>
             </div>
-            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+            <div class="modal-body" style="max-height:400px; overflow-y:auto">
                 <dl ng-repeat="(key, value) in selected_layer" ng-if="key!='feature'">
                     <dt>{{key}} </dt>
                     <dd hs.datasource_selector.object_directive></dd>
                 </dl>
             </div>
             <div class="modal-footer" id="stc-footer">
-                <a role="button" class="btn btn-success" href="#" ng-href='{{layerRDF(selected_ds, selected_layer)}}' data-toggle="tooltip" title="GeoDCAT-AP" target="_blank" ng-show='layerRDF(selected_ds, selected_layer) != "#"'><i class="hs-icon-rdf"></i> RDF</a>
-                <button type="button" class="btn btn-success" translate ng-show="isZoomable(selected_layer)" ng-click="zoomTo(selected_layer.bbox)">Zoom to</button>
+                <a role="button" class="btn btn-success" href="#" ng-href='{{DS.layerRDF(selected_ds, selected_layer)}}' data-toggle="tooltip" title="GeoDCAT-AP" target="_blank" ng-show='DS.layerRDF(selected_ds, selected_layer) != "#"'><i class="hs-icon-rdf"></i> RDF</a>
+                <button type="button" class="btn btn-success" translate ng-show="DS.isZoomable(selected_layer)" ng-click="DS.zoomTo(selected_layer.bbox)">Zoom to</button>
                 <button type="button" class="btn btn-primary" ng-click="addLayerToMap(selected_ds, selected_layer)" ng-hide='config.dss_disallow_add == true' data-dismiss="modal"><span class="glyphicon glyphicon-plus"></span><span translate>Add to map</span></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
             </div>
