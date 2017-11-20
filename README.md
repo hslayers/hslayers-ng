@@ -34,20 +34,9 @@ cd hslayers-ng/
 
 ### Install Dependencies
 
-We have two kinds of dependencies in this project: tools and angular framework code.  The tools help
-us manage and test the application.
-
-We have preconfigured `npm` to automatically run `bower` so we can simply do:
-
 ```
 npm install
 ```
-
-Behind the scenes this will also call `bower install`.  You should find that you have two new
-folders in your project.
-
-* `node_modules` - contains the npm packages for the tools we need
-* `bower_components` - contains the angular framework files
 
 ### Configure the application
 
@@ -71,7 +60,7 @@ Include in your html file, where the map should appear. Check the paths to the j
 
 ```
 <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script src="lib/require.js"></script>    
 <script src="hslayers.js"></script> 
 ```
@@ -277,21 +266,11 @@ translations: hsl_path + 'examples/pilsen_traffic/translations'
 ```
 ## Updating Angular
 
-You can update the tool dependencies by running:
+You can update the dependencies by running:
 
 ```
 npm update
 ```
-
-This will find the latest versions that match the version ranges specified in the `package.json` file.
-
-You can update the dependencies by running:
-
-```
-bower update
-```
-
-This will find the latest versions that match the version ranges specified in the `bower.json` file.
 
 ## Contact
 

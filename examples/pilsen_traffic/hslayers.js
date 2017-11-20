@@ -28,13 +28,13 @@ require.config({
         calendar: './calendar',
         translations: './translations',
         moment: hsl_path + 'node_modules/moment/min/moment.min',
-        ngtimeline: hsl_path + 'bower_components/angular-timelinejs3/dist/js/ng-timeline',
+        ngtimeline: hsl_path + 'node_modules/angular-timelinejs3/dist/js/ng-timeline',
         //Full
-        //timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline',
-        //lazyimage: hsl_path + 'bower_components/ng-directive-lazy-image/dist/lazy-image',
+        //timeline: hsl_path + 'node_modules/TimelineJS3/compiled/js/timeline',
+        //lazyimage: hsl_path + 'node_modules/angular-lazy-image/dist/lazy-image',
         //Min
-        timeline: hsl_path + 'bower_components/TimelineJS3/compiled/js/timeline-min',
-        lazyimage: hsl_path + 'bower_components/ng-directive-lazy-image/dist/lazy-image.min'
+        timeline: 'https://cdn.knightlab.com/libs/timeline3/latest/js/timeline',
+        lazyimage: hsl_path + 'node_modules/angular-lazy-image/dist/lazy-image.min'
     },
     shim: {
         d3: {

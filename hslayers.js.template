@@ -4,7 +4,6 @@ var hsl_path = '/hslayers-ng/';
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
     paths: {
-        angular: hsl_path+'bower_components/angular/angular',
         toolbar: hsl_path+'components/toolbar/toolbar',
         layermanager: hsl_path+'components/layermanager/layermanager',
         map: hsl_path+'components/map/map',
