@@ -12,7 +12,7 @@ require.config({
     paths: {
         app: 'app',
         core: hsl_path + 'components/core/core',
-        angular: hsl_path + 'bower_components/angular/angular',
+        angular: hsl_path + 'node_modules/angular/angular',
         //material dependency
         ngAnimate: hsl_path + 'node_modules/angular-animate/angular-animate',
         ngAria: hsl_path + 'node_modules/angular-aria/angular-aria',

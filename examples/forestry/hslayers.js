@@ -11,7 +11,7 @@ require.config({
     urlArgs: 'bust=' + gitsha,
     paths: {
         sidebar: hsl_path + 'components/sidebar/sidebar',
-        bootstrap: hsl_path + 'bower_components/bootstrap/dist/js/bootstrap.min',
+        bootstrap: hsl_path + 'node_modules/bootstrap/dist/js/bootstrap.min',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
         'ows.wms': hsl_path + 'components/ows/ows_wms',

@@ -15,7 +15,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
         <link rel="stylesheet" type="text/css" href="calendar.css">
-        <link rel="stylesheet" href="../../bower_components/TimelineJS3/compiled/css/timeline.css">
+        <link rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
         <link rel="stylesheet" type="text/css" href="pilsen.css">
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
@@ -61,8 +61,8 @@
         -->
         <!-- End Google Tag Manager (noscript) -->
         <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
-        <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="../../bower_components/requirejs/require.js"></script>     
+        <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="../../node_modules/requirejs/require.js"></script>     
         <script src="hslayers.js"></script> 
     </body>
 </html>

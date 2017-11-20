@@ -46,7 +46,7 @@ module.exports = function (grunt) {
                 }},
                 files: [{
                     expand: true,
-                    src: ["components/**/*.js", "!components/**/*.min.js", "!components/translations/js/translations.js", "!components/draw/draw.js"],
+                    src: ["components/**/*.js", "!components/**/*.min.js", "!components/translations/js/translations.js", "!components/draw/draw.js", "!components/cesium/camera.js"],
                     dest: 'dist',
                     cwd: '.',
                     rename: function (dst, src) {
