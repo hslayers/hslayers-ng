@@ -141,4 +141,23 @@
   .status-creator .md-inline-form md-checkbox {
       margin: 10px 0px;
   }
-  
+
+/*No margins under inputs - compact view */
+*.input-compact {
+    margin-bottom: 3px;
+}
+*.input-compact .md-errors-spacer {
+    min-height: 0px;
+}
+
+*.input-compact2 {
+    margin-bottom: 6px;
+}
+
+/*Compact icons*/
+*.icon-compact, *.icon-compact > *, .md-button.md-icon-button.icon-compact {
+    padding: 2px;
+    height: 28px;
+    margin: 0px;
+    width: 28px;
+}

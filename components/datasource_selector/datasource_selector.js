@@ -117,10 +117,11 @@ define(['angular', 'ol', 'map'],
                     this.data.textField = 'AnyText';
                     this.data.selectedLayer = null;
                     this.data.filterByExtent = true;
-                    this.data.datasets = null;
+                    this.data.datasets = undefined;
                     this.data.mickaDS = undefined;
                     this.data.suggestionConfig = {};
                     this.data.suggestions = [];
+                    this.data.suggestionsLoaded = true;
                     this.data.datasources = config.datasources;
 
                     var extentLayer = new ol.layer.Vector({
@@ -168,7 +169,6 @@ define(['angular', 'ol', 'map'],
                                 var bbox = me.data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
                                 var ue = encodeURIComponent;
                                 var text = angular.isDefined(me.data.query.textFilter) && me.data.query.textFilter.length > 0 ? me.data.query.textFilter : me.data.query.title;
-                                console.log(text);
                                 var query = [
                                     (text != '' ? me.data.textField + ue(" like '*" + text + "*'") : ''),
                                     ue(bbox),
@@ -177,13 +177,15 @@ define(['angular', 'ol', 'map'],
                                     param2Query('topicCategory'),
                                     param2Query('Subject'),
                                     param2Query('Denominator'),
-                                    param2Query('OrganisationName')
+                                    param2Query('OrganisationName'),
+                                    param2Query('keywords')
                                 ].filter(function (n) {
                                     return n != ''
                                 }).join('%20AND%20');
                                 var url = dataset.url + '?request=GetRecords&format=application/json&language=' + dataset.language + '&query=' + query + (typeof me.data.query.sortby != 'undefined' && me.data.query.sortby != '' ? '&sortby=' + me.data.query.sortby : '&sortby=bbox') + '&limit=' + me.data.paging + '&start=' + dataset.start;
                                 url = utils.proxify(url);
                                 if (typeof dataset.ajaxReq != 'undefined') dataset.ajaxReq.abort();
+                                dataset.loaded = false;
                                 dataset.ajaxReq = $.ajax({
                                     url: url,
                                     cache: false,
@@ -210,6 +212,9 @@ define(['angular', 'ol', 'map'],
                                                 }
                                             }
                                         }
+                                    }, 
+                                    error: function(e){
+                                        dataset.loaded = true;
                                     }
                                 });
                                 break;
@@ -328,11 +333,13 @@ define(['angular', 'ol', 'map'],
                         if (typeof me.suggestionAjax != 'undefined') me.suggestionAjax.abort();
                         var url = me.data.mickaDS.url + '../util/suggest.php?&type=' + me.data.suggestionConfig.param + '&query=' + me.data.suggestionFilter;
                         url = utils.proxify(url);
+                        me.data.suggestionsLoaded = false; 
                         me.suggestionAjax = $.ajax({
                             url: url,
                             cache: false,
                             dataType: "json",
                             success: function (j) {
+                                me.data.suggestionsLoaded = true;
                                 me.data.suggestions = j.records;
                                 delete me.suggestionAjax;
                                 if (!$rootScope.$$phase) $rootScope.$digest();
@@ -561,12 +568,12 @@ define(['angular', 'ol', 'map'],
                             if (me.data.filterByExtent) me.loadDatasets(me.data.datasources);
                         });
                         OlMap.map.addLayer(extentLayer);
-                        if (angular.isUndefined(me.data.datasources[0].loaded) && (Core.panelVisible('datasource_selector') || Core.panelVisible('datasources'))) {
+                        if (angular.isUndefined(me.data.datasources[0].loaded) && (Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser'))) {
                             me.loadDatasets(me.data.datasources);
                             me.fillCodesets(me.data.datasources);
                         }
                         $rootScope.$on('core.mainpanel_changed', function (event) {
-                            if (angular.isUndefined(me.data.datasources[0].loaded) && (Core.panelVisible('datasource_selector') || Core.panelVisible('datasources'))) {
+                            if (angular.isUndefined(me.data.datasources[0].loaded) && (Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser'))) {
                                 me.loadDatasets(me.data.datasources);
                                 me.fillCodesets(me.data.datasources);
                             }
