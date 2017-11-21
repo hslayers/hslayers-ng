@@ -7,7 +7,7 @@ require(['clipboard'], function(clipboard) {
     window.Clipboard = clipboard;
   });
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'api', 'compositions', 'ows','angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap', 'matMeasure', 'matQuery', 'matComposition', 'matStatusCreator'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'core', 'datasource_selector', 'api', 'compositions', 'ows','angular-gettext', 'bootstrap', 'translations', 'ngMaterial', 'mdColorPicker', 'ngclipboard', 'matCore','matSearch','mainToolbar', 'bottomToolbar', 'sidepanel', 'matAddLayer', 'matBasemap', 'matLayerManager', 'matShareMap', 'matMeasure', 'matQuery', 'matComposition', 'matStatusCreator', 'matDatasource'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [
@@ -17,6 +17,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.query',
             'hs.search', 'hs.measure',
             'hs.core', 'hs.permalink',
+            'hs.datasource_selector',
             'hs.api',
             'hs.compositions',
             'hs.ows',
@@ -37,7 +38,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.material.measure',
             'hs.material.query',
             'hs.material.composition',
-            'hs.material.statusCreator'
+            'hs.material.statusCreator',
+            'hs.material.datasourceBrowser'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$timeout', function (OlMap, Core, $timeout) {
@@ -166,11 +168,13 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 }
             },
             datasources: [{
-                title: "Catalogue",
-                url: "/php/metadata/csw/",
-                language: 'eng',
-                type: "micka",
-                code_list_url: '/php/metadata/util/codelists.php?_dc=1440156028103&language=cze&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                
+                    title: "Hub layers",
+                    url: "http://opentnet.eu/php/metadata/csw/",
+                    language: 'eng',
+                    type: "micka",
+                    code_list_url: 'http://opentnet.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+                
             }],
             'catalogue_url': caturl || '/php/metadata/csw/',
             'compositions_catalogue_url': caturl || '/php/metadata/csw/',
