@@ -201,6 +201,7 @@ define(['angular', 'core', 'map', 'swipe'],
                         $mdBottomSheet.show({
                             templateUrl: hsl_path + 'components/layout/partials/bottom-sheet.html?bust=' + gitsha,
                             scope: $scope,
+                            parent: "#layout",
                             preserveScope: true,
                             disableBackdrop: true,
                             clickOutsideToClose: true

@@ -1186,3 +1186,9 @@ md-icon.geolocation.searching {
 md-icon.geolocation.on {
     color: rgb(2, 168, 243);
 }
+
+md-bottom-sheet {
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
