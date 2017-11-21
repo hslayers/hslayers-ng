@@ -1192,6 +1192,7 @@ md-icon.geolocation.on {
 }
 
 md-bottom-sheet {
+<<<<<<< HEAD
     max-height: 80%;
     touch-action: pan-y;
     overflow: scroll;
@@ -1208,4 +1209,9 @@ md-bottom-sheet md-toolbar {
 
 md-bottom-sheet .content {
     /*max-height: 400px;*/
+=======
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+>>>>>>> Loading content to the bottom sheet fixed.
 }
