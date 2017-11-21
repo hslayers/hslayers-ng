@@ -6,3 +6,4 @@ hooks/
 /nbproject/private/
 /nbproject/
 .orig
+package-lock.json
