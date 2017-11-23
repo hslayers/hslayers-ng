@@ -14,14 +14,14 @@ define(['ol', 'cesiumjs'],
             */
             calcResolutionForDistance: function (distance, latitude) {
                 // See the reverse calculation (calcDistanceForResolution_) for details
-                const canvas = viewer.scene.canvas;
-                const fovy = viewer.camera.frustum.fovy;
-                const metersPerUnit = ol.proj.get('EPSG:3857').getMetersPerUnit();
+                var canvas = viewer.scene.canvas;
+                var fovy = viewer.camera.frustum.fovy;
+                var metersPerUnit = ol.proj.get('EPSG:3857').getMetersPerUnit();
 
-                const visibleMeters = 2 * distance * Math.tan(fovy / 2);
-                const relativeCircumference = Math.cos(Math.abs(latitude));
-                const visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
-                const resolution = visibleMapUnits / canvas.clientHeight;
+                var visibleMeters = 2 * distance * Math.tan(fovy / 2);
+                var relativeCircumference = Math.cos(Math.abs(latitude));
+                var visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
+                var resolution = visibleMapUnits / canvas.clientHeight;
                 return resolution;
             },
 

@@ -11,7 +11,6 @@ var gitsha = $.ajax({
 require.config({
     urlArgs: 'bust=' + gitsha,
     paths: {
-        angular: hsl_path + 'bower_components/angular/angular',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         toolbar: hsl_path + 'components/toolbar/toolbar',
         layermanager: hsl_path + 'components/layermanager/layermanager',
@@ -33,9 +32,7 @@ require.config({
         drag: hsl_path + 'components/drag/drag',
         core: hsl_path + 'components/core/core',
         WfsSource: hsl_path + 'components/layers/hs.source.Wfs',
-        'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         api: hsl_path + 'components/api/api',
-        'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
         translations: hsl_path + 'components/translations/js/translations'
     },
     shim: {

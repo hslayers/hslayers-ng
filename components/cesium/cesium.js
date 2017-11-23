@@ -34,7 +34,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 if(typeof Cesium == 'undefined'){
                     console.error('Please include cesium in shim definition: cesiumjs: {exports: \'Cesium\'}');
                 }
-                window.CESIUM_BASE_URL = hsl_path + 'bower_components/cesium.js/dist/';
+                window.CESIUM_BASE_URL = hsl_path + 'node_modules/cesium/Build/Cesium';
                 var terrain_provider = new Cesium.CesiumTerrainProvider({
                     url: config.terrain_provider || 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
                 });
@@ -63,12 +63,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
                     skyBox: new Cesium.SkyBox({
                         sources: {
-                            positiveX: hsl_path + 'bower_components/cesium.js/dist/Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
-                            negativeX: hsl_path + 'bower_components/cesium.js/dist/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
-                            positiveY: hsl_path + 'bower_components/cesium.js/dist/Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
-                            negativeY: hsl_path + 'bower_components/cesium.js/dist/Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
-                            positiveZ: hsl_path + 'bower_components/cesium.js/dist/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
-                            negativeZ: hsl_path + 'bower_components/cesium.js/dist/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
+                            positiveX: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
+                            negativeX: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
+                            positiveY: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
+                            negativeY: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
+                            positiveZ: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
+                            negativeZ: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
                         }
                     }),
                     // Show Columbus View map with Web Mercator projection

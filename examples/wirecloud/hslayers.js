@@ -30,10 +30,8 @@ require.config({
         panoramio: hsl_path + 'components/panoramio/panoramio',
         drag: hsl_path + 'components/drag/drag',
         core: hsl_path + 'components/core/core',
-        'angular-sanitize': hsl_path + 'bower_components/angular-sanitize/angular-sanitize',
         wirecloud: hsl_path + 'components/wirecloud/wirecloud',
         api: hsl_path + 'components/api/api',
-        'angular-gettext': hsl_path + 'bower_components/angular-gettext/dist/angular-gettext',
         translations: hsl_path + 'components/translations/js/translations'
     },
     shim: {
