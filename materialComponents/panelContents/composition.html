@@ -1,0 +1,52 @@
+<md-content layout="column" style="max-height:100%;" class="composition">
+
+    <md-toolbar class="md-hue-3" flex="none">
+        <h1 class="md-toolbar-tools"><translate>Compositions</translate>
+            <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
+        </h1>
+    </md-toolbar>
+    <md-content class="md-padding" flex>
+        <div layout="row">
+            <md-input-container flex="60">
+                <label translate>Filter</label>
+                <input name="query" ng-model="query.title" ng-change="filterChanged()">
+            </md-input-container>
+
+            <md-input-container flex="40">
+                <label translate>Sort by</label>
+                <md-select name="sort" ng-model="sortBy" ng-change="setSortAttribute()">
+                    <md-option value="bbox"><translate>Bounding box</translate></md-option>
+                    <md-option value="title"><translate>Title</translate></md-option>
+                    <md-option value="date"><translate>Date</translate></md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <md-input-container class="md-block">
+            <md-checkbox name="bboxFilter" ng-model="filterByExtent">
+                <translate>Filter by map extent</translate>
+            </md-checkbox>
+        </md-input-container>
+        <md-list>
+            <md-list-item ng-repeat="composition in data.compositions" ng-click="data.useCallbackForEdit = false; loadComposition(composition)" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" class="noright">
+                <p>{{composition.title}}</p>
+                <md-icon ng-show="composition.editable" ng-click="confirmDelete(composition, $event)" aria-label="Delete composition" class="md-secondary md-hue-3">delete</md-icon>
+                <md-icon class="md-secondary" ng-click="shareComposition(composition, $event)" aria-label="Share composition">share</md-icon>
+                <md-icon class="md-secondary" ng-click="detailComposition(composition, $event)" aria-label="Show composition info">info</md-icon>
+                <md-divider></md-divider>
+            </md-list-item>
+        </md-list>
+        <div layout="row" layout-align="space-around center">
+            <md-button ng-disabled="compStart == 0" class="md-icon-button" ng-click='getPreviousCompositions()'>
+                    <md-icon class="md-primary md-hue-2">chevron_left</md-icon>
+                    <md-tooltip md-direction="up" translate>Previous composition list</md-tooltip>
+            </md-button>
+            <span ng-show="compNext != 0" translate>Composition {{compStart + 1}} - {{compNext}}</span>
+            <span ng-show="compNext == 0" translate>Composition {{compStart + 1}} - {{data.compositionsCount}}</span>
+            <md-button ng-disabled="compNext == 0" class="md-icon-button" ng-click='getNextCompositions()'>
+                <md-icon class="md-primary md-hue-2">chevron_right</md-icon>
+                <md-tooltip md-direction="up" translate>Next composition page</md-tooltip>
+            </md-button>
+        </div>
+
+    </md-content>
+</md-content>

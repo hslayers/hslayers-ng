@@ -1,0 +1,47 @@
+<md-dialog>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2><translate>Save composition {{compoData.title}}</translate></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="closeDialog()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout-padding layout="column" style="max-width:800px;max-height:810px; ">
+            <p ng-if="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle" class="md-body-2" translate>
+                You are atempting to save map changes to {{compoData.title}}    
+                Do you really want to overwrite {{compoData.title}}?
+            </p>
+            <div ng-if="(!statusData.titleFree && statusData.hasPermission && statusData.changeTitle) || !statusData.titleFree" class="md-body-2">
+                <p ng-if="!statusData.titleFree && statusData.hasPermission && statusData.changeTitle" class="md-body-2" translate>
+                     Select new name for map.
+                </p>
+                <p ng-if="!statusData.titleFree" class="md-body-2" translate>
+                     Use a different name to save the map.
+                </p>
+                <md-input-container>
+                    <label translate>Name</label>
+                    <input required md-maxlength="30" ng-model="compoData.title">
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-if="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle" class="md-primary md-raised" ng-click="save();closeDialog();">
+                <translate>Yes (save)</translate>
+            </md-button>
+            <md-button ng-if="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle" class="md-accent md-raised" ng-click="selectNewTitle();">
+                <translate>No (save as new)</translate>
+            </md-button>
+            <md-button ng-if="!statusData.titleFree && statusData.hasPermission && statusData.changeTitle" class="md-primary md-raised" ng-click="save(true);closeDialog();">
+                 <translate>Save</translate>
+            </md-button>
+            <md-button ng-if="!statusData.titleFree" class="md-primary md-raised" ng-click="confirmSave();closeDialog();">
+                 <translate>Save</translate>
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

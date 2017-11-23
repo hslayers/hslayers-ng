@@ -1,0 +1,26 @@
+<md-content layout="column" style="max-height:100%;">
+        
+    <md-toolbar class="md-hue-3" flex="none">
+        <h1 class="md-toolbar-tools" translate>Change basemap</h1>
+    </md-toolbar>
+    <md-content class="md-padding" flex>
+        <md-card 
+            ng-repeat="map in data.baselayers | orderBy: 'name'"
+            ng-click="changeBaseLayerVisibility($event, map)"
+            ng-class="{'selected-basemap' : map.active}"
+            class="basemap-card"
+        >
+        <img ng-src="{{getImage(map)}}" class="md-card-image" alt="{{map.title}} image" ng-if="hasImage(map)">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{map.title}}</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+                <md-button ng-click="changeBaseLayerVisibility($event,map)"><translate>Select</translate></md-button>
+                <md-button ng-if="isRemoveable(map)" ng-click="$event.stopPropagation();showRemoveDiag($event, map)"><translate>Remove</translate></md-button>
+              </md-card-actions>
+
+        </md-card>
+    </md-content>
+</md-content>

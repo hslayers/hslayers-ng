@@ -1,0 +1,52 @@
+<md-content layout="column" style="max-height:100%;">
+    <md-toolbar class="md-hue-3" flex="none">
+        <h1 class="md-toolbar-tools" translate>Share map</h1>
+    </md-toolbar>
+    <md-content class="md-padding" flex>
+        <div layout="row" layout-align="center center" layout-fill>
+            <md-icon flex="nogrow">link</md-icon>
+            <a ng-href="{{data.permalinkUrl}}" target="_blank" id="permalink-link">{{data.permalinkUrl}}</a>
+            <md-button class="md-icon-button" ngclipboard data-clipboard-text="{{data.permalinkUrl}}" ngclipboard-success="onClipSuccess(e);" ngclipboard-error="onClipError(e);">
+                <md-icon class="md-accent md-hue-2">content_copy</md-icon>
+                <md-tooltip md-direction="down" translate>Copy to clipboard</md-tooltip>
+            </md-button>
+        </div>
+        <div layout="column" layout-margin> 
+            <label for="permalink-embed" translate>Embed code</label>
+            <textarea layout-fill style="height: 80px" id="permalink-embed" ng-model="data.embedCode"></textarea>
+            <br/>
+        </div>
+        <div layout-margin>
+            <h3 layout-fill style="margin-bottom:10px;" translate>Share on social networks</h3>
+            <md-input-container layout-fill>
+                <label translate>Name</label>
+                <input placeholder="{{'Fill in name'|translate}}" ng-change="invalidateShareUrl()"
+                    ng-model="data.title" />
+            </md-input-container>
+
+            <md-input-container layout-fill>
+                <label translate>Abstract</label>
+                <textarea placeholder="{{'Fill in descriptive text about map'|translate}}" ng-change="invalidateShareUrl()"
+                    ng-model="data.abstract" md-maxlength="500" rows="2" md-select-on-focus>
+                            </textarea>
+            </md-input-container>
+
+            <section layout="row" layout-align="left center" layout-wrap>
+                    <md-button class="md-raised md-primary" ng-click="shareOnSocial('facebook')">
+                            Facebook
+                    </md-button>
+                    <md-button class="md-raised md-primary md-hue-3" ng-click="shareOnSocial('twitter')">
+                            Twitter
+                    </md-button>
+                    <md-button class="md-raised md-accent" ng-click="console.log(data)">
+                            Google+
+                    </md-button>
+            </div>
+
+            <div layout="column" layout-align="left center">
+                <h5 translate>Thumbnail</h5>
+                <img layout-margin id="hs-permalink-thumbnail" class="img-thumbnail" alt="Thumbnail">
+            </div>
+        </div>
+    </md-content>
+</md-content>

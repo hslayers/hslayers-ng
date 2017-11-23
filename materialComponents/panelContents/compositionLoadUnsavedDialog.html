@@ -1,0 +1,40 @@
+<md-dialog>
+    <form>
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2><translate>Open composition {{compositionToLoad.title}}</translate></h2>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="closeDialog()">
+            <md-icon>close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-dialog-content layout-padding layout="column" style="max-width:800px;max-height:810px; ">
+        <p class="md-body-2" translate>
+            You are opening map <b>{{compositionToLoad.title}}</b>. There are currently unsaved changes in compositions.
+        </p>
+        <p ng-show="!Core.isAuthorized()" class="md-body-2" translate>
+                You are not loaded as user. You can't save composition now. Log in for saving.
+            </p>
+        <p class="md-body-2" translate>
+            What do you want to do before opening the selected map composition?
+        </p>
+      </md-dialog-content>
+  
+      <md-dialog-actions layout="row">
+        <span flex></span>
+            <md-button class="md-primary md-raised" ng-click="overwrite();closeDialog();">
+                    <translate>Continue without saving</translate>
+            </md-button>
+            <md-button class="md-primary md-hue-2 md-raised" ng-click="add();closeDialog();">
+                <translate>Merge compositions</translate>
+            </md-button>
+            <md-button ng-show="!Core.isAuthorized()" class="md-accent md-raised" ng-click="save();closeDialog();">
+                <translate>Save changes first</translate>
+            </md-button>
+            <md-button ng-click="closeDialog()">
+                <translate>Cancel</translate>
+            </md-button>
+      </md-dialog-actions>
+    </form>
+  </md-dialog>
