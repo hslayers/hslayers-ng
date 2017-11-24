@@ -61,7 +61,7 @@ define(['angular', 'ol','ngMaterial'],
                     $scope.changePosition = function(layer,direction,$event) {
                         var index = layer.layer.get('position');
                         var layers = OlMap.map.getLayers();
-                        var toIndex = index;;
+                        var toIndex = index;
                         if (direction) {// upwards
                             var max = layers.getLength() - 1;
                             if (index < max) {
