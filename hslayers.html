@@ -12,14 +12,4 @@
 <link rel="stylesheet" type="text/css" href="css/mobile.css">
 <link rel="stylesheet" ng-href="{{hsl_path}}css/app.css"/>
 
-<div id="layout" layout="column" style="height:100%;" ng-controller="hs.layout.controller">
-    <div hs.swipe-area.directive></div>
-    <div hs.md-toolbar.directive></div>
-    <section flex layout="row">
-        <div hs.md-sidenav.directive></div>
-        <div flex id="map-container">
-            <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
-            <div hs.md-overlay.directive class="map-floating-gui" id="gui"></div>
-        </div>
-    </section>
-</div>
+<div hs.md-layout.directive id="layout" layout="column" style="height:100%;" ng-controller="hs.layout.controller"></div>

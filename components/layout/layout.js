@@ -7,6 +7,38 @@ define(['angular', 'core', 'map', 'swipe'],
     function(angular) {
         angular.module('hs.layout', ['hs.core', 'hs.map', 'swipe'])
             /**
+            * @memberof hs.mdLayout
+            * @ngdoc directive
+            * @name hs.mdLayout.directive
+            * @description TODO
+            */
+            .directive('hs.mdLayout.directive', ['hs.map.service', 'Core', '$timeout',
+                function(OlMap, Core, $timeout) {
+                    return {
+                        templateUrl: hsl_path + 'components/layout/partials/layout.html?bust=' + gitsha,
+                        link: function(scope, element) {
+                            Core.init(element, {
+                                innerElement: '#map-container'
+                            });
+                    
+                            //Hack - flex map container was not initialized when map loaded 
+                            var container = $('#map-container');
+                            
+                            if (container.height() === 0) {
+                                containerCheck();
+                            }
+                            
+                            function containerCheck(){
+                                $timeout(function(){
+                                    if (container.height() != 0) scope.$emit("Core_sizeChanged");
+                                    else containerCheck();
+                                },100);
+                            }
+                        }
+                    };
+                }
+            ])
+            /**
             * @memberof hs.mdSidenav
             * @ngdoc directive
             * @name hs.mdSidenav.directive
