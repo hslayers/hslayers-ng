@@ -152,6 +152,7 @@ define(['angular', 'ol'],
                             me.speed = position.coords.speed ? Math.round(position.coords.speed * 3.6) : '-';
                             me.last_location = {
                                     "latlng": ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection()),
+                                    altitude: position.coords.altitude,
                                     "geoposition": position
                                 }
                                 // me.last_location.latlng = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection());
@@ -229,6 +230,7 @@ define(['angular', 'ol'],
                             me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
                             me.last_location = {
                                 "latlng": me.geolocation.getPosition(),
+                                altitude: me.geolocation.getAltitude(),
                                 "geoposition": me.geolocation
                             }
                             console.log(me.last_location);
