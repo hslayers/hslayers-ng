@@ -46,7 +46,8 @@ define(['cesium'],
             var accelerating_for = (timestamp - acceleration_started_at);
             if (accelerating_for > 3000) accelerating_for = 3000;
             current_speed = acceleration_start_speed + (next_speed - acceleration_start_speed) * accelerating_for / 3000;
-            runningaudio.volume = current_speed / olus.maxSpeed() / 2.0;
+            var volume = current_speed / olus.maxSpeed() / 2.0;
+            runningaudio.volume = Math.min(Math.max(volume, 0), 1);
             var speed = current_speed * time_ellapsed / 1000.0;
             if (speed > 0) {
                 var diff = { x: target_position[0] - pos_lon_lat[0], y: target_position[1] - pos_lon_lat[1] };
@@ -61,7 +62,7 @@ define(['cesium'],
                 //When going straight to north or south, half of speed must be canceled because there are 90 latitude degrees but 180 longitude
                 var degree_canceler = Math.abs(Math.sin(Math.atan2(diff.y, diff.x)));
                 normalize(diff, speed - (0.5 * speed * degree_canceler));
-                var secs_km = 1000 / (current_speed / olus.maxSpeed()) / 4.;
+                var secs_km = 1000 / (current_speed / olus.maxSpeed()) / 4. * $scope.time_multiplier;
                 $scope.min_km = Math.floor(secs_km / 60).toFixed(0) + ':' + (secs_km % 60 < 10 ? '0' : '') + (secs_km % 60).toFixed(0);
                 var new_position = [pos_lon_lat[0] + diff.x, pos_lon_lat[1] + diff.y];
                 next_speed = olus.getSpeed(new_position);
@@ -76,7 +77,8 @@ define(['cesium'],
                 }
             }
             calculateAltitude(timestamp);
-            olus.updMap(timestamp, pos_lon_lat);
+            if($scope.game_mode == 'virtual')
+                olus.updMap(timestamp, pos_lon_lat);
         }
 
         function flyToInitialLocation() {

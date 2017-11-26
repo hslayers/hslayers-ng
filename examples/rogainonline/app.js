@@ -119,17 +119,20 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
             })
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', '$timeout',
-            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce, $timeout) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', '$timeout', 'hs.geolocation.service',
+            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce, $timeout, geolocation) {
                 var map;
                 var viewer;
                 var last_time = 0;
                 var last_hud_updated = 0;
+                var last_run_counted = 0;
                 var zero_date = new Date(2000, 1, 0, 0, 0, 0, 0, 1);
                 var full_date = new Date(2000, 1, 0, 4, 30, 0, 0);
                 var running_start_date = new Date(2000, 1, 0, 4, 0, 0, 0);
                 var time_game_started;
-                var last_measure_pick;
+                var last_measure_pick, last_run_position = null;
+                var planning_line_segments = [];
+                var running_line_segments = [];
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -144,8 +147,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 pois.init($scope, $compile);
                 stations.init($scope, $compile, olus);
                 $scope.game_state = 'before_game';
+                $scope.game_mode = 'virtual';
                 $scope.time_penalty = 0;
                 $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
+                $scope.time_multiplier = 10;
 
                 function createHud() {
                     var el = angular.element('<div hs.hud></div>');
@@ -168,7 +173,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (timestamp) {
                         var time_ellapsed = timestamp - last_time;
                         if ($scope.game_started) {
-                            $scope.time_remaining = full_date - (timestamp - time_game_started) * 10;
+                            $scope.time_remaining = full_date - (timestamp - time_game_started) * $scope.time_multiplier;
                             if ($scope.time_remaining <= running_start_date && $scope.game_state == 'planning') {
                                 $scope.game_state = 'running';
                                 character.flyToInitialLocation();
@@ -176,13 +181,16 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                             }
                             if ($scope.time_remaining <= zero_date) {
                                 $scope.time_remaining = zero_date;
-                                $scope.time_penalty = Math.ceil((zero_date - (full_date - (timestamp - time_game_started) * 10)) / 60000);
+                                $scope.time_penalty = Math.ceil((zero_date - (full_date - (timestamp - time_game_started) * $scope.time_multiplier)) / 60000);
                             }
                         }
 
                         character.positionCharacter(time_ellapsed, timestamp);
-                        updHud();
                         last_time = timestamp;
+                        updHud();
+                        if ($scope.game_state == 'running') {
+                            countRunDistance()
+                        }
                     }
                     Cesium.requestAnimationFrame(tick);
                 }
@@ -193,13 +201,19 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (!$scope.$$phase) $scope.$apply();
                 }
 
+                function countRunDistance() {
+                    if (last_time - last_run_counted < 1000) return;
+                    last_run_counted = last_time;
+                    addRunPosition(character.currentPos());
+                }
+
                 createHud();
 
                 $scope.createNewMap = function (hours) {
                     $scope.game_started = true;
                     $scope.game_state = 'generating';
                     if (!$scope.$$phase) $scope.$apply();
-                    $timeout(function(){
+                    $timeout(function () {
                         $scope.points_collected = 0;
                         full_date = new Date(2000, 1, 0, hours, 30, 0, 0);
                         running_start_date = new Date(2000, 1, 0, hours, 0, 0, 0);
@@ -225,7 +239,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 $rootScope.$on('cesium_position_clicked', function (event, lon_lat) {
-                    console.log('click');
                     if (last_measure_pick == null)
                         last_measure_pick = character.currentPos();
                     if ($scope.game_state == 'running') {
@@ -237,7 +250,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 });
 
                 $scope.total_distance = 0;
-                var planning_line_segments = [];
                 function addMeasurementPosition(lon_lat) {
                     var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(last_measure_pick[0], last_measure_pick[1]), Cesium.Cartesian3.fromDegrees(lon_lat[0], lon_lat[1]));
                     $scope.total_distance += distance;
@@ -258,6 +270,32 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     last_measure_pick = lon_lat;
                 }
 
+                function addRunPosition(lon_lat) {
+                    if (last_run_position == null)
+                        last_run_position = character.currentPos();
+                    var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(last_run_position[0], last_run_position[1]), Cesium.Cartesian3.fromDegrees(lon_lat[0], lon_lat[1]));
+                    if (distance > 0) {
+                        $scope.total_distance_run += distance;
+                        var rectangleInstance = new Cesium.GeometryInstance({
+                            geometry: new Cesium.CorridorGeometry({
+                                positions: Cesium.Cartesian3.fromDegreesArray([last_run_position[0], last_run_position[1], lon_lat[0], lon_lat[1]]),
+                                width: 5
+                            }),
+                            attributes: {
+                                color: new Cesium.ColorGeometryInstanceAttribute(0.9, .9, .1, 0.8)
+                            }
+                        });
+                        var line = viewer.scene.primitives.add(new Cesium.GroundPrimitive({
+                            geometryInstances: rectangleInstance
+                        }));
+                        line.point = [lon_lat[0], lon_lat[1], lon_lat[2]];
+                        line.time = new Date();
+                        line.distance = distance;
+                        running_line_segments.push(line);
+                    }
+                    last_run_position = [lon_lat[0], lon_lat[1], lon_lat[2]];
+                }
+
                 function playGo() {
                     var audio = new Audio('sounds/go.mp3');
                     audio.play();
@@ -265,6 +303,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
+                    geolocation.geolocation.setTracking(true);
                 });
 
                 $rootScope.$on('cesiummap.loaded', function (event, _viewer) {
@@ -279,7 +318,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 });
 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
-                    if($scope.game_state == 'before_game')
+                    if ($scope.game_state == 'before_game')
                         character.currentPos(center);
                 })
 
@@ -294,7 +333,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     character.flyToInitialLocation();
                 }
 
-                $scope.endGame = function(){
+                $scope.endGame = function () {
                     var el = angular.element('<div hs.enddialog></div>');
                     $("#hs-dialog-area").append(el);
                     $compile(el)($scope);
@@ -302,6 +341,48 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     var audio = new Audio('sounds/fanfare.mp3');
                     audio.play();
                 }
+
+                $scope.getGpx = function () {
+                    var head = `<?xml version="1.0" encoding="UTF-8"?>
+    <gpx version="1.1" creator="Rogainonline.com" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <metadata>
+        <time>${(new Date()).toISOString()}</time>
+        </metadata>
+        <trk>
+        <src>http://www.rogainonline.com/</src>
+        <link href="https://www.endomondo.com/users/1974971/workouts/1007491933">
+            <text>rogainonline</text>
+        </link>
+        <type>ORIENTEERING</type>
+        <trkseg>
+                        `;
+                    var trkpts = running_line_segments.reduce((accumulator, l) => `${accumulator}<trkpt lat="${l.point[1]}" lon="${l.point[0]}">
+                    <ele>${l.point[2]}</ele>
+                    <time>${l.time.toISOString()}</time>
+                  </trkpt>`, '');
+                    var end = `         </trkseg>
+    </trk>
+</gpx>`;
+
+                    download('rogainonline_' + (new Date()).toISOString() + '.gpx', head + trkpts + end);
+                }
+
+                function download(filename, text) {
+                    var element = document.createElement('a');
+                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                    element.setAttribute('download', filename);
+
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+
+                    element.click();
+
+                    document.body.removeChild(element);
+                }
+
+                $scope.$on('geolocation.updated', function (event) {
+                    console.log('Location', geolocation.geolocation.last_location);
+                });
             }
         ]);
 

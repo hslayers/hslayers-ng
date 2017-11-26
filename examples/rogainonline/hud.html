@@ -48,7 +48,12 @@
             The objective is to visit as many stations as possible in a fixed amount of time in any order. <br/>You get different amount of points for each station. Be back at start until 0:00.<br/>
         </p>
         <p>
-            <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(4)">New 4h game</button>
+           Game mode: <a href="#" ng-class="{'btn btn-primary': true, 'active': time_multiplier == 10}"  ng-click="game_mode = 'virtual'" role="button">Simulation</a><a href="#" ng-class="{'btn btn-primary': true, 'active': time_multiplier == 1}" ng-click="game_mode = 'real'; time_multiplier = 1" role="button">Real</a>
+        </p>
+        <p>
+            Time mode: <a href="#" ng-class="{'btn btn-primary': true, 'active': time_multiplier == 10}"  ng-click="time_multiplier = 10" role="button">10x</a><a href="#" ng-class="{'btn btn-primary': true, 'active': time_multiplier == 1}" ng-click="time_multiplier = 1" role="button">Real time</a>
+        </p>
+        <p>Length: <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(4)">New 4h game</button>
             <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(2)">New 2h game</button>
             <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(1)">New 1h game</button>
             <img ng-show="game_state=='generating'" ng-src="{{ajax_loader}}"/>   
