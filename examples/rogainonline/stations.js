@@ -114,7 +114,7 @@ define(['ol'],
                             }
                         } else {
                             entity.properties.visited.setValue(true);
-                            var audio = new Audio('collectcoin.mp3');
+                            var audio = new Audio('sounds/collectcoin.mp3');
                             audio.play();
                             anything_collected = true;
                             styleEntity(entity);
