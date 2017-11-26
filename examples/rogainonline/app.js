@@ -386,15 +386,20 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     document.body.removeChild(element);
                 }
 
+                var last_good_altitude = null;
                 $scope.$on('geolocation.updated', function (event, data) {
                     if (data && angular.isDefined(data.latlng)) {
                         $scope.geolocated = true;
                         var l = data.latlng;
-                        var altitude = data.altitude || 0;
+
+                        var altitude_bad = data.altitude == null || angular.isUndefined(data.altitude);
+                        var altitude = (data.altitude || last_good_altitude) || 0;
                         character.currentPos([l[0], l[1], altitude]);
-                        if (altitude == 0) {
+                        if (altitude_bad) {
                             character.calculateAltitude(last_time)
                         }
+                        if (character.currentPos()[2] > 0)
+                            last_good_altitude = character.currentPos()[2]
                     }
                 });
 
