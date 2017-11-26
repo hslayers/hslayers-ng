@@ -381,11 +381,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     document.body.removeChild(element);
                 }
 
-                $scope.$on('geolocation.updated', function (event) {
+                $scope.$on('geolocation.updated', function (event, data) {
                     debugger;
-                    if(geolocation.geolocation.last_location){
+                    if(data){
                         $scope.geolocated = true;
-                        var l = geolocation.geolocation.last_location.latlng;
+                        var l = data.latlng;
                         character.currentPos([l[0], l[1]]);
                     }
                 });
