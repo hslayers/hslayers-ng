@@ -39,7 +39,7 @@ define(['ol'],
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                 pixelOffset: new Cesium.Cartesian2(0, entity.properties.start ? -40 : -30),
-                pixelOffsetScaleByDistance : new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
+                pixelOffsetScaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
             });
@@ -62,7 +62,7 @@ define(['ol'],
         }
         return {
             getMapWidth: getMapWidth,
-            createStations: function (map, utils, c, callback) {
+            createStations: function (map, utils, c, callback, hours) {
                 var points_added = 0;
                 source.clear();
                 var features = [new ol.Feature({
@@ -73,9 +73,12 @@ define(['ol'],
                     visited: false
                 })];
                 for (i = 1; i < 1000; i++) {
-                    var try_pnt = { x: c[0] - getMapWidth() / 2.0 + Math.random() * getMapWidth(), y: c[1] - getMapWidth() / 2.0 + Math.random() * getMapWidth() * 9.0 / 16.0 };
+                    var try_pnt = {
+                        x: c[0] - getMapWidth() / 2.0 + Math.random() * getMapWidth(),
+                        y: c[1] - getMapWidth() / 2.0 + Math.random() * getMapWidth()
+                    };
                     if (!olus.buildingExistsAtCoordinate(try_pnt) && !stationExistsAtCoordinate(try_pnt, features)) {
-                        var points = Math.floor((20 + Math.random() * 79));
+                        var points = Math.floor((20 + Math.random() * 69));
                         var feature = new ol.Feature({
                             geometry: new ol.geom.Point([try_pnt.x, try_pnt.y]),
                             label: points.toFixed(0),
@@ -85,7 +88,7 @@ define(['ol'],
                         features.push(feature);
                         points_added++;
                     }
-                    if (points_added >= 50) break;
+                    if (points_added >= 40 * (hours / 3)) break;
                 }
                 source.addFeatures(features);
                 source.set('loaded', true);
@@ -103,8 +106,8 @@ define(['ol'],
                 var collected = 0.0;
                 source.cesium_layer.entities.values.forEach(function (entity) {
                     if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 5 && entity.properties.visited.getValue() == false) {
-                        if(entity.properties.start){
-                            if(anything_collected){
+                        if (entity.properties.start) {
+                            if (anything_collected) {
                                 entity.properties.visited.setValue(true);
                                 anything_collected = false;
                                 $scope.endGame();

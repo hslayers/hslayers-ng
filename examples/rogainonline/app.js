@@ -208,16 +208,16 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                             $scope.game_state = 'planning';
                             last_measure_pick = character.currentPos();
                             flyToWholeMapView();
-                        });
+                        }, hours);
                     }, 0)
                 }
 
                 function flyToWholeMapView() {
                     var pos_lon_lat = character.currentPos();
                     viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0] + stations.getMapWidth() / 0.016 * 0.0001 * 14, pos_lon_lat[1] + stations.getMapWidth() / 0.016 * 0.0006 * 14, pos_lon_lat[2] + stations.getMapWidth() / 0.016 * 60 * 18),
+                        destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0] + stations.getMapWidth() / 0.016 * 0.0001 * 14, pos_lon_lat[1] - stations.getMapWidth() / 0.016 * 0.0006 * 14, pos_lon_lat[2] + stations.getMapWidth() / 0.016 * 60 * 18),
                         orientation: {
-                            heading: Cesium.Math.toRadians(180.0),
+                            heading: Cesium.Math.toRadians(0.0),
                             pitch: Cesium.Math.toRadians(-45.0),
                             roll: 0.0
                         }
