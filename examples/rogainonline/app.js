@@ -381,7 +381,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 $scope.$on('geolocation.updated', function (event) {
-                    if($scope.game_mode = 'real'){
+                    if($scope.game_mode = 'real' && geolocation.geolocation.last_location){
                         var l = geolocation.geolocation.last_location.latlng;
                         character.currentPos([l[0], l[1]]);
                     }
