@@ -239,7 +239,7 @@ define(['angular', 'ol'],
                                     OlMap.map.getView().setCenter(p);
                             }
                             if (me.heading) OlMap.map.getView().setRotation(me.heading);
-                            $rootScope.$broadcast('geolocation.updated');
+                            $rootScope.$broadcast('geolocation.updated', me.last_location);
                         }
 
                         me.geolocation.on('change', me.changed_handler);
