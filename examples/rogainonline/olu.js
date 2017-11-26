@@ -240,7 +240,7 @@ define(['ol'],
                 me.getOluUnder(cord).forEach(function (use) {
                     if (use == '13') {
                         speed = 0;
-                        var audio = new Audio('oof.mp3');
+                        var audio = new Audio('sounds/oof.mp3');
                         audio.volume = .5;
                         audio.play();
                     }

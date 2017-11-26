@@ -19,7 +19,7 @@ define(['cesium'],
         var stations;
         var last_altitude_calculated = 0;
         var last_position_altitude = [0, 0];
-        var runningaudio = new Audio('running2.mp3');
+        var runningaudio = new Audio('sounds/running2.mp3');
 
         function normalize(point, scale) {
             var norm = Math.sqrt(point.x * point.x + point.y * point.y);
