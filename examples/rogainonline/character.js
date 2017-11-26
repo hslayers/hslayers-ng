@@ -19,7 +19,7 @@ define(['cesium'],
         var stations;
         var last_altitude_calculated = 0;
         var last_position_altitude = [0, 0];
-        var runningaudio = new Audio('sounds/running2.mp3');
+        var runningaudio = null;
 
         function normalize(point, scale) {
             var norm = Math.sqrt(point.x * point.x + point.y * point.y);
@@ -42,11 +42,16 @@ define(['cesium'],
             return Cesium.Transforms.headingPitchRollQuaternion(position_property.getValue(), hpr)
         }, false);
 
+        function loadRunningAudio() {
+            if (runningaudio == null) runningaudio = new Audio('sounds/running2.mp3');
+        }
+
         function positionCharacter(time_ellapsed, timestamp) {
             var accelerating_for = (timestamp - acceleration_started_at);
             if (accelerating_for > 3000) accelerating_for = 3000;
             current_speed = acceleration_start_speed + (next_speed - acceleration_start_speed) * accelerating_for / 3000;
             var volume = current_speed / olus.maxSpeed() / 2.0;
+            loadRunningAudio();
             runningaudio.volume = Math.min(Math.max(volume, 0), 1);
             var speed = current_speed * time_ellapsed / 1000.0;
             if (speed > 0) {
@@ -77,7 +82,7 @@ define(['cesium'],
                 }
             }
             calculateAltitude(timestamp);
-            if($scope.game_mode == 'virtual')
+            if ($scope.game_mode == 'virtual')
                 olus.updMap(timestamp, pos_lon_lat);
         }
 
@@ -122,6 +127,7 @@ define(['cesium'],
             acceleration_start_speed = current_speed;
             next_speed = olus.getSpeed(pos_lon_lat);
             createTargetPrimitive();
+            loadRunningAudio();
             runningaudio.play();
             olus.directionChanged(true);
         }
@@ -174,6 +180,7 @@ define(['cesium'],
                     orientation: orientation_property
                 });
                 flyToInitialLocation();
+                loadRunningAudio();
                 runningaudio.addEventListener('ended', function () {
                     this.currentTime = 0;
                     this.play();

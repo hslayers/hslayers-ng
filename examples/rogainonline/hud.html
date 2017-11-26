@@ -1,4 +1,4 @@
-<div style="position: absolute; left: 10px; top:0px; z-index: 100;" class="col-xs-11 col-sm-8 col-md-4 col-lg-3">
+<div class="hud col-xs-11 col-sm-8 col-md-5 col-lg-4 col-xl-3">
     <link href="https://fonts.googleapis.com/css?family=Lato:700" rel="stylesheet">
     <style>
         .hsr-speed,
@@ -27,20 +27,23 @@
 
         .hsr-points {
             font-size: 1.5em;
-            color: #2fb336;
+            color: #102011;
         }
     </style>
-    <span class="hsr-speed">
-        {{min_km}} min/km
-    </span>
-    <span class="hsr-timer">
-        {{time_remaining|date:'HH:mm:ss'}}
-    </span>
-    <span class="hsr-points">
-        {{points_collected}}</span><span class="hsr-penalty" ng-show="time_penalty>0">
-        -{{time_penalty}}
-    </span><span class="hsr-points"> points
-    </span>
+    <div style="line-height: 2.2em">
+        <span class="hsr-speed" ng-show="game_state != 'before_game'">
+            {{min_km}} min/km
+        </span>
+        <span class="hsr-timer" ng-show="game_state != 'before_game'">
+            {{time_remaining|date:'HH:mm:ss'}}
+        </span>
+        <span class="hsr-points" ng-show="game_state != 'before_game'">
+            {{points_collected}}</span><span class="hsr-penalty" ng-show="time_penalty>0">
+            -{{time_penalty}}
+        </span><span class="hsr-points" ng-show="game_state != 'before_game'"> points
+        </span>
+        &nbsp;
+    </div>
     <div class="well" ng-show="game_state=='before_game'">
         <h3>Rogaining RPG</h3>
         <p>

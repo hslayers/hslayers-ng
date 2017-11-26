@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>HS Layers</title>
@@ -9,17 +10,40 @@ The application was developed by the DataBio project team, for the purposes of t
 ">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-  <style>
-    .cesium-viewer .cesium-widget-credits{font-size: 7px !important}
-    .cesium-viewer-bottom {right: auto !important;
-    width: 10000px;}
-  </style>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 </head>
-<body >
-    <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
-    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../../node_modules/requirejs/require.js"></script>      
-    <script src="hslayers.js"></script> 
+
+<body>
+  <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
+  <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../../node_modules/requirejs/require.js"></script>
+  <script src="hslayers.js"></script>
+  <style>
+      .cesium-viewer .cesium-widget-credits {
+        font-size: 7px !important
+      }
+  
+      .cesium-viewer-bottom {
+        right: auto !important;
+        width: 10000px;
+      }
+  
+      .search-results {
+        z-index: 101
+      }
+  
+      .hud {
+        position: absolute !important;
+        left: 0px;
+        top: 10px;
+        z-index: 100;
+        pointer-events: none;
+      }
+  
+      .hud .well {
+        pointer-events: auto;
+      }
+    </style>
 </body>
+
 </html>

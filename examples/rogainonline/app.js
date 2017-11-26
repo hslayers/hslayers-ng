@@ -304,7 +304,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
-                    geolocation.geolocation.setTracking(true);
+                    if(Core.isMobile()){
+                        if(angular.isUndefined(geolocation.geolocation))
+                        geolocation.gpsStatus = true;
+                    else
+                        geolocation.startGpsWatch();
+                    }
                 });
 
                 $rootScope.$on('cesiummap.loaded', function (event, _viewer) {
@@ -390,7 +395,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 });
 
                 $scope.locateMe = function(){
-                    if (geolocation.last_location && angular.isDefined(geolocation.last_location.latlng)) {
+                    if (geolocation.last_location && angular.isDefined(geolocation.last_location.latlng)) {geolocation
                         $scope.geolocated = true;
                         var l = geolocation.last_location.latlng;
                         character.currentPos([l[0], l[1]]);
