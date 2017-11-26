@@ -4,6 +4,7 @@ var hsl_path = '../../';
 var gitsha = Math.random();
 
 require.config({
+    waitSeconds : 100,
     urlArgs: 'bust=' + gitsha,
     paths: {
         toolbar: hsl_path + 'components/toolbar/toolbar',
