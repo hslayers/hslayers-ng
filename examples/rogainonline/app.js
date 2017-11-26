@@ -382,8 +382,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 $scope.$on('geolocation.updated', function (event, data) {
-                    debugger;
-                    if(data){
+                    if (data && angular.isDefined(data.latlng)) {
                         $scope.geolocated = true;
                         var l = data.latlng;
                         character.currentPos([l[0], l[1]]);
