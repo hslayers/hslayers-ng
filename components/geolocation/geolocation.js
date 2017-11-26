@@ -178,7 +178,7 @@ define(['angular', 'ol'],
                                 db_id++;
                             }
 
-                            $rootScope.$broadcast('geolocation.updated');
+                            $rootScope.$broadcast('geolocation.updated', me.last_location);
                         };
 
                         /**
