@@ -173,8 +173,10 @@ define(['angular', 'ol'],
 
                             lat = position.coords.latitude;
                             lon = position.coords.longitude;
-                            if (typeof trackingDb != 'undefined') trackingDb.transaction(logPosition, errorCB, successCB);
-                            db_id++;
+                            if (typeof trackingDb != 'undefined') {
+                                trackingDb.transaction(logPosition, errorCB, successCB);
+                                db_id++;
+                            }
 
                             $rootScope.$broadcast('geolocation.updated');
                         };
