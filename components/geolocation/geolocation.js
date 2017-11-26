@@ -247,8 +247,13 @@ define(['angular', 'ol'],
                         // handle geolocation error.
                         me.geolocation.on('error', function(error) {
                             var info = document.getElementById('info');
-                            info.innerHTML = error.message;
-                            info.style.display = '';
+                            if(info) {
+                                info.style.display = '';
+                                info.innerHTML = error.message;
+                            }
+                            else {
+                                console.error(error);   
+                            }
                         });
                         //var track = new ol.dom.Input(document.getElementById('track'));
                         //track.bindTo('checked', geolocation, 'tracking');

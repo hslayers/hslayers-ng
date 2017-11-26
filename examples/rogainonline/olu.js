@@ -115,7 +115,7 @@ define(['ol'],
                 return 0.0006;
             },
             maxSpeed: function () {
-                return 0.0004;
+                return 0.00008;
             },
             directionChanged: function (v) {
                 if (v) direction_changed = true;
@@ -249,7 +249,7 @@ define(['ol'],
                     }
                     if (greenery.indexOf(use) > -1) speed = me.maxSpeed() / 2.0;
                 });
-                return speed;
+                return speed * $scope.time_multiplier;
             },
             init: function (_$scope, _$compile, _map, _utils, _viewer, _character) {
                 $scope = _$scope;

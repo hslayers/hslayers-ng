@@ -12,9 +12,12 @@
                     You earned <strong>{{points_collected - time_penalty}}</strong> points with {{time_remaining|date:'HH:mm:ss'}} remaining.
                 </h1>
                 <p>
-                    <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(4)">New 4h game</button>
-                    <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(2)">New 2h game</button>
-                    <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(1)">New 1h game</button>
+                    <button class="btn btn-default" type="button" ng-click="getGpx()">Get GPX</button>
+                </p>
+                <p>
+                    <button class="btn btn-default" type="button" data-dismiss="modal" ng-click="createNewMap(4)">New 4h game</button>
+                    <button class="btn btn-default" type="button" data-dismiss="modal" ng-click="createNewMap(2)">New 2h game</button>
+                    <button class="btn btn-default" type="button" data-dismiss="modal" ng-click="createNewMap(1)">New 1h game</button>
                 </p>
             </div>
         </div>

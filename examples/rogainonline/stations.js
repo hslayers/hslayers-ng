@@ -26,7 +26,7 @@ define(['ol'],
         }
 
         function styleEntity(entity) {
-            entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 20000, 0.0);
+            entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 40000, 0.0);
             var picture = entity.properties.visited.getValue() ? 'viewpoint' : 'other';
             entity.billboard.image = entity.properties.start ? 'triangle-outline-64.png' : `../foodie-zones/symbols/${picture}.png`;
             entity.label = new Cesium.LabelGraphics({
@@ -105,7 +105,7 @@ define(['ol'],
             checkAtCoords: function (coords) {
                 var collected = 0.0;
                 source.cesium_layer.entities.values.forEach(function (entity) {
-                    if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 5 && entity.properties.visited.getValue() == false) {
+                    if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 15 && entity.properties.visited.getValue() == false) {
                         if (entity.properties.start) {
                             if (anything_collected) {
                                 entity.properties.visited.setValue(true);
