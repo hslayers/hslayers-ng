@@ -304,11 +304,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
-                    if(Core.isMobile()){
-                        if(angular.isUndefined(geolocation.geolocation))
-                        geolocation.gpsStatus = true;
-                    else
-                        geolocation.startGpsWatch();
+                    if (Core.isMobile()) {
+                        if (angular.isUndefined(geolocation.geolocation))
+                            geolocation.gpsStatus = true;
+                        else
+                            geolocation.startGpsWatch();
                     }
                 });
 
@@ -390,12 +390,17 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (data && angular.isDefined(data.latlng)) {
                         $scope.geolocated = true;
                         var l = data.latlng;
-                        character.currentPos([l[0], l[1]]);
+                        var altitude = geolocation.altitude || 0;
+                        character.currentPos([l[0], l[1], altitude]);
+                        if (altitude == 0) {
+                            character.calculateAltitude(last_time)
+                        }
                     }
                 });
 
-                $scope.locateMe = function(){
-                    if (geolocation.last_location && angular.isDefined(geolocation.last_location.latlng)) {geolocation
+                $scope.locateMe = function () {
+                    if (geolocation.last_location && angular.isDefined(geolocation.last_location.latlng)) {
+                        geolocation
                         $scope.geolocated = true;
                         var l = geolocation.last_location.latlng;
                         character.currentPos([l[0], l[1]]);
