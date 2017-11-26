@@ -381,7 +381,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 $scope.$on('geolocation.updated', function (event) {
-                    console.log('Location', geolocation.geolocation.last_location);
+                    if($scope.game_mode = 'real'){
+                        var l = geolocation.geolocation.last_location.latlng;
+                        character.currentPos([l[0], l[1]]);
+                    }
                 });
             }
         ]);
