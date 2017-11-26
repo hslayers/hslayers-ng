@@ -390,7 +390,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (data && angular.isDefined(data.latlng)) {
                         $scope.geolocated = true;
                         var l = data.latlng;
-                        var altitude = geolocation.altitude || 0;
+                        var altitude = data.altitude || 0;
                         character.currentPos([l[0], l[1], altitude]);
                         if (altitude == 0) {
                             character.calculateAltitude(last_time)
