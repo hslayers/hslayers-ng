@@ -157,6 +157,7 @@ define(['cesium'],
             getTargetPosition: function () { return target_position },
             positionCharacter,
             changeTargetPosition,
+            calculateAltitude,
             currentPos: function (to_what) { if (to_what) pos_lon_lat = to_what; return pos_lon_lat },
             flyToInitialLocation: flyToInitialLocation,
             init: function (_$scope, _$compile, _olus, _viewer, _stations) {
