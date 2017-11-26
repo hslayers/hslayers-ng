@@ -142,6 +142,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 Core.panelEnabled('print', false);
                 $scope.Core.setDefaultPanel('layermanager');
                 Core.sidebarExpanded = false;
+                Core.classicSidebar = false;
                 $scope.time_remaining = new Date(2000, 1, 0, 4, 30, 0, 0);
                 $scope.points_collected = 0;
                 pois.init($scope, $compile);
@@ -318,7 +319,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 });
 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
-                    if ($scope.game_state == 'before_game')
+                    if ($scope.game_state == 'before_game' && angular.isUndefined($scope.geolocated))
                         character.currentPos(center);
                 })
 
@@ -381,7 +382,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 $scope.$on('geolocation.updated', function (event) {
-                    if($scope.game_mode = 'real' && geolocation.geolocation.last_location){
+                    if(geolocation.geolocation.last_location){
+                        $scope.geolocated = true;
                         var l = geolocation.geolocation.last_location.latlng;
                         character.currentPos([l[0], l[1]]);
                     }
