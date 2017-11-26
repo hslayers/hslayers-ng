@@ -382,6 +382,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 $scope.$on('geolocation.updated', function (event) {
+                    debugger;
                     if(geolocation.geolocation.last_location){
                         $scope.geolocated = true;
                         var l = geolocation.geolocation.last_location.latlng;
