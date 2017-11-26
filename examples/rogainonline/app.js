@@ -388,6 +388,15 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         character.currentPos([l[0], l[1]]);
                     }
                 });
+
+                $scope.locateMe = function(){
+                    if (geolocation.last_location && angular.isDefined(geolocation.last_location.latlng)) {
+                        $scope.geolocated = true;
+                        var l = geolocation.last_location.latlng;
+                        character.currentPos([l[0], l[1]]);
+                        character.flyToInitialLocation();
+                    }
+                }
             }
         ]);
 
