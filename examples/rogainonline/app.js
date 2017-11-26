@@ -22,19 +22,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
             };
         }]);
 
-        module.directive('hs.aboutproject', function () {
-            function link(scope, element, attrs) {
-                setTimeout(function () {
-                    $('#about-dialog').modal('show');
-                }, 1500);
-            }
-            return {
-                templateUrl: './about.html?bust=' + gitsha,
-                link: link
-            };
-        });
-
-
         module.directive('hs.enddialog', function () {
             function link(scope, element, attrs) {
                 setTimeout(function () {
@@ -156,15 +143,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.points_collected = 0;
                 pois.init($scope, $compile);
                 stations.init($scope, $compile, olus);
-                $scope.game_state = '';
+                $scope.game_state = 'before_game';
                 $scope.time_penalty = 0;
                 $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
-
-                function createAboutDialog() {
-                    var el = angular.element('<div hs.aboutproject></div>');
-                    $("#hs-dialog-area").append(el);
-                    $compile(el)($scope);
-                }
 
                 function createHud() {
                     var el = angular.element('<div hs.hud></div>');
@@ -212,7 +193,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (!$scope.$$phase) $scope.$apply();
                 }
 
-                createAboutDialog();
                 createHud();
 
                 $scope.createNewMap = function (hours) {
@@ -292,13 +272,15 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     var scene = viewer.scene;
                     scene.globe.depthTestAgainstTerrain = true;
                     disableRightMouse(scene);
+                    character.currentPos([hs_map.map.getView().getCenter()[0], hs_map.map.getView().getCenter()[1], 0]);
                     character.init($scope, $compile, olus, viewer, stations);
                     olus.init($scope, $compile, map, utils, _viewer, character);
                     tick();
                 });
 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
-                    //pois.getPois(map, utils, bounds);
+                    if($scope.game_state == 'before_game')
+                        character.currentPos(center);
                 })
 
                 $scope.$on('infopanel.updated', function (event) { });

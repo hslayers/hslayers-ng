@@ -20,7 +20,7 @@ define(['cesium'],
         var last_altitude_calculated = 0;
         var last_position_altitude = [0, 0];
         var runningaudio = new Audio('running2.mp3');
-        
+
         function normalize(point, scale) {
             var norm = Math.sqrt(point.x * point.x + point.y * point.y);
             if (norm != 0) { // as3 return 0,0 for a point of zero length
@@ -87,9 +87,9 @@ define(['cesium'],
             Cesium.when(promise, function (updatedPositions) {
                 pos_lon_lat[2] = updatedPositions[0].height;
                 viewer.camera.flyTo({
-                    destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1] + 0.0005 * 4, pos_lon_lat[2] + 60*4),
+                    destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1] - 0.0005 * 4, pos_lon_lat[2] + 60 * 4),
                     orientation: {
-                        heading: Cesium.Math.toRadians(180.0),
+                        heading: Cesium.Math.toRadians(0.0),
                         pitch: Cesium.Math.toRadians(-45.0),
                         roll: 0.0
                     }
@@ -146,10 +146,10 @@ define(['cesium'],
         }
 
         return {
-            getTargetPosition: function(){return target_position},
+            getTargetPosition: function () { return target_position },
             positionCharacter,
             changeTargetPosition,
-            currentPos: function () { return pos_lon_lat },
+            currentPos: function (to_what) { if (to_what) pos_lon_lat = to_what; return pos_lon_lat },
             flyToInitialLocation: flyToInitialLocation,
             init: function (_$scope, _$compile, _olus, _viewer, _stations) {
                 $scope = _$scope;
@@ -165,14 +165,14 @@ define(['cesium'],
                     },
                     billboard: {
                         image: 'runner.png',
-                        pixelOffset: new Cesium.Cartesian2(0, -16), 
+                        pixelOffset: new Cesium.Cartesian2(0, -16),
                         scaleByDistance: new Cesium.NearFarScalar(100, 0.01, 500, 0.1),
                     },
                     position: position_property,
                     orientation: orientation_property
                 });
                 flyToInitialLocation();
-                runningaudio.addEventListener('ended', function() {
+                runningaudio.addEventListener('ended', function () {
                     this.currentTime = 0;
                     this.play();
                 }, false);
