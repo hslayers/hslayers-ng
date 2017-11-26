@@ -259,7 +259,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 function playGo() {
-                    var audio = new Audio('go.mp3');
+                    var audio = new Audio('sounds/go.mp3');
                     audio.play();
                 }
 
@@ -299,7 +299,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     $("#hs-dialog-area").append(el);
                     $compile(el)($scope);
                     $scope.game_started = false;
-                    var audio = new Audio('fanfare.mp3');
+                    var audio = new Audio('sounds/fanfare.mp3');
                     audio.play();
                 }
             }
