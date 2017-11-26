@@ -53,10 +53,10 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     key: 'get-yours-at-https://www.bingmapsportal.com/',
                     mapStyle: Cesium.BingMapsStyle.AERIAL
                 });
-
                 viewer = new Cesium.Viewer('cesiumContainer', {
                     timeline: false,
                     animation: false,
+                    creditContainer:  typeof config.creditContainer !='undefined' ? config.creditContainer : undefined,
                     infoBox: typeof config.cesiumInfoBox !='undefined' ? config.cesiumInfoBox : true,
                     terrainProvider: terrain_provider,
                     terrainExaggeration: config.terrainExaggeration || 1.0,
