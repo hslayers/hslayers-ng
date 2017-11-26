@@ -1,4 +1,4 @@
-<div style="position: absolute; left: 10px; top:0px; z-index: 100">
+<div style="position: absolute; left: 10px; top:0px; z-index: 100; width: 30%">
     <link href="https://fonts.googleapis.com/css?family=Lato:700" rel="stylesheet">
     <style>
         .hsr-speed,
@@ -41,6 +41,23 @@
         -{{time_penalty}}
     </span><span class="hsr-points"> points
     </span>
+    <div class="well" ng-show="game_state=='before_game'">
+        <h3>Rogaining RPG</h3>
+        <p>
+            This is a game which simulates a rogaining (orienteering) competition. <br/>
+            The objective is to visit as many stations as possible in a fixed amount of time in any order. <br/>You get different amount of points for each station. Be back at start until 0:00.<br/>
+        </p>
+        <p>
+            <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(4)">New 4h game</button>
+            <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(2)">New 2h game</button>
+            <button class="btn btn-primary" type="button" data-dismiss="modal" ng-click="createNewMap(1)">New 1h game</button>
+            <img ng-show="game_state=='generating'" ng-src="{{ajax_loader}}"/>   
+        </p>
+        <p>
+            <small>This application visualises the <a href="http://sdi4apps.eu/open_land_use/" target="_blank">Open Land Use</a> dataset on top of the EU-DEM terrain model in a perspective view.</small>
+        </p>
+        <!--<button class="btn btn-primary" ng-click="donePlanning()">Done planning</button>-->
+    </div>
     <div class="well" ng-show="game_state=='planning'">
         <h3>Planning mode</h3>
         <p>Right click on map to draw a draft route of around 20km.
