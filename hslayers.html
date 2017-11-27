@@ -5,7 +5,7 @@
 <link rel="stylesheet" ng-href="{{hsl_path}}css/app.css"/>
 
 <div id="page-wrapper">
-    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.classicSidebar && Core.sidebarRight && !Core.puremapApp, 'sb-left': Core.classicSidebar && !Core.sidebarRight && !Core.puremapApp}">
+    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight && !Core.puremapApp, 'sb-left': !Core.sidebarRight && !Core.puremapApp}">
         <div class="page-content">
             <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
             <div hs.toolbar.directive ng-controller="hs.toolbar.controller" ng-if="Core.exists('hs.toolbar.controller') && !Core.puremapApp" ng-show="!Core.smallWidth || !Core.sidebarExpanded"></div>
