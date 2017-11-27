@@ -195,8 +195,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                         me.selector = selector;
                     })
                 }])
-            .service('hs.query.wmsService', ['$rootScope', '$sce', 'hs.query.baseService', 'hs.map.service', 'hs.utils.service',
-                function ($rootScope, $sce, Base, OlMap, utils) {
+            .service('hs.query.wmsService', ['$rootScope', '$sce', 'hs.query.baseService', 'hs.map.service', 'hs.utils.service', 'Core', 
+                function ($rootScope, $sce, Base, OlMap, utils, Core) {
                     var me = this;
 
                     var InfoCounter = 0;
