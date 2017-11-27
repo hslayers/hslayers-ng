@@ -29,6 +29,7 @@ define(['ol'],
             entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 40000, 0.0);
             var picture = entity.properties.visited.getValue() ? 'viewpoint' : 'other';
             entity.billboard.image = entity.properties.start ? 'triangle-outline-64.png' : `../foodie-zones/symbols/${picture}.png`;
+            entity.billboard.eyeOffset = new Cesium.Cartesian3(0.0,0.0,-100.0);
             entity.label = new Cesium.LabelGraphics({
                 text: entity.properties.label,
                 font: '18px "Lato", sans-serif',
@@ -38,10 +39,11 @@ define(['ol'],
                 showBackground: true,
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                pixelOffset: new Cesium.Cartesian2(0, entity.properties.start ? -40 : -30),
+                pixelOffset: new Cesium.Cartesian2(0, entity.properties.start ? -50 : -40),
                 pixelOffsetScaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+                eyeOffset: new Cesium.Cartesian3(0.0,0.0,-200.0)
             });
         }
 
@@ -57,8 +59,8 @@ define(['ol'],
             return found_close
         }
 
-        function getMapWidth() {
-            return 0.052;
+        function getMapWidth(hours) {
+            return 10 * hours / 4;
         }
         return {
             getMapWidth: getMapWidth,
@@ -72,10 +74,13 @@ define(['ol'],
                     start: true,
                     visited: false
                 })];
+                var bounds = {west: null, east: null, north: null, south: null };
                 for (i = 1; i < 1000; i++) {
+                    var to_deg_x = (111.320 * Math.cos(c[1] * Math.PI / 180));
+                    var to_deg_y = 110;
                     var try_pnt = {
-                        x: c[0] - getMapWidth() / 2.0 + Math.random() * getMapWidth(),
-                        y: c[1] - getMapWidth() / 2.0 + Math.random() * getMapWidth()
+                        x: c[0] - getMapWidth(hours) / 2.0 / to_deg_x + Math.random() * getMapWidth(hours) / to_deg_x,
+                        y: c[1] - getMapWidth(hours) / 2.0 / to_deg_y + Math.random() * getMapWidth(hours) / to_deg_y
                     };
                     if (!olus.buildingExistsAtCoordinate(try_pnt) && !stationExistsAtCoordinate(try_pnt, features)) {
                         var points = Math.floor((20 + Math.random() * 69));
@@ -85,6 +90,10 @@ define(['ol'],
                             points: points,
                             visited: false
                         });
+                        if(bounds.west==null || try_pnt.x < bounds.west) bounds.west = try_pnt.x;
+                        if(bounds.east==null || try_pnt.x > bounds.east) bounds.east = try_pnt.x;
+                        if(bounds.north==null || try_pnt.y > bounds.north) bounds.north = try_pnt.y;
+                        if(bounds.south==null || try_pnt.y < bounds.south) bounds.south = try_pnt.y;
                         features.push(feature);
                         points_added++;
                     }
@@ -93,7 +102,7 @@ define(['ol'],
                 source.addFeatures(features);
                 source.set('loaded', true);
                 source.dispatchEvent('features:loaded', source);
-                callback();
+                callback(bounds);
             },
             createLayer: function () {
                 return new ol.layer.Vector({
