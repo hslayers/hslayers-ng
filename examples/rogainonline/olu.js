@@ -98,12 +98,13 @@ define(['ol'],
         function generateViewSectorPoints(c) {
             var target = character.getTargetPosition();
             if (target == null) return;
-            var head_rad = Math.atan2((target[0] - c[0])/2, target[1] - c[1]);
-            var view_distance = 0.001;
+            var elips = new Cesium.EllipsoidGeodesic(Cesium.Cartographic.fromDegrees(target[0], target[1]), Cesium.Cartographic.fromDegrees(c[0], c[1]))
+            var head_rad = -elips.startHeading - Math.PI / 2;
+            var view_distance = 0.5; //km
             var pnts = [c[0], c[1]];
             for (var a = - Math.PI / 6; a < + Math.PI / 6; a += + Math.PI / 24) {
-                pnts.push(c[0] + Math.sin(head_rad + a) * view_distance * 1.5);
-                pnts.push(c[1] + Math.cos(head_rad + a) * view_distance)
+                pnts.push(c[0] + Math.cos(head_rad + a) * (view_distance / (111.320 * Math.cos(c[1] * Math.PI / 180)))); //At equator 1 lon degree is 110km, at poles 0
+                pnts.push(c[1] + Math.sin(head_rad + a) * (view_distance / 110)) //Latitude is 1 degree=110km
             };
             pnts.push(c[0]);
             pnts.push(c[1]);
@@ -258,6 +259,8 @@ define(['ol'],
                 utils = _utils;
                 viewer = _viewer;
                 character = _character;
+                $scope.val1 = 1;
+                $scope.val2 = 1;
             }
         }
         return me;
