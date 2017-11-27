@@ -380,7 +380,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
                         OlMap.map.getLayers().forEach(function (layer) {
                             if (layer.get('queryFilter') != undefined) {
                                 var filter = layer.get('queryFilter');
-                                if (filter(map, layer, evt.pixel)) me.queryWmsLayer(layer, evt.coordinate);
+                                if (filter(OlMap.map, layer, evt.pixel)) me.queryWmsLayer(layer, evt.coordinate);
                             }
                             else me.queryWmsLayer(layer, evt.coordinate);
                         });
