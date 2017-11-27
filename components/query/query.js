@@ -496,7 +496,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
             .controller('hs.query.controller', ['$scope', '$rootScope', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core',
                 function ($scope, $rootScope ,OlMap, Base, WMS, Vector, Core) {
                     var popup = new ol.Overlay.Popup();
-                    OlMap.map.addOverlay(popup);
+
+                    if (OlMap.map) 
+                        OlMap.map.addOverlay(popup);
+                    else
+                        $rootScope.$on('map.loaded', function () {
+                            OlMap.map.addOverlay(popup);
+                        });
+
+                    
                     $scope.data = Base.data;
     
                     if (Core.current_panel_queryable) {

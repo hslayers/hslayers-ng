@@ -456,7 +456,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                  * @description 
                  */
                 $scope.init = function () {
-                    service.init();
+                    if (hs_map.map) 
+                        service.init();
+                    else
+                        $rootScope.$on('map.loaded', function () {
+                            service.init();
+                        });
                 }
 
                 /**
