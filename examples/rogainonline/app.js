@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 'character', 'sidebar', 'query', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 'character', 'sidebar', 'query', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap', 'panel'],
 
     function (ol, toolbar, layermanager, geojson, pois, olus, stations, character) {
         var module = angular.module('hs', [
@@ -9,7 +9,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
             'hs.print', 'hs.permalink',
             'hs.geolocation',
             'hs.cesium',
-            'hs.sidebar'
+            'hs.sidebar',
+            'hs.rogainonline'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$compile', '$timeout', function (OlMap, Core, $compile, $timeout) {
@@ -99,6 +100,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
                 active: true
             }],
+            cesiumInfoBox: false,
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
@@ -140,7 +142,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 Core.panelEnabled('compositions', false);
                 Core.panelEnabled('status_creator', false);
                 Core.panelEnabled('print', false);
-                $scope.Core.setDefaultPanel('layermanager');
+                Core.panelEnabled('layermanager', false);
                 Core.sidebarExpanded = false;
                 Core.classicSidebar = false;
                 $scope.time_remaining = new Date(2000, 1, 0, 4, 30, 0, 0);
@@ -148,10 +150,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 pois.init($scope, $compile);
                 stations.init($scope, $compile, olus);
                 $scope.game_state = 'before_game';
-                $scope.game_mode = 'virtual';
+                $scope.game_mode = Core.isMobile() ? 'real' : 'virtual';
                 $scope.time_penalty = 0;
                 $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
                 $scope.time_multiplier = 10;
+                Core.setDefaultPanel('rogainonline');
+                Core.sidebarExpanded = false;
 
                 function createHud() {
                     var el = angular.element('<div hs.hud></div>');
@@ -169,6 +173,14 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         scene.screenSpaceCameraController.enableZoom = true;
                     }, Cesium.ScreenSpaceEventType.RIGHT_UP);
                 }
+
+                $scope.$on("scope_loaded", function (event, args) {
+                    if (args == 'Sidebar') {
+                        var el = angular.element('<div id="test3" hs.rogainonline.panel_directive></div>');
+                        angular.element('#panelplace').append(el);
+                        $compile(el)($scope);
+                    }
+                })
 
                 function tick(timestamp) {
                     if (timestamp) {
@@ -196,10 +208,29 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     Cesium.requestAnimationFrame(tick);
                 }
 
+                var bad_rednering_detected_time = null;
+                var rendering_resolution_reduced = false;
                 function updHud() {
                     if (last_time - last_hud_updated < 500) return;
                     last_hud_updated = last_time;
+                    checkBadPerformance();
                     if (!$scope.$$phase) $scope.$apply();
+                }
+
+                function checkBadPerformance() {
+                    if (!rendering_resolution_reduced && parseFloat($('.cesium-performanceDisplay-fps').html()) < 20) {
+                        if (bad_rednering_detected_time == null) {
+                            bad_rednering_detected_time = last_time;
+                        }
+                        if (last_time - bad_rednering_detected_time > 6000 && devicePixelRatio != 1) {
+                            alert('Reducing the resolution due to bad rendering performance ');
+                            viewer.resolutionScale = 1.0 / devicePixelRatio;
+                            bad_rednering_detected_time = null;
+                            rendering_resolution_reduced = true;
+                        }
+                    } else {
+                        bad_rednering_detected_time = null;
+                    }
                 }
 
                 function countRunDistance() {
@@ -272,6 +303,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     last_measure_pick = lon_lat;
                 }
 
+                $scope.total_distance_run = 0;
                 function addRunPosition(lon_lat) {
                     if (last_run_position == null)
                         last_run_position = character.currentPos();
@@ -327,6 +359,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
                     if ($scope.game_state == 'before_game' && angular.isUndefined($scope.geolocated))
                         character.currentPos(center);
+                    olus.getOlus(character.currentPos());
                 })
 
                 $scope.$on('infopanel.updated', function (event) { });
@@ -400,7 +433,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         if (altitude_bad) {
                             character.calculateAltitude(last_time)
                         }
-                      
+
                     }
                 });
 

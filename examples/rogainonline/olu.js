@@ -82,33 +82,37 @@ define(['ol'],
         function createViewSector(pnts) {
             if (view_sector != null)
                 viewer.scene.primitives.remove(view_sector);
-            var rectangleInstance = new Cesium.GeometryInstance({
-                geometry: new Cesium.PolygonGeometry({
-                    polygonHierarchy: new Cesium.PolygonHierarchy(Cesium.Cartesian3.fromDegreesArray(pnts))
-                }),
-                attributes: {
-                    color: new Cesium.ColorGeometryInstanceAttribute(0.0, .6, .8, 0.3)
-                }
-            });
-            view_sector = viewer.scene.primitives.add(new Cesium.GroundPrimitive({
-                geometryInstances: rectangleInstance
-            }));
+            if ($scope.game_mode == 'virtual') {
+                var rectangleInstance = new Cesium.GeometryInstance({
+                    geometry: new Cesium.PolygonGeometry({
+                        polygonHierarchy: new Cesium.PolygonHierarchy(Cesium.Cartesian3.fromDegreesArray(pnts))
+                    }),
+                    attributes: {
+                        color: new Cesium.ColorGeometryInstanceAttribute(0.0, .6, .8, 0.3)
+                    }
+                });
+                view_sector = viewer.scene.primitives.add(new Cesium.GroundPrimitive({
+                    geometryInstances: rectangleInstance
+                }));
+            }
         }
 
         function generateViewSectorPoints(c) {
-            var target = character.getTargetPosition();
-            if (target == null) return;
-            var elips = new Cesium.EllipsoidGeodesic(Cesium.Cartographic.fromDegrees(target[0], target[1]), Cesium.Cartographic.fromDegrees(c[0], c[1]))
-            var head_rad = -elips.startHeading - Math.PI / 2;
-            var view_distance = 0.5; //km
-            var pnts = [c[0], c[1]];
-            for (var a = - Math.PI / 6; a < + Math.PI / 6; a += + Math.PI / 24) {
-                pnts.push(c[0] + Math.cos(head_rad + a) * (view_distance / (111.320 * Math.cos(c[1] * Math.PI / 180)))); //At equator 1 lon degree is 110km, at poles 0
-                pnts.push(c[1] + Math.sin(head_rad + a) * (view_distance / 110)) //Latitude is 1 degree=110km
-            };
-            pnts.push(c[0]);
-            pnts.push(c[1]);
-            return pnts;
+            if ($scope.game_mode == 'virtual') {
+                var target = character.getTargetPosition();
+                if (target == null) return;
+                var elips = new Cesium.EllipsoidGeodesic(Cesium.Cartographic.fromDegrees(target[0], target[1]), Cesium.Cartographic.fromDegrees(c[0], c[1]))
+                var head_rad = -elips.startHeading - Math.PI / 2;
+                var view_distance = 0.5; //km
+                var pnts = [c[0], c[1]];
+                for (var a = - Math.PI / 6; a < + Math.PI / 6; a += + Math.PI / 24) {
+                    pnts.push(c[0] + Math.cos(head_rad + a) * (view_distance / (111.320 * Math.cos(c[1] * Math.PI / 180)))); //At equator 1 lon degree is 110km, at poles 0
+                    pnts.push(c[1] + Math.sin(head_rad + a) * (view_distance / 110)) //Latitude is 1 degree=110km
+                };
+                pnts.push(c[0]);
+                pnts.push(c[1]);
+                return pnts;
+            }
         }
 
         var me = {
@@ -139,18 +143,18 @@ define(['ol'],
                 var pnts = generateViewSectorPoints(c);
                 direction_changed = false;
                 createViewSector(pnts);
-
-                olu_source.getFeatures().forEach(function (feature) {
-                    feature.set('flaged', true);
-                })
-                //console.log('done', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-                var spnts = '';
-                for (var i = 0; i < pnts.length; i++) {
-                    spnts += pnts[i].toString() + ' ';
-                    if (i % 2 == 1 && i != pnts.length - 1) spnts += ', ';
-                };
-                var extents = `POLYGON ((${spnts}))`;
-                var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
+                if ($scope.game_mode == 'virtual') {
+                    olu_source.getFeatures().forEach(function (feature) {
+                        feature.set('flaged', true);
+                    })
+                    //console.log('done', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                    var spnts = '';
+                    for (var i = 0; i < pnts.length; i++) {
+                        spnts += pnts[i].toString() + ' ';
+                        if (i % 2 == 1 && i != pnts.length - 1) spnts += ', ';
+                    };
+                    var extents = `POLYGON ((${spnts}))`;
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX geo: <http://www.opengis.net/ont/geosparql#> 
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/> 
                 PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> 
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -163,42 +167,43 @@ define(['ol'],
                     FILTER(?use!="17"^^xsd:string)
                 }`) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
-                olu_source.set('loaded', false);
-                $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        if (angular.isUndefined(response.results)) return;
-                        //console.log('got it', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-                        var features = [];
-                        for (var i = 0; i < response.results.bindings.length; i++) {
-                            try {
-                                var b = response.results.bindings[i];
-                                if (b.wkt.datatype == "http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.wkt.value.indexOf('e+') == -1 && b.wkt.value.indexOf('e-') == -1) {
-                                    if (olu_source.getFeatureById(b.o.value) == null) {
-                                        var g_feature = format.readFeature(b.wkt.value.toUpperCase());
-                                        var ext = g_feature.getGeometry().getExtent()
-                                        var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection());
-                                        var feature = new ol.Feature({ geometry: geom_transformed, olu: b.o.value, use: b.use.value, flaged: false });
-                                        feature.setId(b.o.value);
-                                        features.push(feature);
-                                    } else {
-                                        olu_source.getFeatureById(b.o.value).set('flaged', false);
-                                    }
-                                }
-                            } catch (ex) {
-                                //console.log(ex);
-                            }
-                        }
-                        //olu_source.clear();
-                        olu_source.addFeatures(features);
-                        olu_source.getFeatures().forEach(function (feature) {
-                            if (feature.get('flaged') == true) olu_source.removeFeature(feature);
-                        })
-                        olu_source.set('loaded', true);
-                        //console.log('ol features added', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-                        olu_source.dispatchEvent('features:loaded', olu_source);
+                    olu_source.set('loaded', false);
+                    $.ajax({
+                        url: q
                     })
+                        .done(function (response) {
+                            if (angular.isUndefined(response.results)) return;
+                            //console.log('got it', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                            var features = [];
+                            for (var i = 0; i < response.results.bindings.length; i++) {
+                                try {
+                                    var b = response.results.bindings[i];
+                                    if (b.wkt.datatype == "http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.wkt.value.indexOf('e+') == -1 && b.wkt.value.indexOf('e-') == -1) {
+                                        if (olu_source.getFeatureById(b.o.value) == null) {
+                                            var g_feature = format.readFeature(b.wkt.value.toUpperCase());
+                                            var ext = g_feature.getGeometry().getExtent()
+                                            var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection());
+                                            var feature = new ol.Feature({ geometry: geom_transformed, olu: b.o.value, use: b.use.value, flaged: false });
+                                            feature.setId(b.o.value);
+                                            features.push(feature);
+                                        } else {
+                                            olu_source.getFeatureById(b.o.value).set('flaged', false);
+                                        }
+                                    }
+                                } catch (ex) {
+                                    //console.log(ex);
+                                }
+                            }
+                            //olu_source.clear();
+                            olu_source.addFeatures(features);
+                            olu_source.getFeatures().forEach(function (feature) {
+                                if (feature.get('flaged') == true) olu_source.removeFeature(feature);
+                            })
+                            olu_source.set('loaded', true);
+                            //console.log('ol features added', (new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+                            olu_source.dispatchEvent('features:loaded', olu_source);
+                        })
+                }
             },
             createOluLayer: function () {
                 return new ol.layer.Vector({
