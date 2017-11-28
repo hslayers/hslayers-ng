@@ -121,8 +121,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
             })
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', '$timeout', 'hs.geolocation.service',
-            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce, $timeout, geolocation) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', '$timeout', 'hs.geolocation.service', 'Socialshare', 'hs.permalink.service_url', '$http',
+            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce, $timeout, geolocation, socialshare, permalink_service, $http) {
                 var map;
                 var viewer;
                 var last_time = 0;
@@ -445,6 +445,43 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         character.currentPos([l[0], l[1]]);
                         character.flyToInitialLocation();
                     }
+                }
+
+                $scope.share = function () {
+                    viewer.render();
+                    $.ajax({
+                        type: "POST",
+                        url: "sharestore.php",
+                        data: {
+                            img: viewer.canvas.toDataURL()
+                        }
+                    }).done(function (o) {
+                        if (o.result == 1) {
+                            shareSocial('facebook', o.file)
+                        }
+                    });
+                }
+
+                function shareSocial(provider, image_file){
+                    var url = permalink_service.getPermalinkUrl() + '&image='+image_file;
+                    $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
+                        longUrl: url
+                    }).success(function(data, status, headers, config) {
+                        $scope.share_url = data.id;
+                        socialshare.share({
+                            'provider': provider,
+                            'attrs': {
+                                'socialshareText': ($scope.total_distance_run / 1000).toFixed(2) + 'km run',
+                                'socialshareSubject': ($scope.total_distance_run / 1000).toFixed(2) + 'km run',
+                                'socialshareBody': ($scope.total_distance_run / 1000).toFixed(2) + 'km run',
+                                'socialshareUrl': $scope.share_url,
+                                'socialsharePopupHeight': 600,
+                                'socialsharePopupWidth': 500
+                            }
+                        })
+                    }).error(function(data, status, headers, config) {
+                        if(console) console.log('Error creating short Url');
+                    });  
                 }
             }
         ]);

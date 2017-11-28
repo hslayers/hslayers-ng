@@ -8,6 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <?php if (isset($_GET['image'])) { ?>
+      <meta name="description" content="My run" />
+      <!-- Twitter Card data -->
+      <meta name="twitter:card" value="My run">
+
+      <!-- Open Graph data -->
+      <meta property="og:title" content="My run" />
+      <meta property="og:type" content="map" />
+      <meta property="og:url" content="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
+      <meta property="og:image" content="<?php echo "http://$_SERVER[HTTP_HOST]" . explode('?', $_SERVER["REQUEST_URI"])[0] . "images/".$_GET['image'].'.png'; ?>" />
+      <meta property="og:description" content="My run" />
+      <?php } ?>
 </head>
 
 <body>
