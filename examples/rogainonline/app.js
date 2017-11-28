@@ -153,7 +153,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.game_mode = Core.isMobile() ? 'real' : 'virtual';
                 $scope.time_penalty = 0;
                 $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
-                $scope.time_multiplier = 10;
+                $scope.time_multiplier = Core.isMobile() ? 1 : 10;
                 Core.setDefaultPanel('rogainonline');
                 Core.sidebarExpanded = false;
 
