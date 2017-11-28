@@ -24,8 +24,13 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
       <!-- Open Graph data -->
       <meta property="og:title" content="My run on Rogainonline" />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
-      <meta property="og:image" content="<?php echo "http://$_SERVER[HTTP_HOST]" . explode('?', $_SERVER["REQUEST_URI"])[0] . "images/".$_GET['image'].'.png'; ?>" />
+      <meta property="og:url" content="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
+      <meta property="og:image" content="<?php echo "https://$_SERVER[HTTP_HOST]" . explode('?', $_SERVER["REQUEST_URI"])[0] . "images/".$_GET['image'].'.png'; ?>" />
+      <?php
+        $imageinfo = getimagesize("images/".$_GET['image'].'.png');
+      ?>
+      <meta property="og:image:width" content="<?php echo $imageinfo[0] ?>"/>
+      <meta property="og:image:height" content="<?php echo $imageinfo[1] ?>"/>
       <meta property="og:description" content="<?php echo "I just ran ".$_GET['km']." km" ?>" />
       <?php } ?>
 </head>
