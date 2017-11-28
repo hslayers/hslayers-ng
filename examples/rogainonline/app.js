@@ -498,6 +498,17 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         if (console) console.log('Error creating short Url');
                     });
                 }
+
+                $scope.restart = function(){
+                    $scope.game_state = 'before_game';
+                    $scope.game_started = false;
+                    stations.clear();
+                    if (track_line_primitive != null) viewer.scene.primitives.remove(track_line_primitive);
+                    angular.forEach(track_segment_collection, function(line){
+                        viewer.scene.primitives.remove(line);
+                    })
+                    track_points = [];
+                }
             }
         ]);
 
