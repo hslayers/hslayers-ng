@@ -25,7 +25,7 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
       <meta property="og:title" content="My run on Rogainonline" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
-      <meta property="og:image" content="<?php echo "https://$_SERVER[HTTP_HOST]" . explode('?', $_SERVER["REQUEST_URI"])[0] . "images/".$_GET['image'].'.png'; ?>" />
+      <meta property="og:image" content="<?php echo "http://$_SERVER[HTTP_HOST]" . explode('?', $_SERVER["REQUEST_URI"])[0] . "images/".$_GET['image'].'.png'; ?>" />
       <?php
         $imageinfo = getimagesize("images/".$_GET['image'].'.png');
       ?>
