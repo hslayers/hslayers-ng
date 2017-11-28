@@ -5,12 +5,14 @@
         <div class="panel-body">
                 <p>Total distance: {{(total_distance_run / 1000) | number:2}}</p>
                 <p>
-                    <button class="btn btn-default" type="button" ng-click="getGpx()">Get GPX</button>
+                    <button class="btn btn-default" type="button" ng-click="getGpx()">
+                        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                            Get GPX</button>
                 </p>
                 <p>
-                    <button class="btn btn-default" type="button" ng-click="share()">Share</button>
+                    <button class="btn btn-default" type="button" ng-click="share()"><i class="icon-facebook"></i> Share</button>
                 </p>
-            
+                <button class="btn btn-default" ng-click="restart()" title="New run"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> New run</button>
         </div>
     </div>
 </div>

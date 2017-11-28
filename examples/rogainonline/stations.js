@@ -104,6 +104,10 @@ define(['ol'],
                 source.dispatchEvent('features:loaded', source);
                 callback(bounds);
             },
+            clear(){
+                source.clear();
+                source.dispatchEvent('features:loaded', source);
+            },
             createLayer: function () {
                 return new ol.layer.Vector({
                     title: "Stations",
