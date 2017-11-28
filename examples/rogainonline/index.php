@@ -9,16 +9,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <?php if (isset($_GET['image'])) { ?>
-      <meta name="description" content="My run" />
+      <meta name="description" content="<?php echo "I just ran ".$_GET['image']." km" ?>" />
       <!-- Twitter Card data -->
-      <meta name="twitter:card" value="My run">
+      <meta name="twitter:card" value="<?php echo "I just ran ".$_GET['image']." km" ?>">
 
       <!-- Open Graph data -->
-      <meta property="og:title" content="My run" />
-      <meta property="og:type" content="map" />
+      <meta property="og:title" content="My run on Rogainonline" />
+      <meta property="og:type" content="website" />
       <meta property="og:url" content="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" />
       <meta property="og:image" content="<?php echo "http://$_SERVER[HTTP_HOST]" . explode('?', $_SERVER["REQUEST_URI"])[0] . "images/".$_GET['image'].'.png'; ?>" />
-      <meta property="og:description" content="My run" />
+      <meta property="og:description" content="<?php echo "I just ran ".$_GET['km']." km" ?>" />
       <?php } ?>
 </head>
 

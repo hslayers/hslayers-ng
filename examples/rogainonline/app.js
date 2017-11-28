@@ -463,7 +463,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 function shareSocial(provider, image_file){
-                    var url = permalink_service.getPermalinkUrl() + '&image='+image_file;
+                    var url = permalink_service.getPermalinkUrl() + '&image='+image_file+ '&km='+encodeURIComponent(($scope.total_distance_run / 1000).toFixed(2));
                     $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
                         longUrl: url
                     }).success(function(data, status, headers, config) {
