@@ -460,6 +460,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 $scope.share = function () {
+                    var tmp_resol = viewer.resolutionScale;
+                    viewer.resolutionScale = 1; 
                     viewer.render();
                     $.ajax({
                         type: "POST",
@@ -472,6 +474,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                             shareSocial('facebook', o.file)
                         }
                     });
+                    viewer.resolutionScale = tmp_resol;
                 }
 
                 function shareSocial(provider, image_file) {
