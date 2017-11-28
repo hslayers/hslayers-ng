@@ -201,12 +201,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         character.positionCharacter(time_ellapsed, timestamp);
                         last_time = timestamp;
                         updHud();
-                        if ($scope.game_state == 'running') {
-                            countRunDistance()
-                        }
                     }
                     Cesium.requestAnimationFrame(tick);
                 }
+
+                setInterval(countRunDistance, 2000);
 
                 var bad_rednering_detected_time = null;
                 var rendering_resolution_reduced = false;
@@ -234,6 +233,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 function countRunDistance() {
+                    if ($scope.game_state != 'running') return;
                     if (last_time - last_run_counted < 1000) return;
                     last_run_counted = last_time;
                     addRunPosition(character.currentPos());
@@ -304,28 +304,39 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 $scope.total_distance_run = 0;
+                var track_points = [];
+                var track_line_primitive = null;
+                var track_segment_collection = [];
                 function addRunPosition(lon_lat) {
                     if (last_run_position == null)
                         last_run_position = character.currentPos();
-                    var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(last_run_position[0], last_run_position[1]), Cesium.Cartesian3.fromDegrees(lon_lat[0], lon_lat[1]));
+                    var caretesian_pos = Cesium.Cartesian3.fromDegrees(lon_lat[0], lon_lat[1]);
+                    var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(last_run_position[0], last_run_position[1]), caretesian_pos);
                     if (distance > 0) {
+                        track_points.push(caretesian_pos);
                         $scope.total_distance_run += distance;
-                        var rectangleInstance = new Cesium.GeometryInstance({
-                            geometry: new Cesium.CorridorGeometry({
-                                positions: Cesium.Cartesian3.fromDegreesArray([last_run_position[0], last_run_position[1], lon_lat[0], lon_lat[1]]),
-                                width: 5
-                            }),
-                            attributes: {
-                                color: new Cesium.ColorGeometryInstanceAttribute(0.9, .9, .1, 0.8)
+                        if (track_points.length > 1) {
+                            var lineInstance = new Cesium.GeometryInstance({
+                                geometry: new Cesium.CorridorGeometry({
+                                    positions: track_points,
+                                    width: 5
+                                }),
+                                attributes: {
+                                    color: new Cesium.ColorGeometryInstanceAttribute(0.9, .9, .1, 0.8)
+                                }
+                            });
+                            if (track_line_primitive != null) viewer.scene.primitives.remove(track_line_primitive);
+                            track_line_primitive = new Cesium.GroundPrimitive({
+                                geometryInstances: lineInstance
+                            })
+                            viewer.scene.primitives.add(track_line_primitive);
+                            if (track_points.length >= 200) {
+                                track_segment_collection.push(track_line_primitive)
+                                track_line_primitive = null;
+                                track_points = [caretesian_pos];
                             }
-                        });
-                        var line = viewer.scene.primitives.add(new Cesium.GroundPrimitive({
-                            geometryInstances: rectangleInstance
-                        }));
-                        line.point = [lon_lat[0], lon_lat[1], lon_lat[2]];
-                        line.time = new Date();
-                        line.distance = distance;
-                        running_line_segments.push(line);
+                        }
+                        running_line_segments.push({ point: [lon_lat[0], lon_lat[1], lon_lat[2]], time: new Date(), distance: distance });
                     }
                     last_run_position = [lon_lat[0], lon_lat[1], lon_lat[2]];
                 }
@@ -430,6 +441,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         var altitude_bad = data.altitude == null || angular.isUndefined(data.altitude);
                         var altitude = (data.altitude || last_good_altitude) || 0;
                         character.currentPos([l[0], l[1], altitude]);
+                        stations.checkAtCoords(character.currentPos());
                         if (altitude_bad) {
                             character.calculateAltitude(last_time)
                         }
@@ -462,11 +474,11 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     });
                 }
 
-                function shareSocial(provider, image_file){
-                    var url = permalink_service.getPermalinkUrl() + '&image='+image_file+ '&km='+encodeURIComponent(($scope.total_distance_run / 1000).toFixed(2));
+                function shareSocial(provider, image_file) {
+                    var url = permalink_service.getPermalinkUrl() + '&image=' + image_file + '&km=' + encodeURIComponent(($scope.total_distance_run / 1000).toFixed(2));
                     $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
                         longUrl: url
-                    }).success(function(data, status, headers, config) {
+                    }).success(function (data, status, headers, config) {
                         $scope.share_url = data.id;
                         socialshare.share({
                             'provider': provider,
@@ -479,9 +491,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                                 'socialsharePopupWidth': 500
                             }
                         })
-                    }).error(function(data, status, headers, config) {
-                        if(console) console.log('Error creating short Url');
-                    });  
+                    }).error(function (data, status, headers, config) {
+                        if (console) console.log('Error creating short Url');
+                    });
                 }
             }
         ]);
