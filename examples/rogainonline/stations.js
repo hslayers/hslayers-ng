@@ -88,7 +88,7 @@ define(['ol'],
                         x: c[0] - getMapWidth(hours) / 2.0 / to_deg_x + Math.random() * getMapWidth(hours) / to_deg_x,
                         y: c[1] - getMapWidth(hours) / 2.0 / to_deg_y + Math.random() * getMapWidth(hours) / to_deg_y
                     };
-                    if (!olus.buildingExistsAtCoordinate(try_pnt) && !stationExistsAtCoordinate(try_pnt, features)) {
+                    if (!stationExistsAtCoordinate(try_pnt, features) && !olus.buildingExistsAtCoordinate(try_pnt)) {
                         var points = Math.floor((20 + Math.random() * 69));
                         var feature = new ol.Feature({
                             geometry: new ol.geom.Point([try_pnt.x, try_pnt.y]),
