@@ -208,7 +208,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if(distance_counter_timer!=null) clearInterval(distance_counter_timer);
                     distance_counter_timer = setInterval(countRunDistance, 2000 / $scope.time_multiplier);
                     $scope.game_state = 'running';
-                    character.flyToInitialLocation();
+                    character.flyToInitialLocation(true);
                     playGo();
                 }
 

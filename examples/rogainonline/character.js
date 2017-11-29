@@ -90,9 +90,9 @@ define(['cesium'],
                 olus.updMap(timestamp, pos_lon_lat);
         }
 
-        function flyToInitialLocation() {
+        function flyToInitialLocation(force_over_user_input) {
             if (typeof viewer == 'undefined') return;
-            if (user_input_state || (new Date() - last_user_input) < 3000) return;
+            if ((user_input_state || (new Date() - last_user_input) < 3000) && (typeof force_over_user_input == 'undefined' || !force_over_user_input)) return;
             var positions = [
                 Cesium.Cartographic.fromDegrees(pos_lon_lat[0], pos_lon_lat[1])
             ];
