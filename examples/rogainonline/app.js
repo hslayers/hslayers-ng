@@ -205,6 +205,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 function startRunning() {
                     $scope.game_started = true;
+                    stations.playCollectedAudio();
                     if(distance_counter_timer!=null) clearInterval(distance_counter_timer);
                     distance_counter_timer = setInterval(countRunDistance, 2000 / $scope.time_multiplier);
                     $scope.game_state = 'running';
@@ -470,7 +471,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         var altitude_bad = data.altitude == null || angular.isUndefined(data.altitude);
                         var altitude = (data.altitude || last_good_altitude) || 0;
                         character.currentPos([l[0], l[1], altitude]);
-                        stations.checkAtCoords(character.currentPos());
+                        stations.checkAtCoords(Cesium.Cartesian3.fromDegrees(character.currentPos()[0], character.currentPos()[1], 0));
                         if (altitude_bad) {
                             character.calculateAltitude(last_time)
                         }
