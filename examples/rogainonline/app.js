@@ -238,6 +238,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 function updHud() {
                     if (last_time - last_hud_updated < 500) return;
                     last_hud_updated = last_time;
+                    var target_frame_rate = undefined;
+                    if(screen_locked) target_frame_rate = 2;
+                    if(viewer.targetFrameRate!=target_frame_rate) viewer.targetFrameRate = target_frame_rate;
                     checkBadPerformance();
                     if (!$scope.$$phase) $scope.$apply();
                 }
