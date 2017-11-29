@@ -134,7 +134,7 @@ define(['ol'],
                             }
                         } else {
                             entity.properties.visited.setValue(true);
-                            me.playCollectedAudio();
+                            playCollectedAudio();
                             anything_collected = true;
                             styleEntity(entity);
                             collected = Math.floor(entity.properties.points.getValue() / 10);
