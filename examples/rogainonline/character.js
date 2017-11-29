@@ -20,6 +20,8 @@ define(['cesium'],
         var last_altitude_calculated = 0;
         var last_position_altitude = [0, 0];
         var runningaudio = null;
+        var user_input_state = false;
+        var last_user_input = new Date();
 
         function normalize(point, scale) {
             var norm = Math.sqrt(point.x * point.x + point.y * point.y);
@@ -61,6 +63,7 @@ define(['cesium'],
                     next_speed = 0.0;
                     current_speed = 0.0;
                     acceleration_start_speed = 0.0;
+                    flyToInitialLocation();
                     speed = 0.0;
                     return;
                 }
@@ -78,6 +81,7 @@ define(['cesium'],
                     $scope.points_collected += stations.checkAtCoords(Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1], 0));
                 } else {
                     current_speed = 0.0;
+                    flyToInitialLocation();
                     acceleration_start_speed = 0.0;
                 }
             }
@@ -87,6 +91,8 @@ define(['cesium'],
         }
 
         function flyToInitialLocation() {
+            if (typeof viewer == 'undefined') return;
+            if (user_input_state || (new Date() - last_user_input) < 3000) return;
             var positions = [
                 Cesium.Cartographic.fromDegrees(pos_lon_lat[0], pos_lon_lat[1])
             ];
@@ -94,12 +100,14 @@ define(['cesium'],
             Cesium.when(promise, function (updatedPositions) {
                 pos_lon_lat[2] = updatedPositions[0].height;
                 viewer.camera.flyTo({
-                    destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1] - 0.0005 * 4, pos_lon_lat[2] + 60 * 4),
+                    destination: Cesium.Cartesian3.fromDegrees(pos_lon_lat[0], pos_lon_lat[1] - 0.0005 * 15, pos_lon_lat[2] + 60 * 21),
                     orientation: {
                         heading: Cesium.Math.toRadians(0.0),
-                        pitch: Cesium.Math.toRadians(-45.0),
+                        pitch: Cesium.Math.toRadians(-60.0),
                         roll: 0.0
-                    }
+                    },
+                    maximumHeight: pos_lon_lat[2] + 60 * 21,
+                    duration: 0.6
                 })
             });
         }
@@ -153,12 +161,24 @@ define(['cesium'],
             }));
         }
 
+        function userInputing(state) {
+            user_input_state = state;
+            last_user_input = new Date();
+        }
+
         return {
             getTargetPosition: function () { return target_position },
             positionCharacter,
             changeTargetPosition,
             calculateAltitude,
-            currentPos: function (to_what) { if (to_what) pos_lon_lat = to_what; return pos_lon_lat },
+            userInputing: userInputing,
+            currentPos: function (to_what) {
+                if (to_what) {
+                    pos_lon_lat = to_what;
+                    if (typeof $scope != 'undefined' && $scope.game_mode == 'running')
+                        flyToInitialLocation();
+                } return pos_lon_lat
+            },
             flyToInitialLocation: flyToInitialLocation,
             init: function (_$scope, _$compile, _olus, _viewer, _stations) {
                 $scope = _$scope;

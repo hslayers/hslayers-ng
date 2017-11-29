@@ -186,8 +186,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     }
                 }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
 
-
-                handler.setInputAction(function (movement) {
+                function rightClickLeftDoubleClick (movement) {
                     var pickRay = viewer.camera.getPickRay(movement.position);
                     var pickedObject = viewer.scene.pick(movement.position);
 
@@ -206,8 +205,10 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         pickedObject.id.onRightClick(pickedObject.id);
                         return;
                     }
+                }
 
-                }, Cesium.ScreenSpaceEventType.RIGHT_DOWN);
+                handler.setInputAction(rightClickLeftDoubleClick, Cesium.ScreenSpaceEventType.RIGHT_DOWN);
+                handler.setInputAction(rightClickLeftDoubleClick, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
                 /**
                  * @ngdoc event

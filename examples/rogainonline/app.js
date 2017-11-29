@@ -135,6 +135,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 var last_measure_pick, last_run_position = null;
                 var planning_line_segments = [];
                 var running_line_segments = [];
+                var distance_counter_timer = null;
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -172,6 +173,26 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     screenSpaceEventHandler.setInputAction(function () {
                         scene.screenSpaceCameraController.enableZoom = true;
                     }, Cesium.ScreenSpaceEventType.RIGHT_UP);
+
+                    screenSpaceEventHandler.setInputAction(function () {
+                        character.userInputing(true)
+                    }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+                    screenSpaceEventHandler.setInputAction(function () {
+                        character.userInputing(false)
+                    }, Cesium.ScreenSpaceEventType.LEFT_UP);
+
+                    screenSpaceEventHandler.setInputAction(function () {
+                        character.userInputing(true)
+                    }, Cesium.ScreenSpaceEventType.PINCH_START);
+
+                    screenSpaceEventHandler.setInputAction(function () {
+                        character.userInputing(false)
+                    }, Cesium.ScreenSpaceEventType.PINCH_END);
+
+                    screenSpaceEventHandler.setInputAction(function () {
+                        character.userInputing(false)
+                    }, Cesium.ScreenSpaceEventType.WHEEL);
                 }
 
                 $scope.$on("scope_loaded", function (event, args) {
@@ -182,15 +203,22 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     }
                 })
 
+                function startRunning() {
+                    $scope.game_started = true;
+                    if(distance_counter_timer!=null) clearInterval(distance_counter_timer);
+                    distance_counter_timer = setInterval(countRunDistance, 2000 / $scope.time_multiplier);
+                    $scope.game_state = 'running';
+                    character.flyToInitialLocation();
+                    playGo();
+                }
+
                 function tick(timestamp) {
                     if (timestamp) {
                         var time_ellapsed = timestamp - last_time;
                         if ($scope.game_started) {
                             $scope.time_remaining = full_date - (timestamp - time_game_started) * $scope.time_multiplier;
                             if ($scope.time_remaining <= running_start_date && $scope.game_state == 'planning') {
-                                $scope.game_state = 'running';
-                                character.flyToInitialLocation();
-                                playGo();
+                                startRunning()
                             }
                             if ($scope.time_remaining <= zero_date) {
                                 $scope.time_remaining = zero_date;
@@ -204,8 +232,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     }
                     Cesium.requestAnimationFrame(tick);
                 }
-
-                setInterval(countRunDistance, 2000);
 
                 var bad_rednering_detected_time = null;
                 var rendering_resolution_reduced = false;
@@ -234,7 +260,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 function countRunDistance() {
                     if ($scope.game_state != 'running') return;
-                    if (last_time - last_run_counted < 1000) return;
+                    if (last_time - last_run_counted < 500) return;
                     last_run_counted = last_time;
                     addRunPosition(character.currentPos());
                 }
@@ -376,12 +402,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.$on('infopanel.updated', function (event) { });
 
                 $scope.donePlanning = function () {
-                    $scope.game_started = true;
-                    $scope.game_state = 'running';
                     time_game_started = last_time;
                     full_date = running_start_date;
-                    playGo();
-                    character.flyToInitialLocation();
+                    startRunning()
                 }
 
                 $scope.endGame = function () {
@@ -455,13 +478,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         $scope.geolocated = true;
                         var l = geolocation.last_location.latlng;
                         character.currentPos([l[0], l[1]]);
-                        character.flyToInitialLocation();
                     }
                 }
 
                 $scope.share = function () {
                     var tmp_resol = viewer.resolutionScale;
-                    viewer.resolutionScale = 1; 
+                    viewer.resolutionScale = 1;
                     viewer.render();
                     $.ajax({
                         type: "POST",
@@ -499,12 +521,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     });
                 }
 
-                $scope.restart = function(){
+                $scope.restart = function () {
                     $scope.game_state = 'before_game';
                     $scope.game_started = false;
                     stations.clear();
                     if (track_line_primitive != null) viewer.scene.primitives.remove(track_line_primitive);
-                    angular.forEach(track_segment_collection, function(line){
+                    angular.forEach(track_segment_collection, function (line) {
                         viewer.scene.primitives.remove(line);
                     })
                     track_points = [];
