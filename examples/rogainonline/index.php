@@ -40,6 +40,7 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
   <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../../node_modules/requirejs/require.js"></script>
   <script src="hslayers.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-touch-events/1.0.5/jquery.mobile-events.js"></script>
   <style>
       .cesium-viewer .cesium-widget-credits {
         font-size: 7px !important
@@ -94,26 +95,44 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
         $dragging.cy = e.offsetY;
     });
 
-    $(document.body).on("mouseup", function (e) {
-        if($dragging == null) return;
-        if(e.pageX>$(window).width()/2 || e.pageY<$(window).height()/2){
-          $dragging.css({right: '0', top: '0', left: 'auto', bottom: 'auto',  '-moz-transform': 'scale(-1, -1)',
+    function swipeUp(){
+      $("#page-fliper").css({right: '0', top: '0', left: 'auto', bottom: 'auto',  '-moz-transform': 'scale(-1, -1)',
         '-o-transform': 'scale(-1, -1)',
         '-webkit-transform': 'scale(-1, -1)',
         transform: 'scale(-1, -1)',
         filter: 'FlipH FlipV',
-        '-ms-filter': "FlipH FlipV"})
-        } else {
-          $dragging.css({right: 'auto', top: 'auto', left: '0', bottom: '0',  '-moz-transform': 'scale(1, 1)',
+        '-ms-filter': "FlipH FlipV"});
+        adjustFlipDiv()
+    }
+
+    function swipeDown(){
+      $("#page-fliper").css({right: 'auto', top: 'auto', left: '0', bottom: '0',  '-moz-transform': 'scale(1, 1)',
         '-o-transform': 'scale(1, 1)',
         '-webkit-transform': 'scale(1, 1)',
         transform: 'scale(1, 1)',
         filter: 'none',
-        '-ms-filter': "none" })
+        '-ms-filter': "none" });
+        adjustFlipDiv()
+    }
+
+    $(document.body).on("mouseup", function (e) {
+        if($dragging == null) return;
+        if(e.pageX>$(window).width()/2 || e.pageY<$(window).height()/2){
+          swipeUp()
+        } else {
+          swipeDown()
         }
         $dragging = null;
-        adjustFlipDiv()
     });
+
+    $("#page-fliper").swipe(function(e, data) { 
+        if((data.direction=='up' || data.direction=='right') && (data.xAmount>40 && data.yAmount>40))
+          swipeUp();
+
+        if((data.direction=='down' || data.direction=='left') && (data.xAmount>20 && data.yAmount>20))
+          swipeDown();
+    });
+
     </script>
 </body>
 
