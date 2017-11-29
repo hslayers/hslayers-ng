@@ -95,6 +95,8 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
         $dragging.cy = e.offsetY;
     });
 
+    var screen_locked = false;
+
     function swipeUp(){
       $("#page-fliper").css({right: '0', top: '0', left: 'auto', bottom: 'auto',  '-moz-transform': 'scale(-1, -1)',
         '-o-transform': 'scale(-1, -1)',
@@ -102,7 +104,8 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
         transform: 'scale(-1, -1)',
         filter: 'FlipH FlipV',
         '-ms-filter': "FlipH FlipV"});
-        adjustFlipDiv()
+        adjustFlipDiv();
+        screen_locked = true
     }
 
     function swipeDown(){
@@ -112,7 +115,8 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
         transform: 'scale(1, 1)',
         filter: 'none',
         '-ms-filter': "none" });
-        adjustFlipDiv()
+        adjustFlipDiv();
+        screen_locked = false;
     }
 
     $(document.body).on("mouseup", function (e) {
