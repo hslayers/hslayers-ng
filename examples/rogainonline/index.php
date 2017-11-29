@@ -137,6 +137,8 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
           swipeDown();
     });
 
+    window.history.forward(1);     
+    window.onbeforeunload = function() { return "Closing"; };
     </script>
 </body>
 
