@@ -52,7 +52,7 @@ define(['ol'],
             var found_close = false;
             for (j = 0; j < features.length; j++) {
                 var diff = { x: features[j].getGeometry().getCoordinates()[0] - try_pnt.x, y: features[j].getGeometry().getCoordinates()[1] - try_pnt.y };
-                if (Math.sqrt(diff.x * diff.x + diff.y * diff.y) < 0.003) {
+                if (Math.sqrt(diff.x * diff.x + diff.y * diff.y) < 0.0025) {
                     found_close = true;
                     break;
                 }
@@ -61,7 +61,7 @@ define(['ol'],
         }
 
         function getMapWidth(hours) {
-            return 10 * hours / 4;
+            return 6 * hours / 4;
         }
         return {
             getMapWidth: getMapWidth,
@@ -98,7 +98,7 @@ define(['ol'],
                         features.push(feature);
                         points_added++;
                     }
-                    if (points_added >= 40 * (hours / 3)) break;
+                    if (points_added >= 40 * (hours / 2)) break;
                 }
                 source.addFeatures(features);
                 source.set('loaded', true);
