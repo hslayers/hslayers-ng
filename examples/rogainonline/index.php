@@ -70,7 +70,7 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
       .game-settings-row .btn-group .btn:first-child  {width: 9em}
     </style>
     <div id='flip-div' title="Use this to lock the screen" style='position: absolute; bottom: 0; left: 0; background: white; border-top-right-corner-shape: bevel; border-top-right-radius: 50px;  opacity: 0.05; z-index: 1000'></div>
-    <img id='page-fliper' title="Use this to lock the screen" src='images/jantonalcor-corner-up2.png'  draggable="false" style='position: absolute; bottom: 0; left: 0; z-index: 1001; opacity: 0.6;' />
+    <img id='page-fliper' title="Use this to lock the screen" src='jantonalcor-corner-up2.png'  draggable="false" style='position: absolute; bottom: 0; left: 0; z-index: 1001; opacity: 0.6;' />
     <script>
        var $dragging = null;
 
