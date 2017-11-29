@@ -175,7 +175,7 @@ define(['cesium'],
             currentPos: function (to_what) {
                 if (to_what) {
                     pos_lon_lat = to_what;
-                    if (typeof $scope != 'undefined' && $scope.game_mode == 'running')
+                    if (typeof $scope != 'undefined' && $scope.game_state == 'running')
                         flyToInitialLocation();
                 } return pos_lon_lat
             },

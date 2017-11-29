@@ -96,8 +96,15 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
     });
 
     var screen_locked = false;
+    var swipe_state = 'down';
+    var swipe_audio = new Audio('sounds/swipe.mp3');
 
-    function swipeUp(){
+    function playSwipe(){
+      swipe_audio.play()
+    }
+
+    function swipeUp(play_sound){
+      if(play_sound) playSwipe();
       $("#page-fliper").css({right: '0', top: '0', left: 'auto', bottom: 'auto',  '-moz-transform': 'scale(-1, -1)',
         '-o-transform': 'scale(-1, -1)',
         '-webkit-transform': 'scale(-1, -1)',
@@ -105,10 +112,14 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
         filter: 'FlipH FlipV',
         '-ms-filter': "FlipH FlipV"});
         adjustFlipDiv();
-        screen_locked = true
+        screen_locked = true;
+        swipe_state = 'up';
+        $dragging = null;
+        console.log(swipe_state);
     }
 
-    function swipeDown(){
+    function swipeDown(play_sound){
+      if(play_sound) playSwipe();
       $("#page-fliper").css({right: 'auto', top: 'auto', left: '0', bottom: '0',  '-moz-transform': 'scale(1, 1)',
         '-o-transform': 'scale(1, 1)',
         '-webkit-transform': 'scale(1, 1)',
@@ -117,24 +128,38 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
         '-ms-filter': "none" });
         adjustFlipDiv();
         screen_locked = false;
+        swipe_state = 'down';
+        $dragging = null;
+        console.log(swipe_state);
     }
+
+    $('#page-fliper').click(function(){
+      playSwipe();
+    })
 
     $(document.body).on("mouseup", function (e) {
         if($dragging == null) return;
-        if(e.pageX>$(window).width()/2 || e.pageY<$(window).height()/2){
-          swipeUp()
-        } else {
-          swipeDown()
+        if((e.pageX>$(window).width()/2 || e.pageY<$(window).height()/2) && swipe_state == 'down'){
+          swipeUp(true)
+        } else if((e.pageX<$(window).width()/2 || e.pageY>$(window).height()/2) && swipe_state == 'up'){
+          swipeDown(true)
         }
         $dragging = null;
     });
 
     $("#page-fliper").swipe(function(e, data) { 
-        if((data.direction=='up' || data.direction=='right') && (data.xAmount>40 && data.yAmount>40))
-          swipeUp();
-
-        if((data.direction=='down' || data.direction=='left') && (data.xAmount>20 && data.yAmount>20))
-          swipeDown();
+      console.log(data);
+        if((data.direction=='up' || data.direction=='right') && (data.xAmount>20 && data.yAmount>20))
+          swipeUp(true);
+        else
+        if((data.direction=='down' || data.direction=='left') && (data.xAmount>40 && data.yAmount>40))
+          swipeDown(true);
+        else {
+          if(swipe_state =='down')
+            swipeDown(false);
+          else
+            swipeUp(false);
+        }
     });
 
     window.history.forward(1);     

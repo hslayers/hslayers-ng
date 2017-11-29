@@ -6,6 +6,7 @@ define(['ol'],
         var $compile;
         var olus;
         var anything_collected = false;
+        var audio = new Audio('sounds/collectcoin.mp3');
 
         function entityClicked(entity) {
             $scope.showInfo(entity);
@@ -127,8 +128,7 @@ define(['ol'],
                             }
                         } else {
                             entity.properties.visited.setValue(true);
-                            var audio = new Audio('sounds/collectcoin.mp3');
-                            audio.play();
+                            me.playCollectedAudio();
                             anything_collected = true;
                             styleEntity(entity);
                             collected = Math.floor(entity.properties.points.getValue() / 10);
@@ -136,6 +136,9 @@ define(['ol'],
                     }
                 });
                 return collected;
+            },
+            playCollectedAudio: function(){
+                audio.play();
             },
             init: function (_$scope, _$compile, _olus) {
                 $scope = _$scope;
