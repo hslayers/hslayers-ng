@@ -246,15 +246,18 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }
 
                 function checkBadPerformance() {
-                    if (!rendering_resolution_reduced && parseFloat($('.cesium-performanceDisplay-fps').html()) < 20) {
+                    if (!rendering_resolution_reduced && !screen_locked && parseFloat($('.cesium-performanceDisplay-fps').html()) < 20) {
                         if (bad_rednering_detected_time == null) {
                             bad_rednering_detected_time = last_time;
                         }
                         if (last_time - bad_rednering_detected_time > 6000 && devicePixelRatio != 1) {
-                            alert('Reducing the resolution due to bad rendering performance ');
-                            viewer.resolutionScale = 1.0 / devicePixelRatio;
-                            bad_rednering_detected_time = null;
-                            rendering_resolution_reduced = true;
+                            if(confirm('Reducing the resolution due to bad rendering performance?')){
+                                viewer.resolutionScale = 1.0 / devicePixelRatio;
+                                bad_rednering_detected_time = null;
+                                rendering_resolution_reduced = true;   
+                            } else {
+                                rendering_resolution_reduced = true;   
+                            }
                         }
                     } else {
                         bad_rednering_detected_time = null;
