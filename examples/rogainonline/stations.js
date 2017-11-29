@@ -30,7 +30,7 @@ define(['ol'],
             entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 40000, 0.0);
             var picture = entity.properties.visited.getValue() ? 'viewpoint' : 'other';
             entity.billboard.image = entity.properties.start ? 'triangle-outline-64.png' : `../foodie-zones/symbols/${picture}.png`;
-            entity.billboard.eyeOffset = new Cesium.Cartesian3(0.0,0.0,-100.0);
+            entity.billboard.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -100.0);
             entity.label = new Cesium.LabelGraphics({
                 text: entity.properties.label,
                 font: '18px "Lato", sans-serif',
@@ -44,7 +44,7 @@ define(['ol'],
                 pixelOffsetScaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 20000, 0.0),
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-                eyeOffset: new Cesium.Cartesian3(0.0,0.0,-200.0)
+                eyeOffset: new Cesium.Cartesian3(0.0, 0.0, -200.0)
             });
         }
 
@@ -63,6 +63,11 @@ define(['ol'],
         function getMapWidth(hours) {
             return 6 * hours / 4;
         }
+
+        function playCollectedAudio() {
+            audio.play();
+        }
+
         return {
             getMapWidth: getMapWidth,
             createStations: function (map, utils, c, callback, hours) {
@@ -75,7 +80,7 @@ define(['ol'],
                     start: true,
                     visited: false
                 })];
-                var bounds = {west: null, east: null, north: null, south: null };
+                var bounds = { west: null, east: null, north: null, south: null };
                 for (i = 1; i < 1000; i++) {
                     var to_deg_x = (111.320 * Math.cos(c[1] * Math.PI / 180));
                     var to_deg_y = 110;
@@ -91,10 +96,10 @@ define(['ol'],
                             points: points,
                             visited: false
                         });
-                        if(bounds.west==null || try_pnt.x < bounds.west) bounds.west = try_pnt.x;
-                        if(bounds.east==null || try_pnt.x > bounds.east) bounds.east = try_pnt.x;
-                        if(bounds.north==null || try_pnt.y > bounds.north) bounds.north = try_pnt.y;
-                        if(bounds.south==null || try_pnt.y < bounds.south) bounds.south = try_pnt.y;
+                        if (bounds.west == null || try_pnt.x < bounds.west) bounds.west = try_pnt.x;
+                        if (bounds.east == null || try_pnt.x > bounds.east) bounds.east = try_pnt.x;
+                        if (bounds.north == null || try_pnt.y > bounds.north) bounds.north = try_pnt.y;
+                        if (bounds.south == null || try_pnt.y < bounds.south) bounds.south = try_pnt.y;
                         features.push(feature);
                         points_added++;
                     }
@@ -105,7 +110,7 @@ define(['ol'],
                 source.dispatchEvent('features:loaded', source);
                 callback(bounds);
             },
-            clear(){
+            clear() {
                 source.clear();
                 source.dispatchEvent('features:loaded', source);
             },
@@ -118,6 +123,7 @@ define(['ol'],
             },
             checkAtCoords: function (coords) {
                 var collected = 0.0;
+                if (typeof source.cesium_layer == 'undefined') return;
                 source.cesium_layer.entities.values.forEach(function (entity) {
                     if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 15 && entity.properties.visited.getValue() == false) {
                         if (entity.properties.start) {
@@ -137,9 +143,7 @@ define(['ol'],
                 });
                 return collected;
             },
-            playCollectedAudio: function(){
-                audio.play();
-            },
+            playCollectedAudio: playCollectedAudio,
             init: function (_$scope, _$compile, _olus) {
                 $scope = _$scope;
                 $compile = _$compile;
