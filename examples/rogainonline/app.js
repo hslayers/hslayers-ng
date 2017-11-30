@@ -531,11 +531,18 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.restart = function () {
                     $scope.game_state = 'before_game';
                     $scope.game_started = false;
+                    total_distance_run = 0;
+                    total_distance = 0;
                     stations.clear();
                     if (track_line_primitive != null) viewer.scene.primitives.remove(track_line_primitive);
                     angular.forEach(track_segment_collection, function (line) {
                         viewer.scene.primitives.remove(line);
                     })
+                    angular.forEach(planning_line_segments, function (line) {
+                        viewer.scene.primitives.remove(line);
+                    })
+                    last_measure_pick = null;
+                    last_run_position = null;
                     track_points = [];
                 }
             }
