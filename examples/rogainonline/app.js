@@ -491,19 +491,21 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.share = function () {
                     var tmp_resol = viewer.resolutionScale;
                     viewer.resolutionScale = 1;
-                    viewer.render();
-                    $.ajax({
-                        type: "POST",
-                        url: "sharestore.php",
-                        data: {
-                            img: viewer.canvas.toDataURL()
-                        }
-                    }).done(function (o) {
-                        if (o.result == 1) {
-                            shareSocial('facebook', o.file)
-                        }
-                    });
-                    viewer.resolutionScale = tmp_resol;
+                    setTimeOut(function(){
+                        viewer.render();
+                        $.ajax({
+                            type: "POST",
+                            url: "sharestore.php",
+                            data: {
+                                img: viewer.canvas.toDataURL()
+                            }
+                        }).done(function (o) {
+                            if (o.result == 1) {
+                                shareSocial('facebook', o.file)
+                            }
+                        });
+                        viewer.resolutionScale = tmp_resol;
+                    }, 3000)
                 }
 
                 function shareSocial(provider, image_file) {
