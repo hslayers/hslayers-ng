@@ -113,6 +113,7 @@ define(['ol'],
             clear() {
                 source.clear();
                 source.dispatchEvent('features:loaded', source);
+                anything_collected = false;
             },
             createLayer: function () {
                 return new ol.layer.Vector({
@@ -125,7 +126,7 @@ define(['ol'],
                 var collected = 0.0;
                 if (typeof source.cesium_layer == 'undefined') return;
                 source.cesium_layer.entities.values.forEach(function (entity) {
-                    if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 15 && entity.properties.visited.getValue() == false) {
+                    if (Cesium.Cartesian3.distance(entity.position.getValue(), coords) < 30 && entity.properties.visited.getValue() == false) {
                         if (entity.properties.start) {
                             if (anything_collected) {
                                 entity.properties.visited.setValue(true);
