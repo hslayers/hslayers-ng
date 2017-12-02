@@ -206,7 +206,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 function startRunning() {
                     $scope.game_started = true;
                     stations.playCollectedAudio();
-                    if(distance_counter_timer!=null) clearInterval(distance_counter_timer);
+                    if (distance_counter_timer != null) clearInterval(distance_counter_timer);
                     distance_counter_timer = setInterval(countRunDistance, 2000 / $scope.time_multiplier);
                     $scope.game_state = 'running';
                     character.flyToInitialLocation(true);
@@ -240,8 +240,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     if (last_time - last_hud_updated < 500) return;
                     last_hud_updated = last_time;
                     var target_frame_rate = undefined;
-                    if(screen_locked) target_frame_rate = 2;
-                    if(viewer.targetFrameRate!=target_frame_rate) viewer.targetFrameRate = target_frame_rate;
+                    if (screen_locked) target_frame_rate = 2;
+                    if (viewer.targetFrameRate != target_frame_rate) viewer.targetFrameRate = target_frame_rate;
                     checkBadPerformance();
                     if (!$scope.$$phase) $scope.$apply();
                 }
@@ -252,12 +252,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                             bad_rednering_detected_time = last_time;
                         }
                         if (last_time - bad_rednering_detected_time > 6000 && devicePixelRatio != 1) {
-                            if(confirm('Reducing the resolution due to bad rendering performance?')){
+                            if (confirm('Reducing the resolution due to bad rendering performance?')) {
                                 viewer.resolutionScale = 1.0 / devicePixelRatio;
                                 bad_rednering_detected_time = null;
-                                rendering_resolution_reduced = true;   
+                                rendering_resolution_reduced = true;
                             } else {
-                                rendering_resolution_reduced = true;   
+                                rendering_resolution_reduced = true;
                             }
                         }
                     } else {
@@ -471,7 +471,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                         var altitude_bad = data.altitude == null || angular.isUndefined(data.altitude);
                         var altitude = (data.altitude || last_good_altitude) || 0;
                         character.currentPos([l[0], l[1], altitude]);
-                        stations.checkAtCoords(Cesium.Cartesian3.fromDegrees(character.currentPos()[0], character.currentPos()[1], 0));
+                        $scope.points_collected += stations.checkAtCoords(Cesium.Cartesian3.fromDegrees(character.currentPos()[0], character.currentPos()[1], 0));
                         if (altitude_bad) {
                             character.calculateAltitude(last_time)
                         }
@@ -531,8 +531,8 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.restart = function () {
                     $scope.game_state = 'before_game';
                     $scope.game_started = false;
-                    total_distance_run = 0;
-                    total_distance = 0;
+                    $scope.total_distance_run = 0;
+                    $scope.total_distance = 0;
                     stations.clear();
                     if (track_line_primitive != null) viewer.scene.primitives.remove(track_line_primitive);
                     angular.forEach(track_segment_collection, function (line) {
