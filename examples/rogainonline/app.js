@@ -491,7 +491,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.share = function () {
                     var tmp_resol = viewer.resolutionScale;
                     viewer.resolutionScale = 1;
-                    setTimeOut(function(){
+                    setTimeout(function(){
                         viewer.render();
                         $.ajax({
                             type: "POST",
