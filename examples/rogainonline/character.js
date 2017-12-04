@@ -199,7 +199,8 @@ define(['cesium'],
                         scaleByDistance: new Cesium.NearFarScalar(100, 0.01, 500, 0.1),
                     },
                     position: position_property,
-                    orientation: orientation_property
+                    orientation: orientation_property,
+                    eyeOffset: new Cesium.Cartesian3(0.0, 0.0, -210.0)
                 });
                 flyToInitialLocation();
                 loadRunningAudio();

@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 'character', 'track', 'sidebar', 'query', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap', 'panel'],
+define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 'character', 'track', 'gamestates', 'hacks', 'planning', 'sidebar', 'query', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap', 'panel'],
 
-    function (ol, toolbar, layermanager, geojson, pois, olus, stations, character, track) {
+    function (ol, toolbar, layermanager, geojson, pois, olus, stations, character, track, gamestates, hacks, planning) {
         var module = angular.module('hs', [
             'hs.layermanager',
             'hs.query',
@@ -44,55 +44,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
             };
         })
 
-
-        module.directive('hs.foodiezones.infoDirective', function () {
-            return {
-                templateUrl: './info.html?bust=' + gitsha,
-                link: function (scope, element, attrs) {
-                    $('#zone-info-dialog').modal('show');
-                }
-            };
-        })
-
-        module.directive('description', ['$compile', 'hs.utils.service', function ($compile, utils) {
-            return {
-                templateUrl: './description.html?bust=' + gitsha,
-                scope: {
-                    object: '=',
-                    url: '@'
-                },
-                link: function (scope, element, attrs) {
-                    scope.describe = function (e, attribute) {
-                        if (angular.element(e.target).parent().find('table').length > 0) {
-                            angular.element(e.target).parent().find('table').remove();
-                        } else {
-                            var table = angular.element('<table class="table table-striped" description object="attribute' + Math.abs(attribute.value.hashCode()) + '" url="' + attribute.value + '"></table>');
-                            angular.element(e.target).parent().append(table);
-                            $compile(table)(scope.$parent);
-                        }
-                    }
-                    if (angular.isUndefined(scope.object) && angular.isDefined(attrs.url) && typeof attrs.url == 'string') {
-                        scope.object = { attributes: [] };
-                        var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('describe <' + attrs.url + '>') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
-                        $.ajax({
-                            url: utils.proxify(q)
-                        })
-                            .done(function (response) {
-                                if (angular.isUndefined(response.results)) return;
-                                for (var i = 0; i < response.results.bindings.length; i++) {
-                                    var b = response.results.bindings[i];
-                                    var short_name = b.p.value;
-                                    if (short_name.indexOf('#') > -1)
-                                        short_name = short_name.split('#')[1];
-                                    scope.object.attributes.push({ short_name: short_name, value: b.o.value });
-                                    if (!scope.$$phase) scope.$apply();
-                                }
-                            })
-                    }
-                }
-            };
-        }]);
-
         module.value('config', {
             terrain_provider: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
             terrain_providers: [{
@@ -127,13 +78,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 var viewer;
                 var last_time = 0;
                 var last_hud_updated = 0;
-                var zero_date = new Date(2000, 1, 0, 0, 0, 0, 0, 1);
-                var full_date = new Date(2000, 1, 0, 4, 30, 0, 0);
-                var running_start_date = new Date(2000, 1, 0, 4, 0, 0, 0);
-                var time_game_started;
-                var last_measure_pick;
-                var planning_line_segments = [];
-                var distance_counter_timer = null;
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
@@ -148,7 +92,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $scope.points_collected = 0;
                 pois.init($scope, $compile);
                 stations.init($scope, $compile, olus);
-                $scope.game_state = 'before_game';
                 $scope.game_mode = Core.isMobile() ? 'real' : 'virtual';
                 $scope.time_penalty = 0;
                 $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
@@ -162,37 +105,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     $compile(el)($scope);
                 }
 
-                function disableRightMouse(scene) {
-                    var screenSpaceEventHandler = viewer.screenSpaceEventHandler;
-                    screenSpaceEventHandler.setInputAction(function () {
-                        scene.screenSpaceCameraController.enableZoom = false;
-                    }, Cesium.ScreenSpaceEventType.RIGHT_DOWN);
-
-                    screenSpaceEventHandler.setInputAction(function () {
-                        scene.screenSpaceCameraController.enableZoom = true;
-                    }, Cesium.ScreenSpaceEventType.RIGHT_UP);
-
-                    screenSpaceEventHandler.setInputAction(function () {
-                        character.userInputing(true)
-                    }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
-
-                    screenSpaceEventHandler.setInputAction(function () {
-                        character.userInputing(false)
-                    }, Cesium.ScreenSpaceEventType.LEFT_UP);
-
-                    screenSpaceEventHandler.setInputAction(function () {
-                        character.userInputing(true)
-                    }, Cesium.ScreenSpaceEventType.PINCH_START);
-
-                    screenSpaceEventHandler.setInputAction(function () {
-                        character.userInputing(false)
-                    }, Cesium.ScreenSpaceEventType.PINCH_END);
-
-                    screenSpaceEventHandler.setInputAction(function () {
-                        character.userInputing(false)
-                    }, Cesium.ScreenSpaceEventType.WHEEL);
-                }
-
                 $scope.$on("scope_loaded", function (event, args) {
                     if (args == 'Sidebar') {
                         var el = angular.element('<div id="test3" hs.rogainonline.panel_directive></div>');
@@ -201,30 +113,10 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     }
                 })
 
-                function startRunning() {
-                    $scope.game_started = true;
-                    stations.playCollectedAudio();
-                    if (distance_counter_timer != null) clearInterval(distance_counter_timer);
-                    distance_counter_timer = setInterval(function () { track.countRunDistance(last_time) }, 2000 / $scope.time_multiplier);
-                    $scope.game_state = 'running';
-                    character.flyToInitialLocation(true);
-                    playGo();
-                }
-
                 function tick(timestamp) {
                     if (timestamp) {
                         var time_ellapsed = timestamp - last_time;
-                        if ($scope.game_started) {
-                            $scope.time_remaining = full_date - (timestamp - time_game_started) * $scope.time_multiplier;
-                            if ($scope.time_remaining <= running_start_date && $scope.game_state == 'planning') {
-                                startRunning()
-                            }
-                            if ($scope.time_remaining <= zero_date) {
-                                $scope.time_remaining = zero_date;
-                                $scope.time_penalty = Math.ceil((zero_date - (full_date - (timestamp - time_game_started) * $scope.time_multiplier)) / 60000);
-                            }
-                        }
-
+                        gamestates.tick(timestamp);
                         character.positionCharacter(time_ellapsed, timestamp);
                         last_time = timestamp;
                         updHud();
@@ -232,105 +124,22 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     Cesium.requestAnimationFrame(tick);
                 }
 
-                var bad_rednering_detected_time = null;
-                var rendering_resolution_reduced = false;
                 function updHud() {
                     if (last_time - last_hud_updated < 500) return;
                     last_hud_updated = last_time;
                     var target_frame_rate = undefined;
                     if (screen_locked) target_frame_rate = 2;
                     if (viewer.targetFrameRate != target_frame_rate) viewer.targetFrameRate = target_frame_rate;
-                    checkBadPerformance();
+                    hacks.checkBadPerformance(last_time);
                     if (!$scope.$$phase) $scope.$apply();
-                }
-
-                function checkBadPerformance() {
-                    if (!rendering_resolution_reduced && !screen_locked && parseFloat($('.cesium-performanceDisplay-fps').html()) < 20) {
-                        if (bad_rednering_detected_time == null) {
-                            bad_rednering_detected_time = last_time;
-                        }
-                        if (last_time - bad_rednering_detected_time > 6000 && devicePixelRatio != 1) {
-                            if (confirm('Reducing the resolution due to bad rendering performance?')) {
-                                viewer.resolutionScale = 1.0 / devicePixelRatio;
-                                bad_rednering_detected_time = null;
-                                rendering_resolution_reduced = true;
-                            } else {
-                                rendering_resolution_reduced = true;
-                            }
-                        }
-                    } else {
-                        bad_rednering_detected_time = null;
-                    }
                 }
 
                 createHud();
 
-                $scope.createNewMap = function (hours) {
-                    $scope.game_started = true;
-                    $scope.game_state = 'generating';
-                    if (!$scope.$$phase) $scope.$apply();
-                    $timeout(function () {
-                        $scope.points_collected = 0;
-                        full_date = new Date(2000, 1, 0, hours, 30, 0, 0);
-                        running_start_date = new Date(2000, 1, 0, hours, 0, 0, 0);
-                        time_game_started = last_time;
-                        stations.createStations(map, utils, character.currentPos(), function (bounds) {
-                            $scope.game_state = 'planning';
-                            last_measure_pick = character.currentPos();
-                            flyToWholeMapView(hours, bounds);
-                        }, hours);
-                    }, 0)
-                }
-
-                function flyToWholeMapView(hours, bounds) {
-                    var pos_lon_lat = character.currentPos();
-                    var needed = viewer.camera.getRectangleCameraCoordinates(new Cesium.Rectangle.fromDegrees(bounds.west, bounds.south, bounds.east, bounds.north));
-                    viewer.camera.flyTo({
-                        destination: needed,
-                        orientation: {
-                            heading: Cesium.Math.toRadians(0.0),
-                            pitch: Cesium.Math.toRadians(-90.0),
-                            roll: 0.0
-                        }
-                    })
-                }
-
                 $rootScope.$on('cesium_position_clicked', function (event, lon_lat) {
-                    if (last_measure_pick == null)
-                        last_measure_pick = character.currentPos();
-                    if ($scope.game_state == 'running') {
-                        character.changeTargetPosition(lon_lat, last_time);
-                    }
-                    if ($scope.game_state == 'planning') {
-                        addMeasurementPosition(lon_lat);
-                    }
+                    if ($scope.game_state == 'running') character.changeTargetPosition(lon_lat, last_time);
+                    if ($scope.game_state == 'planning') planning.addMeasurementPosition(lon_lat);
                 });
-
-                $scope.total_distance = 0;
-                function addMeasurementPosition(lon_lat) {
-                    var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(last_measure_pick[0], last_measure_pick[1]), Cesium.Cartesian3.fromDegrees(lon_lat[0], lon_lat[1]));
-                    $scope.total_distance += distance;
-                    var rectangleInstance = new Cesium.GeometryInstance({
-                        geometry: new Cesium.CorridorGeometry({
-                            positions: Cesium.Cartesian3.fromDegreesArray([last_measure_pick[0], last_measure_pick[1], lon_lat[0], lon_lat[1]]),
-                            width: 5
-                        }),
-                        attributes: {
-                            color: new Cesium.ColorGeometryInstanceAttribute(0.9, .2, .2, 0.8)
-                        }
-                    });
-                    var line = viewer.scene.primitives.add(new Cesium.GroundPrimitive({
-                        geometryInstances: rectangleInstance
-                    }));
-                    line.distance = distance;
-                    planning_line_segments.push(line);
-                    last_measure_pick = lon_lat;
-                }
-
-                function playGo() {
-                    var audio = new Audio('sounds/go.mp3');
-                    audio.play();
-                }
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
@@ -345,12 +154,13 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 $rootScope.$on('cesiummap.loaded', function (event, _viewer) {
                     viewer = _viewer;
                     var scene = viewer.scene;
-                    scene.globe.depthTestAgainstTerrain = true;
-                    disableRightMouse(scene);
                     character.currentPos([hs_map.map.getView().getCenter()[0], hs_map.map.getView().getCenter()[1], 0]);
                     character.init($scope, $compile, olus, viewer, stations);
                     olus.init($scope, $compile, map, utils, _viewer, character);
-                    track.init($scope, $compile, viewer, stations, character);
+                    track.init($scope, $compile, viewer, stations, character, gamestates);
+                    planning.init($scope, $compile, viewer, stations, character);
+                    gamestates.init($scope, $compile, viewer, stations, character, track, utils, map, planning, $timeout);
+                    hacks.init($scope, $compile, viewer, character)
                     tick();
                 });
 
@@ -362,28 +172,12 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
 
                 $scope.$on('infopanel.updated', function (event) { });
 
-                $scope.donePlanning = function () {
-                    time_game_started = last_time;
-                    full_date = running_start_date;
-                    startRunning()
-                }
-
-                $scope.endGame = function () {
-                    var el = angular.element('<div hs.enddialog></div>');
-                    $("#hs-dialog-area").append(el);
-                    $compile(el)($scope);
-                    $scope.game_started = false;
-                    var audio = new Audio('sounds/fanfare.mp3');
-                    audio.play();
-                }
-
                 $scope.$on('geolocation.updated', function (event, data) {
                     track.locationUpdated(data)
                 });
 
                 $scope.locateMe = function () {
                     if (geolocation.last_location && angular.isDefined(geolocation.last_location.latlng)) {
-                        geolocation
                         $scope.geolocated = true;
                         var l = geolocation.last_location.latlng;
                         character.currentPos([l[0], l[1]]);
@@ -430,19 +224,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                     }).error(function (data, status, headers, config) {
                         if (console) console.log('Error creating short Url');
                     });
-                }
-
-                $scope.restart = function () {
-                    $scope.game_state = 'before_game';
-                    $scope.game_started = false;
-                    $scope.total_distance_run = 0;
-                    $scope.total_distance = 0;
-                    stations.clear();
-                    track.clear();
-                    angular.forEach(planning_line_segments, function (line) {
-                        viewer.scene.primitives.remove(line);
-                    })
-                    last_measure_pick = null;
                 }
             }
         ]);
