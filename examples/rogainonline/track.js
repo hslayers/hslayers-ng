@@ -12,6 +12,7 @@ define(['cesium'],
         var track_line_primitive = null;
         var track_segment_collection = [];
         var last_run_counted = 0;
+        var distance_counter_timer = null;
 
         function addRunPosition(lon_lat) {
             if (last_run_position == null)
@@ -45,6 +46,11 @@ define(['cesium'],
                 running_line_segments.push({ point: [lon_lat[0], lon_lat[1], lon_lat[2]], time: new Date(), distance: distance });
             }
             last_run_position = [lon_lat[0], lon_lat[1], lon_lat[2]];
+        }
+
+        function startDistanceCounting(){
+            if (distance_counter_timer != null) clearInterval(distance_counter_timer);
+            distance_counter_timer = setInterval(function () { countRunDistance(gamestates.getLastTime()) }, 2000 / $scope.time_multiplier);
         }
 
         function download(filename, text) {
@@ -119,19 +125,21 @@ define(['cesium'],
         }
 
         return {
-            init: function (_$scope, _$compile, _viewer, _stations, _character) {
+            init: function (_$scope, _$compile, _viewer, _stations, _character, _gamestates) {
                 $scope = _$scope;
                 $compile = _$compile;
                 viewer = _viewer;
                 stations = _stations;
                 character = _character;
+                gamestates = _gamestates;
 
                 $scope.getGpx = getGpx;
                 $scope.total_distance_run = 0;
             },
             locationUpdated,
             countRunDistance,
-            clear
+            clear,
+            startDistanceCounting
         }
     }
 )
