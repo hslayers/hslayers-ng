@@ -13,6 +13,7 @@ define(['cesium'],
         var target_position = pos_lon_lat;
         var orientation = [0, 0];
         var orientation_property;
+        var $scope;
         var character;
         var olus;
         var viewer;
