@@ -29,7 +29,7 @@ define(['ol'],
         function styleEntity(entity) {
             entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 40000, 0.0);
             var picture = entity.properties.visited.getValue() ? 'viewpoint' : 'other';
-            entity.billboard.image = entity.properties.start ? 'triangle-outline-64.png' : `../foodie-zones/symbols/${picture}.png`;
+            entity.billboard.image = entity.properties.start ? 'img/triangle-outline-64.png' : `../foodie-zones/symbols/${picture}.png`;
             entity.billboard.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -100.0);
             entity.label = new Cesium.LabelGraphics({
                 text: entity.properties.label,
