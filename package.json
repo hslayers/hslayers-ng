@@ -1,9 +1,9 @@
 {
   "name": "hslayer-ng",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Hslayers-ng mapping library",
-  "repository": "git+ssh://git@git.ccss.cz/hsrs/hslayers-ng",
+  "repository": "git+ssh://git@github.com:hslayers/hslayers-ng.git",
   "license": "MIT",
   "devDependencies": {
     "angular-jsdoc": "^1.5.0",
