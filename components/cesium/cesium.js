@@ -20,7 +20,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
          * @ngdoc service
          * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file).
          */
-        .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', function (config, $rootScope, utils, hs_map, layer_manager_service) {
+        .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', 'Core', function (config, $rootScope, utils, hs_map, layer_manager_service, Core) {
             var viewer;
             var BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
 
@@ -34,7 +34,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 if(typeof Cesium == 'undefined'){
                     console.error('Please include cesium in shim definition: cesiumjs: {exports: \'Cesium\'}');
                 }
-                window.CESIUM_BASE_URL = hsl_path + 'node_modules/cesium/Build/Cesium';
+                window.CESIUM_BASE_URL = Core.getNmPath() + 'cesium/Build/Cesium';
                 var terrain_provider = new Cesium.CesiumTerrainProvider({
                     url: config.terrain_provider || 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
                 });
@@ -63,12 +63,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
                     skyBox: new Cesium.SkyBox({
                         sources: {
-                            positiveX: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
-                            negativeX: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
-                            positiveY: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
-                            negativeY: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
-                            positiveZ: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
-                            negativeZ: hsl_path + 'node_modules/cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
+                            positiveX: Core.getNmPath() + 'cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
+                            negativeX: Core.getNmPath() + 'cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
+                            positiveY: Core.getNmPath() + 'cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
+                            negativeY: Core.getNmPath() + 'cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
+                            positiveZ: Core.getNmPath() + 'cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
+                            negativeZ: Core.getNmPath() + 'cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
                         }
                     }),
                     // Show Columbus View map with Web Mercator projection

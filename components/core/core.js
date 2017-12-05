@@ -15,21 +15,22 @@ if (typeof hslMin != 'undefined') {
 else hslMin = '';
 if(console) console.log(hslMin);
 
+var nm_path = hsl_path.indexOf('node_modules')>-1 ? 'node_modules/' : hsl_path +'node_modules/';
 require.config({
     paths: {
         dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
-        ol: requirejs.s.contexts._.config.paths.ol || hsl_path + ((hslMin == '.min') ? 'node_modules/openlayers/dist/ol' : 'node_modules/openlayers/dist/ol-debug'),
+        ol: requirejs.s.contexts._.config.paths.ol || ((hslMin == '.min') ? nm_path + 'openlayers/dist/ol' : nm_path + 'openlayers/dist/ol-debug'),
 
-        angular: hsl_path + 'node_modules/angular/angular' + hslMin,
-        'angular-sanitize': hsl_path + 'node_modules/angular-sanitize/angular-sanitize' + hslMin,
-        'angular-gettext': hsl_path + 'node_modules/angular-gettext/dist/angular-gettext' + hslMin,
-        'angularjs-socialshare': hsl_path + 'node_modules/angular-socialshare/dist/angular-socialshare' + hslMin,
-        bootstrap: requirejs.s.contexts._.config.paths.bootstrap || hsl_path + 'node_modules/bootstrap/dist/js/bootstrap' + hslMin,
-        crossfilter: requirejs.s.contexts._.config.paths.crossfilter || hsl_path + 'node_modules/crossfilter/crossfilter' + hslMin,
+        angular: nm_path +'angular/angular' + hslMin,
+        'angular-sanitize': nm_path +'angular-sanitize/angular-sanitize' + hslMin,
+        'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
+        'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
+        bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
+        crossfilter: requirejs.s.contexts._.config.paths.crossfilter || nm_path +'crossfilter/crossfilter' + hslMin,
         draw: hsl_path + 'components/draw/draw',
-        d3: requirejs.s.contexts._.config.paths.d3 || hsl_path + 'node_modules/d3/d3' + hslMin,
-        ngcookies: hsl_path + 'node_modules/angular-cookies/angular-cookies' + hslMin,
-        proj4: requirejs.s.contexts._.config.paths.proj4 || hsl_path + 'node_modules/proj4/dist/proj4',
+        d3: requirejs.s.contexts._.config.paths.d3 || nm_path +'d3/d3' + hslMin,
+        ngcookies: nm_path +'angular-cookies/angular-cookies' + hslMin,
+        proj4: requirejs.s.contexts._.config.paths.proj4 || nm_path +'proj4/dist/proj4',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api' + hslMin,
         compositions: hsl_path + 'components/compositions/compositions' + hslMin,
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector' + hslMin,
@@ -67,10 +68,10 @@ require.config({
         WfsSource: requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs' + hslMin,
         routing: hsl_path + 'components/routing/routing' + hslMin,
         tracking: hsl_path + 'components/tracking/tracking' + hslMin,
-        'dragdroplists': hsl_path + 'node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists' + hslMin,
-        'ngfocusif': hsl_path + 'node_modules/ng-focus-if/focusIf' + hslMin,
-        'updateMeta': hsl_path + 'node_modules/angular-update-meta/dist/update-meta' + hslMin,
-        socketio: hsl_path + 'node_modules/socket.io-client/socket.io' + hslMin,
+        'dragdroplists': nm_path +'angular-drag-and-drop-lists/angular-drag-and-drop-lists' + hslMin,
+        'ngfocusif': nm_path +'ng-focus-if/focusIf' + hslMin,
+        'updateMeta': nm_path +'angular-update-meta/dist/update-meta' + hslMin,
+        socketio: nm_path +'socket.io-client/socket.io' + hslMin,
         rtserver: requirejs.s.contexts._.config.paths.rtserver || hsl_path + 'components/rtserver/rtserver' + hslMin,
         config_parsers: hsl_path + 'components/compositions/config_parsers' + hslMin
     },
@@ -639,7 +640,11 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             } else {
                                 return "";
                             }
-                        }
+                        },
+                     
+                        getNmPath: function(){
+                            return nm_path;
+                        }                       
                     };
 
                     $templateCache.removeAll();
