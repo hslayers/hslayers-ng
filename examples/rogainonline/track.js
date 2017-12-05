@@ -13,13 +13,23 @@ define(['cesium'],
         var track_segment_collection = [];
         var last_run_counted = 0;
         var distance_counter_timer = null;
+        var last_location_time = null;
 
         function addRunPosition(lon_lat) {
+            var now = new Date();
             if (last_run_position == null)
                 last_run_position = character.currentPos();
             var caretesian_pos = Cesium.Cartesian3.fromDegrees(lon_lat[0], lon_lat[1]);
             var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(last_run_position[0], last_run_position[1]), caretesian_pos);
             if (distance > 0) {
+                if (last_location_time != null) {
+                    var time_ellapsed = now - last_location_time;
+                    if(distance / time_ellapsed / $scope.time_multiplier > 0.015){
+                        if(!confirm('You seem to be teleporting. Should I add this location to the track?')){
+                            return;
+                        }
+                    }
+                }
                 track_points.push(caretesian_pos);
                 $scope.total_distance_run += distance;
                 if (track_points.length > 1) {
@@ -46,9 +56,10 @@ define(['cesium'],
                 running_line_segments.push({ point: [lon_lat[0], lon_lat[1], lon_lat[2]], time: new Date(), distance: distance });
             }
             last_run_position = [lon_lat[0], lon_lat[1], lon_lat[2]];
+            last_location_time = now;
         }
 
-        function startDistanceCounting(){
+        function startDistanceCounting() {
             if (distance_counter_timer != null) clearInterval(distance_counter_timer);
             distance_counter_timer = setInterval(function () { countRunDistance(gamestates.getLastTime()) }, 2000 / $scope.time_multiplier);
         }
@@ -73,7 +84,7 @@ define(['cesium'],
             addRunPosition(character.currentPos());
         }
 
-        function locationUpdated(data){
+        function locationUpdated(data) {
             if (data && angular.isDefined(data.latlng)) {
                 $scope.geolocated = true;
                 var l = data.latlng;
@@ -90,13 +101,14 @@ define(['cesium'],
             }
         }
 
-        function clear(){
+        function clear() {
             if (track_line_primitive != null) viewer.scene.primitives.remove(track_line_primitive);
             angular.forEach(track_segment_collection, function (line) {
                 viewer.scene.primitives.remove(line);
             })
             last_run_position = null;
             track_points = [];
+            last_location_time = null;
         }
 
         function getGpx() {
