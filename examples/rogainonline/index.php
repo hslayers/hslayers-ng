@@ -86,7 +86,7 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
     });
 
     function adjustFlipDiv(){
-      $('#flip-div').css({width: ($("#page-fliper").offset().left + 50) + 'px', height: ($(window).height() - $("#page-fliper").offset().top- 5)+'px' });
+      $('#flip-div').css({width: ($("#page-fliper").offset().left + 60) + 'px', height: ($(window).height() - $("#page-fliper").offset().top)+'px' });
     }
 
     $(document.body).on("mousedown", "#page-fliper", function (e) {
@@ -115,7 +115,6 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
         screen_locked = true;
         swipe_state = 'up';
         $dragging = null;
-        console.log(swipe_state);
     }
 
     function swipeDown(play_sound){
@@ -130,7 +129,6 @@ if(strpos($_SERVER['HTTP_HOST'], 'ng.hslayers') !== false && (empty($_SERVER['HT
         screen_locked = false;
         swipe_state = 'down';
         $dragging = null;
-        console.log(swipe_state);
     }
 
     $('#page-fliper').click(function(){
