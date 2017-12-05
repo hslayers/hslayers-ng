@@ -190,11 +190,11 @@ define(['cesium'],
 
                 character = viewer.entities.add({
                     model: {
-                        uri: 'Cesium_Man.gltf',
+                        uri: 'img/Cesium_Man.gltf',
                         scale: 2
                     },
                     billboard: {
-                        image: 'runner.png',
+                        image: 'img/runner.png',
                         pixelOffset: new Cesium.Cartesian2(0, -16),
                         scaleByDistance: new Cesium.NearFarScalar(100, 0.01, 500, 0.1),
                     },

@@ -10,7 +10,7 @@ define(['angular', 'core'],
 
         .directive('hs.rogainonline.panelDirective', function() {
             return {
-                templateUrl: './panel.html?bust=' + gitsha
+                templateUrl: './partials/panel.html?bust=' + gitsha
             };
         })
 

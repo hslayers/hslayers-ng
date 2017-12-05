@@ -30,14 +30,14 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
                 }, 1500);
             }
             return {
-                templateUrl: './end.html?bust=' + gitsha,
+                templateUrl: './partials/end.html?bust=' + gitsha,
                 link: link
             };
         });
 
         module.directive('hs.hud', function () {
             return {
-                templateUrl: './hud.html?bust=' + gitsha,
+                templateUrl: './partials/hud.html?bust=' + gitsha,
                 link: function (scope, element, attrs) {
 
                 }
