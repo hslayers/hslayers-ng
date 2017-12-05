@@ -1,6 +1,6 @@
 {
-  "name": "hslayer-ng",
-  "private": true,
+  "name": "hslayers-ng",
+  "private": false,
   "version": "0.4.1",
   "description": "Hslayers-ng mapping library",
   "repository": "git+ssh://git@github.com:hslayers/hslayers-ng.git",
