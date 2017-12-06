@@ -9,50 +9,26 @@ http://sdi4apps.eu/spoi/
 
 ## Getting Started
 
-To get you started you can simply clone the hslayers-ng repository and install the dependencies:
-
-### Prerequisites
-
-You need git to clone the hslayers-ng repository. You can get it from
-[http://git-scm.com/](http://git-scm.com/).
-
-Hslayers-ng has a number of node.js tools to initialize and test itself. You must have node.js and
-its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
-
-
-### Clone hslayers-ng
-
-Clone the repository where your webserver can access it using [git][git]:
-
-```
-git clone git@github.com:hslayers/hslayers-ng.git
-or
-git clone https://github.com/hslayers/hslayers-ng.git
-
-cd hslayers-ng/
-```
-
-### Install Dependencies
-
-```
-npm install
-```
+npm install hslayers-ng
 
 ### Configure the application
 
 Copy the application configuration (template) files to the actual files. 
 
 ```
-cp app.js.template app.js
-cp hslayers.js.template hslayers.js
+cp node_modules/hslayers-ng/app.js.template app.js
+cp node_modules/hslayers-ng/hslayers.js.template hslayers.js
 ```
 
-Hslayers.js file contains the paths for the different modules and is the starting 
+hslayers.js file contains the paths for the different modules and is the starting 
 point of the js application.
-Set the hsl_path variable on top of the file to your hslayers-ng directory. 
+Inside it set the hsl_path variable on top of the file to your hslayers-ng directory. 
+```
+var hsl_path = 'node_modules/hslayers-ng/';
+```
 The path should be relative to your www root or the html file where you load hslayers.js file.
 
-App.js file is where you specify which hslayers modules will be loaded for your speciffic 
+app.js file is where you specify which hslayers modules will be loaded for your speciffic 
 application, which map layers will be displayed and other configuration parameters. 
 You can also write some startup code here to load some map service or open some initial panels etc.
 
@@ -61,7 +37,7 @@ Include in your html file, where the map should appear. Check the paths to the j
 ```
 <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
-<script src="lib/require.js"></script>    
+<script src="node_modules/requirejs/require.js"></script>    
 <script src="hslayers.js"></script> 
 ```
 
