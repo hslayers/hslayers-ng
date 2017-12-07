@@ -14,8 +14,13 @@ if (typeof hslMin != 'undefined') {
 } 
 else hslMin = '';
 if(console) console.log(hslMin);
-
+//Node modules path depends if hslayers is used as standalone app (second case) or as a library (first case)
 var nm_path = hsl_path.indexOf('node_modules')>-1 ? 'node_modules/' : hsl_path +'node_modules/';
+/*In expressJs and other frameworks node_modules 
+might be accessible as statis files eg. http://localhost/jquery/dist.js. 
+In that case we have hsl_path 'hslayers-ng/' eg. http://localhost/hslayers/
+*/
+if(hsl_path == 'hslayers-ng/') nm_path = './'; 
 require.config({
     paths: {
         dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
