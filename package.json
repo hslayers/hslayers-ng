@@ -58,8 +58,6 @@
     "bootstrap": "3.3.x",
     "cesium": "^1.39.0",
     "clipboard": "^1.7.1",
-    "crossfilter": "1.3.x",
-    "d3": "3.5.x",
     "html5-boilerplate-npm": "^4.1.0-B",
     "jquery": "^3.2.1",
     "js-cookie": "2.1.2",
@@ -71,7 +69,6 @@
     "openlayers": "^4.0.1",
     "proj4": "2.3.x",
     "requirejs": "^2.3.3",
-    "socket.io-client": "^1.4.8",
     "tinycolor2": "^1.4.1"
   }
 }
