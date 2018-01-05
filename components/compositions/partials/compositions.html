@@ -1,11 +1,10 @@
 <md-content layout="column" style="max-height:100%;" class="composition">
-
     <md-toolbar class="md-hue-3" flex="none">
         <h1 class="md-toolbar-tools"><translate>Compositions</translate>
             <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
         </h1>
     </md-toolbar>
-    <md-content class="md-padding" flex>
+    <div class="md-padding" flex>
         <div layout="row">
             <md-input-container flex="60">
                 <label translate>Filter</label>
@@ -47,6 +46,5 @@
                 <md-tooltip md-direction="up" translate>Next composition page</md-tooltip>
             </md-button>
         </div>
-
     </md-content>
 </md-content>
