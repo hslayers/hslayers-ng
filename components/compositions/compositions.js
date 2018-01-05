@@ -366,35 +366,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                         record.feature = newFeature;
                                         extentLayer.getSource().addFeatures([newFeature]);
                                     } else {
-                                        me.data.compositionsCount = 0;
+                                        //Composition not in extent
                                     }
-
-                                    me.data.next = response.next;
-                                    angular.forEach(me.data.compositions, function (record) {
-                                        var attributes = {
-                                            record: record,
-                                            hs_notqueryable: true,
-                                            highlighted: false
-                                        };
-                                        record.editable = false;
-                                        if (angular.isUndefined(record.thumbnail)) {
-                                            record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
-                                        }
-                                        var extent = compositionParser.parseExtent(record.bbox);
-                                        //Check if height or Width covers the whole screen
-                                        if (!((extent[0] < mapExtent[0] && extent[2] > mapExtent[2]) || (extent[1] < mapExtent[1] && extent[3] > mapExtent[3]))) {
-                                            attributes.geometry = ol.geom.Polygon.fromExtent(extent);
-                                            attributes.is_hs_composition_extent = true;
-                                            var newFeature = new ol.Feature(attributes);
-                                            record.feature = newFeature;
-                                            extentLayer.getSource().addFeatures([newFeature]);
-                                        } else {
-                                            //Composition not in extent
-                                        }
-                                    })
-                                    if (!$rootScope.$$phase) $rootScope.$digest();
-                                    $rootScope.$broadcast('CompositionsLoaded');
-                                    me.loadStatusManagerCompositions(params, b);
                                 })
                                 if (!$rootScope.$$phase) $rootScope.$digest();
                                 $rootScope.$broadcast('CompositionsLoaded');
@@ -403,6 +376,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                     } else {
                         me.loadStatusManagerCompositions(params, b);
                     }
+                }
 
                 me.loadStatusManagerCompositions = function (params, bbox) {
                     var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url;
@@ -524,25 +498,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     feature.get("record").highlighted = true;
                                     somethingDone = true;
                                 }
-                            });
-                            if (features.length) {
-                                angular.forEach(features, function (feature) {
-                                    if (!feature.get("record").highlighted) {
-                                        feature.get("record").highlighted = true;
-                                        somethingDone = true;
-                                    }
-                                })
-                            }
-                            if (somethingDone && !$rootScope.$$phase) $rootScope.$digest();
-                        });
-
-                        if (angular.isDefined($cookies.get('hs_layers')) && window.permalinkApp != true) {
-                            var data = $cookies.get('hs_layers');
-                            var layers = compositionParser.jsonToLayers(JSON.parse(data));
-                            for (var i = 0; i < layers.length; i++) {
-                                OlMap.map.addLayer(layers[i]);
-                            }
-                            $cookies.remove('hs_layers');
+                            })
                         }
                         if (somethingDone && !$rootScope.$$phase) $rootScope.$digest();
                     });
@@ -553,6 +509,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                         for (var i = 0; i < layers.length; i++) {
                             OlMap.map.addLayer(layers[i]);
                         }
+                        $cookies.remove('hs_layers');
                     }
 
                     OlMap.map.addLayer(extentLayer);
