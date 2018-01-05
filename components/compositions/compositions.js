@@ -16,73 +16,81 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
          * @ngdoc directive
          * @description Add composition panel to the map, consist of filtering function, keyword, list of compositions with their functions and composition pager
          */
-        .directive('hs.compositions.directive', function() {
-                return {
-                    templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
-                    link: function(scope, element) {
-                        /* TODO: This should be done more angular way */
-                        //$('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
-                        $('.mid-pane').css('margin-top', '0px');
-                        $(".keywords-panel").hide();
-                    }
-                };
-            })
-            /**
-             * @module hs.compositions
-             * @name hs.compositions.overwriteDialogDirective
-             * @ngdoc directive
-             * @description Display dialog window for situation, when new composition is to be loaded while there are unsaved changes in old composition 
-             */
-            .directive('hs.compositions.overwriteDialogDirective', function() {
-                return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html?bust=' + gitsha,
-                    link: function(scope, element, attrs) {
-                        $('#composition-overwrite-dialog').modal('show');
-                    }
-                };
-            })
-            /**
-             * @module hs.compositions
-             * @name hs.compositions.deleteDialogDirective
-             * @ngdoc directive
-             * @description Display dialog window for confiriming deletion of selected composition
-             */
-            .directive('hs.compositions.deleteDialogDirective', function() {
-                return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html?bust=' + gitsha,
-                    link: function(scope, element, attrs) {
-                        $('#composition-delete-dialog').modal('show');
-                    }
-                };
-            })
-            /**
-             * @module hs.compositions
-             * @name hs.compositions.shareDialogDirective
-             * @ngdoc directive
-             * @description Display dialog of sharing composition (URL / Social networks)
-             */
-            .directive('hs.compositions.shareDialogDirective', function() {
-                return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html?bust=' + gitsha,
-                    link: function(scope, element, attrs) {
-                        $('#composition-share-dialog').modal('show');
-                    }
-                };
-            })
-            /**
-             * @module hs.compositions
-             * @name hs.compositions.infoDialogDirective
-             * @ngdoc directive
-             * @description Display dialog of composition info (name, abstract, thumbnail, extent, layers)
-             */
-            .directive('hs.compositions.infoDialogDirective', function() {
-                return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html?bust=' + gitsha,
-                    link: function(scope, element, attrs) {
-                        $('#composition-info-dialog').modal('show');
-                    }
-                };
-            })
+        .directive('hs.compositions.directive.deprecated', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
+                link: function(scope, element) {
+                    /* TODO: This should be done more angular way */
+                    //$('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
+                    $('.mid-pane').css('margin-top', '0px');
+                    $(".keywords-panel").hide();
+                }
+            };
+        })
+        .directive('hs.compositions.directive', function () {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
+                link: function (scope, element) {
+
+                }
+            };
+        })
+        /**
+         * @module hs.compositions
+         * @name hs.compositions.overwriteDialogDirective
+         * @ngdoc directive
+         * @description Display dialog window for situation, when new composition is to be loaded while there are unsaved changes in old composition 
+         */
+        .directive('hs.compositions.overwriteDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html?bust=' + gitsha,
+                link: function(scope, element, attrs) {
+                    $('#composition-overwrite-dialog').modal('show');
+                }
+            };
+        })
+        /**
+         * @module hs.compositions
+         * @name hs.compositions.deleteDialogDirective
+         * @ngdoc directive
+         * @description Display dialog window for confiriming deletion of selected composition
+         */
+        .directive('hs.compositions.deleteDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html?bust=' + gitsha,
+                link: function(scope, element, attrs) {
+                    $('#composition-delete-dialog').modal('show');
+                }
+            };
+        })
+        /**
+         * @module hs.compositions
+         * @name hs.compositions.shareDialogDirective
+         * @ngdoc directive
+         * @description Display dialog of sharing composition (URL / Social networks)
+         */
+        .directive('hs.compositions.shareDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html?bust=' + gitsha,
+                link: function(scope, element, attrs) {
+                    $('#composition-share-dialog').modal('show');
+                }
+            };
+        })
+        /**
+         * @module hs.compositions
+         * @name hs.compositions.infoDialogDirective
+         * @ngdoc directive
+         * @description Display dialog of composition info (name, abstract, thumbnail, extent, layers)
+         */
+        .directive('hs.compositions.infoDialogDirective', function() {
+            return {
+                templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html?bust=' + gitsha,
+                link: function(scope, element, attrs) {
+                    $('#composition-info-dialog').modal('show');
+                }
+            };
+        })
 
         /**
          * @module hs.compositions
@@ -297,7 +305,244 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
          * @ngdoc controller
          * @description Main controller of composition module
          */
-        .controller('hs.compositions.controller', ['$scope', '$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
+        .controller('hs.compositions.controller', ['$scope', 'Core', 'hs.compositions.service_parser', '$window', '$mdDialog',
+            function ($scope, Core, Composition, $window, $mdDialog) {
+                $scope.data = Composition.data;
+                /**
+                * @ngdoc property
+                * @name hs.compositions.controller#page_size
+                * @public
+                * @type {number} 15
+                * @description Number of compositions displayed on one panel page
+                */
+                $scope.pageSize = 15;
+                $scope.compStart = 0;
+                $scope.compNext = $scope.pageSize;
+                $scope.sortBy = 'bbox';
+                $scope.filterByExtent = true;
+
+                $scope.getPreviousCompositions = function () {
+                    if ($scope.compStart - $scope.pageSize < 0) {
+                        $scope.compStart = 0;
+                        $scope.compNext = $scope.pageSize;
+                    } else {
+                        $scope.compStart -= $scope.pageSize;
+                        $scope.compNext = $scope.compStart + $scope.pageSize;
+                    }
+                    $scope.loadCompositions();
+                }
+
+                $scope.getNextCompositions = function () {
+                    if ($scope.compNext != 0) {
+                        $scope.compStart = Math.floor($scope.compNext / $scope.pageSize) * $scope.pageSize;
+
+                        if ($scope.compNext + $scope.pageSize > $scope.compositionsCount) {
+                            $scope.compNext = $scope.compositionsCount;
+                        } else {
+                            $scope.compNext += $scope.pageSize;
+                        }
+                        $scope.loadCompositions();
+                    }
+                }
+
+                $scope.loadCompositions = function () {
+                    Composition.loadCompositions({
+                        query: $scope.query,
+                        sortBy: $scope.sortBy,
+                        filterExtent: $scope.filterByExtent,
+                        start: $scope.compStart,
+                        limit: $scope.pageSize
+                    });
+                }
+
+                $scope.$watch('data.next', function () {
+                    $scope.compNext = $scope.data.next;
+                })
+
+                $scope.getPageSize = function () {
+                    var panel = angular.element('#sidenav-right');
+                    var listItemCount = Math.round((panel.height() - 180) / 60);
+                    $scope.pageSize = listItemCount;
+                }
+
+                $scope.filterChanged = function () {
+                    Composition.resetCompositionCounter();
+                    $scope.compStart = 0;
+                    $scope.compNext = $scope.pageSize;
+                    $scope.loadCompositions();
+                }
+
+                $scope.confirmDelete = function (composition, ev) {
+                    $scope.compositionToDelete = composition;
+                    deleteDialog(ev);
+                }
+
+                function deleteDialog(ev) {
+                    $mdDialog.show({
+                        parent: angular.element('#hsContainer'),
+                        targetEvent: ev,
+                        clickOutsideToClose: true,
+                        escapeToClose: true,
+                        scope: $scope,
+                        preserveScope: true,  
+                        templateUrl: 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
+                        controller: function DialogController($scope, $mdDialog) {
+                            $scope.closeDialog = function () {
+                                $mdDialog.hide();
+                            }
+                        }
+                    });
+                }
+
+                $scope.delete = function (composition) {
+                    Composition.deleteComposition(composition);
+                }
+
+                $scope.edit = function (composition) {
+                    $scope.data.useCallbackForEdit = true;
+                    Composition.loadComposition(composition);
+                }
+
+                $scope.highlightComposition = function (composition, state) {
+                    Composition.highlightComposition(composition, state);
+                }
+
+                $scope.$on('map.extent_changed', function (event, data, b) {
+                    if (Core.mainpanel != 'composition_browser' && Core.mainpanel != 'composition') return;
+                    if ($scope.filterByExtent) $scope.loadCompositions();
+                });
+
+                $scope.shareComposition = function (record, $event) {
+                    Composition.shareComposition(record);
+                    shareDialog($event);
+                }
+
+                function shareDialog($event) {
+                    $mdDialog.show({
+                        parent: angular.element('#hsContainer'),
+                        targetEvent: $event,
+                        clickOutsideToClose: true,
+                        escapeToClose: true,
+                        scope: $scope,
+                        preserveScope: true,  
+                        templateUrl: 'materialComponents/panelContents/compositionShareDialog.html',
+                        controller: function DialogController($scope, $mdDialog) {
+                            $scope.closeDialog = function () {
+                                $mdDialog.hide();
+                            }
+                        }
+                    });
+                }
+
+
+                $scope.detailComposition = function (record, $event) {
+                    $scope.info = Composition.getCompositionInfo(record);
+                    infoDialog($event);
+                }
+
+                function infoDialog($event) {
+                    var parentEl = angular.element('#hsContainer');
+                    $mdDialog.show({
+                        parent: parentEl,
+                        targetEvent: $event,
+                        clickOutsideToClose: true,
+                        escapeToClose: true,
+                        template:
+                        '<md-dialog aria-label="List dialog">' +
+                        '  <md-dialog-content layout="column" layout-padding>' +
+                        '    <md-list>' +
+                        '    <div layout="row">' +
+                        '       <span flex="30">Abstract</span><span flex="70">{{info.abstract}}</span>' +
+                        '    </div>' +
+                        '    <div layout="row">' +
+                        '       <span flex="30">Thumbnail</span><span flex="70">{{info.thumbnail}}</span>' +
+                        '    </div>' +
+                        '    <div layout="row">' +
+                        '       <span flex="30">Extent</span><span flex="70">{{info.extent}}</span>' +
+                        '    </div>' +
+                        '    <div layout="row" ng-repeat="layer in info.layers">' +
+                        '       <span flex="30">Layer</span><span flex="70">{{layer.title}}</span>' +
+                        '    </div>' +
+                        '    </md-list>' +
+                        '  </md-dialog-content>' +
+                        '  <md-dialog-actions>' +
+                        '    <md-button ng-click="closeDialog()" class="md-primary">' +
+                        '      Close' +
+                        '    </md-button>' +
+                        '  </md-dialog-actions>' +
+                        '</md-dialog>',
+                        locals: {
+                            info: $scope.info
+                        },
+                        controller: DialogController
+                    });
+                    function DialogController($scope, $mdDialog, info) {
+                        $scope.info = info;
+                        $scope.closeDialog = function () {
+                            $mdDialog.hide();
+                        }
+                    }
+                }
+
+                $scope.loadComposition = function (record) {
+                    Composition.loadCompositionParser(record);
+                }
+
+                $scope.overwrite = function () {
+                    Composition.loadComposition($scope.compositionToLoad, true);
+                }
+
+                $scope.add = function () {
+                    Composition.loadComposition($scope.compositionToLoad, false);
+                }
+
+                $scope.save = function () {
+                    Core.openStatusCreator();
+                }
+
+                $scope.setSortAttribute = function (attribute) {
+                    $scope.loadCompositions();
+                }
+
+                $scope.$on('loadComposition.notSaved', function (event, data) {
+                    $scope.compositionToLoad = data.link;
+                    loadUnsavedDialog();
+                });
+
+                function loadUnsavedDialog() {
+                    $mdDialog.show({
+                        parent: angular.element('#hsContainer'),
+                        clickOutsideToClose: true,
+                        escapeToClose: true,
+                        scope: $scope,
+                        preserveScope: true,  
+                        templateUrl: 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
+                        controller: function DialogController($scope, $mdDialog) {
+                            $scope.closeDialog = function () {
+                                $mdDialog.hide();
+                            }
+                        }
+                    });
+                }
+
+                $scope.$on('core.mainpanel_changed', function (event) {
+                    if (Core.mainpanel === 'composition_browser' || Core.mainpanel === 'composition') {
+                        $scope.loadCompositions();
+                    }
+                });
+
+                $scope.getPageSize();
+                angular.element($window).resize(function () {
+                    $scope.getPageSize();
+                });
+                $scope.$on("Core_sizeChanged", function () {
+                    $scope.getPageSize();
+                });
+
+                $scope.$emit('scope_loaded', "MaterialComposition");
+            }
+        ])
+        .controller('hs.compositions.controller.deprecated', ['$scope', '$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
             function($scope, $rootScope, $location, $http, hsMap, Core, composition_parser, config, permalink, $compile, $cookies, utils) {
                 /**
                 * @ngdoc property

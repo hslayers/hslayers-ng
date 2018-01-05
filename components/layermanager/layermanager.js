@@ -23,7 +23,7 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
          */
         .directive('hs.layermanager.directive.deprecated', function () {
             return {
-                templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html?bust=' + gitsha
+                templateUrl: hsl_path + 'components/layermanager/partials/layermanager.deprecared.html?bust=' + gitsha
             };
         })
         /**
