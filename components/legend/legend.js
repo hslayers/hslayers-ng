@@ -51,6 +51,7 @@ define(['angular', 'ol', 'map', 'utils'],
                         source_url = params.OWSURL;
                     }
                     source_url += (source_url.indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image%2Fpng";
+                    source_url = utils.proxify(source_url);
                     return source_url;
                 }
 
