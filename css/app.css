@@ -1208,3 +1208,12 @@ md-bottom-sheet {
     padding-left: 0;
     padding-right: 0;
 }
+
+md-bottom-sheet md-toolbar {
+    /*position: absolute;*/
+    /*overflow: none;*/
+}
+
+md-bottom-sheet .content {
+    /*max-height: 400px;*/
+}
