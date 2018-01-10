@@ -34,7 +34,7 @@ require.config({
         'ngMaterial': {
              deps: ['ngAnimate', 'ngAria']
         },
-        'mdColorPicker': ['tinycolor'],
+        'mdColorPicker': ['angular', 'tinycolor'],
         'ngclipboard': ['clipboard']
     }
 });

@@ -89,16 +89,11 @@ define(['angular', 'core', 'map', 'swipe'],
                             }
                         });
                         element.bind('scroll', function () {
-                            // console.log('in scroll');
-                            // console.log(raw.scrollTop + raw.offsetHeight);
-                            // console.log(raw.scrollHeight);
                             raw.style["touch-action"] = "pan-y";
                             if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
-                                console.log("Bottom!");
                                 raw.style["touch-action"] = "pan-up";
                             }
                             if (raw.scrollTop == 0) {
-                                console.log("Top!");
                                 raw.style["touch-action"] = "pan-down";
                             }
                         })
@@ -112,8 +107,8 @@ define(['angular', 'core', 'map', 'swipe'],
             * @name hs.layout.controller
             * @description TODO
             */
-            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet',
-                function($scope, $rootScope, $window, Core, OlMap, Geolocation, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet) {
+            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet', '$mdPanel',
+                function($scope, $rootScope, $window, Core, OlMap, Geolocation, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet, $mdPanel) {
                     $scope.Core = Core;
                     $scope.geolocation = Geolocation;
                     $scope.location = {
@@ -297,6 +292,15 @@ define(['angular', 'core', 'map', 'swipe'],
                             $scope.swipeOverlayStatus = false;
                         });
                     });
+
+                    function BaselayersPanelProviderConfig($mdPanelProvider) {
+                        $mdPanelProvider.definePreset('demoPreset', {
+                            attachTo: angular.element("#gui"),
+                            controller: "hs.layout.controller",
+                            templateUrl: hsl_path + 'components/layout/partials/baselayers.html?bust=' + gitsha,
+                            zIndex: 100
+                        });
+                    }
 
                     $scope.$emit('scope_loaded', "Layout");
                 }
