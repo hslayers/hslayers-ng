@@ -629,8 +629,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
          * @ngdoc controller
          * @description Main controller of composition module
          */
-        .controller('hs.compositions.controller', ['$scope', 'Core', 'hs.compositions.service', '$window', '$mdDialog',
-            function ($scope, Core, Composition, $window, $mdDialog) {
+        .controller('hs.compositions.controller', ['$scope', 'Core', 'hs.compositions.service', '$window', '$mdDialog', '$mdMedia',
+            function ($scope, Core, Composition, $window, $mdDialog, $mdMedia) {
                 $scope.data = Composition.data;
                 /**
                 * @ngdoc property
@@ -684,9 +684,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 })
 
                 $scope.getPageSize = function () {
-                    var panel = angular.element('#sidenav-right');
-                    var listItemCount = Math.round((panel.height() - 180) / 60);
-                    $scope.pageSize = listItemCount;
+                    let listHeight = screen.height;
+                    if ($mdMedia("gt-sm")) {
+                        let panel = angular.element('#sidenav-right');
+                        listHeight = panel.height();
+                    }
+                    $scope.pageSize = Math.round((listHeight - 180) / 60);
                 }
 
                 $scope.filterChanged = function () {

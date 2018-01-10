@@ -74,6 +74,37 @@ define(['angular', 'core', 'map', 'swipe'],
                 };
             })
 
+            .directive('hs.bottomSheetScroll', function () {
+                return {
+                    restrict: 'A',
+                    link: function (scope, element, attrs) {
+                        var raw = element[0];
+                        scope.$watch(() => raw.scrollHeight,
+                        function(newVal, oldVal){
+                            if (raw.scrollHeight > raw.clientHeight) {
+                                raw.style["touch-action"] = "pan-y";
+                            } else {
+                                raw.style["touch-action"] = "none";
+                            }
+                        });
+                        element.bind('scroll', function () {
+                            // console.log('in scroll');
+                            // console.log(raw.scrollTop + raw.offsetHeight);
+                            // console.log(raw.scrollHeight);
+                            raw.style["touch-action"] = "pan-y";
+                            if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
+                                console.log("Bottom!");
+                                raw.style["touch-action"] = "pan-up";
+                            }
+                            if (raw.scrollTop == 0) {
+                                console.log("Top!");
+                                raw.style["touch-action"] = "pan-down";
+                            }
+                        })
+                    }
+                };
+            })
+
             /**
             * @memberof hs.layout
             * @ngdoc controller
@@ -236,6 +267,7 @@ define(['angular', 'core', 'map', 'swipe'],
                             parent: "#layout",
                             preserveScope: true,
                             disableBackdrop: true,
+                            // disableParentScroll: false,
                             clickOutsideToClose: true
                         }).then(function() {
                             console.log("Bottom sheet closed", Date.now());

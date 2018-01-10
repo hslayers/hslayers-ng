@@ -94,6 +94,9 @@ require.config({
         'ngMaterial': {
             deps: ['ngAnimate', 'ngAria']
         },
+        'bottomSheetCollapsible': {
+            deps: ['ngMaterial']
+        },
         'swipe': {
             deps: ['angular']
         },
