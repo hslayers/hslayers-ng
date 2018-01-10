@@ -42,14 +42,15 @@
   },
   "dependencies": {
     "angular": "1.4.x",
-    "angular-animate": "1.4.14",
-    "angular-aria": "1.4.14",
+    "angular-animate": "^1.5.0",
+    "angular-aria": "^1.5.0",
     "angular-cookies": "1.4.x",
     "angular-drag-and-drop-lists": "^1.4.0",
     "angular-gettext": "2.0.x",
     "angular-lazy-image": "^0.3.4",
     "angular-loader": "1.4.x",
-    "angular-material": "^1.1.4",
+    "angular-material": "^1.1.5",
+    "angular-messages": "^1.5.0",
     "angular-mocks": "1.4.x",
     "angular-sanitize": "1.4.x",
     "angular-socialshare": "^2.3.11",
@@ -72,3 +73,4 @@
     "tinycolor2": "^1.4.1"
   }
 }
+
