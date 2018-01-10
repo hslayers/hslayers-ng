@@ -1353,6 +1353,8 @@ define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'sta
             $scope.Core = Core;
             $scope.layer_renamer_visible = false;
             $scope.data = layManService.data;
+            
+            $scope.utils = utils;
 
             var cur_layer_opacity = 1;
             var map;

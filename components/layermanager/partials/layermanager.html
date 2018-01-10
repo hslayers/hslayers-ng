@@ -83,6 +83,7 @@
                         <md-slider min="0" max="40" step="0.1" ng-model="layer.style.lineWidth" ng-change="saveStyle(layer);"></md-slider>
                     </md-input-container>
                 </div>
+<<<<<<< HEAD
                 <div layout-fill ng-if="layer.layer.getSource().hasPoint">
                     <md-tabs md-no-pagination="true" md-no-ink="true" md-stretch-tabs="always" md-dynamic-height="true">
                         <md-tab id="Circle" md-on-select="changePointType(layer,'Circle')">
@@ -146,6 +147,15 @@
                             </md-tab-body>
                         </md-tab>
                     </md-tabs>
+=======
+                
+                <!-- Legends -->
+                <div class="form-group" ng-if="currentlayer.legends != null">
+                    <label translate>Legend</label>
+                    <p>
+                         <img ng-repeat="legend in currentlayer.legends" ng-src="{{utils.proxify(legend)}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
+                    </p>
+>>>>>>> Proxify legend url also in layermanager
                 </div>
 
                 <!--Resolution setting for layer - unsatisfying behaviour currently 
