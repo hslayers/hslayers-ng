@@ -38,6 +38,7 @@ define(['angular', 'core', 'map', 'swipe'],
                     };
                 }
             ])
+
             /**
             * @memberof hs.mdSidenav
             * @ngdoc directive
