@@ -118,7 +118,7 @@
                 <div class="form-group" ng-if="currentlayer.legends != null">
                     <label translate>Legend</label>
                     <p>
-                         <img ng-repeat="legend in currentlayer.legends" ng-src="{{legend}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
+                         <img ng-repeat="legend in currentlayer.legends" ng-src="{{utils.proxify(legend)}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
                     </p>
                 </div>
                 <!-- Footer -->
