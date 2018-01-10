@@ -20,6 +20,7 @@ var nm_path = hsl_path.indexOf('node_modules')>-1 ? 'node_modules/' : hsl_path +
 might be accessible as statis files eg. http://localhost/jquery/dist.js. 
 In that case we have hsl_path 'hslayers-ng/' eg. http://localhost/hslayers/
 */
+
 if(hsl_path == 'hslayers-ng/') nm_path = './'; 
 require.config({
     paths: {
@@ -32,11 +33,11 @@ require.config({
         ol: requirejs.s.contexts._.config.paths.ol || ((hslMin == '.min') ? nm_path + 'openlayers/dist/ol' : nm_path + 'openlayers/dist/ol-debug'),
         angular: nm_path +'angular/angular' + hslMin,
         'angular-sanitize': nm_path +'angular-sanitize/angular-sanitize' + hslMin,
-        'ngAnimate': hsl_path + 'node_modules/angular-animate/angular-animate' + hslMin,
-        'ngAria': hsl_path + 'node_modules/angular-aria/angular-aria' + hslMin,
-        'ngMessages': hsl_path + 'node_modules/angular-messages/angular-messages' + hslMin,
-        'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
-        'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
+        // 'ngAnimate': hsl_path + 'node_modules/angular-animate/angular-animate' + hslMin,
+        // 'ngAria': hsl_path + 'node_modules/angular-aria/angular-aria' + hslMin,
+        // 'ngMessages': hsl_path + 'node_modules/angular-messages/angular-messages' + hslMin,
+        // 'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
+        // 'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
         'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
         'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
