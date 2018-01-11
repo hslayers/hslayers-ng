@@ -59,6 +59,7 @@
     "bootstrap": "3.3.x",
     "cesium": "^1.39.0",
     "clipboard": "^1.7.1",
+    "hammerjs": "^2.0.8",
     "html5-boilerplate-npm": "^4.1.0-B",
     "jquery": "^3.2.1",
     "js-cookie": "2.1.2",
@@ -73,4 +74,3 @@
     "tinycolor2": "^1.4.1"
   }
 }
-
