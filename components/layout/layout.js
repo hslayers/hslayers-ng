@@ -2,10 +2,10 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-define(['angular', 'core', 'map', 'swipe'],
+define(['angular', 'core', 'map'],
 
     function(angular) {
-        angular.module('hs.layout', ['hs.core', 'hs.map', 'swipe'])
+        angular.module('hs.layout', ['hs.core', 'hs.map'])
             /**
             * @memberof hs.mdLayout
             * @ngdoc directive
@@ -276,20 +276,20 @@ define(['angular', 'core', 'map', 'swipe'],
                         $mdBottomSheet.hide();
                     }
 
-                    $scope.openLeftSidenav = function() {
-                        $mdSidenav('sidenav-left').open()
-                        .then(function() {
-                            $scope.swipeOverlayStatus = true;
-                        });
-                    }
-
-                    $scope.closeLeftSidenav = function() {
-                        $mdSidenav('sidenav-left').close();
-                    }
-
                     $mdSidenav('sidenav-left', true).then(function(){
                         $mdSidenav('sidenav-left').onClose(function() {
                             $scope.swipeOverlayStatus = false;
+                        });
+
+                        Hammer(document.getElementsByClassName("md-sidenav-left")[0]).on("swipeleft", () => {
+                            $mdSidenav('sidenav-left').close();
+                        });
+
+                        Hammer(document.getElementById("sidenav-swipe-overlay")).on("swiperight", () => {
+                            $mdSidenav('sidenav-left').open()
+                            .then(function() {
+                                $scope.swipeOverlayStatus = true;
+                            });
                         });
                     });
 

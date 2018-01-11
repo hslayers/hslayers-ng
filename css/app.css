@@ -1142,6 +1142,10 @@ html, body {
     width: 15px;
 }
 
+md-sidenav md-content {
+    touch-action: pan-y;
+}
+
 md-icon.fab {
     transition: 0.3s;
 }
@@ -1195,17 +1199,7 @@ md-bottom-sheet {
     max-height: 80%;
     touch-action: pan-y;
     overflow: scroll;
-    /*pointer-events: none;*/
     padding-top: 0;
     padding-left: 0;
     padding-right: 0;
-}
-
-md-bottom-sheet md-toolbar {
-    /*position: absolute;*/
-    /*overflow: none;*/
-}
-
-md-bottom-sheet .content {
-    /*max-height: 400px;*/
 }

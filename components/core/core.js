@@ -29,17 +29,12 @@ require.config({
         'ngAria': nm_path +'angular-aria/angular-aria' + hslMin,
         'ngMessages': nm_path +'angular-messages/angular-messages' + hslMin,
         'ngMaterial': nm_path +'angular-material/angular-material' + hslMin,
-        'swipe': nm_path +'angular-swipe/dist/angular-swipe' + hslMin,
         ol: requirejs.s.contexts._.config.paths.ol || ((hslMin == '.min') ? nm_path + 'openlayers/dist/ol' : nm_path + 'openlayers/dist/ol-debug'),
         angular: nm_path +'angular/angular' + hslMin,
         'angular-sanitize': nm_path +'angular-sanitize/angular-sanitize' + hslMin,
-        // 'ngAnimate': hsl_path + 'node_modules/angular-animate/angular-animate' + hslMin,
-        // 'ngAria': hsl_path + 'node_modules/angular-aria/angular-aria' + hslMin,
-        // 'ngMessages': hsl_path + 'node_modules/angular-messages/angular-messages' + hslMin,
-        // 'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
-        // 'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
         'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
         'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
+        hammer: nm_path +'hammerjs/hammer' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || nm_path +'crossfilter/crossfilter' + hslMin,
         draw: hsl_path + 'components/draw/draw',
@@ -94,6 +89,9 @@ require.config({
         'angular': {
             'exports': 'angular'
         },
+        'hammer': {
+            'exports': 'hammer'
+        },
         'ngAnimate': {
             deps: ['angular']
         },
@@ -101,13 +99,10 @@ require.config({
             deps: ['angular']
         },
         'ngMaterial': {
-            deps: ['ngAnimate', 'ngAria']
+            deps: ['ngAnimate', 'ngAria', 'hammer']
         },
         'bottomSheetCollapsible': {
             deps: ['ngMaterial']
-        },
-        'swipe': {
-            deps: ['angular']
         },
         'angularjs-socialshare': {
             deps: ['angular']
