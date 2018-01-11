@@ -1,0 +1,70 @@
+<div layout="column" style="height:100%;" ng-controller="MatCore" id="hsContainer">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2 flex="nogrow" md-truncate>Vodstvo Libereckého kraje</h2>
+            <div ng-controller='hs.material.search.controller' flex="25" flex-offset="5">
+                <hs.material.search.directive></hs.material.search.directive>
+            </div>
+            <div flex=""></div>
+            <!--
+            <div flex="nogrow">
+                <md-button class="md-raised md-warn md-hue-2" aria-label="Změnit mapu">
+                    Změnit mapu
+                </md-button>
+                <md-button class="md-raised md-warn md-hue-2" aria-label="Herní atlas">
+                    Herní atlas
+                </md-button>
+            </div>-->
+        </div>
+    </md-toolbar>
+
+    <section flex layout="row">
+        <hs.material.sidepanel.panelleft.directive></hs.material.sidepanel.panelleft.directive>
+        <div flex id="map-container" style="width:100%;position:relative;">
+            <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
+
+            <div class="map-floating-gui" id="gui">
+                
+                <!--
+                <md-button class="md-raised md-hue-3 left-side-panel-button" ng-click="toogleSidenav('sidenav-left')" ng-show="!isSidenavOpened('sidenav-left')">
+                    <md-tooltip md-direction="right">Show panel</md-tooltip>
+                    <md-icon>chevron_right</md-icon>
+                </md-button>
+                <md-button class="md-raised md-hue-3 left-side-panel-button" ng-click="toogleSidenav('sidenav-left')" ng-show="isSidenavOpened('sidenav-left')">
+                    <md-tooltip md-direction="right">Hide panel</md-tooltip>
+                    <md-icon>chevron_left</md-icon>
+                </md-button>-->
+
+                <md-whiteframe layout="column" layout-align="center center" layout-wrap class="md-whiteframe-4dp map-tool-panel">
+                    <md-button class="md-icon-button md-primary" aria-label="Zoom in map" ng-click="changeZoom(true)">
+                        <md-icon>zoom_in</md-icon>
+                        <md-tooltip md-direction="right" translate>Zoom in map</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button md-primary" aria-label="Zoom out map" ng-click="changeZoom(false)">
+                        <md-icon>zoom_out</md-icon>
+                        <md-tooltip md-direction="right" translate>Zoom out map</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button md-primary" aria-label="Refresh map"
+                       ng-click="resetMap()">
+                        <md-icon>refresh</md-icon>
+                        <md-tooltip md-direction="right" translate>Show default map position</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button md-primary" aria-label="Show my location" ng-click="getPosition()">
+                        <md-icon>my_location</md-icon>
+                        <md-tooltip md-direction="right" translate>Show my position</md-tooltip>
+                    </md-button>
+                </md-whiteframe>
+
+                <div ng-controller='hs.material.mainToolbar.controller'>
+                    <hs.material.maintoolbar.directive></hs.material.maintoolbar.directive>
+                </div>
+                <div ng-controller='hs.material.bottomToolbar.controller'>
+                    <hs.material.bottomtoolbar.directive></hs.material.bottomtoolbar.directive>
+                </div>
+                
+            </div>
+        </div>
+        <hs.material.sidepanel.panelright.directive></hs.material.sidepanel.panelright.directive>
+        <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
+    </section>
+</div>

@@ -1,0 +1,485 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2017-10-29 22:05+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.3\n"
+"X-Poedit-Basepath: .\n"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:36
+msgid "About layer"
+msgstr "O vrstvě"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionShareDialog.html:14
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:28
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:12
+msgid "Abstract"
+msgstr "Shrnutí"
+
+#: examples/liberecMaterial/materialComponents/mainToolbar.js:35
+msgid "Add layer to map"
+msgstr "Přidat vrstvu"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:32
+msgid "Advanced options"
+msgstr "Zobrazit pokročilé"
+
+#: examples/liberecMaterial/materialComponents/bottomToolbar.js:48
+msgid "App help"
+msgstr "Nápověda"
+
+#: examples/liberecMaterial/materialComponents/bottomToolbar.js:54
+msgid "App info"
+msgstr "O aplikaci"
+
+#: examples/liberecMaterial/materialComponents/panelContents/matMeasure.html:11
+msgid "Area"
+msgstr "Plocha"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:18
+msgid "Bounding box"
+msgstr "Bounding box"
+
+#: examples/liberecMaterial/materialComponents/mainToolbar.js:57
+msgid "Browse map compositions"
+msgstr "Prohlížet kompozice"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionDelete.html:24
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:36
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: examples/liberecMaterial/materialComponents/panelContents/basemap.html:4
+msgid "Change basemap"
+msgstr "Výměna podkladové mapy"
+
+#: examples/liberecMaterial/materialComponents/mainToolbar.js:23
+msgid "Change map basemap"
+msgstr "Změnit podkladovou mapu"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:93
+msgid "Circle"
+msgstr "Kruh"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:43
+msgid "Composition {{compStart + 1}} - {{compNext}}"
+msgstr "Kompozice {{compStart + 1}}-{{compNext}}"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:44
+msgid "Composition {{compStart + 1}} - {{data.compositionsCount}}"
+msgstr "Kompozice {{compStart + 1}} - {{data.compositionsCount}}"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:4
+msgid "Compositions"
+msgstr "Kompozice"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:27
+msgid "Continue without saving"
+msgstr "Pokračovat bez uložení"
+
+#: examples/liberecMaterial/materialComponents/panelContents/queryResult.html:27
+msgid "Coordinates clicked"
+msgstr "Souřadnice kliknutí"
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:11
+msgid "Copy to clipboard"
+msgstr "Kopírovat"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:20
+msgid "Date"
+msgstr "Datum"
+
+#: examples/liberecMaterial/materialComponents/panelContents/matMeasure.html:38
+msgid "Delete"
+msgstr "Smazat"
+
+#: examples/liberecMaterial/materialComponents/panelContents/matMeasure.html:21
+msgid "Delete all measurements"
+msgstr "Smazat všechna měření"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionDelete.html:5
+msgid "Delete composition {{compositionToDelete.title}}"
+msgstr "Smazat kompozici {{compositionToDelete.title}}"
+
+#: examples/liberecMaterial/materialComponents/panelContents/matMeasure.html:10
+msgid "Distance"
+msgstr "Délka"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionDelete.html:13
+msgid "Do you want to delete map {{compositionToDelete.title}}"
+msgstr "Chcete smazat kompozici {{compositionToDelete.title}}"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:54
+msgid "East"
+msgstr "Východ"
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:15
+msgid "Embed code"
+msgstr "Embed code"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:40
+msgid "Extent"
+msgstr "Rozsah"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorResultsDialog.html:16
+msgid "Failed to save to status manager"
+msgstr "Uložení kompozice se nezdařilo"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:116
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:136
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:96
+msgid "Fill"
+msgstr "Výplň"
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:29
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:13
+msgid "Fill in descriptive text about map"
+msgstr "Vyplňte popis mapy"
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:23
+msgid "Fill in name"
+msgstr "Vyplňte jméno"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:37
+msgid "Fill keywords"
+msgstr "Vyplňte klíčová slova"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:11
+msgid "Filter"
+msgstr "Filtr"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:26
+msgid "Filter by map extent"
+msgstr "Filtrovat dle mapy"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:59
+msgid "Hide"
+msgstr "Skrýt"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:16
+msgid "Image layer"
+msgstr "Obrazová vrstva"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:146
+msgid "Inner radius"
+msgstr "Vnitřní poloměr"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:36
+msgid "Keywords"
+msgstr "Klíčová slova"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:3
+msgid "Layer manager"
+msgstr "Správce vrstev"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:66
+msgid "Layer name"
+msgstr "Název vrstvy"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:71
+msgid "Layer Opacity"
+msgstr "Průhlednost"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:48
+msgid "Layer options"
+msgstr "Nastavení"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:75
+msgid "Layer Style"
+msgstr "Styl vrstvy"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:24
+msgid "Line features"
+msgstr "Liniové prvky"
+
+#: examples/liberecMaterial/materialComponents/mainToolbar.js:51
+msgid "Local file"
+msgstr "Vektor"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:27
+msgid "Make public"
+msgstr "Zveřejnit"
+
+#: examples/liberecMaterial/materialComponents/mainToolbar.js:29
+msgid "Manage your layers"
+msgstr "Správce vrstev"
+
+#: examples/liberecMaterial/materialComponents/bottomToolbar.js:29
+#: examples/liberecMaterial/materialComponents/panelContents/matMeasure.html:3
+msgid "Measure on map"
+msgstr "Měření"
+
+#: examples/liberecMaterial/materialComponents/panelContents/matMeasure.html:8
+msgid "Measure type"
+msgstr "Typ měření"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:30
+msgid "Merge compositions"
+msgstr "Sloučit kompozice"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:44
+msgid "Move layer downward, SHIFT-click to bottom"
+msgstr "Posunout vrstvu dolů"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:40
+msgid "Move layer upward, SHIFT-click to top"
+msgstr "Posunout vrstvu nahoru"
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:22
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:8
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:25
+msgid "Name"
+msgstr "Název"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:47
+msgid "Next composition page"
+msgstr "Další kompozice"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:37
+msgid "No (save as new)"
+msgstr "Ne (Uložit jako)"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:44
+msgid "North"
+msgstr "Sever"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:5
+msgid "Open composition {{compositionToLoad.title}}"
+msgstr "Otevřít kompozici {{compositionToLoad.title}}"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:144
+msgid "Outer radius"
+msgstr "Vnější poloměr"
+
+#: examples/liberecMaterial/materialComponents/matSearch.html:19
+msgid "Place not known"
+msgstr "Místo neznámé"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:20
+msgid "Point features"
+msgstr "Bodové prvky"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:110
+msgid "Polygon"
+msgstr "Polygon"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:28
+msgid "Polygon features"
+msgstr "Plošné prvky"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:41
+msgid "Previous composition list"
+msgstr "Předchozí kompozice"
+
+#: examples/liberecMaterial/materialComponents/bottomToolbar.js:41
+msgid "Print map"
+msgstr "Tisk"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:102
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:124
+msgid "Radius"
+msgstr "Poloměr"
+
+#: examples/liberecMaterial/materialComponents/panelContents/basemap.html:21
+#: examples/liberecMaterial/materialComponents/panelContents/compositionDelete.html:21
+msgid "Remove"
+msgstr "Odstranit"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:52
+msgid "Remove layer"
+msgstr "Odstranit vrstvu"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:79
+msgid "Reset"
+msgstr "Obnovit"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:122
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:142
+msgid "Rotation"
+msgstr "Rotace"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:80
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:40
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:43
+msgid "Save"
+msgstr "Uložit"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:33
+msgid "Save changes first"
+msgstr "Uložit změny"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:5
+msgid "Save composition {{compoData.title}}"
+msgstr "Uložit kompozici {{compoData.title}}"
+
+#: examples/liberecMaterial/materialComponents/bottomToolbar.js:23
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:3
+msgid "Save map"
+msgstr "Uložit mapu"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorResultsDialog.html:5
+msgid "Save map result"
+msgstr "Výsledek ukládání mapy"
+
+#: examples/liberecMaterial/materialComponents/panelContents/matMeasure.html:17
+msgid "Save measurement to layer"
+msgstr "Uložit měření do vrstvy"
+
+#: examples/liberecMaterial/materialComponents/panelContents/basemap.html:20
+msgid "Select"
+msgstr "Vybrat"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:18
+msgid "Select new name for map."
+msgstr "Vyberte nové jméno mapy."
+
+#: examples/liberecMaterial/materialComponents/panelContents/queryResult.html:5
+msgid "Selected feature"
+msgstr "Vybraný prvek"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionShareDialog.html:5
+msgid "Share composition {{data.shareTitle}}"
+msgstr "Sdílet kompozici {{data.shareTitle}}"
+
+#: examples/liberecMaterial/materialComponents/bottomToolbar.js:35
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:3
+msgid "Share map"
+msgstr "Sdílet mapu"
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:20
+msgid "Share on social networks"
+msgstr "Sdílet na sociálních sítích"
+
+#: examples/liberecMaterial/skeleton.html:50
+msgid "Show default map position"
+msgstr "Základní pozice mapy"
+
+#: examples/liberecMaterial/skeleton.html:54
+msgid "Show my position"
+msgstr "Moje pozice"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:17
+msgid "Show thumbnail"
+msgstr "Zobrazit náhled"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:114
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:134
+msgid "Sides number"
+msgstr "Počet stran"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:16
+msgid "Sort by"
+msgstr "Řadit dle"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:60
+msgid "South"
+msgstr "Ji"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:131
+msgid "Star"
+msgstr "Hvězda"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:118
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:138
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:98
+msgid "Stroke"
+msgstr "Linie"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:100
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:120
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:140
+msgid "Stroke width"
+msgstr "Šířka linie"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorResultsDialog.html:13
+msgid "Successfuly saved to status manager"
+msgstr "Úspěšně uloženo"
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:47
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:20
+msgid "Thumbnail"
+msgstr "Náhled"
+
+#: examples/liberecMaterial/materialComponents/panelContents/composition.html:19
+msgid "Title"
+msgstr "Název"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:21
+msgid "Use a different name to save the map."
+msgstr "Použijte jiné jméno pro uložení mapy."
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:65
+msgid "Use map extent"
+msgstr "Rozsah mapy"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreator.html:50
+msgid "West"
+msgstr "Západ"
+
+#: examples/liberecMaterial/materialComponents/mainToolbar.js:46
+msgid "WFS Layer"
+msgstr "vrstva WFS"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:19
+msgid "What do you want to do before opening the selected map composition?"
+msgstr "Co chcete udělat před otevření vybrané mapy?"
+
+#: examples/liberecMaterial/materialComponents/panelContents/layerManager.html:84
+msgid "Width"
+msgstr "Šířka"
+
+#: examples/liberecMaterial/materialComponents/mainToolbar.js:42
+msgid "WMS Layer"
+msgstr "vrstva WMS"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:34
+msgid "Yes (save)"
+msgstr "Ano (uložit)"
+
+#: examples/liberecMaterial/materialComponents/panelContents/statusCreatorSaveDialog.html:13
+msgid ""
+"You are atempting to save map changes to {{compoData.title}}    \r\n"
+"                Do you really want to overwrite {{compoData.title}}?"
+msgstr ""
+"Pokoušíte se uložit změny v mapě {{compoData.title}}    \n"
+"                Chcete přepsat mapu {{compoData.title}}?"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:16
+msgid ""
+"You are not loaded as user. You can't save composition now. Log in for "
+"saving."
+msgstr ""
+"Nejste přihlášený uživatel a nemůže ukládat mapy. Přihlašte se pro ukládání."
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:13
+msgid ""
+"You are opening map <b>{{compositionToLoad.title}}</b>. There are currently "
+"unsaved changes in compositions."
+msgstr ""
+"Otevíráte mapu <b>{{compositionToLoad.title}}</b>. V současné mapě jsou "
+"neuložené změny."
+
+#: examples/liberecMaterial/skeleton.html:41
+msgid "Zoom in map"
+msgstr "Přiblížit mapu"
+
+#: examples/liberecMaterial/skeleton.html:45
+msgid "Zoom out map"
+msgstr "Oddálit mapu"
+
+#, fuzzy
+#~| msgid "Delete"
+#~ msgid "RemoveDelete"
+#~ msgstr "Smazat"
+
+#~ msgid ""
+#~ "Compositions\r\n"
+#~ "            <span ng-show=\"data.compositionsCount>0\">({{data."
+#~ "compositionsCount}})</span>"
+#~ msgstr "Kompozice"
