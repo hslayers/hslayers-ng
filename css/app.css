@@ -1173,10 +1173,15 @@ md-icon > span, md-icon > span.glyphicon {
 }
 
 .map-floating-gui {
+    pointer-events: none;
     position: absolute;
     width: 100%;
     bottom: 0;
     left: 0;
+}
+
+.map-floating-gui * {
+    pointer-events: initial;
 }
 
 .md-fab.geolocation {

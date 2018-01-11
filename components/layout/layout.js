@@ -65,7 +65,14 @@ define(['angular', 'core', 'map'],
 
             .directive('hs.mdOverlay.directive', function() {
                 return {
-                    templateUrl: hsl_path + 'components/layout/partials/overlay.html?bust=' + gitsha
+                    templateUrl: hsl_path + 'components/layout/partials/overlay.html?bust=' + gitsha,
+                    link: (scope, element, attrs) => {
+                        console.log(element, element.parent());
+                        element.css("height", element.parent().css("height"));
+                        scope.$watch(() => element.parent().css("height"), () => {
+                            element.css("height", element.parent().css("height"));
+                        });
+                    }
                 };
             })
 
@@ -81,7 +88,7 @@ define(['angular', 'core', 'map'],
                     link: function (scope, element, attrs) {
                         var raw = element[0];
                         scope.$watch(() => raw.scrollHeight,
-                        function(newVal, oldVal){
+                        () => {
                             if (raw.scrollHeight > raw.clientHeight) {
                                 raw.style["touch-action"] = "pan-y";
                             } else {
@@ -225,7 +232,7 @@ define(['angular', 'core', 'map'],
                     });
 
                     $rootScope.$on('$viewContentLoaded', function() {
-                        $("#loading-logo").remove();
+                        angular.element("#loading-logo").remove();
                     });
 
                     $timeout(function() {
@@ -276,20 +283,28 @@ define(['angular', 'core', 'map'],
                         $mdBottomSheet.hide();
                     }
 
+                    $scope.openLeftSidenav = function() {
+                        $mdSidenav('sidenav-left').open()
+                        .then(function() {
+                            $scope.swipeOverlayStatus = true;
+                        });
+                    }
+
+                    $scope.closeLeftSidenav = function() {
+                        $mdSidenav('sidenav-left').close();
+                    }
+
                     $mdSidenav('sidenav-left', true).then(function(){
                         $mdSidenav('sidenav-left').onClose(function() {
                             $scope.swipeOverlayStatus = false;
                         });
 
                         Hammer(document.getElementsByClassName("md-sidenav-left")[0]).on("swipeleft", () => {
-                            $mdSidenav('sidenav-left').close();
+                            $scope.closeLeftSidenav();
                         });
 
                         Hammer(document.getElementById("sidenav-swipe-overlay")).on("swiperight", () => {
-                            $mdSidenav('sidenav-left').open()
-                            .then(function() {
-                                $scope.swipeOverlayStatus = true;
-                            });
+                            $scope.openLeftSidenav();
                         });
                     });
 
