@@ -8,3 +8,4 @@ hooks/
 .orig
 package-lock.json
 *.min.js
+docs
