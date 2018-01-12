@@ -2,10 +2,10 @@
  * @namespace hs.draw
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'core', 'utils'],
+define(['angular', 'ol', 'map', 'core', 'utils', 'geolocation'],
 
     function(angular, ol) {
-        angular.module('hs.draw', ['hs.map', 'hs.core', 'hs.utils'])
+        angular.module('hs.draw', ['hs.map', 'hs.core', 'hs.utils', 'hs.geolocation'])
             /**
             * @name hs.draw.directive
             * @ngdoc directive

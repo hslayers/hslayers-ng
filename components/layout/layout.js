@@ -2,10 +2,10 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-define(['angular', 'core', 'map'],
+define(['angular', 'core', 'map', 'geolocation'],
 
     function(angular) {
-        angular.module('hs.layout', ['hs.core', 'hs.map'])
+        angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation'])
             /**
             * @memberof hs.mdLayout
             * @ngdoc directive
