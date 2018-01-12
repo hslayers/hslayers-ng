@@ -20,7 +20,6 @@ var nm_path = hsl_path.indexOf('node_modules')>-1 ? 'node_modules/' : hsl_path +
 might be accessible as statis files eg. http://localhost/jquery/dist.js. 
 In that case we have hsl_path 'hslayers-ng/' eg. http://localhost/hslayers/
 */
-
 if(hsl_path == 'hslayers-ng/') nm_path = './'; 
 require.config({
     paths: {

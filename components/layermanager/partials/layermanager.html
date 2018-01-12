@@ -33,7 +33,20 @@
                 </span>
             </li>
         </ul>
-
+        
+        <ul class="list-group hs-lm-baselayerlist" ng-show="data.terrainlayers.length>0">
+            <li class="list-group-item hs-lm-header clearfix active">
+                <span translate>Terrains</span>
+            </li>
+            <li class="list-group-item hs-lm-item" ng-repeat="layer in data.terrainlayers | orderBy:'name'" ng-click="changeTerrainLayerVisibility($event, layer)" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}" >
+                <span ng-if="layer.active" ng-class="layer.grayed ? 'text-muted': ''"><strong>{{layer.title}}</strong></span>
+                <span ng-if="!layer.active" ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</span>
+                <span class="pull-right" ng-show="layer.active || hovering" ng-style="hovering && !layer.active && {'opacity':'0.5'}">
+                    <button class="btn btn-xs btn-link"><i class="glyphicon glyphicon-globe"></i></button>
+                </span>
+            </li>
+        </ul>
+        
         <ul class="list-group hs-lm-mapcontentlist">
             <li class="list-group-item hs-lm-header active">
                 <span translate>Map Content</span>
@@ -105,7 +118,7 @@
                 <div class="form-group" ng-if="currentlayer.legends != null">
                     <label translate>Legend</label>
                     <p>
-                         <img ng-repeat="legend in currentlayer.legends" ng-src="{{legend}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
+                         <img ng-repeat="legend in currentlayer.legends" ng-src="{{utils.proxify(legend, false)}}"  onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
                     </p>
                 </div>
                 <!-- Footer -->

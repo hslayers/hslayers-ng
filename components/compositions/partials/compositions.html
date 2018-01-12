@@ -1,5 +1,5 @@
 <div class="panel panel-default mainpanel hs-comp-mainpanel">
-    <div class="panel-heading"><span class="panel-title" translate>Compositions <span ng-show='compositionsCount>0'>({{compositionsCount}})</span></span>
+    <div class="panel-heading"><span class="panel-title" translate>Compositions <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span></span>
         <button type="button" class="close" ng-click="Core.closePanel(this)">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
@@ -50,7 +50,7 @@
         </div>
 
         <ul class="hs-comp-list list-group">
-            <li ng-repeat="composition in compositions" class="list-group-item hs-comp-item" ng-class="composition.highlighted ?  'active' : ''" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="use_callback_for_edit = false; loadComposition(composition)"  data-toggle="tooltip"  data-container="body" data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
+            <li ng-repeat="composition in data.compositions" class="list-group-item hs-comp-item" ng-class="composition.highlighted ?  'active' : ''" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="data.useCallbackForEdit = false; loadComposition(composition)"  data-toggle="tooltip"  data-container="body" data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
                 <div class="hs-comp-item-title">{{composition.title}}</div>
                 <div class="hs-comp-item-controls">
                     <button type="button" class="btn btn-xs btn-default" aria-hidden="true" ng-show="composition.editable" ng-click='$event.stopPropagation();confirmDelete(composition)'><i class="glyphicon glyphicon-trash"></i></button>
@@ -63,12 +63,12 @@
     </div>
 
 
-    <div class="panel-footer" ng-show='compositionsCount>0'>
+    <div class="panel-footer" ng-show='data.compositionsCount>0'>
         <nav>
           <ul class="pager">
             <li class="previous" ng-class="compStart == 0 ? 'disabled':''" ng-click='getPreviousCompositions()'><a href="#"><span aria-hidden="true">&larr;</span></a></li>
             <li ng-if="compNext != 0"><span> Results {{compStart + 1}} - {{compNext}}</span></li>
-            <li ng-if="compNext == 0"><span> Results {{compStart + 1}} - {{compositionsCount}}</span></li>
+            <li ng-if="compNext == 0"><span> Results {{compStart + 1}} - {{data.compositionsCount}}</span></li>
             <li class="next" ng-class="compNext == 0 ? 'disabled':''" ng-click='getNextCompositions()'><a href="#"><span aria-hidden="true">&rarr;</span></a></li>
           </ul>
         </nav>
