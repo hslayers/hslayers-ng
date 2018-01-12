@@ -7,3 +7,4 @@ hooks/
 /nbproject/
 .orig
 package-lock.json
+*.min.js
