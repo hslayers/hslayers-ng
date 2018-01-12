@@ -7,25 +7,14 @@
 define(['angular', 'app', 'map', 'ol', 'utils', 'ows.wms', 'dragdroplists', 'status_creator'], function (angular, app, map, ol) {
     angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator'])
             
-        .directive('hs.layermanager.directive', function() {
+        .directive('hs.layermanager.directive', ['config', function(config) {
             return {
-                templateUrl: hsl_path + 'components/layermanager/partials/layermanager.html?bust=' + gitsha,
+                templateUrl: `${hsl_path}components/layermanager/partials/layermanager${config.design || ''}.html?bust=${gitsha}`,
                 link: function(scope, element) {
 
                 }
             };
-        })
-        /**
-         * @module hs.layermanager
-         * @name hs.layermanager.directive
-         * @ngdoc directive
-         * @description Display default HSLayers layer manager panel in application. Contain filter, baselayers, overlay container and settings pane for active layer.
-         */
-        .directive('hs.layermanager.directive.deprecated', function () {
-            return {
-                templateUrl: hsl_path + 'components/layermanager/partials/layermanager.deprecared.html?bust=' + gitsha
-            };
-        })
+        }])
         /**
          * @module hs.layermanager
          * @name hs.layermanager.layerlistDirective

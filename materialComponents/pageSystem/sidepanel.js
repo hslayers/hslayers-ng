@@ -65,8 +65,8 @@ define(['angular', 'core', 'ngMaterial'],
                             "composition": {
                                 id: "composition",
                                 status: false,
-                                directive: 'hs.material.composition.directive',
-                                controller: 'hs.material.composition.controller'
+                                directive: 'hs.compositions.directive',
+                                controller: 'hs.compositions.controller'
                             },
                             "statusCreator": {
                                 id: "statusCreator",

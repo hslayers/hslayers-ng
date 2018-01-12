@@ -1,0 +1,15 @@
+<link rel="stylesheet" ng-href="{{Core.getNmPath()}}/angular-material/angular-material.css" type="text/css">
+<!-- Roboto Draft -->
+<!-- <link href='https://fonts.googleapis.com/css?family=RobotoDraft:400,500,700,400italic' rel='stylesheet' type='text/css'> -->
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div hs.swipe-area.directive></div>
+<div hs.md-toolbar.directive></div>
+<section flex layout="row">
+	<div hs.md-sidenav.directive></div>
+	<div flex id="map-container">
+    <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
+    <div hs.md-overlay.directive class="map-floating-gui" id="gui"></div>
+	</div>
+</section>

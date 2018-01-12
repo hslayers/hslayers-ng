@@ -12,10 +12,10 @@ define(['angular', 'core', 'map'],
             * @name hs.mdLayout.directive
             * @description TODO
             */
-            .directive('hs.mdLayout.directive', ['hs.map.service', 'Core', '$timeout',
-                function(OlMap, Core, $timeout) {
+            .directive('hs.layout.directive', ['hs.map.service', 'Core', '$timeout', 'config',
+                function(OlMap, Core, $timeout, config) {
                     return {
-                        templateUrl: hsl_path + 'components/layout/partials/layout.html?bust=' + gitsha,
+                        templateUrl: `${hsl_path}components/layout/partials/layout${config.design || ''}.html?bust=${gitsha}`,
                         link: function(scope, element) {
                             Core.init(element, {
                                 innerElement: '#map-container'

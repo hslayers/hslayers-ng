@@ -88,7 +88,8 @@ require.config({
         'updateMeta': nm_path +'angular-update-meta/dist/update-meta' + hslMin,
         socketio: nm_path +'socket.io-client/socket.io' + hslMin,
         rtserver: requirejs.s.contexts._.config.paths.rtserver || hsl_path + 'components/rtserver/rtserver' + hslMin,
-        config_parsers: hsl_path + 'components/compositions/config_parsers' + hslMin
+        config_parsers: hsl_path + 'components/compositions/config_parsers' + hslMin,
+        layout: requirejs.s.contexts._.config.paths.layout || hsl_path + 'components/layout/layout' + hslMin
     },
     shim: {
         'angular': {
@@ -139,9 +140,9 @@ require.config({
     ]
 });
 
-define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
+define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
     function(angular, proj4) {
-        angular.module('hs.core', ['hs.map', 'ngMaterial', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
+        angular.module('hs.core', ['hs.map', 'ngMaterial', 'gettext', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
             /**
              * @module hs.core
              * @name Core
@@ -462,7 +463,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                             if (angular.isUndefined(options)) options = {};
                             if (angular.isDefined(options.windowedMap)) me.sizeOptions.windowedMap = options.windowedMap;
                             me.sizeOptions.element = element;
-                            if (angular.isDefined(options.innerElement)) 
+                            if (angular.isDefined(options.innerElement) && $(options.innerElement).length>0) 
                                 me.sizeOptions.innerElement = $(options.innerElement);
                             
                             if (angular.isDefined(options.parent)) {

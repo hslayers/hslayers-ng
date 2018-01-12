@@ -17,32 +17,17 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'hs.compositions
 
     function (angular, ol, SparqlJson, social, hsCompositionsService, hsCompositionsServiceParser, hsCompositionsController, hsCompositionsControllerDeprecated) {
         var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms', 'hs.compositions.config_parsers'])
-
-            /**
-             * @module hs.compositions
-             * @name hs.compositions.directive
-             * @ngdoc directive
-             * @description Add composition panel to the map, consist of filtering function, keyword, list of compositions with their functions and composition pager
-             */
-            .directive('hs.compositions.directive.deprecated', function () {
+            .directive('hs.compositions.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/compositions/partials/compositions.html?bust=' + gitsha,
+                    templateUrl: `${hsl_path}components/compositions/partials/compositions${config.design || ''}.html?bust=${gitsha}`,
                     link: function (scope, element) {
-                        /* TODO: This should be done more angular way */
-                        //$('.mid-pane').prepend($('<div></div>').addClass('composition-info'));
-                        $('.mid-pane').css('margin-top', '0px');
-                        $(".keywords-panel").hide();
+                        if(angular.isUndefined(config.design) || config.design == ''){
+                            $('.mid-pane').css('margin-top', '0px');
+                            $(".keywords-panel").hide();
+                        }
                     }
                 };
-            })
-            .directive('hs.compositions.directive', function () {
-                return {
-                    templateUrl: hsl_path + 'components/compositions/partials/md-compositions.html?bust=' + gitsha,
-                    link: function (scope, element) {
-
-                    }
-                };
-            })
+            }])
             /**
              * @module hs.compositions
              * @name hs.compositions.overwriteDialogDirective
