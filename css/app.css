@@ -90,6 +90,10 @@ div.mainpanel:not(.hs-stc-mainpanel) > div.panel-body {
     pointer-events: initial;
 }
 
+#hs-info-container{
+    pointer-events: none;
+}
+
 .hs-filter {
     border-left:0;
     border-right:0;

@@ -12,11 +12,20 @@ define(['angular', 'core', 'map'],
             * @name hs.mdLayout.directive
             * @description TODO
             */
-            .directive('hs.layout.directive', ['hs.map.service', 'Core', '$timeout', 'config',
-                function(OlMap, Core, $timeout, config) {
+            .directive('hs.layout.directive', ['hs.map.service', 'Core', '$timeout', 'config', '$compile',
+                function(OlMap, Core, $timeout, config, $compile) {
                     return {
                         templateUrl: `${hsl_path}components/layout/partials/layout${config.design || ''}.html?bust=${gitsha}`,
                         link: function(scope, element) {
+                            try { 
+                                if(angular.module('hs.cesium')) {
+                                    if(angular.element('.page-content', element)){
+                                        angular.element('.page-content', element).append($compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope));
+                                    }
+                                }
+                            } catch(err) { /* failed to require */ }
+                            
+
                             Core.init(element, {
                                 innerElement: '#map-container'
                             });
