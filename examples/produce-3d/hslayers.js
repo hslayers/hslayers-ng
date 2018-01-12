@@ -11,7 +11,6 @@ require.config({
     urlArgs: 'bust=' + gitsha,
     paths: {
         toolbar: hsl_path + 'components/toolbar/toolbar',
-        //ol: hsl_path + 'node_modules/openlayers/dist/ol-debug',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         ows: hsl_path + 'components/ows/ows',
         'ows.wms': hsl_path + 'components/ows/ows_wms',
@@ -40,12 +39,6 @@ require.config({
         moment: hsl_path + 'node_modules/moment/min/moment.min'
     },
     shim: {
-        d3: {
-            exports: 'd3'
-        },
-        dc: {
-            deps: ['d3', 'crossfilter']
-        },
         cesiumjs: {
             exports: 'Cesium'
         }

@@ -37,12 +37,6 @@ require.config({
         lazyimage: hsl_path + 'node_modules/angular-lazy-image/dist/lazy-image.min'
     },
     shim: {
-        d3: {
-            exports: 'd3'
-        },
-        dc: {
-            deps: ['d3', 'crossfilter']
-        },
         s4a: {
             deps: ['ol', 'dc'],
             exports: 's4a'

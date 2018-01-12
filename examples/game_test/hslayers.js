@@ -35,14 +35,6 @@ require.config({
         moveFeature: hsl_path + 'examples/game_test/mechanics/moveFeature',
         vectorLabel: hsl_path + 'examples/game_test/mechanics/vectorLabel',
         photoStyle: hsl_path + 'examples/game_test/mechanics/photoStyle'
-    },
-    shim: {
-        d3: {
-            exports: 'd3'
-        },
-        dc: {
-            deps: ['d3', 'crossfilter']
-        }
     }
 });
 

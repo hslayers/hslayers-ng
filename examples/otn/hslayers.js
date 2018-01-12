@@ -14,14 +14,6 @@ require.config({
         app: window.hsl_app || 'app',
         core: hsl_path + 'components/core/core',
         ol: hsl_path + 'node_modules/openlayers/dist/ol-debug'
-    },
-    shim: {
-        d3: {
-            exports: 'd3'
-        },
-        dc: {
-            deps: ['d3', 'crossfilter']
-        }
     }
 });
 

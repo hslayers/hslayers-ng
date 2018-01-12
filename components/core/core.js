@@ -23,7 +23,6 @@ In that case we have hsl_path 'hslayers-ng/' eg. http://localhost/hslayers/
 if(hsl_path == 'hslayers-ng/') nm_path = './'; 
 require.config({
     paths: {
-        dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
         'ngAnimate': nm_path +'angular-animate/angular-animate' + hslMin,
         'ngAria': nm_path +'angular-aria/angular-aria' + hslMin,
         'ngMessages': nm_path +'angular-messages/angular-messages' + hslMin,
@@ -40,9 +39,8 @@ require.config({
         'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
         hammer: nm_path +'hammerjs/hammer' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
-        crossfilter: requirejs.s.contexts._.config.paths.crossfilter || nm_path +'crossfilter/crossfilter' + hslMin,
         draw: hsl_path + 'components/draw/draw',
-        d3: requirejs.s.contexts._.config.paths.d3 || nm_path +'d3/d3' + hslMin,
+        d3: requirejs.s.contexts._.config.paths.d3 || nm_path +'d3/build/d3' + hslMin,
         ngcookies: nm_path +'angular-cookies/angular-cookies' + hslMin,
         proj4: requirejs.s.contexts._.config.paths.proj4 || nm_path +'proj4/dist/proj4',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api' + hslMin,
