@@ -24,12 +24,21 @@ if(hsl_path == 'hslayers-ng/') nm_path = './';
 require.config({
     paths: {
         dc: requirejs.s.contexts._.config.paths.dc || '//cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc',
+        'ngAnimate': nm_path +'angular-animate/angular-animate' + hslMin,
+        'ngAria': nm_path +'angular-aria/angular-aria' + hslMin,
+        'ngMessages': nm_path +'angular-messages/angular-messages' + hslMin,
+        'ngMaterial': nm_path +'angular-material/angular-material' + hslMin,
         ol: requirejs.s.contexts._.config.paths.ol || ((hslMin == '.min') ? nm_path + 'openlayers/dist/ol' : nm_path + 'openlayers/dist/ol-debug'),
-
         angular: nm_path +'angular/angular' + hslMin,
         'angular-sanitize': nm_path +'angular-sanitize/angular-sanitize' + hslMin,
+        // 'ngAnimate': hsl_path + 'node_modules/angular-animate/angular-animate' + hslMin,
+        // 'ngAria': hsl_path + 'node_modules/angular-aria/angular-aria' + hslMin,
+        // 'ngMessages': hsl_path + 'node_modules/angular-messages/angular-messages' + hslMin,
+        // 'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
+        // 'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
         'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
         'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
+        hammer: nm_path +'hammerjs/hammer' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
         crossfilter: requirejs.s.contexts._.config.paths.crossfilter || nm_path +'crossfilter/crossfilter' + hslMin,
         draw: hsl_path + 'components/draw/draw',
@@ -78,11 +87,27 @@ require.config({
         'updateMeta': nm_path +'angular-update-meta/dist/update-meta' + hslMin,
         socketio: nm_path +'socket.io-client/socket.io' + hslMin,
         rtserver: requirejs.s.contexts._.config.paths.rtserver || hsl_path + 'components/rtserver/rtserver' + hslMin,
-        config_parsers: hsl_path + 'components/compositions/config_parsers' + hslMin
+        config_parsers: hsl_path + 'components/compositions/config_parsers' + hslMin,
+        layout: requirejs.s.contexts._.config.paths.layout || hsl_path + 'components/layout/layout' + hslMin
     },
     shim: {
         'angular': {
             'exports': 'angular'
+        },
+        'hammer': {
+            'exports': 'hammer'
+        },
+        'ngAnimate': {
+            deps: ['angular']
+        },
+        'ngAria': {
+            deps: ['angular']
+        },
+        'ngMaterial': {
+            deps: ['ngAnimate', 'ngAria', 'hammer']
+        },
+        'bottomSheetCollapsible': {
+            deps: ['ngMaterial']
         },
         'angularjs-socialshare': {
             deps: ['angular']
@@ -114,9 +139,9 @@ require.config({
     ]
 });
 
-define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4'],
+define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
     function(angular, proj4) {
-        angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.api'])
+        angular.module('hs.core', ['hs.map', 'ngMaterial', 'gettext', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
             /**
              * @module hs.core
              * @name Core
@@ -437,7 +462,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (angular.isUndefined(options)) options = {};
                             if (angular.isDefined(options.windowedMap)) me.sizeOptions.windowedMap = options.windowedMap;
                             me.sizeOptions.element = element;
-                            if (angular.isDefined(options.innerElement)) 
+                            if (angular.isDefined(options.innerElement) && $(options.innerElement).length>0) 
                                 me.sizeOptions.innerElement = $(options.innerElement);
                             
                             if (angular.isDefined(options.parent)) {
@@ -614,7 +639,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
                             }
-                            return false;
+                            return true;
                         },
                         /**
                         * @ngdoc method

@@ -65,8 +65,8 @@ define(['angular', 'core', 'ngMaterial'],
                             "composition": {
                                 id: "composition",
                                 status: false,
-                                directive: 'hs.material.composition.directive',
-                                controller: 'hs.material.composition.controller'
+                                directive: 'hs.compositions.directive',
+                                controller: 'hs.compositions.controller'
                             },
                             "statusCreator": {
                                 id: "statusCreator",
@@ -79,6 +79,40 @@ define(['angular', 'core', 'ngMaterial'],
                                 status: false,
                                 directive: 'hs.material.datasourcebrowser.directive',
                                 controller: 'hs.material.datasourcebrowser.controller'
+                            }
+                        },
+                        activeDirective: undefined
+                    },
+                    'sidenav-left': {
+                        status: false,
+                        content: {
+                            title: "Default",
+                            innerHtml: "<p>pokus</p>",
+                            status: false
+                        },
+                        directives: {
+                            "query": {
+                                id: "query",
+                                status: false,
+                                directive: 'hs.material.query.directive',
+                                controller: 'hs.material.query.controller'
+                            }
+                        },
+                        activeDirective: undefined
+                    },
+                    'sidenav-left': {
+                        status: false,
+                        content: {
+                            title: "Default",
+                            innerHtml: "<p>pokus</p>",
+                            status: false
+                        },
+                        directives: {
+                            "query": {
+                                id: "query",
+                                status: false,
+                                directive: 'hs.material.query.directive',
+                                controller: 'hs.material.query.controller'
                             }
                         },
                         activeDirective: undefined

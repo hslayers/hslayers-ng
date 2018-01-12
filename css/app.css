@@ -86,6 +86,10 @@ div.mainpanel:not(.hs-stc-mainpanel) > div.panel-body {
     background: none !important;
 }
 
+.gui-overlay * {
+    pointer-events: initial;
+}
+
 .hs-filter {
     border-left:0;
     border-right:0;
@@ -1101,3 +1105,115 @@ button.hs_draw_new_extended {
 }
 
 .hsl-search-result{z-index: 2}
+
+/**************/
+/** MATERIAL **/
+/**************/
+
+html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: initial;
+    line-height: initial;
+}
+
+.app {
+    height: 100%;
+}
+
+.swipe-overlay {
+    /*pointer-events: none;*/
+    overflow: hidden;
+    position: absolute;
+    z-index: 999;
+}
+
+#sidenav-swipe-overlay {
+    height: 100%;
+}
+
+#sidenav-swipe-overlay.opened {
+    width: 0;
+}
+
+#sidenav-swipe-overlay.closed {
+    width: 15px;
+}
+
+md-sidenav md-content {
+    touch-action: pan-y;
+}
+
+md-icon.fab {
+    transition: 0.3s;
+}
+
+md-icon.fab.opened {
+    transform: rotate(135deg) scale(1.15);
+}
+
+md-fab-actions button.md-button.md-fab md-icon {
+    color: #4A4A4A !important;
+}
+
+md-list-item > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item > md-icon:first-child:not(.md-avatar-icon), md-list-item > md-icon.md-secondary:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon.md-secondary:not(.md-avatar-icon) {
+    line-height: initial;
+    margin-top: 10px;
+    margin-bottom: 12px;
+}
+
+md-icon > span, md-icon > span.glyphicon {
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -100%);
+    font-size: initial;
+}
+
+.map-floating-gui {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.map-floating-gui * {
+    pointer-events: initial;
+}
+
+.md-fab.geolocation {
+
+}
+
+md-icon.geolocation.off {
+    /*color: rgb(117, 117, 117);*/
+}
+
+md-icon.geolocation.searching {
+    color: rgb(177, 234, 241);
+}
+
+md-icon.geolocation.on {
+    color: rgb(2, 168, 243);
+}
+
+md-bottom-sheet {
+    max-height: 80%;
+    touch-action: pan-y;
+    overflow: scroll;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+md-bottom-sheet md-toolbar {
+    /*position: absolute;*/
+    /*overflow: none;*/
+}
+
+md-bottom-sheet .content {
+    /*max-height: 400px;*/
+}

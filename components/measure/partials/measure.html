@@ -7,12 +7,10 @@
     </div>
     <div class="panel-body">
           <div class="btn-group" style="margin-bottom:10px">
-            <label class="btn btn-default">
-                <input type="radio" name="type" value="distance" ng-model='type' translate> Distance
-            </label>
-            <label class="btn btn-default">
-                <input type="radio" name="type" value="area" ng-model='type' translate> Area
-            </label>
+            <label for="distance" class="btn btn-default" translate>Distance</label>
+                <input id="distance" type="radio" name="type" value="distance" ng-model="type">
+            <label for="area" class="btn btn-default" translate>Area</label>
+                <input id="area" type="radio" name="type" value="area" ng-model="type">
         </div>
         <button class="btn btn-default" style="float:right" ng-click="clearAll()" translate>Clear</button>
         <ul class="list-group">

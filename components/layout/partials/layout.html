@@ -1,0 +1,56 @@
+<link rel="stylesheet" ng-href="{{Core.getNmPath()}}/bootstrap/dist/css/bootstrap.min.css">
+<div id="page-wrapper">
+    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight && !Core.puremapApp, 'sb-left': !Core.sidebarRight && !Core.puremapApp, 'classic-sidebar': Core.classicSidebar, 'mini-sidebar': !Core.classicSidebar}">
+        <div class="page-content">
+            <div hs.map.directive ng-controller="hs.map.controller" id="map" style="z-index:990"></div>
+            <div hs.toolbar.directive ng-controller="hs.toolbar.controller" ng-if="Core.exists('hs.toolbar.controller') && !Core.puremapApp" ng-show="!Core.smallWidth || !Core.sidebarExpanded"></div>
+
+            <div class="gui-overlay" ng-if="!Core.puremapApp">
+
+                <div class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar.controller') && Core.exists('hs.search.controller')">
+                    <div>
+                        <div hs.search.directive_searchinput></div>
+                        <div hs.search.directive_searchresults></div>
+                    </div>
+                </div>
+
+
+                <div class="panelspace" ng-class="{'labels': Core.sidebarLabels, 'buttons': Core.sidebarButtons, 'minisidebar-wrapper':!Core.classicSidebar}">
+                    <div class="panelspace-wrapper">
+                        <div id="sidebar" hs.sidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="Core.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
+                        <div id="mini-sidebar" hs.minisidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="!Core.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
+                        <div id="panelplace" ng-class="{'minisidebar-panel':!Core.classicSidebar}">
+                            <div hs.layermanager.directive          hs.draggable ng-controller="hs.layermanager.controller" ng-show="Core.panelVisible('layermanager', this)"></div>
+                            <div hs.legend.directive                hs.draggable ng-controller="hs.legend.controller" ng-if="Core.exists('hs.legend.controller')" ng-show="Core.panelVisible('legend', this)"></div>
+                            <div hs.ows.directive                   hs.draggable ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources" ng-show="Core.panelVisible('ows', this)"></div>
+                            <div hs.datasource_selector.directive   hs.draggable ng-controller="hs.datasource_selector.controller" ng-if="Core.exists('hs.datasource_selector.controller')" ng-show="Core.panelVisible('datasource_selector', this)"></div>
+                            <div hs.compositions.directive          hs.draggable ng-controller="hs.compositions.controller" ng-if="Core.exists('hs.compositions.controller')" ng-show="Core.panelVisible('composition_browser', this)"></div>
+                            <div hs.lodexplorer.directive           hs.draggable ng-controller="hs.lodexplorer.controller" ng-if="Core.exists('hs.lodexplorer.controller')" ng-show="Core.panelVisible('lodexplorer', this)"></div>
+                            <div hs.feature_crossfilter.directive   hs.draggable ng-controller="hs.feature_crossfilter.controller"  ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-show="Core.panelVisible('feature_crossfilter', this)"></div>
+                            <div hs.measure.directive               hs.draggable ng-controller="hs.measure.controller"  ng-if="Core.exists('hs.measure.controller')" ng-show="Core.panelVisible('measure', this)"></div>
+                            <div hs.print.directive                 hs.draggable ng-controller="hs.print.controller"  ng-if="Core.exists('hs.print.controller')" ng-show="Core.panelVisible('print', this)"></div>
+                            <div hs.styler.directive                hs.draggable ng-controller="hs.styler.controller"  ng-if="Core.exists('hs.styler.controller')" ng-show="Core.panelVisible('styler', this)"></div>
+                            <div hs.permalink.directive             hs.draggable ng-controller="hs.permalink.controller" ng-if="Core.exists('hs.permalink.controller')" ng-show="Core.panelVisible('permalink', this)"></div>
+                            <div hs.query.directive_infopanel       hs.draggable ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller')" ng-show="Core.panelVisible('info', this)"></div>
+                            <div hs.status_creator.directive_panel  hs.draggable ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div>
+                            <div hs.routing.directive               hs.draggable ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="Core.panelVisible('routing', this)"></div>
+                            <div hs.tracking.directive              hs.draggable ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="Core.panelVisible('tracking', this)"></div>
+                            <div hs.draw.directive                  hs.draggable ng-controller="hs.draw.controller" ng-if="Core.exists('hs.draw.controller')" ng-show="Core.panelVisible('draw', this)"></div>
+                            <div hs.customhtml.directive                                                            ng-if="Core.exists('hs.customhtml.controller')"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="hs-info-container" ng-hide="Core.smallWidth && Core.sidebarExpanded">
+                    <div id="hs-info-area">
+                        <div hs.info.directive ng-controller="hs.info.controller" ng-if="Core.exists('hs.info.controller')"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hs-dialog-area">
+                <div hs.lodexplorer.directive_sparqllogdialog ng-controller="hs.lodexplorer.controller_sparqllogdialog"  ng-if="Core.exists('SparqlLogDialog')"></div>
+                <!--<div hs.status_creator.directive ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div>-->
+            </div>
+        </div>
+    </div>
+</div>
