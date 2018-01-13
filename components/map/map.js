@@ -90,7 +90,6 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
             });
             me.map.getView().on('change:resolution', function (e) {
                 extentChanged(e);
-                console.log(me.map.getView().getResolution());
             });
 
             me.map.on('moveend', function (e) {
@@ -205,6 +204,12 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                     angular.forEach(box.get('layers'), function (lyr) {
                         lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                         lyr.manuallyAdded = false;
+                        if (lyr.getSource() instanceof ol.source.ImageWMS)
+                            me.proxifyLayerLoader(lyr, false);
+                        if (lyr.getSource() instanceof ol.source.TileWMS)
+                            me.proxifyLayerLoader(lyr, true);
+                        if (lyr.getSource() instanceof ol.source.Vector)
+                            me.getVectorType(lyr);
                         me.map.addLayer(lyr);
                     });
                 });
@@ -216,8 +221,54 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                     lyr.manuallyAdded = false;
                     if (lyr.getSource() instanceof ol.source.ImageWMS)
                         me.proxifyLayerLoader(lyr, false);
+                    if (lyr.getSource() instanceof ol.source.TileWMS)
+                        me.proxifyLayerLoader(lyr, true);
+                    if (lyr.getSource() instanceof ol.source.Vector)
+                        me.getVectorType(lyr);
                     me.map.addLayer(lyr);
                 });
+            }
+        }
+
+        this.getVectorType = function(layer){
+            var src = layer.getSource();
+            src.hasLine = false;
+            src.hasPoly = false;
+            src.hasPoint = false;
+            if (src.getFeatures().length > 0) {
+                vectorSourceTypeComputer(src);
+            }
+            else {
+                src.on('change', function(evt){
+                    var source = evt.target;
+                    if (source.getState()=== 'ready') {
+                        vectorSourceTypeComputer(source);
+                    }
+                })
+            }
+        }
+
+        function vectorSourceTypeComputer(src){
+            angular.forEach(src.getFeatures(), function(f) {
+                if (f.getGeometry()) {
+                    switch (f.getGeometry().getType()) {
+                        case 'LineString':
+                        case 'MultiLineString':
+                            src.hasLine = true;
+                            break;
+                        case 'Polygon':
+                        case 'MultiPolygon':
+                            src.hasPoly = true;
+                            break;
+                        case 'Point':
+                        case 'MultiPoint':
+                            src.hasPoint = true;
+                            break;
+                    }
+                }
+            })
+            if (src.hasLine || src.hasPoly || src.hasPoint) {
+                src.styleAble = true;
             }
         }
 
@@ -286,7 +337,9 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
             if (tiled) {
                 var tile_url_function = src.getTileUrlFunction() || src.tileUrlFunction();
                 src.setTileUrlFunction(function (b, c, d) {
-                    return utils.proxify(decodeURIComponent(tile_url_function(b, c, d)));
+                    var url = tile_url_function(b, c, d);
+                    if(url.indexOf('proxy') == -1) url = decodeURIComponent(url);
+                    return utils.proxify(url);
                 });
             } else {
                 lyr.getSource().setImageLoadFunction(function (image, src) {
@@ -436,7 +489,7 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
              */
             function onCenterSync(event, data) {
                 if (angular.isUndefined(data) || data == null) return;
-                var transformed_cords = ol.proj.transform([data[0], data[1]], 'EPSG:4326', 'EPSG:3857');
+                var transformed_cords = ol.proj.transform([data[0], data[1]], 'EPSG:4326', OlMap.map.getView().getProjection());
                 OlMap.moveToAndZoom(transformed_cords[0], transformed_cords[1], zoomForResolution(data[2]));
             }
 

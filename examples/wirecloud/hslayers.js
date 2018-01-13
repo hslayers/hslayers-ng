@@ -41,12 +41,6 @@ require.config({
         'angular-sanitize': {
             deps: ['angular'],
         },
-        d3: {
-            exports: 'd3'
-        },
-        dc: {
-            deps: ['d3', 'crossfilter']
-        },
         'angular-gettext': {
             deps: ['angular'],
         },

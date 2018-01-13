@@ -445,8 +445,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
          * @ngdoc controller
          * @description 
          */
-        .controller('hs.cesium.controller', ['$scope', 'hs.cesium.service', 'config', 'hs.permalink.service_url', 'Core', 'hs.map.service', 'hs.sidebar.service', '$timeout',
-            function ($scope, service, config, permalink, Core, hs_map, sidebar_service, $timeout) {
+        .controller('hs.cesium.controller', ['$scope', 'hs.cesium.service', 'config', 'hs.permalink.service_url', 'Core', 'hs.map.service', 'hs.sidebar.service', '$timeout', '$rootScope',
+            function ($scope, service, config, permalink, Core, hs_map, sidebar_service, $timeout, $rootScope) {
 
                 var map = service.map;
 

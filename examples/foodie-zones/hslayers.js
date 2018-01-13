@@ -38,7 +38,7 @@ require.config({
             exports: 'd3'
         },
         dc: {
-            deps: ['d3', 'crossfilter']
+            deps: ['d3', 'crossfilter2']
         }
     }
 });

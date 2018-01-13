@@ -33,14 +33,8 @@ require.config({
         routing: hsl_path + 'components/routing/routing'
     },
     shim: {
-        d3: {
-            exports: 'd3'
-        },
-        dc: {
-            deps: ['d3', 'crossfilter']
-        },
         s4a: {
-            deps: ['ol', 'dc'],
+            deps: ['ol'],
             exports: 's4a'
         }
     }

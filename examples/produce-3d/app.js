@@ -20,7 +20,6 @@ define(['angular', 'ol', 'moment', 'olus', 'zones', 'pois', 'sidebar', 'toolbar'
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function (scope, element) {
-                    angular.element('.page-content', element).append($compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope));
                     $timeout(function () {
                         Core.fullScreenMap(element)
                     }, 0);

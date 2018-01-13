@@ -16,7 +16,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'olus', 'stations', 
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function (scope, element) {
-                    angular.element('.page-content', element).append($compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope));
                     $timeout(function () { Core.fullScreenMap(element) }, 0);
                 }
             };

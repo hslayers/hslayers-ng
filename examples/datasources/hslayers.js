@@ -34,14 +34,6 @@ require.config({
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations'
-    },
-    shim: {
-        d3: {
-            exports: 'd3'
-        },
-        dc: {
-            deps: ['d3', 'crossfilter']
-        }
     }
 });
 
