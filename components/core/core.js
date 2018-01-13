@@ -666,7 +666,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
                         */
                         isMobile: function() {
-                            if (screen.width < 800) {
+                            if (!!window.cordova) {
                                 return "mobile";
                             } else {
                                 return "";

@@ -1,8 +1,8 @@
 <link rel="stylesheet" ng-href="{{Core.getNmPath()}}/openlayers/css/ol.css" type="text/css">
 <!-- Compiled and minified CSS -->
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css"> -->
-<link rel="stylesheet" type="text/css" href="css/mobile.css">
-<link rel="stylesheet" ng-href="{{hsl_path}}css/app.css"/>
 
 <div hs.layout.directive id="layout" layout="column" style="height:100%;" ng-controller="hs.layout.controller"></div>
+<link rel="stylesheet" type="text/css" href="css/mobile.css" ng-if="!!window.cordova">
+<link rel="stylesheet" ng-href="{{hsl_path}}css/app.css"/>
 <link rel="stylesheet" ng-href="{{hsl_path}}css/whhg-font/css/whhg.css"/>

@@ -24,6 +24,6 @@
 	<md-icon md-icon-set="material-icons" class="geolocation material-icons {{location.status.class}}">{{location.status.icon}}</md-icon>
 </md-button>
 
-<md-button ng-if="Core.exists('hs.layermanager.controller')" class="md-fab md-mini md-fab-top-right" ng-click="openBaselayerMenu($event, baselayers)">
+<md-button ng-if="Core.exists('hs.layermanager.controller')" class="md-fab md-mini md-fab-top-right baselayers-button" ng-click="openBaselayersPanel($event)">
 	<md-icon md-icon-set="material-icons">layers</md-icon>
 </md-button>

@@ -2,10 +2,10 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-define(['angular', 'core', 'map'],
+define(['angular', 'core', 'map', 'layermanager'],
 
     function(angular) {
-        angular.module('hs.layout', ['hs.core', 'hs.map'])
+        angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.layermanager'])
             /**
             * @memberof hs.mdLayout
             * @ngdoc directive
@@ -67,7 +67,6 @@ define(['angular', 'core', 'map'],
                 return {
                     templateUrl: hsl_path + 'components/layout/partials/overlay.html?bust=' + gitsha,
                     link: (scope, element, attrs) => {
-                        console.log(element, element.parent());
                         element.css("height", element.parent().css("height"));
                         scope.$watch(() => element.parent().css("height"), () => {
                             element.css("height", element.parent().css("height"));
@@ -114,10 +113,12 @@ define(['angular', 'core', 'map'],
             * @name hs.layout.controller
             * @description TODO
             */
-            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet', '$mdPanel',
-                function($scope, $rootScope, $window, Core, OlMap, Geolocation, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet, $mdPanel) {
+            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet', '$mdPanel', '$mdDialog',
+                function($scope, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet, $mdPanel, $mdDialog) {
                     $scope.Core = Core;
                     $scope.geolocation = Geolocation;
+                    $scope.LM = LayerManager;
+
                     $scope.location = {
                         status: {
                             icon: "location_searching",
@@ -308,13 +309,95 @@ define(['angular', 'core', 'map'],
                         });
                     });
 
-                    function BaselayersPanelProviderConfig($mdPanelProvider) {
-                        $mdPanelProvider.definePreset('demoPreset', {
-                            attachTo: angular.element("#gui"),
-                            controller: "hs.layout.controller",
-                            templateUrl: hsl_path + 'components/layout/partials/baselayers.html?bust=' + gitsha,
-                            zIndex: 100
+                    $scope.defaultBaselayerThumbnail = `${hsl_path}components/layout/osm.png`;
+
+                    let baselayersPanelRef;
+                    
+                    $scope.removeLayer = function (layer) {
+                        var active = layer.active;
+                        OlMap.map.removeLayer(layer.layer);
+                        if (active) {
+                            if (LM.data.baselayers.length > 0) LM.changeBaseLayerVisibility(true,LM.data.baselayers[0]);
+                        }
+                    }
+
+                    $scope.hasImage = function(layer) {
+                        return angular.isDefined(layer.layer.get('img')) ? true : false;
+                    }
+
+                    $scope.getImage = function(layer) {
+                        return layer.layer.get('img');
+                    }
+
+                    $scope.isRemoveable = function(layer) {
+                        return layer.layer.get('removeable');
+                    }
+
+                    $scope.showRemoveDialog = function(e, layer) {
+                        var confirm = $mdDialog.confirm()
+                            .title('Remove basemap ' + layer.title)
+                            .textContent('Are you sure about layer removal?')
+                            .ariaLabel('Confirm layer removal')
+                            .targetEvent(e)
+                            .ok('Remove')
+                            .cancel('Cancel');
+              
+                        $mdDialog.show(confirm).then(function() {
+                            $scope.removeLayer(layer);
+                        }, function() {
                         });
+                    }
+
+                    $scope.openBaselayersPanel = function($event) {
+                        let panelPosition = $mdPanel.newPanelPosition()
+                            // .relativeTo($event.srcElement)
+                            .relativeTo($event.target)
+                            .addPanelPosition(
+                                $mdPanel.xPosition.ALIGN_END,
+                                $mdPanel.yPosition.ALIGN_TOPS
+                            )
+                            .addPanelPosition(
+                                $mdPanel.xPosition.ALIGN_START,
+                                $mdPanel.yPosition.ALIGN_TOPS
+                            )
+                            .addPanelPosition(
+                                $mdPanel.xPosition.ALIGN_END,
+                                $mdPanel.yPosition.ALIGN_BOTTOMS
+                            )
+                            .addPanelPosition(
+                                $mdPanel.xPosition.ALIGN_START,
+                                $mdPanel.yPosition.ALIGN_BOTTOMS
+                            );
+                        let panelAnimation = $mdPanel.newPanelAnimation()
+                            .openFrom($event.target)
+                            .closeTo($event.target)
+                            // .targetEvent($event)
+                            // .defaultAnimation('md-panel-animate-fly')
+                            .withAnimation($mdPanel.animation.SCALE);
+                        let config = {
+                            attachTo: angular.element("#gui"),
+                            position: panelPosition,
+                            animation: panelAnimation,
+                            targetEvent: $event,
+                            templateUrl: `${hsl_path}components/layout/partials/baselayers.html?bust=${gitsha}`,
+                            panelClass: 'baselayers-panel md-whiteframe-8dp',
+                            scope: this,
+                            trapFocus: true,
+                            clickOutsideToClose: true,
+                            clickEscapeToClose: true,
+                            zIndex: 992
+                        }
+
+                        console.log($scope.LM.data.baselayers);
+
+                        $mdPanel.open(config)
+                            .then(function(result) {
+                              baselayersPanelRef = result;
+                            });
+
+                        $scope.closeBaselayersPanel = function(MdPanelRef) {
+                            if (MdPanelRef) MdPanelRef.close();
+                        }
                     }
 
                     $scope.$emit('scope_loaded', "Layout");

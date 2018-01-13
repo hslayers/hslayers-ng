@@ -1127,7 +1127,7 @@ html, body {
     /*pointer-events: none;*/
     overflow: hidden;
     position: absolute;
-    z-index: 999;
+    z-index: 991;
 }
 
 #sidenav-swipe-overlay {
@@ -1201,6 +1201,7 @@ md-icon.geolocation.on {
 }
 
 md-bottom-sheet {
+    box-shadow: 0 -5px 10px 1px rgba(0, 0, 0, 0.3);
     max-height: 80%;
     touch-action: pan-y;
     overflow: scroll;
@@ -1216,4 +1217,42 @@ md-bottom-sheet md-toolbar {
 
 md-bottom-sheet .content {
     /*max-height: 400px;*/
+}
+
+.md-panel.baselayers-panel {
+    background-color: #fff;
+    min-width: 56px;
+    /*max-width: 248px;*/
+    min-height: 56px;
+}
+
+.baselayer-tile {
+    padding: 8px;
+}
+
+.baselayer-tile p {
+    font-size: small;
+    padding: 4px;
+    margin: 0 auto;
+}
+
+.baselayer-tile .md-avatar {
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    flex: none;
+    width: 60px;
+    height: 60px;
+    padding: 4px;
+    margin: 0 auto;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+
+.baselayer-tile.selected-basemap .md-avatar {
+    border: 2px solid #0083FF;
+    border-radius: 50%;
+}
+
+.baselayer-tile.selected-basemap p {
+    color: #0083FF;
 }
