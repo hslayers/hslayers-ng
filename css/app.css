@@ -1260,3 +1260,5 @@ md-bottom-sheet .content {
 .baselayer-tile.selected-basemap p {
     color: #0083FF;
 }
+
+#layout .layout-row{position: relative}

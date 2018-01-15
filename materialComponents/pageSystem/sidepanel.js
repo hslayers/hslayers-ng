@@ -99,40 +99,6 @@ define(['angular', 'core', 'ngMaterial'],
                             }
                         },
                         activeDirective: undefined
-                    },
-                    'sidenav-left': {
-                        status: false,
-                        content: {
-                            title: "Default",
-                            innerHtml: "<p>pokus</p>",
-                            status: false
-                        },
-                        directives: {
-                            "query": {
-                                id: "query",
-                                status: false,
-                                directive: 'hs.material.query.directive',
-                                controller: 'hs.material.query.controller'
-                            }
-                        },
-                        activeDirective: undefined
-                    },
-                    'sidenav-left': {
-                        status: false,
-                        content: {
-                            title: "Default",
-                            innerHtml: "<p>pokus</p>",
-                            status: false
-                        },
-                        directives: {
-                            "query": {
-                                id: "query",
-                                status: false,
-                                directive: 'hs.material.query.directive',
-                                controller: 'hs.material.query.controller'
-                            }
-                        },
-                        activeDirective: undefined
                     }
                 }
 

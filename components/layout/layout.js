@@ -122,11 +122,12 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
             * @name hs.layout.controller
             * @description TODO
             */
-            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet', '$mdPanel', '$mdDialog',
-                function($scope, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet, $mdPanel, $mdDialog) {
+            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet', '$mdPanel', '$mdDialog', 'hs.layout.service', 
+                function($scope, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet, $mdPanel, $mdDialog, layoutService) {
                     $scope.Core = Core;
                     $scope.geolocation = Geolocation;
                     $scope.LM = LayerManager;
+                    $scope.layoutService = layoutService;
 
                     $scope.location = {
                         status: {
@@ -271,10 +272,16 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                         $scope.location.status.class = "off";
                     });
 
+                    $scope.openPanel = function(panel){
+                        Core.setMainPanel(panel);
+                        if(Core.isMobile()){
+                            $scope.openBottomSheet(panel);
+                        }
+                    }
+
                     $scope.openBottomSheet = function(panel) {
                         $scope.closeLeftSidenav();
-                        Core.setMainPanel(panel);
-                        $mdBottomSheet.show({
+                             $mdBottomSheet.show({
                             templateUrl: hsl_path + 'components/layout/partials/bottom-sheet.html?bust=' + gitsha,
                             scope: $scope,
                             parent: "#layout",
@@ -409,14 +416,89 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                         }
                     }
 
+                    $scope.onlyEnabled = function (item) { 
+                        return item.enabled; 
+                    };
+
                     $scope.$emit('scope_loaded', "Layout");
                 }
 
             ])
 
-            .service('hs.layout.service', ['$scope', '$window', 'Core', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu',
-                function($scope, $window, Core, OlMap, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu) {
-                    
+            .directive('panelCreator', ['$compile', '$parse',function($compile, $parse) {
+                return {
+                  restrict: 'A',
+                  terminal: true,
+                  priority: 100000,
+                  link: function(scope, elem) {
+                    var name = $parse(elem.attr('panel-creator'))(scope);
+                    elem.removeAttr('panel-creator');
+                    elem.attr('ng-controller', name);
+                    var dirname = $parse(elem.attr('directive'))(scope);
+                    elem.attr(dirname, '');
+                    $compile(elem)(scope);
+                  }
+                };
+              }])
+
+            .service('hs.layout.service', ['Core',
+                function(Core) {
+                    var me = this;
+
+                    me.data = {
+                        panels: [{
+                                enabled: true,
+                                order: 0,
+                                title: 'Map Compositions',
+                                description: 'List available map compositions',
+                                name: 'composition_browser',
+                                directive: 'hs.compositions.directive',
+                                controller: 'hs.compositions.controller',
+                                mdicon: 'map'
+                            },
+                            {
+                                enabled: true,
+                                order: 1,
+                                title: 'Manage and Style Layers',
+                                description: 'Manage and style your layers in composition',
+                                name: 'layermanager',
+                                directive: 'hs.layermanager.directive',
+                                controller: 'hs.layermanager.controller',
+                                mdicon: 'layers'
+                            },
+                            {
+                                enabled: true,
+                                order: 2,
+                                title: 'Legend',
+                                description: 'Display map legend',
+                                name: 'legend',
+                                directive: 'hs.legend.directive',
+                                controller: 'hs.legend.controller',
+                                mdicon: 'format_list_bulleted'
+                            },
+                            {
+                                enabled: Core.singleDatasources,
+                                order: 3,
+                                title: !Core.singleDatasources ? 'Datasource Selector' : 'Add layers',
+                                description: 'Select data or services for your map composition',
+                                name: 'datasource_selector',
+                                directive: 'hs.datasource_selector.directive',
+                                controller: 'hs.datasource_selector.controller',
+                                mdicon: 'dns'
+                            },
+                            {
+                                enabled: !Core.singleDatasources,
+                                order: 4,
+                                title: 'Add external data',
+                                description: 'Add external data',
+                                name: 'ows',
+                                directive: 'hs.ows.directive',
+                                controller: 'hs.ows.controller',
+                                mdicon: 'library_add'
+                            }           
+                        ]
+                    }
+                    return me;
                 }
             ]);
     })
