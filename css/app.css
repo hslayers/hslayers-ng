@@ -1244,8 +1244,8 @@ md-bottom-sheet .content {
     -webkit-box-flex: 0;
     -webkit-flex: none;
     flex: none;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     padding: 4px;
     margin: 0 auto;
     border-radius: 50%;
@@ -1253,10 +1253,11 @@ md-bottom-sheet .content {
 }
 
 .baselayer-tile.selected-basemap .md-avatar {
-    border: 2px solid #0083FF;
+    border: 2px solid #0062bf;
     border-radius: 50%;
 }
 
 .baselayer-tile.selected-basemap p {
-    color: #0083FF;
+    font-weight: 500;
+    color: #0062bf;
 }
