@@ -13,11 +13,11 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
             * @name hs.ows.directive
             * @description Add core ows panel html template to the map (Select source format and connect to source)
             */
-            .directive('hs.ows.directive', function() {
+            .directive('hs.ows.directive', ['config', function(config) {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/ows.html?bust=' + gitsha
+                    templateUrl: `${hsl_path}components/ows/partials/ows${config.design || ''}.html?bust=${gitsha}`,
                 };
-            })
+            }])
             /**
             * @memberof hs.ows
             * @ngdoc controller

@@ -1,0 +1,34 @@
+<div layout="column" style="max-height:100%;" ng-class="{'mainpanel' : !Core.singleDatasources}">
+    <div class="md-padding content">
+            <form name="frmConnect">
+                <div flex layout="row">
+                    <md-input-container flex-gt-xs="30">
+                        <label>Choose format</label>
+                        <md-select ng-model="type">
+                            <md-option ng-value="type" ng-repeat="type in types">{{ type }}</md-option>
+                        </md-select>
+                    </md-input-container><br/>
+                        
+                    <md-input-container flex-gt-xs="60">
+                        <label>External data source (URL)</label>
+                        <input name="url" ng-model="url" required >
+                        <div ng-messages="frmConnect.url.$error" ng-show="userForm.lastName.$dirty">
+                            <div ng-message="required">This is required!</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-button class="md-icon-button" flex-gt-xs="10" ng-if="frmConnect.url.$valid && isService()" ng-click="connect()">
+                        <md-icon class="md-danger md-hue-2">send</md-icon>
+                        <md-tooltip md-direction="up" translate>Connect</md-tooltip>
+                    </md-button>
+
+                    <md-button class="md-icon-button" flex-gt-xs="10" ng-if="frmConnect.url.$error.required">
+                        <md-icon class="md-primary md-hue-2">warning</md-icon>
+                        <md-tooltip md-direction="up" translate>Some error happened or input missing</md-tooltip>
+                    </md-button>
+                </div>
+            </form>
+            <hr/>
+            <div class='ows-capabilities' ng-show="showDetails" ng-include="templateByType()"></div>
+    </div>
+</div>
