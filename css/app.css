@@ -1261,4 +1261,7 @@ md-bottom-sheet .content {
     font-weight: 500;
     color: #0062bf;
 }
-#layout .layout-row{position: relative}
+
+#layout .layout-row {
+    position: relative
+}
