@@ -2,6 +2,7 @@
     <h1 class="md-toolbar-tools" translate>Layer manager</h1>
 </md-toolbar>
 <md-list layout-fill>
+    {{data.layers.length}}
     <md-list-item class="md-line-2" ng-repeat="layer in data.layers | orderBy:layerOrder:true" ng-click="changeLayerVisibility(!layer.visible,layer)"
         layout-fill>
         <div layout="column" class="md-list-item-text" layout-fill>
