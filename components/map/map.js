@@ -109,7 +109,9 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
              * @eventType broadcast on $rootScope
              * @description Fires when map is loaded (so other map dependent modules can proceed)
              */
+            if (me.initialized) return;
             $rootScope.$broadcast('map.loaded');
+            me.initialized = true;
         }
 
         //clone View to not overwrite deafult

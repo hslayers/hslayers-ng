@@ -10,70 +10,40 @@
                 </div>
             </md-list-item> -->
 
-            <md-list-item ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('composition_browser')" ng-click="openBottomSheet('composition_browser')">
-                <md-icon md-icon-set="material-icons" title="{{'List available map compositions'|translate}}">map</md-icon>
-                <p translate>Map Compositions</p>
-            </md-list-item>
+            <div ng-repeat="panel in layoutService.data.panels | filter: onlyEnabled | orderBy:'order'">
+                <md-list-item ng-if="Core.exists(panel.controller) && Core.panelEnabled(panel.name)" ng-click="openPanel(panel.name)">
+                    <md-icon md-icon-set="material-icons" title="{{panel.description}}">{{panel.mdicon}}</md-icon>
+                    <p translate>{{panel.title}}</p>
+                </md-list-item>
+                <div panel-creator="panel.controller" directive="panel.directive" ng-if="Core.exists(panel.controller)" ng-show="Core.panelVisible(panel.name, this)"></div>
+            </div>          
 
-            <md-list-item ng-if="Core.exists('hs.layermanager.controller') && Core.panelEnabled('layermanager')" ng-click="openBottomSheet('layermanager')">
-                <md-icon md-icon-set="material-icons" title="{{'Manage and style your layers in composition'|translate}}">layers</md-icon>
-                <p translate>Manage and Style Layers</p>
-            </md-list-item>
-
-            <md-list-item ng-if="Core.exists('hs.legend.controller')" ng-click="openBottomSheet('legend')">
-                <md-icon md-icon-set="material-icons" title="{{'Display map legend'|translate}}">format_list_bulleted</md-icon>
-                <p translate>Legend</p>
-            </md-list-item>
-
-            <md-list-item ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="openBottomSheet('datasource_selector')">
-                <md-icon md-icon-set="material-icons" title="{{'Select data or services for your map composition'|translate}}">dns</md-icon>
-                <p ng-if="!Core.singleDatasources" translate>Datasource Selector</p>
-                <p ng-if="Core.singleDatasources" translate>Add layers</p>
-            </md-list-item>
-
-            <md-list-item ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources && Core.panelEnabled('ows')" ng-click="openBottomSheet('ows')">
-                <md-icon md-icon-set="material-icons" title="{{'Add external data'|translate}}">library_add</md-icon>
-                <p translate>Add external data</p>
-            </md-list-item>
-
-            <md-list-item ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-click="openBottomSheet('feature_crossfilter')">
-                <md-icon md-icon-set="material-icons" title="Crossfilter">filter_list</md-icon>
-                <p translate>Filter features</p>
-            </md-list-item>
-
-            <md-list-item ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="openBottomSheet('measure')">
+            <md-list-item ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="openPanel('measure')">
                 <md-icon md-icon-set="material-icons" title="{{'Measure distance or area at map'|translate}}">straighten</md-icon>
                 <p translate>Measurements</p>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.lodexplorer.controller')" ng-click="openBottomSheet('lodexplorer')">
-                <md-icon>
-                    <span class="glyphicon icon-sharedhosting"></span>
-                </md-icon>
-                <p translate>Eurostat explorer</p>
-            </md-list-item>
-
-            <md-list-item ng-if="Core.exists('hs.routing.controller')" ng-click="openBottomSheet('routing')">
+            <md-list-item ng-if="Core.exists('hs.routing.controller')" ng-click="openPanel('routing')">
                 <md-icon md-icon-set="material-icons">directions</md-icon>
                 <p translate>Routing</p>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.tracking.controller')" ng-click="openBottomSheet('tracking')">
+            <md-list-item ng-if="Core.exists('hs.tracking.controller')" ng-click="openPanel('tracking')">
                 <md-icon md-icon-set="material-icons">track_changes</md-icon>
                 <p translate>Tracking</p>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.draw.controller')" ng-click="openBottomSheet('draw')">
+            <md-list-item ng-if="Core.exists('hs.draw.controller')" ng-click="openPanel('draw')">
                 <md-icon md-icon-set="material-icons">add_location</md-icon>
                 <p translate>Draw new features</p>
             </md-list-item>
             
-            <md-list-item ng-if="Core.exists('hs.print.controller')" ng-click="openBottomSheet('print')">
+            <md-list-item ng-if="Core.exists('hs.print.controller')" ng-click="openPanel('print')">
                 <md-icon md-icon-set="material-icons" title="{{'Print map'|translate}}">print</md-icon>
                 <p translate>Print</p>
             </md-list-item>
             
-            <md-list-item ng-if="Core.exists('hs.permalink.controller') && Core.panelEnabled('permalink')" ng-click="openBottomSheet('permalink')">
+            <md-list-item ng-if="Core.exists('hs.permalink.controller') && Core.panelEnabled('permalink')" ng-click="openPanel('permalink')">
                 <md-icon md-icon-set="material-icons" title="{{'Share map'|translate}}">share</md-icon>
                 <p translate>Share map</p>
             </md-list-item>
@@ -83,7 +53,7 @@
                 <p translate>Save composition</p>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.mobile_settings.controller') && Core.panelEnabled('mobile_settings')" ng-click="openBottomSheet('mobile_settings')">
+            <md-list-item ng-if="Core.exists('hs.mobile_settings.controller') && Core.panelEnabled('mobile_settings')" ng-click="openPanel('mobile_settings')">
                 <md-icon md-icon-set="material-icons" title="{{'Specify application user settings'||translate}}">settings</md-icon>
                 <p translate>Application settings</p>
             </md-list-item>
