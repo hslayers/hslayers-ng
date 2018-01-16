@@ -35,7 +35,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             me.loadCompositions = function (params) {
                                 if (angular.isUndefined(params.sortBy)) params.sortBy = 'bbox';
                                 if (angular.isUndefined(params.start)) params.start = me.data.start;
-                                if (angular.isUndefined(params.limit)) params.limit = me.data.limit;
+                                if (angular.isUndefined(params.limit) || isNaN(params.limit)) params.limit = me.data.limit;
                                 var mapSize = OlMap.map.getSize();
                                 var mapExtent = angular.isDefined(mapSize) ? OlMap.map.getView().calculateExtent(mapSize) : [0, 0, 100, 100];
                                 var b = ol.proj.transformExtent(mapExtent, OlMap.map.getView().getProjection(), 'EPSG:4326');
