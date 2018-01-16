@@ -40,7 +40,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 })
             ],
             //project_name: 'hslayers',
-            project_name: 'erra/map',
+            project_name: 'Material',
             default_view: new ol.View({
                 center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 5,
@@ -51,14 +51,14 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "title": "Default",
                     "type": "default",
                     "editable": false,
-                    "url": 'http://youth.sdi4apps.eu'
+                    "url": 'http://atlas.kraj-lbc.cz'
                 },
-                "compositions_catalogue": {
+/*                "compositions_catalogue": {
                     "title": "Compositions catalogue",
                     "type": "compositions_catalogue",
                     "editable": true,
                     "url": 'http://foodie-dev.wirelessinfo.cz'
-                },
+                },*/
                 "status_manager": {
                     "title": "Status manager",
                     "type": "status_manager",
