@@ -1265,3 +1265,10 @@ md-bottom-sheet .content {
 #layout .layout-row {
     position: relative
 }
+
+@media (min-width: 600px) {
+    md-sidenav {
+        width: 100%;
+
+    }
+}
