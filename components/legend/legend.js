@@ -12,11 +12,11 @@ define(['angular', 'ol', 'map', 'utils'],
              * @name hs.legend.directive
              * @description Add legend panel (display available legends for displayed layers) to sidebar
              */
-            .directive('hs.legend.directive', function() {
+            .directive('hs.legend.directive', ['config', function(config) {
                 return {
-                    templateUrl: hsl_path + 'components/legend/partials/legend.html?bust=' + gitsha
+                    templateUrl: `${hsl_path}components/legend/partials/legend${config.design || ''}.html?bust=${gitsha}`,
                 };
-            })
+            }])
 
         /**
          * @memberof hs.legend
