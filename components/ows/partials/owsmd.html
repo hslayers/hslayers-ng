@@ -17,10 +17,12 @@
                         </div>
                     </md-input-container>
 
-                    <md-button class="md-icon-button" flex-gt-xs="10" ng-if="frmConnect.url.$valid && isService()" ng-click="connect()">
-                        <md-icon class="md-danger md-hue-2">send</md-icon>
-                        <md-tooltip md-direction="up" translate>Connect</md-tooltip>
-                    </md-button>
+                    <div flex-gt-xs="10">
+                        <md-button class="md-fab md-primary md-mini"  ng-if="frmConnect.url.$valid && isService()" ng-click="connect()">
+                            <md-icon class="md-danger md-hue-2">send</md-icon>
+                            <md-tooltip md-direction="up" translate>Connect</md-tooltip>
+                        </md-button>
+                    </div>
 
                     <md-button class="md-icon-button" flex-gt-xs="10" ng-if="frmConnect.url.$error.required">
                         <md-icon class="md-primary md-hue-2">warning</md-icon>
