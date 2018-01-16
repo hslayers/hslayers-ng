@@ -87,22 +87,22 @@ define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.w
                         var ows_path = hsl_path + 'components/ows/partials/';
                         switch ($scope.type.toLowerCase()) {
                             case "wms":
-                                template = ows_path + 'owswms.html';
+                                template = `${ows_path}owswms${config.design || ''}.html`;
                                 break;
                             case "wmts":
-                                template = ows_path + 'owswmts.html';
+                                template = `${ows_path}owswmts${config.design || ''}.html`; 
                                 break;
                             case "wms with priorities":
-                                template = ows_path + 'owsprioritized.html';
+                                template = `${ows_path}owsprioritized${config.design || ''}.html`;
                                 break;
                             case "wfs":
                                 if (window.allowWFS2) {
-                                    template = ows_path + 'owswfs.html';
+                                    template = `${ows_path}owswfs${config.design || ''}.html`; 
                                 }
                                 break;
                             case "kml":
                             case "geojson":
-                                template = ows_path + 'owsnonwms.html';
+                                template = `${ows_path}owsnonwms${config.design || ''}.html`; 
                                 $scope.showDetails = true;
                                 break;
                             default:

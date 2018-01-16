@@ -3,17 +3,17 @@
             <form name="frmConnect">
                 <div flex layout="row">
                     <md-input-container flex-gt-xs="30">
-                        <label>Choose format</label>
+                        <label translate>Choose format</label>
                         <md-select ng-model="type">
                             <md-option ng-value="type" ng-repeat="type in types">{{ type }}</md-option>
                         </md-select>
                     </md-input-container><br/>
                         
                     <md-input-container flex-gt-xs="60">
-                        <label>External data source (URL)</label>
+                        <label translate>External data source (URL)</label>
                         <input name="url" ng-model="url" required >
                         <div ng-messages="frmConnect.url.$error" ng-show="userForm.lastName.$dirty">
-                            <div ng-message="required">This is required!</div>
+                            <div ng-message="required" translate>This is required!</div>
                         </div>
                     </md-input-container>
 
