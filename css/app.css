@@ -1262,13 +1262,12 @@ md-bottom-sheet .content {
     color: #0062bf;
 }
 
-#layout .layout-row {
-    position: relative
-}
-
 @media (min-width: 600px) {
     md-sidenav {
         width: 100%;
+    }
 
+    #layout .layout-row {
+        position: relative
     }
 }

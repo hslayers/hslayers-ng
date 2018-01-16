@@ -404,8 +404,6 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                             zIndex: 992
                         }
 
-                        console.log($scope.LM.data.baselayers);
-
                         $mdPanel.open(config)
                             .then(function(result) {
                               baselayersPanelRef = result;
