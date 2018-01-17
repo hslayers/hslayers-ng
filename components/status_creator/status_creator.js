@@ -45,11 +45,11 @@ define(['angular', 'ol', 'map', 'ngcookies'],
              * @memberof hs.status_creator
              * @description Display Save map panel in app (base directive, extended by forms)
              */
-            .directive('hs.statusCreator.directivePanel', function () {
+            .directive('hs.statusCreator.directivePanel', ['config', function(config) {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/panel.html?bust=' + gitsha
+                    templateUrl: `${hsl_path}components/status_creator/partials/panel${config.design || ''}.html?bust=${gitsha}`,
                 };
-            })
+            }])
             /**
              * @ngdoc directive
              * @name hs.statusCreator.resultDialogDirective

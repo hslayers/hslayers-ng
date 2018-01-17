@@ -11,7 +11,7 @@
             </md-list-item> -->
 
             <div ng-repeat="panel in layoutService.data.panels | filter: onlyEnabled | orderBy:'order'">
-                <md-list-item ng-if="Core.exists(panel.controller) && Core.panelEnabled(panel.name)" ng-click="openPanel(panel.name)">
+                <md-list-item ng-if="Core.exists(panel.controller) && Core.panelEnabled(panel.name)" ng-click="panel.ngClick ? panel.ngClick() : openPanel(panel.name)">
                     <md-icon md-icon-set="material-icons" title="{{panel.description}}">{{panel.mdicon}}</md-icon>
                     <p translate>{{panel.title}}</p>
                 </md-list-item>
@@ -43,11 +43,6 @@
                 <p translate>Print</p>
             </md-list-item>
             
-            <md-list-item ng-if="Core.exists('hs.status_creator.controller') && Core.panelEnabled('status_creator')" ng-click="Core.openStatusCreator()">
-                <md-icon md-icon-set="material-icons" title="{{'Save content of map to composition'||translate}}">save</md-icon>
-                <p translate>Save composition</p>
-            </md-list-item>
-
             <md-list-item ng-if="Core.exists('hs.mobile_settings.controller') && Core.panelEnabled('mobile_settings')" ng-click="openPanel('mobile_settings')">
                 <md-icon md-icon-set="material-icons" title="{{'Specify application user settings'||translate}}">settings</md-icon>
                 <p translate>Application settings</p>
