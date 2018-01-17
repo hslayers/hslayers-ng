@@ -497,6 +497,26 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                         {
                             enabled: true,
                             order: 5,
+                            title: 'Measurements',
+                            description: 'Measure distance or area at map',
+                            name: 'measure',
+                            directive: 'hs.measure.directive',
+                            controller: 'hs.measure.controller',
+                            mdicon: 'straighten'
+                        },
+                        {
+                            enabled: true,
+                            order: 6,
+                            title: 'Print',
+                            description: 'Print map',
+                            name: 'print',
+                            directive: 'hs.print.directive',
+                            controller: 'hs.print.controller',
+                            mdicon: 'print'
+                        },
+                        {
+                            enabled: true,
+                            order: 7,
                             title: 'Share map',
                             description: 'Share map',
                             name: 'permalink',
@@ -506,7 +526,7 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                         },
                         {
                             enabled: true,
-                            order: 6,
+                            order: 8,
                             title: 'Save composition',
                             ngClick() {Core.openStatusCreator() },
                             description: 'Save content of map to composition',
@@ -514,16 +534,6 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                             directive: 'hs.status_creator.directive_panel',
                             controller: 'hs.status_creator.controller',
                             mdicon: 'save'
-                        },
-                        {
-                            enabled: true,
-                            order: 7,
-                            title: 'Measurements',
-                            description: 'Measure distance or area at map',
-                            name: 'measure',
-                            directive: 'hs.measure.directive',
-                            controller: 'hs.measure.controller',
-                            mdicon: 'straighten'
                         }
 
                         ]

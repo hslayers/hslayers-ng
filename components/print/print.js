@@ -12,11 +12,11 @@ define(['angular'],
              * @name hs.print.directive
              * @description Add print dialog template to the app
              */
-            .directive('hs.print.directive', function() {
+            .directive('hs.print.directive', ['config', function(config) {
                 return {
-                    templateUrl: hsl_path + 'components/print/partials/printdialog.html?bust=' + gitsha
+                    templateUrl: `${hsl_path}components/print/partials/printdialog${config.design || ''}.html?bust=${gitsha}`,
                 };
-            })
+            }])
 
         /**
          * @memberof hs.print

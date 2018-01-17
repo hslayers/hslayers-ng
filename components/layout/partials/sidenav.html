@@ -31,12 +31,7 @@
             <md-list-item ng-if="Core.exists('hs.draw.controller')" ng-click="openPanel('draw')">
                 <md-icon md-icon-set="material-icons">add_location</md-icon>
                 <p translate>Draw new features</p>
-            </md-list-item>
-            
-            <md-list-item ng-if="Core.exists('hs.print.controller')" ng-click="openPanel('print')">
-                <md-icon md-icon-set="material-icons" title="{{'Print map'|translate}}">print</md-icon>
-                <p translate>Print</p>
-            </md-list-item>
+            </md-list-item>           
             
             <md-list-item ng-if="Core.exists('hs.mobile_settings.controller') && Core.panelEnabled('mobile_settings')" ng-click="openPanel('mobile_settings')">
                 <md-icon md-icon-set="material-icons" title="{{'Specify application user settings'||translate}}">settings</md-icon>

@@ -1,0 +1,16 @@
+<md-content class="print" layout="column" style="max-height:100%;">
+        <md-toolbar class="md-hue-3" flex="none">
+            <h1 class="md-toolbar-tools" translate>Print</h1>
+        </md-toolbar>
+        <md-content class="md-padding" flex>
+            <md-input-container>
+                <label translate>Title</label>
+                <input required md-maxlength="30" ng-model="title">
+            </md-input-container>
+        </md-content>
+        <md-divider></md-divider>
+        <md-content layout-padding layout="row" layout-align="space-around center">
+            <md-button class="md-raised md-accent" ng-click="print()" translate>Print</md-button>
+        </md-content>
+    </md-content>
+</md-content>
