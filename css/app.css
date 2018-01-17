@@ -1271,3 +1271,7 @@ md-bottom-sheet .content {
         position: relative
     }
 }
+
+#permalink-link {
+    overflow-x: hidden;
+}

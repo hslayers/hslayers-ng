@@ -493,7 +493,17 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                                 directive: 'hs.ows.directive',
                                 controller: 'hs.ows.controller',
                                 mdicon: 'library_add'
-                            }           
+                            },
+                            {
+                                enabled: true,
+                                order: 5,
+                                title: 'Share map',
+                                description: 'Share map',
+                                name: 'permalink',
+                                directive: 'hs.permalink.directive',
+                                controller: 'hs.permalink.controller',
+                                mdicon: 'share'
+                            },           
                         ]
                     }
                     return me;

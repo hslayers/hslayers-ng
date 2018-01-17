@@ -20,11 +20,11 @@ define(['angular', 'angularjs-socialshare', 'map', 'core', 'status_creator', 'co
              * @membeof hs.permalink
              * @description Display Embed map and share panel in the aplication. Panel contains Iframe code or Url links for current map or possibility to share map on social networks (Facebook, Twitter, Google+) with title and abstract.
              */
-            .directive('hs.permalink.directive', function() {
+            .directive('hs.permalink.directive', ['config', function(config) {
                 return {
-                    templateUrl: hsl_path + 'components/permalink/partials/directive.html?bust=' + gitsha
+                    templateUrl: `${hsl_path}components/permalink/partials/directive${config.design || ''}.html?bust=${gitsha}`,
                 };
-            })
+            }])
             /**
              * @ngdoc service
              * @name hs.permalink.service_url

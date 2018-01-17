@@ -30,6 +30,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
         }]);
 
         module.value('config', {
+            open_lm_after_comp_loaded: true,
             box_layers: [
                 new ol.layer.Group({
                     'img': 'osm.png',

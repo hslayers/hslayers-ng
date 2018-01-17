@@ -43,11 +43,6 @@
                 <p translate>Print</p>
             </md-list-item>
             
-            <md-list-item ng-if="Core.exists('hs.permalink.controller') && Core.panelEnabled('permalink')" ng-click="openPanel('permalink')">
-                <md-icon md-icon-set="material-icons" title="{{'Share map'|translate}}">share</md-icon>
-                <p translate>Share map</p>
-            </md-list-item>
-
             <md-list-item ng-if="Core.exists('hs.status_creator.controller') && Core.panelEnabled('status_creator')" ng-click="Core.openStatusCreator()">
                 <md-icon md-icon-set="material-icons" title="{{'Save content of map to composition'||translate}}">save</md-icon>
                 <p translate>Save composition</p>
