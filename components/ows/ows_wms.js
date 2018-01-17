@@ -316,17 +316,35 @@ define(['angular', 'ol', 'utils'],
                  */
                 me.addLayers = function(checked){
                     var recurse = function(layer) {
-                        if ((!checked || layer.checked) && typeof layer.Layer === 'undefined')
-                            addLayer(
-                                layer,
-                                layer.Title.replace(/\//g, "&#47;"),
-                                me.data.folder_name,
-                                me.data.image_format,
-                                me.data.query_format,
-                                me.data.single_tile,
-                                me.data.tile_size,
-                                me.data.srs
-                            );
+                        if (!checked || layer.checked){
+                            if(typeof layer.Layer === 'undefined'){
+                                addLayer(
+                                    layer,
+                                    layer.Title.replace(/\//g, "&#47;"),
+                                    me.data.folder_name,
+                                    me.data.image_format,
+                                    me.data.query_format,
+                                    me.data.single_tile,
+                                    me.data.tile_size,
+                                    me.data.srs
+                                );
+                            } else {
+                                var clone = {};
+                                angular.copy(layer, clone);
+                                delete clone.Layer;
+                                addLayer(
+                                    layer,
+                                    layer.Title.replace(/\//g, "&#47;"),
+                                    me.data.folder_name,
+                                    me.data.image_format,
+                                    me.data.query_format,
+                                    me.data.single_tile,
+                                    me.data.tile_size,
+                                    me.data.srs
+                                );
+                            }
+                        }
+                           
 
                         angular.forEach(layer.Layer, function(sublayer) {
                             recurse(sublayer)
