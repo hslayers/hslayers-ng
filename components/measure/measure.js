@@ -13,11 +13,11 @@ define(['angular', 'ol', 'map', 'core'],
          * @name hs.measure.directive
          * @description Add measure html template of measuring distance or area to the map
          */
-        .directive('hs.measure.directive', function() {
+        .directive('hs.measure.directive', ['config', function(config) {
             return {
-                templateUrl: hsl_path + 'components/measure/partials/measure.html?bust=' + gitsha
+                templateUrl: `${hsl_path}components/measure/partials/measure${config.design || ''}.html?bust=${gitsha}`,
             };
-        })
+        }])
         /**
          * @memberof hs.measure
          * @ngdoc service
@@ -30,7 +30,7 @@ define(['angular', 'ol', 'map', 'core'],
                 var map;
                 
                 if (angular.isDefined(OlMap.map)) map = OlMap.map;
-                else $rootScope.$on('map_loaded', function(){
+                else $rootScope.$on('map.loaded', function(){
                     map = OlMap.map;
                 });
                 

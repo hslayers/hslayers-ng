@@ -18,11 +18,6 @@
                 <div panel-creator="panel.controller" directive="panel.directive" ng-if="Core.exists(panel.controller)" ng-show="Core.panelVisible(panel.name, this)"></div>
             </div>          
 
-            <md-list-item ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="openPanel('measure')">
-                <md-icon md-icon-set="material-icons" title="{{'Measure distance or area at map'|translate}}">straighten</md-icon>
-                <p translate>Measurements</p>
-            </md-list-item>
-
             <md-list-item ng-if="Core.exists('hs.routing.controller')" ng-click="openPanel('routing')">
                 <md-icon md-icon-set="material-icons">directions</md-icon>
                 <p translate>Routing</p>

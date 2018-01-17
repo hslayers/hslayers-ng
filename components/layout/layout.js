@@ -515,6 +515,16 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                             controller: 'hs.status_creator.controller',
                             mdicon: 'save'
                         },
+                        {
+                            enabled: true,
+                            order: 7,
+                            title: 'Measurements',
+                            description: 'Measure distance or area at map',
+                            name: 'measure',
+                            directive: 'hs.measure.directive',
+                            controller: 'hs.measure.controller',
+                            mdicon: 'straighten'
+                        }
 
                         ]
                     }
