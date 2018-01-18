@@ -8,7 +8,7 @@
                 ng-class="{'selected-basemap': layer.active}" class="baselayer-tile" layout="column" >
                 <div class="avatar-container">
                     <img ng-src="{{hasImage(layer) ? getImage(layer) : defaultBaselayerThumbnail}}" class="md-avatar" alt="{{layer.title}} image" />
-                    <md-button ng-if="isRemoveable(layer)" ng-click="showRemoveDialog($event, layer)" class="md-icon-button md-accent remove-layer">
+                    <md-button ng-if="isRemovable(layer)" ng-click="$event.stopPropagation();showRemoveDialog($event, layer)" class="md-icon-button md-accent remove-layer">
                         <md-icon class="material-icons" red">
                             delete
                         </md-icon>
@@ -26,11 +26,15 @@
                 ng-repeat="layer in LM.data.terrainLayers | orderBy: 'title'"
                 ng-click="LM.changeTerrainLayerVisibility($event, layer)"
                 ng-class="{'selected-basemap': layer.active}" class="baselayer-tile" layout="column" >
-                <img ng-src="{{hasImage(layer) ? getImage(layer) : defaultBaselayerThumbnail}}" class="md-avatar" alt="{{layer.title}} image" />
+                <div class="avatar-container">
+                    <img ng-src="{{hasImage(layer) ? getImage(layer) : defaultTerrainlayerThumbnail}}" class="md-avatar" alt="{{layer.title}} image" />
+                    <md-button ng-if="isRemovable(layer)" ng-click="$event.stopPropagation();showRemoveDialog($event, layer)" class="md-icon-button md-accent remove-layer">
+                        <md-icon class="material-icons" red">
+                            delete
+                        </md-icon>
+                    </md-button>
+                </div>
                 <p>{{layer.title}}</p>
-                <md-icon ng-if="isRemoveable(layer)" ng-click="$event.stopPropagation();showRemoveDialog($event, layer)" class="material-icons red">
-                    delete
-                </md-icon>
             </div>
         </div>
     </div>

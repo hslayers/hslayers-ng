@@ -67,7 +67,7 @@
                 <!-- opacity -->
                 <md-input-container layout-fill class="md-block">
                     <label translate>Layer Opacity</label>
-                    <md-slider min="0" max="1" step="0.01" ng-model="layer.opacity" ng-change="setOpacity(layer);"></md-slider>
+                    <md-slider min="0" max="1" step="0.01" ng-model="layer.opacity" ng-change="setOpacity(layer);" aria-label="Change layer opacity"></md-slider>
                 </md-input-container>
                 <!-- style -->
                 <label ng-if="layer.layer.getSource().styleAble" translate>Layer Style</label>
@@ -80,7 +80,7 @@
                         md-color-history="false" md-color-default-tab="1"></div>
                     <md-input-container layout-fill class="md-block">
                         <label translate>Width</label>
-                        <md-slider min="0" max="40" step="0.1" ng-model="layer.style.lineWidth" ng-change="saveStyle(layer);"></md-slider>
+                        <md-slider min="0" max="40" step="0.1" ng-model="layer.style.lineWidth" ng-change="saveStyle(layer);" aria-label="Change line width"></md-slider>
                     </md-input-container>
                 </div>
                 <div layout-fill ng-if="layer.layer.getSource().hasPoint">

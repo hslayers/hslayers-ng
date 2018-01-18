@@ -37,8 +37,8 @@ define(['angular', 'ol','ngMaterial'],
                         return layer.layer.get('img');
                     }
 
-                    $scope.isRemoveable = function(layer) {
-                        return layer.layer.get('removeable');
+                    $scope.isRemovable = function(layer) {
+                        return layer.layer.get('removable');
                     }
 
                     $scope.showRemoveDiag = function(e, layer) {

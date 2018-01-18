@@ -351,8 +351,8 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                         return layer.layer.get('img');
                     }
 
-                    $scope.isRemoveable = function (layer) {
-                        return layer.layer.get('removeable');
+                    $scope.isRemovable = function (layer) {
+                        return layer.layer.get('removable');
                     }
 
                     $scope.showRemoveDialog = function (e, layer) {
