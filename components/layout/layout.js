@@ -356,7 +356,8 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                             .ariaLabel('Confirm layer removal')
                             .targetEvent(e)
                             .ok('Remove')
-                            .cancel('Cancel');
+                            .cancel('Cancel')
+                            .hasBackdrop(false);
 
                         $mdDialog.show(confirm).then(function () {
                             $scope.removeLayer(layer);
