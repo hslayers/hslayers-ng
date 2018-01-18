@@ -18,7 +18,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
          * @description Directive for displaying list of layers in default HSLayers manager template. Every directive instance contain one folder of folder stucture. For every layer displays current information notes and on click opens layer options panel. Every directive instance is automatically refresh when layermanager.updated fires.
          * Directive has access to contollers data object.
          */
-                    .directive('hs.layermanager.layerlistDirective', ['$compile', function ($compile) {
+                    .directive('hs.layermanager.layerlistDirective', ['$compile', 'config', function ($compile, config) {
                         return {
                             templateUrl: hsl_path + 'components/layermanager/partials/layerlist.html?bust=' + gitsha,
                             compile: function compile(element) {
@@ -104,6 +104,10 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     }
 
                                     sortLayersByPosition();
+
+                                    scope.order = function(){
+                                        return config.layer_order || '-position';
+                                    }
 
                                     if (angular.isUndefined(contentsLinker)) {
                                         contentsLinker = $compile(contents);

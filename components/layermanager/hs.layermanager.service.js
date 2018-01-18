@@ -162,8 +162,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     title: getLayerTitle(layer),
                                     layer: layer,
                                     grayed: me.isLayerInResolutionInterval(layer),
-                                    visible: layer.getVisible()
+                                    visible: layer.getVisible(),
+                                    position: layer.get('position')
                                 };
+
+                                
 
                                 if (WMST.layerIsWmsT(new_layer)) {
                                     var dimensions_time = new_layer.layer.get('dimensions_time') || new_layer.layer.dimensions_time;
