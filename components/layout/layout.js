@@ -332,6 +332,7 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                     });
 
                     $scope.defaultBaselayerThumbnail = `${hsl_path}components/layout/osm.png`;
+                    $scope.defaultTerrainlayerThumbnail = `${hsl_path}components/layout/osm.png`;
 
                     let baselayersPanelRef;
 

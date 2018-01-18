@@ -222,7 +222,8 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
                     .ariaLabel('Confirm layer removal')
                     .targetEvent(e)
                     .ok('Remove')
-                    .cancel('Cancel');
+                    .cancel('Cancel')
+                    .hasBackdrop(false);
       
                 $mdDialog.show(confirm).then(function() {
                     $scope.removeLayer(layer.layer);
