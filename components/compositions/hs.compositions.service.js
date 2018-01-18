@@ -28,11 +28,14 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             me.data.next = 20;
                             me.data.useCallbackForEdit = false;
 
+                            me.compositionsLoaded = false;
+
                             var extentLayer;
 
                             var ajaxReq;
 
                             me.loadCompositions = function (params) {
+                                me.compositionsLoaded = false;
                                 if (angular.isUndefined(params.sortBy)) params.sortBy = 'bbox';
                                 if (angular.isUndefined(params.start)) params.start = me.data.start;
                                 if (angular.isUndefined(params.limit) || isNaN(params.limit)) params.limit = me.data.limit;
@@ -62,6 +65,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                         url: url
                                     })
                                         .done(function (response) {
+                                            me.compositionsLoaded = true;
                                             ajaxReq = null;
                                             me.data.compositions = response.records;
                                             if (response.records && response.records.length > 0) {
