@@ -1,6 +1,6 @@
 <div class="list-group-item hs-lm-list" ng-if="obj.layers.length>0">
     <ul class="list-group row" dnd-list="layer_titles" dnd-drop="dragged(event, index, item, type, external)">
-        <li ng-repeat="layer in filtered_layers | orderBy:order() | filter:query track by $index" id="layer{{obj.coded_path}}{{$index}}" dnd-draggable="layer.title" dnd-effect-allowed="move" class="list-group-item hs-lm-item" ng-click="setCurrentLayer(layer, $index, obj.coded_path)" ng-class="{detailActivated : 'currentlayer == layer'}">
+        <li ng-repeat="layer in filtered_layers | orderBy:order() | filter:query track by layer.layer.ol_uid + ' ' + layer.position" id="layer{{obj.coded_path}}{{layer.layer.ol_uid}}" dnd-draggable="layer.title" dnd-effect-allowed="move" class="list-group-item hs-lm-item" ng-click="setCurrentLayer(layer, layer.layer.ol_uid, obj.coded_path)" ng-class="{detailActivated : 'currentlayer == layer'}">
             <div class="hs-lm-item-status">
                 <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-hide="layerLoaded(layer.layer)"></span>
                 <span ng-show="layerLoaded(layer.layer)">

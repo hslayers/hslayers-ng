@@ -492,6 +492,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             me.updateLayerOrder = function () {
                                 angular.forEach(me.data.layers, function (my_layer) {
                                     my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));
+                                    my_layer.position = my_layer.layer.get('position');
                                 })
                             }
                             /**

@@ -89,6 +89,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     }
 
                                     scope.$on('layermanager.updated', sortLayersByPosition);
+
+                                    scope.order = function () {
+                                        return config.layer_order || '-position';
+                                    }
+
                                     /**
                                      * @ngdoc method
                                      * @name hs.layermanager.layerlistDirective#sortLayersByPosition
@@ -97,17 +102,18 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                      */
                                     function sortLayersByPosition() {
                                         scope.filtered_layers = filterLayers();
+                                        var minus = scope.order().indexOf('-') == 0;
+                                        var attribute = scope.order().replaceAll('-', '');
                                         scope.filtered_layers.sort(function (a, b) {
-                                            return b.layer.get('position') - a.layer.get('position')
+                                            var a = a.layer.get(attribute);
+                                            var b = b.layer.get(attribute);
+                                            var tmp = (a < b ? -1 : (a > b ? 1 : 0)) * (minus ? -1 : 1);
+                                            return tmp;
                                         });
                                         scope.generateLayerTitlesArray();
                                     }
 
                                     sortLayersByPosition();
-
-                                    scope.order = function(){
-                                        return config.layer_order || '-position';
-                                    }
 
                                     if (angular.isUndefined(contentsLinker)) {
                                         contentsLinker = $compile(contents);

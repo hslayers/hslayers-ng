@@ -31,7 +31,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
 
         module.value('config', {
             open_lm_after_comp_loaded: true,
-            layer_order: 'position',
+            layer_order: '-position',
             box_layers: [
                 new ol.layer.Group({
                     'img': 'osm.png',
