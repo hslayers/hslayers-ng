@@ -407,7 +407,8 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                             scope: this,
                             trapFocus: true,
                             clickOutsideToClose: true,
-                            clickEscapeToClose: true
+                            clickEscapeToClose: true,
+                            zIndex: 50
                         }
 
                         $mdPanel.open(config)

@@ -1285,6 +1285,10 @@ md-bottom-sheet .content {
     #layout .layout-row {
         position: relative
     }
+
+    md-backdrop.md-sidenav-backdrop {
+        display: none;
+    }
 }
 
 #permalink-link {
