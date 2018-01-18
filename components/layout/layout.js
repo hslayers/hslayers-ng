@@ -99,6 +99,12 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                             () => {
                                 if (raw.scrollHeight > raw.clientHeight) {
                                     raw.style["touch-action"] = "pan-y";
+                                    if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
+                                        raw.style["touch-action"] = "pan-up";
+                                    }
+                                    if (raw.scrollTop == 0) {
+                                        raw.style["touch-action"] = "pan-down";
+                                    }
                                 } else {
                                     raw.style["touch-action"] = "none";
                                 }
@@ -122,8 +128,8 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
             * @name hs.layout.controller
             * @description TODO
             */
-            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet', '$mdPanel', '$mdDialog', 'hs.layout.service',
-                function ($scope, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet, $mdPanel, $mdDialog, layoutService) {
+            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet', '$mdPanel', '$mdDialog', '$mdMedia', 'hs.layout.service',
+                function ($scope, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet, $mdPanel, $mdDialog, $mdMedia, layoutService) {
                     $scope.Core = Core;
                     $scope.geolocation = Geolocation;
                     $scope.LM = LayerManager;
@@ -274,7 +280,7 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
 
                     $scope.openPanel = function (panel) {
                         Core.setMainPanel(panel);
-                        if (Core.isMobile()) {
+                        if (!$mdMedia('gt-sm')) {
                             $scope.openBottomSheet(panel);
                         }
                     }
@@ -356,7 +362,8 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                             .ariaLabel('Confirm layer removal')
                             .targetEvent(e)
                             .ok('Remove')
-                            .cancel('Cancel');
+                            .cancel('Cancel')
+                            .hasBackdrop(false);
 
                         $mdDialog.show(confirm).then(function () {
                             $scope.removeLayer(layer);
@@ -400,8 +407,7 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                             scope: this,
                             trapFocus: true,
                             clickOutsideToClose: true,
-                            clickEscapeToClose: true,
-                            zIndex: 992
+                            clickEscapeToClose: true
                         }
 
                         $mdPanel.open(config)

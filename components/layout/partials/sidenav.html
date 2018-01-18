@@ -15,8 +15,8 @@
                     <md-icon md-icon-set="material-icons" title="{{panel.description}}">{{panel.mdicon}}</md-icon>
                     <p translate>{{panel.title}}</p>
                 </md-list-item>
-                <div panel-creator="panel.controller" directive="panel.directive" ng-if="Core.exists(panel.controller)" ng-show="Core.panelVisible(panel.name, this)"></div>
-            </div>          
+                <div panel-creator="panel.controller" directive="panel.directive" ng-if="Core.exists(panel.controller)" ng-show="Core.panelVisible(panel.name, this)" hide-xs hide-sm></div>
+            </div>
 
             <md-list-item ng-if="Core.exists('hs.routing.controller')" ng-click="openPanel('routing')">
                 <md-icon md-icon-set="material-icons">directions</md-icon>

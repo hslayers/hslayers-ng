@@ -1231,7 +1231,10 @@ md-bottom-sheet .content {
 }
 
 .baselayer-tile {
+    position: relative;
     padding: 8px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .baselayer-tile p {
@@ -1240,20 +1243,32 @@ md-bottom-sheet .content {
     margin: 0 auto;
 }
 
+.baselayer-tile .avatar-container {
+    padding: 10px;
+}
+
 .baselayer-tile .md-avatar {
     -webkit-box-flex: 0;
     -webkit-flex: none;
     flex: none;
     width: 40px;
     height: 40px;
-    padding: 4px;
+    padding: 6px;
     margin: 0 auto;
     border-radius: 50%;
     box-sizing: content-box;
 }
 
+.baselayer-tile .remove-layer {
+    position: absolute;
+    top: 0;
+    right: -4px;
+    padding: 0;
+}
+
 .baselayer-tile.selected-basemap .md-avatar {
     border: 2px solid #0062bf;
+    padding: 4px;
     border-radius: 50%;
 }
 

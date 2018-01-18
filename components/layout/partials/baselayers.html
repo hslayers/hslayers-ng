@@ -4,13 +4,17 @@
         <div class="baselayers-row" layout="row">
             <div
                 ng-repeat="layer in LM.data.baselayers | orderBy: 'title'"
-                ng-click="console.log('LM.changeBaseLayerVisibility($event, layer)')"
+                ng-click="LM.changeBaseLayerVisibility($event, layer)"
                 ng-class="{'selected-basemap': layer.active}" class="baselayer-tile" layout="column" >
-                <img ng-src="{{hasImage(layer) ? getImage(layer) : defaultBaselayerThumbnail}}" class="md-avatar" alt="{{layer.title}} image" />
+                <div class="avatar-container">
+                    <img ng-src="{{hasImage(layer) ? getImage(layer) : defaultBaselayerThumbnail}}" class="md-avatar" alt="{{layer.title}} image" />
+                    <md-button ng-if="isRemoveable(layer)" ng-click="showRemoveDialog($event, layer)" class="md-icon-button md-accent remove-layer">
+                        <md-icon class="material-icons" red">
+                            delete
+                        </md-icon>
+                    </md-button>
+                </div>
                 <p>{{layer.title}}</p>
-                <md-icon ng-if="isRemoveable(layer)" ng-click="$event.stopPropagation();showRemoveDialog($event, layer)" class="material-icons red">
-                    delete
-                </md-icon>
             </div>
         </div>
     </div>
@@ -20,7 +24,7 @@
         <div class="terrain-row" layout="row">
             <div
                 ng-repeat="layer in LM.data.terrainLayers | orderBy: 'title'"
-                ng-click="console.log('LM.changeTerrainLayerVisibility($event, layer)')"
+                ng-click="LM.changeTerrainLayerVisibility($event, layer)"
                 ng-class="{'selected-basemap': layer.active}" class="baselayer-tile" layout="column" >
                 <img ng-src="{{hasImage(layer) ? getImage(layer) : defaultBaselayerThumbnail}}" class="md-avatar" alt="{{layer.title}} image" />
                 <p>{{layer.title}}</p>
