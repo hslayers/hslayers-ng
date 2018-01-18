@@ -527,7 +527,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 OlMap.map.getLayers().forEach(function (lyr) {
                                     if (angular.isUndefined(lyr.get('removable')) || lyr.get('removable') == true)
                                         if (angular.isUndefined(lyr.get('base')) || lyr.get('base') == false)
-                                            to_be_removed.push(lyr);
+                                            if (angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true)
+                                                to_be_removed.push(lyr);
                                 });
                                 while (to_be_removed.length > 0) {
                                     OlMap.map.removeLayer(to_be_removed.shift());
