@@ -13,9 +13,9 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                 angular.module('hs.compositions')
                     /**
                      * @module hs.compositions
-                     * @name hs.compositions.controller
+                     * @name hs.compositions.service
                      * @ngdoc controller
-                     * @description Main controller of composition module
+                     * @description Service of composition module
                      */
                     .service('hs.compositions.service', ['$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
                         function ($rootScope, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils) {
@@ -106,6 +106,12 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 }
                             }
 
+                            /**
+                             * @ngdoc method
+                             * @name hs.compositions.service#loadStatusManagerCompositions
+                             * @public
+                             * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
+                             */
                             me.loadStatusManagerCompositions = function (params, bbox) {
                                 var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url;
                                 var query = params.query;
