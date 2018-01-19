@@ -19,6 +19,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                      */
                     .controller('hs.compositions.controller', ['$scope', 'Core', 'hs.compositions.service', '$window', '$mdDialog', '$mdMedia',
                         function ($scope, Core, Composition, $window, $mdDialog, $mdMedia) {
+                            $scope.CS = Composition;
                             $scope.data = Composition.data;
                             /**
                             * @ngdoc property
