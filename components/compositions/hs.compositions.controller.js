@@ -181,9 +181,9 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             $scope.confirmDelete = function (composition, ev) {
                                 $scope.compositionToDelete = composition;
                                 if(config.design == 'md')
-                                    deleteDialogBootstrap();
+                                    deleteDialogMd();
                                 else 
-                                    shareDialogBootstrap()
+                                    deleteDialogBootstrap()
                             }
 
                             function deleteDialogBootstrap(ev) {
@@ -194,7 +194,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                 $compile(el)($scope);
                             }
 
-                            function deleteDialog(ev) {
+                            function deleteDialogMd(ev) {
                                 $mdDialog.show({
                                     parent: angular.element('#hsContainer'),
                                     targetEvent: ev,
