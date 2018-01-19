@@ -70,6 +70,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
         var caturl = "/php/metadata/csw/index.php";
 
         module.value('config', {
+            design: "md",
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM({

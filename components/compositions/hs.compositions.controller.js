@@ -141,7 +141,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     escapeToClose: true,
                                     scope: $scope,
                                     preserveScope: true,
-                                    templateUrl: 'materialComponents/panelContents/compositionShareDialog.html',
+                                    templateUrl: 'components/compositions/partials/dialog_sharemd.html',
                                     controller: function DialogController($scope, $mdDialog) {
                                         $scope.closeDialog = function () {
                                             $mdDialog.hide();
