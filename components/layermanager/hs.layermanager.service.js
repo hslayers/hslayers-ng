@@ -162,8 +162,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     title: getLayerTitle(layer),
                                     layer: layer,
                                     grayed: me.isLayerInResolutionInterval(layer),
-                                    visible: layer.getVisible()
+                                    visible: layer.getVisible(),
+                                    position: layer.get('position')
                                 };
+
+                                
 
                                 if (WMST.layerIsWmsT(new_layer)) {
                                     var dimensions_time = new_layer.layer.get('dimensions_time') || new_layer.layer.dimensions_time;
@@ -489,6 +492,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                             me.updateLayerOrder = function () {
                                 angular.forEach(me.data.layers, function (my_layer) {
                                     my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));
+                                    my_layer.position = my_layer.layer.get('position');
                                 })
                             }
                             /**

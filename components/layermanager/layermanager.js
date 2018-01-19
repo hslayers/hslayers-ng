@@ -366,6 +366,16 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
 
             $scope.icons = ["bag1.svg", "banking4.svg", "bar.svg", "beach17.svg", "bicycles.svg", "building103.svg", "bus4.svg", "cabinet9.svg", "camping13.svg", "caravan.svg", "church15.svg", "church1.svg", "coffee-shop1.svg", "disabled.svg", "favourite28.svg", "football1.svg", "footprint.svg", "gift-shop.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg", "hospital.svg", "hot-air-balloon2.svg", "information78.svg", "library21.svg", "location6.svg", "luggage13.svg", "monument1.svg", "mountain42.svg", "museum35.svg", "park11.svg", "parking28.svg", "pharmacy17.svg", "port2.svg", "restaurant52.svg", "road-sign1.svg", "sailing-boat2.svg", "ski1.svg", "swimming26.svg", "telephone119.svg", "toilets2.svg", "train-station.svg", "university2.svg", "warning.svg", "wifi8.svg"];
 
+             /**
+             * @function isLayerRemovable
+             * @memberOf hs.layermanager.controller
+             * @description Check if layer can be removed based on 'removable' layer attribute
+             * @param {Ol.layer} lyr OL layer to check if removable
+             */
+            $scope.isLayerRemovable = function(lyr){
+                return angular.isDefined(lyr) && (angular.isUndefined(lyr.get('removable')) || lyr.get('removable') == true);
+            }
+
             $scope.removeLayer = function (layer) {
                 OlMap.map.removeLayer(layer);
                 $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents

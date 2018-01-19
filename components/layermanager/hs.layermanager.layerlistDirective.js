@@ -18,7 +18,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
          * @description Directive for displaying list of layers in default HSLayers manager template. Every directive instance contain one folder of folder stucture. For every layer displays current information notes and on click opens layer options panel. Every directive instance is automatically refresh when layermanager.updated fires.
          * Directive has access to contollers data object.
          */
-                    .directive('hs.layermanager.layerlistDirective', ['$compile', function ($compile) {
+                    .directive('hs.layermanager.layerlistDirective', ['$compile', 'config', function ($compile, config) {
                         return {
                             templateUrl: hsl_path + 'components/layermanager/partials/layerlist.html?bust=' + gitsha,
                             compile: function compile(element) {
@@ -89,6 +89,11 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     }
 
                                     scope.$on('layermanager.updated', sortLayersByPosition);
+
+                                    scope.order = function () {
+                                        return config.layer_order || '-position';
+                                    }
+
                                     /**
                                      * @ngdoc method
                                      * @name hs.layermanager.layerlistDirective#sortLayersByPosition
@@ -97,8 +102,13 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                      */
                                     function sortLayersByPosition() {
                                         scope.filtered_layers = filterLayers();
+                                        var minus = scope.order().indexOf('-') == 0;
+                                        var attribute = scope.order().replaceAll('-', '');
                                         scope.filtered_layers.sort(function (a, b) {
-                                            return b.layer.get('position') - a.layer.get('position')
+                                            var a = a.layer.get(attribute);
+                                            var b = b.layer.get(attribute);
+                                            var tmp = (a < b ? -1 : (a > b ? 1 : 0)) * (minus ? -1 : 1);
+                                            return tmp;
                                         });
                                         scope.generateLayerTitlesArray();
                                     }
