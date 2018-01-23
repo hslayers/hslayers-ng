@@ -52,7 +52,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "type": "default",
                     "editable": false,
                     "url": 'http://atlas.kraj-lbc.cz'
-                }/*,
+                }, /*,
                 "compositions_catalogue": {
                     "title": "Compositions catalogue",
                     "type": "compositions_catalogue",
