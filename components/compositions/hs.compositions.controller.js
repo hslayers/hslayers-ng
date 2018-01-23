@@ -180,7 +180,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                              */
                             $scope.confirmDelete = function (composition, ev) {
                                 $scope.compositionToDelete = composition;
-                                if(config.design == 'md')
+                                if(config.design === 'md')
                                     deleteDialogMd();
                                 else 
                                     deleteDialogBootstrap()
@@ -259,7 +259,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                              */
                             $scope.shareComposition = function (record, $event) {
                                 Composition.shareComposition(record);
-                                if(config.design == 'md')
+                                if(config.design === 'md')
                                     shareDialogMd($event);
                                 else 
                                     shareDialogBootstrap()
@@ -299,7 +299,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                              */
                             $scope.detailComposition = function (record, $event) {
                                 $scope.info = Composition.getCompositionInfo(record);
-                                if(config.design == 'md')
+                                if(config.design === 'md')
                                     infoDialogMD($event);
                                 else 
                                     infoDialogBootstrap();
@@ -431,7 +431,7 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
 
                             $scope.$on('loadComposition.notSaved', function (event, data) {
                                 $scope.compositionToLoad = data.link;
-                                if(config.design == 'md')
+                                if(config.design === 'md')
                                     loadUnsavedDialogMD();
                                 else 
                                     loadUnsavedDialogBootstrap();

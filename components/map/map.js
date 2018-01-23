@@ -202,6 +202,36 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                 if (angular.isDefined(config.box_layers)) {
                     angular.forEach(config.box_layers, function (box) {
                         angular.forEach(box.get('layers'), function (lyr) {
+                            let duplicateLayer = false;
+                            me.map.getLayers().forEach((l) => {
+                                if (l.get("source") == lyr.get("source")) {
+                                    duplicateLayer = true;
+                                }
+                            });
+                            if (!duplicateLayer) {
+                                lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
+                                lyr.manuallyAdded = false;
+                                if (lyr.getSource() instanceof ol.source.ImageWMS)
+                                    me.proxifyLayerLoader(lyr, false);
+                                if (lyr.getSource() instanceof ol.source.TileWMS)
+                                    me.proxifyLayerLoader(lyr, true);
+                                if (lyr.getSource() instanceof ol.source.Vector)
+                                    me.getVectorType(lyr);
+                                me.map.addLayer(lyr);
+                            }
+                        });
+                    });
+                }
+
+                if (angular.isDefined(config.default_layers)) {
+                    angular.forEach(config.default_layers, function (lyr) {
+                        let duplicateLayer = false;
+                        me.map.getLayers().forEach((l) => {
+                            if (l.get("source") === lyr.get("source")) {
+                                duplicateLayer = true;
+                            }
+                        });
+                        if (!duplicateLayer) {
                             lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                             lyr.manuallyAdded = false;
                             if (lyr.getSource() instanceof ol.source.ImageWMS)
@@ -211,21 +241,7 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                             if (lyr.getSource() instanceof ol.source.Vector)
                                 me.getVectorType(lyr);
                             me.map.addLayer(lyr);
-                        });
-                    });
-                }
-
-                if (angular.isDefined(config.default_layers)) {
-                    angular.forEach(config.default_layers, function (lyr) {
-                        lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
-                        lyr.manuallyAdded = false;
-                        if (lyr.getSource() instanceof ol.source.ImageWMS)
-                            me.proxifyLayerLoader(lyr, false);
-                        if (lyr.getSource() instanceof ol.source.TileWMS)
-                            me.proxifyLayerLoader(lyr, true);
-                        if (lyr.getSource() instanceof ol.source.Vector)
-                            me.getVectorType(lyr);
-                        me.map.addLayer(lyr);
+                        }
                     });
                 }
             }
@@ -334,6 +350,11 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
              */
             this.proxifyLayerLoader = function (lyr, tiled) {
                 var src = lyr.getSource();
+                me.map.getLayers().forEach((l) => {
+                    if (l.get("source") == src) {
+                        return;
+                    }
+                });
                 if (tiled) {
                     var tile_url_function = src.getTileUrlFunction() || src.tileUrlFunction();
                     src.setTileUrlFunction(function (b, c, d) {

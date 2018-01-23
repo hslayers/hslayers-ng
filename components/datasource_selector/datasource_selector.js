@@ -597,13 +597,15 @@ define(['angular', 'ol', 'map'],
              * @name hs.datasource_selector.controller
              * @description Controller for datasource_selector
              */
-            .controller('hs.datasource_selector.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service',
-                function ($scope, Core, $compile, utils, $http, DS) {
+            .controller('hs.datasource_selector.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config', '$mdDialog',
+                function ($scope, Core, $compile, utils, $http, DS, config, $mdDialog) {
                     $scope.data = DS.data;
                     $scope.DS = DS;
                     $scope.dsPaging = $scope.data.paging;
                     $scope.wms_connecting = false;
-
+                    $scope.config = config;
+                    $scope.advancedSearch = false;
+                    
                     $scope.$on('ows.wms_connecting', function () {
                         $scope.wms_connecting = true;
                     });
@@ -648,14 +650,19 @@ define(['angular', 'ol', 'map'],
                      */
                     $scope.showSuggestions = function (input, param, field) {
                         DS.changeSuggestionConfig(input, param, field);
-                        if ($('#ds-suggestions-micka').length == 0) {
-                            var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
-                            $("#hs-dialog-area").append(el);
-                            $compile(el)($scope);
-                        } else {
-                            $('#ds-suggestions-micka').modal('show');
-                            $('#ds-sug-filter').val($scope.data.query[input]).focus();
+                        if (config.design === "md") {
+                            DS.checkAdvancedMicka();
+                            $scope.data.suggestionFilter = $scope.data.query[input];
                             DS.suggestionFilterChanged();
+                        } else {                        if ($('#ds-suggestions-micka').length == 0) {
+                                var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
+                                $("#hs-dialog-area").append(el);
+                                $compile(el)($scope);
+                            } else {
+                                $('#ds-suggestions-micka').modal('show');
+                                $('#ds-sug-filter').val($scope.data.query[input]).focus();
+                                DS.suggestionFilterChanged();
+                            }
                         }
                     }
 
@@ -702,14 +709,36 @@ define(['angular', 'ol', 'map'],
                      * @param {Object} layer Metadata record of selected layer
                      * Show metadata record dialog window for selected layer.
                      */
-                    $scope.showMetadata = function (ds, layer) {
+                    $scope.showMetadata = function (ds, layer, e) {
                         $scope.selected_layer = layer;
                         $scope.selected_ds = ds;
-                        if (!$scope.$$phase) $scope.$digest();
-                        $("#hs-dialog-area #datasource_selector-metadata-dialog").remove();
-                        var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
-                        $("#hs-dialog-area").append(el)
-                        $compile(el)($scope);
+                        $scope.metadata = decomposeMetadata(layer);
+                        if (config.design === "md") {
+                            metadataDialog(e);
+                        } else {
+                            if (!$scope.$$phase) $scope.$digest();
+                            $("#hs-dialog-area #datasource_selector-metadata-dialog").remove();
+                            var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
+                            $("#hs-dialog-area").append(el)
+                            $compile(el)($scope);
+                        }
+                    }
+
+                    function metadataDialog($event) {
+                        $mdDialog.show({
+                            parent: angular.element('#hsContainer'),
+                            targetEvent: $event,
+                            clickOutsideToClose: true,
+                            escapeToClose: true,
+                            scope: $scope,
+                            preserveScope: true,  
+                            templateUrl: hsl_path + 'materialComponents/panelContents/datasourceBrowserMetadata.html',
+                            controller: function DialogController($scope, $mdDialog) {
+                                $scope.closeDialog = function () {
+                                    $mdDialog.hide();
+                                }
+                            }
+                        });
                     }
 
                     /**
