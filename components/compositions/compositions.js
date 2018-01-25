@@ -1,4 +1,4 @@
-require.config({
+if(require.config) require.config({
     paths: {
         'hs.compositions.service_parser': hsl_path + 'components/compositions/hs.compositions.service_parser' + hslMin,
         'hs.compositions.service': hsl_path + 'components/compositions/hs.compositions.service' + hslMin,
@@ -12,7 +12,7 @@ require.config({
  * @name hs.compositions
  * @description Test composition module
  */
-define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'hs.compositions.service', 'hs.compositions.service_parser', 'hs.compositions.controller', 'map', 'ows.nonwms', 'config_parsers'],
+define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.compositions.service', 'hs.compositions.service_parser', 'hs.compositions.controller', 'map', 'ows_nonwms', 'config_parsers'],
 
     function (angular, ol, SparqlJson, social, hsCompositionsService, hsCompositionsServiceParser, hsCompositionsController) {
         var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms', 'hs.compositions.config_parsers'])

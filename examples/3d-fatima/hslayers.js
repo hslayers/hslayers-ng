@@ -7,17 +7,12 @@ var gitsha = $.ajax({
     async: false
 }).responseText;
 
-require.config({
+if(require.config) require.config({
     urlArgs: 'bust=' + gitsha,
     paths: {
         toolbar: hsl_path + 'components/toolbar/toolbar',
         layermanager: hsl_path + 'components/layermanager/layermanager',
         map: hsl_path + 'components/map/map',
-        ows: hsl_path + 'components/ows/ows',
-        'ows.wms': hsl_path + 'components/ows/ows_wms',
-        'ows.wfs': hsl_path + 'components/ows/ows_wfs',
-        'ows.nonwms': hsl_path + 'components/ows/ows_nonwms',
-        'ows.wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized',
         query: hsl_path + 'components/query/query',
         search: hsl_path + 'components/search/search',
         print: hsl_path + 'components/print/print',

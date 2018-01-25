@@ -17,13 +17,13 @@ require.config({
   // Karma serves files under /base, which is the basePath from your config file
   baseUrl: '/base',
   paths: {
-    'angularjs-socialshare': 'node_modules/angular-socialshare/dist/angular-socialshare',
+    'angular-socialshare': 'node_modules/angular-socialshare/dist/angular-socialshare',
     compositions: 'components/compositions/compositions',
     measure: 'components/measure/measure',
     app: 'examples/datasources/app',
     code: 'components/core/core',
     angular:  'node_modules/angular/angular',
-    ngcookies:  'node_modules/angular-cookies/angular-cookies',
+    'angular-cookies':  'node_modules/angular-cookies/angular-cookies',
     bootstrap:  'node_modules/bootstrap/dist/js/bootstrap',
     ol: 'node_modules/openlayers/dist/ol',
     drag:  'components/drag/drag',
@@ -53,10 +53,10 @@ require.config({
     bootstrap:  'node_modules/bootstrap/dist/js/bootstrap.min',
     layermanager:  'components/layermanager/layermanager',
     ows:  'components/ows/ows',
-    'ows.wms':  'components/ows/ows_wms',
-    'ows.nonwms':  'components/ows/ows_nonwms',
-    'ows.wmts':  'components/ows/ows_wmts',
-    'ows.wmsprioritized':  'components/ows/ows_wmsprioritized',
+    'ows_wms':  'components/ows/ows_wms',
+    'ows_nonwms':  'components/ows/ows_nonwms',
+    'ows_wmts':  'components/ows/ows_wmts',
+    'ows_wmsprioritized':  'components/ows/ows_wmsprioritized',
     query:  'components/query/query',
     search:  'components/search/search',
     print:  'components/print/print',
@@ -72,9 +72,9 @@ require.config({
     datasource_selector: 'components/datasource_selector/datasource_selector',
     'angular-mocks': 'node_modules/angular-mocks/angular-mocks',
     WfsSource: 'components/layers/hs.source.Wfs',
-    'ows.wfs': 'components/ows/ows_wfs',
+    'ows_wfs': 'components/ows/ows_wfs',
     config_parsers: 'components/compositions/config_parsers',
-    'dragdroplists': 'node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists'
+    'angular-drag-and-drop-lists': 'node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists'
 },
   shim: {
     'angular': {'exports': 'angular'},
