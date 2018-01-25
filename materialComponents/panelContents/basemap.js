@@ -2,7 +2,7 @@
  * @namespace hs.material.search
  * @memberOf hs
  */
-define(['angular', 'ol','ngMaterial'],
+define(['angular', 'ol','angular-material'],
 
     function(angular, ol, ngMaterial) {
         angular.module('hs.material.basemap', ['ngMaterial'])

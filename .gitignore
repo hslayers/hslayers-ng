@@ -8,4 +8,5 @@ hooks/
 .orig
 package-lock.json
 *.min.js
+bundle.js
 docs

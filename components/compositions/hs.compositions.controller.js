@@ -5,7 +5,7 @@
  * @description Composition module
  */
 
-define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonwms', 'config_parsers'],
+define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', 'ows_nonwms', 'config_parsers'],
 
     function (angular, ol, SparqlJson, social) {
         return {

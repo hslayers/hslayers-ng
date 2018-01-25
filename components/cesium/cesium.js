@@ -1,5 +1,5 @@
 
-require.config({
+if(require.config) require.config({
     paths: {
         hs_cesium_camera: hsl_path + 'components/cesium/camera' + hslMin,
     }

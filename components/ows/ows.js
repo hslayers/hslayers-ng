@@ -3,7 +3,7 @@
  * @memberOf hs
  */
 
-define(['angular', 'map', 'ows.wms', 'ows.wmts', 'ows.wfs', 'ows.nonwms', 'ows.wmsprioritized', 'permalink'],
+define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'ows_wmsprioritized', 'permalink'],
 
     function(angular) {
         var ows = angular.module('hs.ows', ['hs.map', 'hs.ows.wms', 'hs.ows.wmts', 'hs.ows.nonwms', 'hs.ows.wmsprioritized'])

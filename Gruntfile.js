@@ -70,6 +70,22 @@ module.exports = function (grunt) {
                         return src.replace('.js', '.min.js');
                     }
                 }]
+            },
+            bundles: {
+                options: 
+                {
+                    mangle: {
+                    reserved: ['angular', '$', 'ol','define','Api']
+                }},
+                files: [{
+                    expand: true,
+                    src: ["examples/**/bundle.js", "!examples/**/bundle.min.js"],
+                    dest: 'dist',
+                    cwd: '.',
+                    rename: function (dst, src) {
+                        return src.replace('.js', '.min.js');
+                    }
+                }]
             }
         },
         "jsbeautifier": {

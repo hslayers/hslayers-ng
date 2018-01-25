@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'toolbar', 'ol', 'core', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'lodexplorer', 'measure', 'legend', 'panoramio'],
+define(['angular', 'toolbar', 'ol', 'core', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'measure', 'legend'],
 
     function(angular, toolbar, oj, layermanager) {
         var module = angular.module('hs', [ 
@@ -13,10 +13,8 @@ define(['angular', 'toolbar', 'ol', 'core', 'layermanager', 'map', 'ows', 'query
             'hs.search',
             'hs.print',
             'hs.permalink',
-            'hs.lodexplorer',
             'hs.measure',
-            'hs.legend',
-            'hs.panoramio'
+            'hs.legend'
         ]);
 
         module.directive('hs', ['OlMap', function(OlMap) {

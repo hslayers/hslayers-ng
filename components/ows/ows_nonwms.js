@@ -2,7 +2,7 @@
  * @namespace hs.ows.nonwms
  * @memberOf hs
  */
-define(['angular', 'ol', 'SparqlJson', 'WfsSource', 'styles'],
+define(['angular', 'ol', 'hs.source.SparqlJson', 'hs.source.Wfs', 'styles'],
 
     function(angular, ol, SparqlJson, WfsSource) {
         angular.module('hs.ows.nonwms', ['hs.styles'])

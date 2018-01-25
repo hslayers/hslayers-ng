@@ -4,7 +4,7 @@
  * @name hs.compositions.config_parsers
  */
 
-define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonwms'],
+define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', 'ows_nonwms'],
 
     function(angular, ol, SparqlJson, social) {
         var module = angular.module('hs.compositions.config_parsers', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms'])

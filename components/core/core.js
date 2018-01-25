@@ -1,48 +1,46 @@
 /**
  * @namespace hs
- */
-
-/**
  * @ngdoc module
  * @module hs.core
  * @name hs.core
  * @description Core module for whole HSLayers-NG. Contain paths to all other HS modules and dependencies (therefore it is not needed to specify them in hslayers.js file). Core module consists of Core service which keeps some app-level settings and mantain app size and panel statuses.
  */
-if (typeof hslMin != 'undefined') {
-    if (hslMin == true) hslMin = '.min';
-    else hslMin = '';
-} 
-else hslMin = '';
-if(console) console.log(hslMin);
+
+if (typeof window.hslMin != 'undefined') {
+    if (window.hslMin == true) window.hslMin = '.min';
+    else window.hslMin = '';
+}
+else window.hslMin = '';
+if (console) console.log(window.hslMin);
 //Node modules path depends if hslayers is used as standalone app (second case) or as a library (first case)
-var nm_path = hsl_path.indexOf('node_modules')>-1 ? 'node_modules/' : hsl_path +'node_modules/';
+var nm_path = hsl_path.indexOf('node_modules') > -1 ? 'node_modules/' : hsl_path + 'node_modules/';
 /*In expressJs and other frameworks node_modules 
 might be accessible as statis files eg. http://localhost/jquery/dist.js. 
 In that case we have hsl_path 'hslayers-ng/' eg. http://localhost/hslayers/
 */
-if(hsl_path == 'hslayers-ng/') nm_path = './'; 
-require.config({
+if (hsl_path == 'hslayers-ng/') nm_path = './';
+if (require.config) require.config({
     paths: {
-        'ngAnimate': nm_path +'angular-animate/angular-animate' + hslMin,
-        'ngAria': nm_path +'angular-aria/angular-aria' + hslMin,
-        'ngMessages': nm_path +'angular-messages/angular-messages' + hslMin,
-        'ngMaterial': nm_path +'angular-material/angular-material' + hslMin,
+        'ngAnimate': nm_path + 'angular-animate/angular-animate' + hslMin,
+        'ngAria': nm_path + 'angular-aria/angular-aria' + hslMin,
+        'ngMessages': nm_path + 'angular-messages/angular-messages' + hslMin,
+        'angular-material': nm_path + 'angular-material/angular-material' + hslMin,
         ol: requirejs.s.contexts._.config.paths.ol || ((hslMin == '.min') ? nm_path + 'openlayers/dist/ol' : nm_path + 'openlayers/dist/ol-debug'),
-        angular: nm_path +'angular/angular' + hslMin,
-        'angular-sanitize': nm_path +'angular-sanitize/angular-sanitize' + hslMin,
+        angular: nm_path + 'angular/angular' + hslMin,
+        'angular-sanitize': nm_path + 'angular-sanitize/angular-sanitize' + hslMin,
         // 'ngAnimate': hsl_path + 'node_modules/angular-animate/angular-animate' + hslMin,
         // 'ngAria': hsl_path + 'node_modules/angular-aria/angular-aria' + hslMin,
         // 'ngMessages': hsl_path + 'node_modules/angular-messages/angular-messages' + hslMin,
         // 'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
         // 'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
-        'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
-        'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
-        hammer: nm_path +'hammerjs/hammer' + hslMin,
-        bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
+        'angular-gettext': nm_path + 'angular-gettext/dist/angular-gettext' + hslMin,
+        'angular-socialshare': nm_path + 'angular-socialshare/dist/angular-socialshare' + hslMin,
+        hammer: nm_path + 'hammerjs/hammer' + hslMin,
+        bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path + 'bootstrap/dist/js/bootstrap' + hslMin,
         draw: hsl_path + 'components/draw/draw',
-        d3: requirejs.s.contexts._.config.paths.d3 || nm_path +'d3/build/d3' + hslMin,
-        ngcookies: nm_path +'angular-cookies/angular-cookies' + hslMin,
-        proj4: requirejs.s.contexts._.config.paths.proj4 || nm_path +'proj4/dist/proj4',
+        d3: requirejs.s.contexts._.config.paths.d3 || nm_path + 'd3/build/d3' + hslMin,
+        'angular-cookies': nm_path + 'angular-cookies/angular-cookies' + hslMin,
+        proj4: requirejs.s.contexts._.config.paths.proj4 || nm_path + 'proj4/dist/proj4',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api' + hslMin,
         compositions: hsl_path + 'components/compositions/compositions' + hslMin,
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector' + hslMin,
@@ -58,32 +56,32 @@ require.config({
         mobile_toolbar: requirejs.s.contexts._.config.paths.mobile_toolbar || hsl_path + 'components/mobile_toolbar/mobile_toolbar',
         mobile_settings: requirejs.s.contexts._.config.paths.mobile_settings || hsl_path + 'components/mobile_settings/mobile_settings',
         ows: hsl_path + 'components/ows/ows' + hslMin,
-        'ows.nonwms': hsl_path + 'components/ows/ows_nonwms' + hslMin,
-        'ows.wfs': hsl_path + 'components/ows/ows_wfs' + hslMin,
-        'ows.wms': hsl_path + 'components/ows/ows_wms' + hslMin,
-        'ows.wmts': hsl_path + 'components/ows/ows_wmts' + hslMin,
-        'ows.wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized' + hslMin,
+        'ows_nonwms': hsl_path + 'components/ows/ows_nonwms' + hslMin,
+        'ows_wfs': hsl_path + 'components/ows/ows_wfs' + hslMin,
+        'ows_wms': hsl_path + 'components/ows/ows_wms' + hslMin,
+        'ows_wmts': hsl_path + 'components/ows/ows_wmts' + hslMin,
+        'ows_wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized' + hslMin,
         panoramio: hsl_path + 'components/layers/panoramio/panoramio' + hslMin,
         permalink: requirejs.s.contexts._.config.paths.permalink || hsl_path + 'components/permalink/permalink' + hslMin,
         print: hsl_path + 'components/print/print' + hslMin,
         query: hsl_path + 'components/query/query' + hslMin,
         sidebar: requirejs.s.contexts._.config.paths.sidebar || hsl_path + 'components/sidebar/sidebar' + hslMin,
         search: hsl_path + 'components/search/search' + hslMin,
-        SparqlJson: requirejs.s.contexts._.config.paths.SparqlJson || hsl_path + 'components/layers/hs.source.SparqlJson' + hslMin,
+        'hs.source.SparqlJson': requirejs.s.contexts._.config.paths.SparqlJson || hsl_path + 'components/layers/hs.source.SparqlJson' + hslMin,
         status_creator: hsl_path + 'components/status_creator/status_creator' + hslMin,
         styles: hsl_path + 'components/styles/styles' + hslMin,
         toolbar: requirejs.s.contexts._.config.paths.toolbar || hsl_path + 'components/toolbar/toolbar' + hslMin,
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
         utils: hsl_path + 'components/utils' + hslMin,
-        WFSCapabilities: requirejs.s.contexts._.config.paths.WFSCapabilities || hsl_path + 'components/format/hs.format.WFSCapabilities' + hslMin,
-        olPopup: requirejs.s.contexts._.config.paths.olPopup || hsl_path + 'components/format/ol.popup' + hslMin,
-        WfsSource: requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs' + hslMin,
+        'hs.format.WFSCapabilities': requirejs.s.contexts._.config.paths.WFSCapabilities || hsl_path + 'components/format/hs.format.WFSCapabilities' + hslMin,
+        'ol.popup': requirejs.s.contexts._.config.paths.olPopup || hsl_path + 'components/format/ol.popup' + hslMin,
+        'hs.source.Wfs': requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs' + hslMin,
         routing: hsl_path + 'components/routing/routing' + hslMin,
         tracking: hsl_path + 'components/tracking/tracking' + hslMin,
-        'dragdroplists': nm_path +'angular-drag-and-drop-lists/angular-drag-and-drop-lists' + hslMin,
-        'ngfocusif': nm_path +'ng-focus-if/focusIf' + hslMin,
-        'updateMeta': nm_path +'angular-update-meta/dist/update-meta' + hslMin,
-        socketio: nm_path +'socket.io-client/socket.io' + hslMin,
+        'angular-drag-and-drop-lists': nm_path + 'angular-drag-and-drop-lists/angular-drag-and-drop-lists' + hslMin,
+        'ngfocusif': nm_path + 'ng-focus-if/focusIf' + hslMin,
+        'updateMeta': nm_path + 'angular-update-meta/dist/update-meta' + hslMin,
+        socketio: nm_path + 'socket.io-client/socket.io' + hslMin,
         rtserver: requirejs.s.contexts._.config.paths.rtserver || hsl_path + 'components/rtserver/rtserver' + hslMin,
         config_parsers: hsl_path + 'components/compositions/config_parsers' + hslMin,
         layout: requirejs.s.contexts._.config.paths.layout || hsl_path + 'components/layout/layout' + hslMin
@@ -101,13 +99,13 @@ require.config({
         'ngAria': {
             deps: ['angular']
         },
-        'ngMaterial': {
+        'angular-material': {
             deps: ['ngAnimate', 'ngAria', 'hammer']
         },
         'bottomSheetCollapsible': {
-            deps: ['ngMaterial']
+            deps: ['angular-material']
         },
-        'angularjs-socialshare': {
+        'angular-socialshare': {
             deps: ['angular']
         },
         'ngfocusif': {
@@ -116,7 +114,7 @@ require.config({
         'angular-sanitize': {
             deps: ['angular'],
         },
-        'dragdroplists': {
+        'angular-drag-and-drop-lists': {
             deps: ['angular'],
         },
         'updateMeta': {
@@ -125,7 +123,7 @@ require.config({
         'angular-gettext': {
             deps: ['angular'],
         },
-        ngcookies: {
+        'angular-cookies': {
             deps: ['angular'],
         },
         translations: {
@@ -137,9 +135,9 @@ require.config({
     ]
 });
 
-define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
-    function(angular, proj4) {
-        angular.module('hs.core', ['hs.map', 'ngMaterial', 'gettext', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
+define(['angular', 'angular-material', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
+    function (angular) {
+        var module = angular.module('hs.core', ['hs.map', 'ngMaterial', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
             /**
              * @module hs.core
              * @name Core
@@ -147,7 +145,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
              * @description Core service of HSL and Core module, keeps important app-level settings.
              */
             .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout',
-                function($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache, $timeout) {
+                function ($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache, $timeout) {
                     var me = {
                         /**
                         * @ngdoc property
@@ -221,7 +219,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @description DEPRECATED?
                         */
                         sidebarButtons: true,
-                        classicSidebar:true,
+                        classicSidebar: true,
                         /**
                         * @ngdoc property
                         * @name Core#singleDatasources
@@ -308,7 +306,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @param {Boolean} queryable If map should be queryable with new mainpanel. When parameter ommited, map enable queries.
                         * @description Sets new main panel (Panel displayed in expanded sidebar). Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
                         */
-                        setMainPanel: function(which, by_gui, queryable) {
+                        setMainPanel: function (which, by_gui, queryable) {
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
                                 if (me.sidebarExpanded == true) {
@@ -339,7 +337,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @param {String} which New panel to be default (specify panel name)
                         * @description Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
                         */
-                        setDefaultPanel: function(which) {
+                        setDefaultPanel: function (which) {
                             me.defaultPanel = which;
                             me.setMainPanel(which);
                         },
@@ -352,7 +350,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @returns {Boolean} Panel opened/closed status
                         * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
                         */
-                        panelVisible: function(which, scope) {
+                        panelVisible: function (which, scope) {
                             if (angular.isDefined(scope))
                                 if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
                             if (angular.isDefined(me.panel_statuses[which])) {
@@ -369,7 +367,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @returns {Boolean} Panel enabled/disabled status for getter function
                         * @description Get or set panel visibility in sidebar. When panel is disabled it means that it's not displayed in sidebar (it can be opened programmaticaly) but it's functionality is running. Use with status parameter as setter.
                         */
-                        panelEnabled: function(which, status) {
+                        panelEnabled: function (which, status) {
                             if (typeof status == 'undefined') {
                                 if (angular.isDefined(me.panel_enabled[which]))
                                     return me.panel_enabled[which];
@@ -384,7 +382,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @public
                         * @description Close opened panel programmaticaly. If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels. Cannot resolve unpinned panels.
                         */
-                        hidePanels: function() {
+                        hidePanels: function () {
                             me.mainpanel = '';
                             me.sidebarLabels = true;
                             if (!me.exists('hs.sidebar.controller')) {
@@ -400,7 +398,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @param {Object} which Panel to close (panel scope)
                         * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
                         */
-                        closePanel: function(which) {
+                        closePanel: function (which) {
                             if (which.unpinned) {
                                 which.drag_panel.appendTo($(which.original_container));
                                 which.drag_panel.css({
@@ -423,7 +421,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
 
                             }
 
-                            $rootScope.$broadcast('core.mainpanel_changed',which);
+                            $rootScope.$broadcast('core.mainpanel_changed', which);
                         },
                         /**
                         * @ngdoc method
@@ -433,7 +431,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @returns {Boolean} Controller existence
                         * @description Test if selected panel controller is defined in application.
                         */
-                        exists: function(controllerName) {
+                        exists: function (controllerName) {
                             if (angular.isDefined(me._exist_cache[controllerName])) return true;
                             if (typeof window[controllerName] == 'function') {
                                 return true;
@@ -456,13 +454,13 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @params {Object} options Optional options object when HS app has not CSS sizes declared. Parent property is Boolean type when size should be taken from HS element parent. Element property is string for any Jquery selector (usage of element id is recommended e.g. "#container")
                         * @description Initialization function for HS layers elements and their sizes. Stores element and container references and sets event listeners for map resizing.
                         */
-                        init: function(element, options) {
+                        init: function (element, options) {
                             if (angular.isUndefined(options)) options = {};
                             if (angular.isDefined(options.windowedMap)) me.sizeOptions.windowedMap = options.windowedMap;
                             me.sizeOptions.element = element;
-                            if (angular.isDefined(options.innerElement) && $(options.innerElement).length>0) 
+                            if (angular.isDefined(options.innerElement) && $(options.innerElement).length > 0)
                                 me.sizeOptions.innerElement = $(options.innerElement);
-                            
+
                             if (angular.isDefined(options.parent)) {
                                 me.sizeOptions.selector = element.parent();
                                 me.initSizeListeners();
@@ -485,7 +483,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @params {String|Boolean} container New container for size referencing (options - string Jquery selector - see Init function, Boolean 'true' value for parent of HS element)
                         * @description Change container for HS element.
                         */
-                        setSizeByContainer: function(container) {
+                        setSizeByContainer: function (container) {
                             if (container == true) me.sizeOptions.selector = me.sizeOptions.element.parent();
                             else me.sizeOptions.selector = $(options.element);
                             me.updateElementSize();
@@ -498,7 +496,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @params {Number} width New width of HS element
                         * @description Change HS element size programmatically (currently accept only integer value of pixels).
                         */
-                        setSizeByCSS: function(height, width) {
+                        setSizeByCSS: function (height, width) {
                             if (angular.isDefined(me.sizeOptions.selector)) me.sizeOptions.selector = undefined;
                             var element = me.sizeOptions.element;
                             element.height(height);
@@ -511,18 +509,18 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @public
                         * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application. 
                         */
-                        initSizeListeners: function() {
+                        initSizeListeners: function () {
                             var w = angular.element($window);
-                            w.resize(function(){
+                            w.resize(function () {
                                 //$timeout(function(){
                                 //    me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                                 //},100);//Hack, height of container was changed badly for no aparent reason
                                 me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                             });
-                            $rootScope.$on("Core_sizeChanged",function(){
+                            $rootScope.$on("Core_sizeChanged", function () {
                                 me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                             });
-                            $(function() { //onload checker for cases when bootstrap css change box-sizing property
+                            $(function () { //onload checker for cases when bootstrap css change box-sizing property
                                 me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                             });
                         },
@@ -532,7 +530,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @public
                         * @description Update HS element size by its container sizes.
                         */
-                        updateElementSize: function() {
+                        updateElementSize: function () {
                             var element = me.sizeOptions.element;
                             var container = me.sizeOptions.selector;
                             element.height(container.height());
@@ -545,7 +543,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @public
                         * @description Update map size.
                         */
-                        updateMapSize: function() {
+                        updateMapSize: function () {
                             var container = angular.isDefined(me.sizeOptions.innerElement) ? me.sizeOptions.innerElement : me.sizeOptions.element;
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
@@ -556,11 +554,11 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                             }
                             else if (container.width() > sidebarElem.outerWidth() || sidebarElem.length === 0) {
                                 map.width(container.width() - sidebarElem.outerWidth());
-                            } 
+                            }
                             else {
                                 map.width(0);
                             }
-                            if(angular.isDefined(OlMap.map)) OlMap.map.updateSize();
+                            if (angular.isDefined(OlMap.map)) OlMap.map.updateSize();
                             map.width() < 368 ? me.smallWidth = true : me.smallWidth = false;
                             if (!$rootScope.$$phase) $rootScope.$digest();
                         },
@@ -571,7 +569,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @params {Object} element HS layers element gained from directive link
                         * @description Helper function for single page HS map applications. Not reccomended, used only for compability reasons and might be removed.
                         */
-                        fullScreenMap: function(element) {
+                        fullScreenMap: function (element) {
                             $("html").css('overflow', 'hidden');
                             $("html").css('height', '100%');
                             $('body').css('height', '100%');
@@ -587,7 +585,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @param {String} lang Language to select
                         * @description Set current active language for translating. (Currently cs and nl options supported).
                         */
-                        setLanguage: function(lang) {
+                        setLanguage: function (lang) {
                             switch (lang) {
                                 case "cs_CZ":
                                     lang = 'cs';
@@ -605,7 +603,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @public
                         * @description Open status creator panel
                         */
-                        openStatusCreator: function() {
+                        openStatusCreator: function () {
                             $rootScope.$broadcast('StatusCreator.open');
                         },
                         /**
@@ -616,7 +614,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @returns {Boolean} Current status of Search panel
                         * @description DEPRECATED?
                         */
-                        searchVisible: function(is) {
+                        searchVisible: function (is) {
                             if (arguments.length > 0) {
                                 me.panel_statuses['search'] = is;
                             }
@@ -629,11 +627,11 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @returns {Boolean} Check result - true for authorized user
                         * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
                         */
-                        isAuthorized: function() {
-                            if(!angular.isDefined(window.getLRUser) && angular.isUndefined(me.missingLRFunctionsWarned)){
-                                if(console) console.warn('window.getLRUser function needs to be defined, which usually comes from liferay.');
+                        isAuthorized: function () {
+                            if (!angular.isDefined(window.getLRUser) && angular.isUndefined(me.missingLRFunctionsWarned)) {
+                                if (console) console.warn('window.getLRUser function needs to be defined, which usually comes from liferay.');
                                 me.missingLRFunctionsWarned = true;
-                            } 
+                            }
                             if (angular.isDefined(window.getLRUser) && window.getLRUser() != 'guest') {
                                 return true;
                             }
@@ -645,7 +643,7 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @public
                         * @description Do complete reset of map (view, layers) according to app config
                         */
-                        resetMap: function() {
+                        resetMap: function () {
                             OlMap.reset();
                             /**
                             * @ngdoc event
@@ -662,17 +660,17 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         * @returns {String} Returns "mobile" or ""
                         * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
                         */
-                        isMobile: function() {
+                        isMobile: function () {
                             if (!!window.cordova) {
                                 return "mobile";
                             } else {
                                 return "";
                             }
                         },
-                     
-                        getNmPath: function(){
+
+                        getNmPath: function () {
                             return nm_path;
-                        }                       
+                        }
                     };
 
                     $templateCache.removeAll();
@@ -685,19 +683,20 @@ define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map',
                         me.setMainPanel(me.defaultPanel);
                     }
 
-                    /* HACK: https://github.com/openlayers/ol3/issues/3990 */
+                    /* HACK: https://github.com/openlayers/ol3/issues/3990 
                     try {
                         if (typeof require('proj4') != undefined) {
-                            require(['proj4'], function() {
+                            require(['proj4'], function () {
                                 window.proj4 = proj4
                             });
                         }
                     } catch (ex) {
-                        require(['proj4'], function() {
+                        require(['proj4'], function () {
                             window.proj4 = proj4
                         });
                     }
- 
+                    */
+
                     return me;
                 },
 

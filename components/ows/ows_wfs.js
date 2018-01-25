@@ -2,7 +2,7 @@
  * @namespace hs.ows.wfs
  * @memberOf hs.ows
  */
-define(['angular', 'ol', 'WfsSource', 'WFSCapabilities', 'utils'],
+define(['angular', 'ol', 'hs.source.Wfs', 'hs.format.WFSCapabilities', 'utils'],
     function(angular, ol, WfsSource, WFSCapabilities) {
 
         /**
