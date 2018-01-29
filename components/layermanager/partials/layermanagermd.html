@@ -1,6 +1,3 @@
-<md-toolbar class="md-hue-3" hide-gt-sm>
-    <h1 class="md-toolbar-tools" translate>Layer manager</h1>
-</md-toolbar>
 <md-list layout-fill>
     <md-list-item class="md-line-2" ng-repeat="layer in data.layers | orderBy:layerOrder:true" ng-click="changeLayerVisibility(!layer.visible,layer)"
         layout-fill>

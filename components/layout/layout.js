@@ -2,10 +2,10 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
+define(['angular', 'ngMaterial', 'bottomSheetCollapsible', 'core', 'map', 'geolocation', 'layermanager'],
 
     function (angular) {
-        angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layermanager'])
+        angular.module('hs.layout', ['hs.core', 'ngMaterial', 'material.components.bottomSheetCollapsible', 'hs.map', 'hs.geolocation', 'hs.layermanager'])
             /**
             * @memberof hs.mdLayout
             * @ngdoc directive
@@ -94,20 +94,27 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                 return {
                     restrict: 'A',
                     link: function (scope, element, attrs) {
-                        var raw = element[0];
+                        let raw = element[0];
+                        function resolveScrollPosition() {
+                            if (raw.classList.value.indexOf("expanded") + 1 && raw.scrollHeight > raw.clientHeight) {
+                                raw.style["touch-action"] = "pan-y";
+                                if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
+                                    raw.style["touch-action"] = "pan-up";
+                                }
+                                if (raw.scrollTop == 0) {
+                                    raw.style["touch-action"] = "pan-down";
+                                }
+                            } else {
+                                raw.style["touch-action"] = "none";
+                            }
+                        }
                         scope.$watch(() => raw.scrollHeight,
                             () => {
-                                if (raw.scrollHeight > raw.clientHeight) {
-                                    raw.style["touch-action"] = "pan-y";
-                                    if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
-                                        raw.style["touch-action"] = "pan-up";
-                                    }
-                                    if (raw.scrollTop == 0) {
-                                        raw.style["touch-action"] = "pan-down";
-                                    }
-                                } else {
-                                    raw.style["touch-action"] = "none";
-                                }
+                                resolveScrollPosition();
+                            });
+                        scope.$watch(() => raw.classList.value,
+                            () => {
+                                resolveScrollPosition();
                             });
                         element.bind('scroll', function () {
                             raw.style["touch-action"] = "pan-y";
@@ -128,8 +135,8 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
             * @name hs.layout.controller
             * @description TODO
             */
-            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheet', '$mdPanel', '$mdDialog', '$mdMedia', 'hs.layout.service',
-                function ($scope, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheet, $mdPanel, $mdDialog, $mdMedia, layoutService) {
+            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheetCollapsible', '$mdPanel', '$mdDialog', '$mdMedia', 'hs.layout.service',
+                function ($scope, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheetCollapsible, $mdPanel, $mdDialog, $mdMedia, layoutService) {
                     $scope.Core = Core;
                     $scope.geolocation = Geolocation;
                     $scope.LM = LayerManager;
@@ -252,8 +259,8 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                         angular.element("#loading-logo").remove();
                     });
 
-                    $timeout(function () {
-                        $("#loading-logo").remove();
+                    $timeout(function() {
+                        angular.element("#loading-logo").remove();
                     }, 100);
 
                     $scope.swipeOverlayStatus = false;
@@ -279,31 +286,86 @@ define(['angular', 'core', 'map', 'geolocation', 'layermanager'],
                     });
 
                     $scope.openPanel = function (panel) {
-                        Core.setMainPanel(panel);
+                        Core.setMainPanel(panel.name);
                         if (!$mdMedia('gt-sm')) {
                             $scope.openBottomSheet(panel);
                         }
                     }
 
+                    $scope.switchBottomSheetState = function () {
+                        if ($scope.bottomSheet.hasClass("minimized")) {
+                            $scope.setHalfway();
+                        } else {
+                            $scope.setMinimized();
+                        }
+                    }
+
+                    // $scope.bottomSheetState = "halfway";
+                    // $scope.bottomSheetSwitchStateIcon = "expand_more";
+
+                    function resolveScrollPosition(raw) {
+                        if ($scope.getBottomSheetState === "expanded" && raw.scrollHeight > raw.clientHeight) {
+                            raw.style["touch-action"] = "pan-y";
+                            if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
+                                raw.style["touch-action"] = "pan-up";
+                            }
+                            if (raw.scrollTop == 0) {
+                                raw.style["touch-action"] = "pan-down";
+                            }
+                        } else {
+                            raw.style["touch-action"] = "none";
+                        }
+                    }
+
                     $scope.openBottomSheet = function (panel) {
                         $scope.closeLeftSidenav();
-                        $mdBottomSheet.show({
+                        $scope.bottomSheetTitle = panel.title;
+                        $mdBottomSheetCollapsible.show({
                             templateUrl: hsl_path + 'components/layout/partials/bottom-sheet.html?bust=' + gitsha,
                             scope: $scope,
                             parent: "#layout",
                             preserveScope: true,
                             disableBackdrop: true,
                             // disableParentScroll: false,
-                            clickOutsideToClose: true
-                        }).then(function () {
+                            clickOutsideToClose: true,
+                            onLoad: function (e) {
+                                $scope.setMinimized = e.setMinimized;
+                                $scope.setHalfway = e.setHalfway;
+                                $scope.setExpanded = e.setExpanded;
+                                $scope.getBottomSheetState = e.getState;
+                                $scope.bottomSheet = e.element;
+                                // () => {
+                                //     var raw = $scope.bottomSheet;
+                                //     $scope.$watch(() => raw.scrollHeight,
+                                //         resolveScrollPosition(raw));
+                                //     $scope.$watch(() => $scope.getBottomSheetState(), resolveScrollPosition(raw));
+                                //     element.bind('scroll', function () {
+                                //         raw.style["touch-action"] = "pan-y";
+                                //         if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
+                                //             raw.style["touch-action"] = "pan-up";
+                                //         }
+                                //         if (raw.scrollTop == 0) {
+                                //             raw.style["touch-action"] = "pan-down";
+                                //         }
+                                //     })
+                                // }
+                            }
+                        }).then(function (e) {
+                            console.log(e);
                             console.log("Bottom sheet closed", Date.now());
-                        }).catch(function () {
+                        }).catch(function (e) {
+                            console.log(e);
                             console.log("Bottom sheet canceled", Date.now());
                         });
+                        // $scope.$watch(function() {
+                        //     return $scope.getBottomSheetState();
+                        // }, function() {
+                        //     $scope.bottomSheetSwitchStateIcon = $scope.getBottomSheetState === "minimized" ? "expand_less" : "expand_more";
+                        // });
                     }
 
                     $scope.closeBottomSheet = function () {
-                        $mdBottomSheet.hide();
+                        $mdBottomSheetCollapsible.hide();
                     }
 
                     $scope.openLeftSidenav = function () {

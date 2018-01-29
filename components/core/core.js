@@ -37,6 +37,7 @@ require.config({
         // 'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
         'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
         'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
+        'bottomSheetCollapsible': nm_path + 'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible',
         hammer: nm_path +'hammerjs/hammer' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
         draw: hsl_path + 'components/draw/draw',
@@ -137,9 +138,9 @@ require.config({
     ]
 });
 
-define(['angular', 'ngMaterial', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
+define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
     function(angular, proj4) {
-        angular.module('hs.core', ['hs.map', 'ngMaterial', 'gettext', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
+        angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
             /**
              * @module hs.core
              * @name Core
