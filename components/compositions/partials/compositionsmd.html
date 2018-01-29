@@ -1,12 +1,7 @@
 <div layout="column" style="max-height:100%;" class="composition">
-    <md-toolbar class="md-hue-3" flex="none" hide-gt-sm>
-        <h1 class="md-toolbar-tools"><translate>Compositions</translate>
-            <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
-        </h1>
-    </md-toolbar>
     <md-progress-linear md-mode="indeterminate" ng-disabled="CS.compositionsLoaded"></md-progress-linear>
-    <!-- <md-progress-linear md-mode="indeterminate" ng-disabled="selectedDS.loaded && data.suggestionsLoaded" ng-if="!selectedDS.loaded || !data.suggestionsLoaded"></md-progress-linear> -->
-    <div class="md-padding">
+    <div class="md-padding content">
+        <!-- <md-progress-linear md-mode="indeterminate" ng-disabled="selectedDS.loaded && data.suggestionsLoaded" ng-if="!selectedDS.loaded || !data.suggestionsLoaded"></md-progress-linear> -->
         <div layout="row">
             <md-input-container flex="60">
                 <label translate>Filter</label>

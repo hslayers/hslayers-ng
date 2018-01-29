@@ -1150,7 +1150,7 @@ md-sidenav md-content {
     touch-action: pan-y;
 }
 
-md-icon.fab {
+md-icon.fab, md-bottom-sheet-collapsible .bottom-sheet-switcher md-icon {
     transition: 0.3s;
 }
 
@@ -1204,6 +1204,21 @@ md-icon.geolocation.on {
     color: rgb(2, 168, 243);
 }
 
+md-bottom-sheet-collapsible {
+    touch-action: none;
+    overflow-y: scroll;
+}
+
+md-bottom-sheet-collapsible .bottom-sheet-switcher {
+    position: absolute;
+    bottom: -8px;
+    left: calc(50% - 26px);
+}
+
+md-bottom-sheet-collapsible.minimized .bottom-sheet-switcher md-icon {
+    transform: rotate(180deg);
+}
+
 md-bottom-sheet {
     box-shadow: 0 -5px 10px 1px rgba(0, 0, 0, 0.3);
     max-height: 80%;
@@ -1215,11 +1230,13 @@ md-bottom-sheet {
 }
 
 md-bottom-sheet md-toolbar {
-    /*position: absolute;*/
+    /*position: fixed;*/
     /*overflow: none;*/
 }
 
 md-bottom-sheet .content {
+    /*height: calc(100% - 56px);*/
+    /*overflow-y: scroll;*/
     /*max-height: 400px;*/
 }
 

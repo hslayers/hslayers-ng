@@ -33,10 +33,11 @@ if (require.config) require.config({
         // 'ngMessages': hsl_path + 'node_modules/angular-messages/angular-messages' + hslMin,
         // 'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
         // 'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
-        'angular-gettext': nm_path + 'angular-gettext/dist/angular-gettext' + hslMin,
-        'angular-socialshare': nm_path + 'angular-socialshare/dist/angular-socialshare' + hslMin,
-        hammer: nm_path + 'hammerjs/hammer' + hslMin,
-        bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path + 'bootstrap/dist/js/bootstrap' + hslMin,
+        'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
+        'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
+        'bottomSheetCollapsible': nm_path + 'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible',
+        hammer: nm_path +'hammerjs/hammer' + hslMin,
+        bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
         draw: hsl_path + 'components/draw/draw',
         d3: requirejs.s.contexts._.config.paths.d3 || nm_path + 'd3/build/d3' + hslMin,
         'angular-cookies': nm_path + 'angular-cookies/angular-cookies' + hslMin,
@@ -135,9 +136,9 @@ if (require.config) require.config({
     ]
 });
 
-define(['angular', 'angular-material', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
-    function (angular) {
-        var module = angular.module('hs.core', ['hs.map', 'ngMaterial', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
+define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
+    function(angular, proj4) {
+        angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
             /**
              * @module hs.core
              * @name Core

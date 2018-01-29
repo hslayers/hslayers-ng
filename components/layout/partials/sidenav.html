@@ -11,7 +11,7 @@
             </md-list-item> -->
 
             <div ng-repeat="panel in layoutService.data.panels | filter: onlyEnabled | orderBy:'order'">
-                <md-list-item ng-if="Core.exists(panel.controller) && Core.panelEnabled(panel.name)" ng-click="panel.ngClick ? panel.ngClick() : openPanel(panel.name)">
+                <md-list-item ng-if="Core.exists(panel.controller) && Core.panelEnabled(panel.name)" ng-click="panel.ngClick ? panel.ngClick() : openPanel(panel)">
                     <md-icon md-icon-set="material-icons" title="{{panel.description}}">{{panel.mdicon}}</md-icon>
                     <p translate>{{panel.title}}</p>
                 </md-list-item>

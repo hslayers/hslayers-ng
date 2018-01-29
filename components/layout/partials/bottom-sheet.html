@@ -1,4 +1,17 @@
-<md-bottom-sheet hs.bottom-sheet-scroll ng-class="Core.mainpanel">
+<md-bottom-sheet-collapsible ng-class="Core.mainpanel">
+  <md-toolbar class="md-hue-3" flex="none" hide-gt-sm>
+    <div class="md-toolbar-tools">
+      <h3 flex md-truncate translate>{{ bottomSheetTitle }}</h3>
+      <md-button class="md-icon-button" aria-label="Close bottom sheet" ng-click="closeBottomSheet()">
+      	<md-icon class="material-icons">close</md-icon>
+      </md-button>
+  	</div>
+    <md-button class="md-icon-button bottom-sheet-switcher" aria-label="Switch bottom sheet state" ng-click="switchBottomSheetState()">
+    <!-- <md-button class="md-icon-button bottom-sheet-switcher" aria-label="Switch bottom sheet state" ng-click="bottomSheetState === 'minimized' ? setHalfway : setMinimized"> -->
+    	<md-icon class="material-icons">expand_more</md-icon>
+    	<!-- <md-icon class="material-icons">expand_more</md-icon> -->
+    </md-button>
+  </md-toolbar>
 	<div hs.layermanager.directive          ng-controller="hs.layermanager.controller" ng-if="Core.exists('hs.layermanager.controller')" ng-show="Core.panelVisible('layermanager', this)"></div>
 	<div hs.legend.directive                ng-controller="hs.legend.controller" ng-if="Core.exists('hs.legend.controller')" ng-show="Core.panelVisible('legend', this)"></div>
 	<div hs.ows.directive                   ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources" ng-show="Core.panelVisible('ows', this)"></div>
