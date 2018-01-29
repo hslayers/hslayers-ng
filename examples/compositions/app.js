@@ -52,8 +52,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "type": "default",
                     "editable": false,
                     "url": 'http://atlas.kraj-lbc.cz'
-                },
-/*                "compositions_catalogue": {
+                }, /*,
+                "compositions_catalogue": {
                     "title": "Compositions catalogue",
                     "type": "compositions_catalogue",
                     "editable": true,
@@ -64,16 +64,16 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     "type": "status_manager",
                     "editable": true,
                     "url": 'http://foodie-dev.wirelessinfo.cz'
-                },
+                }
             },
             social_hashtag: 'via @opentnet',
             //compositions_catalogue_url: '/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
             //compositions_catalogue_url: 'http://erra.ccss.cz/php/metadata/csw/index.php',
             //status_manager_url: '/wwwlibs/statusmanager2/index.php',
 
-            'catalogue_url': caturl || '/php/metadata/csw/',
-            'compositions_catalogue_url': caturl || '/php/metadata/csw/',
-            status_manager_url: '/wwwlibs/statusmanager/index.php',
+           'catalogue_url': caturl || '/php/metadata/csw/',
+           'compositions_catalogue_url': caturl || '/php/metadata/csw/',
+           status_manager_url: '/wwwlibs/statusmanager/index.php',
 
             createExtraMenu: function($compile, $scope, element) {
                 $scope.uploadClicked = function() {

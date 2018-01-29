@@ -139,7 +139,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      */
                     this.cleanResults = function(){
                         angular.forEach(me.data.providers, function(provider){
-                            provider.results.length = 0;
+                            if (angular.isDefined(provider.results)) provider.results.length = 0;
                         });
                         me.searchResultsLayer.getSource().clear();
                         me.hideResultsLayer();
