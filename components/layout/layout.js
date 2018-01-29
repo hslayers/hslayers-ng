@@ -351,10 +351,8 @@ define(['angular', 'ngMaterial', 'bottomSheetCollapsible', 'core', 'map', 'geolo
                                 // }
                             }
                         }).then(function (e) {
-                            console.log(e);
                             console.log("Bottom sheet closed", Date.now());
                         }).catch(function (e) {
-                            console.log(e);
                             console.log("Bottom sheet canceled", Date.now());
                         });
                         // $scope.$watch(function() {
@@ -365,7 +363,7 @@ define(['angular', 'ngMaterial', 'bottomSheetCollapsible', 'core', 'map', 'geolo
                     }
 
                     $scope.closeBottomSheet = function () {
-                        $mdBottomSheetCollapsible.hide();
+                        $scope.bottomSheet.hide();
                     }
 
                     $scope.openLeftSidenav = function () {
