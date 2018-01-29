@@ -81,7 +81,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                                 hsMap.map.getView().fit(me.parseExtent(response.extent || response.data.extent), hsMap.map.getSize());
                                                 var layers = me.jsonToLayers(response);
                                                 for (var i = 0; i < layers.length; i++) {
-                                                    if(hsMap.layerDuplicate(layers[i]))
+                                                    if(!hsMap.layerDuplicate(layers[i]))
                                                         hsMap.map.addLayer(layers[i]);
                                                 }
 
