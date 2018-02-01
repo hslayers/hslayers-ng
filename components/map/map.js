@@ -195,10 +195,10 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                 var s_existing = existing.getSource();
                 var s_new = lyr.getSource();
                 return existing.get("title") == lyr.get("title") &&
-                    typeof s_existing == typeof s_new &&
-                    (s_existing.getParams && s_existing.getParams().LAYERS == s_new.getParams().LAYERS) &&
-                    (s_existing.getUrl && s_existing.getUrl() == s_new.getUrl()) &&
-                    (s_existing.getUrls && s_existing.getUrls()  == s_new.getUrls())
+                    typeof s_existing == typeof s_new && 
+                    (angular.isUndefined(s_existing.getParams) || s_existing.getParams().LAYERS == s_new.getParams().LAYERS) &&
+                    (angular.isUndefined(s_existing.getUrl) || s_existing.getUrl() == s_new.getUrl()) &&
+                    (angular.isUndefined(s_existing.getUrls) || s_existing.getUrls()  == s_new.getUrls())
             }
 
             this.layerDuplicate = function(lyr){
