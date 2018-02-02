@@ -173,7 +173,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                                     response.layers = response.data;
                                     var layers = compositions.jsonToLayers(data);
                                     for (var i = 0; i < layers.length; i++) {
-                                        OlMap.map.addLayer(layers[i]);
+                                        OlMap.addLayer(layers[i]);
                                     }
                                 } else {
                                     if (console) console.log('Error loading permalink layers');
