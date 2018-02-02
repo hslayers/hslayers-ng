@@ -30,31 +30,138 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
 
         module.value('config', {
             design: 'md',
-            default_layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM({
-                        wrapX: false
-                    }),
-                    title: "Base layer",
-                    base: true
+            box_layers: [
+                new ol.layer.Group({
+                    title: 'Podkladové mapy',
+                    layers: [	    		
+                        new ol.layer.Tile({
+                            source: new ol.source.OSM({
+                                wrapX: false
+                            }),
+                            title: "Base layer",
+                            base: true
+                        }),			
+						new ol.layer.Image({
+                            title: "Topografická podkladová mapa (šedoškálá)",
+                            base: true,
+							visible: true,
+                            BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
+                            source: new ol.source.ImageWMS({
+                                url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/zabaged_2017_podklad_wms.map',
+                                params: {
+                                    LAYERS: 'zabaged',
+                  									INFO_FORMAT: undefined,
+                  									FORMAT: "image/png", 
+                  									ABSTRACT: "Topografická podkladová mapa Libereckého kraje (šedoškálá)"
+                                },
+                                crossOrigin: null
+                            }),
+						}),
+						new ol.layer.Image({
+                            title: "Topografická podkladová mapa (barevná)",
+                            base: true,
+							visible: false,
+                            BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
+                            source: new ol.source.ImageWMS({
+                                url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/zabaged_2017_podklad_wms.map',
+                                params: {
+                                    LAYERS: 'zabaged',
+                  									INFO_FORMAT: undefined,
+                  									FORMAT: "image/png", 
+                  									ABSTRACT: "Topografická podkladová mapa Libereckého kraje (barevná)"
+                                },
+                                crossOrigin: null
+                            }),
+                        }),
+						new ol.layer.Tile({
+                            title: "Ortofoto",
+                            base: true,
+							visible: false,
+                            BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
+                            source: new ol.source.TileWMS({
+                                url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/orto.map',
+                                params: {
+                                    LAYERS: 'ortofoto',
+                  									INFO_FORMAT: undefined,
+                  									FORMAT: "image/png; mode=8bit", 
+                  									ABSTRACT: "Ortofoto Libereckého kraje"
+                                },
+                                crossOrigin: null
+                            }),
+                        }),
+						new ol.layer.Image({
+                            title: "Jednoduchá podkladová mapa",
+                            base: false,
+							visible: false,
+							removable: false,
+                            BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
+                            source: new ol.source.ImageWMS({
+                                url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/atlas/zabaged_2017_wms.map',
+                                params: {
+                                    LAYERS: 'podkladova_mapa',
+                  									INFO_FORMAT: undefined,
+                  									FORMAT: "image/png", 
+                  									ABSTRACT: "Jednoduchá podkladová mapa Libereckého kraje"
+                                },
+                                crossOrigin: null
+                            }),
+                        }),
+                       
+  
+						new ol.layer.Image({
+                            title: "Stínovaný model reliéfu",
+                            base: false,
+							visible: false,
+							removable: false,
+                            BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
+                            source: new ol.source.ImageWMS({
+                                url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/orto.map',
+                                params: {
+                                    LAYERS: 'stinovany_relief',
+                  									INFO_FORMAT: undefined,
+                  									FORMAT: "image/png", 
+                  									ABSTRACT: "Stínovaný model reliéfu Libereckého kraje"
+                                },
+                                crossOrigin: null
+                            }),
+                        }),	
+                        new ol.layer.Image({
+                            title: "Administrativní členění",
+                            base: false,
+							visible: true,
+							removable: false,
+                            BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
+                            source: new ol.source.ImageWMS({
+                                url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/atlas/administrativni_cleneni.map',
+                                params: {
+                                    LAYERS: 'administrativni_celky_hranice',
+                  									INFO_FORMAT: undefined,
+                  									FORMAT: "image/png", 
+                  									ABSTRACT: "Administrativní členění Libereckého kraje"
+                                },
+                                crossOrigin: null
+                            }),
+                        }),	
+                        new ol.layer.Image({
+                            title: "Sídla",
+                            base: false,
+							visible: true,
+							removable: false,
+                            BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
+                            source: new ol.source.ImageWMS({
+                                url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/atlas/administrativni_cleneni.map',
+                                params: {
+                                    LAYERS: 'definicni_body_administrativnich_celku',
+                  									INFO_FORMAT: undefined,
+                  									FORMAT: "image/png", 
+                  									ABSTRACT: "Administrativní členění Libereckého kraje"
+                                },
+                                crossOrigin: null
+                            }),
+                        }),
+						
+                    ],
                 }),
-                new ol.layer.Image({
-                    title: "Administrativní členění Libereckého kraje",
-                    base: false,
-                    visible: true,
-                    removable: false,
-                    BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
-                    source: new ol.source.ImageWMS({
-                        url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/atlas/administrativni_cleneni.map',
-                        params: {
-                            LAYERS: 'administrativni_celky_hranice',
-                                              INFO_FORMAT: undefined,
-                                              FORMAT: "image/png", 
-                                              ABSTRACT: "Administrativní členění Libereckého kraje"
-                        },
-                        crossOrigin: null
-                    }),
-                })
             ],
             //project_name: 'hslayers',
             project_name: 'Material',

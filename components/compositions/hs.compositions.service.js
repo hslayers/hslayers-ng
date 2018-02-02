@@ -241,8 +241,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                     var data = $cookies.get('hs_layers');
                                     var layers = compositionParser.jsonToLayers(JSON.parse(data));
                                     for (var i = 0; i < layers.length; i++) {
-                                        if(!OlMap.layerDuplicate(layers[i]))
-                                            OlMap.map.addLayer(layers[i]);
+                                        OlMap.addLayer(layers[i]);
                                     }
                                     $cookies.remove('hs_layers');
                                 }

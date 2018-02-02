@@ -206,6 +206,17 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                     layersEqual(existing, lyr)).length > 0;
             }
 
+            this.removeDuplicate = function(lyr){
+                me.map.getLayers().getArray().filter(existing => 
+                    layersEqual(existing, lyr)).forEach(function(to_remove){me.map.getLayers().remove(to_remove)});
+            }
+
+            this.addLayer = function(lyr){
+                if(me.layerDuplicate(lyr))
+                    me.removeDuplicate(lyr);
+                me.map.addLayer(lyr);
+            }
+
             /**
              * @ngdoc method
              * @name hs.map.service#repopulateLayers
