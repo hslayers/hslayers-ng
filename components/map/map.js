@@ -202,13 +202,13 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
             }
 
             this.layerDuplicate = function(lyr){
-                return me.map.getLayers().getArray().filter(existing => 
-                    layersEqual(existing, lyr)).length > 0;
+                return me.map.getLayers().getArray().filter(function(existing){ 
+                    layersEqual(existing, lyr)}).length > 0;
             }
 
             this.removeDuplicate = function(lyr){
-                me.map.getLayers().getArray().filter(existing => 
-                    layersEqual(existing, lyr)).forEach(function(to_remove){me.map.getLayers().remove(to_remove)});
+                me.map.getLayers().getArray().filter(function(existing){ 
+                    layersEqual(existing, lyr)}).forEach(function(to_remove){me.map.getLayers().remove(to_remove)});
             }
 
             this.addLayer = function(lyr){
@@ -364,7 +364,7 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
              */
             this.proxifyLayerLoader = function (lyr, tiled) {
                 var src = lyr.getSource();
-                me.map.getLayers().forEach((l) => {
+                me.map.getLayers().forEach(function(l){
                     if (l.get("source") == src) {
                         return;
                     }
