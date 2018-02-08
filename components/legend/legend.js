@@ -23,9 +23,23 @@ define(['angular', 'ol', 'map', 'utils'],
          * @ngdoc controller
          * @name hs.legend.controller
          */
-        .controller('hs.legend.controller', ['$scope', 'hs.map.service', 'hs.utils.service',
-            function($scope, OlMap, utils) {
-                var map = OlMap.map;
+        .controller('hs.legend.controller', ['$scope', 'hs.map.service', 'hs.utils.service', '$rootScope',
+            function($scope, OlMap, utils, $rootScope) {
+                var map;
+
+                function init(){
+                    map = OlMap.map;
+                    map.getLayers().on("add", layerAdded);
+                    map.getLayers().on("remove", function(e) {
+                        $scope.removeLayerFromLegends(e.element);
+                    });
+                    map.getLayers().forEach(function(lyr) {
+                        layerAdded({
+                            element: lyr
+                        });
+                    })
+                }
+
                 /**
                  * (PRIVATE) Callback function for adding layer to map, add layers legend
                  * @memberof hs.legend.controller
@@ -157,15 +171,13 @@ define(['angular', 'ol', 'map', 'utils'],
 
                 }
 
-                OlMap.map.getLayers().forEach(function(lyr) {
-                    layerAdded({
-                        element: lyr
+                if (OlMap.map) 
+                    init();
+                else
+                    $rootScope.$on('map.loaded', function () {
+                        init()
                     });
-                })
-                map.getLayers().on("add", layerAdded);
-                map.getLayers().on("remove", function(e) {
-                    $scope.removeLayerFromLegends(e.element);
-                });
+               
                 $scope.$emit('scope_loaded', "Legend");
             }
         ]);
