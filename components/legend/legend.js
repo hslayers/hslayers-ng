@@ -140,7 +140,7 @@ define(['angular', 'ol', 'map', 'utils'],
                  */
                 $scope.removeLayerFromLegends = function(layer) {
                     for (var i = 0; i < $scope.layers.length; i++) {
-                        if ($scope.layers[i].layer == layer) {
+                        if ($scope.layers[i].lyr == layer) {
                             $scope.layers.splice(i, 1);
                             break;
                         }
