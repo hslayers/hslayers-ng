@@ -707,6 +707,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
             
             
             $scope.layerIsWmsT = WMST.layerIsWmsT;
+            $scope.setLayerTime = WMST.setLayerTime;
 
             /**
              * @function addDrawingLayer
