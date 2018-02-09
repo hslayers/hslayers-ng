@@ -705,6 +705,9 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
              */
             $scope.layerValid = layerUtils.layerInvalid;
             
+            
+            $scope.layerIsWmsT = WMST.layerIsWmsT;
+
             /**
              * @function addDrawingLayer
              * @memberOf hs.layermanager.controller
