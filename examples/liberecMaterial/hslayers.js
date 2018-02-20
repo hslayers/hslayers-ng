@@ -16,7 +16,7 @@ require.config({
         //material dependency
         ngAnimate: hsl_path + 'node_modules/angular-animate/angular-animate',
         ngAria: hsl_path + 'node_modules/angular-aria/angular-aria',
-        ngMaterial: hsl_path + 'node_modules/angular-material/angular-material',
+        'angular-material': hsl_path + 'node_modules/angular-material/angular-material',
         //layer manager dependency
         tinycolor: hsl_path + 'node_modules/tinycolor2/tinycolor',
         mdColorPicker: hsl_path + 'node_modules/md-color-picker/dist/mdColorPicker',
@@ -31,7 +31,7 @@ require.config({
     shim: {
         'ngAnimate': ['angular'],
         'ngAria': ['angular'],
-        'ngMaterial': {
+        'angular-material': {
              deps: ['ngAnimate', 'ngAria']
         },
         'mdColorPicker': ['angular', 'tinycolor'],

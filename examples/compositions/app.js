@@ -37,6 +37,23 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     }),
                     title: "Base layer",
                     base: true
+                }),
+                new ol.layer.Image({
+                    title: "Administrativní členění Libereckého kraje",
+                    base: false,
+                    visible: true,
+                    removable: false,
+                    BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
+                    source: new ol.source.ImageWMS({
+                        url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/atlas/administrativni_cleneni.map',
+                        params: {
+                            LAYERS: 'administrativni_celky_hranice',
+                                              INFO_FORMAT: undefined,
+                                              FORMAT: "image/png", 
+                                              ABSTRACT: "Administrativní členění Libereckého kraje"
+                        },
+                        crossOrigin: null
+                    }),
                 })
             ],
             //project_name: 'hslayers',

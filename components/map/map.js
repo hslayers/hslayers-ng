@@ -191,6 +191,21 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                 return tmp;
             }
 
+            function layersEqual(existing, lyr){
+                var s_existing = existing.getSource();
+                var s_new = lyr.getSource();
+                return existing.get("title") == lyr.get("title") &&
+                    typeof s_existing == typeof s_new &&
+                    (s_existing.getParams && s_existing.getParams().LAYERS == s_new.getParams().LAYERS) &&
+                    (s_existing.getUrl && s_existing.getUrl() == s_new.getUrl()) &&
+                    (s_existing.getUrls && s_existing.getUrls()  == s_new.getUrls())
+            }
+
+            this.layerDuplicate = function(lyr){
+                return me.map.getLayers().getArray().filter(existing => 
+                    layersEqual(existing, lyr)).length > 0;
+            }
+
             /**
              * @ngdoc method
              * @name hs.map.service#repopulateLayers
@@ -202,13 +217,7 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                 if (angular.isDefined(config.box_layers)) {
                     angular.forEach(config.box_layers, function (box) {
                         angular.forEach(box.get('layers'), function (lyr) {
-                            let duplicateLayer = false;
-                            me.map.getLayers().forEach((l) => {
-                                if (l.get("source") == lyr.get("source")) {
-                                    duplicateLayer = true;
-                                }
-                            });
-                            if (!duplicateLayer) {
+                            if (!me.layerDuplicate(lyr)) {
                                 lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                                 lyr.manuallyAdded = false;
                                 if (lyr.getSource() instanceof ol.source.ImageWMS)
@@ -225,13 +234,7 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
 
                 if (angular.isDefined(config.default_layers)) {
                     angular.forEach(config.default_layers, function (lyr) {
-                        let duplicateLayer = false;
-                        me.map.getLayers().forEach((l) => {
-                            if (l.get("source") === lyr.get("source")) {
-                                duplicateLayer = true;
-                            }
-                        });
-                        if (!duplicateLayer) {
+                        if (!me.layerDuplicate(lyr)) {
                             lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                             lyr.manuallyAdded = false;
                             if (lyr.getSource() instanceof ol.source.ImageWMS)

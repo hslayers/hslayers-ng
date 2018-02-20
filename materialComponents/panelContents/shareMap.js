@@ -2,7 +2,7 @@
  * @namespace hs.material.search
  * @memberOf hs
  */
-define(['angular', 'ol','ngMaterial', 'ngclipboard'],
+define(['angular', 'ol','angular-material', 'ngclipboard'],
 
     function(angular, ol, ngMaterial, ngclipboard) {
         angular.module('hs.material.shareMap', ['ngMaterial'])

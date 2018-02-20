@@ -1,4 +1,4 @@
-define(['angular', 'ol','ngMaterial', 'ows.wms'],
+define(['angular', 'ol','angular-material', 'ows_wms'],
 
     function(angular, ol, ngMaterial) {
         angular.module('hs.material.addLayer', ['ngMaterial', 'hs.ows.wms'])

@@ -5,7 +5,7 @@
  * @description Composition module
  */
 
-define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonwms', 'config_parsers'],
+define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', 'ows_nonwms', 'config_parsers'],
 
     function (angular, ol, SparqlJson, social) {
         return {
@@ -241,7 +241,8 @@ define(['angular', 'ol', 'SparqlJson', 'angularjs-socialshare', 'map', 'ows.nonw
                                     var data = $cookies.get('hs_layers');
                                     var layers = compositionParser.jsonToLayers(JSON.parse(data));
                                     for (var i = 0; i < layers.length; i++) {
-                                        OlMap.map.addLayer(layers[i]);
+                                        if(OlMap.layerDuplicate(layers[i]))
+                                            OlMap.map.addLayer(layers[i]);
                                     }
                                     $cookies.remove('hs_layers');
                                 }

@@ -2,7 +2,7 @@
  * @namespace hs.material.search
  * @memberOf hs
  */
-define(['angular', 'ol', 'ngMaterial', 'ngAnimate'],
+define(['angular', 'ol', 'angular-material', 'ngAnimate'],
 
     function (angular, ol, ngMaterial, ngclipboard) {
         angular.module('hs.material.statusCreator', ['ngMaterial'])

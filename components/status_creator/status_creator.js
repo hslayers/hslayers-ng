@@ -2,7 +2,7 @@
  * @namespace hs.status_creator
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'ngcookies'],
+define(['angular', 'ol', 'map', 'angular-cookies'],
 
     function (angular, ol) {
         var module = angular.module('hs.status_creator', ['hs.map', 'hs.core', 'ngCookies'])

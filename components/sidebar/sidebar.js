@@ -2,7 +2,7 @@
  * @namespace hs.sidebar
  * @memberOf hs
  */
-define(['angular', 'map', 'core', 'permalink', 'ngcookies'],
+define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
 
     function(angular) {
         angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies'])

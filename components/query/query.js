@@ -2,7 +2,7 @@
  * @namespace hs.query
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'olPopup'],
+define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'ol.popup'],
 
     function (angular, ol) {
         angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
