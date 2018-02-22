@@ -2,7 +2,7 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-define(['angular', 'ngMaterial', 'bottomSheetCollapsible', 'core', 'map', 'geolocation', 'layermanager'],
+define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 'geolocation', 'layermanager'],
 
     function (angular) {
         angular.module('hs.layout', ['hs.core', 'ngMaterial', 'material.components.bottomSheetCollapsible', 'hs.map', 'hs.geolocation', 'hs.layermanager'])

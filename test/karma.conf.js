@@ -25,7 +25,7 @@ module.exports = function(config) {
       {pattern:'node_modules/angular-gettext/dist/angular-gettext.js', included: false},
       {pattern:'node_modules/bootstrap/dist/js/bootstrap.min.js', included: false},
       {pattern:'node_modules/angular-sanitize/angular-sanitize.js', included: false},
-      {pattern:'node_modules/angularjs-socialshare/dist/angular-socialshare.js', included: false},
+      {pattern:'node_modules/angular-socialshare/dist/angular-socialshare.js', included: false},
       {pattern:'node_modules/angular-cookies/angular-cookies.js', included: false},
       {pattern:'node_modules/d3/d3.min.js', included: false},
       {pattern:'node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js', included: false},
