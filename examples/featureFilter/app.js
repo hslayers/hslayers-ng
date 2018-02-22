@@ -42,6 +42,13 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     title: "Base layer",
                     base: true
                 }),
+                new ol.layer.Vector({
+                    title: "Satellite imagery example",
+                    source: new ol.source.Vector({
+                        format: new ol.format.GeoJSON,
+                        url: 'copernicus_1.geojson'
+                    })
+                })
             ],
             //project_name: 'hslayers',
             project_name: 'Material',
