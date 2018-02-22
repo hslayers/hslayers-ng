@@ -34,7 +34,7 @@ if (require.config) require.config({
         // 'ngMaterial': hsl_path + 'node_modules/angular-material/angular-material' + hslMin,
         // 'swipe': nm_path + '/angular-swipe/dist/angular-swipe' + hslMin,
         'angular-gettext': nm_path +'angular-gettext/dist/angular-gettext' + hslMin,
-        'angularjs-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
+        'angular-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
         'bottomSheetCollapsible': nm_path + 'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible',
         hammer: nm_path +'hammerjs/hammer' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
