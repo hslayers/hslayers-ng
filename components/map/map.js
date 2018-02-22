@@ -195,15 +195,26 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                 var s_existing = existing.getSource();
                 var s_new = lyr.getSource();
                 return existing.get("title") == lyr.get("title") &&
-                    typeof s_existing == typeof s_new &&
-                    (s_existing.getParams && s_existing.getParams().LAYERS == s_new.getParams().LAYERS) &&
-                    (s_existing.getUrl && s_existing.getUrl() == s_new.getUrl()) &&
-                    (s_existing.getUrls && s_existing.getUrls()  == s_new.getUrls())
+                    typeof s_existing == typeof s_new && 
+                    (angular.isUndefined(s_existing.getParams) || s_existing.getParams().LAYERS == s_new.getParams().LAYERS) &&
+                    (angular.isUndefined(s_existing.getUrl) || s_existing.getUrl() == s_new.getUrl()) &&
+                    (angular.isUndefined(s_existing.getUrls) || s_existing.getUrls()  == s_new.getUrls())
             }
 
             this.layerDuplicate = function(lyr){
-                return me.map.getLayers().getArray().filter(existing => 
-                    layersEqual(existing, lyr)).length > 0;
+                return me.map.getLayers().getArray().filter(function(existing){ 
+                    layersEqual(existing, lyr)}).length > 0;
+            }
+
+            this.removeDuplicate = function(lyr){
+                me.map.getLayers().getArray().filter(function(existing){ 
+                    layersEqual(existing, lyr)}).forEach(function(to_remove){me.map.getLayers().remove(to_remove)});
+            }
+
+            this.addLayer = function(lyr){
+                if(me.layerDuplicate(lyr))
+                    me.removeDuplicate(lyr);
+                me.map.addLayer(lyr);
             }
 
             /**
@@ -353,7 +364,7 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
              */
             this.proxifyLayerLoader = function (lyr, tiled) {
                 var src = lyr.getSource();
-                me.map.getLayers().forEach((l) => {
+                me.map.getLayers().forEach(function(l){
                     if (l.get("source") == src) {
                         return;
                     }
