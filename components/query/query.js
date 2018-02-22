@@ -507,8 +507,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
 
                     $scope.showQueryDialog = function(ev) {
                         $mdDialog.show({
-                            // controller: DialogController,
                             scope: this,
+                            preserveScope: true,
                             templateUrl: config.infopanel_template || `${hsl_path}components/query/partials/infopanel${config.design || ''}.html`,
                             parent: angular.element(document.body),
                             targetEvent: ev,
@@ -518,7 +518,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                             console.log("Closed.");
                         }, function() {
                             console.log("Cancelled.");
-                            // Base.activateQueries();
                         });
                     };
 
@@ -537,9 +536,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
 
                     $scope.$on('queryClicked', function(e){
                         if (config.design === 'md') {
-                            popup.hide();
                             $scope.showQueryDialog(e);
-                            // Base.deactivateQueries();
                         } else {                            
                             popup.hide();
                             if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
