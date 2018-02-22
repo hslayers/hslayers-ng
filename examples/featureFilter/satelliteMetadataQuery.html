@@ -1,0 +1,49 @@
+<md-dialog aria-label="Info">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Info</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancelQueryDialog()">
+          <md-icon md-icon-set="material-icons" aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; min-width:40rem;">
+      <md-tabs md-dynamic-height md-border-bottom md-swipe-content>
+        <md-tab ng-repeat="group in data.groups | orderBy : 'name'" label="{{(group.attributes | filter:{name:'platformname'})[0].value}}">
+          <md-content class="md-padding" flex>
+            <h3 class="md-headline"><span style="font-weight:600;">{{(group.attributes | filter:{name:'platformname'})[0].value}}</span> – {{(group.attributes | filter:{name:'endposition'})[0].value.$$unwrapTrustedValue() | date : 'd. M. yyyy – H:mm:ss'}}</h3>
+            <!-- <h3 class="md-headline">{{(group.attributes | filter:{name:'platformname'})[0].value}} {{(group.attributes | filter:{name:'endposition'})[0].value.$$unwrapTrustedValue() | date : 'd. M. yyyy H:mm:ss'}}</h3> -->
+            <!-- <h3 class="md-headline"><span>{{(group.attributes | filter:{name:'platformname'})[0].value}}</span> <span>({{(group.attributes | filter:{name:'endposition'})[0].value.$$unwrapTrustedValue() | date : 'd. M. yyyy H:mm:ss'}})</span></h3> -->
+            <ul>
+              <li>{{(group.attributes | filter:{name:'instrumentshortname'})[0].value == "SAR-C SAR" ? "radarový snímek" : "multispektrální snímek"}}</li>
+              <li ng-if="(group.attributes | filter:{name:'platformname'})[0].value === 'Sentinel-2'">prostorové rozlišení 10 metrů</li>
+              <li ng-if="(group.attributes | filter:{name:'cloudcoverpercentage'})[0].value">pokrytí oblačností {{(group.attributes | filter:{name:'cloudcoverpercentage'})[0].value | number:2}} %</li>
+            </ul> 
+<!--             <md-list flex>
+              <md-list-item class="md-2-line">
+                <div class="md-list-item-text">
+                  <h3>– {{(group.attributes | filter:{name:'instrumentshortname'})[0].value == "SAR-C SAR" ? "radarový snímek" : "multispektrální snímek"}}</h3>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-2-line">
+                <div class="md-list-item-text">
+                  <h3>– {{(group.attributes | filter:{name:'size'})[0].value}}</h3>
+                  <p>Velikost souboru</p>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-2-line">
+                <div class="md-list-item-text">
+                  <h3>– {{(group.attributes | filter:{name:'link'})[0].value}}</h3>
+                  <p>Odkaz</p>
+                </div>
+              </md-list-item>
+            </md-list> -->
+            <md-button class="md-primary" href="{{(group.attributes | filter:{name:'link'})[0].value}}">Stáhnout data ({{(group.attributes | filter:{name:'format'})[0].value}}, {{(group.attributes | filter:{name:'size'})[0].value}})</md-button>
+          </md-content>
+        </md-tab>
+      </md-tabs>
+    </md-dialog-content>
+  </form>
+</md-dialog>

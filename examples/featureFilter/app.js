@@ -30,6 +30,10 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
 
         module.value('config', {
             design: 'md',
+            query: {
+                multi: true
+            },
+            infopanel_template: "satelliteMetadataQuery.html",
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM({
@@ -38,23 +42,6 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     title: "Base layer",
                     base: true
                 }),
-                new ol.layer.Image({
-                    title: "Administrativní členění Libereckého kraje",
-                    base: false,
-                    visible: true,
-                    removable: false,
-                    BoundingBox : [{crs:"EPSG:3857", extent: [1587156, 6509276, 1735558, 6635340]}],
-                    source: new ol.source.ImageWMS({
-                        url: 'http://geoportal.kraj-lbc.cz/cgi-bin/mapserv?map=/data/gis/MapServer/projects/wms/atlas/administrativni_cleneni.map',
-                        params: {
-                            LAYERS: 'administrativni_celky_hranice',
-                                              INFO_FORMAT: undefined,
-                                              FORMAT: "image/png", 
-                                              ABSTRACT: "Administrativní členění Libereckého kraje"
-                        },
-                        crossOrigin: null
-                    }),
-                })
             ],
             //project_name: 'hslayers',
             project_name: 'Material',
@@ -103,14 +90,14 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
         });
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser',
-            function($scope, Core, QueryService, composition_parser) {
+            function($scope, Core, BaseService, composition_parser) {
                 if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.setMainPanel('composition_browser');
                 //composition_parser.load('http://www.whatstheplan.eu/wwwlibs/statusmanager2/index.php?request=load&id=972cd7d1-e057-417b-96a7-e6bf85472b1e');
                 $scope.$on('query.dataUpdated', function(event) {
-                    if (console) console.log('Attributes', QueryService.data.attributes, 'Groups', QueryService.data.groups);
+                    if (console) console.log('Attributes', BaseService.data.attributes, 'Groups', BaseService.data.groups);
                 });
             }
         ]);
