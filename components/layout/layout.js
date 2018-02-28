@@ -263,7 +263,7 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                         angular.element("#loading-logo").remove();
                     }, 100);
 
-                    $scope.swipeOverlayStatus = false;
+                    $scope.sidenavOpen = false;
 
                     $rootScope.$on('geolocation.started', function () {
                         $scope.location.status.icon = "my_location";
@@ -369,7 +369,7 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                     $scope.openLeftSidenav = function () {
                         $mdSidenav('sidenav-left').open()
                             .then(function () {
-                                $scope.swipeOverlayStatus = true;
+                                $scope.sidenavOpen = true;
                             });
                     }
 
@@ -379,7 +379,7 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
 
                     $mdSidenav('sidenav-left', true).then(function () {
                         $mdSidenav('sidenav-left').onClose(function () {
-                            $scope.swipeOverlayStatus = false;
+                            $scope.sidenavOpen = false;
                         });
 
                         Hammer(document.getElementsByClassName("md-sidenav-left")[0]).on("swipeleft", () => {
