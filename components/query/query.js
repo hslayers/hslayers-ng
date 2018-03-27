@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
             .directive('hs.query.directiveInfopanel', ['config', function (config) {
                 return {
                     // templateUrl: config.infopanel_template || hsl_path + 'components/query/partials/infopanel.html?bust=' + gitsha,
-                    templateUrl: config.infopanel_template || `${hsl_path}components/layout/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: config.infopanel_template || `${hsl_path}components/query/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
                 };
             }])
 
