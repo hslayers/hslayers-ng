@@ -838,7 +838,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 /** SIDEBAR&TOOLBAR RESPONSIVITY **/
 /**********************************/
 
-@media (max-width: 767px) {
+@media only screen and (max-width: 767px) {
     .open div.panelspace, div.panelspace, .panelspace-wrapper {
         width: 300px;
     }
@@ -1294,7 +1294,7 @@ md-bottom-sheet .content {
     color: #0062bf;
 }
 
-@media (min-width: 600px) {
+@media only screen and (min-width: 600px) {
     md-sidenav {
         width: 100%;
     }
@@ -1310,4 +1310,10 @@ md-bottom-sheet .content {
 
 #permalink-link {
     overflow-x: hidden;
+}
+
+/* Material Design Section */
+
+.md-scroll-mask {
+    display: none !important;
 }
