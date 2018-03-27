@@ -14,8 +14,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
             */
             .directive('hs.query.directiveInfopanel', ['config', function (config) {
                 return {
-                    // templateUrl: config.infopanel_template || hsl_path + 'components/query/partials/infopanel.html?bust=' + gitsha,
-                    templateUrl: config.infopanel_template || `${hsl_path}components/layout/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: config.infopanel_template || `${hsl_path}components/query/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
+                    // templateUrl: config.infopanel_template || `${hsl_path}components/layout/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
                 };
             }])
 
@@ -102,8 +102,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         });
                     }
 
-                    if (angular.isDefined(OlMap.map)) init();
-                    else ($rootScope.$on('map.loaded', init));
+                    if (angular.isDefined(OlMap.map)) {
+                        init();
+                    } else {
+                        $rootScope.$on('map.loaded', init);
+                    }
 
                     this.setData = function (data, type, overwrite) {
                         if (angular.isDefined(type)) {
@@ -526,6 +529,33 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     }
                     
                     $scope.data = Base.data;
+
+                    $rootScope.$on('queryStatusChanged', function(){
+                        if (Base.queryActive) {
+                            $scope.deregisterVectorQuery = $scope.$on('queryClicked', function(e){
+                                if (config.design === 'md') {
+                                    $scope.showQueryDialog(e);
+                                } else {                            
+                                    popup.hide();
+                                    if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
+                                }
+                            });
+
+                            $scope.deregisterWmsQuery = $scope.$on('queryWmsResult', function(e,coordinate){
+                                if ($("#invisible_popup").contents().find('body').children().not('style,title,meta').length > 0) {
+                                    if (Base.popupClassname.length > 0 ) popup.getElement().className = Base.popupClassname;
+                                    else popup.getElement().className = "ol-popup";
+                                    popup.show(coordinate, $("#invisible_popup").contents().find('body').html());
+                                    $rootScope.$broadcast('popupOpened','hs.query');
+                                };
+                                if (!$scope.$$phase) $scope.$digest();
+                            });
+                        }
+                        else {
+                            $scope.deregisterVectorQuery();
+                            $scope.deregisterWmsQuery();
+                        }
+                    });
     
                     if (Core.current_panel_queryable) {
                         if (!Base.queryActive) Base.activateQueries();
@@ -533,25 +563,6 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     else {
                         if (Base.queryActive) Base.deactivateQueries();
                     }
-
-                    $scope.$on('queryClicked', function(e){
-                        if (config.design === 'md') {
-                            $scope.showQueryDialog(e);
-                        } else {                            
-                            popup.hide();
-                            if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
-                        }
-                    });
-
-                    $scope.$on('queryWmsResult', function(e,coordinate){
-                        if ($("#invisible_popup").contents().find('body').children().not('style,title,meta').length > 0) {
-                            if (Base.popupClassname.length > 0 ) popup.getElement().className = Base.popupClassname;
-                            else popup.getElement().className = "ol-popup";
-                            popup.show(coordinate, $("#invisible_popup").contents().find('body').html());
-                            $rootScope.$broadcast('popupOpened','hs.query');
-                        };
-                        if (!$scope.$$phase) $scope.$digest();
-                    });
 
                     $scope.$on('queryVectorResult',function(){
                         if (!$scope.$$phase) $scope.$digest();
