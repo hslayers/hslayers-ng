@@ -1317,3 +1317,19 @@ md-bottom-sheet .content {
 .md-scroll-mask {
     display: none !important;
 }
+
+.md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-left, .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-right {
+  -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-transform: translate3d(0, -42px, 0);
+          transform: translate3d(0, -42px, 0);
+}
+
+md-fab-speed-dial.md-fab-bottom-left, md-fab-speed-dial.md-fab-bottom-right {
+    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    -webkit-transition-property: background-color, box-shadow, -webkit-transform;
+    transition-property: background-color, box-shadow, -webkit-transform;
+    transition-property: background-color, box-shadow, transform;
+    transition-property: background-color, box-shadow, transform, -webkit-transform;
+}
