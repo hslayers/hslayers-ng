@@ -1,5 +1,5 @@
 
-if(require.config) require.config({
+if (require.config) require.config({
     paths: {
         hs_cesium_camera: hsl_path + 'components/cesium/camera' + hslMin,
     }
@@ -31,7 +31,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
              * @description Initializes Cesium map
              */
             this.init = function () {
-                if(typeof Cesium == 'undefined'){
+                if (typeof Cesium == 'undefined') {
                     console.error('Please include cesium in shim definition: cesiumjs: {exports: \'Cesium\'}');
                 }
                 window.CESIUM_BASE_URL = Core.getNmPath() + 'cesium/Build/Cesium';
@@ -56,8 +56,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 viewer = new Cesium.Viewer('cesiumContainer', {
                     timeline: typeof config.cesiumTimeline != 'undefined' ? config.cesiumTimeline : false,
                     animation: false,
-                    creditContainer:  typeof config.creditContainer !='undefined' ? config.creditContainer : undefined,
-                    infoBox: typeof config.cesiumInfoBox !='undefined' ? config.cesiumInfoBox : true,
+                    creditContainer: typeof config.creditContainer != 'undefined' ? config.creditContainer : undefined,
+                    infoBox: typeof config.cesiumInfoBox != 'undefined' ? config.cesiumInfoBox : true,
                     terrainProvider: terrain_provider,
                     terrainExaggeration: config.terrainExaggeration || 1.0,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
@@ -165,7 +165,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         return;
                     }
                     if (!Cesium.defined(featuresPromise)) {
-                        if(console) console.log('No features picked.');
+                        if (console) console.log('No features picked.');
                     } else {
 
                         Cesium.when(featuresPromise, function (features) {
@@ -186,7 +186,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     }
                 }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
 
-                function rightClickLeftDoubleClick (movement) {
+                function rightClickLeftDoubleClick(movement) {
                     var pickRay = viewer.camera.getPickRay(movement.position);
                     var pickedObject = viewer.scene.pick(movement.position);
 
@@ -283,13 +283,13 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                     source.entities.values.forEach(function (entity) {
                         try {
-                            if(typeof ol_source.cesium_layer.entities.getById(entity.id) == 'undefined'){
+                            if (typeof ol_source.cesium_layer.entities.getById(entity.id) == 'undefined') {
                                 //console.log('Adding', entity.id);
                                 ol_source.cesium_layer.entities.add(entity);
                             }
-                        } catch(ex){
-                            if(console) console.error(ex.toString())
-                        }                       
+                        } catch (ex) {
+                            if (console) console.error(ex.toString())
+                        }
                     })
                     //console.log('added to real layer',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                     ol_source.cesiumStyler(ol_source.cesium_layer)
@@ -343,75 +343,82 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 });
             }
 
-            this.convertOlToCesiumProvider = function (ol_lyr) {
+            function MyProxy(proxy) {
+                this.proxy = proxy;
+            }
 
-                function MyProxy(proxy) {
-                    this.proxy = proxy;
-                }
-
-                MyProxy.prototype.getURL = function (resource) {
-                    var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + hsl_path + 'img/blank.png';
-                    var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
-                    if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {
+            MyProxy.prototype.getURL = function (resource) {
+                var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + hsl_path + 'img/blank.png';
+                var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
+                if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {
+                    return blank_url;
+                } else {
+                    var params = utils.getParamsFromUrl(resource);
+                    var bbox = params.bbox.split(',');
+                    var dist = Math.sqrt(Math.pow((bbox[0] - bbox[2]), 2) + Math.pow((bbox[1] - bbox[3]), 2));
+                    if (dist > 1) {
                         return blank_url;
-                    } else {
-                        var params = utils.getParamsFromUrl(resource);
-                        var bbox = params.bbox.split(',');
-                        var dist = Math.sqrt(Math.pow((bbox[0] - bbox[2]), 2) + Math.pow((bbox[1] - bbox[3]), 2));
-                        if (dist > 1) {
-                            return blank_url;
-                        }
                     }
-                    resource = resource.replaceAll('fromcrs', 'FROMCRS');
-                    if (resource.indexOf('proxy4ows') > -1) return resource;
-                    return this.proxy + prefix + encodeURIComponent(resource);
-                };
+                }
+                resource = resource.replaceAll('fromcrs', 'FROMCRS');
+                if (resource.indexOf('proxy4ows') > -1) return resource;
+                return this.proxy + prefix + encodeURIComponent(resource);
+            };
 
 
+            this.convertOlToCesiumProvider = function (ol_lyr) {
                 if (ol_lyr.getSource() instanceof ol.source.OSM) {
                     return new Cesium.ImageryLayer(Cesium.createOpenStreetMapImageryProvider(), {
                         show: ol_lyr.getVisible(),
                         minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15
                     });
                 } else if (ol_lyr.getSource() instanceof ol.source.TileWMS) {
-                    var src = ol_lyr.getSource();
-                    var params = src.getParams();
-                    params.VERSION = params.VERSION || '1.1.1';
-                    if(params.VERSION.indexOf('1.1.') == 0) params.CRS = 'EPSG:4326';
-                    if(params.VERSION.indexOf('1.3.') == 0 ) params.SRS = 'EPSG:4326';
-                    params.FROMCRS = 'EPSG:4326';
-                    return new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider({
-                        url: src.getUrls()[0],
-                        layers: src.getParams().LAYERS,
-                        getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
-                        enablePickFeatures: true,
-                        parameters: params,
-                        getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
-                        minimumTerrainLevel: params.minimumTerrainLevel || 12,
-                        proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=')
-                    }), {
-                            alpha: 0.7,
-                            show: ol_lyr.getVisible()
-                        })
+                    return me.createTileProvider(ol_lyr);
                 } else if (ol_lyr.getSource() instanceof ol.source.Vector) {
-                    if (ol_lyr.getSource().getFormat() instanceof ol.format.KML) {
-                        return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(),
-                            {
-                                camera: viewer.scene.camera,
-                                canvas: viewer.scene.canvas,
-                                clampToGround: ol_lyr.getSource().get('clampToGround') || true
-                            })
-                    } else {
-                        var new_source = new Cesium.GeoJsonDataSource(ol_lyr.get('title'));
-                        ol_lyr.cesium_layer = new_source; //link to cesium layer will be set also for OL layers source object, when this function returns.
-                        ol_lyr.on('change:visible', function (e) {
-                            e.target.cesium_layer.show = ol_lyr.getVisible();
-                        })
-                        return new_source;
-                    }
+                    return me.createVectorDataSource(ol_lyr);
                 } else {
-                    if(console) console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
+                    if (console) console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
                 }
+            }
+
+            this.createVectorDataSource = function (ol_lyr) {
+                if (ol_lyr.getSource().getFormat() instanceof ol.format.KML) {
+                    return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(),
+                        {
+                            camera: viewer.scene.camera,
+                            canvas: viewer.scene.canvas,
+                            clampToGround: ol_lyr.getSource().get('clampToGround') || true
+                        })
+                } else {
+                    var new_source = new Cesium.GeoJsonDataSource(ol_lyr.get('title'));
+                    ol_lyr.cesium_layer = new_source; //link to cesium layer will be set also for OL layers source object, when this function returns.
+                    ol_lyr.on('change:visible', function (e) {
+                        e.target.cesium_layer.show = ol_lyr.getVisible();
+                    })
+                    return new_source;
+                }
+            }
+
+            this.createTileProvider = function (ol_lyr) {
+                var src = ol_lyr.getSource();
+                var params = src.getParams();
+                params.VERSION = params.VERSION || '1.1.1';
+                if (params.VERSION.indexOf('1.1.') == 0) params.CRS = 'EPSG:4326';
+                if (params.VERSION.indexOf('1.3.') == 0) params.SRS = 'EPSG:4326';
+                params.FROMCRS = 'EPSG:4326';
+                return new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider({
+                    url: src.getUrls()[0],
+                    layers: src.getParams().LAYERS,
+                    getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
+                    enablePickFeatures: true,
+                    parameters: params,
+                    getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
+                    minimumTerrainLevel: params.minimumTerrainLevel || 12,
+                    proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=')
+                }), {
+                        alpha: 0.7,
+                        show: ol_lyr.getVisible()
+                    })
             }
 
 
@@ -458,7 +465,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                  * @description 
                  */
                 $scope.init = function () {
-                    if (hs_map.map) 
+                    if (hs_map.map)
                         service.init();
                     else
                         $rootScope.$on('map.loaded', function () {
