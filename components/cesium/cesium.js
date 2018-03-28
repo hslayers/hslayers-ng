@@ -54,7 +54,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     mapStyle: Cesium.BingMapsStyle.AERIAL
                 });
                 viewer = new Cesium.Viewer('cesiumContainer', {
-                    timeline: false,
+                    timeline: typeof config.cesiumTimeline != 'undefined' ? config.cesiumTimeline : false,
                     animation: false,
                     creditContainer:  typeof config.creditContainer !='undefined' ? config.creditContainer : undefined,
                     infoBox: typeof config.cesiumInfoBox !='undefined' ? config.cesiumInfoBox : true,
@@ -376,8 +376,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 } else if (ol_lyr.getSource() instanceof ol.source.TileWMS) {
                     var src = ol_lyr.getSource();
                     var params = src.getParams();
-                    params.VERSION = '1.1.1';
-                    params.CRS = 'EPSG:4326';
+                    params.VERSION = params.VERSION || '1.1.1';
+                    if(params.VERSION.indexOf('1.1.') == 0) params.CRS = 'EPSG:4326';
+                    if(params.VERSION.indexOf('1.3.') == 0 ) params.SRS = 'EPSG:4326';
                     params.FROMCRS = 'EPSG:4326';
                     return new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider({
                         url: src.getUrls()[0],
@@ -385,7 +386,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                         enablePickFeatures: true,
                         parameters: params,
-                        getFeatureInfoParameters: { VERSION: '1.1.1', CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
+                        getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
                         minimumTerrainLevel: params.minimumTerrainLevel || 12,
                         proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=')
                     }), {
