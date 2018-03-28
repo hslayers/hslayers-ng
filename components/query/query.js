@@ -497,8 +497,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         $rootScope.$broadcast('queryVectorResult');
                     }
                 }])
-            .controller('hs.query.controller', ['$scope', '$rootScope', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', '$mdDialog',
-                function ($scope, $rootScope ,OlMap, Base, WMS, Vector, Core, config, $mdDialog) {
+            .controller('hs.query.controller', ['$scope', '$rootScope', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', '$mdDialog', '$mdToast',
+                function ($scope, $rootScope ,OlMap, Base, WMS, Vector, Core, config, $mdDialog, $mdToast) {
                     var popup = new ol.Overlay.Popup();
 
                     if (OlMap.map) 
@@ -533,7 +533,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     $rootScope.$on('queryStatusChanged', function(){
                         if (Base.queryActive) {
                             $scope.deregisterVectorQuery = $scope.$on('queryClicked', function(e){
-                                if (config.design === 'md') {
+                                if (config.design === 'md' && $scope.data.groups.length === 0) {
+                                    $mdToast.show(
+                                        $mdToast.simple()
+                                            .textContent("No images matched the query.")
+                                            // .position(pinTo )
+                                            // .hideDelay(3000)
+                                    );
+                                }
+                                if (config.design === 'md' && $scope.data.groups.length > 0) {
                                     $scope.showQueryDialog(e);
                                 } else {                            
                                     popup.hide();
