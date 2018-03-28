@@ -51,9 +51,9 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     visible: false,
                     minimumTerrainLevel: 15
                 }),
-                new ol.layer.Tile({
+                new ol.layer.Image({
                     title: "Road segments of Open Transport Map vizualized by their average daily traffic volumes",
-                    source: new ol.source.TileWMS({
+                    source: new ol.source.ImageWMS({
                         url: 'https://intenzitadopravy.plzen.eu/wms-t',
                         params: {
                             LAYERS: 'may',

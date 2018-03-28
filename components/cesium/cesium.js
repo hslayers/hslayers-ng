@@ -53,7 +53,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     key: 'get-yours-at-https://www.bingmapsportal.com/',
                     mapStyle: Cesium.BingMapsStyle.AERIAL
                 });
-                viewer = new Cesium.Viewer('cesiumContainer', {
+                var cesiumContainerId = 'cesiumContainer';
+                viewer = new Cesium.Viewer(cesiumContainerId, {
                     timeline: typeof config.cesiumTimeline != 'undefined' ? config.cesiumTimeline : false,
                     animation: false,
                     creditContainer: typeof config.creditContainer != 'undefined' ? config.creditContainer : undefined,
@@ -98,6 +99,44 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         $rootScope.$broadcast('map.sync_center', center, viewport);
                     }
                 });
+
+                Cesium.knockout.getObservable(viewer.clockViewModel, 'currentTime').subscribe(function(value) {
+                    var to_be_deleted = [];
+                    var round_time = new Date(value.toString());
+                    round_time.setMilliseconds(0);
+                    round_time.setMinutes(0);
+                    round_time.setSeconds(0);
+                    
+                    for(var i=0; i < me.viewer.imageryLayers.length; i++){
+                        var layer = me.viewer.imageryLayers.get(i);
+                        if(layer.imageryProvider instanceof Cesium.WebMapServiceImageryProvider){
+                            if(layer.prm_cache && getTimeParameter(layer)){
+                                var diff = Math.abs(round_time - new Date(layer.prm_cache.parameters[getTimeParameter(layer)]));
+                                if(diff>1000 * 60) {
+                                    layer.prm_cache.parameters[getTimeParameter(layer)] = round_time.toISOString();
+                                    to_be_deleted.push(layer);
+                                    var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(layer.prm_cache), {
+                                        alpha: layer.alpha,
+                                        show: layer.show
+                                    });
+                                    tmp.prm_cache = layer.prm_cache;
+                                    me.viewer.imageryLayers.add(tmp);
+                                }
+                            }
+                        }
+                    }
+                    while(to_be_deleted.length>0)
+                        me.viewer.imageryLayers.remove(to_be_deleted.pop());
+                });
+
+                function getTimeParameter(cesium_layer){
+                    if(cesium_layer.prm_cache){
+                        if (cesium_layer.prm_cache.parameters.time) return 'time';
+                        if (cesium_layer.prm_cache.parameters.TIME) return 'TIME';
+                    } else {
+                        return undefined;
+                    }
+                }
 
                 function addPointPrimitive(p) {
                     var instance2 = new Cesium.GeometryInstance({
@@ -209,7 +248,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
 
                 handler.setInputAction(rightClickLeftDoubleClick, Cesium.ScreenSpaceEventType.RIGHT_DOWN);
                 handler.setInputAction(rightClickLeftDoubleClick, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-
+                
                 /**
                  * @ngdoc event
                  * @name hs.cesium.service#map.loaded
@@ -252,6 +291,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
 
             function linkOlLayerToCesiumLayer(ol_layer, cesium_layer) {
                 ol_layer.cesium_layer = cesium_layer;
+                cesium_layer.ol_layer = ol_layer;
                 ol_layer.on('change:visible', function (e) {
                     e.target.cesium_layer.show = ol_layer.getVisible();
                 })
@@ -372,11 +412,13 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                         show: ol_lyr.getVisible(),
                         minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15
                     });
-                } else if (ol_lyr.getSource() instanceof ol.source.TileWMS) {
+                } else if (ol_lyr.getSource() instanceof ol.source.TileWMS)
                     return me.createTileProvider(ol_lyr);
-                } else if (ol_lyr.getSource() instanceof ol.source.Vector) {
+                else if (ol_lyr.getSource() instanceof ol.source.ImageWMS)
+                    return me.createSingleImageProvider(ol_lyr);
+                else if (ol_lyr.getSource() instanceof ol.source.Vector)
                     return me.createVectorDataSource(ol_lyr);
-                } else {
+                else {
                     if (console) console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
                 }
             }
@@ -406,7 +448,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 if (params.VERSION.indexOf('1.1.') == 0) params.CRS = 'EPSG:4326';
                 if (params.VERSION.indexOf('1.3.') == 0) params.SRS = 'EPSG:4326';
                 params.FROMCRS = 'EPSG:4326';
-                return new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider({
+                var prm_cache = {
                     url: src.getUrls()[0],
                     layers: src.getParams().LAYERS,
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
@@ -415,10 +457,53 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
                     proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=')
-                }), {
-                        alpha: 0.7,
-                        show: ol_lyr.getVisible()
-                    })
+                };
+                var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(prm_cache), {
+                    alpha: 0.7,
+                    show: ol_lyr.getVisible()
+                });
+                tmp.prm_cache = prm_cache;
+                return tmp;
+            }
+
+            //Same as normal tiled WebMapServiceImageryProvider, but with bigger tileWidth and tileHeight
+            this.createSingleImageProvider = function (ol_lyr) {
+                var src = ol_lyr.getSource();
+                var params = src.getParams();
+                params.VERSION = params.VERSION || '1.1.1';
+                if (params.VERSION.indexOf('1.1.') == 0) params.CRS = 'EPSG:4326';
+                if (params.VERSION.indexOf('1.3.') == 0) params.SRS = 'EPSG:4326';
+                params.FROMCRS = 'EPSG:4326';
+                var prm_cache = {
+                    url: src.getUrl(),
+                    layers: src.getParams().LAYERS,
+                    getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
+                    enablePickFeatures: true,
+                    parameters: params,
+                    getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
+                    minimumTerrainLevel: params.minimumTerrainLevel || 12,
+                    tileWidth: 1024,
+                    tileHeight: 1024,
+                    proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=')
+                };
+                var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(prm_cache), {
+                    alpha: 0.7,
+                    show: ol_lyr.getVisible()
+                });
+                tmp.prm_cache = prm_cache;
+                return tmp;
+            }
+
+
+            this.resize = function(event, size){
+                if(angular.isUndefined(size)) return;
+                console.log(size);
+                angular.element("#cesiumContainer").height(size.height);
+                angular.element('.cesium-viewer-timelineContainer').css({right: 0});
+                if(angular.element('.cesium-viewer-timelineContainer').length>0)
+                    angular.element('.cesium-viewer-bottom').css({bottom: '30px'});
+                else
+                    angular.element('.cesium-viewer-bottom').css({bottom: 0});
             }
 
 
@@ -497,6 +582,10 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     icon_class: 'glyphicon glyphicon-globe',
                     click: toggleCesiumMap
                 });
+
+                $rootScope.$on('Core.mapSizeUpdated', service.resize);
+                service.resize();
+
 
                 $scope.init();
                 $scope.$emit('scope_loaded', "CesiumMap");

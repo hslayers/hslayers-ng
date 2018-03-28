@@ -549,7 +549,6 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             var map = $("#map");
                             var sidebarElem = $('.panelspace');
                             map.height(container.height());
-                            $("#cesiumContainer").height(map.height());
                             if (me.puremapApp) {
                                 map.width(container.width());
                             }
@@ -562,6 +561,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (angular.isDefined(OlMap.map)) OlMap.map.updateSize();
                             map.width() < 368 ? me.smallWidth = true : me.smallWidth = false;
                             if (!$rootScope.$$phase) $rootScope.$digest();
+                            $rootScope.$broadcast('Core.mapSizeUpdated', {width: map.width(), height: map.height()});
                         },
                         /**
                         * @ngdoc method

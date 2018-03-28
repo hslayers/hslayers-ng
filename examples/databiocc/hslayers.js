@@ -1,7 +1,7 @@
 'use strict';
 
 var hsl_path = '../../';
-var gitsha = Math.random();
+var gitsha = '';
 
 require.config({
     urlArgs: 'bust=' + gitsha,
