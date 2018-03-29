@@ -30,7 +30,7 @@ define(['ol', 'cesiumjs'],
                                 }
                                 var diff = Math.abs(round_time - new Date(layer.prm_cache.parameters[me.getTimeParameter(layer)]));
                                 if (diff > 1000 * 60) {
-                                    console.log('Was', layer.prm_cache.parameters[me.getTimeParameter(layer)], 'New', round_time)
+                                    //console.log('Was', layer.prm_cache.parameters[me.getTimeParameter(layer)], 'New', round_time)
                                     layer.prm_cache.parameters[me.getTimeParameter(layer)] = round_time.toISOString();
                                     to_be_deleted.push(layer);
                                     var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(layer.prm_cache), {

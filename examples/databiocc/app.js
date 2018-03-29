@@ -37,14 +37,14 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             for (var i = 0; i < step_array.length; i++) {
                 if (step_array[i].indexOf('/') == -1) {
                     steps.push(new Date(step_array[i]));
-                    console.log(new Date(step_array[i]).toISOString());
+                    //console.log(new Date(step_array[i]).toISOString());
                 } else {
                     //"2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H"
                     var interval_def = step_array[i].split('/');
                     var step = moment.interval(interval_def[2]);
                     var interval = moment.interval(interval_def[0] + '/' + interval_def[1]);
-                    while(interval.start() < interval.end()){
-                        console.log(interval.start().toDate().toISOString());
+                    while (interval.start() < interval.end()) {
+                        //console.log(interval.start().toDate().toISOString());
                         steps.push(interval.start().toDate());
                         interval.start(moment.utc(interval.start().toDate()).add(step.period()));
                     }
@@ -169,6 +169,11 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
 
                 })
+
+                $rootScope.$on('cesiummap.loaded', function (e, viewer) {
+                    viewer.targetFrameRate = 30;
+                    viewer.timeline.zoomTo(Cesium.JulianDate.fromDate(new Date('2016-01-01')), Cesium.JulianDate.fromDate(new Date('2018-04-01')));
+                });
 
                 $scope.$on('infopanel.updated', function (event) { });
             }
