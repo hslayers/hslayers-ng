@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, layermanager, geojson) {
+    function (ol, toolbar, momentinterval, moment, layermanager, geojson) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -30,6 +30,28 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
             var domain = urlArr[2];
             return urlArr[0] + "//" + domain;
         };
+
+        function prepareTimeSteps(step_string) {
+            var step_array = step_string.split(',');
+            var steps = [];
+            for (var i = 0; i < step_array.length; i++) {
+                if (step_array[i].indexOf('/') == -1) {
+                    steps.push(new Date(step_array[i]));
+                    console.log(new Date(step_array[i]).toISOString());
+                } else {
+                    //"2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H"
+                    var interval_def = step_array[i].split('/');
+                    var step = moment.interval(interval_def[2]);
+                    var interval = moment.interval(interval_def[0] + '/' + interval_def[1]);
+                    while(interval.start() < interval.end()){
+                        console.log(interval.start().toDate().toISOString());
+                        steps.push(interval.start().toDate());
+                        interval.start(moment.utc(interval.start().toDate()).add(step.period()));
+                    }
+                }
+            }
+            return steps;
+        }
 
         module.value('config', {
             cesiumTimeline: true,
@@ -69,7 +91,28 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                     maxResolution: 8550,
                     visible: false,
                     opacity: 0.7
+                }),
+                new ol.layer.Image({
+                    title: "Density ocean mixed layer thickness",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                        params: {
+                            LAYERS: 'mlotst',
+                            VERSION: '1.3.0',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            time: '2016-01-16T12:00:00.000Z',
+                            possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=mlotst&PALETTE=redblue'],
+                    //                    maxResolution: 8550,
+                    visible: false,
+                    opacity: 0.7
                 })
+
+
             ],
             project_name: 'erra/map',
             datasources: [
@@ -106,7 +149,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
             })
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', 
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce',
             function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce) {
                 var map;
 
@@ -124,7 +167,7 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
                 });
 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
-                    
+
                 })
 
                 $scope.$on('infopanel.updated', function (event) { });

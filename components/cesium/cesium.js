@@ -2,6 +2,7 @@
 if (require.config) require.config({
     paths: {
         hs_cesium_camera: hsl_path + 'components/cesium/camera' + hslMin,
+        hs_cesium_time: hsl_path + 'components/cesium/time' + hslMin,
     }
 })
 
@@ -11,7 +12,7 @@ if (require.config) require.config({
  * @name hs.cesium
  * @description Module containing cesium map
  */
-define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function (angular, Cesium, permalink, ol, HsCsCamera) {
+define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time'], function (angular, Cesium, permalink, ol, HsCsCamera, HsCsTime) {
     angular.module('hs.cesium', ['hs'])
 
         /**
@@ -84,7 +85,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
 
                 me.viewer = viewer;
                 HsCsCamera.init(viewer, hs_map);
-
+                HsCsTime.init(viewer, hs_map, me);
 
                 setTimeout(function () {
                     me.repopulateLayers(null);
@@ -100,43 +101,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     }
                 });
 
-                Cesium.knockout.getObservable(viewer.clockViewModel, 'currentTime').subscribe(function(value) {
-                    var to_be_deleted = [];
-                    var round_time = new Date(value.toString());
-                    round_time.setMilliseconds(0);
-                    round_time.setMinutes(0);
-                    round_time.setSeconds(0);
-                    
-                    for(var i=0; i < me.viewer.imageryLayers.length; i++){
-                        var layer = me.viewer.imageryLayers.get(i);
-                        if(layer.imageryProvider instanceof Cesium.WebMapServiceImageryProvider){
-                            if(layer.prm_cache && getTimeParameter(layer)){
-                                var diff = Math.abs(round_time - new Date(layer.prm_cache.parameters[getTimeParameter(layer)]));
-                                if(diff>1000 * 60) {
-                                    layer.prm_cache.parameters[getTimeParameter(layer)] = round_time.toISOString();
-                                    to_be_deleted.push(layer);
-                                    var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(layer.prm_cache), {
-                                        alpha: layer.alpha,
-                                        show: layer.show
-                                    });
-                                    tmp.prm_cache = layer.prm_cache;
-                                    me.viewer.imageryLayers.add(tmp);
-                                }
-                            }
-                        }
-                    }
-                    while(to_be_deleted.length>0)
-                        me.viewer.imageryLayers.remove(to_be_deleted.pop());
-                });
 
-                function getTimeParameter(cesium_layer){
-                    if(cesium_layer.prm_cache){
-                        if (cesium_layer.prm_cache.parameters.time) return 'time';
-                        if (cesium_layer.prm_cache.parameters.TIME) return 'TIME';
-                    } else {
-                        return undefined;
-                    }
-                }
 
                 function addPointPrimitive(p) {
                     var instance2 = new Cesium.GeometryInstance({
@@ -248,7 +213,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
 
                 handler.setInputAction(rightClickLeftDoubleClick, Cesium.ScreenSpaceEventType.RIGHT_DOWN);
                 handler.setInputAction(rightClickLeftDoubleClick, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-                
+
                 /**
                  * @ngdoc event
                  * @name hs.cesium.service#map.loaded
@@ -383,21 +348,24 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 });
             }
 
-            function MyProxy(proxy) {
+            function MyProxy(proxy, maxResolution) {
                 this.proxy = proxy;
+                this.maxResolution = maxResolution;
             }
 
             MyProxy.prototype.getURL = function (resource) {
                 var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + hsl_path + 'img/blank.png';
                 var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
-                if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {
-                    return blank_url;
-                } else {
-                    var params = utils.getParamsFromUrl(resource);
-                    var bbox = params.bbox.split(',');
-                    var dist = Math.sqrt(Math.pow((bbox[0] - bbox[2]), 2) + Math.pow((bbox[1] - bbox[3]), 2));
-                    if (dist > 1) {
+                if (this.maxResolution <= 8550) {
+                    if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {
                         return blank_url;
+                    } else {
+                        var params = utils.getParamsFromUrl(resource);
+                        var bbox = params.bbox.split(',');
+                        var dist = Math.sqrt(Math.pow((bbox[0] - bbox[2]), 2) + Math.pow((bbox[1] - bbox[3]), 2));
+                        if (dist > 1) {
+                            return blank_url;
+                        }
                     }
                 }
                 resource = resource.replaceAll('fromcrs', 'FROMCRS');
@@ -451,13 +419,18 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 var prm_cache = {
                     url: src.getUrls()[0],
                     layers: src.getParams().LAYERS,
+                    possible_times: src.getParams().possible_times,
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
                     getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
-                    proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=')
+                    proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
                 };
+                if (src.getParams().possible_times) {
+                    delete src.getParams().possible_times;
+                    delete prm_cache.parameters.possible_times;
+                }
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(prm_cache), {
                     alpha: 0.7,
                     show: ol_lyr.getVisible()
@@ -477,6 +450,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                 var prm_cache = {
                     url: src.getUrl(),
                     layers: src.getParams().LAYERS,
+                    possible_times: src.getParams().possible_times,
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
@@ -484,8 +458,13 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
                     tileWidth: 1024,
                     tileHeight: 1024,
-                    proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=')
+                    proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
                 };
+                prm_cache.parameters.TEST = 1;
+                if (angular.isDefined(src.getParams().possible_times)) {
+                    delete src.getParams().possible_times;
+                    delete prm_cache.parameters.possible_times;
+                }
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(prm_cache), {
                     alpha: 0.7,
                     show: ol_lyr.getVisible()
@@ -495,20 +474,20 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera'], function 
             }
 
 
-            this.resize = function(event, size){
-                if(angular.isUndefined(size)) return;
+            this.resize = function (event, size) {
+                if (angular.isUndefined(size)) return;
                 console.log(size);
                 angular.element("#cesiumContainer").height(size.height);
-                angular.element('.cesium-viewer-timelineContainer').css({right: 0});
-                if(angular.element('.cesium-viewer-timelineContainer').length>0)
-                    angular.element('.cesium-viewer-bottom').css({bottom: '30px'});
+                angular.element('.cesium-viewer-timelineContainer').css({ right: 0 });
+                if (angular.element('.cesium-viewer-timelineContainer').length > 0)
+                    angular.element('.cesium-viewer-bottom').css({ bottom: '30px' });
                 else
-                    angular.element('.cesium-viewer-bottom').css({bottom: 0});
+                    angular.element('.cesium-viewer-bottom').css({ bottom: 0 });
             }
 
 
             this.getCameraCenterInLngLat = HsCsCamera.getCameraCenterInLngLat;
-
+            this.linkOlLayerToCesiumLayer = linkOlLayerToCesiumLayer;
             var me = this;
 
         }])

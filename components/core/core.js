@@ -56,6 +56,8 @@ if (require.config) require.config({
         measure: hsl_path + 'components/measure/measure' + hslMin,
         mobile_toolbar: requirejs.s.contexts._.config.paths.mobile_toolbar || hsl_path + 'components/mobile_toolbar/mobile_toolbar',
         mobile_settings: requirejs.s.contexts._.config.paths.mobile_settings || hsl_path + 'components/mobile_settings/mobile_settings',
+        moment: nm_path + 'moment/min/moment.min',
+        'moment-interval': nm_path + 'moment-interval/src/moment-interval',
         ows: hsl_path + 'components/ows/ows' + hslMin,
         'ows_nonwms': hsl_path + 'components/ows/ows_nonwms' + hslMin,
         'ows_wfs': hsl_path + 'components/ows/ows_wfs' + hslMin,
