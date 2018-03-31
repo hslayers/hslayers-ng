@@ -6,21 +6,21 @@
         </li>
         <li ng-repeat="layer in services.Layer" class="list-group-item clearfix" ng-click="setCurrentLayer(layer, $index)" id="wmtslayer-{{$index}}">
             <div class="hs-lm-item-status">
-                <span class="glyphicon glyphicon-chevron-right" ng-hide="currentlayer == layer"></span>
-                <span class="glyphicon glyphicon-chevron-down" ng-show="currentlayer == layer"></span>
+                <span class="glyphicon glyphicon-chevron-right" ng-hide="currentLayer == layer"></span>
+                <span class="glyphicon glyphicon-chevron-down" ng-show="currentLayer == layer"></span>
             </div>
             <div class="hs-lm-item-title">{{layer.Title}}</div>
         </li>
     </ul>
     
-    <div class="panel panel-default wmtslayerpanel" ng-show="currentlayer!=null">
+    <div class="panel panel-default wmtslayerpanel" ng-show="currentLayer!=null">
         <div class="panel-body">
             <form>
                 <div class="form-group">
                     <label for="image_format" class="capabilities_label col-sm-4 control-label" translate>Image format</label>
                     <div class="capabilities_input col-sm-8">
                         <select class="form-control" ng-model="image_format">
-                            <option ng-repeat="i in currentlayer.Format">{{i}}</option>
+                            <option ng-repeat="i in currentLayer.Format">{{i}}</option>
                         </select>
                     </div>      
                 </div>
@@ -29,7 +29,7 @@
                     <label class="capabilities_label col-sm-4 control-label" translate>Style</label>
                     <div class="capabilities_input col-sm-8">
                         <select class="form-control" ng-model="style">
-                            <option ng-repeat="i in currentlayer.Style" value={{i.Identifier}}>{{i.Title}}</option>
+                            <option ng-repeat="i in currentLayer.Style" value={{i.Identifier}}>{{i.Title}}</option>
                         </select>
                     </div>      
                 </div>
@@ -38,7 +38,7 @@
                     <label class="capabilities_label col-sm-4 control-label">Tile Matrix</label>
                     <div class="capabilities_input col-sm-8">
                         <select class="form-control" ng-model="tileMatrixSet">
-                            <option ng-repeat="i in currentlayer.TileMatrixSetLink">{{i.TileMatrixSet}}</option>
+                            <option ng-repeat="i in currentLayer.TileMatrixSetLink">{{i.TileMatrixSet}}</option>
                         </select>
                     </div>      
                 </div>                     
@@ -46,7 +46,7 @@
             </form>
         </div>
         <div class="panel-footer">
-            <button class="btn btn-success" ng-click="addLayer(currentlayer)">Connect</button>
+            <button class="btn btn-success" ng-click="addLayer(currentLayer)">Connect</button>
         </div>
     </div>
     

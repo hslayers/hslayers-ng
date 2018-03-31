@@ -14,7 +14,8 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.ows',
             'gettext',
             'hs.compositions', 'hs.status_creator',
-            'hs.sidebar'
+            'hs.sidebar',
+            'hs.feature_filter'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
@@ -47,7 +48,27 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                     source: new ol.source.Vector({
                         format: new ol.format.GeoJSON,
                         url: 'copernicus_1.geojson'
-                    })
+                    }),
+                    hsFilters: {
+                        "Satellite mission": {
+                            title: "Satellite mission",
+                            type: "fieldset",
+                            selected: [],
+                            values: ["Sentinel-2", "Sentinel-1"],
+                            gatherValues: true
+                        },
+                        "Date interval": {
+                            title: "Date interval",
+                            type: "dateExtent",
+                            gatherValues: true
+                        },
+                        "Cloud cover": {
+                            title: "Cloud cover",
+                            type: "slider",
+                            range: [0, 100],
+                            unit: "%"
+                        }
+                    }
                 })
             ],
             //project_name: 'hslayers',
