@@ -295,10 +295,10 @@ define(['angular', 'ol', 'utils'],
                  * @param {number} index - Used to position the detail panel after layers li element
                  */
                 $scope.setCurrentLayer = function(layer, index) {
-                    if ($scope.currentlayer == layer) {
-                        $scope.currentlayer = null;
+                    if ($scope.currentLayer == layer) {
+                        $scope.currentLayer = null;
                     } else {
-                        $scope.currentlayer = layer;
+                        $scope.currentLayer = layer;
                         $(".wmtslayerpanel").insertAfter($("#wmtslayer-" + index));
                     }
                     return false;

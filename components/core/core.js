@@ -46,6 +46,7 @@ if (require.config) require.config({
         compositions: hsl_path + 'components/compositions/compositions' + hslMin,
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector' + hslMin,
         drag: hsl_path + 'components/drag/drag' + hslMin,
+        feature_filter: hsl_path + 'components/feature_filter/feature_filter' + hslMin,
         geojson: requirejs.s.contexts._.config.paths.geojson || hsl_path + 'components/layers/hs.source.GeoJSON' + hslMin,
         geolocation: requirejs.s.contexts._.config.paths.geolocation || hsl_path + 'components/geolocation/geolocation' + hslMin,
         info: requirejs.s.contexts._.config.paths['info'] || hsl_path + 'components/info/info' + hslMin,

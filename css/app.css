@@ -1333,3 +1333,11 @@ md-fab-speed-dial.md-fab-bottom-left, md-fab-speed-dial.md-fab-bottom-right {
     transition-property: background-color, box-shadow, transform;
     transition-property: background-color, box-shadow, transform, -webkit-transform;
 }
+
+md-checkbox {
+    margin-bottom: 0px;
+}
+
+.select-all-checkboxes {
+    padding-left: 30px;
+}

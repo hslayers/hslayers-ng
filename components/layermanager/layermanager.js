@@ -12,7 +12,7 @@ if(require.config) require.config({
  * @name hs.layermanager
  * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
-define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator'], 
+define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator', 'feature_filter'], 
     function (angular, app, map, ol, hsLayermanagerService, hsLayermanagerWMSTservice, hsLayermanagerLayerlistDirective) {
     angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator'])
             
@@ -141,6 +141,11 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
                 }
                 if (angular.isUndefined(layer.style) && layer.layer.getSource().styleAble) getLayerStyle(layer);
                 layer.expandSettings = value;
+            }
+
+            $scope.expandFilter = function(layer,value){
+                layer.expandFilter = value;
+                LayMan.currentLayer = layer;
             }
 
             /**
@@ -384,20 +389,32 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
             $scope.activateTheme = LayMan.activateTheme;
 
             /**
-             * @function setCurrentLayer
+             * @function toggleCurrentLayer
              * @memberOf hs.layermanager.controller
              * @description Opens detailed panel for manipulating selected layer and viewing metadata
              * @param {object} layer Selected layer to edit or view - Wrapped layer object 
              * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
              */
-            $scope.setCurrentLayer = function (layer, index, path) {
-                if ($scope.currentlayer == layer) {
-                    $scope.currentlayer = null;
+
+            $scope.setCurrentLayer = function(layer, index, path) {
+                LayMan.currentLayer = layer;
+                if (WMST.layerIsWmsT(layer)) {
+                    LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
+                    LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
+                }
+                $scope.cur_layer_opacity = layer.layer.getOpacity();
+                return false;
+            }
+
+            $scope.currentLayer = LayMan.currentLayer;
+            $scope.toggleCurrentLayer = function (layer, index, path) {
+                if (LayMan.currentLayer == layer) {
+                    LayMan.currentLayer = null;
                 } else {
-                    $scope.currentlayer = layer;
+                    LayMan.currentLayer = layer;
                     if (WMST.layerIsWmsT(layer)) {
-                        $scope.currentlayer.time = new Date(layer.layer.getSource().getParams().TIME);
-                        $scope.currentlayer.date_increment = $scope.currentlayer.time.getTime();
+                        LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
+                        LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
                     }
                     $(".layerpanel").insertAfter($("#layer" + path + index));
                     $scope.cur_layer_opacity = layer.layer.getOpacity();
@@ -612,7 +629,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
              * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
              */
             $scope.setTitle = function () {
-                $scope.currentlayer.layer.set('title', $scope.currentlayer.title);
+                LayMan.currentLayer.layer.set('title', LayMan.currentLayer.title);
             }
 
             /**
@@ -734,9 +751,9 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
             }
 
             $scope.$on('layer.removed', function (event, layer) {
-                if (angular.isObject($scope.currentlayer) && ($scope.currentlayer.layer == layer)) {
+                if (angular.isObject(LayMan.currentLayer) && (LayMan.currentLayer.layer == layer)) {
                     $(".layerpanel").insertAfter($('.hs-lm-mapcontentlist'));
-                    $scope.currentlayer = null;
+                    LayMan.currentLayer = null;
                 }
             });
 
