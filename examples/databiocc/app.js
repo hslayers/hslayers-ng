@@ -101,15 +101,148 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                             VERSION: '1.3.0',
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html",
-                            time: '2016-01-16T12:00:00.000Z',
+                            time: '2018-02-15T00:00:00.000Z',
+                            STYLE: 'boxfill/ferret',
                             possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
                         },
                         crossOrigin: null
                     }),
-                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=mlotst&PALETTE=redblue'],
-                    //                    maxResolution: 8550,
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=mlotst&PALETTE=ferret'],
                     visible: false,
                     opacity: 0.7
+                }),
+                new ol.layer.Image({
+                    title: "Sea surface height",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                        params: {
+                            LAYERS: 'zos',
+                            VERSION: '1.3.0',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            STYLE: 'boxfill/ncview',
+                            time: '2018-02-15T00:00:00.000Z',
+                            possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=zos&PALETTE=ncview'],
+                    visible: false,
+                    opacity: 0.8
+                }),
+                new ol.layer.Image({
+                    title: "Sea floor potential temperature",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                        params: {
+                            LAYERS: 'bottomT',
+                            VERSION: '1.3.0',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            STYLE: 'boxfill/occam',
+                            time: '2018-02-15T00:00:00.000Z',
+                            possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=bottomT&PALETTE=occam'],
+                    visible: false,
+                    opacity: 0.8
+                }),
+                new ol.layer.Image({
+                    title: "Sea ice thickness",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                        params: {
+                            LAYERS: 'sithick',
+                            VERSION: '1.3.0',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            STYLE: 'boxfill/rainbow',
+                            time: '2018-02-15T00:00:00.000Z',
+                            possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=sithick&PALETTE=rainbow'],
+                    visible: false,
+                    opacity: 0.8
+                }),
+                new ol.layer.Image({
+                    title: "Ice concentration",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                        params: {
+                            LAYERS: 'siconc',
+                            VERSION: '1.3.0',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            STYLE: 'boxfill/rainbow',
+                            time: '2018-02-15T00:00:00.000Z',
+                            possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=siconc&PALETTE=rainbow'],
+                    visible: false,
+                    opacity: 0.8
+                }),
+                new ol.layer.Image({
+                    title: "Temperature",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                        params: {
+                            LAYERS: 'thetao',
+                            VERSION: '1.3.0',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            STYLE: 'boxfill/rainbow',
+                            time: '2018-02-15T00:00:00.000Z',
+                            possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=thetao&PALETTE=rainbow'],
+                    visible: false,
+                    opacity: 0.8
+                }),
+                new ol.layer.Image({
+                    title: "Salinity",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                        params: {
+                            LAYERS: 'so',
+                            VERSION: '1.3.0',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            STYLE: 'boxfill/rainbow',
+                            time: '2018-02-15T00:00:00.000Z',
+                            possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=so&PALETTE=rainbow'],
+                    visible: false,
+                    opacity: 0.8
+                }),
+                new ol.layer.Image({
+                    title: "Automatically-generated vector field, composed of the fields eastward_sea_ice_velocity and northward_sea_ice_velocity",
+                    source: new ol.source.ImageWMS({
+                        url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                        params: {
+                            LAYERS: 'sea_ice_velocity',
+                            VERSION: '1.3.0',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                            STYLE: 'vector/rainbow',
+                            time: '2018-02-15T00:00:00.000Z',
+                            possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        },
+                        crossOrigin: null
+                    }),
+                    legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=sea_ice_velocity&PALETTE=rainbow'],
+                    visible: false,
+                    opacity: 0.8
                 })
 
 
