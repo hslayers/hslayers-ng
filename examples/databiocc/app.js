@@ -203,7 +203,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                         crossOrigin: null
                     }),
                     legends: ['http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=thetao&PALETTE=rainbow'],
-                    visible: false,
+                    visible: true,
                     opacity: 0.8
                 }),
                 new ol.layer.Image({
@@ -276,7 +276,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             status_manager_url: '/wwwlibs/statusmanager2/index.php',
             default_view: new ol.View({
                 center: ol.proj.transform([1208534.8815206578, 5761821.705531779], 'EPSG:3857', 'EPSG:4326'),
-                zoom: 16,
+                zoom: 5,
                 units: "m",
                 projection: 'EPSG:4326'
             })
