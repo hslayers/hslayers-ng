@@ -49,7 +49,7 @@ define(['ol', 'cesiumjs', 'moment'],
                     while (to_be_deleted.length > 0)
                         me.viewer.imageryLayers.remove(to_be_deleted.pop());
                     if (something_changed) {
-                        broadcastLayerList();
+                        me.broadcastLayerList();
                     }
                 });
             },
