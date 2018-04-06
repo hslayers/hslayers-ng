@@ -1,11 +1,12 @@
-define(['ol', 'cesiumjs'],
+define(['ol', 'cesiumjs', 'moment'],
 
-    function (ol, Cesium) {
+    function (ol, Cesium, moment) {
+        var $rootScope;
         var me = {
-            monitorTimeLine(){
+            monitorTimeLine() {
                 Cesium.knockout.getObservable(me.viewer.clockViewModel, 'currentTime').subscribe(function (value) {
                     var to_be_deleted = [];
-
+                    var something_changed = false;
                     for (var i = 0; i < me.viewer.imageryLayers.length; i++) {
 
                         var round_time = new Date(value.toString());
@@ -38,15 +39,38 @@ define(['ol', 'cesiumjs'],
                                         show: layer.show
                                     });
                                     tmp.prm_cache = layer.prm_cache;
-                                    me.viewer.imageryLayers.add(tmp);
                                     me.hs_cesium.linkOlLayerToCesiumLayer(layer.ol_layer, tmp);
+                                    me.viewer.imageryLayers.add(tmp);
+                                    something_changed = true;
                                 }
                             }
                         }
                     }
                     while (to_be_deleted.length > 0)
                         me.viewer.imageryLayers.remove(to_be_deleted.pop());
+                    if (something_changed) {
+                        broadcastLayerList();
+                    }
                 });
+            },
+
+            broadcastLayerList(){
+                $rootScope.$broadcast('cesium.time_layers_changed', me.getLayerListTimes());
+            },
+
+            getLayerListTimes() {
+                var tmp = [];
+                for (var i = 0; i < me.viewer.imageryLayers.length; i++) {
+                    var layer = me.viewer.imageryLayers.get(i);
+                    if (angular.isDefined(layer.ol_layer) && angular.isDefined(layer.prm_cache)) {
+                        var t = new Date(layer.prm_cache.parameters[me.getTimeParameter(layer)]);
+                        tmp.push({
+                            name: layer.ol_layer.get('title'),
+                            time: moment.utc(t).format('DD-MM-YYYY HH:mm')
+                        });
+                    }
+                }
+                return tmp;
             },
 
             getTimeParameter(cesium_layer) {
@@ -58,11 +82,12 @@ define(['ol', 'cesiumjs'],
                 }
             },
 
-            init: function (viewer, hs_map, hs_cesium) {
+            init: function (viewer, hs_map, hs_cesium, _$rootScope) {
                 me.viewer = viewer;
                 me.hs_map = hs_map;
                 me.hs_cesium = hs_cesium;
                 me.monitorTimeLine();
+                $rootScope = _$rootScope;
             }
 
         };

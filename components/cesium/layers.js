@@ -41,6 +41,7 @@ define(['ol', 'cesiumjs'],
 
                 setTimeout(function () {
                     me.repopulateLayers(null);
+                    me.hs_cesium.broadcastLayerList();
                 }, 3500);
 
                 me.hs_map.map.getLayers().on('add', function (e) {

@@ -24,6 +24,15 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             };
         }]);
 
+        module.directive('hs.hud', function () {
+            return {
+                templateUrl: './hud.html?bust=' + gitsha,
+                link: function (scope, element, attrs) {
+
+                }
+            };
+        });
+
         function getHostname() {
             var url = window.location.href
             var urlArr = url.split("/");
@@ -55,6 +64,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
 
         module.value('config', {
             cesiumTimeline: true,
+            cesiumAnimation: true,
             terrain_provider: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
             terrain_providers: [{
                 title: 'Local terrain',
@@ -72,7 +82,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                     base: true,
                     visible: false,
                     minimumTerrainLevel: 15
-                }),
+                }),/*
                 new ol.layer.Image({
                     title: "Road segments of Open Transport Map vizualized by their average daily traffic volumes",
                     source: new ol.source.ImageWMS({
@@ -91,7 +101,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                     maxResolution: 8550,
                     visible: false,
                     opacity: 0.7
-                }),
+                }),*/
                 new ol.layer.Image({
                     title: "Density ocean mixed layer thickness",
                     source: new ol.source.ImageWMS({
@@ -226,7 +236,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                     opacity: 0.8
                 }),
                 new ol.layer.Image({
-                    title: "Automatically-generated vector field, composed of the fields eastward_sea_ice_velocity and northward_sea_ice_velocity",
+                    title: "Automatically-generated sea ice velocity vector field",
                     source: new ol.source.ImageWMS({
                         url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
                         params: {
@@ -295,6 +305,12 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 Core.panelEnabled('status_creator', false);
                 $scope.Core.setDefaultPanel('layermanager');
 
+                function createHud() {
+                    var el = angular.element('<div hs.hud></div>');
+                    $(".page-content").append(el);
+                    $compile(el)($scope);
+                }
+
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
                 });
@@ -306,7 +322,22 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 $rootScope.$on('cesiummap.loaded', function (e, viewer) {
                     viewer.targetFrameRate = 30;
                     viewer.timeline.zoomTo(Cesium.JulianDate.fromDate(new Date('2016-01-01')), Cesium.JulianDate.fromDate(new Date('2018-04-01')));
+                    setTimeout(createHud, 3000);
                 });
+
+                
+
+                $rootScope.$on('cesium.time_layers_changed', function (e, time_layers) {
+                    $scope.time_layers = time_layers;
+                    if (!$scope.$$phase) $scope.$apply();
+                    angular.element('.hud').show();
+                    if($scope.timeFader){
+                        clearTimeout($scope.timeFader);
+                    }
+                    $scope.timeFader = setTimeout(function(){
+                        angular.element('.hud').fadeOut();
+                    }, 5000)
+                })
 
                 $scope.$on('infopanel.updated', function (event) { });
             }

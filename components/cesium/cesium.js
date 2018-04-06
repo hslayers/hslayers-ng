@@ -56,10 +56,10 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                 });
                 var cesiumContainerId = 'cesiumContainer';
                 viewer = new Cesium.Viewer(cesiumContainerId, {
-                    timeline: typeof config.cesiumTimeline != 'undefined' ? config.cesiumTimeline : false,
-                    animation: false,
-                    creditContainer: typeof config.creditContainer != 'undefined' ? config.creditContainer : undefined,
-                    infoBox: typeof config.cesiumInfoBox != 'undefined' ? config.cesiumInfoBox : true,
+                    timeline: angular.isDefined(config.cesiumTimeline) ? config.cesiumTimeline : false,
+                    animation: angular.isDefined(config.cesiumAnimation) ? config.cesiumAnimation : false,
+                    creditContainer: angular.isDefined(config.creditContainer) ? config.creditContainer : undefined,
+                    infoBox: angular.isDefined(config.cesiumInfoBox) ? config.cesiumInfoBox : true,
                     terrainProvider: terrain_provider,
                     terrainExaggeration: config.terrainExaggeration || 1.0,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
@@ -85,7 +85,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
 
                 me.viewer = viewer;
                 HsCsCamera.init(viewer, hs_map);
-                HsCsTime.init(viewer, hs_map, me);
+                HsCsTime.init(viewer, hs_map, me, $rootScope);
                 HsCsLayers.init(viewer, hs_map, me, $rootScope, config, utils);
 
                 viewer.camera.moveEnd.addEventListener(function (e) {
@@ -191,6 +191,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
 
             this.getCameraCenterInLngLat = HsCsCamera.getCameraCenterInLngLat;
             this.linkOlLayerToCesiumLayer = HsCsLayers.linkOlLayerToCesiumLayer;
+            this.broadcastLayerList = HsCsTime.broadcastLayerList;
             var me = this;
 
         }])
