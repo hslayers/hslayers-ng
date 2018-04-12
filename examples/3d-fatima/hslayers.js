@@ -6,6 +6,7 @@ var gitsha = $.ajax({
     url: hsl_path + 'gitsha.js',
     async: false
 }).responseText;
+if(gitsha.length>100) gitsha = Math.random();
 
 if(require.config) require.config({
     urlArgs: 'bust=' + gitsha,

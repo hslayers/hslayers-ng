@@ -150,7 +150,6 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 //}
 
                                 if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
-                                if (console) console.log(layer.get('title'), layer.getVisible());
                                 /**
                                 * @ngdoc property
                                 * @name hs.layermanager.service#layer

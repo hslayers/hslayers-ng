@@ -12,23 +12,27 @@
   $( document ).ready(function() 
   {
     var links = {
+                "3d-fatima":{name:"Soil visualization", description: "3D visualization of soil data for Fatima project"},          
+                "3d-olu":{name:"Open land use in 3D", description: "3D visualization land use parcels"},          
+                "databiocc":{name:"DataBio", description: "WMST services visualized in 3D using CesiumJS which show ocean characteristics at different time intervals"},          
                 "datasources":{name:"Data sources", description: "Datatank integration and GetCapabilities request demo."},
+                "compositions":{name:"Thematic maps", description: "Thematic maps and loading of map compositions"},
                 "elf":{name:"Cadaster", description: "WFS 2.0 layers with Czech cadaster."}, 
                 //"eurostat":{name:"Eurostat", description: "Eurostat data visualization for NUTS2 regions."},
-                "full":{name:"Full functionality", description: "Multiple hslayers features combined in one example"},
-                "otn_charts":{name:"Traffic visualization using D3", description: "D3 chart overlay interactively demonstrating traffic accident statistics"},
-                "geosparql":{name:"Smart Tourist Data", description: "Integration with Virtuoso SPARQL endpoint which contains points of interest linked open data in europe + Panoramio images and Czech forest roads"}, 
+                "full":{name:"Full functionality", description: "Multiple hslayers features combined in one example"},               
+                //"geosparql":{name:"Smart Tourist Data", description: "Integration with Virtuoso SPARQL endpoint which contains points of interest linked open data in europe + Panoramio images and Czech forest roads"}, 
                 //"forestry":{name:"Forest statistics", description: "Integration with Virtuoso SPARQL endpoint which contains statistics about forestry"}, 
                 "otn_charts":{name:"Traffic accidents using WFS", description: "WFS 1.0 service demo"},
                 "vectorWmsOtn":{name:"Traffic visualization using WMS", description: "Traffic accidents, clustered point data"}, 
                 //"wfs_crossfilter":{name:"Feature crossfiltering", description: "Demonstration of dynamic feature filtering using Crossfilter and D3 libraries"},
-                "compositions":{name:"Thematic maps", description: "Thematic maps and loading of map compositions"},
-                "webgl_viz":{name:"WebGLayer & HSLayers visualization", description: "Visualization of subset of car accidents in the UK (300 000 points) based on multiple coordinated views with fast brush&link interactions"},
+                "produce-3d":{name:"Wine fields in 3D", description: "3D visualization Wine field yield and points of interest"},          
+                "otn_charts":{name:"Traffic visualization using D3", description: "D3 chart overlay interactively demonstrating traffic accident statistics"},
                 "routing":{name:"SDI4Apps OpenAPI routing", description: "Calculate shortest routes, optimize multi destination routes as well as calculate reachable areas on road networks"},
                 "tracking":{name:"SDI4Apps OpenAPI tracking", description: "Demonstrate how SensLog may be used to track mobile sensors"},
                 "split_map":{name:"Split map", description: "Demonstrate how the map can be split in two parts using a draggable cursor."},
                 "senslog":{name:"Senslog integration", description: "UNDER DEVELOPMENT. Map showing sensor observations from Senslog database and demo of feature drawing component"},
-                "socketio":{name:"Collaborative map", description: "UNDER DEVELOPMENT. Realtime collaboration platform which synchronizes feature drawing and layers between multiple computers using Node + Socket.io"}
+                //"socketio":{name:"Collaborative map", description: "UNDER DEVELOPMENT. Realtime collaboration platform which synchronizes feature drawing and layers between multiple computers using Node + Socket.io"},
+                "webgl_viz":{name:"WebGLayer & HSLayers visualization", description: "Visualization of subset of car accidents in the UK (300 000 points) based on multiple coordinated views with fast brush&link interactions"},
                 };
 
     var exampleCount = Object.keys(links).length;
