@@ -5,9 +5,9 @@
  * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
 
-define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', 'ows_nonwms', 'config_parsers'],
+define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'moment', 'map', 'ows_nonwms', 'config_parsers'],
 
-    function (angular, ol, SparqlJson, social) {
+    function (angular, ol, SparqlJson, social, moment) {
         return {
             init() {
                 angular.module('hs.layermanager')
@@ -61,8 +61,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                         new_layer.max_time = d.monthDiff(d2);
                                         break;
                                     default:
-                                        new_layer.min_time = new Date(metadata.timeInterval[0]).getTime();
-                                        new_layer.max_time = new Date(metadata.timeInterval[1]).getTime();
+                                        new_layer.min_time = moment.utc(metadata.timeInterval[0]).toDate().getTime();
+                                        new_layer.max_time = moment.utc(metadata.timeInterval[1]).toDate().getTime();
                                 }
                             }
 
@@ -183,7 +183,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              */
                             me.setLayerTime = function (currentlayer, application_specific_timezone_offset) {
                                 var dimensions_time = currentlayer.layer.get('dimensions_time') || currentlayer.layer.dimensions_time;
-                                var d = new Date(dimensions_time.timeInterval[0]);
+                                var d = moment.utc(dimensions_time.timeInterval[0]);
                                 switch (currentlayer.time_unit) {
                                     case "FullYear":
                                         d.setFullYear(currentlayer.date_increment);
@@ -198,12 +198,10 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                         if (currentlayer.date_increment > currentlayer.max_time) {
                                             currentlayer.date_increment = currentlayer.max_time;
                                         }
-                                        d = new Date(parseInt(currentlayer.date_increment));
+                                        d = moment.utc(parseInt(currentlayer.date_increment));
                                 }
 
-                                currentlayer.time = d;
-                                if (angular.isDefined(application_specific_timezone_offset))
-                                    d.setTime(d.getTime() + application_specific_timezone_offset * 3600 * 1000);
+                                currentlayer.time = d.toDate();
                                 currentlayer.layer.getSource().updateParams({
                                     'TIME': d.toISOString()
                                 });
