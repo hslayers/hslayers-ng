@@ -145,8 +145,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 title: "Temperature",
                 layer: 'thetao',
                 style: 'boxfill/rainbow',
-                palette: 'rainbow',
-                visible: true
+                palette: 'rainbow'
             },
             {
                 title: "Salinity",
