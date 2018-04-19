@@ -30,7 +30,7 @@ define(['ol', 'cesiumjs'],
 
 
         var me = {
-            setupEvents(){
+            setupEvents() {
                 me.$rootScope.$on('layermanager.base_layer_visible_changed', function (event, data, b) {
                     if (angular.isDefined(data.type) && data.type == 'terrain') {
                         me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
@@ -51,14 +51,14 @@ define(['ol', 'cesiumjs'],
 
             },
 
-             /**
-             * @ngdoc method
-             * @name hs.cesium.service#repopulateLayers
-             * @public
-             * @param {object} visible_layers List of layers, which should be visible. 
-             * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
-             */
-            repopulateLayers (visible_layers) {
+            /**
+            * @ngdoc method
+            * @name hs.cesium.service#repopulateLayers
+            * @public
+            * @param {object} visible_layers List of layers, which should be visible. 
+            * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
+            */
+            repopulateLayers(visible_layers) {
                 if (angular.isDefined(me.config.default_layers)) {
                     angular.forEach(me.config.default_layers, me.processOlLayer);
                 }
@@ -68,7 +68,7 @@ define(['ol', 'cesiumjs'],
                 //Some layers might be loaded from cookies before cesium service was called
                 angular.forEach(me.hs_map.map.getLayers(), function (lyr) {
                     if (angular.isUndefined(lyr.cesium_layer))
-                    me.processOlLayer(lyr);
+                        me.processOlLayer(lyr);
                 });
             },
 
@@ -180,13 +180,16 @@ define(['ol', 'cesiumjs'],
                             me.viewer.imageryLayers.add(cesium_layer);
                         } else {
                             me.viewer.dataSources.add(cesium_layer);
-                            me.linkOlSourceToCesiumDatasource(lyr.getSource(), cesium_layer);
+                            debugger;
+                            if (lyr.get('title') != 'Point clicked') {
+                                me.linkOlSourceToCesiumDatasource(lyr.getSource(), cesium_layer);
+                            }
                         }
                     }
                 }
             },
 
-            convertOlToCesiumProvider (ol_lyr) {
+            convertOlToCesiumProvider(ol_lyr) {
 
                 if (ol_lyr.getSource() instanceof ol.source.OSM) {
                     return new Cesium.ImageryLayer(Cesium.createOpenStreetMapImageryProvider(), {
@@ -204,7 +207,7 @@ define(['ol', 'cesiumjs'],
                 }
             },
 
-            createVectorDataSource (ol_lyr) {
+            createVectorDataSource(ol_lyr) {
                 if (ol_lyr.getSource().getFormat() instanceof ol.format.KML) {
                     return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(),
                         {
@@ -222,7 +225,7 @@ define(['ol', 'cesiumjs'],
                 }
             },
 
-            createTileProvider (ol_lyr) {
+            createTileProvider(ol_lyr) {
                 var src = ol_lyr.getSource();
                 var params = src.getParams();
                 params.VERSION = params.VERSION || '1.1.1';
@@ -253,7 +256,7 @@ define(['ol', 'cesiumjs'],
             },
 
             //Same as normal tiled WebMapServiceImageryProvider, but with bigger tileWidth and tileHeight
-            createSingleImageProvider (ol_lyr) {
+            createSingleImageProvider(ol_lyr) {
                 var src = ol_lyr.getSource();
                 var params = src.getParams();
                 params.VERSION = params.VERSION || '1.1.1';
