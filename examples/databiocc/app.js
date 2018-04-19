@@ -163,7 +163,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             layers.push(new ol.layer.Image({
                 title: def.title,
                 source: new ol.source.ImageWMS({
-                    url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly',
+                    url: 'http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024?',
                     params: {
                         LAYERS: def.layer,
                         VERSION: '1.3.0',
@@ -171,11 +171,11 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                         INFO_FORMAT: "text/html",
                         time: '2018-02-15T00:00:00.000Z',
                         STYLE: def.style,
-                        possible_times: prepareTimeSteps('2016-01-16T12:00:00.000Z,2016-02-15T12:00:00.000Z,2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H,2016-08-16T12:00:00.000Z/2016-12-16T12:00:00.000Z/P30DT12H,2017-01-16T12:00:00.000Z,2017-02-15T00:00:00.000Z,2017-03-16T12:00:00.000Z/2017-07-16T12:00:00.000Z/P30DT12H,2017-08-16T12:00:00.000Z/2017-12-16T12:00:00.000Z/P30DT12H,2018-02-15T00:00:00.000Z')
+                        possible_times: prepareTimeSteps('2016-01-01T12:00:00.000Z/2018-04-28T12:00:00.000Z/P1D')
                     },
                     crossOrigin: null
                 }),
-                legends: [`http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024-monthly?REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
+                legends: [`http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024??REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
                 visible: def.visible || false,
                 opacity: 0.7,
                 path: 'Physical indicators'
