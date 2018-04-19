@@ -175,7 +175,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                     },
                     crossOrigin: null
                 }),
-                legends: [`http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024??REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
+                legends: [`http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024?REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
                 visible: def.visible || false,
                 opacity: 0.7,
                 path: 'Physical indicators'
