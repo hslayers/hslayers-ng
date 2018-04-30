@@ -178,7 +178,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 legends: [`http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024?REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
                 visible: def.visible || false,
                 opacity: 0.7,
-                path: 'Physical indicators'
+                path: '<small>Daily mean fields from Global Ocean Physics Analysis and Forecast, updated daily GLOBAL_ANALYSIS_FORECAST_PHY_001_024'
             }));
         });
 
@@ -252,7 +252,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 legends: [`http://nrt.cmems-du.eu/thredds/wms/dataset-global-analysis-forecast-bio-001-014?REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
                 visible: def.visible || false,
                 opacity: 0.7,
-                path: 'Bio indicators'
+                path: '<small>Weekly mean fields from Global Ocean Biogeochemistry Analysis GLOBAL_ANALYSIS_FORECAST_BIO_001_014'
             }));
         });
 

@@ -180,7 +180,6 @@ define(['ol', 'cesiumjs'],
                             me.viewer.imageryLayers.add(cesium_layer);
                         } else {
                             me.viewer.dataSources.add(cesium_layer);
-                            debugger;
                             if (lyr.get('title') != 'Point clicked') {
                                 me.linkOlSourceToCesiumDatasource(lyr.getSource(), cesium_layer);
                             }

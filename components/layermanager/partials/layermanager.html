@@ -57,8 +57,8 @@
                 </span>
             </li>
             <ul class="list-group hs-lm-layerlist" ng-repeat="value in data.folders.sub_folders | orderBy:'name' ">
-                <li class="list-group-item active">
-                    <span>{{value.name}}</span>
+                <li class="list-group-item active" >
+                    <span ng-bind-html="value.name"></span>
                 </li>
                 <li hs.layermanager.folder_directive ng-show='value.sub_folders.length>0'></li>
                 <li hs.layermanager.layerlist_directive></li>
