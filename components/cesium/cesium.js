@@ -35,7 +35,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                 if (typeof Cesium == 'undefined') {
                     console.error('Please include cesium in shim definition: cesiumjs: {exports: \'Cesium\'}');
                 }
-                window.CESIUM_BASE_URL = Core.getNmPath() + 'cesium/Build/Cesium';
+                window.CESIUM_BASE_URL = Core.getNmPath() + 'cesium/Build/Cesium/';
                 var terrain_provider = new Cesium.CesiumTerrainProvider({
                     url: config.terrain_provider || 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
                 });
