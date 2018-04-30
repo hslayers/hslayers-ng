@@ -46,8 +46,12 @@ define(['ol', 'cesiumjs'],
             getViewportPolygon: function(){
 
                 function cornerToDegrees(d) {
-                    return [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).longitude),
-                    Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).latitude)];
+                    try {
+                        return [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).longitude),
+                            Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).latitude)];
+                    } catch (ex){
+                        return [0, 0, 0, 0]
+                    }
                 }
                 
                 var center = [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).longitude), Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).latitude)];
