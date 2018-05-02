@@ -5,7 +5,6 @@ define(['ol', 'cesiumjs', 'moment'],
         var me = {
             monitorTimeLine() {
                 Cesium.knockout.getObservable(me.viewer.clockViewModel, 'currentTime').subscribe(function (value) {
-                    var to_be_deleted = [];
                     var something_changed = false;
                     for (var i = 0; i < me.viewer.imageryLayers.length; i++) {
 
@@ -17,37 +16,28 @@ define(['ol', 'cesiumjs', 'moment'],
                         var layer = me.viewer.imageryLayers.get(i);
                         if (layer.imageryProvider instanceof Cesium.WebMapServiceImageryProvider) {
                             if (layer.prm_cache && me.getTimeParameter(layer)) {
-                                if (layer.prm_cache.possible_times) {
+                                if (angular.isDefined(layer.prm_cache.dimensions.time)) {
                                     var min_dist = Number.MAX_VALUE;
                                     var min_i = -1;
-                                    for (var pt = 0; pt < layer.prm_cache.possible_times.length; pt++) {
-                                        var diff2 = round_time - layer.prm_cache.possible_times[pt];
+                                    for (var pt = 0; pt < layer.prm_cache.dimensions.time.length; pt++) {
+                                        var diff2 = round_time - layer.prm_cache.dimensions.time[pt];
                                         if (diff2 > 0 && diff2 < min_dist) {
                                             min_dist = diff2;
                                             min_i = pt;
                                         }
                                     }
-                                    round_time = layer.prm_cache.possible_times[min_i];
+                                    round_time = layer.prm_cache.dimensions.time[min_i];
                                 }
                                 var diff = Math.abs(round_time - new Date(layer.prm_cache.parameters[me.getTimeParameter(layer)]));
                                 if (diff > 1000 * 60) {
                                     //console.log('Was', layer.prm_cache.parameters[me.getTimeParameter(layer)], 'New', round_time)
-                                    layer.prm_cache.parameters[me.getTimeParameter(layer)] = round_time.toISOString();
-                                    to_be_deleted.push(layer);
-                                    var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(layer.prm_cache), {
-                                        alpha: layer.alpha,
-                                        show: layer.show
-                                    });
-                                    tmp.prm_cache = layer.prm_cache;
-                                    me.hs_cesium.linkOlLayerToCesiumLayer(layer.ol_layer, tmp);
-                                    me.viewer.imageryLayers.add(tmp);
+                                    me.HsCsLayers.changeLayerParam(layer, me.getTimeParameter(layer), round_time.toISOString());
                                     something_changed = true;
                                 }
                             }
                         }
                     }
-                    while (to_be_deleted.length > 0)
-                        me.viewer.imageryLayers.remove(to_be_deleted.pop());
+                    me.HsCsLayers.removeLayersWithOldParams();
                     if (something_changed) {
                         me.broadcastLayerList();
                     }
@@ -82,12 +72,13 @@ define(['ol', 'cesiumjs', 'moment'],
                 }
             },
 
-            init: function (viewer, hs_map, hs_cesium, _$rootScope) {
+            init: function (viewer, hs_map, hs_cesium, _$rootScope, HsCsLayers) {
                 me.viewer = viewer;
                 me.hs_map = hs_map;
                 me.hs_cesium = hs_cesium;
                 me.monitorTimeLine();
                 $rootScope = _$rootScope;
+                me.HsCsLayers = HsCsLayers;
             }
 
         };

@@ -107,8 +107,9 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             visible: true,
             opacity: 0.7,
         }));
-        
 
+
+        var depths = '-0.49402499198913574,-1.5413750410079956,-2.6456689834594727,-3.8194949626922607,-5.078224182128906,-6.440614223480225,-7.92956018447876,-9.572997093200684,-11.404999732971191,-13.467140197753906,-15.810070037841797,-18.495559692382812,-21.598819732666016,-25.211410522460938,-29.444730758666992,-34.43415069580078,-40.344051361083984,-47.37369155883789,-55.76428985595703,-65.80726623535156,-77.85385131835938,-92.3260726928711,-109.72930145263672,-130.66600036621094,-155.85069274902344,-186.12559509277344,-222.47520446777344,-266.0403137207031,-318.1274108886719,-380.2130126953125,-453.9377136230469,-541.0889282226562,-643.5667724609375,-763.3331298828125,-902.3392944335938,-1062.43994140625,-1245.291015625,-1452.2509765625,-1684.2840576171875,-1941.8929443359375,-2225.077880859375,-2533.3359375,-2865.702880859375,-3220.820068359375,-3597.031982421875,-3992.48388671875,-4405.22412109375,-4833.291015625,-5274.7841796875,-5727.9169921875';
 
         angular.forEach([
             {
@@ -145,7 +146,8 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 title: "Temperature",
                 layer: 'thetao',
                 style: 'boxfill/rainbow',
-                palette: 'rainbow'
+                palette: 'rainbow',
+                elevation: depths
             },
             {
                 title: "Salinity",
@@ -171,7 +173,10 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                         INFO_FORMAT: "text/html",
                         time: '2018-02-15T00:00:00.000Z',
                         STYLE: def.style,
-                        possible_times: prepareTimeSteps('2016-01-01T12:00:00.000Z/2018-04-28T12:00:00.000Z/P1D')
+                        dimensions: {
+                            time: prepareTimeSteps('2016-01-01T12:00:00.000Z/2018-04-28T12:00:00.000Z/P1D'),
+                            elevation: def.elevation ? def.elevation.split(',') : undefined
+                        },
                     },
                     crossOrigin: null
                 }),
@@ -232,7 +237,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 style: 'boxfill/rainbow',
                 palette: 'rainbow'
             }
-            
+
         ], function (def) {
             layers.push(new ol.layer.Image({
                 title: def.title,
@@ -245,7 +250,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                         INFO_FORMAT: "text/html",
                         time: '2018-04-07T12:00:00.000Z',
                         STYLE: def.style,
-                        possible_times: prepareTimeSteps('2011-12-31T12:00:00.000Z/2013-12-14T12:00:00.000Z/P7D,2013-12-22T16:00:00.000Z,2013-12-28T12:00:00.000Z/2018-04-14T12:00:00.000Z/P7D')
+                        dimensions: { time: prepareTimeSteps('2011-12-31T12:00:00.000Z/2013-12-14T12:00:00.000Z/P7D,2013-12-22T16:00:00.000Z,2013-12-28T12:00:00.000Z/2018-04-14T12:00:00.000Z/P7D') }
                     },
                     crossOrigin: null
                 }),
@@ -317,6 +322,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 Core.panelEnabled('compositions', true);
                 Core.panelEnabled('status_creator', false);
                 $scope.Core.setDefaultPanel('layermanager');
+                $scope.depths = depths.split(',');
 
                 function createHud() {
                     var el = angular.element('<div hs.hud></div>');
@@ -332,23 +338,29 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
 
                 })
 
-                $rootScope.$on('cesiummap.loaded', function (e, viewer) {
+                $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
                     viewer.targetFrameRate = 30;
                     viewer.timeline.zoomTo(Cesium.JulianDate.fromDate(new Date('2016-01-01')), Cesium.JulianDate.fromDate(new Date('2018-04-01')));
                     setTimeout(createHud, 3000);
+                    $scope.$watch('current_depth', function () {
+                        for (var i = 0; i < viewer.imageryLayers.length; i++) {
+                            var layer = viewer.imageryLayers.get(i);
+                            if (angular.isUndefined(layer.prm_cache) || angular.isUndefined(layer.prm_cache.dimensions) || angular.isUndefined(layer.prm_cache.dimensions.elevation)) continue;
+                            HsCesium.HsCsLayers.changeLayerParam(layer, 'elevation', $scope.current_depth);
+                            HsCesium.HsCsLayers.removeLayersWithOldParams();
+                        }
+                    });
                 });
-
-
 
                 $rootScope.$on('cesium.time_layers_changed', function (e, time_layers) {
                     $scope.time_layers = time_layers;
                     if (!$scope.$$phase) $scope.$apply();
-                    angular.element('.hud').show();
+                    angular.element('.hud .layerlist').show();
                     if ($scope.timeFader) {
                         clearTimeout($scope.timeFader);
                     }
                     $scope.timeFader = setTimeout(function () {
-                        angular.element('.hud').fadeOut();
+                        angular.element('.hud .layerlist').fadeOut();
                     }, 5000)
                 })
 

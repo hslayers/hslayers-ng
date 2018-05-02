@@ -1,32 +1,57 @@
 <div class="hud col-xs-11 col-sm-8 col-md-5 col-lg-4 col-xl-3">
     <style>
-        .sb-right .hud{
+        .sb-right .hud {
             right: 50px;
         }
-        .sb-right.open .hud{
+
+        .sb-right.open .hud {
             right: 400px;
         }
-        .hud{
+
+        .hud {
             bottom: 14px;
             width: 262px;
             opacity: 0.8;
             filter: alpha(opacity=80);
             position: absolute;
         }
+
         .hud table {
             font-size: xx-small;
         }
-        .hud .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
+
+        .hud .table-condensed>tbody>tr>td,
+        .table-condensed>tbody>tr>th,
+        .table-condensed>tfoot>tr>td,
+        .table-condensed>tfoot>tr>th,
+        .table-condensed>thead>tr>td,
+        .table-condensed>thead>tr>th {
             padding: 2px;
         }
-        .hud .well {padding: 0px;}
+
+        .hud .well {
+            padding: 0px;
+        }
     </style>
-    <div class="well">
+    <div class="well layerlist">
         <table class="table table-condensed">
             <tr ng-repeat="time_layer in time_layers">
                 <td>{{time_layer.name}}</td>
                 <td style="width: 90px">{{time_layer.time}}</td>
             </tr>
         </table>
+    </div>
+
+    <div class="well controls">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-6 control-label">Depth</label>
+                <div class="col-sm-6">
+                    <select class="form-control" ng-model="current_depth">
+                        <option ng-value="depth" ng-repeat="depth in depths">{{depth | number : 2}}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

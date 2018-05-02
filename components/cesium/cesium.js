@@ -85,8 +85,12 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
 
                 me.viewer = viewer;
                 HsCsCamera.init(viewer, hs_map);
-                HsCsTime.init(viewer, hs_map, me, $rootScope);
+                HsCsTime.init(viewer, hs_map, me, $rootScope, HsCsLayers);
                 HsCsLayers.init(viewer, hs_map, me, $rootScope, config, utils);
+
+                me.HsCsCamera = HsCsCamera;
+                me.HsCsTime = HsCsTime;
+                me.HsCsLayers = HsCsLayers;
 
                 viewer.camera.moveEnd.addEventListener(function (e) {
                     if (!hs_map.visible) {
@@ -176,7 +180,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                  * @eventType broadcast on $rootScope
                  * @description 
                  */
-                $rootScope.$broadcast('cesiummap.loaded', viewer);
+                $rootScope.$broadcast('cesiummap.loaded', viewer, me);
             }
 
             this.resize = function (event, size) {

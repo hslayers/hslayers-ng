@@ -30,6 +30,7 @@ define(['ol', 'cesiumjs'],
 
 
         var me = {
+            to_be_deleted: [],
             setupEvents() {
                 me.$rootScope.$on('layermanager.base_layer_visible_changed', function (event, data, b) {
                     if (angular.isDefined(data.type) && data.type == 'terrain') {
@@ -234,7 +235,7 @@ define(['ol', 'cesiumjs'],
                 var prm_cache = {
                     url: src.getUrls()[0],
                     layers: src.getParams().LAYERS,
-                    possible_times: src.getParams().possible_times,
+                    dimensions: src.getParams().dimensions,
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
@@ -242,11 +243,7 @@ define(['ol', 'cesiumjs'],
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
                     proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
                 };
-                if (src.getParams().possible_times) {
-                    delete src.getParams().possible_times;
-                    delete prm_cache.parameters.possible_times;
-                }
-                var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(prm_cache), {
+                var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(me.removeUnwantedParams(prm_cache, src)), {
                     alpha: 0.7,
                     show: ol_lyr.getVisible()
                 });
@@ -265,7 +262,7 @@ define(['ol', 'cesiumjs'],
                 var prm_cache = {
                     url: src.getUrl(),
                     layers: src.getParams().LAYERS,
-                    possible_times: src.getParams().possible_times,
+                    dimensions: src.getParams().dimensions,
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
@@ -275,17 +272,38 @@ define(['ol', 'cesiumjs'],
                     tileHeight: 1024,
                     proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
                 };
-                prm_cache.parameters.TEST = 1;
-                if (angular.isDefined(src.getParams().possible_times)) {
-                    delete src.getParams().possible_times;
-                    delete prm_cache.parameters.possible_times;
-                }
-                var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(prm_cache), {
+                
+                var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(me.removeUnwantedParams(prm_cache, src)), {
                     alpha: 0.7,
                     show: ol_lyr.getVisible()
                 });
                 tmp.prm_cache = prm_cache;
                 return tmp;
+            },
+
+            removeUnwantedParams(prm_cache, src){
+                if (angular.isDefined(src.getParams().dimensions)) {
+                    delete src.getParams().dimensions;
+                    delete prm_cache.parameters.dimensions;
+                }
+                return prm_cache;
+            },
+
+            changeLayerParam(layer, parameter, new_value) {
+                layer.prm_cache.parameters[parameter] = new_value;
+                me.to_be_deleted.push(layer);
+                var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(layer.prm_cache), {
+                    alpha: layer.alpha,
+                    show: layer.show
+                });
+                tmp.prm_cache = layer.prm_cache;
+                me.linkOlLayerToCesiumLayer(layer.ol_layer, tmp);
+                me.viewer.imageryLayers.add(tmp);
+            },
+
+            removeLayersWithOldParams() {
+                while (me.to_be_deleted.length > 0)
+                    me.viewer.imageryLayers.remove(me.to_be_deleted.pop());
             }
 
         };
