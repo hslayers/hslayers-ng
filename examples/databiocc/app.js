@@ -276,21 +276,6 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             }],
             default_layers: layers,
             project_name: 'erra/map',
-            datasources: [
-                {
-                    title: "Datasets",
-                    url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
-                    language: 'eng',
-                    type: "ckan",
-                    download: true
-                }, {
-                    title: "Services",
-                    url: "http://cat.ccss.cz/csw/",
-                    language: 'eng',
-                    type: "micka",
-                    code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
-                }
-            ],
             hostname: {
                 "default": {
                     "title": "Default",
@@ -314,7 +299,6 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce) {
                 var map;
 
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 

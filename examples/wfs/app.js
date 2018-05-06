@@ -88,7 +88,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'hs.source.Wfs', 'sidebar', 
 
         module.controller('Main', ['$scope', 'Core',
             function($scope, Core) {
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 

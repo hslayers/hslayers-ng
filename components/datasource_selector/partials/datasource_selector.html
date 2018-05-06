@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div role="tabpanel"  ng-class="{'tab-pane': true, 'active': wms_connecting}" hs.ows.directive ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources" id="OWS"></div>
+            <div role="tabpanel"  ng-class="{'tab-pane': true, 'active': wms_connecting || data.datasources.length==0}" hs.ows.directive ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources" id="OWS"></div>
         </div>
     </div>
 </div>

@@ -72,7 +72,6 @@ define(['ol', 'toolbar', 'layermanager', 'hs.source.Wfs', 'geojson', 'sidebar', 
 
         module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', 'year_selector_service',
             function($scope, $compile, $element, Core, OlMap, config, year_selector_service) {
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 

@@ -109,7 +109,6 @@ define(['ol', 'sidebar', 'toolbar', 'layermanager', 'hs.source.Wfs', 'map', 'que
 
         module.controller('Main', ['$scope', 'Core', 'hs.map.service',
             function($scope, Core, OlMap) {
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 $scope.Core.sidebarRight = false;

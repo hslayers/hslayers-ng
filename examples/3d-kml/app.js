@@ -99,7 +99,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search'
 
         module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config',
             function($scope, $compile, $element, Core, OlMap, config) {
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 

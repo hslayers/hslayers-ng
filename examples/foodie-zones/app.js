@@ -166,7 +166,6 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'hs.source.Sparql
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service', '$compile', 'hs.query.wmsService', '$sce',
             function($scope, Core, QueryService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils, $compile, WmsService, $sce) {
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.sidebarExpanded = false;

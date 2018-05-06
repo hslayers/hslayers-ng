@@ -122,7 +122,7 @@ define(['angular', 'ol', 'map'],
                     this.data.suggestionConfig = {};
                     this.data.suggestions = [];
                     this.data.suggestionsLoaded = true;
-                    this.data.datasources = config.datasources;
+                    this.data.datasources = config.datasources || [];
 
                     var extentLayer = new ol.layer.Vector({
                         title: "Datasources extents",
@@ -212,8 +212,8 @@ define(['angular', 'ol', 'map'],
                                                 }
                                             }
                                         }
-                                    }, 
-                                    error: function(e){
+                                    },
+                                    error: function (e) {
                                         dataset.loaded = true;
                                     }
                                 });
@@ -333,7 +333,7 @@ define(['angular', 'ol', 'map'],
                         if (typeof me.suggestionAjax != 'undefined') me.suggestionAjax.abort();
                         var url = me.data.mickaDS.url + '../util/suggest.php?&type=' + me.data.suggestionConfig.param + '&query=' + me.data.suggestionFilter;
                         url = utils.proxify(url);
-                        me.data.suggestionsLoaded = false; 
+                        me.data.suggestionsLoaded = false;
                         me.suggestionAjax = $.ajax({
                             url: url,
                             cache: false,
@@ -568,7 +568,7 @@ define(['angular', 'ol', 'map'],
                             if (me.data.filterByExtent) me.loadDatasets(me.data.datasources);
                         });
                         OlMap.map.addLayer(extentLayer);
-                        if (angular.isUndefined(me.data.datasources[0].loaded) && (Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser'))) {
+                        if (me.data.datasources.length > 0 && angular.isUndefined(me.data.datasources[0].loaded) && (Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser'))) {
                             me.loadDatasets(me.data.datasources);
                             me.fillCodesets(me.data.datasources);
                         }
@@ -605,7 +605,7 @@ define(['angular', 'ol', 'map'],
                     $scope.wms_connecting = false;
                     $scope.config = config;
                     $scope.advancedSearch = false;
-                    
+
                     $scope.$on('ows.wms_connecting', function () {
                         $scope.wms_connecting = true;
                     });
@@ -654,7 +654,8 @@ define(['angular', 'ol', 'map'],
                             DS.checkAdvancedMicka();
                             $scope.data.suggestionFilter = $scope.data.query[input];
                             DS.suggestionFilterChanged();
-                        } else {                        if ($('#ds-suggestions-micka').length == 0) {
+                        } else {
+                            if ($('#ds-suggestions-micka').length == 0) {
                                 var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
                                 $("#hs-dialog-area").append(el);
                                 $compile(el)($scope);
@@ -731,7 +732,7 @@ define(['angular', 'ol', 'map'],
                             clickOutsideToClose: true,
                             escapeToClose: true,
                             scope: $scope,
-                            preserveScope: true,  
+                            preserveScope: true,
                             templateUrl: hsl_path + 'materialComponents/panelContents/datasourceBrowserMetadata.html',
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {

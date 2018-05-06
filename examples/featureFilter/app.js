@@ -98,7 +98,6 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser',
             function($scope, Core, BaseService, composition_parser) {
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.setMainPanel('composition_browser');

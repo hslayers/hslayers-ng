@@ -229,7 +229,6 @@ define(['ol', 'toolbar', 'layermanager', 'geojson', 'pois', 'sidebar', 'query', 
             function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce) {
                 var map;
 
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 

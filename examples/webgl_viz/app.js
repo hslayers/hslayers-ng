@@ -75,7 +75,6 @@ define(['ol',
 
         module.controller('Main', ['$scope', 'Core', 'hs.map.service', 'webgl_viz',
             function($scope, Core, OlMap, webgl_viz) {
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.sidebarButtons = false;

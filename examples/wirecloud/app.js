@@ -223,7 +223,6 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
 
         module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'config',
             function($scope, Core, QueryService, config) {
-                if (console) console.log("Main called");
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
 
