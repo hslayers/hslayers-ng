@@ -23,7 +23,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
          */
         .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', 'Core', function (config, $rootScope, utils, hs_map, layer_manager_service, Core) {
             var viewer;
-            var BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
+            var BING_KEY = angular.isDefined(config.cesiumBingKey) ? config.cesiumBingKey : 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
 
             /**
              * @ngdoc method
@@ -79,7 +79,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     shadows: false
                 });
 
-                viewer.scene.debugShowFramesPerSecond = true;
+                viewer.scene.debugShowFramesPerSecond = angular.isDefined(config.cesiumdDebugShowFramesPerSecond) ? config.cesiumdDebugShowFramesPerSecond : false;
 
                 viewer.terrainProvider = terrain_provider;
 
@@ -118,7 +118,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                         destination: Cesium.Cartesian3.fromDegrees(data.coordinate[0], data.coordinate[1], 15000.0)
                     });
                 })
-               
+
                 var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
                 handler.setInputAction(function (movement) {
                     var pickRay = viewer.camera.getPickRay(movement.position);
