@@ -1,6 +1,6 @@
-define(['ol', 'cesiumjs'],
+define(['ol', 'cesiumjs', 'moment'],
 
-    function (ol, Cesium) {
+    function (ol, Cesium, moment) {
         var utils;
 
         function MyProxy(proxy, maxResolution) {
@@ -235,7 +235,7 @@ define(['ol', 'cesiumjs'],
                 var prm_cache = {
                     url: src.getUrls()[0],
                     layers: src.getParams().LAYERS,
-                    dimensions: src.getParams().dimensions,
+                    dimensions: ol_lyr.get('dimensions'),
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
@@ -262,7 +262,7 @@ define(['ol', 'cesiumjs'],
                 var prm_cache = {
                     url: src.getUrl(),
                     layers: src.getParams().LAYERS,
-                    dimensions: src.getParams().dimensions,
+                    dimensions: ol_lyr.get('dimensions'),
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
@@ -282,14 +282,14 @@ define(['ol', 'cesiumjs'],
             },
 
             removeUnwantedParams(prm_cache, src){
-                if (angular.isDefined(src.getParams().dimensions)) {
-                    delete src.getParams().dimensions;
+                if (angular.isDefined(prm_cache.parameters.dimensions)) {
                     delete prm_cache.parameters.dimensions;
                 }
                 return prm_cache;
             },
 
             changeLayerParam(layer, parameter, new_value) {
+                new_value = moment(new_value).isValid() ? moment(new_value).toISOString(): new_value;
                 layer.prm_cache.parameters[parameter] = new_value;
                 me.to_be_deleted.push(layer);
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(layer.prm_cache), {

@@ -543,6 +543,14 @@ define(['angular', 'ol', 'map'],
                         me.data.query.sortby = "";
                     }
 
+                    function dataSourceExistsAndEmpty(){
+                        return me.data.datasources.length > 0 && angular.isUndefined(me.data.datasources[0].loaded)
+                    }
+
+                    function panelVisible(){
+                        return Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser')
+                    }
+
                     function init() {
                         OlMap.map.on('pointermove', function (evt) {
                             var features = extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
@@ -564,20 +572,20 @@ define(['angular', 'ol', 'map'],
                             if (something_done && !$rootScope.$$phase) $rootScope.$digest();
                         });
                         $rootScope.$on('map.extent_changed', function (e) {
-                            if (Core.mainpanel != 'datasource_selector' || Core.mainpanel != "datasources") return;
+                            if (!panelVisible()) return;
                             if (me.data.filterByExtent) me.loadDatasets(me.data.datasources);
                         });
                         OlMap.map.addLayer(extentLayer);
-                        if (me.data.datasources.length > 0 && angular.isUndefined(me.data.datasources[0].loaded) && (Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser'))) {
+                        if (dataSourceExistsAndEmpty() && panelVisible()) {
                             me.loadDatasets(me.data.datasources);
                             me.fillCodesets(me.data.datasources);
                         }
                         $rootScope.$on('core.mainpanel_changed', function (event) {
-                            if (angular.isUndefined(me.data.datasources[0].loaded) && (Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser'))) {
+                            if (dataSourceExistsAndEmpty() && panelVisible()) {
                                 me.loadDatasets(me.data.datasources);
                                 me.fillCodesets(me.data.datasources);
                             }
-                            extentLayer.setVisible(Core.panelVisible('datasource_selector') || Core.panelVisible('datasources'));
+                            extentLayer.setVisible(panelVisible());
                         });
                     }
 

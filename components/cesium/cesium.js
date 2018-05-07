@@ -131,7 +131,6 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     if (!Cesium.defined(featuresPromise)) {
                         if (console) console.log('No features picked.');
                     } else {
-
                         Cesium.when(featuresPromise, function (features) {
 
                             var s = '';
@@ -181,6 +180,13 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                  * @description 
                  */
                 $rootScope.$broadcast('cesiummap.loaded', viewer, me);
+            }
+
+            this.dimensionChanged = function(layer, dimension){
+                var layer = layer.cesium_layer;
+                if (angular.isUndefined(layer.prm_cache) || angular.isUndefined(layer.prm_cache.dimensions) || angular.isUndefined(layer.prm_cache.dimensions[dimension.name])) return;
+                me.HsCsLayers.changeLayerParam(layer, dimension.name, dimension.value);
+                me.HsCsLayers.removeLayersWithOldParams();
             }
 
             this.resize = function (event, size) {
@@ -256,7 +262,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     if (hs_map.visible) {
                         $timeout(function () {
                             Core.updateMapSize();
-                        }, 0)
+                        }, 5000)
                     }
                 }
 
@@ -268,6 +274,10 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     title: '3D/2D',
                     icon_class: 'glyphicon glyphicon-globe',
                     click: toggleCesiumMap
+                });
+
+                $rootScope.$on('layermanager.dimension_changed', function(e, data){
+                    service.dimensionChanged(data.layer, data.dimension)
                 });
 
                 $rootScope.$on('Core.mapSizeUpdated', service.resize);

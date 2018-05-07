@@ -69,9 +69,26 @@
                 <input type="checkbox" class="layer-checked" ng-model="layer.checked" /> {{layer.Title}}
             </div>
             <ul class="list-group" ng-if="hasNestedLayers(layer)">
-                <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">{{sub_layer.Title}} <input type="checkbox" class="layer-checked" ng-model="sub_layer.checked" ng-if="!hasNestedLayers(sub_layer)" />
+                <li ng-repeat="sub_layer in layer.Layer" class="list-group-item">
+                    <div class="hs-ows-layer-title" title="{{sub_layer.Title}}">{{sub_layer.Title}}</div> 
+                    <input type="checkbox" class="layer-checked" ng-model="sub_layer.checked" ng-if="!hasNestedLayers(sub_layer)" />
+                    <form class="form-horizontal">
+                        <div class="form-group" ng-repeat="dimension in sub_layer.Dimension">
+                            <label class="control-label col-xs-4">{{dimension.name}}:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="dimension.value">
+                                    <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">{{dimension_value}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
                     <ul class="list-group" ng-if="hasNestedLayers(sub_layer)">
-                        <li ng-repeat="sub_layer2 in sub_layer.Layer" class="list-group-item">{{sub_layer2.Title}} <input type="checkbox" class="layer-checked" ng-model="sub_layer2.checked" />
+                        <li ng-repeat="sub_layer2 in sub_layer.Layer" class="list-group-item">
+                            <div class="hs-ows-layer-title"  title="{{sub_layer.Title}}">{{sub_layer2.Title}}</div> 
+                            <input type="checkbox" class="layer-checked" ng-model="sub_layer2.checked" />
+                            <span ng-repeat="dimension in sub_layer2.Dimension">
+                                {{dimension.name}}
+                            </span>
                         </li>
                     </ul>
                 </li>

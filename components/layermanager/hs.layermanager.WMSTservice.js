@@ -150,27 +150,30 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'moment'
                                     var metadata = {};
                                     var value = layer.get('dimensions').time.values;
                                     if (angular.isArray(value)) value = value[0];
-                                    value = value.replace(/\s*/g, "");
+                                    if (typeof value === 'string' || value instanceof String) {
+                                        value = value.replace(/\s*/g, "");
 
-                                    if (value.search("/") > -1) {
-                                        var interval = value.split("/").map(function (d) {
-                                            if (d.search("Z") > -1) {
-                                                d = d.replace("Z", "00:00");
+                                        if (value.search("/") > -1) {
+                                            var interval = value.split("/").map(function (d) {
+                                                if (d.search("Z") > -1) {
+                                                    d = d.replace("Z", "00:00");
+                                                }
+                                                return d;
+                                            });
+
+                                            if (interval.length == 3) {
+                                                metadata.timeStep = parseInterval(interval[2]);
+                                                interval.pop();
                                             }
-                                            return d;
-                                        });
-
-                                        if (interval.length == 3) {
-                                            metadata.timeStep = parseInterval(interval[2]);
-                                            interval.pop();
+                                            if (interval.length == 2)
+                                                metadata.timeInterval = interval;
                                         }
-
-                                        metadata.timeInterval = interval;
+                                        angular.extend(layer, {
+                                            dimensions_time: metadata
+                                        })
                                     }
-                                    angular.extend(layer, {
-                                        dimensions_time: metadata
-                                    })
-                                    return true;
+
+                                    return Object.keys(metadata).length > 0;
                                 }
                                 return false;
                             }

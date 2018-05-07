@@ -19,14 +19,14 @@ define(['ol', 'cesiumjs', 'moment'],
                                 if (angular.isDefined(layer.prm_cache.dimensions.time)) {
                                     var min_dist = Number.MAX_VALUE;
                                     var min_i = -1;
-                                    for (var pt = 0; pt < layer.prm_cache.dimensions.time.length; pt++) {
-                                        var diff2 = round_time - layer.prm_cache.dimensions.time[pt];
+                                    for (var pt = 0; pt < layer.prm_cache.dimensions.time.values.length; pt++) {
+                                        var diff2 = round_time - layer.prm_cache.dimensions.time.values[pt];
                                         if (diff2 > 0 && diff2 < min_dist) {
                                             min_dist = diff2;
                                             min_i = pt;
                                         }
                                     }
-                                    round_time = layer.prm_cache.dimensions.time[min_i];
+                                    round_time = layer.prm_cache.dimensions.time.values[min_i];
                                 }
                                 var diff = Math.abs(round_time - new Date(layer.prm_cache.parameters[me.getTimeParameter(layer)]));
                                 if (diff > 1000 * 60) {

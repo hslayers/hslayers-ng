@@ -652,6 +652,17 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
                 }
             }
 
+             /**
+             * @function isLayerWithDimensions
+             * @memberOf hs.layermanager.controller
+             * @param {Ol.layer} lyr Selected layer
+             * @description Test if layer has dimensions
+             */
+            $scope.isLayerWithDimensions = function (lyr_container) {
+                if(angular.isUndefined(lyr_container) || lyr_container == null) return false;
+                return Object.keys(lyr_container.layer.get('dimensions')).length > 0
+            }
+
             /**
              * @function isScaleVisible
              * @memberOf hs.layermanager.controller
@@ -731,6 +742,10 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
                 });
                 hslayers_api.gui.Draw.setLayerToSelect(layer);
                 Core.setMainPanel('draw', false, false);
+            }
+
+            $scope.dimensionChanged = function(currentlayer, dimension){
+                $scope.$emit('layermanager.dimension_changed', {layer: currentlayer.layer, dimension: dimension});
             }
 
             $scope.$on('layer.removed', function (event, layer) {
