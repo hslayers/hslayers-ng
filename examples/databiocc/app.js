@@ -52,7 +52,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                     var interval_def = step_array[i].split('/');
                     var step = moment.interval(interval_def[2]);
                     var interval = moment.interval(interval_def[0] + '/' + interval_def[1]);
-                    while (interval.start() < interval.end()) {
+                    while (interval.start() <= interval.end()) {
                         //console.log(interval.start().toDate().toISOString());
                         steps.push(interval.start().toDate());
                         interval.start(moment.utc(interval.start().toDate()).add(step.period()));
@@ -108,9 +108,14 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             opacity: 0.7,
         }));
 
+        var caps = $.ajax({
+            type: "GET",
+            url: '/cgi-bin/hsproxy.cgi?url='+encodeURIComponent('http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024?service=WMS&request=GetCapabilities'),
+            async: false
+        }).responseText;
 
         var depths = '-0.49402499198913574,-1.5413750410079956,-2.6456689834594727,-3.8194949626922607,-5.078224182128906,-6.440614223480225,-7.92956018447876,-9.572997093200684,-11.404999732971191,-13.467140197753906,-15.810070037841797,-18.495559692382812,-21.598819732666016,-25.211410522460938,-29.444730758666992,-34.43415069580078,-40.344051361083984,-47.37369155883789,-55.76428985595703,-65.80726623535156,-77.85385131835938,-92.3260726928711,-109.72930145263672,-130.66600036621094,-155.85069274902344,-186.12559509277344,-222.47520446777344,-266.0403137207031,-318.1274108886719,-380.2130126953125,-453.9377136230469,-541.0889282226562,-643.5667724609375,-763.3331298828125,-902.3392944335938,-1062.43994140625,-1245.291015625,-1452.2509765625,-1684.2840576171875,-1941.8929443359375,-2225.077880859375,-2533.3359375,-2865.702880859375,-3220.820068359375,-3597.031982421875,-3992.48388671875,-4405.22412109375,-4833.291015625,-5274.7841796875,-5727.9169921875';
-
+        
         angular.forEach([
             {
                 title: "Density ocean mixed layer thickness",
@@ -162,6 +167,11 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 palette: 'rainbow'
             }
         ], function (def) {
+            var timeInterval = $("Layer Name:contains('" + def.layer + "')", caps).parent().find('Dimension[name="time"]').html();
+            var timeSteps = prepareTimeSteps(timeInterval);
+            var elevations; 
+            if($("Layer Name:contains('" + def.layer + "')", caps).parent().find('Dimension[name="elevation"]').length > 0)
+                elevations = $("Layer Name:contains('" + def.layer + "')", caps).parent().find('Dimension[name="elevation"]').html();
             layers.push(new ol.layer.Image({
                 title: def.title,
                 source: new ol.source.ImageWMS({
@@ -171,15 +181,15 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                         VERSION: '1.3.0',
                         FORMAT: "image/png",
                         INFO_FORMAT: "text/html",
-                        time: '2018-02-15T00:00:00.000Z',
+                        time: timeSteps[timeSteps.length - 1].toISOString(),
                         STYLE: def.style
                     },
                     crossOrigin: null
                 }),
                 legends: [`http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024?REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
                 dimensions: {
-                    time: {name: 'time', values: prepareTimeSteps('2016-01-01T12:00:00.000Z/2018-04-28T12:00:00.000Z/P1D') },
-                    elevation: def.elevation ? { name: 'elevation', values: def.elevation.split(',') } : undefined
+                    time: {name: 'time', values: timeSteps },
+                    elevation: def.elevation ? { name: 'elevation', values: elevations.split(',') } : undefined
                 },
                 visible: def.visible || false,
                 opacity: 0.7,
@@ -187,6 +197,11 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             }));
         });
 
+        caps = $.ajax({
+            type: "GET",
+            url: '/cgi-bin/hsproxy.cgi?url='+encodeURIComponent('http://nrt.cmems-du.eu/thredds/wms/dataset-global-analysis-forecast-bio-001-014?service=WMS&request=GetCapabilities'),
+            async: false
+        }).responseText;
 
         angular.forEach([
             {
@@ -239,6 +254,8 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
             }
 
         ], function (def) {
+            var timeInterval = $("Layer Name:contains('" + def.layer + "')", caps).parent().find('Dimension[name="time"]').html();
+            var timeSteps = prepareTimeSteps(timeInterval);
             layers.push(new ol.layer.Image({
                 title: def.title,
                 source: new ol.source.ImageWMS({
@@ -248,13 +265,13 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                         VERSION: '1.3.0',
                         FORMAT: "image/png",
                         INFO_FORMAT: "text/html",
-                        time: '2018-04-07T12:00:00.000Z',
+                        time: timeSteps[timeSteps.length - 1].toISOString(),
                         STYLE: def.style
                     },
                     crossOrigin: null
                 }),
                 legends: [`http://nrt.cmems-du.eu/thredds/wms/dataset-global-analysis-forecast-bio-001-014?REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
-                dimensions: { time: {name: 'time', values: prepareTimeSteps('2011-12-31T12:00:00.000Z/2013-12-14T12:00:00.000Z/P7D,2013-12-22T16:00:00.000Z,2013-12-28T12:00:00.000Z/2018-04-14T12:00:00.000Z/P7D') }},
+                dimensions: { time: {name: 'time', values: timeSteps }},
                 visible: def.visible || false,
                 opacity: 0.7,
                 path: '<small>Weekly mean fields from Global Ocean Biogeochemistry Analysis GLOBAL_ANALYSIS_FORECAST_BIO_001_014'
