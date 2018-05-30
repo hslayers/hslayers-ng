@@ -148,9 +148,9 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                             name: "Coordinates",
                             projections: [{
                                 "name": "EPSG:4326",
-                                "value": ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'))
+                                "value": ol.coordinate.toStringHDMS(ol.proj.transform(coordinate, map.getView().getProjection(), 'EPSG:4326'))
                             }, {
-                                "name": "EPSG:3857",
+                                "name": map.getView().getProjection().getCode(),
                                 "value": ol.coordinate.createStringXY(7)(coordinate)
                             }]
                         };
