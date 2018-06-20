@@ -181,34 +181,34 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'moment'
                             /**
                              * @function setLayerTime
                              * @memberOf hs.layermanager.WMSTservice
-                             * @param {object} currentlayer Selected layer 
+                             * @param {object} currentLayer Selected layer 
                              * @description Update layer time parameter
                              */
-                            me.setLayerTime = function (currentlayer, application_specific_timezone_offset) {
-                                var dimensions_time = currentlayer.layer.get('dimensions_time') || currentlayer.layer.dimensions_time;
+                            me.setLayerTime = function (currentLayer, application_specific_timezone_offset) {
+                                var dimensions_time = currentLayer.layer.get('dimensions_time') || currentLayer.layer.dimensions_time;
                                 var d = moment.utc(dimensions_time.timeInterval[0]);
-                                switch (currentlayer.time_unit) {
+                                switch (currentLayer.time_unit) {
                                     case "FullYear":
-                                        d.setFullYear(currentlayer.date_increment);
+                                        d.setFullYear(currentLayer.date_increment);
                                         break;
                                     case "Month":
-                                        d.addMonths(currentlayer.date_increment);
+                                        d.addMonths(currentLayer.date_increment);
                                         break;
                                     default:
-                                        if (currentlayer.date_increment < currentlayer.min_time) {
-                                            currentlayer.date_increment = currentlayer.min_time;
+                                        if (currentLayer.date_increment < currentLayer.min_time) {
+                                            currentLayer.date_increment = currentLayer.min_time;
                                         }
-                                        if (currentlayer.date_increment > currentlayer.max_time) {
-                                            currentlayer.date_increment = currentlayer.max_time;
+                                        if (currentLayer.date_increment > currentLayer.max_time) {
+                                            currentLayer.date_increment = currentLayer.max_time;
                                         }
-                                        d = moment.utc(parseInt(currentlayer.date_increment));
+                                        d = moment.utc(parseInt(currentLayer.date_increment));
                                 }
 
-                                currentlayer.time = d.toDate();
-                                currentlayer.layer.getSource().updateParams({
+                                currentLayer.time = d.toDate();
+                                currentLayer.layer.getSource().updateParams({
                                     'TIME': d.toISOString()
                                 });
-                                $rootScope.$broadcast('layermanager.layer_time_changed', currentlayer.layer, d.toISOString());
+                                $rootScope.$broadcast('layermanager.layer_time_changed', currentLayer.layer, d.toISOString());
                             }
 
                             return me;
