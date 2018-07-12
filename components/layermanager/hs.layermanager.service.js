@@ -162,7 +162,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                     layer: layer,
                                     grayed: me.isLayerInResolutionInterval(layer),
                                     visible: layer.getVisible(),
-                                    position: layer.get('position')
+                                    position: layer.get('position'),
+                                    hsFilters: layer.get('hsFilters')
                                 };
 
                                 
@@ -200,6 +201,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
 
                                 if (layer.getVisible() && layer.get("base")) me.data.baselayer = getLayerTitle(layer);
                                 me.updateLayerOrder();
+                                $rootScope.$broadcast('layermanager.layer_added', new_layer);
                                 $rootScope.$broadcast('layermanager.updated', layer);
                                 $rootScope.$broadcast('compositions.composition_edited');
                             };

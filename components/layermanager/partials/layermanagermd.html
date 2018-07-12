@@ -1,5 +1,5 @@
 <md-list layout-fill>
-    <md-list-item class="md-line-2" ng-repeat="layer in data.layers | orderBy:layerOrder:true" ng-click="changeLayerVisibility(!layer.visible,layer)"
+    <md-list-item class="md-line-2" ng-repeat="layer in data.layers | orderBy:layerOrder:true" ng-click="setCurrentLayer(layer, layer.layer.ol_uid, obj.coded_path)"
         layout-fill>
         <div layout="column" class="md-list-item-text" layout-fill>
             <div layout="row" layout-fill layout-align="start center">
@@ -26,33 +26,40 @@
             </div>
             <!--Button toolbar-->
             <div layout="row" layout-align="space-around center" layout-wrap class="layer-toolbar">
-                <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="Settings" ng-click="$event.stopPropagation();expandInfo(layer,!layer.expandInfo);">
+                <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="About layer" ng-click="$event.stopPropagation();expandInfo(layer,!layer.expandInfo);">
                     <md-icon>info</md-icon>
                     <md-tooltip md-direction="down" translate>About layer</md-tooltip>
                 </md-button>
-                <md-button layout-fill class="md-icon-button md-primary md-hue-3" aria-label="Settings" ng-click="changePosition(layer,true, $event)">
+                <md-button layout-fill class="md-icon-button md-primary md-hue-3" aria-label="Move layer up" ng-click="changePosition(layer,true, $event)">
                     <md-icon>arrow_upward</md-icon>
                     <md-tooltip md-direction="down" translate>Move layer upward, SHIFT-click to top</md-tooltip>
                 </md-button>
-                <md-button layout-fill class="md-icon-button md-primary md-hue-3" aria-label="Settings" ng-click="changePosition(layer,false, $event)">
+                <md-button layout-fill class="md-icon-button md-primary md-hue-3" aria-label="Move layer down" ng-click="changePosition(layer,false, $event)">
                     <md-icon>arrow_downward</md-icon>
                     <md-tooltip md-direction="down" translate>Move layer downward, SHIFT-click to bottom</md-tooltip>
                 </md-button>
-                <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings" ng-click="$event.stopPropagation();expandSettings(layer,!layer.expandSettings);">
+                <md-button layout-fill class="md-icon-button md-primary" aria-label="Layer options" ng-click="expandSettings(layer,!layer.expandSettings);">
                     <md-icon>settings</md-icon>
                     <md-tooltip md-direction="down" translate>Layer options</md-tooltip>
                 </md-button>
-                <md-button layout-fill class="md-icon-button md-warn md-hue-1" aria-label="Settings" ng-click="$event.stopPropagation();showRemoveLayerDiag($event, layer)">
+                <md-button layout-fill ng-if="layer.hsFilters" class="md-icon-button md-primary" aria-label="Filter features" ng-click="expandFilter(layer,!layer.expandFilter);">
+                    <md-icon>filter_list</md-icon>
+                    <md-tooltip md-direction="down" translate>Filter features</md-tooltip>
+                </md-button>
+                <md-button layout-fill class="md-icon-button md-warn md-hue-1" aria-label="Remove layer" ng-click="showRemoveLayerDiag($event, layer)">
                     <md-icon>delete</md-icon>
                     <md-tooltip md-direction="down" translate>Remove layer</md-tooltip>
                 </md-button>
             </div>
             <!-- expand divider-->
-            <div layout="column" class="divider-layer" layout-fill layout-align="center center" ng-if="layer.expandSettings || layer.expandInfo">
-                <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings" ng-click="$event.stopPropagation();expandSettings(layer,false);expandInfo(layer,false);">
+            <div layout="column" class="divider-layer" layout-fill layout-align="center center" ng-if="layer.expandSettings || layer.expandInfo || layer.expandFilter">
+                <md-button layout-fill class="md-icon-button md-primary" aria-label="Hide" ng-click="$event.stopPropagation();expandSettings(layer,false);expandInfo(layer,false);expandFilter(layer,false);">
                     <md-icon>arrow_drop_up</md-icon>
                     <md-tooltip md-direction="down" translate>Hide</md-tooltip>
                 </md-button>
+            </div>
+            <!-- layer filters -->
+            <div hs.feature-filter.directive ng-controller="hs.feature_filter.controller" ng-if="layer.expandFilter">
             </div>
             <!-- layer settings -->
             <div layout="column" layout-align="start start" layout-wrap class="layer-toolbar" ng-if="layer.expandSettings">

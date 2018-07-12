@@ -14,8 +14,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
             */
             .directive('hs.query.directiveInfopanel', ['config', function (config) {
                 return {
-                    // templateUrl: config.infopanel_template || hsl_path + 'components/query/partials/infopanel.html?bust=' + gitsha,
                     templateUrl: config.infopanel_template || `${hsl_path}components/query/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
+                    // templateUrl: config.infopanel_template || `${hsl_path}components/layout/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
                 };
             }])
 
@@ -84,8 +84,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     this.data.coordinates = [];
                     this.queryActive = false;
                     this.popupClassname = "";
-                    this.selector;
-                    this.currentQuery;
+                    this.selector = null;
+                    this.currentQuery = null;
                     var dataCleared = true;
 
                     function init() {
@@ -102,8 +102,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         });
                     }
 
-                    if (angular.isDefined(OlMap.map)) init();
-                    else ($rootScope.$on('map.loaded', init));
+                    if (angular.isDefined(OlMap.map)) {
+                        init();
+                    } else {
+                        $rootScope.$on('map.loaded', init);
+                    }
 
                     this.setData = function (data, type, overwrite) {
                         if (angular.isDefined(type)) {
@@ -115,7 +118,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                             $rootScope.$broadcast('query.dataUpdated');
                         }
                         else if (console) console.log('Query.BaseService.setData type not passed');
-                    }
+                    };
 
                     this.clearData = function () {
                         me.data.attributes.length = 0;
@@ -124,7 +127,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         $("#invisible_popup").contents().find('body').html('');
                         $("#invisible_popup").height(0).width(0);
                         dataCleared = true;
-                    }
+                    };
 
                     this.fillIframeAndResize = function ($iframe, response, append) {
                         if (append)
@@ -137,7 +140,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         var tmp_height = $iframe.contents().innerHeight();
                         if (tmp_height > 700) tmp_height = 700;
                         $iframe.height(tmp_height);
-                    }
+                    };
 
                     function getCoordinate(coordinate) {
                         me.queryPoint.setCoordinates(coordinate, 'XY');
@@ -159,12 +162,12 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         me.queryActive = true;
                         map.addLayer(me.queryLayer);
                         $rootScope.$broadcast('queryStatusChanged');
-                    }
+                    };
                     this.deactivateQueries = function () {
                         me.queryActive = false;
                         map.removeLayer(me.queryLayer);
                         $rootScope.$broadcast('queryStatusChanged');
-                    }
+                    };
 
                     function pointClickedStyle(feature) {
                         var defaultStyle = new ol.style.Style({
@@ -194,7 +197,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     }
                     $rootScope.$on('vectorSelectorCreated',function(e,selector){
                         me.selector = selector;
-                    })
+                    });
                 }])
             .service('hs.query.wmsService', ['$rootScope', '$sce', 'hs.query.baseService', 'hs.map.service', 'hs.utils.service', 'Core', 
                 function ($rootScope, $sce, Base, OlMap, utils, Core) {
@@ -210,11 +213,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                             cache: false,
                             success: function (response) {
                                 if (reqHash != Base.currentQuery) return;
-                                me.featureInfoReceived(response, infoFormat, url, coordinate, layer)
+                                me.featureInfoReceived(response, infoFormat, url, coordinate, layer);
                             },
                             error: function () {
                                 if (reqHash != Base.currentQuery) return;
-                                me.featureInfoError(coordinate)
+                                me.featureInfoError(coordinate);
                             }
                         });
                     };
@@ -229,7 +232,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         if (infoCounter === 0) {
                             queriesCollected(coordinate);
                         }
-                    }
+                    };
                     /**
                     * @function featureInfoReceived
                     * @memberOf hs.query.service_getwmsfeatureinfo
@@ -261,14 +264,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                                             "value": attr.innerHTML
                                         });
                                         updated = true;
-                                    })
+                                    });
                                     var group = {
                                         layer: layerName,
                                         name: featureName,
                                         attributes: attributes
                                     };
                                     Base.setData(group, 'groups');
-                                })
+                                });
                             });
                             $("featureMember", response).each(function () {
                                 var feature = $(this)[0].firstChild;
@@ -317,7 +320,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
 
                                     }
                                 }
-                            })
+                            });
                         }
                         if (infoFormat.indexOf("html") > 0) {
                             if (response.length <= 1) return;
@@ -328,7 +331,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         if (infoCounter === 0) {
                             queriesCollected(coordinate);
                         }
-                    }
+                    };
 
                     function queriesCollected(coordinate) {
                         if (Base.data.groups.length > 0 || $("#invisible_popup").contents().find('body').html().length > 30) {
@@ -364,7 +367,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                                 }
                             }
                         }
-                    }
+                    };
 
                     function isLayerWmsQueryable(layer) {
                         if (layer instanceof ol.layer.Tile &&
@@ -396,37 +399,33 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         condition: ol.events.condition.click,
                         multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false
                     });
-                    $rootScope.$broadcast('vectorSelectorCreated',me.selector);
+                    $rootScope.$broadcast('vectorSelectorCreated', me.selector);
 
                     if (Base.queryActive) OlMap.map.addInteraction(me.selector);
 
                     $rootScope.$on('queryStatusChanged', function(){
                         if (Base.queryActive) OlMap.map.addInteraction(me.selector);
                         else OlMap.map.removeInteraction(me.selector);
-                    })
+                    });
 
                     me.selector.getFeatures().on('add', function (e) {
-                        Base.clearData();
-                        if (!Base.queryActive) return;
-                        if (e.element.get('hs_notqueryable')) return;
                         $rootScope.$broadcast('vectorQuery.featureSelected', e.element, me.selector);
                         //deprecated
                         $rootScope.$broadcast('infopanel.feature_selected', e.element, me.selector);
-                        var features = me.selector.getFeatures().getArray();
-                        angular.forEach(features, function(feature){
-                            getFeatureAttributes(feature);
-                        });
                     });
 
                     me.selector.getFeatures().on('remove', function (e) {
-                        Base.clearData();
-                        if (!Base.queryActive) return;
-                        Base.data.attributes.length = 0;
                         $rootScope.$broadcast('vectorQuery.featureDelected', e.element);
                         //deprecated
                         $rootScope.$broadcast('infopanel.feature_deselected', e.element);
+                    });
+
+                    $rootScope.$on('queryClicked', function (e) {
+                        Base.clearData();
+                        if (!Base.queryActive) return;
+                        Base.data.attributes.length = 0;
                         var features = me.selector.getFeatures().getArray();
-                        angular.forEach(features, function(feature){
+                        angular.forEach(features, function (feature) {
                             getFeatureAttributes(feature);
                         });
                     });
@@ -463,11 +462,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                                                 value: feature.get('features')[sub_feature].get(key)
                                             });
                                         }
-                                    })
+                                    });
                                     Base.setData(group, 'groups');
                                 }
                             } else {
-                                var obj
+                                var obj;
                                 if ((typeof feature.get(key)).toLowerCase() == "string") {
                                     obj = {
                                         name: key,
@@ -479,11 +478,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                                         value: feature.get(key)
                                     };
                                 }
-                                attributes.push(obj)
-                            };
-                        })
+                                attributes.push(obj);
+                            }
+                        });
                         var layer = feature.getLayer(OlMap.map);
-                        if (angular.isUndefined(layer) ||angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager')===false) return;
+                        if (angular.isUndefined(layer) || angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager') === false) return;
                         var layerName = layer.get("title") || layer.get("name");
                         var group = {
                             layer: layerName,
@@ -494,8 +493,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         $rootScope.$broadcast('queryVectorResult');
                     }
                 }])
-            .controller('hs.query.controller', ['$scope', '$rootScope', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', '$mdDialog',
-                function ($scope, $rootScope ,OlMap, Base, WMS, Vector, Core, config, $mdDialog) {
+            .controller('hs.query.controller', ['$scope', '$rootScope', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', '$mdDialog', '$mdToast',
+                function ($scope, $rootScope ,OlMap, Base, WMS, Vector, Core, config, $mdDialog, $mdToast) {
                     var popup = new ol.Overlay.Popup();
 
                     if (OlMap.map) 
@@ -523,9 +522,44 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
 
                     $scope.cancelQueryDialog = function() {
                         $mdDialog.cancel();
-                    }
+                    };
                     
                     $scope.data = Base.data;
+
+                    $rootScope.$on('queryStatusChanged', function() {
+                        if (Base.queryActive) {
+                            $scope.deregisterVectorQuery = $scope.$on('queryClicked', function(e) {
+                                if (config.design === 'md' && $scope.data.groups.length === 0) {
+                                    $mdToast.show(
+                                        $mdToast.simple()
+                                            .textContent("No images matched the query.")
+                                            // .position(pinTo )
+                                            // .hideDelay(3000)
+                                    );
+                                }
+                                if (config.design === 'md' && $scope.data.groups.length > 0) {
+                                    $scope.showQueryDialog(e);
+                                } else {                            
+                                    popup.hide();
+                                    if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
+                                }
+                            });
+
+                            $scope.deregisterWmsQuery = $scope.$on('queryWmsResult', function(e,coordinate) {
+                                if ($("#invisible_popup").contents().find('body').children().not('style,title,meta').length > 0) {
+                                    if (Base.popupClassname.length > 0 ) popup.getElement().className = Base.popupClassname;
+                                    else popup.getElement().className = "ol-popup";
+                                    popup.show(coordinate, $("#invisible_popup").contents().find('body').html());
+                                    $rootScope.$broadcast('popupOpened','hs.query');
+                                }
+                                if (!$scope.$$phase) $scope.$digest();
+                            });
+                        }
+                        else {
+                            $scope.deregisterVectorQuery();
+                            $scope.deregisterWmsQuery();
+                        }
+                    });
     
                     if (Core.current_panel_queryable) {
                         if (!Base.queryActive) Base.activateQueries();
@@ -534,26 +568,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         if (Base.queryActive) Base.deactivateQueries();
                     }
 
-                    $scope.$on('queryClicked', function(e){
-                        if (config.design === 'md') {
-                            $scope.showQueryDialog(e);
-                        } else {                            
-                            popup.hide();
-                            if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
-                        }
-                    });
-
-                    $scope.$on('queryWmsResult', function(e,coordinate){
-                        if ($("#invisible_popup").contents().find('body').children().not('style,title,meta').length > 0) {
-                            if (Base.popupClassname.length > 0 ) popup.getElement().className = Base.popupClassname;
-                            else popup.getElement().className = "ol-popup";
-                            popup.show(coordinate, $("#invisible_popup").contents().find('body').html());
-                            $rootScope.$broadcast('popupOpened','hs.query');
-                        };
-                        if (!$scope.$$phase) $scope.$digest();
-                    });
-
-                    $scope.$on('queryVectorResult',function(){
+                    $scope.$on('queryVectorResult',function() {
                         if (!$scope.$$phase) $scope.$digest();
                     });
     
@@ -573,8 +588,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     
                     $scope.$on('popupOpened', function (e, source) {
                         if (angular.isDefined(source) && source != "hs.query" && angular.isDefined(popup)) popup.hide();
-                    })
+                    });
 
                     $scope.$emit('scope_loaded', "Query");
                 }]);
-    })
+    });

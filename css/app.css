@@ -838,7 +838,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 /** SIDEBAR&TOOLBAR RESPONSIVITY **/
 /**********************************/
 
-@media (max-width: 767px) {
+@media only screen and (max-width: 767px) {
     .open div.panelspace, div.panelspace, .panelspace-wrapper {
         width: 300px;
     }
@@ -1294,7 +1294,7 @@ md-bottom-sheet .content {
     color: #0062bf;
 }
 
-@media (min-width: 600px) {
+@media only screen and (min-width: 600px) {
     md-sidenav {
         width: 100%;
     }
@@ -1312,13 +1312,42 @@ md-bottom-sheet .content {
     overflow-x: hidden;
 }
 
-.layer-checked{
+.layer-checked {
     float: right;
     clear: right;
 }
 
-.hs-ows-layer-title{
+.hs-ows-layer-title {
     width: calc(100% - 16px);
     display: inline-block;
     overflow-x: hidden;
+}
+/* Material Design Section */
+
+.md-scroll-mask {
+    display: none !important;
+}
+
+.md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-left, .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-right {
+  -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-transform: translate3d(0, -42px, 0);
+          transform: translate3d(0, -42px, 0);
+}
+
+md-fab-speed-dial.md-fab-bottom-left, md-fab-speed-dial.md-fab-bottom-right {
+    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    -webkit-transition-property: background-color, box-shadow, -webkit-transform;
+    transition-property: background-color, box-shadow, -webkit-transform;
+    transition-property: background-color, box-shadow, transform;
+    transition-property: background-color, box-shadow, transform, -webkit-transform;
+}
+
+md-checkbox {
+    margin-bottom: 0px;
+}
+
+.select-all-checkboxes {
+    padding-left: 30px;
 }
