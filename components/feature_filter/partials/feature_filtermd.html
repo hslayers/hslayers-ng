@@ -1,5 +1,5 @@
 <div layout="column" layout-align="start start" layout-wrap class="layer-toolbar" ng-if="LayMan.currentLayer.hsFilters">
-    <div ng-repeat="filter in LayMan.currentLayer.hsFilters" ng-switch on="filter.type">
+    <div ng-repeat="filter in LayMan.currentLayer.hsFilters" ng-switch on="filter.type.type">
 
     	<md-slider-container ng-switch-when="slider">
 			<span class="md-body-1">{{filter.title}}</span>
@@ -38,5 +38,7 @@
 			</md-select>
 		</md-input-container>
 
-    </div>
+	</div>
+
+	<md-button class="md-raised md-primary" ng-click="applyFilters()">Apply</md-button>
 </div>

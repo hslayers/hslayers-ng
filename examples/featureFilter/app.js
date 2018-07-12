@@ -46,29 +46,40 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
                 new ol.layer.Vector({
                     title: "Satellite imagery example",
                     source: new ol.source.Vector({
-                        format: new ol.format.GeoJSON,
+                        format: new ol.format.GeoJSON(),
                         url: 'copernicus_1.geojson'
                     }),
-                    hsFilters: {
-                        "Satellite mission": {
+                    hsFilters: [
+                        {
                             title: "Satellite mission",
-                            type: "fieldset",
-                            selected: [],
+                            valueField: "platformname",
+                            type: {
+                                type: "fieldset",
+                            },
+                            selected: undefined,
                             values: ["Sentinel-2", "Sentinel-1"],
                             gatherValues: true
                         },
-                        "Date interval": {
+                        {
                             title: "Date interval",
-                            type: "dateExtent",
+                            valueField: "beginposition",
+                            type: {
+                                type: "dateExtent",
+                            },
+                            range: undefined,
                             gatherValues: true
                         },
-                        "Cloud cover": {
+                        {
                             title: "Cloud cover",
-                            type: "slider",
+                            valueField: "cloudcoverpercentage",
+                            type: {
+                                type: "slider",
+                                parameters: "le",
+                            },
                             range: [0, 100],
                             unit: "%"
                         }
-                    }
+                    ]
                 })
             ],
             //project_name: 'hslayers',
@@ -117,7 +128,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             }
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser',
+        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser', 'hs.feature_filter.service',
             function($scope, Core, BaseService, composition_parser) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
