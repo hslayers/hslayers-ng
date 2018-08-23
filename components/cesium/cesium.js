@@ -50,8 +50,8 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                 Cesium.BingMapsApi.defaultKey = BING_KEY;
 
                 var bing = new Cesium.BingMapsImageryProvider({
-                    url: 'https://dev.virtualearth.net',
-                    key: 'get-yours-at-https://www.bingmapsportal.com/',
+                    url: '//dev.virtualearth.net',
+                    key: Cesium.BingMapsApi.defaultKey,
                     mapStyle: Cesium.BingMapsStyle.AERIAL
                 });
                 var cesiumContainerId = 'cesiumContainer';
