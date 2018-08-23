@@ -34,7 +34,7 @@ define(['ol'],
 
         var me = {
             get: function (map, utils, rect) {
-                if (map.getView().getResolution() > 8.48657133911758 || olus_lyr.getVisible() == false) return;
+                if (map.getView().getResolution() > 2.48657133911758 || olus_lyr.getVisible() == false) return;
                 var format = new ol.format.WKT();
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
@@ -112,7 +112,7 @@ define(['ol'],
                 olus_lyr = new ol.layer.Vector({
                     title: "Plots intersecting water bodies",
                     source: olus_source,
-                    visible: false,
+                    visible: true,
                     style: function (feature, resolution) {
                         var use = feature.get('use').split('/');
                         use = use[use.length - 1];

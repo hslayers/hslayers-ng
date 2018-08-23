@@ -202,8 +202,8 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
             'compositions_catalogue_url': "/php/metadata/csw",
             status_manager_url: '/wwwlibs/statusmanager2/index.php',
             default_view: new ol.View({
-                center: ol.proj.transform([1208534.8815206578, 5761821.705531779], 'EPSG:3857', 'EPSG:4326'),
-                zoom: 16,
+                center: [14.28, 49.6],
+                zoom: 18,
                 units: "m",
                 projection: 'EPSG:4326'
             }),
