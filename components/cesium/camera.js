@@ -53,12 +53,13 @@ define(['ol', 'cesiumjs'],
                         return [0, 0, 0, 0]
                     }
                 }
-                
+                var of_x = viewer.canvas.width / 10;
+                var of_y = viewer.canvas.height / 10;
                 var center = [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).longitude), Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).latitude)];
-                var top_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(0, 0), new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height)));
-                var top_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width, 0), new Cesium.Cartesian2(0, viewer.canvas.height)));
-                var bot_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width+100, viewer.canvas.height+100), new Cesium.Cartesian2(0, 0)));
-                var bot_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(-100, viewer.canvas.height+100), new Cesium.Cartesian2(viewer.canvas.width, 0)));
+                var top_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(of_x, of_y), new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height)));
+                var top_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width-of_x, of_y), new Cesium.Cartesian2(0, viewer.canvas.height)));
+                var bot_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width-of_x+100, viewer.canvas.height-of_y+100), new Cesium.Cartesian2(0, 0)));
+                var bot_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(-100+of_x, viewer.canvas.height-of_y+100), new Cesium.Cartesian2(viewer.canvas.width, 0)));
 
                 function clamp(p) {
                     var max_dist = 0.13;
