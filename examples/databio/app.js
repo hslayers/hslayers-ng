@@ -297,6 +297,7 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
 
                $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
                 viewer.targetFrameRate = 30;
+                olu.get(map, utils, HsCesium.HsCsCamera.getViewportPolygon());
                })
 
                 $scope.$on('infopanel.updated', function (event) { });
