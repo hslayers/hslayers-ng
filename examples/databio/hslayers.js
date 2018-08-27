@@ -27,6 +27,7 @@ require.config({
         cesium: hsl_path + 'components/cesium/cesium',
         cesiumjs: hsl_path + 'node_modules/cesium/Build/Cesium/Cesium',
         pois: 'poi',
+        parcels_near_water: 'parcels_near_water',
         olu: 'olu'
     },
     shim: {

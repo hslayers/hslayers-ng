@@ -1,7 +1,7 @@
 define(['ol'],
 
     function (ol) {
-        var olus_source = new ol.source.Vector();
+        var src = new ol.source.Vector();
         var $scope;
         var $compile;
         var map;
@@ -18,9 +18,8 @@ define(['ol'],
             $compile(el)($scope);
         }
 
-        olus_source.cesiumStyler = function (dataSource) {
+        src.cesiumStyler = function (dataSource) {
             var entities = dataSource.entities.values;
-            console.log(entities.length);
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
@@ -88,7 +87,7 @@ WHERE {
 }
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
-                olus_source.set('loaded', false);
+                src.set('loaded', false);
                 $.ajax({
                     url: utils.proxify(q)
                 })
@@ -99,7 +98,7 @@ WHERE {
                             try {
                                 var b = response.results.bindings[i];
                                 if (b.coordPlotFinal.datatype == "http://www.openlinksw.com/schemas/virtrdf#Geometry" && b.coordPlotFinal.value.indexOf('e+') == -1 && b.coordPlotFinal.value.indexOf('e-') == -1) {
-                                    if (olus_source.getFeatureById(b.code.value) == null) {
+                                    if (src.getFeatureById(b.code.value) == null) {
                                         var g_feature = format.readFeature(b.coordPlotFinal.value.toUpperCase());
                                         var ext = g_feature.getGeometry().getExtent()
                                         var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection());
@@ -107,25 +106,25 @@ WHERE {
                                         feature.setId(b.code.value);
                                         features.push(feature);
                                     } else {
-                                        olus_source.getFeatureById(b.code.value).set('flaged', false);
+                                        src.getFeatureById(b.code.value).set('flaged', false);
                                     }
                                 }
                             } catch (ex) {
                                 console.log(ex);
                             }
                         }
-                        olus_source.addFeatures(features);
-                        olus_source.getFeatures().forEach(function (feature) {
-                            if (feature.get('flaged') == true) olus_source.removeFeature(feature);
+                        src.addFeatures(features);
+                        src.getFeatures().forEach(function (feature) {
+                            if (feature.get('flaged') == true) src.removeFeature(feature);
                         })
-                        olus_source.set('loaded', true);
-                        olus_source.dispatchEvent('features:loaded', olus_source);
+                        src.set('loaded', true);
+                        src.dispatchEvent('features:loaded', src);
                     })
             },
-            createOluLayer: function () {
+            createLayer: function () {
                 olus_lyr = new ol.layer.Vector({
                     title: "Plots intersecting water bodies",
-                    source: olus_source,
+                    source: src,
                     visible: true,
                     style: function (feature, resolution) {
                         var use = feature.get('use').split('/');

@@ -53,8 +53,8 @@ define(['ol', 'cesiumjs'],
                         return [0, 0, 0, 0]
                     }
                 }
-                var of_x = viewer.canvas.width / 10;
-                var of_y = viewer.canvas.height / 10;
+                var of_x = 0;
+                var of_y = 0;
                 var center = [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).longitude), Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).latitude)];
                 var top_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(of_x, of_y), new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height)));
                 var top_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width-of_x, of_y), new Cesium.Cartesian2(0, viewer.canvas.height)));

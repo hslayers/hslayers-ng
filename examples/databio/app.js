@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, layermanager, pois, olu) {
+    function (ol, toolbar, layermanager, pois, parcels_near_water) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -110,7 +110,6 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
                     visible: false,
                     minimumTerrainLevel: 15
                 }),
-                /*  
                 new ol.layer.Tile({
                     title: "Corine land cover (WMS)",
                     source: new ol.source.TileWMS({
@@ -128,7 +127,7 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
                     visible: false,
                     opacity: 0.7
                 }),
-              new ol.layer.Tile({
+                new ol.layer.Tile({
                     title: "Open-Land-Use (WMS)",
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/olu/openlandusemap.map',
@@ -147,23 +146,6 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
                     maxResolution: 8550,
                     path: 'Open-Land-Use Map',
                     visible: true,
-                    opacity: 0.7
-                }),*/
-                new ol.layer.Tile({
-                    title: "Yield potential Rostenice",
-                    source: new ol.source.TileWMS({
-                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map',
-                        params: {
-                            LAYERS: 'yield_potential',
-                            FORMAT: "image/png",
-                            INFO_FORMAT: "text/html",
-                            minimumTerrainLevel: 14
-                        },
-                        crossOrigin: null
-                    }),
-                    legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/rostenice.map&service=WMS&request=GetLegendGraphic&layer=yield_potential&version=1.3.0&format=image/png&sld_version=1.1.0'],
-                    maxResolution: 8550,
-                    visible: false,
                     opacity: 0.7
                 }),
                 pois.createPoiLayer()
@@ -210,7 +192,7 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
             cesiumBingKey: 'Ag-1WrJMNrtwDswUaPxKvq85UO-82NmE_V5HiXbgssabAYmr4zV2HyFWrusCfaXF'
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', 
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce',
             function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce) {
                 var map;
 
@@ -224,22 +206,22 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
-                    olu.init($scope, $compile, map, utils);
+                    parcels_near_water.init($scope, $compile, map, utils);
                     map.on('moveend', extentChanged);
                 });
 
                 pois.init($scope, $compile);
-                config.default_layers.push(olu.createOluLayer());
+                config.default_layers.push(parcels_near_water.createLayer());
 
                 function extentChanged() {
                     var bbox = map.getView().calculateExtent(map.getSize());
                     //pois.getPois(map, utils, [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]]);
-                    
+
                 }
 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
                     pois.getPois(map, utils, bounds);
-                    olu.get(map, utils, bounds);
+                    parcels_near_water.get(map, utils, bounds);
                 })
 
                 function createAboutDialog() {
@@ -259,7 +241,7 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
                         obj_type: obj_type
                     };
                     describeOlu(id, function () {
-                        if (!$scope.$$phase) $scope.$apply(); 
+                        if (!$scope.$$phase) $scope.$apply();
                     });
                 }
 
@@ -281,24 +263,24 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'olu', 'sidebar', 'query', 'sea
                         })
                 }
 
-                function getLinksTo(id, callback){
-                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('PREFIX geo: <http://www.opengis.net/ont/geosparql#> PREFIX geof: <http://www.opengis.net/def/function/geosparql/> PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> PREFIX poi: <http://www.openvoc.eu/poi#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT * WHERE {?obj <http://www.opengis.net/ont/geosparql#hasGeometry> ?obj_geom. ?obj_geom geo:asWKT ?Coordinates . FILTER(bif:st_intersects (?Coordinates, ?wkt)). { SELECT ?wkt WHERE { <'+id+'> geo:hasGeometry ?geometry. ?geometry geo:asWKT ?wkt.} } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
-                       $.ajax({
-                           url: utils.proxify(q)
-                       })
-                       .done(function(response) {
-                               for (var i = 0; i < response.results.bindings.length; i++) {    
-                                   var b = response.results.bindings[i];
-                                   $scope.zone.links.push({url: b.obj.value});
-                               }
-                               callback();
-                       })
-               }
+                function getLinksTo(id, callback) {
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent('PREFIX geo: <http://www.opengis.net/ont/geosparql#> PREFIX geof: <http://www.opengis.net/def/function/geosparql/> PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> PREFIX poi: <http://www.openvoc.eu/poi#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT * WHERE {?obj <http://www.opengis.net/ont/geosparql#hasGeometry> ?obj_geom. ?obj_geom geo:asWKT ?Coordinates . FILTER(bif:st_intersects (?Coordinates, ?wkt)). { SELECT ?wkt WHERE { <' + id + '> geo:hasGeometry ?geometry. ?geometry geo:asWKT ?wkt.} } }') + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    $.ajax({
+                        url: utils.proxify(q)
+                    })
+                        .done(function (response) {
+                            for (var i = 0; i < response.results.bindings.length; i++) {
+                                var b = response.results.bindings[i];
+                                $scope.zone.links.push({ url: b.obj.value });
+                            }
+                            callback();
+                        })
+                }
 
-               $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
-                viewer.targetFrameRate = 30;
-                olu.get(map, utils, HsCesium.HsCsCamera.getViewportPolygon());
-               })
+                $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
+                    viewer.targetFrameRate = 30;
+                    parcels_near_water.get(map, utils, HsCesium.HsCsCamera.getViewportPolygon());
+                })
 
                 $scope.$on('infopanel.updated', function (event) { });
             }
