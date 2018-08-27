@@ -35,9 +35,11 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                 if (typeof Cesium == 'undefined') {
                     console.error('Please include cesium in shim definition: cesiumjs: {exports: \'Cesium\'}');
                 }
+                Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
                 window.CESIUM_BASE_URL = Core.getNmPath() + 'cesium/Build/Cesium/';
-                var terrain_provider = new Cesium.CesiumTerrainProvider({
-                    url: config.terrain_provider || 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
+                var terrain_provider = Cesium.createWorldTerrain();
+                if(config.terrain_provider) terrain_provider = new Cesium.CesiumTerrainProvider({
+                    url: config.terrain_provider
                 });
 
                 var view = hs_map.map.getView();

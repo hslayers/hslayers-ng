@@ -92,7 +92,6 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'sidebar'
         };
 
         module.value('config', {
-            terrain_provider: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
             terrain_providers: [{
                 title: 'Local terrain',
                 url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
