@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, layermanager, pois, parcels_near_water) {
+    function (ol, toolbar, layermanager, pois, parcels_near_water, water_bodies) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -202,15 +202,28 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'sidebar'
                 Core.panelEnabled('compositions', true);
                 Core.panelEnabled('status_creator', false);
                 $scope.Core.setDefaultPanel('layermanager');
+                var providers = [];
+
+                function registerProvider(provider){
+                    providers.push(provider);
+                }
+
+                registerProvider(parcels_near_water);
+                registerProvider(water_bodies);
 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
-                    parcels_near_water.init($scope, $compile, map, utils);
+                    providers.forEach(function(provider){
+                        provider.init($scope, $compile, map, utils);
+                    })
                     map.on('moveend', extentChanged);
                 });
 
                 pois.init($scope, $compile);
-                config.default_layers.push(parcels_near_water.createLayer());
+                providers.forEach(function(provider){
+                    config.default_layers.push(provider.createLayer());
+                })
+                
 
                 function extentChanged() {
                     var bbox = map.getView().calculateExtent(map.getSize());
@@ -220,7 +233,9 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'sidebar'
 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
                     pois.getPois(map, utils, bounds);
-                    parcels_near_water.get(map, utils, bounds);
+                    providers.forEach(function(provider){
+                        provider.get(map, utils, bounds);
+                    })
                 })
 
                 function createAboutDialog() {
@@ -278,7 +293,9 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'sidebar'
 
                 $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
                     viewer.targetFrameRate = 30;
-                    parcels_near_water.get(map, utils, HsCesium.HsCsCamera.getViewportPolygon());
+                    providers.forEach(function(provider){
+                        provider.get(map, utils, HsCesium.HsCsCamera.getViewportPolygon());
+                    })
                 })
 
                 $scope.$on('infopanel.updated', function (event) { });

@@ -23,10 +23,8 @@ define(['ol', 'sparql_helpers'],
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
-                var name = entity.properties.code;
-                var use = entity.properties.use.getValue();
                 entity.polygon.outline = false;
-                entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(50, 50, 150, 0.6)');
+                entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(0, 0, 220, 0.8)');
                 entity.styled = true;
                 //entity.onclick = entityClicked
             }
@@ -43,7 +41,7 @@ define(['ol', 'sparql_helpers'],
                 //console.log(extents);
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
 
-                PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
 PREFIX virtrdf:	<http://www.openlinksw.com/schemas/virtrdf#> 
 PREFIX poi: <http://www.openvoc.eu/poi#> 
@@ -52,37 +50,14 @@ PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
 PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
 PREFIX olu: <http://w3id.org/foodie/olu#>
 
-
-SELECT DISTINCT ?plot ?code ?shortId ?landUse ?coordPlotFinal
+SELECT ?waterBody ?label ?coordWBody
+FROM <http://w3id.org/foodie/open/cz/Water_bodies_buff25m_WGS#>
 WHERE {
-   ?plot geo:hasGeometry ?geoPlotFinal .
-   ?geoPlotFinal ogcgs:asWKT  ?coordPlotFinal .
-   FILTER(bif:st_intersects(?coordPlotFinal, ?coordWBody, 0.00025)) .
-   
-   GRAPH ?graph1 {
-      SELECT ?plot ?code ?shortId ?landUse
-      FROM <http://w3id.org/foodie/open/cz/180308_pLPIS_WGS#>
-      WHERE{ 
-         ?plot a foodie:Plot ;
-            foodie:code ?code ;
-            foodie-cz:shortId ?shortId ;
-            olu:specificLandUse ?landUse ;
-            geo:hasGeometry ?geoPlot .
-         ?geoPlot ogcgs:asWKT  ?coordPlot .
-         FILTER(bif:st_intersects (?coordPlot, bif:st_geomFromText("${extents}"))) .   
-     }
-   }
-   GRAPH ?graph2 {
-      SELECT ?waterBody ?label ?coordWBody
-      FROM <http://w3id.org/foodie/open/cz/Water_bodies_buff25m_WGS#>
-      WHERE {
-          ?waterBody a foodie-cz:WaterBody ;
-                 rdfs:label ?label ;
-                 geo:hasGeometry ?geoWBody .
-                 ?geoWBody ogcgs:asWKT ?coordWBody .
-     FILTER(bif:st_intersects (?coordWBody, bif:st_geomFromText("${extents}"))) .
-      }
-   }
+    ?waterBody a foodie-cz:WaterBody ;
+            rdfs:label ?label ;
+            geo:hasGeometry ?geoWBody .
+            ?geoWBody ogcgs:asWKT ?coordWBody .
+FILTER(bif:st_intersects (?coordWBody, bif:st_geomFromText("${extents}"))) .
 }
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
@@ -91,22 +66,19 @@ WHERE {
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {parcel: 'code', use: 'landUse'}, map)
+                        sparql_helpers.fillFeatures(src, 'coordWBody', response, 'waterBody', {waterBody: 'waterBody', label: 'label'}, map)
                     })
             },
             createLayer: function () {
                 lyr = new ol.layer.Vector({
-                    title: "Plots intersecting water bodies",
+                    title: "Water bodies",
                     source: src,
                     visible: true,
                     style: function (feature, resolution) {
-                        var use = feature.get('use').split('/');
-                        use = use[use.length - 1];
                         return [
                             new ol.style.Style({
-                                stroke: new ol.style.Stroke({
-                                    color: utils.rainbow(350, use, 0.8),
-                                    width: 2
+                                fill: new ol.style.Stroke({
+                                    color: 'rgba(0, 0, 220, 0.8)'
                                 })
                             })
                         ];
