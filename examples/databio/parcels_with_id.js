@@ -89,8 +89,6 @@ WHERE{
                     source: src,
                     visible: true,
                     style: function (feature, resolution) {
-                        var use = feature.get('use').split('/');
-                        use = use[use.length - 1];
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({

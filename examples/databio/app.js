@@ -330,32 +330,6 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                     parcels_with_crop_types.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
                 }
 
-                function fillClassificators(){
-                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent( `PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
-                    PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
-                    
-                    SELECT DISTINCT ?cropType ?cropName
-                    FROM <http://w3id.org/foodie/core/cz/CZpilot_fields#>
-                    WHERE{ 
-                        ?plot a foodie:Plot ;
-                           foodie:crop ?cropSpecies.
-                        ?cropSpecies foodie:cropSpecies ?cropType .
-                        ?cropType foodie:description ?cropName .
-                    }
-                    ORDER BY ?cropName
-                    `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
-                    $.ajax({
-                        url: utils.proxify(q)
-                    })
-                        .done(function (response) {
-                            $scope.cropTypes = response.results.bindings.map(function(r){
-                                return {name: r.cropName.value, id: r.cropType.value};
-                            }) 
-                        })
-                }
-                
-                fillClassificators();
-
                 $scope.$on('infopanel.updated', function (event) { });
             }
         ]);

@@ -23,8 +23,8 @@ define(['ol', 'sparql_helpers'],
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
-                var name = entity.properties.code;
-                var use = entity.properties.use.getValue();
+                var plotName = entity.properties.plotName;
+                var cropName = entity.properties.cropName.getValue();
                 entity.polygon.outline = false;
                 entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(150, 40, 40, 0.6)');
                 entity.styled = true;
@@ -34,7 +34,7 @@ define(['ol', 'sparql_helpers'],
 
         var me = {
             get: function (map, utils, rect) {
-                if (lyr.getVisible() == false) return;
+                if (map.getView().getResolution() > 20.48657133911758 || lyr.getVisible() == false) return;
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -88,8 +88,6 @@ define(['ol', 'sparql_helpers'],
                     source: src,
                     visible: true,
                     style: function (feature, resolution) {
-                        var use = feature.get('use').split('/');
-                        use = use[use.length - 1];
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
@@ -102,6 +100,29 @@ define(['ol', 'sparql_helpers'],
                 });
                 return lyr;
             },
+            fillClassificators(){
+                var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent( `PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
+                PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
+                
+                SELECT DISTINCT ?cropType ?cropName
+                FROM <http://w3id.org/foodie/core/cz/CZpilot_fields#>
+                WHERE{ 
+                    ?plot a foodie:Plot ;
+                       foodie:crop ?cropSpecies.
+                    ?cropSpecies foodie:cropSpecies ?cropType .
+                    ?cropType foodie:description ?cropName .
+                }
+                ORDER BY ?cropName
+                `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                $.ajax({
+                    url: utils.proxify(q)
+                })
+                    .done(function (response) {
+                        $scope.cropTypes = response.results.bindings.map(function(r){
+                            return {name: r.cropName.value, id: r.cropType.value};
+                        }) 
+                    })
+            },
             getLayer(){
                 return lyr;
             },
@@ -110,6 +131,7 @@ define(['ol', 'sparql_helpers'],
                 $compile = _$compile;
                 map = _map;
                 utils = _utils;
+                me.fillClassificators();
             }
         }
         return me;
