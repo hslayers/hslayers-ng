@@ -78,7 +78,9 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     // Show Columbus View map with Web Mercator projection
                     sceneMode: Cesium.SceneMode.SCENE3D,
                     mapProjection: new Cesium.WebMercatorProjection(),
-                    shadows: false
+                    shadows: false,
+                    scene3DOnly: true,
+                    sceneModePicker: false
                 });
 
                 viewer.scene.debugShowFramesPerSecond = angular.isDefined(config.cesiumdDebugShowFramesPerSecond) ? config.cesiumdDebugShowFramesPerSecond : false;
