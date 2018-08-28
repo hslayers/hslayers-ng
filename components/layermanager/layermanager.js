@@ -398,6 +398,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
 
             $scope.setCurrentLayer = function(layer, index, path) {
                 LayMan.currentLayer = layer;
+                $scope.currentLayer = LayMan.currentLayer;
                 if (WMST.layerIsWmsT(layer)) {
                     LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
                     LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
@@ -419,6 +420,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
                     $(".layerpanel").insertAfter($("#layer" + path + index));
                     $scope.cur_layer_opacity = layer.layer.getOpacity();
                 }
+                $scope.currentLayer = LayMan.currentLayer;
                 return false;
             }
 
