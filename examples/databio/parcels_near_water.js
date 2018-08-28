@@ -57,7 +57,7 @@ SELECT DISTINCT ?plot ?code ?shortId ?landUse ?coordPlotFinal
 WHERE {
    ?plot geo:hasGeometry ?geoPlotFinal .
    ?geoPlotFinal ogcgs:asWKT  ?coordPlotFinal .
-   FILTER(bif:st_intersects(?coordPlotFinal, ?coordWBody, 0.00025)) .
+   FILTER(bif:st_intersects(?coordPlotFinal, ?coordWBody, ${$scope.water_distance})) .
    
    GRAPH ?graph1 {
       SELECT ?plot ?code ?shortId ?landUse
@@ -112,6 +112,9 @@ WHERE {
                         ];
                     }
                 });
+                return lyr;
+            },
+            getLayer(){
                 return lyr;
             },
             init: function (_$scope, _$compile, _map, _utils) {

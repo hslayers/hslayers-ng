@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'parcels_with_id', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, layermanager, pois, parcels_near_water, water_bodies) {
+    function (ol, toolbar, layermanager, pois, parcels_near_water, water_bodies, parcels_with_id, parcels_with_CTVDPB, parcels_with_crop_types) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -44,6 +44,15 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                 }
             };
         })
+
+        module.directive('hs.hud', function () {
+            return {
+                templateUrl: './hud.html?bust=' + gitsha,
+                link: function (scope, element, attrs) {
+
+                }
+            };
+        });
 
         module.directive('description', ['$compile', 'hs.utils.service', function ($compile, utils) {
             return {
@@ -92,15 +101,6 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
         };
 
         module.value('config', {
-            terrain_providers: [{
-                title: 'Local terrain',
-                url: 'http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
-                active: false
-            }, {
-                title: 'EU-DEM',
-                url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
-                active: true
-            }],
             default_layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
@@ -196,10 +196,11 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                 var map;
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
+                var hsCesium;
                 $scope.Core = Core;
 
                 Core.singleDatasources = true;
-                Core.panelEnabled('compositions', true);
+                Core.panelEnabled('compositions', false);
                 Core.panelEnabled('status_creator', false);
                 $scope.Core.setDefaultPanel('layermanager');
                 var providers = [];
@@ -210,7 +211,10 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
 
                 registerProvider(parcels_near_water);
                 registerProvider(water_bodies);
-
+                registerProvider(parcels_with_id);
+                registerProvider(parcels_with_CTVDPB);
+                registerProvider(parcels_with_crop_types);
+                
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
                     providers.forEach(function(provider){
@@ -224,7 +228,6 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                     config.default_layers.push(provider.createLayer());
                 })
                 
-
                 function extentChanged() {
                     var bbox = map.getView().calculateExtent(map.getSize());
                     //pois.getPois(map, utils, [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]]);
@@ -293,10 +296,65 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
 
                 $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
                     viewer.targetFrameRate = 30;
+                    hsCesium = HsCesium;
                     providers.forEach(function(provider){
                         provider.get(map, utils, HsCesium.HsCsCamera.getViewportPolygon());
                     })
+                    setTimeout(createHud, 3000);
                 })
+
+                function createHud() {
+                    var el = angular.element('<div hs.hud></div>');
+                    $(".page-content").append(el);
+                    $compile(el)($scope);
+                }
+
+                $scope.reloadIdUz = function(){
+                    parcels_with_id.getLayer().setVisible(true);
+                    parcels_with_id.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                }
+
+                $scope.water_distance = 0.00025;
+                $scope.reloadNearWaterbodies = function(){
+                    parcels_near_water.getLayer().setVisible(true);
+                    parcels_near_water.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                }
+
+                $scope.reloadCTVDPB = function(){
+                    parcels_with_CTVDPB.getLayer().setVisible(true);
+                    parcels_with_CTVDPB.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                }
+
+                $scope.reloadCropTypeLayer = function(){
+                    parcels_with_crop_types.getLayer().setVisible(true);
+                    parcels_with_crop_types.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                }
+
+                function fillClassificators(){
+                    var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent( `PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
+                    PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
+                    
+                    SELECT DISTINCT ?cropType ?cropName
+                    FROM <http://w3id.org/foodie/core/cz/CZpilot_fields#>
+                    WHERE{ 
+                        ?plot a foodie:Plot ;
+                           foodie:crop ?cropSpecies.
+                        ?cropSpecies foodie:cropSpecies ?cropType .
+                        ?cropType foodie:description ?cropName .
+                    }
+                    ORDER BY ?cropName
+                    `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+                    $.ajax({
+                        url: utils.proxify(q)
+                    })
+                        .done(function (response) {
+                            $scope.cropTypes = response.results.bindings.map(function(r){
+                                return {name: r.cropName.value, id: r.cropType.value};
+                            }) 
+                        })
+                }
+                
+                fillClassificators();
 
                 $scope.$on('infopanel.updated', function (event) { });
             }

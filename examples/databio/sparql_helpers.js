@@ -7,6 +7,9 @@ define(['ol'],
                 if (angular.isUndefined(response.results)) return;
                 var features = [];
                 var format = new ol.format.WKT();
+                src.getFeatures().forEach(function (feature) {
+                    feature.set('flaged', true);
+                })
                 for (var i = 0; i < response.results.bindings.length; i++) {
                     try {
                         var b = response.results.bindings[i];

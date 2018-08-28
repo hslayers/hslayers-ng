@@ -1,0 +1,53 @@
+<div class="hud col-xs-11 col-sm-8 col-md-5 col-lg-4 col-xl-3">
+    <style>
+        .sb-right .hud {
+            left: -5px;
+        }
+
+        .hud {
+            top: 70px;
+            width: 362px;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+            position: absolute;
+        }
+      
+        .hud .well {
+            padding: 5px;
+        }
+    </style>
+    <div class="well controls">
+        <form class="form-horizontal">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="water_distance" placeholder="Distance to water bodies" ng-change="reloadNearWaterbodies()"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" ng-click="reloadNearWaterbodies()" type="button">Filter</button>
+                </span>
+            </div>
+            <br/>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="iduz" placeholder="ID Uz e.g. 17614" ng-change="reloadIdUz()"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" ng-click="reloadIdUz()" type="button">Filter</button>
+                </span>
+            </div>
+            <br/>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="ctvdpd" placeholder="CTVDPB code eg. 57011607501" ng-change="reloadCTVDPB()"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" ng-click="reloadCTVDPB()" type="button">Filter</button>
+                </span>
+            </div>
+            <br/>
+            <div class="input-group">
+                    <select class="form-control" ng-model="cropType">
+                        <option ng-value="ct.id" ng-repeat="ct in cropTypes">{{ct.name}}</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" ng-click="reloadCropTypeLayer()" type="button">Filter</button>
+                    </span>
+                </div>
+            
+        </form>
+    </div>
+</div>
