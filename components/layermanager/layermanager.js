@@ -146,6 +146,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
             $scope.expandFilter = function(layer,value){
                 layer.expandFilter = value;
                 LayMan.currentLayer = layer;
+                $scope.currentLayer = LayMan.currentLayer;
             }
 
             /**
@@ -771,6 +772,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
                 if (angular.isObject(LayMan.currentLayer) && (LayMan.currentLayer.layer == layer)) {
                     $(".layerpanel").insertAfter($('.hs-lm-mapcontentlist'));
                     LayMan.currentLayer = null;
+                    $scope.currentLayer = LayMan.currentLayer;
                 }
             });
 
