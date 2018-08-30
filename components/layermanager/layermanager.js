@@ -12,7 +12,7 @@ if(require.config) require.config({
  * @name hs.layermanager
  * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
-define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator', 'feature_filter'], 
+define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator'], 
     function (angular, app, map, ol, hsLayermanagerService, hsLayermanagerWMSTservice, hsLayermanagerLayerlistDirective) {
     angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator'])
             

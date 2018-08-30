@@ -8,6 +8,7 @@ exports.paths = [
     __dirname + '/node_modules/angular-gettext/dist/angular-gettext',
     __dirname + '/node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
     __dirname + '/components/api',
+    __dirname + '/node_modules/angular-material-bottom-sheet-collapsible',
     __dirname + '/components/cesium',
     __dirname + '/components/compositions',
     __dirname + '/components/core',

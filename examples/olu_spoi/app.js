@@ -318,9 +318,11 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'hs.source.Sparql
                 
                 /*Popups*/
                 function initInfoDirective(){
-                    var el = angular.element('<div hs.pilsentraffic.roadwork-info-directive></div>');
-                    $("#hs-dialog-area").append(el)
-                    $compile(el)($scope);
+                    $timeout(function(){
+                            var el = angular.element('<div hs.pilsentraffic.roadwork-info-directive></div>');
+                            $("#hs-dialog-area").append(el)
+                            $compile(el)($scope);
+                    }, 0)
                 } 
                 
                 initInfoDirective();
