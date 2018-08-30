@@ -8,46 +8,148 @@
             top: 70px;
             width: 362px;
             opacity: 0.8;
-            filter: alpha(opacity=80);
+            filter: alpha(opacity=90);
             position: absolute;
         }
-      
+
         .hud .well {
             padding: 5px;
         }
     </style>
-    <div class="well controls">
-        <form class="form-horizontal">
-            <div class="input-group">
-                <input type="text" class="form-control" ng-model="water_distance" placeholder="Distance to water bodies" ng-change="reloadNearWaterbodies()"/>
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" ng-click="reloadNearWaterbodies()" type="button">Filter</button>
-                </span>
-            </div>
-            <br/>
-            <div class="input-group">
-                <input type="text" class="form-control" ng-model="iduz" placeholder="ID Uz e.g. 17614" ng-change="reloadIdUz()"/>
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" ng-click="reloadIdUz()" type="button">Filter</button>
-                </span>
-            </div>
-            <br/>
-            <div class="input-group">
-                <input type="text" class="form-control" ng-model="ctvdpd" placeholder="CTVDPB code eg. 57011607501" ng-change="reloadCTVDPB()"/>
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" ng-click="reloadCTVDPB()" type="button">Filter</button>
-                </span>
-            </div>
-            <br/>
-            <div class="input-group">
-                    <select class="form-control" ng-model="cropType">
-                        <option ng-value="ct.id" ng-repeat="ct in cropTypes">{{ct.name}}</option>
-                    </select>
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" ng-click="reloadCropTypeLayer()" type="button">Filter</button>
-                    </span>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+        aria-controls="collapseExample">
+        Actions:
+    </button>
+    <div class="collapse in" id="collapseExample">
+        <div class="well controls">
+            <form class="form-inline">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Filter fields which are near water
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="control-label">Distance to water bodies</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control col-sm-4" ng-model="water_distance" ng-change="reloadNearWaterbodies()" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="reloadNearWaterbodies()" type="button">Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+                                    aria-controls="collapseTwo">
+                                    Find field by ID
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="control-label">ID Uz</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-model="iduz" placeholder="e.g. 17614" ng-change="reloadIdUz()" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="reloadIdUz()" type="button">Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                    Find fields by CTVDPB code
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="control-label">CTVDPB</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-model="ctvdpd" placeholder="code eg. 57011607501" ng-change="reloadCTVDPB()" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="reloadCTVDPB()" type="button">Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                    Find fields with crop type
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="control-label">Crop type</label>
+                                    <div class="input-group">
+                                        <select class="form-control" ng-model="cropType">
+                                            <option ng-value="ct.id" ng-repeat="ct in cropTypes">{{ct.name}}</option>
+                                        </select>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="reloadCropTypeLayer()" type="button">Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFive">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                    Filter fields by crop and distance to map center
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="control-label">Crop type</label>
+                                    <select class="form-control" ng-model="cropType">
+                                        <option ng-value="ct.id" ng-repeat="ct in cropTypes">{{ct.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Distance in km</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-model="crop_distance" placeholder="" ng-change="reloadCropTypeLayer(crop_distance)"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="reloadCropTypeLayer(crop_distance)" type="button">Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            
-        </form>
+            </form>
+        </div>
     </div>
+
 </div>

@@ -23,8 +23,8 @@ define(['ol', 'sparql_helpers'],
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
-                var name = entity.properties.code;
-                var use = entity.properties.use.getValue();
+                var plotName = entity.properties.plotName;
+                var cropName = entity.properties.cropName.getValue();
                 entity.polygon.outline = false;
                 entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(150, 40, 40, 0.6)');
                 entity.styled = true;
@@ -33,12 +33,8 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            get: function (map, utils, rect) {
+            get: function (map, utils, distance, center) {
                 if (lyr.getVisible() == false) return;
-                function prepareCords(c) {
-                    return c.toString().replaceAll(',', ' ')
-                }
-                var extents = `POLYGON ((${prepareCords(rect[0])}, ${prepareCords(rect[1])}, ${prepareCords(rect[2])}, ${prepareCords(rect[3])}, ${prepareCords(rect[0])}, ${prepareCords(rect[1])}))`;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
 
 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
@@ -53,23 +49,29 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX olu: <http://w3id.org/foodie/olu#>
 PREFIX af-inspire: <http://inspire.ec.europa.eu/schemas/af/3.0#>
 
-SELECT ?holding ?plot ?code ?shortId ?landUse ?coordPlot
-FROM <http://w3id.org/foodie/open/cz/180308_pLPIS_WGS#>
+SELECT ?plot ?plotName ?code ?shortId ?cropName ?cropArea ?distance ?coordPlot
+FROM <http://w3id.org/foodie/core/cz/CZpilot_fields#>
 WHERE{ 
-    ?holding a foodie:Holding ;
-       common:identifier ?identifier_ID_UZ ;
-       foodie-cz:inspireIdCodeSpace ?inspireIdCodeSpace ;
-       foodie-cz:inspireIdCodeVersion ?inspireIdCodeVersion ;
-       af-inspire:contains ?site .
-    FILTER(STRSTARTS(STR(?identifier_ID_UZ),"${$scope.iduz}") )
-    ?site foodie:containsPlot ?plot .
     ?plot a foodie:Plot ;
        foodie:code ?code ;
+       foodie-cz:plotName ?plotName ;
        foodie-cz:shortId ?shortId ;
-       olu:specificLandUse ?landUse ;
+       foodie:crop ?cropSpecies ;
        geo:hasGeometry ?geoPlot .
-    ?geoPlot ogcgs:asWKT  ?coordPlot .  
-     }
+    ?geoPlot ogcgs:asWKT  ?coordPlot .
+    ?cropSpecies foodie:cropArea ?cropArea ;
+       foodie:cropSpecies ?cropType .
+    ?cropType foodie:description ?cropName .
+    ${$scope.cropType!='' && typeof $scope.cropType!='undefined' && $scope.cropType != "http://w3id.org/foodie/core/CZpilot_fields/CropType/" ? `FILTER(?cropType = <${$scope.cropType}>).` : ''}
+    BIND (bif:ST_XMin(?coordPlot) AS ?xmin) .
+    BIND (bif:ST_YMin(?coordPlot) AS ?ymin) .
+    BIND (bif:ST_XMax(?coordPlot) AS ?xmax) .
+    BIND (bif:ST_YMax(?coordPlot) AS ?ymax) .
+    BIND ((?xmin + ?xmax)/2 AS ?x) .
+    BIND ((?ymin + ?ymax)/2 AS ?y) .
+    BIND (bif:st_distance(bif:st_point(?x, ?y), bif:st_geomFromText("POINT(${center[0]} ${center[1]})")) as ?distance) .
+    FILTER (?distance <=${distance}) .
+}
 
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
@@ -78,12 +80,12 @@ WHERE{
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {holding: 'holding', plot: 'plot', shortId: 'shortId', code: 'code', use: 'landUse'}, map)
+                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plotName: 'plotName', plot: 'plot', shortId: 'shortId', code: 'code', cropName: 'cropName', cropArea: 'cropArea'}, map)
                     })
             },
             createLayer: function () {
                 lyr = new ol.layer.Vector({
-                    title: "Fields filtered by ID_UZ attribute from LPIS db",
+                    title: "Fields by crop types",
                     source: src,
                     visible: true,
                     style: function (feature, resolution) {

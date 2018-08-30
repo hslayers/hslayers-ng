@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'parcels_with_id', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'parcels_with_id', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, layermanager, pois, parcels_near_water, water_bodies, parcels_with_id, parcels_with_CTVDPB, parcels_with_crop_types) {
+    function (ol, toolbar, layermanager, pois, parcels_near_water, water_bodies, parcels_with_id, parcels_with_CTVDPB, parcels_with_crop_types, parcels_with_crop_types_by_distance) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -204,17 +204,22 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                 Core.panelEnabled('status_creator', false);
                 $scope.Core.setDefaultPanel('layermanager');
                 var providers = [];
+                var synced_providers = [];
 
-                function registerProvider(provider){
+                function registerProvider(provider, synced){
                     providers.push(provider);
+                    if(angular.isUndefined(synced) || synced){
+                        synced_providers.push(provider);
+                    }
                 }
 
                 registerProvider(parcels_near_water);
                 registerProvider(water_bodies);
                 registerProvider(parcels_with_id);
                 registerProvider(parcels_with_CTVDPB);
-                registerProvider(parcels_with_crop_types);
-                
+                registerProvider(parcels_with_crop_types, false);
+                registerProvider(parcels_with_crop_types_by_distance, false);
+                                
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
                     providers.forEach(function(provider){
@@ -236,9 +241,10 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
 
                 $rootScope.$on('map.sync_center', function (e, center, bounds) {
                     pois.getPois(map, utils, bounds);
-                    providers.forEach(function(provider){
+                    synced_providers.forEach(function(provider){
                         provider.get(map, utils, bounds);
                     })
+                    $scope.last_center = center;
                 })
 
                 function createAboutDialog() {
@@ -297,7 +303,7 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                 $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
                     viewer.targetFrameRate = 30;
                     hsCesium = HsCesium;
-                    providers.forEach(function(provider){
+                    synced_providers.forEach(function(provider){
                         provider.get(map, utils, HsCesium.HsCsCamera.getViewportPolygon());
                     })
                     setTimeout(createHud, 3000);
@@ -325,10 +331,17 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                     parcels_with_CTVDPB.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
                 }
 
-                $scope.reloadCropTypeLayer = function(){
-                    parcels_with_crop_types.getLayer().setVisible(true);
-                    parcels_with_crop_types.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                $scope.reloadCropTypeLayer = function(crop_distance){
+                    if(angular.isUndefined(crop_distance)){
+                        parcels_with_crop_types.getLayer().setVisible(true);
+                        parcels_with_crop_types.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                    } else {
+                        parcels_with_crop_types_by_distance.getLayer().setVisible(true);
+                        parcels_with_crop_types_by_distance.get(map, utils, $scope.crop_distance, $scope.last_center);
+                    }
                 }
+
+                $scope.crop_distance = 1;
 
                 $scope.$on('infopanel.updated', function (event) { });
             }

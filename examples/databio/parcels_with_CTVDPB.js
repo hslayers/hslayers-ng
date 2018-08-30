@@ -39,8 +39,6 @@ define(['ol', 'sparql_helpers'],
                     return c.toString().replaceAll(',', ' ')
                 }
                 var extents = `POLYGON ((${prepareCords(rect[0])}, ${prepareCords(rect[1])}, ${prepareCords(rect[2])}, ${prepareCords(rect[3])}, ${prepareCords(rect[0])}, ${prepareCords(rect[1])}))`;
-                console.log(extents);
-                //console.log(extents);
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
 
                 PREFIX geo: <http://www.opengis.net/ont/geosparql#>

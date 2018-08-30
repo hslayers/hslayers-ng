@@ -33,7 +33,7 @@ define(['ol', 'cesiumjs', 'moment'],
             to_be_deleted: [],
             setupEvents() {
                 me.$rootScope.$on('layermanager.base_layer_visible_changed', function (event, data, b) {
-                    if (angular.isDefined(data.type) && data.type == 'terrain') {
+                    if (angular.isDefined(data) && angular.isDefined(data.type) && data.type == 'terrain') {
                         me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                             url: data.url
                         });
