@@ -211,6 +211,7 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'hs.source.Sparql
                 $rootScope.$on('map.loaded', function(){
                     map = hsMap.map;
                     map.on('moveend', extentChanged);
+                    initInfoDirective();
                 });
 
                 var spoi_source =  new ol.source.Vector();
@@ -318,15 +319,11 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'hs.source.Sparql
                 
                 /*Popups*/
                 function initInfoDirective(){
-                    $timeout(function(){
-                            var el = angular.element('<div hs.pilsentraffic.roadwork-info-directive></div>');
-                            $("#hs-dialog-area").append(el)
-                            $compile(el)($scope);
-                    }, 0)
-                } 
-                
-                initInfoDirective();
-                    
+                    var el = angular.element('<div hs.pilsentraffic.roadwork-info-directive></div>');
+                    $("#hs-dialog-area").append(el)
+                    $compile(el)($scope);
+                }                
+                   
                 var popup;
                 
                 function showPopup(roadwork){
