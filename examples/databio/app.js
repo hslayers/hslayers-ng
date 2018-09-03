@@ -215,8 +215,8 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
 
                 registerProvider(parcels_near_water);
                 registerProvider(water_bodies);
-                registerProvider(parcels_with_id);
-                registerProvider(parcels_with_CTVDPB);
+                registerProvider(parcels_with_id, false);
+                registerProvider(parcels_with_CTVDPB, false);
                 registerProvider(parcels_with_crop_types, false);
                 registerProvider(parcels_with_crop_types_by_distance, false);
                                 
@@ -303,10 +303,16 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                 $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
                     viewer.targetFrameRate = 30;
                     hsCesium = HsCesium;
-                    synced_providers.forEach(function(provider){
-                        provider.get(map, utils, HsCesium.HsCsCamera.getViewportPolygon());
+                    providers.forEach(function(provider){
+                        provider.cesium = hsCesium;
                     })
                     setTimeout(createHud, 3000);
+                })
+
+                $rootScope.$on('cesiummap.resized', function () {
+                    synced_providers.forEach(function(provider){
+                        provider.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                    })
                 })
 
                 function createHud() {
@@ -334,10 +340,12 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                 $scope.reloadCropTypeLayer = function(crop_distance){
                     if(angular.isUndefined(crop_distance)){
                         parcels_with_crop_types.getLayer().setVisible(true);
+                        parcels_with_crop_types_by_distance.getLayer().setVisible(true);
                         parcels_with_crop_types.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
                     } else {
+                        parcels_with_crop_types.getLayer().setVisible(false);
                         parcels_with_crop_types_by_distance.getLayer().setVisible(true);
-                        parcels_with_crop_types_by_distance.get(map, utils, $scope.crop_distance, $scope.last_center);
+                        parcels_with_crop_types_by_distance.get(map, utils, $scope.crop_distance, hsCesium.HsCsCamera.getCameraCenterInLngLat());
                     }
                 }
 

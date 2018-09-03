@@ -78,7 +78,8 @@ WHERE{
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {holding: 'holding', plot: 'plot', shortId: 'shortId', code: 'code', use: 'landUse'}, map)
+                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {holding: 'holding', plot: 'plot', shortId: 'shortId', code: 'code', use: 'landUse'}, map);
+                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
                     })
             },
             createLayer: function () {

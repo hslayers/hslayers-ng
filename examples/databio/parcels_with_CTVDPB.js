@@ -23,8 +23,6 @@ define(['ol', 'sparql_helpers'],
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
-                var name = entity.properties.code;
-                var use = entity.properties.use.getValue();
                 entity.polygon.outline = false;
                 entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(40, 150, 40, 0.6)');
                 entity.styled = true;
@@ -76,7 +74,8 @@ define(['ol', 'sparql_helpers'],
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {holding: 'holding', plot: 'plot', shortId: 'shortId', code: 'code', use: 'landUse'}, map)
+                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plot: 'plot', shortId: 'shortId', code: 'code'}, map);
+                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
                     })
             },
             createLayer: function () {
@@ -85,8 +84,6 @@ define(['ol', 'sparql_helpers'],
                     source: src,
                     visible: true,
                     style: function (feature, resolution) {
-                        var use = feature.get('use').split('/');
-                        use = use[use.length - 1];
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({

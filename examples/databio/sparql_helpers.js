@@ -19,7 +19,11 @@ define(['ol'],
                                 var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection());
                                 var fields = { geometry: geom_transformed };
                                 for(key in attrs){
-                                    fields[key] = b[attrs[key]].value;
+                                    if(typeof b[attrs[key]] == 'undefined'){
+                                        console.error('Missing key', key);
+                                    } else {
+                                        fields[key] = b[attrs[key]].value;
+                                    }
                                 }
                                 var feature = new ol.Feature(fields);
                                 feature.setId(b[id_field].value);
@@ -38,6 +42,14 @@ define(['ol'],
                 })
                 src.set('loaded', true);
                 src.dispatchEvent('features:loaded', src);
+            },
+            zoomToFetureExtent(src, camera){
+                if(src.getFeatures().length>0){
+                    var extent = src.getFeatures()[0].getGeometry().getExtent().slice(0);
+                    src.getFeatures().forEach(function(feature){ ol.extent.extend(extent,feature.getGeometry().getExtent())});
+                    camera.flyTo({destination:  Cesium.Rectangle.fromDegrees(extent[0], extent[1], extent[2], extent[3])})
+                }
+
             }
         }
         return me;

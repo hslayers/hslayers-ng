@@ -201,6 +201,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     angular.element('.cesium-viewer-bottom').css({ bottom: '30px' });
                 else
                     angular.element('.cesium-viewer-bottom').css({ bottom: 0 });
+                $rootScope.$broadcast('cesiummap.resized', viewer, me);
             }
 
             this.getCameraCenterInLngLat = HsCsCamera.getCameraCenterInLngLat;
