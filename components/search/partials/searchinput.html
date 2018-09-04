@@ -1,6 +1,12 @@
  <div class="input-group search_address">
     <input ng-model="query" class="form-control" id="search_address" placeholder="Search:" ng-change="queryChanged()"/>
     <span class="input-group-btn">
-    <button type="button" class="btn btn-default" ng-if="clearvisible" ng-click="clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
+        <button type="button" class="btn btn-default" ng-if="clearvisible" ng-click="clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
+        <button type="button" class="btn btn-default" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
+            <i class="glyphicon glyphicon-repeat"></i>
+        </button>
+        <button type="button" class="btn btn-default"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true, false)">
+            <i class="glyphicon icon-design"></i>
+        </button>
     </span>
 </div>

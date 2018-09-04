@@ -23,8 +23,8 @@ define(['angular', 'map', 'core', 'permalink'],
          * @ngdoc controller
          * @name hs.toolbar.controller
          */
-        .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window',
-            function($scope, OlMap, Core, bus, $window) {
+        .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window', '$compile',
+            function($scope, OlMap, Core, bus, $window, $compile) {
                 $scope.Core = Core;
                 var collapsed = false;
 
@@ -73,7 +73,7 @@ define(['angular', 'map', 'core', 'permalink'],
 
                 $scope.compositionLoaded = function() {
                     return angular.isDefined($scope.composition_title);
-                }
+                }            
 
                 $scope.$emit('scope_loaded', "Toolbar");
             }
