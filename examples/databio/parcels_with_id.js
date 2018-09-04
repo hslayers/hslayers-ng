@@ -54,7 +54,7 @@ PREFIX olu: <http://w3id.org/foodie/olu#>
 PREFIX af-inspire: <http://inspire.ec.europa.eu/schemas/af/3.0#>
 
 SELECT ?holding ?plot ?code ?shortId ?landUse ?coordPlot
-FROM <http://w3id.org/foodie/open/cz/180308_pLPIS_WGS#>
+FROM <http://w3id.org/foodie/open/cz/pLPIS_180616_WGS#>
 WHERE{ 
     ?holding a foodie:Holding ;
        common:identifier ?identifier_ID_UZ ;

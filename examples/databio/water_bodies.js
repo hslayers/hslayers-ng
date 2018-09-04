@@ -51,7 +51,7 @@ PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
 PREFIX olu: <http://w3id.org/foodie/olu#>
 
 SELECT ?waterBody ?label ?coordWBody
-FROM <http://w3id.org/foodie/open/cz/Water_bodies_buff25m_WGS#>
+FROM <http://w3id.org/foodie/open/cz/water_buffer25#>
 WHERE {
     ?waterBody a foodie-cz:WaterBody ;
             rdfs:label ?label ;

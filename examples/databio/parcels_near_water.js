@@ -52,6 +52,7 @@ PREFIX olu: <http://w3id.org/foodie/olu#>
 
 
 SELECT DISTINCT ?plot ?code ?shortId ?landUse ?coordPlotFinal
+FROM <http://w3id.org/foodie/open/cz/pLPIS_180616_WGS#>
 WHERE {
    ?plot geo:hasGeometry ?geoPlotFinal .
    ?geoPlotFinal ogcgs:asWKT  ?coordPlotFinal .
@@ -59,7 +60,7 @@ WHERE {
    
    GRAPH ?graph1 {
       SELECT ?plot ?code ?shortId ?landUse
-      FROM <http://w3id.org/foodie/open/cz/180308_pLPIS_WGS#>
+      FROM <http://w3id.org/foodie/open/cz/pLPIS_180616_WGS#>
       WHERE{ 
          ?plot a foodie:Plot ;
             foodie:code ?code ;
@@ -67,12 +68,12 @@ WHERE {
             olu:specificLandUse ?landUse ;
             geo:hasGeometry ?geoPlot .
          ?geoPlot ogcgs:asWKT  ?coordPlot .
-         FILTER(bif:st_intersects (?coordPlot, bif:st_geomFromText("${extents}"))) .   
+         FILTER(bif:st_may_intersect  (?coordPlot, bif:st_geomFromText("${extents}"))) .   
      }
    }
    GRAPH ?graph2 {
       SELECT ?waterBody ?label ?coordWBody
-      FROM <http://w3id.org/foodie/open/cz/Water_bodies_buff25m_WGS#>
+      FROM <http://w3id.org/foodie/open/cz/water_buffer25#>
       WHERE {
           ?waterBody a foodie-cz:WaterBody ;
                  rdfs:label ?label ;
