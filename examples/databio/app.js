@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'parcels_with_id', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'parcels_with_id', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, layermanager, pois, parcels_near_water, water_bodies, parcels_with_id, parcels_with_CTVDPB, parcels_with_crop_types, parcels_with_crop_types_by_distance) {
+    function (ol, toolbar, sentinel, layermanager, pois, parcels_near_water, water_bodies, parcels_with_id, parcels_with_CTVDPB, parcels_with_crop_types, parcels_with_crop_types_by_distance) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -12,7 +12,8 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
             'hs.geolocation',
             'hs.cesium',
             'hs.sidebar',
-            'hs.ows'
+            'hs.ows',
+            'hs.sentinel'
         ]);
 
         module.directive('hs', ['hs.map.service', 'Core', '$compile', '$timeout', function (OlMap, Core, $compile, $timeout) {
@@ -117,11 +118,15 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                             LAYERS: 'corine',
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html",
-                            minimumTerrainLevel: 9
+                            minimumTerrainLevel: 9,
+                            maximumLevel: 5,
+                            minimumLevel: 5
                         },
                         crossOrigin: null
                     }),
+                    maxResolution: 8550,
                     minResolution: 2.388657133911758,
+                    maximumLevel: 5,
                     path: 'Open-Land-Use Map',
                     visible: false,
                     opacity: 0.7
@@ -137,7 +142,9 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                             minimumTerrainLevel: 15,
                             VERSION: '1.1.1',
                             CRS: 'EPSG:4326',
-                            FROMCRS: 'EPSG:4326'
+                            FROMCRS: 'EPSG:4326',
+                            maximumLevel: 5,
+                            minimumLevel: 5
                         },
                         crossOrigin: null
                     }),
@@ -348,6 +355,18 @@ define(['ol', 'toolbar', 'layermanager', 'pois', 'parcels_near_water', 'water_bo
                         parcels_with_crop_types_by_distance.get(map, utils, $scope.crop_distance, hsCesium.HsCsCamera.getCameraCenterInLngLat());
                     }
                 }
+
+                $scope.$on("scope_loaded", function(event, args) {
+                    if (args == 'Sidebar') {
+                        var el = angular.element('<div hs.sentinel.directive hs.draggable ng-controller="hs.sentinel.controller" ng-if="Core.exists(\'hs.sentinel.controller\')" ng-show="Core.panelVisible(\'sentinel\', this)"></div>');
+                        angular.element('#panelplace').append(el);
+                        $compile(el)($scope);
+
+                        var toolbar_button = angular.element('<div hs.sentinel.toolbar></div>');
+                        angular.element('.sidebar-list').append(toolbar_button);
+                        $compile(toolbar_button)(event.targetScope);
+                    }
+                })
 
                 $scope.crop_distance = 1;
 
