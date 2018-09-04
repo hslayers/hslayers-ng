@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'parcels_with_id', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'parcels_with_id', 'erosion_zones', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, sentinel, layermanager, pois, parcels_near_water, water_bodies, parcels_with_id, parcels_with_CTVDPB, parcels_with_crop_types, parcels_with_crop_types_by_distance) {
+    function (ol, toolbar, sentinel, layermanager, pois, parcels_near_water, water_bodies, parcels_with_id, erosion_zones, parcels_with_CTVDPB, parcels_with_crop_types, parcels_with_crop_types_by_distance) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -226,6 +226,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 registerProvider(parcels_with_CTVDPB, false);
                 registerProvider(parcels_with_crop_types, false);
                 registerProvider(parcels_with_crop_types_by_distance, false);
+                registerProvider(erosion_zones, false);
                                 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
@@ -343,6 +344,11 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 $scope.reloadCTVDPB = function(){
                     parcels_with_CTVDPB.getLayer().setVisible(true);
                     parcels_with_CTVDPB.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                }
+
+                $scope.reloadErosionZones = function(){
+                    erosion_zones.getLayer().setVisible(true);
+                    erosion_zones.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
                 }
 
                 $scope.reloadCropTypeLayer = function(crop_distance){

@@ -36,9 +36,7 @@ define(['ol', 'sparql_helpers'],
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
-                var extents = `POLYGON ((${prepareCords(rect[0])}, ${prepareCords(rect[1])}, ${prepareCords(rect[2])}, ${prepareCords(rect[3])}, ${prepareCords(rect[0])}, ${prepareCords(rect[1])}))`;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
-
                 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
                 PREFIX virtrdf:	<http://www.openlinksw.com/schemas/virtrdf#> 
@@ -51,25 +49,36 @@ define(['ol', 'sparql_helpers'],
                 PREFIX olu: <http://w3id.org/foodie/olu#>
                 PREFIX af-inspire: <http://inspire.ec.europa.eu/schemas/af/3.0#>
                 
-                SELECT ?plot ?plotName ?code ?shortId ?cropName ?cropArea ?year ?coordPlot
-                FROM <http://w3id.org/foodie/core/cz/CZpilot_fields#>
-                WHERE{ 
-                    ?plot a foodie:Plot ;
-                    foodie:crop ?cropSpecies ;
-                    geo:hasGeometry ?geoPlot .
-                    OPTIONAL {?plot foodie:code ?code } .
-                    OPTIONAL {?plot foodie-cz:plotName ?plotName } .
-                    OPTIONAL {?plot foodie-cz:shortId ?shortId } .
-                    ?geoPlot ogcgs:asWKT  ?coordPlot .
-                    ?cropSpecies foodie:cropArea ?cropArea ;
-                    common:validFrom ?validFrom ;
-                    foodie:cropSpecies ?cropType .
-                    ?cropType foodie:description ?cropName .
-                    BIND (year(xsd:dateTime(?validFrom)) as ?year) .
-                    FILTER(STRSTARTS(STR(?code),"${$scope.ctvdpd}") )
-                    #FILTER (?year=2017) 
-                }
                 
+                SELECT ?erosionZone ?erosion ?erosionCoord
+                FROM <http://w3id.org/foodie/open/cz/Erosion_zones_WGS#>
+                WHERE {
+                  ?erosionZone a foodie-cz:ErosionZone ;
+                     foodie-cz:erosion ?erosion ;
+                     geo:hasGeometry ?erosionGeo .
+                  ?erosionGeo ogcgs:asWKT ?erosionCoord .
+                  FILTER(bif:st_intersects(?erosionCoord, ?coordPlot)) .
+                  GRAPH ?graph1 {   
+                     SELECT ?holding ?plot ?code ?shortId ?landUse ?coordPlot
+                     FROM <http://w3id.org/foodie/open/cz/pLPIS_180616_WGS#>
+                     WHERE{ 
+                       ?holding a foodie:Holding ;
+                          common:identifier ?identifier_ID_UZ ;
+                          foodie-cz:inspireIdCodeSpace ?inspireIdCodeSpace ;
+                          foodie-cz:inspireIdCodeVersion ?inspireIdCodeVersion ;
+                          af-inspire:contains ?site .
+                       FILTER(STRSTARTS(STR(?identifier_ID_UZ),"${$scope.iduz}") )
+                       ?site foodie:containsPlot ?plot .
+                       ?plot a foodie:Plot ;
+                          foodie:code ?code ;
+                          foodie-cz:shortId ?shortId ;
+                          olu:specificLandUse ?landUse ;
+                          geo:hasGeometry ?geoPlot .
+                       ?geoPlot ogcgs:asWKT  ?coordPlot .  
+                    }
+                  }
+                }
+                           
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
                 src.set('loaded', false);
@@ -77,13 +86,13 @@ define(['ol', 'sparql_helpers'],
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plot: 'plot', shortId: 'shortId', code: 'code'}, map);
+                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
                     })
             },
             createLayer: function () {
                 lyr = new ol.layer.Vector({
-                    title: "Fields filtered by CTVDPD code",
+                    title: "Erosion zones",
                     source: src,
                     visible: false,
                     style: function (feature, resolution) {

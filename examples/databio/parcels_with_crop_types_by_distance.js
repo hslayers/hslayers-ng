@@ -63,18 +63,19 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX olu: <http://w3id.org/foodie/olu#>
 PREFIX af-inspire: <http://inspire.ec.europa.eu/schemas/af/3.0#>
 
-SELECT ?plot ?plotName ?code ?shortId ?cropName ?cropArea ?distance ?coordPlot
+SELECT ?plot ?plotName ?code ?shortId ?cropName ?cropArea ?distance ?year ?coordPlot
 FROM <http://w3id.org/foodie/core/cz/CZpilot_fields#>
 WHERE{ 
     ?plot a foodie:Plot ;
-       foodie:code ?code ;
-       foodie-cz:plotName ?plotName ;
-       foodie-cz:shortId ?shortId ;
-       foodie:crop ?cropSpecies ;
-       geo:hasGeometry ?geoPlot .
+    foodie:crop ?cropSpecies ;
+    geo:hasGeometry ?geoPlot .
+    OPTIONAL {?plot foodie:code ?code } .
+    OPTIONAL {?plot foodie-cz:plotName ?plotName } .
+    OPTIONAL {?plot foodie-cz:shortId ?shortId } .
     ?geoPlot ogcgs:asWKT  ?coordPlot .
     ?cropSpecies foodie:cropArea ?cropArea ;
-       foodie:cropSpecies ?cropType .
+        common:validFrom ?validFrom ;
+        foodie:cropSpecies ?cropType .
     ?cropType foodie:description ?cropName .
     ${$scope.cropType!='' && typeof $scope.cropType!='undefined' && $scope.cropType != "http://w3id.org/foodie/core/CZpilot_fields/CropType/" ? `FILTER(?cropType = <${$scope.cropType}>).` : ''}
     BIND (bif:ST_XMin(?coordPlot) AS ?xmin) .
