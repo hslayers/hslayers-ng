@@ -198,8 +198,8 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
             cesiumBingKey: 'Ag-1WrJMNrtwDswUaPxKvq85UO-82NmE_V5HiXbgssabAYmr4zV2HyFWrusCfaXF'
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce',
-            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', 'hs.sentinel.service',
+            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce, sentinel_service) {
                 var map;
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
@@ -238,6 +238,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 pois.init($scope, $compile);
                 providers.forEach(function(provider){
                     config.default_layers.push(provider.createLayer());
+                    config.default_layers.push(sentinel_service.createLayer());
                 })
                 
                 function extentChanged() {
