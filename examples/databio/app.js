@@ -191,7 +191,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
             status_manager_url: '/wwwlibs/statusmanager2/index.php',
             default_view: new ol.View({
                 center: [14.28, 49.6],
-                zoom: 18,
+                zoom: 14,
                 units: "m",
                 projection: 'EPSG:4326'
             }),

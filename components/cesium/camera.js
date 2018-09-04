@@ -85,7 +85,7 @@ define(['ol', 'cesiumjs'],
                 var bot_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(-100+of_x, viewer.canvas.height-of_y+100), new Cesium.Cartesian2(viewer.canvas.width, 0)));
 
                 function clamp(p) {
-                    var max_dist = 0.13;
+                    var max_dist = 0.23;
                     if (Math.abs(p[0] - center[0]) > max_dist)
                         p[0] = center[0] + (p[0] - center[0]) * (max_dist / Math.abs(p[0] - center[0]));
                     if (Math.abs(p[1] - center[1]) > max_dist)

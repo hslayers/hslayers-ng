@@ -164,7 +164,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                                 var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
                                 var longitudeString = Cesium.Math.toDegrees(cartographic.longitude);
                                 var latitudeString = Cesium.Math.toDegrees(cartographic.latitude);
-                                $rootScope.$emit('cesium_position_clicked', [longitudeString, latitudeString]);
+                                $rootScope.$broadcast('cesium_position_clicked', [longitudeString, latitudeString]);
                             }
                         }
                     }

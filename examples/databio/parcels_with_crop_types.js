@@ -100,7 +100,7 @@ define(['ol', 'sparql_helpers'],
                 lyr = new ol.layer.Vector({
                     title: "Fields by crop types",
                     source: src,
-                    visible: true,
+                    visible: false,
                     style: function (feature, resolution) {
                         return [
                             new ol.style.Style({

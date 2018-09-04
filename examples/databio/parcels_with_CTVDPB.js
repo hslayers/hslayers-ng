@@ -82,7 +82,7 @@ define(['ol', 'sparql_helpers'],
                 lyr = new ol.layer.Vector({
                     title: "Fields filtered by CTVDPD code",
                     source: src,
-                    visible: true,
+                    visible: false,
                     style: function (feature, resolution) {
                         return [
                             new ol.style.Style({

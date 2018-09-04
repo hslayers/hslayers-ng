@@ -86,7 +86,7 @@ WHERE{
                 lyr = new ol.layer.Vector({
                     title: "Fields filtered by ID_UZ attribute from LPIS db",
                     source: src,
-                    visible: true,
+                    visible: false,
                     style: function (feature, resolution) {
                         return [
                             new ol.style.Style({

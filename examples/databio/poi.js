@@ -136,7 +136,7 @@ define(['ol'],
                             })
                         ]
                     },
-                    visible: true
+                    visible: false
                 })
             },
             init: function (_$scope, _$compile) {

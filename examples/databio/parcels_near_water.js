@@ -34,7 +34,7 @@ define(['ol', 'sparql_helpers'],
 
         var me = {
             get: function (map, utils, rect) {
-                if (map.getView().getResolution() > 20.48657133911758 || lyr.getVisible() == false) return;
+                if (map.getView().getResolution() > lyr.getMaxResolution() || lyr.getVisible() == false) return;
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -97,6 +97,7 @@ WHERE {
                     title: "Plots intersecting water bodies",
                     source: src,
                     visible: true,
+                    maxResolution: 0.000171661376953125,
                     style: function (feature, resolution) {
                         var use = feature.get('use').split('/');
                         use = use[use.length - 1];

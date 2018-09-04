@@ -24,7 +24,7 @@ define(['ol', 'sparql_helpers'],
                 var entity = entities[i];
                 if (entity.styled) continue;
                 entity.polygon.outline = false;
-                entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(0, 0, 220, 0.8)');
+                entity.polygon.material = new Cesium.Color.fromCssColorString('rgb(31, 90, 186)');
                 entity.styled = true;
                 //entity.onclick = entityClicked
             }
@@ -32,7 +32,7 @@ define(['ol', 'sparql_helpers'],
 
         var me = {
             get: function (map, utils, rect) {
-                if (map.getView().getResolution() > 20.48657133911758 || lyr.getVisible() == false) return;
+                if (map.getView().getResolution() > lyr.getMaxResolution() || lyr.getVisible() == false) return;
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -74,6 +74,7 @@ FILTER(bif:st_intersects (?coordWBody, bif:st_geomFromText("${extents}"))) .
                     title: "Water bodies",
                     source: src,
                     visible: true,
+                    maxResolution: 0.000171661376953125,
                     style: function (feature, resolution) {
                         return [
                             new ol.style.Style({

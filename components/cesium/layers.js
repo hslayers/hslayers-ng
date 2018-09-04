@@ -241,6 +241,8 @@ define(['ol', 'cesiumjs', 'moment'],
                     parameters: params,
                     getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
+                    maximumLevel: params.maximumLevel,
+                    minimumLevel: params.minimumLevel,
                     proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
                 };
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(me.removeUnwantedParams(prm_cache, src)), {
