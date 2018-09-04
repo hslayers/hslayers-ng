@@ -50,7 +50,6 @@ define(['angular', 'ol', 'map', 'core'],
                                 for (var i = 0; i < entities.length; i++) {
                                     var entity = entities[i];
                                     if (entity.styled) continue;
-                                    entity.billboard.scaleByDistance = new Cesium.NearFarScalar(50, 1.5, 35000, 0.0);
                                     entity.billboard.image = '../foodie-zones/symbols/other.png';
                                     entity.billboard.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -100.0);
                                     entity.label = new Cesium.LabelGraphics({
@@ -62,8 +61,6 @@ define(['angular', 'ol', 'map', 'core'],
                                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                                         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                                         pixelOffset: new Cesium.Cartesian2(0, -26),
-                                        pixelOffsetScaleByDistance: new Cesium.NearFarScalar(50, 1.5, 35000, 0.0),
-                                        scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 35000, 0.0),
                                         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
                                         eyeOffset: new Cesium.Cartesian3(0.0, 0.0, -200.0)
                                     })
