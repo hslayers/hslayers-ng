@@ -238,8 +238,8 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 pois.init($scope, $compile);
                 providers.forEach(function(provider){
                     config.default_layers.push(provider.createLayer());
-                    config.default_layers.push(sentinel_service.createLayer());
                 })
+                config.default_layers.push(sentinel_service.createLayer());
                 
                 function extentChanged() {
                     var bbox = map.getView().calculateExtent(map.getSize());
