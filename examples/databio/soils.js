@@ -23,24 +23,22 @@ define(['ol', 'sparql_helpers'],
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
-                var plotName = entity.properties.plotName;
-                var cropName = entity.properties.cropName.getValue();
                 entity.polygon.outline = false;
-                entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(150, 40, 40, 0.6)');
+                entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(237, 189, 113, 0.6)');
                 var polyPositions = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions;
                 var polyCenter = Cesium.BoundingSphere.fromPoints(polyPositions).center;
                 polyCenter = Cesium.Ellipsoid.WGS84.scaleToGeodeticSurface(polyCenter);
                 entity.position = polyCenter;
                 entity.label = new Cesium.LabelGraphics({
-                    text: entity.properties.code.getValue() + ' '+ entity.properties.cropName.getValue(),
+                    text: entity.properties.code.getValue(),
                     font: '16px Helvetica',
                     fillColor: Cesium.Color.WHITE,
                     outlineColor: Cesium.Color.BLACK,
                     showBackground: true,
                     style: Cesium.LabelStyle.FILL,
-                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(10.0, 30000.0),
+                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(10.0, 10000.0),
                     disableDepthTestDistance: Number.POSITIVE_INFINITY,
-                    scaleByDistance: new Cesium.NearFarScalar(500, 1, 70000, 0.0),
+                    scaleByDistance: new Cesium.NearFarScalar(500, 1, 20000, 0.0),
                     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                 })
                 entity.styled = true;
