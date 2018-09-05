@@ -1,8 +1,8 @@
 'use strict';
 
-define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water', 'water_bodies', 'parcels_with_id', 'erosion_zones', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water', 'soils', 'water_bodies', 'parcels_with_id', 'erosion_zones', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
 
-    function (ol, toolbar, sentinel, layermanager, pois, parcels_near_water, water_bodies, parcels_with_id, erosion_zones, parcels_with_CTVDPB, parcels_with_crop_types, parcels_with_crop_types_by_distance) {
+    function (ol, toolbar, sentinel, layermanager, pois, parcels_near_water, soils, water_bodies, parcels_with_id, erosion_zones, parcels_with_CTVDPB, parcels_with_crop_types, parcels_with_crop_types_by_distance) {
         var module = angular.module('hs', [
             'hs.toolbar',
             'hs.layermanager',
@@ -227,6 +227,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 registerProvider(parcels_with_crop_types, false);
                 registerProvider(parcels_with_crop_types_by_distance, false);
                 registerProvider(erosion_zones, false);
+                registerProvider(soils);
                                 
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
@@ -346,15 +347,20 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     parcels_with_CTVDPB.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
                 }
 
-                $scope.reloadErosionZones = function(){
+                $scope.reloadErosionZonesById = function(){
                     erosion_zones.getLayer().setVisible(true);
-                    erosion_zones.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                    erosion_zones.getForId(map, utils);
                 }
+
+                $scope.reloadErosionZonesByCTVDPB = function(){
+                    erosion_zones.getLayer().setVisible(true);
+                    erosion_zones.getForCTVDPB(map, utils);
+                }                
 
                 $scope.reloadCropTypeLayer = function(crop_distance){
                     if(angular.isUndefined(crop_distance)){
                         parcels_with_crop_types.getLayer().setVisible(true);
-                        parcels_with_crop_types_by_distance.getLayer().setVisible(true);
+                        parcels_with_crop_types_by_distance.getLayer().setVisible(false);
                         parcels_with_crop_types.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
                     } else {
                         parcels_with_crop_types.getLayer().setVisible(false);
@@ -362,6 +368,11 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                         parcels_with_crop_types_by_distance.get(map, utils, $scope.crop_distance, hsCesium.HsCsCamera.getCameraCenterInLngLat());
                     }
                 }
+
+                $scope.reloadSoils = function(){
+                    soils.getLayer().setVisible(true);
+                    soils.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                }               
 
                 $scope.$on("scope_loaded", function(event, args) {
                     if (args == 'Sidebar') {

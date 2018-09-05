@@ -94,7 +94,7 @@
                         <div class="panel-heading" role="tab" id="headingFour">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
-                                    aria-controls="collapseThree">
+                                    aria-controls="collapseFour">
                                     Find fields with crop type
                                 </a>
                             </h4>
@@ -119,7 +119,7 @@
                         <div class="panel-heading" role="tab" id="headingFive">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false"
-                                    aria-controls="collapseThree">
+                                    aria-controls="collapseFive">
                                     Filter fields by crop and distance to map center
                                 </a>
                             </h4>
@@ -148,7 +148,7 @@
                         <div class="panel-heading" role="tab" id="headingSix">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false"
-                                    aria-controls="collapseThree">
+                                    aria-controls="collapseSix">
                                     Find erosion zones
                                 </a>
                             </h4>
@@ -160,7 +160,41 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" ng-model="iduz" placeholder="e.g. 17614" />
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadErosionZones()" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadErosionZonesById()" type="button">Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">CTVDPB</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-model="ctvdpd" placeholder="e.g. 57011607501" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="reloadErosionZonesByCTVDPB()" type="button">Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingSeven">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false"
+                                    aria-controls="collapseSeven">
+                                    Filter fields by soil type
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="control-label">Soil type</label>
+                                    <div class="input-group">
+                                        <select class="form-control" ng-model="soilType">
+                                            <option ng-value="label" ng-repeat="label in soilTypes">{{label}}</option>
+                                        </select>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="reloadSoils()" type="button">Filter</button>
                                         </span>
                                     </div>
                                 </div>

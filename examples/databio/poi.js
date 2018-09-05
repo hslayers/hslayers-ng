@@ -4,6 +4,7 @@ define(['ol'],
         var spoi_source = new ol.source.Vector();
         var $scope;
         var $compile;
+        var lyr;
 
         function entityClicked(entity) {
             $scope.showInfo(entity);
@@ -65,7 +66,7 @@ define(['ol'],
 
         return {
             getPois: function (map, utils, rect) {
-                if (map.getView().getResolution() > 8.48657133911758) return;
+                if (map.getView().getResolution() > lyr.getMaxResolution() || lyr.getVisible() == false) return;
                 var format = new ol.format.WKT();
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
@@ -113,9 +114,10 @@ define(['ol'],
                     })
             },
             createPoiLayer: function () {
-                return new ol.layer.Vector({
+                lyr = new ol.layer.Vector({
                     title: "Points of interest",
                     source: spoi_source,
+                    maxResolution: 0.000171661376953125,
                     style: function (feature, resolution) {
                         var s = feature.get('category');
                         if (typeof s === 'undefined') return;
@@ -137,7 +139,8 @@ define(['ol'],
                         ]
                     },
                     visible: false
-                })
+                });
+                return lyr
             },
             init: function (_$scope, _$compile) {
                 $scope = _$scope;

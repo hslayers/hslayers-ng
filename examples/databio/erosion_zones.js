@@ -31,11 +31,8 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            get: function (map, utils, rect) {
+            getForId: function (map, utils) {
                 if (lyr.getVisible() == false) return;
-                function prepareCords(c) {
-                    return c.toString().replaceAll(',', ' ')
-                }
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
                 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
@@ -50,7 +47,7 @@ define(['ol', 'sparql_helpers'],
                 PREFIX af-inspire: <http://inspire.ec.europa.eu/schemas/af/3.0#>
                 
                 
-                SELECT ?erosionZone ?erosion ?erosionCoord
+                SELECT DISTINCT ?erosionZone ?erosion ?erosionCoord
                 FROM <http://w3id.org/foodie/open/cz/Erosion_zones_WGS#>
                 WHERE {
                   ?erosionZone a foodie-cz:ErosionZone ;
@@ -78,6 +75,61 @@ define(['ol', 'sparql_helpers'],
                     }
                   }
                 }
+                           
+                `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+
+                src.set('loaded', false);
+                $.ajax({
+                    url: utils.proxify(q)
+                })
+                    .done(function (response) {
+                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map);
+                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
+                    })
+            },
+            getForCTVDPB: function (map, utils) {
+                if (lyr.getVisible() == false) return;
+                var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
+                PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+                PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
+                PREFIX virtrdf:	<http://www.openlinksw.com/schemas/virtrdf#> 
+                PREFIX poi: <http://www.openvoc.eu/poi#> 
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
+                PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
+                PREFIX common: <http://portele.de/ont/inspire/baseInspire#>
+                PREFIX prov: <http://www.w3.org/ns/prov#>
+                PREFIX olu: <http://w3id.org/foodie/olu#>
+                PREFIX af-inspire: <http://inspire.ec.europa.eu/schemas/af/3.0#>
+
+                SELECT DISTINCT ?erosionZone ?erosion ?erosionCoord
+                FROM <http://w3id.org/foodie/open/cz/Erosion_zones_WGS#>
+                WHERE {
+                ?erosionZone a foodie-cz:ErosionZone ;
+                    foodie-cz:erosion ?erosion ;
+                    geo:hasGeometry ?erosionGeo .
+                ?erosionGeo geo:asWKT ?erosionCoord .
+                FILTER(bif:st_intersects(?erosionCoord, ?coordPlotFinal)) .
+                {
+                SELECT ?plot ?coordPlotFinal
+                FROM <http://w3id.org/foodie/open/cz/pLPIS_180616_WGS#>
+                WHERE {
+                    ?plot a foodie:Plot ;
+                        foodie:code ?input ;
+                        geo:hasGeometry ?geoPlotFinal .
+                    ?geoPlotFinal geo:asWKT  ?coordPlotFinal .
+                    {
+                        SELECT ?input
+                        WHERE {
+                            ?s ?p ?v
+                            BIND ("${$scope.ctvdpd}"^^<http://www.w3.org/2001/XMLSchema#string> as ?input) .
+                        }
+                        LIMIT 1
+                    }
+                }
+                }
+                }
+
                            
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 

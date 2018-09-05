@@ -64,30 +64,36 @@ define(['ol', 'sparql_helpers'],
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                 PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
                 PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
-                PREFIX common: <http://portele.de/ont/inspire/baseInspire#>
-                PREFIX prov: <http://www.w3.org/ns/prov#>
                 PREFIX olu: <http://w3id.org/foodie/olu#>
-                PREFIX af-inspire: <http://inspire.ec.europa.eu/schemas/af/3.0#>
-                
-                SELECT ?plot ?plotName ?code ?shortId ?cropName ?cropArea ?year ?coordPlot
-                FROM <http://w3id.org/foodie/core/cz/CZpilot_fields#>
-                WHERE{ 
-                    ?plot a foodie:Plot ;
-                    foodie:crop ?cropSpecies ;
-                    geo:hasGeometry ?geoPlot .
-                    OPTIONAL {?plot foodie:code ?code } .
-                    OPTIONAL {?plot foodie-cz:plotName ?plotName } .
-                    OPTIONAL {?plot foodie-cz:shortId ?shortId } .
-                    ?cropSpecies foodie:cropArea ?cropArea ;
-                    common:validFrom ?validFrom ;
-                    foodie:cropSpecies ?cropType .
-                    ?cropType foodie:description ?cropName .
-                    BIND (year(xsd:dateTime(?validFrom)) as ?year) .
-                    ?geoPlot geo:asWKT  ?coordPlot .
-                    ${$scope.cropType!='' && typeof $scope.cropType!='undefined' && $scope.cropType != "http://w3id.org/foodie/core/CZpilot_fields/CropType/" ? `FILTER(?cropType = <${$scope.cropType}>).` : ''}
-                    FILTER(bif:st_intersects (?coordPlot, bif:st_geomFromText("${extents}"))) .
-                }               
+                PREFIX common: <http://portele.de/ont/inspire/baseInspire#>
 
+
+                SELECT DISTINCT ?plot ?soilType ?code ?shortId ?landUse ?coordPlotFinal
+                FROM <http://w3id.org/foodie/open/cz/pLPIS_180616_WGS#>
+                WHERE {
+                ?plot a foodie:Plot ;
+                        foodie:code ?code ;
+                        foodie-cz:shortId ?shortId ;
+                        olu:specificLandUse ?landUse ;
+                        geo:hasGeometry ?geoPlotFinal .
+                    ?geoPlotFinal ogcgs:asWKT  ?coordPlotFinal .
+                    FILTER(bif:st_intersects(?coordPlotFinal, ?coordSoil)) .
+                    GRAPH ?graph1 {
+                        SELECT ?soil (?label as ?soilType) ?codeSoil ?description ?link ?coordSoil
+                        FROM <http://w3id.org/foodie/open/cz/Soil_maps_BPEJ_WGSc#>
+                        WHERE {
+                            ?soil a foodie:Plot ;
+                                    geo:hasGeometry ?geoSoil .
+                            optional {?soil rdfs:label ?label }.
+                            optional {?soil foodie:code ?codeSoil }.
+                            optional {?soil common:link ?link }.
+                            optional {?soil foodie:description ?description }.
+                            ?geoSoil ogcgs:asWKT ?coordSoil .
+                            FILTER(STRSTARTS(STR(?label),"${$scope.soilType}") ).
+                        FILTER(bif:st_intersects (?coordSoil, bif:st_geomFromText("${extents}"))) .
+                        }
+                    }
+                }
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
                 src.set('loaded', false);
@@ -95,12 +101,13 @@ define(['ol', 'sparql_helpers'],
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plotName: 'plotName', plot: 'plot', shortId: 'shortId', code: 'code', cropName: 'cropName', cropArea: 'cropArea'}, map)
+                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {plot: 'plot', shortId: 'shortId', code: 'code', soilType: 'soilType'}, map)
                     })
             },
             createLayer: function () {
                 lyr = new ol.layer.Vector({
-                    title: "Fields by crop types",
+                    title: "Fields with soil type",
+                    maxResolution: 0.000171661376953125,
                     source: src,
                     visible: false,
                     style: function (feature, resolution) {
@@ -118,24 +125,30 @@ define(['ol', 'sparql_helpers'],
             },
             fillClassificators(){
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent( `PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
+                PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+                PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
+                PREFIX virtrdf:	<http://www.openlinksw.com/schemas/virtrdf#> 
+                PREFIX poi: <http://www.openvoc.eu/poi#> 
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
                 PREFIX foodie: <http://foodie-cloud.com/model/foodie#>
+                PREFIX olu: <http://w3id.org/foodie/olu#>
+                PREFIX common: <http://portele.de/ont/inspire/baseInspire#>
                 
-                SELECT DISTINCT ?cropType ?cropName
-                FROM <http://w3id.org/foodie/core/cz/CZpilot_fields#>
-                WHERE{ 
-                    ?plot a foodie:Plot ;
-                       foodie:crop ?cropSpecies.
-                    ?cropSpecies foodie:cropSpecies ?cropType .
-                    ?cropType foodie:description ?cropName .
+                SELECT DISTINCT ?label
+                FROM <http://w3id.org/foodie/open/cz/Soil_maps_BPEJ_WGSc#>
+                WHERE {
+                    ?soil a foodie:Plot .
+                    optional {?soil rdfs:label ?label }.
                 }
-                ORDER BY ?cropName
+                
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                 $.ajax({
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        $scope.cropTypes = response.results.bindings.map(function(r){
-                            return {name: r.cropName.value, id: r.cropType.value};
+                        $scope.soilTypes = response.results.bindings.map(function(r){
+                            return r.label.value;
                         }) 
                     })
             },
