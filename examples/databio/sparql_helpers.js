@@ -3,7 +3,7 @@ define(['ol'],
     function (ol) {
 
         var me = {
-            fillFeatures: function (src, geom_name, response, id_field, attrs, map) {
+            fillFeatures: function (src, geom_name, response, id_field, attrs, map, $scope) {
                 if (angular.isUndefined(response.results)) return;
                 var features = [];
                 var format = new ol.format.WKT();
@@ -40,7 +40,17 @@ define(['ol'],
                 src.getFeatures().forEach(function (feature) {
                     if (feature.get('flaged') == true) src.removeFeature(feature);
                 })
+                me.completeLoading(src, $scope);
+            },
+            startLoading(src, $scope){
+                src.set('loaded', false);
+                src.loaded = false;
+                if (!$scope.$$phase) $scope.$apply();
+            },
+            completeLoading(src, $scope){
                 src.set('loaded', true);
+                src.loaded = true;
+                if (!$scope.$$phase) $scope.$apply();
                 src.dispatchEvent('features:loaded', src);
             },
             zoomToFetureExtent(src, camera){

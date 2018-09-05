@@ -78,12 +78,12 @@ define(['ol', 'sparql_helpers'],
                            
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
-                src.set('loaded', false);
+                sparql_helpers.startLoading(src, $scope);
                 $.ajax({
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map);
+                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map, $scope);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
                     })
             },
@@ -133,12 +133,12 @@ define(['ol', 'sparql_helpers'],
                            
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
-                src.set('loaded', false);
+                sparql_helpers.startLoading(src, $scope);
                 $.ajax({
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map);
+                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map, $scope);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
                     })
             },

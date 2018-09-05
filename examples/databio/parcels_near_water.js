@@ -85,12 +85,12 @@ WHERE {
 }
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
-                src.set('loaded', false);
+                sparql_helpers.startLoading(src, $scope);
                 $.ajax({
                     url: utils.proxify(q)
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {parcel: 'code', use: 'landUse'}, map)
+                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {parcel: 'code', use: 'landUse'}, map, $scope)
                     })
             },
             createLayer: function () {
