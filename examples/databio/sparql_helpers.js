@@ -8,7 +8,7 @@ define(['ol'],
                 var features = [];
                 var format = new ol.format.WKT();
                 src.getFeatures().forEach(function (feature) {
-                    feature.set('flaged', true);
+                    feature._flaged_for_removal = true;
                 })
                 for (var i = 0; i < response.results.bindings.length; i++) {
                     try {
@@ -29,7 +29,7 @@ define(['ol'],
                                 feature.setId(b[id_field].value);
                                 features.push(feature);
                             } else {
-                                src.getFeatureById(b[id_field].value).set('flaged', false);
+                                src.getFeatureById(b[id_field].value)._flaged_for_removal = false;
                             }
                         }
                     } catch (ex) {
@@ -38,7 +38,7 @@ define(['ol'],
                 }
                 src.addFeatures(features);
                 src.getFeatures().forEach(function (feature) {
-                    if (feature.get('flaged') == true) src.removeFeature(feature);
+                    if (feature._flaged_for_removal) src.removeFeature(feature);
                 })
                 me.completeLoading(src, $scope);
             },
