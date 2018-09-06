@@ -15,30 +15,32 @@ define(['ol', 'sparql_helpers'],
             entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
         }  
 
+        function createLabel(entity){
+            var polyPositions = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions;
+            var polyCenter = Cesium.BoundingSphere.fromPoints(polyPositions).center;
+            polyCenter = Cesium.Ellipsoid.WGS84.scaleToGeodeticSurface(polyCenter);
+            entity.position = polyCenter;
+            entity.label = new Cesium.LabelGraphics({
+                text: entity.properties.code.getValue() + (entity.properties.cropName ? ' ' + entity.properties.cropName.getValue() : ''),
+                font: '16px Helvetica',
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: Cesium.Color.BLACK,
+                showBackground: true,
+                style: Cesium.LabelStyle.FILL,
+                distanceDisplayCondition: new Cesium.DistanceDisplayCondition(10.0, 30000.0),
+                disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                scaleByDistance: new Cesium.NearFarScalar(500, 1, 70000, 0.0),
+                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+            })
+        }
+
         src.cesiumStyler = function (dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
-                var plotName = entity.properties.plotName;
-                var cropName = entity.properties.cropName.getValue();
                 entity.polygon.outline = false;
-                var polyPositions = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions;
-                var polyCenter = Cesium.BoundingSphere.fromPoints(polyPositions).center;
-                polyCenter = Cesium.Ellipsoid.WGS84.scaleToGeodeticSurface(polyCenter);
-                entity.position = polyCenter;
-                entity.label = new Cesium.LabelGraphics({
-                    text: entity.properties.code.getValue() + ' '+ entity.properties.cropName.getValue(),
-                    font: '16px Helvetica',
-                    fillColor: Cesium.Color.WHITE,
-                    outlineColor: Cesium.Color.BLACK,
-                    showBackground: true,
-                    style: Cesium.LabelStyle.FILL,
-                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(10.0, 30000.0),
-                    disableDepthTestDistance: Number.POSITIVE_INFINITY,
-                    scaleByDistance: new Cesium.NearFarScalar(500, 1, 70000, 0.0),
-                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                })
+                createLabel(entity);
                 entity.original_color = new Cesium.Color.fromCssColorString('rgba(150, 40, 40, 0.6)');
                 entity.polygon.material = new Cesium.ColorMaterialProperty(entity.original_color);
                 entity.styled = true;

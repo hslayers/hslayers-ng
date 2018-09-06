@@ -49,7 +49,7 @@
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
                                     aria-controls="collapseTwo">
-                                    Find field by ID
+                                    Land usage for fields with LPIS ID
                                 </a>
                             </h4>
                         </div>
@@ -72,7 +72,7 @@
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
                                     aria-controls="collapseThree">
-                                    Find fields by CTVDPB code
+                                    Crop types for fields with CTVDPB code
                                 </a>
                             </h4>
                         </div>
@@ -91,11 +91,34 @@
                         </div>
                     </div>
                     <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingEight">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false"
+                                    aria-controls="collapseEight">
+                                    Crop types for fields with LPIS ID
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="control-label">ID</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-model="iduz" placeholder="e.g. 17614" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="reloadIdUzCropTypes()" type="button">Filter</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingFour">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
                                     aria-controls="collapseFour">
-                                    Find fields with crop type
+                                    Find fields with crop type in area
                                 </a>
                             </h4>
                         </div>
@@ -181,7 +204,7 @@
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false"
                                     aria-controls="collapseSeven">
-                                    Filter fields by soil type
+                                    Filter fields by soil type in area
                                 </a>
                             </h4>
                         </div>

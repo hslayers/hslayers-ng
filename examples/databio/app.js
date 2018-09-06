@@ -333,8 +333,14 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
 
                 $scope.reloadIdUz = function(){
                     parcels_with_id.getLayer().setVisible(true);
-                    parcels_with_id.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                    parcels_with_id.get(map, utils);
                 }
+
+
+                $scope.reloadIdUzCropTypes = function(){
+                    parcels_with_id.getLayer().setVisible(true);
+                    parcels_with_id.getCropTypes(map, utils);
+                }               
 
                 $scope.water_distance = 0.00025;
                 $scope.reloadNearWaterbodies = function(){
