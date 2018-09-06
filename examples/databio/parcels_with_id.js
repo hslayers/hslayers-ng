@@ -7,16 +7,13 @@ define(['ol', 'sparql_helpers'],
         var map;
         var utils;
         var lyr;
+        var selected_entity;
 
         function entityClicked(entity) {
-            $scope.showInfo(entity);
-            if ($('#zone-info-dialog').length > 0) {
-                angular.element('#zone-info-dialog').parent().remove();
-            }
-            var el = angular.element('<div hs.foodiezones.info-directive></div>');
-            $("#hs-dialog-area").append(el);
-            $compile(el)($scope);
-        }
+            if(selected_entity) selected_entity.polygon.material.color = entity.original_color;
+            selected_entity = entity;
+            entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
+        }   
 
         src.cesiumStyler = function (dataSource) {
             var entities = dataSource.entities.values;
@@ -26,9 +23,11 @@ define(['ol', 'sparql_helpers'],
                 var name = entity.properties.code;
                 var use = entity.properties.use.getValue();
                 entity.polygon.outline = false;
-                entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(150, 40, 40, 0.6)');
+                entity.polygon.material = new Cesium.ColorMaterialProperty(entity.original_color);
+                entity.original_color = new Cesium.Color.fromCssColorString('rgba(150, 40, 40, 0.6)');
+                entity.polygon.material = new Cesium.ColorMaterialProperty(entity.original_color);
                 entity.styled = true;
-                //entity.onclick = entityClicked
+                entity.onmouseup = entityClicked
             }
         }
 

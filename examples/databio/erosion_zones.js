@@ -8,25 +8,24 @@ define(['ol', 'sparql_helpers'],
         var utils;
         var lyr;
 
+        var selected_entity;
+
         function entityClicked(entity) {
-            $scope.showInfo(entity);
-            if ($('#zone-info-dialog').length > 0) {
-                angular.element('#zone-info-dialog').parent().remove();
-            }
-            var el = angular.element('<div hs.foodiezones.info-directive></div>');
-            $("#hs-dialog-area").append(el);
-            $compile(el)($scope);
-        }
+            if(selected_entity) selected_entity.polygon.material.color = entity.original_color;
+            selected_entity = entity;
+            entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
+        }   
 
         src.cesiumStyler = function (dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
-                entity.polygon.outline = false;
-                entity.polygon.material = new Cesium.Color.fromCssColorString('rgba(40, 150, 40, 0.6)');
+                entity.polygon.outline = false;               
+                entity.original_color = new Cesium.Color.fromCssColorString('rgba(40, 150, 40, 0.6)');
+                entity.polygon.material = new Cesium.ColorMaterialProperty(entity.original_color);
                 entity.styled = true;
-                //entity.onclick = entityClicked
+                entity.onmouseup = entityClicked
             }
         }
 

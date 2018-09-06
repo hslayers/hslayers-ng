@@ -153,6 +153,35 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     }
                 }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
 
+                handler.setInputAction(function (movement) {
+                    var pickRay = viewer.camera.getPickRay(movement.position);
+                    var pickedObject = viewer.scene.pick(movement.position);
+                    var featuresPromise = viewer.imageryLayers.pickImageryLayerFeatures(pickRay, viewer.scene);
+                    if (pickedObject && pickedObject.id && pickedObject.id.onmouseup) {
+                        pickedObject.id.onmouseup(pickedObject.id);
+                        return;
+                    }
+                    if (!Cesium.defined(featuresPromise)) {
+                        if (console) console.log('No features picked.');
+                    } else {
+                        Cesium.when(featuresPromise, function (features) {
+
+                            var s = '';
+                            if (features.length > 0) {
+                                for (var i = 0; i < features.length; i++) {
+                                    s = s + features[i].data + '\n';
+                                }
+                            }
+
+                            var iframe = $('.cesium-infoBox-iframe');
+                            setTimeout(function () {
+                                $('.cesium-infoBox-description', iframe.contents()).html(s.replaceAll('\n', '<br/>'));
+                                iframe.height(200);
+                            }, 1000);
+                        });
+                    }
+                }, Cesium.ScreenSpaceEventType.LEFT_UP);
+
                 function rightClickLeftDoubleClick(movement) {
                     var pickRay = viewer.camera.getPickRay(movement.position);
                     var pickedObject = viewer.scene.pick(movement.position);

@@ -386,6 +386,16 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     }
                 })
 
+                $scope.showPopup = function(entity){
+                    $scope.showInfo(entity);
+                    if ($('#zone-info-dialog').length > 0) {
+                        angular.element('#zone-info-dialog').parent().remove();
+                    }
+                    var el = angular.element('<div hs.foodiezones.info-directive></div>');
+                    $("#hs-dialog-area").append(el);
+                    $compile(el)($scope);
+                }
+
                 $scope.crop_distance = 1;
 
                 $scope.$on('infopanel.updated', function (event) { });

@@ -680,6 +680,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
              */
             $scope.isLayerWithDimensions = function (lyr_container) {
                 if(angular.isUndefined(lyr_container) || lyr_container == null) return false;
+                if(angular.isUndefined(lyr_container.layer.get('dimensions'))) return false;
                 return Object.keys(lyr_container.layer.get('dimensions')).length > 0
             }
 
