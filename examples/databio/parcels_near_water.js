@@ -99,7 +99,7 @@ WHERE {
                     title: "Plots intersecting water bodies",
                     source: src,
                     visible: true,
-                    maxResolution: 0.000171661376953125,
+                    maxResolution: 0.00004291534423828125,
                     style: function (feature, resolution) {
                         var use = feature.get('use').split('/');
                         use = use[use.length - 1];

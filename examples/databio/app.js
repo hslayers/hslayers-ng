@@ -234,6 +234,14 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     providers.forEach(function(provider){
                         provider.init($scope, $compile, map, utils);
                     })
+                    $rootScope.$on('map.sync_center', function (e, center, bounds) {
+                        console.log('queryLayers');
+                        pois.getPois(map, utils, bounds);
+                        synced_providers.forEach(function(provider){
+                            provider.get(map, utils, bounds);
+                        })
+                        $scope.last_center = center;
+                    })
                     map.on('moveend', extentChanged);
                 });
 
@@ -248,14 +256,6 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     //pois.getPois(map, utils, [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]]);
 
                 }
-
-                $rootScope.$on('map.sync_center', function (e, center, bounds) {
-                    pois.getPois(map, utils, bounds);
-                    synced_providers.forEach(function(provider){
-                        provider.get(map, utils, bounds);
-                    })
-                    $scope.last_center = center;
-                })
 
                 function createAboutDialog() {
                     var el = angular.element('<div hs.aboutproject></div>');

@@ -35,8 +35,6 @@ define(['ol', 'sparql_helpers'],
                     return c.toString().replaceAll(',', ' ')
                 }
                 var extents = `POLYGON ((${prepareCords(rect[0])}, ${prepareCords(rect[1])}, ${prepareCords(rect[2])}, ${prepareCords(rect[3])}, ${prepareCords(rect[0])}, ${prepareCords(rect[1])}))`;
-                console.log(extents);
-                //console.log(extents);
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
 
 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
@@ -72,7 +70,7 @@ FILTER(bif:st_intersects (?coordWBody, bif:st_geomFromText("${extents}"))) .
                     title: "Water bodies",
                     source: src,
                     visible: true,
-                    maxResolution: 0.000171661376953125,
+                    maxResolution: 0.00004291534423828125,
                     style: function (feature, resolution) {
                         return [
                             new ol.style.Style({

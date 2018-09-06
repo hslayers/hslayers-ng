@@ -103,6 +103,7 @@ define(['ol', 'sparql_helpers'],
                     title: "Fields by crop types",
                     source: src,
                     visible: false,
+                    maxResolution: 0.00008291534423828125,
                     style: function (feature, resolution) {
                         return [
                             new ol.style.Style({
