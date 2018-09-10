@@ -92,7 +92,7 @@ define(['ol', 'sparql_helpers'],
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: utils.proxify(q)
+                    url: q
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {plot: 'plot', shortId: 'shortId', code: 'code', soilType: 'soilType'}, map, $scope, $scope)

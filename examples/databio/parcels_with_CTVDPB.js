@@ -72,7 +72,7 @@ define(['ol', 'sparql_helpers'],
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: utils.proxify(q)
+                    url: q
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plot: 'plot', shortId: 'shortId', code: 'code'}, map, $scope);

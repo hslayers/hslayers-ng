@@ -94,7 +94,7 @@ WHERE{
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: utils.proxify(q)
+                    url: q
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', { holding: 'holding', plot: 'plot', shortId: 'shortId', code: 'code', use: 'landUse' }, map, $scope);
@@ -152,7 +152,7 @@ WHERE{
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: utils.proxify(q)
+                    url: q
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'coordPlot', response, 'codeLPIS', { plot: 'plot', 'plotName': 'plotName', shortId: 'shortId', code: 'codeLPIS', 'cropName': 'cropName', 'cropArea': 'cropArea', year: 'year' }, map, $scope);
@@ -161,7 +161,7 @@ WHERE{
             },
             createLayer: function () {
                 lyr = new ol.layer.Vector({
-                    title: "Fields filtered by ID_UZ attribute from LPIS db",
+                    title: "Fields by ID_UZ attribute from LPIS db",
                     source: src,
                     visible: false,
                     style: function (feature, resolution) {

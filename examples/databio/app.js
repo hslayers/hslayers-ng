@@ -151,7 +151,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/openlandusemap.map&service=WMS&request=GetLegendGraphic&layer=olu_bbox_srid&version=1.3.0&format=image/png&sld_version=1.1.0'],
                     maxResolution: 8550,
                     path: 'Open-Land-Use Map',
-                    visible: true,
+                    visible: false,
                     opacity: 0.7
                 }),
                 pois.createPoiLayer()

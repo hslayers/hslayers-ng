@@ -88,7 +88,7 @@ WHERE {
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: utils.proxify(q)
+                    url: q
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {parcel: 'code', use: 'landUse'}, map, $scope)
