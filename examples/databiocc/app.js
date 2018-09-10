@@ -341,7 +341,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
 
                 $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
                     viewer.targetFrameRate = 30;
-                    viewer.timeline.zoomTo(Cesium.JulianDate.fromDate(new Date('2016-01-01')), Cesium.JulianDate.fromDate(new Date('2018-04-01')));
+                    viewer.timeline.zoomTo(Cesium.JulianDate.fromDate(new Date('2016-01-01')), Cesium.JulianDate.fromDate(new Date()));
                     setTimeout(createHud, 3000);
                     $scope.$watch('current_depth', function () {
                         for (var i = 0; i < viewer.imageryLayers.length; i++) {
