@@ -239,7 +239,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 registerProvider(water_bodies);
                 registerProvider(parcels_with_id, false);
                 registerProvider(parcels_with_CTVDPB, false);
-                registerProvider(parcels_with_crop_types, false);
+                registerProvider(parcels_with_crop_types);
                 registerProvider(parcels_with_crop_types_by_distance, false);
                 registerProvider(erosion_zones, false);
                 registerProvider(soils);

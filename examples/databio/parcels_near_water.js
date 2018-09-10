@@ -98,7 +98,7 @@ WHERE {
                 lyr = new ol.layer.Vector({
                     title: "Plots intersecting water bodies",
                     source: src,
-                    visible: true,
+                    visible: false,
                     maxResolution: 0.00004291534423828125,
                     style: function (feature, resolution) {
                         var use = feature.get('use').split('/');
