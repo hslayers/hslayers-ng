@@ -189,7 +189,7 @@ define(['ol', 'toolbar', 'moment-interval', 'moment', 'layermanager', 'geojson',
                 legends: [`http://nrt.cmems-du.eu/thredds/wms/global-analysis-forecast-phy-001-024?REQUEST=GetLegendGraphic&LAYER=${def.layer}&PALETTE=${def.palette}`],
                 dimensions: {
                     time: {name: 'time', values: timeSteps },
-                    elevation: def.elevation ? { name: 'elevation', values: elevations.split(',') } : undefined
+                    elevation: def.elevation ? { name: 'elevation', label: 'depth', values: elevations.split(',') } : undefined
                 },
                 visible: def.visible || false,
                 opacity: 0.7,

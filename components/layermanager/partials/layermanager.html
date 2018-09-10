@@ -98,7 +98,7 @@
                  <div ng-show="isLayerWithDimensions(currentLayer)">
                     <label translate>Dimensions</label>
                     <div class="form-group" ng-repeat="(key, dimension) in currentLayer.layer.get('dimensions')">
-                        <label class="control-label">{{key}}:</label>
+                        <label class="control-label">{{dimension.label || key}}:</label>
                         <select class="form-control" ng-model="dimension.value" ng-change="dimensionChanged(currentLayer, dimension)">
                             <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">{{dimension_value}}</option>
                         </select>
