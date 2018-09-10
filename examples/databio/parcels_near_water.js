@@ -10,10 +10,10 @@ define(['ol', 'sparql_helpers'],
         var selected_entity;
 
         function entityClicked(entity) {
-            if(selected_entity) selected_entity.polygon.material.color = entity.original_color;
+            if (selected_entity) selected_entity.polygon.material.color = entity.original_color;
             selected_entity = entity;
             entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
-        }       
+        }
 
         src.cesiumStyler = function (dataSource) {
             var entities = dataSource.entities.values;
@@ -40,8 +40,9 @@ define(['ol', 'sparql_helpers'],
                     return c.toString().replaceAll(',', ' ')
                 }
                 var extents = `POLYGON ((${prepareCords(rect[0])}, ${prepareCords(rect[1])}, ${prepareCords(rect[2])}, ${prepareCords(rect[3])}, ${prepareCords(rect[0])}, ${prepareCords(rect[1])}))`;
+                var distance = $scope.water_distance * ((1 / 110540) + 1 / (111320 * Math.cos($scope.last_center[1]))) / 2;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
-
+                
                 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
 PREFIX virtrdf:	<http://www.openlinksw.com/schemas/virtrdf#> 
@@ -57,7 +58,7 @@ FROM <http://w3id.org/foodie/open/cz/pLPIS_180616_WGS#>
 WHERE {
    ?plot geo:hasGeometry ?geoPlotFinal .
    ?geoPlotFinal ogcgs:asWKT  ?coordPlotFinal .
-   FILTER(bif:st_intersects(?coordPlotFinal, ?coordWBody, ${$scope.water_distance})) .
+   FILTER(bif:st_intersects(?coordPlotFinal, ?coordWBody, ${distance})) .
    
    GRAPH ?graph1 {
       SELECT ?plot ?code ?shortId ?landUse
@@ -91,7 +92,7 @@ WHERE {
                     url: q
                 })
                     .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {parcel: 'code', use: 'landUse'}, map, $scope)
+                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', { parcel: 'code', use: 'landUse' }, map, $scope)
                     })
             },
             createLayer: function () {
@@ -115,7 +116,7 @@ WHERE {
                 });
                 return lyr;
             },
-            getLayer(){
+            getLayer() {
                 return lyr;
             },
             init: function (_$scope, _$compile, _map, _utils) {

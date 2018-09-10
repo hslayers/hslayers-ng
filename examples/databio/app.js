@@ -252,10 +252,10 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     $rootScope.$on('map.sync_center', function (e, center, bounds) {
                         console.log('queryLayers');
                         pois.getPois(map, utils, bounds);
+                        $scope.last_center = center;
                         synced_providers.forEach(function(provider){
                             provider.get(map, utils, bounds);
                         })
-                        $scope.last_center = center;
                     })
                     map.on('moveend', extentChanged);
                 });
@@ -357,7 +357,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     parcels_with_id.getCropTypes(map, utils);
                 }               
 
-                $scope.water_distance = 0.00025;
+                $scope.water_distance = 1;
                 $scope.reloadNearWaterbodies = function(){
                     parcels_near_water.getLayer().setVisible(true);
                     parcels_near_water.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
