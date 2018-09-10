@@ -136,7 +136,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/produkcni_zony.map',
                         params: {
-                            LAYERS: 'MS',
+                            LAYERS: 'p_zony',
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html",
                         },
