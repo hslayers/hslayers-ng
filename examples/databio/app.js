@@ -132,6 +132,21 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     opacity: 0.7
                 }),
                 new ol.layer.Tile({
+                    title: "Production zones",
+                    source: new ol.source.TileWMS({
+                        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/produkcni_zony.map',
+                        params: {
+                            LAYERS: 'MS',
+                            FORMAT: "image/png",
+                            INFO_FORMAT: "text/html",
+                        },
+                        crossOrigin: null
+                    }),
+                    path: 'Open-Land-Use Map',
+                    visible: false,
+                    opacity: 0.7
+                }),
+                new ol.layer.Tile({
                     title: "Open-Land-Use (WMS)",
                     source: new ol.source.TileWMS({
                         url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/olu/openlandusemap.map',
