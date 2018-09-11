@@ -119,14 +119,9 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html",
                             minimumTerrainLevel: 9,
-                            maximumLevel: 5,
-                            minimumLevel: 5
                         },
                         crossOrigin: null
                     }),
-                    maxResolution: 8550,
-                    minResolution: 2.388657133911758,
-                    maximumLevel: 5,
                     path: 'Open-Land-Use Map',
                     visible: false,
                     opacity: 0.7
@@ -154,17 +149,13 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                             LAYERS: 'olu_bbox_srid',
                             FORMAT: "image/png",
                             INFO_FORMAT: "text/html",
-                            minimumTerrainLevel: 15,
                             VERSION: '1.1.1',
                             CRS: 'EPSG:4326',
                             FROMCRS: 'EPSG:4326',
-                            maximumLevel: 5,
-                            minimumLevel: 5
                         },
                         crossOrigin: null
                     }),
                     legends: ['http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/3d_olu/openlandusemap.map&service=WMS&request=GetLegendGraphic&layer=olu_bbox_srid&version=1.3.0&format=image/png&sld_version=1.1.0'],
-                    maxResolution: 8550,
                     path: 'Open-Land-Use Map',
                     visible: false,
                     opacity: 0.7
