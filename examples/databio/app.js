@@ -342,6 +342,15 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     setTimeout(createHud, 3000);
                 })
 
+                $rootScope.$on('map.mode_changed', function (e, mode) {
+                    if(mode == 'ol'){
+                        hs_map.findLayerByTitle('OpenStreetMap').setVisible(true);
+                        providers.forEach(function (provider) {
+                            provider.map_mode = mode;
+                        })
+                    }
+                })                
+
                 $rootScope.$on('cesiummap.resized', function () {
                     synced_providers.forEach(function (provider) {
                         provider.get(map, utils, getViewport());

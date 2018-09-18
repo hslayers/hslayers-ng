@@ -279,6 +279,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                             Core.updateMapSize();
                         }, 5000)
                     }
+                    $rootScope.$broadcast('map.mode_changed', me.visible ? 'cesium' : 'ol');
                 }
 
                 setTimeout(function () {

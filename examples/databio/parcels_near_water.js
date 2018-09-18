@@ -36,7 +36,7 @@ define(['ol', 'sparql_helpers'],
         var me = {
             get: function (map, utils, rect) {
                 if(typeof $scope.last_center == 'undefined') return;
-                if (map.getView().getResolution() > lyr.getMaxResolution() || lyr.getVisible() == false) return;
+                if (map.getView().getResolution() > lyr.getMaxResolution() * (typeof me.map_mode == 'cesium' ? 0.5 : 1) || lyr.getVisible() == false) return;
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -101,7 +101,7 @@ WHERE {
                     title: "Plots intersecting water bodies",
                     source: src,
                     visible: false,
-                    maxResolution: 4.777314267823516*2,
+                    maxResolution: 4.777314267823516*4,
                     style: function (feature, resolution) {
                         var use = feature.get('use').split('/');
                         use = use[use.length - 1];
