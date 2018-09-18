@@ -196,7 +196,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
             'compositions_catalogue_url': "/php/metadata/csw",
             status_manager_url: '/wwwlibs/statusmanager2/index.php',
             default_view: new ol.View({
-                center: [14.28, 49.6],
+                center:  ol.proj.transform([14.28, 49.6], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 14,
                 units: "m"
             }),
