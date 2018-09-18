@@ -248,6 +248,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
             function ($scope, service, config, permalink, Core, hs_map, sidebar_service, $timeout, $rootScope) {
 
                 var map = service.map;
+                $scope.visible = true;
 
                 /**
                  * @ngdoc method
@@ -272,6 +273,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                  */
                 function toggleCesiumMap() {
                     hs_map.visible = !hs_map.visible;
+                    $scope.visible = !hs_map.visible;
                     if (hs_map.visible) {
                         $timeout(function () {
                             Core.updateMapSize();

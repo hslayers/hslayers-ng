@@ -108,9 +108,10 @@ define(['ol', 'sparql_helpers'],
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
-                                    color: 'rgba(0, 0, 0, 1)',
+                                    color: 'rgba(250, 250, 250, 0.6)',
                                     width: 2
-                                })
+                                }),
+                                fill : new ol.style.Fill({color: 'rgba(250, 250, 250, 0.6)'})
                             })
                         ];
                     }

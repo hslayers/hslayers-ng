@@ -98,7 +98,7 @@ WHERE{
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', { holding: 'holding', plot: 'plot', shortId: 'shortId', code: 'code', use: 'landUse' }, map, $scope);
-                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
+                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
             getCropTypes: function (map, utils) {
@@ -156,7 +156,7 @@ WHERE{
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'coordPlot', response, 'codeLPIS', { plot: 'plot', 'plotName': 'plotName', shortId: 'shortId', code: 'codeLPIS', 'cropName': 'cropName', 'cropArea': 'cropArea', year: 'year' }, map, $scope);
-                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
+                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
             createLayer: function () {

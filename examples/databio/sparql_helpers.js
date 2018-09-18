@@ -53,10 +53,11 @@ define(['ol'],
                 if (!$scope.$$phase) $scope.$apply();
                 src.dispatchEvent('features:loaded', src);
             },
-            zoomToFetureExtent(src, camera){
+            zoomToFetureExtent(src, camera, map){
                 if(src.getFeatures().length>0){
                     var extent = src.getFeatures()[0].getGeometry().getExtent().slice(0);
                     src.getFeatures().forEach(function(feature){ ol.extent.extend(extent,feature.getGeometry().getExtent())});
+                    extent = ol.proj.transformExtent(extent, map.getView().getProjection(), 'EPSG:4326');
                     camera.flyTo({destination:  Cesium.Rectangle.fromDegrees(extent[0], extent[1], extent[2], extent[3])})
                 }
 

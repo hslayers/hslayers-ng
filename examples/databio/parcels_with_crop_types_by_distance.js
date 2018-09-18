@@ -95,7 +95,7 @@ WHERE{
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plotName: 'plotName', plot: 'plot', shortId: 'shortId', code: 'code', cropName: 'cropName', cropArea: 'cropArea'}, map, $scope);
-                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
+                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
             createLayer: function () {
@@ -107,9 +107,10 @@ WHERE{
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
-                                    color: 'rgba(0, 0, 0, 1)',
+                                    color: 'rgba(150, 40, 40, 0.8)',
                                     width: 2
-                                })
+                                }),
+                                fill : new ol.style.Fill({color: 'rgba(150, 40, 40, 0.8)'})
                             })
                         ];
                     }

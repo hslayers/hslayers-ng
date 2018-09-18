@@ -101,16 +101,17 @@ define(['ol', 'sparql_helpers'],
             createLayer: function () {
                 lyr = new ol.layer.Vector({
                     title: "Fields with soil type",
-                    maxResolution: 0.000171661376953125,
+                    maxResolution: 4.777314267823516,
                     source: src,
                     visible: false,
                     style: function (feature, resolution) {
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
-                                    color: 'rgba(0, 0, 0, 1)',
+                                    color: 'rgba(237, 189, 113, 0.6)',
                                     width: 2
-                                })
+                                }),
+                                fill : new ol.style.Fill({color: 'rgba(237, 189, 113, 0.8)'})
                             })
                         ];
                     }

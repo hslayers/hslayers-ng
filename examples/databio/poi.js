@@ -117,7 +117,7 @@ define(['ol'],
                 lyr = new ol.layer.Vector({
                     title: "Points of interest",
                     source: spoi_source,
-                    maxResolution: 0.000171661376953125,
+                    maxResolution: 4.777314267823516*2*2,
                     style: function (feature, resolution) {
                         var s = feature.get('category');
                         if (typeof s === 'undefined') return;

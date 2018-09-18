@@ -20,7 +20,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function (scope, element) {
-                    $timeout(function () { Core.fullScreenMap(element) }, 0);
+                    Core.fullScreenMap(element);
                 }
             };
         }]);
@@ -198,8 +198,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
             default_view: new ol.View({
                 center: [14.28, 49.6],
                 zoom: 14,
-                units: "m",
-                projection: 'EPSG:4326'
+                units: "m"
             }),
             cesiumBingKey: 'Ag-1WrJMNrtwDswUaPxKvq85UO-82NmE_V5HiXbgssabAYmr4zV2HyFWrusCfaXF'
         });
@@ -219,9 +218,9 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 var providers = [];
                 var synced_providers = [];
 
-                function registerProvider(provider, synced){
+                function registerProvider(provider, synced) {
                     providers.push(provider);
-                    if(angular.isUndefined(synced) || synced){
+                    if (angular.isUndefined(synced) || synced) {
                         synced_providers.push(provider);
                     }
                 }
@@ -234,29 +233,47 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 registerProvider(parcels_with_crop_types_by_distance, false);
                 registerProvider(erosion_zones, false);
                 registerProvider(soils);
-                                
+
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
-                    providers.forEach(function(provider){
+                    providers.forEach(function (provider) {
                         provider.init($scope, $compile, map, utils);
                     })
                     $rootScope.$on('map.sync_center', function (e, center, bounds) {
-                        console.log('queryLayers');
-                        pois.getPois(map, utils, bounds);
                         $scope.last_center = center;
-                        synced_providers.forEach(function(provider){
-                            provider.get(map, utils, bounds);
-                        })
+                        queryLayersByArea(bounds);
+                    })
+                    $rootScope.$on('map.extent_changed', function (e, elem, bounds) {
+                        if (hs_map.visible) {
+                            bounds = ol.proj.transformExtent(bounds, map.getView().getProjection(), 'EPSG:4326');
+                            var points4 = [
+                                [bounds[0], bounds[1]],
+                                [bounds[2], bounds[1]],
+                                [bounds[2], bounds[3]],
+                                [bounds[0], bounds[3]]
+                            ];
+                            $scope.last_center = [(bounds[0] + bounds[2]) / 2, (bounds[1] + bounds[3]) / 2];
+                            queryLayersByArea(points4);
+                        }
+
                     })
                     map.on('moveend', extentChanged);
                 });
 
+                function queryLayersByArea(points4) {
+                    map = hs_map.map;
+                    pois.getPois(map, utils, points4);
+                    synced_providers.forEach(function (provider) {
+                        provider.get(map, utils, points4);
+                    })
+                }
+
                 pois.init($scope, $compile);
-                providers.forEach(function(provider){
+                providers.forEach(function (provider) {
                     config.default_layers.push(provider.createLayer());
                 })
                 config.default_layers.push(sentinel_service.createLayer());
-                
+
                 function extentChanged() {
                     var bbox = map.getView().calculateExtent(map.getSize());
                     //pois.getPois(map, utils, [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]]);
@@ -319,15 +336,15 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 $rootScope.$on('cesiummap.loaded', function (e, viewer, HsCesium) {
                     viewer.targetFrameRate = 30;
                     hsCesium = HsCesium;
-                    providers.forEach(function(provider){
+                    providers.forEach(function (provider) {
                         provider.cesium = hsCesium;
                     })
                     setTimeout(createHud, 3000);
                 })
 
                 $rootScope.$on('cesiummap.resized', function () {
-                    synced_providers.forEach(function(provider){
-                        provider.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                    synced_providers.forEach(function (provider) {
+                        provider.get(map, utils, getViewport());
                     })
                 })
 
@@ -337,43 +354,43 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     $compile(el)($scope);
                 }
 
-                $scope.reloadIdUz = function(){
+                $scope.reloadIdUz = function () {
                     parcels_with_id.getLayer().setVisible(true);
                     parcels_with_id.get(map, utils);
                 }
 
 
-                $scope.reloadIdUzCropTypes = function(){
+                $scope.reloadIdUzCropTypes = function () {
                     parcels_with_id.getLayer().setVisible(true);
                     parcels_with_id.getCropTypes(map, utils);
-                }               
+                }
 
                 $scope.water_distance = 1;
-                $scope.reloadNearWaterbodies = function(){
+                $scope.reloadNearWaterbodies = function () {
                     parcels_near_water.getLayer().setVisible(true);
-                    parcels_near_water.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                    parcels_near_water.get(map, utils, getViewport());
                 }
 
-                $scope.reloadCTVDPB = function(){
+                $scope.reloadCTVDPB = function () {
                     parcels_with_CTVDPB.getLayer().setVisible(true);
-                    parcels_with_CTVDPB.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                    parcels_with_CTVDPB.get(map, utils, getViewport());
                 }
 
-                $scope.reloadErosionZonesById = function(){
+                $scope.reloadErosionZonesById = function () {
                     erosion_zones.getLayer().setVisible(true);
                     erosion_zones.getForId(map, utils);
                 }
 
-                $scope.reloadErosionZonesByCTVDPB = function(){
+                $scope.reloadErosionZonesByCTVDPB = function () {
                     erosion_zones.getLayer().setVisible(true);
                     erosion_zones.getForCTVDPB(map, utils);
-                }                
+                }
 
-                $scope.reloadCropTypeLayer = function(crop_distance){
-                    if(angular.isUndefined(crop_distance)){
+                $scope.reloadCropTypeLayer = function (crop_distance) {
+                    if (angular.isUndefined(crop_distance)) {
                         parcels_with_crop_types.getLayer().setVisible(true);
                         parcels_with_crop_types_by_distance.getLayer().setVisible(false);
-                        parcels_with_crop_types.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
+                        parcels_with_crop_types.get(map, utils, getViewport());
                     } else {
                         parcels_with_crop_types.getLayer().setVisible(false);
                         parcels_with_crop_types_by_distance.getLayer().setVisible(true);
@@ -381,12 +398,16 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     }
                 }
 
-                $scope.reloadSoils = function(){
-                    soils.getLayer().setVisible(true);
-                    soils.get(map, utils, hsCesium.HsCsCamera.getViewportPolygon());
-                }               
+                function getViewport() {
+                    return hsCesium.HsCsCamera.getViewportPolygon()
+                }
 
-                $scope.$on("scope_loaded", function(event, args) {
+                $scope.reloadSoils = function () {
+                    soils.getLayer().setVisible(true);
+                    soils.get(map, utils, getViewport());
+                }
+
+                $scope.$on("scope_loaded", function (event, args) {
                     if (args == 'Sidebar') {
                         var el = angular.element('<div hs.sentinel.directive hs.draggable ng-controller="hs.sentinel.controller" ng-if="Core.exists(\'hs.sentinel.controller\')" ng-show="Core.panelVisible(\'sentinel\', this)"></div>');
                         angular.element('#panelplace').append(el);
@@ -398,7 +419,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                     }
                 })
 
-                $scope.showPopup = function(entity){
+                $scope.showPopup = function (entity) {
                     $scope.showInfo(entity);
                     if ($('#zone-info-dialog').length > 0) {
                         angular.element('#zone-info-dialog').parent().remove();

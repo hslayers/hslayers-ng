@@ -70,7 +70,7 @@ FILTER(bif:st_intersects (?coordWBody, bif:st_geomFromText("${extents}"))) .
                     title: "Water bodies",
                     source: src,
                     visible: false,
-                    maxResolution: 0.00004291534423828125,
+                    maxResolution: 4.777314267823516*2,
                     style: function (feature, resolution) {
                         return [
                             new ol.style.Style({

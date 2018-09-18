@@ -1,6 +1,6 @@
-define(['ol', 'cesiumjs', 'moment'],
+define(['ol', 'cesiumjs', 'moment', 'proj4'],
 
-    function (ol, Cesium, moment) {
+    function (ol, Cesium, moment, proj4) {
         var utils;
 
         function MyProxy(proxy, maxResolution) {
@@ -111,6 +111,12 @@ define(['ol', 'cesiumjs', 'moment'],
                 var json = f.writeFeaturesObject(features);
                 //console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 //ol_source.cesium_layer.entities.removeAll();
+                json.crs = {
+                    type: "name",
+                    properties: {
+                        name: "EPSG:3857"
+                    }
+                }
                 return json;
             },
 
@@ -137,6 +143,18 @@ define(['ol', 'cesiumjs', 'moment'],
 
             syncFeatures(ol_source) {
                 var tmp_source = new Cesium.GeoJsonDataSource('tmp');
+                Cesium.GeoJsonDataSource.crsNames['EPSG:3857']= function(coordinates){
+
+                    var firstProjection = 'PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","3857"]]';
+                    var secondProjection = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]';
+                  
+                    var xa = coordinates[0];
+                    var ya = coordinates[1];
+        
+                    var newCoordinates = proj4(firstProjection,secondProjection,[xa,ya]);
+                    return Cesium.Cartesian3.fromDegrees(newCoordinates[0], newCoordinates[1], 0);
+        
+                }
                 //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 var promise = tmp_source.load(me.serializeVectorLayerToGeoJson(ol_source),
                     {

@@ -83,7 +83,7 @@ define(['ol', 'sparql_helpers'],
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map, $scope);
-                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
+                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
             getForCTVDPB: function (map, utils) {
@@ -134,11 +134,11 @@ define(['ol', 'sparql_helpers'],
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: utils.proxify(q)
+                    url: q
                 })
                     .done(function (response) {
                         sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map, $scope);
-                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera);
+                        sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
             createLayer: function () {
@@ -150,9 +150,10 @@ define(['ol', 'sparql_helpers'],
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
-                                    color: 'rgba(0, 0, 0, 1)',
+                                    color: 'rgba(40, 150, 40, 0.6)',
                                     width: 2
-                                })
+                                }),
+                                fill : new ol.style.Fill({color: 'rgba(40, 150, 40, 0.8)'})
                             })
                         ];
                     }
