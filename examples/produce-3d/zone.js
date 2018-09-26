@@ -157,9 +157,9 @@ define(['ol'],
                         zones_source.dispatchEvent('features:loaded', zones_source);
                     })
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 return new ol.layer.Vector({
-                    title: "Management zones colored by crop type",
+                    title: gettext("Management zones colored by crop type"),
                     source: zones_source,
                     visible: true,
                     style: function (feature, resolution) {

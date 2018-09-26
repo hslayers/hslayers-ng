@@ -16,24 +16,31 @@ msgstr ""
 msgid "<i class=\"icon-polygonlasso\"></i>"
 msgstr ""
 
+#: components/ows/partials/owswms.html:56
+msgid "<input type=\"checkbox\" ng-model=\"data.register_metadata\"> Register metadata"
+msgstr ""
+
+#: components/ows/partials/owswms.html:34
+msgid "<input type=\"checkbox\" ng-model=\"data.use_tiles\"> Use tiles"
+msgstr ""
+
 #: components/permalink/partials/directive.html:63
 msgid "<input type=\"checkbox\" ng-model=\"new_share\"><span class=\"ng-scope\"> New share</span>"
 msgstr ""
 
-#: components/ows/partials/owswms.html:57
-msgid "<input type=\"checkbox\" ng-model=\"register_metadata\"> Register metadata"
-msgstr ""
-
-#: components/ows/partials/owswms.html:34
-msgid "<input type=\"checkbox\" ng-model=\"use_tiles\"> Use tiles"
+#: components/layermanager/partials/layermanagermd.html:31
+msgid "About layer"
 msgstr ""
 
 #: components/compositions/partials/dialog_info.html:12
 #: components/compositions/partials/dialog_share.html:12
-#: components/layermanager/partials/layermanager.html:86
+#: components/compositions/partials/dialog_sharemd.html:14
+#: components/layermanager/partials/layermanager.html:110
 #: components/ows/partials/owsnonwms.html:11
 #: components/permalink/partials/directive.html:55
+#: components/permalink/partials/directivemd.html:27
 #: components/status_creator/partials/form.html:21
+#: components/status_creator/partials/panelmd.html:12
 #: components/status_creator/partials/simpleform.html:10
 msgid "Abstract"
 msgstr ""
@@ -67,17 +74,24 @@ msgid "Address"
 msgstr ""
 
 #: components/ows/partials/owsnonwms.html:18
+#: components/status_creator/partials/panelmd.html:32
 #: components/status_creator/partials/simpleform.html:32
 msgid "Advanced options"
 msgstr ""
 
-#: components/geolocation/partials/geolocation_cordova.html:6
 #: components/geolocation/partials/geolocation.html:5
+#: components/geolocation/partials/geolocation_cordova.html:6
 msgid "Altitude"
 msgstr ""
 
+#: components/layout/partials/sidenav.html:38
 #: components/sidebar/partials/sidebar.html:77
 msgid "Application settings"
+msgstr ""
+
+#: components/measure/partials/measure.html:12
+#: components/measure/partials/measuremd.html:8
+msgid "Area"
 msgstr ""
 
 #: components/status_creator/partials/form.html:11
@@ -88,7 +102,13 @@ msgstr ""
 msgid "Baselayers"
 msgstr ""
 
+#: components/compositions/partials/compositionsmd.html:14
+msgid "Bounding box"
+msgstr ""
+
+#: components/compositions/partials/dialog_deletemd.html:24
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:36
 #: components/ows/partials/dialog_proxyconfirm.html:15
 #: components/status_creator/partials/simpleform.html:75
 msgid "Cancel"
@@ -99,7 +119,12 @@ msgid "Category"
 msgstr ""
 
 #: components/ows/partials/ows.html:12
+#: components/ows/partials/owsmd.html:6
 msgid "Choose format"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:95
+msgid "Circle"
 msgstr ""
 
 #: components/status_creator/partials/form.html:74
@@ -109,7 +134,7 @@ msgstr ""
 #: components/datasource_selector/partials/datasource_selector.html:40
 #: components/datasource_selector/partials/dialog_micka_advanced.html:101
 #: components/draw/partials/draw.html:26
-#: components/measure/partials/measure.html:17
+#: components/measure/partials/measure.html:15
 #: components/search/partials/searchinput.html:4
 #: components/trip_planner/partials/trip_planner.html:9
 msgid "Clear"
@@ -149,11 +174,11 @@ msgstr ""
 #: components/query/partials/infopopup.html:4
 #: components/routing/partials/routing.html:5
 #: components/rtserver/partials/styler.html:5
+#: components/status_creator/partials/dialog.html:17
+#: components/status_creator/partials/dialog.html:5
 #: components/status_creator/partials/dialog_result.html:15
 #: components/status_creator/partials/dialog_result.html:5
 #: components/status_creator/partials/dialog_save.html:5
-#: components/status_creator/partials/dialog.html:17
-#: components/status_creator/partials/dialog.html:5
 #: components/styles/partials/styler.html:5
 #: components/tracking/partials/tracking.html:5
 #: components/trip_planner/partials/trip_planner.html:5
@@ -171,16 +196,34 @@ msgstr ""
 msgid "Colour gradient limits"
 msgstr ""
 
+#: components/compositions/partials/compositionsmd.html:39
+msgid "Composition {{compStart + 1}} - {{compNext}}"
+msgstr ""
+
+#: components/compositions/partials/compositionsmd.html:40
+msgid "Composition {{compStart + 1}} - {{data.compositionsCount}}"
+msgstr ""
+
 #: components/compositions/partials/compositions.html:2
-msgid "Compositions <span ng-show=\"compositionsCount>0\">({{compositionsCount}})</span>"
+msgid "Compositions <span ng-show=\"data.compositionsCount>0\">({{data.compositionsCount}})</span>"
 msgstr ""
 
 #: components/compositions/partials/dialog_delete.html:7
 msgid "Confirm"
 msgstr ""
 
+#: components/ows/partials/owsmd.html:23
+msgid "Connect"
+msgstr ""
+
 #: components/ows/partials/owswms.html:38
+#: components/ows/partials/owswmsmd.html:33
 msgid "Consider using tiles. Some servers has restricted max size of picture."
+msgstr ""
+
+#: components/layout/partials/toolbar.html:52
+#: components/layout/partials/toolbar.html:6
+msgid "Contact"
 msgstr ""
 
 #: components/status_creator/partials/form.html:5
@@ -188,7 +231,12 @@ msgid "Context"
 msgstr ""
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:14
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:27
 msgid "Continue without saving"
+msgstr ""
+
+#: components/permalink/partials/directivemd.html:7
+msgid "Copy to clipboard"
 msgstr ""
 
 #: components/status_creator/partials/form.html:83
@@ -212,20 +260,38 @@ msgstr ""
 msgid "Datasources"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:75
+#: components/compositions/partials/compositionsmd.html:16
+#: components/layermanager/partials/layermanager.html:88
 msgid "Date"
+msgstr ""
+
+#: components/measure/partials/measuremd.html:35
+msgid "Delete"
+msgstr ""
+
+#: components/measure/partials/measuremd.html:18
+msgid "Delete all measurements"
+msgstr ""
+
+#: components/compositions/partials/dialog_deletemd.html:5
+msgid "Delete composition {{compositionToDelete.title}}"
 msgstr ""
 
 #: components/draw/partials/draw.html:51
 msgid "Description"
 msgstr ""
 
-#: components/compositions/partials/dialog_info.html:7
-msgid "details"
+#: components/layermanager/partials/layermanager.html:99
+msgid "Dimensions"
+msgstr ""
+
+#: components/measure/partials/measure.html:10
+#: components/measure/partials/measuremd.html:7
+msgid "Distance"
 msgstr ""
 
 #: components/status_creator/partials/dialog_save.html:18
-msgid "Do you really want to overwrite <b>{{title}}</b>?"
+msgid "Do you really want to overwrite <b>{{compoData.title}}</b>?"
 msgstr ""
 
 #: components/layermanager/partials/dialog_removeall.html:10
@@ -236,11 +302,16 @@ msgstr ""
 msgid "Do you want to delete map"
 msgstr ""
 
+#: components/compositions/partials/dialog_deletemd.html:13
+msgid "Do you want to delete map {{compositionToDelete.title}}"
+msgstr ""
+
 #: components/datasource_selector/partials/datasource_selector.html:63
 msgid "Download"
 msgstr ""
 
 #: components/draw/partials/draw.html:2
+#: components/layout/partials/sidenav.html:33
 msgid "Draw new features"
 msgstr ""
 
@@ -248,7 +319,12 @@ msgstr ""
 msgid "E-mail"
 msgstr ""
 
+#: components/status_creator/partials/panelmd.html:54
+msgid "East"
+msgstr ""
+
 #: components/permalink/partials/directive.html:40
+#: components/permalink/partials/directivemd.html:14
 msgid "Embed code"
 msgstr ""
 
@@ -262,6 +338,7 @@ msgstr ""
 
 #: components/compositions/partials/dialog_info.html:20
 #: components/status_creator/partials/form.html:30
+#: components/status_creator/partials/panelmd.html:40
 #: components/status_creator/partials/simpleform.html:42
 msgid "Extent"
 msgstr ""
@@ -271,6 +348,7 @@ msgid "External data"
 msgstr ""
 
 #: components/ows/partials/ows.html:21
+#: components/ows/partials/owsmd.html:13
 msgid "External data source (URL)"
 msgstr ""
 
@@ -282,6 +360,9 @@ msgstr ""
 msgid "Failed to save to status manager"
 msgstr ""
 
+#: components/layermanager/partials/layermanagermd.html:118
+#: components/layermanager/partials/layermanagermd.html:138
+#: components/layermanager/partials/layermanagermd.html:98
 #: components/rtserver/partials/styler.html:14
 #: components/styles/partials/styler.html:14
 msgid "Fill"
@@ -289,16 +370,24 @@ msgstr ""
 
 #: components/ows/partials/owsnonwms.html:13
 #: components/permalink/partials/directive.html:57
+#: components/permalink/partials/directivemd.html:28
+#: components/status_creator/partials/panelmd.html:13
 #: components/status_creator/partials/simpleform.html:12
 msgid "Fill in descriptive text about map"
 msgstr ""
 
 #: components/permalink/partials/directive.html:51
+#: components/permalink/partials/directivemd.html:22
 #: components/status_creator/partials/simpleform.html:6
 msgid "Fill in name"
 msgstr ""
 
+#: components/status_creator/partials/panelmd.html:37
+msgid "Fill keywords"
+msgstr ""
+
 #: components/compositions/partials/compositions.html:11
+#: components/compositions/partials/compositionsmd.html:7
 #: components/datasource_selector/partials/dialog_micka_suggestions.html:13
 msgid "Filter"
 msgstr ""
@@ -307,11 +396,8 @@ msgstr ""
 msgid "Filter by"
 msgstr ""
 
-#: components/feature_crossfilter/partials/f_crossfilter.html:12
-msgid "Filter by {{group.name}}"
-msgstr ""
-
 #: components/compositions/partials/compositions.html:28
+#: components/compositions/partials/compositionsmd.html:22
 #: components/datasource_selector/partials/datasource_selector.html:53
 msgid "Filter by map extent"
 msgstr ""
@@ -320,7 +406,12 @@ msgstr ""
 msgid "Filter by value"
 msgstr ""
 
+#: components/feature_crossfilter/partials/f_crossfilter.html:12
+msgid "Filter by {{group.name}}"
+msgstr ""
+
 #: components/feature_crossfilter/partials/f_crossfilter.html:2
+#: components/layermanager/partials/layermanagermd.html:47
 #: components/sidebar/partials/sidebar.html:33
 msgid "Filter features"
 msgstr ""
@@ -331,7 +422,8 @@ msgstr ""
 
 #: components/ows/partials/owsnonwms.html:31
 #: components/ows/partials/owswfs.html:22
-#: components/ows/partials/owswms.html:49
+#: components/ows/partials/owswms.html:48
+#: components/ows/partials/owswmsmd.html:41
 msgid "Folder name"
 msgstr ""
 
@@ -343,13 +435,17 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:121
-#: components/layermanager/partials/layermanager.html:95
-msgid "from"
-msgstr ""
-
 #: components/datasource_selector/partials/dialog_micka_advanced.html:13
 msgid "Fulltext"
+msgstr ""
+
+#: components/layout/partials/toolbar.html:47
+#: components/layout/partials/toolbar.html:5
+msgid "Help"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:58
+msgid "Hide"
 msgstr ""
 
 #: components/rtserver/partials/styler.html:79
@@ -357,43 +453,28 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:22
-msgid "Yes, save"
-msgstr ""
-
 #: components/ows/partials/owswms.html:4
+#: components/ows/partials/owswmsmd.html:5
 #: components/ows/partials/owswmts.html:20
 msgid "Image format"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:11
+msgid "Image layer"
 msgstr ""
 
 #: components/query/partials/infopanel.html:2
 msgid "Info"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:11
-msgid "You are atempting to save map changes to"
-msgstr ""
-
-#: components/status_creator/partials/simpleform.html:81
-msgid "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
-msgstr ""
-
-#: components/compositions/partials/dialog_overwriteconfirm.html:10
-msgid "You are opening map <b>{{composition_name_to_be_loaded}}</b>.<br>There are currently unsaved changes.<br>What do you want to do before opening the selected map composition?"
-msgstr ""
-
-#: components/status_creator/partials/dialog_save.html:43
-msgid "You don't have sufficient rights to do so. Maybe the session has ended?"
-msgstr ""
-
-#: components/info/partials/info.html:12
-#: components/info/partials/info.html:33
-msgid "You have unsaved changes!"
+#: components/layermanager/partials/layermanagermd.html:148
+msgid "Inner radius"
 msgstr ""
 
 #: components/compositions/partials/compositions.html:40
 #: components/datasource_selector/partials/dialog_micka_advanced.html:28
 #: components/status_creator/partials/form.html:26
+#: components/status_creator/partials/panelmd.html:36
 #: components/status_creator/partials/simpleform.html:36
 msgid "Keywords"
 msgstr ""
@@ -403,9 +484,25 @@ msgstr ""
 msgid "Layer"
 msgstr ""
 
+#: components/layermanager/partials/layermanagermd.html:73
+msgid "Layer Opacity"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:77
+msgid "Layer Style"
+msgstr ""
+
 #: components/layermanager/partials/dialog_removeall.html:6
 #: components/layermanager/partials/layermanager.html:2
 msgid "Layer manager"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:68
+msgid "Layer name"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:43
+msgid "Layer options"
 msgstr ""
 
 #: components/status_creator/partials/form.html:45
@@ -413,7 +510,7 @@ msgstr ""
 msgid "Layers"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:106
+#: components/layermanager/partials/layermanager.html:130
 #: components/legend/partials/legend.html:2
 msgid "Legend"
 msgstr ""
@@ -428,6 +525,10 @@ msgstr ""
 #: components/styles/partials/styler.html:31
 #: components/styles/partials/styler.html:63
 msgid "Line Colour"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:19
+msgid "Line features"
 msgstr ""
 
 #: components/rtserver/partials/styler.html:37
@@ -449,28 +550,30 @@ msgstr ""
 msgid "Loading:"
 msgstr ""
 
+#: components/status_creator/partials/panelmd.html:27
 #: components/status_creator/partials/simpleform.html:25
 msgid "Make public"
-msgstr ""
-
-#: components/sidebar/partials/sidebar.html:11
-msgid "Manage and style your layers in composition"
 msgstr ""
 
 #: components/sidebar/partials/sidebar.html:12
 msgid "Manage and Style Layers"
 msgstr ""
 
-#: components/ows/partials/owswms.html:30
-msgid "Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results."
+#: components/sidebar/partials/sidebar.html:11
+msgid "Manage and style your layers in composition"
 msgstr ""
 
 #: components/sidebar/partials/sidebar.html:7
 msgid "Map Compositions"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:39
+#: components/layermanager/partials/layermanager.html:52
 msgid "Map Content"
+msgstr ""
+
+#: components/ows/partials/owswms.html:30
+#: components/ows/partials/owswmsmd.html:27
+msgid "Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results."
 msgstr ""
 
 #: components/ows/partials/dialog_proxyconfirm.html:10
@@ -485,8 +588,12 @@ msgstr ""
 msgid "Measure distance or area at map"
 msgstr ""
 
-#: components/toolbar/partials/toolbar.html:13
+#: components/search/partials/searchinput.html:8
 msgid "Measure lines and polygon"
+msgstr ""
+
+#: components/measure/partials/measuremd.html:5
+msgid "Measure type"
 msgstr ""
 
 #: components/sidebar/partials/sidebar.html:38
@@ -494,6 +601,7 @@ msgid "Measurements"
 msgstr ""
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:15
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:30
 msgid "Merge compositions"
 msgstr ""
 
@@ -501,21 +609,27 @@ msgstr ""
 msgid "Metadata for"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:101
+#: components/layermanager/partials/layermanager.html:125
 msgid "Metadata in"
 msgstr ""
 
 #: components/datasource_selector/partials/datasource_selector.html:39
-#: components/layermanager/partials/layermanager.html:125
+#: components/layermanager/partials/layermanager.html:149
 msgid "More"
 msgstr ""
 
-#: components/measure/partials/measure.html:2
-msgid "multiple shapes"
+#: components/layermanager/partials/layermanagermd.html:39
+msgid "Move layer downward, SHIFT-click to bottom"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:35
+msgid "Move layer upward, SHIFT-click to top"
 msgstr ""
 
 #: components/draw/partials/draw.html:45
 #: components/permalink/partials/directive.html:50
+#: components/permalink/partials/directivemd.html:21
+#: components/status_creator/partials/panelmd.html:8
 #: components/status_creator/partials/simpleform.html:4
 msgid "Name"
 msgstr ""
@@ -537,6 +651,10 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+#: components/compositions/partials/compositionsmd.html:43
+msgid "Next composition page"
+msgstr ""
+
 #: components/layermanager/partials/dialog_removeall.html:16
 msgid "No"
 msgstr ""
@@ -550,6 +668,10 @@ msgstr ""
 msgid "No, save as"
 msgstr ""
 
+#: components/status_creator/partials/panelmd.html:44
+msgid "North"
+msgstr ""
+
 #: components/compositions/partials/dialog_delete.html:14
 #: components/status_creator/partials/dialog_save.html:47
 msgid "OK"
@@ -559,8 +681,12 @@ msgstr ""
 msgid "Only mine"
 msgstr ""
 
-#: components/layermanager/partials/layermanager.html:69
+#: components/layermanager/partials/layermanager.html:82
 msgid "Opacity"
+msgstr ""
+
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:5
+msgid "Open composition {{compositionToLoad.title}}"
 msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:90
@@ -573,6 +699,10 @@ msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:37
 msgid "Organization name"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:146
+msgid "Outer radius"
 msgstr ""
 
 #: components/status_creator/partials/panel.html:11
@@ -604,6 +734,18 @@ msgstr ""
 msgid "Point"
 msgstr ""
 
+#: components/layermanager/partials/layermanagermd.html:15
+msgid "Point features"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:112
+msgid "Polygon"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:23
+msgid "Polygon features"
+msgstr ""
+
 #: components/status_creator/partials/form.html:68
 msgid "Position"
 msgstr ""
@@ -616,8 +758,14 @@ msgstr ""
 msgid "Precision"
 msgstr ""
 
+#: components/compositions/partials/compositionsmd.html:37
+msgid "Previous composition list"
+msgstr ""
+
 #: components/print/partials/printdialog.html:14
 #: components/print/partials/printdialog.html:2
+#: components/print/partials/printdialogmd.html:15
+#: components/print/partials/printdialogmd.html:3
 #: components/sidebar/partials/sidebar.html:61
 msgid "Print"
 msgstr ""
@@ -627,9 +775,12 @@ msgid "Print map"
 msgstr ""
 
 #: components/ows/partials/owswms.html:13
+#: components/ows/partials/owswmsmd.html:14
 msgid "Query format"
 msgstr ""
 
+#: components/layermanager/partials/layermanagermd.html:104
+#: components/layermanager/partials/layermanagermd.html:126
 #: components/rtserver/partials/styler.html:69
 #: components/styles/partials/styler.html:69
 msgid "Radius"
@@ -643,7 +794,12 @@ msgstr ""
 msgid "Reduce the number of dimensions by clicking on categories in each of the charts. Otherwise you might be visualizing multiple units and years at once."
 msgstr ""
 
+#: components/ows/partials/owswmsmd.html:46
+msgid "Register metadata"
+msgstr ""
+
 #: components/legend/partials/legend.html:18
+#: components/legend/partials/legendmd.html:19
 msgid "Reload"
 msgstr ""
 
@@ -651,24 +807,47 @@ msgstr ""
 msgid "Reload composition"
 msgstr ""
 
+#: components/compositions/partials/dialog_deletemd.html:21
+msgid "Remove"
+msgstr ""
+
 #: components/layermanager/partials/dialog_removeall.html:14
 msgid "Remove all added layers"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:51
+msgid "Remove layer"
 msgstr ""
 
 #: components/ows/partials/dialog_proxyconfirm.html:6
 msgid "Resample layer"
 msgstr ""
 
-#: components/toolbar/partials/toolbar.html:10
+#: components/status_creator/partials/panelmd.html:79
+msgid "Reset"
+msgstr ""
+
+#: components/search/partials/searchinput.html:5
 msgid "Reset map"
 msgstr ""
 
+#: components/layermanager/partials/layermanagermd.html:124
+#: components/layermanager/partials/layermanagermd.html:144
+msgid "Rotation"
+msgstr ""
+
+#: components/layout/partials/sidenav.html:23
 #: components/routing/partials/routing.html:2
 msgid "Routing"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:37
+#: components/ows/partials/owswmsmd.html:20
+msgid "SRS"
+msgstr ""
+
 #: components/status_creator/partials/dialog.html:15
+#: components/status_creator/partials/dialog_save.html:37
+#: components/status_creator/partials/panelmd.html:80
 #: components/status_creator/partials/simpleform.html:76
 msgid "Save"
 msgstr ""
@@ -679,6 +858,7 @@ msgid "Save as"
 msgstr ""
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:16
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:33
 msgid "Save changes first"
 msgstr ""
 
@@ -692,13 +872,21 @@ msgstr ""
 msgid "Save current map"
 msgstr ""
 
+#: components/status_creator/partials/panelmd.html:3
+msgid "Save map"
+msgstr ""
+
+#: components/measure/partials/measuremd.html:14
+msgid "Save measurement to layer"
+msgstr ""
+
 #: components/status_creator/partials/dialog_result.html:6
 msgid "Saving to status manager"
 msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:77
-#: components/layermanager/partials/layermanager.html:120
-#: components/layermanager/partials/layermanager.html:94
+#: components/layermanager/partials/layermanager.html:118
+#: components/layermanager/partials/layermanager.html:144
 msgid "Scale"
 msgstr ""
 
@@ -707,7 +895,8 @@ msgid "Search"
 msgstr ""
 
 #: components/ows/partials/owswfs.html:31
-#: components/ows/partials/owswms.html:65
+#: components/ows/partials/owswms.html:64
+#: components/ows/partials/owswmsmd.html:55
 msgid "Select All Layers"
 msgstr ""
 
@@ -723,8 +912,14 @@ msgstr ""
 msgid "Select the colour interval by dragging on the chart below. The regions on left side will be blue and red on the right side"
 msgstr ""
 
+#: components/layout/partials/toolbar.html:4
+#: components/layout/partials/toolbar.html:42
 #: components/mobile_settings/partials/mobile_settings.html:2
 msgid "Settings"
+msgstr ""
+
+#: components/compositions/partials/dialog_sharemd.html:5
+msgid "Share composition {{data.shareTitle}}"
 msgstr ""
 
 #: components/compositions/partials/dialog_share.html:7
@@ -734,21 +929,66 @@ msgstr ""
 msgid "Share map"
 msgstr ""
 
+#: components/permalink/partials/directivemd.html:19
+msgid "Share on social networks"
+msgstr ""
+
 #: components/permalink/partials/directive.html:12
 msgid "Share pure map"
+msgstr ""
+
+#: components/status_creator/partials/panelmd.html:17
+msgid "Show thumbnail"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:116
+#: components/layermanager/partials/layermanagermd.html:136
+msgid "Sides number"
+msgstr ""
+
+#: components/ows/partials/owsmd.html:29
+msgid "Some error happened or input missing"
+msgstr ""
+
+#: components/compositions/partials/compositionsmd.html:12
+msgid "Sort by"
+msgstr ""
+
+#: components/status_creator/partials/panelmd.html:60
+msgid "South"
 msgstr ""
 
 #: components/lodexplorer/partials/sparqllogdialog.html:7
 msgid "Sparql query log"
 msgstr ""
 
-#: components/geolocation/partials/geolocation_cordova.html:5
 #: components/geolocation/partials/geolocation.html:4
+#: components/geolocation/partials/geolocation_cordova.html:5
 msgid "Speed"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:133
+msgid "Star"
 msgstr ""
 
 #: components/status_creator/partials/form.html:77
 msgid "State"
+msgstr ""
+
+#: components/draw/partials/draw.html:33
+msgid "Stop"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:100
+#: components/layermanager/partials/layermanagermd.html:120
+#: components/layermanager/partials/layermanagermd.html:140
+msgid "Stroke"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:102
+#: components/layermanager/partials/layermanagermd.html:122
+#: components/layermanager/partials/layermanagermd.html:142
+msgid "Stroke width"
 msgstr ""
 
 #: components/ows/partials/owswmts.html:29
@@ -760,10 +1000,6 @@ msgstr ""
 msgid "Style layer"
 msgstr ""
 
-#: components/draw/partials/draw.html:33
-msgid "Stop"
-msgstr ""
-
 #: components/status_creator/partials/dialog_result.html:11
 msgid "Successfuly saved to status manager"
 msgstr ""
@@ -772,8 +1008,16 @@ msgstr ""
 msgid "Suggestions"
 msgstr ""
 
+#: components/layermanager/partials/layermanager.html:39
+msgid "Terrains"
+msgstr ""
+
 #: components/ows/partials/dialog_getcapabilities_error.html:11
 msgid "There was error while parsing Capabilities response from given URL"
+msgstr ""
+
+#: components/ows/partials/owsmd.html:16
+msgid "This is required!"
 msgstr ""
 
 #: components/layermanager/partials/layerlist.html:18
@@ -790,35 +1034,32 @@ msgstr ""
 
 #: components/compositions/partials/dialog_info.html:16
 #: components/permalink/partials/directive.html:77
+#: components/permalink/partials/directivemd.html:46
+#: components/status_creator/partials/panelmd.html:20
 #: components/status_creator/partials/simpleform.html:17
 msgid "Thumbnail"
 msgstr ""
 
-#: components/ows/partials/owswms.html:42
+#: components/ows/partials/owswms.html:41
+#: components/ows/partials/owswmsmd.html:36
 msgid "Tile size"
 msgstr ""
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:46
-msgid "Type"
-msgstr ""
-
+#: components/compositions/partials/compositionsmd.html:15
 #: components/datasource_selector/partials/dialog_micka_advanced.html:92
-#: components/layermanager/partials/layermanager.html:116
+#: components/layermanager/partials/layermanager.html:140
 #: components/ows/partials/owsnonwms.html:4
 #: components/print/partials/printdialog.html:11
+#: components/print/partials/printdialogmd.html:8
 #: components/status_creator/partials/form.html:18
 msgid "Title"
-msgstr ""
-
-#: components/layermanager/partials/layermanager.html:122
-#: components/layermanager/partials/layermanager.html:96
-msgid "to"
 msgstr ""
 
 #: components/datasource_selector/partials/dialog_micka_advanced.html:69
 msgid "Topic category"
 msgstr ""
 
+#: components/layout/partials/sidenav.html:28
 #: components/tracking/partials/tracking.html:2
 msgid "Tracking"
 msgstr ""
@@ -827,12 +1068,16 @@ msgstr ""
 msgid "Trip planner"
 msgstr ""
 
-#: components/info/partials/info.html:11
-msgid "Unsaved map"
+#: components/datasource_selector/partials/dialog_micka_advanced.html:46
+msgid "Type"
 msgstr ""
 
 #: components/compositions/partials/dialog_share.html:16
 msgid "URL"
+msgstr ""
+
+#: components/info/partials/info.html:11
+msgid "Unsaved map"
 msgstr ""
 
 #: components/status_creator/partials/dialog_save.html:44
@@ -844,27 +1089,110 @@ msgstr ""
 msgid "Use current map extent"
 msgstr ""
 
+#: components/status_creator/partials/panelmd.html:65
+msgid "Use map extent"
+msgstr ""
+
 #: components/ows/partials/dialog_proxyconfirm.html:14
 msgid "Use proxy"
+msgstr ""
+
+#: components/ows/partials/owswmsmd.html:30
+msgid "Use tiles"
 msgstr ""
 
 #: components/info/partials/info.html:8
 msgid "View, Compose and analyse spatial data"
 msgstr ""
 
+#: components/ows/partials/dialog_getcapabilities_error.html:6
+msgid "WMS Capabilities parsing problem"
+msgstr ""
+
 #: components/trip_planner/partials/trip_planner.html:12
 msgid "Waypoints"
 msgstr ""
 
-#: components/ows/partials/dialog_getcapabilities_error.html:6
-msgid "WMS Capabilities parsing problem"
+#: components/status_creator/partials/panelmd.html:50
+msgid "West"
+msgstr ""
+
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:19
+msgid "What do you want to do before opening the selected map composition?"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:86
+msgid "Width"
 msgstr ""
 
 #: components/status_creator/partials/form.html:54
 msgid "Write"
 msgstr ""
 
+#: components/status_creator/partials/dialog_save.html:22
+msgid "Yes, save"
+msgstr ""
+
+#: components/status_creator/partials/dialog_save.html:11
+msgid "You are atempting to save map changes to"
+msgstr ""
+
+#: components/status_creator/partials/simpleform.html:81
+msgid "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
+msgstr ""
+
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:16
+msgid "You are not loaded as user. You can't save composition now. Log in for saving."
+msgstr ""
+
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:13
+msgid "You are opening map <b>{{compositionToLoad.title}}</b>. There are currently unsaved changes in compositions."
+msgstr ""
+
+#: components/compositions/partials/dialog_overwriteconfirm.html:10
+msgid "You are opening map <b>{{composition_name_to_be_loaded}}</b>.<br>There are currently unsaved changes.<br>What do you want to do before opening the selected map composition?"
+msgstr ""
+
+#: components/status_creator/partials/dialog_save.html:43
+msgid "You don't have sufficient rights to do so. Maybe the session has ended?"
+msgstr ""
+
+#: components/info/partials/info.html:12
+#: components/info/partials/info.html:33
+msgid "You have unsaved changes!"
+msgstr ""
+
 #: components/datasource_selector/partials/dialog_metadata.html:18
 #: components/datasource_selector/partials/object.html:5
 msgid "Zoom to"
+msgstr ""
+
+#: components/compositions/partials/dialog_info.html:7
+msgid "details"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:119
+#: components/layermanager/partials/layermanager.html:145
+msgid "from"
+msgstr ""
+
+#: components/measure/partials/measure.html:2
+msgid "multiple shapes"
+msgstr ""
+
+#: components/layermanager/partials/layermanager.html:120
+#: components/layermanager/partials/layermanager.html:146
+msgid "to"
+msgstr ""
+
+#: components/layout/partials/bottom-sheet.html:4
+msgid "{{ bottomSheetTitle }}"
+msgstr ""
+
+#: components/layout/partials/sidenav.html:45
+msgid "{{but.title}}"
+msgstr ""
+
+#: components/layout/partials/sidenav.html:16
+msgid "{{panel.title}}"
 msgstr ""

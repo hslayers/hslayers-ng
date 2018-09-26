@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'moment', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layermanager', 'hs.source.SparqlJson', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'compositions', 'status_creator', 'ows', 'cesium', 'cesiumjs'],
+define(['angular', 'ol', 'moment', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layermanager', 'hs.source.SparqlJson', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'compositions', 'status_creator', 'ows', 'cesium', 'cesiumjs', 'angular-gettext'],
 
     function (angular, ol, moment, olus, zones, pois, sidebar, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [
@@ -92,8 +92,8 @@ define(['angular', 'ol', 'moment', 'olus', 'zones', 'pois', 'sidebar', 'toolbar'
             })
         });
 
-        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service', '$compile', 'hs.query.wmsService', '$sce',
-            function ($scope, Core, QueryService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils, $compile, WmsService, $sce) {
+        module.controller('Main', ['$scope', 'Core', 'hs.query.baseService', 'hs.compositions.service_parser', '$timeout', 'hs.map.service', '$http', 'config', '$rootScope', 'hs.utils.service', '$compile', 'hs.query.wmsService', '$sce', 'gettext',
+            function ($scope, Core, QueryService, composition_parser, $timeout, hsMap, $http, config, $rootScope, utils, $compile, WmsService, $sce, gettext) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
                 Core.sidebarExpanded = false;
@@ -122,9 +122,9 @@ define(['angular', 'ol', 'moment', 'olus', 'zones', 'pois', 'sidebar', 'toolbar'
                     pois.getPois(map, utils, bounds);
                 })
 
-                config.default_layers.push(olus.createOluLayer());
-                config.default_layers.push(zones.createLayer());
-                config.default_layers.push(pois.createPoiLayer());
+                config.default_layers.push(olus.createOluLayer(gettext));
+                config.default_layers.push(zones.createLayer(gettext));
+                config.default_layers.push(pois.createPoiLayer(gettext));
 
                 $scope.showInfo = function (zone) {
                     var id, obj_type, links_to_id;

@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionDelete.html:13
+msgid "<translate>Do you want to delete map</translate> {{compositionToDelete.title}}"
+msgstr ""
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionDelete.html:14
+msgid "Do you want to delete map"
+msgstr ""
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:30
+msgid "Fill in descriptive text about map"
+msgstr ""
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:24
+msgid "Fill in name"
+msgstr ""
+
+#: examples/liberecMaterial/materialComponents/panelContents/shareMap.html:48
+msgid "Thumbnail"
+msgstr ""
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:19
+msgid "What do you want to do before opening the selected map composition?"
+msgstr ""
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:16
+msgid "You are not loaded as user. You can't save composition now. Log in for saving."
+msgstr ""
+
+#: examples/liberecMaterial/materialComponents/panelContents/compositionLoadUnsavedDialog.html:13
+msgid "You are opening map <b>{{compositionToLoad.title}}</b>. There are currently unsaved changes in compositions."
+msgstr ""

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water', 'soils', 'water_bodies', 'parcels_with_id', 'erosion_zones', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap'],
+define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water', 'soils', 'water_bodies', 'parcels_with_id', 'erosion_zones', 'parcels_with_CTVDPB', 'parcels_with_crop_types', 'parcels_with_crop_types_by_distance', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'datasource_selector', 'cesiumjs', 'bootstrap', 'angular-gettext'],
 
     function (ol, toolbar, sentinel, layermanager, pois, parcels_near_water, soils, water_bodies, parcels_with_id, erosion_zones, parcels_with_CTVDPB, parcels_with_crop_types, parcels_with_crop_types_by_distance) {
         var module = angular.module('hs', [
@@ -203,8 +203,8 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
             cesiumBingKey: 'Ag-1WrJMNrtwDswUaPxKvq85UO-82NmE_V5HiXbgssabAYmr4zV2HyFWrusCfaXF'
         });
 
-        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', 'hs.sentinel.service',
-            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce, sentinel_service) {
+        module.controller('Main', ['$scope', '$compile', '$element', 'Core', 'hs.map.service', 'config', '$rootScope', 'hs.utils.service', '$sce', 'hs.sentinel.service', 'gettext',
+            function ($scope, $compile, $element, Core, hs_map, config, $rootScope, utils, $sce, sentinel_service, gettext) {
                 var map;
 
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
@@ -237,7 +237,7 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
                 $rootScope.$on('map.loaded', function () {
                     map = hs_map.map;
                     providers.forEach(function (provider) {
-                        provider.init($scope, $compile, map, utils);
+                        provider.init($scope, $compile, map, utils, gettext);
                     })
                     $rootScope.$on('map.sync_center', function (e, center, bounds) {
                         $scope.last_center = center;
@@ -270,9 +270,9 @@ define(['ol', 'toolbar', 'sentinel', 'layermanager', 'pois', 'parcels_near_water
 
                 pois.init($scope, $compile);
                 providers.forEach(function (provider) {
-                    config.default_layers.push(provider.createLayer());
+                    config.default_layers.push(provider.createLayer(gettext));
                 })
-                config.default_layers.push(sentinel_service.createLayer());
+                config.default_layers.push(sentinel_service.createLayer(gettext));
 
                 function extentChanged() {
                     var bbox = map.getView().calculateExtent(map.getSize());

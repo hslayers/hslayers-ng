@@ -159,9 +159,9 @@ WHERE{
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 lyr = new ol.layer.Vector({
-                    title: "Fields by ID_UZ attribute from LPIS db",
+                    title: gettext("Fields by ID_UZ attribute from LPIS db"),
                     source: src,
                     visible: false,
                     style: function (feature, resolution) {

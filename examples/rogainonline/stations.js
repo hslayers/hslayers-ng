@@ -104,9 +104,9 @@ define(['ol'],
                 source.dispatchEvent('features:loaded', source);
                 callback(bounds);
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 return new ol.layer.Vector({
-                    title: "Stations",
+                    title: gettext("Stations"),
                     source: source,
                     visible: true
                 })

@@ -98,9 +98,9 @@ define(['ol', 'sparql_helpers'],
                         sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plotName: 'plotName', plot: 'plot', shortId: 'shortId', code: 'code', cropName: 'cropName', cropArea: 'cropArea'}, map, $scope)
                     })
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 lyr = new ol.layer.Vector({
-                    title: "Fields by crop types",
+                    title: gettext("Fields by crop types"),
                     source: src,
                     visible: false,
                     maxResolution: (0.00008291534423828125 * 2),

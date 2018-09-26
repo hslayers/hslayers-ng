@@ -96,9 +96,9 @@ WHERE {
                         sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', { parcel: 'code', use: 'landUse' }, map, $scope)
                     })
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 lyr = new ol.layer.Vector({
-                    title: "Plots intersecting water bodies",
+                    title: gettext("Plots intersecting water bodies"),
                     source: src,
                     visible: false,
                     maxResolution: 4.777314267823516*4,

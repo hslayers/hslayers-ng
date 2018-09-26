@@ -98,9 +98,9 @@ WHERE{
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 lyr = new ol.layer.Vector({
-                    title: "Fields by crop types and distance",
+                    title: gettext("Fields by crop types and distance"),
                     source: src,
                     visible: false,
                     style: function (feature, resolution) {

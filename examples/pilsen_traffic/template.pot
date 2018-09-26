@@ -4,6 +4,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: examples/pilsen_traffic/partials/directive.html:49
+msgctxt "button"
+msgid "Timeline of roadworks"
+msgstr ""
+
+#: examples/pilsen_traffic/partials/advanced_info.html:7
+msgctxt "panelname"
+msgid "Timeline of roadworks"
+msgstr ""
+
 #: examples/pilsen_traffic/pilsentraffic.js:43
 msgid "1 - fluent traffic, individual vehicles passing"
 msgstr ""
@@ -48,10 +58,6 @@ msgstr ""
 #: examples/pilsen_traffic/partials/help-panel.html:10
 #: examples/pilsen_traffic/partials/help-panel.html:19
 msgid "About"
-msgstr ""
-
-#: examples/pilsen_traffic/pilsentraffic.js:48
-msgid "amount of vehicles on the road segment per hour"
 msgstr ""
 
 #: examples/pilsen_traffic/partials/calendar.html:6
@@ -146,10 +152,6 @@ msgstr ""
 msgid "Ongoing roadworks"
 msgstr ""
 
-#: examples/pilsen_traffic/pilsentraffic.js:50
-msgid "partial road closure"
-msgstr ""
-
 #: examples/pilsen_traffic/partials/directive.html:31
 msgid "Pause animation"
 msgstr ""
@@ -178,10 +180,6 @@ msgstr ""
 msgid "Reset map"
 msgstr ""
 
-#: examples/pilsen_traffic/pilsentraffic.js:49
-msgid "road closed"
-msgstr ""
-
 #: examples/pilsen_traffic/partials/roadwork_info.html:4
 msgid "Roadwork"
 msgstr ""
@@ -206,16 +204,16 @@ msgstr ""
 msgid "Select background map"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/help-panel.html:124
-msgid "Select the 'hyperlink' icon to generate a link to share your current map screen."
-msgstr ""
-
 #: examples/pilsen_traffic/partials/help-panel.html:132
 msgid "Select the 'PDF' icon to download a PDF file that contains a preview of your current map screen and the list of roadworks operational on the selected date."
 msgstr ""
 
 #: examples/pilsen_traffic/partials/help-panel.html:148
 msgid "Select the 'Send by email' icon to send a link to your current map screen by email."
+msgstr ""
+
+#: examples/pilsen_traffic/partials/help-panel.html:124
+msgid "Select the 'hyperlink' icon to generate a link to share your current map screen."
 msgstr ""
 
 #: examples/pilsen_traffic/partials/help-panel.html:111
@@ -290,16 +288,6 @@ msgstr ""
 msgid "Timeline of roadworks"
 msgstr ""
 
-#: examples/pilsen_traffic/partials/advanced_info.html:7
-msgctxt "panelname"
-msgid "Timeline of roadworks"
-msgstr ""
-
-#: examples/pilsen_traffic/partials/directive.html:49
-msgctxt "button"
-msgid "Timeline of roadworks"
-msgstr ""
-
 #: examples/pilsen_traffic/partials/roadwork_info.html:11
 msgid "Title:"
 msgstr ""
@@ -340,4 +328,16 @@ msgstr ""
 
 #: examples/pilsen_traffic/partials/calendar.html:10
 msgid "We"
+msgstr ""
+
+#: examples/pilsen_traffic/pilsentraffic.js:48
+msgid "amount of vehicles on the road segment per hour"
+msgstr ""
+
+#: examples/pilsen_traffic/pilsentraffic.js:50
+msgid "partial road closure"
+msgstr ""
+
+#: examples/pilsen_traffic/pilsentraffic.js:49
+msgid "road closed"
 msgstr ""

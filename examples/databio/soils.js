@@ -98,9 +98,9 @@ define(['ol', 'sparql_helpers'],
                         sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {plot: 'plot', shortId: 'shortId', code: 'code', soilType: 'soilType'}, map, $scope, $scope)
                     })
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 lyr = new ol.layer.Vector({
-                    title: "Fields with soil type",
+                    title: gettext("Fields with soil type"),
                     maxResolution: 4.777314267823516,
                     source: src,
                     visible: false,

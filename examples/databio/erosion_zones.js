@@ -141,9 +141,9 @@ define(['ol', 'sparql_helpers'],
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 lyr = new ol.layer.Vector({
-                    title: "Erosion zones",
+                    title: gettext("Erosion zones"),
                     source: src,
                     visible: false,
                     style: function (feature, resolution) {

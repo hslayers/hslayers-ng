@@ -15,7 +15,7 @@
         }
     </style>
     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
-        aria-controls="collapseExample">
+        aria-controls="collapseExample" translate>
         Actions:
     </button>
     <div class="collapse in" id="collapseExample">
@@ -25,7 +25,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" translate>
                                     Filter fields which are near water
                                 </a>
                             </h4>
@@ -33,11 +33,11 @@
                         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="control-label">Distance to water bodies in km</label>
+                                    <label class="control-label" translate>Distance to water bodies in km</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control col-sm-4" ng-model="water_distance" ng-change="reloadNearWaterbodies()" />
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadNearWaterbodies()" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadNearWaterbodies()" type="button" translate>Filter</button>
                                         </span>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                         <div class="panel-heading" role="tab" id="headingTwo">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
-                                    aria-controls="collapseTwo">
+                                    aria-controls="collapseTwo" translate>
                                     Land usage for fields with LPIS ID
                                 </a>
                             </h4>
@@ -56,11 +56,11 @@
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="control-label">ID Uz</label>
+                                    <label class="control-label" translate>ID Uz</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-model="iduz" placeholder="e.g. 17614" />
+                                        <input type="text" class="form-control" ng-model="iduz" placeholder="{{'e.g. 17614'|translate}}" />
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadIdUz()" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadIdUz()" type="button" translate>Filter</button>
                                         </span>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                         <div class="panel-heading" role="tab" id="headingThree">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
-                                    aria-controls="collapseThree">
+                                    aria-controls="collapseThree" translate>
                                     Crop types for fields with CTVDPB code
                                 </a>
                             </h4>
@@ -79,11 +79,11 @@
                         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="control-label">CTVDPB</label>
+                                    <label class="control-label" translate>CTVDPB</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-model="ctvdpd" placeholder="code eg. 57011607501" />
+                                        <input type="text" class="form-control" ng-model="ctvdpd" placeholder="{{'code eg. 57011607501'|translate}}" />
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadCTVDPB()" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadCTVDPB()" type="button" translate>Filter</button>
                                         </span>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                         <div class="panel-heading" role="tab" id="headingEight">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false"
-                                    aria-controls="collapseEight">
+                                    aria-controls="collapseEight" translate>
                                     Crop types for fields with LPIS ID
                                 </a>
                             </h4>
@@ -102,11 +102,11 @@
                         <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="control-label">ID</label>
+                                    <label class="control-label" translate>ID</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-model="iduz" placeholder="e.g. 6423" />
+                                        <input type="text" class="form-control" ng-model="iduz" placeholder="{{'e.g. 6423'|translate}}" />
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadIdUzCropTypes()" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadIdUzCropTypes()" type="button" translate>Filter</button>
                                         </span>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                         <div class="panel-heading" role="tab" id="headingFour">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
-                                    aria-controls="collapseFour">
+                                    aria-controls="collapseFour" translate>
                                     Find fields with crop type in area
                                 </a>
                             </h4>
@@ -125,13 +125,13 @@
                         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="control-label">Crop type</label>
+                                    <label class="control-label" translate>Crop type</label>
                                     <div class="input-group">
                                         <select class="form-control" ng-model="cropType">
                                             <option ng-value="ct.id" ng-repeat="ct in cropTypes">{{ct.name}}</option>
                                         </select>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadCropTypeLayer()" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadCropTypeLayer()" type="button" translate>Filter</button>
                                         </span>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@
                         <div class="panel-heading" role="tab" id="headingFive">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false"
-                                    aria-controls="collapseFive">
+                                    aria-controls="collapseFive" translate>
                                     Filter fields by crop and distance to map center
                                 </a>
                             </h4>
@@ -150,17 +150,17 @@
                         <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="control-label">Crop type</label>
+                                    <label class="control-label" translate>Crop type</label>
                                     <select class="form-control" ng-model="cropType">
                                         <option ng-value="ct.id" ng-repeat="ct in cropTypes">{{ct.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">Distance in km</label>
+                                    <label class="control-label" translate>Distance in km</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" ng-model="crop_distance" placeholder="" />
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadCropTypeLayer(crop_distance)" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadCropTypeLayer(crop_distance)" type="button" translate>Filter</button>
                                         </span>
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@
                         <div class="panel-heading" role="tab" id="headingSix">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false"
-                                    aria-controls="collapseSix">
+                                    aria-controls="collapseSix" translate>
                                     Find erosion zones
                                 </a>
                             </h4>
@@ -179,20 +179,20 @@
                         <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="control-label">LPIS FARM ID (ID_UZ)</label>
+                                    <label class="control-label" translate>LPIS FARM ID (ID_UZ)</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-model="iduz" placeholder="e.g. 17614" />
+                                        <input type="text" class="form-control" ng-model="iduz" placeholder="{{'e.g. 17614'|translate}}" />
                                         <span class="input-group-btn">
                                             <button class="btn btn-primary" ng-click="reloadErosionZonesById()" type="button">Filter</button>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">CTVDPB</label>
+                                    <label class="control-label" translate>CTVDPB</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-model="ctvdpd" placeholder="e.g. 57011607501" />
+                                        <input type="text" class="form-control" ng-model="ctvdpd" placeholder="{{'e.g. 57011607501'|translate}}" />
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadErosionZonesByCTVDPB()" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadErosionZonesByCTVDPB()" type="button" translate>Filter</button>
                                         </span>
                                     </div>
                                 </div>
@@ -203,7 +203,7 @@
                         <div class="panel-heading" role="tab" id="headingSeven">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false"
-                                    aria-controls="collapseSeven">
+                                    aria-controls="collapseSeven" translate>
                                     Filter fields by soil type in area
                                 </a>
                             </h4>
@@ -211,13 +211,13 @@
                         <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="control-label">Soil type</label>
+                                    <label class="control-label" translate>Soil type</label>
                                     <div class="input-group">
                                         <select class="form-control" ng-model="soilType">
                                             <option ng-value="label" ng-repeat="label in soilTypes">{{label}}</option>
                                         </select>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" ng-click="reloadSoils()" type="button">Filter</button>
+                                            <button class="btn btn-primary" ng-click="reloadSoils()" type="button" translate>Filter</button>
                                         </span>
                                     </div>
                                 </div>

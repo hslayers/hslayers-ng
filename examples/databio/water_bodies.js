@@ -65,9 +65,9 @@ FILTER(bif:st_intersects (?coordWBody, bif:st_geomFromText("${extents}"))) .
                         sparql_helpers.fillFeatures(src, 'coordWBody', response, 'waterBody', {waterBody: 'waterBody', label: 'label'}, map, $scope)
                     })
             },
-            createLayer: function () {
+            createLayer: function (gettext) {
                 lyr = new ol.layer.Vector({
-                    title: "Water bodies",
+                    title: gettext("Water bodies"),
                     source: src,
                     visible: false,
                     maxResolution: 4.777314267823516*8,
