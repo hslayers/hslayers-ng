@@ -1,6 +1,6 @@
-define(['ol', 'Cesium', 'moment', 'proj4'],
+define(['ol', 'moment', 'proj4'],
 
-    function(ol, Cesium, moment, proj4) {
+    function(ol, moment, proj4) {
         var utils;
 
         function MyProxy(proxy, maxResolution) {

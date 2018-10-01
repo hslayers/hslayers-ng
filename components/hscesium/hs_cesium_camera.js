@@ -1,6 +1,6 @@
-define(['ol', 'Cesium'],
+define(['ol'],
 
-    function(ol, Cesium) {
+    function(ol) {
 
         var viewer;
         var hs_map;

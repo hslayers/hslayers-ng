@@ -1,8 +1,8 @@
 if (require.config) require.config({
     paths: {
-        hs_cesium_camera: hsl_path + 'components/cesium/camera' + hslMin,
-        hs_cesium_time: hsl_path + 'components/cesium/time' + hslMin,
-        hs_cesium_layers: hsl_path + 'components/cesium/layers' + hslMin,
+        hs_cesium_camera: hsl_path + 'components/hscesium/hs_cesium_camera' + hslMin,
+        hs_cesium_time: hsl_path + 'components/hscesium/hs_cesium_time' + hslMin,
+        hs_cesium_layers: hsl_path + 'components/hscesium/hs_cesium_layers' + hslMin,
     }
 })
 
@@ -12,7 +12,7 @@ if (require.config) require.config({
  * @name hs.cesium
  * @description Module containing cesium map
  */
-define(['angular', 'Cesium', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_cesium_layers'], function(angular, Cesium, permalink, ol, HsCsCamera, HsCsTime, HsCsLayers) {
+define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_cesium_layers'], function(angular, permalink, ol, HsCsCamera, HsCsTime, HsCsLayers) {
     angular.module('hs.cesium', ['hs'])
 
         /**
@@ -233,14 +233,14 @@ define(['angular', 'Cesium', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_t
          */
         .directive('hs.cesium.directive', ['Core', function(Core) {
             return {
-                templateUrl: hsl_path + 'components/cesium/partials/cesium.html?bust=' + gitsha,
+                templateUrl: hsl_path + 'components/hscesium/partials/cesium.html?bust=' + gitsha,
                 link: function(scope, element) {}
             };
         }])
 
         .directive('hs.cesium.toolbarButtonDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/cesium/partials/toolbar_button_directive.html?bust=' + gitsha
+                templateUrl: hsl_path + 'components/hscesium/partials/toolbar_button_directive.html?bust=' + gitsha
             };
         })
 

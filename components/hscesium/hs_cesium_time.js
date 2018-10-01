@@ -1,6 +1,6 @@
-define(['ol', 'Cesium', 'moment'],
+define(['ol','moment'],
 
-    function(ol, Cesium, moment) {
+    function(ol, moment) {
         var $rootScope;
         var me = {
             monitorTimeLine() {
