@@ -7,6 +7,7 @@ var b = browserify({
 });
 
 b.exclude(__dirname + '/../../node_modules/requirejs/bin/r.js');
+b.exclude(__dirname + '/../../node_modules/cesium/index.js');
 
 var bundleFs = fs.createWriteStream(__dirname + '/bundle.js')
 bundleFs.on('finish', function() {

@@ -26,7 +26,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    src: [__dirname + "/bundle.js", "!"+__dirname + "/bundle.min.js"],
+                    src: ["examples/databio/bundle.js", "!" + __dirname + "/bundle.min.js"],
                     dest: 'dist',
                     cwd: '.',
                     rename: function(dst, src) {
@@ -37,10 +37,10 @@ module.exports = function(grunt) {
         },
         "jsbeautifier": {
             "default": {
-                src: [__dirname + "/hslayers.js", __dirname +"/app.js", __dirname + "/*.js"]
+                src: [__dirname + "/hslayers.js", __dirname + "/app.js", __dirname + "/*.js", "!" + __dirname + "/bundle.js", "!" + __dirname + "/bundle.min.js"]
             },
             "git-pre-commit": {
-                src: [__dirname + "/hslayers.js", __dirname + "/app.js"]
+                src: [__dirname + "/hslayers.js", __dirname + "/app.js", "!" + __dirname + "/bundle.js", "!" + __dirname + "/bundle.min.js"]
             }
         },
         jsdoc: {
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-angular-gettext');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-uglify-es');
-    grunt.registerTask('default', ['jsbeautifier']);
+    grunt.registerTask('default', ['jsbeautifier', 'uglify']);
     grunt.registerTask('git-pre-commit', ['jsbeautifier']);
 
 
