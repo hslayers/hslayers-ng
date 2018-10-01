@@ -26,17 +26,11 @@ require.config({
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector',
         api: hsl_path + 'components/api/api',
         translations: hsl_path + 'components/translations/js/translations',
-        cesium: hsl_path + 'components/cesium/cesium',
-        cesiumjs: hsl_path + 'node_modules/cesium/Build/Cesium/Cesium',
+        hscesium: hsl_path + 'components/hscesium/hscesium',
         pois: 'poi',
         olus: 'olu',
         zones: 'zone',
         moment: hsl_path + 'node_modules/moment/min/moment.min'
-    },
-    shim: {
-        cesiumjs: {
-            exports: 'Cesium'
-        }
     }
 });
 
