@@ -1,6 +1,6 @@
 define(['ol', 'sparql_helpers'],
 
-    function (ol, sparql_helpers) {
+    function(ol, sparql_helpers) {
         var src = new ol.source.Vector();
         var $scope;
         var $compile;
@@ -10,12 +10,12 @@ define(['ol', 'sparql_helpers'],
         var selected_entity;
 
         function entityClicked(entity) {
-            if(selected_entity) selected_entity.polygon.material.color = entity.original_color;
+            if (selected_entity) selected_entity.polygon.material.color = entity.original_color;
             selected_entity = entity;
             entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
-        }   
+        }
 
-        src.cesiumStyler = function (dataSource) {
+        src.cesiumStyler = function(dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
@@ -44,8 +44,9 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            get: function (map, utils, rect) {
+            get: function(map, utils, rect) {
                 if (map.getView().getResolution() > lyr.getMaxResolution() || lyr.getVisible() == false) return;
+
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -92,34 +93,41 @@ define(['ol', 'sparql_helpers'],
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {plot: 'plot', shortId: 'shortId', code: 'code', soilType: 'soilType'}, map, $scope, $scope)
+                        url: q
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {
+                            plot: 'plot',
+                            shortId: 'shortId',
+                            code: 'code',
+                            soilType: 'soilType'
+                        }, map, $scope, $scope)
                     })
             },
-            createLayer: function (gettext) {
+            createLayer: function(gettext) {
                 lyr = new ol.layer.Vector({
                     title: gettext("Fields with soil type"),
                     maxResolution: 4.777314267823516,
                     source: src,
                     visible: false,
-                    style: function (feature, resolution) {
+                    style: function(feature, resolution) {
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: 'rgba(237, 189, 113, 0.6)',
                                     width: 2
                                 }),
-                                fill : new ol.style.Fill({color: 'rgba(237, 189, 113, 0.8)'})
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(237, 189, 113, 0.8)'
+                                })
                             })
                         ];
                     }
                 });
                 return lyr;
             },
-            fillClassificators(){
-                var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent( `PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
+            fillClassificators() {
+                var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`PREFIX foodie-cz: <http://foodie-cloud.com/model/foodie-cz#>
                 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
                 PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
                 PREFIX virtrdf:	<http://www.openlinksw.com/schemas/virtrdf#> 
@@ -139,18 +147,18 @@ define(['ol', 'sparql_helpers'],
                 
                 `) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
                 $.ajax({
-                    url: utils.proxify(q)
-                })
-                    .done(function (response) {
-                        $scope.soilTypes = response.results.bindings.map(function(r){
+                        url: utils.proxify(q)
+                    })
+                    .done(function(response) {
+                        $scope.soilTypes = response.results.bindings.map(function(r) {
                             return r.label.value;
-                        }) 
+                        })
                     })
             },
-            getLayer(){
+            getLayer() {
                 return lyr;
             },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function(_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;

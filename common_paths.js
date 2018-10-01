@@ -2,6 +2,8 @@ exports.paths = [
     __dirname + '/components/toolbar',
     __dirname + '/node_modules',
     __dirname + '/node_modules/openlayers/dist',
+    __dirname + '/node_modules/requirejs',
+    __dirname + '/node_modules/cesium/Build/Cesium',
     __dirname + '/node_modules/angular-cookies/angular-cookies',
     __dirname + '/node_modules/angular-socialshare/dist/angular-socialshare',
     __dirname + '/node_modules/angular-material',
@@ -9,7 +11,7 @@ exports.paths = [
     __dirname + '/node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
     __dirname + '/components/api',
     __dirname + '/node_modules/angular-material-bottom-sheet-collapsible',
-    __dirname + '/components/cesium',
+    __dirname + '/components/hscesium',
     __dirname + '/components/compositions',
     __dirname + '/components/core',
     __dirname + '/components/customhtml',
@@ -44,6 +46,5 @@ exports.paths = [
     __dirname + '/components/tracking',
     __dirname + '/components/translations/js',
     __dirname + '/components/trip_planner',
-    __dirname + '/components/wirecloud',
-    __dirname + '/examples/olu_spoi/'
+    __dirname + '/components/wirecloud'
   ];
