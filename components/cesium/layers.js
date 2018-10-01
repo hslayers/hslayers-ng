@@ -1,6 +1,6 @@
-define(['ol', 'cesiumjs', 'moment', 'proj4'],
+define(['ol', 'Cesium', 'moment', 'proj4'],
 
-    function (ol, Cesium, moment, proj4) {
+    function(ol, Cesium, moment, proj4) {
         var utils;
 
         function MyProxy(proxy, maxResolution) {
@@ -8,7 +8,7 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
             this.maxResolution = maxResolution;
         }
 
-        MyProxy.prototype.getURL = function (resource) {
+        MyProxy.prototype.getURL = function(resource) {
             var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + hsl_path + 'img/blank.png';
             var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
             if (this.maxResolution <= 8550) {
@@ -32,7 +32,7 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
         var me = {
             to_be_deleted: [],
             setupEvents() {
-                me.$rootScope.$on('layermanager.base_layer_visible_changed', function (event, data, b) {
+                me.$rootScope.$on('layermanager.base_layer_visible_changed', function(event, data, b) {
                     if (angular.isDefined(data) && angular.isDefined(data.type) && data.type == 'terrain') {
                         me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
                             url: data.url
@@ -40,12 +40,12 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
                     }
                 });
 
-                setTimeout(function () {
+                setTimeout(function() {
                     me.repopulateLayers(null);
                     me.hs_cesium.broadcastLayerList();
                 }, 3500);
 
-                me.hs_map.map.getLayers().on('add', function (e) {
+                me.hs_map.map.getLayers().on('add', function(e) {
                     var lyr = e.element;
                     me.processOlLayer(lyr);
                 })
@@ -53,12 +53,12 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
             },
 
             /**
-            * @ngdoc method
-            * @name hs.cesium.service#repopulateLayers
-            * @public
-            * @param {object} visible_layers List of layers, which should be visible. 
-            * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
-            */
+             * @ngdoc method
+             * @name hs.cesium.service#repopulateLayers
+             * @public
+             * @param {object} visible_layers List of layers, which should be visible. 
+             * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
+             */
             repopulateLayers(visible_layers) {
                 if (angular.isDefined(me.config.default_layers)) {
                     angular.forEach(me.config.default_layers, me.processOlLayer);
@@ -67,13 +67,13 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
                     angular.forEach(me.config.box_layers, me.processOlLayer);
                 }
                 //Some layers might be loaded from cookies before cesium service was called
-                angular.forEach(me.hs_map.map.getLayers(), function (lyr) {
+                angular.forEach(me.hs_map.map.getLayers(), function(lyr) {
                     if (angular.isUndefined(lyr.cesium_layer))
                         me.processOlLayer(lyr);
                 });
             },
 
-            init: function (viewer, hs_map, hs_cesium, $rootScope, config, _utils) {
+            init: function(viewer, hs_map, hs_cesium, $rootScope, config, _utils) {
                 me.viewer = viewer;
                 me.hs_map = hs_map;
                 me.hs_cesium = hs_cesium;
@@ -87,7 +87,7 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
                 var f = new ol.format.GeoJSON();
                 //console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 var features = ol_source.getFeatures();
-                features.forEach(function (feature) {
+                features.forEach(function(feature) {
                     if (typeof ol_source.cesium_layer.entities.getById(feature.getId()) != 'undefined') {
                         features.splice(features.indexOf(feature), 1);
                     } else {
@@ -96,7 +96,7 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
                 });
                 //console.log('start removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 var to_remove = [];
-                ol_source.cesium_layer.entities.values.forEach(function (entity) {
+                ol_source.cesium_layer.entities.values.forEach(function(entity) {
                     if (ol_source.getFeatureById(entity.id) == null) {
                         to_remove.push(entity.id);
                     }
@@ -123,10 +123,10 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
             linkOlLayerToCesiumLayer(ol_layer, cesium_layer) {
                 ol_layer.cesium_layer = cesium_layer;
                 cesium_layer.ol_layer = ol_layer;
-                ol_layer.on('change:visible', function (e) {
+                ol_layer.on('change:visible', function(e) {
                     e.target.cesium_layer.show = ol_layer.getVisible();
                 })
-                ol_layer.on('change:opacity', function (e) {
+                ol_layer.on('change:opacity', function(e) {
                     e.target.cesium_layer.alpha = parseFloat(ol_layer.getOpacity());
                 })
             },
@@ -134,7 +134,7 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
             linkOlSourceToCesiumDatasource(ol_source, cesium_layer) {
                 ol_source.cesium_layer = cesium_layer;
                 me.syncFeatures(ol_source);
-                ol_source.on('features:loaded', function (e) {
+                ol_source.on('features:loaded', function(e) {
                     if (e.target.cesium_layer) {
                         me.syncFeatures(e.target);
                     }
@@ -143,28 +143,27 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
 
             syncFeatures(ol_source) {
                 var tmp_source = new Cesium.GeoJsonDataSource('tmp');
-                Cesium.GeoJsonDataSource.crsNames['EPSG:3857']= function(coordinates){
+                Cesium.GeoJsonDataSource.crsNames['EPSG:3857'] = function(coordinates) {
 
                     var firstProjection = 'PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","3857"]]';
                     var secondProjection = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]';
-                  
+
                     var xa = coordinates[0];
                     var ya = coordinates[1];
-        
-                    var newCoordinates = proj4(firstProjection,secondProjection,[xa,ya]);
+
+                    var newCoordinates = proj4(firstProjection, secondProjection, [xa, ya]);
                     return Cesium.Cartesian3.fromDegrees(newCoordinates[0], newCoordinates[1], 0);
-        
+
                 }
                 //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-                var promise = tmp_source.load(me.serializeVectorLayerToGeoJson(ol_source),
-                    {
-                        camera: me.viewer.scene.camera,
-                        canvas: me.viewer.scene.canvas,
-                        clampToGround: true
-                    });
-                promise.then(function (source) {
+                var promise = tmp_source.load(me.serializeVectorLayerToGeoJson(ol_source), {
+                    camera: me.viewer.scene.camera,
+                    canvas: me.viewer.scene.canvas,
+                    clampToGround: true
+                });
+                promise.then(function(source) {
                     //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-                    source.entities.values.forEach(function (entity) {
+                    source.entities.values.forEach(function(entity) {
                         try {
                             if (typeof ol_source.cesium_layer.entities.getById(entity.id) == 'undefined') {
                                 //console.log('Adding', entity.id);
@@ -182,7 +181,7 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
 
             processOlLayer(lyr) {
                 if (lyr instanceof ol.layer.Group) {
-                    angular.forEach(lyr.layers, function (sub_lyr) {
+                    angular.forEach(lyr.layers, function(sub_lyr) {
                         me.processOlLayer(sub_lyr);
                     })
                 } else {
@@ -227,16 +226,15 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
 
             createVectorDataSource(ol_lyr) {
                 if (ol_lyr.getSource().getFormat() instanceof ol.format.KML) {
-                    return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(),
-                        {
-                            camera: viewer.scene.camera,
-                            canvas: viewer.scene.canvas,
-                            clampToGround: ol_lyr.getSource().get('clampToGround') || true
-                        })
+                    return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(), {
+                        camera: viewer.scene.camera,
+                        canvas: viewer.scene.canvas,
+                        clampToGround: ol_lyr.getSource().get('clampToGround') || true
+                    })
                 } else {
                     var new_source = new Cesium.GeoJsonDataSource(ol_lyr.get('title'));
                     ol_lyr.cesium_layer = new_source; //link to cesium layer will be set also for OL layers source object, when this function returns.
-                    ol_lyr.on('change:visible', function (e) {
+                    ol_lyr.on('change:visible', function(e) {
                         e.target.cesium_layer.show = ol_lyr.getVisible();
                     })
                     return new_source;
@@ -257,7 +255,11 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
-                    getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
+                    getFeatureInfoParameters: {
+                        VERSION: params.VERSION,
+                        CRS: 'EPSG:4326',
+                        FROMCRS: 'EPSG:4326'
+                    },
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
                     maximumLevel: params.maximumLevel,
                     minimumLevel: params.minimumLevel,
@@ -286,13 +288,17 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
-                    getFeatureInfoParameters: { VERSION: params.VERSION, CRS: 'EPSG:4326', FROMCRS: 'EPSG:4326' },
+                    getFeatureInfoParameters: {
+                        VERSION: params.VERSION,
+                        CRS: 'EPSG:4326',
+                        FROMCRS: 'EPSG:4326'
+                    },
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
                     tileWidth: 1024,
                     tileHeight: 1024,
                     proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
                 };
-                
+
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(me.removeUnwantedParams(prm_cache, src)), {
                     alpha: 0.7,
                     show: ol_lyr.getVisible()
@@ -301,7 +307,7 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
                 return tmp;
             },
 
-            removeUnwantedParams(prm_cache, src){
+            removeUnwantedParams(prm_cache, src) {
                 if (angular.isDefined(prm_cache.parameters.dimensions)) {
                     delete prm_cache.parameters.dimensions;
                 }
@@ -309,7 +315,7 @@ define(['ol', 'cesiumjs', 'moment', 'proj4'],
             },
 
             changeLayerParam(layer, parameter, new_value) {
-                new_value = moment(new_value).isValid() ? moment(new_value).toISOString(): new_value;
+                new_value = moment(new_value).isValid() ? moment(new_value).toISOString() : new_value;
                 layer.prm_cache.parameters[parameter] = new_value;
                 me.to_be_deleted.push(layer);
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(layer.prm_cache), {

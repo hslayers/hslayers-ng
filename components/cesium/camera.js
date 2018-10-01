@@ -1,18 +1,18 @@
-define(['ol', 'cesiumjs'],
+define(['ol', 'Cesium'],
 
-    function (ol, Cesium) {
+    function(ol, Cesium) {
 
         var viewer;
         var hs_map;
 
         var me = {
             /**
-            * @ngdoc method
-            * @name hs.cesium.service#calcResolutionForDistance
-            * @private
-            * @description Calculates the resolution for a given distance from the ground and latitude
-            */
-            calcResolutionForDistance: function (distance, latitude) {
+             * @ngdoc method
+             * @name hs.cesium.service#calcResolutionForDistance
+             * @private
+             * @description Calculates the resolution for a given distance from the ground and latitude
+             */
+            calcResolutionForDistance: function(distance, latitude) {
                 // See the reverse calculation (calcDistanceForResolution_) for details
                 var canvas = viewer.scene.canvas;
                 var fovy = viewer.camera.frustum.fovy;
@@ -31,13 +31,13 @@ define(['ol', 'cesiumjs'],
              * @private
              * @description Gets the position the camera is pointing to in lon/lat coordinates and resolution as the third array element
              */
-            getCameraCenterInLngLat: function () {
-                if(viewer.scene.mode == Cesium.SceneMode.SCENE2D || viewer.scene.mode == Cesium.SceneMode.COLUMBUS_VIEW ){
-                    var lngDeg = viewer.camera.positionCartographic.longitude  * (180/Math.PI);
-                    var latDeg = viewer.camera.positionCartographic.latitude  * (180/Math.PI)
+            getCameraCenterInLngLat: function() {
+                if (viewer.scene.mode == Cesium.SceneMode.SCENE2D || viewer.scene.mode == Cesium.SceneMode.COLUMBUS_VIEW) {
+                    var lngDeg = viewer.camera.positionCartographic.longitude * (180 / Math.PI);
+                    var latDeg = viewer.camera.positionCartographic.latitude * (180 / Math.PI)
                     position = [lngDeg, latDeg, 0];
                     return position;
-                } else if(viewer.scene.mode == Cesium.SceneMode.SCENE3D){
+                } else if (viewer.scene.mode == Cesium.SceneMode.SCENE3D) {
                     var ray = viewer.camera.getPickRay(new Cesium.Cartesian2(viewer.canvas.width / 2, viewer.canvas.height / 2));
                     var positionCartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
                     if (positionCartesian3) {
@@ -48,16 +48,16 @@ define(['ol', 'cesiumjs'],
                         return position;
                     } else return null;
                 }
-               
+
             },
 
-                        /**
+            /**
              * @ngdoc method
              * @name hs.cesium.service#getCameraCenterCartesian
              * @private
              * @description Gets the position the camera is pointing to in cartesian coordinates and resolution as the third array element
              */
-            getCameraCenterInCartesian: function () {
+            getCameraCenterInCartesian: function() {
                 var ray = viewer.camera.getPickRay(new Cesium.Cartesian2(viewer.canvas.width / 2, viewer.canvas.height / 2));
                 var positionCartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
                 if (positionCartesian3) {
@@ -66,13 +66,14 @@ define(['ol', 'cesiumjs'],
                 } else return null;
             },
 
-            getViewportPolygon: function(){
+            getViewportPolygon: function() {
 
                 function cornerToDegrees(d) {
                     try {
                         return [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).longitude),
-                            Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).latitude)];
-                    } catch (ex){
+                            Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(d).latitude)
+                        ];
+                    } catch (ex) {
                         return [0, 0, 0, 0]
                     }
                 }
@@ -80,9 +81,9 @@ define(['ol', 'cesiumjs'],
                 var of_y = 0;
                 var center = [Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).longitude), Cesium.Math.toDegrees(viewer.scene.globe.ellipsoid.cartesianToCartographic(viewer.camera.position).latitude)];
                 var top_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(of_x, of_y), new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height)));
-                var top_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width-of_x, of_y), new Cesium.Cartesian2(0, viewer.canvas.height)));
-                var bot_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width-of_x+100, viewer.canvas.height-of_y+100), new Cesium.Cartesian2(0, 0)));
-                var bot_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(-100+of_x, viewer.canvas.height-of_y+100), new Cesium.Cartesian2(viewer.canvas.width, 0)));
+                var top_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width - of_x, of_y), new Cesium.Cartesian2(0, viewer.canvas.height)));
+                var bot_left = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(viewer.canvas.width - of_x + 100, viewer.canvas.height - of_y + 100), new Cesium.Cartesian2(0, 0)));
+                var bot_right = cornerToDegrees(me.getCornerCoord(new Cesium.Cartesian2(-100 + of_x, viewer.canvas.height - of_y + 100), new Cesium.Cartesian2(viewer.canvas.width, 0)));
 
                 function clamp(p) {
                     var max_dist = 0.23;
@@ -99,7 +100,7 @@ define(['ol', 'cesiumjs'],
                 return [top_left, top_right, bot_left, bot_right];
             },
 
-            getCornerCoord: function (startCoordinates, endCoordinates) {
+            getCornerCoord: function(startCoordinates, endCoordinates) {
 
                 var coordinate = viewer.scene.camera.pickEllipsoid(startCoordinates, this.ellipsoid);
 
@@ -115,7 +116,10 @@ define(['ol', 'cesiumjs'],
                 var sy = (y1 < y2) ? 1 : -1;
                 var err = dx - dy;
 
-                coordinate = viewer.scene.camera.pickEllipsoid({ x: x1, y: y1 }, this.ellipsoid);
+                coordinate = viewer.scene.camera.pickEllipsoid({
+                    x: x1,
+                    y: y1
+                }, this.ellipsoid);
                 if (coordinate) {
                     return coordinate;
                 }
@@ -132,7 +136,10 @@ define(['ol', 'cesiumjs'],
                         y1 += sy;
                     }
 
-                    coordinate = viewer.scene.camera.pickEllipsoid({ x: x1, y: y1 }, this.ellipsoid);
+                    coordinate = viewer.scene.camera.pickEllipsoid({
+                        x: x1,
+                        y: y1
+                    }, this.ellipsoid);
                     if (coordinate) {
                         return coordinate;
                     }
@@ -140,7 +147,7 @@ define(['ol', 'cesiumjs'],
                 return;
             },
 
-            setExtentEqualToOlExtent: function (view) {
+            setExtentEqualToOlExtent: function(view) {
                 var ol_ext = view.calculateExtent(hs_map.map.getSize());
                 var trans_ext = ol.proj.transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
                 viewer.camera.setView({
@@ -176,7 +183,7 @@ define(['ol', 'cesiumjs'],
              * @deprecated
              * @description Calculates the distance from the ground based on resolution and latitude
              */
-            calcDistanceForResolution: function (resolution, latitude) {
+            calcDistanceForResolution: function(resolution, latitude) {
                 const canvas = viewer.scene.canvas;
                 const fovy = viewer.camera.frustum.fovy;
                 const metersPerUnit = hs_map.map.getView().getProjection().getMetersPerUnit();
@@ -208,28 +215,28 @@ define(['ol', 'cesiumjs'],
                 return requiredDistance;
             },
 
-            fixMorphs(){
-                viewer.camera.moveEnd.addEventListener(function (e) {
+            fixMorphs() {
+                viewer.camera.moveEnd.addEventListener(function(e) {
                     if (!hs_map.visible) {
                         var center = me.getCameraCenterInLngLat();
-                        if (center == null || (center[0] == 0 || center[1]==0)) return; //Not looking on the map but in the sky
+                        if (center == null || (center[0] == 0 || center[1] == 0)) return; //Not looking on the map but in the sky
                         me.last_good_center = center;
                     }
                 });
-                viewer.scene.morphComplete.addEventListener(function (){
-                    if(me.last_good_center){
-                        setTimeout(function(){
+                viewer.scene.morphComplete.addEventListener(function() {
+                    if (me.last_good_center) {
+                        setTimeout(function() {
                             viewer.camera.flyTo({
                                 destination: Cesium.Cartesian3.fromDegrees(me.last_good_center[0], me.last_good_center[1], 15000.0),
                                 duration: 1
                             })
                         }, 1000)
-                       
+
                     }
                 });
             },
 
-            init: function (_viewer, _hs_map) {
+            init: function(_viewer, _hs_map) {
                 viewer = _viewer;
                 hs_map = _hs_map;
                 me.fixMorphs(viewer);
