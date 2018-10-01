@@ -1,6 +1,6 @@
 define(['ol', 'sparql_helpers'],
 
-    function (ol, sparql_helpers) {
+    function(ol, sparql_helpers) {
         var src = new ol.source.Vector();
         var $scope;
         var $compile;
@@ -11,17 +11,17 @@ define(['ol', 'sparql_helpers'],
         var selected_entity;
 
         function entityClicked(entity) {
-            if(selected_entity) selected_entity.polygon.material.color = entity.original_color;
+            if (selected_entity) selected_entity.polygon.material.color = entity.original_color;
             selected_entity = entity;
             entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
-        }   
+        }
 
-        src.cesiumStyler = function (dataSource) {
+        src.cesiumStyler = function(dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
                 if (entity.styled) continue;
-                entity.polygon.outline = false;               
+                entity.polygon.outline = false;
                 entity.original_color = new Cesium.Color.fromCssColorString('rgba(40, 150, 40, 0.6)');
                 entity.polygon.material = new Cesium.ColorMaterialProperty(entity.original_color);
                 entity.styled = true;
@@ -30,7 +30,7 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            getForId: function (map, utils) {
+            getForId: function(map, utils) {
                 if (lyr.getVisible() == false) return;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
                 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
@@ -79,14 +79,17 @@ define(['ol', 'sparql_helpers'],
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: utils.proxify(q)
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map, $scope);
+                        url: utils.proxify(q)
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {
+                            erosionZone: 'erosionZone',
+                            erosion: 'erosion'
+                        }, map, $scope);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            getForCTVDPB: function (map, utils) {
+            getForCTVDPB: function(map, utils) {
                 if (lyr.getVisible() == false) return;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
                 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
@@ -134,36 +137,41 @@ define(['ol', 'sparql_helpers'],
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {erosionZone: 'erosionZone', erosion: 'erosion'}, map, $scope);
+                        url: q
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'erosionCoord', response, 'erosionZone', {
+                            erosionZone: 'erosionZone',
+                            erosion: 'erosion'
+                        }, map, $scope);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            createLayer: function (gettext) {
+            createLayer: function(gettext) {
                 lyr = new ol.layer.Vector({
                     title: gettext("Erosion zones"),
                     source: src,
                     visible: false,
-                    style: function (feature, resolution) {
+                    style: function(feature, resolution) {
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: 'rgba(40, 150, 40, 0.6)',
                                     width: 2
                                 }),
-                                fill : new ol.style.Fill({color: 'rgba(40, 150, 40, 0.8)'})
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(40, 150, 40, 0.8)'
+                                })
                             })
                         ];
                     }
                 });
                 return lyr;
             },
-            getLayer(){
+            getLayer() {
                 return lyr;
             },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function(_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;

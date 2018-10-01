@@ -1,6 +1,6 @@
 define(['ol', 'sparql_helpers'],
 
-    function (ol, sparql_helpers) {
+    function(ol, sparql_helpers) {
         var src = new ol.source.Vector();
         var $scope;
         var $compile;
@@ -10,12 +10,12 @@ define(['ol', 'sparql_helpers'],
         var selected_entity;
 
         function entityClicked(entity) {
-            if(selected_entity) selected_entity.polygon.material.color = entity.original_color;
+            if (selected_entity) selected_entity.polygon.material.color = entity.original_color;
             selected_entity = entity;
             entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
-        }   
+        }
 
-        src.cesiumStyler = function (dataSource) {
+        src.cesiumStyler = function(dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
@@ -26,7 +26,7 @@ define(['ol', 'sparql_helpers'],
                 polyCenter = Cesium.Ellipsoid.WGS84.scaleToGeodeticSurface(polyCenter);
                 entity.position = polyCenter;
                 entity.label = new Cesium.LabelGraphics({
-                    text: entity.properties.code.getValue() + ' '+ entity.properties.cropName.getValue(),
+                    text: entity.properties.code.getValue() + ' ' + entity.properties.cropName.getValue(),
                     font: '16px Helvetica',
                     fillColor: Cesium.Color.WHITE,
                     outlineColor: Cesium.Color.BLACK,
@@ -45,7 +45,7 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            get: function (map, utils, distance, center) {
+            get: function(map, utils, distance, center) {
                 if (lyr.getVisible() == false) return;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
 
@@ -91,36 +91,45 @@ WHERE{
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plotName: 'plotName', plot: 'plot', shortId: 'shortId', code: 'code', cropName: 'cropName', cropArea: 'cropArea'}, map, $scope);
+                        url: q
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {
+                            plotName: 'plotName',
+                            plot: 'plot',
+                            shortId: 'shortId',
+                            code: 'code',
+                            cropName: 'cropName',
+                            cropArea: 'cropArea'
+                        }, map, $scope);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            createLayer: function (gettext) {
+            createLayer: function(gettext) {
                 lyr = new ol.layer.Vector({
                     title: gettext("Fields by crop types and distance"),
                     source: src,
                     visible: false,
-                    style: function (feature, resolution) {
+                    style: function(feature, resolution) {
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: 'rgba(150, 40, 40, 0.8)',
                                     width: 2
                                 }),
-                                fill : new ol.style.Fill({color: 'rgba(150, 40, 40, 0.8)'})
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(150, 40, 40, 0.8)'
+                                })
                             })
                         ];
                     }
                 });
                 return lyr;
             },
-            getLayer(){
+            getLayer() {
                 return lyr;
             },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function(_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;
