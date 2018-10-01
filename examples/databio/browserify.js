@@ -1,13 +1,10 @@
 var browserify = require('browserify');
 var fs = require('fs');
 var common_paths = require('../../common_paths');
-common_paths.paths.push(__dirname + '/../../examples/databio/');
+common_paths.paths.push(__dirname);
 var b = browserify({
     paths: common_paths.paths
 });
-
-b.exclude(__dirname + '/../../node_modules/requirejs/bin/r.js');
-b.exclude(__dirname + '/../../node_modules/cesium/index.js');
 
 var bundleFs = fs.createWriteStream(__dirname + '/bundle.js')
 bundleFs.on('finish', function() {
