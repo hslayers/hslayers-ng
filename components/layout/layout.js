@@ -287,13 +287,15 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
 
                     $scope.openPanel = function (panel) {
                         Core.setMainPanel(panel.name);
-                        if (!$mdMedia('gt-sm')) {
+                        $scope.bottomSheetTitle = panel.title;
+                        $scope.closeLeftSidenav();
+                        if (!$mdMedia('gt-sm') && !$scope.getBottomSheetState) {
                             $scope.openBottomSheet(panel);
                         }
                     }
 
                     $scope.switchBottomSheetState = function () {
-                        if ($scope.bottomSheet.hasClass("minimized")) {
+                        if ($scope.getBottomSheetState() === "minimized") {
                             $scope.setHalfway();
                         } else {
                             $scope.setMinimized();
@@ -318,8 +320,6 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                     }
 
                     $scope.openBottomSheet = function (panel) {
-                        $scope.closeLeftSidenav();
-                        $scope.bottomSheetTitle = panel.title;
                         $mdBottomSheetCollapsible.show({
                             templateUrl: hsl_path + 'components/layout/partials/bottom-sheet.html?bust=' + gitsha,
                             scope: $scope,
@@ -352,8 +352,10 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                             }
                         }).then(function (e) {
                             console.log("Bottom sheet closed", Date.now());
+                            $scope.unsetBottomSheet();
                         }).catch(function (e) {
                             console.log("Bottom sheet canceled", Date.now());
+                            $scope.unsetBottomSheet();
                         });
                         // $scope.$watch(function() {
                         //     return $scope.getBottomSheetState();
@@ -364,6 +366,15 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
 
                     $scope.closeBottomSheet = function () {
                         $scope.bottomSheet.hide();
+                        $scope.unsetBottomSheet();
+                    }
+
+                    $scope.unsetBottomSheet = function () {
+                        $scope.setMinimized = undefined;
+                        $scope.setHalfway = undefined;
+                        $scope.setExpanded = undefined;
+                        $scope.getBottomSheetState = undefined;
+                        $scope.bottomSheet = undefined;
                     }
 
                     $scope.openLeftSidenav = function () {
