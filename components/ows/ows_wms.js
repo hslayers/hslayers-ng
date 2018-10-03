@@ -379,12 +379,12 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
                         } else {
                             //"2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H"
                             var interval_def = step_array[i].split('/');
-                            var step = moment.interval(interval_def[2]);
-                            var interval = moment.interval(interval_def[0] + '/' + interval_def[1]);
+                            var step = momentinterval.interval(interval_def[2]);
+                            var interval = momentinterval.interval(interval_def[0] + '/' + interval_def[1]);
                             while (interval.start() < interval.end()) {
                                 //console.log(interval.start().toDate().toISOString());
                                 steps.push(interval.start().toDate().toISOString());
-                                interval.start(moment.utc(interval.start().toDate()).add(step.period()));
+                                interval.start(momentinterval.utc(interval.start().toDate()).add(step.period()));
                             }
                         }
                     }

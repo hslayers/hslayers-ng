@@ -7,6 +7,7 @@ exports.paths = [
     __dirname + '/node_modules/angular-cookies/angular-cookies',
     __dirname + '/node_modules/angular-socialshare/dist/angular-socialshare',
     __dirname + '/node_modules/angular-material',
+    __dirname + '/node_modules/moment-interval/node_modules/moment',
     __dirname + '/node_modules/angular-gettext/dist/angular-gettext',
     __dirname + '/node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
     __dirname + '/components/api',
