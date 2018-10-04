@@ -76,6 +76,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         me.push('hs_x', view.getCenter()[0]);
                         me.push('hs_y', view.getCenter()[1]);
                         me.push('hs_z', view.getZoom());
+                        if(Core.language) me.push('lang', Core.language);
                         me.push('visible_layers', visible_layers.join(";"));
                         if (Core.puremapApp) me.push('puremap', "true");
                         for (var cP in me.customParams) {
@@ -265,6 +266,9 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                                     }, 1000);
                                 })
                             });
+                            if (me.getParamValue('lang')) {
+                                Core.setLanguage(me.getParamValue('lang'));
+                            }
                         }
                     }
                     

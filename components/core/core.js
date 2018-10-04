@@ -56,6 +56,7 @@ if (require.config) require.config({
         lodexplorer: hsl_path + 'components/lodexplorer/lodexplorer' + hslMin,
         map: hsl_path + 'components/map/map' + hslMin,
         measure: hsl_path + 'components/measure/measure' + hslMin,
+        language: hsl_path + 'components/language/language' + hslMin,
         mobile_toolbar: requirejs.s.contexts._.config.paths.mobile_toolbar || hsl_path + 'components/mobile_toolbar/mobile_toolbar',
         mobile_settings: requirejs.s.contexts._.config.paths.mobile_settings || hsl_path + 'components/mobile_settings/mobile_settings',
         moment: nm_path + 'moment/min/moment.min',
@@ -133,6 +134,9 @@ if (require.config) require.config({
             deps: ['angular'],
         },
         translations: {
+            deps: ['angular-gettext'],
+        },
+        translations_extended: {
             deps: ['angular-gettext'],
         }
     },
@@ -602,6 +606,16 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             gettextCatalog.setCurrentLanguage(lang);
                             me.language = lang;
+                        },
+                        /**
+                        * @ngdoc method
+                        * @name Core#getCurrentLanguagePrefix 
+                        * @public
+                        * @description Get code of current language
+                        */
+                        getCurrentLanguageCode: function(){
+                            if(typeof me.language == 'undefined' || me.language == '') return 'EN';
+                            return me.language.substr(0, 2).toUpperCase();
                         },
                         /**
                         * @ngdoc method

@@ -24,6 +24,7 @@ exports.paths = [
     __dirname + '/components/format',
     __dirname + '/components/geolocation',
     __dirname + '/components/info',
+    __dirname + '/components/language',
     __dirname + '/components/layermanager',
     __dirname + '/components/layers',
     __dirname + '/components/layout',
