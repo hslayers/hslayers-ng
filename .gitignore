@@ -10,3 +10,4 @@ package-lock.json
 *.min.js
 bundle.js
 docs
+po/cs_CZ.mo
