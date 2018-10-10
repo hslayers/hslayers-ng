@@ -4,7 +4,7 @@ var hsl_path = '../../';
 if(window.location.hostname.indexOf('intenzitadopravy.plzen.eu')>-1)
     hsl_path = './';
 
-var hslMin = true;
+var hslMin = false;
 
 var pilsenSite = false;
 if(window.location.hostname.indexOf('intenzitadopravy.plzen.eu')>-1) pilsenSite = true;
@@ -21,7 +21,7 @@ require.config({
     urlArgs: 'bust=' + gitsha,
     paths: {
         app: 'app',
-        core: hsl_path + 'components/core/core.min',
+        core: hsl_path + 'components/core/core',
         pilsentraffic: './pilsentraffic',
         //ol: hsl_path + 'node_modules/openlayers/dist/ol-debug', //Full
         ol: hsl_path + 'node_modules/openlayers/dist/ol', //Min
@@ -42,7 +42,7 @@ require.config({
             exports: 's4a'
         },
         ngtimeline: {
-            deps: ['timeline']
+            deps: ['angular','timeline']
         },
         lazyimage: {
             deps: ['angular']
