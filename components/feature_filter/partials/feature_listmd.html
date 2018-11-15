@@ -1,0 +1,44 @@
+<md-list layout-fill ng-show="!displayDetails">
+    <md-list-item class="md-line-2" ng-repeat="feature in LayMan.currentLayer.filteredFeatures" ng-click="toggleFeatureDetails(feature)"
+        layout-fill>
+        <div class="md-list-item-text">
+            <h3>{{ feature.values_.name }}</h3>
+            <p>{{ feature.values_.region }}, {{ feature.values_.country }}</p>
+        </div>
+    </md-list-item>
+</md-list>
+
+<md-toolbar class="md-hue-2" ng-show="displayDetails">
+    <div class="md-toolbar-tools">
+        <h2 class="md-flex">{{ featureDetails.name }}</h2>
+
+        <div flex></div>
+
+        <md-button class="md-icon-button" aria-label="Close" ng-click="toggleFeatureDetails()">
+            <md-icon md-menu-origin class="material-icons">close</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<md-content flex layout-padding ng-show="displayDetails">
+    <h3>Overview</h3>
+    <p>{{ featureDetails.overview }}</p>
+
+    <h3>Process</h3>
+    <p>{{ featureDetails.process }}</p>
+
+    <h3>Actors</h3>
+    <p>{{ featureDetails.actors }}</p>
+
+    <h3>Context</h3>
+    <p>{{ featureDetails.context }}</p>
+
+    <h3>Factors</h3>
+    <p>{{ featureDetails.factors }}</p>
+
+    <h3>Farmer benefits</h3>
+    <p>{{ featureDetails.farmer_benefits }}</p>
+
+    <h3>Other benefits</h3>
+    <p>{{ featureDetails.other_benefits }}</p>
+</md-content>
