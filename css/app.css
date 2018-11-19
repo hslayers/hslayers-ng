@@ -371,7 +371,7 @@ div#infopanel.ng-scope .second-col {
 .dc-chart g.row text {
     fill: black;
 }
-. #right-pane {
+#right-pane {
     pointer-events: auto;
 }
 .but-title-sm {
