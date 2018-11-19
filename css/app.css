@@ -1176,6 +1176,10 @@ md-icon > span, md-icon > span.glyphicon {
     font-size: initial;
 }
 
+#map-container {
+    position: relative;
+}
+
 .map-floating-gui {
     pointer-events: none;
     position: absolute;
@@ -1332,6 +1336,15 @@ div.md-sidenav {
     z-index: 90;
 }
 
+md-content.card-collection {
+    column-count: 1;
+    column-gap: 10px;
+}
+
+md-card {
+    break-inside: avoid;
+}
+
 .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-left, .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-right {
   -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -1354,4 +1367,16 @@ md-checkbox {
 
 .select-all-checkboxes {
     padding-left: 30px;
+}
+
+@media (min-width: 960px) {
+    md-content.card-collection {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1280px) {
+    md-content.card-collection {
+        column-count: 3;
+    }
 }

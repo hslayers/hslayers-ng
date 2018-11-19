@@ -68,6 +68,7 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
             */
             .directive('hs.mdRightPanel.directive', ['config', function (config) {
                 return {
+                    replace: true,
                     templateUrl: config.right_panel_template || hsl_path + 'components/layout/partials/right-panel.html?bust=' + gitsha
                 };
             }])

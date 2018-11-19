@@ -1,4 +1,4 @@
-<md-list layout-fill ng-show="!displayDetails">
+<!-- <md-list layout-fill ng-show="!displayDetails">
     <md-list-item class="md-line-2" ng-repeat="feature in LayMan.currentLayer.filteredFeatures" ng-click="toggleFeatureDetails(feature)"
         layout-fill>
         <div class="md-list-item-text">
@@ -6,7 +6,27 @@
             <p>{{ feature.values_.region }}, {{ feature.values_.country }}</p>
         </div>
     </md-list-item>
-</md-list>
+</md-list> -->
+
+<md-content class="md-padding card-collection" ng-show="!displayDetails">
+    <!-- <div flex-xs flex-gt-xs="50" layout="column"> -->
+    <md-card ng-repeat="feature in LayMan.currentLayer.filteredFeatures" ng-click="toggleFeatureDetails(feature)">
+        <img ng-src="{{ 'thumb/' + feature.values_.img }}" class="md-card-image" alt="Best Practice thumbnail">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{ feature.values_.name }}</span>
+                <span class="md-subhead">{{ feature.values_.region }}, {{ feature.values_.country }}</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <p>
+                {{ feature.values_.annotation }} 
+            </p>
+        </md-card-content>
+    </md-card>
+    <!-- </div> -->
+</md-content>
+
 
 <md-toolbar class="md-hue-2" ng-show="displayDetails">
     <div class="md-toolbar-tools">
