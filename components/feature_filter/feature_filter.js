@@ -314,7 +314,21 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
 
                     $scope.toggleFeatureDetails = function(feature) {
                         $scope.displayDetails = !$scope.displayDetails;
-                        if ($scope.displayDetails) $scope.featureDetails = feature.values_;
+                        if ($scope.selectedFeature) $scope.selectedFeature.setStyle(null);
+
+                        if ($scope.displayDetails) {
+                            $scope.featureDetails = feature.values_;
+                            $scope.selectedFeature = feature;
+                            OlMap.moveToAndZoom(feature.values_.geometry.flatCoordinates[0], feature.values_.geometry.flatCoordinates[1], 7);
+                            feature.setStyle(new ol.style.Style({
+                                image: new ol.style.Icon(({
+                                    crossOrigin: 'anonymous',
+                                    src: 'marker_sel.png',
+                                    anchor: [0.5, 1],
+                                    scale: 0.35,
+                                }))
+                            }))
+                        }
                     };
 
                     $scope.$emit('scope_loaded', "featureList");
