@@ -1343,6 +1343,7 @@ md-content.card-collection {
 
 md-card {
     break-inside: avoid;
+    cursor: pointer;
 }
 
 .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-left, .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-right {
