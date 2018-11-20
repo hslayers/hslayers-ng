@@ -323,9 +323,9 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                             feature.setStyle(new ol.style.Style({
                                 image: new ol.style.Icon(({
                                     crossOrigin: 'anonymous',
-                                    src: 'marker_sel.png',
+                                    src: 'marker_lt.png',
                                     anchor: [0.5, 1],
-                                    scale: 0.35,
+                                    scale: 0.4,
                                 }))
                             }))
                         }
