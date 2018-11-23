@@ -266,7 +266,7 @@ define(['ol', 'moment', 'proj4'],
                     proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
                 };
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(me.removeUnwantedParams(prm_cache, src)), {
-                    alpha: 0.7,
+                    alpha:  ol_lyr.getOpacity() || 0.7,
                     show: ol_lyr.getVisible()
                 });
                 tmp.prm_cache = prm_cache;
@@ -300,7 +300,7 @@ define(['ol', 'moment', 'proj4'],
                 };
 
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(me.removeUnwantedParams(prm_cache, src)), {
-                    alpha: 0.7,
+                    alpha: ol_lyr.getOpacity() || 0.7,
                     show: ol_lyr.getVisible()
                 });
                 tmp.prm_cache = prm_cache;
