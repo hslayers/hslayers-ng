@@ -63,6 +63,7 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
                     creditContainer: angular.isDefined(config.creditContainer) ? config.creditContainer : undefined,
                     infoBox: angular.isDefined(config.cesiumInfoBox) ? config.cesiumInfoBox : true,
                     terrainProvider: terrain_provider,
+                    imageryProvider: config.imageryProvider,
                     terrainExaggeration: config.terrainExaggeration || 1.0,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
                     skyBox: new Cesium.SkyBox({
