@@ -1,8 +1,8 @@
 if (require.config) require.config({
     paths: {
-        hs_cesium_camera: hsl_path + 'components/cesium/camera' + hslMin,
-        hs_cesium_time: hsl_path + 'components/cesium/time' + hslMin,
-        hs_cesium_layers: hsl_path + 'components/cesium/layers' + hslMin,
+        hs_cesium_camera: hsl_path + 'components/hscesium/hs_cesium_camera' + hslMin,
+        hs_cesium_time: hsl_path + 'components/hscesium/hs_cesium_time' + hslMin,
+        hs_cesium_layers: hsl_path + 'components/hscesium/hs_cesium_layers' + hslMin,
     }
 })
 
@@ -12,7 +12,7 @@ if (require.config) require.config({
  * @name hs.cesium
  * @description Module containing cesium map
  */
-define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_cesium_layers'], function (angular, Cesium, permalink, ol, HsCsCamera, HsCsTime, HsCsLayers) {
+define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_cesium_layers'], function(angular, permalink, ol, HsCsCamera, HsCsTime, HsCsLayers) {
     angular.module('hs.cesium', ['hs'])
 
         /**
@@ -21,7 +21,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
          * @ngdoc service
          * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file).
          */
-        .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', 'Core', function (config, $rootScope, utils, hs_map, layer_manager_service, Core) {
+        .service('hs.cesium.service', ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', 'Core', function(config, $rootScope, utils, hs_map, layer_manager_service, Core) {
             var viewer;
             var BING_KEY = angular.isDefined(config.cesiumBingKey) ? config.cesiumBingKey : 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
 
@@ -31,14 +31,14 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
              * @public
              * @description Initializes Cesium map
              */
-            this.init = function () {
+            this.init = function() {
                 if (typeof Cesium == 'undefined') {
                     console.error('Please include cesium in shim definition: cesiumjs: {exports: \'Cesium\'}');
                 }
                 Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
                 window.CESIUM_BASE_URL = Core.getNmPath() + 'cesium/Build/Cesium/';
                 var terrain_provider = Cesium.createWorldTerrain();
-                if(config.terrain_provider) terrain_provider = new Cesium.CesiumTerrainProvider({
+                if (config.terrain_provider) terrain_provider = new Cesium.CesiumTerrainProvider({
                     url: config.terrain_provider
                 });
 
@@ -63,6 +63,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     creditContainer: angular.isDefined(config.creditContainer) ? config.creditContainer : undefined,
                     infoBox: angular.isDefined(config.cesiumInfoBox) ? config.cesiumInfoBox : true,
                     terrainProvider: terrain_provider,
+                    imageryProvider: config.imageryProvider,
                     terrainExaggeration: config.terrainExaggeration || 1.0,
                     // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
                     skyBox: new Cesium.SkyBox({
@@ -96,7 +97,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                 me.HsCsTime = HsCsTime;
                 me.HsCsLayers = HsCsLayers;
 
-                viewer.camera.moveEnd.addEventListener(function (e) {
+                viewer.camera.moveEnd.addEventListener(function(e) {
                     if (!hs_map.visible) {
                         var center = HsCsCamera.getCameraCenterInLngLat();
                         if (center == null) return; //Not looking on the map but in the sky
@@ -105,26 +106,26 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     }
                 });
 
-                angular.forEach(config.terrain_providers, function (provider) {
+                angular.forEach(config.terrain_providers, function(provider) {
                     provider.type = 'terrain';
                     layer_manager_service.data.terrainlayers.push(provider);
                 })
 
-                $rootScope.$on('map.extent_changed', function (event, data, b) {
+                $rootScope.$on('map.extent_changed', function(event, data, b) {
                     var view = hs_map.map.getView();
                     if (hs_map.visible) {
                         HsCsCamera.setExtentEqualToOlExtent(view);
                     }
                 });
 
-                $rootScope.$on('search.zoom_to_center', function (event, data) {
+                $rootScope.$on('search.zoom_to_center', function(event, data) {
                     viewer.camera.setView({
                         destination: Cesium.Cartesian3.fromDegrees(data.coordinate[0], data.coordinate[1], 15000.0)
                     });
                 })
 
                 var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-                handler.setInputAction(function (movement) {
+                handler.setInputAction(function(movement) {
                     var pickRay = viewer.camera.getPickRay(movement.position);
                     var pickedObject = viewer.scene.pick(movement.position);
                     var featuresPromise = viewer.imageryLayers.pickImageryLayerFeatures(pickRay, viewer.scene);
@@ -135,7 +136,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     if (!Cesium.defined(featuresPromise)) {
                         if (console) console.log('No features picked.');
                     } else {
-                        Cesium.when(featuresPromise, function (features) {
+                        Cesium.when(featuresPromise, function(features) {
 
                             var s = '';
                             if (features.length > 0) {
@@ -145,7 +146,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                             }
 
                             var iframe = $('.cesium-infoBox-iframe');
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 $('.cesium-infoBox-description', iframe.contents()).html(s.replaceAll('\n', '<br/>'));
                                 iframe.height(200);
                             }, 1000);
@@ -153,7 +154,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     }
                 }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
 
-                handler.setInputAction(function (movement) {
+                handler.setInputAction(function(movement) {
                     var pickedObject = viewer.scene.pick(movement.position);
                     if (pickedObject && pickedObject.id && pickedObject.id.onmouseup) {
                         pickedObject.id.onmouseup(pickedObject.id);
@@ -194,21 +195,27 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                 $rootScope.$broadcast('cesiummap.loaded', viewer, me);
             }
 
-            this.dimensionChanged = function(layer, dimension){
+            this.dimensionChanged = function(layer, dimension) {
                 var layer = layer.cesium_layer;
                 if (angular.isUndefined(layer.prm_cache) || angular.isUndefined(layer.prm_cache.dimensions) || angular.isUndefined(layer.prm_cache.dimensions[dimension.name])) return;
                 me.HsCsLayers.changeLayerParam(layer, dimension.name, dimension.value);
                 me.HsCsLayers.removeLayersWithOldParams();
             }
 
-            this.resize = function (event, size) {
+            this.resize = function(event, size) {
                 if (angular.isUndefined(size)) return;
                 angular.element("#cesiumContainer").height(size.height);
-                angular.element('.cesium-viewer-timelineContainer').css({ right: 0 });
+                angular.element('.cesium-viewer-timelineContainer').css({
+                    right: 0
+                });
                 if (angular.element('.cesium-viewer-timelineContainer').length > 0)
-                    angular.element('.cesium-viewer-bottom').css({ bottom: '30px' });
+                    angular.element('.cesium-viewer-bottom').css({
+                        bottom: '30px'
+                    });
                 else
-                    angular.element('.cesium-viewer-bottom').css({ bottom: 0 });
+                    angular.element('.cesium-viewer-bottom').css({
+                        bottom: 0
+                    });
                 $rootScope.$broadcast('cesiummap.resized', viewer, me);
             }
 
@@ -225,16 +232,16 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
          * @ngdoc directive
          * @description 
          */
-        .directive('hs.cesium.directive', ['Core', function (Core) {
+        .directive('hs.cesium.directive', ['Core', function(Core) {
             return {
-                templateUrl: hsl_path + 'components/cesium/partials/cesium.html?bust=' + gitsha,
-                link: function (scope, element) { }
+                templateUrl: hsl_path + 'components/hscesium/partials/cesium.html?bust=' + gitsha,
+                link: function(scope, element) {}
             };
         }])
 
-        .directive('hs.cesium.toolbarButtonDirective', function () {
+        .directive('hs.cesium.toolbarButtonDirective', function() {
             return {
-                templateUrl: hsl_path + 'components/cesium/partials/toolbar_button_directive.html?bust=' + gitsha
+                templateUrl: hsl_path + 'components/hscesium/partials/toolbar_button_directive.html?bust=' + gitsha
             };
         })
 
@@ -245,7 +252,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
          * @description 
          */
         .controller('hs.cesium.controller', ['$scope', 'hs.cesium.service', 'config', 'hs.permalink.service_url', 'Core', 'hs.map.service', 'hs.sidebar.service', '$timeout', '$rootScope',
-            function ($scope, service, config, permalink, Core, hs_map, sidebar_service, $timeout, $rootScope) {
+            function($scope, service, config, permalink, Core, hs_map, sidebar_service, $timeout, $rootScope) {
 
                 var map = service.map;
                 $scope.visible = true;
@@ -256,11 +263,11 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                  * @public
                  * @description 
                  */
-                $scope.init = function () {
+                $scope.init = function() {
                     if (hs_map.map)
                         service.init();
                     else
-                        $rootScope.$on('map.loaded', function () {
+                        $rootScope.$on('map.loaded', function() {
                             service.init();
                         });
                 }
@@ -275,14 +282,14 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     hs_map.visible = !hs_map.visible;
                     $scope.visible = !hs_map.visible;
                     if (hs_map.visible) {
-                        $timeout(function () {
+                        $timeout(function() {
                             Core.updateMapSize();
                         }, 5000)
                     }
                     $rootScope.$broadcast('map.mode_changed', me.visible ? 'cesium' : 'ol');
                 }
 
-                setTimeout(function () {
+                setTimeout(function() {
                     hs_map.visible = false;
                 }, 0);
 
@@ -292,7 +299,7 @@ define(['angular', 'cesiumjs', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium
                     click: toggleCesiumMap
                 });
 
-                $rootScope.$on('layermanager.dimension_changed', function(e, data){
+                $rootScope.$on('layermanager.dimension_changed', function(e, data) {
                     service.dimensionChanged(data.layer, data.dimension)
                 });
 

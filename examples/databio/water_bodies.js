@@ -1,6 +1,6 @@
 define(['ol', 'sparql_helpers'],
 
-    function (ol, sparql_helpers) {
+    function(ol, sparql_helpers) {
         var src = new ol.source.Vector();
         var $scope;
         var $compile;
@@ -10,12 +10,12 @@ define(['ol', 'sparql_helpers'],
         var selected_entity;
 
         function entityClicked(entity) {
-            if(selected_entity) selected_entity.polygon.material.color = entity.original_color;
+            if (selected_entity) selected_entity.polygon.material.color = entity.original_color;
             selected_entity = entity;
             entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
-        }   
+        }
 
-        src.cesiumStyler = function (dataSource) {
+        src.cesiumStyler = function(dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
@@ -29,8 +29,9 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            get: function (map, utils, rect) {
+            get: function(map, utils, rect) {
                 if (map.getView().getResolution() > lyr.getMaxResolution() || lyr.getVisible() == false) return;
+
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -59,19 +60,22 @@ FILTER(bif:st_intersects (?coordWBody, bif:st_geomFromText("${extents}"))) .
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordWBody', response, 'waterBody', {waterBody: 'waterBody', label: 'label'}, map, $scope)
+                        url: q
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'coordWBody', response, 'waterBody', {
+                            waterBody: 'waterBody',
+                            label: 'label'
+                        }, map, $scope)
                     })
             },
-            createLayer: function (gettext) {
+            createLayer: function(gettext) {
                 lyr = new ol.layer.Vector({
                     title: gettext("Water bodies"),
                     source: src,
                     visible: false,
-                    maxResolution: 4.777314267823516*8,
-                    style: function (feature, resolution) {
+                    maxResolution: 4.777314267823516 * 8,
+                    style: function(feature, resolution) {
                         return [
                             new ol.style.Style({
                                 fill: new ol.style.Stroke({
@@ -83,10 +87,10 @@ FILTER(bif:st_intersects (?coordWBody, bif:st_geomFromText("${extents}"))) .
                 });
                 return lyr;
             },
-            getLayer(){
+            getLayer() {
                 return lyr;
             },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function(_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;

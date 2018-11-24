@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'moment', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layermanager', 'hs.source.SparqlJson', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'compositions', 'status_creator', 'ows', 'cesium', 'cesiumjs', 'angular-gettext'],
+define(['angular', 'ol', 'moment', 'olus', 'zones', 'pois', 'sidebar', 'toolbar', 'layermanager', 'hs.source.SparqlJson', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'compositions', 'status_creator', 'ows', 'hscesium', 'angular-gettext'],
 
     function (angular, ol, moment, olus, zones, pois, sidebar, toolbar, layermanager, SparqlJson) {
         var module = angular.module('hs', [

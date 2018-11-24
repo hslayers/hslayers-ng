@@ -31,6 +31,21 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             }])
         
             /**
+            * @memberof hs.feature_list
+            * @ngdoc directive
+            * @name hs.featureList.directive
+            * @description TODO
+            */
+            .directive('hs.featureList.directive', ['config', function(config) {
+                return {
+                    templateUrl: `${hsl_path}components/feature_filter/partials/feature_list${config.design || ''}.html?bust=${gitsha}`,
+                    link: function(scope, element) {
+
+                    }
+                };
+            }])
+        
+            /**
             * @memberof hs.feature_filter
             * @ngdoc directive
             * @name hs.featureFilter.element.directive
@@ -76,11 +91,17 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                             if (LayMan.currentLayer === undefined) return;
                             layer = LayMan.currentLayer;
                         }
-                        if (!('hsFilters' in layer)) return;
-                        if (!layer.hsFilters) return;
+
+                        var source = layer.layer.getSource();
+                        
+                        if (!('hsFilters' in layer)) return source.getFeatures();
+                        if (!layer.hsFilters) return source.getFeatures();
 
                         var filters = layer.hsFilters;
-                        var source = layer.layer.getSource();
+                        var filteredFeatures = [];
+
+                        console.log(source.getFeatures());
+
                         source.forEachFeature(function (feature) {
                             feature.setStyle(null);
                         });
@@ -136,49 +157,60 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                             }
 
                             source.forEachFeature(function(feature) {
-                                if (!displayFeature(feature, filter)) feature.setStyle(new ol.style.Style({}));
+                                if (!displayFeature(feature, filter)) {
+                                    feature.setStyle(new ol.style.Style({}));
+                                } else {
+                                    filteredFeatures.push(feature);
+                                }
                             });
+                        }
+
+                        layer.filteredFeatures = filteredFeatures;
+                        return filteredFeatures;
+                    },
+
+                    prepLayerFilter: function(layer) {
+                        if ('hsFilters' in layer) {
+                            for (var i in layer.hsFilters) {
+                                var filter = layer.hsFilters[i];
+    
+                                if (filter.gatherValues) {
+                                    switch (filter.type.type) {
+                                        case 'fieldset': case 'dictionary':
+                                            var source = layer.layer.getSource();
+                                            source.forEachFeature(function (feature) {
+                                                if (filter.values.indexOf(feature.values_[filter.valueField]) === -1) {
+                                                    filter.values.push(feature.values_[filter.valueField]);
+                                                }
+                                            });
+                                            break;
+                                        case 'dateExtent':
+                                            // // TODO: create time range from date extents of the features, convert datetime fields to datetime datatype
+                                            // if (filter.range === undefined) filter.range = [];
+    
+                                            // var source = layer.layer.getSource();
+                                            // source.forEachFeature(function (feature) {
+                                            //     if (feature.values_[filter.valueField] < filter.range[0] || filter.range[0] === undefined) {
+                                            //         filter.range[0] = feature.values_[filter.valueField];
+                                            //     }
+                                            //     if (feature.values_[filter.valueField] > filter.range[1] || filter.range[1] === undefined) {
+                                            //         filter.range[1] = feature.values_[filter.valueField];
+                                            //     }
+                                            // });
+                                            break;
+                                    }
+                                }
+    
+                                if (filter.type.type === "fieldset" && filter.selected === undefined && filter.values.length > 0) {
+                                    filter.selected = filter.values.slice(0);
+                                }
+                            }
                         }
                     }
                 };
 
                 $rootScope.$on('layermanager.layer_added', function (e, layer) {
-                    if ('hsFilters' in layer) {
-                        for (var i in layer.hsFilters) {
-                            var filter = layer.hsFilters[i];
-
-                            if (filter.gatherValues) {
-                                switch (filter.type.type) {
-                                    case 'fieldset': case 'dictionary':
-                                        var source = layer.layer.getSource();
-                                        source.forEachFeature(function (feature) {
-                                            if (filter.values.indexOf(feature.values_[filter.valueField]) !== -1) {
-                                                filter.values.push(feature.values_[filter.valueField]);
-                                            }
-                                        });
-                                        break;
-                                    case 'dateExtent':
-                                        // // TODO: create time range from date extents of the features, convert datetime fields to datetime datatype
-                                        // if (filter.range === undefined) filter.range = [];
-
-                                        // var source = layer.layer.getSource();
-                                        // source.forEachFeature(function (feature) {
-                                        //     if (feature.values_[filter.valueField] < filter.range[0] || filter.range[0] === undefined) {
-                                        //         filter.range[0] = feature.values_[filter.valueField];
-                                        //     }
-                                        //     if (feature.values_[filter.valueField] > filter.range[1] || filter.range[1] === undefined) {
-                                        //         filter.range[1] = feature.values_[filter.valueField];
-                                        //     }
-                                        // });
-                                        break;
-                                }
-                            }
-
-                            if (filter.type.type === "fieldset" && filter.selected === undefined) {
-                                filter.selected = filter.values.slice(0);
-                            }
-                        }
-                    }
+                    me.prepLayerFilter(layer);
 
                     if (layer.layer instanceof ol.layer.Vector) {
                         var source = layer.layer.getSource();
@@ -187,6 +219,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                             if (source.getState() === 'ready') {
                                 console.log(source.getState());
                                 ol.Observable.unByKey(listenerKey);
+                                me.prepLayerFilter(layer);
                                 me.applyFilters(layer);
                             }
                         });
@@ -204,20 +237,19 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             */
             .controller('hs.feature_filter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config',
                 function($scope, OlMap, Core, service, LayMan, config) {
-                    window.scope = $scope;
-
                     var map = OlMap.map;
 
                     $scope.map = OlMap.map;
                     $scope.LayMan = LayMan;
-                    $scope.applyFilters = service.applyFilters;
 
+                    $scope.applyFilters = service.applyFilters;
+                    
                     $scope.allSelected = function(filter) {
-                        return filter.selected.length === filter.values.length;
+                        return filter.selected ? filter.selected.length === filter.values.length : false;
                     };
 
                     $scope.isIndeterminate = function(filter) {
-                        return (filter.selected.length !== 0 && filter.selected.length !== filter.values.length);
+                        return filter.selected ? (filter.selected.length !== 0 && filter.selected.length !== filter.values.length) : false;
                     };
 
                     $scope.exists = function(item, list) {
@@ -241,18 +273,65 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         }
                     };
 
-                    // if (Core.mainpanel == 'feature_filter') {
-                    //     $scope.createConfiguredCharts();
-                    // }
-                    // $scope.$on('core.mainpanel_changed', function(event) {
-                    //     if (Core.mainpanel == 'feature_filter') {
-                    //         $scope.createConfiguredCharts();
-                    //     }
-                    // })
-
-                    // $scope.$on('infopanel.updated', function(event) {});
-
                     $scope.$emit('scope_loaded', "featureFilter");
+
+
+
+                    // $rootScope.$on('layermanager.layer_added', function (e, layer) {
+                    //     service.prepLayerFilter(layer);
+
+                    //     if (layer.layer instanceof ol.layer.Vector) {
+                    //         var source = layer.layer.getSource();
+                    //         console.log(source.getState());
+                    //         var listenerKey = source.on('change', function (e) {
+                    //             if (source.getState() === 'ready') {
+                    //                 console.log(source.getState());
+                    //                 ol.Observable.unByKey(listenerKey);
+                    //                 service.prepLayerFilter(layer);
+                    //                 $scope.applyFilters(layer);
+                    //             }
+                    //         });
+                    //     }
+                    // });
+                }
+            ])
+            
+            /**
+            * @memberof hs.feature_filter
+            * @ngdoc controller
+            * @name hs.featureList.controller
+            * @description TODO
+            */
+            .controller('hs.feature_list.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config',
+                function($scope, OlMap, Core, service, LayMan, config) {
+                    window.scope = $scope;
+                    $scope.map = OlMap.map;
+                    $scope.LayMan = LayMan;
+
+                    $scope.applyFilters = service.applyFilters;
+
+                    $scope.displayDetails = false;
+
+                    $scope.toggleFeatureDetails = function(feature) {
+                        $scope.displayDetails = !$scope.displayDetails;
+                        if ($scope.selectedFeature) $scope.selectedFeature.setStyle(null);
+
+                        if ($scope.displayDetails) {
+                            $scope.featureDetails = feature.values_;
+                            $scope.selectedFeature = feature;
+                            OlMap.moveToAndZoom(feature.values_.geometry.flatCoordinates[0], feature.values_.geometry.flatCoordinates[1], 7);
+                            feature.setStyle(new ol.style.Style({
+                                image: new ol.style.Icon(({
+                                    crossOrigin: 'anonymous',
+                                    src: 'marker_lt.png',
+                                    anchor: [0.5, 1],
+                                    scale: 0.4,
+                                }))
+                            }))
+                        }
+                    };
+
+                    $scope.$emit('scope_loaded', "featureList");
                 }
             ]);
 

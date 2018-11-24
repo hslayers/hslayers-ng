@@ -300,6 +300,8 @@ define(['ol','moment',
                         angular.element('.sidebar-list').append(toolbar_button);
                         $compile(toolbar_button)(event.targetScope);
 
+                        addTopbar();
+
                         Core.setMainPanel('pilsentraffic');
                     }
                 });
@@ -342,11 +344,10 @@ define(['ol','moment',
                     $compile(el)($scope);
                 }
                 
-                angular.element(document).ready(function () {
-                    addTopbar();
-                });
-                
-                
+                var dateNow = moment();
+                var minDate = dateNow.clone().subtract(2,'y');
+                var maxDate = dateNow.clone().add(2,'y');
+
                 $scope.showDeveloperInfo = function() {
                     $("#hs-dialog-area #advanced-info-dialog").remove();
                     var el = angular.element('<div hs.advanced_infopanel_directive></div>');
@@ -365,7 +366,7 @@ define(['ol','moment',
                             $(minor_tick.tick).click(function(){
                                 setCurrentDate(minor_tick);
                             })
-                            if(minor_tick.date.data.date_obj>new Date('2018-11-30') || (minor_tick.date.data.date_obj<new Date('2017-04-01'))){
+                            if(minor_tick.date.data.date_obj>maxDate.toDate() || (minor_tick.date.data.date_obj<minDate.toDate())){
                                  $(minor_tick.tick).hide();
                             }
                         })
@@ -375,7 +376,7 @@ define(['ol','moment',
                             $(minor_tick.tick).click(function(){
                                 setCurrentDate(minor_tick);
                             })
-                            if(minor_tick.date.data.date_obj>new Date('2018-11-30') || (minor_tick.date.data.date_obj<new Date('2017-04-01'))){
+                            if(minor_tick.date.data.date_obj>maxDate.toDate() || (minor_tick.date.data.date_obj<minDate.toDate())){
                                  $(minor_tick.tick).hide();
                             }
                         })
@@ -384,7 +385,7 @@ define(['ol','moment',
                     
                     $timeout(function () {
                         $scope.timeline.setData(data);
-                        $scope.timeline.goTo(1);
+                        $scope.timeline.goTo(parseInt($scope.timeline.config.events.length/2));
                         $('.tl-slide-content').width(870);
                         $('.tl-menubar-button').click(function () {
                             $timeout(function () {listenOnTimelineClicks()}, 500);
@@ -406,8 +407,8 @@ define(['ol','moment',
                         'events': []
                 };
                 
-                $scope.min_date = moment('2017-05-01');
-                $scope.max_date = moment('2018-11-30');
+                $scope.min_date = minDate;
+                $scope.max_date = maxDate;
                         
                 $http({
                     method: 'GET',
@@ -437,24 +438,10 @@ define(['ol','moment',
                             'text': {
                                 'headline': item.name,
                                 'text': item.description
-                            }}); 
+                            }});
+                         
+                            
                     })
-                    /*
-                    data.events.push({
-                            'start_date': {
-                                'year': 2019,
-                                'month': 1,
-                                'day': 1
-                            },
-                            'end_date': {
-                                'year': 2019,
-                                'month': 3,
-                                'day': 1
-                            },
-                            'text': {
-                                'headline': ' Test' ,
-                                'text': 'asasas' 
-                            }}); */
                 });
                     
                 $scope.options = {
@@ -464,8 +451,9 @@ define(['ol','moment',
                     timenav_mobile_height_percentage: 80,
                     language: 'cz',
                     dragging: true,
-                    start_at_slide: 1,
-                    data: data
+                    data: data,
+                    scale_factor: 1.4,
+                    start_at_end: true
                 };
 
                 $scope.$on('layermanager.layer_time_changed', function(evt, layer, d) {

@@ -1,10 +1,10 @@
-define(['ol', 'cesiumjs', 'moment'],
+define(['ol','moment'],
 
-    function (ol, Cesium, moment) {
+    function(ol, moment) {
         var $rootScope;
         var me = {
             monitorTimeLine() {
-                Cesium.knockout.getObservable(me.viewer.clockViewModel, 'currentTime').subscribe(function (value) {
+                Cesium.knockout.getObservable(me.viewer.clockViewModel, 'currentTime').subscribe(function(value) {
                     var something_changed = false;
                     for (var i = 0; i < me.viewer.imageryLayers.length; i++) {
 
@@ -44,7 +44,7 @@ define(['ol', 'cesiumjs', 'moment'],
                 });
             },
 
-            broadcastLayerList(){
+            broadcastLayerList() {
                 $rootScope.$broadcast('cesium.time_layers_changed', me.getLayerListTimes());
             },
 
@@ -72,7 +72,7 @@ define(['ol', 'cesiumjs', 'moment'],
                 }
             },
 
-            init: function (viewer, hs_map, hs_cesium, _$rootScope, HsCsLayers) {
+            init: function(viewer, hs_map, hs_cesium, _$rootScope, HsCsLayers) {
                 me.viewer = viewer;
                 me.hs_map = hs_map;
                 me.hs_cesium = hs_cesium;

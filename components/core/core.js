@@ -44,6 +44,7 @@ if (require.config) require.config({
         proj4: requirejs.s.contexts._.config.paths.proj4 || nm_path + 'proj4/dist/proj4',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api' + hslMin,
         compositions: hsl_path + 'components/compositions/compositions' + hslMin,
+        Cesium: nm_path + 'cesium/Build/Cesium/Cesium',
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector' + hslMin,
         drag: hsl_path + 'components/drag/drag' + hslMin,
         feature_filter: hsl_path + 'components/feature_filter/feature_filter' + hslMin,
@@ -55,6 +56,7 @@ if (require.config) require.config({
         lodexplorer: hsl_path + 'components/lodexplorer/lodexplorer' + hslMin,
         map: hsl_path + 'components/map/map' + hslMin,
         measure: hsl_path + 'components/measure/measure' + hslMin,
+        language: hsl_path + 'components/language/language' + hslMin,
         mobile_toolbar: requirejs.s.contexts._.config.paths.mobile_toolbar || hsl_path + 'components/mobile_toolbar/mobile_toolbar',
         mobile_settings: requirejs.s.contexts._.config.paths.mobile_settings || hsl_path + 'components/mobile_settings/mobile_settings',
         moment: nm_path + 'moment/min/moment.min',
@@ -69,6 +71,7 @@ if (require.config) require.config({
         permalink: requirejs.s.contexts._.config.paths.permalink || hsl_path + 'components/permalink/permalink' + hslMin,
         print: hsl_path + 'components/print/print' + hslMin,
         query: hsl_path + 'components/query/query' + hslMin,
+        require: nm_path +'requirejs/requirejs/require',
         sidebar: requirejs.s.contexts._.config.paths.sidebar || hsl_path + 'components/sidebar/sidebar' + hslMin,
         search: hsl_path + 'components/search/search' + hslMin,
         'hs.source.SparqlJson': requirejs.s.contexts._.config.paths.SparqlJson || hsl_path + 'components/layers/hs.source.SparqlJson' + hslMin,
@@ -131,6 +134,9 @@ if (require.config) require.config({
             deps: ['angular'],
         },
         translations: {
+            deps: ['angular-gettext'],
+        },
+        translations_extended: {
             deps: ['angular-gettext'],
         }
     },
@@ -600,6 +606,16 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             gettextCatalog.setCurrentLanguage(lang);
                             me.language = lang;
+                        },
+                        /**
+                        * @ngdoc method
+                        * @name Core#getCurrentLanguagePrefix 
+                        * @public
+                        * @description Get code of current language
+                        */
+                        getCurrentLanguageCode: function(){
+                            if(typeof me.language == 'undefined' || me.language == '') return 'EN';
+                            return me.language.substr(0, 2).toUpperCase();
                         },
                         /**
                         * @ngdoc method

@@ -1,0 +1,13 @@
+<div class="panel panel-default mainpanel">
+    <div class="panel-heading"><span class="panel-title" translate>Change language</span>
+        <button type="button" class="close" ng-click="Core.closePanel(this)">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only" translate>Close</span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <ul class="hs-senslog-list list-group">
+            <button ng-repeat="lang in available_languages" ng-class="'btn btn-block'+(getCurrentLanguageCode()==lang.key.substr(0,2).toUpperCase() ? ' btn-primary' : ' btn-default')" ng-click="setLanguage(lang.key)">{{lang.name}}</button>
+        </ul>
+    </div>
+</div>

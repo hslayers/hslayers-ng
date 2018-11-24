@@ -4,16 +4,16 @@
  */
 define(['angular', 'ol', 'map', 'core'],
 
-    function (angular, ol) {
+    function(angular, ol) {
         angular.module('hs.sentinel', ['hs.core', 'hs.map'])
 
-            .directive('hs.sentinel.directive', function () {
+            .directive('hs.sentinel.directive', function() {
                 return {
                     templateUrl: hsl_path + 'examples/databio/sentineldirective.html?bust=' + gitsha
                 };
             })
 
-            .directive('hs.sentinel.toolbar', function () {
+            .directive('hs.sentinel.toolbar', function() {
                 return {
                     templateUrl: hsl_path + 'examples/databio/sentineltoolbar.html?bust=' + gitsha
                 };
@@ -21,13 +21,17 @@ define(['angular', 'ol', 'map', 'core'],
 
 
             .service("hs.sentinel.service", ['Core', 'hs.utils.service', '$http',
-                function (Core, utils, $http) {
+                function(Core, utils, $http) {
                     var me = {
-                        getCrossings: function (points, cb) {
+                        getCrossings: function(points, cb) {
                             var payload = [];
                             for (var i = 0; i < points.length; i++) {
                                 var p = points[i];
-                                payload.push({ idx: i, lat: p.lat, lon: p.lon });
+                                payload.push({
+                                    idx: i,
+                                    lat: p.lat,
+                                    lon: p.lon
+                                });
                             }
                             $.ajax({
                                 url: 'https://agmeos.cz/satellite_position/service.php',
@@ -35,7 +39,7 @@ define(['angular', 'ol', 'map', 'core'],
                                 data: JSON.stringify(payload),
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json"
-                            }).done(function (response) {
+                            }).done(function(response) {
                                 for (var i = 0; i < response.length; i++) {
                                     delete response[i].mkr;
                                     points[i].crossings = response[i];
@@ -45,7 +49,7 @@ define(['angular', 'ol', 'map', 'core'],
                         },
                         createLayer() {
                             var src = new ol.source.Vector();
-                            src.cesiumStyler = function (dataSource) {
+                            src.cesiumStyler = function(dataSource) {
                                 var entities = dataSource.entities.values;
                                 for (var i = 0; i < entities.length; i++) {
                                     var entity = entities[i];
@@ -72,7 +76,7 @@ define(['angular', 'ol', 'map', 'core'],
                                 title: "Sentinel crossings",
                                 source: src,
                                 visible: true,
-                                style: function (feature, resolution) {
+                                style: function(feature, resolution) {
                                     return [
                                         new ol.style.Style({
                                             stroke: new ol.style.Stroke({
@@ -92,12 +96,16 @@ define(['angular', 'ol', 'map', 'core'],
                 }
             ])
             .controller('hs.sentinel.controller', ['$scope', 'hs.map.service', 'Core', 'config', 'hs.sentinel.service', '$timeout',
-                function ($scope, OlMap, Core, config, service, styles, $timeout) {
+                function($scope, OlMap, Core, config, service, styles, $timeout) {
                     $scope.points = [];
                     $scope.loading = false;
                     $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
-                    $scope.$on('cesium_position_clicked', function (event, data) {
-                        $scope.points.push({ lon: data[0].toFixed(2), lat: data[1].toFixed(2), ix: $scope.points.length });
+                    $scope.$on('cesium_position_clicked', function(event, data) {
+                        $scope.points.push({
+                            lon: data[0].toFixed(2),
+                            lat: data[1].toFixed(2),
+                            ix: $scope.points.length
+                        });
                         service.src.addFeatures([new ol.Feature({
                             geometry: new ol.geom.Point(ol.proj.transform([data[0], data[1]], 'EPSG:4326', OlMap.map.getView().getProjection().getCode())),
                             ix: $scope.points.length - 1
@@ -106,15 +114,15 @@ define(['angular', 'ol', 'map', 'core'],
                         if (!$scope.$$phase) $scope.$apply();
                     });
 
-                    $scope.getCrossings = function () {
+                    $scope.getCrossings = function() {
                         $scope.loading = true;
-                        service.getCrossings($scope.points, function () {
+                        service.getCrossings($scope.points, function() {
                             $scope.loading = false;
                             if (!$scope.$$phase) $scope.$apply();
                         })
                     };
 
-                    $scope.clear = function(){
+                    $scope.clear = function() {
                         $scope.points = [];
                         service.src.clear();
                         service.src.dispatchEvent('features:loaded', service.src);

@@ -1,6 +1,6 @@
 define(['ol', 'sparql_helpers'],
 
-    function (ol, sparql_helpers) {
+    function(ol, sparql_helpers) {
         var src = new ol.source.Vector();
         var $scope;
         var $compile;
@@ -10,12 +10,12 @@ define(['ol', 'sparql_helpers'],
         var selected_entity;
 
         function entityClicked(entity) {
-            if(selected_entity) selected_entity.polygon.material.color = entity.original_color;
+            if (selected_entity) selected_entity.polygon.material.color = entity.original_color;
             selected_entity = entity;
             entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
-        }  
+        }
 
-        src.cesiumStyler = function (dataSource) {
+        src.cesiumStyler = function(dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
@@ -29,8 +29,9 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            get: function (map, utils, rect) {
+            get: function(map, utils, rect) {
                 if (lyr.getVisible() == false) return;
+
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -72,36 +73,42 @@ define(['ol', 'sparql_helpers'],
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {plot: 'plot', shortId: 'shortId', code: 'code'}, map, $scope);
+                        url: q
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {
+                            plot: 'plot',
+                            shortId: 'shortId',
+                            code: 'code'
+                        }, map, $scope);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            createLayer: function (gettext) {
+            createLayer: function(gettext) {
                 lyr = new ol.layer.Vector({
                     title: gettext("Fields filtered by CTVDPD code"),
                     source: src,
                     visible: false,
-                    style: function (feature, resolution) {
+                    style: function(feature, resolution) {
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: 'rgba(40, 150, 40, 0.6)',
                                     width: 2
                                 }),
-                                fill : new ol.style.Fill({color: 'rgba(40, 150, 40, 0.8)'})
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(40, 150, 40, 0.8)'
+                                })
                             })
                         ];
                     }
                 });
                 return lyr;
             },
-            getLayer(){
+            getLayer() {
                 return lyr;
             },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function(_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;

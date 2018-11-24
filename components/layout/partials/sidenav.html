@@ -1,15 +1,7 @@
-<md-sidenav class="md-sidenav-left md-disable-backdrop" flex-gt-md="25" flex-md="40" flex-sm="60" flex-xs="100" md-component-id="sidenav-left" md-whiteframe="4">
+<md-sidenav class="md-sidenav-left" flex-gt-md="25"
+    flex-md="40" flex-sm="60" flex-xs="100" md-component-id="sidenav-left" md-whiteframe="4">
     <md-content>
         <md-list flex>
-            <!-- <md-list-item>
-                <div class="user-view">
-                    <div class="background" style="background-color: #4fc3f7"></div>
-                    <a href="#!user"><img class="circle" src="img/tester.png"></a>
-                    <a href="#!name"><span class="white-text name">Tester</span></a>
-                    <a href="#!email"><span class="white-text email">tester@test.com</span></a>
-                </div>
-            </md-list-item> -->
-
             <div ng-repeat="panel in layoutService.data.panels | filter: onlyEnabled | orderBy:'order'">
                 <md-list-item ng-if="Core.exists(panel.controller) && Core.panelEnabled(panel.name)" ng-click="panel.ngClick ? panel.ngClick() : openPanel(panel)">
                     <md-icon md-icon-set="material-icons" title="{{panel.description}}">{{panel.mdicon}}</md-icon>

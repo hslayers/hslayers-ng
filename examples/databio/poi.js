@@ -1,6 +1,6 @@
 define(['ol'],
 
-    function (ol) {
+    function(ol) {
         var spoi_source = new ol.source.Vector();
         var $scope;
         var $compile;
@@ -16,7 +16,7 @@ define(['ol'],
             $compile(el)($scope);
         }
 
-        spoi_source.cesiumStyler = function (dataSource) {
+        spoi_source.cesiumStyler = function(dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
@@ -44,7 +44,8 @@ define(['ol'],
                             pixelOffset: new Cesium.Cartesian2(0, -36),
                             scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
                             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                        }); break;
+                        });
+                        break;
                     case 'http://gis.zcu.cz/SPOI/Ontology#village':
                         entity.label = new Cesium.LabelGraphics({
                             text: entity.properties.label,
@@ -57,7 +58,8 @@ define(['ol'],
                             pixelOffset: new Cesium.Cartesian2(0, -36),
                             scaleByDistance: new Cesium.NearFarScalar(50, 1.5, 15000, 0.0),
                             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                        }); break;
+                        });
+                        break;
                     default:
                 }
                 entity.onclick = entityClicked
@@ -65,9 +67,10 @@ define(['ol'],
         }
 
         return {
-            getPois: function (map, utils, rect) {
+            getPois: function(map, utils, rect) {
                 if (map.getView().getResolution() > lyr.getMaxResolution() || lyr.getVisible() == false) return;
                 var format = new ol.format.WKT();
+
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -88,9 +91,9 @@ define(['ol'],
 
                 spoi_source.set('loaded', false);
                 $.ajax({
-                    url: utils.proxify(q)
-                })
-                    .done(function (response) {
+                        url: utils.proxify(q)
+                    })
+                    .done(function(response) {
                         if (angular.isUndefined(response.results)) return;
                         var features = [];
                         for (var i = 0; i < response.results.bindings.length; i++) {
@@ -100,11 +103,16 @@ define(['ol'],
                                     var g_feature = format.readFeature(b.wkt.value.toUpperCase());
                                     var ext = g_feature.getGeometry().getExtent()
                                     var geom_transformed = g_feature.getGeometry().transform('EPSG:4326', map.getView().getProjection());
-                                    var feature = new ol.Feature({ geometry: geom_transformed, poi: b.poi.value, category: b.sub.value, label: b.label.value });
+                                    var feature = new ol.Feature({
+                                        geometry: geom_transformed,
+                                        poi: b.poi.value,
+                                        category: b.sub.value,
+                                        label: b.label.value
+                                    });
                                     features.push(feature);
                                 }
                             } catch (ex) {
-                                if(console) console.log(ex);
+                                if (console) console.log(ex);
                             }
                         }
                         spoi_source.clear();
@@ -113,12 +121,12 @@ define(['ol'],
                         spoi_source.dispatchEvent('features:loaded', spoi_source);
                     })
             },
-            createPoiLayer: function () {
+            createPoiLayer: function() {
                 lyr = new ol.layer.Vector({
                     title: "Points of interest",
                     source: spoi_source,
-                    maxResolution: 4.777314267823516*2*2,
-                    style: function (feature, resolution) {
+                    maxResolution: 4.777314267823516 * 2 * 2,
+                    style: function(feature, resolution) {
                         var s = feature.get('category');
                         if (typeof s === 'undefined') return;
                         s = s.split("#")[1];
@@ -142,7 +150,7 @@ define(['ol'],
                 });
                 return lyr
             },
-            init: function (_$scope, _$compile) {
+            init: function(_$scope, _$compile) {
                 $scope = _$scope;
                 $compile = _$compile;
             }

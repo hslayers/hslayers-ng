@@ -1,6 +1,6 @@
 define(['ol', 'sparql_helpers'],
 
-    function (ol, sparql_helpers) {
+    function(ol, sparql_helpers) {
         var src = new ol.source.Vector();
         var $scope;
         var $compile;
@@ -15,7 +15,7 @@ define(['ol', 'sparql_helpers'],
             entity.polygon.material.color = new Cesium.Color.fromCssColorString('rgba(250, 250, 250, 0.6)');
         }
 
-        src.cesiumStyler = function (dataSource) {
+        src.cesiumStyler = function(dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
@@ -34,9 +34,10 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            get: function (map, utils, rect) {
-                if(typeof $scope.last_center == 'undefined') return;
+            get: function(map, utils, rect) {
+                if (typeof $scope.last_center == 'undefined') return;
                 if (map.getView().getResolution() > lyr.getMaxResolution() * (typeof me.map_mode == 'cesium' ? 0.5 : 1) || lyr.getVisible() == false) return;
+
                 function prepareCords(c) {
                     return c.toString().replaceAll(',', ' ')
                 }
@@ -90,19 +91,22 @@ WHERE {
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', { parcel: 'code', use: 'landUse' }, map, $scope)
+                        url: q
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'coordPlotFinal', response, 'code', {
+                            parcel: 'code',
+                            use: 'landUse'
+                        }, map, $scope)
                     })
             },
-            createLayer: function (gettext) {
+            createLayer: function(gettext) {
                 lyr = new ol.layer.Vector({
                     title: gettext("Plots intersecting water bodies"),
                     source: src,
                     visible: false,
-                    maxResolution: 4.777314267823516*4,
-                    style: function (feature, resolution) {
+                    maxResolution: 4.777314267823516 * 4,
+                    style: function(feature, resolution) {
                         var use = feature.get('use').split('/');
                         use = use[use.length - 1];
                         return [
@@ -111,9 +115,11 @@ WHERE {
                                     color: 'rgba(50, 50, 150, 0.8)',
                                     width: 2
                                 }),
-                                fill : new ol.style.Fill({color: 'rgba(50, 50, 150, 0.6)'})
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(50, 50, 150, 0.6)'
+                                })
                             }),
-                            
+
                         ];
                     }
                 });
@@ -122,7 +128,7 @@ WHERE {
             getLayer() {
                 return lyr;
             },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function(_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;

@@ -163,7 +163,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                     grayed: me.isLayerInResolutionInterval(layer),
                                     visible: layer.getVisible(),
                                     position: layer.get('position'),
-                                    hsFilters: layer.get('hsFilters')
+                                    hsFilters: layer.get('hsFilters'),
+                                    uid: utils.generateUuid()
                                 };
 
                                 

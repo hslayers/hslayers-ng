@@ -1,6 +1,6 @@
 define(['ol', 'sparql_helpers'],
 
-    function (ol, sparql_helpers) {
+    function(ol, sparql_helpers) {
         var src = new ol.source.Vector();
         var $scope;
         var $compile;
@@ -40,7 +40,7 @@ define(['ol', 'sparql_helpers'],
             }
         }
 
-        src.cesiumStyler = function (dataSource) {
+        src.cesiumStyler = function(dataSource) {
             var entities = dataSource.entities.values;
             for (var i = 0; i < entities.length; i++) {
                 var entity = entities[i];
@@ -56,7 +56,7 @@ define(['ol', 'sparql_helpers'],
         }
 
         var me = {
-            get: function (map, utils) {
+            get: function(map, utils) {
                 if (lyr.getVisible() == false) return;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
 
@@ -94,14 +94,20 @@ WHERE{
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', { holding: 'holding', plot: 'plot', shortId: 'shortId', code: 'code', use: 'landUse' }, map, $scope);
+                        url: q
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'code', {
+                            holding: 'holding',
+                            plot: 'plot',
+                            shortId: 'shortId',
+                            code: 'code',
+                            use: 'landUse'
+                        }, map, $scope);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            getCropTypes: function (map, utils) {
+            getCropTypes: function(map, utils) {
                 if (lyr.getVisible() == false) return;
                 var q = 'https://www.foodie-cloud.org/sparql?default-graph-uri=&query=' + encodeURIComponent(`
                 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
@@ -152,19 +158,27 @@ WHERE{
 
                 sparql_helpers.startLoading(src, $scope);
                 $.ajax({
-                    url: q
-                })
-                    .done(function (response) {
-                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'codeLPIS', { plot: 'plot', 'plotName': 'plotName', shortId: 'shortId', code: 'codeLPIS', 'cropName': 'cropName', 'cropArea': 'cropArea', year: 'year' }, map, $scope);
+                        url: q
+                    })
+                    .done(function(response) {
+                        sparql_helpers.fillFeatures(src, 'coordPlot', response, 'codeLPIS', {
+                            plot: 'plot',
+                            'plotName': 'plotName',
+                            shortId: 'shortId',
+                            code: 'codeLPIS',
+                            'cropName': 'cropName',
+                            'cropArea': 'cropArea',
+                            year: 'year'
+                        }, map, $scope);
                         sparql_helpers.zoomToFetureExtent(src, me.cesium.viewer.camera, map);
                     })
             },
-            createLayer: function (gettext) {
+            createLayer: function(gettext) {
                 lyr = new ol.layer.Vector({
                     title: gettext("Fields by ID_UZ attribute from LPIS db"),
                     source: src,
                     visible: false,
-                    style: function (feature, resolution) {
+                    style: function(feature, resolution) {
                         return [
                             new ol.style.Style({
                                 stroke: new ol.style.Stroke({
@@ -180,7 +194,7 @@ WHERE{
             getLayer() {
                 return lyr;
             },
-            init: function (_$scope, _$compile, _map, _utils) {
+            init: function(_$scope, _$compile, _map, _utils) {
                 $scope = _$scope;
                 $compile = _$compile;
                 map = _map;

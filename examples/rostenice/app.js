@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'cesium', 'ows', 'cesiumjs', 'bootstrap', 'datasource_selector'],
+define(['ol', 'toolbar', 'layermanager', 'geojson', 'sidebar', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'api', 'hscesium', 'ows', 'bootstrap', 'datasource_selector'],
 
     function(ol, toolbar, layermanager, geojson) {
         var module = angular.module('hs', [

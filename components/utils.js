@@ -217,10 +217,6 @@ define(['angular', 'app', 'ol'], function(angular, app, ol) {
             this.setDate(Math.min(n, this.getDaysInMonth()));
             return this;
         };
-        
-        Date.prototype.toCzechDateString = function() {
-            return this.getDate() + '. ' + this.getMonth() + '. ' + this.getFullYear();
-        }
 
         Date.prototype.monthDiff = function(d2) {
             var months;

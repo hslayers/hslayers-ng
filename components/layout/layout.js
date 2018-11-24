@@ -15,7 +15,7 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
             .directive('hs.layout.directive', ['hs.map.service', 'Core', '$timeout', 'config', '$compile',
                 function (OlMap, Core, $timeout, config, $compile) {
                     return {
-                        templateUrl: `${hsl_path}components/layout/partials/layout${config.design || ''}.html?bust=${gitsha}`,
+                        templateUrl: config.layout_template || `${hsl_path}components/layout/partials/layout${config.design || ''}.html?bust=${gitsha}`,
                         link: function (scope, element) {
                             try {
                                 if (angular.module('hs.cesium')) {
@@ -54,11 +54,24 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
             * @name hs.mdSidenav.directive
             * @description TODO
             */
-            .directive('hs.mdSidenav.directive', function () {
+            .directive('hs.mdSidenav.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/layout/partials/sidenav.html?bust=' + gitsha
+                    templateUrl: config.sidenav_template || hsl_path + 'components/layout/partials/sidenav.html?bust=' + gitsha
                 };
-            })
+            }])
+
+            /**
+            * @memberof hs.mdRightPanel
+            * @ngdoc directive
+            * @name hs.mdRightPanel.directive
+            * @description TODO
+            */
+            .directive('hs.mdRightPanel.directive', ['config', function (config) {
+                return {
+                    replace: true,
+                    templateUrl: config.right_panel_template || hsl_path + 'components/layout/partials/right-panel.html?bust=' + gitsha
+                };
+            }])
 
             /**
             * @memberof hs.mdToolbar
@@ -66,15 +79,15 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
             * @name hs.mdToolbar.directive
             * @description TODO
             */
-            .directive('hs.mdToolbar.directive', function () {
+            .directive('hs.mdToolbar.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/layout/partials/toolbar.html?bust=' + gitsha
+                    templateUrl: config.toolbar_template || hsl_path + 'components/layout/partials/toolbar.html?bust=' + gitsha
                 };
-            })
+            }])
 
-            .directive('hs.mdOverlay.directive', function () {
+            .directive('hs.mdOverlay.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/layout/partials/overlay.html?bust=' + gitsha,
+                    templateUrl: config.overlay_template || hsl_path + 'components/layout/partials/overlay.html?bust=' + gitsha,
                     link: (scope, element, attrs) => {
                         element.css("height", element.parent().css("height"));
                         scope.$watch(() => element.parent().css("height"), () => {
@@ -82,7 +95,7 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                         });
                     }
                 };
-            })
+            }])
 
             .directive('hs.swipeArea.directive', function () {
                 return {
@@ -263,7 +276,7 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                         angular.element("#loading-logo").remove();
                     }, 100);
 
-                    $scope.sidenavOpen = false;
+                    $scope.leftSidenavOpen = false;
 
                     $rootScope.$on('geolocation.started', function () {
                         $scope.location.status.icon = "my_location";
@@ -287,13 +300,15 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
 
                     $scope.openPanel = function (panel) {
                         Core.setMainPanel(panel.name);
-                        if (!$mdMedia('gt-sm')) {
+                        $scope.bottomSheetTitle = panel.title;
+                        if (!$mdMedia('gt-sm') && !$scope.getBottomSheetState) {
+                            $scope.closeLeftSidenav();
                             $scope.openBottomSheet(panel);
                         }
                     }
 
                     $scope.switchBottomSheetState = function () {
-                        if ($scope.bottomSheet.hasClass("minimized")) {
+                        if ($scope.getBottomSheetState() === "minimized") {
                             $scope.setHalfway();
                         } else {
                             $scope.setMinimized();
@@ -318,8 +333,6 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                     }
 
                     $scope.openBottomSheet = function (panel) {
-                        $scope.closeLeftSidenav();
-                        $scope.bottomSheetTitle = panel.title;
                         $mdBottomSheetCollapsible.show({
                             templateUrl: hsl_path + 'components/layout/partials/bottom-sheet.html?bust=' + gitsha,
                             scope: $scope,
@@ -352,8 +365,10 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                             }
                         }).then(function (e) {
                             console.log("Bottom sheet closed", Date.now());
+                            $scope.unsetBottomSheet();
                         }).catch(function (e) {
                             console.log("Bottom sheet canceled", Date.now());
+                            $scope.unsetBottomSheet();
                         });
                         // $scope.$watch(function() {
                         //     return $scope.getBottomSheetState();
@@ -364,12 +379,21 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
 
                     $scope.closeBottomSheet = function () {
                         $scope.bottomSheet.hide();
+                        $scope.unsetBottomSheet();
+                    }
+
+                    $scope.unsetBottomSheet = function () {
+                        $scope.setMinimized = undefined;
+                        $scope.setHalfway = undefined;
+                        $scope.setExpanded = undefined;
+                        $scope.getBottomSheetState = undefined;
+                        $scope.bottomSheet = undefined;
                     }
 
                     $scope.openLeftSidenav = function () {
                         $mdSidenav('sidenav-left').open()
                             .then(function () {
-                                $scope.sidenavOpen = true;
+                                $scope.leftSidenavOpen = true;
                             });
                     }
 
@@ -379,7 +403,7 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
 
                     $mdSidenav('sidenav-left', true).then(function () {
                         $mdSidenav('sidenav-left').onClose(function () {
-                            $scope.sidenavOpen = false;
+                            $scope.leftSidenavOpen = false;
                         });
 
                         Hammer(document.getElementsByClassName("md-sidenav-left")[0]).on("swipeleft", () => {
@@ -388,6 +412,23 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
 
                         Hammer(document.getElementById("sidenav-swipe-overlay")).on("swiperight", () => {
                             $scope.openLeftSidenav();
+                        });
+                    });
+
+                    $scope.openRightPanel = function () {
+                        $mdSidenav('right-panel').open()
+                            .then(function () {
+                                $scope.rightPanelOpen = true;
+                            });
+                    }
+
+                    $scope.closeRightPanel = function () {
+                        $mdSidenav('right-panel').close();
+                    }
+
+                    $mdSidenav('right-panel', true).then(function () {
+                        $mdSidenav('right-panel').onClose(function () {
+                            $scope.rightPanelOpen = false;
                         });
                     });
 

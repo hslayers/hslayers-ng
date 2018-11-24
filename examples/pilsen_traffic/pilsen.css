@@ -284,8 +284,14 @@ input[type="range"] {padding: 0}
     border-color: #000 !important;
 }
 
-.tl-timenav-slider-background{pointer-events: none;}
-.tl-timeaxis-tick {cursor: pointer; background-color: #444444 }
+/*.tl-timenav-slider-background{pointer-events: none;}*/
+.tl-timeaxis {z-index: 8;}
+.tl-timeaxis-tick {
+    cursor: pointer; 
+    background-color: #444444; 
+    width: 32px !important;
+}
+.tl-timeaxis-tick::before {margin-left: 16px !important;}
 .tl-timeaxis-tick:hover {background-color:#1FA22E}
 .tl-slidenav-icon {color: #1FA22E}
 .tl-timemarker.tl-timemarker-active .tl-timemarker-content-container {
@@ -301,10 +307,11 @@ input[type="range"] {padding: 0}
 .hs-p-loading_count span {margin-left:-17px}
 .tl-message-full {display: none}
 .tl-timeaxis .tl-timeaxis-content-container .tl-timeaxis-major .tl-timeaxis-tick {
-    margin-left: -31px;
-    width: 48px;
+    margin-left: -25px;
 }
+
 .tl-slidenav-previous .tl-slidenav-content-container .tl-slidenav-icon, .tl-slidenav-next .tl-slidenav-content-container .tl-slidenav-icon, .tl-slidenav-previous .tl-slidenav-content-container .tl-slidenav-title, .tl-slidenav-next .tl-slidenav-content-container .tl-slidenav-title, .tl-slidenav-previous .tl-slidenav-content-container .tl-slidenav-description, .tl-slidenav-next .tl-slidenav-content-container .tl-slidenav-description{color: #1FA22E}
+.tl-menubar{display: none;}
 .panelspace-wrapper {background-color: #eee;}
 .panel-default {height: 100%;}
 .panel-default > .panel-heading {
