@@ -613,13 +613,15 @@ define(['angular', 'ol', 'map'],
                     $scope.wms_connecting = false;
                     $scope.config = config;
                     $scope.advancedSearch = false;
+                    $scope.id_selected = Core.exists('hs.ows.controller') ? 'OWS' : '';
 
                     $scope.$on('ows.wms_connecting', function () {
                         $scope.wms_connecting = true;
                     });
 
-                    $scope.datasetSelect = function () {
+                    $scope.datasetSelect = function (id_selected) {
                         $scope.wms_connecting = false;
+                        $scope.id_selected = id_selected;
                     }
 
                     $http({
