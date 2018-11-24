@@ -248,10 +248,10 @@ i.hs-lm-queryable {
     top: 2px;
 }
 .hs-tab-singleDS {
-    display: table-cell!important;
-    table-layout: fixed;
-    width: 49%;
-    text-align: center;
+}
+
+.hs-tab-singleDS a {
+    cursor: pointer;
 }
 
 .hs-dataset-panel .panel-body {
