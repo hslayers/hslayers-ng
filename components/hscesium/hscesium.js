@@ -35,12 +35,11 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
                 if (typeof Cesium == 'undefined') {
                     console.error('Please include cesium in shim definition: cesiumjs: {exports: \'Cesium\'}');
                 }
-                Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
+                Cesium.Ion.defaultAccessToken = config.cesiumAccessToken || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
                 window.CESIUM_BASE_URL = Core.getNmPath() + 'cesium/Build/Cesium/';
-                var terrain_provider = Cesium.createWorldTerrain();
-                if (config.terrain_provider) terrain_provider = new Cesium.CesiumTerrainProvider({
-                    url: config.terrain_provider
-                });
+                debugger;
+                var terrain_provider = config.terrain_provider || Cesium.createWorldTerrain(config.createWorldTerrainOptions);
+                if (config.newTerrainProviderOptions) terrain_provider = new Cesium.CesiumTerrainProvider(config.newTerrainProviderOptions);
 
                 var view = hs_map.map.getView();
                 var ol_ext = view.calculateExtent(hs_map.map.getSize());
@@ -79,14 +78,19 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
                     // Show Columbus View map with Web Mercator projection
                     sceneMode: Cesium.SceneMode.SCENE3D,
                     mapProjection: new Cesium.WebMercatorProjection(),
-                    shadows: false,
+                    shadows: config.cesiumShadows || false,
                     scene3DOnly: true,
                     sceneModePicker: false
                 });
 
                 viewer.scene.debugShowFramesPerSecond = angular.isDefined(config.cesiumdDebugShowFramesPerSecond) ? config.cesiumdDebugShowFramesPerSecond : false;
+                viewer.scene.globe.enableLighting = config.cesiumShadows || false;
+                viewer.scene.globe.shadows = config.cesiumShadows || false;
 
                 viewer.terrainProvider = terrain_provider;
+
+                if(angular.isDefined(config.cesiumTime))
+                    viewer.clockViewModel.currentTime = config.cesiumTime;
 
                 me.viewer = viewer;
                 HsCsCamera.init(viewer, hs_map);
