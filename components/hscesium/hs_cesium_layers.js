@@ -34,9 +34,15 @@ define(['ol', 'moment', 'proj4'],
             setupEvents() {
                 me.$rootScope.$on('layermanager.base_layer_visible_changed', function(event, data, b) {
                     if (angular.isDefined(data) && angular.isDefined(data.type) && data.type == 'terrain') {
-                        me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
-                            url: data.url
-                        });
+                        if(data.url == 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles') {
+                            var terrain_provider = Cesium.createWorldTerrain(me.config.createWorldTerrainOptions);
+                            if (me.config.newTerrainProviderOptions) terrain_provider = new Cesium.CesiumTerrainProvider(me.config.newTerrainProviderOptions);
+                            me.viewer.terrainProvider = terrain_provider;
+                        } else {
+                            me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+                                url: data.url
+                            });
+                        }
                     }
                 });
 
