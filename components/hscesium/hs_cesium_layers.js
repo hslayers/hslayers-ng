@@ -36,7 +36,6 @@ define(['ol', 'moment', 'proj4'],
                     if (angular.isDefined(data) && angular.isDefined(data.type) && data.type == 'terrain') {
                         if(data.url == 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles') {
                             var terrain_provider = Cesium.createWorldTerrain(me.config.createWorldTerrainOptions);
-                            if (me.config.newTerrainProviderOptions) terrain_provider = new Cesium.CesiumTerrainProvider(me.config.newTerrainProviderOptions);
                             me.viewer.terrainProvider = terrain_provider;
                         } else {
                             me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
