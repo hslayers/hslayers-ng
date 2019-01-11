@@ -3,7 +3,6 @@ exports.paths = [
     __dirname + '/node_modules',
     __dirname + '/node_modules/openlayers/dist',
     __dirname + '/node_modules/requirejs',
-    __dirname + '/node_modules/cesium/Build/Cesium',
     __dirname + '/node_modules/angular-cookies/angular-cookies',
     __dirname + '/node_modules/angular-socialshare/dist/angular-socialshare',
     __dirname + '/node_modules/angular-material',
