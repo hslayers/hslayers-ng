@@ -37,7 +37,6 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
                 }
                 Cesium.Ion.defaultAccessToken = config.cesiumAccessToken || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
                 window.CESIUM_BASE_URL = Core.getNmPath() + 'cesium/Build/Cesium/';
-                debugger;
                 var terrain_provider = config.terrain_provider || Cesium.createWorldTerrain(config.createWorldTerrainOptions);
                 if (config.newTerrainProviderOptions) terrain_provider = new Cesium.CesiumTerrainProvider(config.newTerrainProviderOptions);
 
