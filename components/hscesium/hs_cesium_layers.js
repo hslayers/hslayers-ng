@@ -116,12 +116,13 @@ define(['ol', 'moment', 'proj4'],
                 var json = f.writeFeaturesObject(features);
                 //console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
                 //ol_source.cesium_layer.entities.removeAll();
-                json.crs = {
-                    type: "name",
-                    properties: {
-                        name: "EPSG:3857"
+                if(me.hs_map.map.getView().getProjection().getCode() == 'EPSG:3857')
+                    json.crs = {
+                        type: "name",
+                        properties: {
+                            name: "EPSG:3857"
+                        }
                     }
-                }
                 return json;
             },
 
