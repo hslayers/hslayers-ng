@@ -300,6 +300,7 @@ define(['ol', 'moment', 'proj4'],
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
                     enablePickFeatures: true,
                     parameters: params,
+                    tilingScheme: new Cesium.WebMercatorTilingScheme(),
                     getFeatureInfoParameters: {
                         VERSION: params.VERSION,
                         CRS: 'EPSG:4326',
