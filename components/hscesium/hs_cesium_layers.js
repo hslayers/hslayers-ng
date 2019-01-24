@@ -282,10 +282,16 @@ define(['ol', 'moment', 'proj4'],
             //Same as normal tiled WebMapServiceImageryProvider, but with bigger tileWidth and tileHeight
             createSingleImageProvider(ol_lyr) {
                 var src = ol_lyr.getSource();
-                var params = src.getParams();
+                var params = Object.assign({}, src.getParams());
                 params.VERSION = params.VERSION || '1.1.1';
-                if (params.VERSION.indexOf('1.1.') == 0) params.CRS = 'EPSG:4326';
-                if (params.VERSION.indexOf('1.3.') == 0) params.SRS = 'EPSG:4326';
+                if (params.VERSION.indexOf('1.1.') == 0) {
+                    params.CRS = 'EPSG:4326';
+                    delete params.SRS;
+                }
+                if (params.VERSION.indexOf('1.3.') == 0) {
+                    params.SRS = 'EPSG:4326';
+                    delete params.CRS;
+                }
                 params.FROMCRS = 'EPSG:4326';
                 var prm_cache = {
                     url: src.getUrl(),
