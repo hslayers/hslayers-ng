@@ -18,8 +18,16 @@ define(['ol', 'moment', 'proj4'],
                     var params = utils.getParamsFromUrl(resource);
                     var bbox = params.bbox.split(',');
                     var dist = Math.sqrt(Math.pow((bbox[0] - bbox[2]), 2) + Math.pow((bbox[1] - bbox[3]), 2));
-                    if (dist > 1) {
-                        return blank_url;
+                    var projection = getProjectFromVersion(params.version, params.srs, params.crs);
+                    if(projection == 'EPSG:3857'){
+                        if (dist > 1000000) {
+                            return blank_url;
+                        }
+                    }
+                    if(projection == 'EPSG:4326'){
+                        if (dist > 1) {
+                            return blank_url;
+                        }
                     }
                 }
             }
@@ -28,6 +36,10 @@ define(['ol', 'moment', 'proj4'],
             return this.proxy + prefix + encodeURIComponent(resource);
         };
 
+        function getProjectFromVersion(version, srs, crs){
+            if(version == '1.1.1') return srs;
+            if(version == '1.3.1') return crs;
+        }
 
         var me = {
             to_be_deleted: [],
@@ -255,7 +267,10 @@ define(['ol', 'moment', 'proj4'],
                 if (params.VERSION.indexOf('1.3.') == 0) params.SRS = 'EPSG:4326';
                 params.FROMCRS = 'EPSG:4326';
                 var prm_cache = {
-                    url: src.getUrls()[0],
+                    url: new Cesium.Resource({
+                        url: src.getUrls()[0],
+                        proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
+                    }),
                     layers: src.getParams().LAYERS,
                     dimensions: ol_lyr.get('dimensions'),
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
@@ -268,8 +283,7 @@ define(['ol', 'moment', 'proj4'],
                     },
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
                     maximumLevel: params.maximumLevel,
-                    minimumLevel: params.minimumLevel,
-                    proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
+                    minimumLevel: params.minimumLevel
                 };
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(me.removeUnwantedParams(prm_cache, src)), {
                     alpha:  ol_lyr.getOpacity() || 0.7,
@@ -294,7 +308,10 @@ define(['ol', 'moment', 'proj4'],
                 }
                 params.FROMCRS = 'EPSG:4326';
                 var prm_cache = {
-                    url: src.getUrl(),
+                    url:  new Cesium.Resource({
+                        url: src.getUrl(),
+                        proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
+                    }),
                     layers: src.getParams().LAYERS,
                     dimensions: ol_lyr.get('dimensions'),
                     getFeatureInfoFormats: [new Cesium.GetFeatureInfoFormat('text', 'text/plain')],
@@ -308,8 +325,7 @@ define(['ol', 'moment', 'proj4'],
                     },
                     minimumTerrainLevel: params.minimumTerrainLevel || 12,
                     tileWidth: 1024,
-                    tileHeight: 1024,
-                    proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
+                    tileHeight: 1024
                 };
 
                 var tmp = new Cesium.ImageryLayer(new Cesium.WebMapServiceImageryProvider(me.removeUnwantedParams(prm_cache, src)), {
