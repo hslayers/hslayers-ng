@@ -2,11 +2,17 @@
 
 var hsl_path = '../../';
 
-var gitsha = $.ajax({
+var gitsha;
+$.ajax({
     type: "GET",
     url: hsl_path + 'gitsha.js',
     async: false
-}).responseText;
+}).done(function (response) {
+    gitsha = response
+}).fail(function () {
+    gitsha = Math.random();
+});
+
 //var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer-snaphsot1_1/js/'; //http://localhost:9999/js/webglayer/js/
 var jans_path = 'http://home.zcu.cz/~jezekjan/webglayer_git/js/'
 

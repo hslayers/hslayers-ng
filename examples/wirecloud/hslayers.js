@@ -1,11 +1,17 @@
 'use strict';
 
 var hsl_path = './';
-var gitsha = $.ajax({
+var gitsha;
+$.ajax({
     type: "GET",
     url: hsl_path + 'gitsha.js',
     async: false
-}).responseText;
+}).done(function (response) {
+    gitsha = response
+}).fail(function () {
+    gitsha = Math.random();
+});
+
 //https://github.com/tnajdek/angular-requirejs-seed
 require.config({
     urlArgs: 'bust=' + gitsha,

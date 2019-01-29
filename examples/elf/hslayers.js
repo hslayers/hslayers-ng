@@ -2,11 +2,16 @@
 
 var hsl_path = '../../';
 var allowWFS2 = true;
-var gitsha = $.ajax({
+var gitsha;
+$.ajax({
     type: "GET",
     url: hsl_path + 'gitsha.js',
     async: false
-}).responseText;
+}).done(function (response) {
+    gitsha = response
+}).fail(function () {
+    gitsha = Math.random();
+});
 
 require.config({
     paths: {

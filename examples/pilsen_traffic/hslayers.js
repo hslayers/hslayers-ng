@@ -9,12 +9,15 @@ var hslMin = false;
 var pilsenSite = false;
 if(window.location.hostname.indexOf('intenzitadopravy.plzen.eu')>-1) pilsenSite = true;
 
-var gitsha = Math.random(); $.ajax({
+var gitsha;
+$.ajax({
     type: "GET",
-    dataType: 'text',
     url: hsl_path + 'gitsha.js',
-    async: false,
-    success: function(r){gitsha = r}
+    async: false
+}).done(function (response) {
+    gitsha = response
+}).fail(function () {
+    gitsha = Math.random();
 });
 
 require.config({

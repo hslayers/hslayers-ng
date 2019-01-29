@@ -3,7 +3,7 @@
  * @ngdoc module
  * @module hs.core
  * @name hs.core
- * @description Core module for whole HSLayers-NG. Contain paths to all other HS modules and dependencies (therefore it is not needed to specify them in hslayers.js file). Core module consists of Core service which keeps some app-level settings and mantain app size and panel statuses.
+ * @description Core module for whole HSLayers-NG. Contains paths to all other HS modules and dependencies (therefore it is not needed to specify them in hslayers.js file). Core module consists of Core service which keeps some app-level settings and mantain app size and panel statuses.
  */
 
 if (typeof window.hslMin != 'undefined') {
@@ -25,6 +25,7 @@ if (require.config) require.config({
         'ngAria': nm_path + 'angular-aria/angular-aria' + hslMin,
         'ngMessages': nm_path + 'angular-messages/angular-messages' + hslMin,
         'angular-material': nm_path + 'angular-material/angular-material' + hslMin,
+        'jquery': nm_path + 'jquery/dist/jquery' + hslMin,
         ol: requirejs.s.contexts._.config.paths.ol || ((hslMin == '.min') ? nm_path + 'openlayers/dist/ol' : nm_path + 'openlayers/dist/ol-debug'),
         angular: nm_path + 'angular/angular' + hslMin,
         'angular-sanitize': nm_path + 'angular-sanitize/angular-sanitize' + hslMin,
@@ -37,7 +38,7 @@ if (require.config) require.config({
         'angular-socialshare': nm_path +'angular-socialshare/dist/angular-socialshare' + hslMin,
         'bottomSheetCollapsible': nm_path + 'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible',
         hammer: nm_path +'hammerjs/hammer' + hslMin,
-        bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap' + hslMin,
+        bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap.bundle' + hslMin,
         draw: hsl_path + 'components/draw/draw',
         d3: requirejs.s.contexts._.config.paths.d3 || nm_path + 'd3/build/d3' + hslMin,
         'angular-cookies': nm_path + 'angular-cookies/angular-cookies' + hslMin,
