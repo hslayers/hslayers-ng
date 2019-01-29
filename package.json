@@ -7,6 +7,7 @@
   "license": "MIT",
   "devDependencies": {
     "angular-jsdoc": "^1.5.0",
+    "cryptiles": ">=4.1.2",
     "grunt": "^1.0.3",
     "grunt-angular-gettext": "^2.3.2",
     "grunt-contrib-uglify": "^3.3.0",
@@ -58,7 +59,7 @@
     "angular-socialshare": "^2.3.11",
     "angular-timelinejs3": "~0.2.3",
     "angular-update-meta": "1.9.0",
-    "bootstrap": "3.3.x",
+    "bootstrap": ">=3.4.0",
     "browserify": "^16.2.3",
     "clipboard": "^2.0.1",
     "deamdify": "^0.3.0",
