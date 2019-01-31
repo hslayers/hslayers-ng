@@ -34,6 +34,42 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
 
                             var ajaxReq;
 
+                            function getCompositionsQueryUrl(params, bbox) {
+                                var query = params.query;
+                                var bboxDelimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
+                                var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
+                                bbox = (params.filterExtent ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + "'") : '');
+                                var catalogueKnown = false;
+                                var textFilter = query && angular.isDefined(query.title) && query.title != '' ? encodeURIComponent(" AND title like '*" + query.title + "*' OR abstract like '*" + query.title + "*'") : '';
+                                var selected = [];
+                                var keywordFilter = "";
+                                angular.forEach(params.keywords, function (value, key) {
+                                    if (value) selected.push("subject='" + key + "'");
+                                });
+                                if (selected.length > 0)
+                                    keywordFilter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
+                                
+                                if (config.hostname.user && config.hostname.user.url) {
+                                    tmp = config.hostname.user.url;
+                                } else if (config.hostname.compositions_catalogue){
+                                    tmp = config.hostname.compositions_catalogue.url
+                                    catalogueKnown = true;
+                                } else if(config.hostname && config.hostname.default) {
+                                    tmp = config.hostname.default.url
+                                }
+                                if(!catalogueKnown) {
+                                    if(tmp.indexOf('http')>-1){
+                                        //Remove domain from url
+                                        tmp += config.compositions_catalogue_url.replace(/^.*\/\/[^\/]+/, ''); 
+                                    } else {
+                                        tmp += config.compositions_catalogue_url
+                                    }
+                                }
+                                tmp += "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + textFilter + keywordFilter + "&lang=eng&sortBy=" + params.sortBy + "&detail=summary&start=" + params.start + "&limit=" + params.limit;
+                                tmp = utils.proxify(tmp);
+                                return tmp;
+                            }
+
                             me.loadCompositions = function (params) {
                                 me.compositionsLoaded = false;
                                 if (angular.isUndefined(params.sortBy)) params.sortBy = 'bbox';
@@ -41,28 +77,13 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 if (angular.isUndefined(params.limit) || isNaN(params.limit)) params.limit = me.data.limit;
                                 var mapSize = OlMap.map.getSize();
                                 var mapExtent = angular.isDefined(mapSize) ? OlMap.map.getView().calculateExtent(mapSize) : [0, 0, 100, 100];
-                                var b = ol.proj.transformExtent(mapExtent, OlMap.map.getView().getProjection(), 'EPSG:4326');
+                                var bbox = ol.proj.transformExtent(mapExtent, OlMap.map.getView().getProjection(), 'EPSG:4326');
 
                                 if (angular.isDefined(config.compositions_catalogue_url)) {
-                                    extentLayer.getSource().clear();
-                                    var query = params.query;
-                                    var textFilter = query && angular.isDefined(query.title) && query.title != '' ? encodeURIComponent(" AND title like '*" + query.title + "*' OR abstract like '*" + query.title + "*'") : '';
-                                    var keywordFilter = "";
-                                    var selected = [];
-                                    angular.forEach(params.keywords, function (value, key) {
-                                        if (value) selected.push("subject='" + key + "'");
-                                    });
-                                    if (selected.length > 0)
-                                        keywordFilter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
-
-                                    var bboxDelimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
-                                    var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
-                                    var bbox = (params.filterExtent ? encodeURIComponent(" and BBOX='" + b.join(bboxDelimiter) + "'") : '');
-                                    var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.compositions_catalogue ? config.hostname.compositions_catalogue.url : config.hostname.default.url)) + config.compositions_catalogue_url + "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + textFilter + keywordFilter + "&lang=eng&sortBy=" + params.sortBy + "&detail=summary&start=" + params.start + "&limit=" + params.limit;
-                                    url = utils.proxify(url);
+                                    extentLayer.getSource().clear();                                 
                                     if (ajaxReq != null) ajaxReq.abort();
                                     ajaxReq = $.ajax({
-                                        url: url
+                                        url: getCompositionsQueryUrl(params, bbox)
                                     })
                                         .done(function (response) {
                                             me.compositionsLoaded = true;
@@ -99,10 +120,10 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                             })
                                             if (!$rootScope.$$phase) $rootScope.$digest();
                                             $rootScope.$broadcast('CompositionsLoaded');
-                                            me.loadStatusManagerCompositions(params, b);
+                                            me.loadStatusManagerCompositions(params, bbox);
                                         })
                                 } else {
-                                    me.loadStatusManagerCompositions(params, b);
+                                    me.loadStatusManagerCompositions(params, bbox);
                                 }
                             }
 
