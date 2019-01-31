@@ -10,7 +10,7 @@ define(['ol',
         'api',
         'glutils', 'WGL', 'wglinit', 'mapConf', 'manager', 'mapcontroller', 'dataloader', 'd3', 'dimension',
         'heatmapdimension', 'heatmaprenderer', 'heatmaplegend', 'maxcalculator', 'chart_panel', 'stackedbarchart', 'histogramdimension', 'mapdimension', 'floatreaderhistogram',
-        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap', 'multibrush', 'extentfilter', 'mappolyfilter'
+        'floatrasterreader', 'linearfilter', 'filter', 'bootstrap.bundle', 'multibrush', 'extentfilter', 'mappolyfilter'
     ],
 
     function(ol, layermanager, sidebar, poly2tri) {

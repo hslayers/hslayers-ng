@@ -27,7 +27,7 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
                             scope.Core.config.createExtraMenu($compile, scope, element);
                         scope.$watch(
                             function() {
-                                return [scope.Core.sidebarExpanded, angular.element('.panelspace').width()]
+                                return [scope.Core.sidebarExpanded, $('.panelspace').width()]
                             },
                             function(value) {
                                 setTimeout(function() {
@@ -54,7 +54,7 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
                             scope.Core.config.createExtraMenu($compile, scope, element);
                         scope.$watch(
                             function() {
-                                return [scope.Core.sidebarExpanded, angular.element('.panelspace').width()]
+                                return [scope.Core.sidebarExpanded, $('.panelspace').width()]
                             },
                             function(value) {
                                 setTimeout(function() {

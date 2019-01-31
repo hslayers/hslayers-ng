@@ -269,11 +269,11 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                     });
 
                     $rootScope.$on('$viewContentLoaded', function () {
-                        angular.element("#loading-logo").remove();
+                        $("#loading-logo").remove();
                     });
 
                     $timeout(function() {
-                        angular.element("#loading-logo").remove();
+                        $("#loading-logo").remove();
                     }, 100);
 
                     $scope.leftSidenavOpen = false;

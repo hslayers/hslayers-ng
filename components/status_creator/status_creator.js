@@ -752,7 +752,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         if ($('a[href=#author]').parent().hasClass('active')) {
                             var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(status_creator.map2json(OlMap.map, $scope.compoData, $scope.userData, $scope.statusData)));
                             $('#stc-download').remove();
-                            $('<a id="stc-download" class="btn btn-default" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
+                            $('<a id="stc-download" class="btn btn-secondary" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
                             $('#stc-download').click(function () {
                                 $('#stc-next').show();
                                 $('#stc-download').hide();

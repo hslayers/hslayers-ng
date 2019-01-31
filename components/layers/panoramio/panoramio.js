@@ -24,7 +24,7 @@ define(['angular', 'ol', 'app', 'map'],
                                 src: attrs.value
                             }));
                             var button = angular.element('<button>').attr({
-                                class: 'btn btn-default'
+                                class: 'btn btn-secondary'
                             }).css('float', 'right');
 
 

@@ -1,22 +1,22 @@
-<div class="panel panel-default panel-help">
-    <div class="panel-heading" ng-if="page=='help'">
+<div class="card panel-default panel-help">
+    <div class="card-header" ng-if="page=='help'">
         <span class="panel-title"><translate>Tutorial</translate></span>
         <button type="button" class="close" ng-click="hideHelpPanel()">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-heading" ng-if="page=='about'">
+    <div class="card-header" ng-if="page=='about'">
         <span class="panel-title"><translate>About</translate></span>
         <button type="button" class="close" ng-click="hideHelpPanel()">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-body" afkl-image-container>
+    <div class="card-body" afkl-image-container>
         <div class="btn-group panel-help-switch" role="group" aria-label="switch">
-          <button type="button" class="btn btn-default" ng-click="setPage('help')" ng-class="{'selected-help': page=='help'}" translate>Tutorial</button>
-          <button type="button" class="btn btn-default" ng-click="setPage('about')" ng-class="{'selected-help': page=='about'}" translate>About</button>
+          <button type="button" class="btn btn-secondary" ng-click="setPage('help')" ng-class="{'selected-help': page=='help'}" translate>Tutorial</button>
+          <button type="button" class="btn btn-secondary" ng-click="setPage('about')" ng-class="{'selected-help': page=='about'}" translate>About</button>
         </div>
         <div ng-if="page=='help'">
             <p translate>The 'Traffic volume in Plzen' application displays the expected traffic situation in Plzen in one hour intervals during the period from May 2017 to November 2018. The traffic volume information is derived from the city's traffic model (which is an advanced prediction and thus might be different from the real traffic situation) and takes into account roadworks that are ongoing on the selected day.</p>

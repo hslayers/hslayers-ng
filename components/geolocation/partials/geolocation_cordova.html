@@ -5,7 +5,7 @@
 <li><translate>Speed</translate>: <span class='value'>{{ speed }} km/h</span></li>
 <li><translate>Altitude</translate>: <span class='value'>{{ alt }} m</span></li>
 <!-- <li><translate>Altitude</translate>: <span class='value'>{{ alt }} m (&#177;{{ altitudeAccuracy }} m)</span></li> -->
-<li><button type="button" ng-class="'btn btn-default but-xs' + (following() ? ' active' : '')" ng-click="following(!following())" style="font: inherit;background-color: #e6e6e6 !important;">Follow</button>
-<button id="geolocation-switch" type="button" ng-class="'btn btn-default but-xs' + (Geolocation.gpsStatus ? ' active' : '')" ng-click="switchGps()" style="font: inherit;background-color: #e6e6e6 !important;">{{ Geolocation.gpsSwitch }}</button></li>
+<li><button type="button" ng-class="'btn btn-secondary but-xs' + (following() ? ' active' : '')" ng-click="following(!following())" style="font: inherit;background-color: #e6e6e6 !important;">Follow</button>
+<button id="geolocation-switch" type="button" ng-class="'btn btn-secondary but-xs' + (Geolocation.gpsStatus ? ' active' : '')" ng-click="switchGps()" style="font: inherit;background-color: #e6e6e6 !important;">{{ Geolocation.gpsSwitch }}</button></li>
 </ul>
 </div>

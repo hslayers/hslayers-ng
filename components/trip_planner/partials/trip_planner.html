@@ -1,15 +1,15 @@
-<div class="panel panel-default mainpanel">
-    <div class="panel-heading"><span class="panel-title"><translate>Trip planner</translate></span>
+<div class="card panel-default mainpanel">
+    <div class="card-header"><span class="panel-title"><translate>Trip planner</translate></span>
         <button type="button" class="close" ng-click="Core.closePanel(this);">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-body">
-        <button class="btn btn-default" style="float:right" ng-click="clearAll()" translate>Clear</button>
+    <div class="card-body">
+        <button class="btn btn-secondary" style="float:right" ng-click="clearAll()" translate>Clear</button>
         <ul class="list-group">
             <li class="list-group-item clearfix active">
-                <span ><button class="btn btn-default btn-sm" ng-click="prevPanel()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button>&nbsp;<span class="ng-scope" translate>Waypoints</span></span>
+                <span ><button class="btn btn-secondary btn-sm" ng-click="prevPanel()"><span class="icon-arrow-left" aria-hidden="true"></span></button>&nbsp;<span class="ng-scope" translate>Waypoints</span></span>
             </li>
             <li ng-repeat="waypoint in service.waypoints" class="list-group-item">
                 <a href="#" ng-click="toggleEdit(waypoint)" ng-show="!waypoint.name_editing">{{waypoint.name}}</a> 
@@ -17,7 +17,7 @@
                 <img ng-show="waypoint.loading" ng-src="{{ajax_loader}}"/>   
                 {{ formatDistance(waypoint) }}
                 <span class="pull-right">
-                    <button type="button" class="btn btn-default btn-xs glyphicon glyphicon-trash" ng-click="service.removeWaypoint(waypoint);">
+                    <button type="button" class="btn btn-secondary btn-sm icon-trash" ng-click="service.removeWaypoint(waypoint);">
                     </button>
                 <span>
             </li>

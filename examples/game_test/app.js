@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap', 'translations', 'moveFeature', 'vectorLabel', 'photoStyle'],
+define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', 'search', 'measure', 'permalink', 'geolocation', 'core', 'api', 'angular-gettext', 'bootstrap.bundle', 'translations', 'moveFeature', 'vectorLabel', 'photoStyle'],
 
     function (angular, ol, toolbar, layermanager) {
         var module = angular.module('hs', [

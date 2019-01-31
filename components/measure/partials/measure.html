@@ -1,18 +1,18 @@
-<div class="panel panel-default mainpanel">
-    <div class="panel-heading"><span class="panel-title"><translate>Measure</translate> <span ng-show="data.multipleShapeMode" translate>multiple shapes</span></span>
+<div class="card panel-default mainpanel">
+    <div class="card-header"><span class="panel-title"><translate>Measure</translate> <span ng-show="data.multipleShapeMode" translate>multiple shapes</span></span>
         <button type="button" class="close" ng-click="Core.closePanel(this);">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
           <div class="btn-group" style="margin-bottom:10px">
-            <label for="distance" class="btn btn-default" translate>Distance</label>
+            <label for="distance" class="btn btn-secondary" translate>Distance</label>
                 <input id="distance" type="radio" name="type" value="distance" ng-model="type">
-            <label for="area" class="btn btn-default" translate>Area</label>
+            <label for="area" class="btn btn-secondary" translate>Area</label>
                 <input id="area" type="radio" name="type" value="area" ng-model="type">
         </div>
-        <button class="btn btn-default" style="float:right" ng-click="clearAll()" translate>Clear</button>
+        <button class="btn btn-secondary" style="float:right" ng-click="clearAll()" translate>Clear</button>
         <ul class="list-group">
             <li ng-repeat="measurement in data.measurements" class="list-group-item">
                 {{measurement.size}}{{measurement.unit}}<span ng-if="measurement.type=='area'"><sup>2</sup></span>

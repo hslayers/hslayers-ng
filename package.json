@@ -59,7 +59,7 @@
     "angular-socialshare": "^2.3.11",
     "angular-timelinejs3": "~0.2.3",
     "angular-update-meta": "1.9.0",
-    "bootstrap": ">=3.4.0",
+    "bootstrap": ">=4.2.0",
     "browserify": "^16.2.3",
     "clipboard": "^2.0.1",
     "deamdify": "^0.3.0",

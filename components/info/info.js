@@ -92,7 +92,7 @@ define(['angular', 'map', 'core', 'updateMeta', 'permalink'],
                         var temp_title = $scope.composition_title;
                         $scope.composition_abstract = data.abstract;
                         $scope.composition_title = data.title;
-                        $scope.info_image = 'glyphicon-warning-sign';
+                        $scope.info_image = 'icon-warning-sign';
                         $timeout(function() {
                             $scope.composition_title = temp_title;
                             $scope.composition_abstract = temp_abstract;

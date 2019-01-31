@@ -1,12 +1,12 @@
-<div class="panel panel-default mainpanel">
-    <div class="panel-heading"><span class="panel-title"><translate>Routing</translate></span>
+<div class="card panel-default mainpanel">
+    <div class="card-header"><span class="panel-title"><translate>Routing</translate></span>
         <button type="button" class="close" ng-click="Core.closePanel(this); clearAll()">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-body">
-        <div class="panel-body">
+    <div class="card-body">
+        <div class="card-body">
             <div class="form-group">
                 <label>Select a routing operation</label>
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -62,19 +62,19 @@
                             <td>{{w.lat| number : 6}}&deg; N</td>
                             <td>{{w.lon| number : 6}}&deg; E</td>
                             <td>
-                                <button ng-if="$index > 0" ng-click="moveUp($index)" type="button" class="btn btn-default btn-xs" aria-label="Up">
-                                    <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                                <button ng-if="$index > 0" ng-click="moveUp($index)" type="button" class="btn btn-secondary btn-sm" aria-label="Up">
+                                    <span class="icon-triangle-top" aria-hidden="true"></span>
                                 </button>
                             </td>
                             <td>
-                                <button ng-if="$index < (wayPoints.length - 1)" ng-click="moveDown($index)" type="button" class="btn btn-default btn-xs" aria-label="Down">
-                                    <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                                <button ng-if="$index < (wayPoints.length - 1)" ng-click="moveDown($index)" type="button" class="btn btn-secondary btn-sm" aria-label="Down">
+                                    <span class="icon-triangle-bottom" aria-hidden="true"></span>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <a href="#" class="btn btn-default btn-sm btn-block" ng-click="clearWayPoints()">Clear way points</a>
+                <a href="#" class="btn btn-secondary btn-sm btn-block" ng-click="clearWayPoints()">Clear way points</a>
                 <a ng-if="operation === 'OptimalRoute' && wayPoints.length > 2" class="btn btn-primary btn-sm btn-block" ng-click="optimizeRoute()">Optimize route</a>
             </div>
             <!-- Shortest path results -->

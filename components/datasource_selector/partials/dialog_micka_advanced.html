@@ -29,7 +29,7 @@
                         <div class="input-group">
                             <input type="text" id="ds-adv-keywords" class="form-control" ng-model="data.query.keywords">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="showSuggestions('keywords', 'keyword', 'value')">...</button>
+                                <button class="btn btn-secondary" type="button" ng-click="showSuggestions('keywords', 'keyword', 'value')">...</button>
                             </span>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                         <div class="input-group">
                             <input type="text" id="ds-adv-organization" class="form-control" ng-model="data.query.OrganisationName">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="showSuggestions('OrganisationName', 'org', 'name')">...</button>
+                                <button class="btn btn-secondary" type="button" ng-click="showSuggestions('OrganisationName', 'org', 'name')">...</button>
                             </span>
                         </div>
                     </div>
@@ -98,8 +98,8 @@
             </div>
             <div class="modal-footer" id="ds-footer">
                 <button type="button" class="btn btn-primary" translate ng-click="DS.loadDatasets(data.datasources)" data-dismiss="modal">Search</button>
-                <button type="button" class="btn btn-default" ng-click="DS.clear()"><translate>Clear</translate></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="DS.clear()" translate>Close</button>
+                <button type="button" class="btn btn-secondary" ng-click="DS.clear()"><translate>Clear</translate></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="DS.clear()" translate>Close</button>
             </div>
         </div>
     </div>

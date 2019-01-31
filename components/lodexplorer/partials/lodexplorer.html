@@ -1,11 +1,11 @@
-<div class="panel panel-default mainpanel" id="lod_data_panel">
-    <div class="panel-heading"><span class="panel-title" translate>Eurostat explorer</span>
+<div class="card panel-default mainpanel" id="lod_data_panel">
+    <div class="card-header" translate>Eurostat explorer
          <button type="button" class="close" ng-click="Core.closePanel(this)">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <form>
             <div class="form-group">
                 <label for="lod_source" class="control-label" translate>Dataset</label>
@@ -17,17 +17,17 @@
                 <img ng-src="{{ajax_loader}}" ng-show="loading"/>
                 <div ng-show="classifs_loaded">
                     <small translate>Reduce the number of dimensions by clicking on categories in each of the charts. Otherwise you might be visualizing multiple units and years at once.</small>
-                    <div class="panel panel-default filter_charts" ng-repeat="group in groupings">
-                        <div class="panel-heading"><span class="panel-title"><translate>Filter by</translate> {{group.name}}</span></div>
-                        <div class="panel-body">
+                    <div class="card panel-default filter_charts" ng-repeat="group in groupings">
+                        <div class="card-header"><translate>Filter by</translate> {{group.name}}</div>
+                        <div class="card-body">
                             <div id='chart{{group.name}}'></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="panel panel-default" ng-show="classifs_loaded">
-                    <div class="panel-heading"><span class="panel-title" translate>Filter by value</span></div>
-                    <div class="panel-body">
+                <div class="card panel-default" ng-show="classifs_loaded">
+                    <div class="card-header" translate>Filter by value</div>
+                    <div class="card-body">
                             <div style="clear:both" >
                                 <small translate>Filter the values which are in a speciffic interval by dragging on the chart below</small>
                             </div>
@@ -35,9 +35,9 @@
                     </div>
                 </div>
 
-                <div class="panel panel-default" ng-show="classifs_loaded">
-                    <div class="panel-heading"><span class="panel-title" translate>Colour gradient limits</span></div>
-                    <div class="panel-body">
+                <div class="card panel-default" ng-show="classifs_loaded">
+                    <div class="card-header" translate>Colour gradient limits</div>
+                    <div class="card-body">
                         <div style="clear:both" ng-show="classifs_loaded">
                             <small translate>Select the colour interval by dragging on the chart below. The regions on left side will be blue and red on the right side</small>
                         </div>

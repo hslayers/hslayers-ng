@@ -39,6 +39,7 @@ if (require.config) require.config({
         'bottomSheetCollapsible': nm_path + 'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible',
         hammer: nm_path +'hammerjs/hammer' + hslMin,
         bootstrap: requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap.bundle' + hslMin,
+        'bootstrap.bundle': requirejs.s.contexts._.config.paths.bootstrap || nm_path +'bootstrap/dist/js/bootstrap.bundle' + hslMin,
         draw: hsl_path + 'components/draw/draw',
         d3: requirejs.s.contexts._.config.paths.d3 || nm_path + 'd3/build/d3' + hslMin,
         'angular-cookies': nm_path + 'angular-cookies/angular-cookies' + hslMin,
@@ -147,7 +148,7 @@ if (require.config) require.config({
 });
 
 define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api', 'proj4', 'layout'],
-    function(angular, proj4) {
+    function(angular) {
         angular.module('hs.core', ['hs.map', 'gettext', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
             /**
              * @module hs.core
@@ -521,7 +522,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application. 
                         */
                         initSizeListeners: function () {
-                            var w = angular.element($window);
+                            var w = $($window);
                             w.resize(function () {
                                 //$timeout(function(){
                                 //    me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();

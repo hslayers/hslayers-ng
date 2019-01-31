@@ -298,7 +298,7 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
 
                 sidebar_service.extra_buttons.push({
                     title: '3D/2D',
-                    icon_class: 'glyphicon glyphicon-globe',
+                    icon_class: 'icon-globealt',
                     click: toggleCesiumMap
                 });
 

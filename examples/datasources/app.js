@@ -1,6 +1,6 @@
 'use strict';
 
-define(['ol', 'sidebar', 'toolbar', 'layermanager', 'hs.source.Wfs', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'datasource_selector', 'api', 'ows', 'bootstrap', 'status_creator'],
+define(['ol', 'sidebar', 'toolbar', 'layermanager', 'hs.source.Wfs', 'map', 'query', 'search', 'print', 'permalink', 'measure', 'geolocation', 'datasource_selector', 'api', 'ows', 'bootstrap.bundle', 'status_creator'],
 
     function(ol, sidebar, layermanager, WfsSource) {
         var module = angular.module('hs', [

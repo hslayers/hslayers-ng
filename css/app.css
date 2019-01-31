@@ -1,8 +1,17 @@
 /* app css stylesheet */
 
-.glyphicon-spin {
+.icon-spin {
     -webkit-animation: spin 1000ms infinite linear;
     animation: spin 1000ms infinite linear;
+
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
 }
 @-webkit-keyframes spin {
     0% {
@@ -71,7 +80,7 @@
     margin-bottom:0;
 }
 
-div.mainpanel:not(.hs-stc-mainpanel) > div.panel-body {
+div.mainpanel:not(.hs-stc-mainpanel) > div.card-body {
     padding: 0px;
 }
 
@@ -224,8 +233,6 @@ div.hs-comp-item-controls {
 i.hs-lm-warning-scale {
     color: #f0ad4e;
     padding: 1px 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
     line-height: 1.5;
     font-size: 12px;
     top: 2px;
@@ -254,7 +261,7 @@ i.hs-lm-queryable {
     cursor: pointer;
 }
 
-.hs-dataset-panel .panel-body {
+.hs-dataset-panel .card-body {
     padding:0;
 }
 
@@ -314,11 +321,20 @@ hr {
 
 .search_address {
     width: 250px;
+    z-index: 2;
 }
 
 #searchresults {
     top: 45px;
     min-width: 250px;
+}
+
+.sidebar-item [class*=" icon-"]  {
+    margin-left:-4px;
+}
+
+.input-group-append [class^="icon-"]{
+    font-size: 0.85rem;
 }
 
 .locate:not(.ol-collapsed) {

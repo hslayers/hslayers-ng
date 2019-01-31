@@ -1,11 +1,11 @@
-<div class="panel panel-default mainpanel">
-    <div class="panel-heading"><span class="panel-title"><translate>Draw new features</translate></span>
+<div class="card panel-default mainpanel">
+    <div class="card-header"><span class="panel-title"><translate>Draw new features</translate></span>
         <button type="button" class="close" ng-click="Core.closePanel(this);">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="panel-body hs-dr-panel">
+    <div class="card-body hs-dr-panel">
     
         <!-- Layer -->
         <div class="form-group">
@@ -16,29 +16,29 @@
         </div>
         
         <div class="btn-group center-block"><!-- 
-             --><button class="btn btn-default ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate><i class="icon-pin"></i></button><!-- 
-             --><button class="btn btn-default ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate><i class="icon-polygonlasso"></i></button><!-- 
-             --><button class="btn btn-default ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate>  <i class="icon-line"></i></button>
+             --><button class="btn btn-secondary ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate><i class="icon-pin"></i></button><!-- 
+             --><button class="btn btn-secondary ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate><i class="icon-polygonlasso"></i></button><!-- 
+             --><button class="btn btn-secondary ng-class:{active: type=='LineString'}" ng-click="setType('LineString')" translate>  <i class="icon-line"></i></button>
         </div>
         <div class="btn-group center-block hs-draw-new-buttons"><!-- 
-             --><button class="btn btn-default ng-class:{hs_draw_new_extended: type!='Point'}" ng-click="start()" translate>New</button><!-- 
-             --><button class="btn btn-default" ng-show="type=='Point' && Core.isMobile()" ng-click="newPointFromGps()" translate>New GPS</button><!-- 
-             --><button class="btn btn-default btn-danger" ng-click="clearAll()" translate>Clear</button>
+             --><button class="btn btn-secondary ng-class:{hs_draw_new_extended: type!='Point'}" ng-click="start()" translate>New</button><!-- 
+             --><button class="btn btn-secondary" ng-show="type=='Point' && Core.isMobile()" ng-click="newPointFromGps()" translate>New GPS</button><!-- 
+             --><button class="btn btn-secondary btn-danger" ng-click="clearAll()" translate>Clear</button>
         </div>
     
         <ul class="list-group hs-dr-featurelist">
             <li ng-repeat="feature in features | orderBy:'-time_stamp' track by $index" id="hs-dr-feature-{{feature.uuid}}" ng-click="setCurrentFeature(feature)" ng-mouseover="highlightFeature(feature, true)" ng-mouseleave="highlightFeature(feature, false)" ng-class="{active : current_feature == feature}" class="list-group-item hs-dr-item">
                 <span>{{feature.type}} {{feature.name}}</span>
                 <span class="pull-right">
-                    <button class="btn btn-default btn-xs" ng-if="feature==current_feature" ng-click="stop()" translate>Stop</button>
-                    <button type="button" class="btn btn-default btn-xs glyphicon glyphicon-trash" ng-click="removeFeature(feature);">
+                    <button class="btn btn-secondary btn-sm" ng-if="feature==current_feature" ng-click="stop()" translate>Stop</button>
+                    <button type="button" class="btn btn-secondary btn-sm icon-trash" ng-click="removeFeature(feature);">
                     </button>
                 <span>
             </li>
         </ul>
         
-        <div class="panel panel-default hs-dr-editpanel" ng-show="current_feature!=null">
-            <div class="panel-body">
+        <div class="card panel-default hs-dr-editpanel" ng-show="current_feature!=null">
+            <div class="card-body">
                 <form>
                 <!-- Name -->
                 <div class="form-group">
@@ -78,7 +78,7 @@
                     <img ng-repeat="image in current_feature.media | orderBy:'-media_id' track by $index" ng-show="current_feature.media" ng-src="{{ image.url?image.url:image.thumbnail_url }}" style="width: 100%"/>
                 </div>
                 
-                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false" aria-controls="hs-more-attributes">
+                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false" aria-controls="hs-more-attributes">
                     Show more
                 </button>
                 <div class="collapse" id="hs-more-attributes">
@@ -90,21 +90,21 @@
                 </div>
                 
             
-                <button class="btn btn-default hs-dr-add-attribute" ng-click="addUserDefinedAttr()" >
-                    <i class="glyphicon glyphicon-plus"></i>
+                <button class="btn btn-secondary hs-dr-add-attribute" ng-click="addUserDefinedAttr()" >
+                    <i class="icon-refresh"></i>
                 </button>
 
-                <button class="btn btn-default" ng-if="Core.isMobile()" ng-click="addPhoto()">
-                    <i class="glyphicon glyphicon-camera"></i>
+                <button class="btn btn-secondary" ng-if="Core.isMobile()" ng-click="addPhoto()">
+                    <i class="icon-camera"></i>
                 </button>
                 
                 <button class="btn btn-primary" ng-click="saveFeature(true)">Save</button>
-                <button class="btn btn-default" ng-click="cancelChanges()" ng-show="is_unsaved==true">Cancel</button>
+                <button class="btn btn-secondary" ng-click="cancelChanges()" ng-show="is_unsaved==true">Cancel</button>
                 <!-- Footer -->
                 </form>
             </div>
         </div>
         
-        <!-- <button class="btn btn-default" style="float:right" ng-click="sync()" translate>Synchronize</button> -->
+        <!-- <button class="btn btn-secondary" style="float:right" ng-click="sync()" translate>Synchronize</button> -->
     </div>
 </div>

@@ -27,12 +27,12 @@ define(['angular', 'map', 'core', 'permalink'],
                             me.panelspace0pened = !me.panelspace0pened;
                         }
                         Core.sidebarExpanded = me.panelspace0pened;
-                        if ($(".menu-switch.btn-mobile .glyphicon-menu-hamburger")[0]) {
-                            $(".menu-switch.btn-mobile .glyphicon-menu-hamburger").removeClass("glyphicon-menu-hamburger");
-                            $(".menu-switch.btn-mobile .menu-icon").addClass(Core.sidebarRight ? "glyphicon-menu-right" : "glyphicon-menu-left");
+                        if ($(".menu-switch.btn-mobile .icon-menu-hamburger")[0]) {
+                            $(".menu-switch.btn-mobile .icon-menu-hamburger").removeClass("icon-menu-hamburger");
+                            $(".menu-switch.btn-mobile .menu-icon").addClass(Core.sidebarRight ? "icon-menu-right" : "icon-menu-left");
                         } else {
-                            $(".menu-switch.btn-mobile .menu-icon").removeClass(Core.sidebarRight ? "glyphicon-menu-right" : "glyphicon-menu-left");
-                            $(".menu-switch.btn-mobile .menu-icon").addClass("glyphicon-menu-hamburger");
+                            $(".menu-switch.btn-mobile .menu-icon").removeClass(Core.sidebarRight ? "icon-menu-right" : "icon-menu-left");
+                            $(".menu-switch.btn-mobile .menu-icon").addClass("icon-menu-hamburger");
                         }
                         $(".panelspace, #toolbar, #map, #menu").toggleClass("panelspace-opened", me.panelspace0pened);
                     }

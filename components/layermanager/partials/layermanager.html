@@ -1,5 +1,5 @@
-<div class="panel panel-default mainpanel">
-    <div class="panel-heading"><span class="panel-title" translate>Layer manager</span>
+<div class="card panel-default mainpanel">
+    <div class="card-header" translate>Layer manager
         <button type="button" class="close" ng-click="Core.closePanel(this)">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
@@ -8,7 +8,7 @@
             <i class="glyphicon icon-refresh"></i>
         </button>
     </div>
-    <div class="panel-body hs-lm-panel">
+    <div class="card-body hs-lm-panel">
         <div class="nav nav-pills" ng-show="hasBoxImages()">
             <div ng-repeat="box in data.box_layers"  class="col-xs-2 col-md-2 active" style="padding-right: 2px; padding-left: 2px;">
                 <a href="#" ng-class="{ 'thumbnail': true, 'alert-info': box.get('active')}" title="{{box.get('title')}}" ng-click="activateTheme(box)">
@@ -20,17 +20,17 @@
         
         <ul class="list-group hs-lm-baselayerlist">
             <li class="list-group-item hs-lm-header clearfix active">
-                <span translate>Baselayers</span>
-                <span class="pull-right">
-                    <button type="button" class="btn btn-xs btn-default" ng-click="changeBaseLayerVisibility()"><i class="glyphicon" ng-class="data.baselayersVisible ? 'glyphicon-eye-open': 'glyphicon-eye-close'"></i></button>
-                </span>
+                <div class="hs-lm-item-title" translate>Baselayers</div>
+                <div class="hs-lm-item-controls">
+                    <button type="button" class="btn btn-sm btn-light" ng-click="changeBaseLayerVisibility()"><i class="" ng-class="data.baselayersVisible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
+                </div>
             </li>
             <li class="list-group-item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'" ng-click="changeBaseLayerVisibility($event, layer)" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}" >
-                <span ng-if="layer.active" ng-class="layer.grayed ? 'text-muted': ''"><strong>{{layer.title}}</strong></span>
-                <span ng-if="!layer.active" ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</span>
-                <span class="pull-right" ng-show="layer.active || hovering" ng-style="hovering && !layer.active && {'opacity':'0.5'}">
-                    <button class="btn btn-xs btn-link"><i class="glyphicon glyphicon-globe"></i></button>
-                </span>
+                <div ng-if="layer.active" class="hs-lm-item-title" ng-class="layer.grayed ? 'text-muted': ''"><strong>{{layer.title}}</strong></div>
+                <div ng-if="!layer.active" class="hs-lm-item-title" ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</div>
+                <div class="hs-lm-item-controls" ng-show="layer.active || hovering" ng-style="hovering && !layer.active && {'opacity':'0.5'}">
+                    <button type="button" class="btn btn-sm btn-light"><i class="" ng-class="data.baselayersVisible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
+                </div>
             </li>
         </ul>
         
@@ -39,11 +39,11 @@
                 <span translate>Terrains</span>
             </li>
             <li class="list-group-item hs-lm-item" ng-repeat="layer in data.terrainlayers | orderBy:'name'" ng-click="changeTerrainLayerVisibility($event, layer)" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}" >
-                <span ng-if="layer.active" ng-class="layer.grayed ? 'text-muted': ''"><strong>{{layer.title}}</strong></span>
-                <span ng-if="!layer.active" ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</span>
-                <span class="pull-right" ng-show="layer.active || hovering" ng-style="hovering && !layer.active && {'opacity':'0.5'}">
-                    <button class="btn btn-xs btn-link"><i class="glyphicon glyphicon-globe"></i></button>
-                </span>
+                <div class="hs-lm-item-title" ng-if="layer.active" ng-class="layer.grayed ? 'text-muted': ''"><strong>{{layer.title}}</strong></div>
+                <div ng-if="!layer.active" class="hs-lm-item-title" ng-class="layer.grayed ? 'text-muted': ''">{{layer.title}}</div>
+                <div class="hs-lm-item-controls" ng-show="layer.active || hovering" ng-style="hovering && !layer.active && {'opacity':'0.5'}">
+                    <button class="btn btn-sm btn-link"><i class="icon-globe"></i></button>
+                </div>
             </li>
         </ul>
         
@@ -51,8 +51,8 @@
             <li class="list-group-item hs-lm-header active">
                 <span translate>Map Content</span>
                 <span class="pull-right">
-                    <button type="button" class="btn btn-xs btn-default"  ng-if="Core.exists('hs.draw.controller')" ng-click="addDrawingLayer()">
-                        <i class="glyphicon glyphicon-pencil"></i>
+                    <button type="button" class="btn btn-sm btn-secondary"  ng-if="Core.exists('hs.draw.controller')" ng-click="addDrawingLayer()">
+                        <i class="icon-pencil"></i>
                     </button>
                 </span>
             </li>
@@ -66,16 +66,16 @@
             <div hs.layermanager.layerlist_directive></div>
 <!--
         <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-default active">
+            <label class="btn btn-secondary active">
             <input type="radio" name="options" id="option1" checked> Logical order
             </label>
-            <label class="btn btn-default">
+            <label class="btn btn-secondary">
             <input type="radio" name="options" id="option2"> Physical order
             </label>
         </div> -->
         </ul>
-        <div class="panel panel-default layerpanel" ng-show="currentLayer!=null">
-            <div class="panel-body">
+        <div class="card panel-default layerpanel" ng-show="currentLayer!=null">
+            <div class="card-body">
                 <form>
                 <!-- Opacity slider -->
                 <div class="form-group">
@@ -135,22 +135,35 @@
                 <!-- Footer -->
                 </form>
             </div>
-            <div class="panel-footer">
+            <div class="card-footer">
                 <div class="form-group" ng-show="layer_renamer_visible">
                     <label translate>Title</label>
                     <input type="text" class="form-control" ng-model="currentLayer.title" ng-change="setTitle()">
-                    <div class="form-inline">
+                    <div class="form">
                         <br/>
                         <label translate>Scale</label>
-                        <span ng-if="currentLayer.layer.minResolutionValid"><span translate>from</span> 1:<input class="form-control" style="width:45px" ng-model="currentLayer.layer.minResolution" ng-change="setLayerResolution(currentLayer.layer)"/></span>
-                        <span ng-if="currentLayer.layer.maxResolutionValid"><span translate>to</span> 1:<input class="form-control" style="width:45px" ng-model="currentLayer.layer.maxResolution" ng-change="setLayerResolution(currentLayer.layer)"/></span>
+                        <div ng-if="currentLayer.layer.minResolutionValid">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><span translate>from</span>&nbsp;1:</span>
+                                </div>
+                                <input class="form-control" style="width:65px" ng-model="currentLayer.layer.minResolution" ng-change="setLayerResolution(currentLayer.layer)"/>
+                            </div>
+                        </div>
+                        <div ng-if="currentLayer.layer.maxResolutionValid">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"> <span translate>to</span>&nbsp;1:</span>
+                                </div>
+                                <input class="form-control" style="width:65px" ng-model="currentLayer.layer.maxResolution" ng-change="setLayerResolution(currentLayer.layer)"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <span translate>More</span>
-                <button class="btn btn-default glyphicon glyphicon-search" ng-click="zoomToLayer(currentLayer.layer)" ng-disabled="!layerIsZoomable(currentLayer.layer)"></button>
-                <button class="btn btn-default glyphicon glyphicon-wrench" ng-click="styleLayer(currentLayer.layer)" ng-disabled="!layerIsStyleable(currentLayer.layer)"></button>
-                <button class="btn btn-default glyphicon glyphicon glyphicon-font" ng-click="toggleLayerRename()"></button>
-                <button class="btn btn-danger glyphicon glyphicon-trash" ng-click="removeLayer(currentLayer.layer)" ng-if="isLayerRemovable(currentLayer.layer)"></button>
+                <button class="btn btn-primary" ng-click="zoomToLayer(currentLayer.layer)" ng-disabled="!layerIsZoomable(currentLayer.layer)"><i class="icon-search"></i></button>
+                <button class="btn btn-primary" ng-click="styleLayer(currentLayer.layer)" ng-disabled="!layerIsStyleable(currentLayer.layer)"><i class="icon-wrench"></i></button>
+                <button class="btn btn-primary" ng-click="toggleLayerRename()"><i class="icon-edit"></i></button>
+                <button class="btn btn-danger" ng-click="removeLayer(currentLayer.layer)" ng-if="isLayerRemovable(currentLayer.layer)"><i class="icon-trash"></i></button>
             </div>
         </div>
     </div>
