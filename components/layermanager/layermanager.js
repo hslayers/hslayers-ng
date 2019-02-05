@@ -12,9 +12,9 @@ if(require.config) require.config({
  * @name hs.layermanager
  * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
-define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator'], 
+define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator', 'styles'], 
     function (angular, app, map, ol, hsLayermanagerService, hsLayermanagerWMSTservice, hsLayermanagerLayerlistDirective) {
-    angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator'])
+    angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator', 'hs.styles'])
             
         /**
          * @module hs.layermanager
@@ -113,8 +113,8 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
      * @ngdoc controller
      * @description Controller for management of deafult HSLayers layer manager template
      */
-    .controller('hs.layermanager.controller', ['$scope', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice',
-        function($scope, Core, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST) {
+    .controller('hs.layermanager.controller', ['$scope', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice', 'hs.styler.service',
+        function($scope, Core, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST, styler) {
 
             $scope.data = LayMan.data;
             $scope.Core = Core;

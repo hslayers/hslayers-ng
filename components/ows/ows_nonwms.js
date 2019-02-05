@@ -192,10 +192,10 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'hs.source.Wfs', 'styles'],
                         };
                     })
 
-                    var listenerKey = src.on('change', function() {
+                    var listenerKey = src.on('change', function(e) {
                         if (src.getState() == 'ready' && (angular.isUndefined(src.get('from_composition')) || !src.get('from_composition'))) {
                             if (src.getFeatures().length == 0) return;
-                            var extent = src.getExtent(); - src.unByKey(listenerKey);
+                            var extent = src.getExtent(); //src.unByKey(listenerKey);
                             if (!isNaN(extent[0]) && !isNaN(extent[1]) && !isNaN(extent[2]) && !isNaN(extent[3]))
                                 OlMap.map.getView().fit(extent, OlMap.map.getSize());
                         }
