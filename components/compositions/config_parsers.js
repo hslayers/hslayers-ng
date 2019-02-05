@@ -44,6 +44,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             minScale: lyr_def.minScale || Number.Infinity,
                             maxScale: lyr_def.maxScale || 0,
                             show_in_manager: lyr_def.displayInLayerSwitcher,
+                            //TODO: Use abstract if name is not defined
                             abstract: lyr_def.name,
                             metadata: lyr_def.metadata,
                             dimensions: lyr_def.dimensions,
@@ -56,6 +57,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 attributions: lyr_def.attribution ? [new ol.Attribution({
                                     html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
                                 })] : undefined,
+                                //Should work also without metadata
                                 styles: lyr_def.metadata.styles,
                                 params: params,
                                 crossOrigin: 'anonymous',
