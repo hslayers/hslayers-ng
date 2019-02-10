@@ -364,10 +364,9 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                                     image: me.data.thumbnail
                                 }),
                                 success: function(j) {
-                                    $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                        longUrl: getHostname() + config.status_manager_url + "?request=socialshare&id=" + serviceURL.shareId
-                                    }).success(function(data, status, headers, config) {
-                                        var shareUrl = data.id;
+                                    utils.shortUrl(getHostname() + config.status_manager_url + "?request=socialshare&id=" + serviceURL.shareId)
+                                    .then(function(shortUrl) {
+                                        var shareUrl = shortUrl;
                                         socialshare.share({
                                             'provider': provider,
                                             'attrs': {
@@ -378,9 +377,9 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                                             }
                                         })
                                         me.data.shareUrlValid = true;
-                                    }).error(function(data, status, headers, config) {
+                                    }).catch(function() {
                                         console.log('Error creating short Url');
-                                    });
+                                    })
                                 }
                             })
                         } else {
@@ -479,23 +478,21 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                             me.data.shareUrlValid = false;
 
                             $q.all([
-                                $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                    longUrl: serviceURL.getPureMapUrl()
-                                }).success(function(data, status, headers, config) {
-                                    me.data.pureMapUrl = data.id;
-                                }).error(function(data, status, headers, config) {
+                                utils.shortUrl(serviceURL.getPureMapUrl())
+                                .then(function(shortUrl) {
+                                    me.data.pureMapUrl = shortUrl;
+                                }).catch(function() {
                                     console.log('Error creating short Url');
                                     me.data.pureMapUrl = serviceURL.getPureMapUrl();
                                 }),
 
-                                $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                    longUrl: serviceURL.getPermalinkUrl()
-                                }).success(function(data, status, headers, config) {
-                                    me.data.permalinkUrl = data.id;
-                                }).error(function(data, status, headers, config) {
+                                utils.shortUrl(serviceURL.getPermalinkUrl())
+                                .then(function(shortUrl) {
+                                    me.data.permalinkUrl = shortUrl;
+                                }).catch(function() {
                                     console.log('Error creating short Url');
                                     me.data.permalinkUrl = serviceURL.getPermalinkUrl();
-                                }),
+                                })
                             ]).then(function() {
                                 me.getEmbedCode();
                             });

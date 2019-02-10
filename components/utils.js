@@ -15,8 +15,10 @@ define(['angular', 'app', 'ol'], function(angular, app, ol) {
      * @description Service for containing various utility functions used throughout HSL modules. 
      * Add few utility functions and also enrich some data types with additional functions (mainly Date and String).
      */
-    .service('hs.utils.service', ['config', function(config) {
+    .service('hs.utils.service', ['config', '$http', function(config, $http) {
         var me = this;
+        
+        
         /**
         * @ngdoc method
         * @name hs.utils.service#proxify
@@ -24,12 +26,15 @@ define(['angular', 'app', 'ol'], function(angular, app, ol) {
         * @param {String} url Url to proxify
         * @param {Boolean} toEncoding Optional parameter if UTF-8 encoding shouldn´t be used for non-image Urls.         
         * @returns {String} Encoded Url with path to hsproxy.cgi script  
-        * @description Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
+        * @description Add path to proxy cgi script (hsproxy.cgi) into Url 
+        * and encode rest of Url if valid http Url is send and proxy use is allowed.
         */
         this.proxify = function(url, toEncoding) {
             toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
             var outUrl = url;
-            if ((url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) || getPortFromUrl(url) != window.location.port) {
+            if ((url.substring(0, 4) == 'http' 
+            && (url.indexOf(window.location.origin) == -1) || url.indexOf(window.location.origin) > 5) 
+            || getPortFromUrl(url) != window.location.port) {
                 if (typeof use_proxy === 'undefined' || use_proxy === true) {
 
                     outUrl = "/cgi-bin/hsproxy.cgi?";
@@ -39,6 +44,42 @@ define(['angular', 'app', 'ol'], function(angular, app, ol) {
             }
             return outUrl;
         }
+
+
+
+        /**
+        * @ngdoc method
+        * @name hs.utils.service#shortUrl
+        * @public
+        * @param {String} url Url to shorten
+        * @returns {String} Shortened url
+        * @description Promise which shortens url by using some url shortener. 
+        * By default tinyurl is used, but user provided function in config.shortenUrl can be used. Example: function(url) {
+                return new Promise(function(resolve, reject){
+                    $http.get("http://tinyurl.com/api-create.php?url=" + url, {
+                        longUrl: url
+                    }).success(function(data, status, headers, config) {
+                        resolve(data);
+                    }).error(function(data, status, headers, config) {
+                        reject()
+                    })
+                })
+            }
+        */
+        this.shortUrl = function(url) {
+            if(config.shortenUrl) return config.shortenUrl(url);
+            return new Promise(function(resolve, reject){
+                $http.get(me.proxify("http://tinyurl.com/api-create.php?url=" + url), {
+                    longUrl: url
+                }).success(function(data, status, headers, config) {
+                    resolve(data);
+                }).error(function(data, status, headers, config) {
+                    reject()
+                })
+            })
+        }
+
+        
         /**
         * @ngdoc method
         * @name hs.utils.service#getPortFromUrl

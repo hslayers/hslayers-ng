@@ -345,10 +345,9 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angular-socialshare
                     $scope.permalink_visible = false;
                     function showPermalink(){
                         var url = permalink_service.getPermalinkUrl();
-                        $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                            longUrl: url
-                        }).success(function(data, status, headers, config) {
-                            $scope.share_url = data.id;
+                        utils.shortUrl(url)
+                        .then(function(shortUrl) {
+                            $scope.share_url = shortUrl;
                             $scope.permalink_visible = !$scope.permalink_visible;
                             setTimeout(function(){
                                 $("#hs-permalink").focus(function() { $(this).select(); } );
@@ -359,10 +358,9 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angular-socialshare
                     
                     function shareSocial(provider){
                         var url = permalink_service.getPermalinkUrl();
-                        $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                            longUrl: url
-                        }).success(function(data, status, headers, config) {
-                            $scope.share_url = data.id;
+                        utils.shortUrl(url)
+                        .then(function(shortUrl) {
+                            $scope.share_url = shortUrl;
                             socialshare.share({
                                 'provider': provider,
                                 'attrs': {
@@ -374,9 +372,9 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angular-socialshare
                                     'socialsharePopupWidth': 500
                                 }
                             })
-                        }).error(function(data, status, headers, config) {
+                        }).catch(function() {
                             if(console) console.log('Error creating short Url');
-                        });  
+                        })
                     }
                     
                     function printPdf(){

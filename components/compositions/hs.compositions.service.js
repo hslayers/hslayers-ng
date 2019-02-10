@@ -317,13 +317,12 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                         image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg'
                                     }),
                                     success: function (j) {
-                                        $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDn5HGT6LDjLX-K4jbcKw8Y29TRgbslfBw', {
-                                            longUrl: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId
-                                        }).success(function (data, status, headers, config) {
-                                            me.data.shareUrl = data.id;
-                                        }).error(function (data, status, headers, config) {
+                                        utils.shortUrl((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId)
+                                        .then(function(shortUrl) {
+                                            me.data.shareUrl = shortUrl;
+                                        }).catch(function() {
                                             console.log('Error creating short Url');
-                                        });
+                                        })
                                     }
                                 })
 
