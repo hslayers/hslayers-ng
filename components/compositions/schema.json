@@ -188,7 +188,17 @@
           "visibility": {
             "$id": "#/properties/layers/items/properties/visibility",
             "type": "boolean",
-            "title": "The Visibility Schema",
+            "title": "Visibility",
+            "default": false,
+            "examples": [
+              true
+            ]
+          },
+          "base": {
+            "$id": "#/properties/layers/items/properties/base",
+            "type": "boolean",
+            "title": "Base layer",
+            "description": "Is the layer one of the base layers",
             "default": false,
             "examples": [
               true
@@ -200,7 +210,7 @@
               "string",
               "integer"
             ],
-            "title": "The Opacity Schema",
+            "title": "Opacity",
             "default": "",
             "examples": [
               "1"
@@ -220,7 +230,7 @@
           "title": {
             "$id": "#/properties/layers/items/properties/title",
             "type": "string",
-            "title": "The Title Schema",
+            "title": "Title",
             "default": "",
             "examples": [
               "Třídy ochrany půdy"
@@ -230,7 +240,8 @@
           "className": {
             "$id": "#/properties/layers/items/properties/className",
             "type": "string",
-            "title": "The Classname Schema",
+            "title": "Classname",
+            "description": "Big type of layer. Currently all raster layers are wms layers and Vector layers are subdivided by protocol property",
             "default": "",
             "enum": [
               "HSLayers.Layer.WMS",
@@ -244,7 +255,8 @@
           "singleTile": {
             "$id": "#/properties/layers/items/properties/singleTile",
             "type": "boolean",
-            "title": "The Singletile Schema",
+            "title": "Single tile requests",
+            "description": "Use single request to WMS provider to get map for the whole screen",
             "default": false,
             "examples": [
               true
@@ -262,7 +274,8 @@
           "wmsMaxScale": {
             "$id": "#/properties/layers/items/properties/wmsMaxScale",
             "type": "number",
-            "title": "The Wmsmaxscale Schema",
+            "title": "Wmsmaxscale",
+            "description": "Deprecated maxScale property used in old OpenLayers2. Is here just for historical reasons",
             "default": 0,
             "examples": [
               0
