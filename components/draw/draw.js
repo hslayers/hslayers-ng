@@ -249,7 +249,7 @@ define(['angular', 'ol', 'map', 'core', 'utils', 'geolocation'],
                 }
 
                 /**
-                 * @function changeLayer
+                 * @function addInteraction
                  * @memberOf hs.draw.controller
                  * (PRIVATE) Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
                  */
