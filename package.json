@@ -27,6 +27,7 @@
     "marked": "^0.3.19",
     "phantomjs-prebuilt": "^2.1.16",
     "protractor": "^5.4.2",
+    "release-it": "^10.1.0",
     "requizzle": "^0.2.1",
     "shelljs": "^0.8.1"
   },
