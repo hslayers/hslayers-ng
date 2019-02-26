@@ -1,138 +1,341 @@
-## Default map
+To configure hslayers-ng based map project different config options can be used. They have to be specified in the main application file (usually app.js) using module.value('config') service:
+```
+ module.value('config', {
+    terrain_provider: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+    terrain_providers: [{
+        title: 'EU-DEM',
+        url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+        active: true
+    }],
+    default_layers: [
+        ...
+```
 
-box_layers
+The following page describes all the configuration options grouped by use case 
 
-default_layers
+## Map
 
-default_view
+**box_layers**
+
+An array of ol.layer.Group objects, which is used to group layers into topics. Each box layer must contain layers property which is an array of ol.layer.Layer objects similar to default_layers config property. Name of the group is contained in "title" property and path to icon image can be provided in "img" property.
+
+**default_layers**
+
+```
+Array of layers which are OpenLayers layers and are not part of a layer group or "box" layer. The can contain extra parameters not specified in OL api such as "path", "show_in_manager", "base", "position", etc. Example: new ol.layer.Tile({
+    title: "Ilida plastics kg/ha per year",
+    source: new ol.source.TileWMS({
+        url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/ilida/ilida.map',
+        params: {
+            LAYERS: 'ilida_cultivation_plastics',
+            INFO_FORMAT: undefined,
+            FORMAT: "image/png",
+            ABSTRACT: "Plastic waste in Ilida municipality"
+        },
+        crossOrigin: "anonymous"
+    }),
+    path: 'Ilida Thematic Data',
+    base: false,
+    visible: true,
+    opacity: 0.8
+})
+```
+
+**default_view**
+
+Openlayers view which specifies default map center, projection, zoom etc. Example: 
+```
+new ol.View({
+    center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+    zoom: 4,
+    units: "m"
+})
+```
 
 ## Layer manager
 
-layer_order
+**layer_order**
 
-open_lm_after_comp_loaded
+1 for ascending order, -1 for descending. Layers are ordered by position in the layer array (default_layers config option).
+
+**open_lm_after_comp_loaded**
+
+Set to true to open layer manager when map composition is loaded
 
 ## Cesium 3D maps
-cesiumAccessToken
+**cesiumAccessToken**
 
-cesiumAnimation
+Access token for cesium. Register for it here https://cesium.com/ion/assets/
 
-cesiumBase
+**cesiumAnimation**
 
-cesiumBingKey
+Boolean property to specify if cesium should animate 3D objects
 
-cesiumdDebugShowFramesPerSecond
+**cesiumBase**
 
-cesiumInfoBox
+Directory of cesium library. Example: ./node_modules/cesium/Build/Cesium/
 
-cesiumShadows
+**cesiumBingKey**
 
-cesiumTime
+API key for bing maps used as Cesium base layer. See: https://www.bingmapsportal.com/
 
-cesiumTimeline
+**cesiumdDebugShowFramesPerSecond**
 
-creditContainer
+Boolean property to turn on or off FPS counter which is used for performance benchmarking.
 
-createWorldTerrainOptions
+**cesiumInfoBox**
 
-imageryProvider
+Boolean property to specify weather to show get feature info results in Cesiums interface.
 
-terrain_provider
+**cesiumShadows**
 
-terrain_providers
+Boolean property to specify weather to sho shadows for objects and terrain.
 
-terrainExaggeration
+**cesiumTime**
+
+Cesium.JulianDate class object which specifies default time value to set Cesiums viewer.clockViewModel.currentTime to. See: https://cesiumjs.org/Cesium/Build/Documentation/JulianDate.html
+
+**cesiumTimeline**
+
+Boolean parameter to turn on and off Cesiums timeline
+
+**creditContainer**
+
+optional Element | String The DOM element or ID that will contain the CreditDisplay. If not specified, the credits are added to the bottom of the widget itself.
+
+**createWorldTerrainOptions**
+
+optional Object. If no terrain_provider config parameter is present, then createWorldTerrainOptions object is used in Cesium.createWorldTerrain function to create terrain layer. See: https://cesiumjs.org/Cesium/Build/Documentation/createWorldTerrain.html
+
+**imageryProvider**
+
+Cesium.ImageryProvider object.	optional. The imagery provider to use instead of default bing maps. This value is only valid if Cesiums options.baseLayerPicker is set to false. See: https://cesiumjs.org/Cesium/Build/Documentation/ImageryProvider.html
+
+**terrain_provider**
+
+optional Object. This is passed to viewer.terrainProvider configuration option. See: https://cesiumjs.org/Cesium/Build/Documentation/Viewer.html and https://cesiumjs.org/Cesium/Build/Documentation/TerrainProvider.html . Example: 
+```
+new Cesium.CesiumTerrainProvider({
+        url : Cesium.IonResource.fromAssetId(3956),
+        requestVertexNormals : true
+    })
+```
+
+**terrain_providers**
+
+optional Array of TerrainProvider objects between which user will be able to choose in layer manager. See terrain_provider config option.
+
+**terrainExaggeration**
+
+Number	optional A scalar used to exaggerate the terrain. Default value is 1.0. Note that terrain exaggeration will not modify any other primitive as they are positioned relative to the ellipsoid.
 
 ## Status manager and Compositions catalogue
 
-advanced_form
+**advanced_form**
 
-comp_keywords
+Boolean parameter to use advanced form of status creator to save compositions.
 
-compositions_catalogue_url
+**comp_keywords**
 
-hostname
+Boolean parameter to show dropdown for filtering of compositions based on keywords.
 
-hostname.default
+**compositions_catalogue_url**
 
-hostname.default.url
+String URL of compositions catalogue. Example: https://atlas.kraj-lbc.cz/php/metadata/csw/index.php
 
-hostname.compositions_catalogue
+**hostname**
 
-hostname.status_manager
+**hostname.default**
 
-hostname.status_manager.url
+**hostname.default.url**
 
-hostname.user.url
+**hostname.compositions_catalogue**
 
-hostname.user.type
+String URL of compositions catalogue. Example: https://atlas.kraj-lbc.cz/php/metadata/csw/index.php
 
-hostname.user.editable
+**hostname.status_manager**
 
-hostnames
+**hostname.status_manager.url**
 
-project_name
+URL or path of status manager. Usually its on the same server and then '/wwwlibs/statusmanager2/index.php' or similar can be used. 
 
-status_manager_url
+**hostname.user.url**
+
+**hostname.user.type**
+
+**hostname.user.editable**
+
+**hostnames**
+
+**project_name**
+
+String variable of project name which is used as a project GET parameter queries to status manager when loading compositions list and making updates and deletes.
+
+**status_manager_url**
+
+URL or path of status manager. Usually its on the same server and then '/wwwlibs/statusmanager2/index.php' or similar can be used. 
 
 ## Datasources 
 
-connectTypes
+**connectTypes**
 
-datasources
+Array of possible dataset types in own panel. Default value is ["", "WMS", "KML", "GeoJSON"]
 
-dsPaging
+**datasources**
+Array of datasource catalogues which are used in Datasource explorer panel. Example: 
+```
+[
+    {
+        title: "Datasets",
+        url: "http://otn-dev.intrasoft-intl.com/otnServices-1.0/platform/ckanservices/datasets",
+        language: 'eng',
+        type: "ckan",
+        download: true
+    }, {
+        title: "Services",
+        url: "http://cat.ccss.cz/csw/",
+        language: 'eng',
+        type: "micka",
+        code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+    }, {
+        title: "Hub layers",
+        url: "http://opentnet.eu/php/metadata/csw/",
+        language: 'eng',
+        type: "micka",
+        code_list_url: 'http://opentnet.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+    }
+]
+```
 
-dss_disallow_add
+**dsPaging**
+
+How many items to display in dataset list
+
+**dss_disallow_add**
+
+Boolean parameter to specify, that datasets must not be allowed to be added to map.
 
 ## GUI
 
-createExtraMenu
+**createExtraMenu**
 
-design
+A function which manipulates sidebar items and creates extra menu items by using AngularJs $compile function. Example: 
+```
+function ($compile, $scope, element) {
+    $scope.uploadClicked = function () {
+        alert("UPLOAD!")
+    }
+    var el = angular.element("<li class=\"sidebar-item\" ng-click=\"uploadClicked()\" ><a href=\"#\"><span class=\"menu-icon glyphicon icon-cloudupload\"></span><span class=\"sidebar-item-title\">Upload</span></a></li>");
+    element.find('ul').append(el);
+    $compile(el)($scope);
+}
+```
 
-draggable_windows
+**design**
 
-infopanel_template
+String. Set this to 'md' to use Material Design instead of Bootstrap
 
-layout_template
+**draggable_windows**
 
-overlay_template
+Boolean parameter to specify if panels can be dragged out of sidepanel.
 
-right_panel_template
+**infopanel_template**
 
-sidenav_template
+Path to infopanel (getfeatureinfo) results template if an override of default template is needed. By default its ${hsl_path}components/query/partials/infopanel${config.design || ''}.html
 
-toolbar_template
+**layout_template**
+
+Path to main application layout template if an override of default template is needed. By default it's ${hsl_path}components/layout/partials/layout${config.design || ''}.html
+
+** overlay_template **
+
+Path to overlay template which is used to show elements over map. By default it's hsl_path + 'components/layout/partials/overlay.html
+
+**right_panel_template**
+
+Path to Material Design specific right panel template if an override of default template is needed. By default it's hsl_path + 'components/layout/partials/right-panel.html
+
+**sidenav_template**
+
+Path to Material Design specific side nav panel template if an override of default template is needed. By default it's hsl_path + 'components/layout/partials/sidenav.html
+
+**toolbar_template**
+
+Path to Material Design specific toolbar template if an override of default template is needed. By default it's hsl_path + 'components/layout/partials/toolbar.html
 
 ## Sharing
 
-permalinkLocation
+**permalinkLocation**
 
-permalinkLocation.origin
+Object which specifies parameters for generation of sharable link of map
 
-permalinkLocation.pathname
+**permalinkLocation.origin**
 
-shortenUrl
+Domain name of url where parmalink points to
 
-social_hashtag
+**permalinkLocation.pathname**
+
+Path name of application on the server which permalink points to
+
+**shortenUrl**
+
+By default tinyurl is used, but user provided function in config.shortenUrl can be used. Example: 
+```
+function(url) {
+    return new Promise(function(resolve, reject){
+        $http.get("http://tinyurl.com/api-create.php?url=" + url, {
+            longUrl: url
+        }).success(function(data, status, headers, config) {
+            resolve(data);
+        }).error(function(data, status, headers, config) {
+            reject()
+        })
+    })
+}
+```
+
+**social_hashtag**
+
+String. Hashtag or any other text to append to title generated for sharing in social networks
 
 ## Senslog
 
-senslog_url
+**senslog_url**
 
-user_name
+Senslog server URL. Example: http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
+
+**user_name**
+
+Senslog user name
 
 ## Other
 
-crossfilterable_layers
+**crossfilterable_layers**
 
-paths
+DEPRECATED. Array of layers to be crossfilterable. Each element is an object which contains layer indexes and feature property to group/count the features. Example: 
+```
+[{
+    layer_ix: 1,
+    attributes: ["http://gis.zcu.cz/poi#category_osm"]
+}] 
+```
 
-queryPoint
+**paths**
 
-query.multi
+Dictionary of requirejs path overrides for all the components in hslayers-ng application. Can be usefull if some component needs to be substituted by third party component.
 
-search_provider
+**queryPoint**
 
-wirecloud_data_consumer
+How to display point clicked on the map. Possible values are: hidden, notWithin
+
+**query.multi**
+
+Boolean. Allow selecting and displaying info about multiple vector layer features.
+
+**search_provider**
+
+String to specify which search provider should be used. Can contain values: "sdi4apps_openapi", "geonames"
+
+**wirecloud_data_consumer**
+
+DEPRECATED. Function which gets executed on data_received_slot event. At the moment handling of that isnt done in hslayers, but in app.js instead. 

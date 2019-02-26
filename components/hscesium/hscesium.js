@@ -48,7 +48,8 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
                 Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
                 Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
                 Cesium.BingMapsApi.defaultKey = BING_KEY;
-
+                
+                //TODO: research if this must be used or ignored
                 var bing = new Cesium.BingMapsImageryProvider({
                     url: '//dev.virtualearth.net',
                     key: Cesium.BingMapsApi.defaultKey,
