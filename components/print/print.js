@@ -41,8 +41,8 @@ define(['angular'],
                     win.document.write(html);
                     $timeout(function(){
                         win.print();
-                        win.location.reload();
-                    },250);
+                        //win.location.reload();
+                    }, 250);
                 }
                 
                 return me;
