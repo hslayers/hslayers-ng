@@ -1,6 +1,6 @@
 //If hslayers is in node_modules and not a standalone directory, then step back 
 //to projects root not hslayers root to load the correct node_modules
-var root = __dirname.indexOf('node_modules') > -1 ? '../..' : __dirname; 
+var root = __dirname.indexOf('node_modules') > -1 ? __dirname + '/../..' : __dirname; 
 
 exports.paths = [
   __dirname + '/components/toolbar',
