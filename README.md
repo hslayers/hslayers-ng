@@ -123,6 +123,8 @@ define([ /* List of js files to be loaded. They are both hslayers and third-part
     });
 ```
 
+To configure applications looks, beheviour and dat [Configuration options](Config-parameters) are specified inside app.js module.values('config'.. service.
+
 ### Proxy
 
 For providing proxy functionality we use a simple cgi script, which you have to copy from `lib/hsproxy.cgi` 
@@ -138,6 +140,8 @@ To enable cgi on ubuntu, use
 sudo a2enmod cgi
 sudo service apache2 restart
 ```
+
+If you are using nginx, see [HsProxy configuration with uwsgi](Hsproxy-configuration)
 
 ### Run the Application
 
