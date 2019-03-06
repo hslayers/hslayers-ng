@@ -1,2 +1,2 @@
 #!/bin/sh
-grunt jsdoc-ng
+grunt jsdoc --force
