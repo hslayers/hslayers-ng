@@ -81,7 +81,7 @@ if (require.config) require.config({
         styles: hsl_path + 'components/styles/styles' + hslMin,
         toolbar: requirejs.s.contexts._.config.paths.toolbar || hsl_path + 'components/toolbar/toolbar' + hslMin,
         translations: requirejs.s.contexts._.config.paths.translations || hsl_path + 'components/translations/js/translations',
-        utils: hsl_path + 'components/utils' + hslMin,
+        utils: hsl_path + 'components/utils/utils' + hslMin,
         'hs.format.WFSCapabilities': requirejs.s.contexts._.config.paths.WFSCapabilities || hsl_path + 'components/format/hs.format.WFSCapabilities' + hslMin,
         'ol.popup': requirejs.s.contexts._.config.paths.olPopup || hsl_path + 'components/format/ol.popup' + hslMin,
         'hs.source.Wfs': requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs' + hslMin,
