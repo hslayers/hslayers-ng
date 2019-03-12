@@ -350,7 +350,10 @@
           },
           "maxResolution": {
             "$id": "#/properties/layers/items/properties/maxResolution",
-            "type": ["number", "null"],
+            "type": [
+              "number",
+              "null"
+            ],
             "title": "The Maxresolution Schema",
             "default": "Number.Infinity",
             "examples": [
@@ -359,7 +362,10 @@
           },
           "minResolution": {
             "$id": "#/properties/layers/items/properties/minResolution",
-            "type": ["number", "null"],
+            "type": [
+              "number",
+              "null"
+            ],
             "title": "The Minresolution Schema",
             "default": 0,
             "examples": [
@@ -511,11 +517,28 @@
     },
     "current_base_layer": {
       "$id": "#/properties/current_base_layer",
-      "type": ["string", "null"],
-      "title": "Title of default base layer selected",
+      "type": [
+        "object",
+        "null"
+      ],
+      "title": "Default base layer selected",
       "default": null,
+      "properties": {
+        "title": {
+          "$id": "#/properties/current_base_layer/properties/title",
+          "type": "string",
+          "title": "Title",
+          "default": "",
+          "examples": [
+            "OpenStreetMap"
+          ],
+          "pattern": "^(.*)$"
+        }
+      },
       "examples": [
-        "OpenStreetMap"
+        {
+          "title": "OpenStreetMap"
+        }
       ]
     }
   }
