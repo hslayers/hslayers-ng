@@ -1,39 +1,38 @@
 'use strict';
 
-define(['angular', 'toolbar', 'ol', 'core', 'layermanager', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'measure', 'legend'],
+define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'query', 'search', 'print', 'permalink', 'measure', 'legend', 'bootstrap.bundle', 'geolocation', 'core', 'datasource_selector', 'api', 'angular-gettext', 'translations', 'compositions', 'status_creator', 'info'],
 
-    function(angular, toolbar, oj, layermanager) {
-        var module = angular.module('hs', [ 
+    function(angular, ol, toolbar, layermanager) {
+        var module = angular.module('hs', [
+            'hs.sidebar',
             'hs.toolbar',
-            'hs.core',
             'hs.layermanager',
             'hs.map',
-            'hs.ows',
             'hs.query',
-            'hs.search',
-            'hs.print',
-            'hs.permalink',
-            'hs.measure',
-            'hs.legend'
+            'hs.search', 'hs.print', 'hs.permalink', 'hs.measure',
+            'hs.legend', 'hs.geolocation', 'hs.core',
+            'hs.datasource_selector',
+            'hs.status_creator',
+            'hs.api',
+            'hs.ows',
+            'gettext',
+            'hs.compositions',
+            'hs.info'
         ]);
 
-        module.directive('hs', ['OlMap', function(OlMap) {
+        module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    $(window).resize(function() {
-                        element[0].style.height = window.innerHeight + "px";
-                        element[0].style.width = window.innerWidth + "px";
-                        $("#map").height(window.innerHeight);
-                        $("#map").width(window.innerWidth);
-                        OlMap.map.updateSize()
-                    });
-                    $(window).resize();
+                    Core.fullScreenMap(element);
                 }
             };
         }]);
-        
-        module.value('box_layers', [
+
+        module.value('config', {
+            open_lm_after_comp_loaded: true,
+            layer_order: '-position',
+            box_layers: [
                 new ol.layer.Group({
                     'img': 'osm.png',
                     title: 'Base layer',
@@ -42,15 +41,8 @@ define(['angular', 'toolbar', 'ol', 'core', 'layermanager', 'map', 'ows', 'query
                             source: new ol.source.OSM(),
                             title: "OpenStreetMap",
                             base: true,
-                            visible: true
-                        }),
-                        new ol.layer.Tile({
-                            title: "OpenCycleMap",
-                            visible: false,
-                            base: true,
-                            source: new ol.source.OSM({
-                                url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                            })
+                            visible: true,
+                            removable: false
                         })
                     ],
                 }), new ol.layer.Group({
@@ -66,24 +58,74 @@ define(['angular', 'toolbar', 'ol', 'core', 'layermanager', 'map', 'ows', 'query
                                     INFO_FORMAT: undefined,
                                     FORMAT: "image/png; mode=8bit"
                                 },
-                                crossOrigin: null
+                                crossOrigin: "anonymous"
                             }),
+                        }),
+                        new ol.layer.Tile({
+                            title: "Ilida plastics kg/ha per year",
+                            source: new ol.source.TileWMS({
+                                url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/ilida/ilida.map',
+                                params: {
+                                    LAYERS: 'ilida_cultivation_plastics',
+                                    INFO_FORMAT: undefined,
+                                    FORMAT: "image/png",
+                                    ABSTRACT: "Plastic waste in Ilida municipality"
+                                },
+                                crossOrigin: "anonymous"
+                            }),
+                            path: 'Ilida Thematic Data',
+                            visible: true,
+                            opacity: 0.8
+                        }),
+                        new ol.layer.Tile({
+                            title: "Výnosový potenciál",
+                            source: new ol.source.TileWMS({
+                                url: 'http://foodie-data.wirelessinfo.cz/geoserver-hsl/kojcice/wms?',
+                                params: {
+                                    LAYERS: 'kojcice_vynospot_5m_poly',
+                                    //INFO_FORMAT: undefined,
+                                    INFO_FORMAT: 'text/html',
+                                    FORMAT: "image/png"
+                                },
+                                crossOrigin: "anonymous"
+                            }),
+                            path: 'Kojčice',
+                            visible: true,
+                            opacity: 0.5
                         })
                     ]
-                })]);
+                })
+            ],
+            default_view: new ol.View({
+                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                zoom: 4,
+                units: "m"
+            }),
+            hostname: {
+                "default": {
+                    "title": "Default",
+                    "type": "default",
+                    "editable": false,
+                    "url": 'http://www.whatstheplan.eu'
+                }
+            },
+            compositions_catalogue_url: '/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
+            status_manager_url: '/wwwlibs/statusmanager2/index.php',
+            datasources: [{
+                title: "SuperCAT",
+                url: "http://cat.ccss.cz/csw/",
+                language: 'eng',
+                type: "micka",
+                code_list_url: 'http://www.whatstheplan.eu/php/metadata/util/codelists.php?_dc=1440156028103&language=eng&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22label%22%7D%5D'
+            }]
+        });
 
-        module.value('default_layers', []);
-
-        module.value('default_view', new ol.View({
-            center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-            zoom: 4
-        }));
-
-        module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer',
-            function($scope, Core, srv_producer) {
+        module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.compositions.service_parser', 'config',
+            function($scope, Core, srv_producer, composition_parser, config) {
                 $scope.hsl_path = hsl_path; //Get this from hslayers.js file
                 $scope.Core = Core;
-                srv_producer.addService('http://erra.ccss.cz/geoserver/ows', 'armenia');
+                Core.sidebarRight = false;
+                Core.singleDatasources = true;
             }
         ]);
 

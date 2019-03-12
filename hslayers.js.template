@@ -1,52 +1,40 @@
 'use strict';
 
-var hsl_path = '/hslayers-ng/';
-//https://github.com/tnajdek/angular-requirejs-seed
-require.config({
-    urlArgs: 'bust=' + gitsha,
-    paths: {
-        toolbar: hsl_path + 'components/toolbar/toolbar',
-        layermanager: hsl_path + 'components/layermanager/layermanager',
-        query: hsl_path + 'components/query/query',
-        search: hsl_path + 'components/search/search',
-        print: hsl_path + 'components/print/print',
-        permalink: hsl_path + 'components/permalink/permalink',
-        lodexplorer: hsl_path + 'components/lodexplorer/lodexplorer',
-        geolocation: hsl_path + 'components/geolocation/geolocation',
-        measure: hsl_path + 'components/measure/measure',
-        legend: hsl_path + 'components/legend/legend',
-        app: 'app',
-        panoramio: hsl_path + 'components/panoramio/panoramio',
-        core: hsl_path + 'components/core/core',
-        datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector',
-        api: hsl_path + 'components/api/api',
-        translations: hsl_path + 'components/translations/js/translations',
-        hscesium: hsl_path + 'components/hscesium/hscesium',
-        pois: 'poi',
-        olus: 'olu',
-        zones: 'zone',
-        moment: hsl_path + 'node_modules/moment/min/moment.min'
-    },
-    shim: {
-        d3: {
-            exports: 'd3'
-        },
-        dc: {
-            deps: ['d3', 'crossfilter2']
+var gitsha;
+$.ajax({
+    type: "GET",
+    url: hsl_path + 'gitsha.js',
+    async: false
+}).done(function(response) {
+    gitsha = response
+}).fail(function() {
+    gitsha = Math.random();
+})
+
+if (typeof require != 'undefined') {
+    if (require.config) require.config({
+        urlArgs: 'bust=' + gitsha,
+        paths: {
+            app: 'app',
+            core: hsl_path + 'components/core/core',
+            hscesium: hsl_path + 'components/hscesium/hscesium'
         }
-    }
-});
+    });
 
-//http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
-window.name = "NG_DEFER_BOOTSTRAP!";
+    //http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
+    window.name = "NG_DEFER_BOOTSTRAP!";
 
-require([
-    'angular',
-    'ol',
-    'app'
-], function(angular, ol, app) {
+    require(['core'], function(app) {
+        require(['app'], function(app) {
+            var $html = angular.element(document.getElementsByTagName('html')[0]);
+            angular.element().ready(function() {
+                angular.resumeBootstrap([app['name']]);
+            });
+        });
+    });
+} else {
     var $html = angular.element(document.getElementsByTagName('html')[0]);
     angular.element().ready(function() {
-        angular.resumeBootstrap([app['name']]);
+        //    angular.resumeBootstrap([exports.app['name']]);
     });
-});
+}
