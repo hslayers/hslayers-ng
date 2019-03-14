@@ -32,7 +32,7 @@ define(['angular', 'app', 'ol'], function (angular, app, ol) {
                 if ((url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) || getPortFromUrl(url) != window.location.port) {
                     if (typeof use_proxy === 'undefined' || use_proxy === true) {
 
-                        outUrl = "/cgi-bin/hsproxy.cgi?";
+                        outUrl = config.proxyPrefix || "/cgi-bin/hsproxy.cgi?";
                         if (toEncoding && (url.indexOf('GetMap') == -1 || url.indexOf('GetFeatureInfo') > -1)) outUrl += "toEncoding=utf-8&";
                         outUrl = outUrl + "url=" + encodeURIComponent(url);
                     }
