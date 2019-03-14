@@ -378,6 +378,7 @@ define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink,
                     });
                 } else {
                     lyr.getSource().setImageLoadFunction(function (image, src) {
+                        if (src.indexOf('proxy') == -1) src = decodeURIComponent(src);
                         image.getImage().src = utils.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
                     })
                 }
