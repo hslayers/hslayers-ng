@@ -262,7 +262,7 @@ i.hs-lm-queryable {
 }
 
 .hs-dataset-panel .card-body {
-    padding:0;
+    padding:3px;
 }
 
 #hs-comp-filter {

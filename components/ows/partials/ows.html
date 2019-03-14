@@ -6,10 +6,10 @@
         </button>
     </div>
     <div class="card-body">
-            <form name="frmConnect" role="form" class="form-horizontal">
+            <form name="frmConnect" role="form" class="form">
                 <div class="form-group">
-                    <div class="col-sm-12 input-group">
-                        <span class="input-group-addon" id="type_label"><translate>Choose format</translate></span>
+                    <div class="input-group">
+                        <div class="input-group-prepend" id="type_label"><span class="input-group-text" translate>Choose format</span></div>
                         <select class="form-control" id="ows_type" ng-model="type">
                             <option ng-repeat="type in types">{{type}}</option>
                         </select>
@@ -17,15 +17,14 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-12 input-group">
+                    <div class="input-group">
                         <input type="url" class="form-control" name="url" ng-model="url" placeholder="{{'External data source (URL)'|translate}}" required />
-                        <span class="input-group-btn">
+                        <div class="input-group-append">
                             <button type="button" class="btn btn-secondary" ng-if="frmConnect.url.$valid && isService()" ng-click="connect()"><i class="icon-link"></i></button>
                             <button type="button" class="btn btn-danger" ng-if="frmConnect.url.$error.url"><i class="icon-alertalt"></i></button>
-                        </span>
+                        </div>
                     </div>
                 </div>
-
             </form>
             <hr/>
             <div class='ows-capabilities' ng-show="showDetails" ng-include="templateByType()"></div>

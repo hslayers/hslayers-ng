@@ -6,7 +6,7 @@
         </button>
     </div>
     <div class="card-body">
-<!--        <div ng-if="!Core.singleDatasources" ng-include="'./datasource_search.html'">
+        <!--        <div ng-if="!Core.singleDatasources" ng-include="'./datasource_search.html'">
             <div class="input-group col-lg-8 col-sm-12 col-xs-12" style="margin-bottom: 4px">
                 <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="loadDatasets(datasources)">
                 <span class="input-group-btn">
@@ -17,73 +17,119 @@
         </div>-->
 
         <ul class="nav flex-column dss-tabs" role="tablist">
-            <li class="nav-item" ng-class="{'active hs-tab-singleDS': Core.singleDatasources && !wms_connecting}" ng-repeat="ds in data.datasets">
-                <a class="nav-link" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab" ng-click="datasetSelect('ds'+$index)">
+            <li class="nav-item" ng-class="{'active hs-tab-singleDS': Core.singleDatasources && !wms_connecting}"
+                ng-repeat="ds in data.datasets">
+                <a class="nav-link" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
+                    data-toggle="tab" ng-click="datasetSelect('ds'+$index)">
                     {{ds.title}}
                     <span ng-show='ds.matched>0'>({{ds.matched}})</span>
                     <span class="glyphicon icon-refresh icon-spin" ng-show="ds.ajaxReq.readyState != 4"></span>
                 </a>
             </li>
-            <li class="nav-item" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources" ng-class="{'hs-tab-singleDS': Core.singleDatasources, 'active': wms_connecting}">
-                <a class="nav-link" href="#OWS" aria-controls="OWS" role="tab" data-toggle="tab" translate>External data</a>
+            <li class="nav-item" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources"
+                ng-class="{'hs-tab-singleDS': Core.singleDatasources, 'active': wms_connecting}">
+                <a class="nav-link" href="#OWS" aria-controls="OWS" role="tab" data-toggle="tab" translate>External
+                    data</a>
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="hs-dataset-panel tab-pane" ng-class="{'active': 'ds'+$index == id_selected && Core.singleDatasources && !wms_connecting}" id="{{'ds'+$index}}" ng-repeat="ds in data.datasets">
+            <div role="tabpanel" class="hs-dataset-panel tab-pane"
+                ng-class="{'active': 'ds'+$index == id_selected && Core.singleDatasources && !wms_connecting}"
+                id="{{'ds'+$index}}" ng-repeat="ds in data.datasets">
                 <div class="card">
                     <div class="card-body">
                         <div ng-if="Core.singleDatasources">
-                            <div class="input-group col-lg-8 col-sm-12 col-xs-12" style="margin-bottom: 4px">
-                                <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="data.query.title" ng-change="DS.loadDatasets(data.datasources)">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-secondary" ng-click='openMickaAdvancedSearch()' translate>More</button>
-                                    <button type="button" class="btn btn-secondary" ng-click="DS.clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
-                                </span>
-                            </div>
-                            
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Theme <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li ng-repeat="keyword in otn_keywords" ng-class="{'active': data.query.Subject==keyword.title}"><a href="#" ng-click="setOtnKeyword(keyword.title)">{{keyword.title}}</a></li>
-                                </ul>
-                            </div>
-                            
-                            <input type="checkbox" ng-model="data.filterByExtent" ng-change='DS.loadDatasets(data.datasources)'><span translate>Filter by map extent</span>
+                            <form class="form">
+                                <div class="form-group">
+                                    <div class="input-group" style="margin-bottom: 4px">
+                                        <input type="text" class="form-control hs-filter" placeholder="Filter:"
+                                            ng-model="data.query.title" ng-change="DS.loadDatasets(data.datasources)">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-secondary"
+                                                ng-click='openMickaAdvancedSearch()' translate>More</button>
+                                            <button type="button" class="btn btn-secondary" ng-click="DS.clear()"><span
+                                                    aria-hidden="true" class="close">×</span><span class="sr-only">
+                                                    <translate>Clear</translate>
+                                                </span></button>
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="btn-group input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" ng-model="data.filterByExtent"
+                                                    ng-change='DS.loadDatasets(data.datasources)'><span translate>Filter
+                                                    by map extent</span>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Theme <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li ng-repeat="keyword in otn_keywords"
+                                                    ng-class="{'active': data.query.Subject==keyword.title}"><a href="#"
+                                                        ng-click="setOtnKeyword(keyword.title)">{{keyword.title}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <ul class="list-group">
                             <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
-                            <li ng-repeat="layer in ds.layers" class="clearfix" ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')" ng-mouseover="DS.highlightComposition(layer, true)" ng-mouseleave="DS.highlightComposition(layer, false)">
+                            <li ng-repeat="layer in ds.layers" class="clearfix"
+                                ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')"
+                                ng-mouseover="DS.highlightComposition(layer, true)"
+                                ng-mouseleave="DS.highlightComposition(layer, false)">
                                 <span class="datasources_item">
-                                    <b><a href="#" data-toggle="tooltip" title="{{layer.description}}" ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a></b>
+                                    <b><a href="#" data-toggle="tooltip" title="{{layer.description}}"
+                                            ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a></b>
                                 </span>
                                 <span class="pull-right">
-                                    <a class="btn btn-sm btn-secondary" ng-href='{{DS.layerDownload(ds, layer)}}' data-toggle="tooltip" title="{{'Download'|translate}}" ng-show='DS.layerDownload(ds,layer) != "#"'><i class="glyphicon icon-download"></i></a>
-                                    <a class="btn btn-sm btn-secondary" ng-href='{{DS.layerRDF(ds, layer)}}' data-toggle="tooltip" title="GeoDCAT-AP" target="_blank" ng-show='DS.layerRDF(ds, layer) != "#"'><i class="hs-icon-rdf"></i></a>
-                                    <button type="button" class="btn btn-sm btn-primary" ng-click="addLayerToMap(ds, layer)" ng-hide='config.dss_disallow_add == true' data-toggle="tooltip" title="{{'Add to map'|translate}}"><i class="icon-refresh"></i></button>
+                                    <a class="btn btn-sm btn-secondary" ng-href='{{DS.layerDownload(ds, layer)}}'
+                                        data-toggle="tooltip" title="{{'Download'|translate}}"
+                                        ng-show='DS.layerDownload(ds,layer) != "#"'><i
+                                            class="glyphicon icon-download"></i></a>
+                                    <a class="btn btn-sm btn-secondary" ng-href='{{DS.layerRDF(ds, layer)}}'
+                                        data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"
+                                        ng-show='DS.layerRDF(ds, layer) != "#"'><i class="hs-icon-rdf"></i></a>
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                        ng-click="addLayerToMap(ds, layer)" ng-hide='config.dss_disallow_add == true'
+                                        data-toggle="tooltip" title="{{'Add to map'|translate}}"><i
+                                            class="icon-refresh"></i></button>
                                 </span>
                             </li>
                         </ul>
                     </div>
                     <div class="card-footer" ng-show='ds.matched>0'>
                         <nav>
-                          <ul class="pagination">
-                            <li class="page-item" ng-class="{'disabled': ds.start == 0 }">
-                                <a href="#" class="page-link" ng-click='getPreviousRecords(ds)'><span aria-hidden="true">&laquo;</span></a>
-                            </li>
-                            <li class="page-item" ng-if="ds.next != 0"><span class="page-link"> Results {{ds.start + 1}} - {{ds.next}}</span></li>
-                            <li class="page-item" ng-if="ds.next == 0"><span class="page-link"> Results {{ds.start + 1}} - {{ds.matched}}</span></li>
-                            <li class="page-item" ng-class="{'disabled': ds.next == 0 }" >
-                                <a href="#" class="page-link" ng-click='getNextRecords(ds)'><span aria-hidden="true">&raquo;</span></a>
-                            </li>
-                          </ul>
+                            <ul class="pagination">
+                                <li class="page-item" ng-class="{'disabled': ds.start == 0 }">
+                                    <a href="#" class="page-link" ng-click='getPreviousRecords(ds)'><span
+                                            aria-hidden="true">&laquo;</span></a>
+                                </li>
+                                <li class="page-item" ng-if="ds.next != 0"><span class="page-link"> Results
+                                        {{ds.start + 1}} - {{ds.next}}</span></li>
+                                <li class="page-item" ng-if="ds.next == 0"><span class="page-link"> Results
+                                        {{ds.start + 1}} - {{ds.matched}}</span></li>
+                                <li class="page-item" ng-class="{'disabled': ds.next == 0 }">
+                                    <a href="#" class="page-link" ng-click='getNextRecords(ds)'><span
+                                            aria-hidden="true">&raquo;</span></a>
+                                </li>
+                            </ul>
                         </nav>
                     </div>
                 </div>
             </div>
-            <div role="tabpanel"  ng-class="{'tab-pane': true, 'active': wms_connecting || data.datasources.length==0 || id_selected == 'OWS'}" hs.ows.directive ng-controller="hs.ows.controller" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources" id="OWS"></div>
+            <div role="tabpanel"
+                ng-class="{'tab-pane': true, 'active': wms_connecting || data.datasources.length==0 || id_selected == 'OWS'}"
+                hs.ows.directive ng-controller="hs.ows.controller"
+                ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources" id="OWS"></div>
         </div>
     </div>
 </div>
