@@ -624,15 +624,16 @@ define(['angular', 'ol', 'map'],
                         $scope.id_selected = id_selected;
                     }
 
-                    $http({
-                        method: 'GET',
-                        url: utils.proxify('http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66')
-                    }).then(function successCallback(response) {
-                        $scope.otn_keywords = [{ title: '-' }];
-                        angular.forEach(response.data.result.tags, function (tag) {
-                            $scope.otn_keywords.push({ title: tag.name });
-                        })
-                    });
+                    if(config.datasources && config.datasources.length > 0)
+                        $http({
+                            method: 'GET',
+                            url: utils.proxify('http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66')
+                        }).then(function successCallback(response) {
+                            $scope.otn_keywords = [{ title: '-' }];
+                            angular.forEach(response.data.result.tags, function (tag) {
+                                $scope.otn_keywords.push({ title: tag.name });
+                            })
+                        });
 
                     /**
                      * @function openMickaAdvancedSearch
