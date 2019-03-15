@@ -370,6 +370,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     };
 
                     function isLayerWmsQueryable(layer) {
+                        if(!layer.getVisible()) return false;
                         if (layer instanceof ol.layer.Tile &&
                             layer.getSource() instanceof ol.source.TileWMS &&
                             layer.getSource().getParams().INFO_FORMAT) return true;
