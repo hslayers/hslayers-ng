@@ -366,7 +366,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if (angular.isDefined(scope))
                                 if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
                             if (angular.isDefined(me.panel_statuses[which])) {
-                                return me.panel_statuses[which];
+                                return me.panel_statuses[which] && me.panelEnabled(which);
                             }
                             return me.mainpanel == which || (angular.isDefined(scope) && scope.unpinned);
                         },
