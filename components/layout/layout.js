@@ -151,7 +151,6 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
             */
             .controller('hs.layout.controller', ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdPanel', '$mdDialog', '$mdMedia', 'hs.layout.service',
                 function ($scope, $injector, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdPanel, $mdDialog, $mdMedia, layoutService) {
-                    debugger;
                     if(config.design == 'md')
                         require(['bottomSheetCollapsible']);
                     $scope.Core = Core;
