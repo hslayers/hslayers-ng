@@ -319,6 +319,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Sets new main panel (Panel displayed in expanded sidebar). Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
                         */
                         setMainPanel: function (which, by_gui, queryable) {
+                            if(!me.panelEnabled(which)) return;
                             if (which == me.mainpanel && by_gui) {
                                 which = "";
                                 if (me.sidebarExpanded == true) {
