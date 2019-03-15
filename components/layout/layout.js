@@ -2,10 +2,11 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 'geolocation', 'layermanager'],
+define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanager'],
 
     function (angular) {
-        angular.module('hs.layout', ['hs.core', 'ngMaterial', 'material.components.bottomSheetCollapsible', 'hs.map', 'hs.geolocation', 'hs.layermanager'])
+        // 'material.components.bottomSheetCollapsible'
+        angular.module('hs.layout', ['hs.core', 'hs.map', 'ngMaterial', 'hs.geolocation', 'hs.layermanager'])
             /**
             * @memberof hs.mdLayout
             * @ngdoc directive
@@ -148,8 +149,11 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
             * @name hs.layout.controller
             * @description TODO
             */
-            .controller('hs.layout.controller', ['$scope', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdBottomSheetCollapsible', '$mdPanel', '$mdDialog', '$mdMedia', 'hs.layout.service',
-                function ($scope, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdBottomSheetCollapsible, $mdPanel, $mdDialog, $mdMedia, layoutService) {
+            .controller('hs.layout.controller', ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdPanel', '$mdDialog', '$mdMedia', 'hs.layout.service',
+                function ($scope, $injector, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdPanel, $mdDialog, $mdMedia, layoutService) {
+                    debugger;
+                    if(config.design == 'md')
+                        require(['bottomSheetCollapsible']);
                     $scope.Core = Core;
                     $scope.geolocation = Geolocation;
                     $scope.LM = LayerManager;
@@ -333,43 +337,49 @@ define(['angular', 'angular-material', 'bottomSheetCollapsible', 'core', 'map', 
                     }
 
                     $scope.openBottomSheet = function (panel) {
-                        $mdBottomSheetCollapsible.show({
-                            templateUrl: hsl_path + 'components/layout/partials/bottom-sheet.html?bust=' + gitsha,
-                            scope: $scope,
-                            parent: "#layout",
-                            preserveScope: true,
-                            disableBackdrop: true,
-                            // disableParentScroll: false,
-                            clickOutsideToClose: true,
-                            onLoad: function (e) {
-                                $scope.setMinimized = e.setMinimized;
-                                $scope.setHalfway = e.setHalfway;
-                                $scope.setExpanded = e.setExpanded;
-                                $scope.getBottomSheetState = e.getState;
-                                $scope.bottomSheet = e.element;
-                                // () => {
-                                //     var raw = $scope.bottomSheet;
-                                //     $scope.$watch(() => raw.scrollHeight,
-                                //         resolveScrollPosition(raw));
-                                //     $scope.$watch(() => $scope.getBottomSheetState(), resolveScrollPosition(raw));
-                                //     element.bind('scroll', function () {
-                                //         raw.style["touch-action"] = "pan-y";
-                                //         if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
-                                //             raw.style["touch-action"] = "pan-up";
-                                //         }
-                                //         if (raw.scrollTop == 0) {
-                                //             raw.style["touch-action"] = "pan-down";
-                                //         }
-                                //     })
-                                // }
-                            }
-                        }).then(function (e) {
-                            console.log("Bottom sheet closed", Date.now());
-                            $scope.unsetBottomSheet();
-                        }).catch(function (e) {
-                            console.log("Bottom sheet canceled", Date.now());
-                            $scope.unsetBottomSheet();
-                        });
+                        try{
+                            var $mdBottomSheetCollapsible = $injector.get('$mdBottomSheetCollapsible');
+                            $mdBottomSheetCollapsible.show({
+                                templateUrl: hsl_path + 'components/layout/partials/bottom-sheet.html?bust=' + gitsha,
+                                scope: $scope,
+                                parent: "#layout",
+                                preserveScope: true,
+                                disableBackdrop: true,
+                                // disableParentScroll: false,
+                                clickOutsideToClose: true,
+                                onLoad: function (e) {
+                                    $scope.setMinimized = e.setMinimized;
+                                    $scope.setHalfway = e.setHalfway;
+                                    $scope.setExpanded = e.setExpanded;
+                                    $scope.getBottomSheetState = e.getState;
+                                    $scope.bottomSheet = e.element;
+                                    // () => {
+                                    //     var raw = $scope.bottomSheet;
+                                    //     $scope.$watch(() => raw.scrollHeight,
+                                    //         resolveScrollPosition(raw));
+                                    //     $scope.$watch(() => $scope.getBottomSheetState(), resolveScrollPosition(raw));
+                                    //     element.bind('scroll', function () {
+                                    //         raw.style["touch-action"] = "pan-y";
+                                    //         if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
+                                    //             raw.style["touch-action"] = "pan-up";
+                                    //         }
+                                    //         if (raw.scrollTop == 0) {
+                                    //             raw.style["touch-action"] = "pan-down";
+                                    //         }
+                                    //     })
+                                    // }
+                                }
+                            }).then(function (e) {
+                                console.log("Bottom sheet closed", Date.now());
+                                $scope.unsetBottomSheet();
+                            }).catch(function (e) {
+                                console.log("Bottom sheet canceled", Date.now());
+                                $scope.unsetBottomSheet();
+                            });
+                        }catch(e){
+                            console.log('Injector does not have mdBottomSheetCollapsible service!');
+                        }
+                        
                         // $scope.$watch(function() {
                         //     return $scope.getBottomSheetState();
                         // }, function() {
