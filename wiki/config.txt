@@ -145,9 +145,15 @@ String URL of compositions catalogue. Example: https://atlas.kraj-lbc.cz/php/met
 
 **hostname**
 
+Object used to build GUI where the user can change the source for compositions catalogue or add his own
+
 **hostname.default**
 
+Object default endpoint of the application if multiple endpoints are available (for compositions catalogue, etc.)
+
 **hostname.default.url**
+
+String, Fully qualified domain name part of the URL used as the remote endpoint
 
 **hostname.compositions_catalogue**
 
@@ -163,7 +169,11 @@ URL or path of status manager. Usually its on the same server and then '/wwwlibs
 
 **hostname.user.type**
 
+String, the type of the hostname (denoting for which purposes it should be used) – e.g. compositions_catalogue (for compositions catalogue), status_manager (for status manages), default (fallback for the previous two), user (overriding the defaults)
+
 **hostname.user.editable**
+
+Boolean parameter denoting whether the user should be able to delete or change this hostname object from the list of hostnames.
 
 **hostnames**
 
