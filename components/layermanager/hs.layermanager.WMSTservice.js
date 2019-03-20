@@ -185,7 +185,9 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'moment'
                              * @description Update layer time parameter
                              */
                             me.setLayerTime = function (currentLayer, application_specific_timezone_offset) {
+                                if(angular.isUndefined(currentLayer.layer)) return;
                                 var dimensions_time = currentLayer.layer.get('dimensions_time') || currentLayer.layer.dimensions_time;
+                                if(angular.isUndefined(dimensions_time)) return;
                                 var d = moment.utc(dimensions_time.timeInterval[0]);
                                 switch (currentLayer.time_unit) {
                                     case "FullYear":
