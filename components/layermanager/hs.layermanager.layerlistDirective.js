@@ -53,7 +53,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                      * @ngdoc method
                                      * @name hs.layermanager.layerlistDirective#filterLayers
                                      * @private
-                                     * @description Filters layers, and return only belonging to folder hiearchy level of directive
+                                     * @description Filters layers, and returns only the ones belonging to folder hiearchy level of directive
                                      */
                                     function filterLayers() {
                                         var tmp = [];

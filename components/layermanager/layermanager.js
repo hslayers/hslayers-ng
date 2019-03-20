@@ -446,6 +446,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
              * @param {unknown} external
              * @param {Array} layerTitles Array of layer titles of group in which layer should be moved in other position
              * Callback for dnd-drop event to change layer position in layer manager structure (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop). 
+             * This is called from layerlistDirective
              */
             $scope.draggedCont = function (event, index, item, type, external, layerTitles) {
                 if (layerTitles.indexOf(item) < index) index--; //Must take into acount that this item will be removed and list will shift
