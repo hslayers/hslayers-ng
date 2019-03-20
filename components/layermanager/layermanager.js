@@ -168,6 +168,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
             * @param {Ol.layer} layer Selected layer
             */
             $scope.setLayerOpacity = function (layer) {
+                if (angular.isUndefined(layer)) return;
                 layer.setOpacity($scope.cur_layer_opacity);
                 $scope.$emit('compositions.composition_edited');
                 return false;
@@ -679,7 +680,7 @@ define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanag
              * @description Test if layer has dimensions
              */
             $scope.isLayerWithDimensions = function (lyr_container) {
-                if(angular.isUndefined(lyr_container) || lyr_container == null) return false;
+                if(angular.isUndefined(lyr_container) || lyr_container == null || angular.isUndefined(lyr_container.layer)) return false;
                 if(angular.isUndefined(lyr_container.layer.get('dimensions'))) return false;
                 return Object.keys(lyr_container.layer.get('dimensions')).length > 0
             }
