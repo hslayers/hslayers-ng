@@ -29,7 +29,7 @@
                             <div hs.measure.directive               hs.draggable ng-controller="hs.measure.controller"  ng-if="Core.exists('hs.measure.controller')" ng-show="Core.panelVisible('measure', this)"></div>
                             <hs.print                               hs.draggable ng-if="Core.exists('hs.print')" ng-show="Core.panelVisible('print', this)"></hs.print>
                             <div hs.styler.directive                hs.draggable ng-controller="hs.styler.controller"  ng-if="Core.exists('hs.styler.controller')" ng-show="Core.panelVisible('styler', this)"></div>
-                            <div hs.permalink.directive             hs.draggable ng-controller="hs.permalink.controller" ng-if="Core.exists('hs.permalink.controller')" ng-show="Core.panelVisible('permalink', this)"></div>
+                            <hs.permalink                           hs.draggable ng-if="Core.exists('hs.permalink')" ng-show="Core.panelVisible('permalink', this)"></hs.permalink>
                             <div hs.query.directive_infopanel       hs.draggable ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller')" ng-show="Core.panelVisible('info', this)"></div>
                             <div hs.status_creator.directive_panel  hs.draggable ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div>
                             <div hs.language.directive              hs.draggable ng-controller="hs.language.controller" ng-if="Core.exists('hs.language.controller')" ng-show="Core.panelVisible('language', this)"></div>

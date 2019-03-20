@@ -628,8 +628,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                             title: 'Print',
                             description: 'Print map',
                             name: 'print',
-                            directive: 'hs.print.directive',
-                            controller: 'hs.print.controller',
+                            directive: 'hs.print',
                             mdicon: 'print'
                         },
                         {
@@ -638,8 +637,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                             title: 'Share map',
                             description: 'Share map',
                             name: 'permalink',
-                            directive: 'hs.permalink.directive',
-                            controller: 'hs.permalink.controller',
+                            directive: 'hs.permalink',
                             mdicon: 'share'
                         },
                         {

@@ -23,7 +23,7 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'ows_w
             * @ngdoc controller
             * @name hs.ows.controller
             */
-            .controller('hs.ows.controller', ['$scope', '$injector', 'hs.ows.wms.service_capabilities', 'hs.ows.wmts.service_capabilities', 'hs.map.service', 'hs.permalink.service_url', 'Core', 'hs.ows.nonwms.service', 'config', '$rootScope',
+            .controller('hs.ows.controller', ['$scope', '$injector', 'hs.ows.wms.service_capabilities', 'hs.ows.wmts.service_capabilities', 'hs.map.service', 'hs.permalink.urlService', 'Core', 'hs.ows.nonwms.service', 'config', '$rootScope',
                 function($scope, $injector, srv_wms_caps, srv_wmts_caps, OlMap, permalink, Core, nonwmsservice, config, $rootScope) {
                     var map = OlMap.map;
                     if (window.allowWFS2) {

@@ -24,7 +24,7 @@ define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
         * @name hs.trip_planner.service
         * @description Service managing trip planning functions - loading, adding, storing, removing waypoints and calculating route
         */
-        .service("hs.trip_planner.service", ['Core', 'hs.map.service', 'hs.utils.service', '$http', 'hs.permalink.service_url',
+        .service("hs.trip_planner.service", ['Core', 'hs.map.service', 'hs.utils.service', '$http', 'hs.permalink.urlService',
             function(Core, OlMap, utils, $http, permalink) {
                 var me = {
                     waypoints: [],

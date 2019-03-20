@@ -17,7 +17,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                      * @ngdoc controller
                      * @description Service of composition module
                      */
-                    .service('hs.compositions.service', ['$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.service_url', '$compile', '$cookies', 'hs.utils.service',
+                    .service('hs.compositions.service', ['$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.urlService', '$compile', '$cookies', 'hs.utils.service',
                         function ($rootScope, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils) {
                             var me = this;
 

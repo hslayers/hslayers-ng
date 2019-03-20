@@ -72,7 +72,7 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
          * @ngdoc controller
          * @name hs.sidebar.controller
          */
-        .controller('hs.sidebar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window', '$cookies', 'hs.sidebar.service',
+        .controller('hs.sidebar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service',
             function($scope, OlMap, Core, bus, $window, $cookies, service) {
                 $scope.Core = Core;
                 /**

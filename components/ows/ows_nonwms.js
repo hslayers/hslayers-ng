@@ -15,7 +15,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'hs.source.Wfs', 'styles'],
         */
         .service('hs.ows.nonwms.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http',
             function(config, $rootScope, OlMap, styles, utils, $http) {
-                me = this;
+                var me = this;
 
                 /**
                 * Load nonwms OWS data and create layer
