@@ -70,9 +70,9 @@ define(['angular'],
                 }])
 
             /**
-             * @memberof hs.print
+             * @memberof hs.language
              * @ngdoc controller
-             * @name hs.print.controller
+             * @name hs.language.controller
              */
             .controller('hs.language.controller', ['$scope', 'hs.language.service',
                 function ($scope, service) {
