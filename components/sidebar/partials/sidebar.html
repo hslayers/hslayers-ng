@@ -33,7 +33,7 @@
         <span class="sidebar-item-title" translate>Filter features</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar.controller'))" ng-click="setMainPanel('measure', false)" ng-class="{active: Core.mainpanel == 'measure'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar'))" ng-click="setMainPanel('measure', false)" ng-class="{active: Core.mainpanel == 'measure'}">
         <span class="menu-icon icon-design" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Measure distance or area at map'|translate}}"></span>
         <span class="sidebar-item-title" translate>Measurements</span>
     </a>
