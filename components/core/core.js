@@ -156,8 +156,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
              * @ngdoc service
              * @description Core service of HSL and Core module, keeps important app-level settings.
              */
-            .service("Core", ['$rootScope', '$controller', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout',
-                function ($rootScope, $controller, $window, OlMap, gettextCatalog, config, $templateCache, $timeout) {
+            .service("Core", ['$rootScope', '$controller', '$injector', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout',
+                function ($rootScope, $controller, $injector, $window, OlMap, gettextCatalog, config, $templateCache, $timeout) {
                     var me = {
                         /**
                         * @ngdoc property
@@ -440,22 +440,23 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc method
                         * @name Core#exists 
                         * @public
-                        * @param {String} controllerName Controler to test (angular name of controller)
-                        * @returns {Boolean} Controller existence
-                        * @description Test if selected panel controller is defined in application.
+                        * @param {String} name Controler or module name to test e.g. hs.print
+                        * @returns {Boolean} True if controller or module exists
+                        * @description Test if selected panel controller or module is defined in application.
                         */
-                        exists: function (controllerName) {
-                            if (angular.isDefined(me._exist_cache[controllerName])) return true;
-                            if (typeof window[controllerName] == 'function') {
+                        exists: function (name) {
+                            if (angular.isDefined(me._exist_cache[name])) return true;
+                            if (name in $injector.modules) {
+                                me._exist_cache[name] = true;
                                 return true;
                             }
                             try {
-                                $controller(controllerName);
-                                me._exist_cache[controllerName] = true;
+                                $controller(name);
+                                me._exist_cache[name] = true;
                                 return true;
                             } catch (error) {
                                 var t = !(error instanceof TypeError);
-                                if (t) me._exist_cache[controllerName] = true;
+                                if (t) me._exist_cache[name] = true;
                                 return t;
                             }
                         },
