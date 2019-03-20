@@ -15,7 +15,7 @@ define(['angular', 'ol','angular-material', 'ngclipboard'],
                     }
                 };
             })
-            .controller('hs.material.sharemap.controller', ['$scope', 'hs.permalink.service_url', 'hs.permalink.shareService',  
+            .controller('hs.material.sharemap.controller', ['$scope', 'hs.permalink.urlService', 'hs.permalink.shareService',  
                 function($scope, UrlService, ShareService) {
                     $scope.data = ShareService.data;
 

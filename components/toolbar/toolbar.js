@@ -23,7 +23,7 @@ define(['angular', 'map', 'core', 'permalink'],
          * @ngdoc controller
          * @name hs.toolbar.controller
          */
-        .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.service_url', '$window', '$compile',
+        .controller('hs.toolbar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$compile',
             function($scope, OlMap, Core, bus, $window, $compile) {
                 $scope.Core = Core;
                 var collapsed = false;

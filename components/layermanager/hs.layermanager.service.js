@@ -12,11 +12,11 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
             init() {
                 angular.module('hs.layermanager')
                     /**
-     * @module hs.layermanager
-     * @name hs.layermanager.service
-     * @ngdoc service
-     * @description Service for core layers management. Maintain layer management structures and connect layer manager with map.Automatically update manager when layer is added or removed from map.
-     */
+                     * @module hs.layermanager
+                     * @name hs.layermanager.service
+                     * @ngdoc service
+                     * @description Service for core layers management. Maintain layer management structures and connect layer manager with map.Automatically update manager when layer is added or removed from map.
+                     */
                     .service("hs.layermanager.service", ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'config', 'hs.layermanager.WMSTservice',
                         function ($rootScope, OlMap, Core, utils, config, WMST) {
                             var me = {};

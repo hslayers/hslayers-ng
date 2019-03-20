@@ -20,9 +20,9 @@
 	<div hs.lodexplorer.directive           ng-controller="hs.lodexplorer.controller" ng-if="Core.exists('hs.lodexplorer.controller')" ng-show="Core.panelVisible('lodexplorer', this)"></div>
 	<div hs.feature_crossfilter.directive   ng-controller="hs.feature_crossfilter.controller"  ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-show="Core.panelVisible('feature_crossfilter', this)"></div>
 	<div hs.measure.directive               ng-controller="hs.measure.controller"  ng-if="Core.exists('hs.measure.controller')" ng-show="Core.panelVisible('measure', this)"></div>
-	<div hs.print.directive                 ng-controller="hs.print.controller"  ng-if="Core.exists('hs.print.controller')" ng-show="Core.panelVisible('print', this)"></div>
+	<hs.print                 							ng-if="Core.exists('hs.print')" ng-show="Core.panelVisible('print', this)"></hs.print>
 	<div hs.styler.directive                ng-controller="hs.styler.controller"  ng-if="Core.exists('hs.styler.controller')" ng-show="Core.panelVisible('styler', this)"></div>
-	<div hs.permalink.directive             ng-controller="hs.permalink.controller" ng-if="Core.exists('hs.permalink.controller')" ng-show="Core.panelVisible('permalink', this)"></div>
+	<hs.permalink							             	ng-if="Core.exists('hs.permalink')" ng-show="Core.panelVisible('permalink', this)"></hs.permalink>
 	<div hs.query.directive_infopanel       ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller')" ng-show="Core.panelVisible('info', this)"></div>
 	<div hs.status_creator.directive_panel  ng-controller="hs.status_creator.controller" ng-if="Core.exists('hs.status_creator.controller')" ng-show="Core.panelVisible('status_creator', this)"></div>
 	<div hs.routing.directive               ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="Core.panelVisible('routing', this)"></div>

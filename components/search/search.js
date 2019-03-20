@@ -235,7 +235,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
              * @ngdoc controller
              * @name hs.search.controller
              */
-            .controller('hs.search.controller', ['$scope', 'Core', 'hs.search.service', 'hs.permalink.service_url',
+            .controller('hs.search.controller', ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService',
                 function($scope, Core, SearchService, permalink) {
                     $scope.data = SearchService.data;
                     
