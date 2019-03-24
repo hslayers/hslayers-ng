@@ -109,7 +109,7 @@ div.mainpanel:not(.hs-stc-mainpanel) > div.card-body {
 }
 
 .layerpanel {
-    max-height: 350px;
+    max-height: 21.875em;
     overflow-y: auto;
     border: 0;
     margin-bottom: 0;
@@ -137,7 +137,7 @@ ul.hs-lm-mapcontentlist {
 }
 
 li.hs-lm-header {
-    padding: 10px 5px;
+    padding: 0.625em 0.3125em;
 }
 
 #hs-comp-advancedPanel {
@@ -177,53 +177,54 @@ li.hs-lm-item.hovering {
 }
 
 li.hs-lm-item, li.hs-comp-item, li.hs-dr-item {
-    padding: 10px 5px;
+    padding: 0.625em 0.3125em;
     word-wrap: break-word;
     cursor: pointer;
     border-left: 0;
     border-right: 0;
+    min-height: 3.5em;
     /*border-bottom: 0;*/
 }
 
 li.hs-comp-item {
-    min-height: 60px;
-    padding: 5px;
+    min-height: 3.75em;
+    padding:  0.3125em;
 }
 
 .hs-lm-item-status {
     display: inline-block;
     text-align: center;
     vertical-align: top;
-    width: 20px;
+    width: 1.25em;
 }
 
 div.hs-lm-item-title {
     display: inline-block;
-    width: calc(100% - 109px);
+    width: calc(100% - 6.9em);
 }
 
 input.hs-waypoint-name{
     display: inline-block;
-    width: calc(100% - 45px);
+    width: calc(100% - 2.8125em);
 }
 
 div.hs-comp-item-title {
     display: inline-block;
-    width: calc(100% - 59px);
+    width: calc(100% - 3.6875em);
 }
 
 div.hs-lm-item-controls {
     display: inline-block;
     text-align: right;
     vertical-align: top;
-    width: 80px;
+    width: 5em;
 }
 
 div.hs-comp-item-controls {
     display: inline-block;
     text-align: right;
     vertical-align: top;
-    width: 54px;
+    width: 3.375em;
 }
 
 .hs-comp-item-controls > button {
@@ -232,10 +233,10 @@ div.hs-comp-item-controls {
 
 i.hs-lm-warning-scale {
     color: #f0ad4e;
-    padding: 1px 5px;
+    padding: 0.0625em 0.3125em;
     line-height: 1.5;
     font-size: 12px;
-    top: 2px;
+    top: 0.125em;
     cursor: default;
 }
 
@@ -247,7 +248,7 @@ i.hs-lm-warning-error {
 i.hs-lm-queryable {
     cursor: default;
     color: #337ab7;
-    padding: 1px 5px;
+    padding: 0.0625em 0.3125em;
     border: 1px solid #ccc;
     border-radius: 3px;
     line-height: 1.5;
