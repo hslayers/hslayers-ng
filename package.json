@@ -53,7 +53,7 @@
     "angular-gettext": "2.4.x",
     "angular-lazy-image": "^0.3.4",
     "angular-loader": "1.6.x",
-    "angular-material": "^1.1.9",
+    "angular-material": "^1.1.14",
     "angular-material-bottom-sheet-collapsible": "git+https://github.com/SLeitgeb/angular-material-bottom-sheet-collapsible.git#7e22ce4",
     "angular-messages": "^1.6.10",
     "angular-mocks": "1.6.x",
