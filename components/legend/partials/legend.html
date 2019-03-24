@@ -15,8 +15,15 @@
                     <p ng-repeat="category in layer.lyr.getSource().legend_categories | orderBy:'name'"><span style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}</p>
                 </li>
         </ul>
-        <button type="button" class="btn btn-secondary ng-scope" title="{{'Reload'|translate}}" ng-click="refresh()">
-            <i class="glyphicon icon-refresh"></i>
-        </button>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col col-md-2"> 
+                    <button type="button" class="btn btn-light btn-outline ng-scope" title="{{'Reload'|translate}}" ng-click="refresh()">
+                        <i class="glyphicon icon-refresh"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
