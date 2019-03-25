@@ -182,28 +182,29 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'moment'
                              * @function setLayerTime
                              * @memberOf hs.layermanager.WMSTservice
                              * @param {object} currentLayer Selected layer 
+                             * @param {number} dateIncrement Value days, months or years by which to increment start time to reach current selected time in the range control 
                              * @description Update layer time parameter
                              */
-                            me.setLayerTime = function (currentLayer, application_specific_timezone_offset) {
+                            me.setLayerTime = function (currentLayer, dateIncrement) {
                                 if(angular.isUndefined(currentLayer.layer)) return;
                                 var dimensions_time = currentLayer.layer.get('dimensions_time') || currentLayer.layer.dimensions_time;
                                 if(angular.isUndefined(dimensions_time)) return;
                                 var d = moment.utc(dimensions_time.timeInterval[0]);
                                 switch (currentLayer.time_unit) {
                                     case "FullYear":
-                                        d.setFullYear(currentLayer.date_increment);
+                                        d.setFullYear(dateIncrement);
                                         break;
                                     case "Month":
-                                        d.addMonths(currentLayer.date_increment);
+                                        d.addMonths(dateIncrement);
                                         break;
                                     default:
-                                        if (currentLayer.date_increment < currentLayer.min_time) {
-                                            currentLayer.date_increment = currentLayer.min_time;
+                                        if (dateIncrement < currentLayer.min_time) {
+                                            dateIncrement = currentLayer.min_time;
                                         }
-                                        if (currentLayer.date_increment > currentLayer.max_time) {
-                                            currentLayer.date_increment = currentLayer.max_time;
+                                        if (dateIncrement > currentLayer.max_time) {
+                                            dateIncrement = currentLayer.max_time;
                                         }
-                                        d = moment.utc(parseInt(currentLayer.date_increment));
+                                        d = moment.utc(parseInt(dateIncrement));
                                 }
 
                                 currentLayer.time = d.toDate();

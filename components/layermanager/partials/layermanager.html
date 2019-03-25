@@ -86,7 +86,7 @@
                 <!-- Time slider -->
                 <div class="form-group" ng-show="layerIsWmsT(currentLayer)">
                     <label translate>Date</label>
-                    <input type="range" step="{{currentLayer.time_step}}" min="{{currentLayer.min_time}}" max="{{currentLayer.max_time}}" class="form-control" style="width: 100%;height: 21px;" ng-model="currentLayer.date_increment" ng-change="setLayerTime(currentLayer)"/>
+                    <input type="range" step="{{currentLayer.time_step}}" min="{{currentLayer.min_time}}" max="{{currentLayer.max_time}}" class="form-control" style="width: 100%;height: 21px;" ng-model="dateIncrement" ng-change="setLayerTime(currentLayer, dateIncrement)"/>
                     <div class="row">
                         <div class="col-md-4"><small>{{dateToNonUtc(currentLayer.date_from) | date : currentLayer.date_format}}</small></div>
                         <div class="col-md-4"><small><b>{{dateToNonUtc(currentLayer.time) | date : currentLayer.date_format}}</small></b></div>
