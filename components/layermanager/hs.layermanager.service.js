@@ -145,7 +145,6 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                             }
                                         }
                                     }
-                                    if (!$rootScope.$$phase) $rootScope.$digest();
                                 })
                                 //}
 
