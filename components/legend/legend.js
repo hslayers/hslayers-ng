@@ -178,7 +178,6 @@ define(['angular', 'ol', 'map', 'utils'], function (angular, ol) {
                         break;
                     }
                 }
-                if (!$scope.$$phase) $scope.$digest();
             }
 
             if (OlMap.map)
