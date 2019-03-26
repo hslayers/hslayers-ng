@@ -10,6 +10,8 @@ exports.paths = [
   root + '/node_modules/requirejs',
   root + '/node_modules/angular',
   root + '/node_modules/angular-cookies/angular-cookies',
+  root + '/node_modules/angular-update-meta/dist',
+  root + '/node_modules/ng-focus-if',
   root + '/node_modules/angular-socialshare/dist/angular-socialshare',
   root + '/node_modules/angular-material',
   root + '/node_modules/moment-interval/node_modules/moment',

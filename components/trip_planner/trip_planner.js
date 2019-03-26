@@ -2,7 +2,7 @@
  * @namespace hs.trip_planner
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'core', 'ngfocusif'],
+define(['angular', 'ol', 'map', 'core', 'focusIf'],
 
     function(angular, ol) {
         angular.module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
