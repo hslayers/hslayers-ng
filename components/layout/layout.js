@@ -6,7 +6,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
 
     function (angular) {
         // 'material.components.bottomSheetCollapsible'
-        angular.module('hs.layout', ['hs.core', 'hs.map', 'ngMaterial', 'hs.geolocation', 'hs.layermanager'])
+        angular.module('hs.layout', ['hs.core', 'hs.map', 'ngMaterial', 'hs.geolocation', 'hs.layermanager', 'hs.print'])
             /**
             * @memberof hs.mdLayout
             * @ngdoc directive
@@ -549,10 +549,16 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                     link: function (scope, elem) {
                         var name = $parse(elem.attr('panel-creator'))(scope);
                         elem.removeAttr('panel-creator');
-                        elem.attr('ng-controller', name);
                         var dirname = $parse(elem.attr('directive'))(scope);
-                        elem.attr(dirname, '');
-                        $compile(elem)(scope);
+                        if(name){
+                            elem.attr('ng-controller', name);
+                            elem.attr(dirname, '');
+                            $compile(elem)(scope);
+                        } else {
+                            var html = angular.element('<' + dirname +'> </' + dirname +'>');
+                            html.attr('ng-show', elem.attr('ng-show'));
+                            elem.append($compile(html)(scope));
+                        }              
                     }
                 };
             }])
@@ -588,8 +594,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                             title: 'Legend',
                             description: 'Display map legend',
                             name: 'legend',
-                            directive: 'hs.legend.directive',
-                            controller: 'hs.legend.controller',
+                            directive: 'hs.legend',
                             mdicon: 'format_list_bulleted'
                         },
                         {

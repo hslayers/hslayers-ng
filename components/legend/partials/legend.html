@@ -8,17 +8,9 @@
     <div class="card-body">
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
         <ul class="list-group">
-            <li ng-repeat="layer in layers | filter:query" class="list-group-item" ng-show="hasLegend(layer, 'wms')">
+            <li ng-repeat="layer in layerDescriptors | filter:query" class="list-group-item" ng-show="isLegendable(layer)">
                 {{layer.title}}
-                <img ng-repeat="sublayer in layer.sub_layers" ng-src="{{sublayer}}"
-                    onerror=" this.parentNode.removeChild(this); "
-                    onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
-            </li>
-            <li ng-repeat="layer in layers | filter:query" class="list-group-item" ng-show="hasLegend(layer, 'vector')">
-                {{layer.title}}
-                <p ng-repeat="category in layer.lyr.getSource().legend_categories | orderBy:'name'"><span
-                        style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
-                </p>
+                <hs.legend.layer-directive layer="layer"></hs.legend.layer-directive>
             </li>
         </ul>
         <div class="row justify-content-center">
