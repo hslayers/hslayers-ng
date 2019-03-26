@@ -4,7 +4,7 @@
  * @name hs.info
  * @description Module responsible for info application status information window. Contain HS-Layers default info template and its controller. When included, it also updates webpage meta tags with current map information.
  */
-define(['angular', 'map', 'core', 'updateMeta', 'permalink'],
+define(['angular', 'map', 'core', 'update-meta', 'permalink'],
 
     function(angular) {
         angular.module('hs.info', ['hs.map', 'hs.core', 'updateMeta'])

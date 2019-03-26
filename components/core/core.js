@@ -88,8 +88,8 @@ if (require.config) require.config({
         routing: hsl_path + 'components/routing/routing' + hslMin,
         tracking: hsl_path + 'components/tracking/tracking' + hslMin,
         'angular-drag-and-drop-lists': nm_path + 'angular-drag-and-drop-lists/angular-drag-and-drop-lists' + hslMin,
-        'ngfocusif': nm_path + 'ng-focus-if/focusIf' + hslMin,
-        'updateMeta': nm_path + 'angular-update-meta/dist/update-meta' + hslMin,
+        'focusIf': nm_path + 'ng-focus-if/focusIf' + hslMin,
+        'update-meta': nm_path + 'angular-update-meta/dist/update-meta' + hslMin,
         socketio: nm_path + 'socket.io-client/socket.io' + hslMin,
         rtserver: requirejs.s.contexts._.config.paths.rtserver || hsl_path + 'components/rtserver/rtserver' + hslMin,
         config_parsers: hsl_path + 'components/compositions/config_parsers' + hslMin,
@@ -117,7 +117,7 @@ if (require.config) require.config({
         'angular-socialshare': {
             deps: ['angular']
         },
-        'ngfocusif': {
+        'focusIf': {
             deps: ['angular']
         },
         'angular-sanitize': {
@@ -126,7 +126,7 @@ if (require.config) require.config({
         'angular-drag-and-drop-lists': {
             deps: ['angular'],
         },
-        'updateMeta': {
+        'update-meta': {
             deps: ['angular'],
         },
         'angular-gettext': {
