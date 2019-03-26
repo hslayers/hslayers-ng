@@ -923,6 +923,8 @@ ul[dnd-list] > li {
 ul[dnd-list] {
     min-height: 42px;
     padding-left: 0px;
+    margin-left: -23px;
+    margin-right: -20px;
 }
 
 /**
@@ -959,9 +961,12 @@ ul[dnd-list] li {
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
     display: block;
-    padding: 7px 4px;
+    padding-top: 7px;
     margin-bottom: -1px;
     line-height: 1em;
+    padding-left: 3px;
+    padding-right: 2px;
+    padding-bottom: 0px;
 }
 
 /**
