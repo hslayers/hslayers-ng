@@ -12,8 +12,8 @@ if(window.require && window.require.config) window.require.config({
  * @name hs.layermanager
  * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
-define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator', 'styles', 'legend'], 
-    function (angular, map, ol, hsLayermanagerService, hsLayermanagerWMSTservice, hsLayermanagerLayerlistDirective) {
+define(['angular', 'app', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator', 'styles', 'legend'], 
+    function (angular, app, map, ol, hsLayermanagerService, hsLayermanagerWMSTservice, hsLayermanagerLayerlistDirective) {
     angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator', 'hs.styles', 'hs.legend'])
             
         /**
@@ -113,8 +113,8 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
      * @ngdoc controller
      * @description Controller for management of deafult HSLayers layer manager template
      */
-    .controller('hs.layermanager.controller', ['$scope', '$timeout', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
-        function($scope, $timeout, Core, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST, styler, legendService) {
+    .controller('hs.layermanager.controller', ['$scope', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
+        function($scope, Core, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST, styler, legendService) {
             $scope.legendService = legendService;
             $scope.data = LayMan.data;
             $scope.Core = Core;
@@ -405,12 +405,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                     LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
                     LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
                 }
-                var layerPanel = document.getElementsByClassName('layerpanel');
-                var layerNode = document.getElementById('layer' + (path || '') + (index || ''));
-                if(layerPanel.length>0){
-                    layerPanel = layerPanel[0];
-                    layerNode.parentNode.insertBefore(layerPanel, layerNode.nextSibling);
-                }
+                $(".layerpanel").insertAfter(angular.element("#layer" + (path || '') + (index || '')));
                 $scope.legendDescriptors = [];
                 var tmpDescriptor = (layer ? legendService.getLayerLegendDescriptor(layer.layer) : false);
                 if(tmpDescriptor) $scope.legendDescriptors.push(tmpDescriptor);

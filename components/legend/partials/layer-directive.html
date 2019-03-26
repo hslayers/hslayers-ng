@@ -2,7 +2,7 @@
     <img ng-repeat="sublayer in layer.subLayerLegends" ng-if="layer.type == 'wms'" ng-src="{{sublayer}}"
     onerror=" this.parentNode.removeChild(this); "
     onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
-<p ng-repeat="category in layer.lyr.getSource().legend_categories" ng-if="layer.type == 'vector'"><span
+<p ng-repeat="category in layer.lyr.getSource().legend_categories | orderBy:'name'" ng-if="layer.type == 'vector'"><span
         style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
 </p>
 </div>
