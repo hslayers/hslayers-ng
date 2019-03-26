@@ -212,7 +212,7 @@ define(['ol'], function (ol) {
                         }
                     })
             },
-            strategy: function(extent, resolution) {
+            strategy: options.strategy || function(extent, resolution) {
                 var tmp = [extent[0], extent[1], extent[2], extent[3]];
                 if (extent[2] - extent[0] > 65735) {
                     tmp[0] = (extent[2] + extent[0]) / 2.0 - 65735 / 2.0;
