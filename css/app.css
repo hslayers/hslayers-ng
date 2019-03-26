@@ -182,7 +182,7 @@ li.hs-lm-item, li.hs-comp-item, li.hs-dr-item {
     cursor: pointer;
     border-left: 0;
     border-right: 0;
-    min-height: 3.5em;
+    min-height: 3.0em;
     /*border-bottom: 0;*/
 }
 
@@ -200,7 +200,11 @@ li.hs-comp-item {
 
 div.hs-lm-item-title {
     display: inline-block;
-    width: calc(100% - 6.9em);
+    width: calc(100% - 3.9em);
+}
+
+div.hs-lm-item-title.hs-lm-item-warning {
+    width: calc(100% - 5.9em);
 }
 
 input.hs-waypoint-name{
@@ -214,10 +218,11 @@ div.hs-comp-item-title {
 }
 
 div.hs-lm-item-controls {
-    display: inline-block;
+    display: block;
     text-align: right;
-    vertical-align: top;
-    width: 5em;
+    max-width: 5em;
+    height: 1.6em;
+    float: right;
 }
 
 div.hs-comp-item-controls {
@@ -954,8 +959,9 @@ ul[dnd-list] li {
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
     display: block;
-    padding: 10px 15px;
+    padding: 7px 4px;
     margin-bottom: -1px;
+    line-height: 1em;
 }
 
 /**
