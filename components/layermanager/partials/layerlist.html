@@ -8,7 +8,7 @@
                     <span class="icon-chevron-down" ng-show="currentLayer == layer"></span>
                 </span>
             </div>
-            <div class="hs-lm-item-title" ng-class="{'hs-lm-item-warning': layerValid(layer.layer)}" ng-click="toggleCurrentLayer(layer, layer.uid, obj.coded_path)">{{layer.title}} <span class="glyphicon icon-resize-vertical hs-lm-drop-hint"></span></div>
+            <div class="hs-lm-item-title" ng-class="{'hs-lm-item-warning': layerValid(layer.layer)}">{{layer.title}} <span class="glyphicon icon-resize-vertical hs-lm-drop-hint"></span></div>
             <div class="hs-lm-item-controls" ng-hide="layerValid(layer.layer)">
                 <i class="icon-warning-sign hs-lm-warning-scale" title="{{'This layer is not available in this scale'|translate}}" data-toggle="tooltip" data-container="body" data-placement="auto" ng-show="layer.grayed" ng-click="$event.stopPropagation()" ></i>
                 <i class="icon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}" ng-show="isLayerQueryable(layer)" ng-click="$event.stopPropagation()" ></i>
