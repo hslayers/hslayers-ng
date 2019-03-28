@@ -20,7 +20,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
          */
                     .directive('hs.layermanager.layerlistDirective', ['$compile', 'config', function ($compile, config) {
                         return {
-                            templateUrl: hsl_path + 'components/layermanager/partials/layerlist.html?bust=' + gitsha,
+                            templateUrl: config.hsl_path + 'components/layermanager/partials/layerlist.html?bust=' + gitsha,
                             compile: function compile(element) {
                                 var contents = element.contents().remove();
                                 var contentsLinker;

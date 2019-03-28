@@ -158,6 +158,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
              */
             .service("Core", ['$rootScope', '$controller', '$injector', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout',
                 function ($rootScope, $controller, $injector, $window, OlMap, gettextCatalog, config, $templateCache, $timeout) {
+                    if(angular.isUndefined(config.hsl_path) && window.hsl_path) config.hsl_path = hsl_path;
                     var me = {
                         /**
                         * @ngdoc property
