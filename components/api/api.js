@@ -101,5 +101,5 @@ define(['angular', 'ol', 'app', 'map', 'core'],
                 }
             ])
 
-        .run(function(Api) {});
+        .run(['Api', function(Api) {}]);
     })
