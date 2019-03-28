@@ -2,9 +2,9 @@
  * @namespace hs.wirecloud
  * @memberOf hs
  */
-define(['angular', 'app', 'map', 'ol'],
+define(['angular', 'map', 'ol'],
 
-    function(angular, app, map, ol) {
+    function(angular, map, ol) {
         angular.module('hs.wirecloud', ['hs', 'hs.map'])
 
         .service("hs.wirecloud.service", ['$rootScope', 'hs.map.service', 'config',

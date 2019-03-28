@@ -2,9 +2,9 @@
  * @namespace hs.api
  * @memberOf hs
  */
-define(['angular', 'ol', 'app', 'map', 'core'],
+define(['angular', 'ol', 'map', 'core'],
 
-    function(angular, ol, app, map) {
+    function(angular, ol, map) {
         angular.module('hs.api', ['hs', 'hs.map', 'hs.core'])
             .service("Api", ['$rootScope', 'hs.map.service', '$controller', 'Core',
                 function($rootScope, OlMap, $controller, Core) {

@@ -4,9 +4,9 @@
  * @memberOf hs
  */
 
-define(['angular', 'ol', 'app', 'map'],
+define(['angular', 'ol', 'map'],
 
-    function(angular, ol, app, map) {
+    function(angular, ol, map) {
         angular.module('hs.panoramio', ['hs', 'hs.map'])
 
         /**

@@ -4,7 +4,7 @@
  * @name hs.map
  * @description Module containing service and controller for main map object (ol.Map).
  */
-define(['angular', 'app', 'permalink', 'ol'], function (angular, app, permalink, ol) {
+define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
     /**
      * This is a workaround.
      * Returns the associated layer.

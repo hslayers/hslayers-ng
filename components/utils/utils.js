@@ -4,7 +4,7 @@
  * @name hs.utils
  * @description Utility module which contains few utility functions.
  */
-define(['angular', 'app', 'ol'], function (angular, app, ol) {
+define(['angular', 'ol'], function (angular, ol) {
     angular.module('hs.utils', ['hs'])
 
         /**
