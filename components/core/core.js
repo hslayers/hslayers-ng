@@ -471,11 +471,12 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Initialization function for HS layers elements and their sizes. Stores element and container references and sets event listeners for map resizing.
                         */
                         init: function (element, options) {
+                            if(me.initCalled) return;
                             if (angular.isUndefined(options)) options = {};
                             if (angular.isDefined(options.windowedMap)) me.sizeOptions.windowedMap = options.windowedMap;
                             me.sizeOptions.element = element;
-                            if (angular.isDefined(options.innerElement) && $(options.innerElement).length > 0)
-                                me.sizeOptions.innerElement = $(options.innerElement);
+                            if (angular.isDefined(options.innerElement) && document.getElementById(options.innerElement.replace('#', '')))
+                                me.sizeOptions.innerElement = document.getElementById(options.innerElement.replace('#', ''));
 
                             if (angular.isDefined(options.parent)) {
                                 me.sizeOptions.selector = element.parent();
@@ -483,7 +484,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 me.updateElementSize();
                             }
                             else if (angular.isDefined(options.element)) {
-                                me.sizeOptions.selector = $(options.element);
+                                me.sizeOptions.selector = options.element;
                                 me.initSizeListeners();
                                 me.updateElementSize();
                             }
@@ -491,6 +492,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 me.initSizeListeners();
                                 me.updateMapSize();
                             }
+                            me.initCalled = true;
                         },
                         /**
                         * @ngdoc method
@@ -501,7 +503,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         */
                         setSizeByContainer: function (container) {
                             if (container == true) me.sizeOptions.selector = me.sizeOptions.element.parent();
-                            else me.sizeOptions.selector = $(options.element);
+                            else me.sizeOptions.selector = options.element;
                             me.updateElementSize();
                         },
                         /**
@@ -515,8 +517,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         setSizeByCSS: function (height, width) {
                             if (angular.isDefined(me.sizeOptions.selector)) me.sizeOptions.selector = undefined;
                             var element = me.sizeOptions.element;
-                            element.height(height);
-                            element.width(width);
+                            element.style.height = height + 'px';
+                            element.style.width = width + 'px';
                             me.updateMapSize();
                         },
                         /**
@@ -526,8 +528,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application. 
                         */
                         initSizeListeners: function () {
-                            var w = $($window);
-                            w.resize(function () {
+                            var w = $window;
+                            w.addEventListener('resize', function () {
                                 //$timeout(function(){
                                 //    me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                                 //},100);//Hack, height of container was changed badly for no aparent reason
@@ -536,7 +538,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             $rootScope.$on("Core_sizeChanged", function () {
                                 me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                             });
-                            $(function () { //onload checker for cases when bootstrap css change box-sizing property
+                            me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
+                            w.addEventListener("load", function () { //onload checker for cases when bootstrap css change box-sizing property
                                 me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                             });
                         },
@@ -547,10 +550,10 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Update HS element size by its container sizes.
                         */
                         updateElementSize: function () {
-                            var element = me.sizeOptions.element;
-                            var container = me.sizeOptions.selector;
-                            element.height(container.height());
-                            element.width(container.width());
+                            var element = me.sizeOptions.element[0];
+                            var container = me.sizeOptions.selector[0];
+                            element.style.height = container.clientHeight+'px';
+                            element.style.width = container.offsetWidth + 'px';
                             me.updateMapSize();
                         },
                         /**
@@ -560,23 +563,28 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Update map size.
                         */
                         updateMapSize: function () {
-                            var container = angular.isDefined(me.sizeOptions.innerElement) ? me.sizeOptions.innerElement : me.sizeOptions.element;
-                            var map = $("#map");
-                            var sidebarElem = $('.panelspace');
-                            map.height(container.height());
+                            var container = angular.isDefined(me.sizeOptions.innerElement) ? me.sizeOptions.innerElement : me.sizeOptions.element[0];
+                            var map = document.getElementById("map");
+                            if(map == null) return;
+                            var sidebarElem = null;
+                            if(document.getElementsByClassName('panelspace').length>0) 
+                            sidebarElem = document.getElementsByClassName('panelspace')[0];
+                            map.style.height = container.clientHeight+ 'px';
                             if (me.puremapApp) {
-                                map.width(container.width());
+                                map.style.width = container.offsetWidth + 'px';
                             }
-                            else if (container.width() > sidebarElem.outerWidth() || sidebarElem.length === 0) {
-                                map.width(container.width() - sidebarElem.outerWidth());
+                            else if ( sidebarElem == null){
+                                map.style.width = container.offsetWidth + 'px';
+                            } else if( sidebarElem != null && container.offsetWidth > sidebarElem.offsetWidth) {
+                                map.style.width = (container.offsetWidth - sidebarElem.offsetWidth) + 'px';
                             }
                             else {
-                                map.width(0);
+                                map.style.width = 0;
                             }
                             if (angular.isDefined(OlMap.map)) OlMap.map.updateSize();
-                            map.width() < 368 ? me.smallWidth = true : me.smallWidth = false;
+                            map.offsetWidth < 368 ? me.smallWidth = true : me.smallWidth = false;
                             if (!$rootScope.$$phase) $rootScope.$digest();
-                            $rootScope.$broadcast('Core.mapSizeUpdated', {width: map.width(), height: map.height()});
+                            $rootScope.$broadcast('Core.mapSizeUpdated', {width: map.offsetWidth, height: map.innerHeight});
                         },
                         /**
                         * @ngdoc method
@@ -586,9 +594,9 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @description Helper function for single page HS map applications. Not reccomended, used only for compability reasons and might be removed.
                         */
                         fullScreenMap: function (element) {
-                            $("html").css('overflow', 'hidden');
-                            $("html").css('height', '100%');
-                            $('body').css('height', '100%');
+                            document.documentElement.style.overflow = 'hidden';
+                            document.documentElement.style.height = '100%';
+                            document.body.style.height = '100%';
                             me.sizeOptions.element = element;
                             me.sizeOptions.selector = element.parent();
                             me.initSizeListeners();

@@ -56,7 +56,6 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'ows_w
                     * @function connect
                     */
                     $scope.connect = function() {
-                        $('.ows-capabilities').slideDown();
                         switch ($scope.type.toLowerCase()) {
                             case "wms":
                                 srv_wms_caps.requestGetCapabilities($scope.url);
@@ -132,7 +131,6 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'ows_w
                     */
                     $scope.clear = function() {
                         $scope.url = '';
-                        $('.ows-capabilities').slideUp();
                         $scope.showDetails = false;
                     }
 

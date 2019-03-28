@@ -1,16 +1,7 @@
 'use strict';
 
 var hsl_path = '../../';
-var gitsha;
-$.ajax({
-    type: "GET",
-    url: hsl_path + 'gitsha.js',
-    async: false
-}).done(function (response) {
-    gitsha = response
-}).fail(function () {
-    gitsha = Math.random();
-});
+var gitsha = 1;
 
 require.config({
     urlArgs: 'bust=' + gitsha,

@@ -70,9 +70,11 @@ define(['angular', 'ol', 'angular-material'],
                     })
 
                     $scope.getPageSize = function () {
-                        var panel = angular.element('#sidenav-right');
-                        var listItemCount = Math.round((panel.height() - 180) / 60);
-                        $scope.pageSize = listItemCount;
+                        let panel = document.getElementById('sidenav-right');
+                        if(panel) {
+                            var listItemCount = Math.round((panel.clientHeight - 180) / 60);
+                            $scope.pageSize = listItemCount;
+                        }
                     }
 
                     $scope.filterChanged = function () {
@@ -242,7 +244,7 @@ define(['angular', 'ol', 'angular-material'],
                     });
 
                     $scope.getPageSize();
-                    angular.element($window).resize(function () {
+                    $window.addEventListener('resize', function () {
                         $scope.getPageSize();
                     });
                     $scope.$on("Core_sizeChanged", function () {

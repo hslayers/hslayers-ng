@@ -151,8 +151,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             $scope.getPageSize = function () {
                                 let listHeight = screen.height;
                                 if ($mdMedia("gt-sm")) {
-                                    let panel = angular.element('#sidenav-right');
-                                    listHeight = panel.height();
+                                    let panel = document.getElementById('sidenav-right');
+                                    if(panel) listHeight = panel.clientHeight;
                                 }
                                 $scope.pageSize = Math.round((listHeight - 180) / 60);
                             }
@@ -472,7 +472,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             });
 
                             $scope.getPageSize();
-                            angular.element($window).resize(function () {
+                            $window.addEventListener('resize', function () {
                                 $scope.getPageSize();
                             });
                             $scope.$on("Core_sizeChanged", function () {

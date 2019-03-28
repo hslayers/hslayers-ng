@@ -313,7 +313,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @param {string} provider Which provider sent the search results
                      */
                     $scope.searchResultsReceived = function(r) {
-                        $("#searchresults").show();
+                        $scope.searchResultsVisible = true;
                         $scope.clearvisible = true;
                         SearchService.showResultsLayer();
                         if (!$scope.$$phase) $scope.$digest();

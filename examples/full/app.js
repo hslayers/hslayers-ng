@@ -24,7 +24,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
             return {
                 templateUrl: hsl_path + 'hslayers.html',
                 link: function(scope, element) {
-                    Core.fullScreenMap(element);
+                    Core.init(element, {parent: true});
                 }
             };
         }]);

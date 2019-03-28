@@ -154,9 +154,9 @@ define(['angular', 'ol', 'utils'],
                     var query_format = getPreferedFormat(query_formats, ["application/vnd.esri.wmts_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wmts_xml", "text/plain", "text/html"]);
 
                     var tmp = [];
-                    $(service).each(function() {
+                    angular.forEach(service, function() {
                         if (console) console.log("Load service", this);
-                        $(this.Layer).each(function() {
+                        angular.forEach(this.Layer, function() {
                             layer = this;
                             var attributions = [];
                             if (layer.Attribution) {
