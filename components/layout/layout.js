@@ -272,13 +272,20 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                         $scope.fab.unset();
                     });
 
-                    $rootScope.$on('$viewContentLoaded', function () {
-                        $("#loading-logo").remove();
-                    });
+                    var logoCheckedTimes = 0;
+                    function removeLoadingLogo(){
+                        var el = document.getElementById('hs-loading-logo');
+                        if(el) {
+                            el.parentElement.removeChild(el);
+                            $timeout.cancel(logoRemoverTimeout);
+                        }
+                        if(logoCheckedTimes++ > 10)
+                            $timeout.cancel(logoRemoverTimeout);
+                    }
 
-                    $timeout(function() {
-                        $("#loading-logo").remove();
-                    }, 100);
+                    $rootScope.$on('$viewContentLoaded', removeLoadingLogo);
+
+                    var logoRemoverTimeout = $timeout(removeLoadingLogo, 100);
 
                     $scope.leftSidenavOpen = false;
 

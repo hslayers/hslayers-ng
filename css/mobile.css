@@ -349,7 +349,7 @@ body {
     pointer-events: none;
 }
 
-div#loading-logo {
+div#hs-loading-logo {
   display: block;
   position: absolute;
   z-index: 999;

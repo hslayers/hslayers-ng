@@ -167,10 +167,16 @@ define(['angular', 'core'],
                     }
                 });
 
-                $scope.$on('scope_loaded', function() {
-                    // $("#loading-logo")[0].removeChild($("svg")[0]);
-                    $("#loading-logo").remove();
-                });
+                function removeLoadingLogo(){
+                    var el = document.getElementById('hs-loading-logo');
+                    if(el) {
+                        debugger;
+                        el.parentElement.removeChild(el);
+                        $timeout.cancel(logoRemoverTimeout);
+                    }
+                }
+
+                $scope.$on('scope_loaded', removeLoadingLogo);
 
                 $scope.$emit('scope_loaded', "Mobile Settings");
             }
