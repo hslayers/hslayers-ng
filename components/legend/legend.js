@@ -7,7 +7,7 @@ define(['angular', 'ol', 'map', 'utils'], function (angular, ol) {
 
     module.directive('hs.legend.layerDirective', ['config', function (config) {
         return {
-            templateUrl: `${hsl_path}components/legend/partials/layer-directive${config.design || ''}.html?bust=${gitsha}`,
+            templateUrl: `${config.hsl_path}components/legend/partials/layer-directive${config.design || ''}.html`,
             scope: {
                 layer: '=',
             }
@@ -98,7 +98,7 @@ define(['angular', 'ol', 'map', 'utils'], function (angular, ol) {
      */
     module.component('hs.legend', {
         templateUrl: ['config', function (config) {
-            return `${hsl_path}components/legend/partials/legend${config.design || ''}.html?bust=${gitsha}`
+            return `${config.hsl_path}components/legend/partials/legend${config.design || ''}.html`
         }],
         controller: ['$scope', 'hs.map.service', '$rootScope', 'hs.legend.service', function ($scope, OlMap, $rootScope, service) {
             var map;

@@ -12,11 +12,11 @@ define(['angular', 'ol', 'map', 'core', 'utils', 'geolocation'],
             * @memberof hs.draw
             * @description Display draw feature panel in map. Panel contains active layer selector, geometry selector and information editor for new features.
             */
-            .directive('hs.draw.directive', function() {
+            .directive('hs.draw.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/draw/partials/draw.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/draw/partials/draw.html'
                 };
-            })
+            }])
 
         /**
         * @name hs.draw.toolbarButtonDirective
@@ -24,11 +24,11 @@ define(['angular', 'ol', 'map', 'core', 'utils', 'geolocation'],
         * @memberof hs.draw
         * @description Display draw toolbar button in map
         */
-        .directive('hs.draw.toolbarButtonDirective', function() {
+        .directive('hs.draw.toolbarButtonDirective', ['config', function (config) {
             return {
-                templateUrl: hsl_path + 'components/draw/partials/toolbar_button_directive.html?bust=' + gitsha
+                templateUrl: config.hsl_path + 'components/draw/partials/toolbar_button_directive.html'
             };
-        })
+        }])
 
         /**
         * @name hs.draw.controller

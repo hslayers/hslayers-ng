@@ -553,7 +553,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
          */
         module.component('hs.permalink', {
             templateUrl: ['config', function (config) {
-                return `${hsl_path}components/permalink/partials/directive${config.design || ''}.html?bust=${gitsha}`
+                return `${config.hsl_path}components/permalink/partials/directive${config.design || ''}.html`
             }],
             /**
              * @memberof hs.permalink

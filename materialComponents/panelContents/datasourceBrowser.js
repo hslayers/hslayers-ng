@@ -7,14 +7,15 @@ define(['angular', 'ol', 'angular-material'],
     function (angular, ol, ngMaterial) {
         angular.module('hs.material.datasourceBrowser', ['ngMaterial'])
 
-            .directive('hs.material.datasourcebrowser.directive', function () {
+            .directive('hs.material.datasourcebrowser.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/panelContents/datasourceBrowser.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/panelContents/datasourceBrowser.html',
                     link: function (scope, element) {
 
                     }
                 };
-            })
+            }])
+            
             .controller('hs.material.datasourcebrowser.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config', '$mdDialog', function($scope, Core, $compile, utils, $http, DS, config, $mdDialog){
                 $scope.data = DS.data;
                 $scope.DS = DS;
@@ -125,7 +126,7 @@ define(['angular', 'ol', 'angular-material'],
                         escapeToClose: true,
                         scope: $scope,
                         preserveScope: true,  
-                        templateUrl: hsl_path + 'materialComponents/panelContents/datasourceBrowserMetadata.html',
+                        templateUrl: config.hsl_path + 'materialComponents/panelContents/datasourceBrowserMetadata.html',
                         controller: function DialogController($scope, $mdDialog) {
                             $scope.closeDialog = function () {
                                 $mdDialog.hide();

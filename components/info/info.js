@@ -14,12 +14,12 @@ define(['angular', 'map', 'core', 'update-meta', 'permalink'],
              * @ngdoc directive
              * @description Template of info window. Shows mainly current composition status. Also display loading sign when composition is loading. 
              */
-            .directive('hs.info.directive', function() {
+            .directive('hs.info.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/info/partials/info.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/info/partials/info.html'
 
                 };
-            })
+            }])
 
         /**
          * @module info

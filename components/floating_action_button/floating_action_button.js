@@ -22,11 +22,11 @@ define(['angular', 'core'],
             * @name hs.floating_action_button.directive
             * @description TODO
             */
-            .directive('hs.floatingActionButton.directive', function() {
+            .directive('hs.floatingActionButton.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/floating_action_button/partials/floating_action_button.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/floating_action_button/partials/floating_action_button.html'
                 };
-            })
+            }])
 
         /**
         * @memberof hs.floating_action_button

@@ -40,28 +40,28 @@ define(['angular', 'ol', 'utils'],
              * @memberOf hs.ows.wmts
              * @description Directive for displaying warning dialog about resampling (proxying) wmts service
              */
-            .directive('hs.ows.wmts.resampleDialogDirective', function() {
+            .directive('hs.ows.wmts.resampleDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/dialog_proxyconfirm.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
                     link: function(scope, element, attrs) {
                         $('#ows-wmts-resample-dialog').modal('show');
                     }
                 };
-            })
+            }])
             /**
              * @name hs.ows.wmts.capabilitiesErrorDirective
              * @ngdoc directive
              * @memberOf hs.ows.wmts
              * @description Directive for displaying dialog about getCapabilities request error
              */
-            .directive('hs.ows.wmts.capabilitiesErrorDirective', function() {
+            .directive('hs.ows.wmts.capabilitiesErrorDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
                     link: function(scope, element, attrs) {
                         $('#ows-wmts-capabilities-error').modal('show');
                     }
                 };
-            })
+            }])
 
         /**
          * @name hs.ows.wmts.service_capabilities

@@ -50,11 +50,11 @@ define(['angular', 'map', 'core', 'permalink'],
             * @name hs.mobile_toolbar.directive
             * @description TODO
             */
-            .directive('hs.mobileToolbar.directive', function() {
+            .directive('hs.mobileToolbar.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/mobile_toolbar/partials/mobile_toolbar.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/mobile_toolbar/partials/mobile_toolbar.html'
                 };
-            })
+            }])
 
         /**
         * @memberof hs.mobile_toolbar

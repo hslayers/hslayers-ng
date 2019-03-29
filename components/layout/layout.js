@@ -16,7 +16,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
             .directive('hs.layout.directive', ['hs.map.service', 'Core', '$timeout', 'config', '$compile',
                 function (OlMap, Core, $timeout, config, $compile) {
                     return {
-                        templateUrl: config.layout_template || `${hsl_path}components/layout/partials/layout${config.design || ''}.html?bust=${gitsha}`,
+                        templateUrl: config.layout_template || `${config.hsl_path}components/layout/partials/layout${config.design || ''}.html`,
                         link: function (scope, element) {
                             try {
                                 if (angular.module('hs.cesium')) {
@@ -57,7 +57,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
             */
             .directive('hs.mdSidenav.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.sidenav_template || hsl_path + 'components/layout/partials/sidenav.html?bust=' + gitsha
+                    templateUrl: config.sidenav_template || config.hsl_path + 'components/layout/partials/sidenav.html' 
                 };
             }])
 
@@ -70,7 +70,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
             .directive('hs.mdRightPanel.directive', ['config', function (config) {
                 return {
                     replace: true,
-                    templateUrl: config.right_panel_template || hsl_path + 'components/layout/partials/right-panel.html?bust=' + gitsha
+                    templateUrl: config.right_panel_template || config.hsl_path + 'components/layout/partials/right-panel.html'
                 };
             }])
 
@@ -82,13 +82,13 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
             */
             .directive('hs.mdToolbar.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.toolbar_template || hsl_path + 'components/layout/partials/toolbar.html?bust=' + gitsha
+                    templateUrl: config.toolbar_template || config.hsl_path + 'components/layout/partials/toolbar.html'
                 };
             }])
 
             .directive('hs.mdOverlay.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.overlay_template || hsl_path + 'components/layout/partials/overlay.html?bust=' + gitsha,
+                    templateUrl: config.overlay_template || config.hsl_path + 'components/layout/partials/overlay.html',
                     link: (scope, element, attrs) => {
                         element.css("height", element.parent().css("height"));
                         scope.$watch(() => element.parent().css("height"), () => {
@@ -98,11 +98,11 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                 };
             }])
 
-            .directive('hs.swipeArea.directive', function () {
+            .directive('hs.swipeArea.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/layout/partials/swipe-area.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/layout/partials/swipe-area.html'
                 };
-            })
+            }])
 
             .directive('hs.bottomSheetScroll', function () {
                 return {
@@ -339,7 +339,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                         try{
                             var $mdBottomSheetCollapsible = $injector.get('$mdBottomSheetCollapsible');
                             $mdBottomSheetCollapsible.show({
-                                templateUrl: hsl_path + 'components/layout/partials/bottom-sheet.html?bust=' + gitsha,
+                                templateUrl: config.hsl_path + 'components/layout/partials/bottom-sheet.html',
                                 scope: $scope,
                                 parent: "#layout",
                                 preserveScope: true,
@@ -513,7 +513,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                             position: panelPosition,
                             animation: panelAnimation,
                             targetEvent: $event,
-                            templateUrl: `${hsl_path}components/layout/partials/baselayers.html?bust=${gitsha}`,
+                            templateUrl: `${config.hsl_path}components/layout/partials/baselayers.html`,
                             panelClass: 'baselayers-panel md-whiteframe-8dp',
                             scope: this,
                             trapFocus: true,

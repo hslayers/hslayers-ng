@@ -7,14 +7,14 @@ define(['angular', 'ol','angular-material'],
     function(angular, ol, ngMaterial) {
         angular.module('hs.material.layerManager', ['ngMaterial'])
             
-            .directive('hs.material.layermanager.directive', function() {
+            .directive('hs.material.layermanager.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/panelContents/layerManager.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/panelContents/layerManager.html',
                     link: function(scope, element) {
 
                     }
                 };
-            })
+            }])
             .controller('hs.material.layermanager.controller', ['$scope', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog',
                 function($scope, config, OlMap, LayMan, $rootScope, $mdDialog) {
 

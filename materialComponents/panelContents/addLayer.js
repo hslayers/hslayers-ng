@@ -3,19 +3,19 @@ define(['angular', 'ol','angular-material', 'ows_wms'],
     function(angular, ol, ngMaterial) {
         angular.module('hs.material.addLayer', ['ngMaterial', 'hs.ows.wms'])
             
-            .directive('hs.material.addlayer.directive', function() {
+            .directive('hs.material.addlayer.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/panelContents/addLayer.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/panelContents/addLayer.html',
                     link: function(scope, element) {
 
                     }
                 };
-            })
-            .directive('hs.material.addlayerwebservice.directive', function() {
+            }])
+            .directive('hs.material.addlayerwebservice.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/panelContents/addLayerWebservice.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'materialComponents/panelContents/addLayerWebservice.html'
                 };
-            })
+            }])
             .controller('hs.material.addlayerwebservice.controller', ['$scope', 'config', 'hs.ows.wms.service_capabilities', 'hs.ows.wms.addLayerService',
                 function($scope, config, WmsCaps, WmsAdd) {
 

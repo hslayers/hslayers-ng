@@ -202,7 +202,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                     escapeToClose: true,
                                     scope: $scope,
                                     preserveScope: true,
-                                    templateUrl: 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
+                                    templateUrl: config.hsl_path + 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
                                     controller: function DialogController($scope, $mdDialog) {
                                         $scope.closeDialog = function () {
                                             $mdDialog.hide();
@@ -281,7 +281,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                     escapeToClose: true,
                                     scope: $scope,
                                     preserveScope: true,
-                                    templateUrl: 'components/compositions/partials/dialog_sharemd.html',
+                                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_sharemd.html',
                                     controller: function DialogController($scope, $mdDialog) {
                                         $scope.closeDialog = function () {
                                             $mdDialog.hide();
@@ -456,7 +456,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                     escapeToClose: true,
                                     scope: $scope,
                                     preserveScope: true,
-                                    templateUrl: 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
+                                    templateUrl: config.hsl_path + 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
                                     controller: function DialogController($scope, $mdDialog) {
                                         $scope.closeDialog = function () {
                                             $mdDialog.hide();

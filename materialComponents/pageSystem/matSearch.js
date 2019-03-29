@@ -7,14 +7,14 @@ define(['angular', 'ol','angular-material'],
     function(angular, ol, ngMaterial) {
         angular.module('hs.material.search', ['ngMaterial'])
             
-            .directive('hs.material.search.directive', function() {
+            .directive('hs.material.search.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/pageSystem/matSearch.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/matSearch.html',
                     link: function(scope, element) {
 
                     }
                 };
-            })
+            }])
             .controller('hs.material.search.controller', ['$scope', 'hs.search.service', 
                 function($scope, SearchService) {
                     $scope.data = SearchService.data;

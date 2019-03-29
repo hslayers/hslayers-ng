@@ -14,8 +14,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
             */
             .directive('hs.query.directiveInfopanel', ['config', function (config) {
                 return {
-                    templateUrl: config.infopanel_template || `${hsl_path}components/query/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
-                    // templateUrl: config.infopanel_template || `${hsl_path}components/layout/partials/infopanel${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: config.infopanel_template || `${config.hsl_path}components/query/partials/infopanel${config.design || ''}.html`,
+                    // templateUrl: config.infopanel_template || `${config.hsl_path}components/layout/partials/infopanel${config.design || ''}.html`,
                 };
             }])
 
@@ -509,7 +509,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         $mdDialog.show({
                             scope: this,
                             preserveScope: true,
-                            templateUrl: config.infopanel_template || `${hsl_path}components/query/partials/infopanel${config.design || ''}.html`,
+                            templateUrl: config.infopanel_template || `${config.hsl_path}components/query/partials/infopanel${config.design || ''}.html`,
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose: true

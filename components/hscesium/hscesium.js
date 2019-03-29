@@ -236,18 +236,18 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
          * @ngdoc directive
          * @description 
          */
-        .directive('hs.cesium.directive', ['Core', function(Core) {
+        .directive('hs.cesium.directive', ['config', function(config) {
             return {
-                templateUrl: hsl_path + 'components/hscesium/partials/cesium.html?bust=' + gitsha,
+                templateUrl: config.hsl_path + 'components/hscesium/partials/cesium.html',
                 link: function(scope, element) {}
             };
         }])
 
-        .directive('hs.cesium.toolbarButtonDirective', function() {
+        .directive('hs.cesium.toolbarButtonDirective', ['config', function (config) {
             return {
-                templateUrl: hsl_path + 'components/hscesium/partials/toolbar_button_directive.html?bust=' + gitsha
+                templateUrl: config.hsl_path + 'components/hscesium/partials/toolbar_button_directive.html'
             };
-        })
+        }])
 
         /**
          * @module hs.cesium

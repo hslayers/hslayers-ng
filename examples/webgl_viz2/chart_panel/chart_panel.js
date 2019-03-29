@@ -9,7 +9,7 @@ define(['angular', 'ol', 'map', 'd3'],
             }])
             .directive('chartpanel', function() {
                 return {
-                    templateUrl: hsl_path + 'examples/webgl_viz2/chart_panel/partials/template.html',
+                    templateUrl: './partials/template.html',
                     link: function(scope, element) {
                         var link = document.createElement("link");
                         link.type = "text/css";

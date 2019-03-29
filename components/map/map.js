@@ -436,9 +436,9 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
          * @ngdoc directive
          * @description Map directive, for map template (not needed for map itself, but other components which might be displayed in map window, e.g. {@link hs.geolocation.directive geolocation})
          */
-        .directive('hs.map.directive', ['Core', '$compile', function (Core, $compile) {
+        .directive('hs.map.directive', ['config', '$compile', function (config, $compile) {
             return {
-                templateUrl: hsl_path + 'components/map/partials/map.html?bust=' + gitsha,
+                templateUrl: config.hsl_path + 'components/map/partials/map.html',
                 link: function (scope, element, attrs, ctrl) {
                     $(".ol-zoomslider", element).width(28).height(200);
                 }

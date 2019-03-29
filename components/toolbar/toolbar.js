@@ -13,7 +13,7 @@ define(['angular', 'map', 'core', 'permalink'], function (angular) {
      */
     module.component('hs.toolbar', {
         templateUrl: ['config', function(config) {
-            return config.hsl_path + 'components/toolbar/partials/toolbar.html?bust='}
+            return config.hsl_path + 'components/toolbar/partials/toolbar.html'}
         ],
         
         /**

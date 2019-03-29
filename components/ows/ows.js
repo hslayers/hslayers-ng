@@ -15,7 +15,7 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'ows_w
             */
             .directive('hs.ows.directive', ['config', function(config) {
                 return {
-                    templateUrl: `${hsl_path}components/ows/partials/ows${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: `${config.hsl_path}components/ows/partials/ows${config.design || ''}.html`,
                 };
             }])
             /**

@@ -7,9 +7,9 @@ define(['angular', 'ol','angular-material'],
     function(angular, ol, ngMaterial) {
         angular.module('hs.material.bottomToolbar', ['ngMaterial'])
             
-            .directive('hs.material.bottomtoolbar.directive', function() {
+            .directive('hs.material.bottomtoolbar.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/pageSystem/bottomToolbar.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/bottomToolbar.html',
                     link: function(scope, element) {
 
                     }

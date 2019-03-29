@@ -42,9 +42,9 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.material.datasourceBrowser'
         ]);
 
-        module.directive('hs', ['hs.map.service', 'Core', '$timeout', function (OlMap, Core, $timeout) {
+        module.directive('hs', ['config', 'Core', '$timeout', function (config, Core, $timeout) {
             return {
-                templateUrl: hsl_path + 'materialComponents/skeleton.html',
+                templateUrl: config.hsl_path + 'materialComponents/skeleton.html',
                 link: function (scope, element) {
                     Core.init(element, {
                         innerElement: '#map-container'

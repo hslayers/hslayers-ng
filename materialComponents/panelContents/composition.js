@@ -7,16 +7,16 @@ define(['angular', 'ol', 'angular-material'],
     function (angular, ol, ngMaterial) {
         angular.module('hs.material.composition', ['ngMaterial'])
 
-            .directive('hs.material.composition.directive', function () {
+            .directive('hs.material.composition.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/panelContents/composition.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/panelContents/composition.html',
                     link: function (scope, element) {
 
                     }
                 };
-            })
-            .controller('hs.material.composition.controller', ['$scope', 'Core', 'hs.compositions.service', '$window', '$mdDialog',
-                function ($scope, Core, Composition, $window, $mdDialog) {
+            }])
+            .controller('hs.material.composition.controller', ['$scope', 'Core', 'hs.compositions.service', '$window', '$mdDialog', 'config', 
+                function ($scope, Core, Composition, $window, $mdDialog, config) {
                     $scope.data = Composition.data;
                     /**
                     * @ngdoc property
@@ -97,7 +97,7 @@ define(['angular', 'ol', 'angular-material'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
+                            templateUrl: config.hsl_path + 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();
@@ -137,7 +137,7 @@ define(['angular', 'ol', 'angular-material'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: 'materialComponents/panelContents/compositionShareDialog.html',
+                            templateUrl: config.hsl_path + 'materialComponents/panelContents/compositionShareDialog.html',
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();
@@ -228,7 +228,7 @@ define(['angular', 'ol', 'angular-material'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
+                            templateUrl: config.hsl_path + 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();

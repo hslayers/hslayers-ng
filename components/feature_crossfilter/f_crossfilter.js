@@ -32,14 +32,14 @@ define(['angular', 'ol', 'dc', 'map'],
             * @name hs.featureCrossfilter.directive
             * @description TODO
             */
-            .directive('hs.featureCrossfilter.directive', function() {
+            .directive('hs.featureCrossfilter.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/feature_crossfilter/partials/f_crossfilter.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/feature_crossfilter/partials/f_crossfilter.html',
                     link: function(scope, element) {
 
                     }
                 };
-            })
+            }])
         
             /**
             * @memberof hs.feature_crossfilter

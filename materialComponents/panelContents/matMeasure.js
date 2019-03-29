@@ -7,14 +7,14 @@ define(['angular', 'ol','angular-material'],
     function(angular, ol, ngMaterial) {
         angular.module('hs.material.measure', ['ngMaterial'])
             
-            .directive('hs.material.measure.directive', function() {
+            .directive('hs.material.measure.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/panelContents/matMeasure.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/panelContents/matMeasure.html',
                     link: function(scope, element) {
 
                     }
                 };
-            })
+            }])
             .controller('hs.material.measure.controller', ['$scope', 'hs.map.service', 'Core', 'hs.measure.service', 
                 function($scope, OlMap, Core, Measure) {
                     $scope.data = Measure.data;

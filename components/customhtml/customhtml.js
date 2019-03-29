@@ -5,9 +5,9 @@
 define(['angular', 'ol'],
     function(angular, ol) {
         angular.module('hs.customhtml', [])
-            .directive('hs.customhtml.directive', [function() {
+            .directive('hs.customhtml.directive', ['config', function (config) {
                 return {
-                    templateUrl: 'customhtml.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'customhtml.html',
                     link: function link(scope, element, attrs) {},
                     replace: true
                 };

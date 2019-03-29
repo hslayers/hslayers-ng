@@ -12,11 +12,11 @@ define(['angular', 'ol', 'map', 'core', 'focusIf'],
             * @name hs.trip_planner.directive
             * @description Add trip planner panel html template to the map
             */
-            .directive('hs.tripPlanner.directive', function() {
+            .directive('hs.tripPlanner.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/trip_planner/partials/trip_planner.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/trip_planner/partials/trip_planner.html'
                 };
-            })
+            }])
 
         /**
         * @memberof hs.trip_planner
@@ -204,11 +204,11 @@ define(['angular', 'ol', 'map', 'core', 'focusIf'],
         * @name hs.tripPlanner.toolbarButtonDirective
         * @description Add trip planner button html template to the map
         */
-        .directive('hs.tripPlanner.toolbarButtonDirective', function() {
+        .directive('hs.tripPlanner.toolbarButtonDirective', ['config', function (config) {
             return {
-                templateUrl: hsl_path + 'components/trip_planner/partials/toolbar_button_directive.html?bust=' + gitsha
+                templateUrl: config.hsl_path + 'components/trip_planner/partials/toolbar_button_directive.html'
             };
-        })
+        }])
 
         /**
         * @memberof hs.trip_planner

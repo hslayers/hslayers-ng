@@ -9,13 +9,13 @@ define(['angular', 'ol', 'map', 'core', 'styles'],
 
         .directive('hs.senslog.directive', function() {
             return {
-                templateUrl: hsl_path + 'examples/senslog/senslog/partials/directive.html?bust=' + gitsha
+                templateUrl: hsl_path + 'examples/senslog/senslog/partials/directive.html'
             };
         })
 
         .directive('hs.senslog.toolbarButtonDirective', function() {
             return {
-                templateUrl: hsl_path + 'examples/senslog/senslog/partials/toolbar_button_directive.html?bust=' + gitsha
+                templateUrl: hsl_path + 'examples/senslog/senslog/partials/toolbar_button_directive.html'
             };
         })
 

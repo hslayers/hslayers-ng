@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map', 'core'],
          */
         .directive('hs.measure.directive', ['config', function(config) {
             return {
-                templateUrl: `${hsl_path}components/measure/partials/measure${config.design || ''}.html?bust=${gitsha}`,
+                templateUrl: `${config.hsl_path}components/measure/partials/measure${config.design || ''}.html`,
             };
         }])
         /**

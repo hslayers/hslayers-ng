@@ -41,14 +41,14 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
              * @memberOf hs.ows.wms
              * @description Directive for displaying warning dialog about resampling (proxying) wms service
              */
-            .directive('hs.ows.wms.resampleDialogDirective', function() {
+            .directive('hs.ows.wms.resampleDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/dialog_proxyconfirm.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
                     link: function(scope, element, attrs) {
                         $('#ows-wms-resample-dialog').modal('show');
                     }
                 };
-            })
+            }])
             
             /**
              * @name hs.ows.wms.capabilitiesErrorDirective
@@ -56,14 +56,14 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
              * @memberOf hs.ows.wms
              * @description Directive for displaying dialog about getCapabilities request error
              */
-            .directive('hs.ows.wms.capabilitiesErrorDirective', function() {
+            .directive('hs.ows.wms.capabilitiesErrorDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
                     link: function(scope, element, attrs) {
                         $('#ows-wms-capabilities-error').modal('show');
                     }
                 };
-            })
+            }])
 
         /**
          * @class hs.ows.wms.service_capabilities

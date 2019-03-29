@@ -73,11 +73,11 @@ define(['angular', 'ol'],
         * @name hs.styler.directive
         * @description Display styling menu for layer
         */
-        .directive('hs.styler.directive', function() {
+        .directive('hs.styler.directive', ['config', function (config) {
             return {
-                templateUrl: hsl_path + 'components/styles/partials/styler.html?bust=' + gitsha
+                templateUrl: config.hsl_path + 'components/styles/partials/styler.html'
             };
-        })
+        }])
 
         /**
         * @memberof hs.styles
@@ -85,7 +85,7 @@ define(['angular', 'ol'],
         * @name hs.styler.colorDirective
         * @description Display color selector for styling menu
         */
-        .directive('hs.styler.colorDirective', function() {
+        .directive('hs.styler.colorDirective', ['config', function (config) {
             return {
 
                 scope: {
@@ -157,9 +157,9 @@ define(['angular', 'ol'],
                         scope.color = col;
                     }
                 },
-                templateUrl: hsl_path + 'components/styles/partials/color.html?bust=' + gitsha
+                templateUrl: config.hsl_path + 'components/styles/partials/color.html'
             };
-        })
+        }])
 
         /**
         * @memberof hs.styles

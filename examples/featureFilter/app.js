@@ -18,9 +18,9 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'map', 'query', '
             'hs.feature_filter'
         ]);
 
-        module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
+        module.directive('hs', ['config', 'Core', function(config, Core) {
             return {
-                templateUrl: hsl_path + 'hslayers.html',
+                templateUrl: config.hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullScreenMap(element);
                 }

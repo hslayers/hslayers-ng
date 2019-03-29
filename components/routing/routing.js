@@ -13,11 +13,11 @@ define(['angular','ol','s4a','map','core'],
          * @name hs.routing.directive
          * @description Add routing panel html template to the map
          */
-        .directive('hs.routing.directive', function() {
+        .directive('hs.routing.directive', ['config', function (config) {
             return {
-                templateUrl: hsl_path + 'components/routing/partials/routing.html?bust=' + gitsha
+                templateUrl: config.hsl_path + 'components/routing/partials/routing.html'
             };
-        })
+        }])
 
     /**
      * @memberof hs.routing

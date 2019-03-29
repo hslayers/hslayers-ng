@@ -7,14 +7,14 @@ define(['angular', 'ol','angular-material'],
     function(angular, ol, ngMaterial) {
         angular.module('hs.material.mainToolbar', ['ngMaterial'])
             
-            .directive('hs.material.maintoolbar.directive', function() {
+            .directive('hs.material.maintoolbar.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/pageSystem/mainToolbar.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/mainToolbar.html',
                     link: function(scope, element) {
 
                     }
                 };
-            })
+            }])
             .controller('hs.material.mainToolbar.controller', ['$scope', 'config', 'gettext',
                 function($scope, config, gettext) {
                     $scope.buttons = [

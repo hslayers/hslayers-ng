@@ -12,11 +12,11 @@ define(['angular', 'core'],
             * @name hs.mobileSettings.directive
             * @description TODO
             */
-            .directive('hs.mobileSettings.directive', function() {
+            .directive('hs.mobileSettings.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/mobile_settings/partials/mobile_settings.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/mobile_settings/partials/mobile_settings.html'
                 };
-            })
+            }])
 
         /**
         * @memberof hs.mobile_settings

@@ -12,7 +12,7 @@ define(['angular'], function (angular) {
      */
     module.component('hs.print', {
         templateUrl: ['config', function (config) {
-            return `${hsl_path}components/print/partials/printdialog${config.design || ''}.html?bust=${gitsha}`
+            return `${config.hsl_path}components/print/partials/printdialog${config.design || ''}.html`
         }],
         controller: ['$scope', 'hs.print.service', function ($scope, PrintS) {
             angular.extend($scope, {

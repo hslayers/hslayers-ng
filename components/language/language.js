@@ -14,7 +14,7 @@ define(['angular'],
              */
             .directive('hs.language.directive', ['config', function (config) {
                 return {
-                    templateUrl: `${hsl_path}components/language/partials/language${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: `${config.hsl_path}components/language/partials/language${config.design || ''}.html`,
                 };
             }])
 

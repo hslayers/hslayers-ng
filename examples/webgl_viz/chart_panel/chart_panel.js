@@ -7,9 +7,9 @@ define(['angular', 'ol', 'map', 'd3'],
 
                 return me;
             }])
-            .directive('chartpanel', function() {
+            .directive('chartpanel', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'examples/webgl_viz/chart_panel/partials/template.html',
+                    templateUrl: './partials/template.html',
                     link: function(scope, element) {
                         var link = document.createElement("link");
                         link.type = "text/css";
@@ -18,7 +18,7 @@ define(['angular', 'ol', 'map', 'd3'],
                         document.getElementsByTagName("head")[0].appendChild(link);
                     }
                 };
-            })
+            }])
 
         .controller('ChartPanel', ['$scope', 'hs.map.service', 'chart_panel_service',
             function($scope, OlMap, chart_panel_service) {

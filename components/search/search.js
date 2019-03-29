@@ -12,9 +12,9 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
              * @name hs.search.directiveSearchinput
              * @description Add search input template to page, with automatic change event and clear button
              */
-            .directive('hs.search.directiveSearchinput', ['$window', function($window) {
+            .directive('hs.search.directiveSearchinput', ['config', function(config) {
                 return {
-                    templateUrl: hsl_path + 'components/search/partials/searchinput.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/search/partials/searchinput.html',
                     replace: true,
                     link: function(scope, element) {
 
@@ -26,9 +26,9 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                  * @name hs.search.directiveSearchresults
                  * @description Add search results template to page
                  */
-            }]).directive('hs.search.directiveSearchresults', ['$window', function($window) {
+            }]).directive('hs.search.directiveSearchresults', ['config', function(config) {
                 return {
-                    templateUrl: hsl_path + 'components/search/partials/searchresults.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/search/partials/searchresults.html?bust=',
                     replace: true,
                     link: function(scope, element) {
 

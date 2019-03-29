@@ -12,33 +12,33 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              * @memberof hs.status_creator
              * @description Display Save map (composition) dialog
              */
-            .directive('hs.statusCreator.directive', function () {
+            .directive('hs.statusCreator.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/dialog.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/status_creator/partials/dialog.html'
                 };
-            })
+            }])
             /**
              * @ngdoc directive
              * @name hs.statusCreator.directiveForm
              * @memberof hs.status_creator
              * @description Display advanced form to collect information (metadata) about saved composition
              */
-            .directive('hs.statusCreator.directiveForm', function () {
+            .directive('hs.statusCreator.directiveForm', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/form.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/status_creator/partials/form.html'
                 };
-            })
+            }])
             /**
              * @ngdoc directive
              * @name hs.statusCreator.directiveSimpleform
              * @memberof hs.status_creator
              * @description Display simple form to collect information (metadata) about saved composition
              */
-            .directive('hs.statusCreator.directiveSimpleform', function () {
+            .directive('hs.statusCreator.directiveSimpleform', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/simpleform.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/status_creator/partials/simpleform.html'
                 };
-            })
+            }])
             /**
              * @ngdoc directive
              * @name hs.statusCreator.directivePanel
@@ -47,7 +47,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              */
             .directive('hs.statusCreator.directivePanel', ['config', function(config) {
                 return {
-                    templateUrl: `${hsl_path}components/status_creator/partials/panel${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: `${config.hsl_path}components/status_creator/partials/panel${config.design || ''}.html`,
                 };
             }])
             /**
@@ -56,28 +56,28 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              * @memberof hs.status_creator
              * @description Display dialog about result of saving to status manager operation
              */
-            .directive('hs.statusCreator.resultDialogDirective', function () {
+            .directive('hs.statusCreator.resultDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/dialog_result.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/status_creator/partials/dialog_result.html',
                     link: function (scope, element, attrs) {
                         $('#status-creator-result-dialog').modal('show');
                     }
                 };
-            })
+            }])
             /**
              * @ngdoc directive
              * @name hs.statusCreator.saveDialogDirective
              * @memberof hs.status_creator
              * @description Display saving dialog (confirmation of saving, overwriting, selection of name)
              */
-            .directive('hs.statusCreator.saveDialogDirective', function () {
+            .directive('hs.statusCreator.saveDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/status_creator/partials/dialog_save.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/status_creator/partials/dialog_save.html',
                     link: function (scope, element, attrs) {
                         $('#status-creator-save-dialog').modal('show');
                     }
                 };
-            })
+            }])
             /**
              * @ngdoc directive
              * @name hs.statusCreator.focusName

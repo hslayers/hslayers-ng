@@ -11,19 +11,19 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angular-socialshare
 
         .directive('hs.pilsentraffic.directive', function() {
             return {
-                templateUrl: './partials/directive.html?bust=' + gitsha
+                templateUrl: './partials/directive.html'
             };
         })
 
         .directive('hs.pilsentraffic.toolbarButtonDirective', function() {
             return {
-                templateUrl: './partials/toolbar_button_directive.html?bust=' + gitsha
+                templateUrl: './partials/toolbar_button_directive.html'
             };
         })
 
         .directive('hs.pilsentraffic.roadworkInfoDirective', function() {
             return {
-                templateUrl: './partials/roadwork_info.html?bust=' + gitsha,
+                templateUrl: './partials/roadwork_info.html',
                 link: function(scope, element, attrs) {
                     $('#roadwork-info-dialog').modal('show');
                 }
@@ -52,7 +52,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angular-socialshare
             }
             
             return {
-                templateUrl: './partials/legend.html?bust=' + gitsha,
+                templateUrl: './partials/legend.html',
                 link: link
             };
         }])
@@ -78,7 +78,7 @@ define(['angular', 'ol', 'moment', 'map', 'core', 'styles', 'angular-socialshare
             }
             
             return {
-                templateUrl: './partials/help-panel.html?bust=' + gitsha,
+                templateUrl: './partials/help-panel.html',
                 link: link
             };
         })

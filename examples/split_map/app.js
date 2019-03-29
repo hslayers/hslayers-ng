@@ -30,11 +30,10 @@ define(['ol',
         ]);
 
         module.directive(
-            'hs', [
-                'hs.map.service', 'Core',
-                function(OlMap, Core) {
+            'hs', ['config', 'Core',
+                function(config, Core) {
                     return {
-                        templateUrl: hsl_path + 'hslayers.html',
+                        templateUrl: config.hsl_path + 'hslayers.html',
                         link: function(scope, element) {
                             Core.fullScreenMap(element);
                         }

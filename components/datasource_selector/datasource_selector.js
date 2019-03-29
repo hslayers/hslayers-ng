@@ -11,11 +11,11 @@ define(['angular', 'ol', 'map'],
              * @memberOf hs.datasource_selector
              * @description Display Datasource selector panel in app. Panel contains datasource types switcher and loaded list of datas. 
              */
-            .directive('hs.datasourceSelector.directive', function () {
+            .directive('hs.datasourceSelector.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/datasource_selector/partials/datasource_selector.html?bust=' + gitsha
+                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/datasource_selector.html'
                 };
-            })
+            }])
 
             /**
              * @ngdoc directive
@@ -23,14 +23,14 @@ define(['angular', 'ol', 'map'],
              * @memberOf hs.datasource_selector
              * @description Directive for displaying metadata about data source
              */
-            .directive('hs.datasourceSelector.metadataDialogDirective', function () {
+            .directive('hs.datasourceSelector.metadataDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_metadata.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_metadata.html',
                     link: function (scope, element, attrs) {
                         $('#datasource_selector-metadata-dialog').modal('show');
                     }
                 };
-            })
+            }])
 
             /**
              * @ngdoc directive
@@ -38,14 +38,14 @@ define(['angular', 'ol', 'map'],
              * @memberOf hs.datasource_selector
              * @description Directive for displaying extended search parameters for Micka catalogue service
              */
-            .directive('hs.datasourceSelector.advancedMickaDialogDirective', function () {
+            .directive('hs.datasourceSelector.advancedMickaDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_advanced.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_micka_advanced.html',
                     link: function (scope, element, attrs) {
                         $('#ds-advanced-micka').modal('show');
                     }
                 };
-            })
+            }])
 
             /**
              * @ngdoc directive
@@ -53,9 +53,9 @@ define(['angular', 'ol', 'map'],
              * @memberOf hs.datasource_selector
              * @description Directive for displaying suggestions for search parameters for Micka catalogue service
              */
-            .directive('hs.datasourceSelector.suggestionsDialogDirective', function () {
+            .directive('hs.datasourceSelector.suggestionsDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
                     link: function (scope, element, attrs) {
                         $('#ds-suggestions-micka').modal('show');
                         scope.data.suggestionFilter = scope.data.query[scope.data.suggestionConfig.input];
@@ -63,7 +63,7 @@ define(['angular', 'ol', 'map'],
                         scope.DS.suggestionFilterChanged();
                     }
                 };
-            })
+            }])
 
             /**
              * @ngdoc directive
@@ -71,9 +71,9 @@ define(['angular', 'ol', 'map'],
              * @memberOf hs.datasource_selector
              * @description Directive for displaying metadata about data source
              */
-            .directive('hs.datasourceSelector.objectDirective', ['$compile', function ($compile) {
+            .directive('hs.datasourceSelector.objectDirective', ['$compile', 'config', function ($compile, config) {
                 return {
-                    templateUrl: hsl_path + 'components/datasource_selector/partials/object.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/object.html',
                     compile: function compile(element) {
                         var contents = element.contents().remove();
                         var contentsLinker;
@@ -744,7 +744,7 @@ define(['angular', 'ol', 'map'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,
-                            templateUrl: hsl_path + 'materialComponents/panelContents/datasourceBrowserMetadata.html',
+                            templateUrl: config.hsl_path + 'materialComponents/panelContents/datasourceBrowserMetadata.html',
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();

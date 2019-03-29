@@ -13,11 +13,11 @@ define(['angular','ol','s4a','dc','map','core'],
          * @name hs.tracking.directive
          * @description Add tracking panel html template to the map
          */
-        .directive('hs.tracking.directive', function() {
+        .directive('hs.tracking.directive', ['config', function (config) {
             return {
-                templateUrl: hsl_path + 'components/tracking/partials/tracking.html?bust=' + gitsha
+                templateUrl: config.hsl_path + 'components/tracking/partials/tracking.html'
             };
-        })
+        }])
 
     /**
      * @memberof hs.tracking

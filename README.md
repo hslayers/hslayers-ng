@@ -67,11 +67,11 @@ define([ /* List of js files to be loaded. They are both hslayers and third-part
         /* Here goes code to modify the UI for extra functionality */
         module.directive(
             'hs', [
-                'hs.map.service', 'Core',
-                function(OlMap, Core) {
+                'config', 'Core',
+                function(config, Core) {
                     return {
                         /* A different layout of the application can be achieved by changing the main template*/
-                        templateUrl: hsl_path + 'hslayers.html',
+                        templateUrl: config.hsl_path + 'hslayers.html',
                         link: function(scope, element) {
                             Core.fullScreenMap(element);
                         }

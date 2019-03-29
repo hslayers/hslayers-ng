@@ -7,14 +7,14 @@ define(['angular', 'ol','angular-material', 'ngclipboard'],
     function(angular, ol, ngMaterial, ngclipboard) {
         angular.module('hs.material.shareMap', ['ngMaterial'])
             
-            .directive('hs.material.sharemap.directive', function() {
+            .directive('hs.material.sharemap.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/sharemap.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/sharemap.html',
                     link: function(scope, element) {
 
                     }
                 };
-            })
+            }])
             .controller('hs.material.sharemap.controller', ['$scope', 'hs.permalink.urlService', 'hs.permalink.shareService',  
                 function($scope, UrlService, ShareService) {
                     $scope.data = ShareService.data;

@@ -15,25 +15,25 @@ define(['angular', 'ol', 'sidebar', 'toolbar', 'layermanager', 'hs.source.Sparql
             'hs.sidebar'
         ]);
 
-        module.directive('hs', ['hs.map.service', 'Core', function(OlMap, Core) {
+        module.directive('hs', ['config', 'Core', function(config, Core) {
             return {
-                templateUrl: hsl_path + 'hslayers.html',
+                templateUrl: config.hsl_path + 'hslayers.html',
                 link: function(scope, element) {
                     Core.fullScreenMap(element);
                 }
             };
         }])
         
-        .directive('hs.pilsentraffic.roadworkInfoDirective', function() {
+        .directive('hs.pilsentraffic.roadworkInfoDirective', ['config', function (config) {
             return {
-                templateUrl: './roadwork_info.html?bust=' + gitsha,
+                templateUrl: './roadwork_info.html',
                 link: function(scope, element, attrs) {
                     $('#roadwork-info-dialog').modal('show');
                 }
             };
-        }).directive('description', ['$compile', 'hs.utils.service', function($compile, utils) {
+        }]).directive('description', ['$compile', 'hs.utils.service', function($compile, utils) {
             return {
-                templateUrl: './description.html?bust=' + gitsha,
+                templateUrl: './description.html',
                 scope: {
                     object: '=',
                     url: '@'

@@ -7,16 +7,16 @@ define(['angular', 'ol', 'angular-material', 'ngAnimate'],
     function (angular, ol, ngMaterial, ngclipboard) {
         angular.module('hs.material.statusCreator', ['ngMaterial'])
 
-            .directive('hs.material.statuscreator.directive', function () {
+            .directive('hs.material.statuscreator.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/panelContents/statusCreator.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/panelContents/statusCreator.html',
                     link: function (scope, element) {
 
                     }
                 };
-            })
-            .controller('hs.material.statuscreator.controller', ['$scope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'hs.status_creator.managerService', '$mdDialog', 'hs.material.sidepanel.service', 
-                function ($scope, OlMap, Core, status_creator, StatusManager, $mdDialog, Sidenav) {
+            }])
+            .controller('hs.material.statuscreator.controller', ['$scope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'hs.status_creator.managerService', '$mdDialog', 'hs.material.sidepanel.service', 'config',  
+                function ($scope, OlMap, Core, status_creator, StatusManager, $mdDialog, Sidenav, config) {
 
                     $scope.compoData = StatusManager.compoData;
                     $scope.statusData = StatusManager.statusData;
@@ -69,7 +69,7 @@ define(['angular', 'ol', 'angular-material', 'ngAnimate'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: 'materialComponents/panelContents/statusCreatorResultsDialog.html'
+                            templateUrl: config.hsl_path + 'materialComponents/panelContents/statusCreatorResultsDialog.html'
                         });
                     }
                     
@@ -80,7 +80,7 @@ define(['angular', 'ol', 'angular-material', 'ngAnimate'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: 'materialComponents/panelContents/statusCreatorSaveDialog.html'
+                            templateUrl: config.hsl_path + 'materialComponents/panelContents/statusCreatorSaveDialog.html'
                         });
                     }
 

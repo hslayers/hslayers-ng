@@ -23,7 +23,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             */
             .directive('hs.featureFilter.directive', ['config', function(config) {
                 return {
-                    templateUrl: `${hsl_path}components/feature_filter/partials/feature_filter${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: `${config.hsl_path}components/feature_filter/partials/feature_filter${config.design || ''}.html`,
                     link: function(scope, element) {
 
                     }
@@ -38,7 +38,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             */
             .directive('hs.featureList.directive', ['config', function(config) {
                 return {
-                    templateUrl: `${hsl_path}components/feature_filter/partials/feature_list${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: `${config.hsl_path}components/feature_filter/partials/feature_list${config.design || ''}.html`,
                     link: function(scope, element) {
 
                     }
@@ -54,7 +54,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             .directive('hs.featureFilter.element.directive', ['config', '$compile', function(config, $compile) {
                 // console.log($state);
                 return {
-                    // templateUrl: `${hsl_path}components/feature_filter/partials/${$state.type}${config.design || ''}.html?bust=${gitsha}`,
+                    // templateUrl: `${config.hsl_path}components/feature_filter/partials/${$state.type}${config.design || ''}.html`,
                     template: '<ng-include src="getTemplateUrl()"/>',
                     scope: {
                         filter: "="
@@ -65,7 +65,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     // },
                     controller: function($scope) {
                         $scope.getTemplateUrl = function() {
-                            return `${hsl_path}components/feature_filter/partials/${$scope.filter.type}${config.design || ''}.html?bust=${gitsha}`;
+                            return `${config.hsl_path}components/feature_filter/partials/${$scope.filter.type}${config.design || ''}.html`;
                         };
                     },
                     // templateUrl: function(el, attrs) {

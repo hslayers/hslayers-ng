@@ -18,7 +18,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
         var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms', 'hs.compositions.config_parsers'])
             .directive('hs.compositions.directive', ['config', function (config) {
                 return {
-                    templateUrl: `${hsl_path}components/compositions/partials/compositions${config.design || ''}.html?bust=${gitsha}`,
+                    templateUrl: `${config.hsl_path}components/compositions/partials/compositions${config.design || ''}.html`,
                     link: function (scope, element) {
                         if(angular.isUndefined(config.design) || config.design == ''){
                             $('.mid-pane').css('margin-top', '0px');
@@ -33,56 +33,56 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
              * @ngdoc directive
              * @description Display dialog window for situation, when new composition is to be loaded while there are unsaved changes in old composition 
              */
-            .directive('hs.compositions.overwriteDialogDirective', function () {
+            .directive('hs.compositions.overwriteDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html',
                     link: function (scope, element, attrs) {
                         $('#composition-overwrite-dialog').modal('show');
                     }
                 };
-            })
+            }])
             /**
              * @module hs.compositions
              * @name hs.compositions.deleteDialogDirective
              * @ngdoc directive
              * @description Display dialog window for confiriming deletion of selected composition
              */
-            .directive('hs.compositions.deleteDialogDirective', function () {
+            .directive('hs.compositions.deleteDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_delete.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_delete.html',
                     link: function (scope, element, attrs) {
                         $('#composition-delete-dialog').modal('show');
                     }
                 };
-            })
+            }])
             /**
              * @module hs.compositions
              * @name hs.compositions.shareDialogDirective
              * @ngdoc directive
              * @description Display dialog of sharing composition (URL / Social networks)
              */
-            .directive('hs.compositions.shareDialogDirective', function () {
+            .directive('hs.compositions.shareDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_share.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_share.html',
                     link: function (scope, element, attrs) {
                         $('#composition-share-dialog').modal('show');
                     }
                 };
-            })
+            }])
             /**
              * @module hs.compositions
              * @name hs.compositions.infoDialogDirective
              * @ngdoc directive
              * @description Display dialog of composition info (name, abstract, thumbnail, extent, layers)
              */
-            .directive('hs.compositions.infoDialogDirective', function () {
+            .directive('hs.compositions.infoDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/compositions/partials/dialog_info.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_info.html',
                     link: function (scope, element, attrs) {
                         $('#composition-info-dialog').modal('show');
                     }
                 };
-            })
+            }])
 
         hsCompositionsServiceParser.init();
         hsCompositionsService.init();

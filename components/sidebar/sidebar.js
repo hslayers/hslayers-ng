@@ -19,9 +19,9 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
              * @name hs.sidebar.directive
              * @description Add sidebar template to app, listeners for sidebar width changes are embed in directive
              */
-            .directive('hs.sidebar.directive', ['$compile', function($compile) {
+            .directive('hs.sidebar.directive', ['$compile', 'config', function($compile, config) {
                 return {
-                    templateUrl: hsl_path + 'components/sidebar/partials/sidebar.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/sidebar/partials/sidebar.html',
                     link: function(scope, element, attrs) {
                         if (angular.isDefined(scope.Core.config.createExtraMenu))
                             scope.Core.config.createExtraMenu($compile, scope, element);
@@ -46,9 +46,9 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
              * @name hs.sidebar.directive
              * @description Add sidebar template to app, listeners for sidebar width changes are embed in directive
              */
-            .directive('hs.minisidebar.directive', ['$compile', function($compile) {
+            .directive('hs.minisidebar.directive', ['$compile', 'config', function($compile, config) {
                 return {
-                    templateUrl: hsl_path + 'components/sidebar/partials/minisidebar.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/sidebar/partials/minisidebar.html',
                     link: function(scope, element, attrs) {
                         if (angular.isDefined(scope.Core.config.createExtraMenu))
                             scope.Core.config.createExtraMenu($compile, scope, element);

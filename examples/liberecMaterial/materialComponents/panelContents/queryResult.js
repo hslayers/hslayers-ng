@@ -7,14 +7,14 @@ define(['angular', 'ol', 'angular-material'],
     function (angular, ol, ngMaterial) {
         angular.module('hs.material.query', ['ngMaterial'])
 
-            .directive('hs.material.query.directive', function () {
+            .directive('hs.material.query.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/queryResult.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'examples/liberecMaterial/materialComponents/panelContents/queryResult.html',
                     link: function (scope, element) {
 
                     }
                 };
-            })
+            }])
             .controller('hs.material.query.controller', ['$scope', '$rootScope', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'hs.material.sidepanel.service',
                 function ($scope, $rootScope, OlMap, Base, WMS, Vector, Core, Sidenav) {
 

@@ -41,14 +41,14 @@ define(['angular', 'ol', 'hs.source.Wfs', 'hs.format.WFSCapabilities', 'utils'],
             * @memberOf hs.ows.wfs
             * @description Display GetCapabilities error dialog template
             */
-            .directive('hs.ows.wfs.capabilitiesErrorDirective', function() {
+            .directive('hs.ows.wfs.capabilitiesErrorDirective', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
                     link: function(scope, element, attrs) {
                         $('#ows-wfs-capabilities-error').modal('show');
                     }
                 };
-            })
+            }])
 
         /**
          * @name hs.ows.wfs.service_capabilities

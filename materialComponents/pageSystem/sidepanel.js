@@ -1,23 +1,23 @@
 define(['angular', 'core', 'angular-material'],
     function (angular, core, ngMaterial) {
         angular.module('hs.material.sidepanel', ['hs.core'])
-            .directive('hs.material.sidepanel.panelright.directive', function () {
+            .directive('hs.material.sidepanel.panelright.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/pageSystem/rightPanel.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/rightPanel.html',
                     link: function (scope, element) {
 
                     }
                 };
-            })
+            }])
 
-            .directive('hs.material.sidepanel.panelleft.directive', function () {
+            .directive('hs.material.sidepanel.panelleft.directive', ['config', function (config) {
                 return {
-                    templateUrl: hsl_path + 'materialComponents/pageSystem/leftPanel.html?bust=' + gitsha,
+                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/leftPanel.html',
                     link: function (scope, element) {
 
                     }
                 };
-            })
+            }])
 
             .service('hs.material.sidepanel.service', ['$rootScope', 'config', '$mdSidenav', '$interval', '$compile', 'Core',
             function ($rootScope, config, $mdSidenav, $interval, $compile, Core) {

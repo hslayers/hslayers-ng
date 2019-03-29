@@ -12,9 +12,9 @@ define(['angular', 'ol'],
             * @name hs.geolocation.directive
             * @description Add geolocation tracking panel html template to map, add event listeners through link
             */
-            .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core', function(OlMap, Geolocation, Core) {
+            .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', function(OlMap, Geolocation, Core, config) {
                 return {
-                    templateUrl: Core.isMobile() ? hsl_path + 'components/geolocation/partials/geolocation_cordova.html?bust=' + gitsha : hsl_path + 'components/geolocation/partials/geolocation.html?bust=' + gitsha,
+                    templateUrl: Core.isMobile() ? config.hsl_path + 'components/geolocation/partials/geolocation_cordova.html' : config.hsl_path + 'components/geolocation/partials/geolocation.html',
                     link: function link(scope, element, attrs) {
                         if (!Core.puremapApp) {
                             if (Core.isMobile()) {
