@@ -170,7 +170,6 @@ define(['angular', 'core'],
                 function removeLoadingLogo(){
                     var el = document.getElementById('hs-loading-logo');
                     if(el) {
-                        debugger;
                         el.parentElement.removeChild(el);
                         $timeout.cancel(logoRemoverTimeout);
                     }
