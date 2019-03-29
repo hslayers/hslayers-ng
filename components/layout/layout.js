@@ -32,17 +32,18 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                             });
 
                             //Hack - flex map container was not initialized when map loaded 
-                            var container = $('#map-container');
-
-                            if (container.height() === 0) {
-                                containerCheck();
-                            }
-
-                            function containerCheck() {
-                                $timeout(function () {
-                                    if (container.height() != 0) scope.$emit("Core_sizeChanged");
-                                    else containerCheck();
-                                }, 100);
+                            var container = document.getElementById('map-container');
+                            if(container){
+                                if (container.height() === 0) {
+                                    containerCheck();
+                                }
+    
+                                function containerCheck() {
+                                    $timeout(function () {
+                                        if (container.clientHeight != 0) scope.$emit("Core_sizeChanged");
+                                        else containerCheck();
+                                    }, 100);
+                                }
                             }
                         }
                     };

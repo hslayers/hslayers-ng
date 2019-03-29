@@ -27,7 +27,9 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
                             scope.Core.config.createExtraMenu($compile, scope, element);
                         scope.$watch(
                             function() {
-                                return [scope.Core.sidebarExpanded, $('.panelspace').width()]
+                                var panels = document.getElementsByClassName('panelspace');
+                                var panelSpaceWidth = panels.length > 0 ? panels[0].clientWidth : 0;
+                                return [scope.Core.sidebarExpanded, panelSpaceWidth]
                             },
                             function(value) {
                                 setTimeout(function() {
