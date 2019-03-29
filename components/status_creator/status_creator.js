@@ -429,7 +429,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                      */
                     generateThumbnail: function ($element, localThis) {
                         if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink' || Core.mainpanel == "statusCreator") {
-                            $element.attr("crossOrigin", "Anonymous");
+                            $element.setAttribute("crossOrigin", "Anonymous");
                             OlMap.map.once('postcompose', function (event) {
                                 var myCanvas = document.getElementById('my_canvas_id');
                                 var canvas = event.context.canvas;
@@ -443,13 +443,14 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                                 var ctx2 = canvas2.getContext("2d");
                                 ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
                                 try {
-                                    $element.attr('src', canvas2.toDataURL('image/png'));
+                                    $element.setAttribute('src', canvas2.toDataURL('image/png'));
                                     this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
                                 }
                                 catch (e) {
-                                    $element.attr('src', hsl_path + 'components/status_creator/notAvailable.png');
+                                    $element.setAttribute('src', hsl_path + 'components/status_creator/notAvailable.png');
                                 }
-                                $element.width(width).height(height);
+                                $element.style.width = width + 'px';
+                                $element.style.height = height + 'px';
                             }, localThis);
                             OlMap.map.renderSync();
                         }
@@ -719,13 +720,13 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                     $rootScope.$on('core.mainpanel_changed', function (event) {
                         if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'statusCreator') {
                             me.refresh();
-                            status_creator.generateThumbnail($('#hs-stc-thumbnail'), me.compoData);
+                            status_creator.generateThumbnail(document.getElementById('hs-stc-thumbnail'), me.compoData);
                         }
                     });
 
                     $rootScope.$on('map.extent_changed', function (event) {
                         me.compoData.bbox = me.getCurrentExtent();
-                        status_creator.generateThumbnail($('#hs-stc-thumbnail'), me.compoData);
+                        status_creator.generateThumbnail(document.getElementById('hs-stc-thumbnail'), me.compoData);
                     });
 
                     return me;

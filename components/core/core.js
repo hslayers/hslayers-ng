@@ -11,7 +11,6 @@ if (typeof window.hslMin != 'undefined') {
     else window.hslMin = '';
 }
 else window.hslMin = '';
-if (console) console.log(window.hslMin);
 //Node modules path depends on if hslayers is used as standalone app (second case) or as a library (first case)
 if(typeof hsl_path == 'undefined') hsl_path = './';
 var nm_path = window.nm_path || (hsl_path.indexOf('node_modules') > -1 ? hsl_path.substr(0, hsl_path.indexOf('node_modules') + 13) : hsl_path + 'node_modules/');

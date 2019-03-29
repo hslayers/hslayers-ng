@@ -21,8 +21,14 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
                     templateUrl: `${config.hsl_path}components/compositions/partials/compositions${config.design || ''}.html`,
                     link: function (scope, element) {
                         if(angular.isUndefined(config.design) || config.design == ''){
-                            $('.mid-pane').css('margin-top', '0px');
-                            $(".keywords-panel").hide();
+                            var el = document.getElementsByClassName('mid-pane');
+                            if(el.length > 0){
+                                el[0].style.marginTop = '0px';
+                            }
+                            var el = document.getElementsByClassName('keywords-panel');
+                            if(el.length > 0){
+                                el[0].style.display = 'none';
+                            }
                         }
                     }
                 };

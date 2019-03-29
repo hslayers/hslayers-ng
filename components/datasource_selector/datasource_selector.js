@@ -555,7 +555,7 @@ define(['angular', 'ol', 'map'],
                         OlMap.map.on('pointermove', function (evt) {
                             var features = extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                             var something_done = false;
-                            $(extentLayer.getSource().getFeatures()).each(function () {
+                            angular.forEach(extentLayer.getSource().getFeatures(), function () {
                                 if (this.get("record").highlighted) {
                                     this.get("record").highlighted = false;
                                     something_done = true;

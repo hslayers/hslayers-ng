@@ -417,7 +417,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                      */
                     generateThumbnail: function ($element) {
                         if (Core.mainpanel == 'status_creator' || Core.mainpanel == 'permalink' || Core.mainpanel == 'shareMap') {
-                            $element.attr("crossOrigin", "Anonymous");
+                            $element.setAttribute("crossOrigin", "Anonymous");
                             OlMap.map.once('postcompose', function (event) {
                                 var myCanvas = document.getElementById('my_canvas_id');
                                 var canvas = event.context.canvas;
@@ -431,13 +431,14 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                                 var ctx2 = canvas2.getContext("2d");
                                 ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
                                 try {
-                                    $element.attr('src', canvas2.toDataURL('image/png'));
+                                    $element.setAttribute('src', canvas2.toDataURL('image/png'));
                                     this.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
                                 }
                                 catch (e) {
-                                    $element.attr('src', hsl_path + 'components/status_creator/notAvailable.png');
+                                    $element.setAttribute('src', hsl_path + 'components/status_creator/notAvailable.png');
                                 }
-                                $element.width(width).height(height);
+                                $element.style.width = width + 'px';
+                                $element.style.height = height + 'px';
                             }, me);
                             OlMap.map.renderSync();
                         }
