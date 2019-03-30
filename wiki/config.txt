@@ -249,7 +249,7 @@ String. Set this to 'md' to use Material Design instead of Bootstrap
 
 Boolean parameter to specify if panels can be dragged out of sidepanel.
 
-**import_css**
+**importCss**
 
 Boolean parameter True by default to specify if to import css files (openlayers.css, bootstrap.min.css, icon fonts). 
 Set this to false for webpack usage where css is imported/required specifically outside hsl.
