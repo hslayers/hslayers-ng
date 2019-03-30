@@ -1,4 +1,4 @@
-if(require.config) require.config({
+if(window.require && window.require.config) window.require.config({
     paths: {
         'hs.compositions.service_parser': hsl_path + 'components/compositions/hs.compositions.service_parser' + hslMin,
         'hs.compositions.service': hsl_path + 'components/compositions/hs.compositions.service' + hslMin,

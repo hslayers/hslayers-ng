@@ -1,4 +1,4 @@
-if(require.config) require.config({
+if(window.require && window.require.config) window.require.config({
     paths: {
         'hs.layermanager.layerlistDirective': hsl_path + 'components/layermanager/hs.layermanager.layerlistDirective' + hslMin,
         'hs.layermanager.service': hsl_path + 'components/layermanager/hs.layermanager.service' + hslMin,

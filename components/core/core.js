@@ -19,7 +19,7 @@ might be accessible as static files eg. http://localhost/jquery/dist.js.
 In that case we have hsl_path 'hslayers-ng/' eg. http://localhost/hslayers/
 */
 if (hsl_path == 'hslayers-ng/') nm_path = './';
-if (require.config) require.config({
+if (window.require && window.require.config) window.require.config({
     paths: {
         'ngAnimate': nm_path + 'angular-animate/angular-animate' + hslMin,
         'ngAria': nm_path + 'angular-aria/angular-aria' + hslMin,
