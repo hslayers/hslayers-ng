@@ -76,8 +76,7 @@ define(['angular', 'map', 'core', 'permalink'],
                  * @description TODO
                  */
                 $scope.setMainPanel = function(which) {
-                    Core.setMainPanel(which, false);
-                    if (!$scope.$$phase) $scope.$digest();
+                    $timeout(function() { Core.setMainPanel(which, false); })
                 }
 
                 $scope.togglePanelspace = service.togglePanelspace;

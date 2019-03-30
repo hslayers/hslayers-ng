@@ -85,8 +85,7 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
                  * @param {boolean} queryable 
                  */
                 $scope.setMainPanel = function(which, queryable) {
-                    Core.setMainPanel(which, true, queryable);
-                    if (!$scope.$$phase) $scope.$digest();
+                    $timeout(function() { Core.setMainPanel(which, true, queryable); })
                 }
 
                 if (bus.getParamValue('hs_panel')) {
