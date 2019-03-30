@@ -299,7 +299,12 @@ define(['angular', 'ol', 'utils'],
                         $scope.currentLayer = null;
                     } else {
                         $scope.currentLayer = layer;
-                        $(".wmtslayerpanel").insertAfter($("#wmtslayer-" + index));
+                        var wmtsLayerPanel = document.getElementsByClassName('wmtslayerpanel');
+                        var layerNode = document.getElementById('wmtslayer-' + index);
+                        if(wmtsLayerPanel.length>0){
+                            wmtsLayerPanel = wmtsLayerPanel[0];
+                            layerNode.parentNode.insertBefore(wmtsLayerPanel, layerNode.nextSibling);
+                        }
                     }
                     return false;
                 }
