@@ -1,4 +1,11 @@
-<link rel="stylesheet" ng-href="{{Core.getNmPath()}}bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" ng-if="import_css" ng-href="{{Core.getNmPath()}}bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" ng-if="import_css" ng-href="{{Core.getNmPath()}}/openlayers/css/ol.css" type="text/css">
+<!-- Compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css"> -->
+<link rel="stylesheet" type="text/css" ng-href="{{hsl_path}}css/mobile.css" ng-if="import_css && !!window.cordova">
+<link rel="stylesheet" ng-if="import_css" ng-href="{{hsl_path}}css/app.css"/>
+<link rel="stylesheet" ng-if="import_css" ng-href="{{hsl_path}}css/whhg-font/css/whhg.css"/>
+
 <div id="page-wrapper">
     <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight && !Core.puremapApp, 'sb-left': !Core.sidebarRight && !Core.puremapApp, 'classic-sidebar': Core.classicSidebar, 'mini-sidebar': !Core.classicSidebar}">
         <div class="page-content">

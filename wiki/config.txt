@@ -249,6 +249,11 @@ String. Set this to 'md' to use Material Design instead of Bootstrap
 
 Boolean parameter to specify if panels can be dragged out of sidepanel.
 
+**import_css**
+
+Boolean parameter True by default to specify if to import css files (openlayers.css, bootstrap.min.css, icon fonts). 
+Set this to false for webpack usage where css is imported/required specifically outside hsl.
+
 **infopanel_template**
 
 Path to infopanel (getfeatureinfo) results template if an override of default template is needed. By default its ${hsl_path}components/query/partials/infopanel${config.design || ''}.html
@@ -329,6 +334,10 @@ DEPRECATED. Array of layers to be crossfilterable. Each element is an object whi
     attributes: ["http://gis.zcu.cz/poi#category_osm"]
 }] 
 ```
+
+** hsl_path **
+
+Path of hslayers-ng to load templates from and require js files using requirejs. If a global variable hsl_path is set, then it is copied automatically to config.hsl_path.
 
 **paths**
 
