@@ -412,7 +412,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                      * @memberof permalink.shareService
                      * @function generateThumbnail
                      * @public
-                     * @params {Object} $element
+                     * @params {Object} $element DOM img element where to place the thumbnail
                      * @description Generate thumbnail of current map and save it to variable and selected element
                      */
                     generateThumbnail: function ($element) {
@@ -521,7 +521,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                 $rootScope.$on('core.mainpanel_changed', function (event) {
                     if (Core.mainpanel == 'permalink') {
                         OlMap.map.once('postrender', function () {
-                            me.generateThumbnail($('#hs-permalink-thumbnail'));
+                            me.generateThumbnail(document.getElementById('hs-permalink-thumbnail'));
                         });
                     }
                 });
@@ -529,7 +529,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
 
                 $rootScope.$on('map.extent_changed', function (event) {
                     OlMap.map.once('postrender', function () {
-                        me.generateThumbnail($('#hs-permalink-thumbnail'));
+                        me.generateThumbnail(document.getElementById('hs-permalink-thumbnail'));
                     });
 
                 });
