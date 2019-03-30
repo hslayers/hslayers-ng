@@ -62,8 +62,8 @@ define(['angular', 'map', 'core', 'permalink'],
         * @name hs.mobile_toolbar.controller
         * @description TODO
         */
-        .controller('hs.mobile_toolbar.controller', ['$scope', 'hs.mobile_toolbar.service', 'Core', '$window',
-            function($scope, service, Core, $window) {
+        .controller('hs.mobile_toolbar.controller', ['$scope', '$timeout', 'hs.mobile_toolbar.service', 'Core', '$window',
+            function($scope, $timeout, service, Core, $window) {
                 $scope.Core = Core;
                 $scope.Core.sidebarRight = false;
                 $scope.Core.sidebarExpanded = service.panelspace0pened;

@@ -74,8 +74,8 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
          * @ngdoc controller
          * @name hs.sidebar.controller
          */
-        .controller('hs.sidebar.controller', ['$scope', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service',
-            function($scope, OlMap, Core, bus, $window, $cookies, service) {
+        .controller('hs.sidebar.controller', ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service',
+            function($scope, $timeout, OlMap, Core, bus, $window, $cookies, service) {
                 $scope.Core = Core;
                 /**
                  * Set current active panel in sidebar
