@@ -142,12 +142,13 @@ define(['angular', 'map', 'core', 'update-meta', 'permalink'],
                 });
 
                 $scope.$on('core.map_reset', function(event) {
-                    delete $scope.composition_title;
-                    delete $scope.composition_abstract;
-                    $scope.layer_loading.length = 0;
-                    $scope.composition_loaded = true;
-                    $scope.composition_edited = false;
-                    if (!$scope.$$phase) $scope.$digest();
+                    $timeout(function(){
+                        delete $scope.composition_title;
+                        delete $scope.composition_abstract;
+                        $scope.layer_loading.length = 0;
+                        $scope.composition_loaded = true;
+                        $scope.composition_edited = false;
+                    })
                 });
 
                 /**

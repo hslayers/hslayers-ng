@@ -21,8 +21,8 @@ define(['angular', 'map', 'core', 'permalink'], function (angular) {
          * @ngdoc controller
          * @name hs.toolbar.controller
          */
-        controller: ['$scope', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$compile',
-            function ($scope, OlMap, Core, bus, $window, $compile) {
+        controller: ['$scope', 'Core', '$timeout',
+            function ($scope, Core, $timeout) {
                 var collapsed = false;
 
                 angular.extend($scope, {
@@ -77,9 +77,10 @@ define(['angular', 'map', 'core', 'permalink'], function (angular) {
 
 
                 $scope.$on('core.map_reset', function (event) {
-                    delete $scope.composition_title;
-                    delete $scope.composition_abstract;
-                    if (!$scope.$$phase) $scope.$digest();
+                    $timeout(function(){
+                        delete $scope.composition_title;
+                        delete $scope.composition_abstract;
+                    })
                 });
 
                 $scope.$emit('scope_loaded', "Toolbar");

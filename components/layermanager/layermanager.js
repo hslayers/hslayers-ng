@@ -113,8 +113,8 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
      * @ngdoc controller
      * @description Controller for management of deafult HSLayers layer manager template
      */
-    .controller('hs.layermanager.controller', ['$scope', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
-        function($scope, Core, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST, styler, legendService) {
+    .controller('hs.layermanager.controller', ['$scope', '$timeout', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
+        function($scope, $timeout, Core, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST, styler, legendService) {
             $scope.legendService = legendService;
             $scope.data = LayMan.data;
             $scope.Core = Core;
@@ -802,8 +802,9 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
             });
 
             $scope.$on('core.map_reset', function (event) {
-                delete $scope.composition_id;
-                if (!$scope.$$phase) $scope.$digest();
+                $timeout(function(){
+                    delete $scope.composition_id;
+                })
             });
 
             function init() {
