@@ -7,7 +7,7 @@ define(['angular', 'ol', 'map', 'utils'], function (angular, ol) {
 
     module.directive('hs.legend.layerDirective', ['config', function (config) {
         return {
-            templateUrl: `${hsl_path}components/legend/partials/layer-directive${config.design || ''}.html?bust=${gitsha}`,
+            templateUrl: `${config.hsl_path}components/legend/partials/layer-directive${config.design || ''}.html`,
             scope: {
                 layer: '=',
             }
