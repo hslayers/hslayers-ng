@@ -405,7 +405,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                     LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
                     LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
                 }
-                var layerPanel = document.getElementsByClassName('layerpanel');	                $(".layerpanel").insertAfter(angular.element("#layer" + (path || '') + (index || '')));
+                var layerPanel = document.getElementsByClassName('layerpanel');
                 var layerNode = document.getElementById('layer' + (path || '') + (index || ''));	
                 if(layerPanel.length>0){	
                     layerPanel = layerPanel[0];	
