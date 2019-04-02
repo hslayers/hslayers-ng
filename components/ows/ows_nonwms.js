@@ -222,43 +222,45 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'hs.source.Wfs', 'styles'],
                 });
                 
                 dragAndDrop.on('addfeatures', function(event) {
-                    var f = new ol.format.GeoJSON();
-                    //TODO Saving to statusmanager should probably be done with statusmanager component throught events
-                    var url = '';
-                    try {
-                        url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
-                    } catch (ex) {}
-                    if (console) console.info(url, config);
-                    var options = {};
-                    options.features = event.features;
-
-                    $http({
-                        url: url,
-                        method: 'POST',
-                        data: JSON.stringify({
-                            project: config.project_name,
-                            title: event.file.name,
-                            request: 'saveData',
-                            dataType: "json",
-                            data: f.writeFeatures(event.features, {
-                                dataProjection: 'EPSG:4326',
-                                featureProjection: OlMap.map.getView().getProjection().getCode()
+                    if(event.features.lenght > 0){
+                        var f = new ol.format.GeoJSON();
+                        //TODO Saving to statusmanager should probably be done with statusmanager component throught events
+                        var url = '';
+                        try {
+                            url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                        } catch (ex) {}
+                        if (console) console.info(url, config);
+                        var options = {};
+                        options.features = event.features;
+    
+                        $http({
+                            url: url,
+                            method: 'POST',
+                            data: JSON.stringify({
+                                project: config.project_name,
+                                title: event.file.name,
+                                request: 'saveData',
+                                dataType: "json",
+                                data: f.writeFeatures(event.features, {
+                                    dataProjection: 'EPSG:4326',
+                                    featureProjection: OlMap.map.getView().getProjection().getCode()
+                                })
                             })
-                        })
-                    }).success(function(j) {
-                        data = {};
-                        data.url = url + "?request=loadData&id=" + j.id;
-                        if (console) console.info(data.url, j);
-                        data.title = event.file.name;
-                        data.projection = event.projection;
-                        var lyr = me.add('geojson', decodeURIComponent(data.url), data.title || 'Layer', '', true, data.projection, options);
-                    }).error(function(e) {
-                        if (console) console.warn(e);
-                        data = {};
-                        data.title = event.file.name;
-                        data.projection = event.projection;
-                        var lyr = me.add('geojson', undefined, data.title || 'Layer', '', true, data.projection, options);
-                    });
+                        }).success(function(j) {
+                            data = {};
+                            data.url = url + "?request=loadData&id=" + j.id;
+                            if (console) console.info(data.url, j);
+                            data.title = event.file.name;
+                            data.projection = event.projection;
+                            var lyr = me.add('geojson', decodeURIComponent(data.url), data.title || 'Layer', '', true, data.projection, options);
+                        }).error(function(e) {
+                            if (console) console.warn(e);
+                            data = {};
+                            data.title = event.file.name;
+                            data.projection = event.projection;
+                            var lyr = me.add('geojson', undefined, data.title || 'Layer', '', true, data.projection, options);
+                        });
+                    }
                 });
             }
         ])

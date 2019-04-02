@@ -83,7 +83,6 @@ define(['angular', 'map', 'core', 'update-meta', 'permalink'],
                         //Composition image (should be glyphicon?)
                         $scope.info_image = 'icon-map';
                     }
-                    if (!$scope.$$phase) $scope.$digest();
                 });
 
                 $scope.$on('compositions.composition_loaded', function(event, data) {

@@ -1,9 +1,12 @@
 <div class="card panel-default mainpanel hs-comp-mainpanel">
-    <div class="card-header" translate>Compositions <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
+    <div class="card-header"><span translate>Compositions</span><span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
         <button type="button" class="close" ng-click="Core.closePanel(this)">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
+        <label class="btn btn-sm btn-secondary btn-file" title="Import composition from a file on device" style="margin-bottom:0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
+            <span class="icon-upload"></span><input type="file" ng-on-change="handleFileSelect($event)" accept=".json" style="display: none;">
+        </label>
     </div>
     <div class="card-body">
         <form id="hs-comp-filter">
@@ -12,28 +15,29 @@
             </div>
 
             <div id="hs-comp-filter" class="form-group">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Sort <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" ng-click="setSortAttribute('bbox')">Bounding box</a></li>
-                        <li><a href="#" ng-click="setSortAttribute('title')">Title</a></li>
-                        <li><a href="#" ng-click="setSortAttribute('date')">Date</a></li>
-                    </ul>
-                </div>
-                
-                <label class="inline">
-                    <input type="checkbox" ng-model="filterByExtent" ng-change='filterChanged()'>
-                    <span translate>Filter by map extent</span>
-                </label>
 
-                <label class="inline">
-                    <input type="checkbox" ng-model="query.editable" ng-change='mineFilterChanged()'>
-                    <span translate>Only mine</span>
-                </label>
-                
-               
+                <div class="input-group">
+                    <div class="btn-group input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"ng-model="filterByExtent" ng-change='filterChanged()'><span translate>Filter
+                                by map extent</span>
+                        </div>
+                        <div class="input-group-text">
+                                <input type="checkbox"  ng-model="query.editable" ng-change='mineFilterChanged()'><span translate>Only mine</span>
+                            </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Sort <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a  class="dropdown-item" ng-click="setSortAttribute('bbox')" href="#">Bounding box</a></li>
+                            <li><a class="dropdown-item" ng-click="setSortAttribute('title')">Title</a></li>
+                            <li><a class="dropdown-item" ng-click="setSortAttribute('date')">Date</a></li>
+                        </ul>                       
+                    </div>
+                </div>
             </div>
 
             <span class="form-group">
