@@ -1,5 +1,5 @@
 <div class="card panel-default mainpanel" id="f_crossfilter_data_panel">
-    <div class="card-header" translate>Filter features
+    <div class="card-header"><translate>Filter features</translate>
          <button type="button" class="close" ng-click="Core.closePanel(this)">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
@@ -9,7 +9,7 @@
         <div class="form-group">
             <img ng-src="{{ajax_loader}}" ng-show="loading"/>
             <div class="filter_charts"  ng-repeat="group in groupings">
-                <translate>Filter by {{group.name}}</translate>
+                <translate>Filter by</translate>&nbsp;{{group.name}}
                 <div id='fc_chart{{group.id}}'></div>
             </div>
         </div>
