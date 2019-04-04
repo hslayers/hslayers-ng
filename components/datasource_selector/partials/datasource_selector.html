@@ -23,7 +23,7 @@
                     data-toggle="tab" ng-click="datasetSelect('ds'+$index)">
                     {{ds.title}}
                     <span ng-show='ds.matched>0'>({{ds.matched}})</span>
-                    <span class="glyphicon icon-refresh icon-spin" ng-show="ds.ajaxReq.readyState != 4"></span>
+                    <span class="glyphicon icon-refresh icon-spin" ng-show="ds.loaded == false"></span>
                 </a>
             </li>
             <li class="nav-item" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources"

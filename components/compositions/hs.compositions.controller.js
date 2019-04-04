@@ -189,7 +189,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             function deleteDialogBootstrap(ev) {
                                 if (!$scope.$$phase) $scope.$digest();
                                 var previousDialog = document.getElementById("composition-delete-dialog");
-                                if(previousDialog)
+                                if (previousDialog)
                                     previousDialog.parentNode.removeChild(previousDialog);
                                 var el = angular.element('<div hs.compositions.delete_dialog_directive></span>');
                                 document.getElementById("hs-dialog-area").appendChild(el[0]);
@@ -269,7 +269,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
 
                             function shareDialogBootstrap($event) {
                                 var previousDialog = document.getElementById("composition-share-dialog")
-                                if(previousDialog)
+                                if (previousDialog)
                                     previousDialog.parentNode.removeChild(previousDialog);
                                 var el = angular.element('<div hs.compositions.share_dialog_directive></div>');
                                 $compile(el)($scope);
@@ -302,17 +302,19 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * @description Load info about composition through service and display composition info dialog
                              */
                             $scope.detailComposition = function (record, $event) {
-                                $scope.info = Composition.getCompositionInfo(record);
-                                if (config.design === 'md')
-                                    infoDialogMD($event);
-                                else
-                                    infoDialogBootstrap();
+                                Composition.getCompositionInfo(record, function (info) {
+                                    $scope.info = info;
+                                    if (config.design === 'md')
+                                        infoDialogMD($event);
+                                    else
+                                        infoDialogBootstrap();
+                                });
                             }
 
                             function infoDialogBootstrap() {
                                 if (!$scope.$$phase) $scope.$digest();
                                 var previousDialog = document.getElementById("composition-info-dialog");
-                                if(previousDialog)
+                                if (previousDialog)
                                     previousDialog.parentNode.removeChild(previousDialog);
                                 var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
                                 document.getElementById("hs-dialog-area").appendChild(el[0]);

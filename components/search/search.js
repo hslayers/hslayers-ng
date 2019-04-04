@@ -4,7 +4,7 @@
  */
 define(['angular', 'ol', 'map', 'permalink', 'styles'],
 
-    function(angular, ol) {
+    function (angular, ol) {
         angular.module('hs.search', ['hs.map', 'hs.styles'])
             /**
              * @memberof hs.search
@@ -12,11 +12,11 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
              * @name hs.search.directiveSearchinput
              * @description Add search input template to page, with automatic change event and clear button
              */
-            .directive('hs.search.directiveSearchinput', ['config', function(config) {
+            .directive('hs.search.directiveSearchinput', ['config', function (config) {
                 return {
                     templateUrl: config.hsl_path + 'components/search/partials/searchinput.html',
                     replace: true,
-                    link: function(scope, element) {
+                    link: function (scope, element) {
 
                     }
                 };
@@ -26,11 +26,11 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                  * @name hs.search.directiveSearchresults
                  * @description Add search results template to page
                  */
-            }]).directive('hs.search.directiveSearchresults', ['config', function(config) {
+            }]).directive('hs.search.directiveSearchresults', ['config', function (config) {
                 return {
                     templateUrl: config.hsl_path + 'components/search/partials/searchresults.html?bust=',
                     replace: true,
-                    link: function(scope, element) {
+                    link: function (scope, element) {
 
                     }
                 };
@@ -40,22 +40,23 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                  * @name hs.search.service
                  * @description Provides geolocation search request from site selected in config (geonames/sdi4apps) and pass response to handler on success
                  */
-            }]).service('hs.search.service', ['$http', 'hs.utils.service', 'config', 'hs.map.service', 'hs.styles.service', '$rootScope',
-                function($http, utils, config, OlMap, Styles, $rootScope) {
+            }]).service('hs.search.service', ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', 'hs.styles.service', '$rootScope',
+                function ($http, $q, utils, config, OlMap, Styles, $rootScope) {
                     this.data = {};
-                    
-                    this.data.providers = {};    
-                    
+
+                    this.data.providers = {};
+
                     var formatWKT = new ol.format.WKT();
-                    
+
                     this.searchResultsLayer = new ol.layer.Vector({
                         title: "Search results",
                         source: new ol.source.Vector({}),
                         style: Styles.pin_white_blue_highlight,
                         show_in_manager: false
                     });
-                    
-                    this.xhr = {};
+
+                    this.canceler = {};
+                    var me = this;
                     /**
                      * @memberof hs.search.service
                      * @function request
@@ -63,34 +64,33 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @params {String} query 
                      * @description Send geolocation request to Geolocation server (based on app config), pass response to results function
                      */
-                    this.request = function(query) {
+                    this.request = function (query) {
                         var url = null;
                         var providers = [];
-                        
+
                         if (angular.isUndefined(config.search_provider))
                             providers = ['geonames'];
-                        else if(typeof config.search_provider == 'string')
+                        else if (typeof config.search_provider == 'string')
                             providers = [config.search_provider]
-                        else if(angular.isObject(config.search_provider)) 
+                        else if (angular.isObject(config.search_provider))
                             providers = config.search_provider;
                         me.cleanResults();
-                        angular.forEach(providers, function(provider){
+                        angular.forEach(providers, function (provider) {
                             if (provider == 'geonames') {
                                 url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
                             } else if (provider == 'sdi4apps_openapi') {
                                 url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
                             }
-                            url = utils.proxify(url);
-                            if (angular.isDefined(me.xhr[provider]) && me.xhr[provider] !== null) me.xhr[provider].abort();
-                            me.xhr[provider] = $.ajax({
-                                url: url,
-                                cache: false,
-                                provider: provider,
-                                success: function(r) {
-                                    me.searchResultsReceived(r, this.provider);
-                                    me.xhr[this.provider] = null
-                                }
-                            });
+                            //url = utils.proxify(url);
+                            if (angular.isDefined(me.canceler[provider])) {
+                                me.canceler[provider].resolve();
+                                delete me.canceler[provider];
+                            }
+                            me.canceler[provider] = $q.defer();
+
+                            $http.get(url, { timeout: me.canceler[provider].promise }).then(function (response) {
+                                me.searchResultsReceived(response.data, provider);
+                            }, function (err) { })
                         })
                     };
                     /**
@@ -101,16 +101,16 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @params {String} providerName Name of request provider 
                      * @description Maintain inner results object and parse response with correct provider parser
                      */
-                    this.searchResultsReceived = function(response, providerName) {
+                    this.searchResultsReceived = function (response, providerName) {
                         if (angular.isUndefined(me.data.providers[providerName]))
-                            me.data.providers[providerName] = {results: [], name: providerName};
+                            me.data.providers[providerName] = { results: [], name: providerName };
                         provider = me.data.providers[providerName];
                         if (providerName == 'geonames') {
                             parseGeonamesResults(response, provider);
                         } else if (providerName == 'sdi4apps_openapi') {
                             parseOpenApiResults(response, provider);
                         }
-                        $rootScope.$broadcast('search.resultsReceived',{layer:me.searchResultsLayer, providers: me.data.providers});
+                        $rootScope.$broadcast('search.resultsReceived', { layer: me.searchResultsLayer, providers: me.data.providers });
                     }
                     /**
                      * @memberof hs.search.service
@@ -118,7 +118,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @public
                      * @description Remove results layer from map
                      */
-                    this.hideResultsLayer = function(){
+                    this.hideResultsLayer = function () {
                         OlMap.map.removeLayer(me.searchResultsLayer);
                     }
                     /**
@@ -127,7 +127,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @public
                      * @description Send geolocation request to Geolocation server (based on app config), pass response to results function
                      */
-                    this.showResultsLayer = function(){
+                    this.showResultsLayer = function () {
                         me.hideResultsLayer();
                         OlMap.map.addLayer(me.searchResultsLayer);
                     }
@@ -137,8 +137,8 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @public
                      * @description Clean all search results from results variable and results layer
                      */
-                    this.cleanResults = function(){
-                        angular.forEach(me.data.providers, function(provider){
+                    this.cleanResults = function () {
+                        angular.forEach(me.data.providers, function (provider) {
                             if (angular.isDefined(provider.results)) provider.results.length = 0;
                         });
                         me.searchResultsLayer.getSource().clear();
@@ -152,12 +152,12 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @params {String} zoomLevel Zoom level to zoom on
                      * @description Move map and zoom on selected search result
                      */
-                    this.selectResult = function(result, zoomLevel){
+                    this.selectResult = function (result, zoomLevel) {
                         var coordinate = getResultCoordinate(result);
                         OlMap.map.getView().setCenter(coordinate);
                         if (angular.isUndefined(zoomLevel)) zoomLevel = 10;
                         OlMap.map.getView().setZoom(zoomLevel);
-                        $rootScope.$broadcast('search.zoom_to_center', {coordinate: ol.proj.transform(coordinate, OlMap.map.getView().getProjection(), 'EPSG:4326'), zoom: zoomLevel});
+                        $rootScope.$broadcast('search.zoom_to_center', { coordinate: ol.proj.transform(coordinate, OlMap.map.getView().getProjection(), 'EPSG:4326'), zoom: zoomLevel });
                     }
                     /**
                      * @memberof hs.search.service
@@ -175,7 +175,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                             return (g_feature.getGeometry().transform('EPSG:4326', OlMap.map.getView().getProjection())).getCoordinates();
                         }
                     }
-                    
+
                     /**
                      * @memberof hs.search.service
                      * @function parseGeonamesResults
@@ -188,9 +188,9 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         provider.results = response.geonames;
                         generateGeonamesFeatures(provider);
                     }
-                    function generateGeonamesFeatures(provider){
+                    function generateGeonamesFeatures(provider) {
                         var src = me.searchResultsLayer.getSource();
-                        angular.forEach(provider.results, function(result) {
+                        angular.forEach(provider.results, function (result) {
                             result.provider_name = provider.name;
                             var feature = new ol.Feature({
                                 geometry: new ol.geom.Point(getResultCoordinate(result)),
@@ -213,9 +213,9 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         provider.results = response.data;
                         generateOpenApiFeatures(provider);
                     }
-                    function generateOpenApiFeatures(provider){
+                    function generateOpenApiFeatures(provider) {
                         var src = me.searchResultsLayer.getSource();
-                        angular.forEach(provider.results, function(result) {
+                        angular.forEach(provider.results, function (result) {
                             var g_feature = formatWKT.readFeature(result.FullGeom.toUpperCase());
                             result.provider_name = provider.name;
                             var feature = new ol.Feature({
@@ -226,7 +226,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                             result.feature = feature;
                         });
                     }
-                    
+
                     var me = this;
                 }
             ])
@@ -236,15 +236,15 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
              * @name hs.search.controller
              */
             .controller('hs.search.controller', ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService',
-                function($scope, Core, SearchService, permalink) {
+                function ($scope, Core, SearchService, permalink) {
                     $scope.data = SearchService.data;
-                    
+
                     /**
                      * Initialization of search state
                      * @memberof hs.search.controller
                      * @function init 
                      */
-                    $scope.init = function() {
+                    $scope.init = function () {
                         $scope.query = "";
                         $scope.clearvisible = false;
                         if (permalink.getParamValue('search')) {
@@ -259,7 +259,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @memberof hs.search.controller
                      * @function queryChanged 
                      */
-                    $scope.queryChanged = function() {
+                    $scope.queryChanged = function () {
                         SearchService.request($scope.query);
                     }
 
@@ -269,7 +269,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @function zoomTo 
                      * @param {object} result Selected result 
                      */
-                    $scope.zoomTo = function(result) {
+                    $scope.zoomTo = function (result) {
                         $scope.fcode_zoom_map = {
                             'PPLA': 12,
                             'PPL': 15,
@@ -290,7 +290,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         if (angular.isDefined(result.fcode) && angular.isDefined($scope.fcode_zoom_map[result.fcode])) {
                             zoom_level = $scope.fcode_zoom_map[result.fcode];
                         }
-                        SearchService.selectResult(result,zoom_level);
+                        SearchService.selectResult(result, zoom_level);
                         $scope.clear();
                     }
 
@@ -299,7 +299,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @memberof hs.search.controller
                      * @function clear 
                      */
-                    $scope.clear = function() {
+                    $scope.clear = function () {
                         $scope.query = '';
                         $scope.clearvisible = false;
                         SearchService.cleanResults();
@@ -312,11 +312,10 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @param {object} response Result of search request
                      * @param {string} provider Which provider sent the search results
                      */
-                    $scope.searchResultsReceived = function(r) {
+                    $scope.searchResultsReceived = function (r) {
                         $scope.searchResultsVisible = true;
                         $scope.clearvisible = true;
                         SearchService.showResultsLayer();
-                        if (!$scope.$$phase) $scope.$digest();
                     }
 
                     /**
@@ -326,19 +325,19 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                      * @param {object} result
                      * @param {string} state
                      */
-                    $scope.highlightResult = function(result, state) {
+                    $scope.highlightResult = function (result, state) {
                         if (angular.isDefined(result.feature))
                             result.feature.set('highlighted', state)
                     }
                     $scope.init();
 
-                    $scope.$on('search.resultsReceived', function(e, r) {
+                    $scope.$on('search.resultsReceived', function (e, r) {
                         $scope.searchResultsReceived(r);
                     });
-                    
-                    $scope.$watch('Core.panelVisible("search")', function(newValue, oldValue) {
+
+                    $scope.$watch('Core.panelVisible("search")', function (newValue, oldValue) {
                         if (newValue !== oldValue && newValue) {
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 $('#search_address').focus();
                             }, 500);
                         }

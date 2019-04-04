@@ -108,9 +108,9 @@ angular.module('gettext').factory('gettextCatalog', function(gettextPlurals, $ht
                 method: 'GET',
                 url: url,
                 cache: catalog.cache
-            }).success(function(data) {
-                for (var lang in data) {
-                    catalog.setStrings(lang, data[lang]);
+            }).then(function(response) {
+                for (var lang in response.data) {
+                    catalog.setStrings(lang, response.data[lang]);
                 }
             });
         }

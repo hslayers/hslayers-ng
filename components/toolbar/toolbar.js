@@ -28,15 +28,8 @@ define(['angular', 'map', 'core', 'permalink'], function (angular) {
                 angular.extend($scope, {
                     Core: Core,
 
-                    /**
-                     * Set current active panel in sidebar
-                     * @memberof hs.toolbar.controller
-                     * @function setMainPanel
-                     * @param {string} which
-                     */
-                    setMainPanel: function (which, by_gui, queryable) {
-                        Core.setMainPanel(which, by_gui, queryable);
-                        if (!$scope.$$phase) $scope.$digest();
+                    measureButtonClicked: function () {
+                        Core.setMainPanel('measure', true, false);
                     },
 
                     /**

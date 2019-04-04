@@ -68,8 +68,6 @@ if (window.require && window.require.config) window.require.config({
         'ows_wfs': hsl_path + 'components/ows/ows_wfs' + hslMin,
         'ows_wms': hsl_path + 'components/ows/ows_wms' + hslMin,
         'ows_wmts': hsl_path + 'components/ows/ows_wmts' + hslMin,
-        'ows_wmsprioritized': hsl_path + 'components/ows/ows_wmsprioritized' + hslMin,
-        panoramio: hsl_path + 'components/layers/panoramio/panoramio' + hslMin,
         permalink: requirejs.s.contexts._.config.paths.permalink || hsl_path + 'components/permalink/permalink' + hslMin,
         print: hsl_path + 'components/print/print' + hslMin,
         query: hsl_path + 'components/query/query' + hslMin,

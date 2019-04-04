@@ -124,22 +124,28 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         me.data.attributes.length = 0;
                         me.data.groups.length = 0;
                         me.data.coordinates.length = 0;
-                        $("#invisible_popup").contents().find('body').html('');
-                        $("#invisible_popup").height(0).width(0);
+                        var invisiblePopup = me.getInvisiblePopup();
+                        invisiblePopup.contentDocument.body.innerHTML = '';
+                        invisiblePopup.style.height = 0;
+                        invisiblePopup.style.width = 0;
                         dataCleared = true;
                     };
 
-                    this.fillIframeAndResize = function ($iframe, response, append) {
+                    this.getInvisiblePopup = function(){
+                        return document.getElementById('invisible_popup');
+                    }
+
+                    this.fillIframeAndResize = function (iframe, response, append) {
                         if (append)
-                            $iframe.contents().find('body').append(response);
+                            invisiblePopup.contentDocument.body.appendChild(response);
                         else
-                            $iframe.contents().find('body').html(response);
-                        var tmp_width = $iframe.contents().innerWidth();
-                        if (tmp_width > $("#map").width() - 60) tmp_width = $("#map").width() - 60;
-                        $iframe.width(tmp_width);
-                        var tmp_height = $iframe.contents().innerHeight();
+                        invisiblePopup.contentDocument.body.innerHTML = response;
+                        var tmp_width = invisiblePopup.contentDocument.innerWidth;
+                        if (tmp_width > document.getElementById("map").clientWidth - 60) tmp_width = document.getElementById("map").clientWidth - 60;
+                        iframe.style.width = tmp_width + 'px';
+                        var tmp_height =  invisiblePopup.contentDocument.innerHeight;
                         if (tmp_height > 700) tmp_height = 700;
-                        $iframe.height(tmp_height);
+                        iframe.style.height = tmp_height + 'px';
                     };
 
                     function getCoordinate(coordinate) {
@@ -199,8 +205,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         me.selector = selector;
                     });
                 }])
-            .service('hs.query.wmsService', ['$rootScope', '$sce', 'hs.query.baseService', 'hs.map.service', 'hs.utils.service', 'Core', 
-                function ($rootScope, $sce, Base, OlMap, utils, Core) {
+            .service('hs.query.wmsService', ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.service', 'hs.utils.service', 'Core', 
+                function ($rootScope, $http, $sce, Base, OlMap, utils, Core) {
                     var me = this;
 
                     var InfoCounter = 0;
@@ -208,17 +214,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     this.request = function (url, infoFormat, coordinate, layer) {
                         var req_url = utils.proxify(url, true);
                         var reqHash = Base.currentQuery;
-                        $.ajax({
-                            url: req_url,
-                            cache: false,
-                            success: function (response) {
-                                if (reqHash != Base.currentQuery) return;
-                                me.featureInfoReceived(response, infoFormat, url, coordinate, layer);
-                            },
-                            error: function () {
-                                if (reqHash != Base.currentQuery) return;
-                                me.featureInfoError(coordinate);
-                            }
+                        $http({ url: req_url }).
+                        then(function (response) {
+                            if (reqHash != Base.currentQuery) return;
+                            me.featureInfoReceived(response.data, infoFormat, url, coordinate, layer);
+                        }, function (err){
+                            if (reqHash != Base.currentQuery) return;
+                            me.featureInfoError(coordinate);
                         });
                     };
 
@@ -324,7 +326,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         }
                         if (infoFormat.indexOf("html") > 0) {
                             if (response.length <= 1) return;
-                            Base.fillIframeAndResize($("#invisible_popup"), response, true);
+                            Base.fillIframeAndResize(Base.getInvisiblePopup(), response, true);
                             if (layer.get('popupClass') != undefined ) Base.popupClassname = "ol-popup " + layer.get('popupClass');
                         }
                         infoCounter--;
@@ -334,7 +336,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     };
 
                     function queriesCollected(coordinate) {
-                        if (Base.data.groups.length > 0 || $("#invisible_popup").contents().find('body').html().length > 30) {
+                        var invisiblePopup = Base.getInvisiblePopup();
+                        if (Base.data.groups.length > 0 || invisiblePopup.contentDocument.body.innerHTML.length > 30) {
                             $rootScope.$broadcast('queryWmsResult',coordinate);
                         }
                     }
@@ -494,8 +497,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         $rootScope.$broadcast('queryVectorResult');
                     }
                 }])
-            .controller('hs.query.controller', ['$scope', '$rootScope', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', '$mdDialog', '$mdToast',
-                function ($scope, $rootScope ,OlMap, Base, WMS, Vector, Core, config, $mdDialog, $mdToast) {
+            .controller('hs.query.controller', ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', '$mdDialog', '$mdToast',
+                function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config, $mdDialog, $mdToast) {
                     var popup = new ol.Overlay.Popup();
 
                     if (OlMap.map) 
@@ -547,13 +550,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                             });
 
                             $scope.deregisterWmsQuery = $scope.$on('queryWmsResult', function(e,coordinate) {
-                                if ($("#invisible_popup").contents().find('body').children().not('style,title,meta').length > 0) {
-                                    if (Base.popupClassname.length > 0 ) popup.getElement().className = Base.popupClassname;
-                                    else popup.getElement().className = "ol-popup";
-                                    popup.show(coordinate, $("#invisible_popup").contents().find('body').html());
-                                    $rootScope.$broadcast('popupOpened','hs.query');
-                                }
-                                if (!$scope.$$phase) $scope.$digest();
+                                $timeout(function(){
+                                    var invisiblePopup = Base.getInvisiblePopup();
+                                    if (invisiblePopup.contentDocument.body.children.length > 0) { //TODO: dont count style, title, meta towards length
+                                        if (Base.popupClassname.length > 0 ) popup.getElement().className = Base.popupClassname;
+                                        else popup.getElement().className = "ol-popup";
+                                        popup.show(coordinate, invisiblePopup.contentDocument.body.innerHTML);
+                                        $rootScope.$broadcast('popupOpened','hs.query');
+                                    }
+                                })
                             });
                         }
                         else {

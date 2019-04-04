@@ -5,7 +5,7 @@
         <button class="btn btn-light btn-outline-secondary" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
             <i class="icon-repeat"></i>
         </button>
-        <button class="btn btn-light btn-outline-secondary"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure.controller')" ng-click="setMainPanel('measure', true, false)">
+        <button class="btn btn-light btn-outline-secondary"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure.controller')" ng-click="measureButtonClicked()">
             <i class="icon-design"></i>
         </button>
     </div>

@@ -14,7 +14,7 @@
             <li ng-repeat="waypoint in service.waypoints" class="list-group-item">
                 <a href="#" ng-click="toggleEdit(waypoint)" ng-show="!waypoint.name_editing">{{waypoint.name}}</a> 
                 <input ng-model="waypoint.name" class="form-control hs-waypoint-name" ng-show="waypoint.name_editing" focus-if="waypoint.name_editing" ng-blur="toggleEdit(waypoint)"/>
-                <img ng-show="waypoint.loading" ng-src="{{ajax_loader}}"/>   
+                <img ng-show="waypoint.loading" ng-src="{{loaderImage}}"/>   
                 {{ formatDistance(waypoint) }}
                 <span class="pull-right">
                     <button type="button" class="btn btn-secondary btn-sm icon-trash" ng-click="service.removeWaypoint(waypoint);">

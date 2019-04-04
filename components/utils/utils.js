@@ -15,7 +15,7 @@ define(['angular', 'ol'], function (angular, ol) {
          * @description Service for containing various utility functions used throughout HSL modules. 
          * Add few utility functions and also enrich some data types with additional functions (mainly Date and String).
          */
-        .service('hs.utils.service', ['config', function (config) {
+        .service('hs.utils.service', ['config', '$http', function (config, $http) {
             var me = this;
             /**
             * @ngdoc method
@@ -52,9 +52,9 @@ define(['angular', 'ol'], function (angular, ol) {
                     return new Promise(function(resolve, reject){
                         $http.get("http://tinyurl.com/api-create.php?url=" + url, {
                             longUrl: url
-                        }).success(function(data, status, headers, config) {
-                            resolve(data);
-                        }).error(function(data, status, headers, config) {
+                        }).then(function(response) {
+                            resolve(response.data);
+                        }).catch(function(err) {
                             reject()
                         })
                     })
@@ -65,9 +65,9 @@ define(['angular', 'ol'], function (angular, ol) {
                 return new Promise(function (resolve, reject) {
                     $http.get(me.proxify("http://tinyurl.com/api-create.php?url=" + url), {
                         longUrl: url
-                    }).success(function (data, status, headers, config) {
-                        resolve(data);
-                    }).error(function (data, status, headers, config) {
+                    }).then(function (response) {
+                        resolve(response.data);
+                    }).catch(function (err) {
                         reject()
                     })
                 })

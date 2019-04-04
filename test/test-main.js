@@ -56,7 +56,6 @@ require.config({
     'ows_wms':  'components/ows/ows_wms',
     'ows_nonwms':  'components/ows/ows_nonwms',
     'ows_wmts':  'components/ows/ows_wmts',
-    'ows_wmsprioritized':  'components/ows/ows_wmsprioritized',
     query:  'components/query/query',
     search:  'components/search/search',
     print:  'components/print/print',

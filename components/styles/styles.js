@@ -178,8 +178,8 @@ define(['angular', 'ol'],
         * @ngdoc controller
         * @name hs.styler.controller
         */
-        .controller('hs.styler.controller', ['$scope', 'hs.styler.service', '$sce', 'Core',
-            function($scope, service, $sce, Core) {
+        .controller('hs.styler.controller', ['$scope', 'hs.styler.service', '$sce', 'Core', '$http',
+            function($scope, service, $sce, Core, $http) {
                 $scope.service = service;
                 $scope.icons = null;
                 $scope.imagetypes = [{
@@ -268,15 +268,13 @@ define(['angular', 'ol'],
                  * @description Load selected SVG icon from folder and use it for layer
                  */
                 $scope.iconSelected = function(i) {
-                    $.ajax({
-                        url: $scope.hsl_path + 'components/styles/img/svg/' + i,
-                        cache: true,
-                        success: function(r) {
-                            $scope.iconimage = $sce.trustAsHtml(r.documentElement.outerHTML);
-                            if (!$scope.$$phase) $scope.$digest();
-                            colorIcon();
-                            $scope.save()
-                        }
+                    $http({ url: $scope.hsl_path + 'components/styles/img/svg/' + i }).
+                    then(function (response) {
+                        $scope.iconimage = $sce.trustAsHtml(response.data);
+                        colorIcon();
+                        $scope.save()
+                    }, function (err){
+
                     });
                 }
 
@@ -286,12 +284,12 @@ define(['angular', 'ol'],
                  * @description Change colors of selected icon based on user input. Decode modifyied icon into Base-64
                  */
                 function colorIcon() {
-                    var $b =
-                        $('.hs-styler-selected-icon-box path');
-                    if (angular.isDefined($scope.iconfillcolor) && $scope.iconfillcolor != null) $b.css('fill', $scope.iconfillcolor['background-color'])
-                    if (angular.isDefined($scope.iconlinecolor) && $scope.iconlinecolor != null) $b.css('stroke', $scope.iconlinecolor['background-color'])
-                    if (angular.isDefined($scope.iconlinewidth) && $scope.iconlinewidth != null) $b.css('stroke-width', $scope.iconlinewidth);
-                    $scope.serialized_icon = 'data:image/svg+xml;base64,' + window.btoa($('.hs-styler-selected-icon-box').html());
+                    var iconPreview = document.getElementsByClassName('hs-styler-selected-icon-box')[0];
+                    var svgPath = iconPreview.querySelector('path');
+                    if (angular.isDefined($scope.iconfillcolor) && $scope.iconfillcolor != null) svgPath.style.fill = $scope.iconfillcolor['background-color'];
+                    if (angular.isDefined($scope.iconlinecolor) && $scope.iconlinecolor != null) svgPath.style.stroke = $scope.iconlinecolor['background-color'];
+                    if (angular.isDefined($scope.iconlinewidth) && $scope.iconlinewidth != null) svgPath.style.strokeWidth = $scope.iconlinewidth;
+                    $scope.serialized_icon = 'data:image/svg+xml;base64,' + window.btoa(iconPreview.innerHTML);
                 }
 
                 /**

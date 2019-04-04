@@ -20,8 +20,8 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
          * @membeof hs.permalink
          * @description Service responsible for creating permalink URLs. Mantain parameters information about map
          */
-        module.service("hs.permalink.urlService", ['$rootScope', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config',
-            function ($rootScope, $location, $window, OlMap, Core, utils, status, compositions, config) {
+        module.service("hs.permalink.urlService", ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config',
+            function ($rootScope, $http, $location, $window, OlMap, Core, utils, status, compositions, config) {
 
                 var url_generation = true;
                 //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
@@ -35,7 +35,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                     added_layers: [],
                     params: {},
                     customParams: {},
-    
+
                     /**
                     * @function update
                     * @memberof hs.permalink.urlService
@@ -57,7 +57,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                             }
                         });
                         me.added_layers = status.layers2json(added_layers);
-    
+
                         if (Core.mainpanel) {
                             if (Core.mainpanel == 'permalink') {
                                 me.push('hs_panel', 'layermanager');
@@ -76,8 +76,8 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         }
                         $location.search(me.params);
                         if (!$rootScope.$$phase) $rootScope.$digest();
-                    },    
-    
+                    },
+
                     /**
                     * @function getPermalinkUrl
                     * @memberof hs.permalink.urlService
@@ -93,7 +93,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                             return window.location.origin + me.current_url + "&permalink=" + encodeURIComponent(stringLayers);
                         }
                     },
-    
+
                     /**
                     * @function getPureMapUrl
                     * @memberof hs.permalink.urlService
@@ -105,7 +105,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         params.puremap = "true";
                         return me.getPermalinkUrl() + "&" + utils.paramsToURLWoEncode(params);
                     },
-    
+
                     /**
                     * @function parse
                     * @memberof hs.permalink.urlService
@@ -117,23 +117,23 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         if (typeof str !== 'string') {
                             return {};
                         }
-    
+
                         str = str.trim().replace(/^\?/, '');
-    
+
                         if (!str) {
                             return {};
                         }
-    
+
                         return str.trim().split('&').reduce(function (ret, param) {
                             var parts = param.replace(/\+/g, ' ').split('=');
                             var key = parts[0];
                             var val = parts[1];
-    
+
                             key = decodeURIComponent(key);
                             // missing `=` should be `null`:
                             // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
                             val = val === undefined ? null : decodeURIComponent(val);
-    
+
                             if (!ret.hasOwnProperty(key)) {
                                 ret[key] = val;
                             } else if (Array.isArray(ret[key])) {
@@ -141,11 +141,11 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                             } else {
                                 ret[key] = [ret[key], val];
                             }
-    
+
                             return ret;
                         }, {});
                     },
-    
+
                     /**
                     * @function parsePermalinkLayers
                     * @memberof hs.permalink.urlService
@@ -153,25 +153,26 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                     */
                     parsePermalinkLayers: function () {
                         var layersUrl = utils.proxify(me.getParamValue('permalink'));
-                        $.ajax({
-                            url: layersUrl
-                        }).done(function (response) {
-                            if (response.success == true) {
-                                var data = {};
-                                data.data = {};
-                                data.data.layers = response.data;
-                                compositions.removeCompositionLayers();
-                                response.layers = response.data;
-                                var layers = compositions.jsonToLayers(data);
-                                for (var i = 0; i < layers.length; i++) {
-                                    OlMap.addLayer(layers[i]);
+                        $http({ url: layersUrl }).
+                            then(function (response) {
+                                if (response.data.success == true) {
+                                    var data = {};
+                                    data.data = {};
+                                    data.data.layers = response.data.data;
+                                    compositions.removeCompositionLayers();
+                                    response.layers = response.data.data;
+                                    var layers = compositions.jsonToLayers(data);
+                                    for (var i = 0; i < layers.length; i++) {
+                                        OlMap.addLayer(layers[i]);
+                                    }
+                                } else {
+                                    if (console) console.log('Error loading permalink layers');
                                 }
-                            } else {
-                                if (console) console.log('Error loading permalink layers');
-                            }
-                        })
+                            }, function (err) {
+
+                            });
                     },
-    
+
                     /**
                     * @function stringify
                     * @memberof hs.permalink.urlService
@@ -182,17 +183,17 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                     stringify: function (obj) {
                         return obj ? Object.keys(obj).map(function (key) {
                             var val = obj[key];
-    
+
                             if (Array.isArray(val)) {
                                 return val.map(function (val2) {
                                     return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
                                 }).join('&');
                             }
-    
+
                             return encodeURIComponent(key) + '=' + encodeURIComponent(val);
                         }).join('&') : '';
                     },
-    
+
                     /**
                     * @function push
                     * @memberof hs.permalink.urlService
@@ -207,7 +208,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         me.pathname = window.location.pathname;
                         me.current_url = me.pathname + '?' + new_params_string;
                     },
-    
+
                     /**
                     * @function getParamValue
                     * @memberof hs.permalink.urlService
@@ -220,7 +221,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         if (tmp[param]) return tmp[param];
                         else return null;
                     },
-    
+
                     /**
                     * @function updateCustomParams
                     * @memberof hs.permalink.urlService
@@ -237,7 +238,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         }, 1000);
                     }
                 });
-                
+
 
                 /**
                 * @function init
@@ -363,11 +364,9 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                     shareOnSocial: function (provider, newShare) {
                         if (!me.data.shareUrlValid) {
                             if (serviceURL.shareId == null || newShare) serviceURL.shareId = utils.generateUuid();
-                            $.ajax({
+                            $http({
                                 url: (getHostname() + config.status_manager_url),
-                                cache: false,
                                 method: 'POST',
-                                async: false,
                                 data: JSON.stringify({
                                     request: 'socialShare',
                                     id: serviceURL.shareId,
@@ -375,26 +374,28 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                                     title: me.data.title,
                                     description: me.data.abstract,
                                     image: me.data.thumbnail
-                                }),
-                                success: function (j) {
-                                    utils.shortUrl(getHostname() + config.status_manager_url + "?request=socialshare&id=" + serviceURL.shareId)
-                                        .then(function (shortUrl) {
-                                            var shareUrl = shortUrl;
-                                            socialshare.share({
-                                                'provider': provider,
-                                                'attrs': {
-                                                    'socialshareText': me.data.title,
-                                                    'socialshareUrl': shareUrl,
-                                                    'socialsharePopupHeight': 600,
-                                                    'socialsharePopupWidth': 500
-                                                }
-                                            })
-                                            me.data.shareUrlValid = true;
-                                        }).catch(function () {
-                                            console.log('Error creating short Url');
+                                })
+                            }).then(function (response) {
+                                utils.shortUrl(getHostname() + config.status_manager_url + "?request=socialshare&id=" + serviceURL.shareId)
+                                    .then(function (shortUrl) {
+                                        var shareUrl = shortUrl;
+                                        socialshare.share({
+                                            'provider': provider,
+                                            'attrs': {
+                                                'socialshareText': me.data.title,
+                                                'socialshareUrl': shareUrl,
+                                                'socialsharePopupHeight': 600,
+                                                'socialsharePopupWidth': 500
+                                            }
                                         })
-                                }
-                            })
+                                        me.data.shareUrlValid = true;
+                                    }).catch(function () {
+                                        console.log('Error creating short Url');
+                                    })
+
+                            }, function (err) {
+
+                            });
                         } else {
                             socialshare.share({
                                 'provider': provider,
@@ -444,7 +445,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         }
                     }
                 })
-                
+
                 /**
                  * @memberof permalink.shareService
                  * @function getHostname
@@ -462,27 +463,23 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         serviceURL.update();
                         var status_url = getHostname() + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
                         if (serviceURL.added_layers.length > 0) {
-                            $.ajax({
+                            $http({
                                 url: status_url,
-                                cache: false,
                                 method: 'POST',
-                                dataType: "json",
                                 data: JSON.stringify({
                                     data: serviceURL.added_layers,
                                     permalink: true,
                                     id: serviceURL.id,
                                     project: config.project_name,
                                     request: "save"
-                                }),
-                                success: function (j) {
-                                    serviceURL.permalinkLayers = status_url + "?request=load&id=" + serviceURL.id;
-                                    $rootScope.$broadcast('browserurl.updated');
+                                })
+                            }).then(function (response) {
+                                serviceURL.permalinkLayers = status_url + "?request=load&id=" + serviceURL.id;
+                                $rootScope.$broadcast('browserurl.updated');
 
-                                },
-                                error: function () {
-                                    console.log('Error saving permalink layers.');
-                                }
-                            })
+                            }, function (err) {
+                                console.log('Error saving permalink layers.');
+                            });
                         } else {
                             $rootScope.$broadcast('browserurl.updated');
                         }

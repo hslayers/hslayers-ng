@@ -148,12 +148,14 @@ define(['angular', 'ol', 'angular-material'],
 
 
                     $scope.detailComposition = function (record, $event) {
-                        $scope.info = Composition.getCompositionInfo(record);
-                        infoDialog($event);
+                        Composition.getCompositionInfo(record, function(info){
+                            $scope.info = info;
+                            infoDialog($event);
+                        });                      
                     }
 
                     function infoDialog($event) {
-                        var parentEl = angular.element('#hsContainer');
+                        var parentEl = document.getElementById('hsContainer');
                         $mdDialog.show({
                             parent: parentEl,
                             targetEvent: $event,

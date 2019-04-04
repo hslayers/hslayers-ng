@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
         <div class="form-group">
-            <img ng-src="{{ajax_loader}}" ng-show="loading"/>
+            <img ng-src="{{loaderImage}}" ng-show="loading"/>
             <div class="filter_charts"  ng-repeat="group in groupings">
                 <translate>Filter by</translate>&nbsp;{{group.name}}
                 <div id='fc_chart{{group.id}}'></div>

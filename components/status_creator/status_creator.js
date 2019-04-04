@@ -45,7 +45,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              * @memberof hs.status_creator
              * @description Display Save map panel in app (base directive, extended by forms)
              */
-            .directive('hs.statusCreator.directivePanel', ['config', function(config) {
+            .directive('hs.statusCreator.directivePanel', ['config', function (config) {
                 return {
                     templateUrl: `${config.hsl_path}components/status_creator/partials/panel${config.design || ''}.html`,
                 };
@@ -470,8 +470,8 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                 });
                 return me;
             }])
-            .service('hs.status_creator.managerService', ['$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config',
-                function ($rootScope, OlMap, Core, status_creator, config) {
+            .service('hs.status_creator.managerService', ['$rootScope', 'hs.map.service', 'Core', 'hs.status_creator.service', 'config', '$http',
+                function ($rootScope, OlMap, Core, status_creator, config, $http) {
                     var me = {}
                     me.compoData = {
                         title: "",
@@ -502,17 +502,17 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         groups: []
                     };
                     me.confirmSave = function () {
-                        $.ajax({
-                            url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
-                            cache: false,
+                        $http({
                             method: 'POST',
-                            async: false,
+                            url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
                             data: JSON.stringify({
                                 project: config.project_name,
                                 title: me.compoData.title,
                                 request: 'rightToSave'
-                            }),
-                            success: function (j) {
+                            })
+                        }).
+                            then(function (response) {
+                                var j = response.data;
                                 me.statusData.hasPermission = j.results.hasPermission;
                                 me.statusData.titleFree = j.results.titleFree
                                 if (j.results.guessedTitle) {
@@ -522,22 +522,18 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                                 if (me.statusData.titleFree && me.statusData.hasPermission) {
                                     me.save(true);
                                 } else {
-                                    $rootScope.$broadcast('StatusManager.saveResult',2);
+                                    $rootScope.$broadcast('StatusManager.saveResult', 2);
                                 }
-                            },
-                            error: function () {
+                            }, function (err) {
                                 me.statusData.success = false;
-                                $rootScope.$broadcast('StatusManager.saveResult',3);
-                            }
-                        })
+                                $rootScope.$broadcast('StatusManager.saveResult', 3);
+                            });
                     };
                     me.save = function (saveAsNew) {
                         if (saveAsNew || me.compoData.id == '') me.compoData.id = status_creator.generateUuid();
-                        $.ajax({
+                        $http({
                             url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
-                            cache: false,
                             method: 'POST',
-                            dataType: "json",
                             data: JSON.stringify({
                                 data: status_creator.map2json(OlMap.map, me.compoData, me.userData, me.statusData),
                                 permanent: true,
@@ -545,22 +541,21 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                                 project: config.project_name,
                                 thumbnail: me.compoData.thumbnail,
                                 request: "save"
-                            }),
-                            success: function (j) {
-                                var compInfo = {};
-                                me.statusData.success = angular.isDefined(j.saved) && (j.saved !== false);
-                                compInfo.id = me.compoData.id;
-                                compInfo.title = me.compoData.title;
-                                compInfo.abstract = me.compoData.abstract || '';
-                                $rootScope.$broadcast('compositions.composition_loading', compInfo);
-                                $rootScope.$broadcast('compositions.composition_loaded', compInfo);
-                                $rootScope.$broadcast('StatusManager.saveResult',1);
-                            },
-                            error: function () {
-                                me.statusData.success = false;
-                                $rootScope.$broadcast('StatusManager.saveResult',3);
-                            }
-                        })
+                            })
+                        }).then(function (response) {
+                            var compInfo = {};
+                            var j = response.data;
+                            me.statusData.success = angular.isDefined(j.saved) && (j.saved !== false);
+                            compInfo.id = me.compoData.id;
+                            compInfo.title = me.compoData.title;
+                            compInfo.abstract = me.compoData.abstract || '';
+                            $rootScope.$broadcast('compositions.composition_loading', compInfo);
+                            $rootScope.$broadcast('compositions.composition_loaded', compInfo);
+                            $rootScope.$broadcast('StatusManager.saveResult', 1);
+                        }, function (err) {
+                            me.statusData.success = false;
+                            $rootScope.$broadcast('StatusManager.saveResult', 3);
+                        });
                     };
                     /**
                      * Initialization of Status Creator from outside of component
@@ -571,7 +566,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         Core.setMainPanel('status_creator', true);
                         me.refresh();
                     };
-                    me.refresh = function(){
+                    me.refresh = function () {
                         me.compoData.layers = [];
                         me.compoData.bbox = me.getCurrentExtent();
                         //debugger;
@@ -587,27 +582,42 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         me.compoData.layers.sort(function (a, b) {
                             return a.layer.get('position') - b.layer.get('position')
                         });
-                        me.fillGroups();
+                        me.fillGroups(function () {
+                            me.statusData.groups.unshift({
+                                roleTitle: 'Public',
+                                roleName: 'guest',
+                                w: false,
+                                r: false
+                            });
+                            var cc = me.compoData.currentComposition;
+                            if (angular.isDefined(me.compoData.currentComposition) && cc != "") {
+                                angular.forEach(me.statusData.groups, function (g) {
+                                    if (angular.isDefined(cc.groups) && angular.isDefined(cc.groups[g.roleName])) {
+                                        g.w = cc.groups[g.roleName].indexOf('w') > -1;
+                                        g.r = cc.groups[g.roleName].indexOf('r') > -1;
+                                    }
+                                });
+                            }
+                        });
                         me.loadUserDetails();
                     }
                     /**
-                 * Send getGroups request to status manager server and process response
-                 * @function fillGroups
-                 * @memberof hs.status_creator.controller
-                 */
-                    me.fillGroups = function () {
+                     * Send getGroups request to status manager server and process response
+                     * @function fillGroups
+                     * @memberof hs.status_creator.controller
+                     */
+                    me.fillGroups = function (cb) {
                         me.statusData.groups = [];
                         if (config.advancedForm) {
-                            $.ajax({
+                            $http({
                                 url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php'),
-                                cache: false,
                                 method: 'GET',
-                                async: false,
-                                dataType: 'json',
                                 data: {
                                     request: 'getGroups'
-                                },
-                                success: function (j) {
+                                }
+                            }).
+                                then(function (response) {
+                                    var j = response.data;
                                     if (j.success) {
                                         me.statusData.groups = j.result;
                                         angular.forEach(me.statusData.groups, function (g) {
@@ -615,43 +625,34 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                                             g.r = false;
                                         });
                                     }
-                                }
-                            });
-                        }
-                        me.statusData.groups.unshift({
-                            roleTitle: 'Public',
-                            roleName: 'guest',
-                            w: false,
-                            r: false
-                        });
-                        var cc = me.compoData.currentComposition;
-                        if (angular.isDefined(me.compoData.currentComposition) && cc != "") {
-                            angular.forEach(me.statusData.groups, function (g) {
-                                if (angular.isDefined(cc.groups) && angular.isDefined(cc.groups[g.roleName])) {
-                                    g.w = cc.groups[g.roleName].indexOf('w') > -1;
-                                    g.r = cc.groups[g.roleName].indexOf('r') > -1;
-                                }
-                            });
+                                    cb();
+                                }, function (err) {
+
+                                });
+                        } else {
+                            cb();
                         }
                     };
+
                     /**
-                 * Get User info from server and call callback (setUserDetail)
-                 * @function loadUserDetails
-                 * @memberof hs.status_creator.controller
-                 */
-                    me.loadUserDetails = function() {
-                        $.ajax({
-                            url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=getuserinfo",
-                            success: me.setUserDetails
-                        });
+                     * Get User info from server and call callback (setUserDetail)
+                     * @function loadUserDetails
+                     * @memberof hs.status_creator.controller
+                     */
+                    me.loadUserDetails = function () {
+                        //TODO: This long statement should be in function
+                        $http({ url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=getuserinfo" }).
+                            then(me.setUserDetails, function (err) { });
                     };
+
                     /**
-                 * Process user info into controller model, so they can be used in Save composition forms
-                 * @function setUserDetails
-                 * @memberof hs.status_creator.controller
-                 * @param {Object} user User object
-                 */
-                    me.setUserDetails = function(user) {
+                     * Process user info into controller model, so they can be used in Save composition forms
+                     * @function setUserDetails
+                     * @memberof hs.status_creator.controller
+                     * @param {Object} respnse Http response containig user data
+                     */
+                    me.setUserDetails = function (respnse) {
+                        var user = response.data;
                         if (user && user.success == true) {
                             // set the values
                             if (user.userInfo) {
@@ -675,7 +676,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                      * @function getCurrentExtent
                      * @memberof hs.status_creator.controller
                      */
-                    me.getCurrentExtent = function() {
+                    me.getCurrentExtent = function () {
                         var b = OlMap.map.getView().calculateExtent(OlMap.map.getSize());
                         var pair1 = [b[0], b[1]]
                         var pair2 = [b[2], b[3]];
@@ -709,7 +710,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         }
                     });
 
-                    me.resetCompoData = function() {
+                    me.resetCompoData = function () {
                         me.compoData.id = me.compoData.abstract = me.compoData.title = me.compoData.currentCompositionTitle = me.compoData.keywords = me.compoData.currentComposition = '';
                     }
 
@@ -790,7 +791,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
 
                     $scope.showSaveDialog = function () {
                         var previousDialog = document.getElementById("status-creator-save-dialog");
-                        if(previousDialog)
+                        if (previousDialog)
                             previousDialog.parentNode.removeChild(previousDialog);
                         var el = angular.element('<div hs.status_creator.save_dialog_directive></span>');
                         $compile(el)($scope);
@@ -809,7 +810,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         StatusManager.save(saveAsNew);
                     }
 
-                    $scope.$on('StatusManager.saveResult', function(e,result){
+                    $scope.$on('StatusManager.saveResult', function (e, result) {
                         if (result === 1) {
                             $scope.showResultDialog();
                             $('#stc-next').show();

@@ -300,9 +300,9 @@ function(url) {
     return new Promise(function(resolve, reject){
         $http.get("http://tinyurl.com/api-create.php?url=" + url, {
             longUrl: url
-        }).success(function(data, status, headers, config) {
-            resolve(data);
-        }).error(function(data, status, headers, config) {
+        }).then(function(response) {
+            resolve(response.data);
+        }, function(err) {
             reject()
         })
     })

@@ -218,7 +218,7 @@ define(['angular', 'ol', 'map', 'core', 'focusIf'],
         .controller('hs.trip_planner.controller', ['$scope', 'hs.map.service', 'Core', 'hs.trip_planner.service', 'config',
             function($scope, OlMap, Core, service, config) {
                 var map = OlMap.map;
-                $scope.ajax_loader = config.hsl_path + 'img/ajax-loader.gif';
+                $scope.loaderImage = config.hsl_path + 'img/ajax-loader.gif';
 
                 var source = new ol.source.Vector({});
                 var style = function(feature, resolution) {

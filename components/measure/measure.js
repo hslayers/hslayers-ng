@@ -107,7 +107,7 @@ define(['angular', 'ol', 'map', 'core'],
                  */
                 this.activateMeasuring = function(type) {
                     map.addLayer(me.measureVector);
-                    $(map.getViewport()).on('mousemove', mouseMoveHandler);
+                    map.getViewport().addEventListener('mousemove', mouseMoveHandler);
                     addInteraction(type);
                 }
 
@@ -118,7 +118,7 @@ define(['angular', 'ol', 'map', 'core'],
                  * @description Stop measuring interaction in app
                  */
                 this.deactivateMeasuring = function() {
-                    $(map.getViewport()).off('mousemove');
+                    map.getViewport().removeEventListener('mousemove', mouseMoveHandler);
                     map.removeInteraction(me.draw);
                     map.removeLayer(me.measureVector);
                 }
@@ -312,19 +312,19 @@ define(['angular', 'ol', 'map', 'core'],
             function($scope, OlMap, Core, Measure) {
                 $scope.data = Measure.data;
 
-                $(document).keyup(function(e) {
-                    if (e.which == 17) {
+                document.addEventListener('keyup', function(e) {
+                    if (e.keyCode == 17) { //ControlLeft
                         Measure.switchMultipleMode();
                         if (!$scope.$$phase) $scope.$digest();
                     }
                 });
 
                 $scope.$on('measure.drawStart', function(){
-                    $("#toolbar").fadeOut();
+                    Core.panelEnabled('toolbar', false);
                 });
                 
                 $scope.$on('measure.drawEnd', function(){
-                    $("#toolbar").fadeIn();
+                    Core.panelEnabled('toolbar', true);
                 });
 
                 $scope.type = 'distance';

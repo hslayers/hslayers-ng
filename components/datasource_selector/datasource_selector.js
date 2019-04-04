@@ -100,8 +100,8 @@ define(['angular', 'ol', 'map'],
                     }
                 };
             }])
-            .service('hs.datasource_selector.service', ['$rootScope', 'hs.map.service', 'Core', 'config', 'hs.utils.service', 'hs.ows.nonwms.service',
-                function ($rootScope, OlMap, Core, config, utils, nonwmsservice) {
+            .service('hs.datasource_selector.service', ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service', 'hs.ows.nonwms.service',
+                function ($rootScope, OlMap, Core, config, $http, $q, utils, nonwmsservice) {
                     var me = this;
 
                     this.data = {};
@@ -184,13 +184,15 @@ define(['angular', 'ol', 'map'],
                                 }).join('%20AND%20');
                                 var url = dataset.url + '?request=GetRecords&format=application/json&language=' + dataset.language + '&query=' + query + (typeof me.data.query.sortby != 'undefined' && me.data.query.sortby != '' ? '&sortby=' + me.data.query.sortby : '&sortby=bbox') + '&limit=' + me.data.paging + '&start=' + dataset.start;
                                 url = utils.proxify(url);
-                                if (typeof dataset.ajaxReq != 'undefined') dataset.ajaxReq.abort();
                                 dataset.loaded = false;
-                                dataset.ajaxReq = $.ajax({
-                                    url: url,
-                                    cache: false,
-                                    dataType: "json",
-                                    success: function (j) {
+                                if (angular.isDefined(dataset.canceler)) {
+                                    dataset.canceler.resolve();
+                                    delete dataset.canceler;
+                                }
+                                dataset.canceler = $q.defer();
+                                $http.get(url, { timeout: dataset.canceler.promise }).then(
+                                    function (j) {
+                                        dataset.loading = false;
                                         angular.forEach(dataset.layers, function (val) {
                                             try {
                                                 if (typeof val.feature !== 'undefined' && val.feature != null)
@@ -199,9 +201,10 @@ define(['angular', 'ol', 'map'],
                                         })
                                         dataset.layers = [];
                                         dataset.loaded = true;
-                                        if (j == null) {
+                                        if (j.data == null) {
                                             dataset.matched == 0;
                                         } else {
+                                            j = j.data;
                                             dataset.matched = j.matched;
                                             dataset.next = j.next;
                                             for (var lyr in j.records) {
@@ -212,11 +215,9 @@ define(['angular', 'ol', 'map'],
                                                 }
                                             }
                                         }
-                                    },
-                                    error: function (e) {
+                                    }, function (e) {
                                         dataset.loaded = true;
-                                    }
-                                });
+                                    });
                                 break;
                         }
                     }
@@ -252,10 +253,13 @@ define(['angular', 'ol', 'map'],
                                         topicCategory: []
                                     }
                                 }
-                                ds.ajax_req_codelists = $.ajax({
-                                    url: url,
-                                    cache: false,
-                                    success: function (j) {
+                                if (angular.isDefined(ds.canceler)){
+                                    ds.canceler.resolve();
+                                    delete ds.canceler;
+                                }
+                                ds.canceler = $q.defer();
+                                $http.get(url, { timeout: ds.canceler.promise }).then(
+                                    function (j) {
                                         $("map serviceType value", j).each(function () {
                                             ds.code_lists.serviceType.push({
                                                 value: $(this).attr('name'),
@@ -281,8 +285,8 @@ define(['angular', 'ol', 'map'],
                                             });
                                         })
                                         me.advancedMickaTypeChanged();
-                                    }
-                                });
+                                    }, function (err) { }
+                                );
                                 break;
                         }
                     }
@@ -543,11 +547,11 @@ define(['angular', 'ol', 'map'],
                         me.data.query.sortby = "";
                     }
 
-                    function dataSourceExistsAndEmpty(){
+                    function dataSourceExistsAndEmpty() {
                         return me.data.datasources.length > 0 && angular.isUndefined(me.data.datasources[0].loaded)
                     }
 
-                    function panelVisible(){
+                    function panelVisible() {
                         return Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser')
                     }
 
@@ -624,7 +628,7 @@ define(['angular', 'ol', 'map'],
                         $scope.id_selected = id_selected;
                     }
 
-                    if(config.datasources && config.datasources.length > 0)
+                    if (config.datasources && config.datasources.length > 0)
                         $http({
                             method: 'GET',
                             url: utils.proxify('http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66')
@@ -732,7 +736,7 @@ define(['angular', 'ol', 'map'],
                         } else {
                             if (!$scope.$$phase) $scope.$digest();
                             var previousDialog = document.getElementById("datasource_selector-metadata-dialog");
-                            if(previousDialog)
+                            if (previousDialog)
                                 previousDialog.parentNode.removeChild(previousDialog);
                             var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
                             document.getElementById("hs-dialog-area").appendChild(el[0]);

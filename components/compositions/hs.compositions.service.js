@@ -17,8 +17,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                      * @ngdoc controller
                      * @description Service of composition module
                      */
-                    .service('hs.compositions.service', ['$rootScope', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.urlService', '$compile', '$cookies', 'hs.utils.service',
-                        function ($rootScope, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils) {
+                    .service('hs.compositions.service', ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.urlService', '$compile', '$cookies', 'hs.utils.service',
+                        function ($rootScope, $q, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils) {
                             var me = this;
 
                             me.data = {};
@@ -31,8 +31,6 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             me.compositionsLoaded = false;
 
                             var extentLayer;
-
-                            var ajaxReq;
 
                             function getCompositionsQueryUrl(params, bbox) {
                                 var query = params.query;
@@ -48,19 +46,19 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 });
                                 if (selected.length > 0)
                                     keywordFilter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
-                                
+
                                 if (config.hostname.user && config.hostname.user.url) {
                                     tmp = config.hostname.user.url;
-                                } else if (config.hostname.compositions_catalogue){
+                                } else if (config.hostname.compositions_catalogue) {
                                     tmp = config.hostname.compositions_catalogue.url
                                     catalogueKnown = true;
-                                } else if(config.hostname && config.hostname.default) {
+                                } else if (config.hostname && config.hostname.default) {
                                     tmp = config.hostname.default.url
                                 }
-                                if(!catalogueKnown) {
-                                    if(tmp.indexOf('http')>-1){
+                                if (!catalogueKnown) {
+                                    if (tmp.indexOf('http') > -1) {
                                         //Remove domain from url
-                                        tmp += config.compositions_catalogue_url.replace(/^.*\/\/[^\/]+/, ''); 
+                                        tmp += config.compositions_catalogue_url.replace(/^.*\/\/[^\/]+/, '');
                                     } else {
                                         tmp += config.compositions_catalogue_url
                                     }
@@ -80,21 +78,23 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 var bbox = ol.proj.transformExtent(mapExtent, OlMap.map.getView().getProjection(), 'EPSG:4326');
 
                                 if (angular.isDefined(config.compositions_catalogue_url)) {
-                                    extentLayer.getSource().clear();                                 
-                                    if (ajaxReq != null) ajaxReq.abort();
-                                    ajaxReq = $.ajax({
-                                        url: getCompositionsQueryUrl(params, bbox)
-                                    })
-                                        .done(function (response) {
+                                    extentLayer.getSource().clear();
+                                    if(angular.isDefined(me.canceler)){
+                                        me.canceler.resolve();    
+                                        delete me.canceler;
+                                    }
+                                    me.canceler = $q.defer();
+                                    $http.get(getCompositionsQueryUrl(params, bbox), { timeout: canceler.promise }).then(
+                                        function (response) {
                                             me.compositionsLoaded = true;
-                                            ajaxReq = null;
+                                            response = response.data;
                                             me.data.compositions = response.records;
                                             if (response.records && response.records.length > 0) {
                                                 me.data.compositionsCount = response.matched;
                                             } else {
                                                 me.data.compositionsCount = 0;
                                             }
-
+                                            //TODO: Needs refactoring
                                             me.data.next = response.next;
                                             angular.forEach(me.data.compositions, function (record) {
                                                 var attributes = {
@@ -118,10 +118,10 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                                     //Composition not in extent
                                                 }
                                             })
-                                            if (!$rootScope.$$phase) $rootScope.$digest();
                                             $rootScope.$broadcast('CompositionsLoaded');
                                             me.loadStatusManagerCompositions(params, bbox);
-                                        })
+                                        }, function (err) { }
+                                    );
                                 } else {
                                     me.loadStatusManagerCompositions(params, bbox);
                                 }
@@ -139,49 +139,47 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 var textFilter = query && angular.isDefined(query.title) && query.title != '' ? '&q=' + encodeURIComponent('*' + query.title + '*') : '';
                                 url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + textFilter + '&start=0&limit=1000&sort=' + getStatusSortAttr(params.sortBy);
                                 url = utils.proxify(url);
-                                ajaxReq = $.ajax({
-                                    url: url,
-                                    cache: false
-                                })
-                                    .done(function (response) {
-                                        if (angular.isUndefined(me.data.compositions)) {
-                                            me.data.compositions = [];
-                                            me.data.compositionsCount = 0;
-                                        }
-                                        ajaxReq = null;
-                                        angular.forEach(response.results, function (record) {
-                                            var found = false;
-                                            angular.forEach(me.data.compositions, function (composition) {
-                                                if (composition.id == record.id) {
-                                                    if (angular.isDefined(record.edit)) composition.editable = record.edit;
-                                                    found = true;
-                                                }
-                                            })
-                                            if (!found) {
-                                                record.editable = false;
-                                                if (angular.isDefined(record.edit)) record.editable = record.edit;
-                                                if (angular.isUndefined(record.link)) {
-                                                    record.link = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=load&id=' + record.id;
-                                                }
-                                                if (angular.isUndefined(record.thumbnail)) {
-                                                    record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
-                                                }
-                                                var attributes = {
-                                                    record: record,
-                                                    hs_notqueryable: true,
-                                                    highlighted: false
-                                                }
-                                                attributes.geometry = ol.geom.Polygon.fromExtent(compositionParser.parseExtent(record.extent));
-                                                record.feature = new ol.Feature(attributes);
-                                                extentLayer.getSource().addFeatures([record.feature]);
-                                                if (record) {
-                                                    me.data.compositions.push(record);
-                                                    me.data.compositionsCount = me.data.compositionsCount + 1;
-                                                }
+                                canceler.resolve();
+                                $http.get(url, { timeout: canceler.promise }).then(function (response) {
+                                    response = response.data;
+                                    if (angular.isUndefined(me.data.compositions)) {
+                                        me.data.compositions = [];
+                                        me.data.compositionsCount = 0;
+                                    }
+                                    angular.forEach(response.results, function (record) {
+                                        var found = false;
+                                        angular.forEach(me.data.compositions, function (composition) {
+                                            if (composition.id == record.id) {
+                                                if (angular.isDefined(record.edit)) composition.editable = record.edit;
+                                                found = true;
                                             }
-                                        });
-                                        if (!$rootScope.$$phase) $rootScope.$digest();
-                                    })
+                                        })
+                                        if (!found) {
+                                            record.editable = false;
+                                            if (angular.isDefined(record.edit)) record.editable = record.edit;
+                                            if (angular.isUndefined(record.link)) {
+                                                record.link = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=load&id=' + record.id;
+                                            }
+                                            if (angular.isUndefined(record.thumbnail)) {
+                                                record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
+                                            }
+                                            var attributes = {
+                                                record: record,
+                                                hs_notqueryable: true,
+                                                highlighted: false
+                                            }
+                                            attributes.geometry = ol.geom.Polygon.fromExtent(compositionParser.parseExtent(record.extent));
+                                            record.feature = new ol.Feature(attributes);
+                                            extentLayer.getSource().addFeatures([record.feature]);
+                                            if (record) {
+                                                me.data.compositions.push(record);
+                                                me.data.compositionsCount = me.data.compositionsCount + 1;
+                                            }
+                                        }
+                                    });
+                                }, function (err) {
+
+                                })
                             }
 
                             me.resetCompositionCounter = function () {
@@ -192,13 +190,13 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             me.deleteComposition = function (composition) {
                                 var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
                                 url = utils.proxify(url);
-                                ajaxReq = $.ajax({
-                                    url: url
-                                })
-                                    .done(function (response) {
+                                $http({ url: url }).
+                                    then(function (response) {
                                         $rootScope.$broadcast('compositions.composition_deleted', composition.id);
                                         me.loadCompositions();
-                                    })
+                                    }, function (err) {
+
+                                    });
                             }
 
                             me.highlightComposition = function (composition, state) {
@@ -303,11 +301,9 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 var compositionUrl = (Core.isMobile() && config.permalinkLocation ? (config.permalinkLocation.origin + config.permalinkLocation.pathname) : ($location.protocol() + "://" + location.host + location.pathname)) + "?composition=" + encodeURIComponent(record.link);
                                 var shareId = utils.generateUuid();
                                 var metadata = {};
-                                $.ajax({
-                                    url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
-                                    cache: false,
+                                $http({
                                     method: 'POST',
-                                    async: false,
+                                    url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
                                     data: JSON.stringify({
                                         request: 'socialShare',
                                         id: shareId,
@@ -315,29 +311,29 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                         title: record.title,
                                         description: record.abstract,
                                         image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg'
-                                    }),
-                                    success: function (j) {
-                                        utils.shortUrl((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId)
-                                        .then(function(shortUrl) {
+                                    })
+                                }).then(function (response) {
+                                    utils.shortUrl((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId)
+                                        .then(function (shortUrl) {
                                             me.data.shareUrl = shortUrl;
-                                        }).catch(function() {
+                                        }).catch(function () {
                                             console.log('Error creating short Url');
                                         })
-                                    }
-                                })
+                                    me.data.shareTitle = record.title;
+                                    if (config.social_hashtag && me.data.shareTitle.indexOf(config.social_hashtag) <= 0) me.data.shareTitle += ' ' + config.social_hashtag;
 
-                                me.data.shareTitle = record.title;
-                                if (config.social_hashtag && me.data.shareTitle.indexOf(config.social_hashtag) <= 0) me.data.shareTitle += ' ' + config.social_hashtag;
-
-                                me.data.shareDescription = record.abstract;
-                                if (!$rootScope.$$phase) $rootScope.$digest();
-                                $rootScope.$broadcast('composition.shareCreated', me.data);
+                                    me.data.shareDescription = record.abstract;
+                                    if (!$rootScope.$$phase) $rootScope.$digest();
+                                    $rootScope.$broadcast('composition.shareCreated', me.data);
+                                }, function (err) { });
                             }
 
-                            me.getCompositionInfo = function (composition) {
-                                me.data.info = compositionParser.loadInfo(composition.link);
-                                me.data.info.thumbnail = composition.thumbnail;
-                                return me.data.info;
+                            me.getCompositionInfo = function (composition, cb) {
+                                compositionParser.loadInfo(composition.link, function (info) {
+                                    me.data.info = info;
+                                    me.data.info.thumbnail = composition.thumbnail;
+                                    cb(me.data.info)
+                                });
                             }
 
                             me.loadCompositionParser = function (record) {

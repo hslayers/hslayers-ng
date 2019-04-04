@@ -15,8 +15,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                  * @ngdoc service
                  * @description Contains function of managing composition (loading, removing Layers)
                  */
-                .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', 'hs.compositions.config_parsers.service',
-                    function (hsMap, config, Core, $rootScope, utils, nonWmsService, configParsers) {
+                .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.utils.service', 'hs.ows.nonwms.service', 'hs.compositions.config_parsers.service',
+                    function (hsMap, config, Core, $rootScope, $http, utils, nonWmsService, configParsers) {
                         var me = {
                             /**
                             * @ngdoc property
@@ -57,20 +57,18 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 me.current_composition_url = url;
                                 url = url.replace('&amp;', '&');
                                 url = utils.proxify(url);
-                                $.ajax({
-                                    url: url
-                                })
-                                    .done(function (response) {
+                                $http({ url: url }).
+                                    then(function (response) {
                                         /**
-                                        * @ngdoc event
-                                        * @name hs.compositions.service_parser#compositions.composition_loading
-                                        * @eventType broadcast on $rootScope
-                                        * @description Fires when composition is downloaded from server and parsing begins
-                                        */
-                                        $rootScope.$broadcast('compositions.composition_loading', response);
-                                        if (response.success == true) {
+                                         * @ngdoc event
+                                         * @name hs.compositions.service_parser#compositions.composition_loading
+                                         * @eventType broadcast on $rootScope
+                                         * @description Fires when composition is downloaded from server and parsing begins
+                                         */
+                                        $rootScope.$broadcast('compositions.composition_loading', response.data);
+                                        if (response.data.success == true) {
                                             me.composition_loaded = url;
-                                            if (angular.isDefined(pre_parse)) response = pre_parse(response);
+                                            if (angular.isDefined(pre_parse)) response = pre_parse(response.data);
                                             /*
                                             Response might contain {data:{abstract:...}} or {abstract:} directly. If there is data object, 
                                             that means composition is enclosed in 
@@ -78,9 +76,11 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                             me.loadCompositionObject(response.data || response, overwrite, response.title, response.extent);
                                             if (angular.isDefined(callback) && callback !== null) callback();
                                         } else {
-                                            me.raiseCompositionLoadError(response);
+                                            me.raiseCompositionLoadError(response.data);
                                         }
-                                    })
+                                    }, function (err) {
+
+                                    });
                             },
 
                             loadCompositionObject: function (obj, overwrite, titleFromContainer, extentFromContainer) {
@@ -154,25 +154,24 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             * @returns {Object} Object containing composition info
                             * @description Send Ajax request to selected server to gain information about composition
                             */
-                            loadInfo: function (url) {
+                            loadInfo: function (url, cb) {
                                 var info = {};
                                 url = url.replace('&amp;', '&');
                                 url = utils.proxify(url);
-                                $.ajax({
-                                    url: url,
-                                    async: false
-                                })
-                                    .done(function (response) {
-                                        info = response.data || response;
+                                $http({ url: url }).
+                                    then(function (response) {
+                                        info = response.data.data || response.data;
                                         /**
                                         * @ngdoc event
                                         * @name hs.compositions.service_parser#compositions.composition_info_loaded
                                         * @eventType broadcast on $rootScope
                                         * @description Fires when metadata about selected composition are loaded
                                         */
-                                        $rootScope.$broadcast('compositions.composition_info_loaded', response);
+                                        $rootScope.$broadcast('compositions.composition_info_loaded', response.data);
+                                        cb(info);
+                                    }, function (err) {
+                                        
                                     });
-                                return info;
                             },
 
                             parseExtent: function (b) {

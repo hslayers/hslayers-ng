@@ -15,7 +15,7 @@
                     </div>
                 </form>
                 <ul ng-repeat="ds in data.datasets" class="list-group">
-                    <img ng-src="{{ajax_loader}}" ng-show="DS.suggestionAjax && DS.suggestionAjax.readyState != 4"/>
+                    <img ng-src="{{loaderImage}}" ng-show="DS.suggestionAjax && DS.suggestionAjax.readyState != 4"/>
                     <li ng-show='data.suggestions.length == 0' class='list-group-item' translate>No results</li>
                     <li ng-repeat="suggestion in data.suggestions | limitTo:10" ng-class="'list-group-item'">
                         <b class="list-group-item-heading">
