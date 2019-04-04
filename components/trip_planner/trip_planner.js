@@ -218,7 +218,7 @@ define(['angular', 'ol', 'map', 'core', 'focusIf'],
         .controller('hs.trip_planner.controller', ['$scope', 'hs.map.service', 'Core', 'hs.trip_planner.service', 'config',
             function($scope, OlMap, Core, service, config) {
                 var map = OlMap.map;
-                $scope.ajax_loader = hsl_path + 'img/ajax-loader.gif';
+                $scope.ajax_loader = config.hsl_path + 'img/ajax-loader.gif';
 
                 var source = new ol.source.Vector({});
                 var style = function(feature, resolution) {
@@ -231,7 +231,7 @@ define(['angular', 'ol', 'map', 'core', 'focusIf'],
                             width: 3
                         }),
                         image: new ol.style.Icon({
-                            src: feature.get('highlighted') ? hsl_path + 'img/pin_white_red32.png' : hsl_path + 'img/pin_white_blue32.png',
+                            src: feature.get('highlighted') ? config.hsl_path + 'img/pin_white_red32.png' : config.hsl_path + 'img/pin_white_blue32.png',
                             crossOrigin: 'anonymous',
                             anchor: [0.5, 1]
                         })

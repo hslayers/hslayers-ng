@@ -84,7 +84,7 @@ define(['angular', 'ol', 'dc', 'map'],
                     var map = OlMap.map;
                     var crossfilterable_layers = config.crossfilterable_layers;
 
-                    $scope.ajax_loader = hsl_path + 'components/feature_crossfilter/ajax-loader.gif';
+                    $scope.ajax_loader = config.hsl_path + 'components/feature_crossfilter/ajax-loader.gif';
                     $scope.loading = false;
                     $scope.groupings = [];
 

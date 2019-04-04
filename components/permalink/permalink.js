@@ -435,7 +435,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                                     this.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
                                 }
                                 catch (e) {
-                                    $element.setAttribute('src', hsl_path + 'components/status_creator/notAvailable.png');
+                                    $element.setAttribute('src', config.hsl_path + 'components/status_creator/notAvailable.png');
                                 }
                                 $element.style.width = width + 'px';
                                 $element.style.height = height + 'px';

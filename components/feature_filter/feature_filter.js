@@ -74,7 +74,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     // link: function(scope, element, attrs) {
                     //     scope.filter = scope.$eval(attrs.filter);
                     // },
-                    // templateUrl: hsl_path + 'components/feature_filter/partials/{{filter.type}}md.html',
+                    // templateUrl: config.hsl_path + 'components/feature_filter/partials/{{filter.type}}md.html',
                 };
             }])
         

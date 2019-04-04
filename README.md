@@ -101,7 +101,7 @@ define([ /* List of js files to be loaded. They are both hslayers and third-part
         module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'hs.compositions.service_parser', '$timeout',
             /* The order of function parameters must match the array of component names above */
             function($scope, Core, $compile, hsmap, composition_parser, $timeout) {
-                $scope.hsl_path = hsl_path; //Get this from hslayers.js file
+                $scope.hsl_path = config.hsl_path; //Get this from hslayers.js file
                 /* Core component is responsible for bootstrapping the application and managing top level interface such as panels and toolbar */
                 $scope.Core = Core;
 

@@ -17,7 +17,7 @@ define(['angular', 'ol'],
                 function($http) {
                     this.pin_white_blue = new ol.style.Style({
                         image: new ol.style.Icon({
-                            src: hsl_path + 'img/pin_white_blue32.png',
+                            src: config.hsl_path + 'img/pin_white_blue32.png',
                             crossOrigin: 'anonymous',
                             anchor: [0.5, 1]
                         })
@@ -26,7 +26,7 @@ define(['angular', 'ol'],
                     this.pin_white_blue_highlight = function(feature, resolution) {
                         return [new ol.style.Style({
                             image: new ol.style.Icon({
-                                src: feature.get('highlighted') ? hsl_path + 'img/pin_white_red32.png' : hsl_path + 'img/pin_white_blue32.png',
+                                src: feature.get('highlighted') ? config.hsl_path + 'img/pin_white_red32.png' : config.hsl_path + 'img/pin_white_blue32.png',
                                 crossOrigin: 'anonymous',
                                 anchor: [0.5, 1]
                             })

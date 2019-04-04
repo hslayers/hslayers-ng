@@ -9,7 +9,7 @@ define(['ol', 'moment', 'proj4'],
         }
 
         MyProxy.prototype.getURL = function(resource) {
-            var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + hsl_path + 'img/blank.png';
+            var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + config.hsl_path + 'img/blank.png';
             var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
             if (this.maxResolution <= 8550) {
                 if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {

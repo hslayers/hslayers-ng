@@ -44,6 +44,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             * name {String}: Optional - only from indent 1, base folder is not named
                             */
                             me.data.folders = {
+                                //TODO: need to describe how hsl_path works here
                                 hsl_path: '',
                                 coded_path: '0-',
                                 layers: [],
@@ -260,6 +261,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                                 found = folder;
                                         })
                                         if (found == null) {
+                                            //TODO: Need to describe how hsl_path works here
                                             var new_folder = {
                                                 sub_folders: [],
                                                 indent: i,

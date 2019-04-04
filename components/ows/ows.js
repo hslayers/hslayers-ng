@@ -83,7 +83,7 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'ows_w
                     /**TODO: move variables out of this function. Call $scope.connected = false when template change */
                     $scope.templateByType = function() {
                         var template;
-                        var ows_path = hsl_path + 'components/ows/partials/';
+                        var ows_path = config.hsl_path + 'components/ows/partials/';
                         switch ($scope.type.toLowerCase()) {
                             case "wms":
                                 template = `${ows_path}owswms${config.design || ''}.html`;

@@ -32,7 +32,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
         }])
         // .directive('hs.baselayers.directive', function() {
         //     return {
-        //         templateUrl: hsl_path + 'components/layermanager/partials/baselayers.html'
+        //         templateUrl: config.hsl_path + 'components/layermanager/partials/baselayers.html'
         //     }
         // })
         /**
