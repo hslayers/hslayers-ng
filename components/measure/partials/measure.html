@@ -5,12 +5,14 @@
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
-    <div class="card-body">
-          <div class="btn-group" style="margin-bottom:10px">
-            <label for="distance" class="btn btn-secondary" translate>Distance</label>
-                <input id="distance" type="radio" name="type" value="distance" ng-model="type">
-            <label for="area" class="btn btn-secondary" translate>Area</label>
-                <input id="area" type="radio" name="type" value="area" ng-model="type">
+    <div class="card-body p-2">
+          <div class="btn-group btn-group-toggle" style="margin-bottom:10px">
+            <label for="distance" class="btn btn-secondary" ng-class="{active: type == 'distance'}">
+                <input id="distance" type="radio" name="type" value="distance"  ng-model="type"><translate>Distance</translate>
+            </label>
+            <label for="area" class="btn btn-secondary" ng-class="{active: type == 'area'}">
+                <input id="area" type="radio" name="type" value="area"  ng-model="type"><translate>Area</translate>
+            </label>
         </div>
         <button class="btn btn-secondary" style="float:right" ng-click="clearAll()" translate>Clear</button>
         <ul class="list-group">
