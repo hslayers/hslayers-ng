@@ -184,7 +184,6 @@ li.hs-lm-item.hovering {
 li.hs-lm-item, li.hs-comp-item, li.hs-dr-item {
     padding: 0.625em 0.3125em;
     word-wrap: break-word;
-    cursor: pointer;
     border-left: 0;
     border-right: 0;
     min-height: 3.0em;
@@ -206,6 +205,11 @@ li.hs-comp-item {
 div.hs-lm-item-title {
     display: inline-block;
     width: calc(100% - 3.9em);
+    cursor: pointer;
+}
+
+div.hs-lm-item-title:hover{
+    text-decoration: underline
 }
 
 div.hs-lm-item-title.hs-lm-item-warning {
