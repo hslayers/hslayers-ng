@@ -13,8 +13,8 @@ define(['angular', 'ol'],
             * @name hs.styles.service
             * @description Service with definition of basic styles used througout HS-LayersNG
             */
-            .service("hs.styles.service", ['$http',
-                function($http) {
+            .service("hs.styles.service", ['$http', 'config',
+                function($http, config) {
                     this.pin_white_blue = new ol.style.Style({
                         image: new ol.style.Icon({
                             src: config.hsl_path + 'img/pin_white_blue32.png',

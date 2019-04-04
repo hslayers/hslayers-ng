@@ -8,33 +8,35 @@ define(['ol', 'moment', 'proj4'],
             this.maxResolution = maxResolution;
         }
 
-        MyProxy.prototype.getURL = function(resource) {
-            var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + config.hsl_path + 'img/blank.png';
-            var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
-            if (this.maxResolution <= 8550) {
-                if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {
-                    return blank_url;
-                } else {
-                    var params = utils.getParamsFromUrl(resource);
-                    var bbox = params.bbox.split(',');
-                    var dist = Math.sqrt(Math.pow((bbox[0] - bbox[2]), 2) + Math.pow((bbox[1] - bbox[3]), 2));
-                    var projection = getProjectFromVersion(params.version, params.srs, params.crs);
-                    if(projection == 'EPSG:3857'){
-                        if (dist > 1000000) {
-                            return blank_url;
+        function defineProxy(config){
+            MyProxy.prototype.getURL = function(resource) {
+                var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + config.hsl_path + 'img/blank.png';
+                var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
+                if (this.maxResolution <= 8550) {
+                    if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {
+                        return blank_url;
+                    } else {
+                        var params = utils.getParamsFromUrl(resource);
+                        var bbox = params.bbox.split(',');
+                        var dist = Math.sqrt(Math.pow((bbox[0] - bbox[2]), 2) + Math.pow((bbox[1] - bbox[3]), 2));
+                        var projection = getProjectFromVersion(params.version, params.srs, params.crs);
+                        if(projection == 'EPSG:3857'){
+                            if (dist > 1000000) {
+                                return blank_url;
+                            }
                         }
-                    }
-                    if(projection == 'EPSG:4326'){
-                        if (dist > 1) {
-                            return blank_url;
+                        if(projection == 'EPSG:4326'){
+                            if (dist > 1) {
+                                return blank_url;
+                            }
                         }
                     }
                 }
-            }
-            resource = resource.replaceAll('fromcrs', 'FROMCRS');
-            if (resource.indexOf('proxy4ows') > -1) return resource;
-            return this.proxy + prefix + encodeURIComponent(resource);
-        };
+                resource = resource.replaceAll('fromcrs', 'FROMCRS');
+                if (resource.indexOf('proxy4ows') > -1) return resource;
+                return this.proxy + prefix + encodeURIComponent(resource);
+            };
+        }
 
         function getProjectFromVersion(version, srs, crs){
             if(version == '1.1.1') return srs;
@@ -96,6 +98,7 @@ define(['ol', 'moment', 'proj4'],
                 me.hs_cesium = hs_cesium;
                 me.$rootScope = $rootScope;
                 me.config = config;
+                defineProxy(config);
                 me.setupEvents();
                 utils = _utils;
             },

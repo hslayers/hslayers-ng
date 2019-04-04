@@ -104,7 +104,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              * @memberof hs.status_creator
              * @description Service for converting composition and composition data into JSON object which can be saved on server
              */
-            .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', function (OlMap, Core, utils, $window, $cookies) {
+            .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', 'config', function (OlMap, Core, utils, $window, $cookies, config) {
                 var me = {
                     /**
                     * Create Json object which stores information about composition, user, map state and map layers (including layer data)
