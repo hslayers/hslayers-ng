@@ -1,11 +1,11 @@
-<div class="modal" id="composition-share-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div ng-class="{'in': shareModalVisible}" class="modal" id="composition-share-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">
                     <translate>Share map </translate> {{data.shareTitle}}
                 </h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" ng-click="shareModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="row">
@@ -27,7 +27,7 @@
                 <button class="btn btn-secondary" socialshare socialshare-provider="google" socialshare-url="{{data.shareUrl}}">
                     <i class="icon-googleplus"></i> Google
                 </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" translate="">Close</button>
+                <button type="button" class="btn btn-secondary" ng-click="shareModalVisible = false" data-dismiss="modal" translate="">Close</button>
             </div>
         </div>
     </div>

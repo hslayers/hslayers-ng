@@ -27,7 +27,7 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_metadata.html',
                     link: function (scope, element, attrs) {
-                        $('#datasource_selector-metadata-dialog').modal('show');
+                        scope.metadataModalVisible = true;
                     }
                 };
             }])
@@ -42,7 +42,7 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_micka_advanced.html',
                     link: function (scope, element, attrs) {
-                        $('#ds-advanced-micka').modal('show');
+                        scope.modalVisible = true;
                     }
                 };
             }])
@@ -57,9 +57,9 @@ define(['angular', 'ol', 'map'],
                 return {
                     templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
                     link: function (scope, element, attrs) {
-                        $('#ds-suggestions-micka').modal('show');
+                        scope.suggestionsModalVisible = true;
                         scope.data.suggestionFilter = scope.data.query[scope.data.suggestionConfig.input];
-                        $('#ds-sug-filter').focus();
+                        document.getElementById('ds-sug-filter').focus();
                         scope.DS.suggestionFilterChanged();
                     }
                 };
@@ -641,12 +641,12 @@ define(['angular', 'ol', 'map'],
                      * Opens Micka Advanced Search dialog, might pass current search string.
                      */
                     $scope.openMickaAdvancedSearch = function () {
-                        if ($('#ds-advanced-micka').length == 0) {
+                        if (document.getElementById('ds-advanced-micka') == null) {
                             var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></div>');
-                            $("#hs-dialog-area").append(el);
                             $compile(el)($scope);
+                            document.getElementById("hs-dialog-area").appendChild(el[0]);
                         } else {
-                            $('#ds-advanced-micka').modal('show');
+                            $scope.modalVisible = true;
                         }
                         DS.checkAdvancedMicka();
                     }
@@ -666,13 +666,15 @@ define(['angular', 'ol', 'map'],
                             $scope.data.suggestionFilter = $scope.data.query[input];
                             DS.suggestionFilterChanged();
                         } else {
-                            if ($('#ds-suggestions-micka').length == 0) {
+                            if (document.getElementById('ds-suggestions-micka') == null) {
                                 var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
-                                $("#hs-dialog-area").append(el);
+                                document.getElementById("hs-dialog-area").appendChild(el[0]);;
                                 $compile(el)($scope);
                             } else {
-                                $('#ds-suggestions-micka').modal('show');
-                                $('#ds-sug-filter').val($scope.data.query[input]).focus();
+                                $scope.suggestionsModalVisible = true;
+                                var filterElement = document.getElementById('ds-sug-filter');
+                                $scope.data.suggestionFilter = $scope.data.query[input];
+                                filterElement.focus();
                                 DS.suggestionFilterChanged();
                             }
                         }
@@ -729,9 +731,11 @@ define(['angular', 'ol', 'map'],
                             metadataDialog(e);
                         } else {
                             if (!$scope.$$phase) $scope.$digest();
-                            $("#hs-dialog-area #datasource_selector-metadata-dialog").remove();
+                            var previousDialog = document.getElementById("datasource_selector-metadata-dialog");
+                            if(previousDialog)
+                                previousDialog.parentNode.removeChild(previousDialog);
                             var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
-                            $("#hs-dialog-area").append(el)
+                            document.getElementById("hs-dialog-area").appendChild(el[0]);
                             $compile(el)($scope);
                         }
                     }
@@ -783,6 +787,7 @@ define(['angular', 'ol', 'map'],
                         else {
                             Core.setMainPanel('layermanager');
                         }
+                        $scope.metadataModalVisible = false;
                     }
 
                     /**

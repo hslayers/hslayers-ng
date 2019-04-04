@@ -44,7 +44,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
          * Example
             * ```
             * var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
-            * $("#hs-dialog-area").append(el)
+            * document.getElementById("hs-dialog-area").appendChild(el[0]);
             * $compile(el)($scope);
             * ```
          */
@@ -52,7 +52,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
             return {
                 templateUrl: config.hsl_path + 'components/layermanager/partials/dialog_removeall.html',
                 link: function (scope, element, attrs) {
-                    $('#hs-remove-all-dialog').modal('show');
+                    scope.removeAllModalVisible = true;
                 }
             };
         }])
@@ -113,8 +113,8 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
      * @ngdoc controller
      * @description Controller for management of deafult HSLayers layer manager template
      */
-    .controller('hs.layermanager.controller', ['$scope', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
-        function($scope, Core, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST, styler, legendService) {
+    .controller('hs.layermanager.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
+        function($scope, Core, $compile, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST, styler, legendService) {
             $scope.legendService = legendService;
             $scope.data = LayMan.data;
             $scope.Core = Core;
@@ -577,12 +577,12 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
              */
             $scope.removeAllLayers = function (confirmed, loadComp) {
                 if (typeof confirmed == 'undefined') {
-                    if ($("#hs-dialog-area #hs-remove-all-dialog").length == 0) {
+                    if (document.getElementById("hs-remove-all-dialog") == null) {
                         var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
-                        $("#hs-dialog-area").append(el)
+                        document.getElementById("hs-dialog-area").appendChild(el[0]);
                         $compile(el)($scope);
                     } else {
-                        $('#hs-remove-all-dialog').modal('show');
+                        $scope.removeAllModalVisible = true;
                     }
                     return;
                 }

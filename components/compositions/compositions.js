@@ -43,7 +43,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
                 return {
                     templateUrl: config.hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html',
                     link: function (scope, element, attrs) {
-                        $('#composition-overwrite-dialog').modal('show');
+                        scope.overwriteModalVisible = true;
                     }
                 };
             }])
@@ -57,7 +57,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
                 return {
                     templateUrl: config.hsl_path + 'components/compositions/partials/dialog_delete.html',
                     link: function (scope, element, attrs) {
-                        $('#composition-delete-dialog').modal('show');
+                        scope.deleteModalVisible = true;
                     }
                 };
             }])
@@ -71,7 +71,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
                 return {
                     templateUrl: config.hsl_path + 'components/compositions/partials/dialog_share.html',
                     link: function (scope, element, attrs) {
-                        $('#composition-share-dialog').modal('show');
+                        scope.shareModalVisible = true;
                     }
                 };
             }])
@@ -85,7 +85,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
                 return {
                     templateUrl: config.hsl_path + 'components/compositions/partials/dialog_info.html',
                     link: function (scope, element, attrs) {
-                        $('#composition-info-dialog').modal('show');
+                        scope.infoModalVisible = true;
                     }
                 };
             }])

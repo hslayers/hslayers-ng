@@ -1,11 +1,11 @@
-<div class="modal" id="status-creator-save-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div ng-class="{'in': saveCompositionModalVisible}" class="modal" id="status-creator-save-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel" translate="">
                    Save composition
                 </h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" ng-click="saveCompositionModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto; text-align:center; font-size: 16px">
                 <div translate>
@@ -19,7 +19,7 @@
                         Do you really want to overwrite <b>{{compoData.title}}</b>?
                     </div>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="save()" translate>Yes, save</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="save(); saveCompositionModalVisible = false" translate>Yes, save</button>
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" ng-click="selectNewTitle()" translate>No, save as</button>
@@ -34,7 +34,7 @@
                         <input type="text" class="form-control" id="hs-stc-title" ng-model="compoData.title" />
                     </p>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="save(true)" translate>Save</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="save(true); saveCompositionModalVisible = false" translate>Save</button>
                     </p>
                 </div>
 
@@ -44,7 +44,7 @@
                         <p translate ng-if="!statusData.titleFree">Use a different name to save the map.</p>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="focusTitle()" translate>OK</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="focusTitle(); saveCompositionModalVisible = false" translate>OK</button>
                     </p>
                 </div>
                 

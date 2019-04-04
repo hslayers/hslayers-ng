@@ -44,7 +44,7 @@ define(['angular', 'ol', 'utils'],
                 return {
                     templateUrl: config.hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
                     link: function(scope, element, attrs) {
-                        $('#ows-wmts-resample-dialog').modal('show');
+                        scope.resampleModalVisible = true;
                     }
                 };
             }])
@@ -58,7 +58,7 @@ define(['angular', 'ol', 'utils'],
                 return {
                     templateUrl: config.hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
                     link: function(scope, element, attrs) {
-                        $('#ows-wmts-capabilities-error').modal('show');
+                        scope.capabilitiesErrorModalVisible = true;
                     }
                 };
             }])
@@ -275,9 +275,11 @@ define(['angular', 'ol', 'utils'],
                     } catch (e) {
                         if (console) console.log(e);
                         $scope.error = e.toString();
-                        $("#hs-dialog-area #ows-wmts-capabilities-error").remove();
+                        var previousDialog = document.getElementById("ows-wms-capabilities-error");
+                        if(previousDialog)
+                            previousDialog.parentNode.removeChild(previousDialog);
                         var el = angular.element('<div hs.ows.wmts.capabilities_error_directive></span>');
-                        $("#hs-dialog-area").append(el)
+                        document.getElementById("hs-dialog-area").appendChild(el[0]);
                         $compile(el)($scope);
                         //throw "wmts Capabilities parsing problem";
                     }

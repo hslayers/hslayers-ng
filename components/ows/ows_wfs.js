@@ -45,7 +45,7 @@ define(['angular', 'ol', 'hs.source.Wfs', 'hs.format.WFSCapabilities', 'utils'],
                 return {
                     templateUrl: config.hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
                     link: function(scope, element, attrs) {
-                        $('#ows-wfs-capabilities-error').modal('show');
+                        scope.capabilitiesErrorModalVisible = true;
                     }
                 };
             }])
@@ -201,10 +201,12 @@ define(['angular', 'ol', 'hs.source.Wfs', 'hs.format.WFSCapabilities', 'utils'],
                     } catch (e) {
                         if (console) console.log(e);
                         $scope.error = e.toString();
-                        $("#hs-dialog-area #ows-wfs-capabilities-error").remove();
+                        var previousDialog = document.getElementById("ows-wfs-capabilities-error");
+                        if(previousDialog)
+                            previousDialog.parentNode.removeChild(previousDialog);
                         var el = angular.element('<div hs.ows.wfs.capabilities_error_directive></span>');
-                        $("#hs-dialog-area").append(el)
                         $compile(el)($scope);
+                        document.getElementById("hs-dialog-area").appendChild(el[0]);
                         //throw "WMS Capabilities parsing problem";
                     }
                 });

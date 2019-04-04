@@ -285,6 +285,10 @@ ul.hs-comp-list {
     overflow-y: auto;
 }
 
+.modal.in{
+    display: block;
+}
+
 .modal-backdrop {
     visibility: hidden
 }

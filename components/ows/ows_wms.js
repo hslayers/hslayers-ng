@@ -45,7 +45,7 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
                 return {
                     templateUrl: config.hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
                     link: function(scope, element, attrs) {
-                        $('#ows-wms-resample-dialog').modal('show');
+                        scope.resampleModalVisible = true;
                     }
                 };
             }])
@@ -60,7 +60,7 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
                 return {
                     templateUrl: config.hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
                     link: function(scope, element, attrs) {
-                        $('#ows-wms-capabilities-error').modal('show');
+                        scope.capabilitiesErrorModalVisible = true;
                     }
                 };
             }])

@@ -1,11 +1,11 @@
-<div class="modal" id="ds-advanced-micka" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div ng-class="{'in': modalVisible}" class="modal" id="ds-advanced-micka" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel" translate="">
                    Extended search parameters for Micka
                 </h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" ng-click="modalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate>Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <form>
@@ -97,9 +97,9 @@
                 </form>
             </div>
             <div class="modal-footer" id="ds-footer">
-                <button type="button" class="btn btn-primary" translate ng-click="DS.loadDatasets(data.datasources)" data-dismiss="modal">Search</button>
+                <button type="button" class="btn btn-primary" translate ng-click="DS.loadDatasets(data.datasources); modalVisible = false" data-dismiss="modal">Search</button>
                 <button type="button" class="btn btn-secondary" ng-click="DS.clear()"><translate>Clear</translate></button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="DS.clear()" translate>Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="DS.clear(); modalVisible = false" translate>Close</button>
             </div>
         </div>
     </div>

@@ -188,9 +188,11 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
 
                             function deleteDialogBootstrap(ev) {
                                 if (!$scope.$$phase) $scope.$digest();
-                                $("#hs-dialog-area #composition-delete-dialog").remove();
+                                var previousDialog = document.getElementById("composition-delete-dialog");
+                                if(previousDialog)
+                                    previousDialog.parentNode.removeChild(previousDialog);
                                 var el = angular.element('<div hs.compositions.delete_dialog_directive></span>');
-                                $("#hs-dialog-area").append(el)
+                                document.getElementById("hs-dialog-area").appendChild(el[0]);
                                 $compile(el)($scope);
                             }
 
@@ -266,10 +268,12 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             }
 
                             function shareDialogBootstrap($event) {
-                                $("#hs-dialog-area #composition-share-dialog").remove();
+                                var previousDialog = document.getElementById("composition-share-dialog")
+                                if(previousDialog)
+                                    previousDialog.parentNode.removeChild(previousDialog);
                                 var el = angular.element('<div hs.compositions.share_dialog_directive></div>');
-                                $("#hs-dialog-area").append(el)
                                 $compile(el)($scope);
+                                document.getElementById("hs-dialog-area").appendChild(el[0]);
                             }
 
 
@@ -307,9 +311,11 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
 
                             function infoDialogBootstrap() {
                                 if (!$scope.$$phase) $scope.$digest();
-                                $("#hs-dialog-area #composition-info-dialog").remove();
+                                var previousDialog = document.getElementById("composition-info-dialog");
+                                if(previousDialog)
+                                    previousDialog.parentNode.removeChild(previousDialog);
                                 var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
-                                $("#hs-dialog-area").append(el)
+                                document.getElementById("hs-dialog-area").appendChild(el[0]);
                                 $compile(el)($scope);
                             }
 
@@ -377,6 +383,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              */
                             $scope.overwrite = function () {
                                 Composition.loadComposition($scope.compositionToLoad, true);
+                                $scope.overwriteModalVisible = false
                             }
 
                             /**
@@ -387,6 +394,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              */
                             $scope.add = function () {
                                 Composition.loadComposition($scope.compositionToLoad, false);
+                                $scope.overwriteModalVisible = false;
                             }
 
                             /**
@@ -397,6 +405,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              */
                             $scope.save = function () {
                                 Core.openStatusCreator();
+                                $scope.overwriteModalVisible = false;
                             }
 
                             /**
@@ -454,14 +463,14 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             });
 
                             function loadUnsavedDialogBootstrap() {
-                                var dialog_id = '#composition-overwrite-dialog';
+                                var dialog_id = 'composition-overwrite-dialog';
                                 $scope.composition_name_to_be_loaded = data.title;
-                                if ($("#hs-dialog-area " + dialog_id).length == 0) {
+                                if (document.getElementById(dialog_id) == null) {
                                     var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
-                                    $("#hs-dialog-area").append(el);
+                                    document.getElementById("hs-dialog-area").appendChild(el[0]);;
                                     $compile(el)($scope);
                                 } else {
-                                    $(dialog_id).modal('show');
+                                    $scope.overwriteModalVisible = true;
                                 }
                             }
 

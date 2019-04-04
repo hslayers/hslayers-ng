@@ -1,19 +1,19 @@
-<div class="modal" id="hs-remove-all-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div ng-class="{'in': removeAllModalVisible}" class="modal" id="hs-remove-all-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel" translate="">
                    Layer manager
                 </h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" ng-click="removeAllModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto" translate>
                     Do you really want to remove all layers?
             </div>
             <div class="modal-footer" id="stc-footer">
-                <button type="button" class="btn btn-primary" translate ng-click="removeAllLayers(true, false)" data-dismiss="modal">Remove all added layers</button>
-                <button type="button" class="btn btn-primary" ng-if="composition_id" translate ng-click="removeAllLayers(true, true)" data-dismiss="modal">Reload composition</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>No</button>
+                <button type="button" class="btn btn-primary" translate ng-click="removeAllLayers(true, false); removeAllModalVisible = false" data-dismiss="modal">Remove all added layers</button>
+                <button type="button" class="btn btn-primary" ng-if="composition_id" translate ng-click="removeAllLayers(true, true); removeAllModalVisible = false" data-dismiss="modal" ng-click="removeAllModalVisible = false">Reload composition</button>
+                <button type="button" class="btn btn-secondary" ng-click="removeAllModalVisible = false" data-dismiss="modal" translate>No</button>
             </div>
         </div>
     </div>

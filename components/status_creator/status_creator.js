@@ -60,7 +60,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                 return {
                     templateUrl: config.hsl_path + 'components/status_creator/partials/dialog_result.html',
                     link: function (scope, element, attrs) {
-                        $('#status-creator-result-dialog').modal('show');
+                        scope.resultModalVisible = true;
                     }
                 };
             }])
@@ -74,7 +74,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                 return {
                     templateUrl: config.hsl_path + 'components/status_creator/partials/dialog_save.html',
                     link: function (scope, element, attrs) {
-                        $('#status-creator-save-dialog').modal('show');
+                        scope.saveCompositionModalVisible = true;
                     }
                 };
             }])
@@ -779,22 +779,22 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                      * @memberof hs.status_creator.controller
                      */
                     $scope.showResultDialog = function () {
-                        if ($("#hs-dialog-area #status-creator-result-dialog").length == 0) {
+                        if (document.getElementById("status-creator-result-dialog") == null) {
                             var el = angular.element('<div hs.status_creator.result_dialog_directive></span>');
-                            $("#hs-dialog-area").append(el)
                             $compile(el)($scope);
+                            document.getElementById("hs-dialog-area").appendChild(el[0]);
                         } else {
-                            $('#status-creator-result-dialog').modal('show');
+                            $scope.resultModalVisible = true;
                         }
-                        if (!$scope.$$phase) $scope.$digest();
                     }
 
                     $scope.showSaveDialog = function () {
-                        $("#hs-dialog-area #status-creator-save-dialog").remove();
+                        var previousDialog = document.getElementById("status-creator-save-dialog");
+                        if(previousDialog)
+                            previousDialog.parentNode.removeChild(previousDialog);
                         var el = angular.element('<div hs.status_creator.save_dialog_directive></span>');
-                        $("#hs-dialog-area").append(el)
                         $compile(el)($scope);
-                        if (!$scope.$$phase) $scope.$digest();
+                        document.getElementById("hs-dialog-area").appendChild(el[0]);
                     }
                     /**
                      * Test if current composition can be saved (User permission, Free title of composition) and a) proceed with saving; b) display advanced save dialog; c) show result dialog, with fail message
