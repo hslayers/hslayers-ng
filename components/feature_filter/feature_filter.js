@@ -69,7 +69,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         };
                     },
                     // templateUrl: function(el, attrs) {
-                    //     return `${hsl_path}components/feature_filter/partials/${attrs.filter.type}md.html?bust=${gitsha}`
+                    //     return `${config.hsl_path}components/feature_filter/partials/${attrs.filter.type}md.html`
                     // },
                     // link: function(scope, element, attrs) {
                     //     scope.filter = scope.$eval(attrs.filter);

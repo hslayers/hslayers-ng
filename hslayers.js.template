@@ -1,19 +1,8 @@
 'use strict';
 
-var gitsha;
-$.ajax({
-    type: "GET",
-    url: hsl_path + 'gitsha.js',
-    async: false
-}).done(function(response) {
-    gitsha = response
-}).fail(function() {
-    gitsha = Math.random();
-})
-
 if (typeof require != 'undefined') {
     if (require.config) require.config({
-        urlArgs: 'bust=' + gitsha,
+        urlArgs: 'bust=' + Math.random(),
         paths: {
             app: 'app',
             core: hsl_path + 'components/core/core',
