@@ -532,7 +532,8 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 //},100);//Hack, height of container was changed badly for no aparent reason
                                 me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                             });
-                            $rootScope.$on("Core_sizeChanged", function () {
+                            if(me.deregisterOnSizeChanged) me.deregisterOnSizeChanged();
+                            me.deregisterOnSizeChanged = $rootScope.$on("Core_sizeChanged", function () {
                                 me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                             });
                             me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
