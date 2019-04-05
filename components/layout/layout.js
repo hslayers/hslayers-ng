@@ -155,6 +155,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                     if(config.design == 'md')
                         window.require(['bottomSheetCollapsible']);
                     $scope.importCss = angular.isDefined(config.importCss) ? config.importCss : true;
+                    $scope.useIsolatedBootstrap = angular.isDefined(config.useIsolatedBootstrap) ? config.useIsolatedBootstrap : false;
                     $scope.Core = Core;
                     $scope.geolocation = Geolocation;
                     $scope.LM = LayerManager;
