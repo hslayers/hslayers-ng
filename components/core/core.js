@@ -530,15 +530,15 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                                 //$timeout(function(){
                                 //    me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                                 //},100);//Hack, height of container was changed badly for no aparent reason
-                                me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
+                                angular.isUndefined(me.sizeOptions.selector) ? me.updateMapSize() : me.updateElementSize();
                             });
                             if(me.deregisterOnSizeChanged) me.deregisterOnSizeChanged();
                             me.deregisterOnSizeChanged = $rootScope.$on("Core_sizeChanged", function () {
-                                me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
+                                angular.isUndefined(me.sizeOptions.selector) ? me.updateMapSize() : me.updateElementSize();
                             });
                             me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                             w.addEventListener("load", function () { //onload checker for cases when bootstrap css change box-sizing property
-                                me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
+                                angular.isUndefined(me.sizeOptions.selector) ? me.updateMapSize() : me.updateElementSize();
                             });
                         },
                         /**
@@ -566,23 +566,23 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             if(map == null) return;
                             var sidebarElem = null;
                             if(document.getElementsByClassName('panelspace').length>0) 
-                            sidebarElem = document.getElementsByClassName('panelspace')[0];
-                            map.style.height = container.clientHeight+ 'px';
+                                sidebarElem = document.getElementsByClassName('panelspace')[0];
+                            var neededSize = {width: 0, height: container.clientHeight};
+                            
                             if (me.puremapApp) {
-                                map.style.width = container.offsetWidth + 'px';
+                                neededSize.width = container.offsetWidth;
                             }
                             else if ( sidebarElem == null){
-                                map.style.width = container.offsetWidth + 'px';
+                                neededSize.width = container.offsetWidth;
                             } else if( sidebarElem != null && container.offsetWidth > sidebarElem.offsetWidth) {
-                                map.style.width = (container.offsetWidth - sidebarElem.offsetWidth) + 'px';
+                                neededSize.width = container.offsetWidth - sidebarElem.offsetWidth;
                             }
-                            else {
-                                map.style.width = 0;
-                            }
+                            map.style.height = neededSize.height + 'px';
+                            map.style.width = neededSize.width + 'px';
                             if (angular.isDefined(OlMap.map)) OlMap.map.updateSize();
                             map.offsetWidth < 368 ? me.smallWidth = true : me.smallWidth = false;
                             if (!$rootScope.$$phase) $rootScope.$digest();
-                            $rootScope.$broadcast('Core.mapSizeUpdated', {width: map.offsetWidth, height: map.innerHeight});
+                            $rootScope.$broadcast('Core.mapSizeUpdated', neededSize);
                         },
                         /**
                         * @ngdoc method
@@ -595,10 +595,11 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             document.documentElement.style.overflow = 'hidden';
                             document.documentElement.style.height = '100%';
                             document.body.style.height = '100%';
-                            me.sizeOptions.element = element;
-                            me.sizeOptions.selector = element.parent();
-                            me.initSizeListeners();
-                            me.updateElementSize();
+                            me.init(element, {parent: true});
+                            //me.sizeOptions.element = element;
+                            //me.sizeOptions.selector = element.parent();
+                            //me.initSizeListeners();
+                            //me.updateElementSize();
                         },
                         /**
                         * @ngdoc method
