@@ -649,9 +649,9 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                      * Process user info into controller model, so they can be used in Save composition forms
                      * @function setUserDetails
                      * @memberof hs.status_creator.controller
-                     * @param {Object} respnse Http response containig user data
+                     * @param {Object} response Http response containig user data
                      */
-                    me.setUserDetails = function (respnse) {
+                    me.setUserDetails = function (response) {
                         var user = response.data;
                         if (user && user.success == true) {
                             // set the values
