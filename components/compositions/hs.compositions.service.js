@@ -139,8 +139,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 var textFilter = query && angular.isDefined(query.title) && query.title != '' ? '&q=' + encodeURIComponent('*' + query.title + '*') : '';
                                 url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + textFilter + '&start=0&limit=1000&sort=' + getStatusSortAttr(params.sortBy);
                                 url = utils.proxify(url);
-                                canceler.resolve();
-                                $http.get(url, { timeout: canceler.promise }).then(function (response) {
+                                me.canceler.resolve();
+                                $http.get(url, { timeout: me.canceler.promise }).then(function (response) {
                                     response = response.data;
                                     if (angular.isUndefined(me.data.compositions)) {
                                         me.data.compositions = [];
