@@ -35,7 +35,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             function getCompositionsQueryUrl(params, bbox) {
                                 var query = params.query;
                                 var bboxDelimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
-                                var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
+                                var serviceName = angular.isDefined(config.compositions_catalogue) && angular.isDefined(config.compositions_catalogue.serviceName) ? 'serviceName=&' + config.compositions_catalogue.serviceName  : '';
                                 bbox = (params.filterExtent ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + "'") : '');
                                 var catalogueKnown = false;
                                 var textFilter = query && angular.isDefined(query.title) && query.title != '' ? encodeURIComponent(" AND title like '*" + query.title + "*' OR abstract like '*" + query.title + "*'") : '';
@@ -84,7 +84,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                         delete me.canceler;
                                     }
                                     me.canceler = $q.defer();
-                                    $http.get(getCompositionsQueryUrl(params, bbox), { timeout: canceler.promise }).then(
+                                    $http.get(getCompositionsQueryUrl(params, bbox), { timeout: me.canceler.promise }).then(
                                         function (response) {
                                             me.compositionsLoaded = true;
                                             response = response.data;
