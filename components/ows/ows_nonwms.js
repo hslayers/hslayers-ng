@@ -13,8 +13,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'hs.source.Wfs', 'styles'],
             * @name hs.ows.nonwms.service
             * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
             */
-            .service('hs.ows.nonwms.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http',
-                function (config, $rootScope, OlMap, styles, utils, $http) {
+            .service('hs.ows.nonwms.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.status_creator.service',
+                function (config, $rootScope, OlMap, styles, utils, $http, statusCreator) {
                     var me = this;
 
                     /**
@@ -224,7 +224,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'hs.source.Wfs', 'styles'],
                             //TODO Saving to statusmanager should probably be done with statusmanager component throught events
                             var url = '';
                             try {
-                                url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                                url = statusCreator.endpointUrl();
                             } catch (ex) { }
                             if (console) console.info(url, config);
                             var options = {};

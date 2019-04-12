@@ -106,6 +106,20 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              */
             .service('hs.status_creator.service', ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', 'config', function (OlMap, Core, utils, $window, $cookies, config) {
                 var me = {
+                    endpointUrl(){
+                        var hostName = location.protocol + '//' + location.host;
+                        if(angular.isDefined(config.hostname)){
+                            if (config.hostname.status_manager && config.hostname.status_manager.url){
+                                return config.hostname.status_manager.url;
+                            }
+                            if(config.hostname.user && config.hostname.user.url){
+                                hostName = config.hostname.user.url; 
+                            } else if(config.hostname.default && config.hostname.default.url) {
+                                hostName = config.hostname.default.url
+                            }
+                        }
+                        return hostName + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php')
+                    },
                     /**
                     * Create Json object which stores information about composition, user, map state and map layers (including layer data)
                     * @memberof hs.status_creator.service
@@ -504,7 +518,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                     me.confirmSave = function () {
                         $http({
                             method: 'POST',
-                            url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
+                            url: status_creator.endpointUrl(),
                             data: JSON.stringify({
                                 project: config.project_name,
                                 title: me.compoData.title,
@@ -522,17 +536,17 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                                 if (me.statusData.titleFree && me.statusData.hasPermission) {
                                     me.save(true);
                                 } else {
-                                    $rootScope.$broadcast('StatusManager.saveResult', 2);
+                                    $rootScope.$broadcast('StatusManager.saveResult', 'saveConfirm');
                                 }
                             }, function (err) {
                                 me.statusData.success = false;
-                                $rootScope.$broadcast('StatusManager.saveResult', 3);
+                                $rootScope.$broadcast('StatusManager.saveResult', 'saveResult', 'error');
                             });
                     };
                     me.save = function (saveAsNew) {
                         if (saveAsNew || me.compoData.id == '') me.compoData.id = status_creator.generateUuid();
                         $http({
-                            url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php"),
+                            url: status_creator.endpointUrl(),
                             method: 'POST',
                             data: JSON.stringify({
                                 data: status_creator.map2json(OlMap.map, me.compoData, me.userData, me.statusData),
@@ -545,16 +559,16 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         }).then(function (response) {
                             var compInfo = {};
                             var j = response.data;
-                            me.statusData.success = angular.isDefined(j.saved) && (j.saved !== false);
                             compInfo.id = me.compoData.id;
                             compInfo.title = me.compoData.title;
                             compInfo.abstract = me.compoData.abstract || '';
+                            me.status = angular.isDefined(j.saved) && (j.saved !== false);
                             $rootScope.$broadcast('compositions.composition_loading', compInfo);
                             $rootScope.$broadcast('compositions.composition_loaded', compInfo);
-                            $rootScope.$broadcast('StatusManager.saveResult', 1);
+                            $rootScope.$broadcast('StatusManager.saveResult', 'saveResult', angular.isDefined(j.saved) && (j.saved !== false) ? 'ok' : 'not-saved');
                         }, function (err) {
                             me.statusData.success = false;
-                            $rootScope.$broadcast('StatusManager.saveResult', 3);
+                            $rootScope.$broadcast('StatusManager.saveResult', 'saveResult', 'error');
                         });
                     };
                     /**
@@ -610,7 +624,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         me.statusData.groups = [];
                         if (config.advancedForm) {
                             $http({
-                                url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php'),
+                                url: status_creator.endpointUrl(),
                                 method: 'GET',
                                 data: {
                                     request: 'getGroups'
@@ -641,7 +655,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                      */
                     me.loadUserDetails = function () {
                         //TODO: This long statement should be in function
-                        $http({ url: (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=getuserinfo" }).
+                        $http({ url: status_creator.endpointUrl() + "?request=getuserinfo" }).
                             then(me.setUserDetails, function (err) { });
                     };
 
@@ -810,8 +824,9 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                         StatusManager.save(saveAsNew);
                     }
 
-                    $scope.$on('StatusManager.saveResult', function (e, result) {
-                        if (result === 1) {
+                    $scope.$on('StatusManager.saveResult', function (e, step, result) {
+                        $scope.resultCode = result;
+                        if (step === 'saveResult') {
                             $scope.showResultDialog();
                             $('#stc-next').show();
                             $('#stc-download').hide();
@@ -824,10 +839,10 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
                             });
                             $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));
                         }
-                        else if (result === 2) {
+                        else if (step === 'saveConfirm') {
                             $scope.showSaveDialog();
                         }
-                        else if (result === 3) {
+                        else if (step === 'saveResult') {
                             $scope.showResultDialog();
                         }
                     })
