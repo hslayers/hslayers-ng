@@ -8,8 +8,10 @@
                 <button type="button" ng-click="resultModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                    <div translate class="alert alert-success" ng-show="statusData.success">Successfuly saved to status manager</div>
-                    <div translate class="alert alert-danger" ng-show="!statusData.success">Failed to save to status manager</div>
+                    <div translate class="alert alert-success" ng-show="statusData.success">Composition saved successfully</div>
+                    <div translate class="alert alert-danger" ng-show="!statusData.success">Composition failed to save</div>
+                    <div translate class="alert alert-danger" ng-show="!statusData.success && resultCode == 'not-saved'">Request was processed, but map was not saved due to authorization missing</div>
+                    <div translate class="alert alert-danger" ng-show="!statusData.success && resultCode == 'error'">Server didn't respond or other error occured</div>
             </div>
             <div class="modal-footer" id="stc-footer">
                 <button type="button" class="btn btn-primary" ng-click="resultModalVisible = false" data-dismiss="modal" translate>Close</button>

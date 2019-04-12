@@ -286,8 +286,8 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
          * @membeof hs.permalink
          * @description Service responsible for sharing background. Mantain correct sharing links on the fly
          */
-        module.service('hs.permalink.shareService', ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlService', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q',
-            function ($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q) {
+        module.service('hs.permalink.shareService', ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlService', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q', 'hs.status_creator.service',
+            function ($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q, statusCreator) {
                 var me = {};
                 angular.extend(me, {
 
@@ -365,7 +365,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         if (!me.data.shareUrlValid) {
                             if (serviceURL.shareId == null || newShare) serviceURL.shareId = utils.generateUuid();
                             $http({
-                                url: (getHostname() + config.status_manager_url),
+                                url: statusCreator.endpointUrl(),
                                 method: 'POST',
                                 data: JSON.stringify({
                                     request: 'socialShare',
@@ -376,7 +376,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                                     image: me.data.thumbnail
                                 })
                             }).then(function (response) {
-                                utils.shortUrl(getHostname() + config.status_manager_url + "?request=socialshare&id=" + serviceURL.shareId)
+                                utils.shortUrl(statusCreator.endpointUrl() + "?request=socialshare&id=" + serviceURL.shareId)
                                     .then(function (shortUrl) {
                                         var shareUrl = shortUrl;
                                         socialshare.share({
@@ -446,22 +446,10 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                     }
                 })
 
-                /**
-                 * @memberof permalink.shareService
-                 * @function getHostname
-                 * @private
-                 */
-                function getHostname() {
-                    if (angular.isDefined(config.hostname))
-                        return config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url);
-                    else
-                        return "";
-                }
-
                 $rootScope.$on('core.mainpanel_changed', function (event) {
                     if (Core.mainpanel == 'permalink') {
                         serviceURL.update();
-                        var status_url = getHostname() + (config.status_manager_url || "/wwwlibs/statusmanager2/index.php");
+                        var status_url = statusCreator.endpointUrl();
                         if (serviceURL.added_layers.length > 0) {
                             $http({
                                 url: status_url,
