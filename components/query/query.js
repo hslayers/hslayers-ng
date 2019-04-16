@@ -65,6 +65,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     var me = this;
 
                     var map;
+
                     this.queryPoint = new ol.geom.Point([0, 0]);
                     this.queryLayer = new ol.layer.Vector({
                         title: "Point clicked",
@@ -90,6 +91,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
 
                     function init() {
                         map = OlMap.map;
+                        me.queryActive = false;
                         map.on('singleclick', function (evt) {
                             if (!me.queryActive) return;
                             me.popupClassname = "";
@@ -102,11 +104,9 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         });
                     }
 
-                    if (angular.isDefined(OlMap.map)) {
-                        init();
-                    } else {
-                        $rootScope.$on('map.loaded', init);
-                    }
+                    if (angular.isDefined(OlMap.map)) init();
+                    if(me.deregisterOnMapLoaded) me.deregisterOnMapLoaded();
+                    me.deregisterOnMapLoaded = $rootScope.$on('map.loaded', init);
 
                     this.setData = function (data, type, overwrite) {
                         if (angular.isDefined(type)) {
@@ -136,14 +136,15 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     }
 
                     this.fillIframeAndResize = function (iframe, response, append) {
+                        var iframe = me.getInvisiblePopup();
                         if (append)
-                            invisiblePopup.contentDocument.body.appendChild(response);
+                            iframe.contentDocument.body.innerHTML += response;
                         else
-                        invisiblePopup.contentDocument.body.innerHTML = response;
-                        var tmp_width = invisiblePopup.contentDocument.innerWidth;
+                            iframe.contentDocument.body.innerHTML = response;
+                        var tmp_width = iframe.contentDocument.innerWidth;
                         if (tmp_width > document.getElementById("map").clientWidth - 60) tmp_width = document.getElementById("map").clientWidth - 60;
                         iframe.style.width = tmp_width + 'px';
-                        var tmp_height =  invisiblePopup.contentDocument.innerHeight;
+                        var tmp_height =  iframe.contentDocument.innerHeight;
                         if (tmp_height > 700) tmp_height = 700;
                         iframe.style.height = tmp_height + 'px';
                     };
@@ -201,7 +202,10 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         }
                         return defaultStyle;
                     }
-                    $rootScope.$on('vectorSelectorCreated',function(e,selector){
+                    if(me.deregisterVectorSelectorCreated) {
+                        me.deregisterVectorSelectorCreated();
+                    }
+                    me.deregisterVectorSelectorCreated = $rootScope.$on('vectorSelectorCreated',function(e,selector){
                         me.selector = selector;
                     });
                 }])
@@ -530,7 +534,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     
                     $scope.data = Base.data;
 
-                    $rootScope.$on('queryStatusChanged', function() {
+                    
+                    var deregisterQueryStatusChanged = $rootScope.$on('queryStatusChanged', function() {
                         if (Base.queryActive) {
                             $scope.deregisterVectorQuery = $scope.$on('queryClicked', function(e) {
                                 if (config.design === 'md' && $scope.data.groups.length === 0) {
@@ -560,11 +565,13 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                                     }
                                 })
                             });
+                        } else {
+                            if($scope.deregisterVectorQuery) $scope.deregisterVectorQuery();
+                            if($scope.deregisterWmsQuery) $scope.deregisterWmsQuery();
                         }
-                        else {
-                            $scope.deregisterVectorQuery();
-                            $scope.deregisterWmsQuery();
-                        }
+                    });
+                    $scope.$on('$destroy', function() {
+                        if(deregisterQueryStatusChanged) deregisterQueryStatusChanged();
                     });
     
                     if (Core.current_panel_queryable) {

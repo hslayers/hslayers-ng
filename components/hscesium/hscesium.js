@@ -208,7 +208,7 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
 
             this.resize = function(event, size) {
                 if (angular.isUndefined(size)) return;
-                angular.element("#cesiumContainer").height(size.height);
+                document.getElementById("cesiumContainer").style.height = size.height + "px";
                 angular.element('.cesium-viewer-timelineContainer').css({
                     right: 0
                 });

@@ -17,8 +17,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                      * @ngdoc controller
                      * @description Service of composition module
                      */
-                    .service('hs.compositions.service', ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.urlService', '$compile', '$cookies', 'hs.utils.service',
-                        function ($rootScope, $q, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils) {
+                    .service('hs.compositions.service', ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.urlService', '$compile', '$cookies', 'hs.utils.service', 'hs.status_creator.service',
+                        function ($rootScope, $q, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils, statusCreator) {
                             var me = this;
 
                             me.data = {};
@@ -35,7 +35,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             function getCompositionsQueryUrl(params, bbox) {
                                 var query = params.query;
                                 var bboxDelimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
-                                var serviceName = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? 'serviceName=p4b&' : '';
+                                var serviceName = angular.isDefined(config.compositions_catalogue) && angular.isDefined(config.compositions_catalogue.serviceName) ? 'serviceName=&' + config.compositions_catalogue.serviceName  : '';
                                 bbox = (params.filterExtent ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + "'") : '');
                                 var catalogueKnown = false;
                                 var textFilter = query && angular.isDefined(query.title) && query.title != '' ? encodeURIComponent(" AND title like '*" + query.title + "*' OR abstract like '*" + query.title + "*'") : '';
@@ -84,7 +84,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                         delete me.canceler;
                                     }
                                     me.canceler = $q.defer();
-                                    $http.get(getCompositionsQueryUrl(params, bbox), { timeout: canceler.promise }).then(
+                                    $http.get(getCompositionsQueryUrl(params, bbox), { timeout: me.canceler.promise }).then(
                                         function (response) {
                                             me.compositionsLoaded = true;
                                             response = response.data;
@@ -104,7 +104,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                                 };
                                                 record.editable = false;
                                                 if (angular.isUndefined(record.thumbnail)) {
-                                                    record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
+                                                    record.thumbnail = statusCreator.endpointUrl() + '?request=loadthumb&id=' + record.id;
                                                 }
                                                 var extent = compositionParser.parseExtent(record.bbox);
                                                 //Check if height or Width covers the whole screen
@@ -134,13 +134,13 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
                              */
                             me.loadStatusManagerCompositions = function (params, bbox) {
-                                var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url;
+                                var url = statusCreator.endpointUrl();
                                 var query = params.query;
                                 var textFilter = query && angular.isDefined(query.title) && query.title != '' ? '&q=' + encodeURIComponent('*' + query.title + '*') : '';
                                 url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + textFilter + '&start=0&limit=1000&sort=' + getStatusSortAttr(params.sortBy);
                                 url = utils.proxify(url);
-                                canceler.resolve();
-                                $http.get(url, { timeout: canceler.promise }).then(function (response) {
+                                me.canceler.resolve();
+                                $http.get(url, { timeout: me.canceler.promise }).then(function (response) {
                                     response = response.data;
                                     if (angular.isUndefined(me.data.compositions)) {
                                         me.data.compositions = [];
@@ -158,10 +158,10 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                             record.editable = false;
                                             if (angular.isDefined(record.edit)) record.editable = record.edit;
                                             if (angular.isUndefined(record.link)) {
-                                                record.link = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=load&id=' + record.id;
+                                                record.link = statusCreator.endpointUrl() + '?request=load&id=' + record.id;
                                             }
                                             if (angular.isUndefined(record.thumbnail)) {
-                                                record.thumbnail = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=loadthumb&id=' + record.id;
+                                                record.thumbnail = statusCreator.endpointUrl() + '?request=loadthumb&id=' + record.id;
                                             }
                                             var attributes = {
                                                 record: record,
@@ -188,7 +188,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             }
 
                             me.deleteComposition = function (composition) {
-                                var url = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
+                                var url = statusCreator.endpointUrl() + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
                                 url = utils.proxify(url);
                                 $http({ url: url }).
                                     then(function (response) {
@@ -270,7 +270,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 if (permalink.getParamValue('composition')) {
                                     var id = permalink.getParamValue('composition');
                                     if (id.indexOf('http') == -1 && id.indexOf(config.status_manager_url) == -1)
-                                        id = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php') + '?request=load&id=' + id;
+                                        id = statusCreator.endpointUrl() + '?request=load&id=' + id;
                                     compositionParser.load(id);
                                 }
                             }
@@ -283,7 +283,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             });
 
                             $rootScope.$on('compositions.load_composition', function (event, id) {
-                                id = (config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php') + '?request=load&id=' + id;
+                                id = statusCreator.endpointUrl() + '?request=load&id=' + id;
                                 compositionParser.load(id);
                             });
 
@@ -303,7 +303,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 var metadata = {};
                                 $http({
                                     method: 'POST',
-                                    url: ((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url),
+                                    url: statusCreator.endpointUrl(),
                                     data: JSON.stringify({
                                         request: 'socialShare',
                                         id: shareId,
@@ -313,7 +313,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                         image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg'
                                     })
                                 }).then(function (response) {
-                                    utils.shortUrl((config.hostname.user ? config.hostname.user.url : (config.hostname.status_manager ? config.hostname.status_manager.url : config.hostname.default.url)) + config.status_manager_url + "?request=socialshare&id=" + shareId)
+                                    utils.shortUrl(statusCreator.endpointUrl() + "?request=socialshare&id=" + shareId)
                                         .then(function (shortUrl) {
                                             me.data.shareUrl = shortUrl;
                                         }).catch(function () {

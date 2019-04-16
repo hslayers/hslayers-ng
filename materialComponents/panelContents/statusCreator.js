@@ -36,15 +36,15 @@ define(['angular', 'ol', 'angular-material', 'ngAnimate'],
                         StatusManager.save(saveAsNew);
                     }
 
-                    $scope.$on('StatusManager.saveResult', function (e, result) {
-                        if (result === 1) {
+                    $scope.$on('StatusManager.saveResult', function (e, step,result) {
+                        if (step === 'saveResult') {
                             showResultsDialog();
                             Sidenav.closeSidenav('sidenav-right');
                         }
-                        else if (result === 2) {
+                        else if (step === 'saveConfirm') {
                             showSaveDialog();
                         }
-                        else if (result === 3) {
+                        else if (step === 'saveResult' && result != 'ok') {
                             showResultsDialog();
                         }
                     })

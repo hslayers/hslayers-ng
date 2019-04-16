@@ -62,6 +62,9 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
              * @description Initialization function for HSLayers map object. Initialize map with basic interaction, scale line and watcher for map view changes. When default controller is used, its called automaticaly, otherwise its must be called before other modules dependent on map object are loaded.
              */
             this.init = function () {
+                if(angular.isDefined(me.map)){
+                    me.map.getLayers().clear();
+                }
                 me.map = new ol.Map({
                     controls: ol.control.defaults({
                         zoom: false
