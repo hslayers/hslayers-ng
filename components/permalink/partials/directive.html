@@ -11,27 +11,27 @@
             <div class="form-group">
                 <label for="pure-map-link" class="control-label" translate>Share pure map</label>
                 <a ng-href="{{data.pureMapUrl}}" target="_blank" id = "pure-map-link">{{data.pureMapUrl}}</a>
-                <p><sub class="text-danger">*Shares only map as picture</sub></p>
+                <p><sub class="text-danger" translate>*Shares only map as picture</sub></p>
             </div>
             <br/>
             <div class="form-group">
                 <label for="permalink-link" class="control-label" translate>Permalink</label>
                 <a ng-href="{{data.permalinkUrl}}" target="_blank" id = "permalink-link">{{data.permalinkUrl}}</a>
-                <p><sub class="text-danger">*Shares map with all portal functionalities</sub></p>
+                <p><sub class="text-danger" translate>*Shares map with all portal functionality</sub></p>
             </div>
             <hr/>
             
             <fieldset class="form-group">
-                <h4 for="share-link" translate>Link for <span ng-show="Core.embededEnabled">embed/</span>social share</h4>
+                <h4 for="share-link"><translate>Link for</translate>&nbsp;<span ng-show="Core.embededEnabled" translate>embed/</span><translate>social share</translate></h4>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="share-link" value="puremap" ng-model="data.shareLink" ng-click="updateEmbedCode()">
+                    <input type="radio" class="form-check-input" name="share-link" value="puremap" ng-model="data.shareLink" ng-click="updateEmbedCode()" translate>
                     Pure map
                   </label>
                 </div>
                 <div class="form-check">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="share-link" value="permalink" ng-model="data.shareLink" ng-click="updateEmbedCode()">
+                    <input type="radio" class="form-check-input" name="share-link" value="permalink" ng-model="data.shareLink" ng-click="updateEmbedCode()" translate>
                     Permalink
                   </label>
                 </div>
@@ -45,7 +45,7 @@
             <hr />
             
             <fieldset>
-            <h4>Share on social network</h4>
+            <h4 translate>Share on social network</h4>
             <div class="form-group">
                 <label for="hs-prmlnk-title" class="control-label" translate>Name</label>
                     <input type="text" class="form-control" id="hs-prmlnk-title" placeholder="{{'Fill in name'|translate}}" ng-change="invalidateShareUrl()" ng-model="data.title" />
@@ -62,15 +62,14 @@
                 <div class="form-group">
                     <label class="control-label" translate=""><input type="checkbox" ng-model="new_share"/><span class="ng-scope"> New share</span></label>
                 </div>
-                <button class="btn btn-secondary" href="#" ng-click="shareOnSocial('twitter')">
-                    <i class="icon-twitter"></i> Twitter
-                </button>
-                <button class="btn btn-secondary" href="#" ng-click="shareOnSocial('facebook')">
-                    <i class="icon-facebook"></i> Facebook
-                </button>
-                <button class="btn btn-secondary" href="#" ng-click="shareOnSocial('google')">
-                    <i class="icon-googleplus"></i> Google
-                </button>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-secondary" href="#" ng-click="shareOnSocial('twitter')">
+                        <i class="icon-twitter"></i> Twitter
+                    </button>
+                    <button class="btn btn-secondary" href="#" ng-click="shareOnSocial('facebook')">
+                        <i class="icon-facebook"></i> Facebook
+                    </button>
+                </div>
             </div>
             
             <div class="form-group">
