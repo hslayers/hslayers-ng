@@ -407,10 +407,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 }
                 var layerPanel = document.getElementsByClassName('layerpanel');
                 var layerNode = document.getElementById('layer' + (path || '') + (index || ''));	
-                if(layerPanel.length>0){	
-                    layerPanel = layerPanel[0];	
-                    layerNode.parentNode.insertBefore(layerPanel, layerNode.nextSibling);	
-                }
+                utils.insertAfter(layerPanel, layerNode);
                 $scope.legendDescriptors = [];
                 var tmpDescriptor = (layer ? legendService.getLayerLegendDescriptor(layer.layer) : false);
                 if(tmpDescriptor) $scope.legendDescriptors.push(tmpDescriptor);
@@ -776,7 +773,9 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
 
             $scope.$on('layer.removed', function (event, layer) {
                 if (angular.isObject(LayMan.currentLayer) && (LayMan.currentLayer.layer == layer)) {
-                    $(".layerpanel").insertAfter($('.hs-lm-mapcontentlist'));
+                    var layerPanel = document.getElementsByClassName('layerpanel');
+                    var layerNode = document.getElementsByClassName('hs-lm-mapcontentlist')[0];	
+                    utils.insertAfter(layerPanel, layerNode);
                     LayMan.currentLayer = null;
                     $scope.currentLayer = LayMan.currentLayer;
                 }

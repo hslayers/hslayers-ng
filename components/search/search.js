@@ -338,7 +338,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                     $scope.$watch('Core.panelVisible("search")', function (newValue, oldValue) {
                         if (newValue !== oldValue && newValue) {
                             setTimeout(function () {
-                                $('#search_address').focus();
+                                document.getElementById('search_address').focus();
                             }, 500);
                         }
                     });

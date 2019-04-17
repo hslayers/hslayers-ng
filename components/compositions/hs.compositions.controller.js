@@ -453,7 +453,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             });
 
                             $scope.$on('compositions.composition_deleted', function () {
-                                $("#hs-dialog-area #composition-delete-dialog").remove();
+                                var deleteDialog = document.getElementById("composition-delete-dialog");
+                                deleteDialog.parentNode.remove(deleteDialog);
                             });
 
                             $scope.$on('loadComposition.notSaved', function (event, data) {

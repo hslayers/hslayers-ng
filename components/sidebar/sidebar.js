@@ -56,7 +56,7 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
                             scope.Core.config.createExtraMenu($compile, scope, element);
                         scope.$watch(
                             function() {
-                                return [scope.Core.sidebarExpanded, $('.panelspace').width()]
+                                return [scope.Core.sidebarExpanded, document.getElementsByClassName('panelspace')[0].innerWidth]
                             },
                             function(value) {
                                 setTimeout(function() {
