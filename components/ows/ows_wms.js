@@ -156,9 +156,9 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
                     var query_format = getPreferedFormat(query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
 
                     var tmp = [];
-                    $(service).each(function() {
+                    angular.forEach(service, function() {
                         if (console) console.log("Load service", this);
-                        $(this.Layer).each(function() {
+                        angular.forEach(this.Layer, function() {
                             layer = this;
                             if (console) console.log("Load service", this);
                             var attributions = [];
@@ -239,7 +239,7 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
             this.addService = function(url, box) {
                 srv_caps.requestGetCapabilities(url).then(function(resp) {
                     var ol_layers = srv_caps.service2layers(resp);
-                    $(ol_layers).each(function() {
+                    angular.forEach(ol_layers, function() {
                         if (typeof box != 'undefined') box.get('layers').push(this);
                         OlMap.map.addLayer(this);
                     });

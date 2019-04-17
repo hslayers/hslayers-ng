@@ -164,6 +164,21 @@ define(['angular', 'ol'], function (angular, ol) {
             }
             /**
             * @ngdoc method
+            * @name hs.utils.service#insertAfter
+            * @public
+            * @param {element} newNode Element to insert
+            * @param {element} referenceNode Element after which to insert
+            * @returns {String} Joined Url query string
+            * @description Insert every element in the set of matched elements after the target.
+            */
+            this.insertAfter = function(newNode, referenceNode) {
+                if(angular.isDefined(newNode.length) && newNode.length>0){	
+                    newNode = newNode[0];	
+                }
+                referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+            }
+            /**
+            * @ngdoc method
             * @name hs.utils.service#paramsToUrlWoEncode
             * @public
             * @param {Object} array Parameter object with parameter key-value pairs 

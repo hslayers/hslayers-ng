@@ -139,9 +139,9 @@ define(['angular', 'ol', 'dc', 'map'],
                                 var attr = attributes[attr_i];
                                 var pies = [];
                                 var createChart = function(id, attr_i) {
-                                    if ($(id).length > 0) {
+                                    if (document.querySelector(id)) {
                                         var chart = dc.rowChart(id);
-                                        chart.width($(".panelspace").width() - 35)
+                                        chart.width(document.getElementsByClassName("panelspace")[0].innerWidth - 35)
                                             .height(dims[attr_i].grouping.size() * 23 + 40).labelOffsetY(12)
                                             .dimension(dims[attr_i].dimension) // set dimension
                                             .group(dims[attr_i].grouping) // set group

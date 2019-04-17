@@ -148,12 +148,15 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
                                     s = s + features[i].data + '\n';
                                 }
                             }
-
-                            var iframe = $('.cesium-infoBox-iframe');
-                            setTimeout(function() {
-                                $('.cesium-infoBox-description', iframe.contents()).html(s.replaceAll('\n', '<br/>'));
-                                iframe.height(200);
-                            }, 1000);
+                            debugger;
+                            var iframe = document.querySelector('.cesium-infoBox-iframe');
+                            if(iframe){
+                                setTimeout(function() {
+                                    var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+                                    innerDoc.querySelector('.cesium-infoBox-description').innerHTML = s.replaceAll('\n', '<br/>');
+                                    iframe.style.height = 200 + 'px';
+                                }, 1000);
+                            }
                         });
                     }
                 }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
