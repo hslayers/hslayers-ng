@@ -41,20 +41,24 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 var textFilter = query && angular.isDefined(query.title) && query.title != '' ? encodeURIComponent(" AND title like '*" + query.title + "*' OR abstract like '*" + query.title + "*'") : '';
                                 var selected = [];
                                 var keywordFilter = "";
+                                var tmp = '';
                                 angular.forEach(params.keywords, function (value, key) {
                                     if (value) selected.push("subject='" + key + "'");
                                 });
                                 if (selected.length > 0)
                                     keywordFilter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
 
-                                if (config.hostname.user && config.hostname.user.url) {
-                                    tmp = config.hostname.user.url;
-                                } else if (config.hostname.compositions_catalogue) {
-                                    tmp = config.hostname.compositions_catalogue.url
-                                    catalogueKnown = true;
-                                } else if (config.hostname && config.hostname.default) {
-                                    tmp = config.hostname.default.url
+                                if(angular.isDefined(config.hostname)){
+                                    if (config.hostname.user && config.hostname.user.url) {
+                                        tmp = config.hostname.user.url;
+                                    } else if (config.hostname.compositions_catalogue) {
+                                        tmp = config.hostname.compositions_catalogue.url
+                                        catalogueKnown = true;
+                                    } else if (config.hostname && config.hostname.default) {
+                                        tmp = config.hostname.default.url
+                                    }
                                 }
+                                
                                 if (!catalogueKnown) {
                                     if (tmp.indexOf('http') > -1) {
                                         //Remove domain from url
