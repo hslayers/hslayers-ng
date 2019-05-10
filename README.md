@@ -11,44 +11,57 @@ http://sdi4apps.eu/spoi/
 
 npm install hslayers-ng
 
+
+Include the bundle file
+
+```<script src="node_modules/hslayers-ng/dist/hslayers-ng.js"></script>```
+
 ### Configure the application
 
-Copy the application configuration (template) files to the actual files. 
+A global hslayersNgConfig function, which returns a configuration object, needs to be created before loading the hslayers-ng.js script. It returns a json object to configure applications looks, behaviour and data. See [Configuration options](Config-parameters) for the available options.
 
 ```
-cp node_modules/hslayers-ng/app.js.template app.js
-cp node_modules/hslayers-ng/hslayers.js.template hslayers.js
-```
+<script>
+    function hslayersNgConfig(ol) {
+      return {
+        default_layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM(),
+            title: "OpenStreetMap",
+            base: true,
+            visible: true,
+            removable: false
+          })
+        ],
 
-hslayers.js file contains the paths for the different modules and is the starting 
-point of the js application.
-Inside it set the hsl_path variable on top of the file to your hslayers-ng directory. 
-```
-var hsl_path = 'node_modules/hslayers-ng/';
-```
-The path should be relative to your www root or the html file where you load hslayers.js file.
+        default_view: new ol.View({
+          center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+          zoom: 4,
+          units: "m"
+        })
+      }
+    } 
+  </script>
+  ```
 
-app.js file is where you specify which hslayers modules will be loaded for your speciffic 
-application, which map layers will be displayed and other configuration parameters. 
-You can also write some startup code here to load some map service or open some initial panels etc.
-
-Include in your html file, where the map should appear. Check the paths to the js files.
+Include in your html file, where the map should appear. 
 
 ```
 <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
-<script src="node_modules/requirejs/require.js"></script>    
-<script src="hslayers.js"></script> 
 ```
 
-Some example html files are provided in the `examples` directory. The template app.js uses 
-some png files for layer groups which are also included in the `examples/full` directory.
+To have more customization optionas which require programming you can also write your own entry module which in this example is named app.js, but can have any other file name. 
+App.js file is where you specify which hslayers modules will be loaded for your speciffic 
+application, which map layers will be displayed and other configuration parameters. 
+You can also write some startup code here to load a map service, open some initial panels etc.
 
-Every application needs an app.js file (it can be named differently or be server generated) whose location is specified in hslayers.js file.
+Some example html files are provided in https://github.com/hslayers/examples repository. The template app.js uses 
+some png files for layer groups which are included in https://github.com/hslayers/examples/tree/master/full directory.
+
 A truncated example app.js with explanations is provided below:
 
 ```
-define([ /* List of js files to be loaded. They are both hslayers and third-party components and the pathes are specified in hslayers.js and Core.js files */
+define([ /* List of js files to be loaded. They are both hslayers and third-party components and the paths are specified in hslayers.js and Core.js files */
         'ol',
         'sidebar',
         'layermanager',
@@ -123,7 +136,10 @@ define([ /* List of js files to be loaded. They are both hslayers and third-part
     });
 ```
 
-To configure applications looks, beheviour and dat [Configuration options](Config-parameters) are specified inside app.js module.values('config'.. service.
+If you are creating your own app.js and not using the provided bundled one, the source will need to be compiled using webpack.
+Example webpack configuration files are provided at https://github.com/hslayers/examples/tree/webpack/full
+
+`webpack --config webpack.dev.conf --progress`
 
 ### Proxy
 
