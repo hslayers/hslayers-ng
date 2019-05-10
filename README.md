@@ -71,7 +71,7 @@ define([ /* List of js files to be loaded. They are both hslayers and third-part
                 function(config, Core) {
                     return {
                         /* A different layout of the application can be achieved by changing the main template*/
-                        templateUrl: config.hsl_path + 'hslayers.html',
+                        template: require('hslayers.html'),
                         link: function(scope, element) {
                             Core.fullScreenMap(element);
                         }

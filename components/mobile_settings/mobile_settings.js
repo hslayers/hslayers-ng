@@ -14,7 +14,7 @@ define(['angular', 'core'],
             */
             .directive('hs.mobileSettings.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/mobile_settings/partials/mobile_settings.html'
+                    template: require('components/mobile_settings/partials/mobile_settings.html'
                 };
             }])
 

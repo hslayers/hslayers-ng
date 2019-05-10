@@ -13,7 +13,7 @@ define(['angular', 'ol', 'map'],
              */
             .directive('hs.datasourceSelector.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/datasource_selector.html'
+                    template: require('components/datasource_selector/partials/datasource_selector.html')
                 };
             }])
 
@@ -25,7 +25,7 @@ define(['angular', 'ol', 'map'],
              */
             .directive('hs.datasourceSelector.metadataDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_metadata.html',
+                    template: require('components/datasource_selector/partials/dialog_metadata.html'),
                     link: function (scope, element, attrs) {
                         scope.metadataModalVisible = true;
                     }
@@ -40,7 +40,7 @@ define(['angular', 'ol', 'map'],
              */
             .directive('hs.datasourceSelector.advancedMickaDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_micka_advanced.html',
+                    template: require('components/datasource_selector/partials/dialog_micka_advanced.html'),
                     link: function (scope, element, attrs) {
                         scope.modalVisible = true;
                     }
@@ -55,7 +55,7 @@ define(['angular', 'ol', 'map'],
              */
             .directive('hs.datasourceSelector.suggestionsDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/dialog_micka_suggestions.html',
+                    template: require('components/datasource_selector/partials/dialog_micka_suggestions.html'),
                     link: function (scope, element, attrs) {
                         scope.suggestionsModalVisible = true;
                         scope.data.suggestionFilter = scope.data.query[scope.data.suggestionConfig.input];
@@ -73,7 +73,7 @@ define(['angular', 'ol', 'map'],
              */
             .directive('hs.datasourceSelector.objectDirective', ['$compile', 'config', function ($compile, config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/datasource_selector/partials/object.html',
+                    template: require('components/datasource_selector/partials/object.html'),
                     compile: function compile(element) {
                         var contents = element.contents().remove();
                         var contentsLinker;
@@ -752,7 +752,7 @@ define(['angular', 'ol', 'map'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,
-                            templateUrl: config.hsl_path + 'materialComponents/panelContents/datasourceBrowserMetadata.html',
+                            template: require('materialComponents/panelContents/datasourceBrowserMetadata.html'),
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();

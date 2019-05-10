@@ -52,7 +52,7 @@ define(['angular', 'map', 'core', 'permalink'],
             */
             .directive('hs.mobileToolbar.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/mobile_toolbar/partials/mobile_toolbar.html'
+                    template: require('components/mobile_toolbar/partials/mobile_toolbar.html')
                 };
             }])
 

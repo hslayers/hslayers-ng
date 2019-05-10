@@ -75,7 +75,7 @@ define(['angular', 'ol'],
         */
         .directive('hs.styler.directive', ['config', function (config) {
             return {
-                templateUrl: config.hsl_path + 'components/styles/partials/styler.html'
+                template: require('components/styles/partials/styler.html')
             };
         }])
 
@@ -157,7 +157,7 @@ define(['angular', 'ol'],
                         scope.color = col;
                     }
                 },
-                templateUrl: config.hsl_path + 'components/styles/partials/color.html'
+                template: require('components/styles/partials/color.html')
             };
         }])
 

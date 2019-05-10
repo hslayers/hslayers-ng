@@ -24,7 +24,7 @@ define(['angular', 'core'],
             */
             .directive('hs.floatingActionButton.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/floating_action_button/partials/floating_action_button.html'
+                    template: require('components/floating_action_button/partials/floating_action_button.html')
                 };
             }])
 

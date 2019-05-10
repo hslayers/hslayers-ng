@@ -12,15 +12,15 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
             init() {
                 angular.module('hs.layermanager')
                     /**
-         * @module hs.layermanager
-         * @name hs.layermanager.layerlistDirective
-         * @ngdoc directive
-         * @description Directive for displaying list of layers in default HSLayers manager template. Every directive instance contain one folder of folder stucture. For every layer displays current information notes and on click opens layer options panel. Every directive instance is automatically refresh when layermanager.updated fires.
-         * Directive has access to contollers data object.
-         */
+                     * @module hs.layermanager
+                     * @name hs.layermanager.layerlistDirective
+                     * @ngdoc directive
+                     * @description Directive for displaying list of layers in default HSLayers manager template. Every directive instance contain one folder of folder stucture. For every layer displays current information notes and on click opens layer options panel. Every directive instance is automatically refresh when layermanager.updated fires.
+                     * Directive has access to contollers data object.
+                     */
                     .directive('hs.layermanager.layerlistDirective', ['$compile', 'config', function ($compile, config) {
                         return {
-                            templateUrl: config.hsl_path + 'components/layermanager/partials/layerlist.html',
+                            template: require('components/layermanager/partials/layerlist.html'),
                             compile: function compile(element) {
                                 var contents = element.contents().remove();
                                 var contentsLinker;

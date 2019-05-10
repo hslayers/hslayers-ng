@@ -15,7 +15,7 @@ define(['angular', 'ol', 'map', 'core'],
          */
         .directive('hs.measure.directive', ['config', function(config) {
             return {
-                templateUrl: `${config.hsl_path}components/measure/partials/measure${config.design || ''}.html`,
+                template: require('components/measure/partials/measure.html'),
             };
         }])
         /**

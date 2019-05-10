@@ -43,7 +43,7 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
              */
             .directive('hs.ows.wms.resampleDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/ows/partials/dialog_proxyconfirm.html',
+                    template: require('components/ows/partials/dialog_proxyconfirm.html'),
                     link: function(scope, element, attrs) {
                         scope.resampleModalVisible = true;
                     }
@@ -58,7 +58,7 @@ define(['angular', 'ol', 'utils', 'moment-interval', 'moment'],
              */
             .directive('hs.ows.wms.capabilitiesErrorDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
+                    template: require('components/ows/partials/dialog_getcapabilities_error.html'),
                     link: function(scope, element, attrs) {
                         scope.capabilitiesErrorModalVisible = true;
                     }

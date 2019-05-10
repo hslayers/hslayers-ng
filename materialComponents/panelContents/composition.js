@@ -9,7 +9,7 @@ define(['angular', 'ol', 'angular-material'],
 
             .directive('hs.material.composition.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/composition.html',
+                    template: require('materialComponents/panelContents/composition.html'),
                     link: function (scope, element) {
 
                     }
@@ -97,7 +97,7 @@ define(['angular', 'ol', 'angular-material'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: config.hsl_path + 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
+                            template: require('materialComponents/panelContents/compositionLoadUnsavedDialog.html'),
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();
@@ -137,7 +137,7 @@ define(['angular', 'ol', 'angular-material'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: config.hsl_path + 'materialComponents/panelContents/compositionShareDialog.html',
+                            template: require('materialComponents/panelContents/compositionShareDialog.html'),
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();
@@ -230,7 +230,7 @@ define(['angular', 'ol', 'angular-material'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: config.hsl_path + 'materialComponents/panelContents/compositionLoadUnsavedDialog.html',
+                            template: require('materialComponents/panelContents/compositionLoadUnsavedDialog.html'),
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();

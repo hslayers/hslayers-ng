@@ -9,7 +9,7 @@ define(['angular', 'ol', 'angular-material', 'ngAnimate'],
 
             .directive('hs.material.statuscreator.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/statusCreator.html',
+                    template: require('materialComponents/panelContents/statusCreator.html'),
                     link: function (scope, element) {
 
                     }
@@ -69,7 +69,7 @@ define(['angular', 'ol', 'angular-material', 'ngAnimate'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: config.hsl_path + 'materialComponents/panelContents/statusCreatorResultsDialog.html'
+                            template: require('materialComponents/panelContents/statusCreatorResultsDialog.html')
                         });
                     }
                     
@@ -80,7 +80,7 @@ define(['angular', 'ol', 'angular-material', 'ngAnimate'],
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,  
-                            templateUrl: config.hsl_path + 'materialComponents/panelContents/statusCreatorSaveDialog.html'
+                            template: require('materialComponents/panelContents/statusCreatorSaveDialog.html')
                         });
                     }
 

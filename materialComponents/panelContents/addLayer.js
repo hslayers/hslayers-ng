@@ -5,7 +5,7 @@ define(['angular', 'ol','angular-material', 'ows_wms'],
             
             .directive('hs.material.addlayer.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/addLayer.html',
+                    template: require('materialComponents/panelContents/addLayer.html'),
                     link: function(scope, element) {
 
                     }
@@ -13,7 +13,7 @@ define(['angular', 'ol','angular-material', 'ows_wms'],
             }])
             .directive('hs.material.addlayerwebservice.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/addLayerWebservice.html'
+                    template: require('materialComponents/panelContents/addLayerWebservice.html')
                 };
             }])
             .controller('hs.material.addlayerwebservice.controller', ['$scope', 'config', 'hs.ows.wms.service_capabilities', 'hs.ows.wms.addLayerService',

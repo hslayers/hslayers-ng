@@ -9,7 +9,7 @@ define(['angular', 'ol', 'angular-material'],
 
             .directive('hs.material.query.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/queryResult.html',
+                    template: require('materialComponents/panelContents/queryResult.html'),
                     link: function (scope, element) {
 
                     }

@@ -71,7 +71,7 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
                     }),
                     target: 'map',
                     interactions: [],
-                    view: cloneView(config.default_view)
+                    view: cloneView(config.default_view || createPlaceholderView())
                 });
 
                 me.visible = true;
@@ -328,7 +328,15 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
              * @description Reset map view to view configured in app config 
              */
             this.resetView = function () {
-                me.map.setView(cloneView(config.default_view));
+                me.map.setView(cloneView(config.default_view || createPlaceholderView()));
+            }
+
+            function createPlaceholderView(){
+                return new ol.View({
+                    center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+                    zoom: 4,
+                    units: "m"
+                })
             }
 
             /**
@@ -441,7 +449,7 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
          */
         .directive('hs.map.directive', ['config', '$compile', function (config, $compile) {
             return {
-                templateUrl: config.hsl_path + 'components/map/partials/map.html',
+                template: require('components/map/partials/map.html'),
                 link: function (scope, element, attrs, ctrl) {
                     var el = document.getElementsByClassName('ol-zoomslider');
                     if(el.length > 0){

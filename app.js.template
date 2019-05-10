@@ -22,7 +22,7 @@ define(['angular', 'ol', 'toolbar', 'layermanager', 'sidebar', 'map', 'ows', 'qu
 
         module.directive('hs', ['config', 'Core', function(config, Core) {
             return {
-                templateUrl: config.hsl_path + 'hslayers.html',
+                template: require('hslayers.html'),
                 link: function(scope, element) {
                     Core.fullScreenMap(element);
                 }

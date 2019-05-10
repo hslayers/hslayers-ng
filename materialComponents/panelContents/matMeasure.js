@@ -9,7 +9,7 @@ define(['angular', 'ol','angular-material'],
             
             .directive('hs.material.measure.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/matMeasure.html',
+                    template: require('materialComponents/panelContents/matMeasure.html'),
                     link: function(scope, element) {
 
                     }

@@ -24,7 +24,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
          */
         .directive('hs.layermanager.directive', ['config', function(config) {
             return {
-                templateUrl: `${config.hsl_path}components/layermanager/partials/layermanager${config.design || ''}.html`,
+                template: require('components/layermanager/partials/layermanager.html'),
                 link: function(scope, element) {
 
                 }
@@ -32,7 +32,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
         }])
         // .directive('hs.baselayers.directive', function() {
         //     return {
-        //         templateUrl: config.hsl_path + 'components/layermanager/partials/baselayers.html'
+        //         template: require('components/layermanager/partials/baselayers.html')
         //     }
         // })
         /**
@@ -50,7 +50,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
          */
         .directive('hs.layermanager.removeAllDialogDirective', ['config', function (config) {
             return {
-                templateUrl: config.hsl_path + 'components/layermanager/partials/dialog_removeall.html',
+                template: require('components/layermanager/partials/dialog_removeall.html'),
                 link: function (scope, element, attrs) {
                     scope.removeAllModalVisible = true;
                 }
@@ -64,7 +64,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
          */
         .directive('hs.layermanager.folderDirective', ['$compile', 'config', function ($compile, config) {
             return {
-                templateUrl: config.hsl_path + 'components/layermanager/partials/folder.html',
+                template: require('components/layermanager/partials/folder.html'),
                 compile: function compile(element) {
                     var contents = element.contents().remove();
                     var contentsLinker;

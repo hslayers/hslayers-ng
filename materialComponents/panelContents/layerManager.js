@@ -9,7 +9,7 @@ define(['angular', 'ol','angular-material'],
             
             .directive('hs.material.layermanager.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/layerManager.html',
+                    template: require('materialComponents/panelContents/layerManager.html'),
                     link: function(scope, element) {
 
                     }

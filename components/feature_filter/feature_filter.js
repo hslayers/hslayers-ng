@@ -23,7 +23,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             */
             .directive('hs.featureFilter.directive', ['config', function(config) {
                 return {
-                    templateUrl: `${config.hsl_path}components/feature_filter/partials/feature_filter${config.design || ''}.html`,
+                    template: require(`components/feature_filter/partials/feature_filter.html`),
                     link: function(scope, element) {
 
                     }
@@ -38,7 +38,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             */
             .directive('hs.featureList.directive', ['config', function(config) {
                 return {
-                    templateUrl: `${config.hsl_path}components/feature_filter/partials/feature_list${config.design || ''}.html`,
+                    template: require(`components/feature_filter/partials/feature_list.html`),
                     link: function(scope, element) {
 
                     }
@@ -74,7 +74,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     // link: function(scope, element, attrs) {
                     //     scope.filter = scope.$eval(attrs.filter);
                     // },
-                    // templateUrl: config.hsl_path + 'components/feature_filter/partials/{{filter.type}}md.html',
+                    // template: require('components/feature_filter/partials/{{filter.type}}md.html'),
                 };
             }])
         

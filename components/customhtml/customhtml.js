@@ -7,7 +7,7 @@ define(['angular', 'ol'],
         angular.module('hs.customhtml', [])
             .directive('hs.customhtml.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'customhtml.html',
+                    template: require('customhtml.html'),
                     link: function link(scope, element, attrs) {},
                     replace: true
                 };

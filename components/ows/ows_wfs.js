@@ -43,7 +43,7 @@ define(['angular', 'ol', 'hs.source.Wfs', 'hs.format.WFSCapabilities', 'utils'],
             */
             .directive('hs.ows.wfs.capabilitiesErrorDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/ows/partials/dialog_getcapabilities_error.html',
+                    template: require('components/ows/partials/dialog_getcapabilities_error.html'),
                     link: function(scope, element, attrs) {
                         scope.capabilitiesErrorModalVisible = true;
                     }

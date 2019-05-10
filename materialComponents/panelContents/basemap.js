@@ -9,7 +9,7 @@ define(['angular', 'ol','angular-material'],
             
             .directive('hs.material.basemap.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/basemap.html',
+                    template: require('materialComponents/panelContents/basemap.html'),
                     link: function(scope, element) {
 
                     }

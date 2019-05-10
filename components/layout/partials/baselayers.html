@@ -9,7 +9,7 @@
                 <div class="avatar-container">
                     <img ng-src="{{hasImage(layer) ? getImage(layer) : defaultBaselayerThumbnail}}" class="md-avatar" alt="{{layer.title}} image" />
                     <md-button ng-if="isRemovable(layer)" ng-click="$event.stopPropagation();showRemoveDialog($event, layer)" class="md-icon-button md-accent remove-layer">
-                        <md-icon class="material-icons" red">
+                        <md-icon class="material-icons red">
                             delete
                         </md-icon>
                     </md-button>
@@ -29,7 +29,7 @@
                 <div class="avatar-container">
                     <img ng-src="{{hasImage(layer) ? getImage(layer) : defaultTerrainlayerThumbnail}}" class="md-avatar" alt="{{layer.title}} image" />
                     <md-button ng-if="isRemovable(layer)" ng-click="$event.stopPropagation();showRemoveDialog($event, layer)" class="md-icon-button md-accent remove-layer">
-                        <md-icon class="material-icons" red">
+                        <md-icon class="material-icons red">
                             delete
                         </md-icon>
                     </md-button>

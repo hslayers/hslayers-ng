@@ -7,7 +7,7 @@ define(['angular', 'ol', 'map', 'utils'], function (angular, ol) {
 
     module.directive('hs.legend.layerDirective', ['config', function (config) {
         return {
-            templateUrl: `${config.hsl_path}components/legend/partials/layer-directive${config.design || ''}.html`,
+            template: require('components/legend/partials/layer-directive.html'),
             scope: {
                 layer: '=',
             }
@@ -97,9 +97,7 @@ define(['angular', 'ol', 'map', 'utils'], function (angular, ol) {
      * @description Add legend panel (display available legends for displayed layers) to sidebar
      */
     module.component('hs.legend', {
-        templateUrl: ['config', function (config) {
-            return `${config.hsl_path}components/legend/partials/legend${config.design || ''}.html`
-        }],
+        template: require('components/legend/partials/legend.html'),
         controller: ['$scope', 'hs.map.service', '$rootScope', 'hs.legend.service', function ($scope, OlMap, $rootScope, service) {
             var map;
 

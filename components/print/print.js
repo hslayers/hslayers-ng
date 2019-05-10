@@ -11,9 +11,7 @@ define(['angular'], function (angular) {
      * @description Add print dialog template to the app
      */
     module.component('hs.print', {
-        templateUrl: ['config', function (config) {
-            return `${config.hsl_path}components/print/partials/printdialog${config.design || ''}.html`
-        }],
+        template: require('components/print/partials/printdialog.html'),
         controller: ['$scope', 'hs.print.service', function ($scope, PrintS) {
             angular.extend($scope, {
                 title: "",

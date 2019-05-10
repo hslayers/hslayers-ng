@@ -538,9 +538,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
          * @description 
          */
         module.component('hs.permalink', {
-            templateUrl: ['config', function (config) {
-                return `${config.hsl_path}components/permalink/partials/directive${config.design || ''}.html`
-            }],
+            template:  require('components/permalink/partials/directive.html'),
             /**
              * @memberof hs.permalink
              * @name hs.permalink.controller

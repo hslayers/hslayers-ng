@@ -1,12 +1,13 @@
-<link rel="stylesheet" ng-if="importCss && !useIsolatedBootstrap" ng-href="{{Core.getNmPath()}}bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" ng-if="importCss && useIsolatedBootstrap" ng-href="{{Core.getNmPath()}}bootstrap/dist/css/bootstrap.isolated.css">
-<link rel="stylesheet" ng-if="importCss" ng-href="{{Core.getNmPath()}}/openlayers/css/ol.css" type="text/css">
+<!--<link rel="stylesheet" ng-if="importCss && !useIsolatedBootstrap" ng-href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" ng-if="importCss && useIsolatedBootstrap" ng-href="node_modules/bootstrap/dist/css/bootstrap.isolated.css">
+<link rel="stylesheet" ng-if="importCss" ng-href="node_modules/openlayers/css/ol.css" type="text/css">
+-->
 <!-- Compiled and minified CSS -->
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css"> -->
-<link rel="stylesheet" type="text/css" ng-href="{{hsl_path}}css/mobile.css" ng-if="importCss && !!window.cordova">
-<link rel="stylesheet" ng-if="importCss" ng-href="{{hsl_path}}css/app.css"/>
-<link rel="stylesheet" ng-if="importCss" ng-href="{{hsl_path}}css/whhg-font/css/whhg.css"/>
-
+<link rel="stylesheet" type="text/css" ng-href="css/mobile.css" ng-if="importCss && !!window.cordova">
+<!--<link rel="stylesheet" ng-if="importCss" ng-href="css/app.css"/>
+<link rel="stylesheet" ng-if="importCss" ng-href="css/whhg-font/css/whhg.css"/>
+-->
 <div id="page-wrapper" class="bootstrap-iso">
     <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight && !Core.puremapApp, 'sb-left': !Core.sidebarRight && !Core.puremapApp, 'classic-sidebar': Core.classicSidebar, 'mini-sidebar': !Core.classicSidebar}">
         <div class="page-content">

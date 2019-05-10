@@ -14,7 +14,7 @@ define(['angular', 'ol', 'map', 'core', 'focusIf'],
             */
             .directive('hs.tripPlanner.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/trip_planner/partials/trip_planner.html'
+                    template: require('components/trip_planner/partials/trip_planner.html')
                 };
             }])
 
@@ -206,7 +206,7 @@ define(['angular', 'ol', 'map', 'core', 'focusIf'],
         */
         .directive('hs.tripPlanner.toolbarButtonDirective', ['config', function (config) {
             return {
-                templateUrl: config.hsl_path + 'components/trip_planner/partials/toolbar_button_directive.html'
+                template: require('components/trip_planner/partials/toolbar_button_directive.html')
             };
         }])
 
