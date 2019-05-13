@@ -6,7 +6,6 @@ import bootstrapCss from 'bootstrap/dist/css/bootstrap.css';
 //import bootstrapIsolatedCss from 'bootstrap/dist/css/bootstrap.isolated.css';
 import olCs from 'openlayers/css/ol.css';
 import angular from 'angular';
-import angularMaterial from 'angular-material';
 import core from 'core';
 import map from 'map';
 import geolocation from 'geolocation';
@@ -15,7 +14,7 @@ import appCss from 'css/app.css';
 import whhgCss from 'css/whhg-font/css/whhg.css';
 
 // 'material.components.bottomSheetCollapsible'
-angular.module('hs.layout', ['hs.core', 'hs.map', 'ngMaterial', 'hs.geolocation', 'hs.layermanager', 'hs.print'])
+angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layermanager', 'hs.print'])
     /**
     * @memberof hs.mdLayout
     * @ngdoc directive
@@ -159,8 +158,8 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'ngMaterial', 'hs.geolocation'
     * @name hs.layout.controller
     * @description TODO
     */
-    .controller('hs.layout.controller', ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', '$mdSidenav', '$mdMenu', '$mdPanel', '$mdDialog', '$mdMedia', 'hs.layout.service',
-        function ($scope, $injector, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, $mdSidenav, $mdMenu, $mdPanel, $mdDialog, $mdMedia, layoutService) {
+    .controller('hs.layout.controller', ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', 'hs.layout.service',
+        function ($scope, $injector, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, layoutService) {
             if (config.design == 'md')
                 window.require(['bottomSheetCollapsible']);
             $scope.importCss = angular.isDefined(config.importCss) ? config.importCss : true;
@@ -315,10 +314,16 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'ngMaterial', 'hs.geolocation'
                 $scope.location.status.class = "off";
             });
 
+            var $mdMedia;
+            try {
+                $mdMedia = $injector.get('$mdMedia')
+            } catch (ex) {
+
+            }
             $scope.openPanel = function (panel) {
                 Core.setMainPanel(panel.name);
                 $scope.bottomSheetTitle = panel.title;
-                if (!$mdMedia('gt-sm') && !$scope.getBottomSheetState) {
+                if ($mdMedia && !$mdMedia('gt-sm') && !$scope.getBottomSheetState) {
                     $scope.closeLeftSidenav();
                     $scope.openBottomSheet(panel);
                 }
@@ -413,47 +418,79 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'ngMaterial', 'hs.geolocation'
                 $scope.bottomSheet = undefined;
             }
 
-            $scope.openLeftSidenav = function () {
-                $mdSidenav('sidenav-left').open()
-                    .then(function () {
-                        $scope.leftSidenavOpen = true;
+            if (config.layout == "md") {
+                try {
+                    var $mdSidenav = $injector.get('$mdSidenav');
+
+                    $scope.openLeftSidenav = function () {
+                        $mdSidenav('sidenav-left').open()
+                            .then(function () {
+                                $scope.leftSidenavOpen = true;
+                            });
+                    }
+
+                    $scope.closeLeftSidenav = function () {
+                        $mdSidenav('sidenav-left').close();
+                    }
+
+                    $mdSidenav('sidenav-left', true).then(function () {
+                        $mdSidenav('sidenav-left').onClose(function () {
+                            $scope.leftSidenavOpen = false;
+                        });
+
+                        Hammer(document.getElementsByClassName("md-sidenav-left")[0]).on("swipeleft", () => {
+                            $scope.closeLeftSidenav();
+                        });
+
+                        Hammer(document.getElementById("sidenav-swipe-overlay")).on("swiperight", () => {
+                            $scope.openLeftSidenav();
+                        });
                     });
-            }
 
-            $scope.closeLeftSidenav = function () {
-                $mdSidenav('sidenav-left').close();
-            }
+                    $scope.openRightPanel = function () {
+                        $mdSidenav('right-panel').open()
+                            .then(function () {
+                                $scope.rightPanelOpen = true;
+                            });
+                    }
 
-            $mdSidenav('sidenav-left', true).then(function () {
-                $mdSidenav('sidenav-left').onClose(function () {
-                    $scope.leftSidenavOpen = false;
-                });
+                    $scope.closeRightPanel = function () {
+                        $mdSidenav('right-panel').close();
+                    }
 
-                Hammer(document.getElementsByClassName("md-sidenav-left")[0]).on("swipeleft", () => {
-                    $scope.closeLeftSidenav();
-                });
-
-                Hammer(document.getElementById("sidenav-swipe-overlay")).on("swiperight", () => {
-                    $scope.openLeftSidenav();
-                });
-            });
-
-            $scope.openRightPanel = function () {
-                $mdSidenav('right-panel').open()
-                    .then(function () {
-                        $scope.rightPanelOpen = true;
+                    $mdSidenav('right-panel', true).then(function () {
+                        $mdSidenav('right-panel').onClose(function () {
+                            $scope.rightPanelOpen = false;
+                        });
                     });
+                } catch (ex) {
+                    console.error("$mdSidenav missing")
+                }
+
+                try {
+                    var $mdDialog = $injector.get('$mdDialog');
+
+                    $scope.showRemoveDialog = function (e, layer) {
+                        var confirm = $mdDialog.confirm()
+                            .title('Remove basemap ' + layer.title)
+                            .textContent('Are you sure about layer removal?')
+                            .ariaLabel('Confirm layer removal')
+                            .targetEvent(e)
+                            .ok('Remove')
+                            .cancel('Cancel')
+                            .hasBackdrop(false);
+
+                        $mdDialog.show(confirm).then(function () {
+                            $scope.removeLayer(layer);
+                        }, function () {
+                        });
+                    }
+                } catch (ex) {
+
+                }
             }
 
-            $scope.closeRightPanel = function () {
-                $mdSidenav('right-panel').close();
-            }
 
-            $mdSidenav('right-panel', true).then(function () {
-                $mdSidenav('right-panel').onClose(function () {
-                    $scope.rightPanelOpen = false;
-                });
-            });
 
             $scope.defaultBaselayerThumbnail = `${hsl_path}components/layout/osm.png`;
             $scope.defaultTerrainlayerThumbnail = `${hsl_path}components/layout/osm.png`;
@@ -480,70 +517,62 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'ngMaterial', 'hs.geolocation'
                 return layer.layer.get('removable');
             }
 
-            $scope.showRemoveDialog = function (e, layer) {
-                var confirm = $mdDialog.confirm()
-                    .title('Remove basemap ' + layer.title)
-                    .textContent('Are you sure about layer removal?')
-                    .ariaLabel('Confirm layer removal')
-                    .targetEvent(e)
-                    .ok('Remove')
-                    .cancel('Cancel')
-                    .hasBackdrop(false);
+            try {
+                var $mdPanel = $injector.get('$mdPanel');
 
-                $mdDialog.show(confirm).then(function () {
-                    $scope.removeLayer(layer);
-                }, function () {
-                });
-            }
+                $scope.openBaselayersPanel = function ($event) {
+                    let panelPosition = $mdPanel.newPanelPosition()
+                        // .relativeTo($event.srcElement)
+                        .relativeTo($event.target)
+                        .addPanelPosition(
+                            $mdPanel.xPosition.ALIGN_END,
+                            $mdPanel.yPosition.ALIGN_TOPS
+                        )
+                        .addPanelPosition(
+                            $mdPanel.xPosition.ALIGN_START,
+                            $mdPanel.yPosition.ALIGN_TOPS
+                        )
+                        .addPanelPosition(
+                            $mdPanel.xPosition.ALIGN_END,
+                            $mdPanel.yPosition.ALIGN_BOTTOMS
+                        )
+                        .addPanelPosition(
+                            $mdPanel.xPosition.ALIGN_START,
+                            $mdPanel.yPosition.ALIGN_BOTTOMS
+                        );
+                    let panelAnimation = $mdPanel.newPanelAnimation()
+                        .openFrom($event.target)
+                        .closeTo($event.target)
+                        // .targetEvent($event)
+                        // .defaultAnimation('md-panel-animate-fly')
+                        .withAnimation($mdPanel.animation.SCALE);
+                    let config = {
+                        attachTo: angular.element("#gui"),
+                        position: panelPosition,
+                        animation: panelAnimation,
+                        targetEvent: $event,
+                        template: require(`components/layout/partials/baselayers.html`),
+                        panelClass: 'baselayers-panel md-whiteframe-8dp',
+                        scope: this,
+                        trapFocus: true,
+                        clickOutsideToClose: true,
+                        clickEscapeToClose: true,
+                        zIndex: 50
+                    }
 
-            $scope.openBaselayersPanel = function ($event) {
-                let panelPosition = $mdPanel.newPanelPosition()
-                    // .relativeTo($event.srcElement)
-                    .relativeTo($event.target)
-                    .addPanelPosition(
-                        $mdPanel.xPosition.ALIGN_END,
-                        $mdPanel.yPosition.ALIGN_TOPS
-                    )
-                    .addPanelPosition(
-                        $mdPanel.xPosition.ALIGN_START,
-                        $mdPanel.yPosition.ALIGN_TOPS
-                    )
-                    .addPanelPosition(
-                        $mdPanel.xPosition.ALIGN_END,
-                        $mdPanel.yPosition.ALIGN_BOTTOMS
-                    )
-                    .addPanelPosition(
-                        $mdPanel.xPosition.ALIGN_START,
-                        $mdPanel.yPosition.ALIGN_BOTTOMS
-                    );
-                let panelAnimation = $mdPanel.newPanelAnimation()
-                    .openFrom($event.target)
-                    .closeTo($event.target)
-                    // .targetEvent($event)
-                    // .defaultAnimation('md-panel-animate-fly')
-                    .withAnimation($mdPanel.animation.SCALE);
-                let config = {
-                    attachTo: angular.element("#gui"),
-                    position: panelPosition,
-                    animation: panelAnimation,
-                    targetEvent: $event,
-                    template: require(`components/layout/partials/baselayers.html`),
-                    panelClass: 'baselayers-panel md-whiteframe-8dp',
-                    scope: this,
-                    trapFocus: true,
-                    clickOutsideToClose: true,
-                    clickEscapeToClose: true,
-                    zIndex: 50
+                    $mdPanel.open(config)
+                        .then(function (result) {
+                            baselayersPanelRef = result;
+                        });
+
+
+                    $scope.closeBaselayersPanel = function (MdPanelRef) {
+                        if (MdPanelRef) MdPanelRef.close();
+                    }
                 }
 
-                $mdPanel.open(config)
-                    .then(function (result) {
-                        baselayersPanelRef = result;
-                    });
+            } catch (ex) {
 
-                $scope.closeBaselayersPanel = function (MdPanelRef) {
-                    if (MdPanelRef) MdPanelRef.close();
-                }
             }
 
             $scope.onlyEnabled = function (item) {

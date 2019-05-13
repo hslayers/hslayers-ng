@@ -17,8 +17,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                      * @ngdoc controller
                      * @description Main controller of composition module
                      */
-                    .controller('hs.compositions.controller', ['$scope', 'Core', 'hs.compositions.service', 'hs.compositions.service_parser', '$window', '$mdDialog', '$mdMedia', 'config', '$compile',
-                        function ($scope, Core, Composition, compositionParser, $window, $mdDialog, $mdMedia, config, $compile) {
+                    .controller('hs.compositions.controller', ['$scope', 'Core', 'hs.compositions.service', 'hs.compositions.service_parser', '$window', 'config', '$compile',
+                        function ($scope, Core, Composition, compositionParser, $window, config, $compile) {
                             $scope.CS = Composition;
                             $scope.data = Composition.data;
                             /**
@@ -150,10 +150,13 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
 
                             $scope.getPageSize = function () {
                                 let listHeight = screen.height;
-                                if ($mdMedia("gt-sm")) {
-                                    let panel = document.getElementById('sidenav-right');
-                                    if (panel) listHeight = panel.clientHeight;
-                                }
+                                try {
+                                    var $mdMedia = $injector.get('$mdMedia');
+                                    if ($mdMedia("gt-sm")) {
+                                        let panel = document.getElementById('sidenav-right');
+                                        if (panel) listHeight = panel.clientHeight;
+                                    }
+                                } catch(ex){}
                                 $scope.pageSize = Math.round((listHeight - 180) / 60);
                             }
 
@@ -181,7 +184,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             $scope.confirmDelete = function (composition, ev) {
                                 $scope.compositionToDelete = composition;
                                 if (config.design === 'md')
-                                    deleteDialogMd();
+                                    $scope.deleteDialogMd();
                                 else
                                     deleteDialogBootstrap()
                             }
@@ -196,22 +199,104 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 $compile(el)($scope);
                             }
 
-                            function deleteDialogMd(ev) {
-                                $mdDialog.show({
-                                    parent: angular.element('#hsContainer'),
-                                    targetEvent: ev,
-                                    clickOutsideToClose: true,
-                                    escapeToClose: true,
-                                    scope: $scope,
-                                    preserveScope: true,
-                                    template: require('materialComponents/panelContents/compositionLoadUnsavedDialog.html'),
-                                    controller: function DialogController($scope, $mdDialog) {
+                            try {
+                                var $mdDialog = $injector.get('$mdDialog');
+                
+                                $scope.deleteDialogMd = function(ev) {
+                                    $mdDialog.show({
+                                        parent: angular.element('#hsContainer'),
+                                        targetEvent: ev,
+                                        clickOutsideToClose: true,
+                                        escapeToClose: true,
+                                        scope: $scope,
+                                        preserveScope: true,
+                                        template: require('materialComponents/panelContents/compositionLoadUnsavedDialog.html'),
+                                        controller: function DialogController($scope, $mdDialog) {
+                                            $scope.closeDialog = function () {
+                                                $mdDialog.hide();
+                                            }
+                                        }
+                                    });
+                                }
+
+                                $scope.shareDialogMd = function($event) {
+                                    $mdDialog.show({
+                                        parent: angular.element('#hsContainer'),
+                                        targetEvent: $event,
+                                        clickOutsideToClose: true,
+                                        escapeToClose: true,
+                                        scope: $scope,
+                                        preserveScope: true,
+                                        template: require('components/compositions/partials/dialog_sharemd.html'),
+                                        controller: function DialogController($scope, $mdDialog) {
+                                            $scope.closeDialog = function () {
+                                                $mdDialog.hide();
+                                            }
+                                        }
+                                    });
+                                }
+
+                                $scope.infoDialogMD = function($event) {
+                                    var parentEl = angular.element('#hsContainer');
+                                    $mdDialog.show({
+                                        parent: parentEl,
+                                        targetEvent: $event,
+                                        clickOutsideToClose: true,
+                                        escapeToClose: true,
+                                        template:
+                                            '<md-dialog aria-label="List dialog">' +
+                                            '  <md-dialog-content layout="column" layout-padding>' +
+                                            '    <md-list>' +
+                                            '    <div layout="row">' +
+                                            '       <span flex="30">Abstract</span><span flex="70">{{info.abstract}}</span>' +
+                                            '    </div>' +
+                                            '    <div layout="row">' +
+                                            '       <span flex="30">Thumbnail</span><span flex="70">{{info.thumbnail}}</span>' +
+                                            '    </div>' +
+                                            '    <div layout="row">' +
+                                            '       <span flex="30">Extent</span><span flex="70">{{info.extent}}</span>' +
+                                            '    </div>' +
+                                            '    <div layout="row" ng-repeat="layer in info.layers">' +
+                                            '       <span flex="30">Layer</span><span flex="70">{{layer.title}}</span>' +
+                                            '    </div>' +
+                                            '    </md-list>' +
+                                            '  </md-dialog-content>' +
+                                            '  <md-dialog-actions>' +
+                                            '    <md-button ng-click="closeDialog()" class="md-primary">' +
+                                            '      Close' +
+                                            '    </md-button>' +
+                                            '  </md-dialog-actions>' +
+                                            '</md-dialog>',
+                                        locals: {
+                                            info: $scope.info
+                                        },
+                                        controller: DialogController
+                                    });
+    
+                                    function DialogController($scope, $mdDialog, info) {
+                                        $scope.info = info;
                                         $scope.closeDialog = function () {
                                             $mdDialog.hide();
                                         }
                                     }
-                                });
-                            }
+                                }
+
+                                $scope.loadUnsavedDialogMD = function() {
+                                    $mdDialog.show({
+                                        parent: angular.element('#hsContainer'),
+                                        clickOutsideToClose: true,
+                                        escapeToClose: true,
+                                        scope: $scope,
+                                        preserveScope: true,
+                                        template: require('materialComponents/panelContents/compositionLoadUnsavedDialog.html'),
+                                        controller: function DialogController($scope, $mdDialog) {
+                                            $scope.closeDialog = function () {
+                                                $mdDialog.hide();
+                                            }
+                                        }
+                                    });
+                                }
+                            } catch(ex){}
 
                             /**
                              * @ngdoc method
@@ -262,7 +347,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             $scope.shareComposition = function (record, $event) {
                                 Composition.shareComposition(record);
                                 if (config.design === 'md')
-                                    shareDialogMd($event);
+                                    $scope.shareDialogMd($event);
                                 else
                                     shareDialogBootstrap()
                             }
@@ -276,24 +361,6 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 document.getElementById("hs-dialog-area").appendChild(el[0]);
                             }
 
-
-                            function shareDialogMd($event) {
-                                $mdDialog.show({
-                                    parent: angular.element('#hsContainer'),
-                                    targetEvent: $event,
-                                    clickOutsideToClose: true,
-                                    escapeToClose: true,
-                                    scope: $scope,
-                                    preserveScope: true,
-                                    template: require('components/compositions/partials/dialog_sharemd.html'),
-                                    controller: function DialogController($scope, $mdDialog) {
-                                        $scope.closeDialog = function () {
-                                            $mdDialog.hide();
-                                        }
-                                    }
-                                });
-                            }
-
                             /**
                              * @ngdoc method
                              * @name hs.compositions.controller#detailComposition
@@ -305,7 +372,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 Composition.getCompositionInfo(record, function (info) {
                                     $scope.info = info;
                                     if (config.design === 'md')
-                                        infoDialogMD($event);
+                                        $scope.infoDialogMD($event);
                                     else
                                         infoDialogBootstrap();
                                 });
@@ -319,51 +386,6 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
                                 document.getElementById("hs-dialog-area").appendChild(el[0]);
                                 $compile(el)($scope);
-                            }
-
-                            function infoDialogMD($event) {
-                                var parentEl = angular.element('#hsContainer');
-                                $mdDialog.show({
-                                    parent: parentEl,
-                                    targetEvent: $event,
-                                    clickOutsideToClose: true,
-                                    escapeToClose: true,
-                                    template:
-                                        '<md-dialog aria-label="List dialog">' +
-                                        '  <md-dialog-content layout="column" layout-padding>' +
-                                        '    <md-list>' +
-                                        '    <div layout="row">' +
-                                        '       <span flex="30">Abstract</span><span flex="70">{{info.abstract}}</span>' +
-                                        '    </div>' +
-                                        '    <div layout="row">' +
-                                        '       <span flex="30">Thumbnail</span><span flex="70">{{info.thumbnail}}</span>' +
-                                        '    </div>' +
-                                        '    <div layout="row">' +
-                                        '       <span flex="30">Extent</span><span flex="70">{{info.extent}}</span>' +
-                                        '    </div>' +
-                                        '    <div layout="row" ng-repeat="layer in info.layers">' +
-                                        '       <span flex="30">Layer</span><span flex="70">{{layer.title}}</span>' +
-                                        '    </div>' +
-                                        '    </md-list>' +
-                                        '  </md-dialog-content>' +
-                                        '  <md-dialog-actions>' +
-                                        '    <md-button ng-click="closeDialog()" class="md-primary">' +
-                                        '      Close' +
-                                        '    </md-button>' +
-                                        '  </md-dialog-actions>' +
-                                        '</md-dialog>',
-                                    locals: {
-                                        info: $scope.info
-                                    },
-                                    controller: DialogController
-                                });
-
-                                function DialogController($scope, $mdDialog, info) {
-                                    $scope.info = info;
-                                    $scope.closeDialog = function () {
-                                        $mdDialog.hide();
-                                    }
-                                }
                             }
 
                             /**
@@ -460,7 +482,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             $scope.$on('loadComposition.notSaved', function (event, data) {
                                 $scope.compositionToLoad = data.link;
                                 if (config.design === 'md')
-                                    loadUnsavedDialogMD();
+                                    $scope.loadUnsavedDialogMD();
                                 else
                                     loadUnsavedDialogBootstrap();
                             });
@@ -475,22 +497,6 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 } else {
                                     $scope.overwriteModalVisible = true;
                                 }
-                            }
-
-                            function loadUnsavedDialogMD() {
-                                $mdDialog.show({
-                                    parent: angular.element('#hsContainer'),
-                                    clickOutsideToClose: true,
-                                    escapeToClose: true,
-                                    scope: $scope,
-                                    preserveScope: true,
-                                    template: require('materialComponents/panelContents/compositionLoadUnsavedDialog.html'),
-                                    controller: function DialogController($scope, $mdDialog) {
-                                        $scope.closeDialog = function () {
-                                            $mdDialog.hide();
-                                        }
-                                    }
-                                });
                             }
 
                             $scope.$on('core.mainpanel_changed', function (event) {

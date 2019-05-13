@@ -10,10 +10,10 @@
         attributes: ["http://gis.zcu.cz/poi#category_osm"]
     }]); 
 */
-define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
+define(['angular', 'ol', 'map', 'layermanager'],
 
     function(angular, ol) {
-        var module = angular.module('hs.feature_filter', ['hs.map', 'hs.core', 'ngMaterial', 'hs.layermanager'])
+        var module = angular.module('hs.feature_filter', ['hs.map', 'hs.core', 'hs.layermanager'])
         
             /**
             * @memberof hs.feature_filter

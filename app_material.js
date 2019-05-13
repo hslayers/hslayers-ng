@@ -1,4 +1,5 @@
 'use strict';
+import angularMaterial from 'angular-material';
 
 import ol from 'ol';
 import toolbar from 'toolbar';

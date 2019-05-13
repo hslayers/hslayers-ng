@@ -609,8 +609,8 @@ define(['angular', 'ol', 'map'],
              * @name hs.datasource_selector.controller
              * @description Controller for datasource_selector
              */
-            .controller('hs.datasource_selector.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config', '$mdDialog',
-                function ($scope, Core, $compile, utils, $http, DS, config, $mdDialog) {
+            .controller('hs.datasource_selector.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config',
+                function ($scope, Core, $compile, utils, $http, DS, config) {
                     $scope.data = DS.data;
                     $scope.DS = DS;
                     $scope.dsPaging = $scope.data.paging;
@@ -745,20 +745,24 @@ define(['angular', 'ol', 'map'],
                     }
 
                     function metadataDialog($event) {
-                        $mdDialog.show({
-                            parent: angular.element('#hsContainer'),
-                            targetEvent: $event,
-                            clickOutsideToClose: true,
-                            escapeToClose: true,
-                            scope: $scope,
-                            preserveScope: true,
-                            template: require('materialComponents/panelContents/datasourceBrowserMetadata.html'),
-                            controller: function DialogController($scope, $mdDialog) {
-                                $scope.closeDialog = function () {
-                                    $mdDialog.hide();
+                        try {
+                            var $mdDialog = $injector.get('$mdDialog');
+            
+                            $mdDialog.show({
+                                parent: angular.element('#hsContainer'),
+                                targetEvent: $event,
+                                clickOutsideToClose: true,
+                                escapeToClose: true,
+                                scope: $scope,
+                                preserveScope: true,
+                                template: require('materialComponents/panelContents/datasourceBrowserMetadata.html'),
+                                controller: function DialogController($scope, $mdDialog) {
+                                    $scope.closeDialog = function () {
+                                        $mdDialog.hide();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } catch(ex){}
                     }
 
                     /**
