@@ -78,7 +78,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                         angular.forEach(providers, function (provider) {
                             if (provider == 'geonames') {
                                 url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
-                                if(location.protocol == 'https') url = utils.proxify(url);
+                                if(location.protocol == 'https:') url = utils.proxify(url);
                             } else if (provider == 'sdi4apps_openapi') {
                                 url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
                             }
