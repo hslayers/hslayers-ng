@@ -540,7 +540,36 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                     $scope.onlyEnabled = function (item) {
                         return item.enabled;
                     };
+                    console.log(config);
 
+                    $scope.defaultView = function(){
+                        console.log(config.default_view.options_.center[0],config.default_view.options_.center[1]);
+                        OlMap.map.getView().animate({
+                            center: [config.default_view.options_.center[0], config.default_view.options_.center[1]],
+                            zoom: config.default_view.options_.zoom
+                        });
+                        console.log(OlMap.map.getView())
+
+                    };
+                    $scope.maxView = function(){
+
+                        var extent = ol.extent.createEmpty();
+                        LayerManager.data.layers.forEach(function(layer) {
+                        console.log(layer);
+                        ol.extent.extend(extent, layer.layer.getSource().getExtent());
+                        });
+                        let appwidth = ($('.ol-unselectable').width());
+                        appwidth = appwidth*0.45;
+                        console.log(OlMap.map.getView())
+                        console.log(OlMap.map.getSize());
+                        OlMap.map.getView().fit(extent,{
+                            padding: [0,appwidth,0,0]
+                        });
+                        console.log(OlMap.map.getView().calculateExtent(OlMap.map.getSize()))
+                        // // OlMap.map.getView().fit(config.default_layers[1].getSource().getExtent(), OlMap.map.getSize());
+                        console.log(OlMap.map.getView().getCenter())
+                    };
+                    
                     $scope.$emit('scope_loaded', "Layout");
                 }
 
