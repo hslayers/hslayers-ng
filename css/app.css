@@ -457,10 +457,8 @@ button.but-title-sm {
 .ol-attribution {
     left: auto;
     right: 5px;
-    top: 6.8em;
-    z-index: 991;
+    bottom: 6.8em;
 }
-
 .ol-scale-line {right: 0.5em;left: auto;}
 #datasource_selector-metadata-dialog dd {
     padding-left: 10px;
