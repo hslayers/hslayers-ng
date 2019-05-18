@@ -4,6 +4,9 @@
 <!-- <link href='https://fonts.googleapis.com/css?family=RobotoDraft:400,500,700,400italic' rel='stylesheet' type='text/css'> -->
 <!--Import Google Icon Font-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" ng-href="{{hsl_path}}css/mobile.css" ng-if="importCss && !!window.cordova">
+<link rel="stylesheet" ng-if="importCss" ng-href="{{hsl_path}}css/app.css"/>
+<link rel="stylesheet" ng-if="importCss" ng-href="{{hsl_path}}css/whhg-font/css/whhg.css"/>
 
 <div hs.swipe-area.directive></div>
 <div hs.md-toolbar.directive></div>

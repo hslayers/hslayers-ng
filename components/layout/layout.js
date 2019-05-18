@@ -34,7 +34,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                             //Hack - flex map container was not initialized when map loaded 
                             var container = document.getElementById('map-container');
                             if(container){
-                                if (container.height() === 0) {
+                                if (container.clientHeight === 0) {
                                     containerCheck();
                                 }
     
