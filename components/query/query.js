@@ -125,9 +125,11 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         me.data.groups.length = 0;
                         me.data.coordinates.length = 0;
                         var invisiblePopup = me.getInvisiblePopup();
-                        invisiblePopup.contentDocument.body.innerHTML = '';
-                        invisiblePopup.style.height = 0;
-                        invisiblePopup.style.width = 0;
+                        if (invisiblePopup) {
+                            invisiblePopup.contentDocument.body.innerHTML = '';
+                            invisiblePopup.style.height = 0;
+                            invisiblePopup.style.width = 0;
+                        }
                         dataCleared = true;
                     };
 
@@ -423,7 +425,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     });
 
                     me.selector.getFeatures().on('remove', function (e) {
-                        $rootScope.$broadcast('vectorQuery.featureDelected', e.element);
+                        $rootScope.$broadcast('vectorQuery.featureDeselected', e.element);
                         //deprecated
                         $rootScope.$broadcast('infopanel.feature_deselected', e.element);
                     });
