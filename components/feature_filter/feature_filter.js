@@ -119,34 +119,34 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                         break;
                                     }
                                     displayFeature = function (feature, filter) {
-                                        return filter.selected.indexOf(feature.values_[filter.valueField]) !== -1;
+                                        return filter.selected.indexOf(feature.getProperties()[filter.valueField]) !== -1;
                                     };
                                     break;
                                 case 'slider':
                                     switch (filter.type.parameters) {
                                         case 'lt':
                                             displayFeature = function (feature, filter) {
-                                                return feature.values_[filter.valueField] < filter.value;
+                                                return feature.getProperties()[filter.valueField] < filter.value;
                                             };
                                             break;
                                         case 'le':
                                             displayFeature = function (feature, filter) {
-                                                return feature.values_[filter.valueField] <= filter.value;
+                                                return feature.getProperties()[filter.valueField] <= filter.value;
                                             };
                                             break;
                                         case 'gt':
                                             displayFeature = function (feature, filter) {
-                                                return feature.values_[filter.valueField] > filter.value;
+                                                return feature.getProperties()[filter.valueField] > filter.value;
                                             };
                                             break;
                                         case 'ge':
                                             displayFeature = function (feature, filter) {
-                                                return feature.values_[filter.valueField] >= filter.value;
+                                                return feature.getProperties()[filter.valueField] >= filter.value;
                                             };
                                             break;
                                         case 'eq':
                                             displayFeature = function (feature, filter) {
-                                                return feature.values_[filter.valueField] === filter.value;
+                                                return feature.getProperties()[filter.valueField] === filter.value;
                                             };
                                             break;
                                     }
@@ -179,8 +179,8 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                         case 'fieldset': case 'dictionary':
                                             var source = layer.layer.getSource();
                                             source.forEachFeature(function (feature) {
-                                                if (filter.values.indexOf(feature.values_[filter.valueField]) === -1) {
-                                                    filter.values.push(feature.values_[filter.valueField]);
+                                                if (filter.values.indexOf(feature.getProperties()[filter.valueField]) === -1) {
+                                                    filter.values.push(feature.getProperties()[filter.valueField]);
                                                 }
                                             });
                                             break;
@@ -190,11 +190,11 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
     
                                             // var source = layer.layer.getSource();
                                             // source.forEachFeature(function (feature) {
-                                            //     if (feature.values_[filter.valueField] < filter.range[0] || filter.range[0] === undefined) {
-                                            //         filter.range[0] = feature.values_[filter.valueField];
+                                            //     if (feature.getProperties()[filter.valueField] < filter.range[0] || filter.range[0] === undefined) {
+                                            //         filter.range[0] = feature.getProperties()[filter.valueField];
                                             //     }
-                                            //     if (feature.values_[filter.valueField] > filter.range[1] || filter.range[1] === undefined) {
-                                            //         filter.range[1] = feature.values_[filter.valueField];
+                                            //     if (feature.getProperties()[filter.valueField] > filter.range[1] || filter.range[1] === undefined) {
+                                            //         filter.range[1] = feature.getProperties()[filter.valueField];
                                             //     }
                                             // });
                                             break;
