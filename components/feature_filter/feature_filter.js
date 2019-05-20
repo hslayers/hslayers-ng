@@ -38,6 +38,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             */
             .directive('hs.featureList.directive', ['config', function(config) {
                 return {
+                    replace: true,
                     templateUrl: `${config.hsl_path}components/feature_filter/partials/feature_list${config.design || ''}.html`,
                     link: function(scope, element) {
 
@@ -302,9 +303,8 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             * @name hs.featureList.controller
             * @description TODO
             */
-            .controller('hs.feature_list.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config',
-                function($scope, OlMap, Core, service, LayMan, config) {
-                    window.scope = $scope;
+            .controller('hs.feature_list.controller', ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config',
+                function($scope, $timeout, OlMap, Core, service, LayMan, config) {
                     $scope.map = OlMap.map;
                     $scope.LayMan = LayMan;
 
@@ -312,26 +312,114 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
 
                     $scope.displayDetails = false;
 
-                    $scope.toggleFeatureDetails = function(feature) {
+                    $scope.selectedFeatures = new ol.Collection();
+
+                    $scope.selectedStyle = new ol.style.Style({
+                        image: new ol.style.Icon(({
+                            crossOrigin: 'anonymous',
+                            src: 'enabling_logo_2_relief04_stin.png',
+                            anchor: [0.5, 0.5],
+                            scale: 0.7,
+                        }))
+                    });
+
+                    $scope.highlightedStyle = new ol.style.Style({
+                        image: new ol.style.Icon(({
+                            crossOrigin: 'anonymous',
+                            src: 'enabling_logo_2_relief03_stin.png',
+                            anchor: [0.5, 0.5],
+                            scale: 0.7,
+                        }))
+                    });
+
+                    $scope.highlightFeature = function(feature) {
+                        feature.setProperties({
+                            class: "highlighted"
+                        });
+                        feature.setStyle($scope.highlightedStyle);
+                    }
+
+
+                    $scope.unhighlightFeature = function(feature) {
+                        feature.setProperties({
+                            class: ""
+                        });
+                        feature.setStyle(null);
+                    }
+
+                    $scope.highlighter = new ol.interaction.Select({
+                        condition: ol.events.condition.pointerMove,
+                        style: $scope.highlightedStyle,
+                        filter: function(feature) {
+                            return feature !== $scope.selectedFeature
+                        },
+                    });
+
+                    $scope.map.addInteraction($scope.highlighter);
+                    $scope.highlighter.on('select', function(e) {
+                        if (e.selected.length > 0) $scope.highlightFeature(e.selected[0]);
+                        if (e.deselected.length > 0) $scope.unhighlightFeature(e.deselected[0]);
+                        if (!$scope.$$phase) $scope.$digest();
+                    });
+
+                    $scope.selector = new ol.interaction.Select({
+                        condition: ol.events.condition.click,
+                        toggleCondition: ol.events.condition.never,
+                        style: $scope.selectedStyle,
+                        features: $scope.selectedFeatures
+                    });
+
+                    $scope.map.addInteraction($scope.selector);
+                    $scope.selector.on('select', function(e) {
+                        let feature = e.target.getFeatures().array_[0];
+
+                        $scope.toggleFeatureDetails(feature, false);
+
+                        if (!$scope.$$phase) $scope.$digest();
+                    });
+
+                    $scope.toggleFeatureDetails = function(feature, handleFeature) {
+                        Core.updateMapSize();
                         $scope.displayDetails = !$scope.displayDetails;
-                        if ($scope.selectedFeature) $scope.selectedFeature.setStyle(null);
+
+                        if (feature === undefined) {
+                            $scope.displayDetails = false;
+                        }
+
+                        if ($scope.selectedFeature) {
+                            if (feature && feature !== $scope.selectedFeature) $scope.displayDetails = true;
+
+                            $scope.selectedFeature.setStyle(null);
+                        }
 
                         if ($scope.displayDetails) {
-                            $scope.featureDetails = feature.values_;
+                            $scope.featureDetails = feature.getProperties();
                             $scope.selectedFeature = feature;
-                            OlMap.moveToAndZoom(feature.values_.geometry.flatCoordinates[0], feature.values_.geometry.flatCoordinates[1], 7);
-                            feature.setStyle(new ol.style.Style({
-                                image: new ol.style.Icon(({
-                                    crossOrigin: 'anonymous',
-                                    src: 'marker_lt.png',
-                                    anchor: [0.5, 1],
-                                    scale: 0.4,
-                                }))
-                            }))
+
+                            var view = $scope.map.getView();
+                            view.animate({
+                                zoom: 7,
+                                center: feature.getProperties().geometry.flatCoordinates,
+                                duration: 300
+                            });
+
+                            if (handleFeature) $scope.selectedFeatures.push(feature);
+                        } else {
+                            if (handleFeature) $scope.selectedFeatures.clear();
+                            $scope.selectedFeature = undefined;
                         }
+
+                        if (!$scope.$$phase) $scope.$digest();
                     };
 
+                    window.scope = $scope;
+                    window.selector = $scope.selector;
+
                     $scope.$emit('scope_loaded', "featureList");
+
+                    $timeout(function(){
+                        Core.updateMapSize();
+                    },1000);
                 }
             ]);
 
