@@ -1387,6 +1387,14 @@ md-card {
     cursor: pointer;
 }
 
+#layout .buttons.top-right {
+    top: 20px;
+    right: 20px;
+    bottom: auto;
+    left: auto;
+    position: absolute;
+}
+
 .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-left, .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-right {
   -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);

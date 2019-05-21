@@ -541,6 +541,30 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                         return item.enabled;
                     };
 
+                    $scope.defaultView = function(){
+                        OlMap.map.getView().animate({
+                            center: [config.default_view.options_.center[0], config.default_view.options_.center[1]],
+                            zoom: config.default_view.options_.zoom,
+                            duration: 300
+                        });
+                    };
+                    $scope.maxView = function(){
+                        $scope.extent = ol.extent.createEmpty();
+                        
+                        LayerManager.data.layers.forEach(function(layer) {
+                            if (layer.visible && layer.layer.type === "VECTOR") {
+                                ol.extent.extend($scope.extent, layer.layer.getSource().getExtent());
+                            }
+                        });
+
+                        OlMap.map.getView().fit($scope.extent, {
+                            size: OlMap.map.getSize(),
+                            padding: [50,50,50,50],
+                            constrainResolution: false,
+                            duration: 300
+                        });
+                    };
+                    
                     $scope.$emit('scope_loaded', "Layout");
                 }
 
