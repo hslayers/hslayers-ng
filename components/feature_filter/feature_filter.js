@@ -314,21 +314,12 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
 
                     $scope.selectedFeatures = new ol.Collection();
 
-                    $scope.selectedStyle = new ol.style.Style({
-                        image: new ol.style.Icon(({
-                            crossOrigin: 'anonymous',
-                            src: 'enabling_logo_2_relief04_stin.png',
-                            anchor: [0.5, 0.5],
-                            scale: 0.7,
-                        }))
-                    });
-
                     $scope.highlightedStyle = new ol.style.Style({
                         image: new ol.style.Icon(({
                             crossOrigin: 'anonymous',
-                            src: 'enabling_logo_2_relief03_stin.png',
+                            src: 'enabling_logo_2_relief11_stin.png',
                             anchor: [0.5, 0.5],
-                            scale: 0.7,
+                            scale: 0.5,
                         }))
                     });
 
@@ -365,7 +356,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     $scope.selector = new ol.interaction.Select({
                         condition: ol.events.condition.click,
                         toggleCondition: ol.events.condition.never,
-                        style: $scope.selectedStyle,
+                        style: $scope.highlightedStyle,
                         features: $scope.selectedFeatures
                     });
 

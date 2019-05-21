@@ -28,18 +28,21 @@
         </div>
     </md-toolbar>
 
-    <md-content flex layout-padding ng-show="displayDetails">
-        <img ng-src="{{ 'thumb/' + featureDetails.img }}" alt="Best Practice thumbnail">
-        <h3>{{ featureDetails.region }}, {{ featureDetails.country }}</h3>
-        <a ng-href="featureDetails.website" ng-if="featureDetails.website">{{ featureDetails.website }}</a>
-
-        <h3 class="heading">Biomass source</h3>
-        <p>{{ featureDetails.biomass_source }}</p>
-
-        <h3 class="heading">Product</h3>
-        <p>{{ featureDetails.product }}</p>
-
-        <h3 class="heading">Abstract</h3>
-        <p>{{ featureDetails.abstract_en }}</p>
+    <md-content layout-padding ng-show="displayDetails">
+        <div class="img-float">
+            <img ng-src="{{ 'thumb/' + featureDetails.img }}" alt="Best Practice thumbnail">
+        </div>
+        <div class="content-body">
+            <h3>{{ featureDetails.region }}, {{ featureDetails.country }}</h3>
+            <a ng-href="featureDetails.website" ng-if="featureDetails.website">{{ featureDetails.website }}</a>
+    
+            <h3 class="heading">Biomass source</h3>
+            <p>{{ featureDetails.biomass_source }}</p>
+    
+            <h3 class="heading">Product</h3>
+            <p>{{ featureDetails.product }}</p>
+            <h3 class="heading">Abstract</h3>
+            <p>{{ featureDetails.abstract_en }}</p>
+        </div>
     </md-content>
 </div>
