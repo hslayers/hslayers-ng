@@ -403,9 +403,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         if (!$scope.$$phase) $scope.$digest();
                     };
 
-                    window.scope = $scope;
-                    window.selector = $scope.selector;
-
                     $scope.$emit('scope_loaded', "featureList");
 
                     $timeout(function(){
