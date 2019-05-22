@@ -1391,6 +1391,73 @@ md-card {
     cursor: pointer;
 }
 
+div.card-list {
+    overflow-y: scroll;
+    display: block;
+}
+
+div.card-list md-content {
+    overflow: hidden;
+}
+
+div.feature-list {
+    max-height: 100%;
+}
+
+div.feature-list md-content img {
+    max-width: 100%;
+}
+
+div.feature-list md-content .img-float {
+    float: right;
+    max-width: 100%;
+    height: auto;
+    margin: 16px;
+}
+
+div.feature-list md-content .content-body {
+    float: none;
+}
+
+div.feature-list:not(.card-list) md-content .content-body div > * {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.content-column {
+    margin: 8px;
+}
+
+.content-column :first-child, .content-body .main-content :first-child {
+    padding-top: 8px;
+    margin-top: 0;
+}
+
+div.feature-list md-content .heading {
+    margin-bottom: 0;
+    padding-bottom: 4px;
+}
+
+div.feature-list md-content .heading + p {
+    margin-top: 0;
+    padding-top: 4px;
+    margin-bottom: 0;
+}
+
+md-card {
+    transition: background-color 0.25s;
+}
+
+md-card.highlighted {
+    background-color: lightgray;
+}
+
+md-content a {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
 #layout .buttons.top-right {
     top: 20px;
     right: 20px;
@@ -1451,10 +1518,18 @@ md-checkbox {
     md-content.card-collection {
         column-count: 2;
     }
+
+    div.feature-list md-content .img-float {
+        width: 50%;
+    }
 }
 
 @media (min-width: 1280px) {
     md-content.card-collection {
         column-count: 3;
+    }
+
+    div.feature-list md-content .img-float {
+        width: calc(200% / 3);
     }
 }

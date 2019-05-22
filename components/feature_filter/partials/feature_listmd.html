@@ -7,7 +7,7 @@
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">{{ feature.values_.name }}</span>
-                    <span class="md-subhead">{{ feature.values_.region }}, {{ feature.values_.country }}</span>
+                    <span class="md-subhead"><span ng-if="feature.values_.region">{{ feature.values_.region }}, </span>{{ feature.values_.country }}</span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content>
@@ -28,21 +28,48 @@
         </div>
     </md-toolbar>
 
-    <md-content layout-padding ng-show="displayDetails">
+    <md-content ng-show="displayDetails && !displayMoreDetails">
         <div class="img-float">
             <img ng-src="{{ 'thumb/' + featureDetails.img }}" alt="Best Practice thumbnail">
         </div>
         <div class="content-body">
-            <h3>{{ featureDetails.region }}, {{ featureDetails.country }}</h3>
-            <a ng-href="featureDetails.website" ng-if="featureDetails.website">{{ featureDetails.website }}</a>
+            <div class="main-content">
+                <h3><span ng-if="featureDetails.region">{{ featureDetails.region }}, </span>{{ featureDetails.country }}</h3>
+                <a ng-href="featureDetails.website" ng-if="featureDetails.website">{{ featureDetails.website }}</a>
+        
+                <h3 class="heading">Biomass source</h3>
+                <p>{{ featureDetails.biomass_source }}</p>
+        
+                <h3 class="heading">Product</h3>
+                <p>{{ featureDetails.product }}</p>
     
-            <h3 class="heading">Biomass source</h3>
-            <p>{{ featureDetails.biomass_source }}</p>
-    
-            <h3 class="heading">Product</h3>
-            <p>{{ featureDetails.product }}</p>
-            <h3 class="heading">Abstract</h3>
-            <p>{{ featureDetails.abstract_en }}</p>
+                <h3 class="heading">Summary</h3>
+                <p>{{ featureDetails.abstract_en }}</p>
+            </div>
+            <div class="additional-content">
+                <h3 class="heading">Partner</h3>
+                <p>{{ featureDetails.partner }}</p>
+                <h3 class="heading">Background context</h3>
+                <p>{{ featureDetails.context }}</p>
+                <h3 class="heading">Description of the process, activity or business model</h3>
+                <p>{{ featureDetails.summary }}</p>
+                <h3 class="heading">List the main actors</h3>
+                <p>{{ featureDetails.actors }}</p>
+                <h3 class="heading">Phase of the innovation</h3>
+                <p>{{ featureDetails.phase }}</p>
+                <h3 class="heading">Innovation in the process</h3>
+                <p>{{ featureDetails.process }}</p>
+                <h3 class="heading">Expected or final outcomes </h3>
+                <p>{{ featureDetails.outcomes }}</p>
+                <h3 class="heading">Benefit for the famers</h3>
+                <p>{{ featureDetails.farmer_benefits }}</p>
+                <h3 class="heading">Benefit/added value for the bio-based product companies</h3>
+                <p>{{ featureDetails.bbpc_benefits }}</p>
+                <h3 class="heading">Benefit/added value for other practioners or end-users</h3>
+                <p>{{ featureDetails.other_benefits }}</p>
+                <h3 class="heading">Other factors that make possible a successful realisation of the practice/activity</h3>
+                <p>{{ featureDetails.other_factors }}</p>
+            </div>
         </div>
     </md-content>
 </div>

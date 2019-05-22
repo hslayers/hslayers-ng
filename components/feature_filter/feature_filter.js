@@ -309,9 +309,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     $scope.LayMan = LayMan;
 
                     $scope.applyFilters = service.applyFilters;
-
                     $scope.displayDetails = false;
-
                     $scope.selectedFeatures = new ol.Collection();
 
                     $scope.highlightedStyle = new ol.style.Style({
@@ -369,6 +367,10 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         if (!$scope.$$phase) $scope.$digest();
                     });
 
+                    cancelLastView = function() {
+                        $scope.moveToLastView = false;
+                    }
+
                     $scope.toggleFeatureDetails = function(feature, handleFeature) {
                         Core.updateMapSize();
                         $scope.displayDetails = !$scope.displayDetails;
@@ -381,9 +383,14 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                             if (feature && feature !== $scope.selectedFeature) $scope.displayDetails = true;
 
                             $scope.selectedFeature.setStyle(null);
+
+                            // $scope.map.un('movestart', cancelLastView);
                         }
 
                         if ($scope.displayDetails) {
+                            $scope.lastView = $scope.map.getView().getProperties();
+                            $scope.moveToLastView = true;
+
                             $scope.featureDetails = feature.getProperties();
                             $scope.selectedFeature = feature;
 
@@ -394,10 +401,22 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                 duration: 300
                             });
 
+                            // $timeout(function() {
+                            //     $scope.map.on('movestart', cancelLastView);
+                            // },350);
+
                             if (handleFeature) $scope.selectedFeatures.push(feature);
                         } else {
                             if (handleFeature) $scope.selectedFeatures.clear();
                             $scope.selectedFeature = undefined;
+
+                            if ($scope.moveToLastView) {
+                                $scope.map.getView().animate({
+                                    resolution: $scope.lastView.resolution,
+                                    center: $scope.lastView.center,
+                                    duration: 300
+                                });
+                            }
                         }
 
                         if (!$scope.$$phase) $scope.$digest();
