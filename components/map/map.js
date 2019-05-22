@@ -121,7 +121,9 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
                     center: template.getCenter(),
                     zoom: template.getZoom(),
                     projection: template.getProjection(),
-                    rotation: template.getRotation()
+                    rotation: template.getRotation(),
+                    maxZoom: template.getMaxZoom(),
+                    minZoom: template.getMinZoom(),
                 });
                 return view;
             }
