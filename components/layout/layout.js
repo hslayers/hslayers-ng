@@ -449,8 +449,6 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                     $scope.defaultBaselayerThumbnail = `${hsl_path}components/layout/osm.png`;
                     $scope.defaultTerrainlayerThumbnail = `${hsl_path}components/layout/osm.png`;
 
-                    let baselayersPanelRef;
-
                     $scope.removeLayer = function (layer) {
                         var active = layer.active;
                         OlMap.map.removeLayer(layer.layer);
@@ -529,10 +527,65 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
 
                         $mdPanel.open(config)
                             .then(function (result) {
-                                baselayersPanelRef = result;
+                                $scope.baselayersPanelRef = result;
                             });
 
                         $scope.closeBaselayersPanel = function (MdPanelRef) {
+                            if (MdPanelRef) MdPanelRef.close();
+                        }
+                    }
+
+                    $scope.openAttributionsPanel = function ($event) {
+                        let panelPosition = $mdPanel.newPanelPosition()
+                            // .relativeTo($event.srcElement)
+                            .relativeTo($event.target)
+                            .addPanelPosition(
+                            $mdPanel.xPosition.ALIGN_END,
+                            $mdPanel.yPosition.ALIGN_TOPS
+                            )
+                            .addPanelPosition(
+                            $mdPanel.xPosition.ALIGN_START,
+                            $mdPanel.yPosition.ALIGN_TOPS
+                            )
+                            .addPanelPosition(
+                            $mdPanel.xPosition.ALIGN_END,
+                            $mdPanel.yPosition.ALIGN_BOTTOMS
+                            )
+                            .addPanelPosition(
+                            $mdPanel.xPosition.ALIGN_START,
+                            $mdPanel.yPosition.ALIGN_BOTTOMS
+                            );
+                        let panelAnimation = $mdPanel.newPanelAnimation()
+                            .openFrom($event.target)
+                            .closeTo($event.target)
+                            // .targetEvent($event)
+                            // .defaultAnimation('md-panel-animate-fly')
+                            .withAnimation($mdPanel.animation.SCALE);
+                        let config = {
+                            attachTo: angular.element("#gui"),
+                            position: panelPosition,
+                            animation: panelAnimation,
+                            targetEvent: $event,
+                            // templateUrl: `${config.hsl_path}components/layout/partials/attributions.html`,
+                            template: "<md-content flex layout-padding>©"
+                                + OlMap.map.controls.getArray().filter(function(el) {
+                                    return el instanceof ol.control.Attribution;
+                                })[0].renderedAttributions_.join("<br>©")
+                                + "</md-content>",
+                            panelClass: 'attributions-panel md-whiteframe-8dp',
+                            scope: this,
+                            trapFocus: true,
+                            clickOutsideToClose: true,
+                            clickEscapeToClose: true,
+                            zIndex: 50
+                        }
+
+                        $mdPanel.open(config)
+                            .then(function (result) {
+                                $scope.attributionsPanelRef = result;
+                            });
+
+                        $scope.closeAttributionsPanel = function (MdPanelRef) {
                             if (MdPanelRef) MdPanelRef.close();
                         }
                     }
@@ -543,11 +596,12 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
 
                     $scope.defaultView = function(){
                         OlMap.map.getView().animate({
-                            center: [config.default_view.options_.center[0], config.default_view.options_.center[1]],
-                            zoom: config.default_view.options_.zoom,
+                            center: config.default_view.getCenter(),
+                            zoom: config.default_view.getZoom(),
                             duration: 300
                         });
                     };
+
                     $scope.maxView = function(){
                         $scope.extent = ol.extent.createEmpty();
                         

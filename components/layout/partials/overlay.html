@@ -24,19 +24,25 @@
 	<md-icon md-icon-set="material-icons" class="geolocation material-icons {{location.status.class}}">{{location.status.icon}}</md-icon>
 </md-button>
 
+<section layout="row" class="buttons top-left">
+	<md-button class="md-icon-button attributions-button" ng-click="openAttributionsPanel($event)">
+		<md-tooltip md-direction="bottom">Attributions</md-tooltip>
+		<md-icon md-icon-set="material-icons">info</md-icon>
+	</md-button>
+</section>
 
 <section layout="row" class="buttons top-right">
-	<md-button ng-if="Core.exists('hs.layermanager.controller')" class="md-fab md-mini baselayers-button" ng-click="openBaselayersPanel($event)">
+	<md-button ng-if="Core.exists('hs.layermanager.controller')" class="md-fab md-mini md-hue-3 baselayers-button" ng-click="openBaselayersPanel($event)">
 		<md-tooltip md-direction="bottom">Baselayers</md-tooltip>
 		<md-icon md-icon-set="material-icons">layers</md-icon>
 	</md-button>
 
-	<md-button class="md-fab md-mini" style="background-color: rgb(93,64,55)" ng-click="defaultView()">
+	<md-button class="md-fab md-mini md-hue-3" ng-click="defaultView()">
 		<md-tooltip md-direction="bottom">Default</md-tooltip>
 		<md-icon md-icon-set="material-icons">home</md-icon>
 	</md-button>
 	
-	<md-button class="md-fab md-mini"  style="background-color: rgb(93,64,55)" ng-click="maxView()">
+	<md-button class="md-fab md-mini md-hue-3" ng-click="maxView()">
 		<md-tooltip md-direction="bottom">Zoom to all features</md-tooltip>
 		<md-icon md-icon-set="material-icons">language</md-icon>
 	</md-button>

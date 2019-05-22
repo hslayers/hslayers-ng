@@ -1292,6 +1292,10 @@ md-bottom-sheet .content {
     min-height: 56px;
 }
 
+.md-panel.attributions-panel {
+    background-color: #fff;
+}
+
 .baselayer-tile {
     position: relative;
     padding: 8px;
@@ -1391,6 +1395,30 @@ md-card {
     top: 20px;
     right: 20px;
     bottom: auto;
+    left: auto;
+    position: absolute;
+}
+
+#layout .buttons.top-left {
+    top: 20px;
+    left: 20px;
+    bottom: auto;
+    right: auto;
+    position: absolute;
+}
+
+#layout .buttons.bottom-left {
+    bottom: 20px;
+    left: 20px;
+    top: auto;
+    right: auto;
+    position: absolute;
+}
+
+#layout .buttons.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    top: auto;
     left: auto;
     position: absolute;
 }
