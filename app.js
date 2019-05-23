@@ -39,6 +39,7 @@ module.directive('hs', ['config', 'Core', function (config, Core) {
 }]);
 
 if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hslayersNgConfig(ol)));
+window.ol = ol;
 
 module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.compositions.service_parser', 'config',
     function ($scope, Core, srv_producer, composition_parser, config) {
