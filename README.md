@@ -14,7 +14,7 @@ npm install hslayers-ng
 
 Include the bundle file
 
-```<script src="node_modules/hslayers-ng/dist/hslayers-ng.js"></script>```
+```<script src="node_modules/hslayers-ng/dist/hslayers-ng.min.js"></script>```
 
 ### Configure the application
 
