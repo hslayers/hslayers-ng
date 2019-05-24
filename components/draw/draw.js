@@ -14,7 +14,7 @@ define(['angular', 'ol', 'map', 'core', 'utils', 'geolocation'],
             */
             .directive('hs.draw.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/draw/partials/draw.html'
+                    template: require('components/draw/partials/draw.html')
                 };
             }])
 
@@ -26,7 +26,7 @@ define(['angular', 'ol', 'map', 'core', 'utils', 'geolocation'],
             */
             .directive('hs.draw.toolbarButtonDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/draw/partials/toolbar_button_directive.html'
+                    template: require('components/draw/partials/toolbar_button_directive.html')
                 };
             }])
 

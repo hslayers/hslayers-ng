@@ -14,7 +14,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
              */
             .directive('hs.search.directiveSearchinput', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/search/partials/searchinput.html',
+                    template: require('components/search/partials/searchinput.html'),
                     replace: true,
                     link: function (scope, element) {
 
@@ -28,7 +28,7 @@ define(['angular', 'ol', 'map', 'permalink', 'styles'],
                  */
             }]).directive('hs.search.directiveSearchresults', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/search/partials/searchresults.html?bust=',
+                    template: require('components/search/partials/searchresults.html'),
                     replace: true,
                     link: function (scope, element) {
 

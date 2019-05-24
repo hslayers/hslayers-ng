@@ -15,7 +15,7 @@ define(['angular','ol','s4a','map','core'],
          */
         .directive('hs.routing.directive', ['config', function (config) {
             return {
-                templateUrl: config.hsl_path + 'components/routing/partials/routing.html'
+                template: require('components/routing/partials/routing.html')
             };
         }])
 

@@ -21,7 +21,7 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
              */
             .directive('hs.sidebar.directive', ['$compile', 'config', function($compile, config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/sidebar/partials/sidebar.html',
+                    template: require('components/sidebar/partials/sidebar.html'),
                     link: function(scope, element, attrs) {
                         if (angular.isDefined(scope.Core.config.createExtraMenu))
                             scope.Core.config.createExtraMenu($compile, scope, element);
@@ -50,7 +50,7 @@ define(['angular', 'map', 'core', 'permalink', 'angular-cookies'],
              */
             .directive('hs.minisidebar.directive', ['$compile', 'config', function($compile, config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/sidebar/partials/minisidebar.html',
+                    template: require('components/sidebar/partials/minisidebar.html'),
                     link: function(scope, element, attrs) {
                         if (angular.isDefined(scope.Core.config.createExtraMenu))
                             scope.Core.config.createExtraMenu($compile, scope, element);

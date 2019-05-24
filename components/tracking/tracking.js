@@ -15,7 +15,7 @@ define(['angular','ol','s4a','dc','map','core'],
          */
         .directive('hs.tracking.directive', ['config', function (config) {
             return {
-                templateUrl: config.hsl_path + 'components/tracking/partials/tracking.html'
+                template: require('components/tracking/partials/tracking.html'
             };
         }])
 

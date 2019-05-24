@@ -9,7 +9,7 @@ define(['angular', 'ol','angular-material'],
             
             .directive('hs.material.search.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/matSearch.html',
+                    template: require('materialComponents/pageSystem/matSearch.html'),
                     link: function(scope, element) {
 
                     }

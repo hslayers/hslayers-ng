@@ -9,7 +9,7 @@ define(['angular', 'ol','angular-material'],
             
             .directive('hs.material.maintoolbar.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/mainToolbar.html',
+                    template: require('materialComponents/pageSystem/mainToolbar.html'),
                     link: function(scope, element) {
 
                     }

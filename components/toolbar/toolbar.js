@@ -12,10 +12,7 @@ define(['angular', 'map', 'core', 'permalink'], function (angular) {
      * @description Add toolbar to map (search field, full map button a measure button)
      */
     module.component('hs.toolbar', {
-        templateUrl: ['config', function(config) {
-            return config.hsl_path + 'components/toolbar/partials/toolbar.html'}
-        ],
-        
+        template: require('components/toolbar/partials/toolbar.html'),
         /**
          * @memberof hs.toolbar
          * @ngdoc controller

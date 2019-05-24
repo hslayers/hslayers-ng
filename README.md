@@ -11,119 +11,133 @@ http://sdi4apps.eu/spoi/
 
 npm install hslayers-ng
 
+
+Include the bundle file
+
+```<script src="node_modules/hslayers-ng/dist/hslayers-ng.js"></script>```
+
 ### Configure the application
 
-Copy the application configuration (template) files to the actual files. 
+A global hslayersNgConfig function, which returns a configuration object, needs to be created before loading the hslayers-ng.js script. It returns a json object to configure applications looks, behaviour and data. See [Configuration options](Config-parameters) for the available options.
 
 ```
-cp node_modules/hslayers-ng/app.js.template app.js
-cp node_modules/hslayers-ng/hslayers.js.template hslayers.js
-```
+<script>
+    function hslayersNgConfig(ol) {
+      return {
+        default_layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM(),
+            title: "OpenStreetMap",
+            base: true,
+            visible: true,
+            removable: false
+          })
+        ],
 
-hslayers.js file contains the paths for the different modules and is the starting 
-point of the js application.
-Inside it set the hsl_path variable on top of the file to your hslayers-ng directory. 
-```
-var hsl_path = 'node_modules/hslayers-ng/';
-```
-The path should be relative to your www root or the html file where you load hslayers.js file.
+        default_view: new ol.View({
+          center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+          zoom: 4,
+          units: "m"
+        })
+      }
+    } 
+  </script>
+  ```
 
-app.js file is where you specify which hslayers modules will be loaded for your speciffic 
-application, which map layers will be displayed and other configuration parameters. 
-You can also write some startup code here to load some map service or open some initial panels etc.
-
-Include in your html file, where the map should appear. Check the paths to the js files.
+Include in your html file, where the map should appear. 
 
 ```
 <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
-<script src="node_modules/requirejs/require.js"></script>    
-<script src="hslayers.js"></script> 
 ```
 
-Some example html files are provided in the `examples` directory. The template app.js uses 
-some png files for layer groups which are also included in the `examples/full` directory.
+To have more customization options which require programming you can also write your own entry module which in this example is named app.js, but can have any other file name. 
+App.js file is where you specify which hslayers modules will be loaded for your speciffic 
+application, which map layers will be displayed and other configuration parameters. 
+You can also write some startup code here to load a map service, open some initial panels etc.
 
-Every application needs an app.js file (it can be named differently or be server generated) whose location is specified in hslayers.js file.
-A truncated example app.js with explanations is provided below:
+Some example html files are provided in https://github.com/hslayers/examples repository. The template app.js uses 
+png icons for layer groups which are included in https://github.com/hslayers/examples/tree/master/full directory.
+
+Hslayers exposes Openlayers as global 'ol' variable and 'angular', which are used in defining modules, layers and configuration.
+
+Following example uses html:
 
 ```
-define([ /* List of js files to be loaded. They are both hslayers and third-party components and the pathes are specified in hslayers.js and Core.js files */
-        'ol',
-        'sidebar',
-        'layermanager',
-        ...
-    ],
-    /* The order of function parameters must match the array of file names above */
-    function(ol) {
-        var module = angular.module('hs', [
-            'hs.layermanager',
-            'hs.query',
-            'hs.print',
-            ...
-            //**  List of Hslayers components
-        ]);
+ <script src="node_modules/hslayers-ng/dist/hslayers-ng.js"></script>
+ <script src="app.js"></script>
+ <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
+```
 
-        /* Here goes code to modify the UI for extra functionality */
-        module.directive(
-            'hs', [
-                'config', 'Core',
-                function(config, Core) {
-                    return {
-                        /* A different layout of the application can be achieved by changing the main template*/
-                        templateUrl: config.hsl_path + 'hslayers.html',
-                        link: function(scope, element) {
-                            Core.fullScreenMap(element);
-                        }
-                    };
-                }
-            ]);
-        
-        /* Here goes configuration of layers, viewport and HsLayers components */
-        module.value('config', {
-            /* Here goes layer definitions which can be ordinary OL layers with extra parameters which are interpreted by HsLayers or some special layer types which are unique to HsLayers */
-            default_layers: [
+And app.js with explanations:
+
+```
+var module = angular.module('hs', [
+    'hs.sidebar',
+    'hs.toolbar',
+    'hs.layermanager',
+    'hs.map',
+    'hs.query',
+    'hs.search', 'hs.print', 'hs.permalink', 'hs.measure',
+    'hs.legend', 'hs.geolocation', 'hs.core',
+    'hs.datasource_selector',
+    'hs.status_creator',
+    'hs.api',
+    'hs.ows',
+    'gettext',
+    'hs.compositions',
+    'hs.info'
+]);
+
+module.directive('hs', ['config', 'Core', function (config, Core) {
+    return {
+        template: Core.hslayersNgTemplate,
+        link: function (scope, element) {
+            Core.fullScreenMap(element);
+        }
+    };
+}]);
+
+module.value('config', {
+    open_lm_after_comp_loaded: true,
+    layer_order: '-position',
+    box_layers: [
+        new ol.layer.Group({
+            'img': 'osm.png',
+            title: 'Base layer',
+            layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM(),
-                    title: "Base layer",
+                    title: "OpenStreetMap",
                     base: true,
-                    path: 'Roads/Additional Cycling routes'
+                    visible: true,
+                    removable: false
+                }),
+                new ol.layer.Tile({
+                    title: "OpenCycleMap",
+                    visible: false,
+                    base: true,
+                    source: new ol.source.OSM({
+                        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+                    })
                 })
             ],
-            default_view: new ol.View({
-                center: ol.proj.transform([6.1319, 49.6116], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-                zoom: 13,
-                units: "m"
-            })
-        });
-        
-        /* The main code which does extra things apart from HsLayers componets is locatet in the controller function below*/
-        module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service', 'hs.compositions.service_parser', '$timeout',
-            /* The order of function parameters must match the array of component names above */
-            function($scope, Core, $compile, hsmap, composition_parser, $timeout) {
-                $scope.hsl_path = config.hsl_path; //Get this from hslayers.js file
-                /* Core component is responsible for bootstrapping the application and managing top level interface such as panels and toolbar */
-                $scope.Core = Core;
+        })
+    ],
+    default_view: new ol.View({
+        center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+        zoom: 4,
+        units: "m"
+    })
+});
 
-                /* We can listen to event emited by components such as layer manager and hide a layer which was added by code or by user for example*/
-                $scope.$on('layermanager.updated', function(data, layer) {
-                    if (layer.get('base') != true && layer.get('always_visible') != true) {
-                       layer.setVisible(true);
-                    }
-                });
-
-                /* To hide certain panels even if they are loaded as a dependency to other component use panelEnabled function */
-                Core.panelEnabled('compositions', false);
-                Core.panelEnabled('permalink', false);
-
-            }
-        ]);
-
-        return module;
-    });
+module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.compositions.service_parser', 'config',
+    function ($scope, Core, srv_producer, composition_parser, config) {
+        Core.sidebarRight = false;
+    }
+]);
 ```
 
-To configure applications looks, beheviour and dat [Configuration options](Config-parameters) are specified inside app.js module.values('config'.. service.
+For webpack bundling instructions see: https://github.com/hslayers/hslayers-ng/wiki/Building-with-webpack
 
 ### Proxy
 

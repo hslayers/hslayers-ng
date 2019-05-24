@@ -2,10 +2,10 @@
  * @namespace hs.query
  * @memberOf hs
  */
-define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 'ol.popup'],
+define(['angular', 'ol', 'map', 'core', 'angular-sanitize', 'ol.popup'],
 
     function (angular, ol) {
-        angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize', 'ngMaterial'])
+        angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
             /**
             * @ngdoc directive
             * @name hs.query.directiveInfopanel
@@ -14,10 +14,23 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
             */
             .directive('hs.query.directiveInfopanel', ['config', function (config) {
                 return {
-                    templateUrl: config.infopanel_template || `${config.hsl_path}components/query/partials/infopanel${config.design || ''}.html`,
+                    template: require('components/query/partials/infopanel.html'),
                     // templateUrl: config.infopanel_template || `${config.hsl_path}components/layout/partials/infopanel${config.design || ''}.html`,
                 };
             }])
+
+                        /**
+            * @ngdoc directive
+            * @name hs.query.directiveInfopanelMd
+            * @memberOf hs.query
+            * @description Display Infopanel with query results
+            */
+           .directive('hs.query.directiveInfopanelMd', ['config', function (config) {
+            return {
+                template: require('components/query/partials/infopanelmd.html'),
+                // templateUrl: config.infopanel_template || `${config.hsl_path}components/layout/partials/infopanel${config.design || ''}.html`,
+            };
+        }])
 
             /**
             * @ngdoc directive
@@ -501,8 +514,8 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         $rootScope.$broadcast('queryVectorResult');
                     }
                 }])
-            .controller('hs.query.controller', ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', '$mdDialog', '$mdToast',
-                function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config, $mdDialog, $mdToast) {
+            .controller('hs.query.controller', ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config',
+                function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config) {
                     var popup = new ol.Overlay.Popup();
 
                     if (OlMap.map) 
@@ -512,11 +525,14 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                             OlMap.map.addOverlay(popup);
                         });
 
+                        try {
+                            var $mdDialog = $injector.get('$mdDialog');
+            
                     $scope.showQueryDialog = function(ev) {
                         $mdDialog.show({
                             scope: this,
                             preserveScope: true,
-                            templateUrl: config.infopanel_template || `${config.hsl_path}components/query/partials/infopanel${config.design || ''}.html`,
+                            template: require('components/query/partials/infopanel.html'),
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose: true
@@ -531,6 +547,18 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                     $scope.cancelQueryDialog = function() {
                         $mdDialog.cancel();
                     };
+
+                    $scope.showNoImagesWarning = function(){
+                        $mdToast.show(
+                            $mdToast.simple()
+                                .textContent("No images matched the query.")
+                                // .position(pinTo )
+                                // .hideDelay(3000)
+                        );
+                    }
+                } catch(ex){
+                    
+                }
                     
                     $scope.data = Base.data;
 
@@ -539,12 +567,7 @@ define(['angular', 'ol', 'map', 'core', 'angular-material', 'angular-sanitize', 
                         if (Base.queryActive) {
                             $scope.deregisterVectorQuery = $scope.$on('queryClicked', function(e) {
                                 if (config.design === 'md' && $scope.data.groups.length === 0) {
-                                    $mdToast.show(
-                                        $mdToast.simple()
-                                            .textContent("No images matched the query.")
-                                            // .position(pinTo )
-                                            // .hideDelay(3000)
-                                    );
+                                    $scope.showNoImagesWarning();
                                 }
                                 if (config.design === 'md' && $scope.data.groups.length > 0) {
                                     $scope.showQueryDialog(e);

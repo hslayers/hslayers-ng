@@ -24,7 +24,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
          */
         .directive('hs.layermanager.directive', ['config', function(config) {
             return {
-                templateUrl: `${config.hsl_path}components/layermanager/partials/layermanager${config.design || ''}.html`,
+                template: require('components/layermanager/partials/layermanager.html'),
                 link: function(scope, element) {
 
                 }
@@ -32,7 +32,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
         }])
         // .directive('hs.baselayers.directive', function() {
         //     return {
-        //         templateUrl: config.hsl_path + 'components/layermanager/partials/baselayers.html'
+        //         template: require('components/layermanager/partials/baselayers.html')
         //     }
         // })
         /**
@@ -50,7 +50,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
          */
         .directive('hs.layermanager.removeAllDialogDirective', ['config', function (config) {
             return {
-                templateUrl: config.hsl_path + 'components/layermanager/partials/dialog_removeall.html',
+                template: require('components/layermanager/partials/dialog_removeall.html'),
                 link: function (scope, element, attrs) {
                     scope.removeAllModalVisible = true;
                 }
@@ -64,7 +64,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
          */
         .directive('hs.layermanager.folderDirective', ['$compile', 'config', function ($compile, config) {
             return {
-                templateUrl: config.hsl_path + 'components/layermanager/partials/folder.html',
+                template: require('components/layermanager/partials/folder.html'),
                 compile: function compile(element) {
                     var contents = element.contents().remove();
                     var contentsLinker;
@@ -113,8 +113,8 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
      * @ngdoc controller
      * @description Controller for management of deafult HSLayers layer manager template
      */
-    .controller('hs.layermanager.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', '$mdDialog', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
-        function($scope, Core, $compile, utils, layerUtils, config, OlMap, LayMan, $rootScope, $mdDialog, WMST, styler, legendService) {
+    .controller('hs.layermanager.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
+        function($scope, Core, $compile, utils, layerUtils, config, OlMap, LayMan, $rootScope, WMST, styler, legendService) {
             $scope.legendService = legendService;
             $scope.data = LayMan.data;
             $scope.Core = Core;
@@ -223,19 +223,23 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
             }
 
             $scope.showRemoveLayerDiag = function(e, layer) {
-                var confirm = $mdDialog.confirm()
-                    .title('Remove layer ' + layer.title)
-                    .textContent('Are you sure about layer removal?')
-                    .ariaLabel('Confirm layer removal')
-                    .targetEvent(e)
-                    .ok('Remove')
-                    .cancel('Cancel')
-                    .hasBackdrop(false);
-      
-                $mdDialog.show(confirm).then(function() {
-                    $scope.removeLayer(layer.layer);
-                }, function() {
-                });
+                try {
+                    var $mdDialog = $injector.get('$mdDialog');
+    
+                    var confirm = $mdDialog.confirm()
+                        .title('Remove layer ' + layer.title)
+                        .textContent('Are you sure about layer removal?')
+                        .ariaLabel('Confirm layer removal')
+                        .targetEvent(e)
+                        .ok('Remove')
+                        .cancel('Cancel')
+                        .hasBackdrop(false);
+        
+                    $mdDialog.show(confirm).then(function() {
+                        $scope.removeLayer(layer.layer);
+                    }, function() {
+                    });
+                } catch(ex){}
             }
 
             $scope.isLayerType = function(layer, type) {

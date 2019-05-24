@@ -9,7 +9,7 @@ define(['angular', 'ol','angular-material', 'ngclipboard'],
             
             .directive('hs.material.sharemap.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/shareMap.html',
+                    template: require('materialComponents/panelContents/shareMap.html'),
                     link: function(scope, element) {
 
                     }

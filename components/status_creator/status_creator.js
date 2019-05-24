@@ -14,7 +14,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              */
             .directive('hs.statusCreator.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/status_creator/partials/dialog.html'
+                    template: require('components/status_creator/partials/dialog.html')
                 };
             }])
             /**
@@ -25,7 +25,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              */
             .directive('hs.statusCreator.directiveForm', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/status_creator/partials/form.html'
+                    template: require('components/status_creator/partials/form.html')
                 };
             }])
             /**
@@ -36,7 +36,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              */
             .directive('hs.statusCreator.directiveSimpleform', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/status_creator/partials/simpleform.html'
+                    template: require('components/status_creator/partials/simpleform.html')
                 };
             }])
             /**
@@ -47,7 +47,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              */
             .directive('hs.statusCreator.directivePanel', ['config', function (config) {
                 return {
-                    templateUrl: `${config.hsl_path}components/status_creator/partials/panel${config.design || ''}.html`,
+                    template: require(`components/status_creator/partials/panel.html`),
                 };
             }])
             /**
@@ -58,7 +58,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              */
             .directive('hs.statusCreator.resultDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/status_creator/partials/dialog_result.html',
+                    template: require('components/status_creator/partials/dialog_result.html'),
                     link: function (scope, element, attrs) {
                         scope.resultModalVisible = true;
                     }
@@ -72,7 +72,7 @@ define(['angular', 'ol', 'map', 'angular-cookies'],
              */
             .directive('hs.statusCreator.saveDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/status_creator/partials/dialog_save.html',
+                    template: require('components/status_creator/partials/dialog_save.html'),
                     link: function (scope, element, attrs) {
                         scope.saveCompositionModalVisible = true;
                     }

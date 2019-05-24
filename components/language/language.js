@@ -14,7 +14,7 @@ define(['angular'],
              */
             .directive('hs.language.directive', ['config', function (config) {
                 return {
-                    templateUrl: `${config.hsl_path}components/language/partials/language${config.design || ''}.html`,
+                    template: require(`components/language/partials/language.html`),
                 };
             }])
 

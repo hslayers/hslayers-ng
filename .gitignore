@@ -11,3 +11,5 @@ package-lock.json
 bundle.js
 docs
 po/cs_CZ.mo
+dist
+stats.json

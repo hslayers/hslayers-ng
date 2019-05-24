@@ -241,14 +241,14 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
          */
         .directive('hs.cesium.directive', ['config', function(config) {
             return {
-                templateUrl: config.hsl_path + 'components/hscesium/partials/cesium.html',
+                template: require('components/hscesium/partials/cesium.html'),
                 link: function(scope, element) {}
             };
         }])
 
         .directive('hs.cesium.toolbarButtonDirective', ['config', function (config) {
             return {
-                templateUrl: config.hsl_path + 'components/hscesium/partials/toolbar_button_directive.html'
+                template: require('components/hscesium/partials/toolbar_button_directive.html')
             };
         }])
 

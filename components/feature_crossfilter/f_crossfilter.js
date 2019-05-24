@@ -34,7 +34,7 @@ define(['angular', 'ol', 'dc', 'map'],
             */
             .directive('hs.featureCrossfilter.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/feature_crossfilter/partials/f_crossfilter.html',
+                    template: require('components/feature_crossfilter/partials/f_crossfilter.html'),
                     link: function(scope, element) {
 
                     }

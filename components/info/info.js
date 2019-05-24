@@ -16,8 +16,7 @@ define(['angular', 'map', 'core', 'update-meta', 'permalink'],
              */
             .directive('hs.info.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/info/partials/info.html'
-
+                    template: require('components/info/partials/info.html')
                 };
             }])
 

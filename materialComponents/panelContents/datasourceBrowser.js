@@ -9,7 +9,7 @@ define(['angular', 'ol', 'angular-material'],
 
             .directive('hs.material.datasourcebrowser.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/panelContents/datasourceBrowser.html',
+                    template: require('materialComponents/panelContents/datasourceBrowser.html'),
                     link: function (scope, element) {
 
                     }
@@ -126,7 +126,7 @@ define(['angular', 'ol', 'angular-material'],
                         escapeToClose: true,
                         scope: $scope,
                         preserveScope: true,  
-                        templateUrl: config.hsl_path + 'materialComponents/panelContents/datasourceBrowserMetadata.html',
+                        template: require('materialComponents/panelContents/datasourceBrowserMetadata.html'),
                         controller: function DialogController($scope, $mdDialog) {
                             $scope.closeDialog = function () {
                                 $mdDialog.hide();

@@ -18,7 +18,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
         var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms', 'hs.compositions.config_parsers'])
             .directive('hs.compositions.directive', ['config', function (config) {
                 return {
-                    templateUrl: `${config.hsl_path}components/compositions/partials/compositions${config.design || ''}.html`,
+                    template: require('components/compositions/partials/compositions.html'),
                     link: function (scope, element) {
                         if(angular.isUndefined(config.design) || config.design == ''){
                             var el = document.getElementsByClassName('mid-pane');
@@ -41,7 +41,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
              */
             .directive('hs.compositions.overwriteDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_overwriteconfirm.html',
+                    template: require('components/compositions/partials/dialog_overwriteconfirm.html'),
                     link: function (scope, element, attrs) {
                         scope.overwriteModalVisible = true;
                     }
@@ -55,7 +55,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
              */
             .directive('hs.compositions.deleteDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_delete.html',
+                    template: require('components/compositions/partials/dialog_delete.html'),
                     link: function (scope, element, attrs) {
                         scope.deleteModalVisible = true;
                     }
@@ -69,7 +69,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
              */
             .directive('hs.compositions.shareDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_share.html',
+                    template: require('components/compositions/partials/dialog_share.html'),
                     link: function (scope, element, attrs) {
                         scope.shareModalVisible = true;
                     }
@@ -83,7 +83,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'hs.comp
              */
             .directive('hs.compositions.infoDialogDirective', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'components/compositions/partials/dialog_info.html',
+                    template: require('components/compositions/partials/dialog_info.html'),
                     link: function (scope, element, attrs) {
                         scope.infoModalVisible = true;
                     }

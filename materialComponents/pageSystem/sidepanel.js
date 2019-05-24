@@ -3,7 +3,7 @@ define(['angular', 'core', 'angular-material'],
         angular.module('hs.material.sidepanel', ['hs.core'])
             .directive('hs.material.sidepanel.panelright.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/rightPanel.html',
+                    template: require('materialComponents/pageSystem/rightPanel.html'),
                     link: function (scope, element) {
 
                     }
@@ -12,7 +12,7 @@ define(['angular', 'core', 'angular-material'],
 
             .directive('hs.material.sidepanel.panelleft.directive', ['config', function (config) {
                 return {
-                    templateUrl: config.hsl_path + 'materialComponents/pageSystem/leftPanel.html',
+                    template: require('materialComponents/pageSystem/leftPanel.html'),
                     link: function (scope, element) {
 
                     }
