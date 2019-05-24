@@ -14,7 +14,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: { app: 'app.js' },
+  entry: 'app.js',
   output: {
     // Path where bundled files will be output
     path: path.resolve(__dirname, 'dist'),
@@ -26,7 +26,7 @@ module.exports = {
   resolve: { symlinks: false},
   plugins: [
     // Clean before build
-    new CleanWebpackPlugin()
+    //new CleanWebpackPlugin()
   ],
   module: {
     rules: [

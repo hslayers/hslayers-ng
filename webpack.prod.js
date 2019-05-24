@@ -26,7 +26,7 @@ module.exports = merge(common, {
   devtool: false,
   output: {
     // Add a chunkhash to file name so it will not be cached by browsers when content changed
-    filename: 'hslayers-ng.min.js',
+    filename: 'hslayers-ng.js',
     path: path.resolve(__dirname, 'dist'),
     library: 'hslayers-ng',
     libraryTarget: 'umd'

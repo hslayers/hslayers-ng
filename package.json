@@ -53,6 +53,7 @@
     "webpack-merge": "^4.2.1"
   },
   "scripts": {
+    "build": "rm -rf dist && webpack --config webpack.all.prod.js",
     "postinstall": "",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000",
@@ -63,7 +64,7 @@
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor test/protractor-conf.js",
-    "release": "release-it",
+    "release": "npm run-script build && release-it",
     "isolate-bootstrap": "node scripts/bootstrap-isolate.js"
   },
   "dependencies": {

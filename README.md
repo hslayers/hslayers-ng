@@ -14,7 +14,7 @@ npm install hslayers-ng
 
 Include the bundle file
 
-```<script src="node_modules/hslayers-ng/dist/hslayers-ng.min.js"></script>```
+```<script src="node_modules/hslayers-ng/dist/hslayers-ng.js"></script>```
 
 ### Configure the application
 
@@ -63,7 +63,7 @@ Hslayers exposes Openlayers as global 'ol' variable and 'angular', which are use
 Following example uses html:
 
 ```
- <script src="node_modules/hslayers-ng/dist/hslayers-ng.min.js"></script>
+ <script src="node_modules/hslayers-ng/dist/hslayers-ng.js"></script>
  <script src="app.js"></script>
  <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
 ```
