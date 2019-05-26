@@ -28,8 +28,9 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
                 link: function (scope, element) {
                     try {
                         if (angular.module('hs.cesium')) {
-                            if (angular.element('.page-content', element)) {
-                                angular.element('.page-content', element).append($compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope));
+                            if (element[0].querySelector('.page-content')) {
+                                let cesiumDir = $compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope);                            
+                                element[0].querySelector('.page-content').appendChild(cesiumDir[0]);
                             }
                         }
                     } catch (err) { /* failed to require */ }

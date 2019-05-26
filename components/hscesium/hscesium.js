@@ -1,19 +1,11 @@
-if (require.config) require.config({
-    paths: {
-        hs_cesium_camera: hsl_path + 'components/hscesium/hs_cesium_camera' + hslMin,
-        hs_cesium_time: hsl_path + 'components/hscesium/hs_cesium_time' + hslMin,
-        hs_cesium_layers: hsl_path + 'components/hscesium/hs_cesium_layers' + hslMin,
-    }
-})
-
 /**
  * @ngdoc module
  * @module hs.cesium
  * @name hs.cesium
  * @description Module containing cesium map
  */
-define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_cesium_layers'], function(angular, permalink, ol, HsCsCamera, HsCsTime, HsCsLayers) {
-    angular.module('hs.cesium', ['hs'])
+define(['permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_cesium_layers'], function(permalink, ol, HsCsCamera, HsCsTime, HsCsLayers) {
+    angular.module('hs.cesium', [])
 
         /**
          * @module hs.cesium
@@ -212,17 +204,17 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
             this.resize = function(event, size) {
                 if (angular.isUndefined(size)) return;
                 document.getElementById("cesiumContainer").style.height = size.height + "px";
-                angular.element('.cesium-viewer-timelineContainer').css({
-                    right: 0
-                });
-                if (angular.element('.cesium-viewer-timelineContainer').length > 0)
-                    angular.element('.cesium-viewer-bottom').css({
-                        bottom: '30px'
-                    });
-                else
-                    angular.element('.cesium-viewer-bottom').css({
-                        bottom: 0
-                    });
+                
+                if (document.querySelector('.cesium-viewer-timelineContainer')) {
+                    document.querySelector('.cesium-viewer-timelineContainer').style.right = '0';
+                }
+                if( document.querySelector('.cesium-viewer-bottom')){
+                    if (document.querySelector('.cesium-viewer-timelineContainer')) {
+                        document.querySelector('.cesium-viewer-bottom').style.bottom = '30px';
+                    } else
+                        document.querySelector('.cesium-viewer-bottom').style.bottom = '0';
+                }
+               
                 $rootScope.$broadcast('cesiummap.resized', viewer, me);
             }
 
@@ -239,16 +231,14 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
          * @ngdoc directive
          * @description 
          */
-        .directive('hs.cesium.directive', ['config', function(config) {
+        .directive('hs.cesium.directive', ['config', 'hs.cesium.service', '$timeout', function(config, service, $timeout) {
             return {
                 template: require('components/hscesium/partials/cesium.html'),
-                link: function(scope, element) {}
-            };
-        }])
-
-        .directive('hs.cesium.toolbarButtonDirective', ['config', function (config) {
-            return {
-                template: require('components/hscesium/partials/toolbar_button_directive.html')
+                link: function(scope, element) {
+                    $timeout(() => {
+                        service.init();
+                    })
+                }
             };
         }])
 
@@ -263,21 +253,6 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
 
                 var map = service.map;
                 $scope.visible = true;
-
-                /**
-                 * @ngdoc method
-                 * @name hs.cesium.controller#init
-                 * @public
-                 * @description 
-                 */
-                $scope.init = function() {
-                    if (hs_map.map)
-                        service.init();
-                    else
-                        $rootScope.$on('map.loaded', function() {
-                            service.init();
-                        });
-                }
 
                 /**
                  * @ngdoc method
@@ -313,8 +288,6 @@ define(['angular', 'permalink', 'ol', 'hs_cesium_camera', 'hs_cesium_time', 'hs_
                 $rootScope.$on('Core.mapSizeUpdated', service.resize);
                 service.resize();
 
-
-                $scope.init();
                 $scope.$emit('scope_loaded', "CesiumMap");
             }
         ]);
