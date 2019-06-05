@@ -287,9 +287,7 @@ angular.module('hs.measure', ['hs.map', 'hs.core'])
              */
             var formatArea = function (polygon) {
                 var sourceProj = map.getView().getProjection();
-                var geom = /** @type {ol.geom.Polygon} */ (polygon.clone().transform(sourceProj, 'EPSG:4326'));
-                var coordinates = geom.getLinearRing(0).getCoordinates();
-                area = Math.abs(getArea(coordinates));
+                var area = Math.abs(getArea(polygon));
                 var output = {
                     size: area,
                     type: 'area',
