@@ -1,10 +1,12 @@
-if(window.require && window.require.config) window.require.config({
-    paths: {
-        'hs.layermanager.layerlistDirective': hsl_path + 'components/layermanager/hs.layermanager.layerlistDirective' + hslMin,
-        'hs.layermanager.service': hsl_path + 'components/layermanager/hs.layermanager.service' + hslMin,
-        'hs.layermanager.WMSTservice': hsl_path + 'components/layermanager/hs.layermanager.WMSTservice' + hslMin
-    }
-})
+import hsLayermanagerService from 'hs.layermanager.service';
+import hsLayermanagerWMSTservice from 'hs.layermanager.WMSTservice';
+import hsLayermanagerLayerlistDirective from 'hs.layermanager.layerlistDirective';
+import 'utils';
+import 'ows_wms';
+import 'angular-drag-and-drop-lists';
+import 'status_creator';
+import 'styles';
+import 'legend';
 
 /**
  * @ngdoc module
@@ -12,100 +14,99 @@ if(window.require && window.require.config) window.require.config({
  * @name hs.layermanager
  * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
-define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMSTservice', 'hs.layermanager.layerlistDirective', 'utils', 'ows_wms', 'angular-drag-and-drop-lists', 'status_creator', 'styles', 'legend'], 
-    function (angular, map, ol, hsLayermanagerService, hsLayermanagerWMSTservice, hsLayermanagerLayerlistDirective) {
-    angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator', 'hs.styles', 'hs.legend'])
-            
-        /**
-         * @module hs.layermanager
-         * @name hs.layermanager.directive
-         * @ngdoc directive
-         * @description Display default HSLayers layer manager panel in application. Contain filter, baselayers, overlay container and settings pane for active layer.
-         */
-        .directive('hs.layermanager.directive', ['config', function(config) {
-            return {
-                template: require('components/layermanager/partials/layermanager.html'),
-                link: function(scope, element) {
 
-                }
-            };
-        }])
-        // .directive('hs.baselayers.directive', function() {
-        //     return {
-        //         template: require('components/layermanager/partials/baselayers.html')
-        //     }
-        // })
-        /**
-         * @module hs.layermanager
-         * @name hs.layermanager.removeAllDialogDirective
-         * @ngdoc directive
-         * @description Display warning dialog (modal) about removing all layers, in default opened when remove all layers function is used. Have option to remove all active layers, reload default composition of app or to cancel action.
-         * When used in current version of HS Layers, it is recommended to append this modal directive to #hs-dialog-area element and compile scope.
-         * Example
-            * ```
-            * var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
-            * document.getElementById("hs-dialog-area").appendChild(el[0]);
-            * $compile(el)($scope);
-            * ```
-         */
-        .directive('hs.layermanager.removeAllDialogDirective', ['config', function (config) {
-            return {
-                template: require('components/layermanager/partials/dialog_removeall.html'),
-                link: function (scope, element, attrs) {
-                    scope.removeAllModalVisible = true;
-                }
-            };
-        }])
-        /**
-         * @module hs.layermanager
-         * @name hs.layermanager.folderDirective
-         * @ngdoc directive
-         * @description Directive for displaying folder structure in default HS layers template. Used recursively to build full folder structure if it is created in layer manager. Single instance shows layers and subfolders of its position in folder structure.
-         */
-        .directive('hs.layermanager.folderDirective', ['$compile', 'config', function ($compile, config) {
-            return {
-                template: require('components/layermanager/partials/folder.html'),
-                compile: function compile(element) {
-                    var contents = element.contents().remove();
-                    var contentsLinker;
+angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists', 'hs.status_creator', 'hs.styles', 'hs.legend'])
 
-                    return function (scope, iElement) {
-                        /**
-                         * @ngdoc method
-                         * @name hs.layermanager.folderDirective#folderVisible
-                         * @public
-                         * @param {Object} obj Folder object of current hiearchy 
-                         * @returns {Boolean} True if subfolders exists
-                         * @description Find if current folder has any subfolder
-                         */
-                        scope.folderVisible = function (obj) {
-                            return obj.sub_folders.length > 0;
-                        }
+    /**
+     * @module hs.layermanager
+     * @name hs.layermanager.directive
+     * @ngdoc directive
+     * @description Display default HSLayers layer manager panel in application. Contain filter, baselayers, overlay container and settings pane for active layer.
+     */
+    .directive('hs.layermanager.directive', ['config', function (config) {
+        return {
+            template: require('components/layermanager/partials/layermanager.html'),
+            link: function (scope, element) {
 
-                        /**
-                        * @ngdoc property
-                        * @name hs.layermanager.folderDirective#obj
-                        * @public
-                        * @type {Object} 
-                        * @description Container for folder object of current folder instance. Either full folders object or its subset based on hierarchy place of directive
-                        */
-                        if (scope.value == null) {
-                            scope.obj = "-";
-                        } else {
-                            scope.obj = scope.value;
-                        }
+            }
+        };
+    }])
+    // .directive('hs.baselayers.directive', function() {
+    //     return {
+    //         template: require('components/layermanager/partials/baselayers.html')
+    //     }
+    // })
+    /**
+     * @module hs.layermanager
+     * @name hs.layermanager.removeAllDialogDirective
+     * @ngdoc directive
+     * @description Display warning dialog (modal) about removing all layers, in default opened when remove all layers function is used. Have option to remove all active layers, reload default composition of app or to cancel action.
+     * When used in current version of HS Layers, it is recommended to append this modal directive to #hs-dialog-area element and compile scope.
+     * Example
+        * ```
+        * var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
+        * document.getElementById("hs-dialog-area").appendChild(el[0]);
+        * $compile(el)($scope);
+        * ```
+     */
+    .directive('hs.layermanager.removeAllDialogDirective', ['config', function (config) {
+        return {
+            template: require('components/layermanager/partials/dialog_removeall.html'),
+            link: function (scope, element, attrs) {
+                scope.removeAllModalVisible = true;
+            }
+        };
+    }])
+    /**
+     * @module hs.layermanager
+     * @name hs.layermanager.folderDirective
+     * @ngdoc directive
+     * @description Directive for displaying folder structure in default HS layers template. Used recursively to build full folder structure if it is created in layer manager. Single instance shows layers and subfolders of its position in folder structure.
+     */
+    .directive('hs.layermanager.folderDirective', ['$compile', 'config', function ($compile, config) {
+        return {
+            template: require('components/layermanager/partials/folder.html'),
+            compile: function compile(element) {
+                var contents = element.contents().remove();
+                var contentsLinker;
 
-                        if (angular.isUndefined(contentsLinker)) {
-                            contentsLinker = $compile(contents);
-                        }
+                return function (scope, iElement) {
+                    /**
+                     * @ngdoc method
+                     * @name hs.layermanager.folderDirective#folderVisible
+                     * @public
+                     * @param {Object} obj Folder object of current hiearchy 
+                     * @returns {Boolean} True if subfolders exists
+                     * @description Find if current folder has any subfolder
+                     */
+                    scope.folderVisible = function (obj) {
+                        return obj.sub_folders.length > 0;
+                    }
 
-                        contentsLinker(scope, function (clonedElement) {
-                            iElement.append(clonedElement);
-                        });
-                    };
-                }
-            };
-            }])   
+                    /**
+                    * @ngdoc property
+                    * @name hs.layermanager.folderDirective#obj
+                    * @public
+                    * @type {Object} 
+                    * @description Container for folder object of current folder instance. Either full folders object or its subset based on hierarchy place of directive
+                    */
+                    if (scope.value == null) {
+                        scope.obj = "-";
+                    } else {
+                        scope.obj = scope.value;
+                    }
+
+                    if (angular.isUndefined(contentsLinker)) {
+                        contentsLinker = $compile(contents);
+                    }
+
+                    contentsLinker(scope, function (clonedElement) {
+                        iElement.append(clonedElement);
+                    });
+                };
+            }
+        };
+    }])
 
     /**
      * @module hs.layermanager
@@ -114,7 +115,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
      * @description Controller for management of deafult HSLayers layer manager template
      */
     .controller('hs.layermanager.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
-        function($scope, Core, $compile, utils, layerUtils, config, OlMap, LayMan, $rootScope, WMST, styler, legendService) {
+        function ($scope, Core, $compile, utils, layerUtils, config, OlMap, LayMan, $rootScope, WMST, styler, legendService) {
             $scope.legendService = legendService;
             $scope.data = LayMan.data;
             $scope.Core = Core;
@@ -126,12 +127,12 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
 
             $scope.shiftDown = false;
 
-            $scope.expandLayer = function(layer){
+            $scope.expandLayer = function (layer) {
                 if (angular.isUndefined(layer.expanded)) layer.expanded = true;
                 else layer.expanded = !layer.expanded;
             }
 
-            $scope.expandSettings = function(layer,value){
+            $scope.expandSettings = function (layer, value) {
                 if (angular.isUndefined(layer.opacity)) {
                     layer.opacity = layer.layer.getOpacity();
                     layer.maxResolutionLimit = layer.layer.getMaxResolution();
@@ -143,7 +144,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 layer.expandSettings = value;
             }
 
-            $scope.expandFilter = function(layer,value){
+            $scope.expandFilter = function (layer, value) {
                 layer.expandFilter = value;
                 LayMan.currentLayer = layer;
                 $scope.currentLayer = LayMan.currentLayer;
@@ -155,7 +156,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
             * @description Set selected layers opacity and emits "compositionchanged"
             * @param {Ol.layer} layer Selected layer
             */
-            $scope.setOpacity = function(layer) {
+            $scope.setOpacity = function (layer) {
                 layer.layer.setOpacity(layer.opacity);
                 $scope.$emit('compositions.composition_edited');
             }
@@ -174,12 +175,12 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 return false;
             }
 
-            $scope.updateResolution = function(layer) {
+            $scope.updateResolution = function (layer) {
                 layer.layer.setMaxResolution(layer.maxResolution);
                 layer.layer.setMinResolution(layer.minResolution);
             }
 
-            $scope.expandInfo = function(layer,value){
+            $scope.expandInfo = function (layer, value) {
                 layer.expandInfo = value;
             }
 
@@ -187,11 +188,11 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
             $scope.changeBaseLayerVisibility = LayMan.changeBaseLayerVisibility;
             $scope.changeTerrainLayerVisibility = LayMan.changeTerrainLayerVisibility;
 
-            $scope.layerOrder = function(layer){
+            $scope.layerOrder = function (layer) {
                 return layer.layer.get('position')
             }
 
-            $scope.changePosition = function(layer,direction,$event) {
+            $scope.changePosition = function (layer, direction, $event) {
                 var index = layer.layer.get('position');
                 var layers = OlMap.map.getLayers();
                 var toIndex = index;
@@ -199,7 +200,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                     var max = layers.getLength() - 1;
                     if (index < max) {
                         if ($event.shiftKey) toIndex = max;
-                        else toIndex = index+1;
+                        else toIndex = index + 1;
                     }
                 }
                 else {//downwards
@@ -212,7 +213,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                     }
                     if (index > min) {
                         if ($event.shiftKey) toIndex = min;
-                        else toIndex = index-1;
+                        else toIndex = index - 1;
                     }
                 }
                 var moveLayer = layers.item(index);
@@ -222,10 +223,10 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
             }
 
-            $scope.showRemoveLayerDiag = function(e, layer) {
+            $scope.showRemoveLayerDiag = function (e, layer) {
                 try {
                     var $mdDialog = $injector.get('$mdDialog');
-    
+
                     var confirm = $mdDialog.confirm()
                         .title('Remove layer ' + layer.title)
                         .textContent('Are you sure about layer removal?')
@@ -234,15 +235,15 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                         .ok('Remove')
                         .cancel('Cancel')
                         .hasBackdrop(false);
-        
-                    $mdDialog.show(confirm).then(function() {
+
+                    $mdDialog.show(confirm).then(function () {
                         $scope.removeLayer(layer.layer);
-                    }, function() {
+                    }, function () {
                     });
-                } catch(ex){}
+                } catch (ex) { }
             }
 
-            $scope.isLayerType = function(layer, type) {
+            $scope.isLayerType = function (layer, type) {
                 switch (type) {
                     case 'wms':
                         return isWms(layer);
@@ -257,17 +258,17 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 }
             }
 
-            function isWms(layer){
+            function isWms(layer) {
                 return (layer.getSource() instanceof ol.source.TileWMS || layer.getSource() instanceof ol.source.ImageWMS);
             }
 
-            $scope.setProp = function(layer,property,value) {
+            $scope.setProp = function (layer, property, value) {
                 layer.set(property, value);
             }
 
             $scope.layerOpacity = 50;
 
-            function getLayerStyle(wrapper){
+            function getLayerStyle(wrapper) {
                 var layer = wrapper.layer;
                 var source = layer.getSource();
                 wrapper.style = {};
@@ -289,11 +290,11 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                     else if (image instanceof ol.style.RegularShape) {
                         wrapper.style.pointPoints = image.getPoints();
                         wrapper.style.rotation = image.getRotation();
-                        if (angular.isUndefined(image.getRadius2()))wrapper.style.pointType = 'Polygon';
+                        if (angular.isUndefined(image.getRadius2())) wrapper.style.pointType = 'Polygon';
                         else {
                             wrapper.style.pointType = 'Star';
                             wrapper.style.radius2 = image.getRadius2();
-                        }  
+                        }
                     }
                     if (image instanceof ol.style.Circle || image instanceof ol.style.RegularShape) {
                         wrapper.style.radius = image.getRadius();
@@ -308,11 +309,11 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 wrapper.style.style = style;
             }
 
-            $scope.saveStyle = function(layer){
+            $scope.saveStyle = function (layer) {
                 setLayerStyle(layer);
             }
 
-            function setLayerStyle(wrapper){
+            function setLayerStyle(wrapper) {
                 //debugger;
                 var layer = wrapper.layer;
                 var source = layer.getSource();
@@ -344,7 +345,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                             radius: wrapper.style.radius,
                             rotation: wrapper.style.rotation
                         });
-                    } 
+                    }
                     if (wrapper.style.pointType === 'Polygon') {
                         image = new ol.style.RegularShape({
                             stroke: stroke,
@@ -352,7 +353,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                             radius: wrapper.style.radius,
                             points: wrapper.style.pointPoints,
                             rotation: wrapper.style.rotation
-                        }); 
+                        });
                     }
                     if (wrapper.style.pointType === 'Star') {
                         image = new ol.style.RegularShape({
@@ -364,12 +365,12 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                             rotation: wrapper.style.rotation
                         });
                     }
-                    style.setImage(image); 
+                    style.setImage(image);
                 }
                 layer.setStyle(style);
             }
 
-            $scope.changePointType = function(layer,type) {
+            $scope.changePointType = function (layer, type) {
                 if (angular.isUndefined(layer.style)) getLayerStyle(layer);
                 layer.style.pointType = type;
                 setLayerStyle(layer);
@@ -377,13 +378,13 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
 
             $scope.icons = ["bag1.svg", "banking4.svg", "bar.svg", "beach17.svg", "bicycles.svg", "building103.svg", "bus4.svg", "cabinet9.svg", "camping13.svg", "caravan.svg", "church15.svg", "church1.svg", "coffee-shop1.svg", "disabled.svg", "favourite28.svg", "football1.svg", "footprint.svg", "gift-shop.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg", "hospital.svg", "hot-air-balloon2.svg", "information78.svg", "library21.svg", "location6.svg", "luggage13.svg", "monument1.svg", "mountain42.svg", "museum35.svg", "park11.svg", "parking28.svg", "pharmacy17.svg", "port2.svg", "restaurant52.svg", "road-sign1.svg", "sailing-boat2.svg", "ski1.svg", "swimming26.svg", "telephone119.svg", "toilets2.svg", "train-station.svg", "university2.svg", "warning.svg", "wifi8.svg"];
 
-             /**
-             * @function isLayerRemovable
-             * @memberOf hs.layermanager.controller
-             * @description Check if layer can be removed based on 'removable' layer attribute
-             * @param {Ol.layer} lyr OL layer to check if removable
-             */
-            $scope.isLayerRemovable = function(lyr){
+            /**
+            * @function isLayerRemovable
+            * @memberOf hs.layermanager.controller
+            * @description Check if layer can be removed based on 'removable' layer attribute
+            * @param {Ol.layer} lyr OL layer to check if removable
+            */
+            $scope.isLayerRemovable = function (lyr) {
                 return angular.isDefined(lyr) && (angular.isUndefined(lyr.get('removable')) || lyr.get('removable') == true);
             }
 
@@ -402,7 +403,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
              * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
              */
 
-            $scope.setCurrentLayer = function(layer, index, path) {
+            $scope.setCurrentLayer = function (layer, index, path) {
                 LayMan.currentLayer = layer;
                 $scope.currentLayer = LayMan.currentLayer;
                 if (WMST.layerIsWmsT(layer)) {
@@ -410,11 +411,11 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                     LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
                 }
                 var layerPanel = document.getElementsByClassName('layerpanel');
-                var layerNode = document.getElementById('layer' + (path || '') + (index || ''));	
+                var layerNode = document.getElementById('layer' + (path || '') + (index || ''));
                 utils.insertAfter(layerPanel, layerNode);
                 $scope.legendDescriptors = [];
                 var tmpDescriptor = (layer ? legendService.getLayerLegendDescriptor(layer.layer) : false);
-                if(tmpDescriptor) $scope.legendDescriptors.push(tmpDescriptor);
+                if (tmpDescriptor) $scope.legendDescriptors.push(tmpDescriptor);
                 $scope.cur_layer_opacity = layer.layer.getOpacity();
                 return false;
             }
@@ -430,12 +431,12 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 return false;
             }
 
-              /**
-             * @function removeLayer
-             * @memberOf hs.layermanager.controller
-             * @description Removes layer from map object
-             * @param {Ol.layer} layer Layer to remove
-             */
+            /**
+           * @function removeLayer
+           * @memberOf hs.layermanager.controller
+           * @description Removes layer from map object
+           * @param {Ol.layer} layer Layer to remove
+           */
             $scope.removeLayer = function (layer) {
                 map.removeLayer(layer);
             }
@@ -601,10 +602,10 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
              * @param {object} layer_container Selected layer - wrapped in layer object
              * @description Test if layer is queryable (WMS layer with Info format)
              */
-            $scope.isLayerQueryable = function(layer_container) {
+            $scope.isLayerQueryable = function (layer_container) {
                 layerUtils.isLayerQueryable(layer_container.layer);
             }
-            
+
             /**
              * @function isLayerWMS
              * @memberOf hs.layermanager.controller
@@ -678,15 +679,15 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 }
             }
 
-             /**
-             * @function isLayerWithDimensions
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} lyr Selected layer
-             * @description Test if layer has dimensions
-             */
+            /**
+            * @function isLayerWithDimensions
+            * @memberOf hs.layermanager.controller
+            * @param {Ol.layer} lyr Selected layer
+            * @description Test if layer has dimensions
+            */
             $scope.isLayerWithDimensions = function (lyr_container) {
-                if(angular.isUndefined(lyr_container) || lyr_container == null || angular.isUndefined(lyr_container.layer)) return false;
-                if(angular.isUndefined(lyr_container.layer.get('dimensions'))) return false;
+                if (angular.isUndefined(lyr_container) || lyr_container == null || angular.isUndefined(lyr_container.layer)) return false;
+                if (angular.isUndefined(lyr_container.layer.get('dimensions'))) return false;
                 return Object.keys(lyr_container.layer.get('dimensions')).length > 0
             }
 
@@ -734,7 +735,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
              * @description Test if selected layer is loaded in map
              */
             $scope.layerLoaded = layerUtils.layerLoaded;
-            
+
             /**
              * @function layerValid
              * @memberOf hs.layermanager.controller
@@ -742,8 +743,8 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
              * @description Test if selected layer is valid (true for invalid)
              */
             $scope.layerValid = layerUtils.layerInvalid;
-            
-            
+
+
             $scope.layerIsWmsT = WMST.layerIsWmsT;
             $scope.setLayerTime = WMST.setLayerTime;
 
@@ -771,14 +772,14 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 Core.setMainPanel('draw', false, false);
             }
 
-            $scope.dimensionChanged = function(currentlayer, dimension){
-                $scope.$emit('layermanager.dimension_changed', {layer: currentlayer.layer, dimension: dimension});
+            $scope.dimensionChanged = function (currentlayer, dimension) {
+                $scope.$emit('layermanager.dimension_changed', { layer: currentlayer.layer, dimension: dimension });
             }
 
             $scope.$on('layer.removed', function (event, layer) {
                 if (angular.isObject(LayMan.currentLayer) && (LayMan.currentLayer.layer == layer)) {
                     var layerPanel = document.getElementsByClassName('layerpanel');
-                    var layerNode = document.getElementsByClassName('hs-lm-mapcontentlist')[0];	
+                    var layerNode = document.getElementsByClassName('hs-lm-mapcontentlist')[0];
                     utils.insertAfter(layerPanel, layerNode);
                     LayMan.currentLayer = null;
                     $scope.currentLayer = LayMan.currentLayer;
@@ -805,7 +806,7 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
             });
 
             $scope.$on('core.map_reset', function (event) {
-                $timeout(function(){
+                $timeout(function () {
                     delete $scope.composition_id;
                 })
             });
@@ -819,13 +820,12 @@ define(['angular', 'map', 'ol', 'hs.layermanager.service', 'hs.layermanager.WMST
                 $rootScope.$on('map.loaded', function () {
                     init();
                 });
-            }    
+            }
 
             $scope.$emit('scope_loaded', "LayerManager");
         }
     ]);
 
-    hsLayermanagerLayerlistDirective.init();
-    hsLayermanagerService.init();
-    hsLayermanagerWMSTservice.init();
-})
+hsLayermanagerLayerlistDirective.init();
+hsLayermanagerService.init();
+hsLayermanagerWMSTservice.init();

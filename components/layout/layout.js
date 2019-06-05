@@ -4,7 +4,7 @@
  */
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.css';
 //import bootstrapIsolatedCss from 'bootstrap/dist/css/bootstrap.isolated.css';
-import olCs from 'openlayers/css/ol.css';
+import 'ol/ol.css';
 import angular from 'angular';
 import core from 'core';
 import map from 'map';

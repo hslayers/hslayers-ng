@@ -1,6 +1,5 @@
 'use strict';
 
-import ol from 'ol';
 import toolbar from 'toolbar';
 import print from 'print';
 import query from 'query';
@@ -39,7 +38,38 @@ module.directive('hs', ['config', 'Core', function (config, Core) {
 }]);
 
 if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hslayersNgConfig(ol)));
-window.ol = ol;
+
+import {Tile, Group, Image as ImageLayer} from 'ol/layer';
+import VectorLayer from 'ol/layer/Vector';
+import {Vector} from 'ol/source';
+import {ImageWMS, ImageArcGISRest} from 'ol/source';
+import {BingMaps, TileArcGISRest, TileWMS, WMTS, XYZ, OSM} from 'ol/source';
+import {register} from 'ol/proj/proj4'
+import * as proj from 'ol/proj';
+import View from 'ol/View';
+
+
+window.ol = {
+    layer: {
+        Tile,
+        Group,
+        Image: ImageLayer,
+        Vector: VectorLayer
+    },
+    source: {
+        OSM,
+        XYZ,
+        TileWMS,
+        Vector,
+        WMTS,
+        TileArcGISRest,
+        BingMaps,
+        ImageWMS,
+        ImageArcGISRest
+    },
+    View,
+    proj
+};
 
 module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.compositions.service_parser', 'config',
     function ($scope, Core, srv_producer, composition_parser, config) {
