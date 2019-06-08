@@ -1,23 +1,29 @@
+import VectorLayer from 'ol/layer/Vector';
+import { Vector } from 'ol/source';
+import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
+import { Polygon, LineString, GeometryType } from 'ol/geom';
+import s4a from 's4a';
+import dc from 'dc';
+import 'core';
+import Feature from 'ol/Feature';
+
 /**
  * @namespace hs.tracking
  * @memberOf hs
  */
-define(['angular','ol','s4a','dc','map','core'], 
-    
-    function(angular, ol, s4a) {
-        angular.module('hs.tracking', ['hs.map', 'hs.core'])
-        
-        /**
-         * @memberof hs.tracking
-         * @ngdoc directive
-         * @name hs.tracking.directive
-         * @description Add tracking panel html template to the map
-         */
-        .directive('hs.tracking.directive', ['config', function (config) {
-            return {
-                template: require('components/tracking/partials/tracking.html'
-            };
-        }])
+angular.module('hs.tracking', ['hs.map', 'hs.core'])
+
+    /**
+     * @memberof hs.tracking
+     * @ngdoc directive
+     * @name hs.tracking.directive
+     * @description Add tracking panel html template to the map
+     */
+    .directive('hs.tracking.directive', ['config', function (config) {
+        return {
+            template: require('components/tracking/partials/tracking.html')
+        };
+    }])
 
     /**
      * @memberof hs.tracking
@@ -25,7 +31,7 @@ define(['angular','ol','s4a','dc','map','core'],
      * @name hs.tracking.controller
      */
     .controller('hs.tracking.controller', ['$scope', 'hs.map.service', 'Core',
-        function($scope, OlMap, Core) {
+        function ($scope, OlMap, Core) {
 
             // Set the instance of the OpenAPI that s4a.js
             // works towards (by default portal.sdi4apps.eu)
@@ -40,7 +46,7 @@ define(['angular','ol','s4a','dc','map','core'],
 
             // Define the source of a vector layer to hold
             // routing calculataed features
-            var gjSrc = new ol.source.Vector();
+            var gjSrc = new Vector();
 
             // Variable to hold most recent observation added to map
             var lastObservationDate = null;
@@ -55,17 +61,17 @@ define(['angular','ol','s4a','dc','map','core'],
             var trackingInterval;
 
             // Define the style to apply to the routing feature layer
-            var gjStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
+            var gjStyle = new Style({
+                fill: new Fill({
                     color: 'rgba(255, 255, 255, 0.2)'
                 }),
-                stroke: new ol.style.Stroke({
+                stroke: new Stroke({
                     color: '#ff0000',
                     width: 3
                 }),
-                image: new ol.style.Circle({
+                image: new Circle({
                     radius: 5,
-                    fill: new ol.style.Fill({
+                    fill: new Fill({
                         color: '#ff0000'
                     })
                 })
@@ -73,7 +79,7 @@ define(['angular','ol','s4a','dc','map','core'],
 
             // Create a re-usable vector layer with the specific
             // source and style
-            var gjLyr = new ol.layer.Vector({
+            var gjLyr = new VectorLayer({
                 source: gjSrc,
                 style: gjStyle
             });
@@ -84,10 +90,10 @@ define(['angular','ol','s4a','dc','map','core'],
              * @memberof hs.tracking.controller
              * @param {type} lonLatArray
              */
-            var addFeature = function(lonLatArray) {
-                var feature = new ol.Feature({
-                    geometry: new ol.geom.Point(lonLatArray),
-                    labelPoint: new ol.geom.Point(lonLatArray),
+            var addFeature = function (lonLatArray) {
+                var feature = new Feature({
+                    geometry: new Point(lonLatArray),
+                    labelPoint: new Point(lonLatArray),
                     name: 'Most recent track'
                 });
                 gjSrc.addFeature(feature);
@@ -98,8 +104,8 @@ define(['angular','ol','s4a','dc','map','core'],
              * @function loadValues
              * @memberof hs.tracking.controller
              */
-            var loadValues = function() {
-                SensLog.getLastPosition(3, 'sdi4apps').then(function(res) {
+            var loadValues = function () {
+                SensLog.getLastPosition(3, 'sdi4apps').then(function (res) {
                     var observationDate = SensLog.toJsDate(res.time_stamp);
                     if (lastObservationDate === null || observationDate.getTime() > lastObservationDate.getTime()) {
 
@@ -117,7 +123,7 @@ define(['angular','ol','s4a','dc','map','core'],
                         var rain = SensLog.getLastObservation(3, 22, 'sdi4apps');
                         var speed = SensLog.getLastObservation(3, 23, 'sdi4apps');
                         jQuery.when(therm, rain, speed)
-                            .done(function(t1, p1, s1) {
+                            .done(function (t1, p1, s1) {
 
                                 // If more than 10 elements in array, remove first
                                 // before adding new
@@ -134,7 +140,7 @@ define(['angular','ol','s4a','dc','map','core'],
 
                                 // Digest scope if not already doing so
                                 if (!$scope.$$phase) $scope.$digest();
-                                
+
                             });
                     }
                 });
@@ -145,11 +151,11 @@ define(['angular','ol','s4a','dc','map','core'],
              * @function startTracking
              * @memberof hs.tracking.controller
              */
-            $scope.startTracking = function() {
+            $scope.startTracking = function () {
                 $scope.isTracking = true;
                 loadValues();
                 if (!$scope.$$phase) $scope.$digest();
-                trackingInterval = setInterval(function() {
+                trackingInterval = setInterval(function () {
                     loadValues();
                     if (!$scope.$$phase) $scope.$digest();
                 }, 5000);
@@ -160,7 +166,7 @@ define(['angular','ol','s4a','dc','map','core'],
              * @function stopTracking
              * @memberof hs.tracking.controller 
              */
-            $scope.stopTracking = function() {
+            $scope.stopTracking = function () {
                 $scope.isTracking = false;
                 clearInterval(trackingInterval);
                 $scope.clearAll();
@@ -172,7 +178,7 @@ define(['angular','ol','s4a','dc','map','core'],
              * @function clearAll
              * @memberof hs.tracking.controller
              */
-            $scope.clearAll = function() {
+            $scope.clearAll = function () {
                 gjSrc.clear();
                 $scope.observations.length = 0;
             };
@@ -182,7 +188,7 @@ define(['angular','ol','s4a','dc','map','core'],
              * @function activate
              * @memberof hs.tracking.controller
              */
-            $scope.activate = function() {
+            $scope.activate = function () {
                 map.addLayer(gjLyr);
             };
 
@@ -191,7 +197,7 @@ define(['angular','ol','s4a','dc','map','core'],
              * @function deactivate
              * @memberof hs.tracking.controller
              */
-            $scope.deactivate = function() {
+            $scope.deactivate = function () {
                 map.removeLayer(gjLyr);
             };
 
@@ -199,7 +205,7 @@ define(['angular','ol','s4a','dc','map','core'],
              * Run the activate/deactivate functions when components
              * are activated by clicking on the side menu
              */
-            $scope.$on('core.mainpanel_changed', function(event) {
+            $scope.$on('core.mainpanel_changed', function (event) {
                 if (Core.mainpanel === 'tracking') {
                     $scope.activate();
                 } else {
@@ -211,7 +217,7 @@ define(['angular','ol','s4a','dc','map','core'],
              * Run the activate/deactivate functions when components
              * are loaded from static URLs
              */
-            $scope.$on('scope_loaded', function(event, data) {
+            $scope.$on('scope_loaded', function (event, data) {
                 if (Core.mainpanel === 'tracking' && data === 'tracking') {
                     $scope.activate();
                 } else {
@@ -226,4 +232,3 @@ define(['angular','ol','s4a','dc','map','core'],
 
         }
     ]);
-});

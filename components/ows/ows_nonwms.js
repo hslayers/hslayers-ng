@@ -3,6 +3,10 @@ import { GPX, IGC,KML,  TopoJSON, GeoJSON } from 'ol/format';
 import SparqlJson from 'hs.source.SparqlJson'
 import WfsSource from 'hs.source.Wfs'
 import 'styles';
+import * as loadingstrategy from 'ol/loadingstrategy';
+import {transform, transformExtent, get as getProj} from 'ol/proj';
+import { Vector } from 'ol/source';
+import VectorLayer from 'ol/layer/Vector';
 
 /**
  * @namespace hs.ows.nonwms
@@ -81,7 +85,7 @@ angular.module('hs.ows.nonwms', ['hs.styles'])
                 } else if (definition.format == 'hs.format.WFS') {
                     src = new WfsSource(options.defOptions);
                 } else if (angular.isDefined(options.features)) {
-                    src = new ol.source.Vector({
+                    src = new Vector({
                         projection: srs,
                         features: options.features
                     });
@@ -112,10 +116,10 @@ angular.module('hs.ows.nonwms', ['hs.styles'])
                     OlMap.map.getView().fit(src.getExtent(), OlMap.map.getSize());
 
                 } else {
-                    src = new ol.source.Vector({
+                    src = new Vector({
                         format: format,
                         url: url,
-                        projection: ol.proj.get(srs),
+                        projection: getProj(srs),
                         extractStyles: extract_styles,
                         loader: function (extent, resolution, projection) {
                             this.set('loaded', false);
@@ -166,13 +170,13 @@ angular.module('hs.ows.nonwms', ['hs.styles'])
                                     me.set('loaded', true);
                                 });
                         },
-                        strategy: ol.loadingstrategy.all
+                        strategy: loadingstrategy.all
                     });
 
                 }
                 src.set('loaded', true);
                 src.set('from_composition', options.from_composition || false);
-                var lyr = new ol.layer.Vector({
+                var lyr = new VectorLayer({
                     abstract: abstract,
                     definition: definition,
                     from_composition: options.from_composition || false,

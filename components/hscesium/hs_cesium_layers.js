@@ -1,6 +1,11 @@
 import ol from 'ol';
 import { default as proj4 } from 'proj4';
 import moment from 'moment';
+import {  GeoJSON, KML } from 'ol/format';
+import { Tile, Group } from 'ol/layer';
+import { TileWMS, WMTS, OSM } from 'ol/source';
+import {ImageWMS, ImageArcGISRest} from 'ol/source';
+import { Vector } from 'ol/source';
 
 var utils;
 
@@ -105,7 +110,7 @@ var me = {
     },
 
     serializeVectorLayerToGeoJson(ol_source) {
-        var f = new ol.format.GeoJSON();
+        var f = new GeoJSON();
         //console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
         var features = ol_source.getFeatures();
         features.forEach(function (feature) {
@@ -202,16 +207,16 @@ var me = {
     },
 
     processOlLayer(lyr) {
-        if (lyr instanceof ol.layer.Group) {
+        if (lyr instanceof Group) {
             angular.forEach(lyr.layers, function (sub_lyr) {
                 me.processOlLayer(sub_lyr);
             })
         } else {
             lyr.setVisible(me.hs_map.isLayerVisible(lyr, me.hs_map.visible_layers) || lyr.getVisible());
             lyr.manuallyAdded = false;
-            if (lyr.getSource() instanceof ol.source.ImageWMS)
+            if (lyr.getSource() instanceof ImageWMS)
                 me.hs_map.proxifyLayerLoader(lyr, false);
-            if (lyr.getSource() instanceof ol.source.TileWMS)
+            if (lyr.getSource() instanceof TileWMS)
                 me.hs_map.proxifyLayerLoader(lyr, true);
             var cesium_layer = me.convertOlToCesiumProvider(lyr);
             if (angular.isDefined(cesium_layer)) {
@@ -230,16 +235,16 @@ var me = {
 
     convertOlToCesiumProvider(ol_lyr) {
 
-        if (ol_lyr.getSource() instanceof ol.source.OSM) {
+        if (ol_lyr.getSource() instanceof OSM) {
             return new Cesium.ImageryLayer(Cesium.createOpenStreetMapImageryProvider(), {
                 show: ol_lyr.getVisible(),
                 minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15
             });
-        } else if (ol_lyr.getSource() instanceof ol.source.TileWMS)
+        } else if (ol_lyr.getSource() instanceof TileWMS)
             return me.createTileProvider(ol_lyr);
-        else if (ol_lyr.getSource() instanceof ol.source.ImageWMS)
+        else if (ol_lyr.getSource() instanceof ImageWMS)
             return me.createSingleImageProvider(ol_lyr);
-        else if (ol_lyr.getSource() instanceof ol.source.Vector)
+        else if (ol_lyr.getSource() instanceof Vector)
             return me.createVectorDataSource(ol_lyr);
         else {
             if (console) console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
@@ -247,7 +252,7 @@ var me = {
     },
 
     createVectorDataSource(ol_lyr) {
-        if (ol_lyr.getSource().getFormat() instanceof ol.format.KML) {
+        if (ol_lyr.getSource().getFormat() instanceof KML) {
             return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(), {
                 camera: viewer.scene.camera,
                 canvas: viewer.scene.canvas,

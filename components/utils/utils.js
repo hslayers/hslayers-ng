@@ -3,6 +3,7 @@ import {ImageWMS, ImageArcGISRest} from 'ol/source';
 import {Tile, Image as ImageLayer} from 'ol/layer';
 import {Vector} from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
+import {isEmpty} from 'ol/extent';
 
 /**
  * @ngdoc module
@@ -337,7 +338,7 @@ angular.module('hs.utils', ['hs'])
             if (typeof layer == 'undefined') return false;
             if (layer.get("BoundingBox")) return true;
             if (me.isLayerWMS(layer)) return true;
-            if (layer.getSource().getExtent && layer.getSource().getExtent() && !ol.extent.isEmpty(layer.getSource().getExtent())) return true;
+            if (layer.getSource().getExtent && layer.getSource().getExtent() && !isEmpty(layer.getSource().getExtent())) return true;
             return false;
         }
 

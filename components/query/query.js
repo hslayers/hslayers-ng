@@ -277,7 +277,7 @@ angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
             */
             this.featureInfoReceived = function (response, infoFormat, url, coordinate, layer) {
                 /* Maybe this will work in future OL versions
-                 * var format = new ol.format.GML();
+                 * var format = new GML();
                  *  console.log(format.readFeatures(response, {}));
                  */
                 var updated = false;

@@ -6,6 +6,10 @@ import 'angular-socialshare';
 import 'ows_nonwms';
 import 'config_parsers';
 import 'hs.layermanager.WMSTservice';
+import {TileWMS, WMTS} from 'ol/source';
+import {ImageWMS, ImageArcGISRest} from 'ol/source';
+import {METERS_PER_UNIT} from 'ol/proj';
+
 
 /**
  * @ngdoc module
@@ -647,12 +651,12 @@ export default {
                      */
                     me.isLayerInResolutionInterval = function (lyr) {
                         var src = lyr.getSource();
-                        if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
+                        if (src instanceof ImageWMS || src instanceof TileWMS) {
                             var view = OlMap.map.getView();
                             var resolution = view.getResolution();
                             var units = map.getView().getProjection().getUnits();
                             var dpi = 25.4 / 0.28;
-                            var mpu = ol.proj.METERS_PER_UNIT[units];
+                            var mpu = METERS_PER_UNIT[units];
                             var cur_res = resolution * mpu * 39.37 * dpi;
                             return (lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution());
                         } else {

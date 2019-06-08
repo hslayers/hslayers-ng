@@ -1,6 +1,11 @@
 import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
+import VectorLayer from 'ol/layer/Vector';
+import {Vector} from 'ol/source';
+import {transform} from 'ol/proj';
+import {Polygon, LineString, GeometryType, Point, Circle as CircleGeom} from 'ol/geom';
+
 /**
  * @namespace hs.geolocation
  * @memberOf hs
@@ -151,19 +156,19 @@ angular.module('hs.geolocation', ['hs.map'])
                         me.heading = position.coords.heading ? position.coords.heading : null;
                         me.speed = position.coords.speed ? Math.round(position.coords.speed * 3.6) : '-';
                         me.last_location = {
-                            "latlng": ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection()),
+                            "latlng": transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection()),
                             altitude: position.coords.altitude,
                             "geoposition": position
                         }
                         // me.last_location.latlng = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection());
                         if (!positionFeature.setGeometry()) {
-                            positionFeature.setGeometry(new ol.geom.Point(me.last_location.latlng));
+                            positionFeature.setGeometry(new Point(me.last_location.latlng));
                         } else {
                             positionFeature.getGeometry().setCoordinates(me.last_location.latlng);
                         }
 
                         if (!accuracyFeature.setGeometry()) {
-                            accuracyFeature.setGeometry(new ol.geom.Circle(me.last_location.latlng, position.coords.accuracy));
+                            accuracyFeature.setGeometry(new CircleGeom(me.last_location.latlng, position.coords.accuracy));
                         } else {
                             accuracyFeature.getGeometry().setCenterAndRadius(me.last_location.latlng, me.accuracy);
                         }
@@ -238,7 +243,7 @@ angular.module('hs.geolocation', ['hs.map'])
                             var p = me.geolocation.getPosition();
                             $log.info(p);
                             if (!positionFeature.getGeometry())
-                                positionFeature.setGeometry(new ol.geom.Point(p));
+                                positionFeature.setGeometry(new Point(p));
                             else
                                 positionFeature.getGeometry().setCoordinates(p);
                             if (me.following)
@@ -292,10 +297,10 @@ angular.module('hs.geolocation', ['hs.map'])
             accuracyFeature.setStyle(me.style);
             positionFeature.setStyle(me.style);
 
-            me.position_layer = new ol.layer.Vector({
+            me.position_layer = new VectorLayer({
                 title: "Position",
                 show_in_manager: false,
-                source: new ol.source.Vector()
+                source: new Vector()
             });
 
             return me;

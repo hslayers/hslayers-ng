@@ -1,15 +1,16 @@
+import permalink from 'permalink';
+import ol from 'ol';
+import HsCsCamera from 'hs_cesium_camera';
+import HsCsLayers from 'hs_cesium_layers';
+import HsCsTime from 'hs_cesium_time';
+import {transformExtent } from 'ol/proj';
+
 /**
  * @ngdoc module
  * @module hs.cesium
  * @name hs.cesium
  * @description Module containing cesium map
  */
-import permalink from 'permalink';
-import ol from 'ol';
-import HsCsCamera from 'hs_cesium_camera';
-import HsCsLayers from 'hs_cesium_layers';
-import HsCsTime from 'hs_cesium_time';
-
 angular.module('hs.cesium', [])
 
     /**
@@ -39,7 +40,7 @@ angular.module('hs.cesium', [])
 
             var view = hs_map.map.getView();
             var ol_ext = view.calculateExtent(hs_map.map.getSize());
-            var trans_ext = ol.proj.transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
+            var trans_ext = transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
             var rectangle = Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]);
 
             Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;

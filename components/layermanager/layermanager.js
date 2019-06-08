@@ -1,6 +1,13 @@
 import hsLayermanagerService from 'hs.layermanager.service';
 import hsLayermanagerWMSTservice from 'hs.layermanager.WMSTservice';
 import hsLayermanagerLayerlistDirective from 'hs.layermanager.layerlistDirective';
+import { Style, Icon, Stroke, Fill, Circle, RegularShape } from 'ol/style';
+import {transform, get as getProj, METERS_PER_UNIT} from 'ol/proj';
+import VectorLayer from 'ol/layer/Vector';
+import {Vector} from 'ol/source';
+import { TileWMS, WMTS, OSM } from 'ol/source';
+import {ImageWMS, ImageArcGISRest} from 'ol/source';
+import {  WMSCapabilities } from 'ol/format';
 import 'utils';
 import 'ows_wms';
 import 'angular-drag-and-drop-lists';
@@ -259,7 +266,7 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
             }
 
             function isWms(layer) {
-                return (layer.getSource() instanceof ol.source.TileWMS || layer.getSource() instanceof ol.source.ImageWMS);
+                return (layer.getSource() instanceof TileWMS || layer.getSource() instanceof ImageWMS);
             }
 
             $scope.setProp = function (layer, property, value) {
@@ -286,8 +293,8 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
                 }
                 if (source.hasPoint) {
                     var image = style.getImage();
-                    if (image instanceof ol.style.Circle) wrapper.style.pointType = 'Circle';
-                    else if (image instanceof ol.style.RegularShape) {
+                    if (image instanceof Circle) wrapper.style.pointType = 'Circle';
+                    else if (image instanceof RegularShape) {
                         wrapper.style.pointPoints = image.getPoints();
                         wrapper.style.rotation = image.getRotation();
                         if (angular.isUndefined(image.getRadius2())) wrapper.style.pointType = 'Polygon';
@@ -296,7 +303,7 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
                             wrapper.style.radius2 = image.getRadius2();
                         }
                     }
-                    if (image instanceof ol.style.Circle || image instanceof ol.style.RegularShape) {
+                    if (image instanceof Circle || image instanceof RegularShape) {
                         wrapper.style.radius = image.getRadius();
                         wrapper.style.pointFill = image.getFill().getColor();
                         wrapper.style.pointStroke = image.getStroke().getColor();
@@ -319,27 +326,27 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
                 var source = layer.getSource();
                 var style = wrapper.style.style;
                 if (source.hasPoly) {
-                    style.setFill(new ol.style.Fill({
+                    style.setFill(new Fill({
                         color: wrapper.style.fillColor
                     }));
                 }
                 if (source.hasLine || source.hasPoly) {
-                    style.setStroke(new ol.style.Stroke({
+                    style.setStroke(new Stroke({
                         color: wrapper.style.lineColor,
                         width: wrapper.style.lineWidth
                     }));
                 }
                 if (source.hasPoint) {
                     var image;
-                    var stroke = new ol.style.Stroke({
+                    var stroke = new Stroke({
                         color: wrapper.style.pointStroke,
                         width: wrapper.style.pointWidth
                     });
-                    var fill = new ol.style.Fill({
+                    var fill = new Fill({
                         color: wrapper.style.pointFill
                     });
                     if (wrapper.style.pointType === 'Circle') {
-                        image = new ol.style.Circle({
+                        image = new Circle({
                             stroke: stroke,
                             fill: fill,
                             radius: wrapper.style.radius,
@@ -347,7 +354,7 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
                         });
                     }
                     if (wrapper.style.pointType === 'Polygon') {
-                        image = new ol.style.RegularShape({
+                        image = new RegularShape({
                             stroke: stroke,
                             fill: fill,
                             radius: wrapper.style.radius,
@@ -356,7 +363,7 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
                         });
                     }
                     if (wrapper.style.pointType === 'Star') {
-                        image = new ol.style.RegularShape({
+                        image = new RegularShape({
                             stroke: stroke,
                             fill: fill,
                             radius1: wrapper.style.radius,
@@ -494,7 +501,7 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
                         url = layer.getSource().getUrl();
                     srv_wms_caps.requestGetCapabilities(url).then(function (capabilities_xml) {
                         //debugger;
-                        var parser = new ol.format.WMSCapabilities();
+                        var parser = new WMSCapabilities();
                         var caps = parser.read(capabilities_xml.data);
                         if (angular.isArray(caps.Capability.Layer)) {
                             angular.forEach(caps.Capability.Layer, function (layer_def) {
@@ -525,16 +532,16 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
                 var extent = null;
                 var bbox = layer.get("BoundingBox");
                 if (angular.isArray(bbox) && bbox.length == 4) {
-                    extent = ol.proj.transformExtent(bbox, 'EPSG:4326', map.getView().getProjection());
+                    extent = transformExtent(bbox, 'EPSG:4326', map.getView().getProjection());
                 } else {
                     for (var ix = 0; ix < bbox.length; ix++) {
-                        if (angular.isDefined(ol.proj.get(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
+                        if (angular.isDefined(getProj(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
                             var crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
                             b = bbox[ix].extent;
                             var first_pair = [b[0], b[1]]
                             var second_pair = [b[2], b[3]];
-                            first_pair = ol.proj.transform(first_pair, crs, map.getView().getProjection());
-                            second_pair = ol.proj.transform(second_pair, crs, map.getView().getProjection());
+                            first_pair = transform(first_pair, crs, map.getView().getProjection());
+                            second_pair = transform(second_pair, crs, map.getView().getProjection());
                             extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
                             break;
                         }
@@ -664,12 +671,12 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
              */
             $scope.isLayerInResolutionInterval = function (lyr) {
                 var src = lyr.getSource();
-                if (src instanceof ol.source.ImageWMS || src instanceof ol.source.TileWMS) {
+                if (src instanceof ImageWMS || src instanceof TileWMS) {
                     var view = OlMap.map.getView();
                     var resolution = view.getResolution();
                     var units = map.getView().getProjection().getUnits();
                     var dpi = 25.4 / 0.28;
-                    var mpu = ol.proj.METERS_PER_UNIT[units];
+                    var mpu = METERS_PER_UNIT[units];
                     var cur_res = resolution * mpu * 39.37 * dpi;
                     return (lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution());
                 } else {
@@ -754,12 +761,12 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'hs.ows.wms', 'dndLists
              * @description Create new vector layer for drawing features by user 
              */
             $scope.addDrawingLayer = function () {
-                var source = new ol.source.Vector();
+                var source = new Vector();
                 source.styleAble = true;
                 source.hasPoint = true;
                 source.hasPolygon = true;
                 source.hasLine = true;
-                var layer = new ol.layer.Vector({
+                var layer = new VectorLayer({
                     title: 'New user graphics layer',
                     visibility: true,
                     source: source

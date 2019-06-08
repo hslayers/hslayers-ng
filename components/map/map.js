@@ -4,8 +4,13 @@ import Kinetic from 'ol/Kinetic';
 import Feature from 'ol/Feature';
 import Vector from 'ol/source/Vector';
 import Map from 'ol/Map';
+import View from 'ol/View';
 import {MousePosition, defaults as controlDefaults} from 'ol/control';
 import {createStringXY} from 'ol/coordinate';
+import { Tile, Group } from 'ol/layer';
+import { TileWMS, WMTS } from 'ol/source';
+import {ImageWMS, ImageArcGISRest} from 'ol/source';
+import {transform, transformExtent} from 'ol/proj';
 
 /**
  * This is a workaround.
@@ -29,7 +34,7 @@ Feature.prototype.getLayer = function (map) {
         }
     };
     map.getLayers().forEach(function (layer) {
-        if (layer instanceof ol.layer.Group) {
+        if (layer instanceof Group) {
             layer.getLayers().forEach(check);
         } else {
             check(layer);
@@ -125,7 +130,7 @@ angular.module('hs.map', ['hs'])
 
         //clone View to not overwrite deafult
         function cloneView(template) {
-            var view = new ol.View({
+            var view = new View({
                 center: template.getCenter(),
                 zoom: template.getZoom(),
                 projection: template.getProjection(),
@@ -244,11 +249,11 @@ angular.module('hs.map', ['hs'])
                         if (!me.layerDuplicate(lyr)) {
                             lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                             lyr.manuallyAdded = false;
-                            if (lyr.getSource() instanceof ol.source.ImageWMS)
+                            if (lyr.getSource() instanceof ImageWMS)
                                 me.proxifyLayerLoader(lyr, false);
-                            if (lyr.getSource() instanceof ol.source.TileWMS)
+                            if (lyr.getSource() instanceof TileWMS)
                                 me.proxifyLayerLoader(lyr, true);
-                            if (lyr.getSource() instanceof ol.source.Vector)
+                            if (lyr.getSource() instanceof Vector)
                                 me.getVectorType(lyr);
                             me.map.addLayer(lyr);
                         }
@@ -261,11 +266,11 @@ angular.module('hs.map', ['hs'])
                     if (!me.layerDuplicate(lyr)) {
                         lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                         lyr.manuallyAdded = false;
-                        if (lyr.getSource() instanceof ol.source.ImageWMS)
+                        if (lyr.getSource() instanceof ImageWMS)
                             me.proxifyLayerLoader(lyr, false);
-                        if (lyr.getSource() instanceof ol.source.TileWMS)
+                        if (lyr.getSource() instanceof TileWMS)
                             me.proxifyLayerLoader(lyr, true);
-                        if (lyr.getSource() instanceof ol.source.Vector)
+                        if (lyr.getSource() instanceof Vector)
                             me.getVectorType(lyr);
                         me.map.addLayer(lyr);
                     }
@@ -342,8 +347,8 @@ angular.module('hs.map', ['hs'])
         }
 
         function createPlaceholderView() {
-            return new ol.View({
-                center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+            return new View({
+                center: transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
                 zoom: 4,
                 units: "m"
             })
@@ -546,7 +551,7 @@ angular.module('hs.map', ['hs'])
              */
             function onCenterSync(event, data) {
                 if (angular.isUndefined(data) || data == null) return;
-                var transformed_cords = ol.proj.transform([data[0], data[1]], 'EPSG:4326', OlMap.map.getView().getProjection());
+                var transformed_cords = transform([data[0], data[1]], 'EPSG:4326', OlMap.map.getView().getProjection());
                 OlMap.moveToAndZoom(transformed_cords[0], transformed_cords[1], zoomForResolution(data[2]));
             }
 
