@@ -5,7 +5,7 @@ import 'ows_nonwms';
 import social from 'angular-socialshare';
 import 'config_parsers';
 import {transform, transformExtent} from 'ol/proj';
-import {Polygon} from 'ol/geom';
+import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import Feature from 'ol/Feature';
 import {Style, Icon, Stroke, Fill, Circle} from 'ol/style';
 
@@ -120,7 +120,7 @@ export default {
                                         var extent = compositionParser.parseExtent(record.bbox);
                                         //Check if height or Width covers the whole screen
                                         if (!((extent[0] < mapExtent[0] && extent[2] > mapExtent[2]) || (extent[1] < mapExtent[1] && extent[3] > mapExtent[3]))) {
-                                            attributes.geometry = Polygon.fromExtent(extent);
+                                            attributes.geometry = polygonFromExtent(extent);
                                             attributes.is_hs_composition_extent = true;
                                             var newFeature = new Feature(attributes);
                                             record.feature = newFeature;
@@ -179,7 +179,7 @@ export default {
                                         hs_notqueryable: true,
                                         highlighted: false
                                     }
-                                    attributes.geometry = Polygon.fromExtent(compositionParser.parseExtent(record.extent));
+                                    attributes.geometry = polygonFromExtent(compositionParser.parseExtent(record.extent));
                                     record.feature = new Feature(attributes);
                                     extentLayer.getSource().addFeatures([record.feature]);
                                     if (record) {
