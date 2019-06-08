@@ -51,8 +51,8 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
                             }, 100);
                         }
                     }
-
-                    if(config.importCss){
+                    
+                    if(angular.isUndefined(config.importCss) || config.importCss){
                         if(config.useIsolatedBootstrap){
                             require('bootstrap/dist/css/bootstrap.isolated.css')
                         } else {
