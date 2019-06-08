@@ -2,8 +2,6 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-import bootstrapCss from 'bootstrap/dist/css/bootstrap.css';
-//import bootstrapIsolatedCss from 'bootstrap/dist/css/bootstrap.isolated.css';
 import 'ol/ol.css';
 import angular from 'angular';
 import core from 'core';
@@ -11,7 +9,6 @@ import map from 'map';
 import geolocation from 'geolocation';
 import layermanager from 'layermanager';
 import appCss from 'css/app.css';
-import whhgCss from 'css/whhg-font/css/whhg.css';
 
 // 'material.components.bottomSheetCollapsible'
 angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layermanager', 'hs.print'])
@@ -53,6 +50,18 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
                                 else containerCheck();
                             }, 100);
                         }
+                    }
+
+                    if(config.importCss){
+                        if(config.useIsolatedBootstrap){
+                            require('bootstrap/dist/css/bootstrap.isolated.css')
+                        } else {
+                            require('bootstrap/dist/css/bootstrap.css')
+                        }
+                        if(!!window.cordova){
+                            require('css/mobile.css')
+                        }
+                        require ('css/whhg-font/css/whhg.css')
                     }
                 }
             };
