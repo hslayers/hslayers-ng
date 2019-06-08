@@ -28,6 +28,7 @@ exports.paths = [
   __dirname + '/components/drag',
   __dirname + '/components/draw',
   __dirname + '/components/feature_crossfilter',
+  __dirname + '/components/feature_filter',
   __dirname + '/components/floating_action_button',
   __dirname + '/components/format',
   __dirname + '/components/geolocation',

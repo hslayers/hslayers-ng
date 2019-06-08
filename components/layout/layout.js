@@ -18,15 +18,15 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
     * @name hs.mdLayout.directive
     * @description TODO
     */
-    .directive('hs.layout.directive', ['hs.map.service', 'Core', '$timeout', 'config', '$compile',
-        function (OlMap, Core, $timeout, config, $compile) {
+    .directive('hs.layout.directive', ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$injector',
+        function (OlMap, Core, $timeout, config, $compile, $injector) {
             return {
-                template: require('components/layout/partials/layout.html'),
+                template: config.design == 'md' ? require('components/layout/partials/layoutmd.html') : require('components/layout/partials/layout.html'),
                 link: function (scope, element) {
                     try {
                         if (angular.module('hs.cesium')) {
                             if (element[0].querySelector('.page-content')) {
-                                let cesiumDir = $compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope);                            
+                                let cesiumDir = $compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope);
                                 element[0].querySelector('.page-content').appendChild(cesiumDir[0]);
                             }
                         }
@@ -40,7 +40,7 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
                     //Hack - flex map container was not initialized when map loaded 
                     var container = document.getElementById('map-container');
                     if (container) {
-                        if (container.height() === 0) {
+                        if (container.clientHeight === 0) {
                             containerCheck();
                         }
 
@@ -51,17 +51,23 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
                             }, 100);
                         }
                     }
-                    
-                    if(angular.isUndefined(config.importCss) || config.importCss){
-                        if(config.useIsolatedBootstrap){
-                            require('bootstrap/dist/css/bootstrap.isolated.css')
+
+                    if (angular.isUndefined(config.importCss) || config.importCss) {
+                        if (config.design == 'md') {
+                            require('angular-material/angular-material.css');
+                            require('angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');
                         } else {
-                            require('bootstrap/dist/css/bootstrap.css')
+                            if (config.useIsolatedBootstrap) {
+                                require('bootstrap/dist/css/bootstrap.isolated.css')
+                            } else {
+                                require('bootstrap/dist/css/bootstrap.css')
+                            }
                         }
-                        if(!!window.cordova){
+
+                        if (!!window.cordova) {
                             require('css/mobile.css')
                         }
-                        require ('css/whhg-font/css/whhg.css')
+                        require('css/whhg-font/css/whhg.css')
                     }
                 }
             };
@@ -171,7 +177,7 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
     .controller('hs.layout.controller', ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', 'hs.layout.service',
         function ($scope, $injector, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, layoutService) {
             if (config.design == 'md')
-                window.require(['bottomSheetCollapsible']);
+                require(['bottomSheetCollapsible']);
             $scope.importCss = angular.isDefined(config.importCss) ? config.importCss : true;
             $scope.useIsolatedBootstrap = angular.isDefined(config.useIsolatedBootstrap) ? config.useIsolatedBootstrap : false;
             $scope.Core = Core;

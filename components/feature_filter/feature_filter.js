@@ -26,7 +26,7 @@ var module = angular.module('hs.feature_filter', ['hs.map', 'hs.core', 'hs.layer
 */
 module.directive('hs.featureFilter.directive', ['config', function (config) {
     return {
-        template: require(`components/feature_filter/partials/feature_filter.html`),
+        template: require(`components/feature_filter/partials/feature_filtermd.html`),
         link: function (scope, element) {
 
         }
@@ -41,7 +41,7 @@ module.directive('hs.featureFilter.directive', ['config', function (config) {
 */
 module.directive('hs.featureList.directive', ['config', function (config) {
     return {
-        template: require(`components/feature_filter/partials/feature_list.html`),
+        template: require(`components/feature_filter/partials/feature_listmd.html`),
         link: function (scope, element) {
 
         }
