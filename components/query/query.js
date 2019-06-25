@@ -282,8 +282,12 @@ angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
                  */
                 var updated = false;
                 if (infoFormat.indexOf("xml") > 0 || infoFormat.indexOf("gml") > 0) {
-                    var features = response.getElementsByTagName('gml:featureMember') ||
-                        response.getElementsByTagName('featureMember');
+                    var oParser = new DOMParser();
+                    var oDOM = oParser.parseFromString(response, "application/xml");
+                    var doc = oDOM.documentElement;
+                                
+                    var features = doc.querySelectorAll('gml\\:featureMember') ||
+                        doc.querySelectorAll('featureMember');
                     angular.forEach(features, function (feature) {
                         var layerName = layer.get("title") || layer.get("name");
                         var layers = feature.getElementsByTagName('Layer');
@@ -306,8 +310,9 @@ angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
                             Base.setData(group, 'groups');
                         });
                     });
-                    $("featureMember", response).each(function () {
-                        var feature = $(this)[0].firstChild;
+                    doc.querySelectorAll("featureMember").forEach(function ($this) {
+                        debugger;
+                        var feature = $this.firstChild;
                         var group = {
                             name: "Feature",
                             attributes: []
@@ -324,9 +329,9 @@ angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
                         }
                         if (updated) Base.setData(group, 'groups');
                     });
-                    $("msGMLOutput", response).each(function () {
-                        for (var layer_i in $(this)[0].children) {
-                            var layer = $(this)[0].children[layer_i];
+                    doc.querySelectorAll("msGMLOutput").forEach(function ($this) {
+                        for (var layer_i in $this.children) {
+                            var layer = $this.children[layer_i];
                             var layer_name = "";
                             if (typeof layer.children == 'undefined') continue;
                             for (var feature_i = 0; feature_i < layer.children.length; feature_i++) {
