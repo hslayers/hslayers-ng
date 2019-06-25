@@ -38,7 +38,7 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'perma
             */
            .directive('hs.ows.wfs', ['config', function(config) {
                 return {
-                    template: config.design == 'md' ? require('components/ows/partials/owswfsmd.html') : require('components/ows/partials/owswfs.html')
+                    template: require('components/ows/partials/owswfs.html')
                 };
             }])
 
