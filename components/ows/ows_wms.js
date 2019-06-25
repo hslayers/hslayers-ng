@@ -15,7 +15,7 @@ import {Attribution} from 'ol/control.js';
 * @returns {String} Either one of prefered formats or first first avaiable format  
 */
 var getPreferedFormat = function (formats, preferedFormats) {
-    for (i = 0; i < preferedFormats.length; i++) {
+    for (var i = 0; i < preferedFormats.length; i++) {
         if (formats.indexOf(preferedFormats[i]) > -1) {
             return (preferedFormats[i]);
         }
