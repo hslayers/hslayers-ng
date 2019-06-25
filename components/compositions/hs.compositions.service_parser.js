@@ -12,7 +12,7 @@ export default {
          * @name hs.compositions
          * @description Composition module
          */
-        angular.module('hs.compositions')
+        angular.module('hs.compositions', ['hs.compositions.config_parsers'])
             /**
              * @module hs.compositions
              * @name hs.compositions.service_parser

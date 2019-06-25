@@ -3,7 +3,7 @@ import VectorLayer from 'ol/layer/Vector';
 import {Vector} from 'ol/source';
 import {transform, transformExtent} from 'ol/proj';
 import Feature from 'ol/Feature';
-import {Polygon} from 'ol/geom';
+import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 /**
  * @namespace hs.datasource_selector
@@ -265,30 +265,27 @@ angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms
                         ds.canceler = $q.defer();
                         $http.get(url, { timeout: ds.canceler.promise }).then(
                             function (j) {
-                                $("map serviceType value", j).each(function () {
+                                var oParser = new DOMParser();
+                                var oDOM = oParser.parseFromString(j.data, "application/xml");
+                                var doc = oDOM.documentElement;
+                                doc.querySelectorAll("map serviceType value").forEach(function (type) {
                                     ds.code_lists.serviceType.push({
-                                        value: $(this).attr('name'),
-                                        name: $(this).html()
+                                        value: type.attributes.name.value,
+                                        name: type.innerHTML
                                     });
-                                })
-                                $("map applicationType value", j).each(function () {
+                                });
+                                doc.querySelectorAll("map applicationType value").forEach(function (type) {
                                     ds.code_lists.applicationType.push({
-                                        value: $(this).attr('name'),
-                                        name: $(this).html()
+                                        value: type.attributes.name.value,
+                                        name: type.innerHTML
                                     });
-                                })
-                                $("map applicationType value", j).each(function () {
-                                    ds.code_lists.applicationType.push({
-                                        value: $(this).attr('name'),
-                                        name: $(this).html()
-                                    });
-                                })
-                                $("map topicCategory value", j).each(function () {
+                                });
+                                doc.querySelectorAll("map topicCategory value").forEach(function (type) {
                                     ds.code_lists.topicCategory.push({
-                                        value: $(this).attr('name'),
-                                        name: $(this).html()
+                                        value: type.attributes.name.value,
+                                        name: type.innerHTML
                                     });
-                                })
+                                });
                                 me.advancedMickaTypeChanged();
                             }, function (err) { }
                         );
@@ -440,7 +437,7 @@ angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms
                 if (!isFinite(second_pair[1])) second_pair[1] = mapProjectionExtent[3];
                 if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
                 var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                attributes.geometry = Polygon.fromExtent(extent);
+                attributes.geometry = polygonFromExtent(extent);
                 var new_feature = new Feature(attributes);
                 record.feature = new_feature;
                 extentLayer.getSource().addFeatures([new_feature]);
@@ -564,16 +561,16 @@ angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms
                 OlMap.map.on('pointermove', function (evt) {
                     var features = extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                     var something_done = false;
-                    angular.forEach(extentLayer.getSource().getFeatures(), function () {
-                        if (this.get("record").highlighted) {
-                            this.get("record").highlighted = false;
+                    angular.forEach(extentLayer.getSource().getFeatures(), function (feature) {
+                        if (feature.get("record").highlighted) {
+                            feature.get("record").highlighted = false;
                             something_done = true;
                         }
                     });
                     if (features.length) {
-                        $(features).each(function () {
-                            if (!this.get("record").highlighted) {
-                                this.get("record").highlighted = true;
+                        angular.forEach(features, function (feature) {
+                            if (!feature.get("record").highlighted) {
+                                feature.get("record").highlighted = true;
                                 something_done = true;
                             }
                         })

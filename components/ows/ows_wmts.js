@@ -189,18 +189,6 @@ define(['angular', 'ol', 'utils'],
                 }
 
                 /**
-                * (DEPRECATED ?)
-                * @memberof hs.ows.wms.service_capabilities
-                * @function getUrl
-                * @param {} url
-                * @param {} use_proxy
-                */
-                this.getUrl = function(url, use_proxy) {
-                    if (typeof use_proxy == 'undefined' || !use_proxy) return url;
-                    else return '/cgi-bin/proxy4ows.cgi?OWSURL=' + encodeURIComponent(url) + '&owsService=wmts';
-                }
-
-                /**
                 * Test if current map projection is in supported projection list
                 * @memberof hs.ows.wms.service_capabilities
                 * @function currentProjectionSupported

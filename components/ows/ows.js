@@ -20,6 +20,83 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'perma
             }])
             /**
             * @memberof hs.ows
+            * @ngdoc directive
+            * @name hs.ows.wms
+            * @description  Directive for configurating wms layer to add
+            */
+           .directive('hs.ows.wms', ['config', function(config) {
+                return {
+                    template: config.design == 'md' ? require('components/ows/partials/owswmsmd.html') : require('components/ows/partials/owswms.html')
+                };
+            }])
+
+            /**
+            * @memberof hs.ows
+            * @ngdoc directive
+            * @name hs.ows.wfs
+            * @description Directive for configurating wfs layer to add
+            */
+           .directive('hs.ows.wfs', ['config', function(config) {
+                return {
+                    template: config.design == 'md' ? require('components/ows/partials/owswfsmd.html') : require('components/ows/partials/owswfs.html')
+                };
+            }])
+
+            /**
+            * @memberof hs.ows
+            * @ngdoc directive
+            * @name hs.ows.wmts
+            * @description Directive for configurating wmts layer to add
+            */
+           .directive('hs.ows.wmts', ['config', function(config) {
+                return {
+                    template: require('components/ows/partials/owswms.html')
+                };
+            }])
+
+            /**
+            * @memberof hs.ows
+            * @ngdoc directive
+            * @name hs.ows.nonwms
+            * @description TODO
+            */
+           .directive('hs.ows.nonwms', ['config', function(config) {
+                return {
+                    template: require('components/ows/partials/owsnonwms.html')
+                };
+            }])
+            
+            /**
+            * @memberof hs.ows
+            * @ngdoc directive
+            * @name compile
+            * @description Directive which compiles a template and includes it in the dome. 
+            * Previously done with ng-bind-html which escaped varaiables and child directives
+            */
+            .directive('compile', ['$compile', function ($compile) {
+                    return function(scope, element, attrs) {
+                        scope.$watch(
+                        function(scope) {
+                            // watch the 'compile' expression for changes
+                            return scope.$eval(attrs.compile);
+                        },
+                        function(value) {
+                            // when the 'compile' expression changes
+                            // assign it into the current DOM
+                            element.html(value);
+            
+                            // compile the new DOM and link it to the current
+                            // scope.
+                            // NOTE: we only compile .childNodes so that
+                            // we don't get into infinite loop compiling ourselves
+                            $compile(element.contents())(scope);
+                        }
+                    );
+                };
+            }])
+
+            /**
+            * @memberof hs.ows
             * @ngdoc controller
             * @name hs.ows.controller
             */
@@ -83,25 +160,22 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'perma
                     /**TODO: move variables out of this function. Call $scope.connected = false when template change */
                     $scope.templateByType = function() {
                         var template;
-                        var ows_path = config.hsl_path + 'components/ows/partials/';
                         switch ($scope.type.toLowerCase()) {
                             case "wms":
-                                template = `${ows_path}owswms${config.design || ''}.html`;
+                                template = '<div hs.ows.wms></div>';
                                 break;
                             case "wmts":
-                                template = `${ows_path}owswmts${config.design || ''}.html`; 
+                                template = '<div hs.ows.wmts></div>';
                                 break;
                             case "wms with priorities":
-                                template = `${ows_path}owsprioritized${config.design || ''}.html`;
+                                template = require(`${ows_path}owsprioritized${config.design || ''}.html`);
                                 break;
                             case "wfs":
-                                if (window.allowWFS2) {
-                                    template = `${ows_path}owswfs${config.design || ''}.html`; 
-                                }
+                                template = '<div hs.ows.wfs></div>';
                                 break;
                             case "kml":
                             case "geojson":
-                                template = `${ows_path}owsnonwms${config.design || ''}.html`; 
+                                template = '<div hs.ows.nonwms></div>';
                                 $scope.showDetails = true;
                                 break;
                             default:
@@ -185,7 +259,7 @@ define(['angular', 'map', 'ows_wms', 'ows_wmts', 'ows_wfs', 'ows_nonwms', 'perma
                     $scope.$emit('scope_loaded', "Ows");
                 }
             ]);
-        if (window.allowWFS2) {
+        if (window.allowWFS2) {//TODO should not use global variables
             ows.requires.push('hs.ows.wfs');
         }
     })
