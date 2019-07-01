@@ -1,8 +1,0 @@
-<form class="form-horizontal" role="form" ng-controller="OwsWmsPrioritized">
-    <ul class="list-group" style="max-height: 300px;overflow-y: scroll;">
-        <li ng-repeat="amenity in amenities" class="list-group-item">{{amenity.title}} 
-        <input type="range" min="1" max="10" class="form-control" style="width: 80px;height: 21px;float: right;" ng-model="amenity.priority" /> 
-        <span style="float: right;">&nbsp;{{amenity.priority}}&nbsp;</span></li>
-    </ul>
-    <button class="btn btn-primary" ng-click="add()" translate>Add</button>
-</form>

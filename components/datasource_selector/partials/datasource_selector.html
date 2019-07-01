@@ -26,7 +26,7 @@
                     <span class="glyphicon icon-refresh icon-spin" ng-show="ds.loaded == false"></span>
                 </a>
             </li>
-            <li class="nav-item" ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources"
+            <li class="nav-item" ng-if="Core.exists('hs.addLayers') && Core.singleDatasources"
                 ng-class="{'hs-tab-singleDS': Core.singleDatasources, 'active': wms_connecting}">
                 <a class="nav-link" href="#OWS" aria-controls="OWS" role="tab" data-toggle="tab" translate>External
                     data</a>
@@ -126,10 +126,9 @@
                     </div>
                 </div>
             </div>
-            <div role="tabpanel"
+            <hs.add-layers role="tabpanel"
                 ng-class="{'tab-pane': true, 'active': wms_connecting || data.datasources.length==0 || id_selected == 'OWS'}"
-                hs.ows.directive ng-controller="hs.ows.controller"
-                ng-if="Core.exists('hs.ows.controller') && Core.singleDatasources" id="OWS"></div>
+                ng-if="Core.exists('hs.addLayers') && Core.singleDatasources" id="OWS"></hs.add-layers>
         </div>
     </div>
 </div>

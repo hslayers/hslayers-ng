@@ -9,25 +9,34 @@ import { Vector } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 
 /**
- * @namespace hs.ows.nonwms
+ * @namespace hs.addLayersVector
  * @memberOf hs
  */
-
-angular.module('hs.ows.nonwms', ['hs.styles'])
-
+angular.module('hs.addLayersVector', ['hs.styles'])
     /**
-    * @memberof hs.ows.nonwms
+    * @memberof hs.ows
+    * @ngdoc directive
+    * @name hs.addLayersVector
+    * @description TODO
+    */
+   .directive('hs.addLayersVector', ['config', function (config) {
+        return {
+            template: require('./partials/add-vector-layer.directive.html')
+        };
+    }])
+    /**
+    * @memberof hs.addLayersVector
     * @ngdoc service
-    * @name hs.ows.nonwms.service
+    * @name hs.addLayersVector.service
     * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
     */
-    .service('hs.ows.nonwms.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.status_creator.service',
+    .service('hs.addLayersVector.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.status_creator.service',
         function (config, $rootScope, OlMap, styles, utils, $http, statusCreator) {
             var me = this;
 
             /**
             * Load nonwms OWS data and create layer
-            * @memberof hs.ows.controller
+            * @memberof hs.addLayers
             * @function add
             * @param {String} type Type of data to load (supports Kml, Geojson, Wfs and Sparql) 
             * @param {String} url Url of data/service localization
@@ -271,11 +280,11 @@ angular.module('hs.ows.nonwms', ['hs.styles'])
     ])
 
     /**
-    * @memberof hs.ows.nonwms
+    * @memberof hs.addLayersVector
     * @ngdoc controller
-    * @name hs.ows.nonwms.controller
+    * @name hs.addLayersVector.controller
     */
-    .controller('hs.ows.nonwms.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.ows.nonwms.service', 'Core',
+    .controller('hs.addLayersVector.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.addLayersVector.service', 'Core',
         function ($scope, OlMap, styles, service, Core) {
             $scope.srs = 'EPSG:3857';
             $scope.title = "";
@@ -283,7 +292,7 @@ angular.module('hs.ows.nonwms', ['hs.styles'])
 
             /**
             * Handler for adding nonwms service, file in template.
-            * @memberof hs.ows.nonwms.controller
+            * @memberof hs.addLayersVector.controller
             * @function add
             */
             $scope.add = function () {

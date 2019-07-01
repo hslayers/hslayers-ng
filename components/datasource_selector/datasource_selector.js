@@ -9,7 +9,7 @@ import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
  * @namespace hs.datasource_selector
  * @memberOf hs
  */
-angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms'])
+angular.module('hs.datasource_selector', ['hs.map'])
     /**
      * @ngdoc directive
      * @name hs.datasource_selector.directive
@@ -105,7 +105,7 @@ angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms
             }
         };
     }])
-    .service('hs.datasource_selector.service', ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service', 'hs.ows.nonwms.service',
+    .service('hs.datasource_selector.service', ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service', 'hs.addLayersVector.service',
         function ($rootScope, OlMap, Core, config, $http, $q, utils, nonwmsservice) {
             var me = this;
 
@@ -619,7 +619,7 @@ angular.module('hs.datasource_selector', ['hs.map', 'hs.ows.wms', 'hs.ows.nonwms
             $scope.wms_connecting = false;
             $scope.config = config;
             $scope.advancedSearch = false;
-            $scope.id_selected = Core.exists('hs.ows.controller') ? 'OWS' : '';
+            $scope.id_selected = Core.exists('hs.addLayers') ? 'OWS' : '';
 
             $scope.$on('ows.wms_connecting', function () {
                 $scope.wms_connecting = true;

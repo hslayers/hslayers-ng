@@ -1,3 +1,5 @@
+//TODO rewrite this to not declare layermanager module second time!
+
 /**
  * @ngdoc module
  * @module hs.layermanager
@@ -5,7 +7,7 @@
  * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
 
-define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'moment', 'map', 'ows_nonwms', 'config_parsers'],
+define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'moment', 'map', 'config_parsers'],
 
     function (angular, ol, SparqlJson, social, moment) {
         return {

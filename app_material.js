@@ -11,7 +11,7 @@ import permalink from 'permalink';
 import info from 'info';
 import ds from 'datasource_selector';
 import sidebar from 'sidebar';
-import ows from 'ows';
+import addLayers from 'add-layers.module';
 
 var module = angular.module('hs', [
     'hs.sidebar',
@@ -24,7 +24,7 @@ var module = angular.module('hs', [
     'hs.datasource_selector',
     'hs.status_creator',
     'hs.api',
-    'hs.ows',
+    'hs.addLayers',
     'gettext',
     'hs.compositions',
     'hs.info'
@@ -41,7 +41,7 @@ module.directive('hs', ['config', 'Core', function (config, Core) {
 
 if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hslayersNgConfig(ol)));
 
-module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.compositions.service_parser', 'config',
+module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config',
     function ($scope, Core, srv_producer, composition_parser, config) {
         $scope.hsl_path = config.hsl_path; //Get this from hslayers.js file
         $scope.Core = Core;
