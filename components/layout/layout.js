@@ -672,8 +672,8 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
                     title: 'Add external data',
                     description: 'Add external data',
                     name: 'ows',
-                    directive: 'hs.ows.directive',
-                    controller: 'hs.ows.controller',
+                    directive: 'hs.addLayers',
+                    controller: 'hs.addLayers',
                     mdicon: 'library_add'
                 },
                 {

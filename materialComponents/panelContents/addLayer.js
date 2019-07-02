@@ -1,7 +1,7 @@
 define(['angular', 'ol','angular-material', 'ows_wms'],
 
     function(angular, ol, ngMaterial) {
-        angular.module('hs.material.addLayer', ['ngMaterial', 'hs.ows.wms'])
+        angular.module('hs.material.addLayer', ['ngMaterial', 'hs.addLayersWms'])
             
             .directive('hs.material.addlayer.directive', ['config', function (config) {
                 return {
@@ -16,7 +16,7 @@ define(['angular', 'ol','angular-material', 'ows_wms'],
                     template: require('materialComponents/panelContents/addLayerWebservice.html')
                 };
             }])
-            .controller('hs.material.addlayerwebservice.controller', ['$scope', 'config', 'hs.ows.wms.service_capabilities', 'hs.ows.wms.addLayerService',
+            .controller('hs.material.addlayerwebservice.controller', ['$scope', 'config', 'hs.wms.getCapabilitiesService', 'hs.addLayersWms.addLayerService',
                 function($scope, config, WmsCaps, WmsAdd) {
 
                     $scope.data = WmsAdd.data;

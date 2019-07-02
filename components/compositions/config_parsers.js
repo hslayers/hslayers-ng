@@ -1,7 +1,7 @@
 import VectorLayer from 'ol/layer/Vector';
 import SparqlJson from 'hs.source.SparqlJson'
 import social from 'angular-socialshare';
-import 'ows_nonwms';
+import '../add-layers/add-layers-vector.module';
 import {ImageWMS} from 'ol/source';
 import { TileWMS } from 'ol/source';
 import ImageLayer from 'ol/layer/Image';
@@ -17,7 +17,7 @@ import {Attribution} from 'ol/control.js';
  * @module hs.compositions.config_parsers
  * @name hs.compositions.config_parsers
  */
-var module = angular.module('hs.compositions.config_parsers', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms']);
+var module = angular.module('hs.compositions.config_parsers', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.addLayersVector']);
 
 /**
 * @module hs.compositions.config_parsers
@@ -25,7 +25,7 @@ var module = angular.module('hs.compositions.config_parsers', ['720kb.socialshar
 * @name hs.compositions.config_parsers.service
 * @description Service for parsing object definition which are invalid for direct use as layers
 */
-module.service('hs.compositions.config_parsers.service', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.ows.nonwms.service', function (OlMap, config, Core, $rootScope, utils, nonWmsService) {
+module.service('hs.compositions.config_parsers.service', ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.addLayersVector.service', function (OlMap, config, Core, $rootScope, utils, nonWmsService) {
     var me = {
         /**
         * @ngdoc method

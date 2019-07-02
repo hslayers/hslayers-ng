@@ -3,7 +3,6 @@ import hsCompositionsServiceParser from 'hs.compositions.service_parser';
 import hsCompositionsController from 'hs.compositions.controller';
 import SparqlJson from 'hs.source.SparqlJson'
 import 'utils';
-import 'ows_nonwms';
 import social from 'angular-socialshare'
 import 'config_parsers';
 
@@ -13,7 +12,7 @@ import 'config_parsers';
  * @name hs.compositions
  * @description Test composition module
  */
-var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.ows.nonwms', 'hs.compositions.config_parsers'])
+var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.compositions.config_parsers'])
     .directive('hs.compositions.directive', ['config', function (config) {
         return {
             template: require('components/compositions/partials/compositions.html'),

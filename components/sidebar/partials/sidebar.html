@@ -23,7 +23,7 @@
         <span class="sidebar-item-title" ng-if="Core.singleDatasources" translate>Add layers</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.ows.controller') && !Core.singleDatasources && Core.panelEnabled('ows')" ng-click="setMainPanel('ows')" ng-class="{active: Core.mainpanel == 'ows'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.addLayers') && !Core.singleDatasources && Core.panelEnabled('ows')" ng-click="setMainPanel('ows')" ng-class="{active: Core.mainpanel == 'ows'}">
         <span class="menu-icon icon-refresh" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Add external data'|translate}}"></span>
         <span class="sidebar-item-title" translate>Add external data</span>
     </a>

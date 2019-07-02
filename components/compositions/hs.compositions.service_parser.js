@@ -1,6 +1,5 @@
 import { transform } from 'ol/proj';
 import 'hs.source.SparqlJson'
-import 'ows_nonwms';
 import 'angular-socialshare';
 import 'config_parsers';
 
@@ -19,8 +18,8 @@ export default {
              * @ngdoc service
              * @description Contains function of managing composition (loading, removing Layers)
              */
-            .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.utils.service', 'hs.ows.nonwms.service', 'hs.compositions.config_parsers.service',
-                function (hsMap, config, Core, $rootScope, $http, utils, nonWmsService, configParsers) {
+            .service('hs.compositions.service_parser', ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.utils.service', 'hs.compositions.config_parsers.service',
+                function (hsMap, config, Core, $rootScope, $http, utils, configParsers) {
                     var me = {
                         /**
                         * @ngdoc property

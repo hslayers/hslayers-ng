@@ -7,36 +7,10 @@ import { Tile, Image as ImageLayer } from 'ol/layer';
 import { TileWMS } from 'ol/source';
 import { ImageWMS } from 'ol/source';
 import { Attribution } from 'ol/control.js';
+import { getPreferedFormat } from '../../common/format-utils';
+import { addAnchors } from '../../common/attribution-utils';
 
-/**
-* (PRIVATE) Select format for WFS service
-* @function getPreferedFormat
-* @param {Array} formats List of formats avaiable for service
-* @param {String} preferedFormats List of prefered formats for output 
-* @returns {String} Either one of prefered formats or first first avaiable format  
-*/
-var getPreferedFormat = function (formats, preferedFormats) {
-    for (var i = 0; i < preferedFormats.length; i++) {
-        if (formats.indexOf(preferedFormats[i]) > -1) {
-            return (preferedFormats[i]);
-        }
-    }
-    return formats[0];
-}
-
-/**
-* (PRIVATE) Replace Urls in text by anchor html tag with url
-* @function addAnchors
-* @param {String} url String to look for Urls
-* @returns {String} Text with added anchors 
-*/
-var addAnchors = function (url) {
-    if (!url) return null;
-    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    return url.replace(exp, "<a href='$1'>$1</a>");
-}
-
-export default ['$rootScope', 'hs.map.service', 'hs.ows.wms.service_capabilities', 'Core', function ($rootScope, OlMap, WmsCapsService, Core) {
+export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService', 'Core', function ($rootScope, OlMap, WmsCapsService, Core) {
     var me = this;
 
     this.data = {
@@ -111,7 +85,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.ows.wms.service_capabilities
 
     /**
      * @function addLayers
-     * @memberOf hs.ows.wms.controller
+     * @memberOf add-layers-wms.controller
      * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
      * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
      */
@@ -202,7 +176,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.ows.wms.service_capabilities
 
     /**
      * @function addLayer
-     * @memberOf hs.ows.wms.controller
+     * @memberOf add-layers-wms.controller
      * @param {Object} layer capabilities layer object
      * @param {String} layerName layer name in the map
      * @param {String} folder name
@@ -277,6 +251,23 @@ export default ['$rootScope', 'hs.map.service', 'hs.ows.wms.service_capabilities
         });
         OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
         OlMap.map.addLayer(new_layer);
+    }
+
+    /**
+     * Add service and its layers to project TODO
+     * @memberof hs.addLayersWms.service_layer_producer
+     * @function addService
+     * @param {String} url Service url
+     * @param {} box TODO
+     */
+    me.addService = function (url, box) {
+        WmsCapsService.requestGetCapabilities(url).then(function (resp) {
+            var ol_layers = WmsCapsService.service2layers(resp);
+            angular.forEach(ol_layers, function () {
+                if (typeof box != 'undefined') box.get('layers').push(me);
+                OlMap.map.addLayer(me);
+            });
+        })
     }
 
     return me;

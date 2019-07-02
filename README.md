@@ -130,8 +130,8 @@ module.value('config', {
     })
 });
 
-module.controller('Main', ['$scope', 'Core', 'hs.ows.wms.service_layer_producer', 'hs.compositions.service_parser', 'config',
-    function ($scope, Core, srv_producer, composition_parser, config) {
+module.controller('Main', ['$scope', 'Core', 'hs.compositions.service_parser', 'config',
+    function ($scope, Core, composition_parser, config) {
         Core.sidebarRight = false;
     }
 ]);

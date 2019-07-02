@@ -3,7 +3,6 @@ import ImageLayer from 'ol/layer/Image';
 import VectorLayer from 'ol/layer/Vector';
 import SparqlJson from 'hs.source.SparqlJson'
 import 'angular-socialshare';
-import 'ows_nonwms';
 import 'config_parsers';
 import 'hs.layermanager.WMSTservice';
 import {TileWMS, WMTS} from 'ol/source';

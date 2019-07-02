@@ -1,7 +1,6 @@
 import { Vector } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import SparqlJson from 'hs.source.SparqlJson'
-import 'ows_nonwms';
 import social from 'angular-socialshare';
 import 'config_parsers';
 import {transform, transformExtent} from 'ol/proj';
