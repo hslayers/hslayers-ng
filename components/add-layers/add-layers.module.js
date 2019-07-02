@@ -26,7 +26,7 @@ export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.add
     * @name hs.addLayers
     */
     .component('hs.addLayers', {
-        template: require('./partials/add-layers.directive.html'), 
+        template: require('components/add-layers/partials/add-layers.directive.html'), 
         controller: ['$scope', '$injector', 'hs.wms.getCapabilitiesService', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.map.service', 'hs.permalink.urlService', 'Core', 'hs.addLayersVector.service', 'config', '$rootScope',
             function ($scope, $injector, srv_wms_caps, srv_wmts_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config, $rootScope) {
                 $scope.Core = Core;

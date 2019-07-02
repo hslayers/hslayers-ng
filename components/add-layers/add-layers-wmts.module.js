@@ -15,7 +15,7 @@ angular.module('hs.addLayersWmts', ['hs.utils', 'hs.getCapabilities'])
      */
     .directive('hs.addLayersWmts.resampleDialogDirective', ['config', function (config) {
         return {
-            template: require('./partials/dialog_proxyconfirm.html'),
+            template: require('components/add-layers/partials/dialog_proxyconfirm.html'),
             link: function (scope, element, attrs) {
                 scope.resampleModalVisible = true;
             }
@@ -30,7 +30,7 @@ angular.module('hs.addLayersWmts', ['hs.utils', 'hs.getCapabilities'])
      */
     .directive('hs.wmts.capabilitiesErrorDirective', ['config', function (config) {
         return {
-            template: require('./partials/dialog_getcapabilities_error.html'),
+            template: require('components/add-layers/partials/dialog_getcapabilities_error.html'),
             link: function (scope, element, attrs) {
                 scope.capabilitiesErrorModalVisible = true;
             }
@@ -71,7 +71,7 @@ angular.module('hs.addLayersWmts', ['hs.utils', 'hs.getCapabilities'])
     .component('hs.addLayersWmts', {
         template: ['config', function (config) {
             return {
-                template: require('./partials/add-wmts-layer.directive.html')
+                template: require('components/add-layers/partials/add-wmts-layer.directive.html')
             };
         }],
         controller: ['$scope', 'hs.map.service', 'hs.addLayersWmts.service_capabilities', 'Core', '$compile', '$rootScope',

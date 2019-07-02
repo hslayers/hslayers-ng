@@ -21,7 +21,7 @@ angular.module('hs.addLayersWfs', ['hs.utils', 'hs.getCapabilities'])
     */
     .directive('hs.addLayersWfs.capabilitiesErrorDirective', ['config', function (config) {
         return {
-            template: require('./partials/dialog_getcapabilities_error.html'),
+            template: require('components/add-layers/partials/dialog_getcapabilities_error.html'),
             link: function (scope, element, attrs) {
                 scope.capabilitiesErrorModalVisible = true;
             }
@@ -37,7 +37,7 @@ angular.module('hs.addLayersWfs', ['hs.utils', 'hs.getCapabilities'])
     .component('hs.addLayersWfs', {
         template: ['config', function (config) {
             return {
-                template: require('./partials/add-wfs-layer.directive.html')
+                template: require('components/add-layers/partials/add-wfs-layer.directive.html')
             };
         }],
         controller: ['$scope', 'hs.map.service', 'hs.wfs.getCapabilitiesService', 'Core', '$compile', '$rootScope',
