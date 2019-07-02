@@ -1,13 +1,13 @@
 
 <div id="page-wrapper" class="bootstrap-iso">
-    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded, 'sb-right': Core.sidebarRight && !Core.puremapApp, 'sb-left': !Core.sidebarRight && !Core.puremapApp, 'classic-sidebar': Core.classicSidebar, 'mini-sidebar': !Core.classicSidebar}">
+    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded && Core.sidebarVisible(), 'sb-right': Core.sidebarRight && !Core.sidebarVisible(), 'sb-left': !Core.sidebarRight && Core.sidebarVisible(), 'classic-sidebar': Core.classicSidebar, 'mini-sidebar': !Core.classicSidebar}">
         <div class="page-content">
             <div hs.map.directive ng-controller="hs.map.controller" ng-show="hs_map.visible" id="map" style="z-index:990"></div>
-            <hs.toolbar ng-if="Core.exists('hs.toolbar') && !Core.puremapApp" ng-show="(!Core.smallWidth || !Core.sidebarExpanded) && Core.panelEnabled('toolbar')"></hs.toolbar>
+            <hs.toolbar ng-if="Core.exists('hs.toolbar') && !Core.puremapApp" ng-show="(!Core.smallWidth || !Core.sidebarExpanded) && Core.panelEnabled('toolbar') && Core.sidebarVisible()"></hs.toolbar>
 
             <div class="gui-overlay" ng-if="!Core.puremapApp">
 
-                <div class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar') && Core.exists('hs.search.controller')">
+                <div class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar') && Core.exists('hs.search.controller') && Core.sidebarVisible()">
                     <div>
                         <div hs.search.directive_searchinput></div>
                         <div hs.search.directive_searchresults></div>
@@ -15,7 +15,7 @@
                 </div>
 
 
-                <div class="panelspace" ng-class="{'labels': Core.sidebarLabels, 'buttons': Core.sidebarButtons, 'minisidebar-wrapper':!Core.classicSidebar}">
+                <div class="panelspace" ng-if="Core.sidebarVisible()" ng-class="{'labels': Core.sidebarLabels, 'buttons': Core.sidebarButtons, 'minisidebar-wrapper':!Core.classicSidebar}">
                     <div class="panelspace-wrapper">
                         <div id="sidebar" hs.sidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="Core.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
                         <div id="mini-sidebar" hs.minisidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="!Core.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>

@@ -246,6 +246,13 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             }
                             return me.mainpanel == which || (angular.isDefined(scope) && scope.unpinned);
                         },
+                        sidebarVisible: function (state) {
+                            if (angular.isDefined(state))
+                                me._sidebarVisible = state;
+                            if(me.puremapApp) return false;
+                            if(angular.isUndefined(me._sidebarVisible)) return true;
+                            return me._sidebarVisible;
+                        },    
                         /**
                         * @ngdoc method
                         * @name Core#panelEnabled 
