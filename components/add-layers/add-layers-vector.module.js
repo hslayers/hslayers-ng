@@ -21,7 +21,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
     */
    .directive('hs.addLayersVector', ['config', function (config) {
         return {
-            template: require('./partials/add-vector-layer.directive.html')
+            template: require('components/add-layers/partials/add-vector-layer.directive.html')
         };
     }])
     /**

@@ -33,7 +33,7 @@ var me = {
         if (viewer.scene.mode == Cesium.SceneMode.SCENE2D || viewer.scene.mode == Cesium.SceneMode.COLUMBUS_VIEW) {
             var lngDeg = viewer.camera.positionCartographic.longitude * (180 / Math.PI);
             var latDeg = viewer.camera.positionCartographic.latitude * (180 / Math.PI)
-            position = [lngDeg, latDeg, 0];
+            var position = [lngDeg, latDeg, 0];
             return position;
         } else if (viewer.scene.mode == Cesium.SceneMode.SCENE3D) {
             var ray = viewer.camera.getPickRay(new Cesium.Cartesian2(viewer.canvas.width / 2, viewer.canvas.height / 2));
@@ -42,7 +42,7 @@ var me = {
                 var positionCartographic = Cesium.Cartographic.fromCartesian(positionCartesian3);
                 var lngDeg = Cesium.Math.toDegrees(positionCartographic.longitude);
                 var latDeg = Cesium.Math.toDegrees(positionCartographic.latitude);
-                position = [lngDeg, latDeg, me.calcResolutionForDistance(Cesium.Cartographic.fromCartesian(viewer.camera.position).height - positionCartographic.height, latDeg)];
+                var position = [lngDeg, latDeg, me.calcResolutionForDistance(Cesium.Cartographic.fromCartesian(viewer.camera.position).height - positionCartographic.height, latDeg)];
                 return position;
             } else return null;
         }

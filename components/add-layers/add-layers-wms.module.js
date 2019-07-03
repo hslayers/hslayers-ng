@@ -24,7 +24,7 @@ angular.module('hs.addLayersWms', ['hs.utils', 'hs.getCapabilities'])
      */
     .directive('hs.addLayersWms.resampleDialogDirective', ['config', function (config) {
         return {
-            template: require('./partials/dialog_proxyconfirm.html'),
+            template: require('components/add-layers/partials/dialog_proxyconfirm.html'),
             link: function (scope, element, attrs) {
                 scope.resampleModalVisible = true;
             }
@@ -39,7 +39,7 @@ angular.module('hs.addLayersWms', ['hs.utils', 'hs.getCapabilities'])
      */
     .directive('hs.addLayersWms.capabilitiesErrorDirective', ['config', function (config) {
         return {
-            template: require('./partials/dialog_getcapabilities_error.html'),
+            template: require('components/add-layers/partials/dialog_getcapabilities_error.html'),
             link: function (scope, element, attrs) {
                 scope.capabilitiesErrorModalVisible = true;
             }
@@ -57,8 +57,8 @@ angular.module('hs.addLayersWms', ['hs.utils', 'hs.getCapabilities'])
     .component('hs.addLayersWms', {
         template: ['config', function (config) {
             return config.design == 'md' ?
-                require('./partials/add-wms-layer.md.directive.html') :
-                require('./partials/add-wms-layer.directive.html')
+                require('components/add-layers/partials/add-wms-layer.md.directive.html') :
+                require('components/add-layers/partials/add-wms-layer.directive.html')
         }],
         controller: ['$scope', 'hs.map.service', 'Core', 'hs.addLayersWms.addLayerService', function ($scope, OlMap, Core, LayService) {
             $scope.data = LayService.data;

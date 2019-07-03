@@ -1,6 +1,6 @@
 
 <div id="page-wrapper" class="bootstrap-iso">
-    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded && Core.sidebarVisible(), 'sb-right': Core.sidebarRight && !Core.sidebarVisible(), 'sb-left': !Core.sidebarRight && Core.sidebarVisible(), 'classic-sidebar': Core.classicSidebar, 'mini-sidebar': !Core.classicSidebar}">
+    <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded && Core.sidebarVisible(), 'sb-right': Core.sidebarRight && Core.sidebarVisible(), 'sb-left': !Core.sidebarRight && Core.sidebarVisible(), 'classic-sidebar': Core.classicSidebar, 'mini-sidebar': !Core.classicSidebar}">
         <div class="page-content">
             <div hs.map.directive ng-controller="hs.map.controller" ng-show="hs_map.visible" id="map" style="z-index:990"></div>
             <hs.toolbar ng-if="Core.exists('hs.toolbar') && !Core.puremapApp" ng-show="(!Core.smallWidth || !Core.sidebarExpanded) && Core.panelEnabled('toolbar') && Core.sidebarVisible()"></hs.toolbar>
