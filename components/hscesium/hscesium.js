@@ -99,6 +99,14 @@ angular.module('hs.cesium', [])
             me.HsCsTime = HsCsTime;
             me.HsCsLayers = HsCsLayers;
 
+            window.addEventListener('blur', function(){
+                me.viewer.targetFrameRate = 5;
+            })
+
+            window.addEventListener('focus', function(){
+                me.viewer.targetFrameRate = 30;
+            })
+
             viewer.camera.moveEnd.addEventListener(function (e) {
                 if (!hs_map.visible) {
                     var center = HsCsCamera.getCameraCenterInLngLat();
