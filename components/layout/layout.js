@@ -8,7 +8,6 @@ import core from 'core';
 import map from 'map';
 import geolocation from 'geolocation';
 import layermanager from 'layermanager';
-import appCss from 'css/app.css';
 
 // 'material.components.bottomSheetCollapsible'
 angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layermanager', 'hs.print'])
@@ -63,7 +62,7 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
                                 require('bootstrap/dist/css/bootstrap.css')
                             }
                         }
-
+                        require ('css/app.css');
                         if (!!window.cordova) {
                             require('css/mobile.css')
                         }
