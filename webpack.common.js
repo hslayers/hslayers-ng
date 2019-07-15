@@ -12,6 +12,7 @@
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
 module.exports = {
   entry: 'app.js',
@@ -27,6 +28,10 @@ module.exports = {
   plugins: [
     // Clean before build
     //new CleanWebpackPlugin()
+    new WebpackBuildNotifierPlugin({
+      title: "HsLayersNg",
+      suppressSuccess: false
+    })
   ],
   module: {
     rules: [
