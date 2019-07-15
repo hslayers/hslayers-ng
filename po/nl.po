@@ -14,12 +14,12 @@ msgstr ""
 #: components/compositions/partials/dialog_info.html:12
 #: components/layermanager/partials/layermanager.html:80
 #: components/ows/partials/owsnonwms.html:10
-#: components/status_creator/partials/form.html:21
-#: components/status_creator/partials/simpleform.html:10
+#: components/save-map/partials/form.html:21
+#: components/save-map/partials/simpleform.html:10
 msgid "Abstract"
 msgstr "Samenvatting"
 
-#: components/status_creator/partials/form.html:8
+#: components/save-map/partials/form.html:8
 msgid "Access"
 msgstr "Toegang"
 
@@ -43,12 +43,12 @@ msgstr "Voeg een laag toe"
 msgid "Add to map"
 msgstr "Voeg toe aan kaart"
 
-#: components/status_creator/partials/form.html:71
+#: components/save-map/partials/form.html:71
 msgid "Address"
 msgstr "Adres"
 
 #: components/ows/partials/owsnonwms.html:17
-#: components/status_creator/partials/simpleform.html:28
+#: components/save-map/partials/simpleform.html:28
 msgid "Advanced options"
 msgstr "Geavanceerde mogelijkheden"
 
@@ -57,7 +57,7 @@ msgstr "Geavanceerde mogelijkheden"
 msgid "Altitude"
 msgstr "Hoogte"
 
-#: components/status_creator/partials/form.html:11
+#: components/save-map/partials/form.html:11
 msgid "Author"
 msgstr "Auteur"
 
@@ -67,7 +67,7 @@ msgstr "Basislagen"
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
 #: components/ows/partials/dialog_proxyconfirm.html:15
-#: components/status_creator/partials/simpleform.html:71
+#: components/save-map/partials/simpleform.html:71
 msgid "Cancel"
 msgstr "Annuleer"
 
@@ -75,7 +75,7 @@ msgstr "Annuleer"
 msgid "Choose format"
 msgstr "Kies het formaat"
 
-#: components/status_creator/partials/form.html:74
+#: components/save-map/partials/form.html:74
 msgid "City"
 msgstr "Stad"
 
@@ -117,11 +117,11 @@ msgstr "Verwijder"
 #: components/print/partials/printdialog.html:5
 #: components/query/partials/infopanel.html:5
 #: components/routing/partials/routing.html:5
-#: components/status_creator/partials/dialog.html:17
-#: components/status_creator/partials/dialog.html:5
-#: components/status_creator/partials/dialog_result.html:15
-#: components/status_creator/partials/dialog_result.html:5
-#: components/status_creator/partials/dialog_save.html:5
+#: components/save-map/partials/dialog.html:17
+#: components/save-map/partials/dialog.html:5
+#: components/save-map/partials/dialog_result.html:15
+#: components/save-map/partials/dialog_result.html:5
+#: components/save-map/partials/dialog_save.html:5
 #: components/styles/partials/styler.html:5
 #: components/tracking/partials/tracking.html:5
 msgid "Close"
@@ -144,7 +144,7 @@ msgstr "Composities"
 msgid "Confirm"
 msgstr "Bevestig"
 
-#: components/status_creator/partials/form.html:5
+#: components/save-map/partials/form.html:5
 msgid "Context"
 msgstr "Context"
 
@@ -152,7 +152,7 @@ msgstr "Context"
 msgid "Continue without saving"
 msgstr "Verdergaan zonder bewaren"
 
-#: components/status_creator/partials/form.html:83
+#: components/save-map/partials/form.html:83
 msgid "Country"
 msgstr "Land"
 
@@ -176,7 +176,7 @@ msgstr "Databronnen"
 msgid "Date"
 msgstr "Datum"
 
-#: components/status_creator/partials/dialog_save.html:18
+#: components/save-map/partials/dialog_save.html:18
 msgid "Do you really want to overwrite <b>{{title}}</b>?"
 msgstr "Bent u zeker dat u <b>{{title}}</b> wilt vervangen?"
 
@@ -192,7 +192,7 @@ msgstr "Bent u zeker dat u de kaart wilt verwijderen?"
 msgid "Download"
 msgstr "Download"
 
-#: components/status_creator/partials/form.html:89
+#: components/save-map/partials/form.html:89
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -218,8 +218,8 @@ msgid "Extended search parameters for Micka"
 msgstr "Uitgebreide zoekparameters voor Micka"
 
 #: components/compositions/partials/dialog_info.html:16
-#: components/status_creator/partials/form.html:30
-#: components/status_creator/partials/simpleform.html:38
+#: components/save-map/partials/form.html:30
+#: components/save-map/partials/simpleform.html:38
 msgid "Extent"
 msgstr "Bereik"
 
@@ -235,7 +235,7 @@ msgstr "Externe databron (url)"
 msgid "Extract styles"
 msgstr "Neem styling over"
 
-#: components/status_creator/partials/dialog_result.html:12
+#: components/save-map/partials/dialog_result.html:12
 msgid "Failed to save to status manager"
 msgstr "Opslaan naar statusmanager mislukt"
 
@@ -244,11 +244,11 @@ msgid "Fill"
 msgstr "Vul in"
 
 #: components/ows/partials/owsnonwms.html:12
-#: components/status_creator/partials/simpleform.html:12
+#: components/save-map/partials/simpleform.html:12
 msgid "Fill in descriptive text about map"
 msgstr "Vul beschrijving kaart in"
 
-#: components/status_creator/partials/simpleform.html:6
+#: components/save-map/partials/simpleform.html:6
 msgid "Fill in name"
 msgstr "Vul naam in"
 
@@ -319,8 +319,8 @@ msgstr "Info"
 
 #: components/compositions/partials/compositions.html:27
 #: components/datasource_selector/partials/dialog_micka_advanced.html:28
-#: components/status_creator/partials/form.html:26
-#: components/status_creator/partials/simpleform.html:32
+#: components/save-map/partials/form.html:26
+#: components/save-map/partials/simpleform.html:32
 msgid "Keywords"
 msgstr "Trefwoorden"
 
@@ -333,8 +333,8 @@ msgstr "Laag"
 msgid "Layer manager"
 msgstr "Beheer lagen"
 
-#: components/status_creator/partials/form.html:45
-#: components/status_creator/partials/simpleform.html:56
+#: components/save-map/partials/form.html:45
+#: components/save-map/partials/simpleform.html:56
 msgid "Layers"
 msgstr "Lagen"
 
@@ -365,7 +365,7 @@ msgstr "Beschikbare mapcomosities"
 msgid "Loading:"
 msgstr "Laden:"
 
-#: components/status_creator/partials/simpleform.html:21
+#: components/save-map/partials/simpleform.html:21
 msgid "Make public"
 msgstr "Publiceer"
 
@@ -435,13 +435,13 @@ msgstr "Metadata in"
 msgid "More"
 msgstr "Meer info"
 
-#: components/status_creator/partials/simpleform.html:4
+#: components/save-map/partials/simpleform.html:4
 msgid "Name"
 msgstr "Naam"
 
 #: components/compositions/partials/compositions.html:56
-#: components/status_creator/partials/dialog.html:14
-#: components/status_creator/partials/panel.html:13
+#: components/save-map/partials/dialog.html:14
+#: components/save-map/partials/panel.html:13
 msgid "Next"
 msgstr "Volgende"
 
@@ -454,12 +454,12 @@ msgstr "Nee"
 msgid "No results"
 msgstr "Geen resultaten"
 
-#: components/status_creator/partials/dialog_save.html:25
+#: components/save-map/partials/dialog_save.html:25
 msgid "No, save as"
 msgstr "Nee, opslaan als"
 
 #: components/compositions/partials/dialog_delete.html:14
-#: components/status_creator/partials/dialog_save.html:47
+#: components/save-map/partials/dialog_save.html:47
 msgid "OK"
 msgstr "Ok"
 
@@ -475,7 +475,7 @@ msgstr "Doorzichtigheid"
 msgid "Order by"
 msgstr "Rangschik op"
 
-#: components/status_creator/partials/form.html:65
+#: components/save-map/partials/form.html:65
 msgid "Organization"
 msgstr "Organisatie"
 
@@ -483,7 +483,7 @@ msgstr "Organisatie"
 msgid "Organization name"
 msgstr "Naam organisaties"
 
-#: components/status_creator/partials/panel.html:11
+#: components/save-map/partials/panel.html:11
 msgid "Overwrite"
 msgstr "Vervang"
 
@@ -491,11 +491,11 @@ msgstr "Vervang"
 msgid "Overwrite existing map?"
 msgstr "Vervang huidige map?"
 
-#: components/status_creator/partials/form.html:62
+#: components/save-map/partials/form.html:62
 msgid "Person"
 msgstr "Persoon"
 
-#: components/status_creator/partials/form.html:86
+#: components/save-map/partials/form.html:86
 msgid "Phone"
 msgstr "Telefoon"
 
@@ -503,11 +503,11 @@ msgstr "Telefoon"
 msgid "Point"
 msgstr "Punt"
 
-#: components/status_creator/partials/form.html:68
+#: components/save-map/partials/form.html:68
 msgid "Position"
 msgstr "Positie"
 
-#: components/status_creator/partials/form.html:80
+#: components/save-map/partials/form.html:80
 msgid "Postal code"
 msgstr "Postcode"
 
@@ -533,7 +533,7 @@ msgstr "Formaal zoekopdracht"
 msgid "Radius"
 msgstr "Straal"
 
-#: components/status_creator/partials/form.html:54
+#: components/save-map/partials/form.html:54
 msgid "Read"
 msgstr "Lees"
 
@@ -569,14 +569,14 @@ msgstr "Kaart resetten"
 msgid "Routing"
 msgstr ""
 
-#: components/status_creator/partials/dialog.html:15
-#: components/status_creator/partials/dialog_save.html:37
-#: components/status_creator/partials/simpleform.html:72
+#: components/save-map/partials/dialog.html:15
+#: components/save-map/partials/dialog_save.html:37
+#: components/save-map/partials/simpleform.html:72
 msgid "Save"
 msgstr "Opslaan"
 
-#: components/status_creator/partials/dialog.html:16
-#: components/status_creator/partials/panel.html:12
+#: components/save-map/partials/dialog.html:16
+#: components/save-map/partials/panel.html:12
 msgid "Save as"
 msgstr "Opslaan als"
 
@@ -585,16 +585,16 @@ msgid "Save changes first"
 msgstr "Wijzigingen eerst opslaan"
 
 #: components/sidebar/partials/sidebar.html:69
-#: components/status_creator/partials/dialog_save.html:6
+#: components/save-map/partials/dialog_save.html:6
 msgid "Save composition"
 msgstr "Compositie opslaan"
 
-#: components/status_creator/partials/dialog.html:7
-#: components/status_creator/partials/panel.html:2
+#: components/save-map/partials/dialog.html:7
+#: components/save-map/partials/panel.html:2
 msgid "Save current map"
 msgstr "Huidige kaart opslaan"
 
-#: components/status_creator/partials/dialog_result.html:6
+#: components/save-map/partials/dialog_result.html:6
 msgid "Saving to status manager"
 msgstr "Opslaan naar statusmanager"
 
@@ -617,7 +617,7 @@ msgstr "Selecteer alle lagen"
 msgid "Select data or services for your map composition"
 msgstr "Selecteer data of webservices voor uw mapcompositie "
 
-#: components/status_creator/partials/dialog_save.html:30
+#: components/save-map/partials/dialog_save.html:30
 msgid "Select new name for map."
 msgstr "Geef uw compositie een naam"
 
@@ -643,7 +643,7 @@ msgstr "Log van Sparql queries"
 msgid "Speed"
 msgstr "Snelheid"
 
-#: components/status_creator/partials/form.html:77
+#: components/save-map/partials/form.html:77
 msgid "State"
 msgstr "Staat"
 
@@ -651,7 +651,7 @@ msgstr "Staat"
 msgid "Style layer"
 msgstr "Stijl laag aanpassen"
 
-#: components/status_creator/partials/dialog_result.html:11
+#: components/save-map/partials/dialog_result.html:11
 msgid "Successfuly saved to status manager"
 msgstr "Succesvol opgeslagen naar statusmanager"
 
@@ -683,7 +683,7 @@ msgstr "Omvang tegel"
 #: components/layermanager/partials/layermanager.html:110
 #: components/ows/partials/owsnonwms.html:3
 #: components/print/partials/printdialog.html:11
-#: components/status_creator/partials/form.html:18
+#: components/save-map/partials/form.html:18
 msgid "Title"
 msgstr "Titel"
 
@@ -703,12 +703,12 @@ msgstr "Type"
 msgid "Unsaved map"
 msgstr "Niet-opgeslagen kaart"
 
-#: components/status_creator/partials/dialog_save.html:44
+#: components/save-map/partials/dialog_save.html:44
 msgid "Use a different name to save the map."
 msgstr "Sla op onder een andere naam"
 
-#: components/status_creator/partials/form.html:44
-#: components/status_creator/partials/simpleform.html:53
+#: components/save-map/partials/form.html:44
+#: components/save-map/partials/simpleform.html:53
 msgid "Use current map extent"
 msgstr "Gebruik huidig kaartbereik"
 
@@ -728,19 +728,19 @@ msgstr "Maak aan, bekijk en analyseer geodata"
 msgid "WMS Capabilities parsing problem"
 msgstr "Er is een fout opgetreden bij het inlezen van de opgegeven WMS"
 
-#: components/status_creator/partials/form.html:54
+#: components/save-map/partials/form.html:54
 msgid "Write"
 msgstr "Schrijven"
 
-#: components/status_creator/partials/dialog_save.html:22
+#: components/save-map/partials/dialog_save.html:22
 msgid "Yes, save"
 msgstr "Ja, opslaan"
 
-#: components/status_creator/partials/dialog_save.html:11
+#: components/save-map/partials/dialog_save.html:11
 msgid "You are atempting to save map changes to"
 msgstr "U probeert wijzigingen in de map op te slaan naar"
 
-#: components/status_creator/partials/simpleform.html:77
+#: components/save-map/partials/simpleform.html:77
 msgid ""
 "You are not authorized to store composition. Please sign in or contact "
 "administrator for your credentials."
@@ -758,7 +758,7 @@ msgstr ""
 "nog niet-opgeslagen wijzigingen.<br>Wat wenst u te doen alvorens de "
 "geslecteerde mapcompositie te openen?"
 
-#: components/status_creator/partials/dialog_save.html:43
+#: components/save-map/partials/dialog_save.html:43
 msgid "You don't have sufficient rights to do so."
 msgstr "U hebt oncoldoende rechten om deze actie uit te voeren"
 

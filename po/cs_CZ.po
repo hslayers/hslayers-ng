@@ -17,12 +17,12 @@ msgstr ""
 #: components/compositions/partials/dialog_info.html:12
 #: components/layermanager/partials/layermanager.html:80
 #: components/ows/partials/owsnonwms.html:10
-#: components/status_creator/partials/form.html:21
-#: components/status_creator/partials/simpleform.html:10
+#: components/save-map/partials/form.html:21
+#: components/save-map/partials/simpleform.html:10
 msgid "Abstract"
 msgstr "Abstrakt"
 
-#: components/status_creator/partials/form.html:8
+#: components/save-map/partials/form.html:8
 msgid "Access"
 msgstr "Přístup"
 
@@ -46,12 +46,12 @@ msgstr "Přidat vrstvy"
 msgid "Add to map"
 msgstr "Přidat do mapy"
 
-#: components/status_creator/partials/form.html:71
+#: components/save-map/partials/form.html:71
 msgid "Address"
 msgstr "Adresa"
 
 #: components/ows/partials/owsnonwms.html:17
-#: components/status_creator/partials/simpleform.html:28
+#: components/save-map/partials/simpleform.html:28
 msgid "Advanced options"
 msgstr "Rozšířené možnosti"
 
@@ -60,7 +60,7 @@ msgstr "Rozšířené možnosti"
 msgid "Altitude"
 msgstr "Šířka"
 
-#: components/status_creator/partials/form.html:11
+#: components/save-map/partials/form.html:11
 msgid "Author"
 msgstr "Autor"
 
@@ -70,7 +70,7 @@ msgstr "Základní vrstvy"
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
 #: components/ows/partials/dialog_proxyconfirm.html:15
-#: components/status_creator/partials/simpleform.html:71
+#: components/save-map/partials/simpleform.html:71
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -78,7 +78,7 @@ msgstr "Zrušit"
 msgid "Choose format"
 msgstr "Vyberte formát"
 
-#: components/status_creator/partials/form.html:74
+#: components/save-map/partials/form.html:74
 msgid "City"
 msgstr "Město"
 
@@ -119,11 +119,11 @@ msgstr "Vymazat"
 #: components/permalink/partials/directive.html:5
 #: components/print/partials/printdialog.html:5
 #: components/query/partials/infopanel.html:5
-#: components/status_creator/partials/dialog.html:17
-#: components/status_creator/partials/dialog.html:5
-#: components/status_creator/partials/dialog_result.html:15
-#: components/status_creator/partials/dialog_result.html:5
-#: components/status_creator/partials/dialog_save.html:5
+#: components/save-map/partials/dialog.html:17
+#: components/save-map/partials/dialog.html:5
+#: components/save-map/partials/dialog_result.html:15
+#: components/save-map/partials/dialog_result.html:5
+#: components/save-map/partials/dialog_save.html:5
 #: components/styles/partials/styler.html:5
 msgid "Close"
 msgstr "Zavřít"
@@ -145,7 +145,7 @@ msgstr "Kompozice"
 msgid "Confirm"
 msgstr "Potvrdit"
 
-#: components/status_creator/partials/form.html:5
+#: components/save-map/partials/form.html:5
 msgid "Context"
 msgstr "Kontext"
 
@@ -153,7 +153,7 @@ msgstr "Kontext"
 msgid "Continue without saving"
 msgstr "Pokračovat bez uložení"
 
-#: components/status_creator/partials/form.html:83
+#: components/save-map/partials/form.html:83
 msgid "Country"
 msgstr "Stát"
 
@@ -177,7 +177,7 @@ msgstr "Datové zdroje"
 msgid "Date"
 msgstr "Datum"
 
-#: components/status_creator/partials/dialog_save.html:18
+#: components/save-map/partials/dialog_save.html:18
 msgid "Do you really want to overwrite <b>{{title}}</b>?"
 msgstr "Dopravdy chcete přepsat <b>{{title}}</b>?"
 
@@ -193,7 +193,7 @@ msgstr "Chcete smazat mapu"
 msgid "Download"
 msgstr "Stáhnout"
 
-#: components/status_creator/partials/form.html:89
+#: components/save-map/partials/form.html:89
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -219,8 +219,8 @@ msgid "Extended search parameters for Micka"
 msgstr "Rozšířené parametry pro hledání"
 
 #: components/compositions/partials/dialog_info.html:16
-#: components/status_creator/partials/form.html:30
-#: components/status_creator/partials/simpleform.html:38
+#: components/save-map/partials/form.html:30
+#: components/save-map/partials/simpleform.html:38
 msgid "Extent"
 msgstr "Rozsah"
 
@@ -236,7 +236,7 @@ msgstr "Zdroj externích dat (URL)"
 msgid "Extract styles"
 msgstr "Extrahovat styly"
 
-#: components/status_creator/partials/dialog_result.html:12
+#: components/save-map/partials/dialog_result.html:12
 msgid "Failed to save to status manager"
 msgstr "Chyba při ukládání"
 
@@ -245,11 +245,11 @@ msgid "Fill"
 msgstr "Výplň"
 
 #: components/ows/partials/owsnonwms.html:12
-#: components/status_creator/partials/simpleform.html:12
+#: components/save-map/partials/simpleform.html:12
 msgid "Fill in descriptive text about map"
 msgstr "Vyplnit popis o mapě"
 
-#: components/status_creator/partials/simpleform.html:6
+#: components/save-map/partials/simpleform.html:6
 msgid "Fill in name"
 msgstr "Vyplnit jméno"
 
@@ -319,8 +319,8 @@ msgstr "Info"
 
 #: components/compositions/partials/compositions.html:27
 #: components/datasource_selector/partials/dialog_micka_advanced.html:28
-#: components/status_creator/partials/form.html:26
-#: components/status_creator/partials/simpleform.html:32
+#: components/save-map/partials/form.html:26
+#: components/save-map/partials/simpleform.html:32
 msgid "Keywords"
 msgstr "Klíčová slova"
 
@@ -333,8 +333,8 @@ msgstr "Vrstva"
 msgid "Layer manager"
 msgstr "Správce vrstev"
 
-#: components/status_creator/partials/form.html:45
-#: components/status_creator/partials/simpleform.html:56
+#: components/save-map/partials/form.html:45
+#: components/save-map/partials/simpleform.html:56
 msgid "Layers"
 msgstr "Vrstvy"
 
@@ -365,7 +365,7 @@ msgstr "Seznam dostupných mapových kompozic"
 msgid "Loading:"
 msgstr "Nahrávání:"
 
-#: components/status_creator/partials/simpleform.html:21
+#: components/save-map/partials/simpleform.html:21
 msgid "Make public"
 msgstr "Veřejná"
 
@@ -435,13 +435,13 @@ msgstr "Metadata v"
 msgid "More"
 msgstr "Více"
 
-#: components/status_creator/partials/simpleform.html:4
+#: components/save-map/partials/simpleform.html:4
 msgid "Name"
 msgstr "Jméno"
 
 #: components/compositions/partials/compositions.html:56
-#: components/status_creator/partials/dialog.html:14
-#: components/status_creator/partials/panel.html:13
+#: components/save-map/partials/dialog.html:14
+#: components/save-map/partials/panel.html:13
 msgid "Next"
 msgstr "Další"
 
@@ -454,12 +454,12 @@ msgstr "Ne"
 msgid "No results"
 msgstr "Žádné výsledky"
 
-#: components/status_creator/partials/dialog_save.html:25
+#: components/save-map/partials/dialog_save.html:25
 msgid "No, save as"
 msgstr "Ne, uložit jako"
 
 #: components/compositions/partials/dialog_delete.html:14
-#: components/status_creator/partials/dialog_save.html:47
+#: components/save-map/partials/dialog_save.html:47
 msgid "OK"
 msgstr "OK"
 
@@ -475,7 +475,7 @@ msgstr "Průhlednost"
 msgid "Order by"
 msgstr "Seřadit podle"
 
-#: components/status_creator/partials/form.html:65
+#: components/save-map/partials/form.html:65
 msgid "Organization"
 msgstr "Organizace"
 
@@ -483,7 +483,7 @@ msgstr "Organizace"
 msgid "Organization name"
 msgstr "Jméno organizace"
 
-#: components/status_creator/partials/panel.html:11
+#: components/save-map/partials/panel.html:11
 msgid "Overwrite"
 msgstr "Přepsat"
 
@@ -491,11 +491,11 @@ msgstr "Přepsat"
 msgid "Overwrite existing map?"
 msgstr "Přepsat existující mapu?"
 
-#: components/status_creator/partials/form.html:62
+#: components/save-map/partials/form.html:62
 msgid "Person"
 msgstr "Osoba"
 
-#: components/status_creator/partials/form.html:86
+#: components/save-map/partials/form.html:86
 msgid "Phone"
 msgstr "Telefon"
 
@@ -503,11 +503,11 @@ msgstr "Telefon"
 msgid "Point"
 msgstr "Bod"
 
-#: components/status_creator/partials/form.html:68
+#: components/save-map/partials/form.html:68
 msgid "Position"
 msgstr "Pozice"
 
-#: components/status_creator/partials/form.html:80
+#: components/save-map/partials/form.html:80
 msgid "Postal code"
 msgstr "PSČ"
 
@@ -533,7 +533,7 @@ msgstr "Formát dotazu"
 msgid "Radius"
 msgstr "Radius"
 
-#: components/status_creator/partials/form.html:54
+#: components/save-map/partials/form.html:54
 msgid "Read"
 msgstr "Číst"
 
@@ -563,14 +563,14 @@ msgstr "Převzorkovat vrstvu"
 msgid "Reset map"
 msgstr "Resetovat mapu"
 
-#: components/status_creator/partials/dialog.html:15
-#: components/status_creator/partials/dialog_save.html:37
-#: components/status_creator/partials/simpleform.html:72
+#: components/save-map/partials/dialog.html:15
+#: components/save-map/partials/dialog_save.html:37
+#: components/save-map/partials/simpleform.html:72
 msgid "Save"
 msgstr "Uložit"
 
-#: components/status_creator/partials/dialog.html:16
-#: components/status_creator/partials/panel.html:12
+#: components/save-map/partials/dialog.html:16
+#: components/save-map/partials/panel.html:12
 msgid "Save as"
 msgstr "Uložit jako"
 
@@ -579,16 +579,16 @@ msgid "Save changes first"
 msgstr "Uložit nejdřív změny"
 
 #: components/sidebar/partials/sidebar.html:59
-#: components/status_creator/partials/dialog_save.html:6
+#: components/save-map/partials/dialog_save.html:6
 msgid "Save composition"
 msgstr "Uložit kompozici"
 
-#: components/status_creator/partials/dialog.html:7
-#: components/status_creator/partials/panel.html:2
+#: components/save-map/partials/dialog.html:7
+#: components/save-map/partials/panel.html:2
 msgid "Save current map"
 msgstr "Uložit nynější mapu"
 
-#: components/status_creator/partials/dialog_result.html:6
+#: components/save-map/partials/dialog_result.html:6
 msgid "Saving to status manager"
 msgstr "Uložit"
 
@@ -611,7 +611,7 @@ msgstr "Vybrat všechny vrstvy"
 msgid "Select data or services for your map composition"
 msgstr "Vybrat data nebo služby pro mapovou kompozici"
 
-#: components/status_creator/partials/dialog_save.html:30
+#: components/save-map/partials/dialog_save.html:30
 msgid "Select new name for map."
 msgstr "Vybrat nové jméno pro mapu."
 
@@ -635,7 +635,7 @@ msgstr ""
 msgid "Speed"
 msgstr "Rychlost"
 
-#: components/status_creator/partials/form.html:77
+#: components/save-map/partials/form.html:77
 msgid "State"
 msgstr "Stav"
 
@@ -643,7 +643,7 @@ msgstr "Stav"
 msgid "Style layer"
 msgstr "Nastylovat vrstvu"
 
-#: components/status_creator/partials/dialog_result.html:11
+#: components/save-map/partials/dialog_result.html:11
 msgid "Successfuly saved to status manager"
 msgstr "Úspěšně uloženo"
 
@@ -675,7 +675,7 @@ msgstr "Velikost dlaždice"
 #: components/layermanager/partials/layermanager.html:110
 #: components/ows/partials/owsnonwms.html:3
 #: components/print/partials/printdialog.html:11
-#: components/status_creator/partials/form.html:18
+#: components/save-map/partials/form.html:18
 msgid "Title"
 msgstr "Nadpis"
 
@@ -691,12 +691,12 @@ msgstr "Typ"
 msgid "Unsaved map"
 msgstr "Neuložená mapa"
 
-#: components/status_creator/partials/dialog_save.html:44
+#: components/save-map/partials/dialog_save.html:44
 msgid "Use a different name to save the map."
 msgstr "Vyberte jíné jméno pro uložení mapy"
 
-#: components/status_creator/partials/form.html:44
-#: components/status_creator/partials/simpleform.html:53
+#: components/save-map/partials/form.html:44
+#: components/save-map/partials/simpleform.html:53
 msgid "Use current map extent"
 msgstr "Použít nynější rozsah"
 
@@ -716,19 +716,19 @@ msgstr "Prohlížení, komponování a analyzování prostorových dat"
 msgid "WMS Capabilities parsing problem"
 msgstr "Problém se čtením WMS Capabilities"
 
-#: components/status_creator/partials/form.html:54
+#: components/save-map/partials/form.html:54
 msgid "Write"
 msgstr "Zápis"
 
-#: components/status_creator/partials/dialog_save.html:22
+#: components/save-map/partials/dialog_save.html:22
 msgid "Yes, save"
 msgstr "Ano, uložit"
 
-#: components/status_creator/partials/dialog_save.html:11
+#: components/save-map/partials/dialog_save.html:11
 msgid "You are atempting to save map changes to"
 msgstr "Pokoušíte se uložit změny v mapě do"
 
-#: components/status_creator/partials/simpleform.html:77
+#: components/save-map/partials/simpleform.html:77
 msgid ""
 "You are not authorized to store composition. Please sign in or contact "
 "administrator for your credentials."
@@ -745,7 +745,7 @@ msgstr ""
 "Otevíráte mapu <b>{{composition_name_to_be_loaded}}</b>.<br>Máte neuložené "
 "změny.<br>Co chcete udělat před otevřením vybrané mapové kompozice?"
 
-#: components/status_creator/partials/dialog_save.html:43
+#: components/save-map/partials/dialog_save.html:43
 msgid "You don't have sufficient rights to do so."
 msgstr "Nemáte práva k provedení operace."
 

@@ -2,10 +2,10 @@
     <input ng-model="query" class="form-control" id="search_address" placeholder="Search:" ng-change="queryChanged()"/>
     <div class="input-group-append">
         <button class="btn btn-light btn-outline-secondary" ng-if="clearvisible" ng-click="clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
-        <button class="btn btn-light btn-outline-secondary" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions.controller')" ng-click="Core.resetMap()">
+        <button class="btn btn-light btn-outline-secondary" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions')" ng-click="Core.resetMap()">
             <i class="icon-repeat"></i>
         </button>
-        <button class="btn btn-light btn-outline-secondary"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure.controller')" ng-click="measureButtonClicked()">
+        <button class="btn btn-light btn-outline-secondary"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure')" ng-click="measureButtonClicked()">
             <i class="icon-design"></i>
         </button>
     </div>

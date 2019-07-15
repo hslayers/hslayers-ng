@@ -1,5 +1,5 @@
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
-import 'utils';
+import 'components/utils/utils.module';
 import { Tile } from 'ol/layer';
 import { WMTS } from 'ol/source';
 import { Attribution } from 'ol/control.js';

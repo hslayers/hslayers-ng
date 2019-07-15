@@ -6,10 +6,10 @@ import query from 'query';
 import search from 'search';
 import measure from 'measure';
 import permalink from 'permalink';
-import info from 'info';
-import ds from 'datasource_selector';
-import sidebar from 'sidebar';
-import addLayers from 'add-layers.module';
+import 'components/info/info.module';
+import 'components/datasource-selector/datasource_selector.module';
+import 'components/sidebar/sidebar.module';
+import 'components/add-layers/add-layers.module';
 
 var module = angular.module('hs', [
     'hs.sidebar',
@@ -20,7 +20,7 @@ var module = angular.module('hs', [
     'hs.search', 'hs.print', 'hs.permalink', 'hs.measure',
     'hs.legend', 'hs.geolocation', 'hs.core',
     'hs.datasource_selector',
-    'hs.status_creator',
+    'hs.save-map',
     'hs.api',
     'hs.addLayersModule',
     'gettext',
@@ -73,7 +73,6 @@ window.ol = {
 
 module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config',
     function ($scope, Core, srv_producer, composition_parser, config) {
-        $scope.hsl_path = config.hsl_path; //Get this from hslayers.js file
         $scope.Core = Core;
         Core.sidebarRight = false;
         Core.singleDatasources = true;

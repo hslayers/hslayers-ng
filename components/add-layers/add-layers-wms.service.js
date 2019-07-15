@@ -1,5 +1,5 @@
 import { WMSCapabilities } from 'ol/format';
-import 'utils';
+import 'components/utils/utils.module';
 import moment from 'moment';
 global.moment = moment;
 import momentinterval from 'moment-interval/src/moment-interval';
