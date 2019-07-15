@@ -2,7 +2,7 @@ import { DragAndDrop } from 'ol/interaction';
 import { GPX, IGC,KML,  TopoJSON, GeoJSON } from 'ol/format';
 import SparqlJson from 'hs.source.SparqlJson'
 import WfsSource from 'hs.source.Wfs'
-import 'styles';
+import 'components/styles/styles.module';
 import * as loadingstrategy from 'ol/loadingstrategy';
 import {transform, transformExtent, get as getProj} from 'ol/proj';
 import { Vector } from 'ol/source';
@@ -30,7 +30,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
     * @name hs.addLayersVector.service
     * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
     */
-    .service('hs.addLayersVector.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.status_creator.service',
+    .service('hs.addLayersVector.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.save-map.service',
         function (config, $rootScope, OlMap, styles, utils, $http, statusCreator) {
             var me = this;
 

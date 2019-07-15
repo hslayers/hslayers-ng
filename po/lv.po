@@ -15,12 +15,12 @@ msgstr ""
 
 #: components/compositions/partials/dialog_info.html:12
 #: components/layermanager/partials/layermanager.html:76
-#: components/status_creator/partials/form.html:21
-#: components/status_creator/partials/simpleform.html:9
+#: components/save-map/partials/form.html:21
+#: components/save-map/partials/simpleform.html:9
 msgid "Abstract"
 msgstr "Apraksts"
 
-#: components/status_creator/partials/form.html:8
+#: components/save-map/partials/form.html:8
 msgid "Access"
 msgstr ""
 
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Add to map"
 msgstr "Pievienot kartei"
 
-#: components/status_creator/partials/form.html:71
+#: components/save-map/partials/form.html:71
 msgid "Address"
 msgstr ""
 
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Altitude"
 msgstr ""
 
-#: components/status_creator/partials/form.html:11
+#: components/save-map/partials/form.html:11
 msgid "Author"
 msgstr ""
 
@@ -62,7 +62,7 @@ msgstr "Pamatslāņi"
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
 #: components/ows/partials/dialog_proxyconfirm.html:15
-#: components/status_creator/partials/simpleform.html:72
+#: components/save-map/partials/simpleform.html:72
 msgid "Cancel"
 msgstr "Atcelt"
 
@@ -70,7 +70,7 @@ msgstr "Atcelt"
 msgid "Choose format"
 msgstr ""
 
-#: components/status_creator/partials/form.html:74
+#: components/save-map/partials/form.html:74
 msgid "City"
 msgstr ""
 
@@ -113,11 +113,11 @@ msgstr "Notīrīt"
 #: components/print/partials/printdialog.html:5
 #: components/query/partials/infopanel.html:5
 #: components/search/partials/searchresults.html:5
-#: components/status_creator/partials/dialog.html:17
-#: components/status_creator/partials/dialog.html:5
-#: components/status_creator/partials/dialog_result.html:15
-#: components/status_creator/partials/dialog_result.html:5
-#: components/status_creator/partials/dialog_save.html:5
+#: components/save-map/partials/dialog.html:17
+#: components/save-map/partials/dialog.html:5
+#: components/save-map/partials/dialog_result.html:15
+#: components/save-map/partials/dialog_result.html:5
+#: components/save-map/partials/dialog_save.html:5
 #: components/styles/partials/styler.html:5
 msgid "Close"
 msgstr "Aizvērt"
@@ -139,7 +139,7 @@ msgstr "Kompozīcijas"
 msgid "Confirm"
 msgstr ""
 
-#: components/status_creator/partials/form.html:5
+#: components/save-map/partials/form.html:5
 msgid "Context"
 msgstr ""
 
@@ -147,7 +147,7 @@ msgstr ""
 msgid "Continue without saving"
 msgstr ""
 
-#: components/status_creator/partials/form.html:83
+#: components/save-map/partials/form.html:83
 msgid "Country"
 msgstr ""
 
@@ -171,7 +171,7 @@ msgstr "Datu avoti"
 msgid "Date"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:18
+#: components/save-map/partials/dialog_save.html:18
 msgid "Do you really want to overwrite <b>{{title}}</b>?"
 msgstr ""
 
@@ -187,7 +187,7 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: components/status_creator/partials/form.html:89
+#: components/save-map/partials/form.html:89
 msgid "E-mail"
 msgstr ""
 
@@ -209,8 +209,8 @@ msgid "Extended search parameters for Micka"
 msgstr ""
 
 #: components/compositions/partials/dialog_info.html:16
-#: components/status_creator/partials/form.html:30
-#: components/status_creator/partials/simpleform.html:39
+#: components/save-map/partials/form.html:30
+#: components/save-map/partials/simpleform.html:39
 msgid "Extent"
 msgstr ""
 
@@ -226,7 +226,7 @@ msgstr ""
 msgid "Extract styles"
 msgstr ""
 
-#: components/status_creator/partials/dialog_result.html:12
+#: components/save-map/partials/dialog_result.html:12
 msgid "Failed to save to status manager"
 msgstr ""
 
@@ -234,11 +234,11 @@ msgstr ""
 msgid "Fill"
 msgstr ""
 
-#: components/status_creator/partials/simpleform.html:11
+#: components/save-map/partials/simpleform.html:11
 msgid "Fill in descriptive text about map"
 msgstr ""
 
-#: components/status_creator/partials/simpleform.html:5
+#: components/save-map/partials/simpleform.html:5
 msgid "Fill in name"
 msgstr ""
 
@@ -302,8 +302,8 @@ msgstr "Informācija"
 
 #: components/compositions/partials/compositions.html:27
 #: components/datasource_selector/partials/dialog_micka_advanced.html:28
-#: components/status_creator/partials/form.html:26
-#: components/status_creator/partials/simpleform.html:33
+#: components/save-map/partials/form.html:26
+#: components/save-map/partials/simpleform.html:33
 msgid "Keywords"
 msgstr "Atslēgas vārdi"
 
@@ -316,8 +316,8 @@ msgstr "Slānis"
 msgid "Layer manager"
 msgstr "Slāņu pārvaldība"
 
-#: components/status_creator/partials/form.html:45
-#: components/status_creator/partials/simpleform.html:57
+#: components/save-map/partials/form.html:45
+#: components/save-map/partials/simpleform.html:57
 msgid "Layers"
 msgstr "Slāņi"
 
@@ -344,7 +344,7 @@ msgstr ""
 msgid "List available map compositions"
 msgstr ""
 
-#: components/status_creator/partials/simpleform.html:20
+#: components/save-map/partials/simpleform.html:20
 msgid "Make public"
 msgstr ""
 
@@ -410,13 +410,13 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: components/status_creator/partials/simpleform.html:3
+#: components/save-map/partials/simpleform.html:3
 msgid "Name"
 msgstr ""
 
 #: components/compositions/partials/compositions.html:56
-#: components/status_creator/partials/dialog.html:14
-#: components/status_creator/partials/panel.html:13
+#: components/save-map/partials/dialog.html:14
+#: components/save-map/partials/panel.html:13
 msgid "Next"
 msgstr ""
 
@@ -429,12 +429,12 @@ msgstr ""
 msgid "No results"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:25
+#: components/save-map/partials/dialog_save.html:25
 msgid "No, save as"
 msgstr ""
 
 #: components/compositions/partials/dialog_delete.html:14
-#: components/status_creator/partials/dialog_save.html:47
+#: components/save-map/partials/dialog_save.html:47
 msgid "OK"
 msgstr ""
 
@@ -450,7 +450,7 @@ msgstr ""
 msgid "Order by"
 msgstr ""
 
-#: components/status_creator/partials/form.html:65
+#: components/save-map/partials/form.html:65
 msgid "Organization"
 msgstr ""
 
@@ -458,7 +458,7 @@ msgstr ""
 msgid "Organization name"
 msgstr ""
 
-#: components/status_creator/partials/panel.html:11
+#: components/save-map/partials/panel.html:11
 msgid "Overwrite"
 msgstr ""
 
@@ -466,11 +466,11 @@ msgstr ""
 msgid "Overwrite existing map?"
 msgstr ""
 
-#: components/status_creator/partials/form.html:62
+#: components/save-map/partials/form.html:62
 msgid "Person"
 msgstr ""
 
-#: components/status_creator/partials/form.html:86
+#: components/save-map/partials/form.html:86
 msgid "Phone"
 msgstr ""
 
@@ -478,11 +478,11 @@ msgstr ""
 msgid "Point"
 msgstr ""
 
-#: components/status_creator/partials/form.html:68
+#: components/save-map/partials/form.html:68
 msgid "Position"
 msgstr ""
 
-#: components/status_creator/partials/form.html:80
+#: components/save-map/partials/form.html:80
 msgid "Postal code"
 msgstr ""
 
@@ -508,7 +508,7 @@ msgstr ""
 msgid "Radius"
 msgstr ""
 
-#: components/status_creator/partials/form.html:54
+#: components/save-map/partials/form.html:54
 msgid "Read"
 msgstr ""
 
@@ -538,14 +538,14 @@ msgstr ""
 msgid "Reset map"
 msgstr ""
 
-#: components/status_creator/partials/dialog.html:15
-#: components/status_creator/partials/dialog_save.html:37
-#: components/status_creator/partials/simpleform.html:73
+#: components/save-map/partials/dialog.html:15
+#: components/save-map/partials/dialog_save.html:37
+#: components/save-map/partials/simpleform.html:73
 msgid "Save"
 msgstr ""
 
-#: components/status_creator/partials/dialog.html:16
-#: components/status_creator/partials/panel.html:12
+#: components/save-map/partials/dialog.html:16
+#: components/save-map/partials/panel.html:12
 msgid "Save as"
 msgstr ""
 
@@ -554,16 +554,16 @@ msgid "Save changes first"
 msgstr ""
 
 #: components/sidebar/partials/sidebar.html:59
-#: components/status_creator/partials/dialog_save.html:6
+#: components/save-map/partials/dialog_save.html:6
 msgid "Save composition"
 msgstr ""
 
-#: components/status_creator/partials/dialog.html:7
-#: components/status_creator/partials/panel.html:2
+#: components/save-map/partials/dialog.html:7
+#: components/save-map/partials/panel.html:2
 msgid "Save current map"
 msgstr ""
 
-#: components/status_creator/partials/dialog_result.html:6
+#: components/save-map/partials/dialog_result.html:6
 msgid "Saving to status manager"
 msgstr ""
 
@@ -592,7 +592,7 @@ msgstr ""
 msgid "Select data or services for your map composition"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:30
+#: components/save-map/partials/dialog_save.html:30
 msgid "Select new name for map."
 msgstr ""
 
@@ -615,7 +615,7 @@ msgstr ""
 msgid "Speed"
 msgstr ""
 
-#: components/status_creator/partials/form.html:77
+#: components/save-map/partials/form.html:77
 msgid "State"
 msgstr ""
 
@@ -623,7 +623,7 @@ msgstr ""
 msgid "Style layer"
 msgstr ""
 
-#: components/status_creator/partials/dialog_result.html:11
+#: components/save-map/partials/dialog_result.html:11
 msgid "Successfuly saved to status manager"
 msgstr ""
 
@@ -651,7 +651,7 @@ msgstr ""
 #: components/layermanager/partials/layermanager.html:108
 #: components/ows/partials/owsnonwms.html:3
 #: components/print/partials/printdialog.html:11
-#: components/status_creator/partials/form.html:18
+#: components/save-map/partials/form.html:18
 msgid "Title"
 msgstr ""
 
@@ -663,12 +663,12 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:44
+#: components/save-map/partials/dialog_save.html:44
 msgid "Use a different name to save the map."
 msgstr ""
 
-#: components/status_creator/partials/form.html:44
-#: components/status_creator/partials/simpleform.html:54
+#: components/save-map/partials/form.html:44
+#: components/save-map/partials/simpleform.html:54
 msgid "Use current map extent"
 msgstr ""
 
@@ -684,15 +684,15 @@ msgstr ""
 msgid "WMS Capabilities parsing problem"
 msgstr ""
 
-#: components/status_creator/partials/form.html:54
+#: components/save-map/partials/form.html:54
 msgid "Write"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:22
+#: components/save-map/partials/dialog_save.html:22
 msgid "Yes, save"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:11
+#: components/save-map/partials/dialog_save.html:11
 msgid "You are atempting to save map changes to"
 msgstr ""
 
@@ -703,7 +703,7 @@ msgid ""
 "selected map composition?"
 msgstr ""
 
-#: components/status_creator/partials/dialog_save.html:43
+#: components/save-map/partials/dialog_save.html:43
 msgid "You don't have sufficient rights to do so."
 msgstr ""
 

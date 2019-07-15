@@ -2,12 +2,12 @@
     <a href="#" class="sidebar-item list-group-item" ng-if="Core.sidebarToggleable">
         <i class="menu-icon" ng-class="Core.sidebarExpanded ? (!Core.sidebarRight ? 'icon-chevron-left' : 'icon-chevron-right') : 'icon-slidersoff'"  ng-click="toggleSidebar()"></i>
     </a>
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('compositions')" ng-click="setMainPanel('composition_browser')" ng-class="{active: Core.mainpanel == 'composition_browser'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.compositions') && Core.panelEnabled('compositions')" ng-click="setMainPanel('composition_browser')" ng-class="{active: Core.mainpanel == 'composition_browser'}">
         <i class="menu-icon icon-map" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'List available map compositions'|translate}}"></i>
         <span class="sidebar-item-title" translate>Map Compositions</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.layermanager.controller') && Core.panelEnabled('layermanager')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.layermanager') && Core.panelEnabled('layermanager')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
         <i class="menu-icon icon-layers" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Manage and style your layers in composition'|translate}}"></i>
         <span class="sidebar-item-title" translate>Manage and Style Layers</span>
     </a>
@@ -67,7 +67,7 @@
         <span class="sidebar-item-title" translate>Share map</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.status_creator.controller') && Core.panelEnabled('status_creator')" ng-click="Core.openStatusCreator()" ng-class="{active: Core.mainpanel == 'status_creator'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.save-map') && Core.panelEnabled('saveMap')" ng-click="Core.openStatusCreator()" ng-class="{active: Core.mainpanel == 'saveMap'}">
         <span class="menu-icon icon-save-floppy" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Save content of map to composition'||translate}}"></span>
         <span class="sidebar-item-title" translate>Save composition</span>
     </a>

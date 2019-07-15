@@ -1,5 +1,5 @@
 import { WMSCapabilities } from 'ol/format';
-import 'utils';
+import 'components/utils/utils.module';
 import { Tile } from 'ol/layer';
 import { TileWMS } from 'ol/source';
 import { Attribution } from 'ol/control.js';
