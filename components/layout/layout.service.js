@@ -48,8 +48,7 @@ export default ['Core',
                 title: 'Add external data',
                 description: 'Add external data',
                 name: 'ows',
-                directive: 'hs.addLayers',
-                controller: 'hs.addLayers',
+                directive: 'hs.add-layers',
                 mdicon: 'library_add'
             },
             {
