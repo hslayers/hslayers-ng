@@ -1,21 +1,5 @@
 export default {
-    template: ['config', function (config) {
-        return {
-            template: require('components/compositions/partials/compositions.html'),
-            link: function (scope, element) {
-                if (angular.isUndefined(config.design) || config.design == '') {
-                    var el = document.getElementsByClassName('mid-pane');
-                    if (el.length > 0) {
-                        el[0].style.marginTop = '0px';
-                    }
-                    var el = document.getElementsByClassName('keywords-panel');
-                    if (el.length > 0) {
-                        el[0].style.display = 'none';
-                    }
-                }
-            }
-        };
-    }],
+    template: require('components/compositions/partials/compositions.html'),
     controller: ['$scope', 'Core', 'hs.compositions.service', 'hs.compositions.service_parser', '$window', 'config', '$compile',
         function ($scope, Core, Composition, compositionParser, $window, config, $compile) {
             $scope.CS = Composition;
@@ -511,6 +495,19 @@ export default {
             $scope.$on("Core_sizeChanged", function () {
                 $scope.getPageSize();
             });
+
+            //This was put here from link function of previous compositions.directive
+            //since components dont support link functions anymore
+            if (angular.isUndefined(config.design) || config.design == '') {
+                var el = document.getElementsByClassName('mid-pane');
+                if (el.length > 0) {
+                    el[0].style.marginTop = '0px';
+                }
+                var el = document.getElementsByClassName('keywords-panel');
+                if (el.length > 0) {
+                    el[0].style.display = 'none';
+                }
+            }
 
             $scope.$emit('scope_loaded', "Compositions");
         }

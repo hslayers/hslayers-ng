@@ -50,5 +50,5 @@ angular.module('hs.datasource_selector', ['hs.map'])
      * @name hs.datasource_selector
      * @description Display Datasource selector panel in app. Panel contains datasource types switcher and loaded list of datas. 
      */
-    .component('hs.datasource_selector', datasourceSelectorComponent);
+    .component('hs.datasourceSelector', datasourceSelectorComponent);
 

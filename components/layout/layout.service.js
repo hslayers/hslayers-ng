@@ -39,7 +39,7 @@ export default ['Core',
                 description: 'Select data or services for your map composition',
                 name: 'datasource_selector',
                 directive: 'hs.datasource_selector.directive',
-                controller: 'hs.datasource_selector.controller',
+                controller: 'hs.datasource_selector',
                 mdicon: 'dns'
             },
             {

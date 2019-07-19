@@ -1,8 +1,6 @@
 export default {
     template: ['config', function (config) {
-        return {
-            template: require('components/measure/partials/measure.html'),
-        };
+        return require('components/measure/partials/measure.html');
     }],
     controller: ['$scope', 'hs.map.service', 'Core', 'hs.measure.service',
         function ($scope, OlMap, Core, Measure) {

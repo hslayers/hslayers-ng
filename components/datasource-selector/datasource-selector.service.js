@@ -297,7 +297,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
          * @function zoomTo
-         * @memberOf hs.datasource_selector.controller
+         * @memberOf hs.datasource_selector
          * @param {String} bbox Bounding box of selected layer
          * ZoomTo / MoveTo to selected layer overview
          */
@@ -315,7 +315,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
          * @function addExtentFeature
-         * @memberOf hs.datasource_selector.controller
+         * @memberOf hs.datasource_selector
          * @param {Object} record Record of one dataset from Get Records response
          * (PRIVATE) Create extent features for displaying extent of loaded dataset records in map
          */
@@ -345,7 +345,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
          * @function layerDownload
-         * @memberOf hs.datasource_selector.controller
+         * @memberOf hs.datasource_selector
          * @param {Object} ds Datasource of selected layer
          * @param {Object} layer Metadata record of selected layer
          * @returns {String} Download url of layer if possible 
@@ -362,7 +362,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
          * @function layerRDF
-         * @memberOf hs.datasource_selector.controller
+         * @memberOf hs.datasource_selector
          * @param {Object} ds Datasource of selected layer
          * @param {Object} layer Metadata record of selected layer
          * @returns {String} URL to record file
@@ -374,7 +374,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
          * @function addLayerToMap
-         * @memberOf hs.datasource_selector.controller
+         * @memberOf hs.datasource_selector
          * @param {Object} ds Datasource of selected layer
          * @param {Object} layer Metadata record of selected layer
          * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)

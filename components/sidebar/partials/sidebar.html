@@ -17,7 +17,7 @@
         <span class="sidebar-item-title">Legend</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.datasource_selector.controller')" ng-click="setMainPanel('datasource_selector')" ng-class="{active: Core.mainpanel == 'datasource_selector'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.datasource_selector')" ng-click="setMainPanel('datasource_selector')" ng-class="{active: Core.mainpanel == 'datasource_selector'}">
         <span class="menu-icon icon-database" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Select data or services for your map composition'|translate}}"></span>
         <span class="sidebar-item-title" ng-if="!Core.singleDatasources" translate>Datasource Selector</span>
         <span class="sidebar-item-title" ng-if="Core.singleDatasources" translate>Add layers</span>

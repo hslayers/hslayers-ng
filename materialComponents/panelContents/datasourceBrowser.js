@@ -56,7 +56,7 @@ define(['angular', 'ol', 'angular-material'],
 
                 /**
                  * @function showSuggestions
-                 * @memberOf hs.datasource_selector.controller
+                 * @memberOf hs.datasource_selector
                  * @param {String} input Suggestion class type name (e.g. "Organisation Name")
                  * @param {String} param Suggestion paramater of Micka service (e.g. "org")
                  * @param {String} field Expected property name in response object (e.g. "value")
@@ -71,7 +71,7 @@ define(['angular', 'ol', 'angular-material'],
 
                 /**
                  * @function getPreviousRecords
-                 * @memberOf hs.datasource_selector.controller
+                 * @memberOf hs.datasource_selector
                  * @param {Object} ds Selected datasource
                  * Loads previous records of datasets from selected datasource (based on number of results per page and current start)
                  */
@@ -88,7 +88,7 @@ define(['angular', 'ol', 'angular-material'],
 
                 /**
                  * @function getNextRecords
-                 * @memberOf hs.datasource_selector.controller
+                 * @memberOf hs.datasource_selector
                  * @param {Object} ds Selected datasource
                  * Loads next records of datasets from selected datasource (based on number of results per page and current start)
                  */
@@ -107,7 +107,7 @@ define(['angular', 'ol', 'angular-material'],
 
                 /**
                  * @function showMetadata
-                 * @memberOf hs.datasource_selector.controller
+                 * @memberOf hs.datasource_selector
                  * @param {Object} ds Datasource of selected layer
                  * @param {Object} layer Metadata record of selected layer
                  * Show metadata record dialog window for selected layer.
@@ -137,7 +137,7 @@ define(['angular', 'ol', 'angular-material'],
 
                 /**
                  * @function addLayerToMap
-                 * @memberOf hs.datasource_selector.controller
+                 * @memberOf hs.datasource_selector
                  * @param {Object} ds Datasource of selected layer
                  * @param {Object} layer Metadata record of selected layer
                  * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
