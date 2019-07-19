@@ -254,30 +254,6 @@ Boolean parameter to specify if panels can be dragged out of sidepanel.
 Boolean parameter True by default to specify if to import css files (openlayers.css, bootstrap.min.css, icon fonts). 
 Set this to false for webpack usage where css is imported/required specifically outside hsl.
 
-**infopanel_template**
-
-Path to infopanel (getfeatureinfo) results template if an override of default template is needed. By default its ${hsl_path}components/query/partials/infopanel${config.design || ''}.html
-
-**layout_template**
-
-Path to main application layout template if an override of default template is needed. By default it's ${hsl_path}components/layout/partials/layout${config.design || ''}.html
-
-** overlay_template **
-
-Path to overlay template which is used to show elements over map. By default it's hsl_path + 'components/layout/partials/overlay.html
-
-**right_panel_template**
-
-Path to Material Design specific right panel template if an override of default template is needed. By default it's hsl_path + 'components/layout/partials/right-panel.html
-
-**sidenav_template**
-
-Path to Material Design specific side nav panel template if an override of default template is needed. By default it's hsl_path + 'components/layout/partials/sidenav.html
-
-**toolbar_template**
-
-Path to Material Design specific toolbar template if an override of default template is needed. By default it's hsl_path + 'components/layout/partials/toolbar.html
-
 **useIsolatedBootstrap**
 
 Load bootstrap css from node_modules/bootstrap/dist/css/bootstrap.isolated.css , which can be generated using ```npm explore hslayers-ng -- npm run isolate-bootstrap``` if hslayers-ng is dependency of your app or ```npm run isolate-bootstrap``` if you have cloned hslayers-ng repo directly.
@@ -339,14 +315,6 @@ DEPRECATED. Array of layers to be crossfilterable. Each element is an object whi
 }] 
 ```
 
-** hsl_path **
-
-Path of hslayers-ng to load templates from and require js files using requirejs. If a global variable hsl_path is set, then it is copied automatically to config.hsl_path.
-
-**paths**
-
-Dictionary of requirejs path overrides for all the components in hslayers-ng application. Can be usefull if some component needs to be substituted by third party component.
-
 **queryPoint**
 
 How to display point clicked on the map. Possible values are: hidden, notWithin
@@ -359,6 +327,3 @@ Boolean. Allow selecting and displaying info about multiple vector layer feature
 
 String to specify which search provider should be used. Can contain values: "sdi4apps_openapi", "geonames"
 
-**wirecloud_data_consumer**
-
-DEPRECATED. Function which gets executed on data_received_slot event. At the moment handling of that isnt done in hslayers, but in app.js instead. 
