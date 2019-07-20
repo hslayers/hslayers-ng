@@ -73,7 +73,6 @@ export default {
                         $scope.composition_title = temp_title;
                         $scope.composition_abstract = temp_abstract;
                         $scope.info_image = 'icon-map';
-                        if (!$scope.$$phase) $scope.$digest();
                     }, 3000);
                 }
                 $scope.composition_loaded = true;
@@ -85,7 +84,6 @@ export default {
                 * @description Status of composition edit (true for edited composition) 
                 */
                 $scope.composition_edited = false;
-                if (!$scope.$$phase) $scope.$digest();
             });
 
             $scope.$on('layermanager.layer_loading', function (event, layer) {
@@ -93,7 +91,6 @@ export default {
                     $scope.layer_loading.push(layer.get('title'));
                 }
                 $scope.composition_loaded = false;
-                if (!$scope.$$phase) $scope.$digest();
             })
 
             $scope.$on('layermanager.layer_loaded', function (event, layer) {
@@ -106,14 +103,12 @@ export default {
                 if ($scope.layer_loading.length == 0) {
                     $scope.composition_loaded = true;
                 }
-                if (!$scope.$$phase) $scope.$digest();
             })
 
             $scope.$on('compositions.composition_deleted', function (event, id) {
                 if (id == $scope.composition_id) {
                     delete $scope.composition_title;
                     delete $scope.composition_abstract;
-                    if (!$scope.$$phase) $scope.$digest();
                 }
             });
 
