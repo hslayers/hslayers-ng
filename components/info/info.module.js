@@ -12,8 +12,8 @@ import infoComponent from './info.component';
 angular.module('hs.info', ['hs.map', 'hs.core', 'updateMeta'])
     /**
      * @module info
-     * @name hs.info.controller
-     * @ngdoc controller
+     * @name hs.info
+     * @ngdoc component
      * @description Automatically updates composition abstract and status when composition is changed through appropriete composition / layermanager events. Shows mainly current composition status. Also display loading sign when composition is loading. 
      */
     .component('hs.info', infoComponent);

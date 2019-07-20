@@ -1,7 +1,6 @@
 import '../permalink/permalink.module';
 import {DoubleClickZoom, KeyboardPan, KeyboardZoom, MouseWheelZoom, PinchRotate, PinchZoom, DragPan, DragRotate, DragZoom} from 'ol/interaction';
 import Kinetic from 'ol/Kinetic';
-import Vector from 'ol/source/Vector';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import {MousePosition, defaults as controlDefaults} from 'ol/control';
@@ -9,6 +8,8 @@ import {createStringXY} from 'ol/coordinate';
 import { TileWMS, WMTS } from 'ol/source';
 import {ImageWMS, ImageArcGISRest} from 'ol/source';
 import Feature from 'ol/Feature';
+import {Group} from 'ol/layer';
+import {Vector} from 'ol/source';
 
 /**
  * This is a workaround.

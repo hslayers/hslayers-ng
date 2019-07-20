@@ -783,12 +783,12 @@ div#content-wrapper:not(.open) .minisidebar-wrapper {
 }
 
 div#hs-info-area {
-    background-color: rgba(255,255,255,0.4);
+    background-color: rgba(47, 88, 141, 0.4);
     border-radius: 4px;
     bottom: 8px;
     color: white;
     left: 0.5em;
-    padding: 2px;
+    padding: 1px;
     pointer-events: initial;
     position: absolute;
     vertical-align: bottom;
@@ -815,7 +815,7 @@ div#hs-info-composition {
 div#hs-info-composition-container {
     font-size: 12px;
     line-height: 12px;
-    padding: 12px;
+    padding: 4px;
 }
 
 div.hs-info-composition-title {
@@ -846,11 +846,6 @@ div#hs-info-container {
 div#hs-info-composition-image > span {
     line-height: 100px;
     width: 100px;
-}
-
-div#hs-info-area > div {
-    background-color: rgba(0,60,136,0.5);
-    margin: 1px;
 }
 
 div#hs-info-layers, div#hs-info-composition-edited {

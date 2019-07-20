@@ -1,15 +1,11 @@
 export default {
-    template: ['config', function (config) {
-        return {
-            template: require('components/info/partials/info.html')
-        };
-    }],
+    template: require('components/info/partials/info.html'),
     controller: ['$rootScope', '$scope', '$timeout', 'Core',
         function ($rootScope, $scope, $timeout, Core) {
             $scope.Core = Core;
             /**
             * @ngdoc property
-            * @name hs.info.controller#composition_loaded
+            * @name hs.info#composition_loaded
             * @public
             * @type {Boolean} true
             * @description Store if composition is loaded
@@ -17,7 +13,7 @@ export default {
             $scope.composition_loaded = true;
             /**
             * @ngdoc property
-            * @name hs.info.controller#layer_loading
+            * @name hs.info#layer_loading
             * @public
             * @type {Array} null
             * @description List of layers which are currently loading.
@@ -29,7 +25,7 @@ export default {
                     if (angular.isDefined(data.data)) {
                         /**
                         * @ngdoc property
-                        * @name hs.info.controller#composition_abstract
+                        * @name hs.info#composition_abstract
                         * @public
                         * @type {String} null
                         * @description Abstract of current composition (filled when first composition is loaded)
@@ -37,7 +33,7 @@ export default {
                         $scope.composition_abstract = data.data.abstract;
                         /**
                         * @ngdoc property
-                        * @name hs.info.controller#composition_title
+                        * @name hs.info#composition_title
                         * @public
                         * @type {String} null
                         * @description Title of current composition (filled when first composition is loaded)
@@ -45,7 +41,7 @@ export default {
                         $scope.composition_title = data.data.title;
                         /**
                         * @ngdoc property
-                        * @name hs.info.controller#composition_id
+                        * @name hs.info#composition_id
                         * @public
                         * @type {Number} null
                         * @description Id of current composition (filled when first composition is loaded)
@@ -78,7 +74,7 @@ export default {
                 $scope.composition_loaded = true;
                 /**
                 * @ngdoc property
-                * @name hs.info.controller#composition_edited
+                * @name hs.info#composition_edited
                 * @public
                 * @type {Boolean} null
                 * @description Status of composition edit (true for edited composition) 
@@ -87,22 +83,26 @@ export default {
             });
 
             $scope.$on('layermanager.layer_loading', function (event, layer) {
-                if (!(layer.get('title') in $scope.layer_loading)) {
-                    $scope.layer_loading.push(layer.get('title'));
-                }
-                $scope.composition_loaded = false;
+                $timeout(function () {
+                    if (!(layer.get('title') in $scope.layer_loading)) {
+                        $scope.layer_loading.push(layer.get('title'));
+                    }
+                    $scope.composition_loaded = false;
+                })
             })
 
             $scope.$on('layermanager.layer_loaded', function (event, layer) {
-                for (var i = 0; i < $scope.layer_loading.length; i++) {
-                    if ($scope.layer_loading[i] == layer.get('title')) {
-                        $scope.layer_loading.splice(i, 1);
+                $timeout(function () {
+                    for (var i = 0; i < $scope.layer_loading.length; i++) {
+                        if ($scope.layer_loading[i] == layer.get('title')) {
+                            $scope.layer_loading.splice(i, 1);
+                        }
                     }
-                }
 
-                if ($scope.layer_loading.length == 0) {
-                    $scope.composition_loaded = true;
-                }
+                    if ($scope.layer_loading.length == 0) {
+                        $scope.composition_loaded = true;
+                    }
+                })
             })
 
             $scope.$on('compositions.composition_deleted', function (event, id) {
@@ -124,7 +124,7 @@ export default {
 
             /**
              * @ngdoc method
-             * @name hs.info.controller#compositionLoaded
+             * @name hs.info#compositionLoaded
              * @public
              * @description Test if composition is loaded, to change info template.
              */
