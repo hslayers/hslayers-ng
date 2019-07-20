@@ -1,10 +1,9 @@
 import { transform } from 'ol/proj';
 import 'hs.source.SparqlJson'
 import 'angular-socialshare';
-import './config-parsers.module';
 
-export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.utils.service', 'hs.compositions.config_parsers.service',
-    function (hsMap, config, Core, $rootScope, $http, utils, configParsers) {
+export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.utils.service', 'hs.compositions.layerParserService',
+    function (hsMap, config, Core, $rootScope, $http, utils, layerParserService) {
         var me = {
             /**
             * @ngdoc property
@@ -118,6 +117,7 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
                 }
                 $rootScope.$broadcast('compositions.composition_loaded', respError);
             },
+
             /**
             * @ngdoc method
             * @name hs.compositions.service_parser#removeCompositionLayers 
@@ -171,6 +171,7 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
                 second_pair = transform(second_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
                 return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
             },
+
             /**
             * @ngdoc method
             * @name hs.compositions.service_parser#jsonToLayers 
@@ -187,27 +188,28 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
                     layers.push(me.jsonToLayer(lyr_def));
                 }
                 return layers;
+            },
+
+            /**
+            * @ngdoc method
+            * @name hs.compositions.service_parser#jsonToLayer 
+            * @public
+            * @param {Object} lyr_def Layer to be created (encapsulated in layer definition object)
+            * @returns {Function} Parser function to create layer (using config_parsers service)
+            * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
+            */
+            jsonToLayer: function (lyr_def) {
+                switch (lyr_def.className) {
+                    case "HSLayers.Layer.WMS":
+                        return layerParserService.createWmsLayer(lyr_def);
+                        break;
+                    case 'OpenLayers.Layer.Vector':
+                        return layerParserService.createVectorLayer(lyr_def);
+                        break;
+                }
             }
         };
 
-        /**
-        * @ngdoc method
-        * @name hs.compositions.service_parser#jsonToLayer 
-        * @public
-        * @param {Object} lyr_def Layer to be created (encapsulated in layer definition object)
-        * @returns {Function} Parser function to create layer (using config_parsers service)
-        * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
-        */
-        me.jsonToLayer = function (lyr_def) {
-            switch (lyr_def.className) {
-                case "HSLayers.Layer.WMS":
-                    return configParsers.createWmsLayer(lyr_def);
-                    break;
-                case 'OpenLayers.Layer.Vector':
-                    return configParsers.createVectorLayer(lyr_def);
-                    break;
-            }
-        }
         return me;
     }
 ]

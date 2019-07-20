@@ -3,7 +3,6 @@ import ImageLayer from 'ol/layer/Image';
 import VectorLayer from 'ol/layer/Vector';
 import SparqlJson from 'hs.source.SparqlJson'
 import 'angular-socialshare';
-import '../compositions/config-parsers.module';
 import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import { METERS_PER_UNIT } from 'ol/proj';

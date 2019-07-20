@@ -220,4 +220,5 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.serv
             }
         }
     }
+    return me;
 }]

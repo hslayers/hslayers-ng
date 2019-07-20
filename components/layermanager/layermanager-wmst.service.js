@@ -1,4 +1,3 @@
-import '../compositions/config-parsers.module';
 import moment from 'moment';
 global.moment = moment;
 

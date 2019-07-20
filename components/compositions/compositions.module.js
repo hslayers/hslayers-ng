@@ -4,7 +4,7 @@ import compositionsComponent from 'compositions.component';
 import SparqlJson from 'hs.source.SparqlJson';
 import 'components/utils/utils.module';
 import 'angular-socialshare';
-import './config-parsers.module';
+import './layer-parser.module';
 import overwriteDialogDirective from './overwrite-dialog.directive';
 import deleteDialogDirective from './delete-dialog.directive';
 import shareDialogDirective from './share-dialog.directive';
@@ -16,7 +16,7 @@ import infoDialogDirective from './info-dialog.directive';
  * @name hs.compositions
  * @description Test composition module
  */
-var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.compositions.config_parsers'])   
+var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.compositions.layerParser'])   
     /**
      * @module hs.compositions
      * @name hs.compositions.overwriteDialogDirective
