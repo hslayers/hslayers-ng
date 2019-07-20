@@ -1,10 +1,5 @@
 <div class="card panel-default mainpanel">
-    <div class="card-header"><translate>Info</translate>
-        <button type="button" class="close" ng-click="Core.closePanel(this)">
-            <span aria-hidden="true">×</span>
-            <span class="sr-only" translate>Close</span>
-        </button>
-    </div>
+    <hs.layout.panel-header panel-name="info" panel-title="'Info'||translate"></hs.layout.panel-header>
     <div class="card-body">
         <table class="table table-compact" ng-repeat="group in data.groups | orderBy : 'name'">
             <tr><th colspan="2">{{group.name}}</th></tr>

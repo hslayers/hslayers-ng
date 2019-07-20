@@ -1,10 +1,7 @@
 <div class="card panel-default mainpanel">
-    <div class="card-header"><span class="panel-title"><translate>Measure</translate> <span ng-show="data.multipleShapeMode" translate>multiple shapes</span></span>
-        <button type="button" class="close" ng-click="Core.closePanel(this);">
-            <span aria-hidden="true">×</span>
-            <span class="sr-only" translate>Close</span>
-        </button>
-    </div>
+    <hs.layout.panel-header panel-name="measure" panel-title="'Measure'||translate">
+        <extra-title>&nbsp;<span ng-show="data.multipleShapeMode" translate>multiple shapes</span></extra-title>
+    </hs.layout.panel-header>
     <div class="card-body p-2">
           <div class="btn-group btn-group-toggle" style="margin-bottom:10px">
             <label for="distance" class="btn btn-secondary" ng-class="{active: type == 'distance'}">

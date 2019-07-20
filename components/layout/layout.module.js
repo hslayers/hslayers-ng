@@ -18,6 +18,7 @@ import mdToolbarDirective from './md-toolbar.directive';
 import mdOverlayDirective from './md-overlay.directive';
 import mdSwipeAreaDirective from './md-swipe-area.directive';
 import layoutService from './layout.service';
+import layoutPanelHeaderDirective from './layout-panel-header.directive';
 
 // 'material.components.bottomSheetCollapsible'
 angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layermanager', 'hs.print'])
@@ -93,6 +94,15 @@ angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layerman
     * @description TODO
     */
     .directive('panelCreator', panelCreatorDirective)
+
+
+    /**
+    * @memberof hs.layout
+    * @ngdoc directive
+    * @name hs.panelHeader
+    * @description Directive for title bar of panels
+    */
+   .directive('hs.layout.panelHeader', layoutPanelHeaderDirective)
 
     /**
     * @memberof hs.layout

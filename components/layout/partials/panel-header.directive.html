@@ -1,0 +1,7 @@
+    <div class="card-header">{{panelTitle}}<span ng-transclude="extraTitle"></span>
+        <button type="button" class="close" ng-click="closePanel(this)">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <span ng-transclude="extraButtons"></span>
+    </div>

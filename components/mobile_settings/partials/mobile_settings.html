@@ -1,24 +1,24 @@
 <div class="card panel-default mainpanel">
-    <div class="card-header"><translate>Settings</translate></div>
-        <button type="button" class="close" ng-click="Core.closePanel(this)">
-            <span aria-hidden="true">×</span>
-            <span class="sr-only" translate>Close</span>
-        </button>
-        <button type="button" class="but-title-sm" ng-click="initSettings(settingsDb)">
-            <span class="icon-repeat"></span>
-        </button>
-    </div>
+    <hs.layout.panel-header panel-name="settings" panel-title="'Settings'||translate">
+        <extra-buttons>
+            <button type="button" class="but-title-sm" ng-click="initSettings(settingsDb)">
+                <span class="icon-repeat"></span>
+            </button>
+        </extra-buttons>
+    </hs.layout.panel-header>
     <div class="card-body">
         <div class="hs-settings-hostname" style="padding: 10px 15px">
             <div class="hs-settings-hostname-title">Data source</div>
-            <select class="form-control" id="hs-settings-hostname" ng-model="selectedHostname" ng-change="changeHostname()" style="margin-bottom: 5px">
-                <option ng-repeat="host in hostnames" ng-selected="selectedHostname==host.title" value="{{ host.title }}">{{ host.title }}</option>
+            <select class="form-control" id="hs-settings-hostname" ng-model="selectedHostname"
+                ng-change="changeHostname()" style="margin-bottom: 5px">
+                <option ng-repeat="host in hostnames" ng-selected="selectedHostname==host.title"
+                    value="{{ host.title }}">{{ host.title }}</option>
             </select>
             <div class="hs-settings-hostname-title">{{ hostname.default.title }}</div>
             <div class="hs-settings-hostname-url">{{ hostname.default.url }}</div>
         </div>
 
-<!--     	<ul class="list-group hostnames">
+        <!--     	<ul class="list-group hostnames">
     		<li ng-repeat="hostname in hostnames" class="list-group-item" ng-class="hostname.editable ? 'editable' : ''">
                 <div class="hs-settings-hostname-title">{{ hostname.title }}</div>
     			<div class="hs-settings-hostname-url">{{ hostname.url }}</div>

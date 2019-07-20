@@ -1,10 +1,7 @@
 <div class="card panel-default mainpanel hs-stc-mainpanel">
-    <div class="card-header"><span class="panel-title"><translate>Save current map</translate> {{title || current_composition_title}}</span>
-        <button type="button" class="close" ng-click="Core.closePanel(this)" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
+    <hs.layout.panel-header panel-name="saveMap" panel-title="'Save current map'||translate">
+        <extra-title>{{title || current_composition_title}}</extra-title>
+    </hs.layout.panel-header>
     <div class="card-body">
         <div hs.save-map.directive_form ng-if="config.advanced_form"></div>
         <div class="modal-footer" id="stc-footer"  ng-if="config.advanced_form">

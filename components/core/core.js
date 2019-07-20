@@ -295,8 +295,11 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'
                         });
                     }
                     which.unpinned = false;
-                    if (which.panel_name == me.mainpanel) {
+                    if (which.panelName == me.mainpanel) {
                         if (me.defaultPanel != '') {
+                            if(which.panelName == me.defaultPanel){
+                                me.sidebarExpanded = false;
+                            } else
                             me.setMainPanel(me.defaultPanel)
                         } else {
                             me.mainpanel = '';

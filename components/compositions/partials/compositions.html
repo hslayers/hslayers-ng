@@ -1,13 +1,14 @@
 <div class="card panel-default mainpanel hs-comp-mainpanel">
-    <div class="card-header"><span translate>Compositions</span><span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
-        <button type="button" class="close" ng-click="Core.closePanel(this)">
-            <span aria-hidden="true">×</span>
-            <span class="sr-only" translate>Close</span>
-        </button>
-        <label class="btn btn-sm btn-secondary btn-file" title="Import composition from a file on device" style="margin-bottom:0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
-            <span class="icon-upload"></span><input type="file" ng-on-change="handleFileSelect($event)" accept=".json" style="display: none;">
-        </label>
-    </div>
+    <hs.layout.panel-header panel-name="composition_browser" panel-title="'Compositions'||translate">
+        <extra-title>
+            <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
+        </extra-title>
+        <extra-buttons>
+            <label class="btn btn-sm btn-secondary btn-file" title="Import composition from a file on device" style="margin-bottom:0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
+                <span class="icon-upload"></span><input type="file" ng-on-change="handleFileSelect($event)" accept=".json" style="display: none;">
+            </label>
+        </extra-buttons>
+    </hs.layout.panel-header>
     <div class="card-body">
         <form id="hs-comp-filter">
             <div class="form-group">

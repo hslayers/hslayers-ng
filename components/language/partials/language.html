@@ -1,10 +1,5 @@
 <div class="card panel-default mainpanel">
-    <div class="card-header"><translate>Change language</translate>
-        <button type="button" class="close" ng-click="Core.closePanel(this)">
-            <span aria-hidden="true">×</span>
-            <span class="sr-only" translate>Close</span>
-        </button>
-    </div>
+    <hs.layout.panel-header panel-name="language" panel-title="'Change language'||translate"></hs.layout.panel-header>
     <div class="card-body">
         <ul class="hs-senslog-list list-group">
             <button ng-repeat="lang in available_languages" ng-class="'btn btn-block'+(getCurrentLanguageCode()==lang.key.substr(0,2).toUpperCase() ? ' btn-primary' : ' btn-secondary')" ng-click="setLanguage(lang.key)">{{lang.name}}</button>
