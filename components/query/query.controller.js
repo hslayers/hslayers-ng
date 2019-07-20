@@ -97,7 +97,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
 
         //add current panel queriable - activate/deactivate
         $scope.$on('core.mainpanel_changed', function (event, closed) {
-            if (angular.isDefined(closed) && closed.panel_name == "info") {
+            if (angular.isDefined(closed) && closed.panelName == "info") {
                 popup.hide();
                 Base.deactivateQueries();
             }

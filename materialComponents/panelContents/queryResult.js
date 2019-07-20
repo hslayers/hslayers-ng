@@ -61,7 +61,7 @@ define(['angular', 'ol', 'angular-material'],
                     }
 
                     $scope.$on('core.mainpanel_changed', function (event, closed) {
-                        if (angular.isDefined(closed) && closed.panel_name == "info") {
+                        if (angular.isDefined(closed) && closed.panelName == "info") {
                             Base.deactivateQueries();
                         }
                         else if (Core.current_panel_queryable) {

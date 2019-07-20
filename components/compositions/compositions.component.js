@@ -16,14 +16,6 @@ export default {
             $scope.compNext = $scope.pageSize;
             /**
             * @ngdoc property
-            * @name hs.compositions.controller#panel_name
-            * @deprecated
-            * @type {string} composition_browser
-            * @description 
-            */
-            $scope.panel_name = 'composition_browser';
-            /**
-            * @ngdoc property
             * @name hs.compositions.controller#keywords
             * @public
             * @type {Object} 

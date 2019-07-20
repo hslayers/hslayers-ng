@@ -232,7 +232,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'
                 */
                 panelVisible: function (which, scope) {
                     if (angular.isDefined(scope))
-                        if (angular.isUndefined(scope.panel_name)) scope.panel_name = which;
+                        if (angular.isUndefined(scope.panelName)) scope.panelName = which;
                     if (angular.isDefined(me.panel_statuses[which])) {
                         return me.panel_statuses[which] && me.panelEnabled(which);
                     }

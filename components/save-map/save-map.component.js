@@ -5,7 +5,6 @@ export default {
             $scope.compoData = StatusManager.compoData;
             $scope.statusData = StatusManager.statusData;
             $scope.userData = StatusManager.userData;
-            $scope.panel_name = 'saveMap';
             $scope.config = config;
 
             /**
