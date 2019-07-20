@@ -30,8 +30,8 @@ angular.module('hs.addLayersVector', ['hs.styles'])
     * @name hs.addLayersVector.service
     * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
     */
-    .service('hs.addLayersVector.service', ['config', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.save-map.service',
-        function (config, $rootScope, OlMap, styles, utils, $http, statusCreator) {
+    .service('hs.addLayersVector.service', ['config', 'Core', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.save-map.service', 'hs.permalink.urlService',
+        function (config, Core, $rootScope, OlMap, styles, utils, $http, statusCreator, permalink) {
             var me = this;
 
             /**
@@ -221,6 +221,40 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                 return lyr;
             };
 
+            /**
+            * (PRIVATE) Zoom to selected vector layer
+            * @memberof hs.addLayers
+            * @function zoomToVectorLayer
+            * @param {ol.Layer} lyr New layer
+            */
+            function zoomToVectorLayer(lyr) {
+                Core.setMainPanel('layermanager');
+                lyr.getSource().on('change', function () { //Event needed because features are loaded asynchronously
+                    var extent = lyr.getSource().getExtent();
+                    if (extent != null) OlMap.map.getView().fit(extent, OlMap.map.getSize());
+                });
+            }
+
+            me.checkUrlParamsAndAdd = function(){
+                var title = decodeURIComponent(permalink.getParamValue('title')) || 'Layer';
+                var abstract = decodeURIComponent(permalink.getParamValue('abstract'));
+
+                if (permalink.getParamValue('geojson_to_connect')) {
+                    var url = permalink.getParamValue('geojson_to_connect');
+                    var type = 'geojson';
+                    if (url.indexOf('gpx') > 0) type = 'gpx';
+                    if (url.indexOf('kml') > 0) type = 'kml';
+                    var lyr = me.add(type, url, title, abstract, false, 'EPSG:4326');
+                    zoomToVectorLayer(lyr);
+                }
+    
+                if (permalink.getParamValue('kml_to_connect')) {
+                    var url = permalink.getParamValue('kml_to_connect');
+                    var lyr = me.add('kml', url, title, abstract, true, 'EPSG:4326');
+                    zoomToVectorLayer(lyr);
+                }
+            }
+
             var dragAndDrop = new DragAndDrop({
                 formatConstructors: [
                     GPX,
@@ -233,6 +267,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
 
             $rootScope.$on('map.loaded', function () {
                 OlMap.map.addInteraction(dragAndDrop);
+                me.checkUrlParamsAndAdd()
             });
 
             dragAndDrop.on('addfeatures', function (event) {

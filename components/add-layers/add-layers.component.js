@@ -101,20 +101,6 @@ export default {
                 $scope.showDetails = false;
             }
 
-            /**
-            * (PRIVATE) Zoom to selected vector layer
-            * @memberof hs.addLayers
-            * @function zoomToVectorLayer
-            * @param {ol.Layer} lyr New layer
-            */
-            function zoomToVectorLayer(lyr) {
-                Core.setMainPanel('layermanager');
-                lyr.getSource().on('change', function () { //Event needed because features are loaded asynchronously
-                    var extent = lyr.getSource().getExtent();
-                    if (extent != null) map.getView().fit(extent, map.getSize());
-                });
-            }
-
             if (permalink.getParamValue('wms_to_connect')) {
                 var wms = permalink.getParamValue('wms_to_connect');
                 Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
@@ -127,24 +113,6 @@ export default {
                 Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                 $scope.setUrlAndConnect(wfs, 'WFS');
                 if (Core.singleDatasources) $('.dss-tabs a[href="#OWS"]').tab('show');
-            }
-
-            var title = decodeURIComponent(permalink.getParamValue('title')) || 'Layer';
-            var abstract = decodeURIComponent(permalink.getParamValue('abstract'));
-
-            if (permalink.getParamValue('geojson_to_connect')) {
-                var url = permalink.getParamValue('geojson_to_connect');
-                var type = 'geojson';
-                if (url.indexOf('gpx') > 0) type = 'gpx';
-                if (url.indexOf('kml') > 0) type = 'kml';
-                var lyr = nonwmsservice.add(type, url, title, abstract, false, 'EPSG:4326');
-                zoomToVectorLayer(lyr);
-            }
-
-            if (permalink.getParamValue('kml_to_connect')) {
-                var url = permalink.getParamValue('kml_to_connect');
-                var lyr = nonwmsservice.add('kml', url, title, abstract, true, 'EPSG:4326');
-                zoomToVectorLayer(lyr);
             }
 
             $scope.$emit('scope_loaded', "Ows");

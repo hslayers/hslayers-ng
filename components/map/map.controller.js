@@ -53,9 +53,6 @@ function ($scope, OlMap, config, permalink, Core, $rootScope) {
             OlMap.moveToAndZoom(parseFloat(hs_x), parseFloat(hs_y), parseInt(hs_z));
         }
 
-        if (permalink.getParamValue('permalink')) {
-            permalink.parsePermalinkLayers();
-        }
         if (permalink.getParamValue("puremap")) {
             Core.puremapApp = true;
             OlMap.puremap();

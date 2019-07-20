@@ -1,5 +1,5 @@
-export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.save-map.service', 'hs.compositions.service_parser', 'config',
-    function ($rootScope, $http, $location, $window, OlMap, Core, utils, saveMap, compositions, config) {
+export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.save-map.service', 'config',
+    function ($rootScope, $http, $location, $window, OlMap, Core, utils, saveMap, config) {
 
         var url_generation = true;
         //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
@@ -122,33 +122,6 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
 
                     return ret;
                 }, {});
-            },
-
-            /**
-            * @function parsePermalinkLayers
-            * @memberof hs.permalink.urlService
-            * Load layers received through permalink to map
-            */
-            parsePermalinkLayers: function () {
-                var layersUrl = utils.proxify(me.getParamValue('permalink'));
-                $http({ url: layersUrl }).
-                    then(function (response) {
-                        if (response.data.success == true) {
-                            var data = {};
-                            data.data = {};
-                            data.data.layers = response.data.data;
-                            compositions.removeCompositionLayers();
-                            response.layers = response.data.data;
-                            var layers = compositions.jsonToLayers(data);
-                            for (var i = 0; i < layers.length; i++) {
-                                OlMap.addLayer(layers[i]);
-                            }
-                        } else {
-                            if (console) console.log('Error loading permalink layers');
-                        }
-                    }, function (err) {
-
-                    });
             },
 
             /**

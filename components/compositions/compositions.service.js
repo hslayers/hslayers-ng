@@ -3,7 +3,7 @@ import { Vector } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import SparqlJson from 'hs.source.SparqlJson'
 import social from 'angular-socialshare';
-import './config-parsers.module';
+import './layer-parser.module';
 import { transform, transformExtent } from 'ol/proj';
 import { fromExtent as polygonFromExtent } from 'ol/geom/Polygon';
 import Feature from 'ol/Feature';
@@ -342,6 +342,39 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
                 me.loadComposition(url, true);
             }
         }
+
+        /**
+        * @function parsePermalinkLayers
+        * @memberof hs.compositions.service
+        * Load layers received through permalink to map
+        */
+        me.parsePermalinkLayers = function () {
+            var layersUrl = utils.proxify(permalink.getParamValue('permalink'));
+            $http({ url: layersUrl }).
+                then(function (response) {
+                    if (response.data.success == true) {
+                        var data = {};
+                        data.data = {};
+                        data.data.layers = response.data.data;
+                        compositionParser.removeCompositionLayers();
+                        response.layers = response.data.data;
+                        var layers = compositionParser.jsonToLayers(data);
+                        for (var i = 0; i < layers.length; i++) {
+                            OlMap.addLayer(layers[i]);
+                        }
+                    } else {
+                        if (console) console.log('Error loading permalink layers');
+                    }
+                }, function (err) {
+
+                });
+        };
+
+        $rootScope.$on('map.loaded', function () {
+            if (permalink.getParamValue('permalink')) {
+                permalink.parsePermalinkLayers();
+            }
+        })
 
         me.loadComposition = function (url, overwrite) {
             compositionParser.load(url, overwrite, me.data.useCallbackForEdit ? callbackForEdit : null);
