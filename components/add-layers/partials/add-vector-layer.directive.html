@@ -3,47 +3,37 @@
     <hs.add-layers-url type="vector" url="url"></hs.add-layers-url>
 
     <div class="form-group">
-        <label class="capabilities_label col-sm-4 control-label" translate>Title</label>
-        <div class="capabilities_input col-sm-8">
-            <input class="form-control" ng-model="title"/>
-        </div>
+        <label class="capabilities_label control-label" translate>Title</label>
+        <input class="form-control" ng-model="title"/>
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label col-sm-4 control-label" translate>Abstract</label>
-        <div class="capabilities_input col-sm-8">
-            <textarea class="form-control" id='hs-ows-abstract' placeholder="{{'Fill in descriptive text about map'|translate}}" ng-model="abstract">
-            </textarea>
-        </div>
+        <label class="capabilities_label control-label" translate>Abstract</label>
+        <textarea class="form-control" id='hs-ows-abstract' placeholder="{{'Fill in descriptive text about map'|translate}}" ng-model="abstract">
+        </textarea>
     </div>
 
-    <button type="button" class="btn btn-secondary" data-toggle="collapse" ng-click="advancedPanelVisible = !advancedPanelVisible" data-target="#hs-ows-advancedPanel" translate>
+    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="collapse" ng-click="advancedPanelVisible = !advancedPanelVisible" data-target="#hs-ows-advancedPanel" translate>
         Advanced options
     </button>
 
     <div id="hs-ows-advancedPanel" class="collapse" ng-class="{'show': advancedPanelVisible}">
         <div class="form-group">
-            <label class="capabilities_label col-sm-4 control-label">SRS</label>
-            <div class="capabilities_input col-sm-8">
-                <input class="form-control" ng-model="srs"/>
-            </div>
+            <label class="capabilities_label control-label">SRS</label>
+            <input class="form-control" ng-model="srs"/>
         </div>
 
         <div class="form-group">
-            <label class="capabilities_label col-sm-4 control-label" translate>Folder name</label>
-            <div class="capabilities_input col-sm-8">
-                <input class="form-control" ng-model="folder_name"/>
-            </div>
+            <label class="capabilities_label control-label" translate>Folder name</label>
+            <input class="form-control" ng-model="folder_name"/>
         </div>
 
         <div class="form-group">
-            <label class="capabilities_label col-sm-4 control-label" translate>Extract styles</label>
-            <div class="capabilities_input col-sm-8">
-                <input type="checkbox" ng-model="extract_styles"/>
-            </div>
+            <label class="capabilities_label control-label" translate>Extract styles</label>
+            <input type="checkbox" ng-model="extract_styles"/>
         </div>
     </div>
 
-    <button class="btn btn-primary pull-right" ng-disabled="!title" ng-click="add()"><i class="icon-refresh"></i> <translate>Add</translate></button>
+    <button class="btn btn-primary btn-block" ng-disabled="!title" ng-click="add()"><i class="icon-plus"></i> <translate>Add</translate></button>
     </a>
 </form>
