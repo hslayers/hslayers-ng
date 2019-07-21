@@ -1,0 +1,8 @@
+<button type="button" ng-click="historyDropdownVisible=!historyDropdownVisible"
+    class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
+    aria-expanded="false">
+    <span class="sr-only">Toggle Dropdown</span>
+    <div class="dropdown-menu" style="left: auto; right:0; width:325px; overflow: hidden" ng-class="{'show': historyDropdownVisible}">
+        <a class="dropdown-item" ng-repeat="item in items" ng-click="clicked(item)" href="#">{{item}}</a>
+    </div>
+</button>
