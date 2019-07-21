@@ -9,8 +9,9 @@ import { ImageWMS } from 'ol/source';
 import { Attribution } from 'ol/control.js';
 import { getPreferedFormat } from '../../common/format-utils';
 import { addAnchors } from '../../common/attribution-utils';
+import 'angular-cookies';
 
-export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService', 'Core', function ($rootScope, OlMap, WmsCapsService, Core) {
+export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService', 'Core', '$cookies', 'hs.permalink.urlService', function ($rootScope, OlMap, WmsCapsService, Core, $cookies, permalink) {
     var me = this;
 
     this.data = {

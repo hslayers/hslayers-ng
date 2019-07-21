@@ -1,0 +1,15 @@
+<div class="form-group">
+    <div class="input-group">
+        <input type="url" class="form-control" name="url" ng-model="url"
+            placeholder="{{'External data source (URL)'|translate}}" required />
+
+        <div class="input-group-append">
+
+            <button type="button" class="btn btn-secondary" ng-if="field.$valid" ng-click="connect()"><i
+                    class="icon-link"></i></button>
+            <button type="button" class="btn btn-danger" ng-if="field.$error.url"><i
+                    class="icon-alertalt"></i></button>
+            <hs.history-list clicked="historySelected" what="{{type}}"></hs.history-list>
+        </div>
+    </div>
+</div>

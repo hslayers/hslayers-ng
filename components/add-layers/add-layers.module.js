@@ -6,14 +6,16 @@ import './add-layers-wms.module';
 import './add-layers-wmts.module';
 import './add-layers-wfs.module';
 import './add-layers-vector.module';
+import '../../common/history-list/history-list.module';
+import addLayersUrlDirective from './add-layers-url.directive';
 
 /**
  * @namespace hs.addLayers
  * @memberOf hs
  */
-export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector'])
+export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector', 'ngCookies', 'hs.historyList'])
     /**
-    * @memberof hs.ows
+    * @memberof hs.addLayers
     * @ngdoc directive
     * @name compile
     * @description Directive which compiles a template and includes it in the dom. 
@@ -22,9 +24,17 @@ export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.add
     .directive('compile', compileDirective)
 
     /**
-    * @memberof hs.ows
-    * @ngdoc controller
+    * @memberof hs.addLayers
+    * @ngdoc directive
+    * @name hs.addLayersUrl
+    */
+   .directive('hs.addLayersUrl', addLayersUrlDirective)
+
+    /**
+    * @memberof hs.addLayers
+    * @ngdoc component
     * @name hs.addLayers
     */
     .component('hs.addLayers', addLayersComponent);
+
 

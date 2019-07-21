@@ -9,8 +9,28 @@ export default {
             require('components/add-layers/partials/add-wms-layer.md.directive.html') :
             require('components/add-layers/partials/add-wms-layer.directive.html')
     }],
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.addLayersWms.addLayerService', function ($scope, OlMap, Core, LayService) {
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.wms.getCapabilitiesService', 'hs.addLayersWms.addLayerService', 'hs.historyListService', function ($scope, OlMap, Core, wmsGetCapabilitiesService, LayService, historyListService) {
         $scope.data = LayService.data;
+
+        /**
+        * Clear Url and hide detailsWms
+        * @memberof hs.addLayers
+        * @function clear
+        */
+        $scope.clear = function () {
+            $scope.url = '';
+            $scope.showDetails = false;
+        }
+
+        $scope.connect = function () {
+            historyListService.addSourceHistory('Wms', $scope.url);
+            wmsGetCapabilitiesService.requestGetCapabilities($scope.url);
+            $scope.showDetails = true;
+        }
+
+        $scope.$on('ows.wms_connecting', function (event, wms) {
+            $scope.setUrlAndConnect(wms);
+        });
 
         /**
          * @function selectAllLayers
@@ -37,6 +57,20 @@ export default {
         $scope.srsChanged = function () {
             LayService.srsChanged();
         }
+
+        /**
+        * Connect to service of specified Url
+        * @memberof hs.addLayersWms
+        * @function setUrlAndConnect
+        * @param {String} url Url of requested service
+        * @param {String} type Type of requested service
+        */
+        $scope.setUrlAndConnect = function (url) {
+            $scope.url = url;
+            $scope.connect();
+        }
+        
+        $scope.sourceHistory = LayService.sourceHistory;
 
         $scope.getDimensionValues = LayService.getDimensionValues;
 

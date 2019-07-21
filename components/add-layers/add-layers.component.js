@@ -1,51 +1,22 @@
 export default {
-    template: require('components/add-layers/partials/add-layers.directive.html'), 
-    controller: ['$scope', '$injector', 'hs.wms.getCapabilitiesService', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.map.service', 'hs.permalink.urlService', 'Core', 'hs.addLayersVector.service', 'config', '$rootScope',
-        function ($scope, $injector, srv_wms_caps, srv_wmts_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config, $rootScope) {
+    template: require('components/add-layers/partials/add-layers.directive.html'),
+    controller: ['$scope', '$injector', 'hs.wms.getCapabilitiesService', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.map.service', 'hs.permalink.urlService', 'Core', 'hs.addLayersVector.service', 'config', '$rootScope', '$timeout',
+        function ($scope, $injector, srv_wms_caps, srv_wmts_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config, $rootScope, $timeout) {
             $scope.Core = Core;
             var map = OlMap.map;
             if (angular.isArray(config.connectTypes)) {
                 $scope.types = config.connectTypes;
             } else {
-                $scope.types = ["", "WMS", "KML", "GeoJSON"];
+                $scope.types = [
+                    { id: "none", text: "" },
+                    { id: "wms", text: "Web map service (WMS)" },
+                    { id: "vector", text: "Vector file (GeoJson, KML)" }
+                ];
             }
             $scope.type = "";
             $scope.image_formats = [];
             $scope.query_formats = [];
             $scope.tile_size = 512;
-            /**
-            * Connect to service of specified Url and Type
-            * @memberof hs.addLayers
-            * @function setUrlAndConnect
-            * @param {String} url Url of requested service
-            * @param {String} type Type of requested service
-            */
-            $scope.setUrlAndConnect = function (url, type) {
-                $scope.url = url;
-                $scope.type = type;
-                $scope.connect();
-            }
-            /**
-            * Get capabalitires of selected OGC service and show details in app
-            * @memberof hs.addLayers
-            * @function connect
-            */
-            $scope.connect = function () {
-                switch ($scope.type.toLowerCase()) {
-                    case "wms":
-                        srv_wms_caps.requestGetCapabilities($scope.url);
-                        $scope.showDetails = true;
-                        break;
-                    case "wmts":
-                        srv_wmts_caps.requestGetCapabilities($scope.url);
-                        $scope.showDetails = true;
-                        break;
-                    case "wfs":
-                        srv_wfs_caps.requestGetCapabilities($scope.url);
-                        $scope.showDetails = true;
-                        break;
-                }
-            };
 
             /**
             * Change detail panel template according to selected type
@@ -66,8 +37,7 @@ export default {
                     case "wfs":
                         template = '<hs.add-layers-wfs/>';
                         break;
-                    case "kml":
-                    case "geojson":
+                    case "vector":
                         template = '<hs.add-layers-vector/>';
                         $scope.showDetails = true;
                         break;
@@ -77,43 +47,19 @@ export default {
                 return template;
             };
 
-            /**
-            * Test if currently selected type is service or file
-            * @memberof hs.addLayers
-            * @function isService
-            * @returns {Boolean} boolean True for service, false for file
-            */
-            $scope.isService = function () {
-                if (["kml", "geojson", "json"].indexOf($scope.type.toLowerCase()) > -1) {
-                    return false;
-                } else {
-                    return true;
+            function connectServiceFromUrlParam(type) {
+                if (permalink.getParamValue(`${type}_to_connect`)) {
+                    var url = permalink.getParamValue(`${type}_to_connect`);
+                    Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
+                    $scope.type = type.toUpperCase();
+                    $timeout(function () {
+                        $rootScope.$broadcast(`ows.${type}_connecting`, url);
+                    })
                 }
             }
 
-            /**
-            * Clear Url and hide details
-            * @memberof hs.addLayers
-            * @function clear
-            */
-            $scope.clear = function () {
-                $scope.url = '';
-                $scope.showDetails = false;
-            }
-
-            if (permalink.getParamValue('wms_to_connect')) {
-                var wms = permalink.getParamValue('wms_to_connect');
-                Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
-                $scope.setUrlAndConnect(wms, 'WMS');
-                $rootScope.$broadcast('ows.wms_connecting');
-            }
-
-            if (permalink.getParamValue('wfs_to_connect') && window.allowWFS2) {
-                var wfs = permalink.getParamValue('wfs_to_connect');
-                Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
-                $scope.setUrlAndConnect(wfs, 'WFS');
-                if (Core.singleDatasources) $('.dss-tabs a[href="#OWS"]').tab('show');
-            }
+            connectServiceFromUrlParam('wms');
+            connectServiceFromUrlParam('wfs');
 
             $scope.$emit('scope_loaded', "Ows");
         }

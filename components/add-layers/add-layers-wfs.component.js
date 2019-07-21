@@ -68,6 +68,37 @@ export default {
             });
 
             /**
+            * Clear Url and hide detailsWms
+            * @memberof hs.addLayers
+            * @function clear
+            */
+            $scope.clear = function () {
+                $scope.url = '';
+                $scope.showDetails = false;
+            }
+
+            $scope.connect = function () {
+                wfsGetCapabilitiesService.requestGetCapabilities($scope.url);
+                $scope.showDetails = true;
+            }
+
+            $scope.$on('ows.wfs_connecting', function (event, url) {
+                $scope.setUrlAndConnect(url);
+            });
+
+            /**
+            * Connect to service of specified Url
+            * @memberof hs.addLayersWms
+            * @function setUrlAndConnect
+            * @param {String} url Url of requested service
+            * @param {String} type Type of requested service
+            */
+            $scope.setUrlAndConnect = function (url) {
+                $scope.url = url;
+                $scope.connect();
+            }
+            
+            /**
              * @function selectAllLayers
              * @memberOf hs.addLayersWfs
              * @description Select all layers from service.
