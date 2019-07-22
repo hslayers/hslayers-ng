@@ -23,17 +23,17 @@
         </md-input-container>
     </div>
 
-    <p class="md-warn" ng-show="data.resample_warning" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
+    <p class="md-warn" ng-show="data.useResampling" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
 
-    <md-checkbox ng-model="data.use_tiles" aria-label="Use tiles">
+    <md-checkbox ng-model="data.useTiles" aria-label="Use tiles">
         <translate>Use tiles</translate>
     </md-checkbox>
 
-    <p class="md-warn" ng-show="!data.use_tiles" translate>Consider using tiles. Some servers has restricted max size of picture.</p>
+    <p class="md-warn" ng-show="!data.useTiles" translate>Consider using tiles. Some servers has restricted max size of picture.</p>
 
     <md-input-container>
         <label translate>Tile size</label>
-        <input ng-model="data.tile_size" >
+        <input ng-model="data.tileSize" >
     </md-input-container>
 
     <md-input-container>

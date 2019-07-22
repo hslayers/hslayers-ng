@@ -1352,11 +1352,6 @@ md-bottom-sheet .content {
     overflow-x: hidden;
 }
 
-.layer-checked {
-    float: right;
-    clear: right;
-}
-
 .hs-ows-layer-title {
     width: calc(100% - 16px);
     display: inline-block;

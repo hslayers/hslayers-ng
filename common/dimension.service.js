@@ -34,7 +34,6 @@ export default [function () {
         },
 
         getDimensionValues(dimension) {
-            debugger;
             try {
                 if (moment(dimension.default).isValid())
                     return me.prepareTimeSteps(dimension.values)
@@ -66,7 +65,6 @@ export default [function () {
                 }
                 angular.forEach(layer.Dimension, function (dimension) {
                     dimension.values = me.getDimensionValues(dimension);
-                    debugger;
                 })
             })
         }

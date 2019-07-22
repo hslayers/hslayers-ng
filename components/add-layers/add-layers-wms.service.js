@@ -20,6 +20,19 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
         tileSize: 512
     };
 
+    function fillProjections(caps, response){
+        if (angular.isDefined(caps.Capability.Layer.CRS)) {
+            me.data.srss = caps.Capability.Layer.CRS;
+        } else {
+            var oParser = new DOMParser();
+            var oDOM = oParser.parseFromString(response, "application/xml");
+            var doc = oDOM.documentElement;
+            doc.querySelectorAll('Capability>Layer>CRS').forEach(function (srs) {
+                me.data.srss.push(srs.innerHTML);
+            });
+        }
+    }
+
     this.capabilitiesReceived = function (response) {
         try {
             var parser = new WMSCapabilities();
@@ -32,13 +45,8 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
             me.data.query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
             me.data.exceptions = caps.Capability.Exception;
             me.data.srss = [];
-            if (angular.isDefined(caps.Capability.Layer.CRS)) {
-                me.data.srss = caps.Capability.Layer.CRS;
-            } else {
-                $("Capability>Layer>SRS", response).each(function () {
-                    me.data.srss.push(this.innerHTML);
-                });
-            }
+            fillProjections(caps, response);
+            //TODO: WHY?
             if (me.data.srss.indexOf('CRS:84') > -1) me.data.srss.splice(me.data.srss.indexOf('CRS:84'), 1);
 
             if (WmsCapsService.currentProjectionSupported(me.data.srss))
@@ -48,8 +56,11 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
             } else
                 me.data.srs = me.data.srss[0];
             me.srsChanged();
-            me.data.services = caps.Capability.Layer;
-
+            if(Array.isArray(caps.Capability.Layer))
+                me.data.services = caps.Capability.Layer;
+            else if(typeof caps.Capability.Layer == 'object')
+                me.data.services = [caps.Capability.Layer];
+            
             dimensionService.fillDimensionValues(caps.Capability.Layer);
 
             me.data.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
@@ -113,7 +124,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                 recurse(sublayer)
             })
         }
-        angular.forEach(me.data.services.Layer, function (layer) {
+        angular.forEach(me.data.services, function (layer) {
             recurse(layer)
         });
         Core.setMainPanel('layermanager');
@@ -152,7 +163,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
         var layer_class = Tile;
         var source_class = TileWMS;
 
-        if (!me.data.use_tiles) {
+        if (!me.data.useTiles) {
             layer_class = ImageLayer;
             source_class = ImageWMS;
         }
@@ -177,19 +188,24 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
         if (layer.Style && layer.Style[0].LegendURL) {
             legends.push(layer.Style[0].LegendURL[0].OnlineResource);
         }
+        var styles = undefined;
+        if(layer.styleSelected) 
+            styles = layer.styleSelected;
+        else
+            styles = layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : 'default'
         var new_layer = new layer_class({
             title: layerName,
             source: new source_class({
                 url: me.data.getMapUrl,
                 attributions: attributions,
                 projection: me.data.crs || me.data.srs,
-                styles: layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : undefined,
                 params: Object.assign({
                     LAYERS: layer.Name,
                     INFO_FORMAT: (layer.queryable ? query_format : undefined),
                     FORMAT: me.data.image_format,
                     FROMCRS: me.data.srs,
-                    VERSION: me.data.version
+                    VERSION: me.data.version,
+                    STYLES: styles
                 }, dimensionService.paramsFromDimensions(layer)),
                 crossOrigin: 'anonymous'
             }),
@@ -204,7 +220,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
             dimensions: dimensions,
             legends: legends
         });
-        OlMap.proxifyLayerLoader(new_layer, me.data.use_tiles);
+        OlMap.proxifyLayerLoader(new_layer, me.data.useTiles);
         OlMap.map.addLayer(new_layer);
     }
 

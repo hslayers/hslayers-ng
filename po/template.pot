@@ -21,7 +21,7 @@ msgid "<input type=\"checkbox\" ng-model=\"data.register_metadata\"> Register me
 msgstr ""
 
 #: components/ows/partials/owswms.html:34
-msgid "<input type=\"checkbox\" ng-model=\"data.use_tiles\"> Use tiles"
+msgid "<input type=\"checkbox\" ng-model=\"data.useTiles\"> Use tiles"
 msgstr ""
 
 #: components/permalink/partials/directive.html:63

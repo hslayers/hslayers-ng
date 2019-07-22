@@ -8,6 +8,7 @@ import './add-layers-wfs.module';
 import './add-layers-vector.module';
 import '../../common/history-list/history-list.module';
 import addLayersUrlDirective from './add-layers-url.directive';
+import nestedLayersTableDirective from './nested-layers-table.directive';
 
 /**
  * @namespace hs.addLayers
@@ -29,6 +30,14 @@ export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.add
     * @name hs.addLayersUrl
     */
    .directive('hs.addLayersUrl', addLayersUrlDirective)
+
+
+    /**
+    * @memberof hs.addLayers
+    * @ngdoc directive
+    * @name hs.addLayersUrl
+    */
+   .directive('hs.nestedLayersTable', nestedLayersTableDirective )
 
     /**
     * @memberof hs.addLayers
