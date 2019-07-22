@@ -1,17 +1,15 @@
 'use strict';
-import angularMaterial from 'angular-material';
-
-import ol from 'ol';
-import toolbar from 'toolbar';
-import print from 'print';
-import query from 'query';
-import search from 'search';
-import measure from 'measure';
-import permalink from 'permalink';
-import info from 'info';
-import ds from 'datasource_selector';
-import sidebar from 'sidebar';
-import addLayers from 'add-layers.module';
+import 'angular-material';
+import 'toolbar.module';
+import 'print.module';
+import 'query.module';
+import 'search.module';
+import 'measure.module';
+import 'permalink.module';
+import 'info.module';
+import 'datasource-selector.module';
+import 'sidebar.module';
+import 'add-layers.module';
 
 var module = angular.module('hs', [
     'hs.sidebar',
@@ -42,7 +40,6 @@ if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hsl
 
 module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config',
     function ($scope, Core, srv_producer, composition_parser, config) {
-        $scope.hsl_path = config.hsl_path; //Get this from hslayers.js file
         $scope.Core = Core;
         Core.sidebarRight = false;
         Core.singleDatasources = true;

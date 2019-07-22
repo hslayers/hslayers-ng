@@ -1,15 +1,15 @@
 'use strict';
 
-import toolbar from 'toolbar';
-import print from 'print';
-import query from 'query';
-import search from 'search';
-import measure from 'measure';
-import permalink from 'permalink';
-import 'components/info/info.module';
-import 'components/datasource-selector/datasource_selector.module';
-import 'components/sidebar/sidebar.module';
-import 'components/add-layers/add-layers.module';
+import 'toolbar.module';
+import 'print.module';
+import 'query.module';
+import 'search.module';
+import 'measure.module';
+import 'permalink.module';
+import 'info.module';
+import 'datasource-selector.module';
+import 'sidebar.module';
+import 'add-layers.module';
 
 var module = angular.module('hs', [
     'hs.sidebar',
@@ -21,7 +21,7 @@ var module = angular.module('hs', [
     'hs.legend', 'hs.geolocation', 'hs.core',
     'hs.datasource_selector',
     'hs.save-map',
-    'hs.addLayersModule',
+    'hs.addLayers',
     'gettext',
     'hs.compositions',
     'hs.info'
