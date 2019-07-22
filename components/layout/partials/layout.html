@@ -2,7 +2,7 @@
 <div id="page-wrapper" class="bootstrap-iso">
     <div id="content-wrapper" ng-class="{'open': Core.sidebarExpanded && Core.sidebarVisible(), 'sb-right': Core.sidebarRight && Core.sidebarVisible(), 'sb-left': !Core.sidebarRight && Core.sidebarVisible(), 'classic-sidebar': Core.classicSidebar, 'mini-sidebar': !Core.classicSidebar}">
         <div class="page-content">
-            <div hs.map.directive ng-controller="hs.map.controller" ng-show="hs_map.visible" id="map" style="z-index:990"></div>
+            <div hs.map.directive ng-controller="hs.map.controller" ng-show="hs_map.visible" id="map" style="z-index:990" ng-style="mapStyle()"></div>
             <hs.toolbar ng-if="Core.exists('hs.toolbar') && !Core.puremapApp" ng-show="(!Core.smallWidth || !Core.sidebarExpanded) && Core.panelEnabled('toolbar') && Core.sidebarVisible()"></hs.toolbar>
 
             <div class="gui-overlay" ng-if="!Core.puremapApp">
@@ -15,11 +15,11 @@
                 </div>
 
 
-                <div class="panelspace" ng-if="Core.sidebarVisible()" ng-class="{'labels': Core.sidebarLabels, 'buttons': Core.sidebarButtons, 'minisidebar-wrapper':!Core.classicSidebar}">
-                    <div class="panelspace-wrapper">
+                <div class="panelspace" ng-if="Core.sidebarVisible()" ng-class="{'labels': Core.sidebarLabels, 'buttons': Core.sidebarButtons, 'minisidebar-wrapper':!Core.classicSidebar}" ng-style="{width: panelSpaceWidth()+'px'}">
+                    <div class="panelspace-wrapper" ng-style="{width: panelSpaceWidth()+'px'}">
                         <div id="sidebar" hs.sidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="Core.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
                         <div id="mini-sidebar" hs.minisidebar.directive ng-controller="hs.sidebar.controller" ng-class="Core.mainpanel" ng-if="!Core.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
-                        <div id="panelplace" ng-class="{'minisidebar-panel':!Core.classicSidebar}">
+                        <div id="panelplace" ng-class="{'minisidebar-panel':!Core.classicSidebar}" ng-style="{width: (panelSpaceWidth()-50)+'px'}">
                             <hs.layermanager                        hs.draggable ng-show="Core.panelVisible('layermanager', this)"></hs.layermanager>
                             <hs.legend                              hs.draggable ng-if="Core.exists('hs.legend')" ng-show="Core.panelVisible('legend', this)"></hs.legend>
                             <hs.add-layers                          hs.draggable ng-if="Core.exists('hs.addLayers') && !Core.singleDatasources" ng-show="Core.panelVisible('ows', this)"></hs.add-layers>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="hs-info-container" ng-hide="Core.smallWidth && Core.sidebarExpanded">
+                <div id="hs-info-container" ng-hide="Core.smallWidth && Core.sidebarExpanded" ng-style="infoContainerStyle()" >
                     <div id="hs-info-area">
                         <hs.info ng-if="Core.exists('hs.info')"></hs.info>
                     </div>

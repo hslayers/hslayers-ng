@@ -92,6 +92,22 @@ export default ['Core',
 
             ]
         }
+
+        me.panelSpaceWidth = function () {
+            if (Core.sidebarExpanded && Core.sidebarVisible()) {
+                if (Core.mainpanel == 'datasource_selector' || Core.mainpanel == 'ows')
+                    return 700;
+                else
+                    return 400
+            } else {
+                return 48;
+            }
+        }
+
+        me.widthWithoutPanelSpace = function() {
+            return 'calc(100% - ' + me.panelSpaceWidth() + 'px)';
+        }
+
         return me;
     }
 ]

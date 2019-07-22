@@ -415,6 +415,34 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
         }
 
+        $scope.panelSpaceWidth = layoutService.panelSpaceWidth;
+
+        $scope.infoContainerStyle = function () {
+            if (!Core.sidebarRight)
+                return {
+                    marginLeft: layoutService.panelSpaceWidth() + 'px',
+                    width: layoutService.widthWithoutPanelSpace()
+                }
+            else
+                return {
+                    marginRight: layoutService.panelSpaceWidth() + 'px',
+                    width: layoutService.widthWithoutPanelSpace()
+                }
+        }
+
+        $scope.mapStyle = function () {
+            if (!Core.sidebarRight)
+                return {
+                    marginLeft: layoutService.panelSpaceWidth() + 'px',
+                    width: layoutService.widthWithoutPanelSpace()
+                }
+            else
+                return {
+                    marginLeft: '-px',
+                    width: layoutService.widthWithoutPanelSpace()
+                }
+        }
+
         $scope.onlyEnabled = function (item) {
             return item.enabled;
         };
