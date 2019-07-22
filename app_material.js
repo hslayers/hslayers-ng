@@ -23,7 +23,6 @@ var module = angular.module('hs', [
     'hs.legend', 'hs.geolocation', 'hs.core',
     'hs.datasource_selector',
     'hs.save-map',
-    'hs.api',
     'hs.addLayers',
     'gettext',
     'hs.compositions',

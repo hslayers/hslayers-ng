@@ -3,8 +3,6 @@ import 'angular-gettext';
 import 'translations';
 import '../map/map.module';
 import '../drag/drag.module';
-import '../api/api.module';
-import '../layout/layout.module';
 
 /**
  * @namespace hs
@@ -14,7 +12,7 @@ import '../layout/layout.module';
  * @description Core module for whole HSLayers-NG. Contains paths to all other HS modules and dependencies (therefore it is not needed to specify them in hslayers.js file). Core module consists of Core service which keeps some app-level settings and mantain app size and panel statuses.
  */
 
-angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout', 'hs.api'])
+angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
     /**
      * @module hs.core
      * @name Core
