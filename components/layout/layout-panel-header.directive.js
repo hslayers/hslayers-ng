@@ -9,8 +9,8 @@ export default ['config', 'Core', function (config, Core) {
             panelName: "@",
             panelTitle: "=panelTitle"
         },
-        controller: function ($scope) {                                   
+        controller: ['$scope', function ($scope) {                                   
             $scope.closePanel = Core.closePanel;
-        }
+        }]
     };
 }]
