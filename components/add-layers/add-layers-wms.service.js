@@ -24,6 +24,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
 
     this.capabilitiesReceived = function (response) {
         try {
+            debugger;
             var parser = new WMSCapabilities();
             var caps = parser.read(response);
             me.data.mapProjection = OlMap.map.getView().getProjection().getCode().toUpperCase();
@@ -53,6 +54,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
             me.data.services = caps.Capability.Layer;
 
             fillDimensionValues(caps.Capability.Layer);
+            debugger;
 
             me.data.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
             me.data.image_format = getPreferedFormat(me.data.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
@@ -132,6 +134,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
         Core.setMainPanel('layermanager');
     }
 
+    //TODO all dimension related things need to be refactored into seperate module
     function prepareTimeSteps(step_string) {
         var step_array = step_string.split(',');
         var steps = [];
@@ -154,11 +157,17 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
         return steps;
     }
 
+    //TODO all dimension related things need to be refactored into seperate module
     me.getDimensionValues = function (dimension) {
-        if (moment(dimension.default).isValid())
-            return prepareTimeSteps(dimension.values)
-        else
-            return dimension.values.split(',');
+        try {
+            if (moment(dimension.default).isValid())
+                return prepareTimeSteps(dimension.values)
+            else
+                return dimension.values.split(',');
+        } catch (ex) {
+            console.error(ex)
+        }
+
     }
 
     me.hasNestedLayers = function (layer) {
