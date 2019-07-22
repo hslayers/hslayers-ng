@@ -1,17 +1,15 @@
 import { WMSCapabilities } from 'ol/format';
 import 'components/utils/utils.module';
-import moment from 'moment';
-global.moment = moment;
-import momentinterval from 'moment-interval/src/moment-interval';
 import { Tile, Image as ImageLayer } from 'ol/layer';
 import { TileWMS } from 'ol/source';
 import { ImageWMS } from 'ol/source';
 import { Attribution } from 'ol/control.js';
 import { getPreferedFormat } from '../../common/format-utils';
+import '../../common/get-capabilities.module';
 import { addAnchors } from '../../common/attribution-utils';
 import 'angular-cookies';
 
-export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService', 'Core', '$cookies', 'hs.permalink.urlService', function ($rootScope, OlMap, WmsCapsService, Core, $cookies, permalink) {
+export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService', 'Core', '$cookies', 'hs.permalink.urlService', 'hs.dimensionService', function ($rootScope, OlMap, WmsCapsService, Core, $cookies, permalink, dimensionService) {
     var me = this;
 
     this.data = {
@@ -24,7 +22,6 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
 
     this.capabilitiesReceived = function (response) {
         try {
-            debugger;
             var parser = new WMSCapabilities();
             var caps = parser.read(response);
             me.data.mapProjection = OlMap.map.getView().getProjection().getCode().toUpperCase();
@@ -53,8 +50,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
             me.srsChanged();
             me.data.services = caps.Capability.Layer;
 
-            fillDimensionValues(caps.Capability.Layer);
-            debugger;
+            dimensionService.fillDimensionValues(caps.Capability.Layer);
 
             me.data.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
             me.data.image_format = getPreferedFormat(me.data.image_formats, ["image/png; mode=8bit", "image/png", "image/gif", "image/jpeg"]);
@@ -64,17 +60,6 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
         catch (e) {
             $rootScope.$broadcast('wmsCapsParseError', e);
         }
-    }
-
-    function fillDimensionValues(layer) {
-        angular.forEach(layer.Layer, function (layer) {
-            if (me.hasNestedLayers(layer)) {
-                fillDimensionValues(layer);
-            }
-            angular.forEach(layer.Dimension, function (dimension) {
-                dimension.values = me.getDimensionValues(dimension)
-            })
-        })
     }
 
     $rootScope.$on('ows.capabilities_received', function (event, response) {
@@ -132,57 +117,17 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
             recurse(layer)
         });
         Core.setMainPanel('layermanager');
-    }
+    }      
 
     //TODO all dimension related things need to be refactored into seperate module
-    function prepareTimeSteps(step_string) {
-        var step_array = step_string.split(',');
-        var steps = [];
-        for (var i = 0; i < step_array.length; i++) {
-            if (step_array[i].indexOf('/') == -1) {
-                steps.push(new Date(step_array[i]).toISOString());
-                //console.log(new Date(step_array[i]).toISOString());
-            } else {
-                //"2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H"
-                var interval_def = step_array[i].split('/');
-                var step = momentinterval.interval(interval_def[2]);
-                var interval = momentinterval.interval(interval_def[0] + '/' + interval_def[1]);
-                while (interval.start() < interval.end()) {
-                    //console.log(interval.start().toDate().toISOString());
-                    steps.push(interval.start().toDate().toISOString());
-                    interval.start(momentinterval.utc(interval.start().toDate()).add(step.period()));
-                }
-            }
-        }
-        return steps;
-    }
-
-    //TODO all dimension related things need to be refactored into seperate module
-    me.getDimensionValues = function (dimension) {
-        try {
-            if (moment(dimension.default).isValid())
-                return prepareTimeSteps(dimension.values)
-            else
-                return dimension.values.split(',');
-        } catch (ex) {
-            console.error(ex)
-        }
-
-    }
+    me.getDimensionValues = dimensionService.getDimensionValues
 
     me.hasNestedLayers = function (layer) {
         if (angular.isUndefined(layer)) return false;
         return angular.isDefined(layer.Layer);
     };
 
-    function paramsFromDimensions(layer) {
-        var tmp = {};
-        angular.forEach(layer.Dimension, function (dimension) {
-            if (dimension.value)
-                tmp[dimension.name] = dimension.value;
-        });
-        return tmp;
-    }
+    
 
     /**
      * @function addLayer
@@ -245,7 +190,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                     FORMAT: me.data.image_format,
                     FROMCRS: me.data.srs,
                     VERSION: me.data.version
-                }, paramsFromDimensions(layer)),
+                }, dimensionService.paramsFromDimensions(layer)),
                 crossOrigin: 'anonymous'
             }),
             minResolution: layer.MinScaleDenominator,

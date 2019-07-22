@@ -8,7 +8,6 @@ export default {
                 $scope.types = config.connectTypes;
             } else {
                 $scope.types = [
-                    { id: "none", text: "" },
                     { id: "wms", text: "Web map service (WMS)" },
                     { id: "vector", text: "Vector file (GeoJson, KML)" }
                 ];

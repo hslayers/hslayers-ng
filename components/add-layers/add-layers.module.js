@@ -13,7 +13,7 @@ import addLayersUrlDirective from './add-layers-url.directive';
  * @namespace hs.addLayers
  * @memberOf hs
  */
-export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector', 'ngCookies', 'hs.historyList'])
+export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector', 'ngCookies', 'hs.historyList', 'hs.getCapabilities'])
     /**
     * @memberof hs.addLayers
     * @ngdoc directive
