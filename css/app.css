@@ -370,12 +370,16 @@ hr {
     bottom: 9.2em;
     right: 5px;
     max-width: calc(100% - 1.3em);
+    z-index: 991;
 }
 .locate ul {
     float: left
 }
 .locate button {
     float: right;
+}
+.locate .btn-primary{
+    background-color: #0069d9 !important;
 }
 .locate.ol-collapsed ul,
 .locate:not(.ol-collapsed) button:hover [role=tooltip] {

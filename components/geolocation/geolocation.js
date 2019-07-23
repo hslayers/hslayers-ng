@@ -2,9 +2,9 @@ import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
 import VectorLayer from 'ol/layer/Vector';
-import {Vector} from 'ol/source';
-import {transform} from 'ol/proj';
-import {Polygon, LineString, GeometryType, Point, Circle as CircleGeom} from 'ol/geom';
+import { Vector } from 'ol/source';
+import { transform } from 'ol/proj';
+import { Polygon, LineString, GeometryType, Point, Circle as CircleGeom } from 'ol/geom';
 
 /**
  * @namespace hs.geolocation
@@ -19,30 +19,31 @@ angular.module('hs.geolocation', ['hs.map'])
     */
     .directive('hs.geolocation.directive', ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', function (OlMap, Geolocation, Core, config) {
         return {
-            templateUrl: Core.isMobile() ? config.hsl_path + 'components/geolocation/partials/geolocation_cordova.html' : config.hsl_path + 'components/geolocation/partials/geolocation.html',
+            template: Core.isMobile() ? require('components/geolocation/partials/geolocation_cordova.html') : require('components/geolocation/partials/geolocation.html'),
             link: function link(scope, element, attrs) {
                 if (!Core.puremapApp) {
                     if (Core.isMobile()) {
-                        element.appendTo($("#menu"));
-                        $('.blocate').click(function () {
-                            $('.locate-mobile').toggleClass('ol-collapsed');
-                            // Rewrite this, ugly implementation.
-                            $('#toolbar').removeClass('show');
-                            if (!Geolocation.gpsStatus && !$('.locate-mobile').hasClass('ol-collapsed')) {
-                                Geolocation.toggleGps();
-                                Geolocation.toggleFeatures(true);
-                            }
-                        });
+                        document.querySelector("#menu").appendChild(element[0]);
                     } else {
-                        element.appendTo($(".ol-overlaycontainer-stopevent"));
-                        $('.locate .blocate').click(function () {
-                            $('.locate').toggleClass('ol-collapsed');
-                            Geolocation.geolocation.setTracking(true);
-                            Geolocation.toggleFeatures(!$('.locate').hasClass('ol-collapsed'));
-                        });
+                        document.querySelector(".ol-overlaycontainer-stopevent").appendChild(element[0]);
                     }
                 }
             },
+            controller: ['$scope', function ($scope) {
+                $scope.collapsed = true;
+                $scope.blocateClick = function (e) {
+                    //Checking target is needed because follow button is inside locate button (container) 
+                    //and because of that follow button triggers click on parent element
+                    if (!e.target.classList.contains('locateToggler')) return;
+                    $scope.collapsed = !$scope.collapsed;
+                    Geolocation.toggleFeatures(!$scope.collapsed);
+                    if (Core.isMobile()) {
+                        Geolocation.toggleGps();
+                    } else {
+                        Geolocation.geolocation.setTracking(true);
+                    }
+                }
+            }],
             replace: true
         };
     }])
@@ -80,8 +81,8 @@ angular.module('hs.geolocation', ['hs.map'])
             };
 
 
-            var accuracyFeature = new Feature();
-            var positionFeature = new Feature();
+            var accuracyFeature = new Feature({ known: false, geometry: new CircleGeom([0, 0], 1) });
+            var positionFeature = new Feature({ known: false, geometry: new Point([0, 0]) });
 
             $rootScope.$on('map.loaded', function () {
                 init();
@@ -161,17 +162,11 @@ angular.module('hs.geolocation', ['hs.map'])
                             "geoposition": position
                         }
                         // me.last_location.latlng = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection());
-                        if (!positionFeature.setGeometry()) {
-                            positionFeature.setGeometry(new Point(me.last_location.latlng));
-                        } else {
-                            positionFeature.getGeometry().setCoordinates(me.last_location.latlng);
-                        }
 
-                        if (!accuracyFeature.setGeometry()) {
-                            accuracyFeature.setGeometry(new CircleGeom(me.last_location.latlng, position.coords.accuracy));
-                        } else {
-                            accuracyFeature.getGeometry().setCenterAndRadius(me.last_location.latlng, me.accuracy);
-                        }
+                        positionFeature.set('known', true);
+                        accuracyFeature.set('known', true);
+                        positionFeature.getGeometry().setCoordinates(me.last_location.latlng);
+                        accuracyFeature.getGeometry().setCenterAndRadius(me.last_location.latlng, me.accuracy);
 
                         if (me.following) {
                             me.setCenter();
@@ -227,7 +222,6 @@ angular.module('hs.geolocation', ['hs.map'])
                     */
                     me.changed_handler = function () {
                         if (!me.geolocation.getTracking()) return;
-
                         me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
                         me.altitude = me.geolocation.getAltitude() ? me.geolocation.getAltitude() + ' [m]' : '-';
                         me.altitudeAccuracy = me.geolocation.getAltitudeAccuracy() ? '+/- ' + me.geolocation.getAltitudeAccuracy() + ' [m]' : '';
@@ -238,14 +232,13 @@ angular.module('hs.geolocation', ['hs.map'])
                             altitude: me.geolocation.getAltitude(),
                             "geoposition": me.geolocation
                         }
-                        console.log(me.last_location);
+                        positionFeature.set('known', !!me.geolocation.getPosition());
+                        accuracyFeature.set('known', !!me.geolocation.getAccuracy());
                         if (me.geolocation.getPosition()) {
                             var p = me.geolocation.getPosition();
                             $log.info(p);
-                            if (!positionFeature.getGeometry())
-                                positionFeature.setGeometry(new Point(p));
-                            else
-                                positionFeature.getGeometry().setCoordinates(p);
+                            positionFeature.getGeometry().setCoordinates(p);
+                            accuracyFeature.getGeometry().setCenterAndRadius(p, me.geolocation.getAccuracy());
                             if (me.following)
                                 OlMap.map.getView().setCenter(p);
                         }
@@ -268,11 +261,6 @@ angular.module('hs.geolocation', ['hs.map'])
                     });
                     //var track = new ol.dom.Input(document.getElementById('track'));
                     //track.bindTo('checked', geolocation, 'tracking');
-
-                    me.geolocation.on('change:accuracyGeometry', function () {
-                        accuracyFeature.set('geometry', me.geolocation.accuracyGeometry);
-                    });
-                    //accuracyFeature.bindTo('geometry', me.geolocation, 'accuracyGeometry');
                 }
             }
 
