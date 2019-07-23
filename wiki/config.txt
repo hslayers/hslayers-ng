@@ -315,6 +315,10 @@ DEPRECATED. Array of layers to be crossfilterable. Each element is an object whi
 }] 
 ```
 
+**locationButtonVisible**
+
+Show or hide geolocation button on map. Possible values: true/false
+
 **queryPoint**
 
 How to display point clicked on the map. Possible values are: hidden, notWithin
