@@ -226,6 +226,11 @@ export default ['config', '$http', function (config, $http) {
         return (c);
     }
 
+    this.typeName = function(obj){
+        var text = obj.constructor.toString()
+        return text.match(/function (.*)\(/)[1]
+    }
+
     Date.isLeapYear = function (year) {
         return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
     };
@@ -291,5 +296,4 @@ export default ['config', '$http', function (config, $http) {
             return this.charAt(0).toUpperCase() + this.slice(1);
         }
     }
-
 }]

@@ -80,24 +80,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
 
         /**
          * @ngdoc method
-         * @name hs.layermanager.service#getLegendUrl
-         * @private
-         * @param {String} source_url Url of WMS server
-         * @param {String} layer_name Name of layer to get graphic legend
-         * @returns {Boolean} Full Url for request
-         * @description Prepare URL for GetLegendGraphic WMS request, expect wms version 1.3.0 and sld version 1.1.0
-         */
-        function getLegendUrl(source_url, layer_name) {
-            if (source_url.indexOf('proxy4ows') > -1) {
-                var params = utils.getParamsFromUrl(source_url);
-                source_url = params.OWSURL;
-            }
-            source_url += (source_url.indexOf('?') > 0 ? '' : '?') + "&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=" + layer_name + "&format=image%2Fpng";
-            return source_url;
-        }
-
-        /**
-         * @ngdoc method
          * @name hs.layermanager.service#layerAdded
          * @private
          * @param {ol.CollectionEvent} e Event object emited by Ol add layer event
@@ -105,39 +87,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
          */
         function layerAdded(e) {
             var layer = e.element;
+            checkLayerHealth(layer);
             if (layer.get('show_in_manager') != null && layer.get('show_in_manager') == false) return;
-            WMST.layerIsWmsT(layer);
+            //WMST.layerIsWmsT(layer);
             loadingEvents(layer);
-            var sub_layers;
-            if (layer.getSource().getParams) { // Legend only for wms layers with params
-                sub_layers = layer.getSource().getParams().LAYERS.split(",");
-                for (var i = 0; i < sub_layers.length; i++) {
-                    if (layer.getSource().getUrls) //Multi tile
-                        sub_layers[i] = getLegendUrl(layer.getSource().getUrls()[0], sub_layers[i]);
-                    if (layer.getSource().getUrl) //Single tile
-                        sub_layers[i] = getLegendUrl(layer.getSource().getUrl(), sub_layers[i]);
-                }
-            }
-            //if (layer.get('base') != true) {
-            layer.on('change:visible', function (e) {
-                if (layer.get('base') != true) {
-                    for (var i = 0; i < me.data.layers.length; i++) {
-                        if (me.data.layers[i].layer == e.target) {
-                            me.data.layers[i].visible = e.target.getVisible();
-                            break;
-                        }
-                    }
-                } else {
-                    for (var i = 0; i < me.data.baselayers.length; i++) {
-                        if (me.data.baselayers[i].layer == e.target) {
-                            me.data.baselayers[i].active = e.target.getVisible();
-                        } else {
-                            me.data.baselayers[i].active = false;
-                        }
-                    }
-                }
-            })
-            //}
+            layer.on('change:visible', layerVisibilityChanged)
 
             if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
             /**
@@ -157,28 +111,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
                 uid: utils.generateUuid()
             };
 
-
-
-            if (WMST.layerIsWmsT(new_layer)) {
-                var dimensions_time = new_layer.layer.get('dimensions_time') || new_layer.layer.dimensions_time;
-                var time;
-                if (angular.isDefined(new_layer.layer.get('dimensions').time.default)) {
-                    time = new Date(new_layer.layer.get('dimensions').time.default);
-                } else {
-                    time = new Date(dimensions_time.timeInterval[0]);
-                }
-                angular.extend(new_layer, {
-                    time_step: dimensions_time.timeStep,
-                    time_unit: dimensions_time.timeUnit,
-                    date_format: WMST.getDateFormatForTimeSlider(dimensions_time.timeUnit),
-                    date_from: new Date(dimensions_time.timeInterval[0]),
-                    date_till: new Date(dimensions_time.timeInterval[1]),
-                    time: time,
-                    date_increment: time.getTime()
-                });
-                WMST.setLayerTimeSliderIntervals(new_layer, dimensions_time);
-                WMST.setLayerTime(new_layer);
-            }
+            WMST.setupTimeLayerIfNeeded(new_layer);
+            
             if (layer.get('base') != true) {
                 populateFolders(layer);
                 if (layer.get('legends')) {
@@ -195,7 +129,35 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
             $rootScope.$broadcast('layermanager.layer_added', new_layer);
             $rootScope.$broadcast('layermanager.updated', layer);
             $rootScope.$broadcast('compositions.composition_edited');
-        };
+        };      
+
+        function checkLayerHealth(layer){
+            var src = layer.getSource();
+            if (['ImageWMS', 'TileWMS'].indexOf(utils.typeName(src)) > -1) {
+                if(angular.isUndefined(src.getParams().LAYERS)){
+                    console.warn('Layer', layer, 'is missing LAYERS parameter');
+                }
+            }
+        }
+
+        function layerVisibilityChanged(e){
+            if (e.target.get('base') != true) {
+                for (var i = 0; i < me.data.layers.length; i++) {
+                    if (me.data.layers[i].layer == e.target) {
+                        me.data.layers[i].visible = e.target.getVisible();
+                        break;
+                    }
+                }
+            } else {
+                for (var i = 0; i < me.data.baselayers.length; i++) {
+                    if (me.data.baselayers[i].layer == e.target) {
+                        me.data.baselayers[i].active = e.target.getVisible();
+                    } else {
+                        me.data.baselayers[i].active = false;
+                    }
+                }
+            }
+        }
 
 
         /**
@@ -319,14 +281,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
          * @description Callback function for removing layer. Clean layers variables
          * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
          */
-        /**
-         * @ngdoc method
-         * @name hs.layermanager.service#getLegendUrl
-         * @public
-         * @param {Object}
-         * @returns {Boolean}
-         * @description 
-         */
         function layerRemoved(e) {
             cleanFolders(e.element);
             for (var i = 0; i < me.data.layers.length; i++) {
@@ -350,14 +304,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
          * @function boxLayersInit
          * @memberOf hs.layermanager.service
          * @description Initilaze box layers and their starting active state
-         */
-        /**
-         * @ngdoc method
-         * @name hs.layermanager.service#getLegendUrl
-         * @public
-         * @param {Object}
-         * @returns {Boolean}
-         * @description 
          */
         function boxLayersInit() {
             if (angular.isDefined(config.box_layers)) {
@@ -455,7 +401,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
         }
 
         /**
-         * @function changeBaseLayerVisibility
+         * @function changeTerrainLayerVisibility
          * @memberOf hs.layermanager.service
          * @description Change visibility (on/off) of baselayers, only one baselayer may be visible 
          * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
@@ -474,14 +420,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
          * @function updateLayerOrder
          * @memberOf hs.layermanager.service            
          */
-        /**
-         * @ngdoc method
-         * @name hs.layermanager.service#getLegendUrl
-         * @public
-         * @param {Object}
-         * @returns {Boolean}
-         * @description 
-         */
         me.updateLayerOrder = function () {
             angular.forEach(me.data.layers, function (my_layer) {
                 my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));
@@ -493,14 +431,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
          * @function getMyLayerPosition
          * @memberOf hs.layermanager.service
          * @param {Ol.layer} layer Selected layer 
-         */
-        /**
-         * @ngdoc method
-         * @name hs.layermanager.service#getLegendUrl
-         * @public
-         * @param {Object}
-         * @returns {Boolean}
-         * @description 
          */
         function getMyLayerPosition(layer) {
             var pos = null;
