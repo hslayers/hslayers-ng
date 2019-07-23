@@ -140,7 +140,7 @@ export default {
             $scope.isLayerType = function (layer, type) {
                 switch (type) {
                     case 'wms':
-                        return isWms(layer);
+                        return LayMan.isWms(layer);
                     case 'point':
                         return layer.getSource().hasPoint;
                     case 'line':
@@ -150,10 +150,6 @@ export default {
                     default:
                         return false;
                 }
-            }
-
-            function isWms(layer) {
-                return (layer.getSource() instanceof TileWMS || layer.getSource() instanceof ImageWMS);
             }
 
             $scope.setProp = function (layer, property, value) {
@@ -180,8 +176,8 @@ export default {
                 }
                 if (source.hasPoint) {
                     var image = style.getImage();
-                    if (image instanceof Circle) wrapper.style.pointType = 'Circle';
-                    else if (image instanceof RegularShape) {
+                    if (utils.instOf(image, Circle)) wrapper.style.pointType = 'Circle';
+                    else if (utils.instOf(image, RegularShape)) {
                         wrapper.style.pointPoints = image.getPoints();
                         wrapper.style.rotation = image.getRotation();
                         if (angular.isUndefined(image.getRadius2())) wrapper.style.pointType = 'Polygon';
@@ -190,7 +186,7 @@ export default {
                             wrapper.style.radius2 = image.getRadius2();
                         }
                     }
-                    if (image instanceof Circle || image instanceof RegularShape) {
+                    if (utils.instOf(image, Circle) || utils.instOf(image, RegularShape)) {
                         wrapper.style.radius = image.getRadius();
                         wrapper.style.pointFill = image.getFill().getColor();
                         wrapper.style.pointStroke = image.getStroke().getColor();
@@ -554,24 +550,9 @@ export default {
              * @function isLayerInResolutionInterval
              * @memberOf hs.layermanager.controller
              * @param {Ol.layer} lyr Selected layer
-             * @description Test if layer (WMS) resolution is within map interval 
+             * @description Test if layer (WMS) resolution is within map resolution interval 
              */
-            $scope.isLayerInResolutionInterval = function (lyr) {
-                var src = lyr.getSource();
-                if (src instanceof ImageWMS || src instanceof TileWMS) {
-                    var view = OlMap.map.getView();
-                    var resolution = view.getResolution();
-                    var units = map.getView().getProjection().getUnits();
-                    var dpi = 25.4 / 0.28;
-                    var mpu = METERS_PER_UNIT[units];
-                    var cur_res = resolution * mpu * 39.37 * dpi;
-                    return (lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution());
-                } else {
-                    var cur_res = OlMap.map.getView().getResolution();
-                    return lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution();
-
-                }
-            }
+            $scope.isLayerInResolutionInterval = LayMan.isLayerInResolutionInterval;
 
             /**
             * @function isLayerWithDimensions

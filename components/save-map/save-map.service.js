@@ -199,10 +199,10 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                         ima.src = style_img.getImage().src;
                 }
 
-                if (style_img instanceof Circle)
+                if (utils.instOf(style_img, Circle))
                     ima.type = 'circle';
 
-                if (style_img instanceof Icon)
+                if (utils.instOf(style_img, Icon))
                     ima.type = 'icon';
 
                 o.image = ima;
@@ -232,9 +232,15 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
             var json = {
                 metadata: {}
             };
+            
+            /*
+            Commented out because we cant reliably use instanceof. 
+            utils.instOf is also not possible, because Layer is a base type
+
             if (!layer instanceof Layer) {
                 return;
             }
+            */
 
             // Common stuff
 
@@ -260,11 +266,11 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
             }
 
             // HTTPRequest
-            if (layer instanceof Tile || layer instanceof ImageLayer) {
+            if (utils.instOf(layer, Tile) || utils.instOf(layer, ImageLayer)) {
                 var src = layer.getSource();
-                if (src instanceof ImageWMS || src instanceof TileWMS) {
+                if (utils.instOf(src, ImageWMS) || utils.instOf(src, TileWMS)) {
                     json.className = "HSLayers.Layer.WMS";
-                    json.singleTile = src instanceof ImageWMS;
+                    json.singleTile = utils.instOf(src, ImageWMS);
                     json.wmsMinScale = layer.get('minScale');
                     json.wmsMaxScale = layer.get('maxScale');
                     if (layer.get('legends')) {
@@ -290,7 +296,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
             }
 
             // Vector
-            if (layer instanceof VectorLayer) {
+            if (utils.instOf(layer, VectorLayer)) {
                 var src = layer.getSource();
                 json.className = "OpenLayers.Layer.Vector";
                 if (angular.isDefined(layer.get('definition'))) {
@@ -309,7 +315,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                 json.maxResolution = layer.getMaxResolution();
                 json.minResolution = layer.getMinResolution();
                 json.projection = "epsg:4326";
-                if (layer.getStyle() instanceof Style) {
+                if (utils.instOf(layer.getStyle(), Style)) {
                     json.style = me.serializeStyle(layer.getStyle());
                 }
             }

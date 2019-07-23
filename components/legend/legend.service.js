@@ -26,9 +26,9 @@ export default ['hs.utils.service', function (utils) {
          */
         getLegendUrl: function (source, layer_name) {
             var source_url = "";
-            if (source instanceof TileWMS) {
+            if (utils.instOf(source, TileWMS)) {
                 source_url = source.getUrls()[0]
-            } else if (source instanceof ImageWMS) {
+            } else if (utils.instOf(source, ImageWMS)) {
                 source_url = source.getUrl()
             } else {
                 return ""
@@ -52,7 +52,7 @@ export default ['hs.utils.service', function (utils) {
          * @param {string} layer_name Name of layer for which legend is requested
          */
         getLayerLegendDescriptor: function (layer) {
-            if (layer.getSource() instanceof TileWMS || layer.getSource() instanceof ImageWMS) {
+            if (utils.instOf(layer.getSource(), TileWMS) || utils.instOf(layer.getSource(), ImageWMS)) {
                 var subLayerLegends = layer.getSource().getParams().LAYERS.split(",");
                 for (var i = 0; i < subLayerLegends.length; i++) {
                     subLayerLegends[i] = me.getLegendUrl(layer.getSource(), subLayerLegends[i]);

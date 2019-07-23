@@ -1,3 +1,9 @@
+import HsCsCamera from 'hs_cesium_camera';
+import HsCsLayers from 'hs_cesium_layers';
+import HsCsTime from 'hs_cesium_time';
+import {transformExtent } from 'ol/proj';
+import 'permalink.module';
+
 export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', 'Core', function (config, $rootScope, utils, hs_map, layer_manager_service, Core) {
     var viewer;
     var BING_KEY = angular.isDefined(config.cesiumBingKey) ? config.cesiumBingKey : 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';

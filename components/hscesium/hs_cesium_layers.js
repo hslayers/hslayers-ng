@@ -207,20 +207,20 @@ var me = {
     },
 
     processOlLayer(lyr) {
-        if (lyr instanceof Group) {
+        if (utils.instOf(lyr, Group)) {
             angular.forEach(lyr.layers, function (sub_lyr) {
                 me.processOlLayer(sub_lyr);
             })
         } else {
             lyr.setVisible(me.hs_map.isLayerVisible(lyr, me.hs_map.visible_layers) || lyr.getVisible());
             lyr.manuallyAdded = false;
-            if (lyr.getSource() instanceof ImageWMS)
+            if (utils.instOf(lyr.getSource(), ImageWMS))
                 me.hs_map.proxifyLayerLoader(lyr, false);
-            if (lyr.getSource() instanceof TileWMS)
+            if (utils.instOf(lyr.getSource(), TileWMS))
                 me.hs_map.proxifyLayerLoader(lyr, true);
             var cesium_layer = me.convertOlToCesiumProvider(lyr);
             if (angular.isDefined(cesium_layer)) {
-                if (cesium_layer instanceof Cesium.ImageryLayer) {
+                if (utils.instOf(cesium_layer, Cesium.ImageryLayer)) {
                     me.linkOlLayerToCesiumLayer(lyr, cesium_layer);
                     me.viewer.imageryLayers.add(cesium_layer);
                 } else {
@@ -235,16 +235,16 @@ var me = {
 
     convertOlToCesiumProvider(ol_lyr) {
 
-        if (ol_lyr.getSource() instanceof OSM) {
+        if (utils.instOf(ol_lyr.getSource(), OSM)) {
             return new Cesium.ImageryLayer(Cesium.createOpenStreetMapImageryProvider(), {
                 show: ol_lyr.getVisible(),
                 minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15
             });
-        } else if (ol_lyr.getSource() instanceof TileWMS)
+        } else if (utils.instOf(ol_lyr.getSource(), TileWMS))
             return me.createTileProvider(ol_lyr);
-        else if (ol_lyr.getSource() instanceof ImageWMS)
+        else if (utils.instOf(ol_lyr.getSource(), ImageWMS))
             return me.createSingleImageProvider(ol_lyr);
-        else if (ol_lyr.getSource() instanceof Vector)
+        else if (utils.instOf(ol_lyr.getSource(), Vector))
             return me.createVectorDataSource(ol_lyr);
         else {
             if (console) console.error('Unsupported layer type for layer: ', ol_lyr, 'in Cesium converter');
@@ -252,7 +252,7 @@ var me = {
     },
 
     createVectorDataSource(ol_lyr) {
-        if (ol_lyr.getSource().getFormat() instanceof KML) {
+        if (angular.isDefined(ol_lyr.getSource().getFormat()) && utils.instOf(ol_lyr.getSource().getFormat(), KML)) {
             return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(), {
                 camera: viewer.scene.camera,
                 canvas: viewer.scene.canvas,

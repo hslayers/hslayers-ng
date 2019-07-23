@@ -5,7 +5,7 @@ import {Vector} from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import {isEmpty} from 'ol/extent';
 
-export default ['config', function (config) {
+export default ['config', 'hs.utils.service', function (config, utils) {
     var me = this;
 
     /**
@@ -32,7 +32,7 @@ export default ['config', function (config) {
      */
     this.layerIsStyleable = function (layer) {
         if (typeof layer == 'undefined') return false;
-        if (layer instanceof VectorLayer /*&& layer.getSource().styleAble*/) return true;
+        if (utils.instOf(layer, VectorLayer) /*&& layer.getSource().styleAble*/) return true;
         return false;
     }
 
@@ -44,11 +44,11 @@ export default ['config', function (config) {
      * @description Test if layer is queryable (WMS layer with Info format)
      */
     this.isLayerQueryable = function (layer) {
-        if (layer instanceof Tile &&
-            (layer.getSource() instanceof TileWMS) &&
+        if (utils.instOf(layer, Tile) &&
+            (utils.instOf(layer.getSource(), TileWMS)) &&
             layer.getSource().getParams().INFO_FORMAT) return true;
-        if (layer instanceof ImageLayer &&
-            layer.getSource() instanceof ImageWMS &&
+        if (utils.instOf(layer, ImageLayer) &&
+            utils.instOf(layer.getSource(), ImageWMS) &&
             layer.getSource().getParams().INFO_FORMAT) return true;
         return false;
     }
@@ -60,10 +60,10 @@ export default ['config', function (config) {
      * @description Test if layer is WMS layer
      */
     this.isLayerWMS = function (layer) {
-        if (layer instanceof Tile &&
-            (layer.getSource() instanceof TileWMS)) return true;
-        if (layer instanceof ImageLayer &&
-            layer.getSource() instanceof ImageWMS) return true;
+        if (utils.instOf(layer, Tile) &&
+            (utils.instOf(layer.getSource(), TileWMS))) return true;
+        if (utils.instOf(layer, ImageLayer) &&
+            utils.instOf(layer.getSource(), ImageWMS)) return true;
         return false;
     }
 

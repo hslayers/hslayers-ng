@@ -1,6 +1,6 @@
-import {TileWMS, WMTS} from 'ol/source';
-import {ImageWMS, ImageArcGISRest} from 'ol/source';
-import {Tile, Image as ImageLayer} from 'ol/layer';
+import { TileWMS, WMTS } from 'ol/source';
+import { ImageWMS, ImageArcGISRest } from 'ol/source';
+import { Tile, Image as ImageLayer } from 'ol/layer';
 
 export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.service', 'hs.utils.service', 'Core',
     function ($rootScope, $http, $sce, Base, OlMap, utils, Core) {
@@ -176,11 +176,11 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
 
         function isLayerWmsQueryable(layer) {
             if (!layer.getVisible()) return false;
-            if (layer instanceof Tile &&
-                layer.getSource() instanceof TileWMS &&
+            if (utils.instOf(layer, Tile) &&
+                utils.instOf(layer.getSource(), TileWMS) &&
                 layer.getSource().getParams().INFO_FORMAT) return true;
-            if (layer instanceof ImageLayer &&
-                layer.getSource() instanceof ImageWMS &&
+            if (utils.instOf(layer, ImageLayer) &&
+                utils.instOf(layer.getSource(), ImageWMS) &&
                 layer.getSource().getParams().INFO_FORMAT) return true;
             return false;
         }
