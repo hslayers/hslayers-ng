@@ -10,7 +10,7 @@ export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', fu
                 }
             }
         },
-        controller: ['$scope', function ($scope) {
+        controller: ['$scope', 'config', function ($scope, config) {
             $scope.collapsed = true;
             $scope.blocateClick = function (e) {
                 //Checking target is needed because follow button is inside locate button (container) 
@@ -23,6 +23,10 @@ export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', fu
                 } else {
                     Geolocation.geolocation.setTracking(true);
                 }
+            }
+
+            $scope.geolocationVisible = function () {
+                return (angular.isUndefined(config.locationButtonVisible) || config.locationButtonVisible);
             }
         }],
         replace: true
