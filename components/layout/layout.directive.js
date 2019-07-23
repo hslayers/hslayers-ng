@@ -33,6 +33,7 @@ export default ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$in
                 }
 
                 if (angular.isUndefined(config.importCss) || config.importCss) {
+                    require('ol/ol.css');
                     if (config.design == 'md') {
                         require('angular-material/angular-material.css');
                         require('angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');

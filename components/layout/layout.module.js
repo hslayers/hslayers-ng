@@ -2,7 +2,6 @@
  * @namespace hs.layout
  * @memberOf hs
  */
-import 'ol/ol.css';
 import angular from 'angular';
 import core from 'core';
 import '../map/map.module';

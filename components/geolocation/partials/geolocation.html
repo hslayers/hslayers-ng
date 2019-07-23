@@ -1,12 +1,18 @@
-<div class="locate ol-unselectable ol-control ol-collapsed" ng-controller="hs.geolocation.controller">
+<div class="locate ol-unselectable ol-control locateToggler" ng-click="blocateClick($event)" ng-class="{'ol-collapsed': collapsed}"
+    ng-controller="hs.geolocation.controller">
 
-<ul>
-<li><translate>Speed</translate>: <span class='value'>{{speed}}</span></li>
-<li><translate>Altitude</translate>: <span class='value'>{{alt}} {{altitudeAccuracy}}</span></li>
-<li><button type="button" ng-class="'btn btn-secondary but-xs' + (following() ? ' active' : '')" ng-click="following(!following())" style="width: 4.375em; font: inherit;background-color: #e6e6e6;" translate>Follow</button></li>
-</ul>
-<button class="ol-has-tooltip blocate" type="button">   
-    <i class="glyphicon icon-navigation"></i>
-</button>
+    <ul>
+        <li>
+            <translate>Speed</translate>: <span class='value'>{{speed}}</span>
+        </li>
+        <li>
+            <translate>Altitude</translate>: <span class='value'>{{alt}} {{altitudeAccuracy}}</span>
+        </li>
+        <li><button type="button" class="btn but-xs" ng-class="{'btn-secondary': !following(), 'btn-primary': following()}"
+                ng-click="following(!following())" style="width: 4.375em; font: inherit;"
+                translate>Follow</button></li>
+    </ul>
+    <button class="ol-has-tooltip blocate locateToggler" type="button">
+        <i class="glyphicon icon-navigation locateToggler"></i>
+    </button>
 </div>
-
