@@ -6,8 +6,8 @@ import { Draw } from 'ol/interaction';
 import { getArea, getDistance } from 'ol/sphere';
 import { transform, transformExtent } from 'ol/proj';
 
-export default ['$rootScope', 'hs.map.service',
-    function ($rootScope, OlMap) {
+export default ['$rootScope', 'hs.map.service', 'hs.utils.service',
+    function ($rootScope, OlMap, utils) {
         var me = this;
 
         var map;
@@ -119,9 +119,9 @@ export default ['$rootScope', 'hs.map.service',
 
                 for (var i = 0; i < me.sketch.length; i++) {
                     var geom = me.sketch[i].getGeometry();
-                    if (geom instanceof Polygon) {
+                    if (utils.instOf(geom, Polygon)) {
                         output = addMultiple(formatArea(geom), output);
-                    } else if (geom instanceof LineString) {
+                    } else if (utils.instOf(geom, LineString)) {
                         output = addMultiple(formatLength(geom), output);
                     }
                 }

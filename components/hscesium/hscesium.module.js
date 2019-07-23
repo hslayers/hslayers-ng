@@ -1,9 +1,3 @@
-import permalink from 'permalink';
-import ol from 'ol';
-import HsCsCamera from 'hs_cesium_camera';
-import HsCsLayers from 'hs_cesium_layers';
-import HsCsTime from 'hs_cesium_time';
-import {transformExtent } from 'ol/proj';
 import hscesiumService from './hscesium.service';
 
 /**

@@ -1,15 +1,15 @@
 import '../permalink/permalink.module';
-import {DoubleClickZoom, KeyboardPan, KeyboardZoom, MouseWheelZoom, PinchRotate, PinchZoom, DragPan, DragRotate, DragZoom} from 'ol/interaction';
+import { DoubleClickZoom, KeyboardPan, KeyboardZoom, MouseWheelZoom, PinchRotate, PinchZoom, DragPan, DragRotate, DragZoom } from 'ol/interaction';
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
 import View from 'ol/View';
-import {MousePosition, defaults as controlDefaults} from 'ol/control';
-import {createStringXY} from 'ol/coordinate';
+import { MousePosition, defaults as controlDefaults } from 'ol/control';
+import { createStringXY } from 'ol/coordinate';
 import { TileWMS, WMTS } from 'ol/source';
-import {ImageWMS, ImageArcGISRest} from 'ol/source';
+import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import Feature from 'ol/Feature';
-import {Group} from 'ol/layer';
-import {Vector} from 'ol/source';
+import { Group } from 'ol/layer';
+import { Vector } from 'ol/source';
 
 /**
  * This is a workaround.
@@ -23,7 +23,7 @@ Feature.prototype.getLayer = function (map) {
         layer_, layersToLookFor = [];
     var check = function (layer) {
         var source = layer.getSource();
-        if (source instanceof Vector) {
+        if (utils.instOf(source, Vector)) {
             var features = source.getFeatures();
             if (features.length > 0) {
                 layersToLookFor.push({
@@ -34,7 +34,7 @@ Feature.prototype.getLayer = function (map) {
         }
     };
     map.getLayers().forEach(function (layer) {
-        if (layer instanceof Group) {
+        if (utils.instOf(layer, Group)) {
             layer.getLayers().forEach(check);
         } else {
             check(layer);
@@ -235,11 +235,11 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
                     if (!me.layerDuplicate(lyr)) {
                         lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                         lyr.manuallyAdded = false;
-                        if (lyr.getSource() instanceof ImageWMS)
+                        if (utils.instOf(lyr.getSource(), ImageWMS))
                             me.proxifyLayerLoader(lyr, false);
-                        if (lyr.getSource() instanceof TileWMS)
+                        if (utils.instOf(lyr.getSource(), TileWMS))
                             me.proxifyLayerLoader(lyr, true);
-                        if (lyr.getSource() instanceof Vector)
+                        if (utils.instOf(lyr.getSource(), Vector))
                             me.getVectorType(lyr);
                         me.map.addLayer(lyr);
                     }
@@ -252,11 +252,11 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
                 if (!me.layerDuplicate(lyr)) {
                     lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
                     lyr.manuallyAdded = false;
-                    if (lyr.getSource() instanceof ImageWMS)
+                    if (utils.instOf(lyr.getSource(), ImageWMS))
                         me.proxifyLayerLoader(lyr, false);
-                    if (lyr.getSource() instanceof TileWMS)
+                    if (utils.instOf(lyr.getSource(), TileWMS))
                         me.proxifyLayerLoader(lyr, true);
-                    if (lyr.getSource() instanceof Vector)
+                    if (utils.instOf(lyr.getSource(), Vector))
                         me.getVectorType(lyr);
                     me.map.addLayer(lyr);
                 }

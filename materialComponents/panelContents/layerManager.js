@@ -120,7 +120,7 @@ define(['angular', 'ol','angular-material'],
                     }
 
                     function isWms(layer){
-                        return (layer.getSource() instanceof ol.source.TileWMS || layer.getSource() instanceof ol.source.ImageWMS);
+                        return (utils.instOf(layer.getSource(), ol.source.TileWMS) || utils.instOf(layer.getSource(), ol.source.ImageWMS));
                     }
 
                     $scope.setProp = function(layer,property,value) {
@@ -147,8 +147,8 @@ define(['angular', 'ol','angular-material'],
                         }
                         if (source.hasPoint) {
                             var image = style.getImage();
-                            if (image instanceof ol.style.Circle) wrapper.style.pointType = 'Circle';
-                            else if (image instanceof ol.style.RegularShape) {
+                            if (utils.instOf(image, ol.style.Circle)) wrapper.style.pointType = 'Circle';
+                            else if (utils.instOf(image, ol.style.RegularShape)) {
                                 wrapper.style.pointPoints = image.getPoints();
                                 wrapper.style.rotation = image.getRotation();
                                 if (angular.isUndefined(image.getRadius2()))wrapper.style.pointType = 'Polygon';
@@ -157,7 +157,7 @@ define(['angular', 'ol','angular-material'],
                                     wrapper.style.radius2 = image.getRadius2();
                                 }  
                             }
-                            if (image instanceof ol.style.Circle || image instanceof ol.style.RegularShape) {
+                            if (utils.instOf(image, ol.style.Circle) || utils.instOf(image, ol.style.RegularShape)) {
                                 wrapper.style.radius = image.getRadius();
                                 wrapper.style.pointFill = image.getFill().getColor();
                                 wrapper.style.pointStroke = image.getStroke().getColor();

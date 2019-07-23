@@ -130,7 +130,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.layermanager.service', 'Core
     $rootScope.$on('layermanager.layer_added', function (e, layer) {
         me.prepLayerFilter(layer);
 
-        if (layer.layer instanceof VectorLayer) {
+        if (utils.instOf(layer.layer, VectorLayer)) {
             var source = layer.layer.getSource();
             console.log(source.getState());
             var listenerKey = source.on('change', function (e) {

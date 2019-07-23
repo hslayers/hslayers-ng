@@ -951,7 +951,7 @@ angular.module('hs.draw', ['hs.map', 'hs.core', 'hs.utils', 'hs.geolocation'])
             function fillDrawableLayersList() {
                 $scope.drawable_layers = [];
                 angular.forEach(map.getLayers(), function (layer) {
-                    if (layer instanceof VectorLayer && layer.getVisible() && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager') == true) && (angular.isDefined(layer.get('title')) && layer.get('title') != '')) {
+                    if (utils.instOf(layer, VectorLayer) && layer.getVisible() && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager') == true) && (angular.isDefined(layer.get('title')) && layer.get('title') != '')) {
                         $scope.drawable_layers.push(layer);
                         if (layer == $scope.layer_to_select) {
                             $scope.selected_layer = layer.get('title');

@@ -226,9 +226,13 @@ export default ['config', '$http', function (config, $http) {
         return (c);
     }
 
-    this.typeName = function(obj){
+    //Check if object is an instance of a class
+    this.instOf = function(obj, type){
         var text = obj.constructor.toString()
-        return text.match(/function (.*)\(/)[1]
+        var typetext = type.toString()
+        var tmp = text.match(/function (.*)\(/)[1] == typetext.match(/function (.*)\(/)[1];
+        return tmp;
+
     }
 
     Date.isLeapYear = function (year) {

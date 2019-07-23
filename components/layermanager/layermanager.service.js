@@ -132,8 +132,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
         };      
 
         function checkLayerHealth(layer){
-            var src = layer.getSource();
-            if (['ImageWMS', 'TileWMS'].indexOf(utils.typeName(src)) > -1) {
+            if (me.isWms(layer)) {
+                var src = layer.getSource();
                 if(angular.isUndefined(src.getParams().LAYERS)){
                     console.warn('Layer', layer, 'is missing LAYERS parameter');
                 }
@@ -497,7 +497,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
             source.loadTotal = 0;
             source.loadError = 0;
             source.loaded = true;
-            if (layer instanceof ImageLayer) {
+            if (utils.instOf(layer, ImageLayer)) {
                 source.on('imageloadstart', function (event) {
                     source.loaded = false;
                     source.loadCounter += 1;
@@ -516,7 +516,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
                     $rootScope.$broadcast('layermanager.layer_loaded', layer);
                     if (!$rootScope.$$phase) $rootScope.$digest();
                 });
-            } else if (layer instanceof Tile) {
+            } else if (utils.instOf(layer, Tile)) {
                 source.on('tileloadstart', function (event) {
                     source.loadCounter += 1;
                     source.loadTotal += 1;
@@ -553,15 +553,19 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
             }
         }
 
+        me.isWms = function(layer){
+            return (utils.instOf(layer.getSource(), TileWMS) || utils.instOf(layer.getSource(), ImageWMS));
+        }
+
         /**
          * @function isLayerInResolutionInterval
          * @memberOf hs.layermanager.service
          * @param {Ol.layer} lyr Selected layer
-         * @description Test if layer (WMS) resolution is within map interval 
+         * @description Test if layer (WMS) resolution is within map resolution interval 
          */
         me.isLayerInResolutionInterval = function (lyr) {
             var src = lyr.getSource();
-            if (src instanceof ImageWMS || src instanceof TileWMS) {
+            if (me.isWms(lyr)) {
                 var view = OlMap.map.getView();
                 var resolution = view.getResolution();
                 var units = map.getView().getProjection().getUnits();

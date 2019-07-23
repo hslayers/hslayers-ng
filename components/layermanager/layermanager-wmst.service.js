@@ -134,7 +134,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
                 var metadata = {};
                 var value = layer.get('dimensions').time.values;
                 if (angular.isArray(value)) value = value[0];
-                if (typeof value === 'string' || value instanceof String) {
+                if (typeof value === 'string' || utils.instOf(value, String)) {
                     value = value.replace(/\s*/g, "");
 
                     if (value.search("/") > -1) {
