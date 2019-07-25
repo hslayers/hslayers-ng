@@ -1,5 +1,5 @@
 export default ['config', '$rootScope', 'hs.utils.service', function (config, $rootScope, utils) {
-    this.extra_buttons = [];
+    this.extraButtons = [];
 
     var me = this;
 

@@ -180,7 +180,7 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
             * Update values for custom parameters which get added to the url and usually are application speciffic
             */
             updateCustomParams: function (params) {
-                for (param in params) {
+                for (var param in params) {
                     me.customParams[param] = params[param];
                 }
                 if (paramTimer != null) clearTimeout(paramTimer);
