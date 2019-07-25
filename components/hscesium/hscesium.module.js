@@ -40,7 +40,7 @@ angular.module('hs.cesium', [])
      * @description 
      */
     .controller('hs.cesium.controller', ['$scope', 'hs.cesium.service', 'config', 'hs.permalink.urlService', 'Core', 'hs.map.service', 'hs.sidebar.service', '$timeout', '$rootScope',
-        function ($scope, service, config, permalink, Core, hs_map, sidebar_service, $timeout, $rootScope) {
+        function ($scope, service, config, permalink, Core, hsMap, sidebarService, $timeout, $rootScope) {
 
             var map = service.map;
             $scope.visible = true;
@@ -52,9 +52,10 @@ angular.module('hs.cesium', [])
              * @description Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
              */
             function toggleCesiumMap() {
-                hs_map.visible = !hs_map.visible;
-                $scope.visible = !hs_map.visible;
-                if (hs_map.visible) {
+                hsMap.visible = !hsMap.visible;
+                $scope.visible = !hsMap.visible;
+                permalink.updateCustomParams({view: hsMap.visible ? '2d' : '3d'});
+                if (hsMap.visible) {
                     $timeout(function () {
                         Core.updateMapSize();
                     }, 5000)
@@ -62,11 +63,17 @@ angular.module('hs.cesium', [])
                 $rootScope.$broadcast('map.mode_changed', $scope.visible ? 'cesium' : 'ol');
             }
 
-            setTimeout(function () {
-                hs_map.visible = false;
-            }, 0);
+            var view = permalink.getParamValue('view');
+            if (view != '2d' || view == '3d') {
+                permalink.updateCustomParams({view: '3d'});
+                setTimeout(function () {
+                    hsMap.visible = false;
+                }, 0);
+            } else {
+                permalink.updateCustomParams({view: '2d'});
+            }
 
-            sidebar_service.extra_buttons.push({
+            sidebarService.extraButtons.push({
                 title: '3D/2D',
                 icon_class: 'icon-globealt',
                 click: toggleCesiumMap
