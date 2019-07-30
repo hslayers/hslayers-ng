@@ -1,8 +1,8 @@
 export default {
     template: require('components/datasource-selector/partials/datasource_selector.html'),
     controller:
-        ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config',
-            function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config) {
+        ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config', '$rootScope', '$timeout',
+            function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, $rootScope, $timeout) {
                 $scope.Core = Core;
                 $scope.data = datasourceSelectorService.data;
                 $scope.DS = datasourceSelectorService;
@@ -19,7 +19,7 @@ export default {
                 $scope.datasetSelect = function (id_selected) {
                     $scope.wms_connecting = false;
                     $scope.id_selected = id_selected;
-                }               
+                }
 
                 /**
                  * @function getPreviousRecords
@@ -80,7 +80,7 @@ export default {
                     }
                 }
 
-                function decomposeMetadata(input, prestring){
+                function decomposeMetadata(input, prestring) {
                     if (angular.isObject(input)) return decomposeObject(input, prestring);
                     else if (angular.isArray(input)) return decomposeArray(input, prestring);
                 }
@@ -88,7 +88,7 @@ export default {
                 function decomposeObject(obj, substring) {
                     var decomposed = {};
                     var subvalue = undefined;
-                    angular.forEach(obj, function(value,key){
+                    angular.forEach(obj, function (value, key) {
                         if (key == "feature") return;
                         var newstring = '';
                         if (angular.isDefined(substring)) newstring = substring + ' - ' + key;
@@ -105,7 +105,7 @@ export default {
                 function decomposeArray(arr, substring) {
                     var decomposed = undefined;
                     var sub = undefined;
-                    angular.forEach(arr, function(value){
+                    angular.forEach(arr, function (value) {
                         if (angular.isObject(value)) sub = decomposeObject(value, substring);
                         else if (angular.isArray(value)) sub = decomposeArray(value, substring);
                         else sub += value;
@@ -145,23 +145,16 @@ export default {
                  */
                 $scope.addLayerToMap = function (ds, layer) {
                     var result = datasourceSelectorService.addLayerToMap(ds, layer);
-                    if (result == "WMS") {
+                    if (result == "WMS" || result == "WFS") {
                         if (Core.singleDatasources) {
-                            $('.dss-tabs a[href="#OWS"]').tab('show')
+                            $scope.datasetSelect('OWS')
                         } else {
                             Core.setMainPanel('ows');
                         }
                         var link = layer.link;
-                        hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WMS');
-                    }
-                    else if (result == "WFS") {
-                        if (Core.singleDatasources) {
-                            $('.dss-tabs a[href="#OWS"]').tab('show')
-                        } else {
-                            Core.setMainPanel('ows');
-                        }
-                        var link = layer.link;
-                        hslayers_api.gui.Ows.setUrlAndConnect(decodeURIComponent(link), 'WFS');
+                        $timeout(() => {
+                            $rootScope.$broadcast(`ows.filling`, result.toLowerCase(), decodeURIComponent(link));
+                        })
                     }
                     else {
                         Core.setMainPanel('layermanager');

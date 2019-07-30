@@ -22,8 +22,8 @@
                 </a>
             </li>
             <li class="nav-item" ng-if="Core.exists('hs.addLayers') && Core.singleDatasources"
-                ng-class="{'hs-tab-singleDS': Core.singleDatasources, 'active': wms_connecting}">
-                <a class="nav-link" href="#OWS" aria-controls="OWS" role="tab" data-toggle="tab" translate>External
+                ng-class="{'hs-tab-singleDS': Core.singleDatasources}">
+                <a class="nav-link" href="#" aria-controls="OWS" ng-class="{'btn-primary active': wms_connecting || id_selected == 'OWS'}" role="tab" ng-click="datasetSelect('OWS')" data-toggle="tab" translate>External
                     data</a>
             </li>
         </ul><!-- Tab panes -->
@@ -82,8 +82,8 @@
                     </div>
                 </div>
             </div>
-            <hs.add-layers role="tabpanel"
-                ng-class="{'tab-pane': true, 'active': wms_connecting || data.datasources.length==0 || id_selected == 'OWS'}"
+            <hs.add-layers role="tabpanel" class="tab-pane"
+                ng-class="{'active': wms_connecting || data.datasources.length==0 || id_selected == 'OWS'}"
                 ng-if="Core.exists('hs.addLayers') && Core.singleDatasources" id="OWS"></hs.add-layers>
         </div>
     </div>

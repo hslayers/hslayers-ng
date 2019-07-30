@@ -51,11 +51,18 @@ export default {
                     var url = permalink.getParamValue(`${type}_to_connect`);
                     Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                     $scope.type = type.toUpperCase();
-                    $timeout(function () {
+                    $timeout(() => {
                         $rootScope.$broadcast(`ows.${type}_connecting`, url);
                     })
                 }
             }
+
+            $scope.$on('ows.filling', function (event, type, url) {
+                $scope.type = type.toUpperCase();
+                $timeout(() => {
+                    $rootScope.$broadcast(`ows.${type}_connecting`, url);
+                })
+            });
 
             connectServiceFromUrlParam('wms');
             connectServiceFromUrlParam('wfs');
