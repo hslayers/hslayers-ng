@@ -3,6 +3,7 @@ export default ['$compile', function ($compile) {
         if (attrs.attribute == 'hstemplate') return;
         if (attrs.template) {
             var el = angular.element('<span ' + attrs.template + '></span>');
+            //TODO: This probaly doestnt work anymore due to jquery missing
             el.attr({
                 attribute: attrs.attribute,
                 value: attrs.value

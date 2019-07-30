@@ -23,6 +23,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', fun
     };
 
     /**
+     * TODO: Probably the same as utils.paramsToURL
     * Create WMS parameter string from parameter object 
     * @memberof hs.wms.getCapabilitiesService
     * @function param2String

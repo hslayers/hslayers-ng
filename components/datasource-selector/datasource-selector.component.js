@@ -2,11 +2,11 @@ export default {
     template: require('components/datasource-selector/partials/datasource_selector.html'),
     controller:
         ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config',
-            function ($scope, Core, $compile, utils, $http, DS, config) {
+            function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config) {
                 $scope.Core = Core;
-                $scope.data = DS.data;
-                $scope.DS = DS;
-                $scope.dsPaging = $scope.data.paging;
+                $scope.data = datasourceSelectorService.data;
+                $scope.DS = datasourceSelectorService;
+                datasourceSelectorService.paging = $scope.data.paging;
                 $scope.wms_connecting = false;
                 $scope.config = config;
                 $scope.advancedSearch = false;
@@ -19,63 +19,7 @@ export default {
                 $scope.datasetSelect = function (id_selected) {
                     $scope.wms_connecting = false;
                     $scope.id_selected = id_selected;
-                }
-
-                if (config.datasources && config.datasources.length > 0)
-                    $http({
-                        method: 'GET',
-                        url: utils.proxify('http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66')
-                    }).then(function successCallback(response) {
-                        $scope.otn_keywords = [{ title: '-' }];
-                        angular.forEach(response.data.result.tags, function (tag) {
-                            $scope.otn_keywords.push({ title: tag.name });
-                        })
-                    });
-
-                /**
-                 * @function openMickaAdvancedSearch
-                 * @memberOf hs.datasource_selector
-                 * Opens Micka Advanced Search dialog, might pass current search string.
-                 */
-                $scope.openMickaAdvancedSearch = function () {
-                    if (document.getElementById('ds-advanced-micka') == null) {
-                        var el = angular.element('<div hs.datasource_selector.advanced_micka_dialog_directive></div>');
-                        $compile(el)($scope);
-                        document.getElementById("hs-dialog-area").appendChild(el[0]);
-                    } else {
-                        $scope.modalVisible = true;
-                    }
-                    DS.checkAdvancedMicka();
-                }
-
-                /**
-                 * @function showSuggestions
-                 * @memberOf hs.datasource_selector
-                 * @param {String} input Suggestion class type name (e.g. "Organisation Name")
-                 * @param {String} param Suggestion paramater of Micka service (e.g. "org")
-                 * @param {String} field Expected property name in response object (e.g. "value")
-                 * Shows suggestions dialog and edits suggestion config.
-                 */
-                $scope.showSuggestions = function (input, param, field) {
-                    DS.changeSuggestionConfig(input, param, field);
-                    if (config.design === "md") {
-                        DS.checkAdvancedMicka();
-                        $scope.data.suggestionFilter = $scope.data.query[input];
-                        DS.suggestionFilterChanged();
-                    } else {
-                        if (document.getElementById('ds-suggestions-micka') == null) {
-                            var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
-                            document.getElementById("hs-dialog-area").appendChild(el[0]);;
-                            $compile(el)($scope);
-                        } else {
-                            $scope.suggestionsModalVisible = true;
-                            var filterElement = document.getElementById('ds-sug-filter');
-                            $scope.data.suggestionFilter = $scope.data.query[input];
-                            filterElement.focus();
-                            DS.suggestionFilterChanged();
-                        }
-                    }
-                }
+                }               
 
                 /**
                  * @function getPreviousRecords
@@ -84,14 +28,14 @@ export default {
                  * Loads previous records of datasets from selected datasource (based on number of results per page and current start)
                  */
                 $scope.getPreviousRecords = function (ds) {
-                    if (ds.start - $scope.data.dsPaging < 0) {
+                    if (ds.start - datasourceSelectorService.paging < 0) {
                         ds.start = 0;
-                        ds.next = $scope.data.dsPaging;
+                        ds.next = datasourceSelectorService.paging;
                     } else {
-                        ds.start -= $scope.data.dsPaging;
-                        ds.next = ds.start + $scope.data.dsPaging;
+                        ds.start -= datasourceSelectorService.paging;
+                        ds.next = ds.start + datasourceSelectorService.paging;
                     }
-                    DS.loadDataset(ds);
+                    datasourceSelectorService.loadDataset(ds);
                 }
 
                 /**
@@ -102,14 +46,14 @@ export default {
                  */
                 $scope.getNextRecords = function (ds) {
                     if (ds.next != 0) {
-                        ds.start = Math.floor(ds.next / $scope.data.dsPaging) * $scope.data.dsPaging;
+                        ds.start = Math.floor(ds.next / datasourceSelectorService.paging) * datasourceSelectorService.paging;
 
-                        if (ds.next + $scope.data.dsPaging > ds.matched) {
+                        if (ds.next + datasourceSelectorService.paging > ds.matched) {
                             ds.next = ds.matched;
                         } else {
-                            ds.next += $scope.data.dsPaging;
+                            ds.next += datasourceSelectorService.paging;
                         }
-                        DS.loadDataset(ds);
+                        datasourceSelectorService.loadDataset(ds);
                     }
                 }
 
@@ -166,7 +110,7 @@ export default {
                  * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
                  */
                 $scope.addLayerToMap = function (ds, layer) {
-                    var result = DS.addLayerToMap(ds, layer);
+                    var result = datasourceSelectorService.addLayerToMap(ds, layer);
                     if (result == "WMS") {
                         if (Core.singleDatasources) {
                             $('.dss-tabs a[href="#OWS"]').tab('show')
@@ -189,19 +133,6 @@ export default {
                         Core.setMainPanel('layermanager');
                     }
                     $scope.metadataModalVisible = false;
-                }
-
-                /**
-                 * @function setOtnKeyword
-                 * @memberOf hs.datasource_selector
-                 * @param {String} theme Selected Otn theme keyword 
-                 * Select Otn Keyword as query subject (used with dropdown list in Gui)
-                 */
-                $scope.setOtnKeyword = function (theme) {
-                    if (theme == '-') theme = '';
-                    $scope.query.Subject = theme;
-                    DS.loadDatasets(DS.datasources);
-                    return false;
                 }
 
                 $scope.$emit('scope_loaded', "DatasourceSelector");

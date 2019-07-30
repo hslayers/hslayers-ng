@@ -5,8 +5,8 @@ import { transform, transformExtent } from 'ol/proj';
 import Feature from 'ol/Feature';
 import { fromExtent as polygonFromExtent } from 'ol/geom/Polygon';
 
-export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service', 'hs.addLayersVector.service',
-    function ($rootScope, OlMap, Core, config, $http, $q, utils, nonwmsservice) {
+export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service', 'hs.addLayersVector.service', 'hs.datasourceMickaFilterService',
+    function ($rootScope, OlMap, Core, config, $http, $q, utils, nonwmsservice, mickaFilterService) {
         var me = this;
 
         this.data = {};
@@ -21,12 +21,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
         this.data.paging = config.dsPaging || 10;
         this.data.textField = 'AnyText';
         this.data.selectedLayer = null;
-        this.data.filterByExtent = true;
         this.data.datasets = undefined;
-        this.data.mickaDS = undefined;
-        this.data.suggestionConfig = {};
-        this.data.suggestions = [];
-        this.data.suggestionsLoaded = true;
         this.data.datasources = config.datasources || [];
 
         var extentLayer = new VectorLayer({
@@ -53,6 +48,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
         * Get datasources and loads datasets for each (uses doadDataset)
         */
         this.loadDatasets = function (datasets) {
+            if (angular.isUndefined(datasets)) datasets = me.data.datasets;
             me.data.datasets = datasets;
             extentLayer.getSource().clear();
             for (var ds in me.data.datasets) {
@@ -71,7 +67,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
             switch (dataset.type) {
                 case "micka":
                     var b = transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    var bbox = me.data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
+                    var bbox = mickaFilterService.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
                     var ue = encodeURIComponent;
                     var text = angular.isDefined(me.data.query.textFilter) && me.data.query.textFilter.length > 0 ? me.data.query.textFilter : me.data.query.title;
                     var query = [
@@ -125,142 +121,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
                         });
                     break;
             }
-        }
-
-        /**
-        * @function fillCodesets
-        * @memberOf hs.datasource_selector.service
-        * @param {Object} datasets Input datasources
-        * Download codelists for all "micka" type datasources from Url specified in app config.
-        */
-        this.fillCodesets = function (datasets) {
-            for (var ds in datasets) {
-                me.fillCodeset(me.data.datasets[ds]);
-            }
-        }
-
-        /**
-        * @function fillCodeset
-        * @memberOf hs.datasource_selector.service
-        * @param {Object} ds Single datasource
-        * Download code-list for micka type source from Url specifiead in app config.
-        */
-        this.fillCodeset = function (ds) {
-            switch (ds.type) {
-                case "micka":
-                    var url = ds.code_list_url;
-                    url = utils.proxify(url);
-                    if (typeof ds.code_lists == 'undefined') {
-                        ds.code_lists = {
-                            serviceType: [],
-                            applicationType: [],
-                            dataType: [],
-                            topicCategory: []
-                        }
-                    }
-                    if (angular.isDefined(ds.canceler)) {
-                        ds.canceler.resolve();
-                        delete ds.canceler;
-                    }
-                    ds.canceler = $q.defer();
-                    $http.get(url, { timeout: ds.canceler.promise }).then(
-                        function (j) {
-                            var oParser = new DOMParser();
-                            var oDOM = oParser.parseFromString(j.data, "application/xml");
-                            var doc = oDOM.documentElement;
-                            doc.querySelectorAll("map serviceType value").forEach(function (type) {
-                                ds.code_lists.serviceType.push({
-                                    value: type.attributes.name.value,
-                                    name: type.innerHTML
-                                });
-                            });
-                            doc.querySelectorAll("map applicationType value").forEach(function (type) {
-                                ds.code_lists.applicationType.push({
-                                    value: type.attributes.name.value,
-                                    name: type.innerHTML
-                                });
-                            });
-                            doc.querySelectorAll("map topicCategory value").forEach(function (type) {
-                                ds.code_lists.topicCategory.push({
-                                    value: type.attributes.name.value,
-                                    name: type.innerHTML
-                                });
-                            });
-                            me.advancedMickaTypeChanged();
-                        }, function (err) { }
-                    );
-                    break;
-            }
-        }
-
-        /**
-        * @function advancedMickaTypeChanged
-        * @memberOf hs.datasource_selector.service
-        * Sets Micka source level types according to current query type (service/appilication). Deprecated?
-        */
-        this.advancedMickaTypeChanged = function () {
-            if (typeof me.data.mickaDS == 'undefined') return;
-            if (typeof me.data.mickaDS.code_lists == 'undefined') return;
-            switch (me.data.query.type) {
-                case "service":
-                    me.data.mickaDS.level2_types = me.data.mickaDS.code_lists.serviceType;
-                    break;
-                case "application":
-                    me.data.mickaDS.level2_types = me.data.mickaDS.code_lists.applicationType;
-                    break;
-            }
-        }
-
-        this.checkAdvancedMicka = function () {
-            if (angular.isUndefined(me.data.mickaDS)) {
-                for (var ds in me.data.datasets) {
-                    if (me.data.datasets[ds].type == 'micka') {
-                        me.data.mickaDS = me.data.datasets[ds];
-                    }
-                }
-            }
-            if (me.data.query.title != '') me.data.query.textFilter = me.data.query.title;
-        }
-
-        this.changeSuggestionConfig = function (input, param, field) {
-            me.data.suggestionConfig = {
-                input: input,
-                param: param,
-                field: field
-            };
-        }
-
-        /**
-        * @function suggestionFilterChanged
-        * @memberOf hs.datasource_selector.service
-        * Send suggestion request to Micka CSW server and parse response
-        */
-        this.suggestionFilterChanged = function () {
-            if (typeof me.suggestionAjax != 'undefined') me.suggestionAjax.abort();
-            var url = me.data.mickaDS.url + '../util/suggest.php?&type=' + me.data.suggestionConfig.param + '&query=' + me.data.suggestionFilter;
-            url = utils.proxify(url);
-            me.data.suggestionsLoaded = false;
-            me.suggestionAjax = $.ajax({
-                url: url,
-                cache: false,
-                dataType: "json",
-                success: function (j) {
-                    me.data.suggestionsLoaded = true;
-                    me.data.suggestions = j.records;
-                    delete me.suggestionAjax;
-                    if (!$rootScope.$$phase) $rootScope.$digest();
-                }
-            });
-        }
-
-        /**
-        * @function addSuggestion
-        * @memberOf hs.datasource_selector.service
-        * @param {String} text Selected property value from suggestions
-        * Save suggestion into Query object
-        */
-        this.addSuggestion = function (text) {
-            me.data.query[me.data.suggestionConfig.input] = text;
         }
 
         /**
@@ -479,17 +339,17 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
             });
             $rootScope.$on('map.extent_changed', function (e) {
                 if (!panelVisible()) return;
-                if (me.data.filterByExtent) me.loadDatasets(me.data.datasources);
+                if (mickaFilterService.filterByExtent) me.loadDatasets(me.data.datasources);
             });
             OlMap.map.addLayer(extentLayer);
             if (dataSourceExistsAndEmpty() && panelVisible()) {
                 me.loadDatasets(me.data.datasources);
-                me.fillCodesets(me.data.datasources);
+                mickaFilterService.fillCodesets(me.data.datasources);
             }
             $rootScope.$on('core.mainpanel_changed', function (event) {
                 if (dataSourceExistsAndEmpty() && panelVisible()) {
                     me.loadDatasets(me.data.datasources);
-                    me.fillCodesets(me.data.datasources);
+                    mickaFilterService.fillCodesets(me.data.datasources);
                 }
                 extentLayer.setVisible(panelVisible());
             });

@@ -140,7 +140,7 @@ export default ['config', '$http', function (config, $http) {
     this.paramsToURL = function (array) {
         var pairs = [];
         for (var key in array)
-            if (array.hasOwnProperty(key))
+            if (array.hasOwnProperty(key) && typeof array[key] != 'undefined')
 
                 pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(array[key]));
         return pairs.join('&');

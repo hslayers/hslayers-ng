@@ -24,6 +24,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service',
         };
 
         /**
+         * TODO: Probably the same as utils.paramsToURL
         * Create WMTS parameter string from parameter object 
         * @memberof hs.wmts.getCapabilitiesService
         * @function param2String

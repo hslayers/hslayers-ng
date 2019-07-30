@@ -1,9 +1,11 @@
 import metadataDialogDirective from './metadata-dialog.directive';
-import advancedMickaDialogDirective from './advanced-micka-dialog.directive';
-import suggestionsDialogDirective from './suggestions-dialog.directive';
+import advancedMickaDialogDirective from './micka/advanced-micka-dialog.directive';
+import suggestionsDialogDirective from './micka/suggestions-dialog.directive';
 import objectDirective from './object.directive';
 import datasourceSelectorService from './datasource-selector.service';
 import datasourceSelectorComponent from './datasource-selector.component';
+import datasourceMickaFilterService from './micka/datasource-micka-filter.service';
+import datasourceMickaFilterDirective from './micka/datasource-micka-filter.directive';
 
 /**
  * @namespace hs.datasource_selector
@@ -42,7 +44,11 @@ angular.module('hs.datasource_selector', ['hs.map'])
      */
     .directive('hs.datasourceSelector.objectDirective', objectDirective)
 
+    .directive('hs.datasourceMickaFilter', datasourceMickaFilterDirective)
+
     .service('hs.datasource_selector.service', datasourceSelectorService)
+
+    .service('hs.datasourceMickaFilterService', datasourceMickaFilterService)
 
     /**
      * @ngdoc component
