@@ -1,5 +1,5 @@
 import { Stroke, Fill, Circle, RegularShape } from 'ol/style';
-import { transform, get as getProj, METERS_PER_UNIT } from 'ol/proj';
+import { transform, get as getProj, METERS_PER_UNIT, transformExtent } from 'ol/proj';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import { TileWMS } from 'ol/source';
