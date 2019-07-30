@@ -11,47 +11,48 @@ import Feature from 'ol/Feature';
 import { Group } from 'ol/layer';
 import { Vector } from 'ol/source';
 
-/**
- * This is a workaround.
- * Returns the associated layer.
- * TODO: Not sure if it is used anywhere. Have to check.
- * @param {ol.Map} map.
- * @return {ol.layer.Vector} Layer.
- */
-Feature.prototype.getLayer = function (map) {
-    var this_ = this,
-        layer_, layersToLookFor = [];
-    var check = function (layer) {
-        var source = layer.getSource();
-        if (utils.instOf(source, Vector)) {
-            var features = source.getFeatures();
-            if (features.length > 0) {
-                layersToLookFor.push({
-                    layer: layer,
-                    features: features
-                });
-            }
-        }
-    };
-    map.getLayers().forEach(function (layer) {
-        if (utils.instOf(layer, Group)) {
-            layer.getLayers().forEach(check);
-        } else {
-            check(layer);
-        }
-    });
-    layersToLookFor.forEach(function (obj) {
-        var found = obj.features.some(function (feature) {
-            return this_ === feature;
-        });
-        if (found) {
-            layer_ = obj.layer;
-        }
-    });
-    return layer_;
-};
-
 export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function (config, $rootScope, utils, $timeout) {
+
+    /**
+     * This is a workaround.
+     * Returns the associated layer.
+     * TODO: Not sure if it is used anywhere. Have to check.
+     * @param {ol.Map} map.
+     * @return {ol.layer.Vector} Layer.
+     */
+    Feature.prototype.getLayer = function (map) {
+        var this_ = this,
+            layer_, layersToLookFor = [];
+        var check = function (layer) {
+            var source = layer.getSource();
+            if (utils.instOf(source, Vector)) {
+                var features = source.getFeatures();
+                if (features.length > 0) {
+                    layersToLookFor.push({
+                        layer: layer,
+                        features: features
+                    });
+                }
+            }
+        };
+        map.getLayers().forEach(function (layer) {
+            if (utils.instOf(layer, Group)) {
+                layer.getLayers().forEach(check);
+            } else {
+                check(layer);
+            }
+        });
+        layersToLookFor.forEach(function (obj) {
+            var found = obj.features.some(function (feature) {
+                return this_ === feature;
+            });
+            if (found) {
+                layer_ = obj.layer;
+            }
+        });
+        return layer_;
+    };
+
     //timer variable for extent change event
     var timer;
     /**
