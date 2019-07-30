@@ -71,7 +71,6 @@ export default {
                     if (config.design === "md") {
                         metadataDialog(e);
                     } else {
-                        if (!$scope.$$phase) $scope.$digest();
                         var previousDialog = document.getElementById("datasource_selector-metadata-dialog");
                         if (previousDialog)
                             previousDialog.parentNode.removeChild(previousDialog);
@@ -79,6 +78,41 @@ export default {
                         document.getElementById("hs-dialog-area").appendChild(el[0]);
                         $compile(el)($scope);
                     }
+                }
+
+                function decomposeMetadata(input, prestring){
+                    if (angular.isObject(input)) return decomposeObject(input, prestring);
+                    else if (angular.isArray(input)) return decomposeArray(input, prestring);
+                }
+
+                function decomposeObject(obj, substring) {
+                    var decomposed = {};
+                    var subvalue = undefined;
+                    angular.forEach(obj, function(value,key){
+                        if (key == "feature") return;
+                        var newstring = '';
+                        if (angular.isDefined(substring)) newstring = substring + ' - ' + key;
+                        else newstring = key;
+                        if (angular.isObject(value)) subvalue = decomposeObject(value, newstring);
+                        else if (angular.isArray(value)) subvalue = decomposeArray(value, newstring);
+                        else subvalue = value;
+                        if (angular.isObject(subvalue)) angular.merge(decomposed, subvalue)
+                        else decomposed[newstring] = subvalue;
+                    });
+                    return decomposed;
+                }
+
+                function decomposeArray(arr, substring) {
+                    var decomposed = undefined;
+                    var sub = undefined;
+                    angular.forEach(arr, function(value){
+                        if (angular.isObject(value)) sub = decomposeObject(value, substring);
+                        else if (angular.isArray(value)) sub = decomposeArray(value, substring);
+                        else sub += value;
+                        if (angular.isObject(sub)) angular.merge(decomposed, sub)
+                        else decomposed[substring] = sub;
+                    });
+                    return decomposed;
                 }
 
                 function metadataDialog($event) {

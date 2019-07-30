@@ -164,10 +164,6 @@ define(['angular', 'ol', 'angular-material'],
                     return typeof obj == 'object'
                 };
 
-                function decomposeMetadata(input, prestring){
-                    if (angular.isObject(input)) return decomposeObject(input, prestring);
-                    else if (angular.isArray(input)) return decomposeArray(input, prestring);
-                }
 
                 function decomposeObject(obj, substring) {
                     var decomposed = {};
