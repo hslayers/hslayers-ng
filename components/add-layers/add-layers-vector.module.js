@@ -59,13 +59,13 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                     url = utils.proxify(url);
                 }
 
-                if(url.toLowerCase().endsWith('kml')){
+                if(type=='kml' || url.toLowerCase().endsWith('kml')){
                     format = new KML({
                         extractStyles: extract_styles
                     });
                     definition.format = "ol.format.KML";
                 }
-                if(url.toLowerCase().endsWith('geojson') || url.toLowerCase().endsWith('json')){
+                if(type=='geojson' || url.toLowerCase().endsWith('geojson') || url.toLowerCase().endsWith('json')){
                     format = new GeoJSON();
                     definition.format = "ol.format.GeoJSON";
                 }
