@@ -230,7 +230,15 @@ export default ['config', '$http', function (config, $http) {
     this.instOf = function(obj, type){
         var text = obj.constructor.toString()
         var typetext = type.toString()
-        var tmp = text.match(/function (.*)\(/)[1] == typetext.match(/function (.*)\(/)[1];
+        const textMatches = text.match(/function (.*)\(/);
+        if(textMatches == null) {
+            return false
+        }
+        const typeTextmatches = typetext.match(/function (.*)\(/);
+        if(typeTextmatches == null) {
+            return false
+        }
+        var tmp = textMatches[1] == typeTextmatches[1];
         return tmp;
 
     }
