@@ -16,7 +16,8 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
     /**
      * This is a workaround.
      * Returns the associated layer.
-     * TODO: Not sure if it is used anywhere. Have to check.
+     * This is used in query-vector.service to get the layer of clicked 
+     * feature when features are listd in info panel.
      * @param {ol.Map} map.
      * @return {ol.layer.Vector} Layer.
      */
