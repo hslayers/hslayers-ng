@@ -16,7 +16,7 @@ define(['angular', 'ol', 'angular-material'],
                 };
             }])
             
-            .controller('hs.material.datasourcebrowser.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config', '$mdDialog', function($scope, Core, $compile, utils, $http, DS, config, $mdDialog){
+            .controller('hs.material.datasourcebrowser.controller', ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', '$mdDialog', function($scope, Core, $compile, utils, $http, DS, config, $mdDialog){
                 $scope.data = DS.data;
                 $scope.DS = DS;
                 $scope.paging = $scope.data.paging;
@@ -83,7 +83,7 @@ define(['angular', 'ol', 'angular-material'],
                         ds.start -= $scope.data.paging;
                         ds.next = ds.start + $scope.data.paging;
                     }
-                    DS.loadDataset(ds);
+                    DS.queryCatalog(ds);
                 }
 
                 /**
@@ -101,7 +101,7 @@ define(['angular', 'ol', 'angular-material'],
                         } else {
                             ds.next += $scope.data.paging;
                         }
-                        DS.loadDataset(ds);
+                        DS.queryCatalog(ds);
                     }
                 }
 
@@ -157,7 +157,7 @@ define(['angular', 'ol', 'angular-material'],
                 }
 
                 $scope.reload = function(){
-                    DS.loadDataset($scope.selectedDS);
+                    DS.queryCatalog($scope.selectedDS);
                 }
 
                 $scope.isIteratable = function (obj) {

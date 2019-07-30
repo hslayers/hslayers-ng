@@ -1,12 +1,11 @@
-import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
+import { Style, Stroke, Fill } from 'ol/style';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
-import { transform, transformExtent } from 'ol/proj';
-import Feature from 'ol/Feature';
-import { fromExtent as polygonFromExtent } from 'ol/geom/Polygon';
+import { transform} from 'ol/proj';
 
-export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service', 'hs.addLayersVector.service', 'hs.datasourceMickaFilterService',
-    function ($rootScope, OlMap, Core, config, $http, $q, utils, nonwmsservice, mickaFilterService) {
+export default ['$rootScope', 'hs.map.service', 'Core', 'config', 
+    'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService',
+    function ($rootScope, OlMap, Core, config, nonwmsservice, mickaFilterService, mickaService) {
         var me = this;
 
         this.data = {};
@@ -42,114 +41,45 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
         });
 
         /**
-        * @function loadDatasets
-        * @memberOf hs.datasource_selector.service
-        * @param {Object} datasets List of datasources for datasets load
-        * Get datasources and loads datasets for each (uses doadDataset)
+        * @function queryCatalogs
+        * @memberOf hs.datasourceBrowserService
+        * @param {Object} datasources List of datasources i.e config to connect 
+        * to catalogue service
+        * @description Queries all configured catalogs for datasources (layers)
         */
-        this.loadDatasets = function (datasets) {
-            if (angular.isUndefined(datasets)) datasets = me.data.datasets;
-            me.data.datasets = datasets;
+        this.queryCatalogs = function (datasources) {
+            if (angular.isUndefined(datasources)) datasources = me.data.datasources;
+            me.data.datasets = datasources;
             extentLayer.getSource().clear();
             for (var ds in me.data.datasets) {
                 me.data.datasets[ds].start = 0;
-                me.loadDataset(me.data.datasets[ds]);
+                me.queryCatalog(me.data.datasets[ds]);
             }
         }
 
         /**
-        * @function loadDataset
-        * @memberOf hs.datasource_selector.service
-        * @param {Object} ds Configuration of selected datasource (from app config)
-        * Loads datasets metadata from selected source (CSW server). Currently supports only "Micka" type of source. Use all query params (search text, bbox, params.., sorting, paging, start) 
+        * @function queryCatalog
+        * @memberOf hs.datasourceBrowserService
+        * @param {Object} dataset Configuration of selected datasource (from app config)
+        * @description Loads datasets metadata from selected source (CSW server). Uses 
+        * pagination set by 'start' attribute of 'dataset' param.
+        * Currently supports only "Micka" type of source. 
+        * Use all query params (search text, bbox, params.., sorting, paging, start) 
         */
-        this.loadDataset = function (dataset) {
-            switch (dataset.type) {
+        this.queryCatalog = function (catalog) {
+            switch (catalog.type) {
                 case "micka":
-                    var b = transformExtent(OlMap.map.getView().calculateExtent(OlMap.map.getSize()), OlMap.map.getView().getProjection(), 'EPSG:4326');
-                    var bbox = mickaFilterService.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
-                    var ue = encodeURIComponent;
-                    var text = angular.isDefined(me.data.query.textFilter) && me.data.query.textFilter.length > 0 ? me.data.query.textFilter : me.data.query.title;
-                    var query = [
-                        (text != '' ? me.data.textField + ue(" like '*" + text + "*'") : ''),
-                        ue(bbox),
-                        //param2Query('type'),
-                        param2Query('ServiceType'),
-                        param2Query('topicCategory'),
-                        param2Query('Subject'),
-                        param2Query('Denominator'),
-                        param2Query('OrganisationName'),
-                        param2Query('keywords')
-                    ].filter(function (n) {
-                        return n != ''
-                    }).join('%20AND%20');
-                    var url = dataset.url + '?request=GetRecords&format=application/json&language=' + dataset.language + '&query=' + query + (typeof me.data.query.sortby != 'undefined' && me.data.query.sortby != '' ? '&sortby=' + me.data.query.sortby : '&sortby=bbox') + '&limit=' + me.data.paging + '&start=' + dataset.start;
-                    url = utils.proxify(url);
-                    dataset.loaded = false;
-                    if (angular.isDefined(dataset.canceler)) {
-                        dataset.canceler.resolve();
-                        delete dataset.canceler;
-                    }
-                    dataset.canceler = $q.defer();
-                    $http.get(url, { timeout: dataset.canceler.promise }).then(
-                        function (j) {
-                            dataset.loading = false;
-                            angular.forEach(dataset.layers, function (val) {
-                                try {
-                                    if (typeof val.feature !== 'undefined' && val.feature != null)
-                                        extentLayer.getSource().removeFeature(val.feature);
-                                } catch (ex) { }
-                            })
-                            dataset.layers = [];
-                            dataset.loaded = true;
-                            if (j.data == null) {
-                                dataset.matched == 0;
-                            } else {
-                                j = j.data;
-                                dataset.matched = j.matched;
-                                dataset.next = j.next;
-                                for (var lyr in j.records) {
-                                    if (j.records[lyr]) {
-                                        var obj = j.records[lyr];
-                                        dataset.layers.push(obj);
-                                        addExtentFeature(obj);
-                                    }
-                                }
-                            }
-                        }, function (e) {
-                            dataset.loaded = true;
-                        });
+                    mickaService.queryCatalog(catalog, extentLayer, me.data.query, me.data.paging)
                     break;
             }
         }
 
         /**
-        * @function param2Query
-        * @memberOf hs.datasource_selector.service
-        * @param {String} which Parameter name to parse
-        * (PRIVATE) Parse query parameter into encoded key value pair. 
-        */
-        function param2Query(which) {
-            if (typeof me.data.query[which] != 'undefined') {
-                if (which == 'type' && me.data.query[which] == 'data') {
-                    //Special case for type 'data' because it can contain many things
-                    return encodeURIComponent("(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')");
-                }
-                return (me.data.query[which] != '' ? encodeURIComponent(which + "='" + me.data.query[which] + "'") : '')
-            } else {
-                if (which == 'ServiceType') {
-                    return encodeURIComponent("(ServiceType=view OR ServiceType=download OR ServiceType=WMS OR ServiceType=WFS)");
-                } else {
-                    return '';
-                }
-            }
-        }
-
-        /**
          * @function isZoomable
-         * @memberOf hs.datasource_selector.service
+         * @memberOf hs.datasourceBrowserService
          * @param {unknown} selected_layer TODO
-         * Test if it possible to zoom to layer overview (bbox has to be defined in metadata of selected layer)
+         * Test if it possible to zoom to layer overview (bbox has to be defined
+         * in metadata of selected layer)
          */
         this.isZoomable = function (layer) {
             return angular.isDefined(layer.bbox);
@@ -171,36 +101,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
             if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
             var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
             OlMap.map.getView().fit(extent, OlMap.map.getSize());
-        }
-
-        /**
-         * @function addExtentFeature
-         * @memberOf hs.datasource_selector
-         * @param {Object} record Record of one dataset from Get Records response
-         * (PRIVATE) Create extent features for displaying extent of loaded dataset records in map
-         */
-        function addExtentFeature(record) {
-            var attributes = {
-                record: record,
-                hs_notqueryable: true,
-                highlighted: false
-            };
-            var b = record.bbox.split(" ");
-            var first_pair = [parseFloat(b[0]), parseFloat(b[1])];
-            var second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-            var mapProjectionExtent = OlMap.map.getView().getProjection().getExtent();
-            first_pair = transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-            second_pair = transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-            if (!isFinite(first_pair[0])) first_pair[0] = mapProjectionExtent[0];
-            if (!isFinite(first_pair[1])) first_pair[1] = mapProjectionExtent[1];
-            if (!isFinite(second_pair[0])) second_pair[0] = mapProjectionExtent[2];
-            if (!isFinite(second_pair[1])) second_pair[1] = mapProjectionExtent[3];
-            if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) return;
-            var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-            attributes.geometry = polygonFromExtent(extent);
-            var new_feature = new Feature(attributes);
-            record.feature = new_feature;
-            extentLayer.getSource().addFeatures([new_feature]);
         }
 
         /**
@@ -237,7 +137,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
          * @memberOf hs.datasource_selector
          * @param {Object} ds Datasource of selected layer
          * @param {Object} layer Metadata record of selected layer
-         * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
+         * Add selected layer to map (into layer manager) if possible 
+         * (supported formats: WMS, WFS, Sparql, kml, geojson, json)
          */
         this.addLayerToMap = function (ds, layer) {
             if (ds.type == "micka") {
@@ -285,7 +186,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
          * @function highlightComposition
-         * @memberOf hs.datasource_selector.service
+         * @memberOf hs.datasourceBrowserService
          * @param {unknown} composition
          * @param {Boolean} state Desired visual state of composition (True = highlighted, False = normal)
          * Change visual apperance of composition overview in map between highlighted and normal
@@ -297,7 +198,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
          * @function clear
-         * @memberOf hs.datasource_selector.service
+         * @memberOf hs.datasourceBrowserService
          * Clear query variable
          */
         this.clear = function () {
@@ -339,16 +240,16 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
             });
             $rootScope.$on('map.extent_changed', function (e) {
                 if (!panelVisible()) return;
-                if (mickaFilterService.filterByExtent) me.loadDatasets(me.data.datasources);
+                if (mickaFilterService.filterByExtent) me.queryCatalogs(me.data.datasources);
             });
             OlMap.map.addLayer(extentLayer);
             if (dataSourceExistsAndEmpty() && panelVisible()) {
-                me.loadDatasets(me.data.datasources);
+                me.queryCatalogs(me.data.datasources);
                 mickaFilterService.fillCodesets(me.data.datasources);
             }
             $rootScope.$on('core.mainpanel_changed', function (event) {
                 if (dataSourceExistsAndEmpty() && panelVisible()) {
-                    me.loadDatasets(me.data.datasources);
+                    me.queryCatalogs(me.data.datasources);
                     mickaFilterService.fillCodesets(me.data.datasources);
                 }
                 extentLayer.setVisible(panelVisible());

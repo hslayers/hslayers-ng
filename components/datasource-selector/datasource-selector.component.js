@@ -1,7 +1,7 @@
 export default {
-    template: require('components/datasource-selector/partials/datasource_selector.html'),
+    template: require('./partials/datasource_selector.html'),
     controller:
-        ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasource_selector.service', 'config', '$rootScope', '$timeout',
+        ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', '$rootScope', '$timeout',
             function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, $rootScope, $timeout) {
                 $scope.Core = Core;
                 $scope.data = datasourceSelectorService.data;
@@ -35,7 +35,7 @@ export default {
                         ds.start -= datasourceSelectorService.paging;
                         ds.next = ds.start + datasourceSelectorService.paging;
                     }
-                    datasourceSelectorService.loadDataset(ds);
+                    datasourceSelectorService.queryCatalog(ds);
                 }
 
                 /**
@@ -53,7 +53,7 @@ export default {
                         } else {
                             ds.next += datasourceSelectorService.paging;
                         }
-                        datasourceSelectorService.loadDataset(ds);
+                        datasourceSelectorService.queryCatalog(ds);
                     }
                 }
 

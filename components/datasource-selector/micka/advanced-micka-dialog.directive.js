@@ -1,13 +1,13 @@
-export default ['config', 'hs.datasourceMickaFilterService', 'hs.datasource_selector.service', '$compile',
-    function (config, mickaFilterService, datasourceSelectorService, $compile) {
+export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService', '$compile',
+    function (config, mickaFilterService, datasourceBrowserService, $compile) {
     return {
-        template: require('components/datasource-selector/micka/dialog_micka_advanced.html'),
+        template: require('./advanced-micka-dialog.html'),
         link: function (scope, element, attrs) {
             scope.modalVisible = true;
 
             scope.mickaFilterService = mickaFilterService;
-            scope.datasourceSelectorService = datasourceSelectorService;
-            scope.qaery = datasourceSelectorService.query;
+            scope.datasourceSelectorService = datasourceBrowserService;
+            scope.qaery = datasourceBrowserService.query;
             scope.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
             
             /**
@@ -21,11 +21,11 @@ export default ['config', 'hs.datasourceMickaFilterService', 'hs.datasource_sele
             scope.showSuggestions = function (input, param, field) {
                 mickaFilterService.changeSuggestionConfig(input, param, field);
                 if (config.design === "md") {
-                    mickaFilterService.suggestionFilter = datasourceSelectorService.data.query[input];
+                    mickaFilterService.suggestionFilter = datasourceBrowserService.data.query[input];
                     mickaFilterService.suggestionFilterChanged(scope.mickaDatasetConfig);
                 } else {
                     if (document.getElementById('ds-suggestions-micka') == null) {
-                        var el = angular.element('<div hs.datasource_selector.suggestions_dialog_directive></span>');
+                        var el = angular.element('<div hs.micka-suggestions-dialog></span>');
                         document.getElementById("hs-dialog-area").appendChild(el[0]);;
                         $compile(el)(scope);
                     } else {
@@ -40,12 +40,12 @@ export default ['config', 'hs.datasourceMickaFilterService', 'hs.datasource_sele
 
             /**
             * @function addSuggestion
-            * @memberOf hs.datasource_selector.service
+            * @memberOf hs.datasourceBrowserService
             * @param {String} text Selected property value from suggestions
             * Save suggestion into Query object
             */
             scope.addSuggestion = function (text) {
-                datasourceSelectorService.data.query[mickaFilterService.suggestionConfig.input] = text;
+                datasourceBrowserService.data.query[mickaFilterService.suggestionConfig.input] = text;
                 scope.suggestionsModalVisible = false;
             }
         }

@@ -20,7 +20,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
         * @function fillCodesets
-        * @memberOf hs.datasource_selector.service
+        * @memberOf hs.datasourceBrowserService
         * @param {Object} datasets Input datasources
         * Download codelists for all "micka" type datasources from Url specified in app config.
         */
@@ -32,7 +32,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
         * @function fillCodeset
-        * @memberOf hs.datasource_selector.service
+        * @memberOf hs.datasourceBrowserService
         * @param {Object} ds Single datasource
         * Download code-list for micka type source from Url specifiead in app config.
         */
@@ -86,7 +86,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
         * @function advancedMickaTypeChanged
-        * @memberOf hs.datasource_selector.service
+        * @memberOf hs.datasourceBrowserService
         * Sets Micka source level types according to current query type (service/appilication). Deprecated?
         */
         me.advancedMickaTypeChanged = function (mickaDS, type) {
@@ -111,7 +111,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
 
         /**
         * @function suggestionFilterChanged
-        * @memberOf hs.datasource_selector.service
+        * @memberOf hs.datasourceBrowserService
         * @param {object} mickaDS Micka catalogue config passed here from directive
         * Send suggestion request to Micka CSW server and parse response
         */
