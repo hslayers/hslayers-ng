@@ -138,7 +138,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
                 return (me.data.query[which] != '' ? encodeURIComponent(which + "='" + me.data.query[which] + "'") : '')
             } else {
                 if (which == 'ServiceType') {
-                    return encodeURIComponent("(ServiceType=view OR ServiceType=download OR ServiceType=WMS OR ServiceType=WFS OR Format like '*KML*' OR Format like '*GeoJSON*' OR Format like '*application/sparql-results+json*')");
+                    return encodeURIComponent("(ServiceType=view OR ServiceType=download OR ServiceType=WMS OR ServiceType=WFS)");
                 } else {
                     return '';
                 }
