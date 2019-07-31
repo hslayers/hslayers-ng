@@ -18,7 +18,7 @@
 
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class="md-raised md-secondary" href="#" ng-href='{{DS.layerRDF(selectedDS, selectedLayer)}}' title="GeoDCAT-AP" target="_blank" ng-show='DS.layerRDF(selectedDS, selectedLayer) != "#"'>
+            <md-button class="md-raised md-secondary" href="#" ng-href='{{DS.layerRDF(selectedDS, selectedLayer)}}' title="GeoDCAT-AP" target="_blank" ng-show='selectedDS.type=="micka" && DS.layerRDF(selectedDS, selectedLayer) != "#"'>
                 Layer RDF
             </md-button>
             <md-button class="md-raised md-secondary md-hue-2" translate ng-show="DS.isZoomable(selectedLayer)" ng-click="DS.zoomTo(selectedLayer.bbox)">
