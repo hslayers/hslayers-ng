@@ -177,36 +177,35 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
          * (supported formats: WMS, WFS, Sparql, kml, geojson, json)
          */
         this.addLayerToMap = function (ds, layer) {
-            var whatToAdd = { type: 'none' }
+            var describer = Promise.resolve({ type: 'none' });
             if (ds.type == "micka") {
-                mickaService.describeWhatToAdd(ds, layer)
+                describer = mickaService.describeWhatToAdd(ds, layer)
             } else if (ds.type == "layman") {
-                whatToAdd = {
-                    type: "WMS",
-                    link: layer.wms.url,
-                    layer: layer.name
-                };
+                describer = laymanService.describeWhatToAdd(ds, layer)
             }
-            if (['WMS', 'WFS'].indexOf(whatToAdd.type) > -1) {
-                if (Core.singleDatasources) {
-                    me.datasetSelect('OWS')
-                } else {
-                    Core.setMainPanel('ows');
+            describer.then(whatToAdd => {
+                if (['WMS', 'WFS'].indexOf(whatToAdd.type) > -1) {
+                    if (Core.singleDatasources) {
+                        me.datasetSelect('OWS')
+                    } else {
+                        Core.setMainPanel('ows');
+                    }
+                    $timeout(() => {
+                        $rootScope.$broadcast(`ows.filling`,
+                            whatToAdd.type.toLowerCase(),
+                            decodeURIComponent(whatToAdd.link),
+                            whatToAdd.layer);
+                    })
+                } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
+                    onwmsservice.add(whatToAdd.type.toLowerCase(), whatToAdd.link,
+                        whatToAdd.title, whatToAdd.abstract,
+                        whatToAdd.extractStyles, whatToAdd.projection);
                 }
-                $timeout(() => {
-                    $rootScope.$broadcast(`ows.filling`,
-                        whatToAdd.type.toLowerCase(),
-                        decodeURIComponent(whatToAdd.link),
-                        whatToAdd.layer);
-                })
-            } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
-                onwmsservice.add(whatToAdd.type.toLowerCase(), whatToAdd.link,
-                    whatToAdd.title, whatToAdd.abstract,
-                    whatToAdd.extractStyles, whatToAdd.projection);
-            }
-            else {
-                Core.setMainPanel('layermanager');
-            }
+                else {
+                    Core.setMainPanel('layermanager');
+                }
+            })
+            
         }
 
         me.datasetSelect = function (id_selected) {

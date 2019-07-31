@@ -80,10 +80,30 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
                         dataset
                     }).then((j) => {
                         angular.extend(layer, j.data);
-                        if(layer.thumbnail) 
+                        if (layer.thumbnail)
                             layer.thumbnail = dataset.url + layer.thumbnail.url;
                         resolve()
                     }).catch((e) => { reject(e) })
+                })
+            },
+
+            /**
+            * @function describeWhatToAdd
+            * @memberOf hs.laymanBrowserService
+            * @param {Object} dataset Configuration of selected datasource (from app config)
+            * @param {Object} layer Layman layer for which to get metadata
+            * Gets layer metadata and returns promise which describes layer 
+            * in a common format for use in add-layers component
+            */
+            describeWhatToAdd(ds, layer) {
+                return new Promise((resolve, reject) => {
+                    me.fillLayerMetadata(ds, layer).then(() => {
+                        resolve({
+                            type: "WMS",
+                            link: layer.wms.url,
+                            layer: layer.name
+                        })
+                    });
                 })
             }
         })
