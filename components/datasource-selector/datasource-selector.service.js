@@ -1,9 +1,9 @@
 import { Style, Stroke, Fill } from 'ol/style';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
-import { transform} from 'ol/proj';
+import { transform } from 'ol/proj';
 
-export default ['$rootScope', 'hs.map.service', 'Core', 'config', 
+export default ['$rootScope', 'hs.map.service', 'Core', 'config',
     'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService',
     function ($rootScope, OlMap, Core, config, nonwmsservice, mickaFilterService, mickaService) {
         var me = this;
@@ -61,17 +61,48 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config',
         * @function queryCatalog
         * @memberOf hs.datasourceBrowserService
         * @param {Object} dataset Configuration of selected datasource (from app config)
-        * @description Loads datasets metadata from selected source (CSW server). Uses 
-        * pagination set by 'start' attribute of 'dataset' param.
+        * @description Loads datasets metadata from selected source (CSW server). 
+        * Uses pagination set by 'start' attribute of 'dataset' param.
         * Currently supports only "Micka" type of source. 
         * Use all query params (search text, bbox, params.., sorting, paging, start) 
         */
         this.queryCatalog = function (catalog) {
+            me.clearDatasetFeatures(catalog, extentLayer);
             switch (catalog.type) {
                 case "micka":
-                    mickaService.queryCatalog(catalog, extentLayer, me.data.query, me.data.paging)
+                    mickaService.queryCatalog(catalog,
+                        me.data.query,
+                        me.data.paging,
+                        me.addExtentFeature)
                     break;
             }
+        }
+
+        /**
+        * @function addExtentFeature
+        * @memberOf hs.datasourceBrowserService
+        * @param {ol/Feature} extentFeature Openlayers Feature
+        * @description  Callback function which gets executed when extent feature 
+        * is created. It should add the feature to vector layer source
+        */
+        this.addExtentFeature = function (extentFeature) {
+            extentLayer.getSource().addFeatures([extentFeature]);
+        }
+
+        /**
+        * @function clearDatasetFeatures
+        * @memberOf hs.datasourceBrowserService
+        * @param {Object} dataset Configuration of selected datasource (from app config)
+        * @param {ol/layer/Vector} extentLayer
+        * (PRIVATE) Remove layer extent features from map
+        */
+        this.clearDatasetFeatures = function (dataset, extentLayer) {
+            angular.forEach(dataset.layers, function (val) {
+                try {
+                    if (angular.isDefined(val.feature) && val.feature != null)
+                        extentLayer.getSource().removeFeature(val.feature);
+                } catch (ex) { }
+            })
         }
 
         /**

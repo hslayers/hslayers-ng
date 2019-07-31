@@ -11,11 +11,15 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
             * @function queryCatalog
             * @memberOf hs.mickaBrowserService
             * @param {Object} dataset Configuration of selected datasource (from app config)
-            * Loads datasets metadata from selected source (CSW server). 
+            * @param {Object} query Container for all query filter values
+            * @param {Number} pageLimit Item count per page
+            * @param {Function} extentFeatureCreated Function which gets called 
+            * extent feature is created. Has one parameter: feature
+            * @description Loads datasets metadata from selected source (CSW server). 
             * Currently supports only "Micka" type of source. 
             * Use all query params (search text, bbox, params.., sorting, paging, start) 
             */
-            queryCatalog(dataset, extentLayer, query, pageLimit) {
+            queryCatalog(dataset, query, pageLimit, extentFeatureCreated) {
                 var b = transformExtent(
                     OlMap.map.getView().calculateExtent(OlMap.map.getSize()),
                     OlMap.map.getView().getProjection(),
@@ -56,45 +60,42 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
                     delete dataset.canceler;
                 }
                 dataset.canceler = $q.defer();
-                $http.get(url, { timeout: dataset.canceler.promise }).then(
-                    function (j) {
-                        dataset.loading = false;
-                        me.clearDatasetFeatures(dataset, extentLayer);
-                        dataset.layers = [];
-                        dataset.loaded = true;
-                        if (j.data == null) {
-                            dataset.matched == 0;
-                        } else {
-                            j = j.data;
-                            dataset.matched = j.matched;
-                            dataset.next = j.next;
-                            for (var lyr in j.records) {
-                                if (j.records[lyr]) {
-                                    var obj = j.records[lyr];
-                                    dataset.layers.push(obj);
-                                    me.addExtentFeature(obj, extentLayer);
-                                }
-                            }
-                        }
-                    }, function (e) {
-                        dataset.loaded = true;
-                    });
+                $http.get(url, { timeout: dataset.canceler.promise, dataset, extentFeatureCreated })
+                    .then(
+                        me.datasetsReceived,
+                        function (e) {
+                            dataset.loaded = true;
+                        });
             },
 
-             /**
-            * @function clearDatasetFeatures
+            /**
+            * @function datasetsReceived
             * @memberOf hs.mickaBrowserService
-            * @param {Object} dataset Configuration of selected datasource (from app config)
-            * @param {ol/layer/Vector} extentLayer
-            * (PRIVATE) Remove layer extent features from map
+            * @param {Object} j HTTP response containing all the layers
+            * (PRIVATE) Callback for catalogue http query
             */
-            clearDatasetFeatures(dataset, extentLayer){
-                angular.forEach(dataset.layers, function (val) {
-                    try {
-                        if (angular.isDefined(val.feature) && val.feature != null)
-                            extentLayer.getSource().removeFeature(val.feature);
-                    } catch (ex) { }
-                })
+            datasetsReceived(j) {
+                var dataset = j.config.dataset;
+                var extentFeatureCreated = j.config.extentFeatureCreated;
+                dataset.loading = false;
+                dataset.layers = [];
+                dataset.loaded = true;
+                if (j.data == null) {
+                    dataset.matched == 0;
+                } else {
+                    j = j.data;
+                    dataset.matched = j.matched;
+                    dataset.next = j.next;
+                    for (var lyr in j.records) {
+                        if (j.records[lyr]) {
+                            var obj = j.records[lyr];
+                            dataset.layers.push(obj);
+                            if (extentFeatureCreated)
+                                extentFeatureCreated(me.addExtentFeature(obj))
+
+                        }
+                    }
+                }
             },
 
             /**
@@ -126,7 +127,7 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
              * @param {ol/layer/Vector} extentLayer
              * (PRIVATE) Create extent features for displaying extent of loaded dataset records in map
              */
-            addExtentFeature(record, extentLayer) {
+            addExtentFeature(record) {
                 var attributes = {
                     record: record,
                     hs_notqueryable: true,
@@ -147,7 +148,7 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
                 attributes.geometry = polygonFromExtent(extent);
                 var new_feature = new Feature(attributes);
                 record.feature = new_feature;
-                extentLayer.getSource().addFeatures([new_feature]);
+                return new_feature;
             }
         })
     }
