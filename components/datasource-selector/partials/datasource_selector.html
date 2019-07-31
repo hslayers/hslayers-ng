@@ -12,9 +12,9 @@
         </div>-->
 
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
-            <li class="nav-item" ng-class="{'hs-tab-singleDS': Core.singleDatasources && !wms_connecting}"
+            <li class="nav-item" ng-class="{'hs-tab-singleDS': Core.singleDatasources && !data.wms_connecting}"
                 ng-repeat="ds in data.datasets">
-                <a class="nav-link" ng-class="{'btn-primary': id_selected == 'ds'+$index}" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
+                <a class="nav-link" ng-class="{'btn-primary': data.id_selected == 'ds'+$index}" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
                     data-toggle="tab" ng-click="datasetSelect('ds'+$index)">
                     {{ds.title}}
                     <span ng-show='ds.matched>0'>({{ds.matched}})</span>
@@ -23,13 +23,13 @@
             </li>
             <li class="nav-item" ng-if="Core.exists('hs.addLayers') && Core.singleDatasources"
                 ng-class="{'hs-tab-singleDS': Core.singleDatasources}">
-                <a class="nav-link" href="#" aria-controls="OWS" ng-class="{'btn-primary active': wms_connecting || id_selected == 'OWS'}" role="tab" ng-click="datasetSelect('OWS')" data-toggle="tab" translate>External
+                <a class="nav-link" href="#" aria-controls="OWS" ng-class="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}" role="tab" ng-click="datasetSelect('OWS')" data-toggle="tab" translate>External
                     data</a>
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="hs-dataset-panel tab-pane"
-                ng-class="{'active': 'ds'+$index == id_selected && Core.singleDatasources && !wms_connecting}"
+                ng-class="{'active': 'ds'+$index == data.id_selected && Core.singleDatasources && !data.wms_connecting}"
                 id="{{'ds'+$index}}" ng-repeat="ds in data.datasets">
                 <div class="card">
                     <div class="card-body">
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <hs.add-layers role="tabpanel" class="tab-pane"
-                ng-class="{'active': wms_connecting || data.datasources.length==0 || id_selected == 'OWS'}"
+                ng-class="{'active': data.wms_connecting || data.datasources.length==0 || data.id_selected == 'OWS'}"
                 ng-if="Core.exists('hs.addLayers') && Core.singleDatasources" id="OWS"></hs.add-layers>
         </div>
     </div>

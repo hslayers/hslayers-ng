@@ -1,25 +1,20 @@
+import laymanService from './layman/layman.service';
+
 export default {
     template: require('./partials/datasource_selector.html'),
     controller:
-        ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', '$rootScope', '$timeout',
-            function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, $rootScope, $timeout) {
+        ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', 'hs.laymanBrowserService',
+            function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, laymanService) {
                 $scope.Core = Core;
                 $scope.data = datasourceSelectorService.data;
                 $scope.DS = datasourceSelectorService;
                 datasourceSelectorService.paging = $scope.data.paging;
-                $scope.wms_connecting = false;
                 $scope.config = config;
                 $scope.advancedSearch = false;
-                $scope.id_selected = Core.exists('hs.addLayers') ? 'OWS' : '';
 
                 $scope.$on('ows.wms_connecting', function () {
-                    $scope.wms_connecting = true;
+                    $scope.data.wms_connecting = true;
                 });
-
-                $scope.datasetSelect = function (id_selected) {
-                    $scope.wms_connecting = false;
-                    $scope.id_selected = id_selected;
-                }
 
                 /**
                  * @function getPreviousRecords
@@ -67,17 +62,24 @@ export default {
                 $scope.showMetadata = function (ds, layer, e) {
                     $scope.selected_layer = layer;
                     $scope.selected_ds = ds;
-                    $scope.metadata = decomposeMetadata(layer);
-                    if (config.design === "md") {
-                        metadataDialog(e);
-                    } else {
-                        var previousDialog = document.getElementById("datasource_selector-metadata-dialog");
-                        if (previousDialog)
-                            previousDialog.parentNode.removeChild(previousDialog);
-                        var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
-                        document.getElementById("hs-dialog-area").appendChild(el[0]);
-                        $compile(el)($scope);
+                    var filler = Promise.resolve();
+
+                    if (ds.type == 'layman') {
+                        filler = laymanService.fillLayerMetadata(ds, layer);
                     }
+                    filler.then(() => {
+                        $scope.metadata = decomposeMetadata(layer);
+                        if (config.design === "md") {
+                            metadataDialog(e);
+                        } else {
+                            var previousDialog = document.getElementById("datasource_selector-metadata-dialog");
+                            if (previousDialog)
+                                previousDialog.parentNode.removeChild(previousDialog);
+                            var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
+                            document.getElementById("hs-dialog-area").appendChild(el[0]);
+                            $compile(el)($scope);
+                        }
+                    })
                 }
 
                 function decomposeMetadata(input, prestring) {
@@ -144,23 +146,11 @@ export default {
                  * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
                  */
                 $scope.addLayerToMap = function (ds, layer) {
-                    var result = datasourceSelectorService.addLayerToMap(ds, layer);
-                    if (result == "WMS" || result == "WFS") {
-                        if (Core.singleDatasources) {
-                            $scope.datasetSelect('OWS')
-                        } else {
-                            Core.setMainPanel('ows');
-                        }
-                        var link = layer.link;
-                        $timeout(() => {
-                            $rootScope.$broadcast(`ows.filling`, result.toLowerCase(), decodeURIComponent(link));
-                        })
-                    }
-                    else {
-                        Core.setMainPanel('layermanager');
-                    }
+                    datasourceSelectorService.addLayerToMap(ds, layer);
                     $scope.metadataModalVisible = false;
                 }
+
+                $scope.datasetSelect = datasourceSelectorService.datasetSelect;
 
                 $scope.$emit('scope_loaded', "DatasourceSelector");
             }
