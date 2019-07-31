@@ -7,6 +7,7 @@ import datasourceSelectorComponent from './datasource-selector.component';
 import mickaFilterService from './micka/micka-filters.service';
 import mickaFiltersDirective from './micka/micka-filters.directive';
 import mickaService from './micka/micka.service';
+import laymanService from './layman/layman.service';
 
 /**
  * @namespace hs.datasource_selector
@@ -80,6 +81,14 @@ angular.module('hs.datasource_selector', ['hs.map'])
      * @description Service for querying layer from Micka metadata catalogue
      */
     .service('hs.mickaBrowserService', mickaService)
+
+    /**
+     * @ngdoc service
+     * @name hs.laymanBrowserService
+     * @memberOf hs.datasource_selector
+     * @description Service for querying layer from Layman
+     */
+    .service('hs.laymanBrowserService', laymanService)
 
     /**
      * @ngdoc component

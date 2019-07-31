@@ -60,7 +60,11 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
                     delete dataset.canceler;
                 }
                 dataset.canceler = $q.defer();
-                $http.get(url, { timeout: dataset.canceler.promise, dataset, extentFeatureCreated })
+                $http.get(url, {
+                    timeout: dataset.canceler.promise,
+                    dataset,
+                    extentFeatureCreated
+                })
                     .then(
                         me.datasetsReceived,
                         function (e) {
@@ -149,6 +153,47 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
                 var new_feature = new Feature(attributes);
                 record.feature = new_feature;
                 return new_feature;
+            },
+
+            describeWhatToAdd(ds, layer) {
+                if (layer.trida == 'service') {
+                    if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
+                        whatToAdd.type = "WMS";
+                        whatToAdd.link = layer.link;
+                    } else if ((layer.link.toLowerCase()).indexOf("sparql") > -1) {
+                        var lyr = nonwmsservice.add('sparql', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
+                    } else if (layer.serviceType == 'WFS' || layer.serviceType == 'OGC:WFS' || layer.serviceType == 'download') {
+                        whatToAdd.type = "WFS";
+                        whatToAdd.link = layer.link;
+                    } else if (layer.formats && ["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
+                        whatToAdd = {
+                            type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
+                            link: layer.link,
+                            title: layer.title || 'Layer',
+                            abstract: layer.abstract || 'Layer',
+                            projection: 'EPSG:4326',
+                            extractStyles: layer.formats[0].toLowerCase() == 'kml'
+                        }
+                    } else {
+                        alert('Service type "' + layer.serviceType + '" not supported.');
+                    }
+                } else if (layer.trida == 'dataset') {
+                    if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
+                        switch (layer.formats[0].toLowerCase()) {
+                            case "kml":
+                                var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
+                                break;
+                            case "json":
+                            case "geojson":
+                                var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
+                                break;
+                        }
+
+                        return;
+                    }
+                } else {
+                    alert('Datasource type "' + layer.trida + '" not supported.');
+                }
             }
         })
     }

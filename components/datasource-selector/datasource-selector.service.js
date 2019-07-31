@@ -3,9 +3,9 @@ import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import { transform } from 'ol/proj';
 
-export default ['$rootScope', 'hs.map.service', 'Core', 'config',
-    'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService',
-    function ($rootScope, OlMap, Core, config, nonwmsservice, mickaFilterService, mickaService) {
+export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
+    'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService', 'hs.laymanBrowserService',
+    function ($rootScope, $timeout, OlMap, Core, config, nonwmsservice, mickaFilterService, mickaService, laymanService) {
         var me = this;
 
         this.data = {};
@@ -22,6 +22,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config',
         this.data.selectedLayer = null;
         this.data.datasets = undefined;
         this.data.datasources = config.datasources || [];
+        this.data.wms_connecting = false;
+        this.data.id_selected = Core.exists('hs.addLayers') ? 'OWS' : '';
 
         var extentLayer = new VectorLayer({
             title: "Datasources extents",
@@ -74,6 +76,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config',
                         me.data.query,
                         me.data.paging,
                         me.addExtentFeature)
+                    break;
+                case "layman":
+                    laymanService.queryCatalog(catalog)
                     break;
             }
         }
@@ -172,55 +177,51 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config',
          * (supported formats: WMS, WFS, Sparql, kml, geojson, json)
          */
         this.addLayerToMap = function (ds, layer) {
+            var whatToAdd = { type: 'none' }
             if (ds.type == "micka") {
-                if (layer.trida == 'service') {
-                    if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
-                        return "WMS";
-                    } else if ((layer.link.toLowerCase()).indexOf("sparql") > -1) {
-                        var lyr = nonwmsservice.add('sparql', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
-                    } else if (layer.serviceType == 'WFS' || layer.serviceType == 'OGC:WFS' || layer.serviceType == 'download') {
-                        return "WFS";
-                    } else if (layer.formats && ["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
-                        switch (layer.formats[0].toLowerCase()) {
-                            case "kml":
-                                var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
-                                break;
-                            case "json":
-                            case "geojson":
-                                var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
-                                break;
-                        }
-
-                        return;
-                    } else {
-                        alert('Service type "' + layer.serviceType + '" not supported.');
-                    }
-                } else if (layer.trida == 'dataset') {
-                    if (["kml", "geojson", "json"].indexOf(layer.formats[0].toLowerCase()) > -1) {
-                        switch (layer.formats[0].toLowerCase()) {
-                            case "kml":
-                                var lyr = nonwmsservice.add('kml', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
-                                break;
-                            case "json":
-                            case "geojson":
-                                var lyr = nonwmsservice.add('geojson', layer.link, layer.title || 'Layer', layer.abstract, false, 'EPSG:4326');
-                                break;
-                        }
-
-                        return;
-                    }
-                } else {
-                    alert('Datasource type "' + layer.trida + '" not supported.');
-                }
+                mickaService.describeWhatToAdd(ds, layer)
+            } else if (ds.type == "layman") {
+                whatToAdd = {
+                    type: "WMS",
+                    link: layer.wms.url,
+                    layer: layer.name
+                };
             }
+            if (['WMS', 'WFS'].indexOf(whatToAdd.type) > -1) {
+                if (Core.singleDatasources) {
+                    me.datasetSelect('OWS')
+                } else {
+                    Core.setMainPanel('ows');
+                }
+                $timeout(() => {
+                    $rootScope.$broadcast(`ows.filling`,
+                        whatToAdd.type.toLowerCase(),
+                        decodeURIComponent(whatToAdd.link),
+                        whatToAdd.layer);
+                })
+            } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
+                onwmsservice.add(whatToAdd.type.toLowerCase(), whatToAdd.link,
+                    whatToAdd.title, whatToAdd.abstract,
+                    whatToAdd.extractStyles, whatToAdd.projection);
+            }
+            else {
+                Core.setMainPanel('layermanager');
+            }
+        }
+
+        me.datasetSelect = function (id_selected) {
+            me.data.wms_connecting = false;
+            me.data.id_selected = id_selected;
         }
 
         /**
          * @function highlightComposition
          * @memberOf hs.datasourceBrowserService
          * @param {unknown} composition
-         * @param {Boolean} state Desired visual state of composition (True = highlighted, False = normal)
-         * Change visual apperance of composition overview in map between highlighted and normal
+         * @param {Boolean} state Desired visual state of composition 
+         * (True = highlighted, False = normal)
+         * @description Change visual apperance of composition overview in map 
+         * between highlighted and normal
          */
         this.highlightComposition = function (composition, state) {
             if (typeof composition.feature !== 'undefined')

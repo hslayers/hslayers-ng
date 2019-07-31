@@ -57,10 +57,10 @@ export default {
                 }
             }
 
-            $scope.$on('ows.filling', function (event, type, url) {
-                $scope.type = type.toUpperCase();
+            $scope.$on('ows.filling', function (event, type, url, layer) {
+                $scope.type = type.toLowerCase();
                 $timeout(() => {
-                    $rootScope.$broadcast(`ows.${type}_connecting`, url);
+                    $rootScope.$broadcast(`ows.${type}_connecting`, url, layer);
                 })
             });
 
