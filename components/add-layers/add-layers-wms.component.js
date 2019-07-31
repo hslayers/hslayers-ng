@@ -22,14 +22,17 @@ export default {
             $scope.showDetails = false;
         }
 
-        $scope.connect = function () {
+        $scope.connect = function (layerToSelect) {
             historyListService.addSourceHistory('Wms', $scope.url);
-            wmsGetCapabilitiesService.requestGetCapabilities($scope.url);
+            wmsGetCapabilitiesService.requestGetCapabilities($scope.url)
+                .then((capabilities) => {
+                    LayService.capabilitiesReceived(capabilities, layerToSelect)
+                });
             $scope.showDetails = true;
         }
 
-        $scope.$on('ows.wms_connecting', function (event, wms) {
-            $scope.setUrlAndConnect(wms);
+        $scope.$on('ows.wms_connecting', function (event, wms, layer) {
+            $scope.setUrlAndConnect(wms, layer);
         });
 
         /**
@@ -63,13 +66,14 @@ export default {
         * @memberof hs.addLayersWms
         * @function setUrlAndConnect
         * @param {String} url Url of requested service
-        * @param {String} type Type of requested service
+        * @param {String} layer Optional layer to select, when 
+        * getCapabilities arrives
         */
-        $scope.setUrlAndConnect = function (url) {
+        $scope.setUrlAndConnect = function (url, layer) {
             $scope.url = url;
-            $scope.connect();
+            $scope.connect(layer);
         }
-        
+
         $scope.sourceHistory = LayService.sourceHistory;
 
         $scope.getDimensionValues = LayService.getDimensionValues;

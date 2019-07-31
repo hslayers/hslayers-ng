@@ -8,8 +8,12 @@ import { WMSCapabilities } from 'ol/format';
 
 export default {
     template: require('components/layermanager/partials/layermanager.html'),
-    controller: ['$scope', 'Core', '$compile', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.map.service', 'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice', 'hs.styler.service', 'hs.legend.service',
-        function ($scope, Core, $compile, utils, layerUtils, config, OlMap, LayMan, $rootScope, WMST, styler, legendService) {
+    controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
+        'hs.utils.layerUtilsService', 'config', 'hs.map.service',
+        'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice',
+        'hs.styler.service', 'hs.legend.service', 'hs.wms.getCapabilitiesService',
+        function ($scope, Core, $compile, utils, layerUtils, config, OlMap,
+            LayMan, $rootScope, WMST, styler, legendService, getCapabilitiesService) {
             $scope.legendService = legendService;
             $scope.data = LayMan.data;
             $scope.Core = Core;
@@ -382,24 +386,25 @@ export default {
                         url = layer.getSource().getUrls()[0];
                     if (layer.getSource().getUrl) //Single tile
                         url = layer.getSource().getUrl();
-                    srv_wms_caps.requestGetCapabilities(url).then(function (capabilities_xml) {
-                        //debugger;
-                        var parser = new WMSCapabilities();
-                        var caps = parser.read(capabilities_xml.data);
-                        if (angular.isArray(caps.Capability.Layer)) {
-                            angular.forEach(caps.Capability.Layer, function (layer_def) {
-                                if (layer_def.Name == layer.params.LAYERS) {
-                                    layer.set('BoundingBox', layer_def.BoundingBox)
-                                }
-                            })
-                        }
-                        if (angular.isObject(caps.Capability.Layer)) {
-                            layer.set('BoundingBox', caps.Capability.Layer.BoundingBox);
-                            extent = getExtentFromBoundingBoxAttribute(layer);
-                            if (extent != null)
-                                map.getView().fit(extent, map.getSize());
-                        }
-                    })
+                    getCapabilitiesService.requestGetCapabilities(url)
+                        .then(function (capabilities_xml) {
+                            //debugger;
+                            var parser = new WMSCapabilities();
+                            var caps = parser.read(capabilities_xml);
+                            if (angular.isArray(caps.Capability.Layer)) {
+                                angular.forEach(caps.Capability.Layer, function (layer_def) {
+                                    if (layer_def.Name == layer.params.LAYERS) {
+                                        layer.set('BoundingBox', layer_def.BoundingBox)
+                                    }
+                                })
+                            }
+                            if (angular.isObject(caps.Capability.Layer)) {
+                                layer.set('BoundingBox', caps.Capability.Layer.BoundingBox);
+                                extent = getExtentFromBoundingBoxAttribute(layer);
+                                if (extent != null)
+                                    map.getView().fit(extent, map.getSize());
+                            }
+                        })
                 }
                 if (extent != null)
                     map.getView().fit(extent, map.getSize());
@@ -420,7 +425,7 @@ export default {
                     for (var ix = 0; ix < bbox.length; ix++) {
                         if (angular.isDefined(getProj(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
                             var crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
-                            b = bbox[ix].extent;
+                            var b = bbox[ix].extent;
                             var first_pair = [b[0], b[1]]
                             var second_pair = [b[2], b[3]];
                             first_pair = transform(first_pair, crs, map.getView().getProjection());

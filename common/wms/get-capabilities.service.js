@@ -65,11 +65,12 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', fun
         var url = [path, me.params2String(params)].join('?');
 
         url = utils.proxify(url);
-        var promise = $http.get(url);
-        promise.then(function (r) {
-            $rootScope.$broadcast('ows.capabilities_received', r)
-        });
-        return promise;
+        return new Promise((resolve, reject) => {
+            $http.get(url).then((r) => {
+                $rootScope.$broadcast('ows.capabilities_received', r)
+                resolve(r.data);
+            }).catch((e) => { reject(e) })
+        })
     };
 
     /**
