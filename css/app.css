@@ -684,10 +684,6 @@ div#content-wrapper:not(.open) .minisidebar-wrapper {
 /** STATUS CREATOR **/
 /********************/
 
-#stc-save, #stc-saveas {
-    display:none;
-}
-
 #hs-stc-footer {
     text-align:center;
     margin-top:10px;

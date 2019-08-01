@@ -1,8 +1,8 @@
 import { transform } from 'ol/proj';
 
-export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service', 
-    'config', '$http', 'hs.statusManagerService',
-    function ($rootScope, OlMap, Core, saveMap, config, $http, statusManagerService) {
+export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
+    'config', '$http', 'hs.statusManagerService', 'hs.laymanService',
+    function ($rootScope, OlMap, Core, saveMap, config, $http, statusManagerService, laymanService) {
         var me = this;
         angular.extend(me, {
             compoData: {
@@ -62,33 +62,37 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
                     });
             },
 
-            save(saveAsNew) {
-                if (saveAsNew || me.compoData.id == '') me.compoData.id = saveMap.generateUuid();
-                $http({
-                    url: statusManagerService.endpointUrl(),
-                    method: 'POST',
-                    data: JSON.stringify({
-                        data: saveMap.map2json(OlMap.map, me.compoData, me.userData, me.statusData),
-                        permanent: true,
-                        id: me.compoData.id,
-                        project: config.project_name,
-                        thumbnail: me.compoData.thumbnail,
-                        request: "save"
+            save(saveAsNew, endpoint) {
+                if (saveAsNew || me.compoData.id == '')
+                    me.compoData.id = saveMap.generateUuid();
+                var compositionJson = saveMap.map2json(OlMap.map, me.compoData, me.userData, me.statusData);
+                var saver = statusManagerService;
+                if (endpoint.type == 'layman')
+                    saver = laymanService;
+                saver.save(compositionJson, endpoint, me.compoData)
+                    .then(response => {
+                        var compInfo = {};
+                        var j = response.data;
+                        compInfo.id = me.compoData.id;
+                        compInfo.title = me.compoData.title;
+                        compInfo.abstract = me.compoData.abstract || '';
+                        if (endpoint.type == 'statusmanager')
+                            me.status = angular.isDefined(j.saved) && (j.saved !== false);
+                        if (endpoint.type == 'layman')
+                            me.status = j.length == 1 && angular.isDefined(j[0].uuid)
+                        $rootScope.$broadcast('compositions.composition_loading', compInfo);
+                        $rootScope.$broadcast('compositions.composition_loaded', compInfo);
+                        const saveStatus = me.status ? 'ok' : 'not-saved';
+                        me.statusData.success = me.status;
+                        $rootScope.$broadcast('StatusManager.saveResult',
+                            'saveResult', saveStatus);
+                    }).catch(e => {
+                        me.statusData.success = false;
+                        $rootScope.$broadcast('StatusManager.saveResult',
+                            'saveResult', 'error');
                     })
-                }).then(function (response) {
-                    var compInfo = {};
-                    var j = response.data;
-                    compInfo.id = me.compoData.id;
-                    compInfo.title = me.compoData.title;
-                    compInfo.abstract = me.compoData.abstract || '';
-                    me.status = angular.isDefined(j.saved) && (j.saved !== false);
-                    $rootScope.$broadcast('compositions.composition_loading', compInfo);
-                    $rootScope.$broadcast('compositions.composition_loaded', compInfo);
-                    $rootScope.$broadcast('StatusManager.saveResult', 'saveResult', angular.isDefined(j.saved) && (j.saved !== false) ? 'ok' : 'not-saved');
-                }, function (err) {
-                    me.statusData.success = false;
-                    $rootScope.$broadcast('StatusManager.saveResult', 'saveResult', 'error');
-                });
+
+
             },
 
             /**
@@ -237,7 +241,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             me.endpoints.push({
                 type: 'layman',
                 name: 'Layman',
-                url: ds.url
+                url: ds.url,
+                user: ds.user
             })
         })
 

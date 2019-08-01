@@ -23,6 +23,8 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                     groups[g.roleName] = (g.r ? 'r' : '') + (g.w ? 'w' : '');
                 }
             });
+            if(angular.isUndefined(groups.guest))
+                groups.guest = 'r';
             var json = {
                 abstract: compoData.abstract,
                 title: compoData.title,
@@ -32,7 +34,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                     address: userData.address,
                     city: userData.city,
                     country: userData.country,
-                    email: userData.email,
+                    email: userData.email || 'none@none',
                     name: userData.name,
                     organization: userData.organization,
                     phone: userData.phone,

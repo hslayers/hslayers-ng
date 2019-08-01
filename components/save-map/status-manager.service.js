@@ -1,4 +1,5 @@
-export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', 'config', function (OlMap, Core, utils, $window, $cookies, config) {
+export default ['Core', 'hs.utils.service', '$http', 'config', 
+    function (Core, utils, $http, config) {
     var me = this;
     angular.extend(me, {
         endpointUrl() {
@@ -14,6 +15,27 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                 }
             }
             return hostName + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php')
+        },
+        save(compositionJson, endpoint, compoData) {
+            return new Promise((resolve, reject) => {
+                $http({
+                    url: me.endpointUrl(),
+                    method: 'POST',
+                    data: JSON.stringify({
+                        data: compositionJson,
+                        permanent: true,
+                        id: compoData.id,
+                        project: config.project_name,
+                        thumbnail: compoData.thumbnail,
+                        request: "save"
+                    })
+                })
+                    .then(function (response) {
+                        resolve(response)
+                    }, function (err) {
+                        reject()
+                    });
+            })
         }
     });
     return me;

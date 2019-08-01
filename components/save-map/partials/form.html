@@ -2,14 +2,14 @@
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
     <li role="presentation" class="nav-item">
         <a href="#context" class="nav-link" ng-class="{'btn-primary': step == 'start'}" aria-controls="context"
-            role="tab" data-toggle="tab" ng-click="step='start'"translate>Context</a>
+            role="tab" data-toggle="tab" ng-click="setStep('start')"translate>Context</a>
     </li>
     <li role="presentation" class="nav-item">
-        <a href="#access" class="nav-link" ng-click="step='access'" ng-class="{'btn-primary': step == 'access'}" aria-controls="access"
+        <a href="#access" class="nav-link" ng-click="setStep('access')" ng-class="{'btn-primary': step == 'access'}" aria-controls="access"
             role="tab" data-toggle="tab" translate>Access</a>
     </li>
     <li role="presentation" class="nav-item">
-        <a href="#author" class="nav-link" ng-class="{'btn-primary': step == 'author'}" ng-click="step='author'" aria-controls="author"
+        <a href="#author" class="nav-link" ng-class="{'btn-primary': step == 'author'}" ng-click="setStep('author')" aria-controls="author"
             role="tab" data-toggle="tab" translate>Author</a>
     </li>
 </ul><!-- Tab panes -->

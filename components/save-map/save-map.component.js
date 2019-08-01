@@ -26,6 +26,9 @@ export default {
                     $scope.step = 'end';
                 }
             }
+            $scope.setStep = function(step){
+                $scope.step = step;
+            }
             /**
              * Show dialog about result of saving operation
              * @function showResultDialog
@@ -59,7 +62,7 @@ export default {
             }
 
             $scope.save = function (saveAsNew) {
-                StatusManager.save(saveAsNew);
+                StatusManager.save(saveAsNew, $scope.endpoint);
             }
 
             $scope.$on('StatusManager.saveResult', function (e, step, result) {
