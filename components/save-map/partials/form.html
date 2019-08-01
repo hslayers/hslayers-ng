@@ -1,17 +1,20 @@
 <!-- Nav tabs -->
-<ul class="nav nav-tabs stc-tabs" role="tablist">
-    <li role="presentation" class="active">
-        <a href="#context" aria-controls="context" role="tab" data-toggle="tab" translate>Context</a>
+<ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
+    <li role="presentation" class="nav-item">
+        <a href="#context" class="nav-link" ng-class="{'btn-primary': step == 'start'}" aria-controls="context"
+            role="tab" data-toggle="tab" ng-click="step='start'"translate>Context</a>
     </li>
-    <li role="presentation">
-        <a href="#access" aria-controls="access" role="tab" data-toggle="tab" translate>Access</a>
+    <li role="presentation" class="nav-item">
+        <a href="#access" class="nav-link" ng-click="step='access'" ng-class="{'btn-primary': step == 'access'}" aria-controls="access"
+            role="tab" data-toggle="tab" translate>Access</a>
     </li>
-    <li role="presentation">
-        <a href="#author" aria-controls="author" role="tab" data-toggle="tab" translate>Author</a>
+    <li role="presentation" class="nav-item">
+        <a href="#author" class="nav-link" ng-class="{'btn-primary': step == 'author'}" ng-click="step='author'" aria-controls="author"
+            role="tab" data-toggle="tab" translate>Author</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="context">
+    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='start'}" id="context">
         <form>
             <div class="form-group">
                 <label for="stc-title" class="control-label" translate="">Title</label> <input type="text"
@@ -25,32 +28,39 @@
                 <label for="stc-keywords" class="control-label" translate="">Keywords</label> <input type="text"
                     class="form-control" id="stc-keywords" ng-model="compoData.keywords" />
             </div>
+            <div class="form-group">
+                <label for="stc-extent1" class="control-label" translate="">Extent</label>
+                <div class="form-row stc-extent-row">
+                    <div class="col-sm-3 px-0">
+                        <input type="text" class="form-control" id="stc-extent1" ng-model="compoData.bbox[0]" title="East" />
+                    </div>
+                    <div class="col-sm-3 px-0">
+                        <input type="text" class="form-control" id="stc-extent2" ng-model="compoData.bbox[1]" title="South" />
+                    </div>
+                    <div class="col-sm-3 px-0">
+                        <input type="text" class="form-control" id="stc-extent3" ng-model="compoData.bbox[2]" title="West"/>
+                    </div>
+                    <div class="col-sm-3 px-0">
+                        <input type="text" class="form-control" id="stc-extent4" ng-model="compoData.bbox[3]" title="North"/>
+                    </div>
+                </div>
+                <button type="button" class="mt-1 btn btn-secondary btn-block" ng-click="getCurrentExtent()" translate="">Use
+                        current
+                        map extent</button>
+            </div>
+            <div class="form-group">
+                <label for="stc-layerlist" class="control-label" translate="">Layers</label>
+                <ul class="list-group" id="stc-layerlist">
+                    <li ng-repeat="layer in compoData.layers | filter:query" id="layer-{{$index}}"
+                        class="list-group-item">
+                        <a href="#">{{layer.title}}</a> <input type="checkbox" class="layer-checked"
+                            ng-model="layer.checked" />
+                    </li>
+                </ul>
+            </div>
         </form>
-        <form class="form">
-            <label for="stc-extent1" class="control-label" translate="">Extent</label>
-            <div class="row stc-extent-row">
-                <div class="form-group col-sm-3">
-                    <input type="text" class="form-control" id="stc-extent1" ng-model="compoData.bbox[0]" />
-                </div>
-                <div class="form-group col-sm-3">
-                    <input type="text" class="form-control" id="stc-extent2" ng-model="compoData.bbox[1]" />
-                </div>
-                <div class="form-group col-sm-3">
-                    <input type="text" class="form-control" id="stc-extent3" ng-model="compoData.bbox[2]" />
-                </div>
-                <div class="form-group col-sm-3">
-                    <input type="text" class="form-control" id="stc-extent4" ng-model="compoData.bbox[3]" />
-                </div>
-            </div><button type="button" class="btn btn-secondary" ng-click="getCurrentExtent()" translate="">Use current
-                map extent</button>
-        </form><label for="stc-layerlist" class="control-label" translate="">Layers</label>
-        <ul class="list-group" id="stc-layerlist">
-            <li ng-repeat="layer in compoData.layers | filter:query" id="layer-{{$index}}" class="list-group-item">
-                <a href="#">{{layer.title}}</a> <input type="checkbox" class="layer-checked" ng-model="layer.checked" />
-            </li>
-        </ul>
     </div>
-    <div role="tabpanel" class="tab-pane" id="access">
+    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='access'}" id="access">
         <table class="table table-condensed" id="stc-access">
             <tr>
                 <th></th>
@@ -64,7 +74,7 @@
             </tr>
         </table>
     </div>
-    <div role="tabpanel" class="tab-pane" id="author">
+    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='author'}" id="author">
         <div class="form-group">
             <label for="stc-name" class="control-label" translate="">Person</label> <input type="text"
                 class="form-control" id="stc-name" ng-model="userData.name" />

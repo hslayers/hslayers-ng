@@ -1,7 +1,8 @@
 export default {
     template: require('components/save-map/partials/panel.html'),
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService',
-        function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager) {
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService', 
+    '$timeout',
+        function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout) {
             $scope.compoData = StatusManager.compoData;
             $scope.statusData = StatusManager.statusData;
             $scope.userData = StatusManager.userData;
@@ -16,27 +17,13 @@ export default {
              * @memberof hs.save-map
              */
             $scope.next = function () {
-                if ($('a[href=#author]').parent().hasClass('active')) {
-                    var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveMap.map2json(OlMap.map, $scope.compoData, $scope.userData, $scope.statusData)));
-                    $('#stc-download').remove();
-                    $('<a id="stc-download" class="btn btn-secondary" href="data:' + data + '" download="context.hsl">Download</a>').insertAfter('#stc-next');
-                    $('#stc-download').click(function () {
-                        $('#stc-next').show();
-                        $('#stc-download').hide();
-                        $('#stc-save, #stc-saveas').hide();
-                        $('.stc-tabs li:eq(0) a').tab('show');
-                        Core.setMainPanel('layermanager', true);
-                    })
-                    $('#stc-next').hide();
-                    if (Core.isAuthorized()) {
-                        $('#stc-save, #stc-saveas').show();
-                    }
-                } else {
-                    if ($('a[href=#context]').parent().hasClass('active'))
-                        $('.stc-tabs li:eq(1) a').tab('show');
-                    else
-                        if ($('a[href=#access]').parent().hasClass('active'))
-                            $('.stc-tabs li:eq(2) a').tab('show');
+                if ($scope.step == 'start')
+                    $scope.step = 'access';
+                else if ($scope.step == 'access')
+                    $scope.step = 'author';
+                else if ($scope.step == 'author') {
+                    $scope.downloadableData = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveMap.map2json(OlMap.map, $scope.compoData, $scope.userData, $scope.statusData)));
+                    $scope.step = 'end';
                 }
             }
             /**
@@ -79,16 +66,14 @@ export default {
                 $scope.resultCode = result;
                 if (step === 'saveResult') {
                     $scope.showResultDialog();
-                    $('#stc-next').show();
-                    $('#stc-download').hide();
-                    $('#stc-save, #stc-saveas').hide();
-                    $('.stc-tabs li:eq(0) a').tab('show');
+                    $scope.step = 'start';
                     Core.setMainPanel('layermanager', true);
-
+                    //Probably was used in OTN hub
+                    /*
                     $('.composition-info').html($('<div>').html($scope.title)).click(function () {
                         $('.composition-abstract').toggle()
                     });
-                    $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));
+                    $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));*/
                 }
                 else if (step === 'saveConfirm') {
                     $scope.showSaveDialog();
@@ -115,9 +100,9 @@ export default {
                 if ($scope.statusData.guessedTitle) {
                     $scope.compoData.title = $scope.statusData.guessedTitle;
                 }
-                setTimeout(function () {
-                    $('#hs-stc-title').focus();
-                }, 0);
+                $timeout(()=> {
+                    document.getElementById('hs-stc-title').focus();
+                });
             };
 
             $scope.getCurrentExtent = function () {
@@ -126,26 +111,19 @@ export default {
 
             $scope.$on('core.map_reset', function (event, data) {
                 $scope.step = 'start';
-                $('#stc-next').show();
-                $('#stc-download').hide();
-                $('#stc-save, #stc-saveas').hide();
-                $('.stc-tabs li:eq(0) a').tab('show');
             });
 
             $scope.$on('core.mainpanel_changed', function (event) {
                 if (Core.mainpanel == 'saveMap') {
-                    $('#stc-next').show();
-                    $('#stc-download').hide();
-                    $('#stc-save, #stc-saveas').hide();
-                    $('.stc-tabs li:eq(0) a').tab('show');
+                    $scope.step = 'start';
                 }
             });
 
-            $scope.isAllowed = function(){
-                if($scope.endpoint.type == 'statusmanager')
+            $scope.isAllowed = function () {
+                if ($scope.endpoint.type == 'statusmanager')
                     return !Core.isAuthorized()
                 else
-                    if($scope.endpoint.type == 'layman')
+                    if ($scope.endpoint.type == 'layman')
                         return true;
             }
 

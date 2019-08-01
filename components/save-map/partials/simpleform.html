@@ -73,7 +73,7 @@
     <div class="card-footer row" id="hs-stc-footer">
         <div class="btn-group" role="group" aria-label="Save composition">
             <button type="button" class="btn btn-secondary" id="hs-stc-cancel" translate ng-click="cancel()">Cancel</button>
-            <button type="button" class="btn btn-primary" id="hs-stc-saveas" translate ng-disabled="!compoData.title" ng-click="confirmSave()">Save</button>
+            <button type="button" class="btn btn-primary" id="hs-stc-saveas" ng-show="step=='start'" translate ng-disabled="!compoData.title" ng-click="confirmSave()">Save</button>
         </div>
     </div>
 </div>
