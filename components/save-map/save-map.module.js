@@ -2,6 +2,7 @@ import 'angular-cookies';
 import saveMapComponent from './save-map.component';
 import saveMapService from './save-map.service';
 import saveMapManagerService from './save-map-manager.service';
+import statusManagerService from './status-manager.service';
 
 /**
  * @namespace hs.save-map
@@ -110,7 +111,9 @@ var module = angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies'])
      */
     .service('hs.save-map.service', saveMapService)
 
-    .service('hs.save-map.managerService', saveMapManagerService)
+    .service('hs.saveMapManagerService', saveMapManagerService)
+
+    .service('hs.statusManagerService', statusManagerService)
     
     /**
      * @ngdoc component

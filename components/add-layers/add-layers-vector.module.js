@@ -30,8 +30,8 @@ angular.module('hs.addLayersVector', ['hs.styles'])
     * @name hs.addLayersVector.service
     * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
     */
-    .service('hs.addLayersVector.service', ['config', 'Core', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.save-map.service', 'hs.permalink.urlService',
-        function (config, Core, $rootScope, OlMap, styles, utils, $http, statusCreator, permalink) {
+    .service('hs.addLayersVector.service', ['config', 'Core', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.statusManagerService', 'hs.permalink.urlService',
+        function (config, Core, $rootScope, OlMap, styles, utils, $http, statusManagerService, permalink) {
             var me = this;
 
             /**
@@ -279,7 +279,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                     //TODO Saving to statusmanager should probably be done with statusmanager component throught events
                     var url = '';
                     try {
-                        url = statusCreator.endpointUrl();
+                        url = statusManagerService.endpointUrl();
                     } catch (ex) { }
                     if (console) console.info(url, config);
                     var options = {};

@@ -15,7 +15,7 @@ define(['angular', 'ol', 'angular-material', 'ngAnimate'],
                     }
                 };
             }])
-            .controller('hs.material.statuscreator.controller', ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'hs.save-map.managerService', '$mdDialog', 'hs.material.sidepanel.service', 'config',  
+            .controller('hs.material.statuscreator.controller', ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'hs.saveMapManagerService', '$mdDialog', 'hs.material.sidepanel.service', 'config',  
                 function ($scope, OlMap, Core, saveMapService, StatusManager, $mdDialog, Sidenav, config) {
 
                     $scope.compoData = StatusManager.compoData;

@@ -1,11 +1,14 @@
 export default {
     template: require('components/save-map/partials/panel.html'),
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.save-map.managerService',
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService',
         function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager) {
             $scope.compoData = StatusManager.compoData;
             $scope.statusData = StatusManager.statusData;
             $scope.userData = StatusManager.userData;
             $scope.config = config;
+            $scope.endpoint = StatusManager.endpoints[0];
+            $scope.endpoints = StatusManager.endpoints;
+            $scope.step = 'start'; //Possible values: start, 
 
             /**
              * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
@@ -122,6 +125,7 @@ export default {
             }
 
             $scope.$on('core.map_reset', function (event, data) {
+                $scope.step = 'start';
                 $('#stc-next').show();
                 $('#stc-download').hide();
                 $('#stc-save, #stc-saveas').hide();
@@ -136,6 +140,15 @@ export default {
                     $('.stc-tabs li:eq(0) a').tab('show');
                 }
             });
+
+            $scope.isAllowed = function(){
+                if($scope.endpoint.type == 'statusmanager')
+                    return !Core.isAuthorized()
+                else
+                    if($scope.endpoint.type == 'layman')
+                        return true;
+            }
+
             $scope.$emit('scope_loaded', "StatusCreator");
         }
     ]

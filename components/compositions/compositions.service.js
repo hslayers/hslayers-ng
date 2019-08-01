@@ -9,8 +9,8 @@ import { fromExtent as polygonFromExtent } from 'ol/geom/Polygon';
 import Feature from 'ol/Feature';
 import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 
-export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.urlService', '$compile', '$cookies', 'hs.utils.service', 'hs.save-map.service',
-    function ($rootScope, $q, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils, statusCreator) {
+export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.urlService', '$compile', '$cookies', 'hs.utils.service', 'hs.statusManagerService',
+    function ($rootScope, $q, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils, statusManagerService) {
         var me = this;
 
         me.data = {};
@@ -100,7 +100,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
                             };
                             record.editable = false;
                             if (angular.isUndefined(record.thumbnail)) {
-                                record.thumbnail = statusCreator.endpointUrl() + '?request=loadthumb&id=' + record.id;
+                                record.thumbnail = statusManagerService.endpointUrl() + '?request=loadthumb&id=' + record.id;
                             }
                             var extent = compositionParser.parseExtent(record.bbox);
                             //Check if height or Width covers the whole screen
@@ -130,7 +130,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
          * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
          */
         me.loadStatusManagerCompositions = function (params, bbox) {
-            var url = statusCreator.endpointUrl();
+            var url = statusManagerService.endpointUrl();
             var query = params.query;
             var textFilter = query && angular.isDefined(query.title) && query.title != '' ? '&q=' + encodeURIComponent('*' + query.title + '*') : '';
             url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + textFilter + '&start=0&limit=1000&sort=' + getStatusSortAttr(params.sortBy);
@@ -154,10 +154,10 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
                         record.editable = false;
                         if (angular.isDefined(record.edit)) record.editable = record.edit;
                         if (angular.isUndefined(record.link)) {
-                            record.link = statusCreator.endpointUrl() + '?request=load&id=' + record.id;
+                            record.link = statusManagerService.endpointUrl() + '?request=load&id=' + record.id;
                         }
                         if (angular.isUndefined(record.thumbnail)) {
-                            record.thumbnail = statusCreator.endpointUrl() + '?request=loadthumb&id=' + record.id;
+                            record.thumbnail = statusManagerService.endpointUrl() + '?request=loadthumb&id=' + record.id;
                         }
                         var attributes = {
                             record: record,
@@ -184,7 +184,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
         }
 
         me.deleteComposition = function (composition) {
-            var url = statusCreator.endpointUrl() + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
+            var url = statusManagerService.endpointUrl() + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
             url = utils.proxify(url);
             $http({ url: url }).
                 then(function (response) {
@@ -266,7 +266,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
             if (permalink.getParamValue('composition')) {
                 var id = permalink.getParamValue('composition');
                 if (id.indexOf('http') == -1 && id.indexOf(config.status_manager_url) == -1)
-                    id = statusCreator.endpointUrl() + '?request=load&id=' + id;
+                    id = statusManagerService.endpointUrl() + '?request=load&id=' + id;
                 compositionParser.load(id);
             }
         }
@@ -279,7 +279,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
         });
 
         $rootScope.$on('compositions.load_composition', function (event, id) {
-            id = statusCreator.endpointUrl() + '?request=load&id=' + id;
+            id = statusManagerService.endpointUrl() + '?request=load&id=' + id;
             compositionParser.load(id);
         });
 
@@ -299,7 +299,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
             var metadata = {};
             $http({
                 method: 'POST',
-                url: statusCreator.endpointUrl(),
+                url: statusManagerService.endpointUrl(),
                 data: JSON.stringify({
                     request: 'socialShare',
                     id: shareId,
@@ -309,7 +309,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
                     image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg'
                 })
             }).then(function (response) {
-                utils.shortUrl(statusCreator.endpointUrl() + "?request=socialshare&id=" + shareId)
+                utils.shortUrl(statusManagerService.endpointUrl() + "?request=socialshare&id=" + shareId)
                     .then(function (shortUrl) {
                         me.data.shareUrl = shortUrl;
                     }).catch(function () {

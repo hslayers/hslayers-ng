@@ -1,5 +1,5 @@
-export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlService', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q', 'hs.save-map.service',
-    function ($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q, saveMap) {
+export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlService', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q', 'hs.statusManagerService',
+    function ($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q, statusManagerService) {
         var me = {};
         angular.extend(me, {
 
@@ -77,7 +77,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
                 if (!me.data.shareUrlValid) {
                     if (serviceURL.shareId == null || newShare) serviceURL.shareId = utils.generateUuid();
                     $http({
-                        url: saveMap.endpointUrl(),
+                        url: statusManagerService.endpointUrl(),
                         method: 'POST',
                         data: JSON.stringify({
                             request: 'socialShare',
@@ -88,7 +88,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
                             image: me.data.thumbnail
                         })
                     }).then(function (response) {
-                        utils.shortUrl(saveMap.endpointUrl() + "?request=socialshare&id=" + serviceURL.shareId)
+                        utils.shortUrl(statusManagerService.endpointUrl() + "?request=socialshare&id=" + serviceURL.shareId)
                             .then(function (shortUrl) {
                                 var shareUrl = shortUrl;
                                 socialshare.share({
@@ -161,7 +161,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
         $rootScope.$on('core.mainpanel_changed', function (event) {
             if (Core.mainpanel == 'permalink') {
                 serviceURL.update();
-                var status_url = saveMap.endpointUrl();
+                var status_url = statusManagerService.endpointUrl();
                 if (serviceURL.added_layers.length > 0) {
                     $http({
                         url: status_url,

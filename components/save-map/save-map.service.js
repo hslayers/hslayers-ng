@@ -8,20 +8,6 @@ import { GeoJSON } from 'ol/format';
 
 export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', 'config', function (OlMap, Core, utils, $window, $cookies, config) {
     var me = {
-        endpointUrl() {
-            var hostName = location.protocol + '//' + location.host;
-            if (angular.isDefined(config.hostname)) {
-                if (config.hostname.status_manager && config.hostname.status_manager.url) {
-                    return config.hostname.status_manager.url;
-                }
-                if (config.hostname.user && config.hostname.user.url) {
-                    hostName = config.hostname.user.url;
-                } else if (config.hostname.default && config.hostname.default.url) {
-                    hostName = config.hostname.default.url
-                }
-            }
-            return hostName + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php')
-        },
         /**
         * Create Json object which stores information about composition, user, map state and map layers (including layer data)
         * @memberof hs.save-map.service
