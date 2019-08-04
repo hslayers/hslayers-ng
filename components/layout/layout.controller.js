@@ -1,7 +1,7 @@
 export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', 'hs.layout.service',
     function ($scope, $injector, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, layoutService) {
         if (config.design == 'md')
-            require(['bottomSheetCollapsible']);
+            require(['angular-material-bottom-sheet-collapsible/bottomSheetCollapsible']);
         $scope.importCss = angular.isDefined(config.importCss) ? config.importCss : true;
         $scope.useIsolatedBootstrap = angular.isDefined(config.useIsolatedBootstrap) ? config.useIsolatedBootstrap : false;
         $scope.Core = Core;
