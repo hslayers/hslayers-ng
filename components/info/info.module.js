@@ -1,6 +1,5 @@
 import '../map/map.module';
 import '../core/core';
-import 'update-meta';
 import infoComponent from './info.component';
 
 /**
@@ -9,7 +8,7 @@ import infoComponent from './info.component';
  * @name hs.info
  * @description Module responsible for info application status information window. Contain HS-Layers default info template and its controller. When included, it also updates webpage meta tags with current map information.
  */
-angular.module('hs.info', ['hs.map', 'hs.core', 'updateMeta'])
+angular.module('hs.info', ['hs.map', 'hs.core'])
     /**
      * @module info
      * @name hs.info
