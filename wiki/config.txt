@@ -331,3 +331,9 @@ Boolean. Allow selecting and displaying info about multiple vector layer feature
 
 String to specify which search provider should be used. Can contain values: "sdi4apps_openapi", "geonames"
 
+**useProxy**
+Weather to use proxy or not. Might be usefull in cordova apps, where proxying is not needed
+
+**proxyPrefix**
+url to use for proxy. By default it's "/cgi-bin/hsproxy.cgi?", in which case url=... parameter is added to the get request.
+If other proxy service is used non-encoded url will be added directly to the proxyPrefix specified e.g. "/proxy/https://www.google.com" in case of "/proxy/"

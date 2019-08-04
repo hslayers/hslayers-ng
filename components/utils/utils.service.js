@@ -13,11 +13,14 @@ export default ['config', '$http', function (config, $http) {
         toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
         var outUrl = url;
         if ((url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) || getPortFromUrl(url) != window.location.port) {
-            if (typeof use_proxy === 'undefined' || use_proxy === true) {
-
+            if (angular.isUndefined(config.useProxy) || config.useProxy === true) {
                 outUrl = config.proxyPrefix || "/cgi-bin/hsproxy.cgi?";
-                if (toEncoding && (url.indexOf('GetMap') == -1 || url.indexOf('GetFeatureInfo') > -1)) outUrl += "toEncoding=utf-8&";
-                outUrl = outUrl + "url=" + encodeURIComponent(url);
+                if (outUrl.indexOf('hsproxy.cgi') > -1) {
+                    if (toEncoding && (url.indexOf('GetMap') == -1 || url.indexOf('GetFeatureInfo') > -1)) outUrl += "toEncoding=utf-8&";
+                    outUrl = outUrl + "url=" + encodeURIComponent(url);
+                } else {
+                    outUrl += url;
+                }
             }
         }
         return outUrl;
@@ -227,15 +230,15 @@ export default ['config', '$http', function (config, $http) {
     }
 
     //Check if object is an instance of a class
-    this.instOf = function(obj, type){
+    this.instOf = function (obj, type) {
         var text = obj.constructor.toString()
         var typetext = type.toString()
         const textMatches = text.match(/function (.*)\(/);
-        if(textMatches == null) {
+        if (textMatches == null) {
             return false
         }
         const typeTextmatches = typetext.match(/function (.*)\(/);
-        if(typeTextmatches == null) {
+        if (typeTextmatches == null) {
             return false
         }
         var tmp = textMatches[1] == typeTextmatches[1];
