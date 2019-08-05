@@ -455,7 +455,7 @@
           },
           "projection": {
             "$id": "#/properties/layers/items/properties/projection",
-            "type": "number",
+            "type": "string",
             "title": "Projection of layer if it is different from the map projection for the whole application",
             "default": null,
             "examples": [

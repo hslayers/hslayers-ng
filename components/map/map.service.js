@@ -10,6 +10,7 @@ import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import Feature from 'ol/Feature';
 import { Group } from 'ol/layer';
 import { Vector } from 'ol/source';
+import { transform, transformExtent } from 'ol/proj';
 
 export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function (config, $rootScope, utils, $timeout) {
 
@@ -431,6 +432,21 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         view.setCenter([x, y]);
         view.setZoom(zoom);
     }
+
+    this.getMapExtent = function(){
+        var mapSize = me.map.getSize();
+        var mapExtent = angular.isDefined(mapSize) ?
+            me.map.getView().calculateExtent(mapSize) :
+            [0, 0, 100, 100];
+        return mapExtent;
+    };
+
+    this.getMapExtentInEpsg4326 = function(){
+        var bbox = transformExtent(me.getMapExtent(),
+            me.map.getView().getProjection(),
+            'EPSG:4326');
+        return bbox;
+    };
 
     /**
      * @ngdoc method

@@ -55,12 +55,13 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
                         $rootScope.$broadcast('compositions.composition_loading', response.data);
                         if (response.data.success == true) {
                             me.composition_loaded = url;
-                            if (angular.isDefined(pre_parse)) response = pre_parse(response.data);
+                              if (angular.isDefined(pre_parse)) response = pre_parse(response.data);
                             /*
                             Response might contain {data:{abstract:...}} or {abstract:} directly. If there is data object, 
                             that means composition is enclosed in 
                             container which itself might contain title or extent properties */
-                            me.loadCompositionObject(response.data || response, overwrite, response.title, response.extent);
+                            me.loadCompositionObject(response.data.data || response.data, overwrite, response.title, response.extent);
+                            me.finalizeCompositionLoading(response.data);
                             if (angular.isDefined(callback) && callback !== null) callback();
                         } else {
                             me.raiseCompositionLoadError(response.data);
@@ -88,10 +89,9 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
                             lyr.setVisible(true);
                     });
                 }
-                me.finalizeCompositionLoading();
             },
 
-            finalizeCompositionLoading: function () {
+            finalizeCompositionLoading: function (responseData) {
                 if (config.open_lm_after_comp_loaded) {
                     Core.setMainPanel('layermanager');
                 }
@@ -103,7 +103,7 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
                 * @eventType broadcast on $rootScope
                 * @description Fires when composition is loaded or not loaded with Error message
                 */
-                $rootScope.$broadcast('compositions.composition_loaded', response);
+                $rootScope.$broadcast('compositions.composition_loaded', responseData);
             },
 
             raiseCompositionLoadError: function (response) {

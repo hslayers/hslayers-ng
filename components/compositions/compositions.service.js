@@ -4,183 +4,48 @@ import VectorLayer from 'ol/layer/Vector';
 import SparqlJson from 'hs.source.SparqlJson'
 import social from 'angular-socialshare';
 import './layer-parser.module';
-import { transform, transformExtent } from 'ol/proj';
-import { fromExtent as polygonFromExtent } from 'ol/geom/Polygon';
-import Feature from 'ol/Feature';
 import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 
-export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Core', 'hs.compositions.service_parser', 'config', 'hs.permalink.urlService', '$compile', '$cookies', 'hs.utils.service', 'hs.statusManagerService',
-    function ($rootScope, $q, $location, $http, OlMap, Core, compositionParser, config, permalink, $compile, $cookies, utils, statusManagerService) {
+export default ['$rootScope', '$location', '$http', 'hs.map.service',
+    'Core', 'hs.compositions.service_parser',
+    'config', 'hs.permalink.urlService', '$compile', '$cookies',
+    'hs.utils.service', 'hs.statusManagerService',
+    'hs.compositions.mickaService', 'hs.compositions.statusManagerService',
+    function ($rootScope, $location, $http, OlMap, Core, compositionParser,
+        config, permalink, $compile, $cookies, utils, statusManagerService,
+        mickaEndpointService, statusManagerEndpointService) {
         var me = this;
 
-        me.data = {};
-
-        me.data.start = 0;
-        me.data.limit = 20;
-        me.data.next = 20;
-        me.data.useCallbackForEdit = false;
-
-        me.compositionsLoaded = false;
-
         var extentLayer;
-
-        function getCompositionsQueryUrl(params, bbox) {
-            var query = params.query;
-            var bboxDelimiter = config.compositions_catalogue_url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
-            var serviceName = angular.isDefined(config.compositions_catalogue) && angular.isDefined(config.compositions_catalogue.serviceName) ? 'serviceName=&' + config.compositions_catalogue.serviceName : '';
-            bbox = (params.filterExtent ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + "'") : '');
-            var catalogueKnown = false;
-            var textFilter = query && angular.isDefined(query.title) && query.title != '' ? encodeURIComponent(" AND title like '*" + query.title + "*' OR abstract like '*" + query.title + "*'") : '';
-            var selected = [];
-            var keywordFilter = "";
-            var tmp = '';
-            angular.forEach(params.keywords, function (value, key) {
-                if (value) selected.push("subject='" + key + "'");
-            });
-            if (selected.length > 0)
-                keywordFilter = encodeURIComponent(' AND (' + selected.join(' OR ') + ')');
-
-            if (angular.isDefined(config.hostname)) {
-                if (config.hostname.user && config.hostname.user.url) {
-                    tmp = config.hostname.user.url;
-                } else if (config.hostname.compositions_catalogue) {
-                    tmp = config.hostname.compositions_catalogue.url
-                    catalogueKnown = true;
-                } else if (config.hostname && config.hostname.default) {
-                    tmp = config.hostname.default.url
+        me.data = {
+            endpoints: config.datasources.map(ds => {
+                return {
+                    url: ds.url,
+                    type: ds.type,
+                    title: ds.title,
+                    start: 0,
+                    limit: 20
                 }
-            }
-
-            if (!catalogueKnown) {
-                if (tmp.indexOf('http') > -1) {
-                    //Remove domain from url
-                    tmp += config.compositions_catalogue_url.replace(/^.*\/\/[^\/]+/, '');
-                } else {
-                    tmp += config.compositions_catalogue_url
-                }
-            }
-            tmp += "?format=json&" + serviceName + "query=type%3Dapplication" + bbox + textFilter + keywordFilter + "&lang=eng&sortBy=" + params.sortBy + "&detail=summary&start=" + params.start + "&limit=" + params.limit;
-            tmp = utils.proxify(tmp);
-            return tmp;
+            })
         }
 
-        me.loadCompositions = function (params) {
-            me.compositionsLoaded = false;
-            if (angular.isUndefined(params.sortBy)) params.sortBy = 'bbox';
-            if (angular.isUndefined(params.start)) params.start = me.data.start;
-            if (angular.isUndefined(params.limit) || isNaN(params.limit)) params.limit = me.data.limit;
-            var mapSize = OlMap.map.getSize();
-            var mapExtent = angular.isDefined(mapSize) ? OlMap.map.getView().calculateExtent(mapSize) : [0, 0, 100, 100];
-            var bbox = transformExtent(mapExtent, OlMap.map.getView().getProjection(), 'EPSG:4326');
-
-            if (angular.isDefined(config.compositions_catalogue_url)) {
-                extentLayer.getSource().clear();
-                if (angular.isDefined(me.canceler)) {
-                    me.canceler.resolve();
-                    delete me.canceler;
-                }
-                me.canceler = $q.defer();
-                $http.get(getCompositionsQueryUrl(params, bbox), { timeout: me.canceler.promise }).then(
-                    function (response) {
-                        me.compositionsLoaded = true;
-                        response = response.data;
-                        me.data.compositions = response.records;
-                        if (response.records && response.records.length > 0) {
-                            me.data.compositionsCount = response.matched;
-                        } else {
-                            me.data.compositionsCount = 0;
-                        }
-                        //TODO: Needs refactoring
-                        me.data.next = response.next;
-                        angular.forEach(me.data.compositions, function (record) {
-                            var attributes = {
-                                record: record,
-                                hs_notqueryable: true,
-                                highlighted: false
-                            };
-                            record.editable = false;
-                            if (angular.isUndefined(record.thumbnail)) {
-                                record.thumbnail = statusManagerService.endpointUrl() + '?request=loadthumb&id=' + record.id;
-                            }
-                            var extent = compositionParser.parseExtent(record.bbox);
-                            //Check if height or Width covers the whole screen
-                            if (!((extent[0] < mapExtent[0] && extent[2] > mapExtent[2]) || (extent[1] < mapExtent[1] && extent[3] > mapExtent[3]))) {
-                                attributes.geometry = polygonFromExtent(extent);
-                                attributes.is_hs_composition_extent = true;
-                                var newFeature = new Feature(attributes);
-                                record.feature = newFeature;
-                                extentLayer.getSource().addFeatures([newFeature]);
-                            } else {
-                                //Composition not in extent
-                            }
-                        })
-                        $rootScope.$broadcast('CompositionsLoaded');
-                        me.loadStatusManagerCompositions(params, bbox);
-                    }, function (err) { }
-                );
-            } else {
-                me.loadStatusManagerCompositions(params, bbox);
-            }
+        me.datasetSelect = function (id_selected) {
+            me.data.id_selected = id_selected;
         }
 
-        /**
-         * @ngdoc method
-         * @name hs.compositions.service#loadStatusManagerCompositions
-         * @public
-         * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
-         */
-        me.loadStatusManagerCompositions = function (params, bbox) {
-            var url = statusManagerService.endpointUrl();
-            var query = params.query;
-            var textFilter = query && angular.isDefined(query.title) && query.title != '' ? '&q=' + encodeURIComponent('*' + query.title + '*') : '';
-            url += '?request=list&project=' + encodeURIComponent(config.project_name) + '&extent=' + bbox.join(',') + textFilter + '&start=0&limit=1000&sort=' + getStatusSortAttr(params.sortBy);
-            url = utils.proxify(url);
-            me.canceler.resolve();
-            $http.get(url, { timeout: me.canceler.promise }).then(function (response) {
-                response = response.data;
-                if (angular.isUndefined(me.data.compositions)) {
-                    me.data.compositions = [];
-                    me.data.compositionsCount = 0;
-                }
-                angular.forEach(response.results, function (record) {
-                    var found = false;
-                    angular.forEach(me.data.compositions, function (composition) {
-                        if (composition.id == record.id) {
-                            if (angular.isDefined(record.edit)) composition.editable = record.edit;
-                            found = true;
-                        }
-                    })
-                    if (!found) {
-                        record.editable = false;
-                        if (angular.isDefined(record.edit)) record.editable = record.edit;
-                        if (angular.isUndefined(record.link)) {
-                            record.link = statusManagerService.endpointUrl() + '?request=load&id=' + record.id;
-                        }
-                        if (angular.isUndefined(record.thumbnail)) {
-                            record.thumbnail = statusManagerService.endpointUrl() + '?request=loadthumb&id=' + record.id;
-                        }
-                        var attributes = {
-                            record: record,
-                            hs_notqueryable: true,
-                            highlighted: false
-                        }
-                        attributes.geometry = polygonFromExtent(compositionParser.parseExtent(record.extent));
-                        record.feature = new Feature(attributes);
-                        extentLayer.getSource().addFeatures([record.feature]);
-                        if (record) {
-                            me.data.compositions.push(record);
-                            me.data.compositionsCount = me.data.compositionsCount + 1;
-                        }
-                    }
-                });
-            }, function (err) {
-
+        me.loadCompositions = function (ds, params) {
+            extentLayer.getSource().clear();
+            var bbox = OlMap.getMapExtentInEpsg4326();
+            mickaEndpointService.loadList(ds, params, bbox, extentLayer).then(() => {
+                statusManagerEndpointService.loadList(ds, params, bbox);
             })
         }
 
         me.resetCompositionCounter = function () {
-            me.data.start = 0;
-            me.data.next = me.data.limit;
+            me.data.endpoints.forEach(ds => {
+                if (ds.type == 'micka')
+                    mickaEndpointService.resetCompositionCounter(ds)
+            })
         }
 
         me.deleteComposition = function (composition) {
@@ -189,7 +54,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
             $http({ url: url }).
                 then(function (response) {
                     $rootScope.$broadcast('compositions.composition_deleted', composition.id);
-                    me.loadCompositions();
+                    me.loadCompositions(composition.endpoint);
                 }, function (err) {
 
                 });
@@ -198,15 +63,6 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
         me.highlightComposition = function (composition, state) {
             if (angular.isDefined(composition.feature))
                 composition.feature.set('highlighted', state)
-        }
-
-        function getStatusSortAttr(sortBy) {
-            var sortMap = {
-                bbox: '[{"property":"bbox","direction":"ASC"}]',
-                title: '[{"property":"title","direction":"ASC"}]',
-                date: '[{"property":"date","direction":"ASC"}]'
-            };
-            return encodeURIComponent(sortMap[sortBy]);
         }
 
         function callbackForEdit() {
@@ -286,10 +142,10 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
         $rootScope.$on('infopanel.feature_selected', function (event, feature, selector) {
             if (angular.isDefined(feature.get("is_hs_composition_extent")) && angular.isDefined(feature.get("record"))) {
                 var record = feature.get("record");
-                me.data.useCallbackForEdit = false;
+                mickaEndpointService.data.useCallbackForEdit = false;
                 feature.set('highlighted', false);
                 selector.getFeatures().clear();
-                me.loadComposition(record);
+                me.loadComposition(record.link);
             }
         });
 
@@ -377,7 +233,7 @@ export default ['$rootScope', '$q', '$location', '$http', 'hs.map.service', 'Cor
         })
 
         me.loadComposition = function (url, overwrite) {
-            compositionParser.load(url, overwrite, me.data.useCallbackForEdit ? callbackForEdit : null);
+            compositionParser.load(url, overwrite, mickaEndpointService.data.useCallbackForEdit ? callbackForEdit : null);
         }
 
         $rootScope.$on('core.map_reset', function (event, data) {

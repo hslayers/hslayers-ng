@@ -4,15 +4,18 @@
             <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
         </extra-title>
         <extra-buttons>
-            <label class="btn btn-sm btn-secondary btn-file" title="Import composition from a file on device" style="margin-bottom:0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
-                <span class="icon-upload"></span><input type="file" ng-on-change="handleFileSelect($event)" accept=".json" style="display: none;">
+            <label class="btn btn-sm btn-secondary btn-file" title="Import composition from a file on device"
+                style="margin-bottom:0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
+                <span class="icon-upload"></span><input type="file" ng-on-change="handleFileSelect($event)"
+                    accept=".json" style="display: none;">
             </label>
         </extra-buttons>
     </hs.layout.panel-header>
     <div class="card-body">
         <form id="hs-comp-filter">
             <div class="form-group">
-                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}" ng-model="query.title" ng-change="filterChanged()">
+                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}"
+                    ng-model="query.title" ng-change="filterChanged()">
             </div>
 
             <div id="hs-comp-filter" class="form-group">
@@ -20,69 +23,113 @@
                 <div class="input-group">
                     <div class="btn-group input-group-prepend">
                         <div class="input-group-text">
-                            <input type="checkbox"ng-model="filterByExtent" ng-change='filterChanged()'><span translate>Filter
+                            <input type="checkbox" ng-model="filterByExtent" ng-change='filterChanged()'><span
+                                translate>Filter
                                 by map extent</span>
                         </div>
                         <div class="input-group-text">
-                                <input type="checkbox"  ng-model="query.editable" ng-change='mineFilterChanged()'><span translate>Only mine</span>
-                            </div>
+                            <input type="checkbox" ng-model="query.editable" ng-change='mineFilterChanged()'><span
+                                translate>Only mine</span>
+                        </div>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
                             Sort <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a  class="dropdown-item" ng-click="setSortAttribute('bbox')" href="#">Bounding box</a></li>
+                            <li><a class="dropdown-item" ng-click="setSortAttribute('bbox')" href="#">Bounding box</a>
+                            </li>
                             <li><a class="dropdown-item" ng-click="setSortAttribute('title')">Title</a></li>
                             <li><a class="dropdown-item" ng-click="setSortAttribute('date')">Date</a></li>
-                        </ul>                       
+                        </ul>
                     </div>
                 </div>
             </div>
 
             <span class="form-group">
-                <button type="button" ng-click="toggleKeywords()" ng-if="config.comp_keywords" class="btn btn-secondary btn-sm"><translate>Keywords</translate><span class="caret"></span></button>
+                <button type="button" ng-click="toggleKeywords()" ng-if="config.comp_keywords"
+                    class="btn btn-secondary btn-sm">
+                    <translate>Keywords</translate><span class="caret"></span>
+                </button>
                 <div class="keywords-panel" ng-if="config.comp_keywords">
-                    <div style="width: 45%; display:inline-block" class="checkbox" ng-repeat="(keyword, enabled) in keywords">
+                    <div style="width: 45%; display:inline-block" class="checkbox"
+                        ng-repeat="(keyword, enabled) in keywords">
                         <label>
-                            <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()" >
+                            <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()">
                             {{keyword}}
                         </label>
                     </div>
                 </div>
             </span>
+
         </form>
-  
-
-        <ul class="hs-comp-list list-group">
-            <li ng-repeat="composition in data.compositions" class="list-group-item hs-comp-item" ng-class="composition.highlighted ?  'active' : ''" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" ng-click="data.useCallbackForEdit = false; loadComposition(composition)"  data-toggle="tooltip"  data-container="body" data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
-                <div class="hs-comp-item-title">{{composition.title}}</div>
-                <div class="hs-comp-item-controls">
-                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true" ng-show="composition.editable" ng-click='$event.stopPropagation();confirmDelete(composition)'><i class="glyphicon icon-trash"></i></button>
-                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true" ng-click='$event.stopPropagation();shareComposition(composition)'><i class="glyphicon icon-share-alt"></i></button>
-                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true" ng-hide="true" ng-click='$event.stopPropagation()'><i class="glyphicon icon-save-floppy"></i></button>
-                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true" ng-click='$event.stopPropagation();detailComposition(composition)'><i class="glyphicon icon-info-sign"></i></button>
-                </div>
+        <ul class="nav flex-column flex-sm-row" role="tablist">
+            <li class="nav-item" ng-repeat="ds in data.endpoints">
+                <a class="nav-link" ng-class="{'btn-primary': data.id_selected == 'ds'+$index}" href="#"
+                    data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab"
+                    ng-click="datasetSelect('ds'+$index)">
+                    {{ds.title}}
+                    <span ng-show='ds.compositionsCount>0'>({{ds.compositionsCount}})</span>
+                    <span class="glyphicon icon-refresh icon-spin" ng-show="ds.loaded == false"></span>
+                </a>
             </li>
-        </ul>
-    </div>
+        </ul><!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="hs-dataset-panel tab-pane"
+                ng-class="{'active': 'ds'+$index == data.id_selected}" id="{{'ds'+$index}}"
+                ng-repeat="ds in data.endpoints">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="hs-comp-list list-group">
+                            <li ng-repeat="composition in ds.compositions" class="list-group-item hs-comp-item"
+                                ng-class="composition.highlighted ?  'active' : ''"
+                                ng-mouseover="highlightComposition(composition, true)"
+                                ng-mouseleave="highlightComposition(composition, false)"
+                                ng-click="mickaEndpointService.data.useCallbackForEdit = false; loadComposition(composition)"
+                                data-toggle="tooltip" data-container="body" data-placement="bottom"
+                                ng-attr-title="{{composition.mdAbstract}}">
+                                <div class="hs-comp-item-title">{{composition.title}}</div>
+                                <div class="hs-comp-item-controls">
+                                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true"
+                                        ng-show="composition.editable"
+                                        ng-click='$event.stopPropagation();confirmDelete(composition)'><i
+                                            class="glyphicon icon-trash"></i></button>
+                                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true"
+                                        ng-click='$event.stopPropagation();shareComposition(composition)'><i
+                                            class="glyphicon icon-share-alt"></i></button>
+                                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true"
+                                        ng-hide="true" ng-click='$event.stopPropagation()'><i
+                                            class="glyphicon icon-save-floppy"></i></button>
+                                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true"
+                                        ng-click='$event.stopPropagation();detailComposition(composition)'><i
+                                            class="glyphicon icon-info-sign"></i></button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
 
 
-    <div class="card-footer" ng-show='data.compositionsCount>0'>
-        <nav>
-            <ul class="pagination">
-                <li class="page-item" ng-class="{'disabled': compStart == 0 }">
-                    <a href="#" class="page-link" ng-click='getPreviousCompositions()'><span aria-hidden="true">&laquo;</span></a>
-                </li>
-                <li class="page-item" ng-if="compNext!= 0"><span class="page-link"> Results {{compStart + 1}} - {{compNext}}</span></li>
-                <li class="page-item" ng-if="compNext == 0"><span class="page-link"> Results {{compStart + 1}} - {{data.compositionsCount}}</span></li>
-                <li class="page-item" ng-class="{'disabled': compNext == 0 }" >
-                    <a href="#" class="page-link" ng-click='getNextCompositions()'><span aria-hidden="true">&raquo;</span></a>
-                </li>
-            </ul>                 
-        </nav>
+                    <div class="card-footer" ng-show='ds.compositionsCount>0'>
+                        <nav>
+                            <ul class="pagination d-flex justify-content-center">
+                                <li class="page-item" ng-class="{'disabled': compStart == 0 }">
+                                    <a href="#" class="page-link" ng-click='getPreviousCompositions(ds)'><span
+                                            aria-hidden="true">&laquo;</span></a>
+                                </li>
+                                <li class="page-item" ng-if="ds.next!= 0"><span class="page-link"> Results
+                                        {{ds.start + 1}} - {{ds.next}}</span></li>
+                                <li class="page-item" ng-if="ds.next == 0"><span class="page-link"> Results
+                                        {{ds.start + 1}} - {{ds.compositionsCount}}</span></li>
+                                <li class="page-item" ng-class="{'disabled': ds.next == 0 }">
+                                    <a href="#" class="page-link" ng-click='getNextCompositions(ds)'><span
+                                            aria-hidden="true">&raquo;</span></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-

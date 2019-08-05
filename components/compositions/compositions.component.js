@@ -1,19 +1,14 @@
 export default {
     template: require('components/compositions/partials/compositions.html'),
-    controller: ['$scope', 'Core', 'hs.compositions.service', 'hs.compositions.service_parser', '$window', 'config', '$compile',
-        function ($scope, Core, Composition, compositionParser, $window, config, $compile) {
+    controller: ['$scope', 'Core', 'hs.compositions.service', 
+        'hs.compositions.service_parser', '$window', 'config', '$compile', 
+        'hs.compositions.mickaService',
+        function ($scope, Core, Composition, compositionParser, $window, config, 
+            $compile, mickaEndpointService) {
             $scope.CS = Composition;
             $scope.data = Composition.data;
-            /**
-            * @ngdoc property
-            * @name hs.compositions.controller#page_size
-            * @public
-            * @type {number} 15
-            * @description Number of compositions displayed on one panel page
-            */
-            $scope.pageSize = 15;
-            $scope.compStart = 0;
-            $scope.compNext = $scope.pageSize;
+            $scope.mickaEndpointService = mickaEndpointService;
+            Composition.data.endpoints.forEach(ds => ds.next = ds.limit)
             /**
             * @ngdoc property
             * @name hs.compositions.controller#keywords
@@ -62,15 +57,15 @@ export default {
              * @public
              * @description Load previous list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
              */
-            $scope.getPreviousCompositions = function () {
-                if ($scope.compStart - $scope.pageSize < 0) {
-                    $scope.compStart = 0;
-                    $scope.compNext = $scope.pageSize;
+            $scope.getPreviousCompositions = function (ds) {
+                if (ds.start - ds.limit < 0) {
+                    ds.start = 0;
+                    ds.next = ds.limit;
                 } else {
-                    $scope.compStart -= $scope.pageSize;
-                    $scope.compNext = $scope.compStart + $scope.pageSize;
+                    ds.start -= ds.limit;
+                    ds.next = ds.start + ds.limit;
                 }
-                $scope.loadCompositions();
+                $scope.loadCompositions(ds);
             }
 
             /**
@@ -79,16 +74,16 @@ export default {
              * @public
              * @description Load next list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
              */
-            $scope.getNextCompositions = function () {
-                if ($scope.compNext != 0) {
-                    $scope.compStart = Math.floor($scope.compNext / $scope.pageSize) * $scope.pageSize;
+            $scope.getNextCompositions = function (ds) {
+                if (ds.next != 0) {
+                    ds.start = Math.floor(ds.next / ds.limit) * ds.limit;
 
-                    if ($scope.compNext + $scope.pageSize > $scope.compositionsCount) {
-                        $scope.compNext = $scope.compositionsCount;
+                    if (ds.next + ds.limit > ds.compositionsCount) {
+                        ds.next = ds.compositionsCount;
                     } else {
-                        $scope.compNext += $scope.pageSize;
+                        ds.next += ds.limit;
                     }
-                    $scope.loadCompositions();
+                    $scope.loadCompositions(ds);
                 }
             }
 
@@ -98,20 +93,16 @@ export default {
              * @public
              * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
              */
-            $scope.loadCompositions = function () {
-                Composition.loadCompositions({
+            $scope.loadCompositions = function (ds) {
+                Composition.loadCompositions(ds, {
                     query: $scope.query,
                     sortBy: $scope.sortBy,
                     filterExtent: $scope.filterByExtent,
                     keywords: $scope.keywords,
-                    start: $scope.compStart,
-                    limit: $scope.pageSize
+                    start: ds.start,
+                    limit: ds.limit
                 });
             }
-
-            $scope.$watch('data.next', function () {
-                $scope.compNext = $scope.data.next;
-            })
 
             /**
              * Handler of "Only mine" filter change, delete editable variable if needed
@@ -132,7 +123,9 @@ export default {
                         if (panel) listHeight = panel.clientHeight;
                     }
                 } catch (ex) { }
-                $scope.pageSize = Math.round((listHeight - 180) / 60);
+                Composition.data.endpoints.forEach(ds => {
+                    ds.limit = Math.round((listHeight - 180) / 60)
+                })
             }
 
             /**
@@ -143,9 +136,11 @@ export default {
              */
             $scope.filterChanged = function () {
                 Composition.resetCompositionCounter();
-                $scope.compStart = 0;
-                $scope.compNext = $scope.pageSize;
-                $scope.loadCompositions();
+                Composition.data.endpoints.forEach(ds => {
+                    ds.start = 0;
+                    ds.next = ds.limit;
+                    $scope.loadCompositions(ds);
+                })
             }
 
             /**
@@ -153,10 +148,9 @@ export default {
             * @name hs.compositions.controller#confirmDelete
             * @public
             * @param {object} composition Composition selected for deletion    
-            * @param {object} ev
             * @description Display delete dialog of composition 
             */
-            $scope.confirmDelete = function (composition, ev) {
+            $scope.confirmDelete = function (composition) {
                 $scope.compositionToDelete = composition;
                 if (config.design === 'md')
                     $scope.deleteDialogMd();
@@ -291,7 +285,7 @@ export default {
              * @param {object} composition Selected composition
              */
             $scope.edit = function (composition) {
-                $scope.data.useCallbackForEdit = true;
+                mickaEndpointService.data.useCallbackForEdit = true;
                 Composition.loadComposition(composition);
             }
 
@@ -309,8 +303,16 @@ export default {
 
             $scope.$on('map.extent_changed', function (event, data, b) {
                 if (Core.mainpanel != 'composition_browser' && Core.mainpanel != 'composition') return;
-                if ($scope.filterByExtent) $scope.loadCompositions();
+                if ($scope.filterByExtent) {
+                    loadCompositionsForAllEndpoints();
+                }
             });
+
+            function loadCompositionsForAllEndpoints() {
+                Composition.data.endpoints.forEach(ds => {
+                    $scope.loadCompositions(ds);
+                });
+            }           
 
             /**
              * @ngdoc method
@@ -416,7 +418,7 @@ export default {
              */
             $scope.setSortAttribute = function (attribute) {
                 $scope.sortBy = attribute;
-                $scope.loadCompositions();
+                loadCompositionsForAllEndpoints();
             }
 
             /**
@@ -443,6 +445,8 @@ export default {
                     reader.readAsText(f);
                 }
             }
+
+            $scope.datasetSelect = Composition.datasetSelect;
 
             $scope.$on('CompositionLoaded', function () {
                 $('.tooltip').remove();
@@ -476,7 +480,7 @@ export default {
 
             $scope.$on('core.mainpanel_changed', function (event) {
                 if (Core.mainpanel === 'composition_browser' || Core.mainpanel === 'composition') {
-                    $scope.loadCompositions();
+                    loadCompositionsForAllEndpoints();
                 }
             });
 
@@ -505,3 +509,4 @@ export default {
         }
     ]
 }
+
