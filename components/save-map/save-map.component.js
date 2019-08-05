@@ -65,8 +65,9 @@ export default {
                 StatusManager.save(saveAsNew, $scope.endpoint);
             }
 
-            $scope.$on('StatusManager.saveResult', function (e, step, result) {
+            $scope.$on('StatusManager.saveResult', function (e, step, result, details) {
                 $scope.resultCode = result;
+                $scope.details = details;
                 if (step === 'saveResult') {
                     $scope.showResultDialog();
                     $scope.step = 'start';

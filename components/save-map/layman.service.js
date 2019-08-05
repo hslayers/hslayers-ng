@@ -22,7 +22,7 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                         .then(function (response) {
                             resolve(response)
                         }, function (err) {
-                            reject()
+                            reject(err.data)
                         });
                 })
             }

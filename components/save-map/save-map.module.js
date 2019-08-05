@@ -10,7 +10,7 @@ import laymanService from './layman.service';
  * @memberOf hs
  */
 
-var module = angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies'])
+var module = angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets'])
     /**
      * @ngdoc directive
      * @name hs.save-map.directive

@@ -86,10 +86,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
                         me.statusData.success = me.status;
                         $rootScope.$broadcast('StatusManager.saveResult',
                             'saveResult', saveStatus);
-                    }).catch(e => {
+                    }).catch(e => { 
+                        //e contains the json responses data object from api
                         me.statusData.success = false;
                         $rootScope.$broadcast('StatusManager.saveResult',
-                            'saveResult', 'error');
+                            'saveResult', 'error', e);
                     })
 
 
