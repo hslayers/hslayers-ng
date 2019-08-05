@@ -464,7 +464,7 @@ button.but-title-sm {
     bottom: 6.8em;
 }
 .ol-scale-line {right: 0.5em;left: auto;}
-#datasource_selector-metadata-dialog dd {
+*[hs\.widgets\.object-directive] dd {
     padding-left: 10px;
 }
 .list-group-item.active a {

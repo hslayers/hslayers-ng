@@ -1,19 +1,19 @@
 import metadataDialogDirective from './metadata-dialog.directive';
 import advancedMickaDialogDirective from './micka/advanced-micka-dialog.directive';
 import mickaSuggestionsDialogDirective from './micka/micka-suggestions-dialog.directive';
-import objectDirective from './object.directive';
 import datasourceSelectorService from './datasource-selector.service';
 import datasourceSelectorComponent from './datasource-selector.component';
 import mickaFilterService from './micka/micka-filters.service';
 import mickaFiltersDirective from './micka/micka-filters.directive';
 import mickaService from './micka/micka.service';
 import laymanService from './layman/layman.service';
+import '../../common/widgets/widgets.module';
 
 /**
  * @namespace hs.datasource_selector
  * @memberOf hs
  */
-angular.module('hs.datasource_selector', ['hs.map'])
+angular.module('hs.datasource_selector', ['hs.map', 'hs.widgets'])
     /**
      * @ngdoc directive
      * @name hs.datasourceSelector.metadataDialogDirective
@@ -38,14 +38,6 @@ angular.module('hs.datasource_selector', ['hs.map'])
      * @description Directive for displaying suggestions for search parameters for Micka catalogue service
      */
     .directive('hs.mickaSuggestionsDialog', mickaSuggestionsDialogDirective)
-
-    /**
-     * @ngdoc directive
-     * @name hs.datasourceSelector.objectDirective
-     * @memberOf hs.datasource_selector
-     * @description Universal directive for displaying metadata about data source
-     */
-    .directive('hs.datasourceSelector.objectDirective', objectDirective)
 
     /**
      * @ngdoc directive

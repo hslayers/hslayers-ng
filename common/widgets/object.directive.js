@@ -1,6 +1,6 @@
 export default ['$compile', 'config', function ($compile, config) {
     return {
-        template: require('components/datasource-selector/partials/object.html'),
+        template: require('./object.html'),
         compile: function compile(element) {
             var contents = element.contents().remove();
             var contentsLinker;
