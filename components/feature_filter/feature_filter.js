@@ -101,8 +101,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         var filters = layer.hsFilters;
                         var filteredFeatures = [];
 
-                        console.log(source.getFeatures());
-
                         source.forEachFeature(function (feature) {
                             feature.setStyle(null);
                         });
@@ -113,12 +111,12 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
 
                             switch (filter.type.type) {
                                 case 'fieldset':
-                                    if (filter.selected.length === 0) {
-                                        displayFeature = function (feature, filter) {
-                                            return true;
-                                        };
-                                        break;
-                                    }
+                                    // if (filter.selected.length === 0) {
+                                    //     displayFeature = function (feature, filter) {
+                                    //         return true;
+                                    //     };
+                                    //     break;
+                                    // }
                                     displayFeature = function (feature, filter) {
                                         return filter.selected.indexOf(feature.getProperties()[filter.valueField]) !== -1;
                                     };
@@ -184,6 +182,11 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                                     filter.values.push(feature.getProperties()[filter.valueField]);
                                                 }
                                             });
+                                            
+                                            filter.values.sort(function(a, b) {
+                                                return (a.replace("the ","").replace("The ","") > b.replace("the ","").replace("The ","")) * 2 - 1;
+                                            });
+
                                             break;
                                         case 'dateExtent':
                                             // // TODO: create time range from date extents of the features, convert datetime fields to datetime datatype
@@ -215,10 +218,8 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
 
                     if (layer.layer instanceof ol.layer.Vector) {
                         var source = layer.layer.getSource();
-                        console.log(source.getState());
                         var listenerKey = source.on('change', function (e) {
                             if (source.getState() === 'ready') {
-                                console.log(source.getState());
                                 ol.Observable.unByKey(listenerKey);
                                 me.prepLayerFilter(layer);
                                 me.applyFilters(layer);
@@ -264,6 +265,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         } else {
                             selected.push(value);
                         }
+                        $scope.applyFilters();
                     };
 
                     $scope.toggleAll = function(filter) {
@@ -272,6 +274,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         } else {
                             filter.selected = filter.values.slice(0);
                         }
+                        $scope.applyFilters();
                     };
 
                     $scope.$emit('scope_loaded', "featureFilter");

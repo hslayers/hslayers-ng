@@ -1,4 +1,8 @@
 <div class="feature-list" ng-class="{'card-list': !displayDetails, 'layout-column': displayDetails}">
+    <md-content flex layout-padding ng-show="!displayDetails">
+        <div hs.feature-filter.directive ng-controller="hs.feature_filter.controller"></div>
+    </md-content>
+
     <md-content flex layout-padding class="card-collection" ng-show="!displayDetails">
         <md-card ng-repeat="feature in LayMan.currentLayer.filteredFeatures"
             ng-click="toggleFeatureDetails(feature, true)" ng-mouseenter="highlightFeature(feature)"
@@ -35,7 +39,7 @@
         <div class="content-body">
             <div class="main-content">
                 <h3><span ng-if="featureDetails.region">{{ featureDetails.region }}, </span>{{ featureDetails.country }}</h3>
-                <a ng-href="featureDetails.website" ng-if="featureDetails.website">{{ featureDetails.website }}</a>
+                <a target="_blank" ng-href="{{featureDetails.website}}" ng-if="featureDetails.website">{{ featureDetails.website }}</a>
         
                 <h3 class="heading">Biomass source</h3>
                 <p>{{ featureDetails.biomass_source }}</p>
