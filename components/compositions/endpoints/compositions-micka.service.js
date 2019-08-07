@@ -7,8 +7,7 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
         var me = this;
         angular.extend(me, {
             data: {
-                limit: 15,
-                useCallbackForEdit: false
+                limit: 15
             },
             getCompositionsQueryUrl(ds, params, bbox) {
                 var query = params.query;

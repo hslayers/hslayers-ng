@@ -1,7 +1,7 @@
 export default {
     template: require('components/save-map/partials/panel.html'),
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService', 
-    '$timeout',
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService',
+        '$timeout',
         function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout) {
             $scope.compoData = StatusManager.compoData;
             $scope.statusData = StatusManager.statusData;
@@ -26,7 +26,7 @@ export default {
                     $scope.step = 'end';
                 }
             }
-            $scope.setStep = function(step){
+            $scope.setStep = function (step) {
                 $scope.step = step;
             }
             /**
@@ -104,7 +104,7 @@ export default {
                 if ($scope.statusData.guessedTitle) {
                     $scope.compoData.title = $scope.statusData.guessedTitle;
                 }
-                $timeout(()=> {
+                $timeout(() => {
                     document.getElementById('hs-stc-title').focus();
                 });
             };
@@ -130,6 +130,14 @@ export default {
                     if ($scope.endpoint.type == 'layman')
                         return true;
             }
+
+            $scope.$on('StatusCreator.open', function (e, composition) {
+                if (composition && composition.endpoint) {
+                    var openedType = composition.endpoint.type;
+                    $scope.endpoint = StatusManager.endpoints
+                        .filter((ep) => ep.type == openedType)[0]
+                }
+            });
 
             $scope.$emit('scope_loaded', "StatusCreator");
         }

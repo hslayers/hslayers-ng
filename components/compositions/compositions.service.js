@@ -10,7 +10,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
     'Core', 'hs.compositions.service_parser',
     'config', 'hs.permalink.urlService', '$compile', '$cookies',
     'hs.utils.service', 'hs.statusManagerService',
-    'hs.compositions.mickaService', 'hs.compositions.statusManagerService', 
+    'hs.compositions.mickaService', 'hs.compositions.statusManagerService',
     'hs.compositions.laymanService',
     function ($rootScope, $location, $http, OlMap, Core, compositionParser,
         config, permalink, $compile, $cookies, utils, statusManagerService,
@@ -62,7 +62,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
             var endpoint = composition.endpoint;
             var url;
             var method;
-            switch(endpoint.type){
+            switch (endpoint.type) {
                 case 'micka':
                     url = statusManagerService.endpointUrl() + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
                     method = 'GET';
@@ -84,10 +84,6 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         me.highlightComposition = function (composition, state) {
             if (angular.isDefined(composition.feature))
                 composition.feature.set('highlighted', state)
-        }
-
-        function callbackForEdit() {
-            Core.openStatusCreator();
         }
 
         function init() {
@@ -163,7 +159,6 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         $rootScope.$on('infopanel.feature_selected', function (event, feature, selector) {
             if (angular.isDefined(feature.get("is_hs_composition_extent")) && angular.isDefined(feature.get("record"))) {
                 var record = feature.get("record");
-                mickaEndpointService.data.useCallbackForEdit = false;
                 feature.set('highlighted', false);
                 selector.getFeatures().clear();
                 me.loadComposition(record.link);
@@ -210,23 +205,28 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         }
 
         me.loadCompositionParser = function (record) {
-            var url;
-            var title;
-            switch(record.endpoint.type){
-                case 'micka':
-                    url = record.link;
-                    title = record.title
-                    break;
-                case 'layman':
-                    url = record.endpoint.url + record.url +'/file';
-                    title = record.name;
-                    break;
-            }
-            if (compositionParser.composition_edited == true) {
-                $rootScope.$broadcast('loadComposition.notSaved', record);
-            } else {
-                me.loadComposition(url, true);
-            }
+            return new Promise((resolve, reject) => {
+                var url;
+                var title;
+                switch (record.endpoint.type) {
+                    case 'micka':
+                        url = record.link;
+                        title = record.title
+                        break;
+                    case 'layman':
+                        url = record.endpoint.url + record.url + '/file';
+                        title = record.name;
+                        break;
+                }
+                if (compositionParser.composition_edited == true) {
+                    $rootScope.$broadcast('loadComposition.notSaved', record);
+                    reject();
+                } else {
+                    me.loadComposition(url, true).then(() => {
+                        resolve()
+                    });
+                }
+            })
         }
 
         /**
@@ -263,7 +263,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         })
 
         me.loadComposition = function (url, overwrite) {
-            compositionParser.loadUrl(url, overwrite, mickaEndpointService.data.useCallbackForEdit ? callbackForEdit : null);
+            return compositionParser.loadUrl(url, overwrite);
         }
 
         $rootScope.$on('core.map_reset', function (event, data) {

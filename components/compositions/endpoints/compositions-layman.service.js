@@ -7,7 +7,6 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
         var me = this;
         angular.extend(me, {
             data: {
-                useCallbackForEdit: false
             },
             loadList(ds, params, bbox, extentLayer) {
                 ds.loaded = false;

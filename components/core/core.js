@@ -508,15 +508,6 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 },
                 /**
                 * @ngdoc method
-                * @name Core#openStatusCreator 
-                * @public
-                * @description Open status creator panel
-                */
-                openStatusCreator: function () {
-                      $rootScope.$broadcast('StatusCreator.open');
-                },
-                /**
-                * @ngdoc method
                 * @name Core#searchVisible 
                 * @public
                 * @param {booelan} is New status of search panel

@@ -1,10 +1,10 @@
 export default {
     template: require('components/compositions/partials/compositions.html'),
-    controller: ['$scope', 'Core', 'hs.compositions.service', 
-        'hs.compositions.service_parser', '$window', 'config', '$compile', 
-        'hs.compositions.mickaService',
-        function ($scope, Core, Composition, compositionParser, $window, config, 
-            $compile, mickaEndpointService) {
+    controller: ['$scope', 'Core', 'hs.compositions.service',
+        'hs.compositions.service_parser', '$window', 'config', '$compile',
+        'hs.compositions.mickaService', '$rootScope',
+        function ($scope, Core, Composition, compositionParser, $window, config,
+            $compile, mickaEndpointService, $rootScope) {
             $scope.CS = Composition;
             $scope.data = Composition.data;
             $scope.mickaEndpointService = mickaEndpointService;
@@ -284,8 +284,9 @@ export default {
              * @param {object} composition Selected composition
              */
             $scope.edit = function (composition) {
-                mickaEndpointService.data.useCallbackForEdit = true;
-                Composition.loadComposition(composition);
+                Composition.loadCompositionParser(composition).then(() => {
+                    $rootScope.$broadcast('StatusCreator.open', composition);
+                });
             }
 
             /**
@@ -311,7 +312,7 @@ export default {
                 Composition.data.endpoints.forEach(ds => {
                     $scope.loadCompositions(ds);
                 });
-            }           
+            }
 
             /**
              * @ngdoc method
@@ -398,17 +399,6 @@ export default {
 
             /**
              * @ngdoc method
-             * @name hs.compositions.controller#save
-             * @public
-             * @description Open Status creator panel for saving old composition
-             */
-            $scope.save = function () {
-                Core.openStatusCreator();
-                $scope.overwriteModalVisible = false;
-            }
-
-            /**
-             * @ngdoc method
              * @name hs.compositions.controller#setSortAttribute
              * @public
              * @param {String} attribute Attribute by which compositions should be sorted (expected values: bbox, title, date)
@@ -453,7 +443,7 @@ export default {
 
             $scope.$on('compositions.composition_deleted', function (event, composition) {
                 var deleteDialog = document.getElementById("composition-delete-dialog");
-                if(deleteDialog)
+                if (deleteDialog)
                     deleteDialog.parentNode.remove(deleteDialog);
                 $scope.loadCompositions(composition.endpoint);
             });
@@ -478,13 +468,12 @@ export default {
                 }
             }
 
-            $scope.commonId = function(composition){
+            $scope.commonId = function (composition) {
                 return composition.uuid || composition.id;
             }
 
-            $scope.compositionClicked = function(composition){
-                $scope.selectedCompId = $scope.commonId(composition); 
-                mickaEndpointService.data.useCallbackForEdit = false; 
+            $scope.compositionClicked = function (composition) {
+                $scope.selectedCompId = $scope.commonId(composition);
                 $scope.startLoadComposition(composition);
             }
 

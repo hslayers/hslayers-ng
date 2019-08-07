@@ -247,7 +247,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             })
         })
 
-        $rootScope.$on('StatusCreator.open', function (e) {
+        $rootScope.$on('StatusCreator.open', function (e, composition) {
             me.open();
         });
 

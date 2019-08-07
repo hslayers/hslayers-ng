@@ -41,14 +41,18 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
             * @description Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
             */
             loadUrl: function (url, overwrite, callback, pre_parse) {
-                me.current_composition_url = url;
-                url = url.replace('&amp;', '&');
-                url = utils.proxify(url);
-                $http({ url: url, overwrite, callback, pre_parse }).
-                    then(me.loaded,
-                        function (err) {
+                return new Promise((resolve, reject) => {
+                    me.current_composition_url = url;
+                    url = url.replace('&amp;', '&');
+                    url = utils.proxify(url);
+                    $http({ url: url, overwrite, callback, pre_parse }).
+                        then(me.loaded,
+                            function (err) {
 
-                        });
+                            }).then(() => {
+                                resolve();
+                            });
+                })
             },
 
             loaded(response) {

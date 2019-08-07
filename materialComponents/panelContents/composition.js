@@ -111,7 +111,6 @@ define(['angular', 'ol', 'angular-material'],
                     }
 
                     $scope.edit = function (composition) {
-                        $scope.data.useCallbackForEdit = true;
                         Composition.loadComposition(composition);
                     }
 

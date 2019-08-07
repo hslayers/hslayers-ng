@@ -1,5 +1,5 @@
-export default ['Core', 'config',
-    function (Core, config) {
+export default ['Core', 'config', '$rootScope',
+    function (Core, config, $rootScope) {
         var me = this;
 
         me.data = {
@@ -83,7 +83,7 @@ export default ['Core', 'config',
                 enabled: true,
                 order: 8,
                 title: 'Save composition',
-                ngClick() { Core.openStatusCreator() },
+                ngClick() { $rootScope.$broadcast('StatusCreator.open'); },
                 description: 'Save content of map to composition',
                 name: 'saveMap',
                 directive: 'hs.save-map.directive_panel',

@@ -23,7 +23,7 @@
             </md-checkbox>
         </md-input-container>
         <md-list>
-            <md-list-item ng-repeat="composition in data.compositions" ng-click="data.useCallbackForEdit = false; loadComposition(composition)" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" class="noright">
+            <md-list-item ng-repeat="composition in data.compositions" ng-click="loadComposition(composition)" ng-mouseover="highlightComposition(composition, true)" ng-mouseleave="highlightComposition(composition, false)" class="noright">
                 <p>{{composition.title}}</p>
                 <md-icon ng-show="composition.editable" ng-click="confirmDelete(composition, $event)" aria-label="Delete composition" class="md-secondary md-hue-3">delete</md-icon>
                 <md-icon class="md-secondary" ng-click="shareComposition(composition, $event)" aria-label="Share composition">share</md-icon>
