@@ -678,10 +678,9 @@ export default {
                 }
             });
 
-            $scope.$on('compositions.composition_deleted', function (event, id) {
-                if (id == $scope.composition_id) {
+            $scope.$on('compositions.composition_deleted', function (event, composition) {
+                if (composition.id == $scope.composition_id) {
                     delete $scope.composition_id;
-                    if (!$scope.$$phase) $scope.$digest();
                 }
             });
 

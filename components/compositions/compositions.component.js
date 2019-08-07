@@ -159,7 +159,6 @@ export default {
             }
 
             function deleteDialogBootstrap(ev) {
-                if (!$scope.$$phase) $scope.$digest();
                 var previousDialog = document.getElementById("composition-delete-dialog");
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
@@ -356,7 +355,6 @@ export default {
             }
 
             function infoDialogBootstrap() {
-                if (!$scope.$$phase) $scope.$digest();
                 var previousDialog = document.getElementById("composition-info-dialog");
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
@@ -372,7 +370,7 @@ export default {
              * @param {object} record Composition to be loaded 
              * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
              */
-            $scope.loadComposition = function (record) {
+            $scope.startLoadComposition = function (record) {
                 Composition.loadCompositionParser(record);
             }
 
@@ -453,9 +451,11 @@ export default {
                 $('[data-toggle="tooltip"]').tooltip();
             });
 
-            $scope.$on('compositions.composition_deleted', function () {
+            $scope.$on('compositions.composition_deleted', function (event, composition) {
                 var deleteDialog = document.getElementById("composition-delete-dialog");
-                deleteDialog.parentNode.remove(deleteDialog);
+                if(deleteDialog)
+                    deleteDialog.parentNode.remove(deleteDialog);
+                $scope.loadCompositions(composition.endpoint);
             });
 
             $scope.$on('loadComposition.notSaved', function (event, data) {
@@ -476,6 +476,16 @@ export default {
                 } else {
                     $scope.overwriteModalVisible = true;
                 }
+            }
+
+            $scope.commonId = function(composition){
+                return composition.uuid || composition.id;
+            }
+
+            $scope.compositionClicked = function(composition){
+                $scope.selectedCompId = $scope.commonId(composition); 
+                mickaEndpointService.data.useCallbackForEdit = false; 
+                $scope.startLoadComposition(composition);
             }
 
             $scope.$on('core.mainpanel_changed', function (event) {

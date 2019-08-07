@@ -40,35 +40,50 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
             * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
             * @description Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
             */
-            load: function (url, overwrite, callback, pre_parse) {
+            loadUrl: function (url, overwrite, callback, pre_parse) {
                 me.current_composition_url = url;
                 url = url.replace('&amp;', '&');
                 url = utils.proxify(url);
-                $http({ url: url }).
-                    then(function (response) {
-                        /**
-                         * @ngdoc event
-                         * @name hs.compositions.service_parser#compositions.composition_loading
-                         * @eventType broadcast on $rootScope
-                         * @description Fires when composition is downloaded from server and parsing begins
-                         */
-                        $rootScope.$broadcast('compositions.composition_loading', response.data);
-                        if (response.data.success == true) {
-                            me.composition_loaded = url;
-                              if (angular.isDefined(pre_parse)) response = pre_parse(response.data);
-                            /*
-                            Response might contain {data:{abstract:...}} or {abstract:} directly. If there is data object, 
-                            that means composition is enclosed in 
-                            container which itself might contain title or extent properties */
-                            me.loadCompositionObject(response.data.data || response.data, overwrite, response.title, response.extent);
-                            me.finalizeCompositionLoading(response.data);
-                            if (angular.isDefined(callback) && callback !== null) callback();
-                        } else {
-                            me.raiseCompositionLoadError(response.data);
-                        }
-                    }, function (err) {
+                $http({ url: url, overwrite, callback, pre_parse }).
+                    then(me.loaded,
+                        function (err) {
 
-                    });
+                        });
+            },
+
+            loaded(response) {
+                /**
+                 * @ngdoc event
+                 * @name hs.compositions.service_parser#compositions.composition_loading
+                 * @eventType broadcast on $rootScope
+                 * @description Fires when composition is downloaded from server and parsing begins
+                 */
+                $rootScope.$broadcast('compositions.composition_loading', response.data);
+                if (me.checkLoadSuccess(response)) {
+                    me.composition_loaded = response.config.url;
+                    if (angular.isDefined(response.config.pre_parse))
+                        response = response.config.pre_parse(response.data);
+                    /*
+                    Response might contain {data:{abstract:...}} or {abstract:} 
+                    directly. If there is data object, 
+                    that means composition is enclosed in 
+                    container which itself might contain title or extent 
+                    properties */
+                    me.loadCompositionObject(response.data.data || response.data,
+                        response.config.overwrite, response.title, response.extent);
+                    me.finalizeCompositionLoading(response.data);
+                    if (angular.isFunction(response.config.callback))
+                        response.config.callback();
+                } else {
+                    me.raiseCompositionLoadError(response.data);
+                }
+            },
+
+            checkLoadSuccess(response) {
+                return response.data.success == true || /*micka*/
+                    (angular.isUndefined(response.data.success) && /*layman*/
+                        angular.isDefined(response.data.name)
+                    )
             },
 
             loadCompositionObject: function (obj, overwrite, titleFromContainer, extentFromContainer) {

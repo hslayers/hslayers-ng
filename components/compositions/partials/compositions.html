@@ -82,28 +82,28 @@
                 <div class="card">
                     <div class="card-body">
                         <ul class="hs-comp-list list-group">
-                            <li ng-repeat="composition in ds.compositions" class="list-group-item hs-comp-item"
+                            <li ng-repeat="composition in ds.compositions" class="list-group-item hs-comp-item" style="cursor: pointer"
                                 ng-class="composition.highlighted ?  'active' : ''"
                                 ng-mouseover="highlightComposition(composition, true)"
                                 ng-mouseleave="highlightComposition(composition, false)"
-                                ng-click="mickaEndpointService.data.useCallbackForEdit = false; loadComposition(composition)"
+                                ng-click="compositionClicked(composition)"
                                 data-toggle="tooltip" data-container="body" data-placement="bottom"
                                 ng-attr-title="{{composition.mdAbstract}}">
-                                <div class="hs-comp-item-title">{{composition.title}}</div>
-                                <div class="hs-comp-item-controls">
-                                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true"
-                                        ng-show="composition.editable"
-                                        ng-click='$event.stopPropagation();confirmDelete(composition)'><i
-                                            class="glyphicon icon-trash"></i></button>
-                                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true"
-                                        ng-click='$event.stopPropagation();shareComposition(composition)'><i
-                                            class="glyphicon icon-share-alt"></i></button>
-                                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true"
-                                        ng-hide="true" ng-click='$event.stopPropagation()'><i
-                                            class="glyphicon icon-save-floppy"></i></button>
-                                    <button type="button" class="btn btn-sm btn-secondary" aria-hidden="true"
-                                        ng-click='$event.stopPropagation();detailComposition(composition)'><i
-                                            class="glyphicon icon-info-sign"></i></button>
+                                <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
+                                <div class="btn-group btn-block" ng-class="{'d-none': commonId(composition) != selectedCompId}" role="group">
+                                    <a class="btn btn-secondary" ng-click='$event.stopPropagation();shareComposition(composition)' href="#">
+                                        <i class="glyphicon icon-share-alt"></i>
+                                    </a>
+                                    <a class="btn btn-secondary" href="#" ng-click='$event.stopPropagation()'>
+                                        <i class="glyphicon icon-save-floppy"></i>
+                                    </a>
+                                    <a class="btn btn-secondary" href="#" ng-click='$event.stopPropagation();detailComposition(composition)'>
+                                        <i class="glyphicon icon-info-sign"></i>
+                                    </a>
+                                    <a class="btn btn-secondary" href="#" ng-show="composition.editable"
+                                    ng-click='$event.stopPropagation();confirmDelete(composition)'>
+                                        <i class="glyphicon icon-trash"></i>
+                                    </a>
                                 </div>
                             </li>
                         </ul>

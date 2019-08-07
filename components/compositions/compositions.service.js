@@ -10,10 +10,11 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
     'Core', 'hs.compositions.service_parser',
     'config', 'hs.permalink.urlService', '$compile', '$cookies',
     'hs.utils.service', 'hs.statusManagerService',
-    'hs.compositions.mickaService', 'hs.compositions.statusManagerService',
+    'hs.compositions.mickaService', 'hs.compositions.statusManagerService', 
+    'hs.compositions.laymanService',
     function ($rootScope, $location, $http, OlMap, Core, compositionParser,
         config, permalink, $compile, $cookies, utils, statusManagerService,
-        mickaEndpointService, statusManagerEndpointService) {
+        mickaEndpointService, statusManagerEndpointService, laymanEndpointService) {
         var me = this;
 
         var extentLayer;
@@ -24,7 +25,8 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                     type: ds.type,
                     title: ds.title,
                     start: 0,
-                    limit: 20
+                    limit: 20,
+                    user: ds.user
                 }
             })
         }
@@ -36,9 +38,17 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         me.loadCompositions = function (ds, params) {
             extentLayer.getSource().clear();
             var bbox = OlMap.getMapExtentInEpsg4326();
-            mickaEndpointService.loadList(ds, params, bbox, extentLayer).then(() => {
-                statusManagerEndpointService.loadList(ds, params, bbox);
-            })
+            switch (ds.type) {
+                case 'micka':
+                    mickaEndpointService.loadList(ds, params, bbox, extentLayer)
+                        .then(() => {
+                            statusManagerEndpointService.loadList(ds, params, bbox);
+                        })
+                    break;
+                case 'layman':
+                    laymanEndpointService.loadList(ds, params, bbox, extentLayer);
+                    break;
+            }
         }
 
         me.resetCompositionCounter = function () {
@@ -49,12 +59,23 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         }
 
         me.deleteComposition = function (composition) {
-            var url = statusManagerService.endpointUrl() + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
+            var endpoint = composition.endpoint;
+            var url;
+            var method;
+            switch(endpoint.type){
+                case 'micka':
+                    url = statusManagerService.endpointUrl() + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
+                    method = 'GET';
+                    break;
+                case 'layman':
+                    url = endpoint.url + composition.url;
+                    method = 'DELETE';
+                    break;
+            }
             url = utils.proxify(url);
-            $http({ url: url }).
+            $http({ url, method }).
                 then(function (response) {
-                    $rootScope.$broadcast('compositions.composition_deleted', composition.id);
-                    me.loadCompositions(composition.endpoint);
+                    $rootScope.$broadcast('compositions.composition_deleted', composition);
                 }, function (err) {
 
                 });
@@ -123,7 +144,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                 var id = permalink.getParamValue('composition');
                 if (id.indexOf('http') == -1 && id.indexOf(config.status_manager_url) == -1)
                     id = statusManagerService.endpointUrl() + '?request=load&id=' + id;
-                compositionParser.load(id);
+                compositionParser.loadUrl(id);
             }
         }
 
@@ -136,7 +157,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
 
         $rootScope.$on('compositions.load_composition', function (event, id) {
             id = statusManagerService.endpointUrl() + '?request=load&id=' + id;
-            compositionParser.load(id);
+            compositionParser.loadUrl(id);
         });
 
         $rootScope.$on('infopanel.feature_selected', function (event, feature, selector) {
@@ -189,11 +210,20 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         }
 
         me.loadCompositionParser = function (record) {
-            var url = record.link;
-            var title = record.title;
+            var url;
+            var title;
+            switch(record.endpoint.type){
+                case 'micka':
+                    url = record.link;
+                    title = record.title
+                    break;
+                case 'layman':
+                    url = record.endpoint.url + record.url +'/file';
+                    title = record.name;
+                    break;
+            }
             if (compositionParser.composition_edited == true) {
                 $rootScope.$broadcast('loadComposition.notSaved', record);
-
             } else {
                 me.loadComposition(url, true);
             }
@@ -233,7 +263,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         })
 
         me.loadComposition = function (url, overwrite) {
-            compositionParser.load(url, overwrite, mickaEndpointService.data.useCallbackForEdit ? callbackForEdit : null);
+            compositionParser.loadUrl(url, overwrite, mickaEndpointService.data.useCallbackForEdit ? callbackForEdit : null);
         }
 
         $rootScope.$on('core.map_reset', function (event, data) {
