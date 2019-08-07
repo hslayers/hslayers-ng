@@ -1,5 +1,5 @@
-export default ['Core',
-    function (Core) {
+export default ['Core', 'config',
+    function (Core, config) {
         var me = this;
 
         me.data = {
@@ -94,11 +94,18 @@ export default ['Core',
         }
 
         me.panelSpaceWidth = function () {
+            const panelWidths = {
+                default: 400,
+                datasource_selector: 700,
+                ows: 700,
+                composition_browser: 500
+            }
+            Object.assign(panelWidths, config.panelWidths);
             if (Core.sidebarExpanded && Core.sidebarVisible()) {
-                if (Core.mainpanel == 'datasource_selector' || Core.mainpanel == 'ows')
-                    return 700;
+                if(panelWidths[Core.mainpanel]) 
+                    return panelWidths[Core.mainpanel]
                 else
-                    return 400
+                panelWidths.default;
             } else {
                 return 48;
             }

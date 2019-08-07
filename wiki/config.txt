@@ -254,6 +254,13 @@ Boolean parameter to specify if panels can be dragged out of sidepanel.
 Boolean parameter True by default to specify if to import css files (openlayers.css, bootstrap.min.css, icon fonts). 
 Set this to false for webpack usage where css is imported/required specifically outside hsl.
 
+**panelWidths**
+
+Dictionary for overriding of side panel widths for each of the main components. Example:
+{
+    'compositions': 500
+}
+
 **useIsolatedBootstrap**
 
 Load bootstrap css from node_modules/bootstrap/dist/css/bootstrap.isolated.css , which can be generated using ```npm explore hslayers-ng -- npm run isolate-bootstrap``` if hslayers-ng is dependency of your app or ```npm run isolate-bootstrap``` if you have cloned hslayers-ng repo directly.
