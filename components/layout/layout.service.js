@@ -105,7 +105,7 @@ export default ['Core', 'config',
                 if(panelWidths[Core.mainpanel]) 
                     return panelWidths[Core.mainpanel]
                 else
-                panelWidths.default;
+                    return panelWidths.default;
             } else {
                 return 48;
             }
