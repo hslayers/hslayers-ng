@@ -209,10 +209,6 @@ define(['angular', 'ol', 'angular-material'],
                         Composition.loadComposition($scope.compositionToLoad, false);
                     }
 
-                    $scope.save = function () {
-                        Core.openStatusCreator();
-                    }
-
                     $scope.setSortAttribute = function (attribute) {
                         $scope.loadCompositions();
                     }

@@ -67,7 +67,7 @@
         <span class="sidebar-item-title" translate>Share map</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.save-map') && Core.panelEnabled('saveMap')" ng-click="Core.openStatusCreator()" ng-class="{active: Core.mainpanel == 'saveMap'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.save-map') && Core.panelEnabled('saveMap')" ng-click="setMainPanel('saveMap')" ng-class="{active: Core.mainpanel == 'saveMap'}">
         <span class="menu-icon icon-save-floppy" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Save content of map to composition'||translate}}"></span>
         <span class="sidebar-item-title" translate>Save composition</span>
     </a>
