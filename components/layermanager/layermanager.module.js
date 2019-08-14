@@ -9,6 +9,7 @@ import layermanagerService from './layermanager.service';
 import folderDirective from './layermanager-folder.directive';
 import removeAllDialogDirective from './remove-all-dialog.directive';
 import layermanagerComponent from './layermanager.component';
+import 'common/get-capabilities.module'
 
 /**
  * @ngdoc module
@@ -16,7 +17,7 @@ import layermanagerComponent from './layermanager.component';
  * @name hs.layermanager
  * @description Layer manager module maintain management of layers loaded in HS Layers application. It use folder structure to enable building hiearchy of layers. All layers are wrapped inside HSLayer object, which contain auxilary informations and layer itself.
  */
-angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-map', 'hs.styles', 'hs.legend'])
+angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-map', 'hs.styles', 'hs.legend', 'hs.getCapabilities'])
     // .directive('hs.baselayers.directive', function() {
     //     return {
     //         template: require('components/layermanager/partials/baselayers.html')
