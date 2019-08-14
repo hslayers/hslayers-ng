@@ -19,7 +19,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
 
         var extentLayer;
         me.data = {
-            endpoints: config.datasources.map(ds => {
+            endpoints: (config.datasources || []).map(ds => {
                 return {
                     url: ds.url,
                     type: ds.type,

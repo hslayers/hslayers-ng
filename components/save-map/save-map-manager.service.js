@@ -86,7 +86,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
                         me.statusData.success = me.status;
                         $rootScope.$broadcast('StatusManager.saveResult',
                             'saveResult', saveStatus);
-                    }).catch(e => { 
+                    }).catch(e => {
                         //e contains the json responses data object from api
                         me.statusData.success = false;
                         $rootScope.$broadcast('StatusManager.saveResult',
@@ -238,14 +238,15 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             }
         ];
 
-        config.datasources.filter(ds => ds.type == 'layman').forEach(ds => {
-            me.endpoints.push({
-                type: 'layman',
-                name: 'Layman',
-                url: ds.url,
-                user: ds.user
+        (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
+            ds => {
+                me.endpoints.push({
+                    type: 'layman',
+                    name: 'Layman',
+                    url: ds.url,
+                    user: ds.user
+                })
             })
-        })
 
         $rootScope.$on('StatusCreator.open', function (e, composition) {
             me.open();
