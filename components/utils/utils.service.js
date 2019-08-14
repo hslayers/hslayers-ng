@@ -12,7 +12,11 @@ export default ['config', '$http', function (config, $http) {
     this.proxify = function (url, toEncoding) {
         toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
         var outUrl = url;
-        if ((url.substring(0, 4) == 'http' && url.indexOf(window.location.origin) == -1) || getPortFromUrl(url) != window.location.port) {
+        var windowUrlPosition = url.indexOf(window.location.origin);
+        if (
+            (url.substring(0, 4) == 'http'
+                && (windowUrlPosition == -1 || windowUrlPosition > 7)
+            ) || getPortFromUrl(url) != window.location.port) {
             if (angular.isUndefined(config.useProxy) || config.useProxy === true) {
                 outUrl = config.proxyPrefix || "/cgi-bin/hsproxy.cgi?";
                 if (outUrl.indexOf('hsproxy.cgi') > -1) {
