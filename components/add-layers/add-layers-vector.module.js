@@ -1,10 +1,10 @@
 import { DragAndDrop } from 'ol/interaction';
-import { GPX, IGC,KML,  TopoJSON, GeoJSON } from 'ol/format';
+import { GPX, IGC, KML, TopoJSON, GeoJSON } from 'ol/format';
 import SparqlJson from 'hs.source.SparqlJson'
 import WfsSource from 'hs.source.Wfs'
 import 'components/styles/styles.module';
 import * as loadingstrategy from 'ol/loadingstrategy';
-import {transform, transformExtent, get as getProj} from 'ol/proj';
+import { transform, transformExtent, get as getProj } from 'ol/proj';
 import { Vector } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 
@@ -19,7 +19,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
     * @name hs.addLayersVector
     * @description TODO
     */
-   .directive('hs.addLayersVector', ['config', function (config) {
+    .directive('hs.addLayersVector', ['config', function (config) {
         return {
             template: require('components/add-layers/partials/add-vector-layer.directive.html')
         };
@@ -59,21 +59,23 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                     url = utils.proxify(url);
                 }
 
-                if(type=='kml' || url.toLowerCase().endsWith('kml')){
+                if (type == 'kml' || 
+                    (angular.isDefined(url) && url.toLowerCase().endsWith('kml'))) {
                     format = new KML({
                         extractStyles: extract_styles
                     });
                     definition.format = "ol.format.KML";
                 }
-                if(type=='geojson' || url.toLowerCase().endsWith('geojson') || url.toLowerCase().endsWith('json')){
+                if (type == 'geojson' || 
+                    (angular.isDefined(url) && url.toLowerCase().endsWith('geojson') || url.toLowerCase().endsWith('json'))) {
                     format = new GeoJSON();
                     definition.format = "ol.format.GeoJSON";
                 }
-                if(url.toLowerCase().endsWith('gpx')){
+                if (angular.isDefined(url) && url.toLowerCase().endsWith('gpx')) {
                     format = new GPX();
                     definition.format = "ol.format.GPX";
                 }
-                if(type.toLowerCase() == "sparql"){
+                if (type.toLowerCase() == "sparql") {
                     definition.format = "hs.format.Sparql";
                 }
                 if (definition.format == 'hs.format.Sparql') {
@@ -132,7 +134,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                 return lyr;
             };
 
-            function createVectorSource(format, url, extract_styles, srs){
+            function createVectorSource(format, url, extract_styles, srs) {
                 var src = new Vector({
                     format: format,
                     url: url,
@@ -193,7 +195,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                 return src;
             }
 
-            function createVectorSourceFromFeatures(srs, options){
+            function createVectorSourceFromFeatures(srs, options) {
                 var src = new Vector({
                     projection: srs,
                     features: options.features
@@ -238,7 +240,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                 });
             }
 
-            me.checkUrlParamsAndAdd = function(){
+            me.checkUrlParamsAndAdd = function () {
                 var title = decodeURIComponent(permalink.getParamValue('title')) || 'Layer';
                 var abstract = decodeURIComponent(permalink.getParamValue('abstract'));
 
@@ -250,7 +252,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                     var lyr = me.add(type, url, title, abstract, false, 'EPSG:4326');
                     zoomToVectorLayer(lyr);
                 }
-    
+
                 if (permalink.getParamValue('kml_to_connect')) {
                     var url = permalink.getParamValue('kml_to_connect');
                     var lyr = me.add('kml', url, title, abstract, true, 'EPSG:4326');
@@ -268,10 +270,14 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                 ]
             });
 
-            $rootScope.$on('map.loaded', function () {
+            if (OlMap.map) {
                 OlMap.map.addInteraction(dragAndDrop);
-                me.checkUrlParamsAndAdd()
-            });
+            } else {
+                $rootScope.$on('map.loaded', function () {
+                    OlMap.map.addInteraction(dragAndDrop);
+                    me.checkUrlParamsAndAdd()
+                });
+            }
 
             dragAndDrop.on('addfeatures', function (event) {
                 if (event.features.length > 0) {
@@ -299,7 +305,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                             })
                         })
                     }).then(function (response) {
-                        data = {};
+                        var data = {};
                         data.url = url + "?request=loadData&id=" + response.data.id;
                         if (console) console.info(data.url, response.data);
                         data.title = event.file.name;
@@ -307,7 +313,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                         var lyr = me.add('geojson', decodeURIComponent(data.url), data.title || 'Layer', '', true, data.projection, options);
                     }, function (e) {
                         if (console) console.warn(e);
-                        data = {};
+                        var data = {};
                         data.title = event.file.name;
                         data.projection = event.projection;
                         var lyr = me.add('geojson', undefined, data.title || 'Layer', '', true, data.projection, options);
