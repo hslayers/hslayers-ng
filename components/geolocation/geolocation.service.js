@@ -36,10 +36,6 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core',
         var accuracyFeature = new Feature({ known: false, geometry: new CircleGeom([0, 0], 1) });
         var positionFeature = new Feature({ known: false, geometry: new Point([0, 0]) });
 
-        $rootScope.$on('map.loaded', function () {
-            init();
-        });
-
         function init() {
             if (Core.isMobile()) {
                 /**
@@ -215,6 +211,8 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core',
                 //track.bindTo('checked', geolocation, 'tracking');
             }
         }
+
+        OlMap.loaded().then(init);
 
         me.style = new Style({
             image: new Circle({

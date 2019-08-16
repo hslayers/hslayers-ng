@@ -599,7 +599,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
 
             boxLayersInit();
 
-            OlMap.map.getView().on('change:resolution', function (e) {
+            map.getView().on('change:resolution', function (e) {
                 if (timer != null) clearTimeout(timer);
                 timer = setTimeout(function () {
                     for (var i = 0; i < me.data.layers.length; i++) {
@@ -613,14 +613,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
             map.getLayers().on("remove", layerRemoved);
         }
 
-        if (angular.isDefined(OlMap.map)) {
-            init();
-        }
-        else {
-            $rootScope.$on('map.loaded', function () {
-                init();
-            });
-        }
+        OlMap.loaded().then(init);
 
         return me;
     }

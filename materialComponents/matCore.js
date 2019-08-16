@@ -71,10 +71,10 @@ define(['angular', 'core', 'angular-material'],
                         }
                     })
 
-                    $scope.$on('map.loaded', function () {
-                        angular.forEach(OlMap.map.getControls(), function (control) {
-                            OlMap.map.removeControl(control);
+                    OlMap.loaded().then(map => { 
+                        angular.forEach(map.getControls(), control => {
+                            map.removeControl(control);
                         })
-                    })
+                     });
                 }])
     })

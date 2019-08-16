@@ -80,12 +80,7 @@ export default {
             }
         }
 
-        if (OlMap.map)
-            init();
-        else
-            $rootScope.$on('map.loaded', function () {
-                init()
-            });
+        OlMap.loaded().then(init);
 
         $scope.$emit('scope_loaded', "Legend");
     }]
