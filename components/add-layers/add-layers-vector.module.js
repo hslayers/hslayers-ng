@@ -270,14 +270,10 @@ angular.module('hs.addLayersVector', ['hs.styles'])
                 ]
             });
 
-            if (OlMap.map) {
-                OlMap.map.addInteraction(dragAndDrop);
-            } else {
-                $rootScope.$on('map.loaded', function () {
-                    OlMap.map.addInteraction(dragAndDrop);
-                    me.checkUrlParamsAndAdd()
-                });
-            }
+            OlMap.loaded().then(map => {
+                map.addInteraction(dragAndDrop);
+                me.checkUrlParamsAndAdd()
+            })
 
             dragAndDrop.on('addfeatures', function (event) {
                 if (event.features.length > 0) {

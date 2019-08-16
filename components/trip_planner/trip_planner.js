@@ -259,14 +259,7 @@ angular.module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
                 features: movable_features
             });
 
-            if (angular.isUndefined(OlMap.map))
-                $scope.$on('map.loaded', function () {
-                    OlMap.map.addLayer(vector);
-                });
-            else {
-                if (console) console.log('add trip layer');
-                OlMap.map.addLayer(vector);
-            }
+            OlMap.loaded().then(map => { map.addLayer(vector); });
 
             if (angular.isUndefined(config.default_layers))
                 config.default_layers = [];

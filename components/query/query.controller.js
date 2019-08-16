@@ -5,12 +5,15 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
     function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config) {
         var popup = new Popup();
 
-        if (OlMap.map)
-            OlMap.map.addOverlay(popup);
-        else
-            $rootScope.$on('map.loaded', function () {
-                OlMap.map.addOverlay(popup);
-            });
+        OlMap.loaded().then(map => {
+            map.addOverlay(popup);
+            if (Core.current_panel_queryable) {
+                if (!Base.queryActive) Base.activateQueries();
+            }
+            else {
+                if (Base.queryActive) Base.deactivateQueries();
+            }
+        });
 
         try {
             var $mdDialog = $injector.get('$mdDialog');
@@ -83,13 +86,6 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
         $scope.$on('$destroy', function () {
             if (deregisterQueryStatusChanged) deregisterQueryStatusChanged();
         });
-
-        if (Core.current_panel_queryable) {
-            if (!Base.queryActive) Base.activateQueries();
-        }
-        else {
-            if (Base.queryActive) Base.deactivateQueries();
-        }
 
         $scope.$on('queryVectorResult', function () {
             if (!$scope.$$phase) $scope.$digest();

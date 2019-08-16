@@ -249,8 +249,8 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
             return Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser')
         }
 
-        function init() {
-            OlMap.map.on('pointermove', function (evt) {
+        function init(map) {
+            map.on('pointermove', function (evt) {
                 var features = extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                 var something_done = false;
                 angular.forEach(extentLayer.getSource().getFeatures(), function (feature) {
@@ -273,7 +273,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
                 if (!panelVisible()) return;
                 if (mickaFilterService.filterByExtent) me.queryCatalogs(me.data.datasources);
             });
-            OlMap.map.addLayer(extentLayer);
+            map.addLayer(extentLayer);
             if (dataSourceExistsAndEmpty() && panelVisible()) {
                 me.queryCatalogs(me.data.datasources);
                 mickaFilterService.fillCodesets(me.data.datasources);
@@ -287,12 +287,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
             });
         }
 
-        if (angular.isDefined(OlMap.map))
-            init()
-        else
-            $rootScope.$on('map.loaded', function () {
-                init();
-            });
+        OlMap.loaded().then(init)
 
         return me;
     }]

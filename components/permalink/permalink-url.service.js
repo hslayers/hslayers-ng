@@ -197,16 +197,17 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
         * @private
         * Function for service initialization when map object is ready
         */
-        function init() {
+        function init(map) {
             if (url_generation) {
                 var timer = null;
                 $rootScope.$on('map.extent_changed', function (event, data, b) {
                     me.update()
                     $rootScope.$broadcast('browserurl.updated');
                 });
-                OlMap.map.getLayers().on("add", function (e) {
+                map.getLayers().on("add", function (e) {
                     var layer = e.element;
-                    if (layer.get('show_in_manager') != null && layer.get('show_in_manager') == false) return;
+                    if (layer.get('show_in_manager') != null 
+                        && layer.get('show_in_manager') == false) return;
                     layer.on('change:visible', function (e) {
                         if (timer != null) clearTimeout(timer);
                         timer = setTimeout(function () {
@@ -221,12 +222,7 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
             }
         }
 
-        if (angular.isDefined(OlMap.map))
-            init()
-        else
-            $rootScope.$on('map.loaded', function () {
-                init();
-            });
+        OlMap.loaded().then(init);
         return me;
     }
 ]

@@ -86,7 +86,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                 composition.feature.set('highlighted', state)
         }
 
-        function init() {
+        function init(map) {
             extentLayer = new VectorLayer({
                 title: "Composition extents",
                 show_in_manager: false,
@@ -105,7 +105,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                 }
             });
 
-            OlMap.map.on('pointermove', function (evt) {
+            map.on('pointermove', function (evt) {
                 var features = extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                 var somethingDone = false;
                 angular.forEach(extentLayer.getSource().getFeatures(), function (feature) {
@@ -134,7 +134,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                 $cookies.remove('hs_layers');
             }
 
-            OlMap.map.addLayer(extentLayer);
+            map.addLayer(extentLayer);
 
             if (permalink.getParamValue('composition')) {
                 var id = permalink.getParamValue('composition');
@@ -142,10 +142,13 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                     id = statusManagerService.endpointUrl() + '?request=load&id=' + id;
                 compositionParser.loadUrl(id);
             }
+
+            if (permalink.getParamValue('permalink')) {
+                permalink.parsePermalinkLayers();
+            }
         }
 
-        if (angular.isDefined(OlMap.map)) init()
-        else $rootScope.$on('map.loaded', function () { init(); });
+        OlMap.loaded().then(init);
 
         $rootScope.$on('compositions.composition_edited', function (event) {
             compositionParser.composition_edited = true;
@@ -255,12 +258,6 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
 
                 });
         };
-
-        $rootScope.$on('map.loaded', function () {
-            if (permalink.getParamValue('permalink')) {
-                permalink.parsePermalinkLayers();
-            }
-        })
 
         me.loadComposition = function (url, overwrite) {
             return compositionParser.loadUrl(url, overwrite);

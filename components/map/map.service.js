@@ -117,6 +117,19 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         $rootScope.$broadcast('map.loaded');
     }
 
+    this.loaded = function () {
+        return new Promise((resolve, reject) => {
+            if (me.map) {
+                resolve(me.map);
+                return;
+            } else {
+                $timeout(() => {
+                    if (me.map) resolve(me.map); else reject();
+                }, 1000);
+            }
+        })
+    }
+
     //clone View to not overwrite deafult
     function cloneView(template) {
         var view = new View({
@@ -344,12 +357,6 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
     }
 
     /**
-     * @function isLayerVisibleInPermalink
-     * @memberOf hs.map.controller.init
-     * @param {ol.Layer} lyr - Layer for which to determine visibility
-     * @description Finds out if layer is set as visible in URL (permalink)
-     */
-    /**
      * @ngdoc method
      * @name hs.map.service#isLayerVisible
      * @public
@@ -433,7 +440,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         view.setZoom(zoom);
     }
 
-    this.getMapExtent = function(){
+    this.getMapExtent = function () {
         var mapSize = me.map.getSize();
         var mapExtent = angular.isDefined(mapSize) ?
             me.map.getView().calculateExtent(mapSize) :
@@ -441,7 +448,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         return mapExtent;
     };
 
-    this.getMapExtentInEpsg4326 = function(){
+    this.getMapExtentInEpsg4326 = function () {
         var bbox = transformExtent(me.getMapExtent(),
             me.map.getView().getProjection(),
             'EPSG:4326');

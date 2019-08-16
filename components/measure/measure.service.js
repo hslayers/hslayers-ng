@@ -12,10 +12,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.utils.service',
 
         var map;
 
-        if (angular.isDefined(OlMap.map)) map = OlMap.map;
-        else $rootScope.$on('map.loaded', function () {
-            map = OlMap.map;
-        });
+        OlMap.loaded().then(m => { map = m });
 
         this.draw;
 

@@ -50,9 +50,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
             });
         }
 
-        if (angular.isDefined(OlMap.map)) init();
-        if (me.deregisterOnMapLoaded) me.deregisterOnMapLoaded();
-        me.deregisterOnMapLoaded = $rootScope.$on('map.loaded', init);
+        OlMap.loaded().then(init);
 
         this.setData = function (data, type, overwrite) {
             if (angular.isDefined(type)) {
