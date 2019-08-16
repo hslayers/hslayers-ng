@@ -31,7 +31,7 @@
                             <div hs.feature_crossfilter.directive   hs.draggable ng-controller="hs.feature_crossfilter.controller"  ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-show="Core.panelVisible('feature_crossfilter', this)"></div>
                             <hs.measure                             hs.draggable ng-if="Core.exists('hs.measure')" ng-show="Core.panelVisible('measure', this)"></hs.measure>
                             <hs.print                               hs.draggable ng-if="Core.exists('hs.print')" ng-show="Core.panelVisible('print', this)"></hs.print>
-                            <hs.styler                              hs.draggable ng-if="Core.exists('hs.styler')" ng-show="Core.panelVisible('styler', this)"></hs.styler>
+                            <hs.styler                              hs.draggable ng-if="Core.exists('hs.styles')" ng-show="Core.panelVisible('styler', this)"></hs.styler>
                             <hs.permalink                           hs.draggable ng-if="Core.exists('hs.permalink')" ng-show="Core.panelVisible('permalink', this)"></hs.permalink>
                             <div hs.query.directive_infopanel       hs.draggable ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller') && config.design != 'md'" ng-show="Core.panelVisible('info', this)"></div>
                             <div hs.query.directive_infopanel_md    hs.draggable ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller') && config.design == 'md'" ng-show="Core.panelVisible('info', this)"></div>
