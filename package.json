@@ -54,7 +54,7 @@
     "webpack-merge": "^4.2.1"
   },
   "scripts": {
-    "build": "rm -rf dist && webpack --config webpack.all.prod.js",
+    "build": "rm -rf dist && webpack --config scripts/webpack.all.prod.js",
     "postinstall": "",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000",
