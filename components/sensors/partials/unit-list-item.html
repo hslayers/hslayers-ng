@@ -1,0 +1,8 @@
+<div>
+    <a href="#" ng-click="unitClicked()">{{$ctrl.unit.description}}</a>
+    <ul class="list-group">
+        <li ng-repeat="sensor in $ctrl.unit.sensors | filter:query" class="list-group-item">
+            {{sensor.sensor_type}} <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}} <translate>in</translate> {{sensor.uom}}
+        </li>
+    </ul>
+</div>

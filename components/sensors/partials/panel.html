@@ -1,0 +1,11 @@
+<div class="card panel-default mainpanel">
+    <hs.layout.panel-header panel-name="sensors" panel-title="'Sensors'||translate"></hs.layout.panel-header>
+    <div class="card-body">
+        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.description"></p>
+        <ul class="list-group">
+            <li ng-repeat="unit in service.units | filter:query" class="list-group-item">
+                <hs.sensors.unit-list-item unit="unit"></hs.sensors.unit-list-item>
+            </li>
+        </ul>
+    </div>
+</div>
