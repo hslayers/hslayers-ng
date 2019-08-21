@@ -1,0 +1,66 @@
+<div ng-style="{'visibility': sensorsService.unitDialogVisible?'visible':'hidden'}" id="sensor-unit-dialog"
+    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position: absolute;
+    width: {{layoutService.widthWithoutPanelSpace()}};
+    bottom: 5px;
+    left: 627px;">
+    <div class="modal-dialog modal-lg" style="margin-right: 43px; max-width: 100%; z-index: 4; margin-bottom: 3px;">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 0.2rem 0.3rem;">
+                <h4 class="modal-title" id="myModalLabel" translate="">
+                    Sensor unit {{$ctrl.unit.description}}
+                </h4>
+                <button type="button" class="close" ng-click="sensorsService.unitDialogVisible = false"
+                    data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"
+                        translate="">Close</span></button>
+            </div>
+            <div class="modal-body" style="max-height:260px; overflow-y:auto" translate>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-8">
+                            <div id="chartplace"></div>
+                        </div>
+                        <div class="col-4">
+                            <ul class="list-group" style="max-height:195px; overflow-y:scroll">
+                                <a href="#" ng-class="{'active': sensorSelected == sensor}"
+                                    ng-click="sensorClicked(sensor)"
+                                    ng-repeat="sensor in $ctrl.unit.sensors | filter:query" class="list-group-item">
+                                    {{sensor.sensor_type}} <b>{{sensor.sensor_name}}</b>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="stc-footer" style="padding: 0.2rem 0.3rem;">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default"
+                                    ng-class="{'btn-primary': currentInterval.unit=='hours'}"
+                                    ng-click="timeButtonClicked({amount: 1, unit: 'hours'})"
+                                    aria-label="1 hour">1H</button>
+                                <button type="button" class="btn btn-default"
+                                    ng-class="{'btn-primary': currentInterval.unit=='days'}"
+                                    ng-click="timeButtonClicked({amount: 1, unit: 'days'})"
+                                    aria-label="1 day">1D</button>
+                                <button type="button" class="btn btn-default"
+                                    ng-class="{'btn-primary': currentInterval.unit=='weeks'}"
+                                    ng-click="timeButtonClicked({amount: 1, unit: 'weeks'})"
+                                    aria-label="1 week">1W</button>
+                                <button type="button" class="btn btn-default"
+                                    ng-class="{'btn-primary': currentInterval.unit=='months' && currentInterval.amount == 1}"
+                                    ng-click="timeButtonClicked({amount: 1, unit: 'months'})"
+                                    aria-label="1 month">1M</button>
+                                <button type="button" class="btn btn-default"
+                                    ng-class="{'btn-primary': currentInterval.unit=='months' && currentInterval.amount == 6}"
+                                    ng-click="timeButtonClicked({amount: 6, unit: 'months'})"
+                                    aria-label="6 months">6M</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

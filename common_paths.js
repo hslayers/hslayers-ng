@@ -52,6 +52,7 @@ exports.paths = [
   __dirname + '/components/routing',
   __dirname + '/components/rtserver',
   __dirname + '/components/search',
+  __dirname + '/components/sensors',
   __dirname + '/components/sidebar',
   __dirname + '/components/save-map',
   __dirname + '/components/styles',
