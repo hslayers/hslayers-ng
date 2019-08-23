@@ -4,6 +4,7 @@ import saveMapService from './save-map.service';
 import saveMapManagerService from './save-map-manager.service';
 import statusManagerService from './status-manager.service';
 import laymanService from './layman.service';
+import layerSynchronizerService from './layer-synchronizer.service';
 
 /**
  * @namespace hs.save-map
@@ -117,6 +118,8 @@ var module = angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'h
     .service('hs.statusManagerService', statusManagerService)
 
     .service('hs.laymanService', laymanService)
+
+    .service('hs.layerSynchronizerService', layerSynchronizerService)
     
     /**
      * @ngdoc component
