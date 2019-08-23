@@ -25,6 +25,9 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                             reject(err.data)
                         });
                 })
+            },
+            synchronizeVectorSource(ds, geojson){
+                console.log(geojson);
             }
         });
         return me;

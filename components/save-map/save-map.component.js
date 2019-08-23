@@ -1,8 +1,8 @@
 export default {
     template: require('components/save-map/partials/panel.html'),
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService',
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService', 'hs.layerSynchronizerService',
         '$timeout',
-        function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout) {
+        function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout, layerSynchronizerService) {
             $scope.compoData = StatusManager.compoData;
             $scope.statusData = StatusManager.statusData;
             $scope.userData = StatusManager.userData;
