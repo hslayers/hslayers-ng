@@ -26,7 +26,8 @@
                 <span>{{feature.type}} {{feature.name}}</span>
                 <span class="pull-right">
                     <button class="btn btn-secondary btn-sm" ng-if="feature==current_feature" ng-click="stop()" translate>Stop</button>
-                    <button type="button" class="btn btn-secondary btn-sm icon-trash" ng-click="removeFeature(feature);">
+                    <button type="button" class="btn btn-secondary btn-sm" ng-click="removeFeature(feature);">
+                        <i class="icon-trash"></i>
                     </button>
                 <span>
             </li>
@@ -73,10 +74,10 @@
                     <img ng-repeat="image in current_feature.media | orderBy:'-media_id' track by $index" ng-show="current_feature.media" ng-src="{{ image.url?image.url:image.thumbnail_url }}" style="width: 100%"/>
                 </div>
                 
-                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false" aria-controls="hs-more-attributes">
+                <button class="btn btn-secondary" ng-click="moreAttributesVisible = !moreAttributesVisible" type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false" aria-controls="hs-more-attributes">
                     Show more
                 </button>
-                <div class="collapse" id="hs-more-attributes">
+                <div class="collapse" ng-class="{'show': moreAttributesVisible}" id="hs-more-attributes">
                     <br/>
                     <div class="form-group" ng-repeat="user_defined_attr in current_feature.extra_attributes">
                         <input type="text" class="form-control hs-dr-extra-attribute-name" ng-model="user_defined_attr.name"/>
@@ -86,7 +87,7 @@
                 
             
                 <button class="btn btn-secondary hs-dr-add-attribute" ng-click="addUserDefinedAttr()" >
-                    <i class="icon-refresh"></i>
+                    <i class="icon-plus"></i>
                 </button>
 
                 <button class="btn btn-secondary" ng-if="Core.isMobile()" ng-click="addPhoto()">

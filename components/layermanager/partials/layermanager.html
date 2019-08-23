@@ -49,7 +49,7 @@
             <li class="list-group-item hs-lm-header active">
                 <span translate>Map Content</span>
                 <span class="pull-right">
-                    <button type="button" class="btn btn-sm btn-secondary"  ng-if="Core.exists('hs.draw.controller')" ng-click="addDrawingLayer()">
+                    <button type="button" class="btn btn-sm btn-secondary"  ng-if="Core.exists('hs.vgi-draw')" ng-click="addDrawingLayer()">
                         <i class="icon-pencil"></i>
                     </button>
                 </span>
@@ -162,7 +162,7 @@
                     </div>
                 </div>
                 <button class="btn btn-primary" ng-click="zoomToLayer(currentLayer.layer)" ng-disabled="!layerIsZoomable(currentLayer.layer)"><i class="icon-search"></i></button>
-                <button class="btn btn-primary" ng-click="styleLayer(currentLayer.layer)" ng-disabled="!layerIsStyleable(currentLayer.layer)"><i class="icon-wrench"></i></button>
+                <button class="btn btn-primary" ng-click="styleLayer(currentLayer.layer)" ng-disabled="!layerIsStyleable(currentLayer.layer)"><i class="icon-brush"></i></button>
                 <button class="btn btn-primary" ng-click="toggleLayerRename()"><i class="icon-edit"></i></button>
                 <button class="btn btn-danger" ng-click="removeLayer(currentLayer.layer)" ng-if="isLayerRemovable(currentLayer.layer)"><i class="icon-trash"></i></button>
             </div>
