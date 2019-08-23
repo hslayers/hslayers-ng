@@ -1,6 +1,5 @@
 import { Vector as VectorSource } from 'ol/source';
 import { GeoJSON, WFS } from 'ol/format';
-import GML3 from 'ol/format/GML3';
 
 export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService',
     function (Core, utils, config, hsMap, laymanService) {
