@@ -26,6 +26,6 @@
 	<hs.save-map				ng-controller="hs.save-map" ng-if="Core.exists('hs.save-map.controller')" ng-show="Core.panelVisible('saveMap', this)"></hs.save-map>>
 	<div hs.routing.directive               ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="Core.panelVisible('routing', this)"></div>
 	<div hs.tracking.directive              ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="Core.panelVisible('tracking', this)"></div>
-	<div hs.draw.directive                  ng-controller="hs.draw.controller" ng-if="Core.exists('hs.draw.controller')" ng-show="Core.panelVisible('draw', this)"></div>
+	<hs.vgi-draw                ng-if="Core.exists('hs.vgi-draw')" ng-show="Core.panelVisible('draw', this)"></hs.vgi-draw>
 	<hs.customhtml				ng-if="Core.exists('hs.customhtml')"></hs.customhtml>
 </md-bottom-sheet>
