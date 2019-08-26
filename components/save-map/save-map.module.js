@@ -10,8 +10,7 @@ import layerSynchronizerService from './layer-synchronizer.service';
  * @namespace hs.save-map
  * @memberOf hs
  */
-
-var module = angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets'])
+angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets'])
     /**
      * @ngdoc directive
      * @name hs.save-map.directive
@@ -44,17 +43,6 @@ var module = angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'h
     .directive('hs.saveMap.directiveSimpleform', ['config', function (config) {
         return {
             template: require('components/save-map/partials/simpleform.html')
-        };
-    }])
-    /**
-     * @ngdoc directive
-     * @name hs.saveMap.directivePanel
-     * @memberof hs.save-map
-     * @description Display Save map panel in app (base directive, extended by forms)
-     */
-    .directive('hs.saveMap.directivePanel', ['config', function (config) {
-        return {
-            template: require(`components/save-map/partials/panel.html`),
         };
     }])
     /**
@@ -105,6 +93,7 @@ var module = angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'h
             }
         };
     })
+    
     /**
      * @ngdoc service
      * @name hs.save-map.service
@@ -113,17 +102,46 @@ var module = angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'h
      */
     .service('hs.save-map.service', saveMapService)
 
+    /**
+     * @ngdoc service
+     * @name hs.save-map.service
+     * @memberof hs.save-map
+     * @description Service for managing saving logic to various providers. 
+     * Currently Layman and Status manager are supported.
+     */
     .service('hs.saveMapManagerService', saveMapManagerService)
 
+     /**
+     * @ngdoc service
+     * @name hs.laymanService
+     * @memberof hs.save-map
+     * @description Service for sending and retrieving compositions from Status 
+     * Manager backend
+     */
     .service('hs.statusManagerService', statusManagerService)
 
+    /**
+     * @ngdoc service
+     * @name hs.laymanService
+     * @memberof hs.save-map
+     * @description Service for sending and retrieving data from Layman 
+     * (compositions, layers) (https://github.com/jirik/gspld)
+     */
     .service('hs.laymanService', laymanService)
 
+    /**
+     * @ngdoc service
+     * @name hs.layerSynchronizerService
+     * @memberof hs.save-map
+     * @description Service which monitors vector layers and initiates sending 
+     * and gets requesting of features to/from Layman
+     */
     .service('hs.layerSynchronizerService', layerSynchronizerService)
     
     /**
      * @ngdoc component
      * @name hs.saveMap
      * @memberof hs.save-map
+     * @description Save map panel
      */
     .component('hs.saveMap', saveMapComponent);
