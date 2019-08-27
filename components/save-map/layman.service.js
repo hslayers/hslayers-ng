@@ -172,7 +172,8 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                                     angular.isDefined(description.code) &&
                                     description.code == 15)
                                     resolve(false);
-                                else if (angular.isDefined(description.name))
+                                else if (description != null && 
+                                    angular.isDefined(description.name))
                                     resolve(true);
                                 else
                                     resolve(false)
