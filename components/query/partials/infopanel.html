@@ -1,17 +1,7 @@
 <div class="card panel-default mainpanel">
     <hs.layout.panel-header panel-name="info" panel-title="'Info'||translate"></hs.layout.panel-header>
     <div class="card-body">
-        <table class="table table-compact" ng-repeat="group in data.groups | orderBy : 'name'">
-            <tr>
-                <th colspan="2">{{group.name}}</th>
-            </tr>
-            <tr ng-repeat="attribute in group.attributes | orderBy : 'name'">
-                <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' class="first-col"
-                    class="first-col"></td>
-                <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}'
-                    value='{{attribute.value}}' class="second-col"></td>
-            </tr>
-        </table>
+        <hs.query.feature ng-repeat="feature in data.features track by features.name | orderBy : 'name'" feature="feature"></hs.query.feature>
         <table class="table table-striped" style="table-layout:fixed" ng-show="data.attributes.length > 0">
             <tr ng-repeat="attribute in data.attributes | orderBy : name">
                 <td class="first-col">{{attribute.name}}</td>
