@@ -49,7 +49,7 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         function getFeatureAttributes(feature) {
             var attributes = [];
             feature.getKeys().forEach(function (key) {
-                if (key == 'gid' || key == 'geometry') return;
+                if (['gid', 'geometry', 'wkb_geometry'].indexOf(key) > -1) return;
                 if (key == "features") {
                     for (var sub_feature in feature.get('features')) {
                         var hstemplate = null;
