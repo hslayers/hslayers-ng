@@ -3,8 +3,8 @@ import { click, pointerMove, altKeyOnly } from 'ol/events/condition.js';
 import Collection from 'ol/Collection';
 import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 
-export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService',
-    function (Core, utils, config, hsMap, laymanService) {
+export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService', 'hs.query.baseService',
+    function (Core, utils, config, hsMap, laymanService, queryBaseService) {
         var me = this;
         angular.extend(me, {
             draw: null,
@@ -69,6 +69,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
 
                     me.draw.on('drawend', function (e) {
                         me.draw.setActive(false);
+                        queryBaseService.activateQueries();
                         if (onDrawEnd) onDrawEnd(e)
                     }, this);
 
@@ -89,6 +90,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
             deactivateDrawing() {
                 return new Promise((resolve, reject) => {
                     hsMap.loaded().then(map => {
+                        queryBaseService.deactivateQueries();
                         if (me.draw) {
                             map.removeInteraction(me.draw);
                             map.removeInteraction(me.modify);
