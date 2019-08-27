@@ -36,16 +36,18 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
             /**
              * @function activateDrawing
              * @memberOf hs.draw.service
-             * Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
+             * @param {Boolean} drawState Should drawing be set active when 
+             * creating the interactions
+             * @description Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
              */
-            activateDrawing(onDrawStart, onDrawEnd, onSelected, onDeselected) {
+            activateDrawing(onDrawStart, onDrawEnd, onSelected, onDeselected, drawState) {
                 me.deactivateDrawing().then(() => {
                     me.draw = new Draw({
                         source: me.source,
                         type: /** @type {ol.geom.GeometryType} */ (me.type)
                     });
 
-                    me.draw.setActive(false);
+                    me.draw.setActive(drawState);
                     me.modify = new Modify({
                         features: me.selectedFeatures
                     });

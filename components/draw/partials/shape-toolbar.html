@@ -1,0 +1,16 @@
+<div style="position: absolute; right: 5px; bottom: 15px; height: 120px;">
+    <form style="float:left">
+        <select class="form-control" ng-model="selectedLayer" ng-change="changeLayer()"
+            ng-options="layer as layer.get('title') for layer in drawableLayers()">
+        </select>
+    </form>
+    <div class="btn-group-sm btn-group-vertical" style="width: 30px;">
+        <button class="btn btn-secondary ng-class:{active: type=='Point'}" ng-click="setType('Point')" translate><i
+                class="icon-pin"></i></button>
+        <button class="btn btn-secondary ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')" translate><i
+                class="icon-polygonlasso"></i></button>
+        <button class="btn btn-secondary ng-class:{active: type=='LineString'}" ng-click="setType('LineString')"
+            translate>
+            <i class="icon-line"></i></button>
+    </div>
+</div>

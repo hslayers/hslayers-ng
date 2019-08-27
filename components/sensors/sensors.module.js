@@ -36,9 +36,9 @@ angular.module('hs.sensors', ['hs.map', 'hs.utils'])
 
 
     /**
-     * @memberof hs.sensors.unitDialog
+     * @memberof hs.sensors
      * @ngdoc component
-     * @name hs.sensors
+     * @name hs.sensors.unitDialog
      * @description Dialog window showing list of sensors for unit and vega 
      * charts for different date intervals
      */
