@@ -4,6 +4,7 @@ import 'core'
 import 'components/utils/utils.module'
 import 'geolocation';
 import drawService from './draw.service';
+import drawShapeToolbarComponent from './draw-shape-toolbar.component';
 
 /**
 * @namespace hs.draw
@@ -12,3 +13,11 @@ import drawService from './draw.service';
 
 angular.module('hs.draw', ['hs.map', 'hs.core', 'hs.utils'])
     .service('hs.draw.service', drawService)
+
+    /**
+     * @memberof hs.draw
+     * @ngdoc component
+     * @name hs.draw.shapeToolbar
+     * @description Buttons in the corner for controlling drawing
+     */
+    .component('hs.draw.shapeToolbar', drawShapeToolbarComponent);
