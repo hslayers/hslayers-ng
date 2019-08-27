@@ -27,7 +27,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
 
         this.data = {};
         this.data.attributes = [];
-        this.data.groups = [];
+        this.data.features = [];
         this.data.coordinates = [];
         this.queryActive = false;
         this.popupClassname = "";
@@ -66,7 +66,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
 
         this.clearData = function () {
             me.data.attributes.length = 0;
-            me.data.groups.length = 0;
+            me.data.features.length = 0;
             me.data.coordinates.length = 0;
             var invisiblePopup = me.getInvisiblePopup();
             invisiblePopup.contentDocument.body.innerHTML = '';

@@ -2,11 +2,12 @@
 import 'angular-sanitize';
 import queryInfoPanelDirective from './query-info-panel.directive';
 import queryInfoPanelMdDirective from './query-info-panel-md.directive';
-import queryInfovalueDirective from './query-infovalue.directive';
+import attributeRowComponent from './attribute-row.component';
 import queryBaseService from './query-base.service';
 import queryWmsService from './query-wms.service';
 import queryVectorService from './query-vector.service';
 import queryController from './query.controller';
+import featureComponent from './feature.component.js';
 
 /**
  * @namespace hs.query
@@ -30,12 +31,20 @@ angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
     .directive('hs.query.directiveInfopanelMd', queryInfoPanelMdDirective)
 
     /**
-    * @ngdoc directive
-    * @name hs.query.infovalue
+    * @ngdoc component
+    * @name hs.query.attributeRow
     * @memberOf hs.query
     * @description TODO
     */
-    .directive('hs.query.infovalue', queryInfovalueDirective)
+    .component('hs.query.attributeRow', attributeRowComponent)
+
+    /**
+    * @ngdoc component
+    * @name hs.query.feature
+    * @memberOf hs.query
+    * @description TODO
+    */
+   .component('hs.query.feature', featureComponent)
 
     /**
     * @ngdoc service

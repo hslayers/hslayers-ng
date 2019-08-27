@@ -58,7 +58,7 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                     for (var sub_feature in feature.get('features')) {
                         var hstemplate = null;
                         if (feature.get('features')[sub_feature].get('hstemplate')) hstemplate = feature.get('features')[sub_feature].get('hstemplate');
-                        var group = {
+                        var feature = {
                             name: "Feature",
                             attributes: [],
                             hstemplate: hstemplate
@@ -66,18 +66,18 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                         feature.get('features')[sub_feature].getKeys().forEach(function (key) {
                             if (key == 'gid' || key == 'geometry') return;
                             if ((typeof feature.get('features')[sub_feature].get(key)).toLowerCase() == "string") {
-                                group.attributes.push({
+                                feature.attributes.push({
                                     name: key,
                                     value: $sce.trustAsHtml(feature.get('features')[sub_feature].get(key))
                                 });
                             } else {
-                                group.attributes.push({
+                                feature.attributes.push({
                                     name: key,
                                     value: feature.get('features')[sub_feature].get(key)
                                 });
                             }
                         });
-                        Base.setData(group, 'groups');
+                        Base.setData(feature, 'features');
                     }
                 } else {
                     var obj;
@@ -98,12 +98,13 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
             var layer = feature.getLayer(OlMap.map);
             if (angular.isUndefined(layer) || angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager') === false) return;
             var layerName = layer.get("title") || layer.get("name");
-            var group = {
+            var feature = {
                 layer: layerName,
                 name: "Feature",
-                attributes: attributes
+                attributes: attributes,
+                feature
             };
-            Base.setData(group, 'groups');
+            Base.setData(feature, 'features');
             $rootScope.$broadcast('queryVectorResult');
         }
     }]
