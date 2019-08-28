@@ -286,6 +286,8 @@ export default {
             $scope.edit = function (composition) {
                 Composition.loadCompositionParser(composition).then(() => {
                     $rootScope.$broadcast('StatusCreator.open', composition);
+                }).catch(() => {
+
                 });
             }
 
@@ -372,7 +374,9 @@ export default {
              * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
              */
             $scope.startLoadComposition = function (record) {
-                Composition.loadCompositionParser(record);
+                Composition.loadCompositionParser(record).then(_ => { }).catch(_ => {
+
+                });
             }
 
             /**
@@ -382,7 +386,7 @@ export default {
              * @description Load new composition without saving old composition
              */
             $scope.overwrite = function () {
-                Composition.loadComposition($scope.compositionToLoad, true);
+                Composition.loadComposition($scope.compositionToLoad.url, true);
                 $scope.overwriteModalVisible = false
             }
 
@@ -393,7 +397,7 @@ export default {
              * @description Load new composition (with service_parser Load function) and merge it with old composition
              */
             $scope.add = function () {
-                Composition.loadComposition($scope.compositionToLoad, false);
+                Composition.loadComposition($scope.compositionToLoad.url, false);
                 $scope.overwriteModalVisible = false;
             }
 
@@ -448,17 +452,17 @@ export default {
                 $scope.loadCompositions(composition.endpoint);
             });
 
-            $scope.$on('loadComposition.notSaved', function (event, data) {
-                $scope.compositionToLoad = data.link;
+            $scope.$on('loadComposition.notSaved', function (event, url, title) {
+                $scope.compositionToLoad = {url, title};
                 if (config.design === 'md')
                     $scope.loadUnsavedDialogMD();
                 else
-                    loadUnsavedDialogBootstrap();
+                    loadUnsavedDialogBootstrap(url, title);
             });
 
-            function loadUnsavedDialogBootstrap() {
+            function loadUnsavedDialogBootstrap(url, title) {
                 var dialog_id = 'composition-overwrite-dialog';
-                $scope.composition_name_to_be_loaded = data.title;
+                $scope.composition_name_to_be_loaded = title;
                 if (document.getElementById(dialog_id) == null) {
                     var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
                     document.getElementById("hs-dialog-area").appendChild(el[0]);;

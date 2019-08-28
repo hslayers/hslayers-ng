@@ -222,7 +222,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                         break;
                 }
                 if (compositionParser.composition_edited == true) {
-                    $rootScope.$broadcast('loadComposition.notSaved', record);
+                    $rootScope.$broadcast('loadComposition.notSaved', url);
                     reject();
                 } else {
                     me.loadComposition(url, true).then(() => {
