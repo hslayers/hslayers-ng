@@ -39,9 +39,21 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         me.createFeatureAttributeList = () => {
             Base.data.attributes.length = 0;
             var features = me.selector.getFeatures().getArray();
+            var featureDescriptions = [];
             angular.forEach(features, function (feature) {
-                getFeatureAttributes(feature);
+                featureDescriptions = featureDescriptions.concat(
+                    getFeatureAttributes(feature)
+                );
             });
+            Base.setData(featureDescriptions, 'features');
+            $rootScope.$broadcast('queryVectorResult');
+        }
+
+        function getFeatureLayerName(feature){
+            var layer = feature.getLayer(OlMap.map);
+            if (angular.isUndefined(layer) || angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager') === false) return '';
+            var layerName = layer.get("title") || layer.get("name");
+            return layerName
         }
 
         /**
@@ -55,10 +67,12 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
             feature.getKeys().forEach((key) => {
                 if (['gid', 'geometry', 'wkb_geometry'].indexOf(key) > -1) return;
                 if (key == "features") {
+                    var subFeatures = [];
                     for (var sub_feature in feature.get('features')) {
                         var hstemplate = null;
                         if (feature.get('features')[sub_feature].get('hstemplate')) hstemplate = feature.get('features')[sub_feature].get('hstemplate');
                         var featureDescription = {
+                            layer: getFeatureLayerName(feature),
                             name: "Feature",
                             attributes: [],
                             hstemplate: hstemplate
@@ -77,8 +91,9 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                                 });
                             }
                         });
-                        Base.setData(featureDescription, 'features');
+                        subFeatures.push(featureDescription);
                     }
+                    return subFeatures;
                 } else {
                     var obj;
                     if ((typeof feature.get(key)).toLowerCase() == "string") {
@@ -95,16 +110,13 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                     attributes.push(obj);
                 }
             });
-            var layer = feature.getLayer(OlMap.map);
-            if (angular.isUndefined(layer) || angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager') === false) return;
-            var layerName = layer.get("title") || layer.get("name");
+            
             var featureDescription = {
-                layer: layerName,
+                layer: getFeatureLayerName(feature),
                 name: "Feature",
                 attributes: attributes,
                 feature
             };
-            Base.setData(featureDescription, 'features');
-            $rootScope.$broadcast('queryVectorResult');
+            return [featureDescription];            
         }
     }]
