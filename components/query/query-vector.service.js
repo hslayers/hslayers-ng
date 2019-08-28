@@ -64,36 +64,16 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         */
         function getFeatureAttributes(feature) {
             var attributes = [];
+            var tmp = [];
+            var hstemplate = null;
             feature.getKeys().forEach((key) => {
                 if (['gid', 'geometry', 'wkb_geometry'].indexOf(key) > -1) return;
+                if (feature.get('hstemplate')) hstemplate = feature.get('hstemplate');
                 if (key == "features") {
-                    var subFeatures = [];
-                    for (var sub_feature in feature.get('features')) {
-                        var hstemplate = null;
-                        if (feature.get('features')[sub_feature].get('hstemplate')) hstemplate = feature.get('features')[sub_feature].get('hstemplate');
-                        var featureDescription = {
-                            layer: getFeatureLayerName(feature),
-                            name: "Feature",
-                            attributes: [],
-                            hstemplate: hstemplate
-                        };
-                        feature.get('features')[sub_feature].getKeys().forEach(function (key) {
-                            if (key == 'gid' || key == 'geometry') return;
-                            if ((typeof feature.get('features')[sub_feature].get(key)).toLowerCase() == "string") {
-                                featureDescription.attributes.push({
-                                    name: key,
-                                    value: $sce.trustAsHtml(feature.get('features')[sub_feature].get(key))
-                                });
-                            } else {
-                                featureDescription.attributes.push({
-                                    name: key,
-                                    value: feature.get('features')[sub_feature].get(key)
-                                });
-                            }
-                        });
-                        subFeatures.push(featureDescription);
+                    for (var ixSubFeature in feature.get('features')) {
+                        var subFeature = feature.get('features')[ixSubFeature];
+                        tmp = tmp.concat(getFeatureAttributes(subFeature));
                     }
-                    return subFeatures;
                 } else {
                     var obj;
                     if ((typeof feature.get(key)).toLowerCase() == "string") {
@@ -115,8 +95,10 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                 layer: getFeatureLayerName(feature),
                 name: "Feature",
                 attributes: attributes,
+                hstemplate,
                 feature
             };
-            return [featureDescription];            
+            tmp.push(featureDescription);
+            return tmp;            
         }
     }]

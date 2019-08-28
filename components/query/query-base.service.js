@@ -61,7 +61,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
                     me.data[type] = me.data[type].concat(data); 
                 else 
                     me.data[type].push(data);
-                console.log(type, data);
                 $rootScope.$broadcast('infopanel.updated'); //Compatibility, deprecated
                 $rootScope.$broadcast('query.dataUpdated');
             }
