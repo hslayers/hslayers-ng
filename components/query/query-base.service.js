@@ -57,7 +57,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
                 if (angular.isDefined(overwrite) && overwrite) {
                     me.data[type].length = 0;
                 }
-                me.data[type].push(data);
+                if(Array.isArray(data)) 
+                    me.data[type] = me.data[type].concat(data); 
+                else 
+                    me.data[type].push(data);
+                console.log(type, data);
                 $rootScope.$broadcast('infopanel.updated'); //Compatibility, deprecated
                 $rootScope.$broadcast('query.dataUpdated');
             }
@@ -66,7 +70,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
 
         this.clearData = function () {
             me.data.attributes.length = 0;
-            me.data.features.length = 0;
+            me.data.features = [];
             me.data.coordinates.length = 0;
             var invisiblePopup = me.getInvisiblePopup();
             invisiblePopup.contentDocument.body.innerHTML = '';
