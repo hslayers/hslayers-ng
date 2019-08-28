@@ -8,15 +8,19 @@
                 <td class="second-col" ng-bind-html="attribute.value"></td>
             </tr>
         </table>
-        <table class="table table-striped" style="table-layout:fixed" ng-show="data.coordinates[0].name.length > 0">
-            <tr>
-                <th colspan="2">{{data.coordinates[0].name}}</th>
-            </tr>
-            <tr ng-repeat="projection in data.coordinates[0].projections | orderBy : name">
-                <td class="first-col">{{projection.name}}</td>
-                <td class="second-col" ng-bind-html="projection.value"></td>
-            </tr>
-        </table>
+        <div class="container-fluid" ng-show="data.coordinates[0].name.length > 0">
+            <div class="row">
+                <div class="col-12 m-2"><strong>{{data.coordinates[0].name}}</strong></div>
+            </div>
+            <div class="row" ng-repeat="projection in data.coordinates[0].projections | orderBy : name">
+                <div class="input-group m-1" >
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">{{projection.name}}</span>
+                    </div>
+                    <input class="form-control" ng-value="projection.value"></input>
+                </div>
+            </div>
+        </div>
     </div>
     <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
 </div>
