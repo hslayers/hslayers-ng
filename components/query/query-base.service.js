@@ -67,10 +67,14 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
             else if (console) console.log('Query.BaseService.setData type not passed');
         };
 
-        this.clearData = function () {
-            me.data.attributes.length = 0;
-            me.data.features = [];
-            me.data.coordinates.length = 0;
+        this.clearData = function (type) {
+            if(type){
+                me.data[type].length = 0;
+            } else {
+                me.data.attributes.length = 0;
+                me.data.features = [];
+                me.data.coordinates.length = 0;  
+            }
             var invisiblePopup = me.getInvisiblePopup();
             invisiblePopup.contentDocument.body.innerHTML = '';
             invisiblePopup.style.height = 0;
@@ -103,6 +107,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
                 projections: [{
                     "name": "EPSG:4326",
                     "value": toStringHDMS(transform(coordinate, map.getView().getProjection(), 'EPSG:4326'))
+                },
+                {
+                    "name": "EPSG:4326",
+                    "value": createStringXY(7)(transform(coordinate, map.getView().getProjection(), 'EPSG:4326'))
                 }, {
                     "name": map.getView().getProjection().getCode(),
                     "value": createStringXY(7)(coordinate)

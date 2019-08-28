@@ -31,7 +31,7 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         });
 
         $rootScope.$on('queryClicked', function (e) {
-            Base.clearData();
+            Base.clearData('features');
             if (!Base.queryActive) return;
             me.createFeatureAttributeList();
         });
