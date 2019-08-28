@@ -2,10 +2,8 @@
     <div class="row">
         <div class="col-12 m-2"><strong>{{$ctrl.feature.name}} in layer {{$ctrl.feature.layer}}</strong></div>
     </div>
-    <div>
-        <hs.query.attribute-row
-            ng-repeat="attribute in $ctrl.feature.attributes track by attribute.name | orderBy : 'name'"
-            template='$ctrl.feature.hstemplate' feature="$ctrl.feature" attribute='attribute'>
-        </hs.query.attribute-row>
-    </div>
+    <hs.query.attribute-row
+        ng-repeat="attribute in $ctrl.feature.attributes track by attribute.name | orderBy : 'name'"
+        template='$ctrl.feature.hstemplate' feature="$ctrl.feature" attribute='attribute'>
+    </hs.query.attribute-row>
 </div>
