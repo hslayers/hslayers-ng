@@ -7,7 +7,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
         angular.extend(me, {
             syncedLayers: [],
             crs: null,
-            
+
             init(map) {
                 const layerAdded = (e) => me.addLayer(e.element);
                 map.getLayers().on("add", layerAdded);
@@ -47,10 +47,10 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                     layer.get('synchronize') === true) {
                     var layerSource = layer.getSource();
                     me.pull(layer, layer.getSource());
-                    layerSource.on('change', function (e) {
-                        if(e.target.loading) return;
+                    layerSource.on('change', utils.debounce(function (e) {
+                        if (e.target.loading) return;
                         me.push(layer, e.target);
-                    })
+                    }, 1000))
                     return layer
                 }
             },
@@ -89,17 +89,17 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                 (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
                     ds => {
                         laymanService.pullVectorSource(ds, me.getLayerName(layer))
-                        .then(featureString => {
-                            if(featureString){
-                                source.loading = true;
-                                var format = new WFS();
-                                featureString = featureString.replaceAll('urn:x-ogc:def:crs:EPSG:3857', 'EPSG:3857');
-                                source.addFeatures(
-                                    format.readFeatures(featureString)
-                                );
-                                source.loading = false;
-                            }
-                        });
+                            .then(featureString => {
+                                if (featureString) {
+                                    source.loading = true;
+                                    var format = new WFS();
+                                    featureString = featureString.replaceAll('urn:x-ogc:def:crs:EPSG:3857', 'EPSG:3857');
+                                    source.addFeatures(
+                                        format.readFeatures(featureString)
+                                    );
+                                    source.loading = false;
+                                }
+                            });
                     })
             },
 
