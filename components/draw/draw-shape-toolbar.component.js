@@ -59,7 +59,7 @@ export default {
                     const editorConfig = $scope.selectedLayer.get('editor');
                     if (editorConfig.defaultAttributes) {
                         angular.forEach(editorConfig.defaultAttributes,
-                            (key, value) => {
+                            (value, key) => {
                                 e.feature.set(key, value);
                             })
                     }
