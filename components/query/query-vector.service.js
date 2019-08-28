@@ -31,12 +31,12 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         });
 
         $rootScope.$on('queryClicked', function (e) {
+            Base.clearData();
             if (!Base.queryActive) return;
             me.createFeatureAttributeList();
         });
 
         me.createFeatureAttributeList = () => {
-            Base.clearData();
             Base.data.attributes.length = 0;
             var features = me.selector.getFeatures().getArray();
             angular.forEach(features, function (feature) {
