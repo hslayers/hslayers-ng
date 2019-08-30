@@ -24,6 +24,7 @@ exports.paths = [
   __dirname + '/components/hscesium',
   __dirname + '/components/compositions',
   __dirname + '/components/core',
+  __dirname + '/img',
   __dirname + '/components/customhtml',
   __dirname + '/components/datasource-selector',
   __dirname + '/components/drag',
