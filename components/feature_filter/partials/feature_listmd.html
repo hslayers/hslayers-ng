@@ -38,42 +38,41 @@
         </div>
         <div class="content-body">
             <div class="main-content">
-                <h3><span ng-if="featureDetails.region">{{ featureDetails.region }}, </span>{{ featureDetails.country }}</h3>
-                <a ng-repeat-start="url in featureDetails.website.split(',')" target="_blank" ng-href="{{url}}" ng-if="featureDetails.website">{{ url }}</a>
-                <br ng-repeat-end>
+                <h2><span ng-if="featureDetails.region">{{ featureDetails.region }}, </span>{{ featureDetails.country }}</h2>
+                <p ng-repeat="url in featureDetails.website.split(',')" ng-if="featureDetails.website"><a target="_blank" ng-href="{{url}}">{{ url }}</a></p>
         
-                <h3 class="heading">Biomass source</h3>
-                <p>{{ featureDetails.biomass_source }}</p>
+                <h3 ng-if="featureDetails.biomass_source" class="heading">Biomass source</h3>
+                <p ng-if="featureDetails.biomass_source">{{ featureDetails.biomass_source }}</p>
         
-                <h3 class="heading">Product</h3>
-                <p>{{ featureDetails.product }}</p>
+                <h3 ng-if="featureDetails.product" class="heading">Product</h3>
+                <p ng-if="featureDetails.product">{{ featureDetails.product }}</p>
     
-                <h3 class="heading">Summary</h3>
-                <p ng-bind-html="featureDetails.summary_en"></p>
+                <h3 ng-if="featureDetails.summary_en" class="heading">Summary</h3>
+                <p ng-if="featureDetails.summary_en" ng-bind-html="featureDetails.summary_en"></p>
             </div>
             <div class="additional-content">
-                <h3 class="heading">Partner</h3>
-                <p ng-bind-html="featureDetails.partner"></p>
-                <h3 class="heading">Background context</h3>
-                <p ng-bind-html="featureDetails.context"></p>
-                <h3 class="heading">Description of the process, activity or business model</h3>
-                <p ng-bind-html="featureDetails.description"></p>
-                <h3 class="heading">List the main actors</h3>
-                <p ng-bind-html="featureDetails.actors"></p>
-                <h3 class="heading">Phase of the innovation</h3>
-                <p ng-bind-html="featureDetails.phase"></p>
-                <h3 class="heading">Innovation in the process</h3>
-                <p ng-bind-html="featureDetails.process"></p>
-                <h3 class="heading">Expected or final outcomes </h3>
-                <p ng-bind-html="featureDetails.outcomes"></p>
-                <h3 class="heading">Benefit for the famers</h3>
-                <p ng-bind-html="featureDetails.farmer_benefits"></p>
-                <h3 class="heading">Benefit/added value for the bio-based product companies</h3>
-                <p ng-bind-html="featureDetails.bbpc_benefits"></p>
-                <h3 class="heading">Benefit/added value for other practioners or end-users</h3>
-                <p ng-bind-html="featureDetails.other_benefits"></p>
-                <h3 class="heading">Other factors that make possible a successful realisation of the practice/activity</h3>
-                <p ng-bind-html="featureDetails.other_factors"></p>
+                <h3 ng-if="featureDetails.partner" class="heading">Partner</h3>
+                <p ng-if="featureDetails.partner" ng-bind-html="featureDetails.partner"></p>
+                <h3 ng-if="featureDetails.context" class="heading">Background context</h3>
+                <p ng-if="featureDetails.context" ng-bind-html="featureDetails.context"></p>
+                <h3 ng-if="featureDetails.description" class="heading">Description of the process, activity or business model</h3>
+                <p ng-if="featureDetails.description" ng-bind-html="featureDetails.description"></p>
+                <h3 ng-if="featureDetails.actors" class="heading">List the main actors</h3>
+                <p ng-if="featureDetails.actors" ng-bind-html="featureDetails.actors"></p>
+                <h3 ng-if="featureDetails.phase" class="heading">Phase of the innovation</h3>
+                <p ng-if="featureDetails.phase" ng-bind-html="featureDetails.phase"></p>
+                <h3 ng-if="featureDetails.process" class="heading">Innovation in the process</h3>
+                <p ng-if="featureDetails.process" ng-bind-html="featureDetails.process"></p>
+                <h3 ng-if="featureDetails.outcomes" class="heading">Expected or final outcomes </h3>
+                <p ng-if="featureDetails.outcomes" ng-bind-html="featureDetails.outcomes"></p>
+                <h3 ng-if="featureDetails.farmer_benefits" class="heading">Benefit for the famers</h3>
+                <p ng-if="featureDetails.farmer_benefits" ng-bind-html="featureDetails.farmer_benefits"></p>
+                <h3 ng-if="featureDetails.bbpc_benefits" class="heading">Benefit/added value for the bio-based product companies</h3>
+                <p ng-if="featureDetails.bbpc_benefits" ng-bind-html="featureDetails.bbpc_benefits"></p>
+                <h3 ng-if="featureDetails.other_benefits" class="heading">Benefit/added value for other practioners or end-users</h3>
+                <p ng-if="featureDetails.other_benefits" ng-bind-html="featureDetails.other_benefits"></p>
+                <h3 ng-if="featureDetails.other_factors" class="heading">Other factors that make possible a successful realisation of the practice/activity</h3>
+                <p ng-if="featureDetails.other_factors" ng-bind-html="featureDetails.other_factors"></p>
             </div>
         </div>
     </md-content>
