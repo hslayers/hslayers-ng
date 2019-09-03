@@ -1,8 +1,9 @@
 import { Vector as VectorSource } from 'ol/source';
 import { GeoJSON, WFS } from 'ol/format';
+const debounceInterval = 1000;
 
-export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService',
-    function (Core, utils, config, hsMap, laymanService) {
+export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService', '$timeout',
+    function (Core, utils, config, hsMap, laymanService, $timeout) {
         var me = this;
         angular.extend(me, {
             syncedLayers: [],
@@ -47,10 +48,6 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                     layer.get('synchronize') === true) {
                     var layerSource = layer.getSource();
                     me.pull(layer, layer.getSource());
-                    layerSource.on('change', utils.debounce(function (e) {
-                        if (e.target.loading) return;
-                        me.push(layer, e.target);
-                    }, 1000))
                     return layer
                 }
             },
@@ -99,6 +96,12 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                                     );
                                     source.loading = false;
                                 }
+                                var changeHandler = utils.debounce(function (e) {
+                                    if (e.target.loading) return;
+                                    me.push(layer, e.target);
+                                }, debounceInterval);
+                                source.on('changefeature', changeHandler);
+                                source.on('addfeature', changeHandler);
                             });
                     })
             },
