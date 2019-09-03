@@ -1,10 +1,10 @@
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
-import {Style, Icon, Stroke, Fill, Circle} from 'ol/style';
-import {Polygon, LineString, GeometryType, Point} from 'ol/geom';
+import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
+import { Polygon, LineString, GeometryType, Point } from 'ol/geom';
 import Feature from 'ol/Feature';
-import {transform, transformExtent} from 'ol/proj';
-import {toStringHDMS, createStringXY} from 'ol/coordinate';
+import { transform, transformExtent } from 'ol/proj';
+import { toStringHDMS, createStringXY } from 'ol/coordinate';
 
 export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
     function ($rootScope, OlMap, Core, $sce, config) {
@@ -57,23 +57,23 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
                 if (angular.isDefined(overwrite) && overwrite) {
                     me.data[type].length = 0;
                 }
-                if(Array.isArray(data)) 
-                    me.data[type] = me.data[type].concat(data); 
-                else 
+                if (Array.isArray(data))
+                    me.data[type] = me.data[type].concat(data);
+                else
                     me.data[type].push(data);
                 $rootScope.$broadcast('infopanel.updated'); //Compatibility, deprecated
-                $rootScope.$broadcast('query.dataUpdated');
+                $rootScope.$broadcast('query.dataUpdated', me.data);
             }
             else if (console) console.log('Query.BaseService.setData type not passed');
         };
 
         this.clearData = function (type) {
-            if(type){
+            if (type) {
                 me.data[type].length = 0;
             } else {
                 me.data.attributes.length = 0;
                 me.data.features = [];
-                me.data.coordinates.length = 0;  
+                me.data.coordinates.length = 0;
             }
             var invisiblePopup = me.getInvisiblePopup();
             invisiblePopup.contentDocument.body.innerHTML = '';
@@ -102,15 +102,20 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
 
         function getCoordinate(coordinate) {
             me.queryPoint.setCoordinates(coordinate, 'XY');
+            var epsg4326Coordinate = transform(coordinate,
+                map.getView().getProjection(), 'EPSG:4326'
+            );
             var coords = {
                 name: "Coordinates",
+                mapProjCoordinate: coordinate,
+                epsg4326Coordinate,
                 projections: [{
                     "name": "EPSG:4326",
-                    "value": toStringHDMS(transform(coordinate, map.getView().getProjection(), 'EPSG:4326'))
+                    "value": toStringHDMS(epsg4326Coordinate)
                 },
                 {
                     "name": "EPSG:4326",
-                    "value": createStringXY(7)(transform(coordinate, map.getView().getProjection(), 'EPSG:4326'))
+                    "value": createStringXY(7)(epsg4326Coordinate)
                 }, {
                     "name": map.getView().getProjection().getCode(),
                     "value": createStringXY(7)(coordinate)
