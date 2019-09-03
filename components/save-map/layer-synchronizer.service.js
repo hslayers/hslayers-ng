@@ -2,8 +2,8 @@ import { Vector as VectorSource } from 'ol/source';
 import { GeoJSON, WFS } from 'ol/format';
 const debounceInterval = 1000;
 
-export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService', '$timeout',
-    function (Core, utils, config, hsMap, laymanService, $timeout) {
+export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService',
+    function (Core, utils, config, hsMap, laymanService) {
         var me = this;
         angular.extend(me, {
             syncedLayers: [],
