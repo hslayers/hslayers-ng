@@ -100,6 +100,12 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                             resolve();
                             return;
                         }
+                        if(descr.wfs.status == 'NOT_AVAILABLE'){
+                            setTimeout(function(){
+                                me.pullVectorSource(endpoint, layerName).then(response => resolve(response))
+                            }, 2000);
+                            return;
+                        }
                         /* When OL will support GML3.2, then we can use WFS 
                         version 2.0.0. Currently only 3.1.1 is possible */
                         $http({
@@ -113,7 +119,7 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                             method: 'GET'
                         })
                             .then(function (response) {
-                                resolve(response.data);
+                                resolve(response);
                             }, err => resolve(null))
                     })
                 })

@@ -86,7 +86,8 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                 (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
                     ds => {
                         laymanService.pullVectorSource(ds, me.getLayerName(layer))
-                            .then(featureString => {
+                            .then(response => {
+                                var featureString = response.data;
                                 if (featureString) {
                                     source.loading = true;
                                     var format = new WFS();
