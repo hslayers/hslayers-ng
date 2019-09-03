@@ -178,7 +178,7 @@ export default {
                         escapeToClose: true,
                         scope: $scope,
                         preserveScope: true,
-                        template: require('materialComponents/panelContents/compositionLoadUnsavedDialog.html'),
+                        template: require('./partials/compositionLoadUnsavedDialog.html'),
                         controller: function DialogController($scope, $mdDialog) {
                             $scope.closeDialog = function () {
                                 $mdDialog.hide();
@@ -256,7 +256,7 @@ export default {
                         escapeToClose: true,
                         scope: $scope,
                         preserveScope: true,
-                        template: require('materialComponents/panelContents/compositionLoadUnsavedDialog.html'),
+                        template: require('./partials/compositionLoadUnsavedDialog.html'),
                         controller: function DialogController($scope, $mdDialog) {
                             $scope.closeDialog = function () {
                                 $mdDialog.hide();

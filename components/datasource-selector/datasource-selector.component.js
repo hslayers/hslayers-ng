@@ -128,7 +128,7 @@ export default {
                             escapeToClose: true,
                             scope: $scope,
                             preserveScope: true,
-                            template: require('materialComponents/panelContents/datasourceBrowserMetadata.html'),
+                            template: require('./partials/datasourceBrowserMetadata.html'),
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
                                     $mdDialog.hide();

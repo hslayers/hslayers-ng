@@ -1,0 +1,32 @@
+<md-dialog>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate>Metadata for {{selectedLayer.title}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="closeDialog()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout-padding layout="column" style="max-width:800px;max-height:810px; ">
+            <div layout="row" ng-repeat="(key, value) in metadata" ng-if="key!='feature'">
+                <p flex="25" class="md-body-2">{{key}}</p>
+                <p flex="75" class="md-body-1"> {{value}}</p>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised md-secondary" href="#" ng-href='{{DS.layerRDF(selectedDS, selectedLayer)}}' title="GeoDCAT-AP" target="_blank" ng-show='selectedDS.type=="micka" && DS.layerRDF(selectedDS, selectedLayer) != "#"'>
+                Layer RDF
+            </md-button>
+            <md-button class="md-raised md-secondary md-hue-2" translate ng-show="DS.isZoomable(selectedLayer)" ng-click="DS.zoomTo(selectedLayer.bbox)">
+                Zoom to
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="addLayerToMap(selectedDS, selectedLayer)" ng-hide='config.dss_disallow_add == true'>
+                Add to map
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
