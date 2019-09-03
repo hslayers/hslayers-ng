@@ -10,6 +10,7 @@ import folderDirective from './layermanager-folder.directive';
 import removeAllDialogDirective from './remove-all-dialog.directive';
 import layermanagerComponent from './layermanager.component';
 import 'common/get-capabilities.module'
+import layerEditorComponent from './layer-editor.component';
 
 /**
  * @ngdoc module
@@ -29,8 +30,12 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      * @module hs.layermanager
      * @name hs.layermanager.removeAllDialogDirective
      * @ngdoc directive
-     * @description Display warning dialog (modal) about removing all layers, in default opened when remove all layers function is used. Have option to remove all active layers, reload default composition of app or to cancel action.
-     * When used in current version of HS Layers, it is recommended to append this modal directive to #hs-dialog-area element and compile scope.
+     * @description Display warning dialog (modal) about removing all layers, in 
+     * default opened when remove all layers function is used. Have option to 
+     * remove all active layers, reload default composition of app or to cancel 
+     * action.
+     * When used in current version of HS Layers, it is recommended to append 
+     * this modal directive to #hs-dialog-area element and compile scope.
      * Example
         * ```
         * var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
@@ -44,8 +49,12 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      * @module hs.layermanager
      * @name hs.layermanager.layerlistDirective
      * @ngdoc directive
-     * @description Directive for displaying list of layers in default HSLayers manager template. Every directive instance contain one folder of folder stucture. For every layer displays current information notes and on click opens layer options panel. Every directive instance is automatically refresh when layermanager.updated fires.
-     * Directive has access to contollers data object.
+     * @description Directive for displaying list of layers in default HSLayers 
+     * manager template. Every directive instance contain one folder of 
+     * folder stucture. For every layer displays current information notes and 
+     * on click opens layer options panel. Every directive instance is 
+     * automatically refresh when layermanager.updated fires. Directive has 
+     * access to contollers data object.
      */
     .directive('hs.layermanager.layerlistDirective', layerlistDirective)
 
@@ -61,7 +70,9 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      * @module hs.layermanager
      * @name hs.layermanager.service
      * @ngdoc service
-     * @description Service for core layers management. Maintain layer management structures and connect layer manager with map.Automatically update manager when layer is added or removed from map.
+     * @description Service for core layers management. Maintain layer management 
+     * structures and connect layer manager with map.Automatically update 
+     * manager when layer is added or removed from map.
      */
     .service("hs.layermanager.service", layermanagerService)
 
@@ -69,7 +80,10 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      * @module hs.layermanager
      * @name hs.layermanager.folderDirective
      * @ngdoc directive
-     * @description Directive for displaying folder structure in default HS layers template. Used recursively to build full folder structure if it is created in layer manager. Single instance shows layers and subfolders of its position in folder structure.
+     * @description Directive for displaying folder structure for grouping lists 
+     * of layers Used recursively to build full folder structure if it is created 
+     * in layer manager. Single instance shows layers and subfolders of its 
+     * position in folder structure.
      */
     .directive('hs.layermanager.folderDirective', folderDirective)
 
@@ -77,6 +91,15 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      * @module hs.layermanager
      * @name hs.layermanager
      * @ngdoc component
-     * @description Component for management of deafult HSLayers layer manager template. Display default HSLayers layer manager panel in application. Contain filter, baselayers, overlay container and settings pane for active layer.
+     * @description Layer manager panel. Contains filter, baselayers, overlay 
+     * container and settings panel for active layer.
      */
-    .component('hs.layermanager', layermanagerComponent);
+    .component('hs.layermanager', layermanagerComponent)
+
+        /**
+     * @module hs.layerEditor
+     * @name hs.layer-editor
+     * @ngdoc component
+     * @description Panel for editing selected layer parameters
+     */
+    .component('hs.layerEditor', layerEditorComponent);

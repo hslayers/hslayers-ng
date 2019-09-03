@@ -6,8 +6,8 @@ import { transform } from 'ol/proj';
 
 export default {
     template: require('./partials/vgi-draw.html'),
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.save-map.service', 'config', 'hs.draw.service',
-        function ($scope, OlMap, Core, Geolocation, $http, utils, $timeout, saveMap, config, drawService) {
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.save-map.service', 'config', 'hs.draw.service', '$compile',
+        function ($scope, OlMap, Core, Geolocation, $http, utils, $timeout, saveMap, config, drawService, $compile) {
             var map = OlMap.map;
             var newObsId = 0;
 
@@ -978,6 +978,34 @@ export default {
              */
             $scope.setLayerToSelect = function (layer) {
                 $scope.layer_to_select = layer;
+            }
+
+            var el = angular.element('<span hs.vgi-layer-manager-button></span>');
+            document.querySelector('.hs-lm-map-content-header').appendChild(el[0]);
+            $compile(el)($scope);
+
+            /**
+             * @function addDrawingLayer
+             * @memberOf hs.layermanager.controller
+             * @description Create new vector layer for drawing features by user 
+             */
+            $scope.addDrawingLayer = function () {
+                var source = new Vector();
+                source.styleAble = true;
+                source.hasPoint = true;
+                source.hasPolygon = true;
+                source.hasLine = true;
+                var layer = new VectorLayer({
+                    title: 'New user graphics layer',
+                    visibility: true,
+                    source: source
+                })
+                map.getLayers().push(layer);
+                $scope.$emit('layer_added', {
+                    layer: saveMap.layer2json(layer)
+                });
+                $scope.setLayerToSelect(layer);
+                Core.setMainPanel('draw', false, false);
             }
 
             $scope.$on('senslog.categories_loaded', function (event, categories) {

@@ -1,87 +1,19 @@
-import { Stroke, Fill, Circle, RegularShape } from 'ol/style';
-import { transform, get as getProj, METERS_PER_UNIT, transformExtent } from 'ol/proj';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
-import { TileWMS } from 'ol/source';
-import { ImageWMS } from 'ol/source';
-import { WMSCapabilities } from 'ol/format';
 
 export default {
     template: require('components/layermanager/partials/layermanager.html'),
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.map.service',
         'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice',
-        'hs.styler.service', 'hs.legend.service', 'hs.wms.getCapabilitiesService',
+        'hs.legend.service',
         function ($scope, Core, $compile, utils, layerUtils, config, OlMap,
-            LayMan, $rootScope, WMST, styler, legendService, getCapabilitiesService) {
-            $scope.legendService = legendService;
+            LayMan, $rootScope, WMST, legendService) {
             $scope.data = LayMan.data;
             $scope.Core = Core;
-            $scope.layer_renamer_visible = false;
             $scope.utils = utils;
-
-            var cur_layer_opacity = 1;
             var map;
-
-            $scope.shiftDown = false;
-
-            $scope.expandLayer = function (layer) {
-                if (angular.isUndefined(layer.expanded)) layer.expanded = true;
-                else layer.expanded = !layer.expanded;
-            }
-
-            $scope.expandSettings = function (layer, value) {
-                if (angular.isUndefined(layer.opacity)) {
-                    layer.opacity = layer.layer.getOpacity();
-                    layer.maxResolutionLimit = layer.layer.getMaxResolution();
-                    layer.minResolutionLimit = layer.layer.getMinResolution();
-                    layer.maxResolution = layer.maxResolutionLimit;
-                    layer.minResolution = layer.minResolutionLimit;
-                }
-                if (angular.isUndefined(layer.style) && layer.layer.getSource().styleAble) getLayerStyle(layer);
-                layer.expandSettings = value;
-            }
-
-            $scope.expandFilter = function (layer, value) {
-                layer.expandFilter = value;
-                LayMan.currentLayer = layer;
-                $scope.currentLayer = LayMan.currentLayer;
-            }
-
-            /**
-            * @function setOpacity
-            * @memberOf hs.layermanager.controller
-            * @description Set selected layers opacity and emits "compositionchanged"
-            * @param {Ol.layer} layer Selected layer
-            */
-            $scope.setOpacity = function (layer) {
-                layer.layer.setOpacity(layer.opacity);
-                $scope.$emit('compositions.composition_edited');
-            }
-
-            /**
-            * @function setLayerOpacity
-            * @memberOf hs.layermanager.controller
-            * @deprecated
-            * @description Set selected layers opacity and emits "compositionchanged"
-            * @param {Ol.layer} layer Selected layer
-            */
-            $scope.setLayerOpacity = function (layer) {
-                if (angular.isUndefined(layer)) return;
-                layer.setOpacity($scope.cur_layer_opacity);
-                $scope.$emit('compositions.composition_edited');
-                return false;
-            }
-
-            $scope.updateResolution = function (layer) {
-                layer.layer.setMaxResolution(layer.maxResolution);
-                layer.layer.setMinResolution(layer.minResolution);
-            }
-
-            $scope.expandInfo = function (layer, value) {
-                layer.expandInfo = value;
-            }
-
+            $scope.shiftDown = false;          
             $scope.changeLayerVisibility = LayMan.changeLayerVisibility;
             $scope.changeBaseLayerVisibility = LayMan.changeBaseLayerVisibility;
             $scope.changeTerrainLayerVisibility = LayMan.changeTerrainLayerVisibility;
@@ -119,27 +51,7 @@ export default {
                 layers.insertAt(toIndex, moveLayer);
                 LayMan.updateLayerOrder();
                 $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
-            }
-
-            $scope.showRemoveLayerDiag = function (e, layer) {
-                try {
-                    var $mdDialog = $injector.get('$mdDialog');
-
-                    var confirm = $mdDialog.confirm()
-                        .title('Remove layer ' + layer.title)
-                        .textContent('Are you sure about layer removal?')
-                        .ariaLabel('Confirm layer removal')
-                        .targetEvent(e)
-                        .ok('Remove')
-                        .cancel('Cancel')
-                        .hasBackdrop(false);
-
-                    $mdDialog.show(confirm).then(function () {
-                        $scope.removeLayer(layer.layer);
-                    }, function () {
-                    });
-                } catch (ex) { }
-            }
+            }          
 
             $scope.isLayerType = function (layer, type) {
                 switch (type) {
@@ -158,111 +70,7 @@ export default {
 
             $scope.setProp = function (layer, property, value) {
                 layer.set(property, value);
-            }
-
-            $scope.layerOpacity = 50;
-
-            function getLayerStyle(wrapper) {
-                var layer = wrapper.layer;
-                var source = layer.getSource();
-                wrapper.style = {};
-                if (angular.isUndefined(layer.getStyle)) return;
-                var style = layer.getStyle();
-                if (typeof style == 'function') style = style(source.getFeatures()[0]);
-                if (typeof style == 'object') style = style[0];
-                style = style.clone();
-                if (source.hasPoly) {
-                    wrapper.style.fillColor = style.getFill().getColor();
-                }
-                if (source.hasLine || source.hasPoly) {
-                    wrapper.style.lineColor = style.getStroke().getColor();
-                    wrapper.style.lineWidth = style.getStroke().getColor();
-                }
-                if (source.hasPoint) {
-                    var image = style.getImage();
-                    if (utils.instOf(image, Circle)) wrapper.style.pointType = 'Circle';
-                    else if (utils.instOf(image, RegularShape)) {
-                        wrapper.style.pointPoints = image.getPoints();
-                        wrapper.style.rotation = image.getRotation();
-                        if (angular.isUndefined(image.getRadius2())) wrapper.style.pointType = 'Polygon';
-                        else {
-                            wrapper.style.pointType = 'Star';
-                            wrapper.style.radius2 = image.getRadius2();
-                        }
-                    }
-                    if (utils.instOf(image, Circle) || utils.instOf(image, RegularShape)) {
-                        wrapper.style.radius = image.getRadius();
-                        wrapper.style.pointFill = image.getFill().getColor();
-                        wrapper.style.pointStroke = image.getStroke().getColor();
-                        wrapper.style.pointWidth = image.getStroke().getWidth();
-                    }
-                    if (angular.isUndefined(wrapper.style.radius2)) wrapper.style.radius2 = wrapper.style.radius / 2;
-                    if (angular.isUndefined(wrapper.style.pointPoints)) wrapper.style.pointPoints = 4;
-                    if (angular.isUndefined(wrapper.style.rotation)) wrapper.style.rotation = Math.PI / 4;
-                }
-                wrapper.style.style = style;
-            }
-
-            $scope.saveStyle = function (layer) {
-                setLayerStyle(layer);
-            }
-
-            function setLayerStyle(wrapper) {
-                //debugger;
-                var layer = wrapper.layer;
-                var source = layer.getSource();
-                var style = wrapper.style.style;
-                if (source.hasPoly) {
-                    style.setFill(new Fill({
-                        color: wrapper.style.fillColor
-                    }));
-                }
-                if (source.hasLine || source.hasPoly) {
-                    style.setStroke(new Stroke({
-                        color: wrapper.style.lineColor,
-                        width: wrapper.style.lineWidth
-                    }));
-                }
-                if (source.hasPoint) {
-                    var image;
-                    var stroke = new Stroke({
-                        color: wrapper.style.pointStroke,
-                        width: wrapper.style.pointWidth
-                    });
-                    var fill = new Fill({
-                        color: wrapper.style.pointFill
-                    });
-                    if (wrapper.style.pointType === 'Circle') {
-                        image = new Circle({
-                            stroke: stroke,
-                            fill: fill,
-                            radius: wrapper.style.radius,
-                            rotation: wrapper.style.rotation
-                        });
-                    }
-                    if (wrapper.style.pointType === 'Polygon') {
-                        image = new RegularShape({
-                            stroke: stroke,
-                            fill: fill,
-                            radius: wrapper.style.radius,
-                            points: wrapper.style.pointPoints,
-                            rotation: wrapper.style.rotation
-                        });
-                    }
-                    if (wrapper.style.pointType === 'Star') {
-                        image = new RegularShape({
-                            stroke: stroke,
-                            fill: fill,
-                            radius1: wrapper.style.radius,
-                            radius2: wrapper.style.radius2,
-                            points: wrapper.style.pointPoints,
-                            rotation: wrapper.style.rotation
-                        });
-                    }
-                    style.setImage(image);
-                }
-                layer.setStyle(style);
-            }
+            }                  
 
             $scope.changePointType = function (layer, type) {
                 if (angular.isUndefined(layer.style)) getLayerStyle(layer);
@@ -271,21 +79,6 @@ export default {
             }
 
             $scope.icons = ["bag1.svg", "banking4.svg", "bar.svg", "beach17.svg", "bicycles.svg", "building103.svg", "bus4.svg", "cabinet9.svg", "camping13.svg", "caravan.svg", "church15.svg", "church1.svg", "coffee-shop1.svg", "disabled.svg", "favourite28.svg", "football1.svg", "footprint.svg", "gift-shop.svg", "gps40.svg", "gps41.svg", "gps42.svg", "gps43.svg", "gps5.svg", "hospital.svg", "hot-air-balloon2.svg", "information78.svg", "library21.svg", "location6.svg", "luggage13.svg", "monument1.svg", "mountain42.svg", "museum35.svg", "park11.svg", "parking28.svg", "pharmacy17.svg", "port2.svg", "restaurant52.svg", "road-sign1.svg", "sailing-boat2.svg", "ski1.svg", "swimming26.svg", "telephone119.svg", "toilets2.svg", "train-station.svg", "university2.svg", "warning.svg", "wifi8.svg"];
-
-            /**
-            * @function isLayerRemovable
-            * @memberOf hs.layermanager.controller
-            * @description Check if layer can be removed based on 'removable' layer attribute
-            * @param {Ol.layer} lyr OL layer to check if removable
-            */
-            $scope.isLayerRemovable = function (lyr) {
-                return angular.isDefined(lyr) && (angular.isUndefined(lyr.get('removable')) || lyr.get('removable') == true);
-            }
-
-            $scope.removeLayer = function (layer) {
-                OlMap.map.removeLayer(layer);
-                $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
-            }
 
             $scope.activateTheme = LayMan.activateTheme;
 
@@ -364,106 +157,7 @@ export default {
                 map.getLayers().insertAt(to_index, item_layer);
                 LayMan.updateLayerOrder();
                 $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
-            }
-
-            /**
-             * @function zoomToLayer
-             * @memberOf hs.layermanager.controller
-             * @description Zoom to selected layer (layer extent). Get extent from bounding box property, getExtent() function or from BoundingBox property of GetCapabalities request (for WMS layer)
-             * @param {Ol.layer} layer Selected layer
-             */
-            $scope.zoomToLayer = function (layer) {
-                //debugger;
-                var extent = null;
-                if (layer.get("BoundingBox")) {
-                    extent = getExtentFromBoundingBoxAttribute(layer);
-                } else if (angular.isDefined(layer.getSource().getExtent)) {
-                    extent = layer.getSource().getExtent();
-                }
-                if (extent == null && $scope.isLayerWMS(layer)) {
-                    var url = null;
-                    if (layer.getSource().getUrls) //Multi tile
-                        url = layer.getSource().getUrls()[0];
-                    if (layer.getSource().getUrl) //Single tile
-                        url = layer.getSource().getUrl();
-                    getCapabilitiesService.requestGetCapabilities(url)
-                        .then(function (capabilities_xml) {
-                            //debugger;
-                            var parser = new WMSCapabilities();
-                            var caps = parser.read(capabilities_xml);
-                            if (angular.isArray(caps.Capability.Layer)) {
-                                angular.forEach(caps.Capability.Layer, function (layer_def) {
-                                    if (layer_def.Name == layer.params.LAYERS) {
-                                        layer.set('BoundingBox', layer_def.BoundingBox)
-                                    }
-                                })
-                            }
-                            if (angular.isObject(caps.Capability.Layer)) {
-                                layer.set('BoundingBox', caps.Capability.Layer.BoundingBox);
-                                extent = getExtentFromBoundingBoxAttribute(layer);
-                                if (extent != null)
-                                    map.getView().fit(extent, map.getSize());
-                            }
-                        })
-                }
-                if (extent != null)
-                    map.getView().fit(extent, map.getSize());
-            }
-
-            /**
-             * (PRIVATE) Get transformated extent from layer "BoundingBox" property
-             * @function getExtentFromBoundingBoxAttribute
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} layer Selected layer
-             */
-            function getExtentFromBoundingBoxAttribute(layer) {
-                var extent = null;
-                var bbox = layer.get("BoundingBox");
-                if (angular.isArray(bbox) && bbox.length == 4) {
-                    extent = transformExtent(bbox, 'EPSG:4326', map.getView().getProjection());
-                } else {
-                    for (var ix = 0; ix < bbox.length; ix++) {
-                        if (angular.isDefined(getProj(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
-                            var crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
-                            var b = bbox[ix].extent;
-                            var first_pair = [b[0], b[1]]
-                            var second_pair = [b[2], b[3]];
-                            first_pair = transform(first_pair, crs, map.getView().getProjection());
-                            second_pair = transform(second_pair, crs, map.getView().getProjection());
-                            extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                            break;
-                        }
-                    }
-                }
-                return extent;
-            }
-
-            /**
-             * @function layerIsZoomable
-             * @memberOf hs.layermanager.controller
-             * @description Determines if layer has BoundingBox defined as its metadata or is a Vector layer. Used for setting visibility of 'Zoom to ' button
-             * @param {Ol.layer} layer Selected layer
-             */
-            $scope.layerIsZoomable = layerUtils.layerIsZoomable;
-
-            /**
-             * @function layerIsStyleable
-             * @memberOf hs.layermanager.controller
-             * @description Determines if layer is a Vector layer and styleable. Used for allowing styling
-             * @param {Ol.layer} layer Selected layer
-             */
-            $scope.layerIsStyleable = layerUtils.layerIsStyleable;
-
-            /**
-             * @function styleLayer
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} layer Selected layer
-             * @description Display styler panel for selected layer, so user can change its style
-             */
-            $scope.styleLayer = function (layer) {
-                styler.layer = layer;
-                Core.setMainPanel('styler');
-            }
+            }           
 
             /**
              * @function removeAllLayers
@@ -502,42 +196,6 @@ export default {
             }
 
             /**
-             * @function isLayerWMS
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} layer Selected layer
-             * @description Test if layer is WMS layer
-             */
-            $scope.isLayerWMS = layerUtils.isLayerWMS;
-
-            /**
-             * @function dateToNonUtc
-             * @memberOf hs.layermanager.controller
-             * @param {Date} d Date to convert
-             * @description Convert date to non Utc format
-             */
-            $scope.dateToNonUtc = function (d) {
-                if (angular.isUndefined(d)) return;
-                var noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
-                return noutc;
-            }
-            /**
-             * @function toggleLayerRename
-             * @memberOf hs.layermanager.controller
-             * @description Toogle layer rename control on panel (through layer rename variable)
-             */
-            $scope.toggleLayerRename = function () {
-                $scope.layer_renamer_visible = !$scope.layer_renamer_visible;
-            }
-            /**
-             * @function setTitle
-             * @memberOf hs.layermanager.controller
-             * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
-             */
-            $scope.setTitle = function () {
-                LayMan.currentLayer.layer.set('title', LayMan.currentLayer.title);
-            }
-
-            /**
              * @function hasBoxLayers
              * @memberOf hs.layermanager.controller
              * @description Test if box layers are loaded
@@ -557,57 +215,8 @@ export default {
              * @param {Ol.layer} lyr Selected layer
              * @description Test if layer (WMS) resolution is within map resolution interval 
              */
-            $scope.isLayerInResolutionInterval = LayMan.isLayerInResolutionInterval;
-
-            /**
-            * @function isLayerWithDimensions
-            * @memberOf hs.layermanager.controller
-            * @param {Ol.layer} lyr Selected layer
-            * @description Test if layer has dimensions
-            */
-            $scope.isLayerWithDimensions = function (lyr_container) {
-                if (angular.isUndefined(lyr_container) || lyr_container == null || angular.isUndefined(lyr_container.layer)) return false;
-                if (angular.isUndefined(lyr_container.layer.get('dimensions'))) return false;
-                return Object.keys(lyr_container.layer.get('dimensions')).length > 0
-            }
-
-            /**
-             * @function isScaleVisible
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} layer Selected layer
-             * @description Test if layer has min and max relolution set
-             */
-            $scope.isScaleVisible = function (layer) {
-                if (typeof layer == 'undefined') return false;
-                layer.minResolutionValid = false;
-                layer.maxResolutionValid = false;
-                if (angular.isDefined(layer.getMinResolution()) && layer.getMinResolution() != 0) {
-                    layer.minResolutionValid = true;
-                    layer.minResolution = layer.getMinResolution();
-                }
-                if (angular.isDefined(layer.getMaxResolution()) && layer.getMaxResolution() != Infinity) {
-                    layer.maxResolutionValid = true;
-                    layer.maxResolution = layer.getMaxResolution();
-                }
-
-                if (layer.minResolutionValid || layer.maxResolutionValid) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            /**
-             * @function setLayerResolution
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} layer Selected layer
-             * @description Set max and min resolution for selected layer (with layer params changed in gui)
-             */
-            $scope.setLayerResolution = function (layer) {
-                if (typeof layer == 'undefined') return false;
-                layer.setMinResolution(layer.minResolution);
-                layer.setMaxResolution(layer.maxResolution);
-            }
-
+            $scope.isLayerInResolutionInterval = LayMan.isLayerInResolutionInterval;    
+           
             /**
              * @function layerLoaded
              * @memberOf hs.layermanager.controller
@@ -625,32 +234,7 @@ export default {
             $scope.layerValid = layerUtils.layerInvalid;
 
 
-            $scope.layerIsWmsT = WMST.layerIsWmsT;
             $scope.setLayerTime = WMST.setLayerTime;
-
-            /**
-             * @function addDrawingLayer
-             * @memberOf hs.layermanager.controller
-             * @description Create new vector layer for drawing features by user 
-             */
-            $scope.addDrawingLayer = function () {
-                var source = new Vector();
-                source.styleAble = true;
-                source.hasPoint = true;
-                source.hasPolygon = true;
-                source.hasLine = true;
-                var layer = new VectorLayer({
-                    title: 'New user graphics layer',
-                    visibility: true,
-                    source: source
-                })
-                map.getLayers().push(layer);
-                $scope.$emit('layer_added', {
-                    layer: saveMap.layer2json(layer)
-                });
-                hslayers_api.gui.Draw.setLayerToSelect(layer);
-                Core.setMainPanel('draw', false, false);
-            }
 
             $scope.dimensionChanged = function (currentlayer, dimension) {
                 $scope.$emit('layermanager.dimension_changed', { layer: currentlayer.layer, dimension: dimension });

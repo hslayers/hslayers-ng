@@ -24,6 +24,19 @@ angular.module('hs.vgi-draw', ['hs.map', 'hs.core', 'hs.utils', 'hs.geolocation'
     }])
 
     /**
+    * @name hs.vgiLayerManagerButton
+    * @ngdoc directive
+    * @memberof hs.vgi-draw
+    * @description Button for adding layer in layer manager panel
+    */
+    .directive('hs.vgiLayerManagerButton', ['config', function (config) {
+        return {
+            template: require('./partials/layer-manager-button.html'),
+            replace: true
+        };
+    }])
+
+    /**
     * @name hs.vgi-draw
     * @ngdoc component
     * @memberof hs.vgi-draw

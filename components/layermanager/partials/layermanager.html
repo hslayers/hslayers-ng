@@ -46,13 +46,8 @@
         </ul>
         
         <ul class="list-group hs-lm-mapcontentlist">
-            <li class="list-group-item hs-lm-header active">
+            <li class="list-group-item hs-lm-header active hs-lm-map-content-header">
                 <span translate>Map Content</span>
-                <span class="pull-right">
-                    <button type="button" class="btn btn-sm btn-secondary"  ng-if="Core.exists('hs.vgi-draw')" ng-click="addDrawingLayer()">
-                        <i class="icon-pencil"></i>
-                    </button>
-                </span>
             </li>
             <ul class="list-group hs-lm-layerlist" ng-repeat="value in data.folders.sub_folders | orderBy:'name' ">
                 <li class="list-group-item active" >
@@ -72,100 +67,6 @@
             </label>
         </div> -->
         </ul>
-        <div class="card panel-default layerpanel" ng-show="currentLayer!=null">
-            <div class="card-body">
-                <form>
-                <!-- Opacity slider -->
-                <div class="form-group">
-                    <label translate>Opacity</label>
-                    <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="cur_layer_opacity" ng-change="setLayerOpacity(currentLayer.layer)"/>
-                </div>
-                
-                <!-- Time slider -->
-                <div class="form-group" ng-show="layerIsWmsT(currentLayer)">
-                    <label translate>Date</label>
-                    <input type="range" step="{{currentLayer.time_step}}" min="{{currentLayer.min_time}}" max="{{currentLayer.max_time}}" class="form-control" style="width: 100%;height: 21px;" ng-model="dateIncrement" ng-change="setLayerTime(currentLayer, dateIncrement)"/>
-                    <div class="row">
-                        <div class="col-md-4"><small>{{dateToNonUtc(currentLayer.date_from) | date : currentLayer.date_format}}</small></div>
-                        <div class="col-md-4"><small><b>{{dateToNonUtc(currentLayer.time) | date : currentLayer.date_format}}</small></b></div>
-                        <div class="col-md-4"><small>{{dateToNonUtc(currentLayer.date_till) | date : currentLayer.date_format}}</small></div>
-                    </div>
-                </div>
-                
-                 <!-- Dimensions -->
-                 <div ng-show="isLayerWithDimensions(currentLayer)">
-                    <label translate>Dimensions</label>
-                    <div class="form-group" ng-repeat="(key, dimension) in currentLayer.layer.get('dimensions')">
-                        <label class="control-label">{{dimension.label || key}}:</label>
-                        <select class="form-control" ng-model="dimension.value" ng-change="dimensionChanged(currentLayer, dimension)">
-                            <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">{{dimension_value}}</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Abstract -->
-                <div class="form-group" ng-show="currentLayer.layer.get('abstract') ? true : false">
-                    <label translate>Abstract</label>
-                    <p>
-                        {{currentLayer.layer.get('abstract')}}
-                    </p>
-                </div>
-                
-                <!-- Scale -->
-                <div class="form-group" ng-show="isScaleVisible(currentLayer.layer)">
-                    <label translate>Scale</label>
-                    <span ng-if="currentLayer.layer.minResolutionValid"><span translate>from</span> 1:{{currentLayer.layer.getMinResolution()}}</span>
-                    <span ng-if="currentLayer.layer.maxResolutionValid"><span translate>to</span> 1:{{currentLayer.layer.getMaxResolution()}}</span>
-                </div>
-                
-                <!-- Metadata -->
-                <div class="form-group" ng-show="currentLayer.layer.get('MetadataURL') ? true : false">
-                    <b><a ng-repeat="metadata in currentLayer.layer.get('MetadataURL')" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata" ><translate>Metadata in</translate> {{metadata.type}}</a></b>
-                </div>
-                
-                <!-- Legends -->
-                <div ng-if="currentLayer.layer">
-                    <div ng-repeat="layer in legendDescriptors">
-                        <div class="form-group" ng-if="legendService.isLegendable(layer)">
-                            <label translate>Legend</label>
-                            <hs.legend.layer-directive layer="layer"></hs.legend.layer-directive>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Footer -->
-                </form>
-            </div>
-            <div class="card-footer">
-                <div class="form-group" ng-show="layer_renamer_visible">
-                    <label translate>Title</label>
-                    <input type="text" class="form-control" ng-model="currentLayer.title" ng-change="setTitle()">
-                    <div class="form">
-                        <br/>
-                        <label translate>Scale</label>
-                        <div ng-if="currentLayer.layer.minResolutionValid">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1"><span translate>from</span>&nbsp;1:</span>
-                                </div>
-                                <input class="form-control" style="width:65px" ng-model="currentLayer.layer.minResolution" ng-change="setLayerResolution(currentLayer.layer)"/>
-                            </div>
-                        </div>
-                        <div ng-if="currentLayer.layer.maxResolutionValid">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1"> <span translate>to</span>&nbsp;1:</span>
-                                </div>
-                                <input class="form-control" style="width:65px" ng-model="currentLayer.layer.maxResolution" ng-change="setLayerResolution(currentLayer.layer)"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-primary" ng-click="zoomToLayer(currentLayer.layer)" ng-disabled="!layerIsZoomable(currentLayer.layer)"><i class="icon-search"></i></button>
-                <button class="btn btn-primary" ng-click="styleLayer(currentLayer.layer)" ng-disabled="!layerIsStyleable(currentLayer.layer)"><i class="icon-brush"></i></button>
-                <button class="btn btn-primary" ng-click="toggleLayerRename()"><i class="icon-edit"></i></button>
-                <button class="btn btn-danger" ng-click="removeLayer(currentLayer.layer)" ng-if="isLayerRemovable(currentLayer.layer)"><i class="icon-trash"></i></button>
-            </div>
-        </div>
+        <hs.layer-editor current-layer="currentLayer" ng-show="currentLayer!=null" class="layerpanel"></hs.layer-editor>
     </div>
 </div>
