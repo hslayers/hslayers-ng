@@ -3,13 +3,12 @@ import { click, pointerMove, altKeyOnly } from 'ol/events/condition.js';
 import Collection from 'ol/Collection';
 import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 
-export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService', 'hs.query.baseService',
-    function (Core, utils, config, hsMap, laymanService, queryBaseService) {
+export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService', 'hs.query.baseService', '$rootScope',
+    function (Core, utils, config, hsMap, laymanService, queryBaseService, $rootScope) {
         var me = this;
         angular.extend(me, {
             draw: null,
             modify: null,
-            selector: null,
             type: 'Point',
             selectedFeatures: new Collection(),
             highlighted_style(feature, resolution) {
@@ -48,18 +47,9 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                     });
 
                     me.draw.setActive(drawState);
-                    me.modify = new Modify({
-                        features: me.selectedFeatures
-                    });
-
-                    me.selector = new Select({
-                        condition: click
-                    });
 
                     hsMap.loaded().then(map => {
                         map.addInteraction(me.draw);
-                        map.addInteraction(me.modify);
-                        map.addInteraction(me.selector);
                     })
 
                     me.draw.on('drawstart', function (e) {
@@ -72,12 +62,6 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                         queryBaseService.activateQueries();
                         if (onDrawEnd) onDrawEnd(e)
                     }, this);
-
-                    if (onSelected) 
-                        me.selector.getFeatures().on('add', onSelected);
-
-                    if (onDeselected) 
-                        me.selector.getFeatures().on('remove', onDeselected);
                 })
 
             },
@@ -93,11 +77,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                         queryBaseService.deactivateQueries();
                         if (me.draw) {
                             map.removeInteraction(me.draw);
-                            map.removeInteraction(me.modify);
-                            map.removeInteraction(me.selector);
                             me.draw = null;
-                            me.modify = null;
-                            me.selector = null;
                         }
                         resolve();
                     });
@@ -119,5 +99,29 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                 me.draw.setActive(true);
             }
         })
+
+        hsMap.loaded().then(map => {
+            me.modify = new Modify({
+                features: me.selectedFeatures
+            });
+            map.addInteraction(me.modify);
+        })
+
+        me.selectedFeatures.on('add', (e) => {
+            if (me.onSelected) me.onSelected(e);
+            me.modify.setActive(true);
+        });
+
+        me.selectedFeatures.on('remove', (e) => {
+            if (me.onDeselected) me.onDeselected(e)
+        })
+
+        $rootScope.$on('vectorQuery.featureSelected', (e, feature) => {
+            me.selectedFeatures.push(feature)
+        });
+
+        $rootScope.$on('vectorQuery.featureDelected', (e, feature) => {
+            me.selectedFeatures.remove(feature)
+        });
     }
 ]
