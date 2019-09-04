@@ -3,9 +3,10 @@
     <ul class="list-group" ng-show="$ctrl.expanded || $ctrl.unit.expanded">
         <li ng-repeat="sensor in $ctrl.unit.sensors | filter:query" class="list-group-item">
             <a ng-if="$ctrl.viewMode == 'sensors'" href="#" ng-click="sensorClicked(sensor)">
-                {{sensor.sensor_type}} <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}} <translate>in</translate> {{sensor.uom}}</a>
+                {{sensor.sensor_type}} <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}}</a>
             <a ng-if="$ctrl.viewMode == 'phenomena'" href="#" ng-click="sensorClicked(sensor)">
-                {{sensor.phenomenon_name}} {{sensor.last_observation_value}} {{sensor.uom}}</a>
+                {{sensor.phenomenon_name}}</a>
+            <span class="badge badge-light badge-pill float-right">{{sensor.lastObservationValue}} {{sensor.uom}}</span>
         </li>
     </ul>
 </div>

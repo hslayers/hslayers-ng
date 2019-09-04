@@ -3,7 +3,7 @@ import { default as vegaEmbed } from 'vega-embed';
 
 export default ['hs.utils.service', '$http', 'config', function (utils, $http, config) {
     var me = this;
-    var endpoint = config.senslogOT;
+    var endpoint = config.senslog;
 
     return angular.extend(me, {
         units: [],
@@ -19,15 +19,31 @@ export default ['hs.utils.service', '$http', 'config', function (utils, $http, c
          * @description Get list of units from Senslog backend
          */
         getUnits() {
-            var url = utils.proxify(`${endpoint.url}/rest/unit`);
+            var url = utils.proxify(`${endpoint.url}/senslogOT/rest/unit`);
             $http.get(url, {
                 params: {
                     user_id: endpoint.user_id
                 }
-            }).then(
-                response => {
-                    me.units = response.data;
-                },
+            }).then(response => {
+                me.units = response.data;
+                $http.get(utils.proxify(`${endpoint.url}/MapLogOT/SensorService`), {
+                    params: {
+                        Operation: 'GetLastObservations',
+                        group: endpoint.group,
+                        user: endpoint.user
+                    }
+                }).then(response => {
+                    var sensorValues = {};
+                    response.data.forEach(sv => {
+                        sensorValues[sv.sensorId] = sv.observedValue;
+                    });
+                    me.units.forEach(unit => {
+                        unit.sensors.forEach(sensor => {
+                            sensor.lastObservationValue = sensorValues[sensor.sensor_id];
+                        })
+                    })
+                })
+            },
                 function (err) {
 
                 });
@@ -45,7 +61,7 @@ export default ['hs.utils.service', '$http', 'config', function (utils, $http, c
          */
         getObservationHistory(unit, interval) {
             return new Promise((resolve, reject) => {
-                var url = utils.proxify(`${endpoint.url}/rest/observation`);
+                var url = utils.proxify(`${endpoint.url}/senslogOT/rest/observation`);
                 var from_time = moment().subtract(interval.amount, interval.unit);
                 from_time = `${from_time.format('YYYY-MM-DD')} ${from_time.format('HH:mm:ssZ')}`;
                 $http.get(url, {

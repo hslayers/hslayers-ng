@@ -302,13 +302,15 @@ String. Hashtag or any other text to append to title generated for sharing in so
 
 ## Senslog
 
-**senslog_url**
+**senslog**
 
-Senslog server URL. Example: http://portal.sdi4apps.eu/SensLog-VGI/rest/vgi
-
-**user_name**
-
-Senslog user name
+Object containing senslog configuration. 
+Example: {
+        url: 'http://foodie.lesprojekt.cz:8080',
+        user_id: 6, //Needed for senslogOT
+        group: 'test', //Needed for MapLogOT
+        user: 'test' //Needed for MapLogOT
+    }
 
 ## Other
 
