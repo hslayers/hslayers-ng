@@ -4,7 +4,19 @@ export default {
         var map;
 
         angular.extend($scope, {
-            service: sensorsService,         
+            service: sensorsService,  
+            viewMode: 'sensors',
+            setViewMode(viewMode){
+                $scope.viewMode = viewMode
+            },
+            toggleExpansion(){
+                $scope.viewExpanded = !$scope.viewExpanded;
+                if(!$scope.viewExpanded){
+                    sensorsService.units.forEach(element => {
+                        element.expanded = false;
+                    });
+                }
+            }       
         });
 
         /**

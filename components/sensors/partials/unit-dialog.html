@@ -16,17 +16,8 @@
             <div class="modal-body" style="max-height:260px; overflow-y:auto" translate>
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-8">
-                            <div id="chartplace"></div>
-                        </div>
-                        <div class="col-4">
-                            <ul class="list-group" style="max-height:195px; overflow-y:scroll">
-                                <a href="#" ng-class="{'active': sensorSelected == sensor}"
-                                    ng-click="sensorClicked(sensor)"
-                                    ng-repeat="sensor in $ctrl.unit.sensors | filter:query" class="list-group-item">
-                                    {{sensor.sensor_type}} <b>{{sensor.sensor_name}}</b>
-                                </a>
-                            </ul>
+                        <div class="col-12">
+                            <div id="chartplace" style="min-width: 400px; min-height:50px"></div>
                         </div>
                     </div>
                 </div>
@@ -37,23 +28,23 @@
                         <div class="col-4">
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': currentInterval.unit=='hours'}"
+                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='hours'}"
                                     ng-click="timeButtonClicked({amount: 1, unit: 'hours'})"
                                     aria-label="1 hour">1H</button>
                                 <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': currentInterval.unit=='days'}"
+                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='days'}"
                                     ng-click="timeButtonClicked({amount: 1, unit: 'days'})"
                                     aria-label="1 day">1D</button>
                                 <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': currentInterval.unit=='weeks'}"
+                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='weeks'}"
                                     ng-click="timeButtonClicked({amount: 1, unit: 'weeks'})"
                                     aria-label="1 week">1W</button>
                                 <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': currentInterval.unit=='months' && currentInterval.amount == 1}"
+                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='months' && sensorsService.currentInterval.amount == 1}"
                                     ng-click="timeButtonClicked({amount: 1, unit: 'months'})"
                                     aria-label="1 month">1M</button>
                                 <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': currentInterval.unit=='months' && currentInterval.amount == 6}"
+                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='months' && sensorsService.currentInterval.amount == 6}"
                                     ng-click="timeButtonClicked({amount: 6, unit: 'months'})"
                                     aria-label="6 months">6M</button>
                             </div>
