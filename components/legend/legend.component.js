@@ -26,10 +26,8 @@ export default {
              * @function noLayerExists
              */
             noLayerExists: function () {
-                var visibleLayers = $scope.layerDescriptors.filter(function(check){
-                    return check.visible == true;
-                });
-                console.log(visibleLayers);
+                var visibleLayers = $scope.layerDescriptors
+                    .filter(check => check.visible);
                 return (visibleLayers.length == 0)
             },
 
@@ -85,7 +83,7 @@ export default {
 
         function layerVisibilityChanged(e) {
             for (var i = 0; i < $scope.layerDescriptors.length; i++) {
-                if ($scope.layerDescriptors[i].layer == e.target) {
+                if ($scope.layerDescriptors[i].lyr == e.target) {
                     $scope.layerDescriptors[i].visible = e.target.getVisible();
                     break;
                 }
