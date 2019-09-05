@@ -10,7 +10,7 @@
             <md-list-item ng-repeat="layer in layers | filter:query" class="list-group-item" ng-show="hasLegend(layer, 'vector')">
                 <div class="md-list-item-text" layout="column">
                     {{layer.title}}
-                    <p ng-repeat="category in layer.lyr.getSource().legend_categories | orderBy:'name'"><span style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}</p>
+                    <p ng-repeat="category in layer.lyr.getSource().legend_categories | orderBy:'name'"><span style="background-color: '{{category.color}}';">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}</p>
                 </div>
             </md-list-item>
         </md-list>

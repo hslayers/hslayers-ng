@@ -2,6 +2,9 @@
     <hs.layout.panel-header panel-name="legend" panel-title="'Legend'||translate"></hs.layout.panel-header>
     <div class="card-body">
         <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.title"></p>
+        <span ng-if="noLayerExists()">
+            <p style="text-align: center">No layer with legend exists!</p>
+        </span>
         <ul class="list-group">
             <li ng-repeat="layer in layerDescriptors | filter:query" class="list-group-item" ng-show="isLegendable(layer)">
                 {{layer.title}}
