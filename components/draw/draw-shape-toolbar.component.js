@@ -1,9 +1,11 @@
 import VectorLayer from 'ol/layer/Vector';
+import 'utils.module';
+
 export default {
     template: require('./partials/shape-toolbar.html'),
     controller: ['$scope', 'hs.map.service', 'hs.draw.service',
-        'hs.utils.service', 'hs.query.vectorService', '$timeout',
-        function ($scope, OlMap, drawService, utils, queryVectorService, $timeout) {
+        'hs.utils.layerUtilsService', 'hs.query.vectorService', '$timeout',
+        function ($scope, OlMap, drawService, layerUtilsService, queryVectorService, $timeout) {
             var map;
             angular.extend($scope, {
                 service: drawService,
@@ -18,27 +20,10 @@ export default {
                         return tmp;
                     }
                 },
-                isLayerInManager(layer) {
-                    return angular.isUndefined(layer.get('show_in_manager'))
-                        || layer.get('show_in_manager') == true
-                },
-                hasLayerTitle(layer) {
-                    return angular.isDefined(layer.get('title'))
-                        && layer.get('title') != ''
-                },
-                isLayerEditable(layer) {
-                    if (angular.isUndefined(layer.get('editor'))) return true;
-                    const editorConfig = layer.get('editor');
-                    if (angular.isUndefined(editorConfig.editable)) return true;
-                    return editorConfig.editable
-                },
-                isLayerDrawable(layer) {
-                    return utils.instOf(layer, VectorLayer) &&
-                        layer.getVisible() &&
-                        $scope.isLayerInManager(layer) &&
-                        $scope.hasLayerTitle(layer) &&
-                        $scope.isLayerEditable(layer)
-                },
+                isLayerInManager: layerUtilsService.isLayerInManager,
+                hasLayerTitle: layerUtilsService.hasLayerTitle,
+                isLayerEditable: layerUtilsService.isLayerEditable,
+                isLayerDrawable: layerUtilsService.isLayerDrawable,
                 setType(what) {
                     drawService.type = what;
                     drawService.source = $scope.selectedLayer.getSource();

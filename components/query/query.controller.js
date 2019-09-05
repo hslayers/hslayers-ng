@@ -1,5 +1,6 @@
 import Popup from 'ol-popup';
 import 'ol-popup/src/ol-popup.css';
+import { remove } from 'lodash';
 
 export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config',
     function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config) {
@@ -107,6 +108,10 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
 
         $scope.$on('popupOpened', function (e, source) {
             if (angular.isDefined(source) && source != "hs.query" && angular.isDefined(popup)) popup.hide();
+        });
+
+        $scope.$on('infopanel.featureRemoved', (e, feature) => {
+            remove($scope.data.features, feature)
         });
 
         $scope.$emit('scope_loaded', "Query");

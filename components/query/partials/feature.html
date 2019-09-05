@@ -6,4 +6,11 @@
         ng-repeat="attribute in $ctrl.feature.attributes track by attribute.name | orderBy : 'name'"
         template='$ctrl.feature.hstemplate' feature="$ctrl.feature" attribute='attribute'>
     </hs.query.attribute-row>
+    <div class="row">
+        <div class="col-12 m-2 text-right">
+            <button class="btn btn-primary btn-sm" ng-click="zoomToFeature()"><i class="icon-search"></i></button>
+            <button class="btn btn-danger btn-sm" ng-click="removeFeature()" ng-if="isFeatureRemovable()"><i class="icon-trash"></i></button>
+        </div>
+    </div>
+    <hr/>
 </div>

@@ -47,7 +47,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                 if (utils.instOf(layer.getSource(), VectorSource) &&
                     layer.get('synchronize') === true) {
                     var layerSource = layer.getSource();
-                    me.pull(layer, layer.getSource());
+                    me.pull(layer, layerSource);
                     return layer
                 }
             },
@@ -103,6 +103,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                                 }, debounceInterval);
                                 source.on('changefeature', changeHandler);
                                 source.on('addfeature', changeHandler);
+                                source.on('removefeature', changeHandler);
                             });
                     })
             },
