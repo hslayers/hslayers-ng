@@ -20,6 +20,18 @@ export default {
                     layer.on('change:visible', layerVisibilityChanged);
                 }
             },
+             /**
+             * Check if there is any visible layer
+             * @memberof hs.legend.controller
+             * @function noLayerExists
+             */
+            noLayerExists: function () {
+                var visibleLayers = $scope.layerDescriptors.filter(function(check){
+                    return check.visible == true;
+                });
+                console.log(visibleLayers);
+                return (visibleLayers.length == 0)
+            },
 
             /**
              * Remove selected layer from legend items
