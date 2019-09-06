@@ -1,5 +1,4 @@
 import 'focusIf';
-import 'map';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
