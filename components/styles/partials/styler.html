@@ -50,7 +50,7 @@
                 <div class="card-body">
 
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-secondary" style="" ng-repeat="m in imagetypes"
+                        <label class="btn btn-secondary" ng-repeat="m in imagetypes"
                             ng-click='setImageType(m.name)'>
                             <input type="radio" class="form-control layer-checked" ng-value="m.name"
                                 name="imagetype" />{{m.hrname}}
@@ -87,7 +87,7 @@
                         <div class="hs-styler-selected-icon-box" ng-bind-html="iconimage"></div>
                         <div>
                             <div ng-repeat="icon in icons" class="hs-styler-iconbox" ng-click="iconSelected(icon)">
-                                <img ng-src='{{hsl_path}}components/styles/img/svg/{{icon}}' />
+                                <img ng-src='{{icon}}' />
                             </div>
                         </div>
                     </div>

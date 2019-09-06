@@ -10,6 +10,7 @@ import 'info.module';
 import 'datasource-selector.module';
 import 'sidebar.module';
 import 'add-layers.module';
+import 'styles.module';
 
 var module = angular.module('hs', [
     'hs.sidebar',
@@ -24,7 +25,8 @@ var module = angular.module('hs', [
     'hs.addLayers',
     'gettext',
     'hs.compositions',
-    'hs.info'
+    'hs.info',
+    'hs.styles'
 ]);
 
 module.directive('hs', ['config', 'Core', function (config, Core) {
@@ -46,6 +48,8 @@ import {BingMaps, TileArcGISRest, TileWMS, WMTS, XYZ, OSM} from 'ol/source';
 import {register} from 'ol/proj/proj4'
 import * as proj from 'ol/proj';
 import View from 'ol/View';
+import { Polygon, LineString, GeometryType, Point } from 'ol/geom';
+import Feature from 'ol/Feature';
 
 
 window.ol = {

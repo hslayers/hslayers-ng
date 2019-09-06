@@ -128,6 +128,8 @@ export default {
                 map.removeLayer(layer);
             }
 
+
+
             /** 
              * @function dragged
              * @memberOf hs.layermanager.controller

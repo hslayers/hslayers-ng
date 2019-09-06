@@ -79,7 +79,19 @@ export default {
                     styler.layer = layer;
                     Core.setMainPanel('styler');
                 },
-
+                /**
+                * @function declutterTrue
+                * @memberOf hs.layermanager.controller
+                * @param {Ol.layer} layer Selected layer
+                * @description Set max and min resolution for selected layer 
+                * (with layer params changed in gui)
+                */
+            //    declutterTrue() {
+            //     LayMan.currentLayer.layer.set('declutter', $scope.declutter);
+            //     if(declutter == true){
+            //         return true;
+            //     }
+            // },
                 /**
                  * @function toggleLayerRename
                  * @memberOf hs.layermanager.controller
