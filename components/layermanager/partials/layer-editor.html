@@ -6,11 +6,7 @@
             <label translate>Opacity</label>
             <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="opacity" ng-model-options="{ getterSetter: true }"/>
         </div>
-        <!-- Declutter checkbox -->
-        <!-- <div ng-if="declutterTrue()" class="form-group">
-            <label translate>Declutter: <input type="checkbox"/></label><br/>
-        </div> -->
-        
+     
         <!-- Time slider -->
         <div class="form-group" ng-show="layerIsWmsT()">
             <label translate>Date</label>
@@ -47,7 +43,11 @@
             <span ng-if="minResolutionValid()"><span translate>from</span> 1:{{minResolution()}}</span>
             <span ng-if="maxResolutionValid()"><span translate>to</span> 1:{{maxResolution()}}</span>
         </div>
-        
+        <!-- Declutter checkbox  -->
+        <div ng-if="isVectorLayer()" class="form-group">
+            <label translate>Declutter<input type="checkbox" ng-model="declutter" ng-model-options="{ getterSetter:  true}" /></label>
+                <span ng-if="declutter()">This will open decluttering tools!</span> <!-- Here will go the function for the declutter options-->
+        </div>
         <!-- Metadata -->
         <div class="form-group" ng-show="$ctrl.currentLayer.layer.get('MetadataURL') ? true : false">
             <b><a ng-repeat="metadata in $ctrl.currentLayer.layer.get('MetadataURL')" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata" ><translate>Metadata in</translate> {{metadata.type}}</a></b>
