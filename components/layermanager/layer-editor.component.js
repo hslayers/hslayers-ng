@@ -14,6 +14,7 @@ export default {
         'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout',
         function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, getCapabilitiesService, $rootScope, $timeout) {
             angular.extend($scope, {
+                subLayerChecked: {},
                 layer_renamer_visible: false,
                 legendService,
                 layerIsWmsT() { return WMST.layerIsWmsT($scope.$ctrl.currentLayer) },
@@ -344,14 +345,28 @@ export default {
                     layer.expandSettings = value;
                 },
 
-                maxResolutionLimit() {
-                    if (angular.isUndefined($scope.olLayer())) return false;
-                    return $scope.olLayer().getMaxResolution()
+                hasSubLayers() {
+                    var subLayers = $scope.getSubLayers();
+                    return angular.isDefined(subLayers) && subLayers.length > 0;
                 },
 
-                minResolutionLimit() {
-                    if (angular.isUndefined($scope.olLayer())) return false;
-                    return $scope.olLayer().getMinResolution()
+                getSubLayers() {
+                    if ($scope.$ctrl.currentLayer == null) return;
+                    return $scope.$ctrl.currentLayer.layer.getSource().get('subLayers');
+                },
+
+                subLayerSelected() {
+                    let subLayerList = $scope.getSubLayers();
+                    let src = $scope.$ctrl.currentLayer.layer.getSource();
+                    let params = src.getParams();
+                    if (angular.isUndefined(src.get('originalLayers')))
+                        src.set('originalLayers', params.LAYERS);
+                    params.LAYERS = subLayerList.filter(sl =>
+                        $scope.subLayerChecked[sl]
+                    ).join(',');
+                    if (params.LAYERS == '')
+                        params.LAYERS = src.get('originalLayers');
+                    src.updateParams(params);
                 },
 
                 expandFilter(layer, value) {

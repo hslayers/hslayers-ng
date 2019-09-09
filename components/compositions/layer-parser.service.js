@@ -34,6 +34,17 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.serv
                     legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
                 }
             }
+            var source = new source_class({
+                url: decodeURIComponent(lyr_def.url),
+                attributions: lyr_def.attribution ? [new Attribution({
+                    html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
+                })] : undefined,
+                styles: (angular.isDefined(lyr_def.metadata) ? lyr_def.metadata.styles : undefined),
+                params: params,
+                crossOrigin: 'anonymous',
+                projection: lyr_def.projection,
+                ratio: lyr_def.ratio
+            });
             var new_layer = new layer_class({
                 title: lyr_def.title,
                 from_composition: true,
@@ -50,18 +61,9 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.serv
                 saveState: true,
                 path: lyr_def.path,
                 opacity: lyr_def.opacity || 1,
-                source: new source_class({
-                    url: decodeURIComponent(lyr_def.url),
-                    attributions: lyr_def.attribution ? [new Attribution({
-                        html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
-                    })] : undefined,
-                    styles: (angular.isDefined(lyr_def.metadata) ? lyr_def.metadata.styles : undefined),
-                    params: params,
-                    crossOrigin: 'anonymous',
-                    projection: lyr_def.projection,
-                    ratio: lyr_def.ratio
-                })
+                source
             });
+            source.set('subLayers', lyr_def.subLayers);
             new_layer.setVisible(lyr_def.visibility);
             OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
             return new_layer;

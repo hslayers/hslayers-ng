@@ -109,12 +109,12 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                         addLayer(
                             layer,
                             layer.Title.replace(/\//g, "&#47;"),
-                            me.data.folder_name,
+                            me.data.path,
                             me.data.image_format,
                             me.data.query_format,
-                            me.data.single_tile,
                             me.data.tile_size,
-                            me.data.srs
+                            me.data.srs,
+                            getSublayerNames(layer)
                         );
                     } else {
                         var clone = {};
@@ -123,12 +123,12 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                         addLayer(
                             layer,
                             layer.Title.replace(/\//g, "&#47;"),
-                            me.data.folder_name,
+                            me.data.path,
                             me.data.image_format,
                             me.data.query_format,
-                            me.data.single_tile,
                             me.data.tile_size,
-                            me.data.srs
+                            me.data.srs,
+                            getSublayerNames(layer)
                         );
                     }
                 }
@@ -142,6 +142,12 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                 recurse(layer)
             });
             Core.setMainPanel('layermanager');
+        }
+
+        function getSublayerNames(service){
+            if(service.Layer){
+                return service.Layer.map(l => l.Name)
+            } else return []
         }
 
         //TODO all dimension related things need to be refactored into seperate module
@@ -159,15 +165,14 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
          * @memberOf add-layers-wms.controller
          * @param {Object} layer capabilities layer object
          * @param {String} layerName layer name in the map
-         * @param {String} folder name
+         * @param {String} path Path name
          * @param {String} imageFormat
          * @param {String} queryFormat
-         * @param {Boolean} singleTile
          * @param {OpenLayers.Size} tileSize
          * @param {OpenLayers.Projection} crs of the layer
          * @description Add selected layer to map
          */
-        function addLayer(layer, layerName, folder, imageFormat, query_format, singleTile, tileSize, crs) {
+        function addLayer(layer, layerName, path, imageFormat, queryFormat, tileSize, crs, subLayers) {
             var attributions = [];
             if (layer.Attribution) {
                 attributions = [new Attribution({
@@ -207,22 +212,24 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                 styles = layer.styleSelected;
             else
                 styles = layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : 'default'
+            var source = new source_class({
+                url: me.data.getMapUrl,
+                attributions,
+                projection: me.data.crs || me.data.srs,
+                params: Object.assign({
+                    LAYERS: layer.Name,
+                    INFO_FORMAT: (layer.queryable ? queryFormat : undefined),
+                    FORMAT: imageFormat,
+                    FROMCRS: me.data.srs,
+                    VERSION: me.data.version,
+                    STYLES: styles
+                }, dimensionService.paramsFromDimensions(layer)),
+                crossOrigin: 'anonymous'
+            });
+            source.set('subLayers', subLayers);
             var new_layer = new layer_class({
                 title: layerName,
-                source: new source_class({
-                    url: me.data.getMapUrl,
-                    attributions: attributions,
-                    projection: me.data.crs || me.data.srs,
-                    params: Object.assign({
-                        LAYERS: layer.Name,
-                        INFO_FORMAT: (layer.queryable ? query_format : undefined),
-                        FORMAT: me.data.image_format,
-                        FROMCRS: me.data.srs,
-                        VERSION: me.data.version,
-                        STYLES: styles
-                    }, dimensionService.paramsFromDimensions(layer)),
-                    crossOrigin: 'anonymous'
-                }),
+                source,
                 minResolution: layer.MinScaleDenominator,
                 maxResolution: layer.MaxScaleDenominator,
                 saveState: true,
@@ -230,7 +237,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                 abstract: layer.Abstract,
                 MetadataURL: layer.MetadataURL,
                 BoundingBox: boundingbox,
-                path: me.data.path,
+                path,
                 dimensions: dimensions,
                 legends: legends
             });
