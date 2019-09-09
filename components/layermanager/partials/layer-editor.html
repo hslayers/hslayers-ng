@@ -6,7 +6,19 @@
             <label translate>Opacity</label>
             <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="opacity" ng-model-options="{ getterSetter: true }"/>
         </div>
-     
+        <!-- Declutter checkbox -->
+        <!-- <div ng-if="declutterTrue()" class="form-group">
+            <label translate>Declutter: <input type="checkbox"/></label><br/>
+        </div> -->
+        
+        <div ng-if="hasSubLayers()">
+            <label translate>Sublayers</label>
+            <div ng-repeat="subLayer in getSubLayers()" class="form-check">
+                <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer]" ng-change="subLayerSelected()">
+                <label class="form-check-label">{{subLayer}}</label>
+            </div>
+        </div>
+
         <!-- Time slider -->
         <div class="form-group" ng-show="layerIsWmsT()">
             <label translate>Date</label>

@@ -14,7 +14,7 @@ export default {
         'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout',
         function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, getCapabilitiesService, $rootScope, $timeout) {
             angular.extend($scope, {
-                subLayerChecked: {},
+                checkedSubLayers: {},
                 layer_renamer_visible: false,
                 legendService,
                 layerIsWmsT() { return WMST.layerIsWmsT($scope.$ctrl.currentLayer) },
@@ -362,7 +362,7 @@ export default {
                     if (angular.isUndefined(src.get('originalLayers')))
                         src.set('originalLayers', params.LAYERS);
                     params.LAYERS = subLayerList.filter(sl =>
-                        $scope.subLayerChecked[sl]
+                        $scope.checkedSubLayers[sl]
                     ).join(',');
                     if (params.LAYERS == '')
                         params.LAYERS = src.get('originalLayers');
