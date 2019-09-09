@@ -127,13 +127,17 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
 
         this.activateQueries = function () {
             me.queryActive = true;
-            map.addLayer(me.queryLayer);
-            $rootScope.$broadcast('queryStatusChanged');
+            OlMap.loaded().then(map => {
+                map.addLayer(me.queryLayer);
+                $rootScope.$broadcast('queryStatusChanged');
+            });
         };
         this.deactivateQueries = function () {
             me.queryActive = false;
-            map.removeLayer(me.queryLayer);
-            $rootScope.$broadcast('queryStatusChanged');
+            OlMap.loaded().then(map => {
+                map.removeLayer(me.queryLayer);
+                $rootScope.$broadcast('queryStatusChanged');
+            })
         };
 
         function pointClickedStyle(feature) {
