@@ -79,19 +79,41 @@ export default {
                     styler.layer = layer;
                     Core.setMainPanel('styler');
                 },
+                 /**
+                 * @function isLayerVectorLayer
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Test if layer is WMS layer
+                 */
+                isLayerVectorLayer: layerUtils.isLayerVectorLayer,
                 /**
-                * @function declutterTrue
+                 * @function isVectorLayer
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Test if layer is WMS layer
+                 */
+                isVectorLayer(){
+                    if (!$scope.$ctrl.currentLayer) return;
+                let layer = $scope.olLayer();
+                if(!$scope.isLayerVectorLayer(layer)) return;
+                else return true;
+                },
+                /**
+                * @function Declutter
                 * @memberOf hs.layermanager.controller
-                * @param {Ol.layer} layer Selected layer
-                * @description Set max and min resolution for selected layer 
-                * (with layer params changed in gui)
+                * @description Set declutter to true;
                 */
-                //    declutterTrue() {
-                //     LayMan.currentLayer.layer.set('declutter', $scope.declutter);
-                //     if(declutter == true){
-                //         return true;
-                //     }
-                // },
+               declutter(newValue) {
+                if (!$scope.$ctrl.currentLayer) return;
+                let layer = $scope.olLayer();
+                if (arguments.length) {
+                    layer.set('declutter', newValue)
+                    $scope.$emit('compositions.composition_edited');
+                   }
+                   else {
+                    return layer.get('declutter');
+                   }
+            },
                 /**
                  * @function toggleLayerRename
                  * @memberOf hs.layermanager.controller

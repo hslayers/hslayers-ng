@@ -72,6 +72,18 @@ export default ['config', 'hs.utils.service', function (config, utils) {
                 utils.instOf(layer.getSource(), ImageWMS)) return true;
             return false;
         },
+         /**
+         * @ngdoc method
+         * @name hs.utils.layerUtilsService#isLayerVectorLayer
+         * @param {Ol.layer} layer Selected layer
+         * @returns {Boolean} True for Vector layer
+         * @description Test if layer is Vector layer
+         */
+        isLayerVectorLayer(layer) {
+            if (utils.instOf(layer, VectorLayer) &&
+                (utils.instOf(layer.getSource(), VectorSource))) return true;
+            return false;
+        },
 
         /**
          * @ngdoc method
