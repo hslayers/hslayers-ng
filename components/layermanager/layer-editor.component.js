@@ -1,6 +1,7 @@
 import { Stroke, Fill, Circle, RegularShape } from 'ol/style';
 import { transform, get as getProj, METERS_PER_UNIT, transformExtent } from 'ol/proj';
 import { WMSCapabilities } from 'ol/format';
+import VectorLayer from 'ol/layer/Vector';
 
 export default {
     template: require('./partials/layer-editor.html'),
@@ -10,8 +11,8 @@ export default {
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
         'hs.legend.service', 'hs.styler.service', 'hs.map.service',
-        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope',
-        function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, getCapabilitiesService, $rootScope) {
+        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout',
+        function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, getCapabilitiesService, $rootScope, $timeout) {
             angular.extend($scope, {
                 layer_renamer_visible: false,
                 legendService,
@@ -79,12 +80,12 @@ export default {
                     styler.layer = layer;
                     Core.setMainPanel('styler');
                 },
-                 /**
-                 * @function isLayerVectorLayer
-                 * @memberOf hs.layermanager.controller
-                 * @param {Ol.layer} layer Selected layer
-                 * @description Test if layer is WMS layer
-                 */
+                /**
+                * @function isLayerVectorLayer
+                * @memberOf hs.layermanager.controller
+                * @param {Ol.layer} layer Selected layer
+                * @description Test if layer is WMS layer
+                */
                 isLayerVectorLayer: layerUtils.isLayerVectorLayer,
                 /**
                  * @function isVectorLayer
@@ -92,28 +93,47 @@ export default {
                  * @param {Ol.layer} layer Selected layer
                  * @description Test if layer is WMS layer
                  */
-                isVectorLayer(){
+                isVectorLayer() {
                     if (!$scope.$ctrl.currentLayer) return;
-                let layer = $scope.olLayer();
-                if(!$scope.isLayerVectorLayer(layer)) return;
-                else return true;
+                    let layer = $scope.olLayer();
+                    if (!$scope.isLayerVectorLayer(layer)) return;
+                    else return true;
                 },
                 /**
                 * @function Declutter
                 * @memberOf hs.layermanager.controller
-                * @description Set declutter to true;
+                * @description Set declutter of features;
                 */
-               declutter(newValue) {
-                if (!$scope.$ctrl.currentLayer) return;
-                let layer = $scope.olLayer();
-                if (arguments.length) {
-                    layer.set('declutter', newValue)
-                    $scope.$emit('compositions.composition_edited');
-                   }
-                   else {
-                    return layer.get('declutter');
-                   }
-            },
+                declutter(newValue) {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    if (arguments.length) {
+                        layer.set('declutter', newValue);
+                        let index = hsMap.map.getLayers().getArray().indexOf(layer);
+                        hsMap.map.removeLayer(layer);
+                        hsMap.map.getLayers().insertAt(index,
+                            $scope.cloneVectorLayer(layer, newValue)
+                        );
+                        $scope.$emit('compositions.composition_edited');
+                    }
+                    else {
+                        return layer.get('declutter');
+                    }
+                },
+                cloneVectorLayer(layer, declutter) {
+                    let options = {};
+                    layer.getKeys().forEach(k => options[k] = layer.get(k));
+                    angular.extend(options, {
+                        declutter,
+                        source: layer.getSource(),
+                        style: layer.getStyleFunction() || layer.getStyle(),
+                        maxResolution: layer.getMaxResolution(),
+                        minResolution: layer.getMinResolution(),
+                        visible: layer.getVisible(),
+                        opacity: layer.getOpacity()
+                    });
+                    return new VectorLayer(options)
+                },
                 /**
                  * @function toggleLayerRename
                  * @memberOf hs.layermanager.controller

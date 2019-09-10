@@ -44,9 +44,9 @@
             <span ng-if="maxResolutionValid()"><span translate>to</span> 1:{{maxResolution()}}</span>
         </div>
         <!-- Declutter checkbox  -->
-        <div ng-if="isVectorLayer()" class="form-group">
-            <label translate>Declutter<input type="checkbox" ng-model="declutter" ng-model-options="{ getterSetter:  true}" /></label>
-                <span ng-if="declutter()">This will open decluttering tools!</span> <!-- Here will go the function for the declutter options-->
+        <div ng-if="isVectorLayer()" class="form-check">
+            <input type="checkbox" ng-model="declutter" ng-model-options="{ getterSetter:  true}" />
+            <label translate>Declutter</label>
         </div>
         <!-- Metadata -->
         <div class="form-group" ng-show="$ctrl.currentLayer.layer.get('MetadataURL') ? true : false">
