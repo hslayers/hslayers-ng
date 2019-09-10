@@ -238,10 +238,6 @@ export default {
 
             $scope.setLayerTime = WMST.setLayerTime;
 
-            $scope.dimensionChanged = function (currentlayer, dimension) {
-                $scope.$emit('layermanager.dimension_changed', { layer: currentlayer.layer, dimension: dimension });
-            }
-
             $scope.$on('layer.removed', function (event, layer) {
                 if (angular.isObject(LayMan.currentLayer) && (LayMan.currentLayer.layer == layer)) {
                     var layerPanel = document.getElementsByClassName('layerpanel');

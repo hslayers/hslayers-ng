@@ -9,13 +9,13 @@ export default {
     },
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
-        'hs.legend.service', 'hs.styler.service', 'hs.map.service', 
+        'hs.legend.service', 'hs.styler.service', 'hs.map.service',
         'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope',
         function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, getCapabilitiesService, $rootScope) {
             angular.extend($scope, {
                 layer_renamer_visible: false,
                 legendService,
-                layerIsWmsT: WMST.layerIsWmsT,
+                layerIsWmsT() { return WMST.layerIsWmsT($scope.$ctrl.currentLayer) },
                 /**
                  * @function isLayerWMS
                  * @memberOf hs.layermanager.controller
@@ -29,10 +29,9 @@ export default {
                  * @description Zoom to selected layer (layer extent). Get extent 
                  * from bounding box property, getExtent() function or from 
                  * BoundingBox property of GetCapabalities request (for WMS layer)
-                 * @param {Ol.layer} layer Selected layer
                  */
-                zoomToLayer(layer) {
-                    //debugger;
+                zoomToLayer() {
+                    let layer = $scope.olLayer();
                     var extent = null;
                     if (layer.get("BoundingBox")) {
                         extent = getExtentFromBoundingBoxAttribute(layer);
@@ -61,7 +60,7 @@ export default {
                                     layer.set('BoundingBox', caps.Capability.Layer.BoundingBox);
                                     extent = getExtentFromBoundingBoxAttribute(layer);
                                     if (extent != null)
-                                    hsMap.map.getView().fit(extent, hsMap.map.getSize());
+                                        hsMap.map.getView().fit(extent, hsMap.map.getSize());
                                 }
                             })
                     }
@@ -75,7 +74,8 @@ export default {
                  * @param {Ol.layer} layer Selected layer
                  * @description Display styler panel for selected layer, so user can change its style
                  */
-                styleLayer(layer) {
+                styleLayer() {
+                    let layer = $scope.olLayer();
                     styler.layer = layer;
                     Core.setMainPanel('styler');
                 },
@@ -86,12 +86,12 @@ export default {
                 * @description Set max and min resolution for selected layer 
                 * (with layer params changed in gui)
                 */
-            //    declutterTrue() {
-            //     LayMan.currentLayer.layer.set('declutter', $scope.declutter);
-            //     if(declutter == true){
-            //         return true;
-            //     }
-            // },
+                //    declutterTrue() {
+                //     LayMan.currentLayer.layer.set('declutter', $scope.declutter);
+                //     if(declutter == true){
+                //         return true;
+                //     }
+                // },
                 /**
                  * @function toggleLayerRename
                  * @memberOf hs.layermanager.controller
@@ -122,28 +122,19 @@ export default {
                 },
 
                 /**
-                * @function setLayerOpacity
-                * @memberOf hs.layermanager.controller
-                * @deprecated
-                * @description Set selected layers opacity and emits "compositionchanged"
-                * @param {Ol.layer} layer Selected layer
-                */
-                setLayerOpacity(layer) {
-                    if (angular.isUndefined(layer)) return;
-                    layer.setOpacity($scope.cur_layer_opacity);
-                    $scope.$emit('compositions.composition_edited');
-                    return false;
-                },
-
-                /**
-                * @function setOpacity
+                * @function opacity
                 * @memberOf hs.layermanager.controller
                 * @description Set selected layers opacity and emits "compositionchanged"
-                * @param {Ol.layer} layer Selected layer
                 */
-                setOpacity(layer) {
-                    layer.layer.setOpacity(layer.opacity);
-                    $scope.$emit('compositions.composition_edited');
+                opacity(newValue) {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    if (arguments.length) {
+                        layer.setOpacity(newValue);
+                        $scope.$emit('compositions.composition_edited');
+                    }
+                    else
+                        return layer.getOpacity()
                 },
 
                 /**
@@ -154,7 +145,9 @@ export default {
                  * of 'Zoom to ' button
                  * @param {Ol.layer} layer Selected layer
                  */
-                layerIsZoomable: layerUtils.layerIsZoomable,
+                layerIsZoomable() {
+                    return layerUtils.layerIsZoomable($scope.olLayer())
+                },
 
                 /**
                  * @function layerIsStyleable
@@ -163,19 +156,36 @@ export default {
                  * styleable. Used for allowing styling
                  * @param {Ol.layer} layer Selected layer
                  */
-                layerIsStyleable: layerUtils.layerIsStyleable,
+                layerIsStyleable() {
+                    return layerUtils.layerIsStyleable($scope.olLayer())
+                },
 
                 /**
-                * @function setLayerResolution
+                * @function minResolution
                 * @memberOf hs.layermanager.controller
-                * @param {Ol.layer} layer Selected layer
-                * @description Set max and min resolution for selected layer 
-                * (with layer params changed in gui)
+                * @description Set min resolution for selected layer 
                 */
-                setLayerResolution(layer) {
-                    if (typeof layer == 'undefined') return false;
-                    layer.setMinResolution(layer.minResolution);
-                    layer.setMaxResolution(layer.maxResolution);
+                minResolution(newValue) {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    if (arguments.length)
+                        layer.setMinResolution(newValue);
+                    else
+                        return layer.minResolution
+                },
+
+                /**
+                * @function minResolution
+                * @memberOf hs.layermanager.controller
+                * @description Set max resolution for selected layer 
+                */
+                maxResolution(newValue) {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    if (arguments.length)
+                        layer.setMaxResolution(newValue);
+                    else
+                        return layer.maxResolution
                 },
 
                 /**
@@ -183,14 +193,15 @@ export default {
                 * @memberOf hs.layermanager.controller
                 * @description Check if layer can be removed based on 'removable' 
                 * layer attribute
-                * @param {Ol.layer} lyr OL layer to check if removable
                 */
-                isLayerRemovable(lyr) {
-                    return angular.isDefined(lyr) && (angular.isUndefined(lyr.get('removable')) || lyr.get('removable') == true);
+                isLayerRemovable() {
+                    let layer = $scope.olLayer();
+                    return angular.isDefined(layer)
+                        && (angular.isUndefined(layer.get('removable')) || layer.get('removable') == true);
                 },
 
-                removeLayer(layer) {
-                    hsMap.map.removeLayer(layer);
+                removeLayer() {
+                    hsMap.map.removeLayer($scope.olLayer());
                     $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
                 },
 
@@ -204,45 +215,78 @@ export default {
                  * @param {Ol.layer} layer Selected layer
                  * @description Test if layer has min and max relolution set
                  */
-                isScaleVisible(layer) {
-                    if (typeof layer == 'undefined') return false;
-                    layer.minResolutionValid = false;
-                    layer.maxResolutionValid = false;
-                    if (angular.isDefined(layer.getMinResolution()) && layer.getMinResolution() != 0) {
-                        layer.minResolutionValid = true;
-                        layer.minResolution = layer.getMinResolution();
-                    }
-                    if (angular.isDefined(layer.getMaxResolution()) && layer.getMaxResolution() != Infinity) {
-                        layer.maxResolutionValid = true;
-                        layer.maxResolution = layer.getMaxResolution();
-                    }
+                isScaleVisible() {
+                    let layer = $scope.olLayer();
+                    if (angular.isUndefined(layer)) return false;
+                    return ($scope.minResolutionValid() || $scope.maxResolutionValid())
+                },
 
-                    if (layer.minResolutionValid || layer.maxResolutionValid) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                olLayer() {
+                    if (!$scope.$ctrl.currentLayer) return undefined;
+                    return $scope.$ctrl.currentLayer.layer;
+                },
+
+                minResolutionValid() {
+                    let layer = $scope.olLayer();
+                    if (angular.isUndefined(layer)) return false;
+                    return angular.isDefined(layer.getMinResolution())
+                        && layer.getMinResolution() != 0
+                },
+
+                maxResolutionValid() {
+                    let layer = $scope.olLayer();
+                    if (angular.isUndefined(layer)) return false;
+                    return angular.isDefined(layer.getMaxResolution())
+                        && layer.getMaxResolution() != Infinity
                 },
 
                 /**
                 * @function isLayerWithDimensions
                 * @memberOf hs.layermanager.controller
-                * @param {Ol.layer} lyr Selected layer
                 * @description Test if layer has dimensions
                 */
-                isLayerWithDimensions(lyr_container) {
-                    if (angular.isUndefined(lyr_container) || lyr_container == null || angular.isUndefined(lyr_container.layer)) return false;
-                    if (angular.isUndefined(lyr_container.layer.get('dimensions'))) return false;
-                    return Object.keys(lyr_container.layer.get('dimensions')).length > 0
+                isLayerWithDimensions() {
+                    let layer = $scope.olLayer();
+                    if (angular.isUndefined(layer)) return false;
+                    if (angular.isUndefined(layer.get('dimensions'))) return false;
+                    return Object.keys(layer.get('dimensions')).length > 0
+                },
+
+                dimensionChanged(dimension) {
+                    $scope.$emit('layermanager.dimension_changed', {
+                        layer: $scope.olLayer(),
+                        dimension
+                    });
+                },
+
+                dimensions() {
+                    let layer = $scope.olLayer();
+                    if (angular.isUndefined(layer)) return [];
+                    return layer.get('dimensions');
                 },
 
                 /**
-                 * @function setTitle
+                 * @function title
                  * @memberOf hs.layermanager.controller
                  * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
                  */
-                setTitle() {
-                    LayMan.currentLayer.layer.set('title', LayMan.currentLayer.title);
+                title(newTitle) {
+                    let layer = $scope.olLayer();
+                    if (angular.isUndefined(layer)) return false;
+                    if (arguments.length) {
+                        $scope.$ctrl.currentLayer.title = newTitle;
+                        layer.set('title', newTitle);
+                    } else
+                        return layer.get('title')
+                },
+
+                abstract(newAbstract) {
+                    let layer = $scope.olLayer();
+                    if (angular.isUndefined(layer)) return false;
+                    if (arguments.length)
+                        layer.set('abstract', newAbstract);
+                    else
+                        return layer.get('abstract')
                 },
 
                 expandLayer(layer) {
@@ -253,24 +297,25 @@ export default {
                 expandSettings(layer, value) {
                     if (angular.isUndefined(layer.opacity)) {
                         layer.opacity = layer.layer.getOpacity();
-                        layer.maxResolutionLimit = layer.layer.getMaxResolution();
-                        layer.minResolutionLimit = layer.layer.getMinResolution();
-                        layer.maxResolution = layer.maxResolutionLimit;
-                        layer.minResolution = layer.minResolutionLimit;
                     }
                     if (angular.isUndefined(layer.style) && layer.layer.getSource().styleAble) getLayerStyle(layer);
                     layer.expandSettings = value;
+                },
+
+                maxResolutionLimit() {
+                    if (angular.isUndefined($scope.olLayer())) return false;
+                    return $scope.olLayer().getMaxResolution()
+                },
+
+                minResolutionLimit() {
+                    if (angular.isUndefined($scope.olLayer())) return false;
+                    return $scope.olLayer().getMinResolution()
                 },
 
                 expandFilter(layer, value) {
                     layer.expandFilter = value;
                     LayMan.currentLayer = layer;
                     $scope.currentLayer = LayMan.currentLayer;
-                },
-
-                updateResolution(layer) {
-                    layer.layer.setMaxResolution(layer.maxResolution);
-                    layer.layer.setMinResolution(layer.minResolution);
                 },
 
                 expandInfo(layer, value) {
@@ -381,7 +426,7 @@ export default {
                 wrapper.style = {};
                 if (angular.isUndefined(layer.getStyle)) return;
                 var style = layer.getStyle();
-                if (typeof style == 'function') 
+                if (typeof style == 'function')
                     style = style(source.getFeatures()[0]);
                 if (typeof style == 'object') style = style[0];
                 style = style.clone();
@@ -394,12 +439,12 @@ export default {
                 }
                 if (source.hasPoint) {
                     var image = style.getImage();
-                    if (utils.instOf(image, Circle)) 
+                    if (utils.instOf(image, Circle))
                         wrapper.style.pointType = 'Circle';
                     else if (utils.instOf(image, RegularShape)) {
                         wrapper.style.pointPoints = image.getPoints();
                         wrapper.style.rotation = image.getRotation();
-                        if (angular.isUndefined(image.getRadius2())) 
+                        if (angular.isUndefined(image.getRadius2()))
                             wrapper.style.pointType = 'Polygon';
                         else {
                             wrapper.style.pointType = 'Star';
@@ -412,11 +457,11 @@ export default {
                         wrapper.style.pointStroke = image.getStroke().getColor();
                         wrapper.style.pointWidth = image.getStroke().getWidth();
                     }
-                    if (angular.isUndefined(wrapper.style.radius2)) 
+                    if (angular.isUndefined(wrapper.style.radius2))
                         wrapper.style.radius2 = wrapper.style.radius / 2;
-                    if (angular.isUndefined(wrapper.style.pointPoints)) 
+                    if (angular.isUndefined(wrapper.style.pointPoints))
                         wrapper.style.pointPoints = 4;
-                    if (angular.isUndefined(wrapper.style.rotation)) 
+                    if (angular.isUndefined(wrapper.style.rotation))
                         wrapper.style.rotation = Math.PI / 4;
                 }
                 wrapper.style.style = style;

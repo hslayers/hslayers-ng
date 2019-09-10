@@ -4,7 +4,7 @@
         <!-- Opacity slider -->
         <div class="form-group">
             <label translate>Opacity</label>
-            <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="cur_layer_opacity" ng-change="setLayerOpacity($ctrl.currentLayer.layer)"/>
+            <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" ng-model="opacity" ng-model-options="{ getterSetter: true }"/>
         </div>
         <!-- Declutter checkbox -->
         <!-- <div ng-if="declutterTrue()" class="form-group">
@@ -12,7 +12,7 @@
         </div> -->
         
         <!-- Time slider -->
-        <div class="form-group" ng-show="layerIsWmsT($ctrl.currentLayer)">
+        <div class="form-group" ng-show="layerIsWmsT()">
             <label translate>Date</label>
             <input type="range" step="{{$ctrl.currentLayer.time_step}}" min="{{$ctrl.currentLayer.min_time}}" max="{{$ctrl.currentLayer.max_time}}" class="form-control" style="width: 100%;height: 21px;" ng-model="dateIncrement" ng-change="setLayerTime($ctrl.currentLayer, dateIncrement)"/>
             <div class="row">
@@ -23,29 +23,29 @@
         </div>
         
          <!-- Dimensions -->
-         <div ng-show="isLayerWithDimensions($ctrl.currentLayer)">
+         <div ng-show="isLayerWithDimensions()">
             <label translate>Dimensions</label>
-            <div class="form-group" ng-repeat="(key, dimension) in $ctrl.currentLayer.layer.get('dimensions')">
+            <div class="form-group" ng-repeat="(key, dimension) in dimensions()">
                 <label class="control-label">{{dimension.label || key}}:</label>
-                <select class="form-control" ng-model="dimension.value" ng-change="dimensionChanged($ctrl.currentLayer, dimension)">
+                <select class="form-control" ng-model="dimension.value" ng-change="dimensionChanged(dimension)">
                     <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">{{dimension_value}}</option>
                 </select>
             </div>
         </div>
         
         <!-- Abstract -->
-        <div class="form-group" ng-show="$ctrl.currentLayer.layer.get('abstract') ? true : false">
+        <div class="form-group" ng-show="abstract()">
             <label translate>Abstract</label>
             <p>
-                {{$ctrl.currentLayer.layer.get('abstract')}}
+                {{abstract()}}
             </p>
         </div>
         
         <!-- Scale -->
-        <div class="form-group" ng-show="isScaleVisible($ctrl.currentLayer.layer)">
+        <div class="form-group" ng-show="isScaleVisible()">
             <label translate>Scale</label>
-            <span ng-if="$ctrl.currentLayer.layer.minResolutionValid"><span translate>from</span> 1:{{$ctrl.currentLayer.layer.getMinResolution()}}</span>
-            <span ng-if="$ctrl.currentLayer.layer.maxResolutionValid"><span translate>to</span> 1:{{$ctrl.currentLayer.layer.getMaxResolution()}}</span>
+            <span ng-if="minResolutionValid()"><span translate>from</span> 1:{{minResolution()}}</span>
+            <span ng-if="maxResolutionValid()"><span translate>to</span> 1:{{maxResolution()}}</span>
         </div>
         
         <!-- Metadata -->
@@ -54,7 +54,7 @@
         </div>
         
         <!-- Legends -->
-        <div ng-if="$ctrl.currentLayer.layer">
+        <div ng-if="olLayer()">
             <div ng-repeat="layer in legendDescriptors">
                 <div class="form-group" ng-if="legendService.isLegendable(layer)">
                     <label translate>Legend</label>
@@ -69,31 +69,31 @@
     <div class="card-footer">
         <div class="form-group" ng-show="layer_renamer_visible">
             <label translate>Title</label>
-            <input type="text" class="form-control" ng-model="$ctrl.currentLayer.title" ng-change="setTitle()">
+            <input type="text" class="form-control" ng-model="title" ng-model-options="{ getterSetter: true }">
             <div class="form">
                 <br/>
                 <label translate>Scale</label>
-                <div ng-if="$ctrl.currentLayer.layer.minResolutionValid">
+                <div ng-if="minResolutionValid()">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"><span translate>from</span>&nbsp;1:</span>
                         </div>
-                        <input class="form-control" style="width:65px" ng-model="$ctrl.currentLayer.layer.minResolution" ng-change="setLayerResolution($ctrl.currentLayer.layer)"/>
+                        <input class="form-control" style="width:65px" ng-model="minResolution" ng-model-options="{ getterSetter: true }"/>
                     </div>
                 </div>
-                <div ng-if="$ctrl.currentLayer.layer.maxResolutionValid">
+                <div ng-if="maxResolutionValid()">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"> <span translate>to</span>&nbsp;1:</span>
                         </div>
-                        <input class="form-control" style="width:65px" ng-model="$ctrl.currentLayer.layer.maxResolution" ng-change="setLayerResolution($ctrl.currentLayer.layer)"/>
+                        <input class="form-control" style="width:65px" ng-model="maxResolution" ng-model-options="{ getterSetter: true }"/>
                     </div>
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" ng-click="zoomToLayer($ctrl.currentLayer.layer)" ng-disabled="!layerIsZoomable($ctrl.currentLayer.layer)"><i class="icon-search"></i></button>
-        <button class="btn btn-primary" ng-click="styleLayer($ctrl.currentLayer.layer)" ng-disabled="!layerIsStyleable($ctrl.currentLayer.layer)"><i class="icon-brush"></i></button>
+        <button class="btn btn-primary" ng-click="zoomToLayer()" ng-disabled="!layerIsZoomable()"><i class="icon-search"></i></button>
+        <button class="btn btn-primary" ng-click="styleLayer()" ng-disabled="!layerIsStyleable()"><i class="icon-brush"></i></button>
         <button class="btn btn-primary" ng-click="toggleLayerRename()"><i class="icon-edit"></i></button>
-        <button class="btn btn-danger" ng-click="removeLayer($ctrl.currentLayer.layer)" ng-if="isLayerRemovable($ctrl.currentLayer.layer)"><i class="icon-trash"></i></button>
+        <button class="btn btn-danger" ng-click="removeLayer()" ng-if="isLayerRemovable()"><i class="icon-trash"></i></button>
     </div>
 </div>

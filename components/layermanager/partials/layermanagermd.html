@@ -66,12 +66,12 @@
                 <!-- title -->
                 <md-input-container layout-fill class="md-block">
                     <label translate>Layer name</label>
-                    <input ng-model="layer.title" ng-change="setProp(layer.layer,'title',layer.title);">
+                    <input ng-model="title" ng-model-options="{ getterSetter: true }">
                 </md-input-container>
                 <!-- opacity -->
                 <md-input-container layout-fill class="md-block">
                     <label translate>Layer Opacity</label>
-                    <md-slider min="0" max="1" step="0.01" ng-model="layer.opacity" ng-change="setOpacity(layer);" aria-label="Change layer opacity"></md-slider>
+                    <md-slider min="0" max="1" step="0.01" ng-model="opacity" ng-model-options="{ getterSetter: true }" aria-label="Change layer opacity"></md-slider>
                 </md-input-container>
                 <!-- style -->
                 <label ng-if="layer.layer.getSource().styleAble" translate>Layer Style</label>
@@ -157,12 +157,12 @@
                     <label>Layout Resolution</label>
                         <md-input-container>
                           <label>From</label>
-                          <input ng-model="layer.maxResolution" type="number" max="layer.maxResolutionLimit" min="layer.minResolution" ng-change="updateResolution(layer)">
+                          <input ng-model="maxResolution" ng-model-options="{ getterSetter: true }" type="number" max="maxResolutionLimit()" min="minResolution()">
                         </md-input-container>
                   
                         <md-input-container>
                           <label>To</label>
-                          <input ng-model="layer.minResolution" type="number" max="layer.maxResolution" min="layer.minResolutionLimit" ng-change="updateResolution(layer)">
+                          <input ng-model="minResolution" ng-model-options="{ getterSetter: true }" type="number" max="maxResolution()" min="minResolutionLimit()">
                         </md-input-container>
                       </div>-->
             </div>
