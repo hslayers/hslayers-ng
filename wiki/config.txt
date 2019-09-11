@@ -230,6 +230,11 @@ Boolean parameter to specify, that datasets must not be allowed to be added to m
 **createExtraMenu**
 
 A function which manipulates sidebar items and creates extra menu items by using AngularJs $compile function. Example: 
+
+## pureMap
+
+Hide all GUI elements leaving only the map itself
+
 ```
 function ($compile, $scope, element) {
     $scope.uploadClicked = function () {

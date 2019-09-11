@@ -26,7 +26,10 @@ export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', fu
             }
 
             $scope.geolocationVisible = function () {
-                return (angular.isUndefined(config.locationButtonVisible) || config.locationButtonVisible);
+                return (angular.isUndefined(config.locationButtonVisible)
+                    || config.locationButtonVisible) &&
+                    (angular.isUndefined(Core.puremapApp) ||
+                        Core.puremapApp === false);
             }
         }],
         replace: true

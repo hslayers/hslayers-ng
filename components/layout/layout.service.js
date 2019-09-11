@@ -107,7 +107,10 @@ export default ['Core', 'config', '$rootScope',
                 else
                     return panelWidths.default;
             } else {
-                return 48;
+                if(Core.puremapApp) 
+                    return 0
+                else
+                    return 48;
             }
         }
 
