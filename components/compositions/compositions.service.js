@@ -200,9 +200,26 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         }
 
         me.getCompositionInfo = function (composition, cb) {
-            compositionParser.loadInfo(composition.link, function (info) {
+            var url;
+            switch (composition.endpoint.type) {
+                case 'micka':
+                    url = composition.link;
+                    break;
+                case 'layman':
+                    url = composition.endpoint.url + composition.url;
+                    break;
+            }
+            compositionParser.loadInfo(url, function (info) {
                 me.data.info = info;
-                me.data.info.thumbnail = composition.thumbnail;
+                switch (composition.endpoint.type) {
+                    case 'micka':
+                        me.data.info.thumbnail = composition.thumbnail;
+                        break;
+                    case 'layman':
+                        me.data.info.thumbnail = composition.endpoint.url + info.thumbnail.url;
+                        me.data.info.abstract = info.description;
+                        break;
+                }
                 cb(me.data.info)
             });
         }
