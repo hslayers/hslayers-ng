@@ -91,13 +91,13 @@ function ($scope, service, $sce, Core, $http) {
      */
     
     $scope.iconSelected = function (i) {
-        $http({ url:'components/styles/img/svg/' + i }).
+        $http({ url:'' + i }).
             then(function (response) {
                 $scope.iconimage = $sce.trustAsHtml(response.data);
                 colorIcon();
                 $scope.save()
             }, function (err) {
-
+ 
             });
     }
 
