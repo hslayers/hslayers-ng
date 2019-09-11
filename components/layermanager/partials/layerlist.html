@@ -1,22 +1,44 @@
 <div class="list-group-item hs-lm-list" ng-if="obj.layers.length>0">
     <ul class="list-group row" dnd-list="layer_titles" dnd-drop="dragged(event, index, item, type, external)">
-        <li ng-repeat="layer in filtered_layers | orderBy:order() | filter:query track by layer.layer.ol_uid + ' ' + layer.position" id="layer{{obj.coded_path}}{{layer.uid}}" dnd-draggable="layer.title" dnd-effect-allowed="move" class="list-group-item hs-lm-item" ng-class="{detailActivated : 'currentLayer == layer'}">
-            <div class="hs-lm-item-status" ng-click="toggleCurrentLayer(layer, layer.uid, obj.coded_path)">
-                <span class="icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
-                <span ng-show="layerLoaded(layer.layer)">
-                    <span class="icon-chevron-right" ng-hide="currentLayer == layer || !layerLoaded(layer.layer)"></span>
-                    <span class="icon-chevron-down" ng-show="currentLayer == layer"></span>
-                </span>
-            </div>
-            <div class="hs-lm-item-title" ng-class="{'hs-lm-item-warning': layerValid(layer.layer)}" ng-click="toggleCurrentLayer(layer, layer.uid, obj.coded_path)">{{layer.title}} <span class="glyphicon icon-resize-vertical hs-lm-drop-hint"></span></div>
-            <div class="hs-lm-item-controls" ng-hide="layerValid(layer.layer)">
-                <i class="icon-warning-sign hs-lm-warning-scale" title="{{'This layer is not available in this scale'|translate}}" data-toggle="tooltip" data-container="body" data-placement="auto" ng-show="layer.grayed" ng-click="$event.stopPropagation()" ></i>
-                <i class="icon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}" ng-show="isLayerQueryable(layer)" ng-click="$event.stopPropagation()" ></i>
-                <button type="button" class="btn btn-sm btn-light" ng-click="changeLayerVisibility(!layer.visible, layer);$event.stopPropagation()" ><i class="" ng-class="layer.visible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
-            </div>
-            <div class="hs-lm-item-controls" ng-show="layerValid(layer.layer)">
-                <i class="icon-warning-sign alert-danger btn btn-sm hs-lm-warning-error" title="{{'This layer is not available'|translate}}" data-toggle="tooltip" data-container="body" data-placement="auto" ng-click="$event.stopPropagation()" ></i>
-                <button type="button" class="btn btn-sm btn-light" ng-click="changeLayerVisibility(!layer.visible, layer);$event.stopPropagation()"><i class="" ng-class="layer.visible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
+        <li ng-repeat="layer in filtered_layers | orderBy:order() | filter:query track by layer.layer.ol_uid + ' ' + layer.position"
+            id="layer{{obj.coded_path}}{{layer.uid}}" dnd-draggable="layer.title" dnd-effect-allowed="move"
+            class="list-group-item hs-lm-item" ng-class="{detailActivated : 'currentLayer == layer'}">
+            <div class="d-flex ">
+                <div class="p-0 hs-lm-item-status" ng-click="toggleCurrentLayer(layer, layer.uid, obj.coded_path)">
+                    <span class="icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
+                    <span ng-show="layerLoaded(layer.layer)">
+                        <span class="icon-chevron-right"
+                            ng-hide="currentLayer == layer || !layerLoaded(layer.layer)"></span>
+                        <span class="icon-chevron-down" ng-show="currentLayer == layer"></span>
+                    </span>
+                </div>
+                <div class="p-0 flex-grow-1 hs-lm-item-title"
+                    ng-click="toggleCurrentLayer(layer, layer.uid, obj.coded_path)">
+                    {{layer.title}}
+                </div>
+                <div class="p-0">
+                    <span class="glyphicon icon-resize-vertical hs-lm-drop-hint"></span>
+                </div>
+                <div class="p-0 " ng-hide="layerValid(layer.layer)">
+                    <i class="icon-warning-sign hs-lm-warning-scale"
+                        title="{{'This layer is not available in this scale'|translate}}" data-toggle="tooltip"
+                        data-container="body" data-placement="auto" ng-show="layer.grayed"
+                        ng-click="$event.stopPropagation()"></i>
+                </div>
+                <div class="p-0" ng-show="layerValid(layer.layer)">
+                    <i class="icon-warning-sign alert-danger btn btn-sm hs-lm-warning-error"
+                        title="{{'This layer is not available'|translate}}" data-toggle="tooltip" data-container="body"
+                        data-placement="auto" ng-click="$event.stopPropagation()"></i>
+                </div>
+                <div class="p-0" ng-show="isLayerQueryable(layer)">
+                        <i class="icon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}"
+                         ng-click="$event.stopPropagation()"></i>
+                </div>
+                <div class="p-0">
+                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                        ng-click="changeLayerVisibility(!layer.visible, layer);$event.stopPropagation()"><i class=""
+                            ng-class="layer.visible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
+                </div>
             </div>
         </li>
     </ul>

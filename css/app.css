@@ -141,10 +141,6 @@ ul.hs-lm-mapcontentlist {
     border-bottom: 1px solid #ddd;
 }
 
-li.hs-lm-header {
-    padding: 0.625em 0.3125em;
-}
-
 #hs-comp-advancedPanel {
     margin-top: 10px;
 }
@@ -167,11 +163,6 @@ li.hs-lm-header {
     border-top-right-radius:0;
 }
 
-.hs-lm-header {
-    border-left:0;
-    border-right:0;
-}
-
 .hs-lm-list:last-child, .hs-lm-item:last-child, .hs-comp-list:last-child, .hs-comp-item:last-child {
     border-bottom-left-radius:0;
     border-bottom-right-radius:0;
@@ -182,46 +173,37 @@ li.hs-lm-item.hovering {
 }
 
 li.hs-lm-item, li.hs-dr-item {
-    padding: 0.625em 0.3125em;
     word-wrap: break-word;
     border-left: 0;
     border-right: 0;
-    min-height: 3.0em;
+    padding: 0.1em;
+    padding-top: 0.4em;
+    padding-left: 0.2em;
     /*border-bottom: 0;*/
 }
 
 .hs-lm-item-status {
-    display: inline-block;
     text-align: center;
+    color: #666666;
     vertical-align: top;
-    width: 1.25em;
 }
 
 div.hs-lm-item-title {
-    display: inline-block;
-    width: calc(100% - 3.9em);
     cursor: pointer;
+    
+}
+
+.hs-lm-item-visibility{
+    margin-top: -0.42em;
 }
 
 div.hs-lm-item-title:hover{
     text-decoration: underline
 }
 
-div.hs-lm-item-title.hs-lm-item-warning {
-    width: calc(100% - 5.9em);
-}
-
 input.hs-waypoint-name{
     display: inline-block;
     width: calc(100% - 2.8125em);
-}
-
-div.hs-lm-item-controls {
-    display: block;
-    text-align: right;
-    max-width: 5em;
-    height: 1.6em;
-    float: right;
 }
 
 i.hs-lm-warning-scale {
@@ -971,9 +953,6 @@ ul[dnd-list] li.selected {
 }
 .hs-lm-item:hover .hs-lm-drop-hint {
     z-index: 10000;
-    position: absolute;
-    top: 14px;
-    right: 106px;
     color: #cccccc;
     display: inline;
 }
@@ -1390,4 +1369,13 @@ md-checkbox {
     md-content.card-collection {
         column-count: 3;
     }
+}
+
+li.hs-lm-header {
+    border-left:0;
+    border-right:0;
+    padding-left: 2em;
+}
+.hs-lm-map-content-header{
+    height: 2.36em;
 }
