@@ -53,7 +53,7 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
                 OlMap.moveToAndZoom(parseFloat(hs_x), parseFloat(hs_y), parseInt(hs_z));
             }
 
-            if (permalink.getParamValue("puremap")) {
+            if (permalink.getParamValue("puremap") || config.pureMap == true) {
                 Core.puremapApp = true;
                 OlMap.puremap();
             }
