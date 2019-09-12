@@ -1,4 +1,4 @@
-export default ['$compile', 'config', function ($compile, config) {
+export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', 'hs.map.service', 'hs.utils.service', '$timeout', function ($compile, config, $rootScope, LayMan, hsMap, utils, $timeout) {
     return {
         template: require('components/layermanager/partials/layerlist.html'),
         compile: function compile(element) {
@@ -113,6 +113,46 @@ export default ['$compile', 'config', function ($compile, config) {
                     scope.draggedCont(event, index, item, type, external, scope.layer_titles);
                 }
 
+                /** 
+                 * @function dragged
+                 * @memberOf hs.layermanager-layerlist-directive
+                 * @param {unknow} event
+                 * @param {unknown} index
+                 * @param {unknown} item
+                 * @param {unknown} type
+                 * @param {unknown} external
+                 * @param {Array} layerTitles Array of layer titles of group in which layer should be moved in other position
+                 * @description Callback for dnd-drop event to change layer position in layer manager structure (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop). 
+                 * This is called from layerlistDirective
+                 */
+                scope.draggedCont = function (event, index, item, type, external, layerTitles) {
+                    if (layerTitles.indexOf(item) < index) index--; //Must take into acount that this item will be removed and list will shift
+                    var to_title = layerTitles[index];
+                    var to_index = null;
+                    var item_index = null;
+                    var layers = hsMap.map.getLayers();
+                    //Get the position where to drop the item in the map.getLayers list and which item to remove. because we could be working only within a folder so layer_titles is small
+                    for (var i = 0; i < layers.getLength(); i++) {
+                        if (layers.item(i).get('title') == to_title) to_index = i;
+                        if (layers.item(i).get('title') == item) item_index = i;
+                        if (index > layerTitles.length) to_index = i + 1; //If dragged after the last item
+                    }
+                    var layerPanel = document.getElementsByClassName('layerpanel');
+                    var layerNode = document.querySelector('.hs-lm-list')
+                        .querySelectorAll('.hs-lm-item');
+                    layerNode = layerNode[layerNode.length - 1];
+                    utils.insertAfter(layerPanel, layerNode);
+                    var item_layer = layers.item(item_index);
+                    hsMap.map.getLayers().removeAt(item_index);
+                    hsMap.map.getLayers().insertAt(to_index, item_layer);
+                    LayMan.updateLayerOrder();
+                    let layerDesc = LayMan.getLayerDescriptorForOlLayer(item_layer);
+                    $timeout(_ => {
+                        layerNode = document.getElementById(layerDesc.idString());
+                        utils.insertAfter(layerPanel, layerNode);
+                        $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
+                    }, 300)
+                }
             };
         }
     };

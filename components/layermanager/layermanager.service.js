@@ -6,9 +6,10 @@ import 'angular-socialshare';
 import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import { METERS_PER_UNIT } from 'ol/proj';
+import layermanagerComponent from './layermanager.component';
 
-export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'config', 'hs.layermanager.WMSTservice',
-    function ($rootScope, OlMap, Core, utils, config, WMST) {
+export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
+    function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST) {
         var me = {};
 
         /**
@@ -102,13 +103,16 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
             * @description Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
             */
             var new_layer = {
-                title: getLayerTitle(layer),
+                title: layerUtils.getLayerTitle(layer),
                 layer: layer,
                 grayed: me.isLayerInResolutionInterval(layer),
                 visible: layer.getVisible(),
                 position: layer.get('position'),
                 hsFilters: layer.get('hsFilters'),
-                uid: utils.generateUuid()
+                uid: utils.generateUuid(),
+                idString(){
+                    return 'layer' + (this.coded_path || '') + (this.uid || '')
+                }
             };
 
             WMST.setupTimeLayerIfNeeded(new_layer);
@@ -124,7 +128,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
                 me.data.baselayers.push(new_layer);
             };
 
-            if (layer.getVisible() && layer.get("base")) me.data.baselayer = getLayerTitle(layer);
+            if (layer.getVisible() && layer.get("base")) 
+                me.data.baselayer = layerUtils.getLayerTitle(layer);
             me.updateLayerOrder();
             $rootScope.$broadcast('layermanager.layer_added', new_layer);
             $rootScope.$broadcast('layermanager.updated', layer);
@@ -176,23 +181,19 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
 
         me.getLayerByTitle = getLayerByTitle;
 
-
         /**
          * @ngdoc method
-         * @name hs.layermanager.service#getLayerTitle
+         * @name hs.layermanager.service#getLayerDescriptorForOlLayer
          * @private
          * @param {Ol.layer} Layer to get layer title
-         * @returns {String} Layer title or "Void"
-         * @description Get title of selected layer
-         * Move to utils?
+         * @returns {Object} Layer container which is used in layer-list directive
+         * @description Get layer container object for OL layer
          */
-        function getLayerTitle(layer) {
-            if (angular.isDefined(layer.get('title'))) {
-                return layer.get('title').replace(/&#47;/g, '/');
-            } else {
-                return 'Void';
-            }
-        }
+        me.getLayerDescriptorForOlLayer = function(layer) {
+            let tmp = me.data.layers.filter(l => l.layer == layer)
+            if(tmp.length>0) return tmp[0]
+            return;
+        }       
 
         /**
          * @ngdoc method
@@ -228,6 +229,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'con
                         curfolder = found;
                     }
                 }
+                lyr.coded_path = curfolder.coded_path;
                 curfolder.layers.push(lyr);
                 if (me.data.folders.layers.indexOf(lyr) > -1) me.data.folders.layers.splice(me.data.folders.layers.indexOf(lyr), 1);
             } else {

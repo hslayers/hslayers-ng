@@ -60,6 +60,21 @@ export default ['config', 'hs.utils.service', function (config, utils) {
 
         /**
          * @ngdoc method
+         * @name hs.utils.layerUtilsService#getLayerTitle
+         * @param {Ol.layer} Layer to get layer title
+         * @returns {String} Layer title or "Void"
+         * @description Get title of selected layer
+         */
+        getLayerTitle(layer) {
+            if (angular.isDefined(layer.get('title'))) {
+                return layer.get('title').replace(/&#47;/g, '/');
+            } else {
+                return 'Void';
+            }
+        },
+
+        /**
+         * @ngdoc method
          * @name hs.utils.layerUtilsService#isLayerWMS
          * @param {Ol.layer} layer Selected layer
          * @returns {Boolean} True for ol.layer.Tile and ol.layer.Image

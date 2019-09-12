@@ -9,6 +9,7 @@ export default {
         'hs.legend.service',
         function ($scope, Core, $compile, utils, layerUtils, config, OlMap,
             LayMan, $rootScope, WMST, legendService) {
+            $scope.LayMan = LayMan;
             $scope.data = LayMan.data;
             $scope.Core = Core;
             $scope.utils = utils;
@@ -90,15 +91,14 @@ export default {
              * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
              */
 
-            $scope.setCurrentLayer = function (layer, index, path) {
+            $scope.setCurrentLayer = function (layer) {
                 LayMan.currentLayer = layer;
-                $scope.currentLayer = LayMan.currentLayer;
                 if (WMST.layerIsWmsT(layer)) {
                     LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
                     LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
                 }
                 var layerPanel = document.getElementsByClassName('layerpanel');
-                var layerNode = document.getElementById('layer' + (path || '') + (index || ''));
+                var layerNode = document.getElementById(layer.idString());
                 utils.insertAfter(layerPanel, layerNode);
                 $scope.legendDescriptors = [];
                 var tmpDescriptor = (layer ? legendService.getLayerLegendDescriptor(layer.layer) : false);
@@ -107,14 +107,12 @@ export default {
                 return false;
             }
 
-            $scope.currentLayer = LayMan.currentLayer;
-            $scope.toggleCurrentLayer = function (layer, index, path) {
+            $scope.toggleCurrentLayer = function (layer) {
                 if (LayMan.currentLayer == layer) {
                     LayMan.currentLayer = null;
                 } else {
-                    $scope.setCurrentLayer(layer, index, path)
+                    $scope.setCurrentLayer(layer)
                 }
-                $scope.currentLayer = LayMan.currentLayer;
                 return false;
             }
 
@@ -126,40 +124,7 @@ export default {
            */
             $scope.removeLayer = function (layer) {
                 map.removeLayer(layer);
-            }
-
-
-
-            /** 
-             * @function dragged
-             * @memberOf hs.layermanager.controller
-             * @param {unknow} event
-             * @param {unknown} index
-             * @param {unknown} item
-             * @param {unknown} type
-             * @param {unknown} external
-             * @param {Array} layerTitles Array of layer titles of group in which layer should be moved in other position
-             * Callback for dnd-drop event to change layer position in layer manager structure (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop). 
-             * This is called from layerlistDirective
-             */
-            $scope.draggedCont = function (event, index, item, type, external, layerTitles) {
-                if (layerTitles.indexOf(item) < index) index--; //Must take into acount that this item will be removed and list will shift
-                var to_title = layerTitles[index];
-                var to_index = null;
-                var item_index = null;
-                var layers = OlMap.map.getLayers();
-                //Get the position where to drop the item in the map.getLayers list and which item to remove. because we could be working only within a folder so layer_titles is small
-                for (var i = 0; i < layers.getLength(); i++) {
-                    if (layers.item(i).get('title') == to_title) to_index = i;
-                    if (layers.item(i).get('title') == item) item_index = i;
-                    if (index > layerTitles.length) to_index = i + 1; //If dragged after the last item
-                }
-                var item_layer = layers.item(item_index);
-                map.getLayers().removeAt(item_index);
-                map.getLayers().insertAt(to_index, item_layer);
-                LayMan.updateLayerOrder();
-                $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
-            }           
+            }         
 
             /**
              * @function removeAllLayers
@@ -244,7 +209,6 @@ export default {
                     var layerNode = document.getElementsByClassName('hs-lm-mapcontentlist')[0];
                     utils.insertAfter(layerPanel, layerNode);
                     LayMan.currentLayer = null;
-                    $scope.currentLayer = LayMan.currentLayer;
                 }
             });
 
