@@ -3,7 +3,7 @@ import { DoubleClickZoom, KeyboardPan, KeyboardZoom, MouseWheelZoom, PinchRotate
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
 import View from 'ol/View';
-import { MousePosition, defaults as controlDefaults } from 'ol/control';
+import { MousePosition, ScaleLine, defaults as controlDefaults } from 'ol/control';
 import { createStringXY } from 'ol/coordinate';
 import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
@@ -68,9 +68,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
             me.map.getLayers().clear();
         }
         me.map = new Map({
-            controls: controlDefaults({
-                zoom: false
-            }),
+            controls: me.controls,
             target: 'map',
             interactions: [],
             view: cloneView(config.default_view || createPlaceholderView())
@@ -149,6 +147,21 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @description Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
      */
     this.duration = 400;
+
+    /**
+     * @ngdoc property
+     * @name hs.map.service#controls
+     * @public
+     * @type {Object} 
+     * @description Set of default map controls used in HSLayers, may be loaded from config file
+     */
+    var defaultDesktopControls = controlDefaults();
+    defaultDesktopControls.push(new ScaleLine());
+    var defaultMobileControls = controlDefaults({
+        zoom: false
+    });
+    this.controls =  angular.isDefined(config.mapControls) ? config.mapControls :
+        !!window.cordova ? defaultMobileControls : defaultDesktopControls;
 
     /**
      * @ngdoc property
