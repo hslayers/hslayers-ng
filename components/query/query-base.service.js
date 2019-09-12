@@ -126,17 +126,19 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
         }
 
         this.activateQueries = function () {
+            if (me.queryActive) return;
             me.queryActive = true;
             OlMap.loaded().then(map => {
                 map.addLayer(me.queryLayer);
-                $rootScope.$broadcast('queryStatusChanged');
+                $rootScope.$broadcast('queryStatusChanged', true);
             });
         };
         this.deactivateQueries = function () {
+            if (!me.queryActive) return;
             me.queryActive = false;
             OlMap.loaded().then(map => {
                 map.removeLayer(me.queryLayer);
-                $rootScope.$broadcast('queryStatusChanged');
+                $rootScope.$broadcast('queryStatusChanged', false);
             })
         };
 

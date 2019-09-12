@@ -1,5 +1,5 @@
-export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.save-map.service', 'config',
-    function ($rootScope, $http, $location, $window, OlMap, Core, utils, saveMap, config) {
+export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.save-map.service', 'config', 'hs.language.service',
+    function ($rootScope, $http, $location, $window, OlMap, Core, utils, saveMap, config, languageService) {
 
         var url_generation = true;
         //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
@@ -46,7 +46,7 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
                 me.push('hs_x', view.getCenter()[0]);
                 me.push('hs_y', view.getCenter()[1]);
                 me.push('hs_z', view.getZoom());
-                if (Core.language) me.push('lang', Core.language);
+                if (languageService.language) me.push('lang', languageService.language);
                 me.push('visible_layers', visible_layers.join(";"));
                 if (Core.puremapApp) me.push('puremap', "true");
                 for (var cP in me.customParams) {
@@ -217,7 +217,7 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
                     })
                 });
                 if (me.getParamValue('lang')) {
-                    Core.setLanguage(me.getParamValue('lang'));
+                    languageService.setLanguage(me.getParamValue('lang'));
                 }
             }
         }

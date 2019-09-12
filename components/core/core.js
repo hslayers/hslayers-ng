@@ -479,35 +479,6 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 },
                 /**
                 * @ngdoc method
-                * @name Core#setLanguage 
-                * @public
-                * @param {String} lang Language to select
-                * @description Set current active language for translating. (Currently cs and nl options supported).
-                */
-                setLanguage: function (lang) {
-                    switch (lang) {
-                        case "cs_CZ":
-                            lang = 'cs';
-                            break;
-                        case "nl_BE":
-                            lang = 'nl';
-                            break;
-                    }
-                    gettextCatalog.setCurrentLanguage(lang);
-                    me.language = lang;
-                },
-                /**
-                * @ngdoc method
-                * @name Core#getCurrentLanguagePrefix 
-                * @public
-                * @description Get code of current language
-                */
-                getCurrentLanguageCode: function () {
-                    if (typeof me.language == 'undefined' || me.language == '') return 'EN';
-                    return me.language.substr(0, 2).toUpperCase();
-                },
-                /**
-                * @ngdoc method
                 * @name Core#searchVisible 
                 * @public
                 * @param {booelan} is New status of search panel

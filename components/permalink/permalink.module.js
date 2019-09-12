@@ -2,13 +2,14 @@ import 'components/compositions/compositions.module';
 import permalinkUrlService from './permalink-url.service';
 import permalinkShareService from './permalink-share.service';
 import permalinkComponent from './permalink.component';
+import 'language.module';
 
 /**
  * @namespace hs.permalink
  * @memberOf hs
  */
 
-var module = angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.save-map', 'hs.compositions']);
+var module = angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.save-map', 'hs.compositions', 'hs.language']);
 
 module.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode({

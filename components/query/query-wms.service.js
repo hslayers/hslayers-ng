@@ -2,11 +2,11 @@ import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import { Tile, Image as ImageLayer } from 'ol/layer';
 
-export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.service', 'hs.utils.service', 'Core',
-    function ($rootScope, $http, $sce, Base, OlMap, utils, Core) {
+export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.service', 'hs.utils.service', 'Core', 'hs.language.service',
+    function ($rootScope, $http, $sce, Base, OlMap, utils, Core, languageService) {
         var me = this;
 
-        me.InfoCounter = 0;
+        me.infoCounter = 0;
 
         this.request = function (url, infoFormat, coordinate, layer) {
             var req_url = utils.proxify(url, true);
@@ -160,8 +160,8 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
                     coordinate, viewResolution, source.getProjection() ? source.getProjection() : map.getView().getProjection(), {
                         'INFO_FORMAT': source.getParams().INFO_FORMAT
                     });
-                if (angular.isDefined(layer.get('featureInfoLang')) && angular.isDefined(layer.get('featureInfoLang')[Core.language])) {
-                    url = url.replace(source.getUrl(), layer.get('featureInfoLang')[Core.language]);
+                if (angular.isDefined(layer.get('featureInfoLang')) && angular.isDefined(layer.get('featureInfoLang')[languageService.language])) {
+                    url = url.replace(source.getUrl(), layer.get('featureInfoLang')[languageService.language]);
                 }
                 if (url) {
                     if (console) console.log(url);

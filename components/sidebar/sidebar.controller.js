@@ -1,6 +1,7 @@
-export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service',
-    function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, service) {
+export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service', 'hs.language.service',
+    function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, service, languageService) {
         $scope.Core = Core;
+        $scope.languageService = languageService;
         /**
          * Set current active panel in sidebar
          * @memberof hs.sidebar.controller

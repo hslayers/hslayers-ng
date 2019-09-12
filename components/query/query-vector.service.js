@@ -7,7 +7,11 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
 
         this.selector = new Select({
             condition: click,
-            multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false
+            multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false,
+            filter: function(feature, layer){
+                if (layer.get('queryable') === false) return false;
+                else return true;
+            }
         });
         $rootScope.$broadcast('vectorSelectorCreated', me.selector);
 

@@ -77,8 +77,8 @@
         <span class="sidebar-item-title">Sensors</span>
     </a>   
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.language.controller') && Core.panelEnabled('language')" ng-click="setMainPanel('language')" ng-class="{active: Core.mainpanel == 'language'}">
-        <span data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Change language'||translate}}">{{Core.getCurrentLanguageCode()}}</span>
+    <a href="#" class="sidebar-item list-group-item text-justify" ng-if="Core.exists('hs.language.controller') && Core.panelEnabled('language')" ng-click="setMainPanel('language')" ng-class="{active: Core.mainpanel == 'language'}">
+        <span data-toggle="tooltip" data-container="body" data-placement="auto" class="" title="{{'Change language'||translate}}">{{languageService.getCurrentLanguageCode().toUpperCase()}}</span>
         <span class="sidebar-item-title" translate>Change language</span>
     </a>
 
