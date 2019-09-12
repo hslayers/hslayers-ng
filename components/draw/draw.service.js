@@ -85,7 +85,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
             },
 
             stopDrawing() {
-                if(angular.isUndefined(me.draw)) return;
+                if (angular.isUndefined(me.draw) || me.draw == null) return;
                 try {
                     if (me.draw.getActive()) me.draw.finishDrawing();
                 } catch (ex) { }
