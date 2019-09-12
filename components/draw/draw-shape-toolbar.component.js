@@ -38,6 +38,21 @@ export default {
                         true //Activate drawing immediately
                     );
                 },
+                selectLayer(layer) {
+                    $scope.selectedLayer = layer;
+                    $scope.layersExpanded = false;
+                },
+                selectedLayerString() {
+                    if ($scope.selectedLayer) {
+                        return $scope.selectedLayer.get('title') || $scope.selectedLayer.get('name')
+                    } else return 'Select layer'
+                },
+                toggleDrawToolbar() {
+                    $scope.drawToolabrExpanded = !$scope.drawToolabrExpanded;
+                    if (!$scope.drawToolabrExpanded) {
+                        drawService.stopDrawing()
+                    }
+                },
                 onDrawEnd(e) {
                     if (angular.isUndefined($scope.selectedLayer.get('editor')))
                         return;
