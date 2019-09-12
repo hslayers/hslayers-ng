@@ -52,6 +52,10 @@ new ol.View({
 })
 ```
 
+**mapControls**
+
+Override list of openlayers controls to use on the map
+
 ## Layer manager
 
 **layer_order**
