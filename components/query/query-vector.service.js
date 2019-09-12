@@ -1,5 +1,7 @@
-import {Select} from 'ol/interaction';
-import {click, pointerMove, altKeyOnly} from 'ol/events/condition.js';
+import { Select } from 'ol/interaction';
+import { click, pointerMove, altKeyOnly } from 'ol/events/condition.js';
+import * as extent from 'ol/extent';
+import { toLonLat } from 'ol/proj.js';
 
 export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 'config',
     function ($rootScope, Base, $sce, OlMap, Config) {
@@ -53,13 +55,17 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
             $rootScope.$broadcast('queryVectorResult');
         }
 
-        function getFeatureLayerName(feature){
+        function getFeatureLayerName(feature) {
             var layer = feature.getLayer(OlMap.map);
             if (angular.isUndefined(layer) || angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager') === false) return '';
             var layerName = layer.get("title") || layer.get("name");
             return layerName
         }
-
+        function getCentroid(feature) {
+            if (angular.isUndefined(feature)) return;
+            var center = extent.getCenter(feature.getGeometry().getExtent());
+            return center;
+        }
         /**
         * @function getFeatureAttributes
         * @memberOf hs.query.controller
@@ -94,15 +100,16 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                     attributes.push(obj);
                 }
             });
-            
+
             var featureDescription = {
                 layer: getFeatureLayerName(feature),
                 name: "Feature",
                 attributes: attributes,
+                stats: [{ name: "center", value: toLonLat(getCentroid(feature)) }],
                 hstemplate,
                 feature
             };
             tmp.push(featureDescription);
-            return tmp;            
+            return tmp;
         }
     }]
