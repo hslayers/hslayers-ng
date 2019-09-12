@@ -16,7 +16,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'h
      */
     this.init = function () {
         Cesium.Ion.defaultAccessToken = config.cesiumAccessToken || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
-        window.CESIUM_BASE_URL = config.cesiumBase || Core.getNmPath() + 'cesium/Build/Cesium/';
+        window.CESIUM_BASE_URL = config.cesiumBase;
         var terrain_provider = config.terrain_provider || Cesium.createWorldTerrain(config.createWorldTerrainOptions);
         if (config.newTerrainProviderOptions) terrain_provider = new Cesium.CesiumTerrainProvider(config.newTerrainProviderOptions);
 
@@ -47,12 +47,12 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'h
             // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
             skyBox: new Cesium.SkyBox({
                 sources: {
-                    positiveX: config.cesiumBase || (Core.getNmPath() + 'cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
-                    negativeX: config.cesiumBase || (Core.getNmPath() + 'cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
-                    positiveY: config.cesiumBase || (Core.getNmPath() + 'cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
-                    negativeY: config.cesiumBase || (Core.getNmPath() + 'cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
-                    positiveZ: config.cesiumBase || (Core.getNmPath() + 'cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
-                    negativeZ: config.cesiumBase || (Core.getNmPath() + 'cesium/Build/Cesium/') + '/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
+                    positiveX: (config.cesiumBase || 'node_modules/cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
+                    negativeX: (config.cesiumBase || 'node_modules/cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
+                    positiveY: (config.cesiumBase || 'node_modules/cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
+                    negativeY: (config.cesiumBase || 'node_modules/cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
+                    positiveZ: (config.cesiumBase || 'node_modules/cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
+                    negativeZ: (config.cesiumBase || 'node_modules/cesium/Build/Cesium/') + 'Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
                 }
             }),
             // Show Columbus View map with Web Mercator projection

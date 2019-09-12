@@ -538,10 +538,6 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                         return "";
                     }
                 },
-
-                getNmPath: function () {
-                    return nm_path;
-                }
             };
 
             $templateCache.removeAll();
