@@ -8,12 +8,13 @@ import queryWmsService from './query-wms.service';
 import queryVectorService from './query-vector.service';
 import queryController from './query.controller';
 import featureComponent from './feature.component.js';
+import 'language.module';
 
 /**
  * @namespace hs.query
  * @memberOf hs
  */
-angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize'])
+angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize', 'hs.language'])
     /**
     * @ngdoc directive
     * @name hs.query.directiveInfopanel
