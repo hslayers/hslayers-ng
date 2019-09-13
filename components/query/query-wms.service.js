@@ -73,7 +73,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
                             name: featureName,
                             attributes: attributes
                         };
-                        Base.setData(group, 'groups');
+                        Base.setData(group, 'features');
                     });
                 });
                 doc.querySelectorAll("featureMember").forEach(function ($this) {
@@ -93,7 +93,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
                             updated = true;
                         }
                     }
-                    if (updated) Base.setData(group, 'groups');
+                    if (updated) Base.setData(group, 'features');
                 });
                 doc.querySelectorAll("msGMLOutput").forEach(function ($this) {
                     for (var layer_i in $this.children) {
@@ -119,7 +119,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
                                         updated = true;
                                     }
                                 }
-                                if (updated) Base.setData(group, 'groups');
+                                if (updated) Base.setData(group, 'features');
                             }
 
                         }
@@ -139,7 +139,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
 
         function queriesCollected(coordinate) {
             var invisiblePopup = Base.getInvisiblePopup();
-            if (Base.data.groups.length > 0 || invisiblePopup.contentDocument.body.innerHTML.length > 30) {
+            if (Base.data.features.length > 0 || invisiblePopup.contentDocument.body.innerHTML.length > 30) {
                 $rootScope.$broadcast('queryWmsResult', coordinate);
             }
         }

@@ -3,9 +3,10 @@
         <div class="col-12 m-2"><strong>{{$ctrl.feature.name}} in layer {{$ctrl.feature.layer}}</strong></div>
     </div>
     <hs.query.attribute-row ng-repeat="attribute in $ctrl.feature.attributes track by attribute.name | orderBy : 'name'"
-        template='$ctrl.feature.hstemplate' feature="$ctrl.feature" attribute='attribute'>
+        template='$ctrl.feature.hstemplate' feature="$ctrl.feature" attribute='attribute' readonly=false>
     </hs.query.attribute-row>
-    <hs.query.attribute-row ng-repeat="stat in $ctrl.feature.stats" feature="$ctrl.feature" attribute='stat'>
+    <hs.query.attribute-row ng-repeat="stat in $ctrl.feature.stats" feature="$ctrl.feature" attribute="stat"
+        readonly=true>
     </hs.query.attribute-row>
     <div class="row">
         <div class="col-12 m-2 text-right">
