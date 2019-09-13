@@ -4,7 +4,7 @@ import 'utils.module';
 export default {
     template: require('./partials/feature.html'),
     bindings: {
-        feature: '='
+        feature: '<'
     },
     controller: ['$scope', 'hs.utils.service', 'hs.utils.layerUtilsService', 'hs.map.service',
         function ($scope, utils, layerUtilsService, hsMap) {

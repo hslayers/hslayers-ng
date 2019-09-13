@@ -1,9 +1,10 @@
 export default {
     template: require('./partials/attribute-row.html'),
     bindings: {
-        attribute: '=',
-        feature: '=',
-        template: '='
+        attribute: '<',
+        feature: '<',
+        readonly: '@',
+        template: '<'
     },
     controller: ['$scope', function ($scope) {
         angular.extend($scope, {

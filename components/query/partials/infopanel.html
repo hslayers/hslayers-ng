@@ -1,7 +1,7 @@
 <div class="card panel-default mainpanel">
     <hs.layout.panel-header panel-name="info" panel-title="'Info'||translate"></hs.layout.panel-header>
     <div class="card-body">
-        <hs.query.feature ng-repeat="feature in data.features | orderBy : 'name'" feature="feature"></hs.query.feature>
+        <hs.query.feature ng-repeat="item in data.features | orderBy : 'name'" feature="item"></hs.query.feature>
         <table class="table table-striped" style="table-layout:fixed" ng-show="data.attributes.length > 0">
             <tr ng-repeat="attribute in data.attributes | orderBy : name">
                 <td class="first-col">{{attribute.name}}</td>
@@ -13,7 +13,7 @@
                 <div class="col-12 m-2"><strong>{{data.coordinates[0].name}}</strong></div>
             </div>
             <div class="row" ng-repeat="projection in data.coordinates[0].projections | orderBy : name">
-                <div class="input-group m-1" >
+                <div class="input-group m-1">
                     <div class="input-group-prepend">
                         <span class="input-group-text">{{projection.name}}</span>
                     </div>
