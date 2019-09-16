@@ -15,6 +15,9 @@ export default {
                 return $scope.$ctrl.feature.feature
             }
             angular.extend($scope, {
+                exportFormats: [
+                    {name: 'WKT format'}
+                ],
                 isFeatureRemovable() {
                     let source = olSource();
                     let layer = olFeature().getLayer(hsMap.map);
@@ -27,7 +30,7 @@ export default {
                         source.removeFeature(olFeature());
                     $scope.$emit('infopanel.featureRemoved', $scope.$ctrl.feature);
                 },
-                zoomToFeature(){
+                zoomToFeature() {
                     let extent = olFeature().getGeometry().getExtent();
                     hsMap.map.getView().fit(extent, hsMap.map.getSize());
                 }
