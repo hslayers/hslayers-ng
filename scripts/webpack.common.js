@@ -10,8 +10,6 @@
  *   `'ngInject';` or `@ngInject` in comments. See https://docs.angularjs.org/guide/di
  */
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 const hslPaths = require(path.join( __dirname, '..', 'common_paths')); //TODO this should not be necessary
 
