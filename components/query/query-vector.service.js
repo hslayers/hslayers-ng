@@ -61,8 +61,9 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                 var wktRepresentation = formatWKT.writeFeature(feature);
                 var data = new Blob([wktRepresentation], { type: 'text/plain' });
                 var url = window.URL.createObjectURL(data);
-                document.getElementById('exportLink').href = url;
-                window.URL.revokeObjectURL(url);
+                if(me.exportedFeatureHref)
+                    window.URL.revokeObjectURL(me.exportedFeatureHref);
+                me.exportedFeatureHref = url;
             } else return;
         }
         function getFeatureLayerName(feature) {

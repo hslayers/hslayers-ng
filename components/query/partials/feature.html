@@ -18,7 +18,7 @@
                         class="icon-download"></i></button>
                 <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': exportMenuVisible}"
                     aria-labelledby="dropdownMenuBtn">
-                    <a class="dropdown-item" id="exportLink" download="{{format.name}}_file.txt" href="#"
+                    <a class="dropdown-item" download="{{format.name}}_file.txt" ng-href="{{queryVectorService.exportedFeatureHref}}"
                         ng-repeat="format in exportFormats"
                         ng-click="exportData(format.name,$ctrl.feature.feature);">{{format.name}}</a>
                 </div>

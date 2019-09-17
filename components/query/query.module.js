@@ -77,4 +77,10 @@ angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize', 'hs.language'])
     * @memberOf hs.query
     * @description TODO
     */
-    .controller('hs.query.controller', queryController);
+    .controller('hs.query.controller', queryController)
+    
+    .config(['$compileProvider',
+        function($compileProvider) {
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|blob):/);
+        }
+    ]);
