@@ -21,6 +21,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
                 })]
             }),
             show_in_manager: false,
+            show_in_legend: false,
             removable: false,
             style: pointClickedStyle
         });
