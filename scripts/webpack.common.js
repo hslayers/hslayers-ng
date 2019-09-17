@@ -13,18 +13,24 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+const hslPaths = require(path.join( __dirname, '..', 'common_paths')); //TODO this should not be necessary
 
 module.exports = {
-  entry: 'app.js',
+  entry: path.resolve(__dirname, '../app.js'),
   output: {
     // Path where bundled files will be output
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../dist'),
     filename: 'hslayers-ng.js',
     library: 'hslayers-ng',
     libraryTarget:'umd'
   },
   // Just for build speed improvement
-  resolve: { symlinks: false},
+  resolve: { symlinks: true,  
+    modules: [
+      path.join(__dirname, '..'),
+      "../node_modules",
+    ].concat(hslPaths.paths)
+  },
   plugins: [
     // Clean before build
     //new CleanWebpackPlugin()
