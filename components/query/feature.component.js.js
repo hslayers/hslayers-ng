@@ -6,8 +6,8 @@ export default {
     bindings: {
         feature: '<'
     },
-    controller: ['$scope', 'hs.utils.service', 'hs.utils.layerUtilsService', 'hs.map.service',
-        function ($scope, utils, layerUtilsService, hsMap) {
+    controller: ['$scope', 'hs.utils.service', 'hs.utils.layerUtilsService', 'hs.map.service', 'hs.query.vectorService',
+        function ($scope, utils, layerUtilsService, hsMap, vectorService) {
             let olSource = () => {
                 return olFeature().getLayer(hsMap.map).getSource()
             }
@@ -16,7 +16,7 @@ export default {
             }
             angular.extend($scope, {
                 exportFormats: [
-                    {name: 'WKT format'}
+                    { name: 'WKT format' }
                 ],
                 isFeatureRemovable() {
                     let source = olSource();
@@ -24,6 +24,7 @@ export default {
                     return utils.instOf(source, VectorSource)
                         && layerUtilsService.isLayerEditable(layer);
                 },
+                exportData: vectorService.exportData,
                 removeFeature() {
                     let source = olSource();
                     if (utils.instOf(source, VectorSource))

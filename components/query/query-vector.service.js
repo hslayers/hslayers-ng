@@ -2,6 +2,7 @@ import { Select } from 'ol/interaction';
 import { click, pointerMove, altKeyOnly } from 'ol/events/condition.js';
 import * as extent from 'ol/extent';
 import { toLonLat } from 'ol/proj.js';
+import { WKT } from 'ol/format';
 
 export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 'config',
     function ($rootScope, Base, $sce, OlMap, Config) {
@@ -10,7 +11,7 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         this.selector = new Select({
             condition: click,
             multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false,
-            filter: function(feature, layer){
+            filter: function (feature, layer) {
                 if (layer.get('queryable') === false) return false;
                 else return true;
             }
@@ -54,7 +55,16 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
             Base.setData(featureDescriptions, 'features');
             $rootScope.$broadcast('queryVectorResult');
         }
-
+        me.exportData = (clickedFormat, feature) => {
+            if (clickedFormat == 'WKT format') {
+                var formatWKT = new WKT();
+                var wktRepresentation = formatWKT.writeFeature(feature);
+                var data = new Blob([wktRepresentation], { type: 'text/plain' });
+                var url = window.URL.createObjectURL(data);
+                document.getElementById('exportLink').href = url;
+                window.URL.revokeObjectURL(url);
+            } else return;
+        }
         function getFeatureLayerName(feature) {
             var layer = feature.getLayer(OlMap.map);
             if (angular.isUndefined(layer) || angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager') === false) return '';
