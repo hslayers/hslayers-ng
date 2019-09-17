@@ -10,16 +10,21 @@
         readonly=true>
     </hs.query.attribute-row>
     <div class="row">
-        <div class="col-12 m-2 text-right" class="dropdown">
-            <button class="btn btn-primary btn-sm" ng-click="zoomToFeature()"><i class="icon-search"></i></button>
-            <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                id="dropdownMenuBtn" aris-haspopup="true"><i class="icon-download"></i></button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuBtn">
-                <a class="dropdown-item" id="exportLink" download="{{format.name}}_file.txt" href=""
-                    ng-repeat="format in exportFormats"
-                    ng-click="exportData(format.name,$ctrl.feature.feature)">{{format.name}}</a>
-            </div> <button class="btn btn-danger btn-sm" ng-click="removeFeature()" ng-if="isFeatureRemovable()"><i
-                    class="icon-trash"></i></button>
+        <div class="col-6 offset-6 mb-2 text-right">
+            <div class="btn-group">
+                <button class="btn btn-primary btn-sm" ng-click="zoomToFeature()"><i class="icon-search"></i></button>
+                <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                    id="dropdownMenuBtn" aris-haspopup="true" ng-click="exportMenuVisible = !exportMenuVisible"><i
+                        class="icon-download"></i></button>
+                <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': exportMenuVisible}"
+                    aria-labelledby="dropdownMenuBtn">
+                    <a class="dropdown-item" id="exportLink" download="{{format.name}}_file.txt" href="#"
+                        ng-repeat="format in exportFormats"
+                        ng-click="exportData(format.name,$ctrl.feature.feature);">{{format.name}}</a>
+                </div>
+                <button class="btn btn-danger btn-sm" ng-click="removeFeature()" ng-if="isFeatureRemovable()"><i
+                        class="icon-trash"></i></button>
+            </div>
         </div>
     </div>
     <hr />
