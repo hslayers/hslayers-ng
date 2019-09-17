@@ -1,5 +1,7 @@
 import { TileWMS, WMTS } from 'ol/source';
-import {ImageWMS, ImageArcGISRest} from 'ol/source';
+import { ImageWMS, ImageArcGISRest } from 'ol/source';
+import VectorLayer from 'ol/layer/Vector';
+import {Icon} from 'ol/style';
 
 export default ['hs.utils.service', function (utils) {
     var me = {};
@@ -15,6 +17,17 @@ export default ['hs.utils.service', function (utils) {
         isLegendable: function (layer) {
             if (['vector', 'wms'].indexOf(layer.type) > -1 && layer.lyr.getVisible()) return true;
             return false;
+        },
+        /** 
+         * Style VectorLayer
+         * @memberof hs.legend.service
+         * @function getStyleVectorLayer
+         * @returns {style}
+         */
+        getStyleVectorLayer: function (layer) {
+            var style = layer.getStyle();
+            var image = style.getImage();
+         
         },
 
         /**
@@ -64,12 +77,13 @@ export default ['hs.utils.service', function (utils) {
                     subLayerLegends: subLayerLegends,
                     visible: layer.getVisible()
                 };
-            } else if (layer.getSource().legend_categories) {
+            } else if (utils.instOf(layer, VectorLayer) && (angular.isUndefined(layer.get('show_in_legend')) || layer.get('show_in_legend') == true)) {
                 return {
                     title: layer.get("title"),
                     lyr: layer,
                     type: 'vector',
-                    visible: layer.getVisible()
+                    visible: layer.getVisible(),
+                    style: me.getStyleVectorLayer(layer)
                 };
             } else return undefined;
         }
