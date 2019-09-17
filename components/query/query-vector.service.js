@@ -57,12 +57,13 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         }
         me.exportData = (clickedFormat, feature) => {
             if (clickedFormat == 'WKT format') {
+                window.URL.revokeObjectURL(url);
                 var formatWKT = new WKT();
                 var wktRepresentation = formatWKT.writeFeature(feature);
                 var data = new Blob([wktRepresentation], { type: 'text/plain' });
                 var url = window.URL.createObjectURL(data);
                 document.getElementById('exportLink').href = url;
-                window.URL.revokeObjectURL(url);
+
             } else return;
         }
         function getFeatureLayerName(feature) {
