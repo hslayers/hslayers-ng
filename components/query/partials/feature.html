@@ -15,7 +15,9 @@
             <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
                 id="dropdownMenuBtn" aris-haspopup="true"><i class="icon-download"></i></button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuBtn">
-                <a class="dropdown-item" ng-repeat="format in exportFormats" href="#">{{format.name}}</a>
+                <a class="dropdown-item" id="exportLink" download="{{format.name}}_file.txt" href=""
+                    ng-repeat="format in exportFormats"
+                    ng-click="exportData(format.name,$ctrl.feature.feature)">{{format.name}}</a>
             </div> <button class="btn btn-danger btn-sm" ng-click="removeFeature()" ng-if="isFeatureRemovable()"><i
                     class="icon-trash"></i></button>
         </div>

@@ -1,7 +1,7 @@
 import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
-import {Icon} from 'ol/style';
+import { Icon } from 'ol/style';
 
 export default ['hs.utils.service', function (utils) {
     var me = {};
@@ -26,8 +26,8 @@ export default ['hs.utils.service', function (utils) {
          */
         getStyleVectorLayer: function (layer) {
             var style = layer.getStyle();
-            var image = style.getImage();
-         
+            // var image = style.getImage();
+
         },
 
         /**
