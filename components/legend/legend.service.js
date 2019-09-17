@@ -1,7 +1,7 @@
 import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
-import { Icon } from 'ol/style';
+import { Style, Icon } from 'ol/style';
 
 export default ['hs.utils.service', function (utils) {
     var me = {};
@@ -24,10 +24,33 @@ export default ['hs.utils.service', function (utils) {
          * @function getStyleVectorLayer
          * @returns {style}
          */
-        getStyleVectorLayer: function (layer) {
-            var style = layer.getStyle();
-            // var image = style.getImage();
+        getStyleVectorLayer: function (currentLayer) {
+            if (angular.isUndefined(currentLayer)) return;
+            var style = new Style();
+            style = currentLayer.getStyle();
+            var image = style.getImage();
+            if (image) {
+                if (utils.instOf(image, Icon)) {
+                    var icon2 = new Icon(({
+                        src: image.getSrc()
+                    }))
+                    var iconStyle2 = new Style({
+                        image: icon2
+                    });
+                    var row = {};
+                    row.style = iconStyle2;
+                    row.title = currentLayer.get('title');
 
+                } else {
+                    var row = {};
+                    row.style = style;
+                    row.title = currentLayer.get('title');
+                }
+            } else {
+                var row = {};
+                row.style = style;
+                row.title = currentLayer.get('title');
+            }
         },
 
         /**
