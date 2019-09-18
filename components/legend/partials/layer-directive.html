@@ -1,8 +1,12 @@
-<div>
+<div class="row">
+    <div class="col-12 m-2">
+        {{layer.style.title}}
+        <img style="width: 35px;" ng-src="{{layer.style.style.src}}">
+    </div>
     <img ng-repeat="sublayer in layer.subLayerLegends" ng-if="layer.type == 'wms'" ng-src="{{sublayer}}"
-    onerror=" this.parentNode.removeChild(this); "
-    onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
-<p ng-repeat="category in layer.lyr.getSource().legend_categories" ng-if="layer.type == 'vector'"><span
-        style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
-</p>
+        onerror=" this.parentNode.removeChild(this); "
+        onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
+    <p ng-repeat="category in layer.lyr.getSource().legend_categories" ng-if="layer.type == 'vector'"><span
+            style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
+    </p>
 </div>
