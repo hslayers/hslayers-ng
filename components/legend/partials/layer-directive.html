@@ -1,12 +1,31 @@
-<div class="row">
-    <div class="col-12 m-2">
-        {{layer.style.title}}
-        <img style="width: 35px;" ng-src="{{layer.style.style.src}}">
+<div class="row" ng-if="layer.style.icon">
+    <div class="col-sm-6">
+        <img ng-style="{{layer.style.icon}}" ng-src="{{layer.style.icon.src}}">
     </div>
-    <img ng-repeat="sublayer in layer.subLayerLegends" ng-if="layer.type == 'wms'" ng-src="{{sublayer}}"
-        onerror=" this.parentNode.removeChild(this); "
-        onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
-    <p ng-repeat="category in layer.lyr.getSource().legend_categories" ng-if="layer.type == 'vector'"><span
-            style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
-    </p>
+    <div class="col-sm-6">
+        Marker
+    </div>
 </div>
+<div class="row" ng-if="layer.style.styleFill">
+    <div class="col-sm-6">
+        <div ng-style="{{layer.style.styleFill}}">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        Fill
+    </div>
+</div>
+<div class="row" ng-if="layer.style.styleStroke">
+    <div class="col-sm-6">
+        <div ng-style="{{layer.style.styleStroke}}">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        Stroke
+    </div>
+</div>
+<img ng-repeat="sublayer in layer.subLayerLegends" ng-if="layer.type == 'wms'" ng-src="{{sublayer}}"
+    onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
+<p ng-repeat="category in layer.lyr.getSource().legend_categories" ng-if="layer.type == 'vector'"><span
+        ng-style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
+</p>
