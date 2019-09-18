@@ -34,28 +34,28 @@ export default ['hs.utils.service', function (utils) {
                 var stroke = style.getStroke();
                 var fill = style.getFill();
                 if (image && utils.instOf(image, Icon)) {
-                    row.icon = { type: 'icon', src: image.getSrc(), width: '35px', height: '35px'};
+                    row.icon = { type: 'icon', src: image.getSrc(), width: '35px', height: '35px' };
                     if (!stroke && !fill) {
                     } else if (stroke && fill) {
-                        row.styleStroke = { type: 'stroke', minWidth: '35px', maxWidth: '35px', minHeight: '35px', borderBottom: "thick solid", borderColor: stroke.getColor() };
+                        row.styleStroke = { type: 'stroke', minWidth: '35px', maxWidth: '35px', minHeight: '17px', maxHeight: '17px', borderBottom: "thick solid", borderColor: stroke.getColor() };
                         row.styleFill = { type: 'fill', backgroundColor: fill.getColor(), maxWidth: '35px', minWidth: '35px', minHeight: '35px', border: "3px solid", borderColor: stroke.getColor() };
                     } else {
                         if (fill) {
                             row.styleFill = { type: 'fill', backgroundColor: fill.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px' };
 
                         } else {
-                            row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px', borderBottom: "thick solid", borderColor: stroke.getColor() };
+                            row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '17px', maxHeight: '17px', borderBottom: "thick solid", borderColor: stroke.getColor() };
                         }
                     }
                 } else if (!stroke && !fill) {
                 } else if (stroke && fill) {
-                    row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px', borderBottom: "thick solid", borderColor: stroke.getColor() };
+                    row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '17px', maxHeight: '17px', borderBottom: "thick solid", borderColor: stroke.getColor() };
                     row.styleFill = { type: 'fill', backgroundColor: fill.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px', border: "3px solid", borderColor: stroke.getColor() };
                 } else {
                     if (fill) {
                         row.styleFill = { type: 'fill', backgroundColor: fill.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px' };
                     } else {
-                        row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px', borderBottom: "thick solid", borderColor: stroke.getColor() };
+                        row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '17px', maxHeight: '17px', borderBottom: "thick solid", borderColor: stroke.getColor() };
                     }
                 }
             } else {
