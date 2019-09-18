@@ -28,58 +28,39 @@ export default ['hs.utils.service', function (utils) {
             if (angular.isUndefined(currentLayer)) return;
             var style = new Style();
             style = currentLayer.getStyle();
+            var row = {};
             if (typeof style !== "function") {
                 var image = style.getImage();
                 var stroke = style.getStroke();
                 var fill = style.getFill();
                 if (image && utils.instOf(image, Icon)) {
-                    var row = {};
-                    row.style = { type: 'icon', src: image.getSrc() };
-                    row.title = currentLayer.get('title');
+                    row.icon = { type: 'icon', src: image.getSrc(), width: '35px', height: '35px'};
                     if (!stroke && !fill) {
-                        console.log("There is only image");
                     } else if (stroke && fill) {
-                        console.log("There is stroke,fill and image");
+                        row.styleStroke = { type: 'stroke', minWidth: '35px', maxWidth: '35px', minHeight: '35px', borderBottom: "thick solid", borderColor: stroke.getColor() };
+                        row.styleFill = { type: 'fill', backgroundColor: fill.getColor(), maxWidth: '35px', minWidth: '35px', minHeight: '35px', border: "3px solid", borderColor: stroke.getColor() };
                     } else {
                         if (fill) {
-                            console.log("There is  fill and image");
+                            row.styleFill = { type: 'fill', backgroundColor: fill.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px' };
+
                         } else {
-                            console.log("There is stroke and image");
+                            row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px', borderBottom: "thick solid", borderColor: stroke.getColor() };
                         }
                     }
                 } else if (!stroke && !fill) {
-                    console.log("There is no style");
                 } else if (stroke && fill) {
-                    console.log("There is stroke and fill");
+                    row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px', borderBottom: "thick solid", borderColor: stroke.getColor() };
+                    row.styleFill = { type: 'fill', backgroundColor: fill.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px', border: "3px solid", borderColor: stroke.getColor() };
                 } else {
                     if (fill) {
-                        console.log("There is  fill");
+                        row.styleFill = { type: 'fill', backgroundColor: fill.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px' };
                     } else {
-                        console.log("There is stroke");
+                        row.styleStroke = { type: 'stroke', color: stroke.getColor(), minWidth: '35px', maxWidth: '35px', minHeight: '35px', borderBottom: "thick solid", borderColor: stroke.getColor() };
                     }
                 }
             } else {
-                var row = {};
-                row.style = style;
-                row.title = currentLayer.get('title');
             }
             return row;
-            //     switch (style) {
-            //         case style.getImage():
-            //             console.log("There is an image")
-            //             break;
-            //         case style.getStroke && style.getFill:
-            //             console.log("There is stroke and fill")
-            //             break;
-            //         case style.getStroke:
-            //             console.log("There is stroke")
-            //             break;
-            //         case style.getFill:
-            //             console.log("There is fill")
-            //             break;
-            //         default:
-            //     }
-            // } else return;
         },
 
         /**
