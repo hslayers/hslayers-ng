@@ -38,7 +38,7 @@
     "karma-junit-reporter": "^1.2.0",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-requirejs": "^1.1.0",
-    "mini-css-extract-plugin": "^0.6.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "ng-cache-loader": "0.0.26",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "phantomjs-prebuilt": "^2.1.16",
