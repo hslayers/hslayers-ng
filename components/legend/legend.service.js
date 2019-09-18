@@ -28,29 +28,58 @@ export default ['hs.utils.service', function (utils) {
             if (angular.isUndefined(currentLayer)) return;
             var style = new Style();
             style = currentLayer.getStyle();
-            var image = style.getImage();
-            if (image) {
-                if (utils.instOf(image, Icon)) {
-                    var icon2 = new Icon(({
-                        src: image.getSrc()
-                    }))
-                    var iconStyle2 = new Style({
-                        image: icon2
-                    });
+            if (typeof style !== "function") {
+                var image = style.getImage();
+                var stroke = style.getStroke();
+                var fill = style.getFill();
+                if (image && utils.instOf(image, Icon)) {
                     var row = {};
-                    row.style = iconStyle2;
+                    row.style = { type: 'icon', src: image.getSrc() };
                     row.title = currentLayer.get('title');
-
+                    if (!stroke && !fill) {
+                        console.log("There is only image");
+                    } else if (stroke && fill) {
+                        console.log("There is stroke,fill and image");
+                    } else {
+                        if (fill) {
+                            console.log("There is  fill and image");
+                        } else {
+                            console.log("There is stroke and image");
+                        }
+                    }
+                } else if (!stroke && !fill) {
+                    console.log("There is no style");
+                } else if (stroke && fill) {
+                    console.log("There is stroke and fill");
                 } else {
-                    var row = {};
-                    row.style = style;
-                    row.title = currentLayer.get('title');
+                    if (fill) {
+                        console.log("There is  fill");
+                    } else {
+                        console.log("There is stroke");
+                    }
                 }
             } else {
                 var row = {};
                 row.style = style;
                 row.title = currentLayer.get('title');
             }
+            return row;
+            //     switch (style) {
+            //         case style.getImage():
+            //             console.log("There is an image")
+            //             break;
+            //         case style.getStroke && style.getFill:
+            //             console.log("There is stroke and fill")
+            //             break;
+            //         case style.getStroke:
+            //             console.log("There is stroke")
+            //             break;
+            //         case style.getFill:
+            //             console.log("There is fill")
+            //             break;
+            //         default:
+            //     }
+            // } else return;
         },
 
         /**
