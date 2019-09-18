@@ -46,7 +46,7 @@
     "postcss-prefix-selector": "^1.7.2",
     "protractor": "^5.4.2",
     "release-it": "^12.4.0",
-    "style-loader": "^0.23.1",
+    "style-loader": "^1.0.0",
     "url-loader": "^2.1.0",
     "webpack": "^4.39.3",
     "webpack-build-notifier": "^1.1.1",
