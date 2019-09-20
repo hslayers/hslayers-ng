@@ -2,7 +2,7 @@
     <div class="card-header"><span class="panel-title">
             <translate>Style layer</translate> {{layerTitle}}
         </span>
-        <button type="button" class="close" ng-click="Core.setMainPanel('layermanager')">
+        <button type="button" class="close" ng-click="layermanager()">
             <span aria-hidden="true">×</span>
             <span class="sr-only" translate>Close</span>
         </button>
@@ -50,8 +50,7 @@
                 <div class="card-body">
 
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-secondary" ng-repeat="m in imagetypes"
-                            ng-click='setImageType(m.name)'>
+                        <label class="btn btn-secondary" ng-repeat="m in imagetypes" ng-click='setImageType(m.name)'>
                             <input type="radio" class="form-control layer-checked" ng-value="m.name"
                                 name="imagetype" />{{m.hrname}}
                         </label>
