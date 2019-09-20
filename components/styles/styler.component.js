@@ -125,7 +125,9 @@ function ($scope, service, $sce, Core, $http) {
         $scope.imagetype = t;
         $scope.save();
     }
-
+    $scope.layermanager = function(){
+        Core.setMainPanel('layermanager');
+    },
     $scope.$watch('linecolor', $scope.save);
     $scope.$watch('service.layer', updateHasVectorFeatures);
 
