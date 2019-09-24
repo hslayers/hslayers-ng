@@ -191,9 +191,8 @@ export default function (options) {
                                 }
                                 extendAttributes(options, objects);
                                 if (console) {
-                                    console.log('Add features', objects);
-                                    console.log(this);
-                                  }
+                                    console.log('Add features', objects)
+                                }
                                 this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                                 src.loadCounter -= 1;
                                 this.set('last_feature_count', Object.keys(objects).length);
