@@ -1,6 +1,6 @@
 import { WKT, GeoJSON } from 'ol/format';
-import {transform, transformExtent, get as getProj} from 'ol/proj';
-import {Polygon, LineString, GeometryType, Point} from 'ol/geom';
+import { transform, transformExtent, get as getProj } from 'ol/proj';
+import { Polygon, LineString, GeometryType, Point } from 'ol/geom';
 import Feature from 'ol/Feature';
 import { Vector } from 'ol/source';
 import * as loadingstrategy from 'ol/loadingstrategy';
@@ -48,10 +48,8 @@ function registerCategoryForStatistics(feature_object, options, feature, categor
 
 function loadFeatures(objects, src, options, occupied_xy, category_map, category_id) {
     var features = [];
-    var i = 0.0;
     var format = new WKT();
     for (var key in objects) {
-        i++;
         if (objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"] != "" && objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"] != "") {
             var x = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#long"]);
             var y = parseFloat(objects[key]["http://www.w3.org/2003/01/geo/wgs84_pos#lat"]);
@@ -66,6 +64,7 @@ function loadFeatures(objects, src, options, occupied_xy, category_map, category
             }
         }
         if (objects[key]["http://www.opengis.net/ont/geosparql#asWKT"]) {
+            console.log("foo");
             var g_feature = format.readFeature(objects[key]['http://www.opengis.net/ont/geosparql#asWKT'].toUpperCase());
             objects[key].geometry = g_feature.getGeometry();
             objects[key].geometry.transform('EPSG:4326', options.projection);
@@ -88,6 +87,7 @@ function loadFeatures(objects, src, options, occupied_xy, category_map, category
             features[i].color = rainbow(category_id, features[i].category_id, 0.7);
         }
     }
+    console.log(features);
     return features;
 }
 
@@ -121,12 +121,21 @@ export default function (options) {
             first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
             second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
             var extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-            var s_extent = 'FILTER(bif:st_intersects(bif:st_geomfromtext("BOX(' + extent[0] + ' ' + extent[1] + ', ' + extent[2] + ' ' + extent[3] + ')"), ' + options.geom_attribute + ')).';
+            var s_extent = encodeURIComponent('FILTER(geof:sfIntersects("POLYGON((' +
+                extent[0] + ' ' + extent[1] + ', ' +
+                extent[0] + ' ' + extent[3] + ', ' +
+                extent[2] + ' ' + extent[3] + ', ' +
+                extent[2] + ' ' + extent[1] + ', ' +
+                extent[0] + ' ' + extent[1] +
+                '))"^^geo:wktLiteral, ' + options.geom_attribute + ')).');
+            let tmp = p.split("&query=");
+            p = tmp[0] + "&query=" +
+                encodeURIComponent("PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n" +
+                "PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n") + tmp[1];
             p = p.replace("<extent>", s_extent);
             if (options.hsproxy)
                 p = "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + encodeURIComponent(p);
             if (console && typeof src.get('geoname') != 'undefined') console.log('Get ', src.get('geoname'));
-            if (console) console.log(s_extent);
             this.loadCounter += 1;
             this.loadTotal += 1;
             $.ajax({
@@ -139,6 +148,10 @@ export default function (options) {
                     src.loadCounter -= 1;
                     if (this.options.updates_url) {
                         var updates_query = this.options.updates_url;
+                        let tmp = updates_query.split("&query=");
+                        updates_query = tmp[0] + "&query=" +
+                            encodeURIComponent("PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n" +
+                            "PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n") + tmp[1];
                         updates_query = updates_query.replace("<extent>", s_extent);
                         src.loadCounter += 1;
                         src.loadTotal += 1;
@@ -149,38 +162,38 @@ export default function (options) {
                             .done(function (updates_response) {
                                 if (console && typeof this.get('geoname') != 'undefined')
                                     console.log('Finish updates ', this.get('geoname'), response.results.bindings.length, updates_response.results.bindings.length);
-                                var objects = {};
-                                for (var i = 0; i < response.results.bindings.length; i++) {
-                                    var b = response.results.bindings[i];
-                                    if (typeof objects[b.o.value] === 'undefined') {
-                                        objects[b.o.value] = {
-                                            'poi_id': b.o.value
+                                let objects = {};
+                                for (const item of response.results.bindings) {
+                                    if (typeof objects[item.o.value] === 'undefined') {
+                                        objects[item.o.value] = {
+                                            'poi_id': item.o.value
                                         };
                                     }
-                                    objects[b.o.value][b.p.value] = b.s.value;
+                                    objects[item.o.value][item.p.value] = item.s.value;
                                 }
-                                for (var i = 0; i < updates_response.results.bindings.length; i++) {
-                                    var b = updates_response.results.bindings[i];
-                                    var attribute_name = b.attr.value;
+                                for (const item of updates_response.results.bindings) {
+                                    let attribute_name = item.attr.value;
                                     //Because photos can be more than one
-                                    if (typeof objects[b.o.value][attribute_name] != 'undefined' && attribute_name == 'http://xmlns.com/foaf/0.1/depiction') {
-                                        for (var try_i = 1; try_i < 20; try_i++) {
-                                            if (typeof objects[b.o.value][attribute_name + try_i] == 'undefined') {
+                                    if (typeof objects[item.o.value][attribute_name] != 'undefined' && attribute_name == 'http://xmlns.com/foaf/0.1/depiction') {
+                                        for (let try_i = 1; try_i < 20; try_i++) {
+                                            if (typeof objects[item.o.value][attribute_name + try_i] == 'undefined') {
                                                 attribute_name = attribute_name + try_i;
                                                 break;
                                             }
                                         }
                                     }
-                                    objects[b.o.value][attribute_name] = b.value.value;
+                                    objects[item.o.value][attribute_name] = item.value.value;
                                 }
                                 if (typeof options.category != 'undefined') {
-                                    for (var i in objects) {
+                                    for (let i in objects) {
                                         objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] = options.category;
                                     }
                                 }
                                 extendAttributes(options, objects);
-                                if (console)
+                                if (console) {
                                     console.log('Add features', objects);
+                                    console.log(this);
+                                  }
                                 this.addFeatures(loadFeatures(objects, this, options, occupied_xy, category_map, category_id));
                                 src.loadCounter -= 1;
                                 this.set('last_feature_count', Object.keys(objects).length);
@@ -234,5 +247,7 @@ export default function (options) {
     src.loadTotal = 0;
     src.options = options;
     src.legend_categories = category_map;
+    console.log("src");
+    console.log(src);
     return src;
 };
