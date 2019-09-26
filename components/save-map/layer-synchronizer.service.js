@@ -87,7 +87,8 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                     ds => {
                         laymanService.pullVectorSource(ds, me.getLayerName(layer))
                             .then(response => {
-                                var featureString = response.data;
+                                var featureString;
+                                if(response) featureString = response.data;
                                 if (featureString) {
                                     source.loading = true;
                                     var format = new WFS();
