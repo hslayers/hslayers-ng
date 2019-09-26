@@ -408,13 +408,18 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
             var tile_url_function = src.getTileUrlFunction() || src.tileUrlFunction();
             src.setTileUrlFunction(function (b, c, d) {
                 var url = tile_url_function.call(src, b, c, d);
-                if (url.indexOf('proxy') == -1) url = decodeURIComponent(url);
-                return utils.proxify(url);
+                if (url.indexOf(config.proxyPrefix) == 0) 
+                    return url
+                else
+                    return utils.proxify(url);
             });
         } else {
             lyr.getSource().setImageLoadFunction(function (image, src) {
-                if (src.indexOf('proxy') == -1) src = decodeURIComponent(src);
-                image.getImage().src = utils.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+                if (src.indexOf(config.proxyPrefix) == 0) {
+                    image.getImage().src = src
+                } else {
+                    image.getImage().src = utils.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+                }
             })
         }
     }
