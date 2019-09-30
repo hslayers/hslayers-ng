@@ -17,7 +17,7 @@ function MyProxy(proxy, maxResolution) {
 function defineProxy(config) {
     MyProxy.prototype.getURL = function (resource) {
         var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + 'img/blank.png';
-        var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
+        var prefix = this.proxy.indexOf('?') === -1 && this.proxy.indexOf('hsproxy') > -1 ? '?' : '';
         if (this.maxResolution <= 8550) {
             if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {
                 return blank_url;
@@ -40,7 +40,7 @@ function defineProxy(config) {
         }
         resource = resource.replaceAll('fromcrs', 'FROMCRS');
         if (resource.indexOf('proxy4ows') > -1) return resource;
-        return this.proxy + prefix + this.proxy.indexOf('hsproxy') > -1 ? encodeURIComponent(resource) : resource;
+        return this.proxy + prefix + (this.proxy.indexOf('hsproxy') > -1 ? encodeURIComponent(resource) : resource);
     };
 }
 
