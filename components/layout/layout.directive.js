@@ -33,22 +33,22 @@ export default ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$in
                 }
 
                 if (angular.isUndefined(config.importCss) || config.importCss) {
-                    require('ol/ol.css');
+                    import('ol/ol.css');
                     if (config.design == 'md') {
-                        require('angular-material/angular-material.css');
-                        require('angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');
+                        import('angular-material/angular-material.css');
+                        import('angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');
                     } else {
                         if (config.useIsolatedBootstrap) {
-                            require('bootstrap/dist/css/bootstrap.isolated.css')
+                            import('bootstrap/dist/css/bootstrap.isolated.css')
                         } else {
-                            require('bootstrap/dist/css/bootstrap.css')
+                            import('bootstrap/dist/css/bootstrap.css')
                         }
                     }
-                    require('css/app.css');
+                    import('css/app.css');
                     if (!!window.cordova) {
-                        require('css/mobile.css')
+                        import('css/mobile.css')
                     }
-                    require('css/whhg-font/css/whhg.css')
+                    import('css/whhg-font/css/whhg.css')
                 }
             }
         };

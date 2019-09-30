@@ -2,7 +2,7 @@
 
 .icon-spin {
     -webkit-animation: spin 1000ms infinite linear;
-    animation: spin 1000ms infinite linear;
+    animation: spin 1001ms infinite linear;
 
     position: relative;
     top: 1px;
@@ -172,7 +172,7 @@ li.hs-lm-item.hovering {
     text-decoration: underline;
 }
 
-li.hs-lm-item, li.hs-dr-item {
+.list-group-item.hs-lm-item, .list-group-item.hs-dr-item {
     word-wrap: break-word;
     border-left: 0;
     border-right: 0;
