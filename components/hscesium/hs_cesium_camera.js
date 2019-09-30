@@ -146,6 +146,7 @@ var me = {
     },
 
     setExtentEqualToOlExtent: function (view) {
+        if(viewer.isDestroyed()) return;
         var ol_ext = view.calculateExtent(hs_map.map.getSize());
         var trans_ext = transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
         viewer.camera.setView({

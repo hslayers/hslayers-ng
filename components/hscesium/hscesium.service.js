@@ -82,10 +82,12 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'h
         me.HsCsLayers = HsCsLayers;
 
         window.addEventListener('blur', function(){
+            if(viewer.isDestroyed()) return;
             me.viewer.targetFrameRate = 5;
         })
 
         window.addEventListener('focus', function(){
+            if(viewer.isDestroyed()) return;
             me.viewer.targetFrameRate = 30;
         })
 
@@ -98,6 +100,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'h
             }
         });
 
+        layer_manager_service.data.terrainlayers = [];
         angular.forEach(config.terrain_providers, function (provider) {
             provider.type = 'terrain';
             layer_manager_service.data.terrainlayers.push(provider);

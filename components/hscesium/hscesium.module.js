@@ -56,9 +56,12 @@ angular.module('hs.cesium', [])
                 $scope.visible = !hsMap.visible;
                 permalink.updateCustomParams({view: hsMap.visible ? '2d' : '3d'});
                 if (hsMap.visible) {
+                    service.viewer.destroy();
                     $timeout(function () {
                         Core.updateMapSize();
                     }, 5000)
+                } else {
+                    service.init();
                 }
                 $rootScope.$broadcast('map.mode_changed', $scope.visible ? 'cesium' : 'ol');
             }

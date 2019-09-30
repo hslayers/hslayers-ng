@@ -49,6 +49,7 @@ define(['ol','moment'],
             },
 
             getLayerListTimes() {
+                if(me.viewer.isDestroyed()) return;
                 var tmp = [];
                 for (var i = 0; i < me.viewer.imageryLayers.length; i++) {
                     var layer = me.viewer.imageryLayers.get(i);

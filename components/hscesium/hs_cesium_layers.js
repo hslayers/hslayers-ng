@@ -1,10 +1,10 @@
 import ol from 'ol';
 import { default as proj4 } from 'proj4';
 import moment from 'moment';
-import {  GeoJSON, KML } from 'ol/format';
+import { GeoJSON, KML } from 'ol/format';
 import { Tile, Group } from 'ol/layer';
 import { TileWMS, WMTS, OSM } from 'ol/source';
-import {ImageWMS, ImageArcGISRest} from 'ol/source';
+import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import { Vector } from 'ol/source';
 
 var utils;
@@ -16,7 +16,7 @@ function MyProxy(proxy, maxResolution) {
 
 function defineProxy(config) {
     MyProxy.prototype.getURL = function (resource) {
-        var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + config.hsl_path + 'img/blank.png';
+        var blank_url = this.proxy + window.location.protocol + '//' + window.location.hostname + window.location.pathname + 'img/blank.png';
         var prefix = this.proxy.indexOf('?') === -1 ? '?' : '';
         if (this.maxResolution <= 8550) {
             if (resource.indexOf('bbox=0%2C0%2C45') > -1 || resource.indexOf('bbox=0, 45') > -1) {
@@ -40,7 +40,7 @@ function defineProxy(config) {
         }
         resource = resource.replaceAll('fromcrs', 'FROMCRS');
         if (resource.indexOf('proxy4ows') > -1) return resource;
-        return this.proxy + prefix + encodeURIComponent(resource);
+        return this.proxy + prefix + this.proxy.indexOf('hsproxy') > -1 ? encodeURIComponent(resource) : resource;
     };
 }
 
@@ -85,6 +85,7 @@ var me = {
      * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
      */
     repopulateLayers(visible_layers) {
+        if(me.viewer.isDestroyed()) return;
         if (angular.isDefined(me.config.default_layers)) {
             angular.forEach(me.config.default_layers, me.processOlLayer);
         }
@@ -270,7 +271,7 @@ var me = {
 
     createTileProvider(ol_lyr) {
         var src = ol_lyr.getSource();
-        var params = src.getParams();
+        var params = JSON.parse(JSON.stringify(src.getParams()));
         params.VERSION = params.VERSION || '1.1.1';
         if (params.VERSION.indexOf('1.1.') == 0) params.CRS = 'EPSG:4326';
         if (params.VERSION.indexOf('1.3.') == 0) params.SRS = 'EPSG:4326';
@@ -278,7 +279,9 @@ var me = {
         var prm_cache = {
             url: new Cesium.Resource({
                 url: src.getUrls()[0],
-                proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
+                proxy: new MyProxy(me.config.proxyPrefix ?
+                    me.config.proxyPrefix :
+                    '/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
             }),
             layers: src.getParams().LAYERS,
             dimensions: ol_lyr.get('dimensions'),
@@ -319,7 +322,8 @@ var me = {
         var prm_cache = {
             url: new Cesium.Resource({
                 url: src.getUrl(),
-                proxy: new MyProxy('/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
+                proxy: new MyProxy(me.config.proxyPrefix ?
+                    me.config.proxyPrefix : '/cgi-bin/hsproxy.cgi?url=', ol_lyr.getMaxResolution())
             }),
             layers: src.getParams().LAYERS,
             dimensions: ol_lyr.get('dimensions'),
