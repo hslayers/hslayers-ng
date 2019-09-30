@@ -177,7 +177,7 @@ li.hs-lm-item, li.hs-dr-item {
     border-left: 0;
     border-right: 0;
     padding: 0.1em;
-    padding-top: 0.4em;
+    padding-top: 0.2em;
     padding-left: 0.2em;
     /*border-bottom: 0;*/
 }
@@ -190,10 +190,10 @@ li.hs-lm-item, li.hs-dr-item {
 
 div.hs-lm-item-title {
     cursor: pointer;
-    
+    min-height: 1.76em;
 }
 
-.hs-lm-item-visibility{
+.hs-lm-item-visibility, .hs-lm-baseitem-visibility{
     margin-top: -0.42em;
 }
 

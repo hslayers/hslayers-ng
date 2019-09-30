@@ -22,10 +22,10 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix active">
                 <div class="d-flex ">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        Baselayers
+                        <span class="align-middle" style="line-height: 2em;" translate>Baselayers</span>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" ng-click="changeBaseLayerVisibility()"><i
+                    <div class="p-0">
+                        <button type="button" class="btn btn-sm btn-light" ng-click="changeBaseLayerVisibility()"><i
                                 class=""
                                 ng-class="data.baselayersVisible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
                     </div>
@@ -35,7 +35,7 @@
                 ng-click="changeBaseLayerVisibility($event, layer)" ng-mouseenter="hovering=true"
                 ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}">
                 <div class="d-flex ">
-                    <div class="p-0 flex-grow-1 hs-lm-item-title" ng-if="layer.active"
+                    <div class="p-0 flex-grow-1 hs-lm-item-title"
                         ng-class="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
                         {{layer.title}}
                     </div>
@@ -49,20 +49,25 @@
         </ul>
 
         <ul class="list-group hs-lm-baselayerlist" ng-show="data.terrainlayers.length>0">
-            <li class="list-group-item hs-lm-header clearfix active">
-                <span translate>Terrains</span>
+            <li class="list-group-item hs-lm-item hs-lm-header clearfix active">
+                <div class="d-flex">
+                    <div class="p-0 flex-grow-1 hs-lm-item-title">
+                        <span translate class="align-middle" style="line-height: 2em;">Terrains</span>
+                    </div>
+                </div>
             </li>
             <li class="list-group-item hs-lm-item" ng-repeat="layer in data.terrainlayers | orderBy:'name'"
                 ng-click="changeTerrainLayerVisibility($event, layer)" ng-mouseenter="hovering=true"
                 ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}">
                 <div class="d-flex ">
-                    <div class="p-0 flex-grow-1 hs-lm-item-title" ng-if="layer.active"
+                    <div class="p-0 flex-grow-1 hs-lm-item-title"
                         ng-class="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
                         {{layer.title}}
                     </div>
                     <div class="p-0" ng-show="layer.active || hovering"
                         ng-style="hovering && !layer.active && {'opacity':'0.5'}">
-                        <button class="btn btn-sm btn-link"><i class="icon-globe"></i></button>
+                        <button class="btn btn-sm btn-link hs-lm-baseitem-visibility"><i
+                                class="icon-globe"></i></button>
                     </div>
                 </div>
             </li>
@@ -70,7 +75,7 @@
 
         <ul class="list-group hs-lm-mapcontentlist">
             <li class="list-group-item hs-lm-header hs-lm-item active hs-lm-map-content-header">
-                <span translate>Map Content</span>
+                <span translate class="align-middle" style="line-height: 2em;">Map Content</span>
             </li>
             <ul class="list-group hs-lm-layerlist" ng-repeat="value in data.folders.sub_folders | orderBy:'name' ">
                 <li class="list-group-item active">
@@ -90,6 +95,7 @@
             </label>
         </div> -->
         </ul>
-        <hs.layer-editor current-layer="LayMan.currentLayer" ng-show="LayMan.currentLayer!=null" class="layerpanel"></hs.layer-editor>
+        <hs.layer-editor current-layer="LayMan.currentLayer" ng-show="LayMan.currentLayer!=null" class="layerpanel">
+        </hs.layer-editor>
     </div>
 </div>
