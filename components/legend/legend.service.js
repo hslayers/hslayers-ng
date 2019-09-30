@@ -110,7 +110,7 @@ export default ['hs.utils.service', function (utils) {
                     subLayerLegends: subLayerLegends,
                     visible: layer.getVisible()
                 };
-            } else if (utils.instOf(layer, VectorLayer) && (angular.isUndefined(layer.get('show_in_legend')) || layer.get('show_in_legend') == true)) {
+            } else if (utils.instOf(layer, VectorLayer) && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager') == true)) {
                 return {
                     title: layer.get("title"),
                     lyr: layer,
