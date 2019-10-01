@@ -283,6 +283,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                         autoColumns:true,
                         index: "idx",
                         layout:"fitData",
+                        movableColumns:true,      //allow column order to be changed
                         pagination:"local",
                         paginationSize:12,
                         paginationSizeSelector:[ 6, 12, 18, 24],
