@@ -4,8 +4,8 @@ import { Vector } from 'ol/source';
 import { transform } from 'ol/proj';
 
 export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
-    'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService', 'hs.laymanBrowserService',
-    function ($rootScope, $timeout, OlMap, Core, config, nonwmsservice, mickaFilterService, mickaService, laymanService) {
+    'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService', 'hs.laymanBrowserService', 'hs.layout.service',
+    function ($rootScope, $timeout, OlMap, Core, config, nonwmsservice, mickaFilterService, mickaService, laymanService, layoutService) {
         var me = this;
 
         this.data = {};
@@ -246,7 +246,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
         }
 
         function panelVisible() {
-            return Core.panelVisible('datasource_selector') || Core.panelVisible('datasourceBrowser')
+            return layoutService.panelVisible('datasource_selector') || layoutService.panelVisible('datasourceBrowser')
         }
 
         function init(map) {

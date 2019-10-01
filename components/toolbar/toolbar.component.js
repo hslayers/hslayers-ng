@@ -58,7 +58,7 @@ export default {
                  * @function toolbarStyle
                  */
                 toolbarStyle() {
-                    if (!Core.sidebarRight)
+                    if (!layoutService.sidebarRight)
                         return {
                             marginLeft: layoutService.panelSpaceWidth() + 'px',
                         }

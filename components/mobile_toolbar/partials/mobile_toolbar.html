@@ -16,12 +16,12 @@
     --></button><!--
 
     compositions switch
-    --><button type="button" class="menu-item btn btn-secondary btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller') && Core.panelEnabled('compositions')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"><!-- 
+    --><button type="button" class="menu-item btn btn-secondary btn-mobile" title="Map Compositions" ng-if="Core.exists('hs.compositions.controller') && layoutService.panelEnabled('compositions')" ng-click="[setMainPanel('composition_browser'),togglePanelspace()]"><!-- 
         --><i class="glyphicon icon-map"></i><!-- 
     --></button><!-- 
 
     draw switch
-    --><button type="button" class="menu-item btn btn-secondary btn-mobile" title="Draw new features" ng-if="Core.exists('hs.vgi-draw') && Core.panelEnabled('draw')" ng-click="[setMainPanel('draw'),togglePanelspace()]"><!-- 
+    --><button type="button" class="menu-item btn btn-secondary btn-mobile" title="Draw new features" ng-if="Core.exists('hs.vgi-draw') && layoutService.panelEnabled('draw')" ng-click="[setMainPanel('draw'),togglePanelspace()]"><!-- 
         --><i class="icon-flag"></i><!-- 
     --></button><!-- 
 

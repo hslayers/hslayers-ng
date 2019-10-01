@@ -1,5 +1,7 @@
-export default ['Core',
-function (Core) {
+import layoutService from "../layout/layout.service";
+
+export default ['Core', 'hs.layout.service',
+function (Core, layoutService) {
     /**
     * @function togglePanelspace
     * @memberOf hs.mobile_toolbar.service
@@ -8,23 +10,23 @@ function (Core) {
     */
     function togglePanelspace(to_state) {
         if (angular.isDefined(to_state)) {
-            me.panelspace0pened = to_state;
+            me.panelspaceOpened = to_state;
         } else {
-            me.panelspace0pened = !me.panelspace0pened;
+            me.panelspaceOpened = !me.panelspaceOpened;
         }
-        Core.sidebarExpanded = me.panelspace0pened;
+        layoutService.sidebarExpanded = me.panelspaceOpened;
         if ($(".menu-switch.btn-mobile .icon-menu-hamburger")[0]) {
             $(".menu-switch.btn-mobile .icon-menu-hamburger").removeClass("icon-menu-hamburger");
-            $(".menu-switch.btn-mobile .menu-icon").addClass(Core.sidebarRight ? "icon-menu-right" : "icon-menu-left");
+            $(".menu-switch.btn-mobile .menu-icon").addClass(layoutService.sidebarRight ? "icon-menu-right" : "icon-menu-left");
         } else {
-            $(".menu-switch.btn-mobile .menu-icon").removeClass(Core.sidebarRight ? "icon-menu-right" : "icon-menu-left");
+            $(".menu-switch.btn-mobile .menu-icon").removeClass(layoutService.sidebarRight ? "icon-menu-right" : "icon-menu-left");
             $(".menu-switch.btn-mobile .menu-icon").addClass("icon-menu-hamburger");
         }
-        $(".panelspace, #toolbar, #map, #menu").toggleClass("panelspace-opened", me.panelspace0pened);
+        $(".panelspace, #toolbar, #map, #menu").toggleClass("panelspace-opened", me.panelspaceOpened);
     }
 
     var me = {
-        panelspace0pened: false,
+        panelspaceOpened: false,
         togglePanelspace: togglePanelspace
     };
     return me;

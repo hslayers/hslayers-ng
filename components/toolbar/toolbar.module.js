@@ -7,7 +7,7 @@ import toolbarComponent from './toolbar.component';
  * @namespace hs.toolbar
  * @memberOf hs
  */
-var module = angular.module('hs.toolbar', ['hs.map', 'hs.core']);
+var module = angular.module('hs.toolbar', ['hs.map', 'hs.core', 'hs.layout']);
 
 /**
  * @memberof hs.toolbar

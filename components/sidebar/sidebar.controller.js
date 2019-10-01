@@ -1,7 +1,9 @@
-export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service', 'hs.language.service',
-    function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, service, languageService) {
+export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service', 'hs.language.service', 'hs.layout.service',
+    function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, service, languageService, layoutService) {
         $scope.Core = Core;
         $scope.languageService = languageService;
+        $scope.panelEnabled = layoutService.panelEnabled;
+        $scope.layoutService = layoutService;
         /**
          * Set current active panel in sidebar
          * @memberof hs.sidebar.controller
@@ -10,7 +12,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
          * @param {boolean} queryable 
          */
         $scope.setMainPanel = function (which, queryable) {
-            $timeout(function () { Core.setMainPanel(which, true, queryable); })
+            $timeout(function () { layoutService.setMainPanel(which, true, queryable); })
         }
 
         if (bus.getParamValue('hs_panel')) {
@@ -25,7 +27,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
          * @function toggleSidebar
          */
         $scope.toggleSidebar = function () {
-            $scope.Core.sidebarExpanded = !$scope.Core.sidebarExpanded;
+            layoutService.sidebarExpanded = !layoutService.sidebarExpanded;
         };
 
         $scope.$emit('scope_loaded', "Sidebar");

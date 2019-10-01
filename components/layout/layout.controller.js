@@ -8,6 +8,8 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         $scope.geolocation = Geolocation;
         $scope.LM = LayerManager;
         $scope.layoutService = layoutService;
+        $scope.panelVisible = layoutService.panelVisible;
+        $scope.panelEnabled = layoutService.panelEnabled;
 
         $scope.location = {
             status: {
@@ -418,7 +420,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         $scope.panelSpaceWidth = layoutService.panelSpaceWidth;
 
         $scope.infoContainerStyle = function () {
-            if (!Core.sidebarRight)
+            if (!layoutService.sidebarRight)
                 return {
                     marginLeft: layoutService.panelSpaceWidth() + 'px',
                     width: layoutService.widthWithoutPanelSpace()
@@ -431,7 +433,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         }
 
         $scope.mapStyle = function () {
-            if (!Core.sidebarRight)
+            if (!layoutService.sidebarRight)
                 return {
                     marginLeft: layoutService.panelSpaceWidth() + 'px',
                     width: layoutService.widthWithoutPanelSpace()

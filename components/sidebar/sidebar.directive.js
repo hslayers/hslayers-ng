@@ -1,4 +1,4 @@
-export default ['$compile', 'config', function ($compile, config) {
+export default ['$compile', 'config', 'hs.layout.service', function ($compile, config, layoutService) {
     return {
         template: require('components/sidebar/partials/sidebar.html'),
         link: function (scope, element, attrs) {
@@ -8,13 +8,13 @@ export default ['$compile', 'config', function ($compile, config) {
                 function () {
                     var panels = document.getElementsByClassName('panelspace');
                     var panelSpaceWidth = panels.length > 0 ? panels[0].clientWidth : 0;
-                    return [scope.Core.sidebarExpanded, panelSpaceWidth]
+                    return [layoutService.sidebarExpanded, panelSpaceWidth]
                 },
                 function (value) {
                     setTimeout(function () {
                         scope.Core.updateMapSize();
                     }, 0)
-                    scope.$emit('sidebar_change', scope.Core.sidebarExpanded);
+                    scope.$emit('sidebar_change', layoutService.sidebarExpanded);
                 }, true
             )
         }

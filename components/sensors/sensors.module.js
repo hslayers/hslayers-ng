@@ -7,7 +7,7 @@ import sensorsUnitDialogComponent from "./sensors-unit-dialog.component";
  * @namespace hs.sensors
  * @memberOf hs
  */
-angular.module('hs.sensors', ['hs.map', 'hs.utils'])
+angular.module('hs.sensors', ['hs.map', 'hs.utils', 'hs.layout'])
 
     /**
      * @memberof hs.sensors.service

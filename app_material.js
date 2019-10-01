@@ -38,10 +38,10 @@ module.directive('hs', ['config', 'Core', function (config, Core) {
 
 if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hslayersNgConfig(ol)));
 
-module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config',
-    function ($scope, Core, srv_producer, composition_parser, config) {
+module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config', 'hs.layout.service',
+    function ($scope, Core, srv_producer, composition_parser, config, layoutService) {
         $scope.Core = Core;
-        Core.sidebarRight = false;
+        layoutService.sidebarRight = false;
         Core.singleDatasources = true;
     }
 ]);

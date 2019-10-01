@@ -139,7 +139,6 @@ module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_prod
     function($scope, Core, srv_producer, composition_parser, config) {
         $scope.hsl_path = config.hsl_path; //Get this from hslayers.js file
         $scope.Core = Core;
-        Core.sidebarRight = false;
         Core.singleDatasources = true;
     }
 ]);

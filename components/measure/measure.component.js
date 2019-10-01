@@ -2,8 +2,8 @@ export default {
     template: ['config', function (config) {
         return require('components/measure/partials/measure.html');
     }],
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.measure.service',
-        function ($scope, OlMap, Core, Measure) {
+    controller: ['$scope', 'hs.map.service', 'hs.layout.service', 'hs.measure.service',
+        function ($scope, OlMap, layoutService, Measure) {
             $scope.data = Measure.data;
 
             document.addEventListener('keyup', function (e) {
@@ -14,11 +14,11 @@ export default {
             });
 
             $scope.$on('measure.drawStart', function () {
-                Core.panelEnabled('toolbar', false);
+                layoutService.panelEnabled('toolbar', false);
             });
 
             $scope.$on('measure.drawEnd', function () {
-                Core.panelEnabled('toolbar', true);
+                layoutService.panelEnabled('toolbar', true);
             });
 
             $scope.type = 'distance';
@@ -51,12 +51,12 @@ export default {
             }
 
             $scope.$watch('type', function () {
-                if (Core.mainpanel != 'measure') return;
+                if (layoutService.mainpanel != 'measure') return;
                 Measure.changeMeasureParams($scope.type);
             });
 
             $scope.$on('core.mainpanel_changed', function (event) {
-                if (Core.mainpanel == 'measure') {
+                if (layoutService.mainpanel == 'measure') {
                     Measure.activateMeasuring($scope.type);
                 } else {
                     Measure.deactivateMeasuring();
@@ -64,8 +64,8 @@ export default {
             });
 
             //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
-            if (Core.mainpanel == "measure") {
-                Core.current_panel_queryable = false;
+            if (layoutService.mainpanel == "measure") {
+                layoutService.current_panel_queryable = false;
                 Measure.activateMeasuring($scope.type);
             }
 

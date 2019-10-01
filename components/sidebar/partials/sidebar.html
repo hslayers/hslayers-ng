@@ -1,54 +1,54 @@
 <div class="sidebar-list list-group">
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.sidebarToggleable">
-        <i class="menu-icon" ng-class="Core.sidebarExpanded ? (!Core.sidebarRight ? 'icon-chevron-left' : 'icon-chevron-right') : 'icon-slidersoff'"  ng-click="toggleSidebar()"></i>
+    <a href="#" class="sidebar-item list-group-item" ng-if="layoutService.sidebarToggleable">
+        <i class="menu-icon" ng-class="layoutService.sidebarExpanded ? (!layoutService.sidebarRight ? 'icon-chevron-left' : 'icon-chevron-right') : 'icon-slidersoff'"  ng-click="toggleSidebar()"></i>
     </a>
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.compositions') && Core.panelEnabled('compositions')" ng-click="setMainPanel('composition_browser')" ng-class="{active: Core.mainpanel == 'composition_browser'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.compositions') && panelEnabled('compositions')" ng-click="setMainPanel('composition_browser')" ng-class="{active: layoutService.mainpanel == 'composition_browser'}">
         <i class="menu-icon icon-map" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'List available map compositions'|translate}}"></i>
         <span class="sidebar-item-title" translate>Map Compositions</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.layermanager') && Core.panelEnabled('layermanager')" ng-click="setMainPanel('layermanager')" ng-class="{active: Core.mainpanel == 'layermanager'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.layermanager') && panelEnabled('layermanager')" ng-click="setMainPanel('layermanager')" ng-class="{active: layoutService.mainpanel == 'layermanager'}">
         <i class="menu-icon icon-layers" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Manage and style your layers in composition'|translate}}"></i>
         <span class="sidebar-item-title" translate>Manage and Style Layers</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.legend')" ng-click="setMainPanel('legend')" ng-class="{active: Core.mainpanel == 'legend'}">    
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.legend')" ng-click="setMainPanel('legend')" ng-class="{active: layoutService.mainpanel == 'legend'}">    
         <i class="menu-icon icon-dotlist" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Legend'|translate}}"></i>
         <span class="sidebar-item-title">Legend</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.datasource_selector')" ng-click="setMainPanel('datasource_selector')" ng-class="{active: Core.mainpanel == 'datasource_selector'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.datasource_selector')" ng-click="setMainPanel('datasource_selector')" ng-class="{active: layoutService.mainpanel == 'datasource_selector'}">
         <span class="menu-icon icon-database" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Select data or services for your map composition'|translate}}"></span>
         <span class="sidebar-item-title" ng-if="!Core.singleDatasources" translate>Datasource Selector</span>
         <span class="sidebar-item-title" ng-if="Core.singleDatasources" translate>Add layers</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.addLayers') && !Core.singleDatasources && Core.panelEnabled('ows')" ng-click="setMainPanel('ows')" ng-class="{active: Core.mainpanel == 'ows'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.addLayers') && !Core.singleDatasources && panelEnabled('ows')" ng-click="setMainPanel('ows')" ng-class="{active: layoutService.mainpanel == 'ows'}">
         <span class="menu-icon icon-refresh" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Add external data'|translate}}"></span>
         <span class="sidebar-item-title" translate>Add external data</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-click="setMainPanel('feature_crossfilter')" ng-class="{active: Core.mainpanel == 'feature_crossfilter'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-click="setMainPanel('feature_crossfilter')" ng-class="{active: layoutService.mainpanel == 'feature_crossfilter'}">
         <span class="menu-icon icon-analytics-piechare" data-toggle="tooltip" data-container="body" data-placement="auto" title="Crossfilter"></span>
         <span class="sidebar-item-title" translate>Filter features</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar'))" ng-click="setMainPanel('measure', false)" ng-class="{active: Core.mainpanel == 'measure'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="(Core.exists('hs.measure.controller') && !Core.exists('hs.toolbar'))" ng-click="setMainPanel('measure', false)" ng-class="{active: layoutService.mainpanel == 'measure'}">
         <span class="menu-icon icon-design" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Measure distance or area at map'|translate}}"></span>
         <span class="sidebar-item-title" translate>Measurements</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.lodexplorer.controller')" ng-click="setMainPanel('lodexplorer')" ng-class="{active: Core.mainpanel == 'lodexplorer'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.lodexplorer.controller')" ng-click="setMainPanel('lodexplorer')" ng-class="{active: layoutService.mainpanel == 'lodexplorer'}">
         <span class="menu-icon icon-sharedhosting"></span>
         <span class="sidebar-item-title">Eurostat explorer</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.routing.controller')" ng-click="setMainPanel('routing')" ng-class="{active: Core.mainpanel == 'routing'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.routing.controller')" ng-click="setMainPanel('routing')" ng-class="{active: layoutService.mainpanel == 'routing'}">
         <span class="menu-icon icon-road"></span>
         <span class="sidebar-item-title">Routing</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.tracking.controller')" ng-click="setMainPanel('tracking')" ng-class="{active: Core.mainpanel == 'tracking'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.tracking.controller')" ng-click="setMainPanel('tracking')" ng-class="{active: layoutService.mainpanel == 'tracking'}">
         <span class="menu-icon icon-screenshot"></span>
         <span class="sidebar-item-title">Tracking</span>
     </a>
@@ -56,33 +56,33 @@
     <div hs.vgi-draw.toolbar-button-directive></div>
     
     
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.print') && Core.panelEnabled('print')" ng-click="setMainPanel('print')" ng-class="{active: Core.mainpanel == 'print'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.print') && panelEnabled('print')" ng-click="setMainPanel('print')" ng-class="{active: layoutService.mainpanel == 'print'}">
         <span class="menu-icon icon-print" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Print map'|translate}}"></span>
         <span class="sidebar-item-title" translate>Print</span>
     </a>
     
     
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.permalink')  && Core.panelEnabled('permalink')" ng-click="setMainPanel('permalink')" ng-class="{active: Core.mainpanel == 'permalink'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.permalink')  && panelEnabled('permalink')" ng-click="setMainPanel('permalink')" ng-class="{active: layoutService.mainpanel == 'permalink'}">
         <span class="menu-icon icon-share-alt" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Share map'|translate}}"></span>
         <span class="sidebar-item-title" translate>Share map</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.save-map') && Core.panelEnabled('saveMap')" ng-click="setMainPanel('saveMap')" ng-class="{active: Core.mainpanel == 'saveMap'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.save-map') && panelEnabled('saveMap')" ng-click="setMainPanel('saveMap')" ng-class="{active: layoutService.mainpanel == 'saveMap'}">
         <span class="menu-icon icon-save-floppy" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Save content of map to composition'||translate}}"></span>
         <span class="sidebar-item-title" translate>Save composition</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.sensors')" ng-click="setMainPanel('sensors')" ng-class="{active: Core.mainpanel == 'sensors'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.sensors')" ng-click="setMainPanel('sensors')" ng-class="{active: layoutService.mainpanel == 'sensors'}">
         <span class="menu-icon icon-weightscale"></span>
         <span class="sidebar-item-title">Sensors</span>
     </a>   
 
-    <a href="#" class="sidebar-item list-group-item text-justify" ng-if="Core.exists('hs.language.controller') && Core.panelEnabled('language')" ng-click="setMainPanel('language')" ng-class="{active: Core.mainpanel == 'language'}">
+    <a href="#" class="sidebar-item list-group-item text-justify" ng-if="Core.exists('hs.language.controller') && panelEnabled('language')" ng-click="setMainPanel('language')" ng-class="{active: layoutService.mainpanel == 'language'}">
         <span data-toggle="tooltip" data-container="body" data-placement="auto" class="" title="{{'Change language'||translate}}">{{languageService.getCurrentLanguageCode().toUpperCase()}}</span>
         <span class="sidebar-item-title" translate>Change language</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.mobile_settings.controller') && Core.panelEnabled('mobile_settings')" ng-click="setMainPanel('mobile_settings')" ng-class="{active: Core.mainpanel == 'mobile_settings'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.mobile_settings.controller') && panelEnabled('mobile_settings')" ng-click="setMainPanel('mobile_settings')" ng-class="{active: layoutService.mainpanel == 'mobile_settings'}">
         <span class="menu-icon icon-settingsandroid" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Specify application user settings'||translate}}"></span>
         <span class="sidebar-item-title" translate>Application settings</span>
     </a>

@@ -129,9 +129,9 @@ module.value('config', {
     })
 });
 
-module.controller('Main', ['$scope', 'Core', 'hs.compositions.service_parser', 'config',
-    function ($scope, Core, composition_parser, config) {
-        Core.sidebarRight = false;
+module.controller('Main', ['$scope', 'Core', 'hs.compositions.service_parser', 'config', 'hs.layout.service',
+    function ($scope, Core, composition_parser, config, layoutService) {
+        layoutService.sidebarRight = false;
     }
 ]);
 ```

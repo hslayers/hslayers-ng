@@ -12,20 +12,20 @@
     	<!-- <md-icon class="material-icons">expand_more</md-icon> -->
     </md-button>
   </md-toolbar>
-	<hs.layermanager      		ng-if="Core.exists('hs.layermanager')" ng-show="Core.panelVisible('layermanager', this)"></hs.layermanager>>
-	<hs.legend              	ng-if="Core.exists('hs.legend')" ng-show="Core.panelVisible('legend', this)"></hs.legend>
-	<hs.add-layers               ng-if="Core.exists('hs.addLayers') && !Core.singleDatasources" ng-show="Core.panelVisible('ows', this)"></hs.add-layers>>
-	<hs.datasource_selector   	ng-if="Core.exists('hs.datasource_selector')" ng-show="Core.panelVisible('datasource_selector', this)"></hs.datasource_selector>>
-	<hs.compositions          	ng-if="Core.exists('hs.compositions')" ng-show="Core.panelVisible('composition_browser', this)"></hs.compositions>>
-	<div hs.feature_crossfilter.directive   ng-controller="hs.feature_crossfilter.controller"  ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-show="Core.panelVisible('feature_crossfilter', this)"></div>
-	<hs.measure   				ng-if="Core.exists('hs.measure')" ng-show="Core.panelVisible('measure', this)"></hs.measure>>
-	<hs.print                 	ng-if="Core.exists('hs.print')" ng-show="Core.panelVisible('print', this)"></hs.print>
-	<hs.styler					ng-controller="hs.styler"  ng-if="Core.exists('hs.styler.controller')" ng-show="Core.panelVisible('styler', this)"></hs.styler>>
-	<hs.permalink				ng-if="Core.exists('hs.permalink')" ng-show="Core.panelVisible('permalink', this)"></hs.permalink>
-	<div hs.query.directive_infopanel       ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller')" ng-show="Core.panelVisible('info', this)"></div>
-	<hs.save-map				ng-controller="hs.save-map" ng-if="Core.exists('hs.save-map.controller')" ng-show="Core.panelVisible('saveMap', this)"></hs.save-map>>
-	<div hs.routing.directive               ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="Core.panelVisible('routing', this)"></div>
-	<div hs.tracking.directive              ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="Core.panelVisible('tracking', this)"></div>
-	<hs.vgi-draw                ng-if="Core.exists('hs.vgi-draw')" ng-show="Core.panelVisible('draw', this)"></hs.vgi-draw>
+	<hs.layermanager      		ng-if="Core.exists('hs.layermanager')" ng-show="panelVisible('layermanager', this)"></hs.layermanager>>
+	<hs.legend              	ng-if="Core.exists('hs.legend')" ng-show="panelVisible('legend', this)"></hs.legend>
+	<hs.add-layers               ng-if="Core.exists('hs.addLayers') && !Core.singleDatasources" ng-show="panelVisible('ows', this)"></hs.add-layers>>
+	<hs.datasource_selector   	ng-if="Core.exists('hs.datasource_selector')" ng-show="panelVisible('datasource_selector', this)"></hs.datasource_selector>>
+	<hs.compositions          	ng-if="Core.exists('hs.compositions')" ng-show="panelVisible('composition_browser', this)"></hs.compositions>>
+	<div hs.feature_crossfilter.directive   ng-controller="hs.feature_crossfilter.controller"  ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-show="panelVisible('feature_crossfilter', this)"></div>
+	<hs.measure   				ng-if="Core.exists('hs.measure')" ng-show="panelVisible('measure', this)"></hs.measure>>
+	<hs.print                 	ng-if="Core.exists('hs.print')" ng-show="panelVisible('print', this)"></hs.print>
+	<hs.styler					ng-controller="hs.styler"  ng-if="Core.exists('hs.styler.controller')" ng-show="panelVisible('styler', this)"></hs.styler>>
+	<hs.permalink				ng-if="Core.exists('hs.permalink')" ng-show="panelVisible('permalink', this)"></hs.permalink>
+	<div hs.query.directive_infopanel       ng-controller="hs.query.controller" id="infopanel" ng-if="Core.exists('hs.query.controller')" ng-show="panelVisible('info', this)"></div>
+	<hs.save-map				ng-controller="hs.save-map" ng-if="Core.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></hs.save-map>>
+	<div hs.routing.directive               ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="panelVisible('routing', this)"></div>
+	<div hs.tracking.directive              ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="panelVisible('tracking', this)"></div>
+	<hs.vgi-draw                ng-if="Core.exists('hs.vgi-draw')" ng-show="panelVisible('draw', this)"></hs.vgi-draw>
 	<hs.customhtml				ng-if="Core.exists('hs.customhtml')"></hs.customhtml>
 </md-bottom-sheet>

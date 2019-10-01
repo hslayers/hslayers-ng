@@ -11,7 +11,7 @@ import sidebarController from './sidebar.controller';
  * @namespace hs.sidebar
  * @memberOf hs
  */
-angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies'])
+angular.module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies', 'hs.layout'])
     /**
      * @memberof hs.sidebar
      * @ngdoc service

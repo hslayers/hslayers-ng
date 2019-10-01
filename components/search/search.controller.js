@@ -1,6 +1,7 @@
-export default ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService',
-    function ($scope, Core, SearchService, permalink) {
+export default ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService', 'hs.layout.service',
+    function ($scope, Core, SearchService, permalink, layoutService) {
         $scope.data = SearchService.data;
+        $scope.layoutService = layoutService;
 
         /**
          * Initialization of search state
@@ -98,7 +99,7 @@ export default ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService'
             $scope.searchResultsReceived(r);
         });
 
-        $scope.$watch('Core.panelVisible("search")', function (newValue, oldValue) {
+        $scope.$watch('layoutService.panelVisible("search")', function (newValue, oldValue) {
             if (newValue !== oldValue && newValue) {
                 setTimeout(function () {
                     document.getElementById('search_address').focus();

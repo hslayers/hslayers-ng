@@ -77,7 +77,6 @@ window.ol = {
 module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config',
     function ($scope, Core, srv_producer, composition_parser, config) {
         $scope.Core = Core;
-        Core.sidebarRight = false;
         Core.singleDatasources = true;
     }
 ]);

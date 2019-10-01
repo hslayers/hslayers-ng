@@ -3,6 +3,7 @@ import 'angular-gettext';
 import 'translations';
 import '../map/map.module';
 import '../drag/drag.module';
+import layoutService from '../layout/layout.service';
 
 /**
  * @namespace hs
@@ -19,8 +20,8 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
      * @ngdoc service
      * @description Core service of HSL and Core module, keeps important app-level settings.
      */
-    .service("Core", ['$rootScope', '$controller', '$injector', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout',
-        function ($rootScope, $controller, $injector, $window, OlMap, gettextCatalog, config, $templateCache, $timeout) {
+    .service("Core", ['$rootScope', '$controller', '$injector', '$window', 'hs.map.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', 'hs.layout.service',
+        function ($rootScope, $controller, $injector, $window, OlMap, gettextCatalog, config, $templateCache, $timeout, layoutService) {
             if (angular.isUndefined(config.hsl_path) && window.hsl_path) config.hsl_path = hsl_path;
             var me = {
                 hslayersNgTemplate: require('hslayers.html'),
@@ -39,64 +40,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 * @type {Array} 
                 * @description DEPRECATED?
                 */
-                scopes_registered: [],
-                /**
-                * @ngdoc property
-                * @name Core#mainpanel
-                * @public
-                * @type {String} null 
-                * @description Storage of current main panel (panel which is opened). When {@link Core#defaultPanel defaultPanel} is specified, main panel is set to it during Core initialization.
-                */
-                mainpanel: "",
-                /**
-                * @ngdoc property
-                * @name Core#defaultPanel
-                * @public
-                * @type {String} null 
-                * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed). 
-                */
-                defaultPanel: "",
-                /**
-                * @ngdoc property
-                * @name Core#sidebarExpanded
-                * @public
-                * @type {Boolean} false 
-                * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
-                */
-                sidebarExpanded: false,
-                /**
-                * @ngdoc property
-                * @name Core#sidebarRight
-                * @public
-                * @type {Boolean} true 
-                * @description Side on which sidebar will be shown (true - right side of map, false - left side of map)
-                */
-                sidebarRight: true,
-                /**
-                * @ngdoc property
-                * @name Core#sidebarLabels
-                * @public
-                * @type {Boolean} true 
-                * @description DEPRECATED? (labels display is done with CSS classes)
-                */
-                sidebarLabels: true,
-                /**
-                * @ngdoc property
-                * @name Core#sidebarToggleable
-                * @public
-                * @type {Boolean} true 
-                * @description Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
-                */
-                sidebarToggleable: true,
-                /**
-                * @ngdoc property
-                * @name Core#sidebarButtons
-                * @public
-                * @type {Boolean} true 
-                * @description DEPRECATED?
-                */
-                sidebarButtons: true,
-                classicSidebar: true,
+                scopes_registered: [],            
                 /**
                 * @ngdoc property
                 * @name Core#singleDatasources
@@ -115,44 +59,13 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 embededEnabled: true,
                 /**
                 * @ngdoc property
-                * @name Core#smallWidth
-                * @public
-                * @type {Boolean} false 
-                * @description Helper property for showing some button on smaller screens
-                */
-                smallWidth: false,
-                /**
-                * @ngdoc property
-                * @name Core#panel_statuses
-                * @public
-                * @type {Object} 
-                * @description DEPRACATED?
-                */
-                panel_statuses: {},
-                /**
-                * @ngdoc property
-                * @name Core#panel_enabled
-                * @public
-                * @type {Object}  
-                * @description DEPRACATED?
-                */
-                panel_enabled: {},
-                /**
-                * @ngdoc property
                 * @name Core#_exist_cache
                 * @public
                 * @type {Object}  
                 * @description DEPRECATED?
                 */
                 _exist_cache: {},
-                /**
-                * @ngdoc property
-                * @name Core#current_panel_queryable
-                * @public
-                * @type {Boolean} false 
-                * @description Keep queryable status of current panel
-                */
-                current_panel_queryable: false,
+              
                 /**
                 * @ngdoc property
                 * @name Core#sizeOptions
@@ -174,142 +87,25 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 */
                 puremapApp: false,
                 language: 'en',
-                /**
-                * @ngdoc method
-                * @name Core#setMainPanel 
-                * @public
-                * @param {String} which New panel to activate (panel name)
-                * @param {Boolean} by_gui Whether function call came as result of GUI action
-                * @param {Boolean} queryable If map should be queryable with new mainpanel. When parameter ommited, map enable queries.
-                * @description Sets new main panel (Panel displayed in expanded sidebar). Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
-                */
                 setMainPanel: function (which, by_gui, queryable) {
-                    if (!me.panelEnabled(which)) return;
-                    if (which == me.mainpanel && by_gui) {
-                        which = "";
-                        if (me.sidebarExpanded == true) {
-                            me.sidebarLabels = true;
-                        }
-                    } else {
-                        me.sidebarExpanded = true;
-                        me.sidebarLabels = false;
-                    }
-                    me.mainpanel = which;
-                    if (typeof queryable == 'undefined')
-                        me.current_panel_queryable = true;
-                    else
-                        me.current_panel_queryable = queryable;
-                    if (!$rootScope.$$phase) $rootScope.$digest();
-                    /**
-                    * @ngdoc event
-                    * @name Core#core.mainpanel_changed
-                    * @eventType broadcast on $rootScope
-                    * @description Fires when current mainpanel change - toggle, change of opened panel
-                    */
-                    $rootScope.$broadcast('core.mainpanel_changed');
+                    console.warn('setMainPanel will be removed from Core in future. Use hs.layout.service#setMainPanel method instead');
+                    layoutService.setMainPanel(which, by_gui, queryable)
                 },
-                /**
-                * @ngdoc method
-                * @name Core#setDefaultPanel 
-                * @public
-                * @param {String} which New panel to be default (specify panel name)
-                * @description Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
-                */
                 setDefaultPanel: function (which) {
-                    me.defaultPanel = which;
-                    me.setMainPanel(which);
+                    console.warn('setDefaultPanel will be removed from Core in future. Use hs.layout.service#setDefaultPanel method instead');
+                    return layoutService.setDefaultPanel(which);
                 },
-                /**
-                * @ngdoc method
-                * @name Core#panelVisible 
-                * @public
-                * @param {String} which Name of panel to test
-                * @param {$scope} scope Angular scope of panels controller (optional, needed for test of unpinned panels)
-                * @returns {Boolean} Panel opened/closed status
-                * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
-                */
                 panelVisible: function (which, scope) {
-                    if (angular.isDefined(scope))
-                        if (angular.isUndefined(scope.panelName)) scope.panelName = which;
-                    if (angular.isDefined(me.panel_statuses[which])) {
-                        return me.panel_statuses[which] && me.panelEnabled(which);
-                    }
-                    return me.mainpanel == which || (angular.isDefined(scope) && scope.unpinned);
+                    console.warn('panelVisible will be removed from Core in future. Use hs.layout.service#panelVisible method instead');
+                    return layoutService.panelVisible(which, scope);
                 },
-                sidebarVisible: function (state) {
-                    if (angular.isDefined(state))
-                        me._sidebarVisible = state;
-                    if (me.puremapApp) return false;
-                    if (angular.isUndefined(me._sidebarVisible)) return true;
-                    return me._sidebarVisible;
-                },
-                /**
-                * @ngdoc method
-                * @name Core#panelEnabled 
-                * @public
-                * @param {String} which Selected panel (panel name)
-                * @param {Boolean} status Visibility status of panel to set
-                * @returns {Boolean} Panel enabled/disabled status for getter function
-                * @description Get or set panel visibility in sidebar. When panel is disabled it means that it's not displayed in sidebar (it can be opened programmaticaly) but it's functionality is running. Use with status parameter as setter.
-                */
                 panelEnabled: function (which, status) {
-                    if (typeof status == 'undefined') {
-                        if (angular.isDefined(me.panel_enabled[which]))
-                            return me.panel_enabled[which];
-                        else
-                            return true;
-                    } else
-                        me.panel_enabled[which] = status;
+                    console.warn('panelEnabled will be removed from Core in future. Use hs.layout.service#panelEnabled method instead');
+                    return layoutService.panelEnabled(which, status);
                 },
-                /**
-                * @ngdoc method
-                * @name Core#hidePanels 
-                * @public
-                * @description Close opened panel programmaticaly. If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels. Cannot resolve unpinned panels.
-                */
-                hidePanels: function () {
-                    me.mainpanel = '';
-                    me.sidebarLabels = true;
-                    if (!me.exists('hs.sidebar.controller')) {
-                        me.sidebarExpanded = false
-                    }
-                    if (!$rootScope.$$phase) $rootScope.$digest();
-                    $rootScope.$broadcast('core.mainpanel_changed');
-                },
-                /**
-                * @ngdoc method
-                * @name Core#closePanel 
-                * @public
-                * @param {Object} which Panel to close (panel scope)
-                * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
-                */
                 closePanel: function (which) {
-                    if (which.unpinned) {
-                        which.drag_panel.appendTo($(which.original_container));
-                        which.drag_panel.css({
-                            top: 'auto',
-                            left: 'auto',
-                            position: 'relative'
-                        });
-                    }
-                    which.unpinned = false;
-                    if (which.panelName == me.mainpanel) {
-                        if (me.defaultPanel != '') {
-                            if(which.panelName == me.defaultPanel){
-                                me.sidebarExpanded = false;
-                            } else
-                            me.setMainPanel(me.defaultPanel)
-                        } else {
-                            me.mainpanel = '';
-                            me.sidebarLabels = true;
-                        }
-                        if (!me.exists('hs.sidebar.controller')) {
-                            me.sidebarExpanded = false
-                        }
-
-                    }
-
-                    $rootScope.$broadcast('core.mainpanel_changed', which);
+                    console.warn('closePanel will be removed from Core in future. Use hs.layout.service#closePanel method instead');
+                    return layoutService(which)
                 },
                 /**
                 * @ngdoc method
@@ -456,7 +252,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     map.style.height = neededSize.height + 'px';
                     map.style.width = neededSize.width + 'px';
                     if (angular.isDefined(OlMap.map)) OlMap.map.updateSize();
-                    map.offsetWidth < 368 ? me.smallWidth = true : me.smallWidth = false;
+                    map.offsetWidth < 368 ? layoutService.smallWidth = true : layoutService.smallWidth = false;
                     if (!$rootScope.$$phase) $rootScope.$digest();
                     $rootScope.$broadcast('Core.mapSizeUpdated', neededSize);
                 },
@@ -543,11 +339,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
             $templateCache.removeAll();
 
             if (me.exists('hs.sidebar.controller') /*&& me.puremapApp != true*/) {
-                me.sidebarExpanded = true;
-            }
-
-            if (me.defaultPanel != '') {
-                me.setMainPanel(me.defaultPanel);
+                layoutService.sidebarExpanded = true;
             }
 
             /* HACK: https://github.com/openlayers/ol3/issues/3990 

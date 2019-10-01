@@ -7,7 +7,7 @@ import mobileToolbarController from './mobile-toolbar.controller';
  * @namespace hs.mobile_toolbar
  * @memberOf hs
  */
-angular.module('hs.mobile_toolbar', ['hs.map', 'hs.core'])
+angular.module('hs.mobile_toolbar', ['hs.map', 'hs.core', 'hs.layout'])
     /**
     * @memberof hs.mobile_toolbar
     * @ngdoc service

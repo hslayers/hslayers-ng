@@ -2,13 +2,13 @@ import Popup from 'ol-popup';
 import 'ol-popup/src/ol-popup.css';
 import { remove } from 'lodash';
 
-export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config',
-    function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config) {
+export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', 'hs.layout.service',
+    function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config, layoutService) {
         var popup = new Popup();
 
         OlMap.loaded().then(map => {
             map.addOverlay(popup);
-            if (Core.current_panel_queryable) {
+            if (layoutService.current_panel_queryable) {
                 if (!Base.queryActive) Base.activateQueries();
             }
             else {
@@ -64,7 +64,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
                         $scope.showQueryDialog(e);
                     } else {
                         popup.hide();
-                        if (['layermanager', '', 'permalink'].indexOf(Core.mainpanel) >= 0 || (Core.mainpanel == "info" && Core.sidebarExpanded == false)) Core.setMainPanel('info');
+                        if (['layermanager', '', 'permalink'].indexOf(layoutService.mainpanel) >= 0 || (layoutService.mainpanel == "info" && layoutService.sidebarExpanded == false)) layoutService.setMainPanel('info');
                     }
                 });
 
@@ -98,7 +98,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
                 popup.hide();
                 Base.deactivateQueries();
             }
-            else if (Core.current_panel_queryable) {
+            else if (layoutService.current_panel_queryable) {
                 if (!Base.queryActive) Base.activateQueries();
             }
             else {

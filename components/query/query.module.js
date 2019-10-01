@@ -14,7 +14,7 @@ import 'language.module';
  * @namespace hs.query
  * @memberOf hs
  */
-angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize', 'hs.language'])
+angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize', 'hs.language', 'hs.layout'])
     /**
     * @ngdoc directive
     * @name hs.query.directiveInfopanel

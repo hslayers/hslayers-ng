@@ -10,7 +10,7 @@ import searchController from './search.controller';
  * @memberOf hs
  */
 
-angular.module('hs.search', ['hs.map', 'hs.styles'])
+angular.module('hs.search', ['hs.map', 'hs.styles', 'hs.layout'])
     /**
      * @memberof hs.search
      * @ngdoc directive

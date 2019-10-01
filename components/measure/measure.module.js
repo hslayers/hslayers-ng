@@ -5,7 +5,7 @@ import measureService from './measure.service';
  * @namespace hs.measure
  * @memberOf hs
  */
-angular.module('hs.measure', ['hs.map', 'hs.core'])
+angular.module('hs.measure', ['hs.map', 'hs.core', 'hs.layout'])
     /**
      * @memberof hs.measure
      * @ngdoc service
