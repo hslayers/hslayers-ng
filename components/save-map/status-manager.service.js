@@ -1,5 +1,4 @@
-export default ['Core', 'hs.utils.service', '$http', 'config', 
-    function (Core, utils, $http, config) {
+export default ['Core', 'hs.utils.service', '$http', 'config', function (Core, utils, $http, config) {
     var me = this;
     angular.extend(me, {
         endpointUrl() {
@@ -14,7 +13,13 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                     hostName = config.hostname.default.url
                 }
             }
-            return hostName + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php')
+            if (config.status_manager_url
+                && config.status_manager_url.indexOf('://') > -1) {
+                //Full url specified
+                return config.status_manager_url;
+            }
+            else
+                return hostName + (config.status_manager_url || '/wwwlibs/statusmanager2/index.php')
         },
         save(compositionJson, endpoint, compoData) {
             return new Promise((resolve, reject) => {
