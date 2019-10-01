@@ -14,8 +14,8 @@ else window.hslMin = '';
 //Node modules path depends on if hslayers is used as standalone app (second case) or as a library (first case)
 if(typeof hsl_path == 'undefined') hsl_path = './';
 var nm_path = window.nm_path || (hsl_path.indexOf('node_modules') > -1 ? hsl_path.substr(0, hsl_path.indexOf('node_modules') + 13) : hsl_path + 'node_modules/');
-/*In expressJs and other frameworks node_modules 
-might be accessible as static files eg. http://localhost/jquery/dist.js. 
+/*In expressJs and other frameworks node_modules
+might be accessible as static files eg. http://localhost/jquery/dist.js.
 In that case we have hsl_path 'hslayers-ng/' eg. http://localhost/hslayers/
 */
 if (hsl_path == 'hslayers-ng/') nm_path = './';
@@ -46,6 +46,7 @@ if (window.require && window.require.config) window.require.config({
         proj4: requirejs.s.contexts._.config.paths.proj4 || nm_path + 'proj4/dist/proj4',
         api: requirejs.s.contexts._.config.paths.api || hsl_path + 'components/api/api' + hslMin,
         compositions: hsl_path + 'components/compositions/compositions' + hslMin,
+        csv_importer: hsl_path + 'components/csv_importer/csv_importer' + hslMin,
         Cesium: nm_path + 'cesium/Build/Cesium/Cesium',
         datasource_selector: hsl_path + 'components/datasource_selector/datasource_selector' + hslMin,
         drag: hsl_path + 'components/drag/drag' + hslMin,
@@ -86,6 +87,7 @@ if (window.require && window.require.config) window.require.config({
         'ol.popup': requirejs.s.contexts._.config.paths.olPopup || hsl_path + 'components/format/ol.popup' + hslMin,
         'hs.source.Wfs': requirejs.s.contexts._.config.paths.WfsSource || hsl_path + 'components/layers/hs.source.Wfs' + hslMin,
         routing: hsl_path + 'components/routing/routing' + hslMin,
+        'tabulator-tables': nm_path + 'tabulator-tables/dist/js/tabulator' + hslMin,
         tracking: hsl_path + 'components/tracking/tracking' + hslMin,
         'angular-drag-and-drop-lists': nm_path + 'angular-drag-and-drop-lists/angular-drag-and-drop-lists' + hslMin,
         'focusIf': nm_path + 'ng-focus-if/focusIf' + hslMin,
@@ -164,7 +166,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#config
                         * @public
-                        * @type {Object} 
+                        * @type {Object}
                         * @description Service shortcut to config module defined by app.js for application
                         */
                         config: config,
@@ -172,7 +174,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#scopes_registered
                         * @public
-                        * @type {Array} 
+                        * @type {Array}
                         * @description DEPRECATED?
                         */
                         scopes_registered: [],
@@ -180,7 +182,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#mainpanel
                         * @public
-                        * @type {String} null 
+                        * @type {String} null
                         * @description Storage of current main panel (panel which is opened). When {@link Core#defaultPanel defaultPanel} is specified, main panel is set to it during Core initialization.
                         */
                         mainpanel: "",
@@ -188,15 +190,15 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#defaultPanel
                         * @public
-                        * @type {String} null 
-                        * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed). 
+                        * @type {String} null
+                        * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed).
                         */
                         defaultPanel: "",
                         /**
                         * @ngdoc property
                         * @name Core#sidebarExpanded
                         * @public
-                        * @type {Boolean} false 
+                        * @type {Boolean} false
                         * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
                         */
                         sidebarExpanded: false,
@@ -204,7 +206,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#sidebarRight
                         * @public
-                        * @type {Boolean} true 
+                        * @type {Boolean} true
                         * @description Side on which sidebar will be shown (true - right side of map, false - left side of map)
                         */
                         sidebarRight: true,
@@ -212,7 +214,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#sidebarLabels
                         * @public
-                        * @type {Boolean} true 
+                        * @type {Boolean} true
                         * @description DEPRECATED? (labels display is done with CSS classes)
                         */
                         sidebarLabels: true,
@@ -220,7 +222,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#sidebarToggleable
                         * @public
-                        * @type {Boolean} true 
+                        * @type {Boolean} true
                         * @description Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
                         */
                         sidebarToggleable: true,
@@ -228,7 +230,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#sidebarButtons
                         * @public
-                        * @type {Boolean} true 
+                        * @type {Boolean} true
                         * @description DEPRECATED?
                         */
                         sidebarButtons: true,
@@ -237,7 +239,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#singleDatasources
                         * @public
-                        * @type {Boolean} false 
+                        * @type {Boolean} false
                         * @description If true, datasource can be added to app only through Datasource selector panel (in GUI)
                         */
                         singleDatasources: false,
@@ -245,7 +247,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#embededEnabled
                         * @public
-                        * @type {Boolean} true 
+                        * @type {Boolean} true
                         * @description If map can be shared as embeded frame
                         */
                         embededEnabled: true,
@@ -253,7 +255,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#smallWidth
                         * @public
-                        * @type {Boolean} false 
+                        * @type {Boolean} false
                         * @description Helper property for showing some button on smaller screens
                         */
                         smallWidth: false,
@@ -261,7 +263,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#panel_statuses
                         * @public
-                        * @type {Object} 
+                        * @type {Object}
                         * @description DEPRACATED?
                         */
                         panel_statuses: {},
@@ -269,7 +271,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#panel_enabled
                         * @public
-                        * @type {Object}  
+                        * @type {Object}
                         * @description DEPRACATED?
                         */
                         panel_enabled: {},
@@ -277,7 +279,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#_exist_cache
                         * @public
-                        * @type {Object}  
+                        * @type {Object}
                         * @description DEPRECATED?
                         */
                         _exist_cache: {},
@@ -285,7 +287,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#current_panel_queryable
                         * @public
-                        * @type {Boolean} false 
+                        * @type {Boolean} false
                         * @description Keep queryable status of current panel
                         */
                         current_panel_queryable: false,
@@ -293,7 +295,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#sizeOptions
                         * @public
-                        * @type {Object} 
+                        * @type {Object}
                         * @description Hold data for computing app sizes. Shouldnt be modified directly. Holds reference to HS app element and optionally its container.
                         */
                         sizeOptions: {
@@ -305,14 +307,14 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc property
                         * @name Core#puremapApp
                         * @public
-                        * @type {Boolean} false 
+                        * @type {Boolean} false
                         * @description If app is running in puremapApp mode
                         */
                         puremapApp: false,
                         language: 'en',
                         /**
                         * @ngdoc method
-                        * @name Core#setMainPanel 
+                        * @name Core#setMainPanel
                         * @public
                         * @param {String} which New panel to activate (panel name)
                         * @param {Boolean} by_gui Whether function call came as result of GUI action
@@ -346,7 +348,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#setDefaultPanel 
+                        * @name Core#setDefaultPanel
                         * @public
                         * @param {String} which New panel to be default (specify panel name)
                         * @description Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
@@ -357,7 +359,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#panelVisible 
+                        * @name Core#panelVisible
                         * @public
                         * @param {String} which Name of panel to test
                         * @param {$scope} scope Angular scope of panels controller (optional, needed for test of unpinned panels)
@@ -374,7 +376,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#panelEnabled 
+                        * @name Core#panelEnabled
                         * @public
                         * @param {String} which Selected panel (panel name)
                         * @param {Boolean} status Visibility status of panel to set
@@ -392,7 +394,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#hidePanels 
+                        * @name Core#hidePanels
                         * @public
                         * @description Close opened panel programmaticaly. If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels. Cannot resolve unpinned panels.
                         */
@@ -407,7 +409,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#closePanel 
+                        * @name Core#closePanel
                         * @public
                         * @param {Object} which Panel to close (panel scope)
                         * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
@@ -439,7 +441,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#exists 
+                        * @name Core#exists
                         * @public
                         * @param {String} name Controler or module name to test e.g. hs.print
                         * @returns {Boolean} True if controller or module exists
@@ -463,7 +465,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#init 
+                        * @name Core#init
                         * @public
                         * @params {Object} element HS layers element gained from directive link
                         * @params {Object} options Optional options object when HS app has not CSS sizes declared. Parent property is Boolean type when size should be taken from HS element parent. Element property is string for any Jquery selector (usage of element id is recommended e.g. "#container")
@@ -495,7 +497,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#setSizeByContainer 
+                        * @name Core#setSizeByContainer
                         * @public
                         * @params {String|Boolean} container New container for size referencing (options - string Jquery selector - see Init function, Boolean 'true' value for parent of HS element)
                         * @description Change container for HS element.
@@ -507,7 +509,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#setSizeByContainer 
+                        * @name Core#setSizeByContainer
                         * @public
                         * @params {Number} height New height of HS element
                         * @params {Number} width New width of HS element
@@ -524,7 +526,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         * @ngdoc method
                         * @name Core#initSizeListeners
                         * @public
-                        * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application. 
+                        * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application.
                         */
                         initSizeListeners: function () {
                             var w = $window;
@@ -566,7 +568,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                             var map = document.getElementById("map");
                             if(map == null) return;
                             var sidebarElem = null;
-                            if(document.getElementsByClassName('panelspace').length>0) 
+                            if(document.getElementsByClassName('panelspace').length>0)
                             sidebarElem = document.getElementsByClassName('panelspace')[0];
                             map.style.height = container.clientHeight+ 'px';
                             if (me.puremapApp) {
@@ -587,7 +589,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#fullScreenMap 
+                        * @name Core#fullScreenMap
                         * @public
                         * @params {Object} element HS layers element gained from directive link
                         * @description Helper function for single page HS map applications. Not reccomended, used only for compability reasons and might be removed.
@@ -603,7 +605,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#setLanguage 
+                        * @name Core#setLanguage
                         * @public
                         * @param {String} lang Language to select
                         * @description Set current active language for translating. (Currently cs and nl options supported).
@@ -622,7 +624,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#getCurrentLanguagePrefix 
+                        * @name Core#getCurrentLanguagePrefix
                         * @public
                         * @description Get code of current language
                         */
@@ -632,7 +634,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#openStatusCreator 
+                        * @name Core#openStatusCreator
                         * @public
                         * @description Open status creator panel
                         */
@@ -641,7 +643,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#searchVisible 
+                        * @name Core#searchVisible
                         * @public
                         * @param {booelan} is New status of search panel
                         * @returns {Boolean} Current status of Search panel
@@ -655,7 +657,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#isAuthorized 
+                        * @name Core#isAuthorized
                         * @public
                         * @returns {Boolean} Check result - true for authorized user
                         * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
@@ -688,7 +690,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         },
                         /**
                         * @ngdoc method
-                        * @name Core#isMobile 
+                        * @name Core#isMobile
                         * @public
                         * @returns {String} Returns "mobile" or ""
                         * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
@@ -716,7 +718,7 @@ define(['angular', 'angular-gettext', 'translations', 'ol', 'map', 'drag', 'api'
                         me.setMainPanel(me.defaultPanel);
                     }
 
-                    /* HACK: https://github.com/openlayers/ol3/issues/3990 
+                    /* HACK: https://github.com/openlayers/ol3/issues/3990
                     try {
                         if (typeof require('proj4') != undefined) {
                             require(['proj4'], function () {
