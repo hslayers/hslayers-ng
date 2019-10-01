@@ -397,7 +397,8 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                         if (olf.getGeometry().getType() == 'Point') {
                             map.getView().setCenter(olf.getGeometry().getCoordinates());
                         } else {
-                            map.getView().fit(olf.getGeometry(), map.getSize(), {duration: 1000});
+                            //map.getView().fit(olf.getGeometry(), map.getSize(), {duration: 10000});
+                            map.getView().fit(olf.getGeometry(), {duration: 1000});
                         }
                     }
 
