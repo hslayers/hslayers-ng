@@ -191,10 +191,11 @@ li.hs-lm-item.hovering {
 div.hs-lm-item-title {
     cursor: pointer;
     min-height: 1.76em;
+    margin-top: auto;
 }
 
 .hs-lm-item-visibility, .hs-lm-baseitem-visibility{
-    margin-top: -0.42em;
+    margin-top: -0.19em;
 }
 
 div.hs-lm-item-title:hover{
