@@ -6,8 +6,8 @@ import { transform } from 'ol/proj';
 
 export default {
     template: require('./partials/vgi-draw.html'),
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.save-map.service', 'config', 'hs.draw.service', '$compile',
-        function ($scope, OlMap, Core, Geolocation, $http, utils, $timeout, saveMap, config, drawService, $compile) {
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.save-map.service', 'config', 'hs.draw.service', '$compile', 'hs.layout.service'
+        function ($scope, OlMap, Core, Geolocation, $http, utils, $timeout, saveMap, config, drawService, $compile, layoutService) {
             var map = OlMap.map;
             var newObsId = 0;
 
@@ -744,13 +744,13 @@ export default {
             }
 
             $scope.$watch('drawService.type', function () {
-                if (Core.mainpanel != 'draw') return;
+                if (layoutService.mainpanel != 'draw') return;
                 drawService.deactivateDrawing();
                 activateDrawing();
             });
 
             $scope.$on('core.mainpanel_changed', function (event) {
-                if (Core.mainpanel == 'draw') {
+                if (layoutService.mainpanel == 'draw') {
                     fillDrawableLayersList();
                     if ($scope.drawable_layers.length == 1) {
                         $scope.selected_layer = $scope.drawable_layers[0].get('title');
@@ -1005,7 +1005,7 @@ export default {
                     layer: saveMap.layer2json(layer)
                 });
                 $scope.setLayerToSelect(layer);
-                Core.setMainPanel('draw', false, false);
+                layoutService.setMainPanel('draw', false, false);
             }
 
             $scope.$on('senslog.categories_loaded', function (event, categories) {

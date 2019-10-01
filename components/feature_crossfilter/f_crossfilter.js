@@ -79,8 +79,8 @@ define(['angular', 'ol', 'dc', 'map'],
             * @name hs.featureCrossfilter.controller
             * @description TODO
             */
-            .controller('hs.feature_crossfilter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_crossfilter.service', 'config',
-                function($scope, OlMap, Core, service, config) {
+            .controller('hs.feature_crossfilter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_crossfilter.service', 'config', 'hs.layout.service',
+                function($scope, OlMap, Core, service, config, layoutService) {
                     var map = OlMap.map;
                     var crossfilterable_layers = config.crossfilterable_layers;
 
@@ -163,11 +163,11 @@ define(['angular', 'ol', 'dc', 'map'],
                         if (!$scope.$$phase) $scope.$digest();
                     }
 
-                    if (Core.mainpanel == 'feature_crossfilter') {
+                    if (layoutService.mainpanel == 'feature_crossfilter') {
                         $scope.createConfiguredCharts();
                     }
                     $scope.$on('core.mainpanel_changed', function(event) {
-                        if (Core.mainpanel == 'feature_crossfilter') {
+                        if (layoutService.mainpanel == 'feature_crossfilter') {
                             $scope.createConfiguredCharts();
                         }
                     })

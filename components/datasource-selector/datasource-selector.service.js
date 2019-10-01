@@ -188,7 +188,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
                     if (Core.singleDatasources) {
                         me.datasetSelect('OWS')
                     } else {
-                        Core.setMainPanel('ows');
+                        layoutService.setMainPanel('ows');
                     }
                     $timeout(() => {
                         $rootScope.$broadcast(`ows.filling`,
@@ -202,7 +202,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
                         whatToAdd.extractStyles, whatToAdd.projection);
                 }
                 else {
-                    Core.setMainPanel('layermanager');
+                    layoutService.setMainPanel('layermanager');
                 }
             })
             

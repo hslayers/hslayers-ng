@@ -28,7 +28,8 @@ define(['angular','ol','s4a','map','core'],
         '$scope',
         'hs.map.service',
         'Core',
-        function($scope, OlMap, Core) {
+        'layoutService',
+        function($scope, OlMap, Core, layoutService) {
 
             // Set the instance of the OpenAPI that s4a.js
             // works towards
@@ -445,7 +446,7 @@ define(['angular','ol','s4a','map','core'],
             };
 
             $scope.$on('core.mainpanel_changed', function(event) {
-                if (Core.mainpanel === 'routing') {
+                if (layoutService.mainpanel === 'routing') {
                     setDefaultOperation();
                     $scope.activate();
                 } else {
@@ -454,7 +455,7 @@ define(['angular','ol','s4a','map','core'],
             });
 
             $scope.$on('scope_loaded', function(event, data) {
-                if (Core.mainpanel === 'routing' && data === 'routing') {
+                if (layoutService.mainpanel === 'routing' && data === 'routing') {
                     setDefaultOperation();
                     $scope.activate();
                 } else {

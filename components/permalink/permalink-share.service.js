@@ -1,5 +1,5 @@
-export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlService', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q', 'hs.statusManagerService',
-    function ($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q, statusManagerService) {
+export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlService', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q', 'hs.statusManagerService', 'hs.layout.service',
+    function ($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q, statusManagerService, layoutService) {
         var me = {};
         angular.extend(me, {
 
@@ -129,7 +129,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
              * @description Generate thumbnail of current map and save it to variable and selected element
              */
             generateThumbnail: function ($element) {
-                if (Core.mainpanel == 'saveMap' || Core.mainpanel == 'permalink' || Core.mainpanel == 'shareMap') {
+                if (layoutService.mainpanel == 'saveMap' || layoutService.mainpanel == 'permalink' || layoutService.mainpanel == 'shareMap') {
                     $element.setAttribute("crossOrigin", "Anonymous");
                     OlMap.map.once('postcompose', function (event) {
                         var myCanvas = document.getElementById('my_canvas_id');
@@ -159,7 +159,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
         })
 
         $rootScope.$on('core.mainpanel_changed', function (event) {
-            if (Core.mainpanel == 'permalink') {
+            if (layoutService.mainpanel == 'permalink') {
                 serviceURL.update();
                 var status_url = statusManagerService.endpointUrl();
                 if (serviceURL.added_layers.length > 0) {
@@ -187,7 +187,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
         });
 
         $rootScope.$on('browserurl.updated', function () {
-            if (Core.mainpanel == "permalink" || Core.mainpanel == "shareMap") {
+            if (layoutService.mainpanel == "permalink" || layoutService.mainpanel == "shareMap") {
 
                 me.data.shareUrlValid = false;
 
@@ -216,7 +216,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
         })
 
         $rootScope.$on('core.mainpanel_changed', function (event) {
-            if (Core.mainpanel == 'permalink') {
+            if (layoutService.mainpanel == 'permalink') {
                 OlMap.map.once('postrender', function () {
                     me.generateThumbnail(document.getElementById('hs-permalink-thumbnail'));
                 });

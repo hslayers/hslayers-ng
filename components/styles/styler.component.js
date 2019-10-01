@@ -1,8 +1,8 @@
 import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 
 export default {
-    template: require('components/styles/partials/styler.html'), controller: ['$scope', 'hs.styler.service', '$sce', 'Core', '$http',
-        function ($scope, service, $sce, Core, $http) {
+    template: require('components/styles/partials/styler.html'), controller: ['$scope', 'hs.styler.service', '$sce', 'Core', '$http', 'hs.layout.service',
+        function ($scope, service, $sce, Core, $http, layoutService) {
             $scope.service = service;
             $scope.icons = null;
             $scope.imagetypes = [{
@@ -128,7 +128,7 @@ export default {
                 $scope.save();
             }
             $scope.layermanager = function () {
-                Core.setMainPanel('layermanager');
+                layoutService.setMainPanel('layermanager');
             },
                 $scope.$watch('linecolor', $scope.save);
             $scope.$watch('service.layer', updateHasVectorFeatures);
@@ -194,7 +194,7 @@ export default {
             });
 
             $scope.$on('core.mainpanel_changed', function (e, panel) {
-                if (Core.mainpanel == 'styler' && $scope.icons == null) {
+                if (layoutService.mainpanel == 'styler' && $scope.icons == null) {
                     $scope.icons = [require("./img/svg/bag1.svg"), require("./img/svg/banking4.svg"), require("./img/svg/bar.svg"), require("./img/svg/beach17.svg"), require("./img/svg/bicycles.svg"), require("./img/svg/building103.svg"), require("./img/svg/bus4.svg"), require("./img/svg/cabinet9.svg"), require("./img/svg/camping13.svg"), require("./img/svg/caravan.svg"), require("./img/svg/church15.svg"), require("./img/svg/church1.svg"), require("./img/svg/coffee-shop1.svg"), require("./img/svg/disabled.svg"), require("./img/svg/favourite28.svg"), require("./img/svg/football1.svg"), require("./img/svg/footprint.svg"), require("./img/svg/gift-shop.svg"), require("./img/svg/gps40.svg"), require("./img/svg/gps41.svg"), require("./img/svg/gps42.svg"), require("./img/svg/gps43.svg"), require("./img/svg/gps5.svg"), require("./img/svg/hospital.svg"), require("./img/svg/hot-air-balloon2.svg"), require("./img/svg/information78.svg"), require("./img/svg/library21.svg"), require("./img/svg/location6.svg"), require("./img/svg/luggage13.svg"), require("./img/svg/monument1.svg"), require("./img/svg/mountain42.svg"), require("./img/svg/museum35.svg"), require("./img/svg/park11.svg"), require("./img/svg/parking28.svg"), require("./img/svg/pharmacy17.svg"), require("./img/svg/port2.svg"), require("./img/svg/restaurant52.svg"), require("./img/svg/road-sign1.svg"), require("./img/svg/sailing-boat2.svg"), require("./img/svg/ski1.svg"), require("./img/svg/swimming26.svg"), require("./img/svg/telephone119.svg"), require("./img/svg/toilets2.svg"), require("./img/svg/train-station.svg"), require("./img/svg/university2.svg"), require("./img/svg/warning.svg"), require("./img/svg/wifi8.svg")];
                 }
 

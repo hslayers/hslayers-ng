@@ -1,8 +1,8 @@
 export default {
     template: require('components/save-map/partials/panel.html'),
     controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService', 'hs.layerSynchronizerService',
-        '$timeout',
-        function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout, layerSynchronizerService) {
+        '$timeout', 'hs.layout.service',
+        function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout, layerSynchronizerService, layoutService) {
             $scope.compoData = StatusManager.compoData;
             $scope.statusData = StatusManager.statusData;
             $scope.userData = StatusManager.userData;
@@ -71,7 +71,7 @@ export default {
                 if (step === 'saveResult') {
                     $scope.showResultDialog();
                     $scope.step = 'start';
-                    Core.setMainPanel('layermanager', true);
+                    layoutService.setMainPanel('layermanager', true);
                     //Probably was used in OTN hub
                     /*
                     $('.composition-info').html($('<div>').html($scope.title)).click(function () {
@@ -118,7 +118,7 @@ export default {
             });
 
             $scope.$on('core.mainpanel_changed', function (event) {
-                if (Core.mainpanel == 'saveMap') {
+                if (layoutService.mainpanel == 'saveMap') {
                     $scope.step = 'start';
                 }
             });

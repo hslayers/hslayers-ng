@@ -10,8 +10,8 @@ import { addAnchors } from '../../common/attribution-utils';
 import 'angular-cookies';
 
 export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
-    'Core', 'hs.dimensionService', '$timeout',
-    function ($rootScope, OlMap, WmsCapsService, Core, dimensionService, $timeout) {
+    'Core', 'hs.dimensionService', '$timeout', 'hs.layout.service',
+    function ($rootScope, OlMap, WmsCapsService, Core, dimensionService, $timeout, layoutService) {
         var me = this;
 
         this.data = {
@@ -141,7 +141,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
             angular.forEach(me.data.services, function (layer) {
                 recurse(layer)
             });
-            Core.setMainPanel('layermanager');
+            layoutService.setMainPanel('layermanager');
         }
 
         function getSublayerNames(service){

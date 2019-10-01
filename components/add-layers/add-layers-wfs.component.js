@@ -15,8 +15,8 @@ export default {
             template: require('components/add-layers/partials/add-wfs-layer.directive.html')
         };
     }],
-    controller: ['$scope', 'hs.map.service', 'hs.wfs.getCapabilitiesService', 'Core', '$compile', '$rootScope',
-        function ($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
+    controller: ['$scope', 'hs.map.service', 'hs.wfs.getCapabilitiesService', 'Core', '$compile', '$rootScope', 'hs.layout.service',
+        function ($scope, OlMap, srv_caps, Core, $compile, $rootScope, layoutService) {
             $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
             $scope.$on('ows_wfs.capabilities_received', function (event, response) {
                 try {
@@ -152,7 +152,7 @@ export default {
                 angular.forEach($scope.services, function (layer) {
                     recurse(layer)
                 });
-                Core.setMainPanel('layermanager');
+                layoutService.setMainPanel('layermanager');
             };
 
             /**

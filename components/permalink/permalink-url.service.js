@@ -1,5 +1,5 @@
-export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.save-map.service', 'config', 'hs.language.service',
-    function ($rootScope, $http, $location, $window, OlMap, Core, utils, saveMap, config, languageService) {
+export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.save-map.service', 'config', 'hs.language.service', 'hs.layout.service',
+    function ($rootScope, $http, $location, $window, OlMap, Core, utils, saveMap, config, languageService, layoutService) {
 
         var url_generation = true;
         //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
@@ -36,11 +36,11 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
                 });
                 me.added_layers = saveMap.layers2json(added_layers);
 
-                if (Core.mainpanel) {
-                    if (Core.mainpanel == 'permalink') {
+                if (layoutService.mainpanel) {
+                    if (layoutService.mainpanel == 'permalink') {
                         me.push('hs_panel', 'layermanager');
                     } else {
-                        me.push('hs_panel', Core.mainpanel);
+                        me.push('hs_panel', layoutService.mainpanel);
                     }
                 }
                 me.push('hs_x', view.getCenter()[0]);

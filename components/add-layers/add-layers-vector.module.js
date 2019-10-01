@@ -30,8 +30,8 @@ angular.module('hs.addLayersVector', ['hs.styles'])
     * @name hs.addLayersVector.service
     * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
     */
-    .service('hs.addLayersVector.service', ['config', 'Core', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.statusManagerService', 'hs.permalink.urlService',
-        function (config, Core, $rootScope, OlMap, styles, utils, $http, statusManagerService, permalink) {
+    .service('hs.addLayersVector.service', ['config', 'Core', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.statusManagerService', 'hs.permalink.urlService', 'hs.layout.service',
+        function (config, Core, $rootScope, OlMap, styles, utils, $http, statusManagerService, permalink, layoutService) {
             var me = this;
 
             /**
@@ -233,7 +233,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
             * @param {ol.Layer} lyr New layer
             */
             function zoomToVectorLayer(lyr) {
-                Core.setMainPanel('layermanager');
+                layoutService.setMainPanel('layermanager');
                 lyr.getSource().on('change', function () { //Event needed because features are loaded asynchronously
                     var extent = lyr.getSource().getExtent();
                     if (extent != null) OlMap.map.getView().fit(extent, OlMap.map.getSize());
@@ -324,8 +324,8 @@ angular.module('hs.addLayersVector', ['hs.styles'])
     * @ngdoc controller
     * @name hs.addLayersVector.controller
     */
-    .controller('hs.addLayersVector.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.addLayersVector.service', 'Core',
-        function ($scope, OlMap, styles, service, Core) {
+    .controller('hs.addLayersVector.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.addLayersVector.service', 'Core', 'hs.layout.service',
+        function ($scope, OlMap, styles, service, Core, layoutService) {
             $scope.srs = 'EPSG:4326';
             $scope.title = "";
             $scope.extract_styles = false;
@@ -337,7 +337,7 @@ angular.module('hs.addLayersVector', ['hs.styles'])
             */
             $scope.add = function () {
                 service.add($scope.type, $scope.url, $scope.title, $scope.abstract, $scope.extract_styles, $scope.srs);
-                Core.setMainPanel('layermanager');
+                layoutService.setMainPanel('layermanager');
             }
         }
     ]);

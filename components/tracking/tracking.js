@@ -30,8 +30,8 @@ angular.module('hs.tracking', ['hs.map', 'hs.core'])
      * @ngdoc controller
      * @name hs.tracking.controller
      */
-    .controller('hs.tracking.controller', ['$scope', 'hs.map.service', 'Core',
-        function ($scope, OlMap, Core) {
+    .controller('hs.tracking.controller', ['$scope', 'hs.map.service', 'Core', 'hs.layout.service',
+        function ($scope, OlMap, Core, layoutService) {
 
             // Set the instance of the OpenAPI that s4a.js
             // works towards (by default portal.sdi4apps.eu)
@@ -206,7 +206,7 @@ angular.module('hs.tracking', ['hs.map', 'hs.core'])
              * are activated by clicking on the side menu
              */
             $scope.$on('core.mainpanel_changed', function (event) {
-                if (Core.mainpanel === 'tracking') {
+                if (layoutService.mainpanel === 'tracking') {
                     $scope.activate();
                 } else {
                     $scope.deactivate();
@@ -218,7 +218,7 @@ angular.module('hs.tracking', ['hs.map', 'hs.core'])
              * are loaded from static URLs
              */
             $scope.$on('scope_loaded', function (event, data) {
-                if (Core.mainpanel === 'tracking' && data === 'tracking') {
+                if (layoutService.mainpanel === 'tracking' && data === 'tracking') {
                     $scope.activate();
                 } else {
                     $scope.deactivate();

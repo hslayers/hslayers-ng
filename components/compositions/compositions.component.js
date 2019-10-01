@@ -2,9 +2,9 @@ export default {
     template: require('components/compositions/partials/compositions.html'),
     controller: ['$scope', 'Core', 'hs.compositions.service',
         'hs.compositions.service_parser', '$window', 'config', '$compile',
-        'hs.compositions.mickaService', '$rootScope',
+        'hs.compositions.mickaService', '$rootScope', 'hs.layout.service',
         function ($scope, Core, Composition, compositionParser, $window, config,
-            $compile, mickaEndpointService, $rootScope) {
+            $compile, mickaEndpointService, $rootScope, layoutService) {
             $scope.CS = Composition;
             $scope.data = Composition.data;
             $scope.mickaEndpointService = mickaEndpointService;
@@ -304,7 +304,7 @@ export default {
             }
 
             $scope.$on('map.extent_changed', function (event, data, b) {
-                if (Core.mainpanel != 'composition_browser' && Core.mainpanel != 'composition') return;
+                if (layoutService.mainpanel != 'composition_browser' && layoutService.mainpanel != 'composition') return;
                 if ($scope.filterByExtent) {
                     loadCompositionsForAllEndpoints();
                 }
@@ -482,7 +482,7 @@ export default {
             }
 
             $scope.$on('core.mainpanel_changed', function (event) {
-                if (Core.mainpanel === 'composition_browser' || Core.mainpanel === 'composition') {
+                if (layoutService.mainpanel === 'composition_browser' || layoutService.mainpanel === 'composition') {
                     loadCompositionsForAllEndpoints();
                 }
             });

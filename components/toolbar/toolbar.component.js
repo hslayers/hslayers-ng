@@ -13,7 +13,7 @@ export default {
                 Core: Core,
 
                 measureButtonClicked() {
-                    Core.setMainPanel('measure', true, false);
+                    layoutService.setMainPanel('measure', true, false);
                 },
 
                 /**

@@ -2,8 +2,8 @@ import { transform } from 'ol/proj';
 import 'hs.source.SparqlJson'
 import 'angular-socialshare';
 
-export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.utils.service', 'hs.compositions.layerParserService',
-    function (hsMap, config, Core, $rootScope, $http, utils, layerParserService) {
+export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.utils.service', 'hs.compositions.layerParserService', 'hs.layout.service',
+    function (hsMap, config, Core, $rootScope, $http, utils, layerParserService, layoutService) {
         var me = {
             /**
             * @ngdoc property
@@ -112,7 +112,7 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
 
             finalizeCompositionLoading: function (responseData) {
                 if (config.open_lm_after_comp_loaded) {
-                    Core.setMainPanel('layermanager');
+                    layoutService.setMainPanel('layermanager');
                 }
 
                 me.composition_edited = false;

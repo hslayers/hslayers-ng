@@ -11,8 +11,8 @@ export default {
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
         'hs.legend.service', 'hs.styler.service', 'hs.map.service',
-        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout',
-        function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, getCapabilitiesService, $rootScope, $timeout) {
+        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service',
+        function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, getCapabilitiesService, $rootScope, $timeout, layoutService) {
             angular.extend($scope, {
                 checkedSubLayers: {},
                 layer_renamer_visible: false,
@@ -79,7 +79,7 @@ export default {
                 styleLayer() {
                     let layer = $scope.olLayer();
                     styler.layer = layer;
-                    Core.setMainPanel('styler');
+                    layoutService.setMainPanel('styler');
                 },
                 /**
                 * @function isLayerVectorLayer

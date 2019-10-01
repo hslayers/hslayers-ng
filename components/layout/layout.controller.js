@@ -163,7 +163,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
         }
         $scope.openPanel = function (panel) {
-            Core.setMainPanel(panel.name);
+            layoutService.setMainPanel(panel.name);
             $scope.bottomSheetTitle = panel.title;
             if ($mdMedia && !$mdMedia('gt-sm') && !$scope.getBottomSheetState) {
                 $scope.closeLeftSidenav();

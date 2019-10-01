@@ -223,8 +223,8 @@ angular.module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
     * @ngdoc controller
     * @name hs.trip_planner.controller
     */
-    .controller('hs.trip_planner.controller', ['$scope', 'hs.map.service', 'Core', 'hs.trip_planner.service', 'config',
-        function ($scope, OlMap, Core, service, config) {
+    .controller('hs.trip_planner.controller', ['$scope', 'hs.map.service', 'Core', 'hs.trip_planner.service', 'config', 'hs.layout.service',
+        function ($scope, OlMap, Core, service, config, layoutService) {
             var map = OlMap.map;
             $scope.loaderImage = config.hsl_path + 'img/ajax-loader.gif';
 
@@ -406,7 +406,7 @@ angular.module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
             }
 
             $scope.prevPanel = function () {
-                Core.setMainPanel('info');
+                layoutService.setMainPanel('info');
             }
 
             $scope.$on('core.mainpanel_changed', function (event) {

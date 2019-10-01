@@ -11,10 +11,10 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
     'config', 'hs.permalink.urlService', '$compile', '$cookies',
     'hs.utils.service', 'hs.statusManagerService',
     'hs.compositions.mickaService', 'hs.compositions.statusManagerService',
-    'hs.compositions.laymanService',
+    'hs.compositions.laymanService', 'hs.layout.service',
     function ($rootScope, $location, $http, OlMap, Core, compositionParser,
         config, permalink, $compile, $cookies, utils, statusManagerService,
-        mickaEndpointService, statusManagerEndpointService, laymanEndpointService) {
+        mickaEndpointService, statusManagerEndpointService, laymanEndpointService, layoutService) {
         var me = this;
 
         var extentLayer;
@@ -287,7 +287,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
 
         $rootScope.$on('core.mainpanel_changed', function (event) {
             if (angular.isDefined(extentLayer)) {
-                if (Core.mainpanel === 'composition_browser' || Core.mainpanel === 'composition') {
+                if (layoutService.mainpanel === 'composition_browser' || layoutService.mainpanel === 'composition') {
                     extentLayer.setVisible(true);
                 }
                 else extentLayer.setVisible(false);

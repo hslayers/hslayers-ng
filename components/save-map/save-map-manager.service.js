@@ -1,8 +1,8 @@
 import { transform } from 'ol/proj';
 
 export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
-    'config', '$http', 'hs.statusManagerService', 'hs.laymanService',
-    function ($rootScope, OlMap, Core, saveMap, config, $http, statusManagerService, laymanService) {
+    'config', '$http', 'hs.statusManagerService', 'hs.laymanService', 'hs.layout.service',
+    function ($rootScope, OlMap, Core, saveMap, config, $http, statusManagerService, laymanService, layoutService) {
         var me = this;
         angular.extend(me, {
             compoData: {
@@ -102,7 +102,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
              * @memberof hs.save-map.controller
              */
             open() {
-                Core.setMainPanel('saveMap', true);
+                layoutService.setMainPanel('saveMap', true);
                 me.refresh();
             },
 
@@ -277,7 +277,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
         });
 
         $rootScope.$on('core.mainpanel_changed', function (event) {
-            if (Core.mainpanel == 'saveMap' || Core.mainpanel == 'statusCreator') {
+            if (layoutService.mainpanel == 'saveMap' || layoutService.mainpanel == 'statusCreator') {
                 me.refresh();
                 saveMap.generateThumbnail(document.getElementById('hs-stc-thumbnail'), me.compoData);
             }

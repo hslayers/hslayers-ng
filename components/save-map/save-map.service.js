@@ -6,7 +6,7 @@ import { ImageWMS } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import { GeoJSON } from 'ol/format';
 
-export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', 'config', function (OlMap, Core, utils, $window, $cookies, config) {
+export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cookies', 'config', 'hs.layout.service', function (OlMap, Core, utils, $window, $cookies, config, layoutService) {
     var me = {
         /**
         * Create Json object which stores information about composition, user, map state and map layers (including layer data)
@@ -339,7 +339,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
          * @param {$scope} $scope Angular scope from which function was called
          */
         generateThumbnail: function ($element, localThis) {
-            if (Core.mainpanel == 'save-map' || Core.mainpanel == 'permalink' || Core.mainpanel == "statusCreator") {
+            if (layoutService.mainpanel == 'save-map' || layoutService.mainpanel == 'permalink' || layoutService.mainpanel == "statusCreator") {
                 $element.setAttribute("crossOrigin", "Anonymous");
                 OlMap.map.once('postcompose', function (event) {
                     var myCanvas = document.getElementById('my_canvas_id');

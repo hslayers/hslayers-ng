@@ -1,7 +1,7 @@
 export default {
     template: require('components/add-layers/partials/add-layers.directive.html'),
-    controller: ['$scope', '$injector', 'hs.wms.getCapabilitiesService', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.map.service', 'hs.permalink.urlService', 'Core', 'hs.addLayersVector.service', 'config', '$rootScope', '$timeout',
-        function ($scope, $injector, srv_wms_caps, srv_wmts_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config, $rootScope, $timeout) {
+    controller: ['$scope', '$injector', 'hs.wms.getCapabilitiesService', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.map.service', 'hs.permalink.urlService', 'Core', 'hs.addLayersVector.service', 'config', '$rootScope', '$timeout', 'hs.layout.service',
+        function ($scope, $injector, srv_wms_caps, srv_wmts_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config, $rootScope, $timeout, layoutService) {
             $scope.Core = Core;
             var map = OlMap.map;
             if (angular.isArray(config.connectTypes)) {
@@ -49,7 +49,7 @@ export default {
             function connectServiceFromUrlParam(type) {
                 if (permalink.getParamValue(`${type}_to_connect`)) {
                     var url = permalink.getParamValue(`${type}_to_connect`);
-                    Core.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
+                    layoutService.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
                     $scope.type = type.toUpperCase();
                     $timeout(() => {
                         $rootScope.$broadcast(`ows.${type}_connecting`, url);
