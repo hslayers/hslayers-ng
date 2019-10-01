@@ -30,14 +30,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                 };
             }])
 
-            /**
-            * @memberof hs.csv_importer
-            * @ngdoc directive
-            * @name hs.fileReader.element.directive
-            * @description TODO
-            */
             .directive('fileReader', function($rootScope, config){
-              console.log('directive fileReader');
               return {
                 scope: {
                   fileReader:"="
@@ -55,13 +48,10 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                         });
                         loadJoiner(contents);
                       };
-                      //$rootScope.csv = r.result;
                       r.readAsText(files[0]);
 
-                      //loadJoiner();
                       function loadJoiner(csv){
                         csvRows = csv.split(/\r?\n|\r/);
-                        console.log(csvRows[1]);
                         addCSVHeader(csvRows[0]);
                         createFormOptions();
                       }
@@ -88,36 +78,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                           $("#innerJoinRight").append(option);
                         }
                       }
-                      /*$().ready(function () {
-                      //window.onload = function(){
-                        var select = document.createElement("select");
-                        select.appendChild(option);
-                        options = option;
-                        //console.log(optionValue);
-                        //console.log(option);
-                        $("#joinColumns").append(option);
-                        $("#formular").append('<p>haha</p>');
-                        //document.getElementById("tableHead").appendChild(option);
-                        //document.getElementById("joinColumns").appendChild(option);
-                        console.log(option);
-                        //console.log(document.getElementById("joinColumns"));
-                        console.log($("#joinColumns").nodeValue);
-                      });*/
-                      //console.log(document.getElementById("formular"));
-/*
-                      var row = document.createElement("th");
-                      var rowname = document.createTextNode(key);
-                      row.appendChild(rowname);
-                      document.getElementById("tableHead").appendChild(row);*/
-                      //console.log(r);
-                      //console.log(r.result);
-                      /*var categories = ["ARTS_ENTERTAINMENT", "EDUCATION", "FITNESS_RECREATION", "FOOD_BEVERAGE", "HOTEL_LODGING", "MEDICAL_HEALTH", "SHOPPING_RETAIL", "TRAVEL_TRANSPORTATION"];
-                      for(var i=0; i<categories.length; i++){
-                        var option = categories[i];
-                        console.log(option);
-                        option = option.replace('_',' & ').toLowerCase();
-                        $("#joinColumns").append("<option>" + option + "</option>");
-                      }*/
+
                     }
                   });
                 }
@@ -200,10 +161,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                             });
                         }
 
-                        layer.filteredFeatures = filteredFeatures;
-                        return filteredFeatures;
                     },*/
-                    //var csv = $rootScope.csv;
 
                     makeTable: function(layer){
                       /*var style = new ol.style.Style({
@@ -217,21 +175,12 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                       });*/
 
                       source = layer.getSource();
-                      //var plotFeatures = layer.layer.getSource().getFeatures();
-                      //plotFeatures = layer.getSource().getFeatures();
                       var plotFeatures = source.getFeatures();
-                      //$(".myGrid").height(height);
-                      //$("#table-floater").height(height + 43);
-                      //featuresToTable(plotFeatures);
-                      callFunctionFroController(plotFeatures);
+                      createTable(plotFeatures);
 
-                      function callFunctionFroController(features){
-                        $rootScope.$broadcast('i want that function', {data: features});
+                      function createTable(features){
+                        $rootScope.$broadcast('data ready', {data: features});
                       }
-
-                      //$rootScope.tableOptions = tableOptions;
-                      //$rootScope.tableBody = [];
-                      //$rootScope.currentLayer = plotLayer.get('title');
 
                       //$rootScope.tableOptions.data = $rootScope.tableBody;
                       /*plotFeatures.forEach(function(feature){
@@ -251,8 +200,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                         console.log(source.getState());
                         me.makeTable(layer);
                         ol.Observable.unByKey(listenerKey);
-                        //me.prepLayerFilter(layer);
-                        //me.applyFilters(layer);
                     }
                 });
                 return me;
@@ -266,19 +213,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
             */
             .controller('hs.csv_importer.controller', ['$scope', 'hs.map.service', 'Core', 'hs.csv_importer.service', 'hs.layermanager.service', 'config',
                 function($scope, OlMap, Core, service, LayMan, config, $rootScope) {
-                    /*if (!layer) {
-                        if (LayMan.currentLayer === undefined) return;
-                        layer = LayMan.currentLayer;
-                    }
-
-                    var source = layer.layer.getSource();
-
-                    if (!('hsFilters' in layer)) return source.getFeatures();
-                    if (!layer.hsFilters) return source.getFeatures();
-
-                    var filters = layer.hsFilters;
-                    var filteredFeatures = [];*/
-
                     angular.extend($scope, $rootScope, {
                         /**
                          * @memberof hs.csv_importer.component
@@ -293,29 +227,16 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                             var csvTable = csvRows;
                             var newFeatures = joinCsvWithLayer(csvJoinedColumn, csvTable, features, csvJoinField, tableJoinField);
                             updateFeaturesToTable(newFeatures);
-                            //$scope.somefunction();
                         }
                     });
 
-                    $scope.somefunction = function(features){
-                      featuresToTable(features);
-                    };
-                    $scope.$on('i want that function', function(e, data){
-                      console.log(data.data);
-                      $scope.somefunction(data.data);
-                    })
-
-                    function featuresToTable(features){
-                      /*$("#tableHead").html("");
-                      HtmlTableHead(features);
-                      $("#tableBody").html("");
-                      HtmlTableBody(features);
-                      HtmlTableToTabulator(features);*/
+                    $scope.featuresToTable = function(features){
                       json = featuresToJson(features).features;
                       jsonToTabulator(json, features);
-                      //featuresToTabulator(features);
-                    }
-
+                    };
+                    $scope.$on('data ready', function(e, data){
+                      $scope.featuresToTable(data.data);
+                    })
 
                     function updateFeaturesToTable(features){
                       json = featuresToJson(features);
@@ -480,7 +401,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                     }
 
                     function featuresToTabulator(features){
-                      console.log(features);
                       table = new Tabulator("#htmlTable2", {
                         //height:405, // set height of table (optional)
                         data: features,
@@ -496,33 +416,23 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                       //table.setData(features);
                     }
 
-                    //map = OlMap.map;
                     $scope.map = OlMap.map;
                     $scope.LayMan = LayMan;
-                    //console.log('hs.feature_list controller');
                     var layer;
                     layer = LayMan.currentLayer;
-                    //layer = config.default_layers[0];
-                    //var source = layer.layer.getSource();
 
                     function joinCsvWithLayer(csvJoinedColumn, csvTable, features, csvField, tableField){
-                      //var csvJoinedColumnOrder = getCsvJoinedColumnOrder();
-                      //plotFeatures = source.getFeatures();
-                      //var layerFeatures = source.getFeatures();;
                       var newFeatures = features;
-                      console.log("joining column " + csvJoinedColumn + " according to fields " + csvField + " and " + tableField);
+                      //console.log("joining column " + csvJoinedColumn + " according to fields " + csvField + " and " + tableField);
                       var csvJoinedColumnNum = ($("#columnToAdd").prop("selectedIndex"));
                       var csvDict = csvToDictionary(csvRows, 0, csvJoinedColumnNum);
-                      console.log("1st features " + tableField + " is " + newFeatures[0].getProperties()[tableField]);
+                      //console.log("1st features " + tableField + " is " + newFeatures[0].getProperties()[tableField]);
                       newFeatures.forEach(function(feature){
                         var num = feature.getProperties()[tableField];
                         var key = '"' + num + '"';
                         feature.set(csvJoinedColumn, csvDict[key]);
                       });
                       return newFeatures;
-
-                      //me.makeTable(newFeatures);
-                      //featuresToTable(newFeatures);
 
                       function csvToDictionary(csvRows, csvField, csvJoinedColumnNum){
                         var dict = {};
@@ -532,62 +442,9 @@ define(['angular', 'ol', 'angular-material', 'map', 'draw', 'layermanager', 'cor
                         }
                         return dict;
                       };
-                      //map.addLayer(plotLayer);
+
                     };
 
-                    //console.log(OlMap.map.getLayers().item(layers[0]).getSource().getFeatures().length);
-                    /*$scope.map = OlMap.map;
-                    $scope.LayMan = LayMan;
-
-                    $scope.applyFilters = service.applyFilters;
-
-                    $scope.allSelected = function(filter) {
-                        return filter.selected ? filter.selected.length === filter.values.length : false;
-                    };
-
-                    $scope.isIndeterminate = function(filter) {
-                        return filter.selected ? (filter.selected.length !== 0 && filter.selected.length !== filter.values.length) : false;
-                    };
-
-                    $scope.exists = function(item, list) {
-                        return list.indexOf(item) > -1;
-                    };
-
-                    $scope.toggle = function(value, selected) {
-                        var idx = selected.indexOf(value);
-                        if (idx > -1) {
-                            selected.splice(idx, 1);
-                        } else {
-                            selected.push(value);
-                        }
-                    };
-
-                    $scope.toggleAll = function(filter) {
-                        if (filter.selected.length === filter.values.length) {
-                            filter.selected = [];
-                        } else {
-                            filter.selected = filter.values.slice(0);
-                        }
-                    };
-
-                    $scope.$emit('scope_loaded', "featureFilter");*/
-
-                    // $rootScope.$on('layermanager.layer_added', function (e, layer) {
-                    //     service.prepLayerFilter(layer);
-
-                    //     if (layer.layer instanceof ol.layer.Vector) {
-                    //         var source = layer.layer.getSource();
-                    //         console.log(source.getState());
-                    //         var listenerKey = source.on('change', function (e) {
-                    //             if (source.getState() === 'ready') {
-                    //                 console.log(source.getState());
-                    //                 ol.Observable.unByKey(listenerKey);
-                    //                 service.prepLayerFilter(layer);
-                    //                 $scope.applyFilters(layer);
-                    //             }
-                    //         });
-                    //     }
-                    // });
                 }
             ])
 
