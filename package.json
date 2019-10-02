@@ -1,7 +1,11 @@
 {
   "name": "hslayers-ng",
   "private": false,
+<<<<<<< HEAD
   "version": "1.6.1",
+=======
+  "version": "1.6.0",
+>>>>>>> Styles and geometries visible in legend
   "description": "Hslayers-ng mapping library",
   "repository": "git+ssh://git@github.com:hslayers/hslayers-ng.git",
   "license": "MIT",

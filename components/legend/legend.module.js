@@ -1,6 +1,7 @@
 import 'components/utils/utils.module';
 import legendService from './legend.service';
 import legendLayerDirective from './legend-layer.directive';
+import legendLayerVectorDirective from './legend-layer-vector.directive';
 import legendComponent from './legend.component';
 
 /**
@@ -11,6 +12,7 @@ import legendComponent from './legend.component';
 var module = angular.module('hs.legend', ['hs.map', 'hs.utils']);
 
 module.directive('hs.legend.layerDirective', legendLayerDirective);
+module.directive('hs.legend.layerVectorDirective', legendLayerVectorDirective);
 
 module.service('hs.legend.service', legendService);
 
