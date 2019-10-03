@@ -71,7 +71,8 @@ export default ['hs.utils.service', function (utils) {
                     styleArray = styleArray.concat(featureStyle);
                 }
             }
-            var serializedStyles = styleArray.map(style => me.serializeStyle(style));
+            var filtered = styleArray.filter(style => !style.getText());
+            var serializedStyles = filtered.map(style => me.serializeStyle(style));
             serializedStyles = utils.removeDuplicates(serializedStyles, 'hashcode');
             return serializedStyles;
         },
@@ -101,7 +102,11 @@ export default ['hs.utils.service', function (utils) {
             if (image && utils.instOf(image, Icon)) {
                 row.icon = { type: 'icon', src: image.getSrc() };
             } else if (image && utils.instOf(image, Circle)) {
-                row.customCircle = { type: 'circle', cx: '17.5px', cy: '17.5px', r: '15px', fill: image.getFill().getColor(), stroke: image.getStroke().getColor(), strokeWidth: image.getStroke().getWidth() };
+                if (image.getStroke() && image.getFill()){
+                    row.customCircle = { type: 'circle', cx: '17.5px', cy: '17.5px', r: '15px', fill: image.getFill().getColor(), stroke: image.getStroke().getColor(), strokeWidth: image.getStroke().getWidth() };
+                }else if(image.getStroke()){
+                    row.customCircle = { type: 'circle', cx: '17.5px', cy: '17.5px', r: '15px', fill: 'blue', stroke: image.getStroke().getColor(), strokeWidth: image.getStroke().getWidth() };
+                }
             } else {
                 row.defaultCircle = { fill: 'blue', cx: '17.5px', cy: '17.5px', r: '15px' };
             }
