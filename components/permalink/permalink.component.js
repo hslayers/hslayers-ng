@@ -1,5 +1,10 @@
 export default {
-    template: require('components/permalink/partials/directive.html'),
+    template: ['config', (config) => {
+        if (config.design == 'md')
+            return require('components/permalink/partials/directivemd.html')
+        else
+            return require('components/permalink/partials/directive.html')
+    }],
     /**
      * @memberof hs.permalink
      * @name hs.permalink.controller

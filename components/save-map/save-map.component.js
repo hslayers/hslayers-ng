@@ -1,5 +1,10 @@
 export default {
-    template: require('components/save-map/partials/panel.html'),
+    template: ['config', (config) => {
+        if (config.design == 'md')
+            return require('components/save-map/partials/panelmd.html')
+        else
+            return require('components/save-map/partials/panel.html')
+    }],
     controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService', 'hs.layerSynchronizerService',
         '$timeout', 'hs.layout.service',
         function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout, layerSynchronizerService, layoutService) {

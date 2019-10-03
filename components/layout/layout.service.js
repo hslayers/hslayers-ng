@@ -9,8 +9,7 @@ export default ['config', '$rootScope',
                 title: 'Map Compositions',
                 description: 'List available map compositions',
                 name: 'composition_browser',
-                directive: 'hs.compositions.directive',
-                controller: 'hs.compositions.controller',
+                directive: 'hs.compositions',
                 mdicon: 'map'
             },
             {
@@ -19,8 +18,7 @@ export default ['config', '$rootScope',
                 title: 'Manage and Style Layers',
                 description: 'Manage and style your layers in composition',
                 name: 'layermanager',
-                directive: 'hs.layermanager.directive',
-                controller: 'hs.layermanager.controller',
+                directive: 'hs.layermanager',
                 mdicon: 'layers'
             },
             {
@@ -38,8 +36,7 @@ export default ['config', '$rootScope',
                 title: !config.singleDatasources ? 'Datasource Selector' : 'Add layers',
                 description: 'Select data or services for your map composition',
                 name: 'datasource_selector',
-                directive: 'hs.datasource_selector.directive',
-                controller: 'hs.datasource_selector',
+                directive: 'hs.datasource-selector',
                 mdicon: 'dns'
             },
             {
@@ -57,8 +54,7 @@ export default ['config', '$rootScope',
                 title: 'Measurements',
                 description: 'Measure distance or area at map',
                 name: 'measure',
-                directive: 'hs.measure.directive',
-                controller: 'hs.measure.controller',
+                directive: 'hs.measure',
                 mdicon: 'straighten'
             },
             {
@@ -83,10 +79,9 @@ export default ['config', '$rootScope',
                 enabled: true,
                 order: 8,
                 title: 'Save composition',
-                ngClick() { $rootScope.$broadcast('StatusCreator.open'); },
                 description: 'Save content of map to composition',
                 name: 'saveMap',
-                directive: 'hs.save-map.directive_panel',
+                directive: 'hs.save-map',
                 mdicon: 'save'
             }
 

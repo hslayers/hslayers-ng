@@ -1,5 +1,10 @@
 export default {
-    template: require('components/compositions/partials/compositions.html'),
+    template: ['config', (config) => {
+        if (config.design == 'md')
+            return require('components/compositions/partials/compositionsmd.html')
+        else
+            return require('components/compositions/partials/compositions.html')
+    }],
     controller: ['$scope', 'Core', 'hs.compositions.service',
         'hs.compositions.service_parser', '$window', 'config', '$compile',
         'hs.compositions.mickaService', '$rootScope', 'hs.layout.service',
@@ -439,7 +444,7 @@ export default {
             });
 
             $scope.$on('loadComposition.notSaved', function (event, url, title) {
-                $scope.compositionToLoad = {url, title};
+                $scope.compositionToLoad = { url, title };
                 if (config.design === 'md')
                     $scope.loadUnsavedDialogMD();
                 else

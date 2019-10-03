@@ -2,7 +2,12 @@ import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 
 export default {
-    template: require('components/layermanager/partials/layermanager.html'),
+    template: ['config', (config) => {
+        if (config.design == 'md')
+            return require('components/layermanager/partials/layermanagermd.html')
+        else
+            return require('components/layermanager/partials/layermanager.html')
+    }],
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.map.service',
         'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice',

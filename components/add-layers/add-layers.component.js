@@ -1,5 +1,10 @@
 export default {
-    template: require('components/add-layers/partials/add-layers.directive.html'),
+    template: ['config', (config) => {
+        if (config.design == 'md')
+            return require('components/add-layers/partials/add-layers.md.directive.html')
+        else
+            return require('components/add-layers/partials/add-layers.directive.html')
+    }],
     controller: ['$scope', '$injector', 'hs.wms.getCapabilitiesService', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.map.service', 'hs.permalink.urlService', 'Core', 'hs.addLayersVector.service', 'config', '$rootScope', '$timeout', 'hs.layout.service',
         function ($scope, $injector, srv_wms_caps, srv_wmts_caps, srv_wfs_caps, OlMap, permalink, Core, nonwmsservice, config, $rootScope, $timeout, layoutService) {
             $scope.Core = Core;

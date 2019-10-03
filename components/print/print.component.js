@@ -1,5 +1,10 @@
 export default {
-    template: require('components/print/partials/printdialog.html'),
+    template: ['config', (config) => {
+        if (config.design == 'md')
+            return require('components/print/partials/printdialogmd.html')
+        else
+            return require('components/print/partials/printdialog.html')
+    }],
     controller: ['$scope', 'hs.print.service', function ($scope, PrintS) {
         angular.extend($scope, {
             title: "",

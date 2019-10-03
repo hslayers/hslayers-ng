@@ -1,6 +1,9 @@
 export default {
-    template: ['config', function (config) {
-        return require('components/measure/partials/measure.html');
+    template: ['config', (config) => {
+        if (config.design == 'md')
+            return require('components/measure/partials/measuremd.html')
+        else
+            return require('components/measure/partials/measure.html')
     }],
     controller: ['$scope', 'hs.map.service', 'hs.layout.service', 'hs.measure.service',
         function ($scope, OlMap, layoutService, Measure) {
