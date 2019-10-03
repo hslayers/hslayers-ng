@@ -2,7 +2,8 @@
     <ul class="list-group row" dnd-list="layer_titles" dnd-drop="dragged(event, index, item, type, external)">
         <li ng-repeat="layer in filtered_layers | orderBy:order() | filter:query track by layer.layer.ol_uid + ' ' + layer.position"
             id="{{layer.idString()}}" dnd-draggable="layer.title" dnd-effect-allowed="move"
-            class="list-group-item hs-lm-item" ng-class="{detailActivated : 'currentLayer == layer'}">
+            class="list-group-item hs-lm-item" 
+            ng-class="{detailActivated : 'currentLayer == layer', 'deactivatedLayer': !layer.visible || layerValid(layer.layer) || layer.grayed}">
             <div class="d-flex ">
                 <div class="p-0 hs-lm-item-status" ng-click="toggleCurrentLayer(layer)">
                     <span class="icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>

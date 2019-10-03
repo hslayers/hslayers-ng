@@ -2,7 +2,7 @@
 
 .icon-spin {
     -webkit-animation: spin 1000ms infinite linear;
-    animation: spin 1001ms infinite linear;
+    animation: spin 1000ms infinite linear;
 
     position: relative;
     top: 1px;
@@ -172,12 +172,12 @@ li.hs-lm-item.hovering {
     text-decoration: underline;
 }
 
-.list-group-item.hs-lm-item, .list-group-item.hs-dr-item {
+li.hs-lm-item, li.hs-dr-item {
     word-wrap: break-word;
     border-left: 0;
     border-right: 0;
     padding: 0.1em;
-    padding-top: 0.2em;
+    padding-top: 0.4em;
     padding-left: 0.2em;
     /*border-bottom: 0;*/
 }
@@ -190,12 +190,11 @@ li.hs-lm-item.hovering {
 
 div.hs-lm-item-title {
     cursor: pointer;
-    min-height: 1.76em;
-    margin-top: auto;
+    
 }
 
-.hs-lm-item-visibility, .hs-lm-baseitem-visibility{
-    margin-top: -0.19em;
+.hs-lm-item-visibility{
+    margin-top: -0.42em;
 }
 
 div.hs-lm-item-title:hover{
@@ -432,6 +431,12 @@ button.but-title-sm {
 .list-group-item.active a {
     color: #fff;
 }
+
+.deactivatedLayer{
+    /* background: linear-gradient(90deg, rgba(245,238,238,0.75) 0%, rgba(230,230,238,0.89) 33%, rgba(221,220,228,0.94) 100%)!important; */
+    color:#cccccc;
+}
+
 .btn .close {
     font-size: 20px
 }
