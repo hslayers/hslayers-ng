@@ -57,7 +57,7 @@ export default {
             * @function refresh
             */
             refresh: function () {
-                if (!$scope.$$phase) $scope.$digest();
+                
             },
 
             isLegendable: service.isLegendable
