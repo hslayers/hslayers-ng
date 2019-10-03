@@ -17,9 +17,12 @@ export default function (options) {
             if (key.indexOf("_PARSERS") > 0)
                 gm[key]["http://www.opengis.net/gml/3.2"] = gm[key]["http://www.opengis.net/gml"];
         }
-        $("member", response).each(function () {
+        var oParser = new DOMParser();
+        var oDOM = oParser.parseFromString(response, "application/xml");
+        var doc = oDOM.documentElement;
+        doc.querySelectorAll('member').forEach(function () {
             var attrs = {};
-            var geom_node = $("geometry", this).get(0) || $("CP\\:geometry", this).get(0);
+            var geom_node = this.querySelector("geometry") || this.querySelector("CP\\:geometry");
             attrs.geometry = gm.readGeometryElement(geom_node, [{}]);
             var feature = new Feature(attrs);
             features.push(feature);
@@ -39,12 +42,11 @@ export default function (options) {
                 'SRSNAME=' + options.projection + '&outputFormat=geojson&' +
                 'bbox=' + extent.join(',') + ',urn:ogc:def:crs:EPSG:6.3:3857';
             var url = options.hsproxy ? "/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=" + window.escape(p) : p;
+            var $injector = angular.injector(['ng']);
+            var $http = $injector.get('$http');
 
-            $.ajax({
-                url: url,
-                context: this
-            })
-                .done(function (response) {
+            $http.get(url)
+                .then(response => {
                     this.addFeatures(options.parser(response));
                     this.hasLine = false;
                     this.hasPoly = false;

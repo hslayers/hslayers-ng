@@ -54,13 +54,10 @@ angular.module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
                 * @params {String} uuid Identifier of selected trip
                 */
                 loadWaypoints: function (uuid) {
-                    $("meta[property=og\\:title]").attr("content", 'test');
                     var trip_url = '<http://www.sdi4apps.eu/trips.rdf#' + uuid + '>';
                     var query = 'SELECT * FROM <http://www.sdi4apps.eu/trips.rdf> WHERE {' + trip_url + ' ?p ?o}';
-                    $.ajax({
-                        url: '//data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
-                    })
-                        .done(function (response) {
+                    $http.get('//data.plan4all.eu/sparql?default-graph-uri=&query=' + encodeURIComponent(query) + '&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on')
+                        .then(response => {
                             angular.forEach(response.results.bindings, function (record) {
                                 if (record.p.value == 'http://www.sdi4apps.eu/trips.rdf#waypoints') {
                                     me.waypoints = JSON.parse(record.o.value);
@@ -116,14 +113,12 @@ angular.module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
                     var trip_url = '<http://www.sdi4apps.eu/trips.rdf#' + me.trip + '>';
                     var waypoints_url = '<http://www.sdi4apps.eu/trips.rdf#waypoints>';
                     var query = 'WITH <http://www.sdi4apps.eu/trips.rdf> DELETE {?t ?p ?s} INSERT {' + trip_url + ' ' + waypoints_url + ' "' + JSON.stringify(waypoints).replace(/"/g, '\\"') + '"} WHERE {?t ?p ?s. FILTER(?t = ' + trip_url + '). }';
-                    $.ajax({
-                        type: 'POST',
-                        data: {
+                    $http.post(
+                        '//data.plan4all.eu/sparql?default-graph-uri=&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on',
+                        {
                             query: query
-                        },
-                        url: '//data.plan4all.eu/sparql?default-graph-uri=&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'
-                    })
-                        .done(function (response) {
+                        })
+                        .then(function (response) {
                             console.log(response);
                         });
                 },

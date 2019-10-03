@@ -138,11 +138,8 @@ export default function (options) {
             if (console && typeof src.get('geoname') != 'undefined') console.log('Get ', src.get('geoname'));
             this.loadCounter += 1;
             this.loadTotal += 1;
-            $.ajax({
-                url: p,
-                context: this
-            })
-                .done(function (response) {
+            $http(p)
+                .then((response) => {
                     if (console)
                         console.log('Finish ', this.get('geoname'), response.results.bindings.length);
                     src.loadCounter -= 1;
@@ -155,11 +152,10 @@ export default function (options) {
                         updates_query = updates_query.replace("<extent>", s_extent);
                         src.loadCounter += 1;
                         src.loadTotal += 1;
-                        $.ajax({
-                            url: updates_query,
-                            context: this
-                        })
-                            .done(function (updates_response) {
+                        var $injector = angular.injector(['ng']);
+                        var $http = $injector.get('$http');
+                        $http(updates_query)
+                            .then(updates_response => {
                                 if (console && typeof this.get('geoname') != 'undefined')
                                     console.log('Finish updates ', this.get('geoname'), response.results.bindings.length, updates_response.results.bindings.length);
                                 let objects = {};
