@@ -72,12 +72,6 @@ export default {
                     $scope.showResultDialog();
                     $scope.step = 'start';
                     layoutService.setMainPanel('layermanager', true);
-                    //Probably was used in OTN hub
-                    /*
-                    $('.composition-info').html($('<div>').html($scope.title)).click(function () {
-                        $('.composition-abstract').toggle()
-                    });
-                    $('.composition-info').append($('<div>').html($scope.abstract).addClass('well composition-abstract'));*/
                 }
                 else if (step === 'saveConfirm') {
                     $scope.showSaveDialog();

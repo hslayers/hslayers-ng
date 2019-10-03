@@ -7,6 +7,7 @@ export default {
             $compile, mickaEndpointService, $rootScope, layoutService) {
             $scope.CS = Composition;
             $scope.data = Composition.data;
+            $scope.config = config;
             $scope.mickaEndpointService = mickaEndpointService;
             Composition.data.endpoints.forEach(ds => ds.next = ds.limit)
             /**
@@ -413,16 +414,6 @@ export default {
                 loadCompositionsForAllEndpoints();
             }
 
-            /**
-             * @ngdoc method
-             * @name hs.compositions.controller#toggleKeywords
-             * @public
-             * @description Toogle keywords panel on compositions panel
-             */
-            $scope.toggleKeywords = function () {
-                $(".keywords-panel").slideToggle();
-            }
-
             $scope.handleFileSelect = function (evt) {
                 var files = evt.target.files; // FileList object
                 for (var i = 0, f; f = files[i]; i++) {
@@ -439,11 +430,6 @@ export default {
             }
 
             $scope.datasetSelect = Composition.datasetSelect;
-
-            $scope.$on('CompositionLoaded', function () {
-                $('.tooltip').remove();
-                $('[data-toggle="tooltip"]').tooltip();
-            });
 
             $scope.$on('compositions.composition_deleted', function (event, composition) {
                 var deleteDialog = document.getElementById("composition-delete-dialog");

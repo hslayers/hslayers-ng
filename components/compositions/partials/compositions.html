@@ -32,37 +32,34 @@
                                 translate>Only mine</span>
                         </div>
                     </div>
-                    <div class="btn-group">
+                    <div class="input-group-append dropleft">
                         <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                            aria-haspopup="true" aria-expanded="false" ng-click="sortMenuOpen=!sortMenuOpen">
                             Sort <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" ng-class="{'show': sortMenuOpen}">
                             <li><a class="dropdown-item" ng-click="setSortAttribute('bbox')" href="#">Bounding box</a>
                             </li>
                             <li><a class="dropdown-item" ng-click="setSortAttribute('title')">Title</a></li>
                             <li><a class="dropdown-item" ng-click="setSortAttribute('date')">Date</a></li>
                         </ul>
                     </div>
-                </div>
-            </div>
-
-            <span class="form-group">
-                <button type="button" ng-click="toggleKeywords()" ng-if="config.comp_keywords"
-                    class="btn btn-secondary btn-sm">
-                    <translate>Keywords</translate><span class="caret"></span>
-                </button>
-                <div class="keywords-panel" ng-if="config.comp_keywords">
-                    <div style="width: 45%; display:inline-block" class="checkbox"
-                        ng-repeat="(keyword, enabled) in keywords">
-                        <label>
-                            <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()">
-                            {{keyword}}
-                        </label>
+                    <div class="input-group-append dropleft" ng-if="config.comp_keywords">
+                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"
+                            ng-click="keywordsMenuOpen=!keywordsMenuOpen" aria-haspopup="true" aria-expanded="false">
+                            Keywords<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" ng-class="{'show': keywordsMenuOpen}">
+                            <li class="dropdown-item" ng-repeat="(keyword, enabled) in keywords">
+                                <label>
+                                    <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()">
+                                    {{keyword}}
+                                </label>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </span>
-
+            </div>
         </form>
         <ul class="nav flex-column flex-sm-row" role="tablist">
             <li class="nav-item" ng-repeat="ds in data.endpoints">
@@ -82,26 +79,29 @@
                 <div class="card">
                     <div class="card-body">
                         <ul class="hs-comp-list list-group">
-                            <li ng-repeat="composition in ds.compositions" class="list-group-item hs-comp-item" style="cursor: pointer"
-                                ng-class="composition.highlighted ?  'active' : ''"
+                            <li ng-repeat="composition in ds.compositions" class="list-group-item hs-comp-item"
+                                style="cursor: pointer" ng-class="composition.highlighted ?  'active' : ''"
                                 ng-mouseover="highlightComposition(composition, true)"
                                 ng-mouseleave="highlightComposition(composition, false)"
-                                ng-click="compositionClicked(composition)"
-                                data-toggle="tooltip" data-container="body" data-placement="bottom"
-                                ng-attr-title="{{composition.mdAbstract}}">
+                                ng-click="compositionClicked(composition)" data-container="body"
+                                data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
                                 <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
-                                <div class="btn-group btn-block" ng-class="{'d-none': commonId(composition) != selectedCompId}" role="group">
-                                    <a class="btn btn-secondary" ng-click='$event.stopPropagation();shareComposition(composition)' href="#">
+                                <div class="btn-group btn-block"
+                                    ng-class="{'d-none': commonId(composition) != selectedCompId}" role="group">
+                                    <a class="btn btn-secondary"
+                                        ng-click='$event.stopPropagation();shareComposition(composition)' href="#">
                                         <i class="glyphicon icon-share-alt"></i>
                                     </a>
-                                    <a class="btn btn-secondary" href="#" ng-click='$event.stopPropagation();edit(composition)'>
+                                    <a class="btn btn-secondary" href="#"
+                                        ng-click='$event.stopPropagation();edit(composition)'>
                                         <i class="glyphicon icon-edit"></i>
                                     </a>
-                                    <a class="btn btn-secondary" href="#" ng-click='$event.stopPropagation();detailComposition(composition)'>
+                                    <a class="btn btn-secondary" href="#"
+                                        ng-click='$event.stopPropagation();detailComposition(composition)'>
                                         <i class="glyphicon icon-info-sign"></i>
                                     </a>
                                     <a class="btn btn-secondary" href="#" ng-show="composition.editable"
-                                    ng-click='$event.stopPropagation();confirmDelete(composition)'>
+                                        ng-click='$event.stopPropagation();confirmDelete(composition)'>
                                         <i class="glyphicon icon-trash"></i>
                                     </a>
                                 </div>

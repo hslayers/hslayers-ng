@@ -21,9 +21,9 @@ export default ['hs.map.service', 'hs.wmts.getCapabilitiesService', function (Ol
     this.addService = function (url, box) {
         srv_caps.requestGetCapabilities(url, function (resp) {
             var ol_layers = srv_caps.service2layers(resp);
-            $(ol_layers).each(function () {
-                if (typeof box != 'undefined') box.get('layers').push(this);
-                OlMap.map.addLayer(this);
+            ol_layers.forEach(layer => {
+                if (typeof box != 'undefined') box.get('layers').push(layer);
+                OlMap.map.addLayer(layer);
             });
         })
     }
