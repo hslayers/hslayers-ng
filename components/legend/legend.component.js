@@ -1,5 +1,10 @@
 export default {
-    template: require('components/legend/partials/legend.html'),
+    template: ['config', (config) => {
+        if (config.design == 'md')
+            return require('components/legend/partials/legendmd.html')
+        else
+            return require('components/legend/partials/legend.html')
+    }],
     controller: ['$scope', 'hs.map.service', '$rootScope', 'hs.legend.service', function ($scope, OlMap, $rootScope, service) {
         var map;
 
