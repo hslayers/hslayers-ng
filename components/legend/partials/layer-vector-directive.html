@@ -2,27 +2,45 @@
     <div class="col-sm-2">
         <div ng-repeat="style in layerStyle">
             <div ng-if="style.icon && geometry == 'point'">
-                <img ng-style="{{style.icon}}" ng-src="{{style.icon.src}}">
+                <img ng-style="{{style.style}}" ng-src="{{style.icon.src}}">
             </div>
-            <!-- <svg xmlns="http://www.w3.org/2000/svg"></svg>
-
-
-            <circle ng-if="!style.icon && geometry == 'point'" cx="10" cy="10" r="10" stroke="{{style.styleStroke}}"
-                fill="{{style.styleFill}}" />
-            <path ng-if="!style.icon && geometry == 'polygon'" cx="10" cy="10" r="10" fill="{{style.styleFill}}" />
-            <path ng-if="!style.icon && geometry == 'line'" cx="10" cy="10" r="10" fill="{{style.styleFill}}" /> -->
-            <div ng-if="style.styleFill && geometry == 'polygon'">
-                <div ng-style="{{style.styleFill}}" ng-style="{{style.styleStroke}}">
-                </div>
+            <div ng-if="style.defaultCircle && geometry == 'point'">
+                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
+                    <circle ng-style="{{style.defaultCircle}}" />
+                </svg>
             </div>
-            <div ng-if="style.styleStroke && geometry == 'line'">
-                <div ng-style="{{style.styleStroke}}">
-                </div>
+            <div ng-if="style.customCircle && geometry == 'point'">
+                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
+                    <circle ng-style="{{style.customCircle}}" />
+                </svg>
             </div>
-            </svg>
+            <div ng-if="style.defaultPolygon && geometry == 'polygon'">
+                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
+                    <polygon points="5,30 8,5 25,5 30,30" ng-style="{{style.defaultPolygon}}" />
+                </svg>
+            </div>
+            <div ng-if="style.fullPolygon && geometry == 'polygon'">
+                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
+                    <polygon points="5,30 8,5 25,5 30,30"   ng-style="{{style.fullPolygon}}" />
+                </svg>
+            </div>
+            <div ng-if="style.polygon && geometry == 'polygon'">
+                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
+                    <polygon points="5,30 8,5 25,5 30,30"   ng-style="{{style.polygon}}" />
+                </svg>
+            </div>
+            <div ng-if="style.defaultLine && geometry == 'line'">
+                    <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
+                        <line x1="0" y1="20" x2="35" y2="20"   ng-style="{{style.defaultLine}}" />
+                    </svg>
+            </div>
+            <div ng-if="style.line && geometry == 'line'">
+                    <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
+                        <line x1="0" y1="20" x2="35" y2="20"   ng-style="{{style.line}}" />
+                    </svg>
+            </div>
         </div>
     </div>
-
     <div class="col-sm-10">
         {{geometry}}
     </div>
