@@ -367,7 +367,7 @@ export default {
                 var previousDialog = document.getElementById("composition-info-dialog");
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
-                var el = angular.element('<div hs.compositions.info_dialog_directive></span>');
+                var el = angular.element('<div hs.compositions.info_dialog_directive></div>');
                 document.getElementById("hs-dialog-area").appendChild(el[0]);
                 $compile(el)($scope);
             }

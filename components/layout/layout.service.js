@@ -210,7 +210,8 @@ export default ['config', '$rootScope',
             */
             closePanel: function (which) {
                 if (which.unpinned) {
-                    which.drag_panel.appendTo($(which.original_container));
+                    document.querySelector(which.original_container)
+                        .appendChild(which.drag_panel);
                     which.drag_panel.css({
                         top: 'auto',
                         left: 'auto',
