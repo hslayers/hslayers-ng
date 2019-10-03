@@ -259,8 +259,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
             $scope.getBottomSheetState = undefined;
             $scope.bottomSheet = undefined;
         }
-
-        if (config.layout == "md") {
+        if (config.design == "md") {
             try {
                 var $mdSidenav = $injector.get('$mdSidenav');
 
@@ -276,6 +275,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
                 }
 
                 $mdSidenav('sidenav-left', true).then(function () {
+                    var Hammer = require('hammerjs');
                     $mdSidenav('sidenav-left').onClose(function () {
                         $scope.leftSidenavOpen = false;
                     });
@@ -433,16 +433,20 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         }
 
         $scope.mapStyle = function () {
-            if (!layoutService.sidebarRight)
-                return {
-                    marginLeft: layoutService.panelSpaceWidth() + 'px',
-                    width: layoutService.widthWithoutPanelSpace()
-                }
-            else
-                return {
-                    marginLeft: '-px',
-                    width: layoutService.widthWithoutPanelSpace()
-                }
+            if (config.design == 'md') {
+
+            } else {
+                if (!layoutService.sidebarRight)
+                    return {
+                        marginLeft: layoutService.panelSpaceWidth() + 'px',
+                        width: layoutService.widthWithoutPanelSpace()
+                    }
+                else
+                    return {
+                        marginLeft: '-px',
+                        width: layoutService.widthWithoutPanelSpace()
+                    }
+            }
         }
 
         $scope.onlyEnabled = function (item) {

@@ -3,7 +3,6 @@ import 'angular-gettext';
 import 'translations';
 import '../map/map.module';
 import '../drag/drag.module';
-import layoutService from '../layout/layout.service';
 
 /**
  * @namespace hs
