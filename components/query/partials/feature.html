@@ -10,22 +10,45 @@
         readonly=true>
     </hs.query.attribute-row>
     <div class="row">
-        <div class="col-6 offset-6 mb-2 text-right">
-            <div class="btn-group">
-                <button class="btn btn-primary btn-sm" ng-click="zoomToFeature()"><i class="icon-search"></i></button>
-                <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                    id="dropdownMenuBtn" aris-haspopup="true" ng-click="exportMenuVisible = !exportMenuVisible"><i
-                        class="icon-download"></i></button>
-                <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': exportMenuVisible}"
-                    aria-labelledby="dropdownMenuBtn">
-                    <a class="dropdown-item" download="{{format.name}}_file.txt" ng-href="{{queryVectorService.exportedFeatureHref}}"
-                        ng-repeat="format in exportFormats"
-                        ng-click="exportData(format.name,$ctrl.feature.feature);">{{format.name}}</a>
-                </div>
-                <button class="btn btn-danger btn-sm" ng-click="removeFeature()" ng-if="isFeatureRemovable()"><i
-                        class="icon-trash"></i></button>
+        <div class="input-group m-1" ng-show="addAttribute">
+            <div class="input-group m-1">
+                <input class="form-control" placeholder="attribute name" ng-model="attributeName"></input>
             </div>
         </div>
     </div>
-    <hr />
+    <div class="row">
+        <div class="input-group m-1" ng-show="attributeName && addAttribute">
+            <div class="input-group m-1">
+                <input class="form-control" placeholder="attribute value" ng-model="attributeValue"></input>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="attributeName && attributeValue && addAttribute">
+        <div class="col-6 mb-2 text-left">
+            <div class="btn-group">
+                <button class="btn btn-primary btn-sm" ng-click="addAttribute = !addAttribute; addAttribute()"><i
+                        class="icon-save-floppy"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding-left: 10px">
+    <div class="col-6 offset-6 mb-2 text-right">
+        <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" ng-click="addAttribute = !addAttribute"><i
+                    class="icon-calcplus"></i></button>
+            <button class="btn btn-primary btn-sm" ng-click="zoomToFeature()"><i class="icon-search"></i></button>
+            <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                id="dropdownMenuBtn" aris-haspopup="true" ng-click="exportMenuVisible = !exportMenuVisible"><i
+                    class="icon-download"></i></button>
+            <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': exportMenuVisible}"
+                aria-labelledby="dropdownMenuBtn">
+                <a class="dropdown-item" download="{{format.name}}_file.txt"
+                    ng-href="{{queryVectorService.exportedFeatureHref}}" ng-repeat="format in exportFormats"
+                    ng-click="exportData(format.name,$ctrl.feature.feature);">{{format.name}}</a>
+            </div>
+            <button class="btn btn-danger btn-sm" ng-click="removeFeature()" ng-if="isFeatureRemovable()"><i
+                    class="icon-trash"></i></button>
+        </div>
+    </div>
 </div>
