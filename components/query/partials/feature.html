@@ -10,24 +10,24 @@
         readonly=true>
     </hs.query.attribute-row>
     <div class="row">
-        <div class="input-group m-1" ng-show="addAttribute">
+        <div class="input-group m-1" ng-show="$ctrl.newAttribVisible">
             <div class="input-group m-1">
-                <input class="form-control" placeholder="attribute name" ng-model="attributeName"></input>
+                <input class="form-control" placeholder="attribute name" ng-model="$ctrl.attributeName"></input>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="input-group m-1" ng-show="attributeName && addAttribute">
+        <div class="input-group m-1" ng-show="$ctrl.attributeName && $ctrl.newAttribVisible">
             <div class="input-group m-1">
-                <input class="form-control" placeholder="attribute value" ng-model="attributeValue"></input>
+                <input class="form-control" placeholder="attribute value" ng-model="$ctrl.attributeValue"></input>
             </div>
         </div>
     </div>
-    <div class="row" ng-show="attributeName && attributeValue && addAttribute">
+    <div class="row" ng-show="$ctrl.attributeName && $ctrl.attributeValue && $ctrl.newAttribVisible">
         <div class="col-6 mb-2 text-left">
             <div class="btn-group">
                 <button class="btn btn-primary btn-sm"
-                    ng-click="addAttribute = !addAttribute; newAttribute(attributeName,attributeValue); attributeName= ''; attributeValue= ''"><i
+                    ng-click="saveNewAttribute($ctrl.attributeName,$ctrl.attributeValue)"><i
                         class="icon-save-floppy"></i></button>
             </div>
         </div>
@@ -36,7 +36,7 @@
 <div class="row" style="padding-left: 10px">
     <div class="col-6 offset-6 mb-2 text-right">
         <div class="btn-group">
-            <button class="btn btn-secondary btn-sm" ng-click="addAttribute = !addAttribute"><i
+            <button class="btn btn-secondary btn-sm" ng-click="$ctrl.newAttribVisible = !$ctrl.newAttribVisible"><i
                     class="icon-calcplus"></i></button>
             <button class="btn btn-primary btn-sm" ng-click="zoomToFeature()"><i class="icon-search"></i></button>
             <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"

@@ -15,6 +15,9 @@ export default {
                 return $scope.$ctrl.feature.feature
             }
             angular.extend($scope, {
+                attributeName: '',
+                attributeValue: '',
+                newAttribVisible: false,
                 exportFormats: [
                     { name: 'WKT format' }
                 ],
@@ -25,9 +28,19 @@ export default {
                         && layerUtilsService.isLayerEditable(layer);
                 },
                 exportData: queryVectorService.exportData,
-                newAttribute (attributeName, attributeValue){
-                    let feature = olFeature();
-                    feature.set(attributeName, attributeValue);
+                saveNewAttribute(attributeName, attributeValue) {
+                    if ($scope.$ctrl.feature && $scope.$ctrl.feature.feature) {
+                        const feature = $scope.$ctrl.feature.feature;
+                        var getDuplicates = $scope.$ctrl.feature.attributes.filter(duplicate => duplicate.name == attributeName);
+                        if (getDuplicates.length == 0) {
+                            var obj = { name: attributeName, value: attributeValue };
+                            feature.set(
+                                $scope.$ctrl.feature.attributes.push(obj));
+                        }
+                    }
+                    $scope.$ctrl.newAttribVisible = !$scope.$ctrl.newAttribVisible;
+                    $scope.$ctrl.attributeName = '';
+                    $scope.$ctrl.attributeValue = '';
                 },
                 removeFeature() {
                     let source = olSource();
