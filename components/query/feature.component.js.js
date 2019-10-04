@@ -15,7 +15,6 @@ export default {
                 return $scope.$ctrl.feature.feature
             }
             angular.extend($scope, {
-                queryVectorService,
                 exportFormats: [
                     { name: 'WKT format' }
                 ],
@@ -26,6 +25,10 @@ export default {
                         && layerUtilsService.isLayerEditable(layer);
                 },
                 exportData: queryVectorService.exportData,
+                newAttribute (attributeName, attributeValue){
+                    let feature = olFeature();
+                    feature.set(attributeName, attributeValue);
+                },
                 removeFeature() {
                     let source = olSource();
                     if (utils.instOf(source, VectorSource))

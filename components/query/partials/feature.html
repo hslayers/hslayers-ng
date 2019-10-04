@@ -26,7 +26,8 @@
     <div class="row" ng-show="attributeName && attributeValue && addAttribute">
         <div class="col-6 mb-2 text-left">
             <div class="btn-group">
-                <button class="btn btn-primary btn-sm" ng-click="addAttribute = !addAttribute; addAttribute()"><i
+                <button class="btn btn-primary btn-sm"
+                    ng-click="addAttribute = !addAttribute; newAttribute(attributeName,attributeValue); attributeName= ''; attributeValue= ''"><i
                         class="icon-save-floppy"></i></button>
             </div>
         </div>
