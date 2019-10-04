@@ -1,4 +1,4 @@
-export default ['config', 'Core', function (config, Core) {
+export default ['config', 'hs.layout.service', function (config, layoutService) {
     return {
         template: require('components/layout/partials/panel-header.directive.html'),
         transclude: {
@@ -10,7 +10,7 @@ export default ['config', 'Core', function (config, Core) {
             panelTitle: "=panelTitle"
         },
         controller: ['$scope', function ($scope) {                                   
-            $scope.closePanel = Core.closePanel;
+            $scope.closePanel = layoutService.closePanel;
         }]
     };
 }]

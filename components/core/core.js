@@ -77,14 +77,6 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     windowedMap: undefined,
                     selector: undefined
                 },
-                /**
-                * @ngdoc property
-                * @name Core#puremapApp
-                * @public
-                * @type {Boolean} false 
-                * @description If app is running in puremapApp mode
-                */
-                puremapApp: false,
                 language: 'en',
                 setMainPanel: function (which, by_gui, queryable) {
                     console.warn('setMainPanel will be removed from Core in future. Use hs.layout.service#setMainPanel method instead');
@@ -104,7 +96,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 },
                 closePanel: function (which) {
                     console.warn('closePanel will be removed from Core in future. Use hs.layout.service#closePanel method instead');
-                    return layoutService(which)
+                    return layoutService.closePanel(which)
                 },
                 /**
                 * @ngdoc method
@@ -334,6 +326,24 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     }
                 },
             };
+
+            let _puremapApp = false;
+            /**
+            * @ngdoc property
+            * @name Core#puremapApp
+            * @public
+            * @type {Boolean} false 
+            * @description If app is running in puremapApp mode
+            */
+            Object.defineProperty(me, 'puremapApp', {
+                get: function() {
+                    return _puremapApp;
+                },
+                set: function(value) {
+                   _puremapApp = value;
+                   if(!value) layoutService.sidebarVisible(false);
+                }
+            });
 
             $templateCache.removeAll();
 

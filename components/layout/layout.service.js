@@ -229,10 +229,7 @@ export default ['config', '$rootScope',
                         me.mainpanel = '';
                         me.sidebarLabels = true;
                     }
-                    if (!me.exists('hs.sidebar.controller')) {
-                        me.sidebarExpanded = false
-                    }
-
+                    me.sidebarExpanded = false
                 }
 
                 $rootScope.$broadcast('core.mainpanel_changed', which);
@@ -315,10 +312,10 @@ export default ['config', '$rootScope',
                     else
                         return panelWidths.default;
                 } else {
-                    if (Core.puremapApp)
-                        return 0
+                    if (me.sidebarVisible())
+                        return 48
                     else
-                        return 48;
+                        return 0;
                 }
             },
 
