@@ -983,6 +983,15 @@ button.hs_draw_new_extended {
     margin-bottom: 0;
 }
 
+.card-icon{
+    padding-right: 0.25rem;
+}
+.card-href {
+    color: #212529;
+    width: 100%;
+    display: inline-block;
+}
+
 /* Sub menu component */
 
 .dropdown-submenu {
