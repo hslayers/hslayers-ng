@@ -87,6 +87,15 @@ export default ['config', 'hs.utils.service', function (config, utils) {
                 utils.instOf(layer.getSource(), ImageWMS)) return true;
             return false;
         },
+        // todo
+        getURL(layer){
+            let url;
+            if (layer.getSource().getUrls) //Multi tile
+            url = layer.getSource().getUrls()[0];
+            if (layer.getSource().getUrl) //Single tile
+            url = layer.getSource().getUrl();
+            return url;
+        },
          /**
          * @ngdoc method
          * @name hs.utils.layerUtilsService#isLayerVectorLayer

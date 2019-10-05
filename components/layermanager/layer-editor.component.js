@@ -202,6 +202,69 @@ export default {
                 layerIsStyleable() {
                     return layerUtils.layerIsStyleable($scope.olLayer())
                 },
+                hasCopyright(){
+                    return 
+                },
+                hasMetadata(layer){
+                    if (!$scope.$ctrl.currentLayer) return;
+                    else {
+
+                        return layer.layer.get('MetadataURL');
+                    }
+                },
+                /**
+                 * @function toggleMetaPanel
+                 * @memberOf hs.layermanager.controller
+                 * @description Toggles Additional information panel for current
+                 * layer and fetches info by calling getCapabilities.
+                 * @param {Ol.layer} layer Selected layer
+                 */
+                toggleMetaPanel(layer) {
+                    if (layer.layer.get("metapanelActive") === true) {
+                        layer.layer.set("metapanelActive", false);
+                    }
+                    else {
+                        layer.layer.set("metapanelActive", true);
+                    }
+                    if ($scope.isLayerWMS(layer.layer)) {
+                        const url = layerUtils.getURL(layer.layer);
+                        getCapabilitiesService.requestGetCapabilities(url)
+                            .then(function (capabilities_xml) {
+                                let parser = new WMSCapabilities();
+                                let caps = parser.read(capabilities_xml);
+                                let layers = caps.Capability.Layer.Layer;
+                                let service = {};
+                                service[0] = caps.Service;
+
+                                let layer_name = (layer.layer.getSource().getParams().LAYERS)
+                                angular.forEach(layers, function (service_layer) {
+                                    if (layer_name === service_layer.Name) {
+                                        layer.layer.setProperties(service_layer)
+
+                                        if (service_layer.MetadataURL == false) {
+                                            if (layer.layer.get("Metadata")) {
+                                                layer.layer.set("MetadataURL", { "OnlineResource": layer.layer.get("Metadata") });
+                                            }
+                                            else { layer.layer.set("MetadataURL", service) }
+                                        }
+                                        if (service_layer.Attribution == false) {
+                                            layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                                        }
+                                    }
+                                    if (!$rootScope.$$phase) $rootScope.$digest();
+                                });
+                            });
+
+                    }
+                    else if ($scope.isLayerVectorLayer(layer.layer)) {
+                        layer.layer.set("MetadataURL", layer.layer.get("Metadata"))
+                        layer.layer.set("Attribution", layer.layer.set("OnlineResource", layer.layer.get("Copyright")))
+
+                    }
+
+
+                },
+
 
                 /**
                 * @function minResolution
