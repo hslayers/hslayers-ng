@@ -7,7 +7,7 @@ import queryBaseService from './query-base.service';
 import queryWmsService from './query-wms.service';
 import queryVectorService from './query-vector.service';
 import queryController from './query.controller';
-import featureComponent from './feature.component.js';
+import featureComponent from './feature.component';
 import 'language.module';
 
 /**

@@ -42,7 +42,6 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
             if (!Base.queryActive) return;
             me.createFeatureAttributeList();
         });
-
         me.createFeatureAttributeList = () => {
             Base.data.attributes.length = 0;
             var features = me.selector.getFeatures().getArray();
