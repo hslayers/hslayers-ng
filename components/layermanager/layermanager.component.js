@@ -97,6 +97,7 @@ export default {
              */
 
             $scope.setCurrentLayer = function (layer) {
+                console.log(layer);
                 LayMan.currentLayer = layer;
                 if (WMST.layerIsWmsT(layer)) {
                     LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
