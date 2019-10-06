@@ -96,11 +96,15 @@
                 <!-- Copyright -->
                 <div  class="pt-2" ng-show="$ctrl.currentLayer.layer.get('metapanelActive')">
 
-                    <div class="form-group" ng-show="$ctrl.currentLayer.layer.get('Attribution')">
+                    <div class="form-group" ng-show="$ctrl.currentLayer.layer.get('Attribution').OnlineResource">
                         <a class="card-href" href="{{$ctrl.currentLayer.layer.get('Attribution').OnlineResource}}"
                             target="_blank" title="Copyright">
                             <i
                                 class="icon-copyright card-icon"></i>{{$ctrl.currentLayer.layer.get('Attribution').OnlineResource}}</a>
+                    </div>
+                    <div ng-hide="$ctrl.currentLayer.layer.get('Attribution').OnlineResource">
+                        <i
+                        class="icon-copyright card-icon"></i> No copyright info avalaible
                     </div>
                 </div>
             </div>
