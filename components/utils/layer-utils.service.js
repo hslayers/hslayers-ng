@@ -88,6 +88,12 @@ export default ['config', 'hs.utils.service', function (config, utils) {
             return false;
         },
         // todo
+
+        isLayerWMTS(layer){
+            if (utils.instOf(layer, Tile) &&
+                    (utils.instOf(layer.getSource(), WMTS))) return true;
+        },
+        // todo
         getURL(layer){
             let url;
             if (layer.getSource().getUrls) //Multi tile
