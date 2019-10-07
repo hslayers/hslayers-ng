@@ -443,6 +443,28 @@ button.but-title-sm {
 #content-wrapper {
     position: relative;
 }
+.basemapGallery{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    top: 0.5em;
+    position: absolute;
+}
+.basemapGallery .basemap-tile{
+    background-color: hsla(211, 100%, 50%, 0.445);
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    padding: 0.25em;
+    margin:0.2em !important;
+
+}
+.basemapGallery .selected-basemap{
+    border: 1px solid #007bff;
+    background-color:hsla(211, 100%, 50%, 0.719);
+
+}   
 
 
 /******SIDEBAR****************/
