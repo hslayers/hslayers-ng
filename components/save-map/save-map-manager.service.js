@@ -5,6 +5,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
     function ($rootScope, OlMap, Core, saveMap, config, $http, statusManagerService, laymanService, layoutService) {
         var me = this;
         angular.extend(me, {
+            btnSelectDeseletClicked: true,
             compoData: {
                 title: "",
                 abstract: "",
@@ -32,6 +33,15 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
                 success: undefined,
                 changeTitle: undefined,
                 groups: []
+            },
+            /**
+ * Select or deselect all layers
+ * @function selectDeselectAllLayers
+ * @memberof hs.save-map
+ */
+            selectDeselectAllLayers() {
+                me.btnSelectDeseletClicked = !me.btnSelectDeseletClicked;
+                me.compoData.layers.forEach(layer => layer.checked = me.btnSelectDeseletClicked);
             },
             confirmSave() {
                 $http({
@@ -109,7 +119,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             refresh() {
                 me.compoData.layers = [];
                 me.compoData.bbox = me.getCurrentExtent();
-                //debugger;
                 OlMap.map.getLayers().forEach(function (lyr) {
                     if ((angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) && (lyr.get('base') != true)) {
                         me.compoData.layers.push({
@@ -224,7 +233,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
                 pair2 = transform(pair2, cur_proj, 'EPSG:4326');
                 return [pair1[0].toFixed(2), pair1[1].toFixed(2), pair2[0].toFixed(2), pair2[1].toFixed(2)];
             },
-
             resetCompoData() {
                 me.compoData.id = me.compoData.abstract = me.compoData.title = me.compoData.currentCompositionTitle = me.compoData.keywords = me.compoData.currentComposition = '';
             }

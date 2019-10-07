@@ -3,13 +3,15 @@
         <div class="form-group">
             <label for="hs-stc-title" class="control-label" translate>Name</label>
 
-                <input type="text" class="form-control" id="hs-stc-title" placeholder="{{'Fill in name'|translate}}" ng-model="compoData.title" />
+            <input type="text" class="form-control" id="hs-stc-title" placeholder="{{'Fill in name'|translate}}"
+                ng-model="compoData.title" />
 
         </div>
         <div class="form-group">
             <label for="hs-stc-abstract" class="control-label" translate>Abstract</label>
 
-                <textarea class="form-control" id="hs-stc-abstract" placeholder="{{'Fill in descriptive text about map'|translate}}" ng-model="compoData.abstract">
+            <textarea class="form-control" id="hs-stc-abstract"
+                placeholder="{{'Fill in descriptive text about map'|translate}}" ng-model="compoData.abstract">
                 </textarea>
 
         </div>
@@ -19,22 +21,23 @@
         </div>
         <div class="form-group">
 
-                <div class="checkbox" ng-repeat="g in statusData.groups">
-                    <label>
-                        <input type="checkbox" ng-model="g.r" />
-                        <span translate>Make public</span>
-                    </label>
-                </div>
+            <div class="checkbox" ng-repeat="g in statusData.groups">
+                <label>
+                    <input type="checkbox" ng-model="g.r" />
+                    <span translate>Make public</span>
+                </label>
+            </div>
         </div>
 
     </form>
 
-    <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#hs-comp-advancedPanel" translate>Advanced options</button>
+    <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#hs-comp-advancedPanel"
+        translate>Advanced options</button>
     <div id="hs-comp-advancedPanel" class="collapse">
         <form class="form">
             <div class="form-group">
                 <label for="hs-stc-keywords" class="control-label" translate>Keywords</label>
-                 <input type="text" class="form-control" id="hs-stc-keywords" ng-model="compoData.keywords" />
+                <input type="text" class="form-control" id="hs-stc-keywords" ng-model="compoData.keywords" />
             </div>
 
 
@@ -42,24 +45,30 @@
                 <label class="control-label" translate>Extent</label>
                 <div class="row hs-comp-ext-row">
                     <div class="form-group hs-comp-ext col-sm-3">
-                        <input type="text" class="form-control input-group-lg" id="stc-extent1" ng-model="compoData.bbox[0]" />
+                        <input type="text" class="form-control input-group-lg" id="stc-extent1"
+                            ng-model="compoData.bbox[0]" />
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
-                        <input type="text" class="form-control hs-comp-ext input-group-lg" id="stc-extent2" ng-model="compoData.bbox[1]" />
+                        <input type="text" class="form-control hs-comp-ext input-group-lg" id="stc-extent2"
+                            ng-model="compoData.bbox[1]" />
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
-                        <input type="text" class="form-control hs-comp-ext input-group-lg" id="stc-extent3" ng-model="compoData.bbox[2]" />
+                        <input type="text" class="form-control hs-comp-ext input-group-lg" id="stc-extent3"
+                            ng-model="compoData.bbox[2]" />
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
-                        <input type="text" class="form-control hs-comp-ext input-group-lg" id="stc-extent4" ng-model="compoData.bbox[3]" />
+                        <input type="text" class="form-control hs-comp-ext input-group-lg" id="stc-extent4"
+                            ng-model="compoData.bbox[3]" />
                     </div>
                 </div>
-                <button type="button" class="btn btn-secondary" ng-click="getCurrentExtent()" translate>Use current map extent</button>
+                <button type="button" class="btn btn-secondary" ng-click="getCurrentExtent()" translate>Use current map
+                    extent</button>
             </div>
             <div class="form-group">
                 <label for="hs-stc-layerlist" class="control-label" translate>Layers</label>
                 <ul class="list-group" id="hs-stc-layerlist">
-                    <li ng-repeat="layer in compoData.layers | filter:query" id="layer-{{$index}}" class="list-group-item">
+                    <li ng-repeat="layer in compoData.layers | filter:query" id="layer-{{$index}}"
+                        class="list-group-item">
                         <span>{{layer.title}}</span>
                         <span class="pull-right">
                             <input type="checkbox" class="layer-checked" ng-model="layer.checked" />
@@ -72,13 +81,15 @@
 
     <div class="card-footer row" id="hs-stc-footer">
         <div class="btn-group" role="group" aria-label="Save composition">
-            <button type="button" class="btn btn-secondary" id="hs-stc-cancel" translate ng-click="cancel()">Cancel</button>
-            <button type="button" class="btn btn-primary" id="hs-stc-saveas" ng-show="step=='start'" translate ng-disabled="!compoData.title" ng-click="confirmSave()">Save</button>
+            <button type="button" class="btn btn-secondary" id="hs-stc-cancel" translate
+                ng-click="cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" id="hs-stc-saveas" ng-show="step=='start'" translate
+                ng-disabled="!compoData.title" ng-click="confirmSave()">Save</button>
         </div>
     </div>
 </div>
 <div ng-if="isAllowed()">
-<div class="alert alert-info" translate>
-  You are not authorized to store composition. Please sign in or contact administrator for your credentials.
-</div>
+    <div class="alert alert-info" translate>
+        You are not authorized to store composition. Please sign in or contact administrator for your credentials.
+    </div>
 </div>

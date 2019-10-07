@@ -14,8 +14,8 @@ export default {
             $scope.config = config;
             $scope.endpoint = StatusManager.endpoints[0];
             $scope.endpoints = StatusManager.endpoints;
-            $scope.step = 'start'; //Possible values: start, 
-
+            $scope.step = 'start'; //Possible values: start,
+            $scope.selectDeselectAllLayers = StatusManager.selectDeselectAllLayers;
             /**
              * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
              * @function next
