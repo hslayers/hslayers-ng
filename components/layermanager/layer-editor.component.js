@@ -209,7 +209,18 @@ export default {
                 hasMetadata(layer){
                     if (!$scope.$ctrl.currentLayer) return;
                     else {
-                        return layer.layer.get('MetadataURL');
+                        return layer.layer.get('MetadataURL') ? true : false;
+                    }
+                },
+
+                hasCopyright(layer){
+                    if (!$scope.$ctrl.currentLayer) return;
+                    else {
+                        if(layer.layer.get('Attribution')){
+                            let attr = layer.layer.get('Attribution');
+                            return (attr.OnlineResource) ? true : false;
+                        }
+                        else { return false}
                     }
                 },
                 /**

@@ -76,9 +76,9 @@
                     Info
                 </div>
                 <!-- Metadata -->
-                <div class="pt-2" ng-show="$ctrl.currentLayer.layer.get('metapanelActive')">
+                <div class="pt-2" ng-if="$ctrl.currentLayer.layer.get('metapanelActive')">
 
-                    <div ng-show="hasMetadata($ctrl.currentLayer)">
+                    <div ng-if="hasMetadata($ctrl.currentLayer)">
                         <a class="card-href" ng-repeat="metadata in $ctrl.currentLayer.layer.get('MetadataURL')"
                             href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
                             <span ng-show="metadata.type">
@@ -89,20 +89,20 @@
                             </span>
                         </a>
                     </div>
-                    <div ng-show="!hasMetadata($ctrl.currentLayer)">
+                    <div ng-if="!hasMetadata($ctrl.currentLayer)">
                         No matadata avalaible for current layer!
                     </div>
                 </div>
                 <!-- Copyright -->
-                <div  class="pt-2" ng-show="$ctrl.currentLayer.layer.get('metapanelActive')">
+                <div  class="pt-2" ng-if="$ctrl.currentLayer.layer.get('metapanelActive')">
 
-                    <div class="form-group" ng-show="$ctrl.currentLayer.layer.get('Attribution').OnlineResource">
+                    <div class="form-group" ng-if="hasCopyright($ctrl.currentLayer)">
                         <a class="card-href" href="{{$ctrl.currentLayer.layer.get('Attribution').OnlineResource}}"
                             target="_blank" title="Copyright">
                             <i
                                 class="icon-copyright card-icon"></i>{{$ctrl.currentLayer.layer.get('Attribution').OnlineResource}}</a>
                     </div>
-                    <div ng-hide="$ctrl.currentLayer.layer.get('Attribution').OnlineResource">
+                    <div ng-if="!hasCopyright($ctrl.currentLayer)">
                         <i
                         class="icon-copyright card-icon"></i> No copyright info avalaible
                     </div>
