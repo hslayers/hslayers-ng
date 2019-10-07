@@ -11,9 +11,9 @@ export default {
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.map.service',
         'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice',
-        'hs.legend.service',
+        'hs.legend.service','hs.layout.service',
         function ($scope, Core, $compile, utils, layerUtils, config, OlMap,
-            LayMan, $rootScope, WMST, legendService) {
+            LayMan, $rootScope, WMST, legendService,layoutService) {
             $scope.LayMan = LayMan;
             $scope.data = LayMan.data;
             $scope.Core = Core;
@@ -97,7 +97,6 @@ export default {
              */
 
             $scope.setCurrentLayer = function (layer) {
-                console.log(layer);
                 LayMan.currentLayer = layer;
                 if (WMST.layerIsWmsT(layer)) {
                     LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
