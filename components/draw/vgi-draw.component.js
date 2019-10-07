@@ -6,7 +6,7 @@ import { transform } from 'ol/proj';
 
 export default {
     template: require('./partials/vgi-draw.html'),
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.save-map.service', 'config', 'hs.draw.service', '$compile', 'hs.layout.service'
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.save-map.service', 'config', 'hs.draw.service', '$compile', 'hs.layout.service',
         function ($scope, OlMap, Core, Geolocation, $http, utils, $timeout, saveMap, config, drawService, $compile, layoutService) {
             var map = OlMap.map;
             var newObsId = 0;

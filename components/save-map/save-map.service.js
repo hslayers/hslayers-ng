@@ -78,7 +78,6 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
             json.current_base_layer = me.getCurrentBaseLayer(map);
             return json;
         },
-
         /**
         * Returns object about current selected base layer
         * @memberof hs.save-map.service
