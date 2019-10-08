@@ -17,7 +17,7 @@
                     </div>
                 </div>
 
-                <hs.layout.gallery ng-if="gallery"></hs.layout.gallery>
+                <hs.layout.gallery ng-if="layoutService.toggleGallery()"></hs.layout.gallery>
 
                 <div class="panelspace" ng-if="layoutService.sidebarVisible()" ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons, 'minisidebar-wrapper':!layoutService.classicSidebar}" ng-style="{width: panelSpaceWidth()+'px'}">
                     <div class="panelspace-wrapper" ng-style="{width: panelSpaceWidth()+'px'}">

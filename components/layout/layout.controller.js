@@ -419,8 +419,6 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
         $scope.panelSpaceWidth = layoutService.panelSpaceWidth;
 
-        $scope.gallery = layoutService.toggleGallery();
-
         $scope.infoContainerStyle = function () {
             if (!layoutService.sidebarRight)
                 return {
