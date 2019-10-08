@@ -16,8 +16,10 @@ export default {
             LayMan, $rootScope, WMST, legendService,layoutService) {
             $scope.LayMan = LayMan;
             $scope.data = LayMan.data;
+            console.log($scope.data);
             $scope.Core = Core;
             $scope.utils = utils;
+            $scope.layoutService = layoutService;
             var map;
             $scope.shiftDown = false;          
             $scope.changeLayerVisibility = LayMan.changeLayerVisibility;
