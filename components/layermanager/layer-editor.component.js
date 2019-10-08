@@ -237,8 +237,18 @@ export default {
                     }
                     else {
                         layer.layer.set("metapanelActive", true);
-                        fillMetadata(layer);
-                    }
+                        if (layer.layer.get("Copyright") && layer.layer.get("Metadata")){
+                            let metadata = {
+                                metainfo: { "OnlineResource": layer.layer.get("Metadata") }
+                            };
+                            layer.layer.set("MetadataURL", metadata);
+                            layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                        }
+                        else {
+                            fillMetadata(layer);
+                        };
+                        
+                    };
                 },
 
 
@@ -572,32 +582,36 @@ export default {
                 if ($scope.isLayerWMS(layer.layer)) {
                     WMSgetCapabilitiesService.requestGetCapabilities(url)
                         .then(function (capabilities_xml) {
-                            let parser = new WMSCapabilities();
-                            let caps = parser.read(capabilities_xml);
-                            let layers = caps.Capability.Layer.Layer;
-                            let service = {
-                                "0" :caps.Service
-                            };
+                                let parser = new WMSCapabilities();
+                                let caps = parser.read(capabilities_xml);
+                                let layers = caps.Capability.Layer.Layer;
+                                let service = {
+                                    "0": caps.Service
+                                };
 
-                            let layer_name = (layer.layer.getSource().getParams().LAYERS)
-                            angular.forEach(layers, function (service_layer) {
-                                if (layer_name === service_layer.Name) {
-                                    layer.layer.setProperties(service_layer)
-                                    if (layer.layer.get("Copyright")) {
-                                        layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                                    }
-                                    if (layer.layer.get("Metadata")){
-                                        layer.layer.set("MetadataURL", metadata);
-                                        if (!$rootScope.$$phase) $rootScope.$digest();
-                                        return
-                                    }
-                                    if (service_layer.MetadataURL == false) {
-                                        layer.layer.set("MetadataURL", service) 
-                                    }
+                                let layer_name = (layer.layer.getSource().getParams().LAYERS)
+                                angular.forEach(layers, function (service_layer) {
+                                    if (layer_name === service_layer.Name) {
+                                        layer.layer.setProperties(service_layer)
+                                        if (layer.layer.get("Copyright")) {
+                                            layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                                        }
+                                        if (layer.layer.get("Metadata")) {
+                                            layer.layer.set("MetadataURL", metadata);
+                                            if (!$rootScope.$$phase) $rootScope.$digest();
+                                            return
+                                        }
+                                        if (service_layer.MetadataURL == false) {
+                                            layer.layer.set("MetadataURL", service)
+                                        }
 
-                                }
-                            });
-                        });
+                                    }
+                                });
+
+                        })
+                        .catch(function (e) {
+                            console.log('GetCapabilities call invalid');
+                        })
 
 
                 }
@@ -605,34 +619,41 @@ export default {
                 else if (layerUtils.isLayerWMTS(layer.layer)) {
                     WMTSgetCapabilitiesService.requestGetCapabilities(url)
                         .then(function (capabilities_xml) {
-                            let parser = new WMTSCapabilities();
-                            let caps = parser.read(capabilities_xml.data);
-                            layer.layer.setProperties(caps);
-                            if (layer.layer.get("Copyright")) {
-                                layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                            }
-                            else {
-                                layer.layer.set("Attribution", { "OnlineResource": caps.ServiceProvider.ProviderSite });
-                            }
-                            if (layer.layer.get("Metadata")) {
-                                layer.layer.set("MetadataURL", metadata);
-                            }
+                                let parser = new WMTSCapabilities();
+                                let caps = parser.read(capabilities_xml.data);
+                                layer.layer.setProperties(caps);
+                                if (layer.layer.get("Copyright")) {
+                                    layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                                }
+                                else {
+                                    layer.layer.set("Attribution", { "OnlineResource": caps.ServiceProvider.ProviderSite });
+                                }
+                                if (layer.layer.get("Metadata")) {
+                                    layer.layer.set("MetadataURL", metadata);
+                                }
                         })
+                        .catch(error => console.log(error));
+                       
 
                 }
                 //WFS and vector
                 else if ($scope.isLayerVectorLayer(layer.layer)) {
                     if (url) {
-                        //WFS Caps parser needed
-                        WFSgetCapabilitiesService.requestGetCapabilities(url)
+                        
+                            WFSgetCapabilitiesService.requestGetCapabilities(url)
                             .then(function (capabilities_xml) {
-                                layer.layer.set("MetadataURL", metadata);
-                                layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                            });
-                    }
-                    else {
-                        layer.layer.set("MetadataURL", metadata);
-                        layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                                let parser = new DOMParser();
+                                let caps = parser.parseFromString(capabilities_xml.data, "application/xml");
+                                let el = caps.getElementsByTagNameNS("*", "ProviderSite");
+                                if (layer.layer.get("Copyright")) {
+                                    layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                                }
+                                else {
+                                    layer.layer.set("Attribution", { "OnlineResource": el[0].getAttribute("xlink:href") });
+                                }
+                            })
+                            .catch(error => console.log(error.message));
+
                     }
                 }
 
