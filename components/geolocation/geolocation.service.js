@@ -5,6 +5,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import { transform } from 'ol/proj';
 import { Polygon, LineString, GeometryType, Point, Circle as CircleGeom } from 'ol/geom';
+import { gyroNorm } from 'gyronorm';
 
 export default ['hs.map.service', '$rootScope', '$log', 'Core',
     function (OlMap, $rootScope, $log, Core) {
@@ -45,6 +46,33 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core',
                 */
                 me.setCenter = function () {
                     OlMap.map.getView().setCenter(me.last_location.latlng);
+                };
+                /**
+                * (Only for Mobile) set map rotation based on the device rotation
+                * @memberof hs.geolocation.service
+                * @function setRotation
+                */
+                me.setRotation = function () {
+                    var args = {
+                        orientationBase: GyroNorm.WORLD,		// ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
+                        decimalCount: 4,					// ( How many digits after the decimal point will there be in the return values )
+                    };
+                    var gn = new gyroNorm();
+                    gn.init(args).then(function () {
+                        gn.start(function (event) {
+                            var rotation = OlMap.map.view.getRotation();
+                            var y = toRadians(event.do.gamma);
+                            // var x = event.do.beta;
+                            // var y = event.do.gamma;
+                            // if (x > 90) {x = 90};
+                            // if (x < -90) {x = -90};
+                            // console.log(z, x, y);
+                            rotation[0] = y;
+                            OlMap.map.getView().setRotation(rotation);
+                        });
+                    }).catch(function (e) {
+                        console.log(e);
+                    });
                 };
 
                 me.geolocation = navigator.geolocation;

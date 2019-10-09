@@ -58,8 +58,8 @@ export default ['hs.utils.service', function (utils) {
          * @returns {style}
          */
         getStyleVectorLayer: function (currentLayer) {
-            var styleArray = [];
             if (angular.isUndefined(currentLayer)) return;
+            var styleArray = [];
             var layerStyle = currentLayer.getStyle();
             if (typeof layerStyle !== "function") {
                 styleArray.push(layerStyle);
@@ -102,9 +102,9 @@ export default ['hs.utils.service', function (utils) {
             if (image && utils.instOf(image, Icon)) {
                 row.icon = { type: 'icon', src: image.getSrc() };
             } else if (image && utils.instOf(image, Circle)) {
-                if (image.getStroke() && image.getFill()){
+                if (image.getStroke() && image.getFill()) {
                     row.customCircle = { type: 'circle', cx: '17.5px', cy: '17.5px', r: '15px', fill: image.getFill().getColor(), stroke: image.getStroke().getColor(), strokeWidth: image.getStroke().getWidth() };
-                }else if(image.getStroke()){
+                } else if (image.getStroke()) {
                     row.customCircle = { type: 'circle', cx: '17.5px', cy: '17.5px', r: '15px', fill: 'blue', stroke: image.getStroke().getColor(), strokeWidth: image.getStroke().getWidth() };
                 }
             } else {
