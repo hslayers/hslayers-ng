@@ -326,15 +326,6 @@ export default ['config', '$rootScope',
                 return me._sidebarVisible;
             },
 
-            toggleGallery(){
-                if (config.gallery){
-                    return config.gallery
-                }
-                else {
-                    return false
-                }
-            },
-
             /**
             * @ngdoc property
             * @name hs.layout.service#sidebarExpanded
