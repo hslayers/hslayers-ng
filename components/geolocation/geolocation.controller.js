@@ -50,23 +50,23 @@ export default ['$scope', 'hs.geolocation.service', 'hs.map.service', 'Core', fu
     * @param {Boolean} set_to Optional - Desired following state
     */
     $scope.following = function (set_to) {
-        if (arguments.length == 0)
-            return service.following;
-        else {
+        if (arguments.length == 0) return service.following; else {
             service.following = set_to;
             if (console) console.log(service.last_location);
+            if (set_to) service.setRotation();
+
             if (angular.isDefined(service.last_location)) {
                 if (set_to) {
                     OlMap.map.getView().setCenter(service.last_location.latlng);
-                    OlMap.map.getView().setRotation(service.setRotation);
+
                 }
+
                 if (Core.isMobile()) service.changed_handler();
             } else {
                 if (console) console.log('last location not defined');
             }
         }
     };
-
     /**
     * Change style of location layer
     * @memberof hs.geolocation.controller
