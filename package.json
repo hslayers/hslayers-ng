@@ -14,7 +14,7 @@
     "babel-plugin-angularjs-annotate": "^0.10.0",
     "clean-webpack-plugin": "^2.0.2",
     "cryptiles": ">=4.1.2",
-    "css-loader": "^2.1.1",
+    "css-loader": "^3.2.0",
     "extract-loader": "^3.1.0",
     "file-loader": "^4.2.0",
     "grunt": "^1.0.4",
