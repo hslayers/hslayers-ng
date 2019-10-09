@@ -11,7 +11,7 @@ import removeAllDialogDirective from './remove-all-dialog.directive';
 import layermanagerComponent from './layermanager.component';
 import 'common/get-capabilities.module'
 import layerEditorComponent from './layer-editor.component';
-
+import layermanagerGalleryDirective from './layermanager-gallery.directive';
 /**
  * @ngdoc module
  * @module hs.layermanager
@@ -102,4 +102,14 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      * @ngdoc component
      * @description Panel for editing selected layer parameters
      */
-    .component('hs.layerEditor', layerEditorComponent);
+    .component('hs.layerEditor', layerEditorComponent)
+
+        /**
+     * @module hs.layermanager
+     * @name hs.layermanager.gallery
+     * @ngdoc component
+     * @description Panel for editing selected layer parameters
+     */
+    .directive('hs.layermanager.gallery', layermanagerGalleryDirective);
+
+
