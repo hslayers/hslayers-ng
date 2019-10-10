@@ -1,4 +1,4 @@
-<hs.legend.layer-vector-directive layer-style="styles" geometry-type="geometryTypes">
+<hs.legend.layer-vector-directive ng-if="layer.type == 'vector'" layer-style="styles" geometry-type="geometryTypes">
 </hs.legend.layer-vector-directive>
 <img ng-repeat="sublayer in layer.subLayerLegends" ng-if="layer.type == 'wms'" ng-src="{{sublayer}}"
     onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
