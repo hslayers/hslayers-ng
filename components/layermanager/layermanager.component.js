@@ -11,13 +11,15 @@ export default {
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.map.service',
         'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice',
-        'hs.legend.service',
+        'hs.legend.service','hs.layout.service',
         function ($scope, Core, $compile, utils, layerUtils, config, OlMap,
-            LayMan, $rootScope, WMST, legendService) {
+            LayMan, $rootScope, WMST, legendService,layoutService) {
             $scope.LayMan = LayMan;
             $scope.data = LayMan.data;
+            console.log($scope.data);
             $scope.Core = Core;
             $scope.utils = utils;
+            $scope.layoutService = layoutService;
             var map;
             $scope.shiftDown = false;          
             $scope.changeLayerVisibility = LayMan.changeLayerVisibility;

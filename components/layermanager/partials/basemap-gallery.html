@@ -1,0 +1,10 @@
+<div class="basemapGallery" ng-style="galleryStyle()"> 
+    <div 
+        ng-repeat="layer in LayMan.data.baselayers | orderBy: 'title'" 
+        ng-click="LayMan.changeBaseLayerVisibility($event, layer)"
+        ng-class="{'selected-basemap': layer.active}" class="basemap-tile" layout="column" >
+
+        {{layer.title}}
+        
+    </div>
+</div>

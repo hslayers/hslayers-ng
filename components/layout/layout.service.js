@@ -338,6 +338,7 @@ export default ['config', '$rootScope',
             widthWithoutPanelSpace() {
                 return 'calc(100% - ' + me.panelSpaceWidth() + 'px)';
             }
+
         })
 
         angular.forEach(config.panelsEnabled, (value, key) => {

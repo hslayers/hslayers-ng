@@ -2,7 +2,7 @@
 
 .icon-spin {
     -webkit-animation: spin 1000ms infinite linear;
-    animation: spin 1001ms infinite linear;
+    animation: spin 1000ms infinite linear;
 
     position: relative;
     top: 1px;
@@ -172,12 +172,12 @@ li.hs-lm-item.hovering {
     text-decoration: underline;
 }
 
-.list-group-item.hs-lm-item, .list-group-item.hs-dr-item {
+li.hs-lm-item, li.hs-dr-item {
     word-wrap: break-word;
     border-left: 0;
     border-right: 0;
     padding: 0.1em;
-    padding-top: 0.2em;
+    padding-top: 0.4em;
     padding-left: 0.2em;
     /*border-bottom: 0;*/
 }
@@ -190,12 +190,11 @@ li.hs-lm-item.hovering {
 
 div.hs-lm-item-title {
     cursor: pointer;
-    min-height: 1.76em;
-    margin-top: auto;
+    
 }
 
-.hs-lm-item-visibility, .hs-lm-baseitem-visibility{
-    margin-top: -0.19em;
+.hs-lm-item-visibility{
+    margin-top: -0.42em;
 }
 
 div.hs-lm-item-title:hover{
@@ -432,6 +431,11 @@ button.but-title-sm {
 .list-group-item.active a {
     color: #fff;
 }
+
+.deactivatedLayer{
+    color:#cccccc;
+}
+
 .btn .close {
     font-size: 20px
 }
@@ -439,6 +443,28 @@ button.but-title-sm {
 #content-wrapper {
     position: relative;
 }
+.basemapGallery{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    top: 0.5em;
+    position: absolute;
+}
+.basemapGallery .basemap-tile{
+    background-color: hsla(211, 100%, 50%, 0.445);
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    padding: 0.25em;
+    margin:0.2em !important;
+
+}
+.basemapGallery .selected-basemap{
+    border: 1px solid #007bff;
+    background-color:hsla(211, 100%, 50%, 0.719);
+
+}   
 
 
 /******SIDEBAR****************/
@@ -977,6 +1003,15 @@ button.hs_draw_new_extended {
 
 .panel.hs-dr-editpanel {
     margin-bottom: 0;
+}
+
+.card-icon{
+    padding-right: 0.25rem;
+}
+.card-href {
+    color: #212529;
+    width: 100%;
+    display: inline-block;
 }
 
 /* Sub menu component */

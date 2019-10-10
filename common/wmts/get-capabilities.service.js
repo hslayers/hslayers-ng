@@ -4,9 +4,10 @@ import { Tile } from 'ol/layer';
 import { WMTS } from 'ol/source';
 import { Attribution } from 'ol/control.js';
 import { getPreferedFormat } from '../format-utils';
+import { resolve } from 'path';
 
-export default ['$http', 'hs.map.service', 'hs.utils.service',
-    function ($http, OlMap, utils) {
+export default ['$http', 'hs.map.service', 'hs.utils.service','$rootScope',
+    function ($http, OlMap, utils, $rootScope) {
         var me = this;
 
         /**
@@ -69,8 +70,10 @@ export default ['$http', 'hs.map.service', 'hs.utils.service',
             var promise = $http.get(url);
             promise.then(function (r) {
                 $rootScope.$broadcast('ows_wmts.capabilities_received', r)
+
             });
             return promise;
+
         };
 
         /**
