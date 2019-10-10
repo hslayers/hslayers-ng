@@ -21,6 +21,8 @@
                 </div>
             </div>
         </div>
+        <div ng-repeat="html in data.featureInfoHtmls" ng-bind-html="html">
+        </div>
     </div>
     <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
 </div>

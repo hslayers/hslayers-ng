@@ -77,7 +77,6 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
                     });
                 });
                 doc.querySelectorAll("featureMember").forEach(function ($this) {
-                    debugger;
                     var feature = $this.firstChild;
                     var group = {
                         name: "Feature",
@@ -128,8 +127,13 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
             }
             if (infoFormat.indexOf("html") > 0) {
                 if (response.length <= 1) return;
-                Base.fillIframeAndResize(Base.getInvisiblePopup(), response, true);
-                if (layer.get('popupClass') != undefined) Base.popupClassname = "ol-popup " + layer.get('popupClass');
+                if(layer.get('getFeatureInfoTarget') == 'info-panel'){
+                    Base.pushFeatureInfoHtml(response);
+                } else {
+                    Base.fillIframeAndResize(Base.getInvisiblePopup(), response, true);
+                    if (layer.get('popupClass') != undefined) 
+                        Base.popupClassname = "ol-popup " + layer.get('popupClass');
+                }
             }
             me.infoCounter--;
             if (me.infoCounter === 0) {

@@ -28,6 +28,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
         this.data = {};
         this.data.attributes = [];
         this.data.features = [];
+        this.data.featureInfoHtmls = [];
         this.data.coordinates = [];
         this.queryActive = false;
         this.popupClassname = "";
@@ -74,6 +75,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
                 me.data.attributes.length = 0;
                 me.data.features = [];
                 me.data.coordinates.length = 0;
+                me.data.featureInfoHtmls = [];
             }
             var invisiblePopup = me.getInvisiblePopup();
             invisiblePopup.contentDocument.body.innerHTML = '';
@@ -84,6 +86,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
 
         this.getInvisiblePopup = function () {
             return document.getElementById('invisible_popup');
+        }
+
+        this.pushFeatureInfoHtml = (html) => {
+            me.data.featureInfoHtmls.push($sce.trustAsHtml(html));
+            dataCleared = false;
         }
 
         this.fillIframeAndResize = function (iframe, response, append) {
