@@ -52,16 +52,16 @@
                     translate="">Use current map extent</button>
             </div>
             <div class="form-group">
-                <button type="button" class="mt-1 btn btn-secondary btn-block" ng-click="selectDeselectAllLayers()"
-                    translate>Select/Deselect all layers</button>
-            </div>
-            <div class="form-group">
+                <button type="button" class="mt-1 btn btn-secondary btn-sm right" ng-click="selectDeselectAllLayers()" translate>Toggle all</button>
                 <label for="stc-layerlist" class="control-label" translate="">Layers</label>
                 <ul class="list-group" id="stc-layerlist">
                     <li ng-repeat="layer in compoData.layers | filter:query" id="layer-{{$index}}"
                         class="list-group-item">
-                        <a href="#">{{layer.title}}</a> <input type="checkbox" class="layer-checked"
+                        <div class="form-check">
+                            <input type="checkbox" class="layer-checked form-check-input"
                             ng-model="layer.checked" />
+                            <label class="form-check-label">{{layer.title}}</label>
+                        </div>
                     </li>
                 </ul>
             </div>
