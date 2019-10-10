@@ -57,12 +57,12 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
              * @memberof hs.layerSynchronizerService
              * @function getLayerName
              * @param {Ol.layer} layer Layer to get Layman friendly name for
-             * @param {Ol.source} source Openlayers VectorSource from which to 
              * get features
              */
-            push(layer, source) {
+            push(layer) {
+                if (layer.getSource().loading) return;
                 var f = new GeoJSON();
-                var geojson = f.writeFeaturesObject(source.getFeatures());
+                var geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
                 (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
                     ds => {
                         laymanService.pushVectorSource(ds, geojson, {
@@ -88,7 +88,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                         laymanService.pullVectorSource(ds, me.getLayerName(layer))
                             .then(response => {
                                 var featureString;
-                                if(response) featureString = response.data;
+                                if (response) featureString = response.data;
                                 if (featureString) {
                                     source.loading = true;
                                     var format = new WFS();
@@ -98,13 +98,19 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                                     );
                                     source.loading = false;
                                 }
-                                var changeHandler = utils.debounce(function (e) {
-                                    if (e.target.loading) return;
-                                    me.push(layer, e.target);
+                                var handleFeatureChange = utils.debounce(function (e) {
+                                    me.push(layer);
                                 }, debounceInterval);
-                                source.on('changefeature', changeHandler);
-                                source.on('addfeature', changeHandler);
-                                source.on('removefeature', changeHandler);
+                                function observeFeature(f) {
+                                    f.getGeometry().on('change', handleFeatureChange);
+                                    f.on('propertychange', handleFeatureChange);
+                                }
+                                source.forEachFeature(observeFeature)
+                                source.on('addfeature', (e) => {
+                                    handleFeatureChange(e);
+                                    observeFeature(e.feature)
+                                });
+                                source.on('removefeature', handleFeatureChange);
                             });
                     })
             },
