@@ -5,7 +5,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import { transform } from 'ol/proj';
 import { Polygon, LineString, GeometryType, Point, Circle as CircleGeom } from 'ol/geom';
-import GyroNorm from 'gyronorm';
+import GyroNorm from '../../lib/gyronorm_updated';
 import FULLTILT from 'fulltilt';
 import { toRadians } from 'ol/math';
 
