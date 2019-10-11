@@ -451,7 +451,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
         $scope.onlyEnabled = function (item) {
             return item.enabled;
-        };
+        };       
 
         $scope.$emit('scope_loaded', "Layout");
     }

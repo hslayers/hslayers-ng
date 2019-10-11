@@ -43,6 +43,12 @@ export default ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$in
                         } else {
                             import('bootstrap/dist/css/bootstrap.css')
                         }
+                        $timeout(_ => {
+                            if(window.innerWidth < 600){
+                                var viewport = document.querySelector('meta[name="viewport"]');
+                                viewport.setAttribute("content", "width=device-width, initial-scale=0.6, maximum-scale=2, user-scalable=no");
+                            }
+                        }, 500);
                     }
                     import('css/app.css');
                     if (!!window.cordova) {
