@@ -5,6 +5,9 @@ import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import { transform } from 'ol/proj';
 import { Polygon, LineString, GeometryType, Point, Circle as CircleGeom } from 'ol/geom';
+import GyroNorm from '../../lib/gyronorm_updated';
+import FULLTILT from 'fulltilt';
+import { toRadians } from 'ol/math';
 
 export default ['hs.map.service', '$rootScope', '$log', 'Core',
     function (OlMap, $rootScope, $log, Core) {
@@ -37,6 +40,28 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core',
         var positionFeature = new Feature({ known: false, geometry: new Point([0, 0]) });
 
         function init() {
+            /**
+               * (Only for Mobile) set map rotation based on the device rotation
+               * @memberof hs.geolocation.service
+               * @function setRotation
+               */
+            me.setRotation = function () {
+                var args = {
+                    orientationBase: GyroNorm.WORLD,		// ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
+                    decimalCount: 4,					// ( How many digits after the decimal point will there be in the return values )
+                };
+                var gn = new GyroNorm();
+                gn.FULLTILT = FULLTILT;
+                gn.init(args).then(function () {
+                    gn.start(function (event) {
+                        var z = toRadians(event.do.alpha);
+                        OlMap.map.getView().setRotation(z);
+                    });
+                }).catch(function (e) {
+                    console.log(e);
+                });
+            };
+
             if (Core.isMobile()) {
                 /**
                 * (Only for Mobile) Center map on last location
@@ -174,7 +199,7 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core',
                     me.altitude = me.geolocation.getAltitude() ? me.geolocation.getAltitude() + ' [m]' : '-';
                     me.altitudeAccuracy = me.geolocation.getAltitudeAccuracy() ? '+/- ' + me.geolocation.getAltitudeAccuracy() + ' [m]' : '';
                     me.heading = me.geolocation.getHeading() ? me.geolocation.getHeading() : null;
-                    me.speed = me.geolocation.getSpeed() ? me.geolocation.getSpeed() + ' [m/s]' : '-';
+                    me.speed = me.geolocation.getSpeed() ? Math.round(me.geolocation.getSpeed()) + ' [m/s]' : '-';
                     me.last_location = {
                         "latlng": me.geolocation.getPosition(),
                         altitude: me.geolocation.getAltitude(),
