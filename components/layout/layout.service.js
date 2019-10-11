@@ -96,7 +96,7 @@ export default ['config', '$rootScope',
             * @type {String} null 
             * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed). 
             */
-            defaultPanel: "", 
+            defaultPanel: "",
             /**
             * @ngdoc property
             * @name hs.layout.service#panel_statuses
@@ -305,21 +305,25 @@ export default ['config', '$rootScope',
                     ows: 700,
                     composition_browser: 500
                 }
+                var layoutWidth = document.getElementById('layout').clientWidth;
                 Object.assign(panelWidths, config.panelWidths);
+                let tmp = 0;
                 if (me.sidebarExpanded && me.sidebarVisible()) {
                     if (panelWidths[me.mainpanel])
-                        return panelWidths[me.mainpanel]
+                        tmp = panelWidths[me.mainpanel]
                     else
-                        return panelWidths.default;
+                        tmp = panelWidths.default;
                 } else {
                     if (me.sidebarVisible())
-                        return 48
+                        tmp = 48
                     else
-                        return 0;
+                        tmp = 0;
                 }
+                if (tmp > layoutWidth * 0.45) tmp = layoutWidth * 0.45;
+                return tmp;
             },
 
-            sidebarVisible (state) {
+            sidebarVisible(state) {
                 if (angular.isDefined(state))
                     me._sidebarVisible = state;
                 if (angular.isUndefined(me._sidebarVisible)) return true;

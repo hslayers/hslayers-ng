@@ -1,9 +1,9 @@
-export default ['config', function (config) {
+export default ['config', 'hs.layout.service', function (config, layoutService) {
     return {
         template: require('components/search/partials/searchinput.html'),
         replace: true,
         link: function (scope, element) {
-
+            scope.layoutService = layoutService;
         }
     };
     /**
