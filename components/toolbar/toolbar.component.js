@@ -11,7 +11,8 @@ export default {
 
             angular.extend($scope, {
                 Core: Core,
-
+                layoutService,
+                
                 measureButtonClicked() {
                     layoutService.setMainPanel('measure', true, false);
                 },

@@ -5,7 +5,7 @@
             <div hs.map.directive ng-controller="hs.map.controller" ng-show="hs_map.visible" id="map" style="z-index:990" ng-style="mapStyle()"></div>
             <hs.toolbar 
                 ng-if="Core.exists('hs.toolbar') && !Core.puremapApp"
-                ng-show="(!layoutService.smallWidth || !layoutService.sidebarExpanded) && panelEnabled('toolbar') && layoutService.sidebarVisible()">
+                ng-show="panelEnabled('toolbar') && layoutService.sidebarVisible()">
             </hs.toolbar>
 
             <div class="gui-overlay" ng-if="!Core.puremapApp">
