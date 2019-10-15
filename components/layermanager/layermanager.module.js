@@ -12,6 +12,7 @@ import layermanagerComponent from './layermanager.component';
 import 'common/get-capabilities.module'
 import layerEditorComponent from './layer-editor.component';
 import layermanagerGalleryDirective from './layermanager-gallery.directive';
+import layerEditorSubLayerCheckboxesComponent from './layer-editor.sub-layer-checkboxes.component';
 /**
  * @ngdoc module
  * @module hs.layermanager
@@ -104,12 +105,21 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      */
     .component('hs.layerEditor', layerEditorComponent)
 
-        /**
+     /**
      * @module hs.layermanager
      * @name hs.layermanager.gallery
      * @ngdoc component
      * @description Panel for editing selected layer parameters
      */
-    .directive('hs.layermanager.gallery', layermanagerGalleryDirective);
+    .directive('hs.layermanager.gallery', layermanagerGalleryDirective)
+    
+     /**
+     * @module hs.layermanager
+     * @name hs.layerEditor.sublayerCheckbox
+     * @ngdoc directive
+     * @description List of checkboxes for sub-layer ticking
+     */
+    .component('hs.layerEditor.sublayerCheckbox', layerEditorSubLayerCheckboxesComponent)
+    ;
 
 

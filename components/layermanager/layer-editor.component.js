@@ -399,19 +399,27 @@ export default {
                     return angular.isDefined(subLayers) && subLayers.length > 0;
                 },
 
+                subLayerIsString(subLayer){
+                    return typeof subLayer == 'string'
+                },
+
                 getSubLayers() {
                     if ($scope.$ctrl.currentLayer == null) return;
                     return $scope.$ctrl.currentLayer.layer.get('subLayers');
                 },
 
+                nestedLayerChecked(e){
+                    angular.extend($scope.checkedSubLayers, e.detail);
+                    $scope.subLayerSelected();
+                },
+
                 subLayerSelected() {
-                    let subLayerList = $scope.getSubLayers();
                     let src = $scope.$ctrl.currentLayer.layer.getSource();
                     let params = src.getParams();
                     if (angular.isUndefined(src.get('originalLayers')))
                         src.set('originalLayers', params.LAYERS);
-                    params.LAYERS = subLayerList.filter(sl =>
-                        $scope.checkedSubLayers[sl]
+                    params.LAYERS = Object.keys($scope.checkedSubLayers).filter(key =>
+                        $scope.checkedSubLayers[key]
                     ).join(',');
                     if (params.LAYERS == '')
                         params.LAYERS = src.get('originalLayers');

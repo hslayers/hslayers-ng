@@ -1,0 +1,13 @@
+<div ng-repeat="(key, value) in $ctrl.subLayer">
+    <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[key]"
+        ng-change="subLayerSelected()" ng-attr-id="hs-sublayers-{{key}}">
+    <label class="form-check-label" ng-attr-for="hs-sublayers-{{key}}">{{key}}</label>
+    <div ng-repeat="subLayer in value" class="form-check">
+        <div ng-if="subLayerIsString(subLayer)">
+            <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer]"
+                ng-change="subLayerSelected()" ng-attr-id="hs-sublayers-{{subLayer}}">
+            <label class="form-check-label" ng-attr-for="hs-sublayers-{{subLayer}}">{{subLayer}}</label>
+        </div>
+        <hs.layer-editor.sublayer-checkbox sub-layer="subLayer" ng-if="!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
+    </div>
+</div>
