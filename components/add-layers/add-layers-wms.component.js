@@ -9,7 +9,7 @@ export default {
             require('components/add-layers/partials/add-wms-layer.md.directive.html') :
             require('components/add-layers/partials/add-wms-layer.directive.html')
     }],
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.wms.getCapabilitiesService', 'hs.addLayersWms.addLayerService', 'hs.historyListService', function ($scope, OlMap, Core, wmsGetCapabilitiesService, LayService, historyListService) {
+    controller: ['$scope', 'hs.map.service', 'Core', 'hs.wms.getCapabilitiesService', 'hs.addLayersWms.addLayerService', 'hs.historyListService','$timeout', function ($scope, OlMap, Core, wmsGetCapabilitiesService, LayService, historyListService, $timeout) {
         $scope.data = LayService.data;
 
         /**
@@ -26,7 +26,9 @@ export default {
             historyListService.addSourceHistory('Wms', $scope.url);
             wmsGetCapabilitiesService.requestGetCapabilities($scope.url)
                 .then((capabilities) => {
-                    LayService.capabilitiesReceived(capabilities, layerToSelect)
+                    $timeout(_ => {
+                        LayService.capabilitiesReceived(capabilities, layerToSelect);
+                    }, 0)
                 });
             $scope.showDetails = true;
         }

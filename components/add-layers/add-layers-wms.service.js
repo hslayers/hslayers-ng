@@ -144,9 +144,15 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
             layoutService.setMainPanel('layermanager');
         }
 
-        function getSublayerNames(service){
-            if(service.Layer){
-                return service.Layer.map(l => l.Name)
+        function getSublayerNames(service) {
+            if (service.Layer) {
+                return service.Layer.map(l => {
+                    let tmp = {};
+                    if (l.Name) tmp.name = l.Name;
+                    if (l.Title) tmp.title = l.Title;
+                    if (l.Layer) tmp.children = getSublayerNames(l);
+                    return tmp
+                })
             } else return []
         }
 
@@ -217,7 +223,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                 attributions,
                 projection: me.data.crs || me.data.srs,
                 params: Object.assign({
-                    LAYERS: layer.Name,
+                    LAYERS: layer.Name || layer.Layer[0].Name,
                     INFO_FORMAT: (layer.queryable ? queryFormat : undefined),
                     FORMAT: imageFormat,
                     FROMCRS: me.data.srs,

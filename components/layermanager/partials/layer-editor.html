@@ -10,11 +10,11 @@
 
             <div class="form-group" ng-if="hasSubLayers()">
                 <label translate>Sublayers</label>
-                <div ng-repeat="subLayer in getSubLayers()" class="form-check">
-                    <div ng-if="subLayerIsString(subLayer)">
-                        <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer]"
-                            ng-change="subLayerSelected()">
-                        <label class="form-check-label">{{subLayer}}</label>
+                <div ng-repeat="subLayer in getSubLayers()">
+                    <div class="p-0 form-check form-check-inline" ng-if="subLayerIsString(subLayer)">
+                            <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer]"
+                                ng-change="subLayerSelected()">
+                            <label class="form-check-label">{{sublayer}}</label>
                     </div>
                     <hs.layer-editor.sublayer-checkbox sub-layer="subLayer" ng-on-checked="nestedLayerChecked($event)" ng-if="!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
                 </div>
