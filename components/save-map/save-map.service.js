@@ -339,6 +339,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
          */
         generateThumbnail: function ($element, localThis) {
             if (layoutService.mainpanel == 'save-map' || layoutService.mainpanel == 'permalink' || layoutService.mainpanel == "statusCreator") {
+                if($element == null) return;
                 $element.setAttribute("crossOrigin", "Anonymous");
                 OlMap.map.once('postcompose', function (event) {
                     var myCanvas = document.getElementById('my_canvas_id');
@@ -357,6 +358,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                         this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
                     }
                     catch (e) {
+                        console.warn(e);
                         $element.setAttribute('src', require('components/save-map/notAvailable.png'));
                     }
                     $element.style.width = width + 'px';

@@ -130,6 +130,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
              */
             generateThumbnail: function ($element) {
                 if (layoutService.mainpanel == 'saveMap' || layoutService.mainpanel == 'permalink' || layoutService.mainpanel == 'shareMap') {
+                    if($element == null) return;
                     $element.setAttribute("crossOrigin", "Anonymous");
                     OlMap.map.once('postcompose', function (event) {
                         var myCanvas = document.getElementById('my_canvas_id');
@@ -145,9 +146,10 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
                         ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
                         try {
                             $element.setAttribute('src', canvas2.toDataURL('image/png'));
-                            this.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
+                            me.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
                         }
                         catch (e) {
+                            console.warn(e);
                             $element.setAttribute('src', require('components/save-map/notAvailable.png'));
                         }
                         $element.style.width = width + 'px';
