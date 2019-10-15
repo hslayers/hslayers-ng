@@ -401,7 +401,7 @@ export default {
 
                 getSubLayers() {
                     if ($scope.$ctrl.currentLayer == null) return;
-                    return $scope.$ctrl.currentLayer.layer.getSource().get('subLayers');
+                    return $scope.$ctrl.currentLayer.layer.get('subLayers');
                 },
 
                 subLayerSelected() {

@@ -61,9 +61,10 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.serv
                 saveState: true,
                 path: lyr_def.path,
                 opacity: lyr_def.opacity || 1,
-                source
+                source,
+                subLayers: lyr_def.subLayers
             });
-            source.set('subLayers', lyr_def.subLayers);
+            
             new_layer.setVisible(lyr_def.visibility);
             OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
             return new_layer;

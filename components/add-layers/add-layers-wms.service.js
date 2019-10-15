@@ -226,7 +226,6 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                 }, dimensionService.paramsFromDimensions(layer)),
                 crossOrigin: 'anonymous'
             });
-            source.set('subLayers', subLayers);
             var new_layer = new layer_class({
                 title: layerName,
                 source,
@@ -239,7 +238,8 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
                 BoundingBox: boundingbox,
                 path,
                 dimensions: dimensions,
-                legends: legends
+                legends: legends,
+                subLayers: subLayers
             });
             OlMap.proxifyLayerLoader(new_layer, me.data.useTiles);
             OlMap.map.addLayer(new_layer);

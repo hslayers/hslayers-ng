@@ -274,7 +274,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                     if (src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
                     json.params = src.getParams();
                     json.ratio = src.get('ratio') || src.ratio_;
-                    json.subLayers = src.get('subLayers');
+                    json.subLayers = layer.get('subLayers');
                     json.displayInLayerSwitcher = layer.get('show_in_manager');
                     json.metadata.styles = src.get('styles');
                     if (layer.get('dimensions')) {
