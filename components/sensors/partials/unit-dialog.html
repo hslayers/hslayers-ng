@@ -1,8 +1,7 @@
-<div ng-style="{'visibility': sensorsService.unitDialogVisible?'visible':'hidden'}" id="sensor-unit-dialog"
+<div ng-style="{'visibility': sensorsService.unitDialogVisible?'visible':'hidden', 'left': (layoutService.panelSpaceWidth() + 10) + 'px', 'width': 'calc(' + layoutService.widthWithoutPanelSpace() +' + 25px)'}" id="sensor-unit-dialog"
     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position: absolute;
-    width: calc({{layoutService.widthWithoutPanelSpace()}} + 25px);
     bottom: 5px;
-    left: {{layoutService.panelSpaceWidth() + 10}}px">
+    ">
     <div class="modal-dialog modal-lg" style="margin-right: 43px; max-width: 100%; z-index: 4; margin-bottom: 3px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.2rem 0.3rem;">
