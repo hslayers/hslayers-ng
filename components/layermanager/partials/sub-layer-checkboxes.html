@@ -5,7 +5,7 @@
                 ng-change="subLayerSelected()" ng-attr-id="hs-sublayers-{{$ctrl.subLayer.name}}" />
                 <div class="p-0" ng-if="$ctrl.subLayer.children">
                     <button type="button" class="btn btn-sm" ng-click="toggleExpanded()"><i
-                            ng-class="{'icon-calcminus': expanded, 'icon-calcplus': !expanded}"></i></button>
+                            ng-class="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i></button>
                 </div>
             <label class="form-check-label"
                 ng-attr-for="hs-sublayers-{{$ctrl.subLayer.name}}">{{$ctrl.subLayer.title || $ctrl.subLayer.name}}</label>
