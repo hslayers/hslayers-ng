@@ -116,10 +116,10 @@ export default ['config', '$rootScope',
             * @ngdoc property
             * @name hs.layout.service#current_panel_queryable
             * @public
-            * @type {Boolean} false 
+            * @type {Boolean} true 
             * @description Keep queryable status of current panel
             */
-            current_panel_queryable: false,
+            current_panel_queryable: true,
             /**
             * @ngdoc property
             * @name hs.layout.service#mainpanel
