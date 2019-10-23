@@ -11,7 +11,7 @@
                 aria-expanded="{{baseLayersExpanded}}">
                 Baselayers
             </button>
-            <div class="dropdown-menu" ng-class="{'show': baseLayersExpanded}">
+            <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': baseLayersExpanded}">
                 <a class="dropdown-item" href="#" ng-repeat="layer in LayMan.data.baselayers | orderBy: 'title'"
                     ng-click="LayMan.changeBaseLayerVisibility($event, layer)" ng-class="{'active': layer.active}">{{layer.title}}</a>
             </div>

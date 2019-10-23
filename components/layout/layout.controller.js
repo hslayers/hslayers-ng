@@ -434,17 +434,33 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
         $scope.mapStyle = function () {
             if (config.design == 'md') {
+                console.log("md")
+            }
+            else if (layoutService.sidebarBottom()) {
+                console.log({
+                    height: layoutService.sbBottomMapHeight() + "!important",
+                    width: layoutService.panelSpaceWidth() + 'px',
+                })
+                return {
+                    height: 500 + 'px',
+                    width: layoutService.panelSpaceWidth() + 'px',
+                }
+            }
+            else {
+                console.log(                    {
+                    marginLeft: layoutService.panelSpaceWidth() + 'px',
+                    width: layoutService.widthWithoutPanelSpace(),
+                })
 
-            } else {
                 if (!layoutService.sidebarRight)
                     return {
                         marginLeft: layoutService.panelSpaceWidth() + 'px',
-                        width: layoutService.widthWithoutPanelSpace()
+                        width: layoutService.widthWithoutPanelSpace(),
                     }
                 else
                     return {
                         marginLeft: '-px',
-                        width: layoutService.widthWithoutPanelSpace()
+                        width: layoutService.widthWithoutPanelSpace(),
                     }
             }
         }

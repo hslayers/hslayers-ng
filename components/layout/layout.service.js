@@ -308,6 +308,13 @@ export default ['config', '$rootScope',
                 var layoutWidth = document.getElementById('layout').clientWidth;
                 Object.assign(panelWidths, config.panelWidths);
                 let tmp = 0;
+                if (layoutWidth <= 767){
+                    tmp = layoutWidth;
+                    me.sidebarToggleable = false;
+                    return tmp;
+                }
+                else {me.sidebarToggleable = true;
+                }
                 if (me.sidebarExpanded && me.sidebarVisible()) {
                     if (panelWidths[me.mainpanel])
                         tmp = panelWidths[me.mainpanel]
@@ -329,7 +336,17 @@ export default ['config', '$rootScope',
                 if (angular.isUndefined(me._sidebarVisible)) return true;
                 return me._sidebarVisible;
             },
-
+            sidebarBottom(){
+                return document.getElementById('layout').clientWidth <= 767
+            },
+            sbBottomMapHeight(){
+                    return 'calc(100% - ' + me.panelSpaceHeight() + 'px)';
+            },
+            //todo
+            panelSpaceHeight(){
+                let tmp = document.getElementsByClassName('panelspace-wrapper')[0].clientHeight;
+                return tmp
+            },
             /**
             * @ngdoc property
             * @name hs.layout.service#sidebarExpanded

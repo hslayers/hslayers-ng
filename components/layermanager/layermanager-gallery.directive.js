@@ -5,7 +5,7 @@ export default ['config', 'hs.layout.service', 'hs.layermanager.service', functi
         controller: ['$scope', function ($scope) {
             $scope.LayMan = LayMan;
             $scope.galleryStyle = function () {
-                if (!layoutService.sidebarRight) {
+                if (!layoutService.sidebarRight || document.getElementById('layout').clientWidth <= 767) {
                     return { right: '15px' }
                 }
                 else {

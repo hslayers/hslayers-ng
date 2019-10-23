@@ -1,8 +1,8 @@
 
 <div id="page-wrapper" class="bootstrap-iso">
-    <div id="content-wrapper" ng-class="{'open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(), 'classic-sidebar': layoutService.classicSidebar, 'mini-sidebar': !layoutService.classicSidebar}">
+    <div id="content-wrapper" ng-class="{'open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'sb-bottom':layoutService.sidebarBottom(), 'classic-sidebar': layoutService.classicSidebar, 'mini-sidebar': !layoutService.classicSidebar}">
         <div class="page-content">
-            <div hs.map.directive ng-controller="hs.map.controller" ng-show="hs_map.visible" id="map" style="z-index:990" ng-style="mapStyle()"></div>
+            <div hs.map.directive ng-controller="hs.map.controller"  id="map" style="z-index:990" ng-style="mapStyle()"></div>
             <hs.toolbar 
                 ng-if="Core.exists('hs.toolbar') && !Core.puremapApp"
                 ng-show="panelEnabled('toolbar') && layoutService.sidebarVisible()">
@@ -46,11 +46,11 @@
                         </div>
                     </div>
                 </div>
-                <div id="hs-info-container" ng-hide="layoutService.smallWidth && layoutService.sidebarExpanded" ng-style="infoContainerStyle()" >
+                <!-- <div id="hs-info-container" ng-hide="layoutService.smallWidth && layoutService.sidebarExpanded" ng-style="infoContainerStyle()" >
                     <div id="hs-info-area">
                         <hs.info ng-if="Core.exists('hs.info')"></hs.info>
                     </div>
-                </div>
+                </div> -->
                 <hs.draw.shape-toolbar></hs.draw.shape-toolbar>
             </div>
 

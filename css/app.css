@@ -1,5 +1,5 @@
 /* app css stylesheet */
-
+::-webkit-scrollbar {display:none;}
 .icon-spin {
     -webkit-animation: spin 1000ms infinite linear;
     animation: spin 1000ms infinite linear;
@@ -857,7 +857,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 /**********************************/
 
 @media only screen and (max-width: 767px) {
-    .open div.panelspace, div.panelspace, .panelspace-wrapper {
+    /* .open div.panelspace, div.panelspace, .panelspace-wrapper {
         width: 300px;
     }
 
@@ -872,21 +872,64 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 
     div#content-wrapper.sb-right.open div.panelspace:not(.labels) .sidebar-list {
         right: 250px;
+    } */
+    #content-wrapper .sidebar-item-title {
+        display:none;
+    }
+   
+    .panelspace {
+        left:0;
+        bottom: 0;
+        height:auto;
+        top: unset;
+        width: 100%;
+    }
+    #content-wrapper {
+        position: unset;
+    }
+    .sb-bottom #map {
+        width: 100% !important;
+        margin-bottom: 48px;
+    }
+    .panelspace-wrapper{
+        display: flex;
+        flex-direction: column;
+        /* firefox only ???*/
+        scrollbar-width: none; 
+        max-height: 40vh;
+    }
+    
+    #sidebar, #panelspace {
+        display: flex;
+    }
+    div#sidebar{
+        position: unset;
+        width: 100% !important;
+    }
+    #sidebar ~ div#panelplace
+    {
+        /* margin-left: 0; */
+        margin: auto;
+    }
+    /* maybe do in html ng-clas */
+    #sidebar > div.list-group{
+        flex-direction: row !important;
+        justify-content: space-evenly;
+    }
+    #content-wrapper.open div.panelspace:not(.labels) .sidebar-list {
+        width: 100% ;
+
     }
 
-    .sb-left.open #map {
+    /* .sb-left.open #map {
         margin-left:300px;
     }
 
     .sb-right.open #map {
         margin-left:0px;
-    }
+    } */
 
-    div#sidebar ~ div#panelplace {
-        width: 251px;
-    }
-
-    div.panelspace:not(.buttons) div#sidebar ~ div#panelplace {
+    /* div.panelspace:not(.buttons) div#sidebar ~ div#panelplace {
         width:300px;
     }
 
@@ -904,7 +947,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 
     .panelplace .list-group-item {
         padding: 10px;
-    }
+    } */
 }
 
 ul[dnd-list],
