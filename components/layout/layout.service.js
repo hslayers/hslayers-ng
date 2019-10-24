@@ -267,7 +267,11 @@ export default ['config', '$rootScope',
                 if (which == me.mainpanel && by_gui) {
                     which = "";
                     if (me.sidebarExpanded == true) {
-                        me.sidebarLabels = true;
+                        if (me.sidebarBottom()){
+                            me.sidebarExpanded = false
+                        }
+                        else{me.sidebarLabels = true;
+                        }
                     }
                 } else {
                     me.sidebarExpanded = true;
@@ -339,13 +343,12 @@ export default ['config', '$rootScope',
             sidebarBottom(){
                 return document.getElementById('layout').clientWidth <= 767
             },
-            sbBottomMapHeight(){
-                    return 'calc(100% - ' + me.panelSpaceHeight() + 'px)';
-            },
-            //todo
-            panelSpaceHeight(){
-                let tmp = document.getElementsByClassName('panelspace-wrapper')[0].clientHeight;
-                return tmp
+            panelSpaceHeight() {
+                if (angular.isDefined(document.getElementsByClassName('panelspace-wrapper'))) {
+                    console.log(document.getElementsByClassName('panelspace-wrapper'))
+                    return document.getElementsByClassName('panelspace-wrapper')[0].clientHeight;
+                    // return tmp
+                }
             },
             /**
             * @ngdoc property

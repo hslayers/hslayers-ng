@@ -1,5 +1,7 @@
 /* app css stylesheet */
-::-webkit-scrollbar {display:none;}
+::-webkit-scrollbar {
+    display:none;
+}
 .icon-spin {
     -webkit-animation: spin 1000ms infinite linear;
     animation: spin 1000ms infinite linear;
@@ -857,22 +859,6 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 /**********************************/
 
 @media only screen and (max-width: 767px) {
-    /* .open div.panelspace, div.panelspace, .panelspace-wrapper {
-        width: 300px;
-    }
-
-    .open.sb-left div#hs-info-container {
-        margin-left: 300px;
-        width: calc(100% - 300px);
-    }
-
-    div#content-wrapper.sb-left.open div.panelspace:not(.labels) .sidebar-list {
-        left: 250px;
-    }
-
-    div#content-wrapper.sb-right.open div.panelspace:not(.labels) .sidebar-list {
-        right: 250px;
-    } */
     #content-wrapper .sidebar-item-title {
         display:none;
     }
@@ -889,13 +875,11 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     }
     .sb-bottom #map {
         width: 100% !important;
-        margin-bottom: 48px;
     }
     .panelspace-wrapper{
         display: flex;
         flex-direction: column;
-        /* firefox only ???*/
-        scrollbar-width: none; 
+        scrollbar-width: none;  /* firefox */ 
         max-height: 40vh;
     }
     
@@ -908,46 +892,27 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     }
     #sidebar ~ div#panelplace
     {
-        /* margin-left: 0; */
         margin: auto;
+        scrollbar-width: none;
     }
-    /* maybe do in html ng-clas */
     #sidebar > div.list-group{
         flex-direction: row !important;
         justify-content: space-evenly;
     }
-    #content-wrapper.open div.panelspace:not(.labels) .sidebar-list {
+    #content-wrapper div.panelspace #sidebar .sidebar-list{
         width: 100% ;
-
+    }
+    a.sidebar-item.list-group-item {
+        padding: 0.55rem 1.05rem;
     }
 
-    /* .sb-left.open #map {
-        margin-left:300px;
-    }
-
-    .sb-right.open #map {
-        margin-left:0px;
-    } */
-
-    /* div.panelspace:not(.buttons) div#sidebar ~ div#panelplace {
-        width:300px;
-    }
-
-    .panelspace.labels #sidebar {
-        width: 300px;
-    }
-
-    .sb-left.open #toolbar {
+    /* .sb-left.open #toolbar {
        margin-left: 310px;
-    }
-
+    }*/
+ */
     .panel-footer {
         padding: 5px;
-    }
-
-    .panelplace .list-group-item {
-        padding: 10px;
-    } */
+    } 
 }
 
 ul[dnd-list],

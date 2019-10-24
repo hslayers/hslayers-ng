@@ -240,10 +240,10 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     } else if (sidebarElem != null && container.offsetWidth > sidebarElem.offsetWidth) {
                         neededSize.width = container.offsetWidth - sidebarElem.offsetWidth;
                     }
-                    map.style.height = neededSize.height + 'px';
-                    map.style.width = neededSize.width + 'px';
+                    // map.style.height = neededSize.height + 'px';
+                    // map.style.width = neededSize.width + 'px';
                     if (angular.isDefined(OlMap.map)) OlMap.map.updateSize();
-                    map.offsetWidth < 368 ? layoutService.smallWidth = true : layoutService.smallWidth = false;
+                    map.offsetWidth < 767 ? layoutService.smallWidth = true : layoutService.smallWidth = false;
                     if (!$rootScope.$$phase) $rootScope.$digest();
                     $rootScope.$broadcast('Core.mapSizeUpdated', neededSize);
                 },

@@ -420,7 +420,14 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         $scope.panelSpaceWidth = layoutService.panelSpaceWidth;
 
         $scope.infoContainerStyle = function () {
-            if (!layoutService.sidebarRight)
+            if (layoutService.sidebarBottom()){
+                return {
+                    width: layoutService.widthWithoutPanelSpace(),
+                    bottom: layoutService.panelSpaceHeight() + 'px'
+                }
+            }
+            else {
+                if (!layoutService.sidebarRight)
                 return {
                     marginLeft: layoutService.panelSpaceWidth() + 'px',
                     width: layoutService.widthWithoutPanelSpace()
@@ -430,6 +437,8 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
                     marginRight: layoutService.panelSpaceWidth() + 'px',
                     width: layoutService.widthWithoutPanelSpace()
                 }
+
+            }
         }
 
         $scope.mapStyle = function () {
@@ -437,30 +446,23 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
                 console.log("md")
             }
             else if (layoutService.sidebarBottom()) {
-                console.log({
-                    height: layoutService.sbBottomMapHeight() + "!important",
-                    width: layoutService.panelSpaceWidth() + 'px',
-                })
                 return {
-                    height: 500 + 'px',
+                    height: document.getElementById('hs-app').clientHeight - layoutService.panelSpaceHeight() + 'px',
                     width: layoutService.panelSpaceWidth() + 'px',
                 }
             }
             else {
-                console.log(                    {
-                    marginLeft: layoutService.panelSpaceWidth() + 'px',
-                    width: layoutService.widthWithoutPanelSpace(),
-                })
-
                 if (!layoutService.sidebarRight)
                     return {
                         marginLeft: layoutService.panelSpaceWidth() + 'px',
                         width: layoutService.widthWithoutPanelSpace(),
+                        height: 100 + 'vh'
                     }
                 else
                     return {
                         marginLeft: '-px',
                         width: layoutService.widthWithoutPanelSpace(),
+                        height: 100 + 'vh'
                     }
             }
         }
