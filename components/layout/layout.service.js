@@ -344,8 +344,7 @@ export default ['config', '$rootScope',
                 return document.getElementById('layout').clientWidth <= 767
             },
             panelSpaceHeight() {
-                if (angular.isDefined(document.getElementsByClassName('panelspace-wrapper'))) {
-                    console.log(document.getElementsByClassName('panelspace-wrapper'))
+                if (angular.isDefined(document.getElementsByClassName('panelspace-wrapper')[0])) {
                     return document.getElementsByClassName('panelspace-wrapper')[0].clientHeight;
                     // return tmp
                 }
