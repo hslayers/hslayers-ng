@@ -1,7 +1,7 @@
 <div class="basemapGallery" ng-style="galleryStyle()">
     <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
         <button type="button" ng-if="fitsInContainer()" class="btn btn-secondary btn-sm "
-            ng-repeat="layer in LayMan.data.baselayers | orderBy: 'title'"
+            ng-repeat="layer in ::LayMan.data.baselayers | orderBy: 'title'"
             ng-click="LayMan.changeBaseLayerVisibility($event, layer)"
             ng-class="{'active': layer.active}">{{layer.title}}</button>
 

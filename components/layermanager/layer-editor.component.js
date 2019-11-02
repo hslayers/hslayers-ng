@@ -19,6 +19,7 @@ export default {
             WMTSgetCapabilitiesService,WFSgetCapabilitiesService) {
             angular.extend($scope, {
                 checkedSubLayers: {},
+                withChildren: {},
                 layer_renamer_visible: false,
                 legendService,
                 layerIsWmsT() { return WMST.layerIsWmsT($scope.$ctrl.currentLayer) },
@@ -405,7 +406,24 @@ export default {
 
                 getSubLayers() {
                     if ($scope.$ctrl.currentLayer == null) return;
+                    $scope.populateSubLayers();
                     return $scope.$ctrl.currentLayer.layer.get('subLayers');
+                },
+                populateSubLayers() {
+                    if (Object.keys($scope.checkedSubLayers).length === 0) {
+                        let sublayers = $scope.$ctrl.currentLayer.layer.get('subLayers');
+                        angular.forEach(sublayers, function (layer) {
+                            if (layer.children) {
+                                angular.extend($scope.withChildren, { [layer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
+                                angular.forEach(layer.children, function(sublayer){
+                                    angular.extend($scope.checkedSubLayers, { [sublayer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
+                                })
+                            }
+                            else {
+                                angular.extend($scope.checkedSubLayers, { [layer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
+                            }
+                        })
+                    }
                 },
 
                 nestedLayerChecked(e){
@@ -414,15 +432,20 @@ export default {
                 },
 
                 subLayerSelected() {
+                    let layer = $scope.$ctrl.currentLayer;
                     let src = $scope.$ctrl.currentLayer.layer.getSource();
                     let params = src.getParams();
                     if (angular.isUndefined(src.get('originalLayers')))
                         src.set('originalLayers', params.LAYERS);
                     params.LAYERS = Object.keys($scope.checkedSubLayers).filter(key =>
-                        $scope.checkedSubLayers[key]
+                        $scope.checkedSubLayers[key] && !$scope.withChildren[key]
                     ).join(',');
-                    if (params.LAYERS == '')
-                        params.LAYERS = src.get('originalLayers');
+                    if (params.LAYERS == '') {
+                        LayMan.changeLayerVisibility(!layer.visible, layer)
+                        return
+                    }
+                    if (layer.visible == false) LayMan.changeLayerVisibility(!layer.visible, layer)
+                    // params.LAYERS = src.get('originalLayers');
                     src.updateParams(params);
                 },
 

@@ -14,9 +14,9 @@
                     <div class="p-0 form-check form-check-inline" ng-if="subLayerIsString(subLayer)">
                             <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer]"
                                 ng-change="subLayerSelected()">
-                            <label class="form-check-label">{{sublayer}}</label>
+                            <label class="form-check-label">{{::sublayer}}</label>
                     </div>
-                    <hs.layer-editor.sublayer-checkbox sub-layer="subLayer" ng-on-checked="nestedLayerChecked($event)" ng-if="!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
+                    <hs.layer-editor.sublayer-checkbox with-children="withChildren" sub-layer="subLayer" checked-sub-layers="checkedSubLayers" ng-on-checked="nestedLayerChecked($event)" ng-if="!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@
                         <a class="card-href" ng-repeat="metadata in $ctrl.currentLayer.layer.get('MetadataURL')"
                             href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
                             <span ng-show="metadata.type">
-                                Metadata of layer in {{metadata.type}}
+                                Metadata of layer in {{::metadata.type}}
                             </span>
                             <span ng-hide="metadata.type">
                                 Metadata of service

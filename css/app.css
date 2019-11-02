@@ -893,6 +893,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     #sidebar ~ div#panelplace
     {
         margin: auto;
+        min-height: 30vh;
         scrollbar-width: none;
     }
     #sidebar > div.list-group{
@@ -905,7 +906,9 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     a.sidebar-item.list-group-item {
         padding: 0.55rem 1.05rem;
     }
-
+    .sidebar-item [class*=" icon-"]  {
+        font-size: x-large;
+    }
     /* .sb-left.open #toolbar {
        margin-left: 310px;
     }*/
