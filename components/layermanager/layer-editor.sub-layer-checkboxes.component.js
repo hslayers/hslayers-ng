@@ -3,15 +3,13 @@ export default  {
         bindings: {
             subLayer: '<',
             checkedSubLayers: '<',
-            withChildren: '='
+            withChildren: '=',
+            currentLayer: '<'
         },
         controller: ['$scope', '$element', function($scope, $element){
             angular.extend($scope, {
                 checkedSubLayers: {},
                 expanded: false,
-                isVisible(){
-                    return false
-                },
                 subLayerIsString(subLayer){
                     return typeof subLayer == 'string'
                 },
@@ -31,8 +29,8 @@ export default  {
                     angular.extend($scope.checkedSubLayers, e.detail);
                     $scope.subLayerSelected();
                 },
-                populateNestedLayers(sublayer){
-                    angular.extend($scope.checkedSubLayers, {[sublayer.name]:true});
+                populateNestedLayers(sublayer,layer){
+                    angular.extend($scope.checkedSubLayers, {[sublayer.name]:layer.visible});
 
                 }
             })

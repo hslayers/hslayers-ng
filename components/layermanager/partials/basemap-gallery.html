@@ -3,7 +3,7 @@
         <button type="button" ng-if="fitsInContainer()" class="btn btn-secondary btn-sm "
             ng-repeat="layer in ::LayMan.data.baselayers | orderBy: 'title'"
             ng-click="LayMan.changeBaseLayerVisibility($event, layer)"
-            ng-class="{'active': layer.active}">{{layer.title}}</button>
+            ng-class="{'active': layer.active}">{{::layer.title}}</button>
 
         <div class="btn-group btn-group-sm" role="group" ng-if="!fitsInContainer()">
             <button type="button" ng-click="baseLayersExpanded=!baseLayersExpanded"

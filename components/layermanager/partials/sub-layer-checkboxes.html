@@ -1,11 +1,15 @@
 <div>
     <div class="d-flex">
         <div class="p-0 form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" ng-model="$ctrl.checkedSubLayers[$ctrl.subLayer.name]"
+            <input class="form-check-input" type="checkbox" 
+                ng-model="isChecked"
+                ng-model-options="{ getterSetter: true }"    
                 ng-change="subLayerSelected($ctrl.subLayer,$ctrl.checkedSubLayers[$ctrl.subLayer.name])" 
                 ng-attr-id="hs-sublayers-{{$ctrl.subLayer.name}}"
                 ng-if="!$ctrl.subLayer.children"/>
-            <input class="form-check-input" type="checkbox" ng-model="$ctrl.withChildren[$ctrl.subLayer.name]"
+            <input class="form-check-input" type="checkbox" 
+                ng-model="$ctrl.withChildren[$ctrl.subLayer.name]"
+                ng-model-options="{ getterSetter: true }"
                 ng-change="subLayerSelected($ctrl.subLayer,$ctrl.withChildren[$ctrl.subLayer.name])" 
                 ng-attr-id="hs-sublayers-{{$ctrl.subLayer.name}}" 
                 ng-if="$ctrl.subLayer.children"/>
@@ -19,7 +23,7 @@
         </div>
     </div>
     <div ng-if="$ctrl.subLayer.children" class="collapse ml-4" ng-class="{'show': expanded}">
-        <div ng-repeat="subLayer in $ctrl.subLayer.children" ng-init="populateNestedLayers(subLayer)">
+        <div ng-repeat="subLayer in $ctrl.subLayer.children" ng-init="populateNestedLayers(subLayer,$ctrl.currentLayer)">
             <div ng-if="subLayerIsString(subLayer)">
                 <input class="form-check-input" type="checkbox" ng-model="$ctrl.checkedSubLayers[subLayer]"
                     ng-change="subLayerSelected($ctrl.subLayer,$ctrl.checkedSubLayers[$ctrl.subLayer.name])" ng-attr-id="hs-sublayers-{{subLayer}}">
