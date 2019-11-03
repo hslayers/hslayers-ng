@@ -37,7 +37,7 @@
                 <div class="d-flex ">
                     <div class="p-0 flex-grow-1 hs-lm-item-title"
                         ng-class="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
-                        {{layer.title}}
+                        {{::layer.title}}
                     </div>
                     <div class="p-0" ng-show="layer.active || hovering"
                         ng-style="hovering && !layer.active && {'opacity':'0.5'}">

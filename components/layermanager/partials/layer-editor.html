@@ -16,7 +16,12 @@
                                 ng-change="subLayerSelected()">
                             <label class="form-check-label">{{::sublayer}}</label>
                     </div>
-                    <hs.layer-editor.sublayer-checkbox with-children="withChildren" sub-layer="subLayer" checked-sub-layers="checkedSubLayers" ng-on-checked="nestedLayerChecked($event)" ng-if="!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
+                    <hs.layer-editor.sublayer-checkbox 
+                    current-layer="$ctrl.currentLayer"
+                    with-children="withChildren" 
+                    sub-layer="subLayer" 
+                    checked-sub-layers="checkedSubLayers" 
+                    ng-on-checked="nestedLayerChecked($event)" ng-if="!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
                 </div>
             </div>
 
