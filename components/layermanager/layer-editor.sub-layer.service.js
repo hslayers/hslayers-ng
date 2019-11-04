@@ -6,7 +6,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         me.withChildren = {};
         
         me.hasSubLayers= function() {
-            var subLayers = $scope.getSubLayers();
+            var subLayers = me.getSubLayers();
             return angular.isDefined(subLayers) && subLayers.length > 0;
         };
         
@@ -36,17 +36,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             }
         };
         
-        me.nestedLayerChecked= function(e){
-            angular.extend($scope.checkedSubLayers, e.detail);
-            $scope.subLayerSelected();
-        };
-        
         me.subLayerSelected= function() {
             let layer = LayMan.currentLayer;
             let src = LayMan.currentLayer.layer.getSource();
             let params = src.getParams();
-            if (angular.isUndefined(src.get('originalLayers')))
-                src.set('originalLayers', params.LAYERS);
             params.LAYERS = Object.keys(me.checkedSubLayers).filter(key =>
                 me.checkedSubLayers[key] && !me.withChildren[key]
             ).join(',');
@@ -56,7 +49,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                 return
             }
             if (layer.visible == false) LayMan.changeLayerVisibility(!layer.visible, layer)
-            // params.LAYERS = src.get('originalLayers');
             src.updateParams(params);
         };
 
