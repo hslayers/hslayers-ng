@@ -1,6 +1,6 @@
 
-export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice','hs.layermanager.service',
-    function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST, LayMan) {
+export default ['hs.layermanager.service',
+    function (LayMan) {
         let me = {};
         me.checkedSubLayers = {};
         me.withChildren = {};
