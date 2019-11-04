@@ -12,7 +12,6 @@ export default ['$compile', 'config', 'hs.layout.service', function ($compile, c
                 },
                 function (value) {
                     setTimeout(function () {
-                        console.log("mapsize")
                         scope.Core.updateMapSize();
                     }, 0)
                     scope.$emit('sidebar_change', layoutService.sidebarExpanded);

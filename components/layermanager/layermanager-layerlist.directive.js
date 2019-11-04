@@ -1,6 +1,15 @@
-export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', 'hs.map.service', 'hs.utils.service', '$timeout', function ($compile, config, $rootScope, LayMan, hsMap, utils, $timeout) {
+export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', 'hs.map.service', 'hs.utils.service', '$timeout','hs.layerEditor.sublayerService', function ($compile, config, $rootScope, LayMan, hsMap, utils, $timeout,subLayerService) {
     return {
         template: require('components/layermanager/partials/layerlist.html'),
+        controller: ['$scope', function ($scope) {
+            $scope.toggleSublayers = function () {
+                if (subLayerService.hasSubLayers()) {
+                    Object.keys(subLayerService.checkedSubLayers).forEach(function(key){
+                        subLayerService.checkedSubLayers[key] = LayMan.currentLayer.visible;
+                    })
+                }
+            };
+        }],
         compile: function compile(element) {
             var contents = element.contents().remove();
             var contentsLinker;
