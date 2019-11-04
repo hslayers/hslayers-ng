@@ -10,10 +10,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             return angular.isDefined(subLayers) && subLayers.length > 0;
         };
         
-        me.subLayerIsString= function(subLayer){
-            return typeof subLayer == 'string'
-        };
-        
         me.getSubLayers= function() {
             if (LayMan.currentLayer == null) return;
             me.populateSubLayers();
@@ -43,7 +39,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             params.LAYERS = Object.keys(me.checkedSubLayers).filter(key =>
                 me.checkedSubLayers[key] && !me.withChildren[key]
             ).join(',');
-            console.log(params)
             if (params.LAYERS == '') {
                 LayMan.changeLayerVisibility(!layer.visible, layer)
                 return
