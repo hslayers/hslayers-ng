@@ -14,12 +14,10 @@ export default {
         'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
         'hs.legend.service', 'hs.styler.service', 'hs.map.service',
         'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service',
-        'hs.wmts.getCapabilitiesService','hs.wfs.getCapabilitiesService',
+        'hs.wmts.getCapabilitiesService','hs.wfs.getCapabilitiesService','hs.layerEditor.sublayerService',
         function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, WMSgetCapabilitiesService, $rootScope, $timeout, layoutService,
-            WMTSgetCapabilitiesService,WFSgetCapabilitiesService) {
+            WMTSgetCapabilitiesService,WFSgetCapabilitiesService, subLayerService) {
             angular.extend($scope, {
-                checkedSubLayers: {},
-                withChildren: {},
                 layer_renamer_visible: false,
                 legendService,
                 layerIsWmsT() { return WMST.layerIsWmsT($scope.$ctrl.currentLayer) },
@@ -400,54 +398,52 @@ export default {
                     return angular.isDefined(subLayers) && subLayers.length > 0;
                 },
 
-                subLayerIsString(subLayer){
-                    return typeof subLayer == 'string'
-                },
+                // subLayerIsString(subLayer){
+                //     return typeof subLayer == 'string'
+                // },
 
-                getSubLayers() {
-                    if ($scope.$ctrl.currentLayer == null) return;
-                    $scope.populateSubLayers();
-                    return $scope.$ctrl.currentLayer.layer.get('subLayers');
-                },
-                populateSubLayers() {
-                    if (Object.keys($scope.checkedSubLayers).length === 0) {
-                        let sublayers = $scope.$ctrl.currentLayer.layer.get('subLayers');
-                        angular.forEach(sublayers, function (layer) {
-                            if (layer.children) {
-                                angular.extend($scope.withChildren, { [layer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
-                                angular.forEach(layer.children, function(sublayer){
-                                    angular.extend($scope.checkedSubLayers, { [sublayer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
-                                })
-                            }
-                            else {
-                                angular.extend($scope.checkedSubLayers, { [layer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
-                            }
-                        })
-                    }
-                },
+                getSubLayers(){
+                    return subLayerService.getSubLayers();
+                 },
+                // // populateSubLayers() {
+                //     if (Object.keys($scope.checkedSubLayers).length === 0) {
+                //         let sublayers = $scope.$ctrl.currentLayer.layer.get('subLayers');
+                //         angular.forEach(sublayers, function (layer) {
+                //             if (layer.children) {
+                //                 angular.extend($scope.withChildren, { [layer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
+                //                 angular.forEach(layer.children, function(sublayer){
+                //                     angular.extend($scope.checkedSubLayers, { [sublayer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
+                //                 })
+                //             }
+                //             else {
+                //                 angular.extend($scope.checkedSubLayers, { [layer.name]: $scope.$ctrl.currentLayer.layer.getVisible() });
+                //             }
+                //         })
+                //     }
+                // },
 
-                nestedLayerChecked(e){
-                    angular.extend($scope.checkedSubLayers, e.detail);
-                    $scope.subLayerSelected();
-                },
+                // nestedLayerChecked(e){
+                //     angular.extend($scope.checkedSubLayers, e.detail);
+                //     $scope.subLayerSelected();
+                // },
 
-                subLayerSelected() {
-                    let layer = $scope.$ctrl.currentLayer;
-                    let src = $scope.$ctrl.currentLayer.layer.getSource();
-                    let params = src.getParams();
-                    if (angular.isUndefined(src.get('originalLayers')))
-                        src.set('originalLayers', params.LAYERS);
-                    params.LAYERS = Object.keys($scope.checkedSubLayers).filter(key =>
-                        $scope.checkedSubLayers[key] && !$scope.withChildren[key]
-                    ).join(',');
-                    if (params.LAYERS == '') {
-                        LayMan.changeLayerVisibility(!layer.visible, layer)
-                        return
-                    }
-                    if (layer.visible == false) LayMan.changeLayerVisibility(!layer.visible, layer)
-                    // params.LAYERS = src.get('originalLayers');
-                    src.updateParams(params);
-                },
+                // subLayerSelected() {
+                //     let layer = $scope.$ctrl.currentLayer;
+                //     let src = $scope.$ctrl.currentLayer.layer.getSource();
+                //     let params = src.getParams();
+                //     if (angular.isUndefined(src.get('originalLayers')))
+                //         src.set('originalLayers', params.LAYERS);
+                //     params.LAYERS = Object.keys($scope.checkedSubLayers).filter(key =>
+                //         $scope.checkedSubLayers[key] && !$scope.withChildren[key]
+                //     ).join(',');
+                //     if (params.LAYERS == '') {
+                //         LayMan.changeLayerVisibility(!layer.visible, layer)
+                //         return
+                //     }
+                //     if (layer.visible == false) LayMan.changeLayerVisibility(!layer.visible, layer)
+                //     // params.LAYERS = src.get('originalLayers');
+                //     src.updateParams(params);
+                // },
 
                 expandFilter(layer, value) {
                     layer.expandFilter = value;
