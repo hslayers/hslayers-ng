@@ -11,7 +11,7 @@
         <!-- Sublayers -->
         <div class="form-group" ng-if="hasSubLayers()">
             <label translate>Sublayers</label>
-            <div ng-repeat="subLayer in getSubLayers()">
+            <div ng-repeat="subLayer in ::getSubLayers()">
                 <hs.layer-editor.sublayer-checkbox></hs.layer-editor.sublayer-checkbox>
             </div>
         </div>

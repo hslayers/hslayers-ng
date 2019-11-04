@@ -1,22 +1,22 @@
 <div class="d-flex">
     <!-- string -->
-    <div class="p-0 form-check form-check-inline" ng-if="subLayerIsString(subLayer)">
+    <div class="p-0 form-check form-check-inline" ng-if="::subLayerIsString(subLayer)">
         <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer]"
             ng-change="subLayerSelected()">
-        <label class="form-check-label">{{::sublayer}}</label>
+        <label class="form-check-label">{{::subLayer}}</label>
     </div>
     <!-- object -->
-    <div ng-if="!subLayerIsString(subLayer)">
+    <div ng-if="::!subLayerIsString(subLayer)">
         <div class="d-flex">
             <div class="p-0 form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer.name]"
                     ng-change="subLayerSelected(subLayer,checkedSubLayers[subLayer.name])"
-                    ng-attr-id="hs-sublayers-{{subLayer.name}}" ng-if="!subLayer.children" />
+                    ng-attr-id="hs-sublayers-{{subLayer.name}}" ng-if="::!subLayer.children" />
                 <input class="form-check-input" type="checkbox" ng-model="withChildren[subLayer.name]"
                     ng-change="subLayerSelected(subLayer, withChildren[subLayer.name])"
-                    ng-attr-id="hs-sublayers-{{subLayer.name}}" ng-if="subLayer.children" />
+                    ng-attr-id="hs-sublayers-{{subLayer.name}}" ng-if="::subLayer.children" />
 
-                <div class="p-0" ng-if="subLayer.children">
+                <div class="p-0" ng-if="::subLayer.children">
                     <button type="button" class="btn btn-sm" ng-click="toggleExpanded()"><i
                             ng-class="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i></button>
                 </div>
@@ -24,15 +24,15 @@
                     ng-attr-for="hs-sublayers-{{subLayer.name}}">{{subLayer.title || subLayer.name}}</label>
             </div>
         </div>
-        <div ng-if="subLayer.children" class="collapse ml-4" ng-class="{'show': expanded}">
-            <div ng-repeat="subLayer in subLayer.children">
-                <div ng-if="subLayerIsString(subLayer)">
+        <div ng-if="::subLayer.children" class="collapse ml-4" ng-class="{'show': expanded}">
+            <div ng-repeat="subLayer in ::subLayer.children">
+                <div ng-if="::subLayerIsString(subLayer)">
                     <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer]"
                         ng-change="subLayerSelected(subLayer,checkedSubLayers[subLayer.name])"
                         ng-attr-id="hs-sublayers-{{subLayer}}">
-                    <label class="form-check-label" ng-attr-for="hs-sublayers-{{subLayer}}">{{::sublayer}}</label>
+                    <label class="form-check-label" ng-attr-for="hs-sublayers-{{subLayer}}">{{::subLayer}}</label>
                 </div>
-                <hs.layer-editor.sublayer-checkbox ng-if="!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
+                <hs.layer-editor.sublayer-checkbox ng-if="::!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
             </div>
         </div>
 

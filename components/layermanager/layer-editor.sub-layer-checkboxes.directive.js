@@ -14,6 +14,10 @@
                    return subLayerService.getSubLayers();
                 }
 
+                $scope.subLayerIsString= function(subLayer){
+                    return typeof subLayer == 'string'
+                };
+
                 $scope.toggleExpanded = function(){
                         $scope.expanded = !$scope.expanded
                 };

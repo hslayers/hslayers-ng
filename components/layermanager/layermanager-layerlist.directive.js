@@ -4,11 +4,20 @@ export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', '
         controller: ['$scope', function ($scope) {
             $scope.toggleSublayers = function () {
                 if (subLayerService.hasSubLayers()) {
-                    Object.keys(subLayerService.checkedSubLayers).forEach(function(key){
+                    Object.keys(subLayerService.checkedSubLayers).forEach(function (key) {
                         subLayerService.checkedSubLayers[key] = LayMan.currentLayer.visible;
                     })
+                    if (Object.keys(subLayerService.withChildren).length === 0) {
+                        return
+                    }
+                    else {
+                        Object.keys(subLayerService.withChildren).forEach(function (key) {
+                            subLayerService.withChildren[key] = LayMan.currentLayer.visible;
+                        })
+
                 }
             };
+        }
         }],
         compile: function compile(element) {
             var contents = element.contents().remove();
