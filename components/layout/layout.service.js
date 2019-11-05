@@ -258,10 +258,11 @@ export default ['config', '$rootScope',
                 if (which == me.mainpanel && by_gui) {
                     which = "";
                     if (me.sidebarExpanded == true) {
-                        if (me.sidebarBottom()){
+                        if (me.sidebarBottom()) {
                             me.sidebarExpanded = false
                         }
-                        else{me.sidebarLabels = true;
+                        else {
+                        me.sidebarLabels = true;
                         }
                     }
                 } else {
@@ -298,12 +299,13 @@ export default ['config', '$rootScope',
                 var layoutWidth = document.getElementById('hs-layout').clientWidth;
                 Object.assign(panelWidths, config.panelWidths);
                 let tmp = 0;
-                if (layoutWidth <= 767){
+                if (layoutWidth <= 767) {
                     tmp = layoutWidth;
                     me.sidebarToggleable = false;
                     return tmp;
                 }
-                else {me.sidebarToggleable = true;
+                else {
+                me.sidebarToggleable = true;
                 }
                 if (me.sidebarExpanded && me.sidebarVisible()) {
                     if (panelWidths[me.mainpanel])
@@ -326,7 +328,8 @@ export default ['config', '$rootScope',
                 if (angular.isUndefined(me._sidebarVisible)) return true;
                 return me._sidebarVisible;
             },
-            sidebarBottom(){
+            sidebarBottom() {
+                if (document.getElementById('hs-layout') == null) return false;
                 return document.getElementById('hs-layout').clientWidth <= 767
             },
             panelSpaceHeight() {
