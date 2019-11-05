@@ -33,12 +33,11 @@ module.directive('hs', ['config', 'Core', function (config, Core) {
     return {
         template: require('hslayers.html'),
         link: function (scope, element, attrs) {
-            Core.fullScreenMap(element);
+            if(typeof config.sizeMode == 'undefined' || config.sizeMode == 'fullscreen')
+                Core.fullScreenMap(element);
         }
     };
 }]);
-
-if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hslayersNgConfig(ol)));
 
 import {Tile, Group, Image as ImageLayer} from 'ol/layer';
 import VectorLayer from 'ol/layer/Vector';
@@ -50,7 +49,7 @@ import * as proj from 'ol/proj';
 import View from 'ol/View';
 import { Polygon, LineString, GeometryType, Point } from 'ol/geom';
 import Feature from 'ol/Feature';
-
+import GeoJSON from 'ol/format/GeoJSON';
 
 window.ol = {
     layer: {
@@ -70,12 +69,17 @@ window.ol = {
         ImageWMS,
         ImageArcGISRest
     },
+    format: {
+        GeoJSON
+    },
     View,
     proj
 };
 
-module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config',
-    function ($scope, Core, srv_producer, composition_parser, config) {
+if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hslayersNgConfig(window.ol)));
+
+module.controller('Main', ['$scope', 'Core', 'config',
+    function ($scope, Core, config) {
         $scope.Core = Core;
         Core.singleDatasources = true;
     }

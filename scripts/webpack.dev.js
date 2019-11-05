@@ -13,7 +13,7 @@ const path = require('path');
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'cheap-eval-source-map',
+  devtool: 'source-map',
   watchOptions: { ignored: /node_modules/ },
   optimization: {
     // see https://webpack.js.org/guides/build-performance#avoid-extra-optimization-steps
