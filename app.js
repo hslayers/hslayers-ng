@@ -33,18 +33,18 @@ module.directive('hs', ['config', 'Core', function (config, Core) {
     return {
         template: require('hslayers.html'),
         link: function (scope, element, attrs) {
-            if(typeof config.sizeMode == 'undefined' || config.sizeMode == 'fullscreen')
+            if (typeof config.sizeMode == 'undefined' || config.sizeMode == 'fullscreen')
                 Core.fullScreenMap(element);
         }
     };
 }]);
 
-import {Tile, Group, Image as ImageLayer} from 'ol/layer';
+import { Tile, Group, Image as ImageLayer } from 'ol/layer';
 import VectorLayer from 'ol/layer/Vector';
-import {Vector} from 'ol/source';
-import {ImageWMS, ImageArcGISRest} from 'ol/source';
-import {BingMaps, TileArcGISRest, TileWMS, WMTS, XYZ, OSM} from 'ol/source';
-import {register} from 'ol/proj/proj4'
+import { Vector } from 'ol/source';
+import { ImageWMS, ImageArcGISRest } from 'ol/source';
+import { BingMaps, TileArcGISRest, TileWMS, WMTS, XYZ, OSM } from 'ol/source';
+import { register } from 'ol/proj/proj4'
 import * as proj from 'ol/proj';
 import View from 'ol/View';
 import { Polygon, LineString, GeometryType, Point } from 'ol/geom';
@@ -76,11 +76,18 @@ window.ol = {
     proj
 };
 
-if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hslayersNgConfig(window.ol)));
+if (window.hslayersNgConfig) module.value('config', window.hslayersNgConfig(window.ol));
 
-module.controller('Main', ['$scope', 'Core', 'config',
-    function ($scope, Core, config) {
+module.controller('Main', ['$scope', 'Core', 'config', 'hs.map.service',
+    function ($scope, Core, config, hsMap) {
         $scope.Core = Core;
         Core.singleDatasources = true;
+        let lastConfigBuster = config.buster;
+        setInterval(function () {
+            if (lastConfigBuster != config.buster) {
+                lastConfigBuster = config.buster;
+                hsMap.reset();
+            }
+        }, 100)
     }
 ]);
