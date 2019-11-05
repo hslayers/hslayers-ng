@@ -295,7 +295,7 @@ export default ['config', '$rootScope',
                     ows: 700,
                     composition_browser: 500
                 }
-                var layoutWidth = document.getElementById('layout').clientWidth;
+                var layoutWidth = document.getElementById('hs-layout').clientWidth;
                 Object.assign(panelWidths, config.panelWidths);
                 let tmp = 0;
                 if (layoutWidth <= 767){
@@ -327,7 +327,7 @@ export default ['config', '$rootScope',
                 return me._sidebarVisible;
             },
             sidebarBottom(){
-                return document.getElementById('layout').clientWidth <= 767
+                return document.getElementById('hs-layout').clientWidth <= 767
             },
             panelSpaceHeight() {
                 if (angular.isDefined(document.getElementsByClassName('panelspace-wrapper')[0])) {
