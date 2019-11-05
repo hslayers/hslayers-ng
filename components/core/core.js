@@ -244,7 +244,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     // map.style.width = neededSize.width + 'px';
                     if (angular.isDefined(OlMap.map)) OlMap.map.updateSize();
                     map.offsetWidth < 767 ? layoutService.smallWidth = true : layoutService.smallWidth = false;
-                    if (!$rootScope.$$phase) $rootScope.$digest();
+                    //if (!$rootScope.$$phase) $rootScope.$digest();
                     $rootScope.$broadcast('Core.mapSizeUpdated', neededSize);
                 },
                 /**
@@ -254,7 +254,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 * @params {Object} element HS layers element gained from directive link
                 * @description Helper function for single page HS map applications. Not reccomended, used only for compability reasons and might be removed.
                 */
-                fullScreenMap: function (element) {
+                fullScreenMap: function (element) {                  
                     document.documentElement.style.overflow = 'hidden';
                     document.documentElement.style.height = '100%';
                     document.body.style.height = '100%';

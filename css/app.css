@@ -471,7 +471,7 @@ button.but-title-sm {
 
 /******SIDEBAR****************/
 .panelspace {
-    box-shadow: 0 -1px 24px rgba(0,0,0,0.4);
+    box-shadow: -36px -12px 61px -39px rgba(0,0,0,0.3);
     background-color: white;
     height: 100%;
     overflow-x: visible;
@@ -1344,7 +1344,7 @@ md-bottom-sheet .content {
         width: 100%;
     }
 
-    #layout .layout-row {
+    #hs-layout .layout-row {
         position: relative
     }
 

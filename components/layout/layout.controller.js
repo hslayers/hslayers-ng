@@ -202,7 +202,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
                 $mdBottomSheetCollapsible.show({
                     template: require('components/layout/partials/bottom-sheet.html'),
                     scope: $scope,
-                    parent: "#layout",
+                    parent: "#hs-layout",
                     preserveScope: true,
                     disableBackdrop: true,
                     // disableParentScroll: false,
@@ -442,6 +442,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         }
 
         $scope.mapStyle = function () {
+            let fullscreen = typeof config.sizeMode == 'undefined' || config.sizeMode == 'fullscreen';
             if (config.design == 'md') {
                 console.log("md")
             }
@@ -453,17 +454,18 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
                 }
             }
             else {
+                let height = fullscreen ? 100 + 'vh' : document.getElementById('hs-layout').clientHeight + 'px';
                 if (!layoutService.sidebarRight)
                     return {
                         marginLeft: layoutService.panelSpaceWidth() + 'px',
                         width: layoutService.widthWithoutPanelSpace(),
-                        height: 100 + 'vh'
+                        height
                     }
                 else
                     return {
                         marginLeft: '-px',
                         width: layoutService.widthWithoutPanelSpace(),
-                        height: 100 + 'vh'
+                        height
                     }
             }
         }
