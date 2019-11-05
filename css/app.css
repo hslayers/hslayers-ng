@@ -174,7 +174,7 @@ li.hs-lm-item.hovering {
     text-decoration: underline;
 }
 
-li.hs-lm-item, li.hs-dr-item {
+#hs-layermanager-card li.hs-lm-item, li.hs-dr-item {
     word-wrap: break-word;
     border-left: 0;
     border-right: 0;
@@ -184,18 +184,17 @@ li.hs-lm-item, li.hs-dr-item {
     /*border-bottom: 0;*/
 }
 
-.hs-lm-item-status {
+#hs-layermanager-card .hs-lm-item-status {
     text-align: center;
     color: #666666;
     vertical-align: top;
 }
 
 div.hs-lm-item-title {
-    cursor: pointer;
-    
+    cursor: pointer;   
 }
 
-.hs-lm-item-visibility{
+#hs-layermanager-card .hs-lm-item-visibility{
     margin-top: -0.42em;
 }
 
@@ -986,10 +985,10 @@ ul[dnd-list] li.selected {
 
 .hs-senslog-sensor {color: #333}
 .input-group-btn .btn {height:34px}
-.hs-lm-item .hs-lm-drop-hint {
+#hs-layermanager-card .hs-lm-item .hs-lm-drop-hint {
     display: none;
 }
-.hs-lm-item:hover .hs-lm-drop-hint {
+#hs-layermanager-card .hs-lm-item:hover .hs-lm-drop-hint {
     z-index: 10000;
     color: #cccccc;
     display: inline;
