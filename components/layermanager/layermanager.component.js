@@ -111,6 +111,8 @@ export default {
                 var tmpDescriptor = (layer ? legendService.getLayerLegendDescriptor(layer.layer) : false);
                 if (tmpDescriptor) $scope.legendDescriptors.push(tmpDescriptor);
                 $scope.cur_layer_opacity = layer.layer.getOpacity();
+                // LayMan.FillMetadata(layer);
+                // console.log("1")
                 return false;
             }
 
