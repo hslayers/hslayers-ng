@@ -1,7 +1,4 @@
 /* app css stylesheet */
-::-webkit-scrollbar {
-    display:none;
-}
 .icon-spin {
     -webkit-animation: spin 1000ms infinite linear;
     animation: spin 1000ms infinite linear;
@@ -861,13 +858,28 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     #content-wrapper .sidebar-item-title {
         display:none;
     }
-   
+    input[type=checkbox]{
+        transform: scale(2,2);
+    }
+   .basemapGallery a, .galleryButton {
+        font-size: x-large !important;
+    }
+
+    #content-wrapper > div > div.gui-overlay.ng-scope > hs.layermanager.gallery > div > div > div > button {
+        font-size: x-large;
+    }
     .panelspace {
         left:0;
         bottom: 0;
         height:auto;
         top: unset;
         width: 100%;
+    }
+    .sublayerContainer{
+        width: 90%;
+    }
+    .form-check-label{
+        margin-left: 1em;
     }
     #content-wrapper {
         position: unset;
@@ -880,6 +892,8 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
         flex-direction: column;
         scrollbar-width: none;  /* firefox */ 
         max-height: 40vh;
+        overflow-y: visible;
+        font-size: x-large;
     }
     
     #sidebar, #panelspace {
