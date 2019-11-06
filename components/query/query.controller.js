@@ -92,13 +92,17 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
             if (!$scope.$$phase) $scope.$digest();
         });
 
+        $scope.$watch(() => layoutService.sidebarExpanded, () => {
+            if (layoutService.sidebarExpanded && Base.currentPanelQueryable()) {
+                if (!Base.queryActive) Base.activateQueries();
+            } else {
+                if (Base.queryActive) Base.deactivateQueries();
+            }
+        })
+
         //add current panel queriable - activate/deactivate
         $scope.$on('core.mainpanel_changed', function (event, closed) {
-            if (angular.isDefined(closed) && closed.panelName == "info") {
-                popup.hide();
-                Base.deactivateQueries();
-            }
-            else if (Base.currentPanelQueryable()) {
+            if (Base.currentPanelQueryable()) {
                 if (!Base.queryActive) Base.activateQueries();
             }
             else {
