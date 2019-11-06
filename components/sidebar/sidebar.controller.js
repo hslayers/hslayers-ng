@@ -9,10 +9,9 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
          * @memberof hs.sidebar.controller
          * @function setMainPanel
          * @param {string} which Name of panel to set active
-         * @param {boolean} queryable 
          */
-        $scope.setMainPanel = function (which, queryable) {
-            $timeout(function () { layoutService.setMainPanel(which, true, queryable); })
+        $scope.setMainPanel = function (which) {
+            $timeout(function () { layoutService.setMainPanel(which, true); })
         }
 
         if (bus.getParamValue('hs_panel')) {

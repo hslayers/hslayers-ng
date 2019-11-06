@@ -6,8 +6,8 @@ import Feature from 'ol/Feature';
 import { transform, transformExtent } from 'ol/proj';
 import { toStringHDMS, createStringXY } from 'ol/coordinate';
 
-export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
-    function ($rootScope, OlMap, Core, $sce, config) {
+export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.layout.service',
+    function ($rootScope, OlMap, Core, $sce, config, layoutService) {
         var me = this;
 
         var map;
@@ -148,6 +148,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config',
                 $rootScope.$broadcast('queryStatusChanged', false);
             })
         };
+
+        this.currentPanelQueryable = function(){
+            let nonQueryablePanels = ['measure', 'compositions'];
+            return (nonQueryablePanels.indexOf(layoutService.mainpanel) == -1)
+        }
 
         function pointClickedStyle(feature) {
             var defaultStyle = new Style({

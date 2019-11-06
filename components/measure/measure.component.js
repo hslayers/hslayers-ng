@@ -68,7 +68,6 @@ export default {
 
             //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
             if (layoutService.mainpanel == "measure") {
-                layoutService.current_panel_queryable = false;
                 Measure.activateMeasuring($scope.type);
             }
 

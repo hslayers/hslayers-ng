@@ -114,14 +114,6 @@ export default ['config', '$rootScope',
             panel_enabled: {},
             /**
             * @ngdoc property
-            * @name hs.layout.service#current_panel_queryable
-            * @public
-            * @type {Boolean} true 
-            * @description Keep queryable status of current panel
-            */
-            current_panel_queryable: true,
-            /**
-            * @ngdoc property
             * @name hs.layout.service#mainpanel
             * @public
             * @type {String} null 
@@ -259,10 +251,9 @@ export default ['config', '$rootScope',
             * @public
             * @param {String} which New panel to activate (panel name)
             * @param {Boolean} by_gui Whether function call came as result of GUI action
-            * @param {Boolean} queryable If map should be queryable with new mainpanel. When parameter ommited, map enable queries.
             * @description Sets new main panel (Panel displayed in expanded sidebar). Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
             */
-            setMainPanel: function (which, by_gui, queryable) {
+            setMainPanel: function (which, by_gui) {
                 if (!me.panelEnabled(which)) return;
                 if (which == me.mainpanel && by_gui) {
                     which = "";
@@ -278,11 +269,6 @@ export default ['config', '$rootScope',
                     me.sidebarLabels = false;
                 }
                 me.mainpanel = which;
-                if (typeof queryable == 'undefined')
-                    me.current_panel_queryable = true;
-                else
-                    me.current_panel_queryable = queryable;
-                if (!$rootScope.$$phase) $rootScope.$digest();
                 /**
                 * @ngdoc event
                 * @name Core#core.mainpanel_changed

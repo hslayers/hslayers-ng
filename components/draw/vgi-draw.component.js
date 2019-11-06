@@ -1005,7 +1005,7 @@ export default {
                     layer: saveMap.layer2json(layer)
                 });
                 $scope.setLayerToSelect(layer);
-                layoutService.setMainPanel('draw', false, false);
+                layoutService.setMainPanel('draw', false);
             }
 
             $scope.$on('senslog.categories_loaded', function (event, categories) {

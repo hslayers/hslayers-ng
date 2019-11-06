@@ -78,9 +78,9 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     selector: undefined
                 },
                 language: 'en',
-                setMainPanel: function (which, by_gui, queryable) {
+                setMainPanel: function (which, by_gui) {
                     console.warn('setMainPanel will be removed from Core in future. Use hs.layout.service#setMainPanel method instead');
-                    layoutService.setMainPanel(which, by_gui, queryable)
+                    layoutService.setMainPanel(which, by_gui)
                 },
                 setDefaultPanel: function (which) {
                     console.warn('setDefaultPanel will be removed from Core in future. Use hs.layout.service#setDefaultPanel method instead');

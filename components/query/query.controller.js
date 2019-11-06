@@ -8,7 +8,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
 
         OlMap.loaded().then(map => {
             map.addOverlay(popup);
-            if (layoutService.current_panel_queryable) {
+            if (Base.currentPanelQueryable()) {
                 if (!Base.queryActive) Base.activateQueries();
             }
             else {
@@ -64,7 +64,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
                         $scope.showQueryDialog(e);
                     } else {
                         popup.hide();
-                        if (['layermanager', '', 'permalink'].indexOf(layoutService.mainpanel) >= 0 || (layoutService.mainpanel == "info" && layoutService.sidebarExpanded == false)) layoutService.setMainPanel('info');
+                        if (Base.currentPanelQueryable()) layoutService.setMainPanel('info');
                     }
                 });
 
@@ -98,7 +98,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
                 popup.hide();
                 Base.deactivateQueries();
             }
-            else if (layoutService.current_panel_queryable) {
+            else if (Base.currentPanelQueryable()) {
                 if (!Base.queryActive) Base.activateQueries();
             }
             else {
