@@ -7,9 +7,13 @@ import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import { METERS_PER_UNIT } from 'ol/proj';
 import layermanagerComponent from './layermanager.component';
+import { WMSCapabilities, WMTSCapabilities } from 'ol/format';
+import WFS from 'ol/format';
+
 
 export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
-    function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST) {
+'hs.wmts.getCapabilitiesService','hs.wfs.getCapabilitiesService','hs.wms.getCapabilitiesService',
+    function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST, WMTSgetCapabilitiesService,WFSgetCapabilitiesService,WMSgetCapabilitiesService) {
         var me = {};
 
         /**
@@ -25,7 +29,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         * @ngdoc property
         * @name hs.layermanager.service.data#folders
         * @public
-        * @type {Object} 
+        * @type {Object}
         * @description Folders object for structure of layers. Each level contain 5 properties:
         * hsl_path {String}: Worded path to folder position in folders hiearchy. 
         * coded_path {String}: Path encoded in numbers
@@ -47,7 +51,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         * @ngdoc property
         * @name hs.layermanager.service.data#layers
         * @public
-        * @type {Array} 
+        * @type {Array}
         * @description List of all layers (overlay layers, baselayers are excluded) loaded in layer manager.
         */
         me.data.layers = [];
@@ -71,7 +75,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         * @ngdoc property
         * @name hs.layermanager.service.data#baselayersVisible
         * @public
-        * @type {Boolean} 
+        * @type {Boolean}
         * @description Store if baselayers are visible (more precisely one of baselayers)
         */
         me.data.baselayersVisible = true;
@@ -99,7 +103,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             * @ngdoc property
             * @name hs.layermanager.service#layer
             * @private
-            * @type {Object} 
+            * @type {Object}
             * @description Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
             */
             var new_layer = {
@@ -116,7 +120,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             };
 
             WMST.setupTimeLayerIfNeeded(new_layer);
-            
+
             if (layer.get('base') != true) {
                 populateFolders(layer);
                 if (layer.get('legends')) {
@@ -193,7 +197,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             let tmp = me.data.layers.filter(l => l.layer == layer)
             if(tmp.length>0) return tmp[0]
             return;
-        }       
+        }
 
         /**
          * @ngdoc method
@@ -325,7 +329,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         /**
          * @function changeLayerVisibility
          * @memberOf hs.layermanager.service
-         * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible 
+         * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
          * @param {Boolean} visibility Visibility layer should have
          * @param {Object} layer Selected layer - wrapped layer object (layer.layer expected)
          */
@@ -345,7 +349,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         /**
          * @function changeBaseLayerVisibility
          * @memberOf hs.layermanager.service
-         * @description Change visibility (on/off) of baselayers, only one baselayer may be visible 
+         * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
          * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
          * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
          */
@@ -405,7 +409,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         /**
          * @function changeTerrainLayerVisibility
          * @memberOf hs.layermanager.service
-         * @description Change visibility (on/off) of baselayers, only one baselayer may be visible 
+         * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
          * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
          * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
          */
@@ -420,7 +424,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         /**
          * Update "position" property of layers, so layers could be correctly ordered in GUI
          * @function updateLayerOrder
-         * @memberOf hs.layermanager.service            
+         * @memberOf hs.layermanager.service
          */
         me.updateLayerOrder = function () {
             angular.forEach(me.data.layers, function (my_layer) {
@@ -432,7 +436,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
          * (PRIVATE) Get position of selected layer in map layer order
          * @function getMyLayerPosition
          * @memberOf hs.layermanager.service
-         * @param {Ol.layer} layer Selected layer 
+         * @param {Ol.layer} layer Selected layer
          */
         function getMyLayerPosition(layer) {
             var pos = null;
@@ -446,10 +450,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         }
 
         /**
-             * (PRIVATE) 
+             * (PRIVATE)
              * @function removeAllLayers
              * @memberOf hs.layermanager.service
-             * @description Remove all layers from map 
+             * @description Remove all layers from map
              */
         me.removeAllLayers = function () {
             var to_be_removed = [];
@@ -563,7 +567,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
          * @function isLayerInResolutionInterval
          * @memberOf hs.layermanager.service
          * @param {Ol.layer} lyr Selected layer
-         * @description Test if layer (WMS) resolution is within map resolution interval 
+         * @description Test if layer (WMS) resolution is within map resolution interval
          */
         me.isLayerInResolutionInterval = function (lyr) {
             var src = lyr.getSource();
@@ -582,14 +586,104 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             }
         }
 
-
         var timer;
+        
+        me.fillMetadata= function (layer){
+            const url = layerUtils.getURL(layer.layer);
+            let metadata = {
+                metainfo: { "OnlineResource": layer.layer.get("Metadata") }
+            };
+            //WMS
+            if (layerUtils.isLayerWMS(layer.layer)) {
+                WMSgetCapabilitiesService.requestGetCapabilities(url)
+                    .then(function (capabilities_xml) {
+                            let parser = new WMSCapabilities();
+                            let caps = parser.read(capabilities_xml);
+                            let layers = caps.Capability.Layer.Layer;
+                            let service = {
+                                "0": caps.Service
+                            };
+
+                            let layer_name = (layer.layer.getSource().getParams().LAYERS)
+
+                            angular.forEach(layers, function (service_layer) {
+                                if (layer_name === service_layer.Name) {
+                                    layer.layer.setProperties(service_layer)
+                                    if (layer.layer.get("Copyright")) {
+                                        layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                                    }
+                                    if (layer.layer.get("Metadata")) {
+                                        layer.layer.set("MetadataURL", metadata);
+                                        if (!$rootScope.$$phase) $rootScope.$digest();
+                                        return layer
+                                    }
+                                    if (service_layer.MetadataURL == false) {
+                                        layer.layer.set("MetadataURL", service)
+                                    }
+                                    // populateSublayers(layer,service_layer);
+                                };
+                            });
+                            if (!$rootScope.$$phase) $rootScope.$digest();
+
+                    })
+                    .catch(function (e) {
+                        console.log('GetCapabilities call invalid',e);
+                    })
+
+
+            }
+            //WMTS
+            else if (layerUtils.isLayerWMTS(layer.layer)) {
+                WMTSgetCapabilitiesService.requestGetCapabilities(url)
+                    .then(function (capabilities_xml) {
+                            let parser = new WMTSCapabilities();
+                            let caps = parser.read(capabilities_xml.data);
+                            layer.layer.setProperties(caps);
+                            if (layer.layer.get("Copyright")) {
+                                layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                            }
+                            else {
+                                layer.layer.set("Attribution", { "OnlineResource": caps.ServiceProvider.ProviderSite });
+                            }
+                            if (layer.layer.get("Metadata")) {
+                                layer.layer.set("MetadataURL", metadata);
+                            }
+                            if (!$rootScope.$$phase) $rootScope.$digest();
+
+                    })
+                    .catch(error => console.log(error));
+
+
+            }
+            //WFS and vector
+            else if (layerUtils.isLayerVectorLayer(layer.layer)) {
+                if (url) {
+
+                        WFSgetCapabilitiesService.requestGetCapabilities(url)
+                        .then(function (capabilities_xml) {
+                            let parser = new DOMParser();
+                            let caps = parser.parseFromString(capabilities_xml.data, "application/xml");
+                            let el = caps.getElementsByTagNameNS("*", "ProviderSite");
+                            if (layer.layer.get("Copyright")) {
+                                layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                            }
+                            else {
+                                layer.layer.set("Attribution", { "OnlineResource": el[0].getAttribute("xlink:href") });
+                            }
+                            if (!$rootScope.$$phase) $rootScope.$digest();
+
+
+                        })
+                        .catch(error => console.log(error.message));
+                }
+            }
+        };
 
         /**
          * (PRIVATE)
          * @function init
          * @memberOf hs.layermanager.service
-         * @description Initialization of needed controllers, run when map object is available 
+         * @description Initialization of needed controllers, run when map object is available
          */
         function init() {
             map = OlMap.map;
