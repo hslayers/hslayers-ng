@@ -41,8 +41,8 @@ export default ['hs.layermanager.service',
             params.LAYERS = Object.keys(me.checkedSubLayers).filter(key =>
                 me.checkedSubLayers[key] && !me.withChildren[key]
             ).join(',');
-
-            if (params.LAYERS == 'undefined') {
+            console.log(params)
+            if (params.LAYERS == "") {
                 LayMan.changeLayerVisibility(!layer.visible, layer)
                 return
             }
