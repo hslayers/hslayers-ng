@@ -16,7 +16,6 @@ export default {
             LayMan, $rootScope, WMST, legendService,layoutService) {
             $scope.LayMan = LayMan;
             $scope.data = LayMan.data;
-            console.log($scope.data);
             $scope.Core = Core;
             $scope.utils = utils;
             $scope.layoutService = layoutService;
@@ -111,8 +110,6 @@ export default {
                 var tmpDescriptor = (layer ? legendService.getLayerLegendDescriptor(layer.layer) : false);
                 if (tmpDescriptor) $scope.legendDescriptors.push(tmpDescriptor);
                 $scope.cur_layer_opacity = layer.layer.getOpacity();
-                // LayMan.FillMetadata(layer);
-                // console.log("1")
                 return false;
             }
 
@@ -120,11 +117,12 @@ export default {
                 if (LayMan.currentLayer == layer) {
                     LayMan.currentLayer = null;
                 } else {
-                    $scope.setCurrentLayer(layer)
+                    $scope.setCurrentLayer(layer);
+                    LayMan.fillMetadata(layer);
+                    console.log("firstcon")
+                    return false;
                 }
-                return false;
             }
-
             /**
            * @function removeLayer
            * @memberOf hs.layermanager.controller
