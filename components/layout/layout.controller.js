@@ -447,7 +447,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
                 console.log("md")
             }
             else if (layoutService.sidebarBottom()) {
-                // OlMap.map.updateSize()
+                OlMap.map.updateSize()
                 return {
                     height: document.getElementById('hs-app').clientHeight - layoutService.panelSpaceHeight() + 'px',
                     width: layoutService.panelSpaceWidth() + 'px',

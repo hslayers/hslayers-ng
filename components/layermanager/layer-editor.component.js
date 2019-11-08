@@ -13,10 +13,9 @@ export default {
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
         'hs.legend.service', 'hs.styler.service', 'hs.map.service',
-        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service',
-        'hs.wmts.getCapabilitiesService','hs.wfs.getCapabilitiesService','hs.layerEditor.sublayerService',
+        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service','hs.layerEditor.sublayerService',
         function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, WMSgetCapabilitiesService, $rootScope, $timeout, layoutService,
-            WMTSgetCapabilitiesService,WFSgetCapabilitiesService, subLayerService) {
+            subLayerService) {
             angular.extend($scope, {
                 layer_renamer_visible: false,
                 legendService,
@@ -236,17 +235,6 @@ export default {
                     }
                     else {
                         layer.layer.set("metapanelActive", true);
-                        if (layer.layer.get("Copyright") && layer.layer.get("Metadata")){
-                            let metadata = {
-                                metainfo: { "OnlineResource": layer.layer.get("Metadata") }
-                            };
-                            layer.layer.set("MetadataURL", metadata);
-                            layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                        }
-                        else {
-                            fillMetadata(layer);
-                        };
-                        
                     };
                 },
 
@@ -391,6 +379,10 @@ export default {
                     }
                     if (angular.isUndefined(layer.style) && layer.layer.getSource().styleAble) getLayerStyle(layer);
                     layer.expandSettings = value;
+                },
+                
+                toggleSublayers(){
+                    $scope.subLayersVisible = !$scope.subLayersVisible;
                 },
 
                 hasSubLayers() {
@@ -555,94 +547,6 @@ export default {
                         wrapper.style.rotation = Math.PI / 4;
                 }
                 wrapper.style.style = style;
-            }
-
-            function fillMetadata(layer){
-                const url = layerUtils.getURL(layer.layer);
-                let metadata = {
-                    metainfo: { "OnlineResource": layer.layer.get("Metadata") }
-                };
-                //WMS
-                if ($scope.isLayerWMS(layer.layer)) {
-                    WMSgetCapabilitiesService.requestGetCapabilities(url)
-                        .then(function (capabilities_xml) {
-                                let parser = new WMSCapabilities();
-                                let caps = parser.read(capabilities_xml);
-                                let layers = caps.Capability.Layer.Layer;
-                                let service = {
-                                    "0": caps.Service
-                                };
-
-                                let layer_name = (layer.layer.getSource().getParams().LAYERS)
-                                angular.forEach(layers, function (service_layer) {
-                                    if (layer_name === service_layer.Name) {
-                                        layer.layer.setProperties(service_layer)
-                                        if (layer.layer.get("Copyright")) {
-                                            layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                                        }
-                                        if (layer.layer.get("Metadata")) {
-                                            layer.layer.set("MetadataURL", metadata);
-                                            if (!$rootScope.$$phase) $rootScope.$digest();
-                                            return
-                                        }
-                                        if (service_layer.MetadataURL == false) {
-                                            layer.layer.set("MetadataURL", service)
-                                        }
-
-                                    }
-                                });
-
-                        })
-                        .catch(function (e) {
-                            console.log('GetCapabilities call invalid');
-                        })
-
-
-                }
-                //WMTS
-                else if (layerUtils.isLayerWMTS(layer.layer)) {
-                    WMTSgetCapabilitiesService.requestGetCapabilities(url)
-                        .then(function (capabilities_xml) {
-                                let parser = new WMTSCapabilities();
-                                let caps = parser.read(capabilities_xml.data);
-                                layer.layer.setProperties(caps);
-                                if (layer.layer.get("Copyright")) {
-                                    layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                                }
-                                else {
-                                    layer.layer.set("Attribution", { "OnlineResource": caps.ServiceProvider.ProviderSite });
-                                }
-                                if (layer.layer.get("Metadata")) {
-                                    layer.layer.set("MetadataURL", metadata);
-                                }
-                        })
-                        .catch(error => console.log(error));
-                       
-
-                }
-                //WFS and vector
-                else if ($scope.isLayerVectorLayer(layer.layer)) {
-                    if (url) {
-                        
-                            WFSgetCapabilitiesService.requestGetCapabilities(url)
-                            .then(function (capabilities_xml) {
-                                let parser = new DOMParser();
-                                let caps = parser.parseFromString(capabilities_xml.data, "application/xml");
-                                let el = caps.getElementsByTagNameNS("*", "ProviderSite");
-                                if (layer.layer.get("Copyright")) {
-                                    layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                                }
-                                else {
-                                    layer.layer.set("Attribution", { "OnlineResource": el[0].getAttribute("xlink:href") });
-                                }
-                            })
-                            .catch(error => console.log(error.message));
-
-                    }
-                }
-
-                if (!$rootScope.$$phase) $rootScope.$digest();
-
             }
         }]
 }

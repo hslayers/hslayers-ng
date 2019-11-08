@@ -22,9 +22,9 @@
                         $scope.expanded = !$scope.expanded
                 };
                 $scope.subLayerSelected = function (sublayer,state){
-                    if (angular.isDefined(sublayer) && sublayer.children){
-                        angular.forEach(sublayer.children,function(children){
-                            angular.extend($scope.checkedSubLayers, {[children.name]:state});
+                    if (angular.isDefined(sublayer) && sublayer.Layer){
+                        angular.forEach(sublayer.Layer,function(children){
+                            angular.extend($scope.checkedSubLayers, {[children.Name]:state});
                         })
                     }
                     return subLayerService.subLayerSelected();

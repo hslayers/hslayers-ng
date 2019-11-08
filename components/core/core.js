@@ -244,7 +244,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     // map.style.width = neededSize.width + 'px';
                     if (angular.isDefined(OlMap.map)) OlMap.map.updateSize();
                     map.offsetWidth < 767 ? layoutService.smallWidth = true : layoutService.smallWidth = false;
-                    //if (!$rootScope.$$phase) $rootScope.$digest();
+                    if (!$rootScope.$$phase) $rootScope.$digest();
                     $rootScope.$broadcast('Core.mapSizeUpdated', neededSize);
                 },
                 /**
