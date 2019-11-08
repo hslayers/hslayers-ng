@@ -119,7 +119,6 @@ export default {
                 } else {
                     $scope.setCurrentLayer(layer);
                     LayMan.fillMetadata(layer);
-                    console.log("firstcon")
                     return false;
                 }
             }
