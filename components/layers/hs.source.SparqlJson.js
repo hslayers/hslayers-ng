@@ -103,6 +103,8 @@ function extendAttributes(options, objects) {
     }
 }
 
+var $http = angular.injector(["ng"]).get("$http");
+
 export default function (options) {
     var category_map = {};
     var category_id = 0;
@@ -138,10 +140,10 @@ export default function (options) {
             if (console && typeof src.get('geoname') != 'undefined') console.log('Get ', src.get('geoname'));
             this.loadCounter += 1;
             this.loadTotal += 1;
-            $http(p)
+            $http({url: p})
                 .then((response) => {
                     if (console)
-                        console.log('Finish ', this.get('geoname'), response.results.bindings.length);
+                        console.log('Finish ', this.get('geoname'), response.data.results.bindings.length);
                     src.loadCounter -= 1;
                     if (this.options.updates_url) {
                         var updates_query = this.options.updates_url;
@@ -154,12 +156,12 @@ export default function (options) {
                         src.loadTotal += 1;
                         var $injector = angular.injector(['ng']);
                         var $http = $injector.get('$http');
-                        $http(updates_query)
+                        $http({url: updates_query})
                             .then(updates_response => {
                                 if (console && typeof this.get('geoname') != 'undefined')
-                                    console.log('Finish updates ', this.get('geoname'), response.results.bindings.length, updates_response.results.bindings.length);
+                                    console.log('Finish updates ', this.get('geoname'), response.data.results.bindings.length, updates_response.data.results.bindings.length);
                                 let objects = {};
-                                for (const item of response.results.bindings) {
+                                for (const item of response.data.results.bindings) {
                                     if (typeof objects[item.o.value] === 'undefined') {
                                         objects[item.o.value] = {
                                             'poi_id': item.o.value
@@ -167,7 +169,7 @@ export default function (options) {
                                     }
                                     objects[item.o.value][item.p.value] = item.s.value;
                                 }
-                                for (const item of updates_response.results.bindings) {
+                                for (const item of updates_response.data.results.bindings) {
                                     let attribute_name = item.attr.value;
                                     //Because photos can be more than one
                                     if (typeof objects[item.o.value][attribute_name] != 'undefined' && attribute_name == 'http://xmlns.com/foaf/0.1/depiction') {
@@ -199,8 +201,8 @@ export default function (options) {
                             })
                     } else {
                         var objects = {};
-                        for (var i = 0; i < response.results.bindings.length; i++) {
-                            var b = response.results.bindings[i];
+                        for (var i = 0; i < response.data.results.bindings.length; i++) {
+                            var b = response.data.results.bindings[i];
                             if (typeof objects[b.o.value] === 'undefined') {
                                 objects[b.o.value] = {
                                     'poi_id': b.o.value
