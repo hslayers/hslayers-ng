@@ -1,28 +1,7 @@
-<div id="cesiumContainer" ng-show="visible"></div>
+<div id="cesiumContainer" ng-show="visible" ng-style="mapStyle()"></div>
 <style>
 #cesiumContainer {
-    height: 100%; margin: 0; padding: 0; overflow: hidden;  
+    height: 100%; margin: 0; padding: 0; overflow: hidden;position:absolute;left: 0; top:0;width:auto;  
     margin-right: 0;
-}
-.sb-left.open.classic-sidebar #cesiumContainer {
-    margin-left:400px;
-}
-
-.sb-right.classic-sidebar #cesiumContainer {
-    margin-right: 48px;
-}
-
-.sb-right.open.classic-sidebar #cesiumContainer {
-    margin-right:400px;
-}
-
-@media (max-width: 767px) {
-    .sb-left.open.classic-sidebar #map {
-        margin-left:300px;
-    }
-
-    .sb-right.open.classic-sidebar #map {
-        margin-left:0px;
-    }
 }
 </style>
