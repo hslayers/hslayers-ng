@@ -7,11 +7,13 @@ export default ['hs.layermanager.service',
         me.populatedLayers = [];
         
         me.hasSubLayers= function() {
-            var subLayers = me.getSubLayers();
+            if ($scope.$ctrl.currentLayer == null) return;
+            var subLayers = $scope.$ctrl.currentLayer.layer.get('Layer');
             return angular.isDefined(subLayers) && subLayers.length > 0;
         };
         
         me.getSubLayers= function() {
+            console.log('subs')
             if (LayMan.currentLayer == null) return;
             me.populateSubLayers();
             
@@ -19,8 +21,9 @@ export default ['hs.layermanager.service',
         };
         me.populateSubLayers= function() {
              if (me.populatedLayers.includes(LayMan.currentLayer.layer.ol_uid)) return
-             me.populatedLayers.push(LayMan.currentLayer.layer.ol_uid)
                 let sublayers = (LayMan.currentLayer.layer.get('Layer'));
+                if (sublayers){
+                 me.populatedLayers.push(LayMan.currentLayer.layer.ol_uid)
                 angular.forEach(sublayers, function (layer) {
                     if (layer.Layer) {
                         angular.extend(me.withChildren, { [layer.Name]: LayMan.currentLayer.layer.getVisible() });
@@ -31,7 +34,7 @@ export default ['hs.layermanager.service',
                     else {
                         angular.extend(me.checkedSubLayers, { [layer.Name]: LayMan.currentLayer.layer.getVisible() });
                     }
-                })
+                })}
         };
         
         me.subLayerSelected= function() {

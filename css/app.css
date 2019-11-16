@@ -645,7 +645,12 @@ a.sidebar-main {
 div#content-wrapper:not(.open) .minisidebar-wrapper {
     width: 1px !important;
 }
-
+input[type="checkbox"]{
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
 /*************/
 /** TOOLBAR **/
 /*************/
