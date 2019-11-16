@@ -381,12 +381,9 @@ export default {
                     layer.expandSettings = value;
                 },
                 
-                toggleSublayers(){
-                    $scope.subLayersVisible = !$scope.subLayersVisible;
-                },
-
                 hasSubLayers() {
-                    var subLayers = $scope.getSubLayers();
+                    if ($scope.$ctrl.currentLayer == null) return;
+                    var subLayers = $scope.$ctrl.currentLayer.layer.get('Layer');
                     return angular.isDefined(subLayers) && subLayers.length > 0;
                 },
 

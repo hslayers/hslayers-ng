@@ -3,18 +3,9 @@
         <form>
 
             <!-- Sublayers ng-if="subLayersOn()"-->
-            <div class="form-group" >
-                <div class="hs-lm-item-title pb-1" ng-click="toggleSublayers()" ng-init="subLayersVisible=false">
-                    <i class="small" ng-class="{'icon-chevron-down': subLayersVisible, 'icon-chevron-right': !subLayersVisible}"></i>
-                    Sublayers
-                </div>
-                <div ng-if="subLayersVisible">
-                    <div ng-show="hasSubLayers()" ng-repeat="subLayer in ::getSubLayers()">
-                        <hs.layer-editor.sublayer-checkbox></hs.layer-editor.sublayer-checkbox>
-                    </div>
-                    <div ng-show="!hasSubLayers()">
-                        No sublayers avaliable
-                    </div>
+            <div  ng-show="hasSubLayers()" class="form-group">
+                <div ng-repeat="subLayer in ::getSubLayers()">
+                    <hs.layer-editor.sublayer-checkbox></hs.layer-editor.sublayer-checkbox>
                 </div>
             </div>
 
