@@ -8,9 +8,8 @@
                 <div class="p-0 hs-lm-item-status" ng-click="toggleCurrentLayer(layer)">
                     <span class="icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
                     <span ng-show="layerLoaded(layer.layer)">
-                        <span class="icon-chevron-right"
-                            ng-hide="currentLayer == layer || !layerLoaded(layer.layer)"></span>
-                        <span class="icon-chevron-down" ng-show="currentLayer == layer"></span>
+                        <span class="mr-1" ng-class="{true:'icon-chevron-down', false:'icon-chevron-right'}[LayMan.currentLayer == layer]"
+                            ng-hide="!layerLoaded(layer.layer)"></span>
                     </span>
                 </div>
                 <div class="p-0 flex-grow-1 hs-lm-item-title"
