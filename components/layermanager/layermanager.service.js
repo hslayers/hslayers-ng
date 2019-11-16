@@ -620,7 +620,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                                     if (service_layer.MetadataURL == false) {
                                         layer.layer.set("MetadataURL", service)
                                     }
-                                    // populateSublayers(layer,service_layer);
                                 };
                             });
                             if (!$rootScope.$$phase) $rootScope.$digest();
