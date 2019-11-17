@@ -645,12 +645,30 @@ a.sidebar-main {
 div#content-wrapper:not(.open) .minisidebar-wrapper {
     width: 1px !important;
 }
-input[type="checkbox"]{
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
+
+.sublayerContainer input[type=checkbox]{
+    position: absolute;
+    left: -9999px;
 }
+
+.checkmark, .uncheckmark {
+    position: relative;
+}
+.checkmark::before, .uncheckmark::before{
+   content: "\2713";
+   color: white;
+   background-color: #4495eb;
+   padding: 0.05em 0.4em 0.05em 0.4em;
+   border-radius: 0.2em;
+   font-weight: 1000;
+   margin-right: 0.2rem;
+   font-size: small;
+}
+.uncheckmark::before{
+    background-color: white;
+    box-shadow: inset 0 0 0 0.2em #4495eb;
+}
+
 /*************/
 /** TOOLBAR **/
 /*************/
@@ -880,11 +898,11 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
         top: unset;
         width: 100%;
     }
-    .sublayerContainer{
-        width: 90%;
+    .checkmark::before, .uncheckmark::before{
+    font-size: large;
     }
-    .form-check-label{
-        margin-left: 1em;
+    div .form-check-inline{
+        margin-right: 0 !important;
     }
     #content-wrapper {
         position: unset;
@@ -926,6 +944,10 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     }
     .sidebar-item [class*=" icon-"]  {
         font-size: x-large;
+    }
+    .removeIcon{
+        line-height: 1.5;
+        font-size: large;
     }
     /* .sb-left.open #toolbar {
        margin-left: 310px;
