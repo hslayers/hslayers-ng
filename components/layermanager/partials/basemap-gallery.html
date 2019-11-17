@@ -1,15 +1,15 @@
 <div class="basemapGallery" ng-style="galleryStyle()">
     <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
         <button type="button" ng-if="fitsInContainer()" class="btn btn-secondary btn-sm "
-            ng-repeat="layer in ::LayMan.data.baselayers | orderBy: 'title'"
+            ng-repeat="layer in LayMan.data.baselayers | orderBy: 'title'"
             ng-click="LayMan.changeBaseLayerVisibility($event, layer)"
             ng-class="{'active': layer.active}">{{::layer.title}}</button>
 
         <div class="btn-group btn-group-sm" role="group" ng-if="!fitsInContainer()">
             <button type="button" ng-click="baseLayersExpanded=!baseLayersExpanded"
-                class="btn btn-secondary dropdown-toggle galleryButton" data-toggle="dropdown" aria-haspopup="true"
+                class="btn btn-secondary galleryButton" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="{{baseLayersExpanded}}">
-                Baselayers
+                <i class="glyphicon icon-map x-large"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': baseLayersExpanded}">
                 <a class="dropdown-item" href="#" ng-repeat="layer in LayMan.data.baselayers | orderBy: 'title'"

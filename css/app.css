@@ -873,6 +873,10 @@ div#hs-info-layers, div#hs-info-composition-edited {
 div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-body {
     font-size: 14px;
 }
+.galleryButton {
+    font-size: x-large !important;
+}
+
 /**********************************/
 /** SIDEBAR&TOOLBAR RESPONSIVITY **/
 /**********************************/
@@ -884,7 +888,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     input[type=checkbox]{
         transform: scale(2,2);
     }
-   .basemapGallery a, .galleryButton {
+   .basemapGallery a{
         font-size: x-large !important;
     }
 
