@@ -17,13 +17,13 @@
                     ng-attr-id="hs-sublayers-{{subLayer.Name}}" ng-if="::subLayer.Layer" />
 
                 <div class="p-0" ng-if="::subLayer.Layer" ng-click="toggleExpanded()">
-                    <button type="button" class="btn btn-sm"><i
+                    <button type="button" class="btn btn-sm p-0"><i
                             ng-class="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i></button>
-                            <label>{{subLayer.Title || subLayer.Name}}</label>
+                            <label class="m-0">{{subLayer.Title || subLayer.Name}}</label>
                 </div>
                 <div ng-if="!subLayer.Layer">
-                    <label class="form-check-label"
-                        ng-attr-for="hs-sublayers-{{subLayer.Name}}">{{subLayer.Title || subLayer.Name}}</label>
+                    <label class="form-check-label m-0" ng-class="{'checkmark':checkedSubLayers[subLayer.Name],'uncheckmark':!checkedSubLayers[subLayer.Name]}"
+                    ng-attr-for="hs-sublayers-{{subLayer.Name}}">{{subLayer.Title || subLayer.Name}}</label>
                 </div>
             </div>
         </div>

@@ -36,8 +36,8 @@
                 </div>
                 <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                        ng-click="changeLayerVisibility(!layer.visible, layer);toggleSublayers();$event.stopPropagation()"><i class=""
-                            ng-class="layer.visible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
+                        ng-click="changeLayerVisibility(!layer.visible, layer);toggleSublayers();$event.stopPropagation()"
+                         ng-class="layer.visible ? 'checkmark' : 'uncheckmark'"></button>
                 </div>
             </div>
         </li>
