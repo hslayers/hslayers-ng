@@ -25,9 +25,8 @@
                         <span class="align-middle" style="line-height: 2em;" translate>Baselayers</span>
                     </div>
                     <div class="p-0">
-                        <button type="button" class="btn btn-sm btn-light" ng-click="changeBaseLayerVisibility()"><i
-                                class=""
-                                ng-class="data.baselayersVisible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
+                        <button type="button" class="btn btn-sm btn-baselayers" ng-click="changeBaseLayerVisibility()"
+                        ng-class="data.baselayersVisible  ? 'checkmark' : 'uncheckmark'"></button>
                     </div>
                 </div>
             </li>
@@ -41,8 +40,8 @@
                     </div>
                     <div class="p-0" ng-show="layer.active || hovering"
                         ng-style="hovering && !layer.active && {'opacity':'0.5'}">
-                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"><i class=""
-                                ng-class="data.baselayersVisible ? 'icon-eye-open': 'icon-eye-close'"></i></button>
+                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                        ng-class="data.baselayersVisible  ? 'checkmark' : 'uncheckmark'"></button>
                     </div>
                 </div>
             </li>

@@ -9,7 +9,6 @@ export default ['config', 'hs.layout.service', 'hs.layermanager.service', functi
                     return { right: '15px' }
                 }
                 else {
-                    console.log(layoutService.panelSpaceWidth()+20)
                     return { right: (layoutService.panelSpaceWidth() + 20) + 'px' }
                 }
 

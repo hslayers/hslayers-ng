@@ -13,7 +13,6 @@ export default ['hs.layermanager.service',
         };
         
         me.getSubLayers= function() {
-            console.log('subs')
             if (LayMan.currentLayer == null) return;
             me.populateSubLayers();
             
