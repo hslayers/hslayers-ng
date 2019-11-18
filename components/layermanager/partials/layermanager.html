@@ -31,18 +31,18 @@
                 </div>
             </li>
             <li class="list-group-item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'"
-                ng-click="changeBaseLayerVisibility($event, layer)" ng-mouseenter="hovering=true"
-                ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active),'deactivatedLayer': !layer.visible || !layer.active}">
+                ng-click="changeBaseLayerVisibility($event, layer)" ng-class="{'deactivatedLayer': !layer.visible || !layer.active}">
                 <div class="d-flex ">
-                    <div class="p-0 flex-grow-1 hs-lm-item-title"
+                    <div class="p-0">
+                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                        ng-class="(data.baselayersVisible && layer.visible)  ? 'checkmark' : 'uncheckmark'"></button>
+                    </div>
+                  
+                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         ng-class="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
                         {{::layer.title}}
                     </div>
-                    <div class="p-0" ng-show="layer.active || hovering"
-                        ng-style="hovering && !layer.active && {'opacity':'0.5'}">
-                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                        ng-class="data.baselayersVisible  ? 'checkmark' : 'uncheckmark'"></button>
-                    </div>
+
                 </div>
             </li>
         </ul>
@@ -59,14 +59,19 @@
                 ng-click="changeTerrainLayerVisibility($event, layer)" ng-mouseenter="hovering=true"
                 ng-mouseleave="hovering=false" ng-class="{'hovering': (hovering && !layer.active)}">
                 <div class="d-flex ">
-                    <div class="p-0 flex-grow-1 hs-lm-item-title"
-                        ng-class="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
-                        {{layer.title}}
-                    </div>
-                    <div class="p-0" ng-show="layer.active || hovering"
+                        <!-- <div class="p-0" ng-show="layer.active || hovering"
                         ng-style="hovering && !layer.active && {'opacity':'0.5'}">
                         <button class="btn btn-sm btn-link hs-lm-baseitem-visibility"><i
                                 class="icon-globe"></i></button>
+                    </div> -->
+                    <div class="p-0">
+                            <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                            ng-class="(data.baselayersVisible && layer.visible)  ? 'checkmark' : 'uncheckmark'"></button>
+                    </div>
+
+                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
+                        ng-class="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
+                        {{layer.title}}
                     </div>
                 </div>
             </li>
