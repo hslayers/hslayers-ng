@@ -298,8 +298,7 @@ hr {
 }
 
 .search_address {
-    width: 170px;
-    z-index: 2;
+   z-index: 2;
 }
 
 #searchresults {
@@ -650,9 +649,12 @@ div#content-wrapper:not(.open) .minisidebar-wrapper {
     position: absolute;
     left: -9999px;
 }
-
+/*************/
+/** CHECKBOXES **/
+/*************/
 .checkmark, .uncheckmark {
     position: relative;
+    cursor: pointer;
 }
 .checkmark::before, .uncheckmark::before{
    content: "\2713";
@@ -667,6 +669,10 @@ div#content-wrapper:not(.open) .minisidebar-wrapper {
 .uncheckmark::before{
     background-color: white;
     box-shadow: inset 0 0 0 0.2em #4495eb;
+}
+.checkmark.btn-baselayers::before{
+    color: #4495eb;
+    background-color: white;
 }
 
 /*************/
@@ -875,6 +881,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 }
 .galleryButton {
     font-size: x-large !important;
+    opacity: 0.85;
 }
 
 /**********************************/

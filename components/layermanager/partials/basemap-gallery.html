@@ -7,9 +7,9 @@
 
         <div class="btn-group btn-group-sm" role="group" ng-if="!fitsInContainer()">
             <button type="button" ng-click="baseLayersExpanded=!baseLayersExpanded"
-                class="btn btn-secondary galleryButton" data-toggle="dropdown" aria-haspopup="true"
+                class="btn btn-secondary rounded galleryButton pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="{{baseLayersExpanded}}">
-                <i class="glyphicon icon-map x-large"></i>
+                <i class="glyphicon icon-map x-large p-0"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': baseLayersExpanded}">
                 <a class="dropdown-item" href="#" ng-repeat="layer in LayMan.data.baselayers | orderBy: 'title'"
