@@ -5,14 +5,20 @@
             class="list-group-item hs-lm-item" 
             ng-class="{detailActivated : 'currentLayer == layer', 'deactivatedLayer': !layer.visible || layerValid(layer.layer) || layer.grayed}">
             <div class="d-flex ">
-                <div class="p-0 hs-lm-item-status" ng-click="toggleCurrentLayer(layer)">
+                <div style="width: 25px" class="p-0 hs-lm-item-status" ng-click="toggleCurrentLayer(layer)">
                     <span class="icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
                     <span ng-show="layerLoaded(layer.layer)">
                         <span class="mr-1" ng-class="{true:'icon-chevron-down', false:'icon-chevron-right'}[LayMan.currentLayer == layer]"
                             ng-hide="!layerLoaded(layer.layer)"></span>
                     </span>
                 </div>
-                <div class="p-0 flex-grow-1 hs-lm-item-title"
+                <div class="p-0">
+                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                        ng-click="changeLayerVisibility(!layer.visible, layer);toggleSublayers();$event.stopPropagation()"
+                        ng-class="layer.visible ? 'checkmark' : 'uncheckmark'"></button>
+                </div>
+
+                <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                     ng-click="toggleCurrentLayer(layer, layer.uid, obj.coded_path)">
                     {{::layer.title}}
                 </div>
@@ -33,11 +39,6 @@
                 <div class="p-0" ng-show="isLayerQueryable(layer)">
                         <i class="icon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}"
                          ng-click="$event.stopPropagation()"></i>
-                </div>
-                <div class="p-0">
-                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                        ng-click="changeLayerVisibility(!layer.visible, layer);toggleSublayers();$event.stopPropagation()"
-                        ng-class="layer.visible ? 'checkmark' : 'uncheckmark'"></button>
                 </div>
             </div>
         </li>

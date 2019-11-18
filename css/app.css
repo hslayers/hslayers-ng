@@ -660,7 +660,7 @@ div#content-wrapper:not(.open) .minisidebar-wrapper {
    content: "\2713";
    color: white;
    background-color: #4495eb;
-   padding: 0.05em 0.4em 0.05em 0.4em;
+   padding: 0.09em 0.4em 0.05em 0.4em;
    border-radius: 0.2em;
    font-weight: 1000;
    margin-right: 0.2rem;
@@ -880,8 +880,15 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     font-size: 14px;
 }
 .galleryButton {
+    opacity: 0.9 !important;
+    background: rgba(0,60,136,0.5) !important;
+    color: white !important;
+}
+.galleryButton:hover{
+    background-color: rgba(0,60,136,0.7) !important;
+}
+.x-large{
     font-size: x-large !important;
-    opacity: 0.85;
 }
 
 /**********************************/
