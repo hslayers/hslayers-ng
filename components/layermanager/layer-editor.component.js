@@ -204,14 +204,27 @@ export default {
                 layerIsStyleable() {
                     return layerUtils.layerIsStyleable($scope.olLayer())
                 },
+                                /**
+                 * @function hasCopyright
+                 * @memberOf hs.layermanager.controller
+                 * @description Determines if layer has metadata information avaliable * 
+                 * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+                 */
                 hasMetadata(layer){
                     if (!$scope.$ctrl.currentLayer) return;
                     else {
                         return layer.layer.get('MetadataURL') ? true : false;
                     }
                 },
-
+                /**
+                 * @function hasCopyright
+                 * @memberOf hs.layermanager.controller
+                 * @description Determines if layer has copyright information avaliable * 
+                 * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+                 */
                 hasCopyright(layer){
+                    console.log($scope.$ctrl.currentLayer);
+
                     if (!$scope.$ctrl.currentLayer) return;
                     else {
                         if(layer.layer.get('Attribution')){
@@ -225,9 +238,8 @@ export default {
                  * @function toggleMetaPanel
                  * @memberOf hs.layermanager.controller
                  * @description Toggles Additional information panel for current
-                 * layer and fetches info data .
-                 * 
-                 * @param {Ol.layer} layer Selected layer
+                 * layer.                 * 
+                 * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
                  */
                 toggleMetaPanel(layer) {
                     if (layer.layer.get("metapanelActive")) {
