@@ -660,7 +660,7 @@ div#content-wrapper:not(.open) .minisidebar-wrapper {
    content: "\2713";
    color: white;
    background-color: #4495eb;
-   padding: 0.09em 0.4em 0.05em 0.4em;
+   padding: 0.09em 0.4em 0.05em 0.35em;
    border-radius: 0.2em;
    font-weight: 1000;
    margin-right: 0.2rem;
