@@ -91,4 +91,8 @@
         <span ng-class="'menu-icon ' + but.icon_class"></span>
         <span class="sidebar-item-title">{{but.title}}</span>
     </a>
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.query')" ng-click="setMainPanel('info')" ng-class="{active: panelVisible('info')}">
+        <i class="menu-icon icon-info-sign" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Display map-query result informations'|translate}}"></i>
+        <span class="sidebar-item-title" translate>Info panel</span>
+    </a>
 </div>
