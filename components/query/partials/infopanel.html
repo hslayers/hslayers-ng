@@ -1,5 +1,8 @@
-<div class="card panel-default mainpanel">
-    <hs.layout.panel-header panel-name="info" panel-title="'Info'||translate"></hs.layout.panel-header>
+<hs.layout.panel-header panel-name="info" panel-title="'Info'||translate"></hs.layout.panel-header>
+<div class="card panel-default mainpanel" ng-show="!data.coordinates[0].name.length > 0">
+    <div class="card-body m-2">Click on map for query results!</div>
+</div>
+<div ng-show="data.coordinates[0].name.length > 0" class="card panel-default mainpanel">
     <div class="card-body">
         <hs.query.feature ng-repeat="item in data.features | orderBy : 'name'" feature="item"></hs.query.feature>
         <table class="table table-striped" style="table-layout:fixed" ng-show="data.attributes.length > 0">
