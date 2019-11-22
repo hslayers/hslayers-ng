@@ -12,8 +12,8 @@ import WFS from 'ol/format';
 
 
 export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
-'hs.wmts.getCapabilitiesService','hs.wfs.getCapabilitiesService','hs.wms.getCapabilitiesService',
-    function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST, WMTSgetCapabilitiesService,WFSgetCapabilitiesService,WMSgetCapabilitiesService) {
+    'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.wms.getCapabilitiesService',
+    function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST, WMTSgetCapabilitiesService, WFSgetCapabilitiesService, WMSgetCapabilitiesService) {
         var me = {};
 
         /**
@@ -114,7 +114,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                 position: layer.get('position'),
                 hsFilters: layer.get('hsFilters'),
                 uid: utils.generateUuid(),
-                idString(){
+                idString() {
                     return 'layer' + (this.coded_path || '') + (this.uid || '')
                 }
             };
@@ -132,24 +132,24 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                 me.data.baselayers.push(new_layer);
             };
 
-            if (layer.getVisible() && layer.get("base")) 
+            if (layer.getVisible() && layer.get("base"))
                 me.data.baselayer = layerUtils.getLayerTitle(layer);
             me.updateLayerOrder();
             $rootScope.$broadcast('layermanager.layer_added', new_layer);
             $rootScope.$broadcast('layermanager.updated', layer);
             $rootScope.$broadcast('compositions.composition_edited');
-        };      
+        };
 
-        function checkLayerHealth(layer){
+        function checkLayerHealth(layer) {
             if (me.isWms(layer)) {
                 var src = layer.getSource();
-                if(angular.isUndefined(src.getParams().LAYERS)){
+                if (angular.isUndefined(src.getParams().LAYERS)) {
                     console.warn('Layer', layer, 'is missing LAYERS parameter');
                 }
             }
         }
 
-        function layerVisibilityChanged(e){
+        function layerVisibilityChanged(e) {
             if (e.target.get('base') != true) {
                 for (var i = 0; i < me.data.layers.length; i++) {
                     if (me.data.layers[i].layer == e.target) {
@@ -193,9 +193,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
          * @returns {Object} Layer container which is used in layer-list directive
          * @description Get layer container object for OL layer
          */
-        me.getLayerDescriptorForOlLayer = function(layer) {
+        me.getLayerDescriptorForOlLayer = function (layer) {
             let tmp = me.data.layers.filter(l => l.layer == layer)
-            if(tmp.length>0) return tmp[0]
+            if (tmp.length > 0) return tmp[0]
             return;
         }
 
@@ -259,6 +259,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                             curfolder = folder;
                     })
                 }
+
                 curfolder.layers.splice(curfolder.layers.indexOf(lyr), 1);
                 for (var i = parts.length; i > 0; i--) {
                     if (curfolder.layers.length == 0 && curfolder.sub_folders.length == 0) {
@@ -271,12 +272,14 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                                 })
                             }
                         }
-                        newfolder.sub_folders.splice(newfolder.sub_folders.indexOf(curfolder), 1);
+                        var ixToRemove = newfolder.sub_folders.indexOf(curfolder);
+                        if (ixToRemove > -1) newfolder.sub_folders.splice(ixToRemove, 1);
                         curfolder = newfolder;
                     } else break;
                 }
             } else {
-                me.data.folders.layers.splice(me.data.folders.layers.indexOf(lyr), 1);
+                var ixToRemove = me.data.folders.layers.indexOf(lyr);
+                if (ixToRemove > -1) me.data.folders.layers.splice(ixToRemove, 1);
             }
         }
 
@@ -294,6 +297,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                     me.data.layers.splice(i, 1);
                 }
             }
+
             for (var i = 0; i < me.data.baselayers.length; i++) {
                 if (me.data.baselayers[i].layer == e.element) {
                     me.data.baselayers.splice(i, 1);
@@ -559,7 +563,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             }
         }
 
-        me.isWms = function(layer){
+        me.isWms = function (layer) {
             return (utils.instOf(layer.getSource(), TileWMS) || utils.instOf(layer.getSource(), ImageWMS));
         }
 
@@ -587,8 +591,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         }
 
         var timer;
-        
-        me.fillMetadata= function (layer){
+
+        me.fillMetadata = function (layer) {
             const url = layerUtils.getURL(layer.layer);
             let metadata = {
                 metainfo: { "OnlineResource": layer.layer.get("Metadata") }
@@ -597,36 +601,36 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             if (layerUtils.isLayerWMS(layer.layer)) {
                 WMSgetCapabilitiesService.requestGetCapabilities(url)
                     .then(function (capabilities_xml) {
-                            let parser = new WMSCapabilities();
-                            let caps = parser.read(capabilities_xml);
-                            let layers = caps.Capability.Layer.Layer;
-                            let service = {
-                                "0": caps.Service
+                        let parser = new WMSCapabilities();
+                        let caps = parser.read(capabilities_xml);
+                        let layers = caps.Capability.Layer.Layer;
+                        let service = {
+                            "0": caps.Service
+                        };
+
+                        let layer_name = (layer.layer.getSource().getParams().LAYERS)
+
+                        angular.forEach(layers, function (service_layer) {
+                            if (layer_name === service_layer.Name) {
+                                layer.layer.setProperties(service_layer)
+                                if (layer.layer.get("Copyright")) {
+                                    layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                                }
+                                if (layer.layer.get("Metadata")) {
+                                    layer.layer.set("MetadataURL", metadata);
+                                    if (!$rootScope.$$phase) $rootScope.$digest();
+                                    return layer
+                                }
+                                if (service_layer.MetadataURL == false) {
+                                    layer.layer.set("MetadataURL", service)
+                                }
                             };
-
-                            let layer_name = (layer.layer.getSource().getParams().LAYERS)
-
-                            angular.forEach(layers, function (service_layer) {
-                                if (layer_name === service_layer.Name) {
-                                    layer.layer.setProperties(service_layer)
-                                    if (layer.layer.get("Copyright")) {
-                                        layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                                    }
-                                    if (layer.layer.get("Metadata")) {
-                                        layer.layer.set("MetadataURL", metadata);
-                                        if (!$rootScope.$$phase) $rootScope.$digest();
-                                        return layer
-                                    }
-                                    if (service_layer.MetadataURL == false) {
-                                        layer.layer.set("MetadataURL", service)
-                                    }
-                                };
-                            });
-                            if (!$rootScope.$$phase) $rootScope.$digest();
+                        });
+                        if (!$rootScope.$$phase) $rootScope.$digest();
 
                     })
                     .catch(function (e) {
-                        console.log('GetCapabilities call invalid',e);
+                        console.log('GetCapabilities call invalid', e);
                     })
 
 
@@ -635,19 +639,19 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             else if (layerUtils.isLayerWMTS(layer.layer)) {
                 WMTSgetCapabilitiesService.requestGetCapabilities(url)
                     .then(function (capabilities_xml) {
-                            let parser = new WMTSCapabilities();
-                            let caps = parser.read(capabilities_xml.data);
-                            layer.layer.setProperties(caps);
-                            if (layer.layer.get("Copyright")) {
-                                layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
-                            }
-                            else {
-                                layer.layer.set("Attribution", { "OnlineResource": caps.ServiceProvider.ProviderSite });
-                            }
-                            if (layer.layer.get("Metadata")) {
-                                layer.layer.set("MetadataURL", metadata);
-                            }
-                            if (!$rootScope.$$phase) $rootScope.$digest();
+                        let parser = new WMTSCapabilities();
+                        let caps = parser.read(capabilities_xml.data);
+                        layer.layer.setProperties(caps);
+                        if (layer.layer.get("Copyright")) {
+                            layer.layer.set("Attribution", { "OnlineResource": layer.layer.get("Copyright") });
+                        }
+                        else {
+                            layer.layer.set("Attribution", { "OnlineResource": caps.ServiceProvider.ProviderSite });
+                        }
+                        if (layer.layer.get("Metadata")) {
+                            layer.layer.set("MetadataURL", metadata);
+                        }
+                        if (!$rootScope.$$phase) $rootScope.$digest();
 
                     })
                     .catch(error => console.log(error));
@@ -658,7 +662,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             else if (layerUtils.isLayerVectorLayer(layer.layer)) {
                 if (url) {
 
-                        WFSgetCapabilitiesService.requestGetCapabilities(url)
+                    WFSgetCapabilitiesService.requestGetCapabilities(url)
                         .then(function (capabilities_xml) {
                             let parser = new DOMParser();
                             let caps = parser.parseFromString(capabilities_xml.data, "application/xml");
