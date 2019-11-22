@@ -171,10 +171,6 @@ npm start
 Now browse to the app at `http://localhost:8000/`.
 
 
-## Testing
-
-There are two kinds of tests in the hslayers-ng: Unit tests and End to End tests.
-
 ### Running Unit Tests
 
 The hslayers-ng app comes preconfigured with unit tests. These are written in
