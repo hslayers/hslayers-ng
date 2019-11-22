@@ -18,7 +18,7 @@ module.exports = function(config) {
 
         basePath: '',
         files: ['webpack.karma.context.js'],
-        preprocessors: { 'webpack.karma.context.js': ['webpack'] },
+        preprocessors: { 'webpack.karma.context.js': ['webpack', 'sourcemap'] },
         exclude: [],
         webpack: webpackCOnf,
         webpackMiddleware: {

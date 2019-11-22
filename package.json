@@ -30,6 +30,7 @@
     "karma-jasmine": "^2.0.1",
     "karma-junit-reporter": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
+    "karma-sourcemap-loader": "^0.3.7",
     "mini-css-extract-plugin": "^0.8.0",
     "ng-cache-loader": "0.0.26",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
