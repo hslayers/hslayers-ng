@@ -5,10 +5,10 @@ export default {
         else
             return require('components/compositions/partials/compositions.html')
     }],
-    controller: ['$scope', 'Core', 'hs.compositions.service',
+    controller: ['$scope', 'Core', 'hs.map.service', 'hs.compositions.service',
         'hs.compositions.service_parser', '$window', 'config', '$compile',
         'hs.compositions.mickaService', '$rootScope', 'hs.layout.service',
-        function ($scope, Core, Composition, compositionParser, $window, config,
+        function ($scope, Core, hsMap, Composition, compositionParser, $window, config,
             $compile, mickaEndpointService, $rootScope, layoutService) {
             $scope.CS = Composition;
             $scope.data = Composition.data;
@@ -100,14 +100,18 @@ export default {
              * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
              */
             $scope.loadCompositions = function (ds) {
-                Composition.loadCompositions(ds, {
-                    query: $scope.query,
-                    sortBy: $scope.sortBy,
-                    filterExtent: $scope.filterByExtent,
-                    keywords: $scope.keywords,
-                    start: ds.start,
-                    limit: ds.limit
-                });
+                return new Promise((resolve, reject) => {
+                    hsMap.loaded().then(map => {
+                        Composition.loadCompositions(ds, {
+                            query: $scope.query,
+                            sortBy: $scope.sortBy,
+                            filterExtent: $scope.filterByExtent,
+                            keywords: $scope.keywords,
+                            start: ds.start,
+                            limit: ds.limit
+                        }).then(_ => { resolve() });
+                    })
+                })
             }
 
             /**

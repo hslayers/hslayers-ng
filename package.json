@@ -30,6 +30,7 @@
     "karma-firefox-launcher": "^1.2.0",
     "karma-jasmine": "^2.0.1",
     "karma-junit-reporter": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-requirejs": "^1.1.0",
     "mini-css-extract-plugin": "^0.8.0",
@@ -48,7 +49,7 @@
     "webpack-merge": "^4.2.2"
   },
   "scripts": {
-    "build": "rm -rf dist && webpack --config scripts/webpack.all.prod.js",
+    "build": "npm run isolate-bootstrap && rm -rf dist && webpack --config scripts/webpack.all.prod.js",
     "postinstall": "",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000",
@@ -88,6 +89,7 @@
     "html5-boilerplate-npm": "^4.1.0-B",
     "jquery": "^3.4.1",
     "js-cookie": "2.2.1",
+    "karma-webpack": "^4.0.2",
     "md-color-picker": "^0.2.6",
     "moment": "^2.24.0",
     "moment-interval": "^0.2.1",

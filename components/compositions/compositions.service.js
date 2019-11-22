@@ -31,24 +31,45 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
             })
         }
 
+        extentLayer = new VectorLayer({
+            title: "Composition extents",
+            show_in_manager: false,
+            source: new Vector(),
+            removable: false,
+            style: function (feature, resolution) {
+                return [new Style({
+                    stroke: new Stroke({
+                        color: '#005CB6',
+                        width: feature.get('highlighted') ? 4 : 1
+                    }),
+                    fill: new Fill({
+                        color: 'rgba(0, 0, 255, 0.01)'
+                    })
+                })]
+            }
+        });
+
         me.datasetSelect = function (id_selected) {
             me.data.id_selected = id_selected;
         }
 
         me.loadCompositions = function (ds, params) {
-            extentLayer.getSource().clear();
-            var bbox = OlMap.getMapExtentInEpsg4326();
-            switch (ds.type) {
-                case 'micka':
-                    mickaEndpointService.loadList(ds, params, bbox, extentLayer)
-                        .then(() => {
-                            statusManagerEndpointService.loadList(ds, params, bbox);
-                        })
-                    break;
-                case 'layman':
-                    laymanEndpointService.loadList(ds, params, bbox, extentLayer);
-                    break;
-            }
+            return new Promise((resolve, reject) => {
+                extentLayer.getSource().clear();
+                var bbox = OlMap.getMapExtentInEpsg4326();
+                switch (ds.type) {
+                    case 'micka':
+                        mickaEndpointService.loadList(ds, params, bbox, extentLayer)
+                            .then(() => {
+                                statusManagerEndpointService.loadList(ds, params, bbox);
+                                resolve()
+                            })
+                        break;
+                    case 'layman':
+                        laymanEndpointService.loadList(ds, params, bbox, extentLayer).then(_ => resolve());
+                        break;
+                }
+            })
         }
 
         me.resetCompositionCounter = function () {
@@ -87,24 +108,6 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         }
 
         function init(map) {
-            extentLayer = new VectorLayer({
-                title: "Composition extents",
-                show_in_manager: false,
-                source: new Vector(),
-                removable: false,
-                style: function (feature, resolution) {
-                    return [new Style({
-                        stroke: new Stroke({
-                            color: '#005CB6',
-                            width: feature.get('highlighted') ? 4 : 1
-                        }),
-                        fill: new Fill({
-                            color: 'rgba(0, 0, 255, 0.01)'
-                        })
-                    })]
-                }
-            });
-
             map.on('pointermove', function (evt) {
                 var features = extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
                 var somethingDone = false;
