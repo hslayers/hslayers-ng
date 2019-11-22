@@ -367,7 +367,9 @@ export default ['config', '$rootScope',
             compositionLoadingProgress: false
         };
         angular.forEach(panelsEnabledDefaults, (value, key) => {
-            if (typeof config.panelsEnabled[key] == 'undefined') me.panelEnabled(key, value)
+            if (typeof config.panelsEnabled == 'undefined' ||
+                typeof config.panelsEnabled[key] == 'undefined')
+                me.panelEnabled(key, value)
         })
         angular.forEach(config.panelsEnabled, (value, key) => {
             me.panelEnabled(key, value)
