@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="hs-info-container" ng-hide="layoutService.smallWidth" ng-style="infoContainerStyle()" >
+                <div id="hs-info-container" ng-hide="layoutService.smallWidth || !panelVisible('compositionLoadingProgress')" ng-style="infoContainerStyle()" >
                     <div id="hs-info-area">
                         <hs.info ng-if="Core.exists('hs.info')"></hs.info>
                     </div>

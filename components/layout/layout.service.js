@@ -262,7 +262,7 @@ export default ['config', '$rootScope',
                             me.sidebarExpanded = false
                         }
                         else {
-                        me.sidebarLabels = true;
+                            me.sidebarLabels = true;
                         }
                     }
                 } else {
@@ -305,7 +305,7 @@ export default ['config', '$rootScope',
                     return tmp;
                 }
                 else {
-                me.sidebarToggleable = true;
+                    me.sidebarToggleable = true;
                 }
                 if (me.sidebarExpanded && me.sidebarVisible()) {
                     if (panelWidths[me.mainpanel])
@@ -353,6 +353,22 @@ export default ['config', '$rootScope',
 
         })
 
+        let panelsEnabledDefaults = {
+            compositions: true,
+            toolbar: false,
+            mobile_settings: false,
+            draw: false,
+            ows: true,
+            layermanager: true,
+            print: true,
+            saveMap: true,
+            language: true,
+            permalink: true,
+            compositionLoadingProgress: false
+        };
+        angular.forEach(panelsEnabledDefaults, (value, key) => {
+            if (typeof config.panelsEnabled[key] == 'undefined') me.panelEnabled(key, value)
+        })
         angular.forEach(config.panelsEnabled, (value, key) => {
             me.panelEnabled(key, value)
         })

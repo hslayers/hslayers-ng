@@ -283,7 +283,8 @@ Dictionary for overriding panel visibility. If module is loaded, then panel is v
     print: true,
     saveMap: true,
     language: true,
-    permalink: true
+    permalink: true,
+    compositionLoadingProgress: false 
 }
 
 **sizeMode**
