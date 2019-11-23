@@ -1,4 +1,4 @@
-<div class="sidebar-list list-group">
+<div class="sidebar-list list-group" ng-class="{'minisidebar':!layoutService.classicSidebar}">
     <a href="#" class="sidebar-item list-group-item" ng-if="layoutService.sidebarToggleable">
         <i class="menu-icon" ng-class="layoutService.sidebarExpanded ? (!layoutService.sidebarRight ? 'icon-chevron-left' : 'icon-chevron-right') : 'icon-slidersoff'"  ng-click="toggleSidebar()"></i>
     </a>
@@ -9,7 +9,7 @@
 
     <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.layermanager') && panelEnabled('layermanager')" ng-click="setMainPanel('layermanager')" ng-class="{active: layoutService.mainpanel == 'layermanager'}">
         <i class="menu-icon icon-layers" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Manage and style your layers in composition'|translate}}"></i>
-        <span class="sidebar-item-title" translate>Manage and Style Layers</span>
+        <span class="sidebar-item-title" translate>Layer Manager</span>
     </a>
 
     <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.legend')" ng-click="setMainPanel('legend')" ng-class="{active: layoutService.mainpanel == 'legend'}">    
@@ -77,7 +77,7 @@
         <span class="sidebar-item-title">Sensors</span>
     </a>   
 
-    <a href="#" class="sidebar-item list-group-item text-justify" ng-if="Core.exists('hs.language.controller') && panelEnabled('language')" ng-click="setMainPanel('language')" ng-class="{active: layoutService.mainpanel == 'language'}">
+    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.language.controller') && panelEnabled('language')" ng-click="setMainPanel('language')" ng-class="{active: layoutService.mainpanel == 'language'}">
         <span data-toggle="tooltip" data-container="body" data-placement="auto" class="" title="{{'Change language'||translate}}">{{languageService.getCurrentLanguageCode().toUpperCase()}}</span>
         <span class="sidebar-item-title" translate>Change language</span>
     </a>

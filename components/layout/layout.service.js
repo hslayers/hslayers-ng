@@ -300,8 +300,13 @@ export default ['config', '$rootScope',
                 Object.assign(panelWidths, config.panelWidths);
                 let tmp = 0;
                 if (layoutWidth <= 767) {
+                    me.populateEnabledPanels()
                     tmp = layoutWidth;
                     me.sidebarToggleable = false;
+                    if (layoutWidth < me.panelsEnabled * 53.6) { me.classicSidebar = false }
+                    else {
+                    me.classicSidebar = true
+                    }
                     return tmp;
                 }
                 else {
@@ -349,7 +354,8 @@ export default ['config', '$rootScope',
 
             widthWithoutPanelSpace() {
                 return 'calc(100% - ' + me.panelSpaceWidth() + 'px)';
-            }
+            },
+            panelsEnabled: 0
 
         })
 
@@ -374,7 +380,12 @@ export default ['config', '$rootScope',
         angular.forEach(config.panelsEnabled, (value, key) => {
             me.panelEnabled(key, value)
         })
-
+        me.populateEnabledPanels = function(){
+            if(me.panelsEnabled == 0 && document.getElementsByClassName("sidebar-item").length>0){
+                me.panelsEnabled = document.getElementsByClassName("sidebar-item").length;
+            }
+            else {return}
+        }
         return me;
     }
 ]

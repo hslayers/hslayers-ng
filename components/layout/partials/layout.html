@@ -22,7 +22,7 @@
                 <div class="panelspace" ng-if="layoutService.sidebarVisible()" ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons, 'minisidebar-wrapper':!layoutService.classicSidebar}" ng-style="{width: panelSpaceWidth()+'px'}">
                     <div class="panelspace-wrapper" ng-style="{width: panelSpaceWidth()+'px'}">
                         <div id="sidebar" hs.sidebar.directive ng-controller="hs.sidebar.controller" ng-if="layoutService.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
-                        <div id="mini-sidebar" hs.minisidebar.directive ng-controller="hs.sidebar.controller" ng-class="layoutService.mainpanel" ng-if="!layoutService.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
+                        <div id="sidebar" class="menuToggle" hs.minisidebar.directive ng-controller="hs.sidebar.controller" ng-if="!layoutService.classicSidebar" ng-if="Core.exists('hs.sidebar.controller')" ng-cloak></div>
                         <div id="panelplace" ng-class="{'minisidebar-panel':!layoutService.classicSidebar}" ng-style="{width: (panelSpaceWidth()-50)+'px'}">
                             <hs.layermanager                        hs.draggable ng-show="panelVisible('layermanager', this)"></hs.layermanager>
                             <hs.legend                              hs.draggable ng-if="Core.exists('hs.legend')" ng-show="panelVisible('legend', this)"></hs.legend>
@@ -41,12 +41,13 @@
                             <div hs.routing.directive               hs.draggable ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="panelVisible('routing', this)"></div>
                             <div hs.tracking.directive              hs.draggable ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="panelVisible('tracking', this)"></div>
                             <hs.vgi-draw                            hs.draggable ng-if="Core.exists('hs.vgi-draw')" ng-show="panelVisible('draw', this)"></hs.vgi-draw>
-                            <hs.sensors.panel                       hs.draggable  ng-if="Core.exists('hs.sensors')" ng-show="panelVisible('sensors', this)"></hs.sensors.panel>
+                            <hs.sensors.panel                       hs.draggable ng-if="Core.exists('hs.sensors')" ng-show="panelVisible('sensors', this)"></hs.sensors.panel>
+                            <div hs.sidebar.directive               hs.draggable ng-controller="hs.sidebar.controller" ng-if="Core.exists('hs.sidebar') && !layoutService.classicSidebar" ng-show="panelVisible('sidebar', this)"></div>
                             <div hs.customhtml.directive                                                            ng-if="Core.exists('hs.customhtml')"></div>
                         </div>
                     </div>
                 </div>
-                <div id="hs-info-container" ng-hide="layoutService.smallWidth || !panelVisible('compositionLoadingProgress')" ng-style="infoContainerStyle()" >
+                <div id="hs-info-container" ng-hide="layoutService.smallWidth" ng-style="infoContainerStyle()" >
                     <div id="hs-info-area">
                         <hs.info ng-if="Core.exists('hs.info')"></hs.info>
                     </div>
