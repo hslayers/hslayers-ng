@@ -404,6 +404,21 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                         $scope.bottomSheet = undefined;
                     }
 
+                    $scope.showHelpDialog = function(ev) {
+                        $mdDialog.show({
+                            scope: this,
+                            preserveScope: true,
+                            templateUrl: config.help_template || `${config.hsl_path}components/layout/partials/help${config.design || ''}.html`,
+                            parent: angular.element(document.body),
+                            targetEvent: ev,
+                            clickOutsideToClose: true
+                        });
+                    };
+
+                    $scope.cancelHelpDialog = function() {
+                        $mdDialog.cancel();
+                    };
+
                     $scope.openLeftSidenav = function () {
                         $mdSidenav('sidenav-left').open()
                             .then(function () {

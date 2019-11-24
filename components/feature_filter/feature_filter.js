@@ -367,7 +367,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     $scope.map.addInteraction($scope.highlighter);
                     $scope.highlighter.on('select', function(e) {
                         if (e.selected.length > 0) $scope.highlightFeature(e.selected[0], true);
-                        if (e.deselected.length > 0) $scope.unhighlightFeature(e.deselected[0], true);
+                        if (e.deselected.length > 0) $scope.unhighlightFeature(e.deselected[0], e.selected.length === 0);
                         if (!$scope.$$phase) $scope.$digest();
                     });
 
