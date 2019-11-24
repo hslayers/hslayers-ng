@@ -308,6 +308,15 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
             */
             .controller('hs.feature_list.controller', ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config',
                 function($scope, $timeout, OlMap, Core, service, LayMan, config) {
+                    const POPUP = new ol.Overlay.Popup();
+
+                    if (OlMap.map) 
+                        OlMap.map.addOverlay(POPUP);
+                    else
+                        $rootScope.$on('map.loaded', function () {
+                            OlMap.map.addOverlay(POPUP);
+                        });
+
                     $scope.map = OlMap.map;
                     $scope.LayMan = LayMan;
 
@@ -324,19 +333,27 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         }))
                     });
 
-                    $scope.highlightFeature = function(feature) {
+                    $scope.highlightFeature = function(feature, displayPopup=false) {
                         feature.setProperties({
                             class: "highlighted"
                         });
                         feature.setStyle($scope.highlightedStyle);
+
+                        if (displayPopup) {
+                            const COORDS = feature.getProperties().geometry.flatCoordinates;
+                            POPUP.show(COORDS, feature.getProperties().name);
+                        }
                     }
 
 
-                    $scope.unhighlightFeature = function(feature) {
+                    $scope.unhighlightFeature = function(feature, displayPopup=false) {
                         feature.setProperties({
                             class: ""
                         });
                         feature.setStyle(null);
+                        if (displayPopup) {
+                            POPUP.hide();
+                        }
                     }
 
                     $scope.highlighter = new ol.interaction.Select({
@@ -349,8 +366,8 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
 
                     $scope.map.addInteraction($scope.highlighter);
                     $scope.highlighter.on('select', function(e) {
-                        if (e.selected.length > 0) $scope.highlightFeature(e.selected[0]);
-                        if (e.deselected.length > 0) $scope.unhighlightFeature(e.deselected[0]);
+                        if (e.selected.length > 0) $scope.highlightFeature(e.selected[0], true);
+                        if (e.deselected.length > 0) $scope.unhighlightFeature(e.deselected[0], true);
                         if (!$scope.$$phase) $scope.$digest();
                     });
 
