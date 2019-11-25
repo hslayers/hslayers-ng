@@ -3,10 +3,9 @@
     <span class="glyphicon-menu-hamburger" ng-class="layoutService.sidebarExpanded ? (!layoutService.sidebarRight ? 'icon-menu-left' : 'icon-menu-right') : 'icon-menu-left'"  ng-click="toggleSidebar()"></span>
 </a> -->
 <div class="sidebar-list list-group minisidebar">
-    <a href="#" class="list-group-item" ng-if="Core.exists('hs.sidebar') && panelEnabled('sidebar')" ng-click="setMainPanel('sidebar')" ng-class="{active: layoutService.mainpanel == 'layermanager'}">
+    <a href="#" class="list-group-item" ng-if="Core.exists('hs.sidebar')" ng-click="setMainPanel('sidebar')" ng-class="{active: layoutService.mainpanel == 'sidebar'}">
             <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Manage and style your layers in composition'|translate}}"></i>
     </a>
-        Aplication menu
 </div>
 
 

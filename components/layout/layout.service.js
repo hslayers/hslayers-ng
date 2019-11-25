@@ -303,7 +303,7 @@ export default ['config', '$rootScope',
                     me.populateEnabledPanels()
                     tmp = layoutWidth;
                     me.sidebarToggleable = false;
-                    if (layoutWidth < me.panelsEnabled * 53.6) { me.classicSidebar = false }
+                    if (layoutWidth < (me.panelsEnabled+1) * 53.6) { me.classicSidebar = false }
                     else {
                     me.classicSidebar = true
                     }

@@ -953,6 +953,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     {
         margin: auto;
         min-height: 35vh;
+        padding-top: 0.5em;
         scrollbar-width: none;
     }
     #sidebar > div.list-group{
@@ -991,15 +992,13 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     }
     .minisidebar .sidebar-item {
         text-align: center;
-        width: 80px;
+        width: 30%;
         height: 80px;
     }
     .minisidebar .list-group-item{
         border: none;
         background-color: unset;
     }
-
- */
     .panel-footer {
         padding: 5px;
     } 
