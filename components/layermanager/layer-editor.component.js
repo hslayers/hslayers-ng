@@ -17,6 +17,9 @@ export default {
         'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service', 'hs.layerEditor.sublayerService',
         function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, WMSgetCapabilitiesService, $rootScope, $timeout, layoutService,
             subLayerService) {
+            $scope.distance = {
+                value: 40
+            };
             angular.extend($scope, {
                 layer_renamer_visible: false,
                 legendService,
@@ -125,20 +128,41 @@ export default {
                     }
                 },
                 /**
+                * @function changeDistance
+                * @memberOf hs.layermanager.controller
+                * @description Set distance between features;
+                */
+                changeDistance() {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    var cluster = $scope.setModifiedLayer();
+                    cluster.setDistance($scope.distance.value);
+                },
+                setModifiedLayer() {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    let cluster = new VectorLayer();
+                    if (layer.get('cluster')) {
+                        var clusterSource = new Cluster({
+                            distance: $scope.distance.value,
+                            source: layer.getSource()
+                        });
+                        cluster.setSource(clusterSource);
+                    } else {
+                        cluster.setSource(layer.getSource());
+                    }
+                    return cluster;
+                },
+                /**
                 * @function cluster
                 * @memberOf hs.layermanager.controller
-                * @description Set cluster of features;
+                * @description Set cluster for layer;
                 */
                 cluster(newValue) {
                     if (!$scope.$ctrl.currentLayer) return;
                     let layer = $scope.olLayer();
                     if (arguments.length) {
                         layer.set('cluster', newValue);
-                        let index = hsMap.map.getLayers().getArray().indexOf(layer);
-                        hsMap.map.removeLayer(layer);
-                        hsMap.map.getLayers().insertAt(index,
-                            $scope.cloneVectorLayer(layer, layer.get('declutter'), newValue)
-                        );
                         $scope.$emit('compositions.composition_edited');
                     }
                     else {
@@ -151,7 +175,7 @@ export default {
                     angular.extend(options, {
                         declutter,
                         cluster,
-                        source: layer.getSource(),
+                        source: $scope.setModifiedLayer().getSource(),
                         style: layer.getStyleFunction() || layer.getStyle(),
                         maxResolution: layer.getMaxResolution(),
                         minResolution: layer.getMinResolution(),
