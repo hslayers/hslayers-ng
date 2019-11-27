@@ -1,6 +1,6 @@
-# Hslayers-ng mapping library
+# HSlayers-ng mapping library
 
-Hslayers-ng is a library which extends OpenLayers 5 functionality by providing a foundation to build map GUI and extra components such as layer manager, permalink generating, styling of vector features, including OpenGIS® Web Map Service Interface Standard (WMS) layers to the map in a user friendly way etc.  
+HSlayers-ng is a library which extends OpenLayers 6 functionality by providing a foundation to build map GUI and extra components such as layer manager, permalink generating, styling of vector features, including OpenGIS® Web Map Service Interface Standard (WMS) layers to the map in a user friendly way etc.  
 
 Check out the examples to get an idea:  
 http://ng.hslayers.org/examples/
