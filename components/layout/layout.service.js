@@ -311,6 +311,7 @@ export default ['config', '$rootScope',
                 }
                 else {
                     me.sidebarToggleable = true;
+                    me.classicSidebar = true
                 }
                 if (me.sidebarExpanded && me.sidebarVisible()) {
                     if (panelWidths[me.mainpanel])
