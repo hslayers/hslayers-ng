@@ -9,7 +9,7 @@ import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import Feature from 'ol/Feature';
 import { Group } from 'ol/layer';
-import { Vector } from 'ol/source';
+import { Vector, Cluster } from 'ol/source';
 import { transform, transformExtent } from 'ol/proj';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
@@ -30,6 +30,8 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
             layer_, layersToLookFor = [];
         var check = function (layer) {
             var source = layer.getSource();
+            if (utils.instOf(source, Cluster))
+                source = source.getSource();
             if (utils.instOf(source, Vector)) {
                 var features = source.getFeatures();
                 if (features.length > 0) {
@@ -39,6 +41,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
                     });
                 }
             }
+            
         };
         map.getLayers().forEach(function (layer) {
             if (utils.instOf(layer, Group)) {

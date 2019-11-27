@@ -9,7 +9,11 @@ export default {
     controller: ['$scope', 'hs.utils.service', 'hs.utils.layerUtilsService', 'hs.map.service', 'hs.query.vectorService',
         function ($scope, utils, layerUtilsService, hsMap, queryVectorService) {
             let olSource = () => {
-                return olFeature().getLayer(hsMap.map).getSource()
+                let layer = olFeature().getLayer(hsMap.map);
+                if(angular.isUndefined(layer)) 
+                    return;
+                else
+                    return layer.getSource()
             }
             let olFeature = () => {
                 return $scope.$ctrl.feature.feature
@@ -23,6 +27,7 @@ export default {
                 ],
                 isFeatureRemovable() {
                     let source = olSource();
+                    if(angular.isUndefined(source)) return false;
                     let layer = olFeature().getLayer(hsMap.map);
                     return utils.instOf(source, VectorSource)
                         && layerUtilsService.isLayerEditable(layer);
