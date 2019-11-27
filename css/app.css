@@ -655,15 +655,23 @@ div#content-wrapper:not(.open) .minisidebar-wrapper {
 .checkmark, .uncheckmark {
     position: relative;
     cursor: pointer;
+    margin-right: 0.3em;
+}
+.checkmark::before{
+    content: "\2713";
+}
+.uncheckmark::before{
+    content: "\00a0 ";
 }
 .checkmark::before, .uncheckmark::before{
-   content: "\2713";
    color: white;
+   display: inline-block;
+   width: 1.5em;
+   height: 1.5em;
    background-color: #4495eb;
    padding: 0.09em 0.4em 0.05em 0.35em;
    border-radius: 0.2em;
    font-weight: 1000;
-   margin-right: 0.2rem;
    font-size: small;
 }
 .uncheckmark::before{
@@ -915,9 +923,6 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
         height:auto;
         top: unset;
         width: 100%;
-    }
-    .checkmark::before, .uncheckmark::before{
-    font-size: large;
     }
     div .form-check-inline{
         margin-right: 0 !important;
