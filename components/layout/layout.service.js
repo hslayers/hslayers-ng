@@ -302,10 +302,15 @@ export default ['config', '$rootScope',
                 if (layoutWidth <= 767) {
                     tmp = layoutWidth;
                     me.sidebarToggleable = false;
+                    if (layoutWidth < (me.panelsEnabled + 1) * 53.6) { me.classicSidebar = false }
+                    else {
+                        me.classicSidebar = true
+                    }
                     return tmp;
                 }
                 else {
                     me.sidebarToggleable = true;
+                    me.classicSidebar = true
                 }
                 if (me.sidebarExpanded && me.sidebarVisible()) {
                     if (panelWidths[me.mainpanel])
@@ -349,13 +354,16 @@ export default ['config', '$rootScope',
 
             widthWithoutPanelSpace() {
                 return 'calc(100% - ' + me.panelSpaceWidth() + 'px)';
-            }
+            },
+            panelsEnabled: 0
 
         })
 
         let panelsEnabledDefaults = {
+            legend: true,
+            info: true,
             compositions: true,
-            toolbar: false,
+            toolbar: true,
             mobile_settings: false,
             draw: false,
             ows: true,
@@ -364,8 +372,16 @@ export default ['config', '$rootScope',
             saveMap: true,
             language: true,
             permalink: true,
-            compositionLoadingProgress: false
+            compositionLoadingProgress: false,
+            sensors: false,
+            routing: false,
+            tracking: false,
+            explorer: false,
+            filter: false,
         };
+
+        let nonSidebarPanels = ['toolbar','compositionLoadingProgress','styler'];
+
         angular.forEach(panelsEnabledDefaults, (value, key) => {
             if (typeof config.panelsEnabled == 'undefined' ||
                 typeof config.panelsEnabled[key] == 'undefined')
@@ -373,6 +389,10 @@ export default ['config', '$rootScope',
         })
         angular.forEach(config.panelsEnabled, (value, key) => {
             me.panelEnabled(key, value)
+        })
+
+        angular.forEach(me.panel_enabled, (value, key) => {
+            if (me.panel_enabled[key] && !nonSidebarPanels.includes(key)) { me.panelsEnabled += 1 }
         })
 
         return me;

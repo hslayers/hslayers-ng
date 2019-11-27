@@ -449,17 +449,17 @@ button.but-title-sm {
     position: absolute;
 }
 .basemapGallery .basemap-tile{
-    background-color: hsla(211, 100%, 50%, 0.445);
+    background: rgba(0,60,136,0.5);
     text-align: center;
     color: white;
     font-weight: 500;
     padding: 0.25em;
     margin:0.2em !important;
+    border: none;
 
 }
-.basemapGallery .selected-basemap{
-    border: 1px solid #007bff;
-    background-color:hsla(211, 100%, 50%, 0.719);
+.basemapGallery .active{
+    background: rgba(0, 59, 136, 0.788);
 
 }   
 
@@ -548,7 +548,7 @@ div#sidebar {
     width: 100%;
 }
 
-#content-wrapper.open div.panelspace:not(.labels) .sidebar-list {
+#content-wrapper.open div.panelspace:not(.labels) .sidebar-list:not(.minisidebar) {
     width: 48px;
 }
 
@@ -904,12 +904,16 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 /**********************************/
 
 @media only screen and (max-width: 767px) {
-    #content-wrapper .sidebar-item-title {
+    #content-wrapper .sidebar-item-title:not(.minisidebar) {
         display:none;
     }
     input[type=checkbox]{
         transform: scale(2,2);
+        margin-right: 0.5em;
     }
+    input[type="radio"]{
+        transform: scale(2,2);
+    };
    .basemapGallery a{
         font-size: x-large !important;
     }
@@ -953,6 +957,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     {
         margin: auto;
         min-height: 35vh;
+        padding-top: 0.5em;
         scrollbar-width: none;
     }
     #sidebar > div.list-group{
@@ -975,7 +980,29 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     /* .sb-left.open #toolbar {
        margin-left: 310px;
     }*/
- */
+    .minisidebar{
+        flex-direction: row !important;
+        justify-content: center;
+        align-items: center;
+    }
+    .minisidebar:not(.menuToggle){
+        flex-wrap: wrap;
+        margin: auto;
+    }
+    .minisidebar .sidebar-item-title{
+        display: block !important;
+        margin: 0;
+        font-size: 10px;
+    }
+    .minisidebar .sidebar-item {
+        text-align: center;
+        width: 30%;
+        height: 80px;
+    }
+    .minisidebar .list-group-item:not(.menuToggle .minisidebar .list-group-item){
+        border: none;
+        background-color: unset;
+    }
     .panel-footer {
         padding: 5px;
     } 

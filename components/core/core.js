@@ -348,7 +348,8 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
             $templateCache.removeAll();
 
             if (me.exists('hs.sidebar.controller') /*&& me.puremapApp != true*/) {
-                layoutService.sidebarExpanded = true;
+                if(window.innerWidth < 767){layoutService.sidebarExpanded = false;}
+                else{layoutService.sidebarExpanded = true;}
             }
 
             /* HACK: https://github.com/openlayers/ol3/issues/3990 
