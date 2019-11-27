@@ -3,6 +3,7 @@ import { transform, get as getProj, METERS_PER_UNIT, transformExtent } from 'ol/
 import { WMSCapabilities, WMTSCapabilities } from 'ol/format';
 import VectorLayer from 'ol/layer/Vector';
 import WFS from 'ol/format';
+import { Cluster, Vector as VectorSource } from 'ol/source';
 
 
 export default {
@@ -13,9 +14,12 @@ export default {
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
         'hs.legend.service', 'hs.styler.service', 'hs.map.service',
-        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service','hs.layerEditor.sublayerService',
+        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service', 'hs.layerEditor.sublayerService',
         function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, WMSgetCapabilitiesService, $rootScope, $timeout, layoutService,
             subLayerService) {
+            $scope.distance = {
+                value: 40
+            };
             angular.extend($scope, {
                 layer_renamer_visible: false,
                 legendService,
@@ -112,22 +116,21 @@ export default {
                     let layer = $scope.olLayer();
                     if (arguments.length) {
                         layer.set('declutter', newValue);
-                        let index = hsMap.map.getLayers().getArray().indexOf(layer);
-                        hsMap.map.removeLayer(layer);
-                        hsMap.map.getLayers().insertAt(index,
-                            $scope.cloneVectorLayer(layer, newValue)
-                        );
-                        $scope.$emit('compositions.composition_edited');
+                            let index = hsMap.map.getLayers().getArray().indexOf(layer);
+                            hsMap.map.removeLayer(layer);
+                            hsMap.map.getLayers().insertAt(index,
+                                $scope.cloneVectorLayer(layer, newValue,layer.get('cluster'))
+                            );
+                            $scope.$emit('compositions.composition_edited');
                     }
-                    else {
-                        return layer.get('declutter');
-                    }
+                    return layer.get('declutter');
                 },
-                cloneVectorLayer(layer, declutter) {
+                cloneVectorLayer(layer, declutter,cluster) {
                     let options = {};
                     layer.getKeys().forEach(k => options[k] = layer.get(k));
                     angular.extend(options, {
                         declutter,
+                        cluster,
                         source: layer.getSource(),
                         style: layer.getStyleFunction() || layer.getStyle(),
                         maxResolution: layer.getMaxResolution(),
@@ -136,6 +139,40 @@ export default {
                         opacity: layer.getOpacity()
                     });
                     return new VectorLayer(options)
+                },
+                /**
+              * @function cluster
+              * @memberOf hs.layermanager.controller
+              * @description Set cluster for layer;
+              */
+                cluster(newValue) {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    if (arguments.length) {
+                        layer.set('cluster', newValue);
+                        layer.setSource($scope.createClusteredSource());
+                        $scope.$emit('compositions.composition_edited');
+                    }
+                    return layer.get('cluster');
+                },
+                /**
+                * @function changeDistance
+                * @memberOf hs.layermanager.controller
+                * @description Set distance between features;
+                */
+                changeDistance() {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    if(angular.isUndefined(layer.getSource().setDistance)) return;
+                    layer.getSource().setDistance($scope.distance.value);
+                },
+                createClusteredSource() {
+                    if (!$scope.$ctrl.currentLayer) return;
+                    let layer = $scope.olLayer();
+                    return new Cluster({
+                        distance: $scope.distance.value,
+                        source: layer.getSource()
+                    });
                 },
                 /**
                  * @function toggleLayerRename
@@ -204,13 +241,13 @@ export default {
                 layerIsStyleable() {
                     return layerUtils.layerIsStyleable($scope.olLayer())
                 },
-                                /**
-                 * @function hasCopyright
-                 * @memberOf hs.layermanager.controller
-                 * @description Determines if layer has metadata information avaliable * 
-                 * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
-                 */
-                hasMetadata(layer){
+                /**
+    * @function hasCopyright
+    * @memberOf hs.layermanager.controller
+    * @description Determines if layer has metadata information avaliable * 
+    * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+    */
+                hasMetadata(layer) {
                     if (!$scope.$ctrl.currentLayer) return;
                     else {
                         return layer.layer.get('MetadataURL') ? true : false;
@@ -222,16 +259,16 @@ export default {
                  * @description Determines if layer has copyright information avaliable * 
                  * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
                  */
-                hasCopyright(layer){
+                hasCopyright(layer) {
                     console.log($scope.$ctrl.currentLayer);
 
                     if (!$scope.$ctrl.currentLayer) return;
                     else {
-                        if(layer.layer.get('Attribution')){
+                        if (layer.layer.get('Attribution')) {
                             let attr = layer.layer.get('Attribution');
                             return (attr.OnlineResource) ? true : false;
                         }
-                        else { return false}
+                        else { return false }
                     }
                 },
                 /**
@@ -392,17 +429,17 @@ export default {
                     if (angular.isUndefined(layer.style) && layer.layer.getSource().styleAble) getLayerStyle(layer);
                     layer.expandSettings = value;
                 },
-                
+
                 hasSubLayers() {
                     if ($scope.$ctrl.currentLayer == null) return;
                     var subLayers = $scope.$ctrl.currentLayer.layer.get('Layer');
                     return angular.isDefined(subLayers) && subLayers.length > 0;
                 },
 
-                getSubLayers(){
+                getSubLayers() {
                     return subLayerService.getSubLayers();
-                 },
-                 
+                },
+
                 expandFilter(layer, value) {
                     layer.expandFilter = value;
                     LayMan.currentLayer = layer;
@@ -424,138 +461,137 @@ export default {
                     var noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
                     return noutc;
                 }
-            });
+            }),
+                function setLayerStyle(wrapper) {
+                    //debugger;
+                    var layer = wrapper.layer;
+                    var source = layer.getSource();
+                    var style = wrapper.style.style;
+                    if (source.hasPoly) {
+                        style.setFill(new Fill({
+                            color: wrapper.style.fillColor
+                        }));
+                    }
+                    if (source.hasLine || source.hasPoly) {
+                        style.setStroke(new Stroke({
+                            color: wrapper.style.lineColor,
+                            width: wrapper.style.lineWidth
+                        }));
+                    }
+                    if (source.hasPoint) {
+                        var image;
+                        var stroke = new Stroke({
+                            color: wrapper.style.pointStroke,
+                            width: wrapper.style.pointWidth
+                        });
+                        var fill = new Fill({
+                            color: wrapper.style.pointFill
+                        });
+                        if (wrapper.style.pointType === 'Circle') {
+                            image = new Circle({
+                                stroke: stroke,
+                                fill: fill,
+                                radius: wrapper.style.radius,
+                                rotation: wrapper.style.rotation
+                            });
+                        }
+                        if (wrapper.style.pointType === 'Polygon') {
+                            image = new RegularShape({
+                                stroke: stroke,
+                                fill: fill,
+                                radius: wrapper.style.radius,
+                                points: wrapper.style.pointPoints,
+                                rotation: wrapper.style.rotation
+                            });
+                        }
+                        if (wrapper.style.pointType === 'Star') {
+                            image = new RegularShape({
+                                stroke: stroke,
+                                fill: fill,
+                                radius1: wrapper.style.radius,
+                                radius2: wrapper.style.radius2,
+                                points: wrapper.style.pointPoints,
+                                rotation: wrapper.style.rotation
+                            });
+                        }
+                        style.setImage(image);
+                    }
+                    layer.setStyle(style);
+                },
 
-            function setLayerStyle(wrapper) {
-                //debugger;
-                var layer = wrapper.layer;
-                var source = layer.getSource();
-                var style = wrapper.style.style;
-                if (source.hasPoly) {
-                    style.setFill(new Fill({
-                        color: wrapper.style.fillColor
-                    }));
-                }
-                if (source.hasLine || source.hasPoly) {
-                    style.setStroke(new Stroke({
-                        color: wrapper.style.lineColor,
-                        width: wrapper.style.lineWidth
-                    }));
-                }
-                if (source.hasPoint) {
-                    var image;
-                    var stroke = new Stroke({
-                        color: wrapper.style.pointStroke,
-                        width: wrapper.style.pointWidth
-                    });
-                    var fill = new Fill({
-                        color: wrapper.style.pointFill
-                    });
-                    if (wrapper.style.pointType === 'Circle') {
-                        image = new Circle({
-                            stroke: stroke,
-                            fill: fill,
-                            radius: wrapper.style.radius,
-                            rotation: wrapper.style.rotation
-                        });
-                    }
-                    if (wrapper.style.pointType === 'Polygon') {
-                        image = new RegularShape({
-                            stroke: stroke,
-                            fill: fill,
-                            radius: wrapper.style.radius,
-                            points: wrapper.style.pointPoints,
-                            rotation: wrapper.style.rotation
-                        });
-                    }
-                    if (wrapper.style.pointType === 'Star') {
-                        image = new RegularShape({
-                            stroke: stroke,
-                            fill: fill,
-                            radius1: wrapper.style.radius,
-                            radius2: wrapper.style.radius2,
-                            points: wrapper.style.pointPoints,
-                            rotation: wrapper.style.rotation
-                        });
-                    }
-                    style.setImage(image);
-                }
-                layer.setStyle(style);
-            }
-
-            /**
-             * (PRIVATE) Get transformated extent from layer "BoundingBox" property
-             * @function getExtentFromBoundingBoxAttribute
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} layer Selected layer
-             */
-            function getExtentFromBoundingBoxAttribute(layer) {
-                var extent = null;
-                var bbox = layer.get("BoundingBox");
-                if (angular.isArray(bbox) && bbox.length == 4) {
-                    extent = transformExtent(bbox, 'EPSG:4326', hsMap.map.getView().getProjection());
-                } else {
-                    for (var ix = 0; ix < bbox.length; ix++) {
-                        if (angular.isDefined(getProj(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
-                            var crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
-                            var b = bbox[ix].extent;
-                            var first_pair = [b[0], b[1]]
-                            var second_pair = [b[2], b[3]];
-                            first_pair = transform(first_pair, crs, hsMap.map.getView().getProjection());
-                            second_pair = transform(second_pair, crs, hsMap.map.getView().getProjection());
-                            extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-                            break;
+                /**
+                 * (PRIVATE) Get transformated extent from layer "BoundingBox" property
+                 * @function getExtentFromBoundingBoxAttribute
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 */
+                function getExtentFromBoundingBoxAttribute(layer) {
+                    var extent = null;
+                    var bbox = layer.get("BoundingBox");
+                    if (angular.isArray(bbox) && bbox.length == 4) {
+                        extent = transformExtent(bbox, 'EPSG:4326', hsMap.map.getView().getProjection());
+                    } else {
+                        for (var ix = 0; ix < bbox.length; ix++) {
+                            if (angular.isDefined(getProj(bbox[ix].crs)) || angular.isDefined(layer.getSource().getParams().FROMCRS)) {
+                                var crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
+                                var b = bbox[ix].extent;
+                                var first_pair = [b[0], b[1]]
+                                var second_pair = [b[2], b[3]];
+                                first_pair = transform(first_pair, crs, hsMap.map.getView().getProjection());
+                                second_pair = transform(second_pair, crs, hsMap.map.getView().getProjection());
+                                extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+                                break;
+                            }
                         }
                     }
-                }
-                return extent;
-            }
+                    return extent;
+                },
 
-            function getLayerStyle(wrapper) {
-                var layer = wrapper.layer;
-                var source = layer.getSource();
-                wrapper.style = {};
-                if (angular.isUndefined(layer.getStyle)) return;
-                var style = layer.getStyle();
-                if (typeof style == 'function')
-                    style = style(source.getFeatures()[0]);
-                if (typeof style == 'object') style = style[0];
-                style = style.clone();
-                if (source.hasPoly) {
-                    wrapper.style.fillColor = style.getFill().getColor();
-                }
-                if (source.hasLine || source.hasPoly) {
-                    wrapper.style.lineColor = style.getStroke().getColor();
-                    wrapper.style.lineWidth = style.getStroke().getColor();
-                }
-                if (source.hasPoint) {
-                    var image = style.getImage();
-                    if (utils.instOf(image, Circle))
-                        wrapper.style.pointType = 'Circle';
-                    else if (utils.instOf(image, RegularShape)) {
-                        wrapper.style.pointPoints = image.getPoints();
-                        wrapper.style.rotation = image.getRotation();
-                        if (angular.isUndefined(image.getRadius2()))
-                            wrapper.style.pointType = 'Polygon';
-                        else {
-                            wrapper.style.pointType = 'Star';
-                            wrapper.style.radius2 = image.getRadius2();
+                function getLayerStyle(wrapper) {
+                    var layer = wrapper.layer;
+                    var source = layer.getSource();
+                    wrapper.style = {};
+                    if (angular.isUndefined(layer.getStyle)) return;
+                    var style = layer.getStyle();
+                    if (typeof style == 'function')
+                        style = style(source.getFeatures()[0]);
+                    if (typeof style == 'object') style = style[0];
+                    style = style.clone();
+                    if (source.hasPoly) {
+                        wrapper.style.fillColor = style.getFill().getColor();
+                    }
+                    if (source.hasLine || source.hasPoly) {
+                        wrapper.style.lineColor = style.getStroke().getColor();
+                        wrapper.style.lineWidth = style.getStroke().getColor();
+                    }
+                    if (source.hasPoint) {
+                        var image = style.getImage();
+                        if (utils.instOf(image, Circle))
+                            wrapper.style.pointType = 'Circle';
+                        else if (utils.instOf(image, RegularShape)) {
+                            wrapper.style.pointPoints = image.getPoints();
+                            wrapper.style.rotation = image.getRotation();
+                            if (angular.isUndefined(image.getRadius2()))
+                                wrapper.style.pointType = 'Polygon';
+                            else {
+                                wrapper.style.pointType = 'Star';
+                                wrapper.style.radius2 = image.getRadius2();
+                            }
                         }
+                        if (utils.instOf(image, Circle) || utils.instOf(image, RegularShape)) {
+                            wrapper.style.radius = image.getRadius();
+                            wrapper.style.pointFill = image.getFill().getColor();
+                            wrapper.style.pointStroke = image.getStroke().getColor();
+                            wrapper.style.pointWidth = image.getStroke().getWidth();
+                        }
+                        if (angular.isUndefined(wrapper.style.radius2))
+                            wrapper.style.radius2 = wrapper.style.radius / 2;
+                        if (angular.isUndefined(wrapper.style.pointPoints))
+                            wrapper.style.pointPoints = 4;
+                        if (angular.isUndefined(wrapper.style.rotation))
+                            wrapper.style.rotation = Math.PI / 4;
                     }
-                    if (utils.instOf(image, Circle) || utils.instOf(image, RegularShape)) {
-                        wrapper.style.radius = image.getRadius();
-                        wrapper.style.pointFill = image.getFill().getColor();
-                        wrapper.style.pointStroke = image.getStroke().getColor();
-                        wrapper.style.pointWidth = image.getStroke().getWidth();
-                    }
-                    if (angular.isUndefined(wrapper.style.radius2))
-                        wrapper.style.radius2 = wrapper.style.radius / 2;
-                    if (angular.isUndefined(wrapper.style.pointPoints))
-                        wrapper.style.pointPoints = 4;
-                    if (angular.isUndefined(wrapper.style.rotation))
-                        wrapper.style.rotation = Math.PI / 4;
+                    wrapper.style.style = style;
                 }
-                wrapper.style.style = style;
-            }
         }]
 }

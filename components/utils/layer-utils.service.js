@@ -1,7 +1,7 @@
 import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import { Tile, Image as ImageLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
+import { Vector as VectorSource, Cluster } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import { isEmpty } from 'ol/extent';
 
@@ -111,7 +111,7 @@ export default ['config', 'hs.utils.service', function (config, utils) {
          */
         isLayerVectorLayer(layer) {
             if (utils.instOf(layer, VectorLayer) &&
-                (utils.instOf(layer.getSource(), VectorSource))) return true;
+                (utils.instOf(layer.getSource(), Cluster) || utils.instOf(layer.getSource(), VectorSource))) return true;
             return false;
         },
 
