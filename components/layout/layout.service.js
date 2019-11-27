@@ -300,12 +300,11 @@ export default ['config', '$rootScope',
                 Object.assign(panelWidths, config.panelWidths);
                 let tmp = 0;
                 if (layoutWidth <= 767) {
-                    me.populateEnabledPanels()
                     tmp = layoutWidth;
                     me.sidebarToggleable = false;
-                    if (layoutWidth < (me.panelsEnabled+1) * 53.6) { me.classicSidebar = false }
+                    if (layoutWidth < (me.panelsEnabled + 1) * 53.6) { me.classicSidebar = false }
                     else {
-                    me.classicSidebar = true
+                        me.classicSidebar = true
                     }
                     return tmp;
                 }
@@ -361,8 +360,10 @@ export default ['config', '$rootScope',
         })
 
         let panelsEnabledDefaults = {
+            legend: true,
+            info: true,
             compositions: true,
-            toolbar: false,
+            toolbar: true,
             mobile_settings: false,
             draw: false,
             ows: true,
@@ -371,8 +372,16 @@ export default ['config', '$rootScope',
             saveMap: true,
             language: true,
             permalink: true,
-            compositionLoadingProgress: false
+            compositionLoadingProgress: false,
+            sensors: false,
+            routing: false,
+            tracking: false,
+            explorer: false,
+            filter: false,
         };
+
+        let nonSidebarPanels = ['toolbar','compositionLoadingProgress','styler'];
+
         angular.forEach(panelsEnabledDefaults, (value, key) => {
             if (typeof config.panelsEnabled == 'undefined' ||
                 typeof config.panelsEnabled[key] == 'undefined')
@@ -381,12 +390,11 @@ export default ['config', '$rootScope',
         angular.forEach(config.panelsEnabled, (value, key) => {
             me.panelEnabled(key, value)
         })
-        me.populateEnabledPanels = function(){
-            if(me.panelsEnabled == 0 && document.getElementsByClassName("sidebar-item").length>0){
-                me.panelsEnabled = document.getElementsByClassName("sidebar-item").length;
-            }
-            else {return}
-        }
+
+        angular.forEach(me.panel_enabled, (value, key) => {
+            if (me.panel_enabled[key] && !nonSidebarPanels.includes(key)) { me.panelsEnabled += 1 }
+        })
+
         return me;
     }
 ]
