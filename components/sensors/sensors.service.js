@@ -1,7 +1,57 @@
 import moment from 'moment';
 import { default as vegaEmbed } from 'vega-embed';
+import { WKT } from 'ol/format';
+import VectorLayer from 'ol/layer/Vector';
+import { Vector as VectorSource } from 'ol/source';
+import { Style, Icon, Stroke, Fill, Circle, Text } from 'ol/style';
 
-export default ['hs.utils.service', '$http', 'config', function (utils, $http, config) {
+var labelStyle = new Style({
+    geometry: function (feature) {
+        var geometry = feature.getGeometry();
+        if (geometry.getType() == 'MultiPolygon') {
+            // Only render label for the widest polygon of a multipolygon
+            var polygons = geometry.getPolygons();
+            var widest = 0;
+            for (var i = 0, ii = polygons.length; i < ii; ++i) {
+                var polygon = polygons[i];
+                var width = getWidth(polygon.getExtent());
+                if (width > widest) {
+                    widest = width;
+                    geometry = polygon;
+                }
+            }
+        }
+        return geometry;
+    },
+    text: new Text({
+        font: '12px Calibri,sans-serif',
+        overflow: true,
+        fill: new Fill({
+            color: '#000'
+        }),
+        stroke: new Stroke({
+            color: '#fff',
+            width: 3
+        })
+    })
+});
+
+var bookmarkStyle = [new Style({
+    fill: new Fill({
+        color: 'rgba(255, 255, 255, 0.2)'
+    }),
+    stroke: new Stroke({
+        color: '#e49905',
+        width: 2
+    }),
+    image: new Icon({
+        src: require('../../components/styles/img/svg/wifi8.svg'),
+        crossOrigin: 'anonymous',
+        anchor: [0.5, 1]
+    })
+}), labelStyle];
+
+export default ['hs.utils.service', '$http', 'config', 'hs.map.service', function (utils, $http, config, hsMap) {
     var me = this;
     var endpoint = config.senslog;
 
@@ -9,9 +59,25 @@ export default ['hs.utils.service', '$http', 'config', function (utils, $http, c
         units: [],
         sensorsSelected: [],
         sensorIdsSelected: [],
+        layers: null,
         selectSensor(sensor) {
             me.sensorsSelected = [sensor];
             me.sensorIdsSelected = [sensor.sensor_id]
+        },
+        createLayer() {
+            me.layer = new VectorLayer({
+                title: 'Sensor units',
+                synchronize: true,
+                editor: {
+                    editable: false
+                },
+                style: function (feature) {
+                    labelStyle.getText().setText(feature.get('name'));
+                    return bookmarkStyle;
+                },
+                source: new VectorSource({})
+            });
+            hsMap.map.addLayer(me.layer)
         },
         /**
          * @memberof hs.sensors.service
@@ -19,14 +85,27 @@ export default ['hs.utils.service', '$http', 'config', function (utils, $http, c
          * @description Get list of units from Senslog backend
          */
         getUnits() {
-            var url = utils.proxify(`${endpoint.url}/senslogOT/rest/unit`);
+            if (me.layer == null) me.createLayer();
+            var url = utils.proxify(`${endpoint.url}/senslog-lite/rest/unit`);
             $http.get(url, {
                 params: {
                     user_id: endpoint.user_id
                 }
             }).then(response => {
                 me.units = response.data;
-                $http.get(utils.proxify(`${endpoint.url}/MapLogOT/SensorService`), {
+                let features = me.units
+                    .filter(unit => unit.unit_position && unit.unit_position.asWKT)
+                    .map(unit => {
+                        const format = new WKT();
+                        const feature = format.readFeature(unit.unit_position.asWKT, {
+                            dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
+                        })
+                        feature.set('name', unit.description);
+                        return feature
+                    })
+                me.layer.getSource().addFeatures(features);
+
+                $http.get(utils.proxify(`${endpoint.url}/senslog1/SensorService`), {
                     params: {
                         Operation: 'GetLastObservations',
                         group: endpoint.group,
@@ -61,7 +140,7 @@ export default ['hs.utils.service', '$http', 'config', function (utils, $http, c
          */
         getObservationHistory(unit, interval) {
             return new Promise((resolve, reject) => {
-                var url = utils.proxify(`${endpoint.url}/senslogOT/rest/observation`);
+                var url = utils.proxify(`${endpoint.url}/senslog-lite/rest/observation`);
                 var from_time = moment().subtract(interval.amount, interval.unit);
                 from_time = `${from_time.format('YYYY-MM-DD')} ${from_time.format('HH:mm:ssZ')}`;
                 $http.get(url, {
