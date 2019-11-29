@@ -8,12 +8,6 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
 
         OlMap.loaded().then(map => {
             map.addOverlay(popup);
-            if (Base.currentPanelQueryable()) {
-                if (!Base.queryActive) Base.activateQueries();
-            }
-            else {
-                if (Base.queryActive) Base.deactivateQueries();
-            }
         });
 
         try {
@@ -91,14 +85,6 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
         $scope.$on('queryVectorResult', function () {
             if (!$scope.$$phase) $scope.$digest();
         });
-
-        $scope.$watch(() => layoutService.sidebarExpanded, () => {
-            if (layoutService.sidebarExpanded && Base.currentPanelQueryable()) {
-                if (!Base.queryActive) Base.activateQueries();
-            } else {
-                if (Base.queryActive) Base.deactivateQueries();
-            }
-        })
 
         //add current panel queriable - activate/deactivate
         $scope.$on('core.mainpanel_changed', function (event, closed) {

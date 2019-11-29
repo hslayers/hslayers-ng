@@ -49,6 +49,13 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                 me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
                 $rootScope.$broadcast('queryClicked', evt);
             });
+            $rootScope.$watch(() => layoutService.sidebarExpanded, () => {
+                if (layoutService.sidebarExpanded && me.currentPanelQueryable()) {
+                    if (!me.queryActive) me.activateQueries();
+                } else {
+                    if (me.queryActive) me.deactivateQueries();
+                }
+            })
         }
 
         OlMap.loaded().then(init);
