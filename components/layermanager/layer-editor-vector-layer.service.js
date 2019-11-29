@@ -11,7 +11,7 @@ export default ['hs.map.service', function (hsMap) {
     * @description Set declutter of features;
      */
     me.declutter = function (newValue, layer) {
-        if (newValue == true && layer.get('cluster') == false) {
+        if (newValue == true && !layer.get('cluster')) {
                 layer.set('hsOriginalStyle',layer.getStyle());           
             let index = hsMap.map.getLayers().getArray().indexOf(layer);
             hsMap.map.removeLayer(layer);
@@ -44,15 +44,13 @@ export default ['hs.map.service', function (hsMap) {
   * @description Set cluster for layer;
   */
     me.cluster = function (newValue, layer, distance) {
-        if (newValue == true && layer.get('declutter') == false) {
+        if (newValue == true && !layer.get('declutter')) {
             if(!layer.hsOriginalStyle){
                 layer.hsOriginalStyle = layer.getStyle();
             }
             var styleCache = {};
             layer.setSource(me.createClusteredSource(layer, distance));
-            var features = layer.getSource().getSource().getFeatures();
-
-            layer.setStyle(function (feature) {
+            layer.setStyle(function (feature, resolution) {
                 var size = feature.get('features').length;
                 if (size > 1) {
                     var textStyle = styleCache[size];
@@ -78,7 +76,10 @@ export default ['hs.map.service', function (hsMap) {
                     }
                     return textStyle;
                 } else {
-                    return layer.hsOriginalStyle;
+                    if(typeof layer.hsOriginalStyle == 'function' )
+                        return layer.hsOriginalStyle(feature, resolution)
+                    else
+                        return layer.hsOriginalStyle;
                 }
 
             })
