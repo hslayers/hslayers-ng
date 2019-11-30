@@ -12,15 +12,19 @@ export default ['hs.map.service', function (hsMap) {
      */
     me.declutter = function (newValue, layer) {
         if (newValue == true && !layer.get('cluster')) {
-                layer.set('hsOriginalStyle',layer.getStyle());           
+            if (!layer.hsOriginalStyle) {
+                layer.hsOriginalStyle = layer.getStyle();
+            }
             let index = hsMap.map.getLayers().getArray().indexOf(layer);
             hsMap.map.removeLayer(layer);
             hsMap.map.getLayers().insertAt(index,
                 me.cloneVectorLayer(layer, newValue, layer.get('cluster'))
             );
         } else {
-            layer.setStyle(() => layer.get('hsOriginalStyle'));
-            layer.setSource(layer.getSource())
+            if (typeof layer.hsOriginalStyle == 'function')
+                return layer.hsOriginalStyle(feature, resolution)
+            else
+                return layer.hsOriginalStyle;
         }
     }
     me.cloneVectorLayer = function (layer, declutter, cluster) {
@@ -45,7 +49,7 @@ export default ['hs.map.service', function (hsMap) {
   */
     me.cluster = function (newValue, layer, distance) {
         if (newValue == true && !layer.get('declutter')) {
-            if(!layer.hsOriginalStyle){
+            if (!layer.hsOriginalStyle) {
                 layer.hsOriginalStyle = layer.getStyle();
             }
             var styleCache = {};
@@ -76,7 +80,7 @@ export default ['hs.map.service', function (hsMap) {
                     }
                     return textStyle;
                 } else {
-                    if(typeof layer.hsOriginalStyle == 'function' )
+                    if (typeof layer.hsOriginalStyle == 'function')
                         return layer.hsOriginalStyle(feature, resolution)
                     else
                         return layer.hsOriginalStyle;
@@ -90,7 +94,7 @@ export default ['hs.map.service', function (hsMap) {
     }
     me.createClusteredSource = function (layer, distance) {
         return new Cluster({
-            distance: distance.value,
+            distance: distance,
             source: layer.getSource(),
         });
     }

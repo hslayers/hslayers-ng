@@ -107,6 +107,17 @@ export default {
                     else return true;
                 },
                 /**
+                 * @function isOptionsDefined
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Test if layers cluster or declutter is defined
+                 */
+                isOptionsDefined(value) {
+                    if (angular.isUndefined(value)) return;
+                    else return true;
+                },
+
+                /**
                 * @function Declutter
                 * @memberOf hs.layermanager.controller
                 * @description Set declutter of features;
@@ -136,7 +147,7 @@ export default {
                     if (arguments.length) {
                         layer.set('cluster', newValue);
                         if (!angular.isUndefined(layer) && (!angular.isUndefined(newValue))) {
-                            vectorLayerService.cluster(newValue, layer, $scope.distance);
+                            vectorLayerService.cluster(newValue, layer, $scope.distance.value);
                             $scope.$emit('compositions.composition_edited');
                         }
                     } else {

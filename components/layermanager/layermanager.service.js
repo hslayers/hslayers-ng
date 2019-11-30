@@ -12,8 +12,8 @@ import WFS from 'ol/format';
 
 
 export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
-    'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.wms.getCapabilitiesService','hs.layerEditorVectorLayer.service',
-    function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST, WMTSgetCapabilitiesService, WFSgetCapabilitiesService, WMSgetCapabilitiesService,vectorLayerService) {
+    'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapabilitiesService', 'hs.wms.getCapabilitiesService', 'hs.layerEditorVectorLayer.service',
+    function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST, WMTSgetCapabilitiesService, WFSgetCapabilitiesService, WMSgetCapabilitiesService, vectorLayerService) {
         var me = {};
 
         /**
@@ -97,7 +97,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             //WMST.layerIsWmsT(layer);
             loadingEvents(layer);
             layer.on('change:visible', layerVisibilityChanged)
-            // if(layerUtils.isLayerVectorLayer(layer) && layer.get('cluster')) vectorLayerService.cluster();
+            if (layerUtils.isLayerVectorLayer(layer) && layer.get('cluster')) vectorLayerService.cluster(true, layer, "40");
             if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
             /**
             * @ngdoc property
