@@ -1,4 +1,4 @@
-import { Stroke, Fill, Circle, RegularShape } from 'ol/style';
+import { Stroke, Fill, Circle, RegularShape, Text, Style } from 'ol/style';
 import { transform, get as getProj, METERS_PER_UNIT, transformExtent } from 'ol/proj';
 import { WMSCapabilities, WMTSCapabilities } from 'ol/format';
 import VectorLayer from 'ol/layer/Vector';
@@ -14,9 +14,9 @@ export default {
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
         'hs.legend.service', 'hs.styler.service', 'hs.map.service',
-        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service', 'hs.layerEditor.sublayerService',
+        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service', 'hs.layerEditor.sublayerService', 'hs.layerEditorVectorLayer.service',
         function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, WMSgetCapabilitiesService, $rootScope, $timeout, layoutService,
-            subLayerService) {
+            subLayerService, vectorLayerService) {
             $scope.distance = {
                 value: 40
             };
@@ -107,6 +107,17 @@ export default {
                     else return true;
                 },
                 /**
+                 * @function isOptionsDefined
+                 * @memberOf hs.layermanager.controller
+                 * @param {Ol.layer} layer Selected layer
+                 * @description Test if layers cluster or declutter is defined
+                 */
+                isOptionsDefined(value) {
+                    if (angular.isUndefined(value)) return;
+                    else return true;
+                },
+
+                /**
                 * @function Declutter
                 * @memberOf hs.layermanager.controller
                 * @description Set declutter of features;
@@ -115,31 +126,16 @@ export default {
                     if (!$scope.$ctrl.currentLayer) return;
                     let layer = $scope.olLayer();
                     if (arguments.length) {
-                        layer.set('declutter', newValue);
-                            let index = hsMap.map.getLayers().getArray().indexOf(layer);
-                            hsMap.map.removeLayer(layer);
-                            hsMap.map.getLayers().insertAt(index,
-                                $scope.cloneVectorLayer(layer, newValue,layer.get('cluster'))
-                            );
+                        if (!angular.isUndefined(layer) && (!angular.isUndefined(newValue))) {
+                            layer.set('declutter', newValue);
+                            vectorLayerService.declutter(newValue, layer);
                             $scope.$emit('compositions.composition_edited');
+                        }
+                    } else {
+                        return layer.get('declutter');
                     }
-                    return layer.get('declutter');
                 },
-                cloneVectorLayer(layer, declutter,cluster) {
-                    let options = {};
-                    layer.getKeys().forEach(k => options[k] = layer.get(k));
-                    angular.extend(options, {
-                        declutter,
-                        cluster,
-                        source: layer.getSource(),
-                        style: layer.getStyleFunction() || layer.getStyle(),
-                        maxResolution: layer.getMaxResolution(),
-                        minResolution: layer.getMinResolution(),
-                        visible: layer.getVisible(),
-                        opacity: layer.getOpacity()
-                    });
-                    return new VectorLayer(options)
-                },
+
                 /**
               * @function cluster
               * @memberOf hs.layermanager.controller
@@ -150,29 +146,24 @@ export default {
                     let layer = $scope.olLayer();
                     if (arguments.length) {
                         layer.set('cluster', newValue);
-                        layer.setSource($scope.createClusteredSource());
-                        $scope.$emit('compositions.composition_edited');
+                        if (!angular.isUndefined(layer) && (!angular.isUndefined(newValue))) {
+                            vectorLayerService.cluster(newValue, layer, $scope.distance.value);
+                            $scope.$emit('compositions.composition_edited');
+                        }
+                    } else {
+                        return layer.get('cluster');
                     }
-                    return layer.get('cluster');
                 },
                 /**
                 * @function changeDistance
                 * @memberOf hs.layermanager.controller
-                * @description Set distance between features;
+                * @description Set distance between cluster features;
                 */
                 changeDistance() {
                     if (!$scope.$ctrl.currentLayer) return;
                     let layer = $scope.olLayer();
-                    if(angular.isUndefined(layer.getSource().setDistance)) return;
+                    if (angular.isUndefined(layer.getSource().setDistance)) return;
                     layer.getSource().setDistance($scope.distance.value);
-                },
-                createClusteredSource() {
-                    if (!$scope.$ctrl.currentLayer) return;
-                    let layer = $scope.olLayer();
-                    return new Cluster({
-                        distance: $scope.distance.value,
-                        source: layer.getSource()
-                    });
                 },
                 /**
                  * @function toggleLayerRename
@@ -242,11 +233,11 @@ export default {
                     return layerUtils.layerIsStyleable($scope.olLayer())
                 },
                 /**
-    * @function hasCopyright
-    * @memberOf hs.layermanager.controller
-    * @description Determines if layer has metadata information avaliable * 
-    * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
-    */
+        * @function hasCopyright
+        * @memberOf hs.layermanager.controller
+        * @description Determines if layer has metadata information avaliable * 
+        * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+        */
                 hasMetadata(layer) {
                     if (!$scope.$ctrl.currentLayer) return;
                     else {

@@ -14,6 +14,7 @@ import layerEditorComponent from './layer-editor.component';
 import layermanagerGalleryDirective from './layermanager-gallery.directive';
 import layerEditorSubLayerCheckboxesDirective from './layer-editor.sub-layer-checkboxes.directive';
 import layerEditorSubLayerService from './layer-editor.sub-layer.service';
+import layerEditorVectorLayerService from './layer-editor-vector-layer.service';
 
 /**
  * @ngdoc module
@@ -106,6 +107,14 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      * @description Panel for editing selected layer parameters
      */
     .component('hs.layerEditor', layerEditorComponent)
+         /**
+     * @module hs.layerEditor
+     * @name hs.layer-editor
+     * @ngdoc service
+     * @description Service for layer editor management.
+     * manages layer clustering and decluttering
+     */
+    .service('hs.layerEditorVectorLayer.service', layerEditorVectorLayerService)
 
      /**
      * @module hs.layermanager
