@@ -11,8 +11,8 @@ module.exports = function(config) {
         reporters:  ['mocha'],
 
         logLevel: config.LOG_INFO,
-        autoWatch: false,
-        singleRun: true,
+        autoWatch: typeof process.env.watch == 'undefined' ? false :  process.env.watch,
+        singleRun: typeof process.env.watch == 'undefined' ? true : !process.env.watch,
         colors: true,
         port: 9876,
 

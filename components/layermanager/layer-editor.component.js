@@ -251,8 +251,6 @@ export default {
                  * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
                  */
                 hasCopyright(layer) {
-                    console.log($scope.$ctrl.currentLayer);
-
                     if (!$scope.$ctrl.currentLayer) return;
                     else {
                         if (layer.layer.get('Attribution')) {
