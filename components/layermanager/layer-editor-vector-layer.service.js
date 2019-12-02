@@ -11,28 +11,23 @@ export default ['hs.map.service', function (hsMap) {
     * @description Set declutter of features;
      */
     me.declutter = function (newValue, layer) {
+        let index = hsMap.map.getLayers().getArray().indexOf(layer);
         if (newValue == true && !layer.get('cluster')) {
-            if (!layer.hsOriginalStyle) {
-                layer.hsOriginalStyle = layer.getStyle();
-            }
-            let index = hsMap.map.getLayers().getArray().indexOf(layer);
             hsMap.map.removeLayer(layer);
             hsMap.map.getLayers().insertAt(index,
-                me.cloneVectorLayer(layer, newValue, layer.get('cluster'))
+                me.cloneVectorLayer(layer, newValue)
             );
         } else {
-            if (typeof layer.hsOriginalStyle == 'function')
-                return layer.hsOriginalStyle(feature, resolution)
-            else
-                return layer.hsOriginalStyle;
+            hsMap.map.removeLayer(layer);
+            hsMap.map.getLayers().insertAt(index,
+                me.cloneVectorLayer(layer, false));
         }
     }
-    me.cloneVectorLayer = function (layer, declutter, cluster) {
+    me.cloneVectorLayer = function (layer, declutter) {
         let options = {};
         layer.getKeys().forEach(k => options[k] = layer.get(k));
         angular.extend(options, {
             declutter,
-            cluster,
             source: layer.getSource(),
             style: layer.getStyleFunction() || layer.getStyle(),
             maxResolution: layer.getMaxResolution(),
@@ -48,10 +43,10 @@ export default ['hs.map.service', function (hsMap) {
   * @description Set cluster for layer;
   */
     me.cluster = function (newValue, layer, distance) {
+        if (!layer.hsOriginalStyle) {
+            layer.hsOriginalStyle = layer.getStyle();
+        }
         if (newValue == true && !layer.get('declutter')) {
-            if (!layer.hsOriginalStyle) {
-                layer.hsOriginalStyle = layer.getStyle();
-            }
             var styleCache = {};
             layer.setSource(me.createClusteredSource(layer, distance));
             layer.setStyle(function (feature, resolution) {
@@ -88,7 +83,12 @@ export default ['hs.map.service', function (hsMap) {
 
             })
         } else {
-            layer.setStyle(() => layer.hsOriginalStyle);
+            layer.setStyle(function () {
+                if (typeof layer.hsOriginalStyle == 'function')
+                    return layer.hsOriginalStyle();
+                else
+                    return layer.hsOriginalStyle;
+            });
             layer.setSource(layer.getSource().getSource())
         }
     }
