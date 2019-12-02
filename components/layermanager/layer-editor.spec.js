@@ -21,20 +21,26 @@ describe('layermanager', function () {
         angular.mock.module('hs.layermanager')
     }); //<--- Hook module
 
-
     beforeEach(inject(function (_$componentController_, $rootScope) {
         scope = $rootScope.$new();
         $componentController = _$componentController_;
     }));
 
-    it('Clusterization', function () {
+    it('clusterization', function () {
         var ctrl = $componentController('hs.layerEditor', { $scope: scope }, { currentLayer: { layer: layerForCluster } });
         scope.cluster(true);
 
         expect(layerForCluster.get('cluster')).toBe(true);
         expect(layerForCluster.getSource().getSource).toBeDefined();
 
-        scope.changeDistance($scope.distance)
+        scope.distance.value = 15;
+        scope.changeDistance(scope.distance.value);
+        expect(layerForCluster.getSource().getDistance()).toBe(15);
+
+        //Turn clusterization off
+        scope.cluster(false);
+        expect(layerForCluster.getSource().getSource).toBeUndefined();
+
     });
 });
 
