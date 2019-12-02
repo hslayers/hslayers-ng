@@ -97,6 +97,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             //WMST.layerIsWmsT(layer);
             loadingEvents(layer);
             layer.on('change:visible', layerVisibilityChanged)
+            if (layerUtils.isLayerVectorLayer(layer) && layer.get('cluster') && layer.get('declutter')) layer.set('declutter',false);
             if (layerUtils.isLayerVectorLayer(layer) && layer.get('cluster')) vectorLayerService.cluster(true, layer, "40");
             if (typeof layer.get('position') == 'undefined') layer.set('position', getMyLayerPosition(layer));
             /**
