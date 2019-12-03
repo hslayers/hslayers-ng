@@ -38,11 +38,6 @@
         <span class="sidebar-item-title" translate>Measurements</span>
     </a>
 
-    <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.lodexplorer.controller') && panelEnabled('explorer')" ng-click="setMainPanel('lodexplorer')" ng-class="{active: layoutService.mainpanel == 'lodexplorer'}">
-        <span class="menu-icon icon-sharedhosting"></span>
-        <span class="sidebar-item-title">Eurostat explorer</span>
-    </a>
-
     <a href="#" class="sidebar-item list-group-item" ng-if="Core.exists('hs.routing.controller') && panelEnabled('routing')" ng-click="setMainPanel('routing')" ng-class="{active: layoutService.mainpanel == 'routing'}">
         <span class="menu-icon icon-road"></span>
         <span class="sidebar-item-title">Routing</span>

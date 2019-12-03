@@ -373,10 +373,9 @@ export default ['config', '$rootScope',
             language: true,
             permalink: true,
             compositionLoadingProgress: false,
-            sensors: false,
-            routing: false,
-            tracking: false,
-            explorer: false,
+            sensors: true,
+            routing: true,
+            tracking: true,
             filter: false,
         };
 
