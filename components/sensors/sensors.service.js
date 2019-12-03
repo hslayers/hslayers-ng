@@ -208,6 +208,23 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                 me.sensorIdsSelected.indexOf(s.sensor_id) > -1
             );
             if (sensorDesc.length > 0) sensorDesc = sensorDesc[0];
+            let observations = me.observations.reduce(
+                (acc, val) => acc.concat(
+                    val.sensors
+                        .filter(s => me.sensorIdsSelected.indexOf(s.sensor_id) > -1)
+                        .map(s => {
+                            var time = moment(val.time_stamp);
+                            s.sensor_name = sensorDesc.sensor_name;
+                            s.time = time.format('DD.MM.YYYY HH:mm');
+                            s.time_stamp = time.toDate();
+                            return s
+                        })
+                ), []);
+            observations.sort((a, b) => {
+                if (a.time_stamp > b.time_stamp) return 1;
+                if (b.time_stamp > a.time_stamp) return -1;
+                return 0;
+            });
             //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
             var chartData = {
                 "$schema": "https://vega.github.io/schema/vega-lite/v3.4.0.json",
@@ -226,18 +243,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                 },
                 "datasets": {
                     "data-062c25e80e0ff23df3803082d5c6f7e7":
-                        me.observations.reduce(
-                            (acc, val) => acc.concat(
-                                val.sensors
-                                    .filter(s => me.sensorIdsSelected.indexOf(s.sensor_id) > -1)
-                                    .map(s => {
-                                        s.sensor_name = sensorDesc.sensor_name;
-                                        s.time_stamp =
-                                            moment(val.time_stamp)
-                                                .format('DD.MM.YYYY HH:mm');
-                                        return s
-                                    })
-                            ), [])
+                        observations
                 },
                 "encoding": {
                     "color": {
@@ -253,7 +259,8 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                             "labelOverlap": true
                         },
                         "field": "time_stamp",
-                        "type": "nominal"
+                        "sort": false,
+                        "type": "temporal"
                     },
                     "y": {
                         "axis": {

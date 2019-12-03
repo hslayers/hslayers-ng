@@ -32,9 +32,9 @@ export default {
             timeButtonClicked(interval) {
                 sensorsService.currentInterval = interval;
                 sensorsService.getObservationHistory(
-                    $scope.$ctrl.unit,
+                    sensorsService.unit,
                     interval
-                ).then(_ => sensorService.createChart($scope.$ctrl.unit))
+                ).then(_ => sensorService.createChart(sensorsService.unit))
             }           
         });
 
