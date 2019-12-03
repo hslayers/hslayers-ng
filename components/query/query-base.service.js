@@ -40,14 +40,18 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
             map = OlMap.map;
             me.queryActive = false;
             map.on('singleclick', function (evt) {
+                $rootScope.$broadcast('mapClicked', angular.extend(evt, {
+                    coordinates: getCoordinate(evt.coordinate)
+                }));
                 if (!me.queryActive) return;
                 me.popupClassname = "";
                 if (!dataCleared) me.clearData();
                 dataCleared = false;
                 me.currentQuery = (Math.random() + 1).toString(36).substring(7);
-                getCoordinate(evt.coordinate);
+                me.setData(getCoordinate(evt.coordinate), 'coordinates', true);
+                if (!$rootScope.$$phase) $rootScope.$digest();
                 me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
-                $rootScope.$broadcast('queryClicked', evt);
+                $rootScope.$broadcast('mapQueryStarted', evt);
             });
             $rootScope.$watch(() => layoutService.sidebarExpanded, () => {
                 if (layoutService.sidebarExpanded && me.currentPanelQueryable()) {
@@ -135,8 +139,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                     "value": createStringXY(7)(coordinate)
                 }]
             };
-            me.setData(coords, 'coordinates', true);
-            if (!$rootScope.$$phase) $rootScope.$digest();
+          return coords
         }
 
         this.activateQueries = function () {
@@ -156,8 +159,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
             })
         };
 
-        this.currentPanelQueryable = function(){
-            let nonQueryablePanels = ['measure', 'compositions'];
+        this.currentPanelQueryable = function () {
+            let nonQueryablePanels = ['measure', 'compositions', 'analysis', 'sensors'];
             return (nonQueryablePanels.indexOf(layoutService.mainpanel) == -1)
         }
 

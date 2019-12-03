@@ -50,7 +50,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
 
         var deregisterQueryStatusChanged = $rootScope.$on('queryStatusChanged', function () {
             if (Base.queryActive) {
-                $scope.deregisterVectorQuery = $scope.$on('queryClicked', function (e) {
+                $scope.deregisterVectorQuery = $scope.$on('mapQueryStarted', function (e) {
                     if (config.design === 'md' && $scope.data.groups.length === 0) {
                         $scope.showNoImagesWarning();
                     }

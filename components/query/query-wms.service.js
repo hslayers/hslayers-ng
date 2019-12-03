@@ -189,7 +189,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
             return false;
         }
 
-        $rootScope.$on('queryClicked', function (e, evt) {
+        $rootScope.$on('mapQueryStarted', function (e, evt) {
             me.infoCounter = 0;
             OlMap.map.getLayers().forEach(function (layer) {
                 if (layer.get('queryFilter') != undefined) {

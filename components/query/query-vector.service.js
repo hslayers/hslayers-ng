@@ -37,7 +37,7 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
             $rootScope.$broadcast('infopanel.feature_deselected', e.element);
         });
 
-        $rootScope.$on('queryClicked', function (e) {
+        $rootScope.$on('mapQueryStarted', function (e) {
             Base.clearData('features');
             if (!Base.queryActive) return;
             me.createFeatureAttributeList();
