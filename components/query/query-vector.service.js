@@ -18,11 +18,11 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         });
         $rootScope.$broadcast('vectorSelectorCreated', me.selector);
 
-        if (Base.queryActive) OlMap.map.addInteraction(me.selector);
+        OlMap.map.addInteraction(me.selector);
 
         $rootScope.$on('queryStatusChanged', function () {
-            if (Base.queryActive) OlMap.map.addInteraction(me.selector);
-            else OlMap.map.removeInteraction(me.selector);
+            /*if (Base.queryActive) OlMap.map.addInteraction(me.selector);
+            else OlMap.map.removeInteraction(me.selector);*/
         });
 
         me.selector.getFeatures().on('add', function (e) {
