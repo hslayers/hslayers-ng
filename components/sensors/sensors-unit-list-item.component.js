@@ -17,27 +17,7 @@ export default {
              * displaying charts or reopen already existing one.
              */
             unitClicked() {
-                sensorsService.unit = $scope.$ctrl.unit;
-                $scope.$ctrl.unit.expanded = !$scope.$ctrl.unit.expanded;
-                sensorsService.selectSensor($scope.$ctrl.unit.sensors[0]);
-                if (document.querySelector('#sensor-unit-dialog') == null) {
-                    const dir = 'hs.sensors.unit-dialog';
-                    const html = `<${dir} unit="sensorsService.unit"></${dir}>`;
-                    const element = angular.element(html)[0];
-                    document.querySelector(".gui-overlay").appendChild(element);
-                    $compile(element)($scope);
-                } else {
-                    sensorsService.unitDialogVisible = true;
-                }
-                $timeout(_ => {
-                    if (angular.isUndefined(sensorsService.currentInterval))
-                        sensorsService.currentInterval = { amount: 1, unit: 'days' };
-                    sensorsService.getObservationHistory(
-                        sensorsService.unit,
-                        sensorsService.currentInterval
-                    ).then(_ => sensorsService.createChart(sensorsService.unit))
-
-                }, 0)
+                sensorsService.selectUnit($scope.$ctrl.unit)
             },
 
             /**

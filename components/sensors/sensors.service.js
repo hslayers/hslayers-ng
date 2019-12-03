@@ -51,9 +51,17 @@ var bookmarkStyle = [new Style({
     })
 }), labelStyle];
 
-export default ['hs.utils.service', '$http', 'config', 'hs.map.service', function (utils, $http, config, hsMap) {
+export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.layout.service', '$rootScope', '$compile', '$timeout', function (utils, $http, config, hsMap, layoutService, $rootScope, $compile, $timeout) {
     var me = this;
     var endpoint = config.senslog;
+
+    $rootScope.$on('vectorQuery.featureSelected', utils.debounce((event, feature) => {
+        layoutService.setMainPanel('sensors');
+        me.units.forEach(unit => unit.expanded = false);
+        me.selectUnit(me.units.filter(unit =>
+            unit.unit_id == feature.get('unit_id')
+        )[0]);
+    }))
 
     return angular.extend(me, {
         units: [],
@@ -63,6 +71,29 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', functio
         selectSensor(sensor) {
             me.sensorsSelected = [sensor];
             me.sensorIdsSelected = [sensor.sensor_id]
+        },
+        selectUnit(unit) {
+            me.unit = unit;
+            unit.expanded = !unit.expanded;
+            me.selectSensor(unit.sensors[0]);
+            if (document.querySelector('#sensor-unit-dialog') == null) {
+                const dir = 'hs.sensors.unit-dialog';
+                const html = `<${dir} unit="sensorsService.unit"></${dir}>`;
+                const element = angular.element(html)[0];
+                document.querySelector(".gui-overlay").appendChild(element);
+                $compile(element)($rootScope.$new());
+            } else {
+                me.unitDialogVisible = true;
+            }
+            $timeout(_ => {
+                if (angular.isUndefined(me.currentInterval))
+                    me.currentInterval = { amount: 1, unit: 'days' };
+                me.getObservationHistory(
+                    me.unit,
+                    me.currentInterval
+                ).then(_ => me.createChart(me.unit))
+
+            }, 0)
         },
         createLayer() {
             me.layer = new VectorLayer({
@@ -101,6 +132,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', functio
                             dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
                         })
                         feature.set('name', unit.description);
+                        feature.set('unit_id', unit.unit_id);
                         return feature
                     })
                 me.layer.getSource().addFeatures(features);
