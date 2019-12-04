@@ -56,11 +56,13 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
     var endpoint = config.senslog;
 
     $rootScope.$on('vectorQuery.featureSelected', utils.debounce((event, feature) => {
-        layoutService.setMainPanel('sensors');
-        me.units.forEach(unit => unit.expanded = false);
-        me.selectUnit(me.units.filter(unit =>
-            unit.unit_id == feature.get('unit_id')
-        )[0]);
+        if (feature.getLayer(hsMap.map) == me.layer) {
+            layoutService.setMainPanel('sensors');
+            me.units.forEach(unit => unit.expanded = false);
+            me.selectUnit(me.units.filter(unit =>
+                unit.unit_id == feature.get('unit_id')
+            )[0]);
+        }
     }))
 
     return angular.extend(me, {
