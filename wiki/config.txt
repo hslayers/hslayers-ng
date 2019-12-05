@@ -274,16 +274,17 @@ Dictionary for overriding of side panel widths for each of the main components. 
 
 Dictionary for overriding panel visibility. If module is loaded, then panel is visible by default:
 {
-    compositions: true,
+    composition_browser: true,
     toolbar: false,
     mobile_settings: false,
     draw: false,
-    ows: true,
+    datasource_selector: true,
     layermanager: true,
     print: true,
     saveMap: true,
     language: true,
     permalink: true,
+    feature_crossfilter: true,
     compositionLoadingProgress: false 
 }
 

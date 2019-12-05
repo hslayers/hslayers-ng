@@ -1,33 +1,61 @@
-export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service', 'hs.language.service', 'hs.layout.service',
-    function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, service, languageService, layoutService) {
-        $scope.Core = Core;
-        $scope.languageService = languageService;
-        $scope.panelEnabled = layoutService.panelEnabled;
-        $scope.layoutService = layoutService;
-        /**
-         * Set current active panel in sidebar
-         * @memberof hs.sidebar.controller
-         * @function setMainPanel
-         * @param {string} which Name of panel to set active
-         */
-        $scope.setMainPanel = function (which) {
-            $timeout(function () { layoutService.setMainPanel(which, true); })
-        }
+export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service', 'hs.language.service', 'hs.layout.service', 'gettext',
+    function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, service, languageService, layoutService, gettext) {
+        $scope = angular.extend($scope, {
+            layoutService,
+            buttons: [
+                { panel: 'composition_browser', module: 'hs.compositions', title: gettext('Map Compositions'), description: gettext('List available map compositions'), icon: 'icon-map' },
+                { panel: 'layermanager', module: 'hs.layermanager', title: gettext('Layer Manager'), description: gettext('Manage and style your layers in composition'), icon: 'icon-layers' },
+                { panel: 'legend', module: 'hs.legend', title: gettext('Legend'), description: gettext('Legend'), icon: 'icon-dotlist' },
+                { panel: 'datasource_selector', module: 'hs.datasource_selector', title: gettext('Add layers'), description: gettext('Select data or services for your map composition'), icon: 'icon-database' },
+                { panel: 'feature_crossfilter', module: 'hs.feature_crossfilter.controller', title: gettext('Filter features'), description: gettext('Crossfilter'), icon: 'icon-analytics-piechare' },
+                { panel: 'measure', module: 'hs.measure.controller', title: gettext('Measurements'), description: gettext('Measure distance or area at map'), icon: 'icon-design' },
+                { panel: 'routing', module: 'hs.routing.controller', title: gettext('Routing'), description: gettext(''), icon: 'icon-road' },
+                { panel: 'tracking', module: 'hs.tracking.controller', title: gettext('Tracking'), description: gettext(''), icon: 'icon-screenshot' },
+                { panel: 'print', module: 'hs.print', title: gettext('Print'), description: gettext('Print map'), icon: 'icon-print' },
+                { panel: 'permalink', module: 'hs.permalink', title: gettext('Share map'), description: gettext('Share map'), icon: 'icon-share-alt' },
+                { panel: 'saveMap', module: 'hs.save-map', title: gettext('Save composition'), description: gettext('Save content of map to composition'), icon: 'icon-save-floppy' },
+                { panel: 'sensors', module: 'hs.sensors', title: gettext('Sensors'), description: gettext(''), icon: 'icon-weightscale' },
+                { panel: 'language', module: 'hs.language.controller', title: gettext('Change language'), description: gettext('Change language'), content: function () { languageService.getCurrentLanguageCode().toUpperCase() } },
+                { panel: 'mobile_settings', module: 'hs.mobile_settings.controller', title: gettext('Application settings'), description: gettext('Specify application user settings'), icon: 'icon-settingsandroid' },
+                { panel: 'info', module: 'hs.query', title: gettext('Info panel'), description: gettext('Display map-query result information'), icon: 'icon-info-sign' }
+            ],
+            
+             /**
+             * Calculate visibility of button by taking into account if its 
+             * module is loaded and if the button is enabled in conf 
+             * panelsEnabled object.
+             * @memberof hs.sidebar.controller
+             * @function buttonVisible
+             * @param {object} button Button definition object
+             */
+            buttonVisible(button) {
+                return Core.exists(button.module) && layoutService.panelEnabled(button.panel);
+            },
+
+            /**
+             * Set current active panel in sidebar
+             * @memberof hs.sidebar.controller
+             * @function setMainPanel
+             * @param {string} which Name of panel to set active
+             */
+            setMainPanel(which) {
+                $timeout(function () { layoutService.setMainPanel(which, true); })
+            },
+
+            /**
+             * Toggle sidebar mode between expanded and narrow
+             * @memberof hs.sidebar.controller
+             * @function toggleSidebar
+             */
+            toggleSidebar() {
+                layoutService.sidebarExpanded = !layoutService.sidebarExpanded;
+            }
+        });
+
 
         if (bus.getParamValue('hs_panel')) {
             $scope.setMainPanel(bus.getParamValue('hs_panel'));
         }
-
-        $scope.service = service;
-
-        /**
-         * Toggle sidebar mode between expanded and narrow
-         * @memberof hs.sidebar.controller
-         * @function toggleSidebar
-         */
-        $scope.toggleSidebar = function () {
-            layoutService.sidebarExpanded = !layoutService.sidebarExpanded;
-        };
 
         $scope.$emit('scope_loaded', "Sidebar");
     }
