@@ -15,7 +15,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
                 { panel: 'permalink', module: 'hs.permalink', title: gettext('Share map'), description: gettext('Share map'), icon: 'icon-share-alt' },
                 { panel: 'saveMap', module: 'hs.save-map', title: gettext('Save composition'), description: gettext('Save content of map to composition'), icon: 'icon-save-floppy' },
                 { panel: 'sensors', module: 'hs.sensors', title: gettext('Sensors'), description: gettext(''), icon: 'icon-weightscale' },
-                { panel: 'language', module: 'hs.language.controller', title: gettext('Change language'), description: gettext('Change language'), content: function () { languageService.getCurrentLanguageCode().toUpperCase() } },
+                { panel: 'language', module: 'hs.language.controller', title: gettext('Change language'), description: gettext('Change language'), content: function () {return languageService.getCurrentLanguageCode().toUpperCase() } },
                 { panel: 'mobile_settings', module: 'hs.mobile_settings.controller', title: gettext('Application settings'), description: gettext('Specify application user settings'), icon: 'icon-settingsandroid' },
                 { panel: 'info', module: 'hs.query', title: gettext('Info panel'), description: gettext('Display map-query result information'), icon: 'icon-info-sign' }
             ],
