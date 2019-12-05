@@ -956,7 +956,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     #sidebar ~ div#panelplace
     {
         margin: auto;
-        min-height: 35vh;
+        height: 35vh;
         padding-top: 0.5em;
         scrollbar-width: none;
     }
