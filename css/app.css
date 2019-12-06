@@ -882,7 +882,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 /**********************************/
 
 @media only screen and (max-width: 767px) {
-    #content-wrapper .sidebar-item-title:not(#minisidebar) {
+    #content-wrapper .sidebar-item-title:not(#hs-minisidebar) {
         display:none;
     }
     input[type=checkbox]{
@@ -945,7 +945,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     #content-wrapper div.panelspace #sidebar .sidebar-list{
         width: 100% ;
     }
-    #content-wrapper div.panelspace #minisidebar .sidebar-list{
+    #content-wrapper div.panelspace #hs-minisidebar .sidebar-list{
         width: 100% ;
     }
 
@@ -962,14 +962,14 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     /* .sb-left.open #toolbar {
        margin-left: 310px;
     }*/
-    #minisidebar .sidebar-list{
+    #hs-minisidebar .sidebar-list{
         flex-direction: row !important;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
         margin: auto;
     }
-    #minisidebar .sidebar-item {
+    #hs-minisidebar .sidebar-item {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -978,13 +978,13 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
         height: 80px;
 
     }
-    #minisidebar .sidebar-item-title{
+    #hs-minisidebar .sidebar-item-title{
         display: block !important;
         margin: 0;
         font-size: 10px;
     }
 
-   #minisidebar .list-group-item{
+   #hs-minisidebar .list-group-item{
         border: none;
         background-color: unset;
     }
@@ -994,7 +994,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     #sidebar .panelHidden {
         display: none !important;
     }
-    #minisidebar .sidebar-item:not(.panelHidden){
+    #hs-minisidebar .sidebar-item:not(.panelHidden){
         display: none !important;
     }
     .panel-footer {
