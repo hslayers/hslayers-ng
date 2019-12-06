@@ -19,7 +19,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
                 { panel: 'mobile_settings', module: 'hs.mobile_settings.controller', title: gettext('Application settings'), description: gettext('Specify application user settings'), icon: 'icon-settingsandroid' },
                 { panel: 'info', module: 'hs.query', title: gettext('Info panel'), description: gettext('Display map-query result information'), icon: 'icon-info-sign' }
             ],
-            
+            visibleButtons: [],
              /**
              * Calculate visibility of button by taking into account if its 
              * module is loaded and if the button is enabled in conf 
@@ -29,7 +29,31 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
              * @param {object} button Button definition object
              */
             buttonVisible(button) {
-                return Core.exists(button.module) && layoutService.panelEnabled(button.panel);
+                if (Core.exists(button.module) && layoutService.panelEnabled(button.panel)){
+                    if(!$scope.visibleButtons.includes(button.panel)) !$scope.visibleButtons.push(button.panel)
+                    return true
+                }
+            },
+            /**
+            * @ngdoc method
+            * @name hs.sidebar.controller#fitsSidebar 
+            * @public
+            * @param {String} which Sidear button to be checked (specify panel name)
+            * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
+            * @description Toggles minisidebar button
+            */
+            fitsSidebar(which){
+                if (window.innerWidth > 767) {
+                    layoutService.minisidebar = false;
+                    return true
+                }
+                else {
+                    if (( $scope.visibleButtons.indexOf(which)+1) >= (window.innerWidth / 60) && (window.innerWidth / 60) <=  $scope.visibleButtons.length-1 ) {
+                        layoutService.minisidebar = true;
+                        return true
+                    }
+                    if (window.innerWidth > ( $scope.visibleButtons.length-1)* 60) layoutService.minisidebar = false;
+                }
             },
 
             /**
@@ -54,6 +78,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
 
 
         if (bus.getParamValue('hs_panel')) {
+            if (angular.isUndefined(document.getElementById("minisidebar")))
             $scope.setMainPanel(bus.getParamValue('hs_panel'));
         }
 
