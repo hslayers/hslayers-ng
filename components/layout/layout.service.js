@@ -160,7 +160,6 @@ export default ['config', '$rootScope',
             * @description Helper property for showing some button on smaller screens
             */
             smallWidth: false,
-            classicSidebar: true,
             /**
             * @ngdoc method
             * @name hs.layout.service#panelVisible 
@@ -302,15 +301,11 @@ export default ['config', '$rootScope',
                 if (layoutWidth <= 767) {
                     tmp = layoutWidth;
                     me.sidebarToggleable = false;
-                    if (layoutWidth < (me.panelsEnabled + 1) * 53.6) { me.classicSidebar = false }
-                    else {
-                        me.classicSidebar = true
-                    }
+
                     return tmp;
                 }
                 else {
                     me.sidebarToggleable = true;
-                    me.classicSidebar = true
                 }
                 if (me.sidebarExpanded && me.sidebarVisible()) {
                     if (panelWidths[me.mainpanel])
@@ -351,11 +346,17 @@ export default ['config', '$rootScope',
             * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
             */
             sidebarExpanded: false,
-
+            /**
+            * @ngdoc property
+            * @name hs.layout.service#minisidebar
+            * @public
+            * @type {Boolean} false 
+            * @description Show if minisidebar panel is visible in sidebar, allows sidebar to be visible in panelspace
+            */
+            minisidebar: false,
             widthWithoutPanelSpace() {
                 return 'calc(100% - ' + me.panelSpaceWidth() + 'px)';
             },
-            panelsEnabled: 0
 
         })
 
@@ -379,8 +380,6 @@ export default ['config', '$rootScope',
             filter: false,
         };
 
-        let nonSidebarPanels = ['toolbar','compositionLoadingProgress','styler'];
-
         angular.forEach(panelsEnabledDefaults, (value, key) => {
             if (typeof config.panelsEnabled == 'undefined' ||
                 typeof config.panelsEnabled[key] == 'undefined')
@@ -388,10 +387,6 @@ export default ['config', '$rootScope',
         })
         angular.forEach(config.panelsEnabled, (value, key) => {
             me.panelEnabled(key, value)
-        })
-
-        angular.forEach(me.panel_enabled, (value, key) => {
-            if (me.panel_enabled[key] && !nonSidebarPanels.includes(key)) { me.panelsEnabled += 1 }
         })
 
         return me;

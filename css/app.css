@@ -548,7 +548,7 @@ div#sidebar {
     width: 100%;
 }
 
-#content-wrapper.open div.panelspace:not(.labels) .sidebar-list:not(.minisidebar) {
+#content-wrapper.open div.panelspace:not(.labels) .sidebar-list {
     width: 48px;
 }
 
@@ -619,36 +619,14 @@ a.sidebar-main {
     display:none;
 }
 
-#mini-sidebar {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    top: calc(50% - 20px);
-    left: -40px;
-    z-index: 1000;
-    
-}
-
-#mini-sidebar a {
-    background-color: #fff;
-    border-bottom-right-radius: 0px;
-    border-top-right-radius: 0px;
-    border-right-width: 0px;
-}
-
-.minisidebar-panel {
-    overflow-x: auto;
-    overflow-y: auto;
-}
-
-div#content-wrapper:not(.open) .minisidebar-wrapper {
-    width: 1px !important;
-}
-
 .sublayerContainer input[type=checkbox]{
     position: absolute;
     left: -9999px;
 }
+.sublayerContainer{
+    padding-bottom: 2.5px;
+}
+
 /*************/
 /** CHECKBOXES **/
 /*************/
@@ -904,7 +882,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 /**********************************/
 
 @media only screen and (max-width: 767px) {
-    #content-wrapper .sidebar-item-title:not(.minisidebar) {
+    #content-wrapper .sidebar-item-title:not(#minisidebar) {
         display:none;
     }
     input[type=checkbox]{
@@ -967,6 +945,10 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     #content-wrapper div.panelspace #sidebar .sidebar-list{
         width: 100% ;
     }
+    #content-wrapper div.panelspace #minisidebar .sidebar-list{
+        width: 100% ;
+    }
+
     a.sidebar-item.list-group-item {
         padding: 0.55rem 1.05rem;
     }
@@ -980,28 +962,40 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     /* .sb-left.open #toolbar {
        margin-left: 310px;
     }*/
-    .minisidebar{
+    #minisidebar .sidebar-list{
         flex-direction: row !important;
         justify-content: center;
         align-items: center;
-    }
-    .minisidebar:not(.menuToggle){
         flex-wrap: wrap;
         margin: auto;
     }
-    .minisidebar .sidebar-item-title{
+    #minisidebar .sidebar-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 25%;
+        height: 80px;
+
+    }
+    #minisidebar .sidebar-item-title{
         display: block !important;
         margin: 0;
         font-size: 10px;
     }
-    .minisidebar .sidebar-item {
-        text-align: center;
-        width: 30%;
-        height: 80px;
-    }
-    .minisidebar .list-group-item:not(.menuToggle .minisidebar .list-group-item){
+
+   #minisidebar .list-group-item{
         border: none;
         background-color: unset;
+    }
+    .panel-footer {
+        padding: 5px;
+    } 
+    #sidebar .panelHidden {
+        display: none !important;
+    }
+    #minisidebar .sidebar-item:not(.panelHidden){
+        display: none !important;
     }
     .panel-footer {
         padding: 5px;
