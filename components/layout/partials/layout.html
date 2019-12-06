@@ -42,7 +42,7 @@
                             <div hs.tracking.directive              hs.draggable ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="panelVisible('tracking', this)"></div>
                             <hs.vgi-draw                            hs.draggable ng-if="Core.exists('hs.vgi-draw')" ng-show="panelVisible('draw', this)"></hs.vgi-draw>
                             <hs.sensors.panel                       hs.draggable ng-if="Core.exists('hs.sensors')" ng-show="panelVisible('sensors', this)"></hs.sensors.panel>
-                            <div hs.sidebar.directive             id="minisidebar"  hs.draggable ng-controller="hs.sidebar.controller" ng-if="Core.exists('hs.sidebar') && layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></div>
+                            <div hs.sidebar.directive             id="hs-minisidebar"  hs.draggable ng-controller="hs.sidebar.controller" ng-if="Core.exists('hs.sidebar') && layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></div>
                             <div hs.customhtml.directive                                                            ng-if="Core.exists('hs.customhtml')"></div>
                         </div>
                     </div>
