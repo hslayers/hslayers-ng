@@ -160,7 +160,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
                 var source = layer.getSource();
                 var map = OlMap.map;
                 var viewResolution = map.getView().getResolution();
-                var url = source.getGetFeatureInfoUrl(
+                var url = source.getFeatureInfoUrl(
                     coordinate, viewResolution, source.getProjection() ? source.getProjection() : map.getView().getProjection(), {
                         'INFO_FORMAT': source.getParams().INFO_FORMAT
                     });
