@@ -42,7 +42,7 @@ export default {
                     let layer = $scope.olLayer();
                     var extent = null;
                     if (layer.get("BoundingBox")) {
-                        extent = getExtentFromBoundingBoxAttribute(layer);
+                        extent = $scope.getExtentFromBoundingBoxAttribute(layer);
                     } else if (angular.isDefined(layer.getSource().getExtent)) {
                         extent = layer.getSource().getExtent();
                     }
@@ -66,7 +66,7 @@ export default {
                                 }
                                 if (angular.isObject(caps.Capability.Layer)) {
                                     layer.set('BoundingBox', caps.Capability.Layer.BoundingBox);
-                                    extent = getExtentFromBoundingBoxAttribute(layer);
+                                    extent = $scope.getExtentFromBoundingBoxAttribute(layer);
                                     if (extent != null)
                                         hsMap.map.getView().fit(extent, hsMap.map.getSize());
                                 }
@@ -415,7 +415,7 @@ export default {
                     if (angular.isUndefined(layer.opacity)) {
                         layer.opacity = layer.layer.getOpacity();
                     }
-                    if (angular.isUndefined(layer.style) && layer.layer.getSource().styleAble) getLayerStyle(layer);
+                    if (angular.isUndefined(layer.style) && layer.layer.getSource().styleAble) $scope.getLayerStyle(layer);
                     layer.expandSettings = value;
                 },
 
@@ -514,7 +514,7 @@ export default {
                  * @memberOf hs.layermanager.controller
                  * @param {Ol.layer} layer Selected layer
                  */
-                function getExtentFromBoundingBoxAttribute(layer) {
+                $scope.getExtentFromBoundingBoxAttribute = function (layer) {
                     var extent = null;
                     var bbox = layer.get("BoundingBox");
                     if (angular.isArray(bbox) && bbox.length == 4) {
@@ -536,7 +536,7 @@ export default {
                     return extent;
                 },
 
-                function getLayerStyle(wrapper) {
+                $scope.getLayerStyle = function (wrapper) {
                     var layer = wrapper.layer;
                     var source = layer.getSource();
                     wrapper.style = {};
