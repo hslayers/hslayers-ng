@@ -1,4 +1,4 @@
-export default ['$timeout', function ($timeout) {
+export default ['$timeout', 'hs.map.service', function ($timeout, hsMap) {
     var me = {};
     return angular.extend(me, {
 
@@ -10,7 +10,7 @@ export default ['$timeout', function ($timeout) {
          * @description Basic print implementation
          */
         print: function (title) {
-            var canvas = canvas = document.getElementsByTagName("canvas")[0];
+            var canvas = hsMap.getCanvas();
             var img = canvas.toDataURL("image/png");
             var win = window.open();
             var html = "<html><head></head><body><h2>" + title + "</h2><br><img src='" + img + "'/></body></html>";

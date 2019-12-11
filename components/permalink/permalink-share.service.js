@@ -1,3 +1,4 @@
+import { getVectorContext } from 'ol/render';
 export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlService', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q', 'hs.statusManagerService', 'hs.layout.service',
     function ($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q, statusManagerService, layoutService) {
         var me = {};
@@ -128,25 +129,29 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
              * @params {Object} $element DOM img element where to place the thumbnail
              * @description Generate thumbnail of current map and save it to variable and selected element
              */
-            generateThumbnail: function ($element) {
+            generateThumbnail: function ($element, newRender) {
                 if (layoutService.mainpanel == 'saveMap' || layoutService.mainpanel == 'permalink' || layoutService.mainpanel == 'shareMap') {
-                    if($element == null) return;
+                    if ($element == null) return;
                     $element.setAttribute("crossOrigin", "Anonymous");
-                    OlMap.map.once('postcompose', function (event) {
-                        var myCanvas = document.getElementById('my_canvas_id');
-                        var canvas = event.context.canvas;
+                    function rendered() {
+                        var canvas = OlMap.getCanvas();
                         var canvas2 = document.createElement("canvas");
                         var width = 256,
                             height = 256;
-                        canvas2.style.width = width + "px";
-                        canvas2.style.height = height + "px";
                         canvas2.width = width;
                         canvas2.height = height;
+
+                        canvas2.style.width = width + "px";
+                        canvas2.style.height = height + "px";
                         var ctx2 = canvas2.getContext("2d");
-                        ctx2.drawImage(canvas, canvas.width / 2 - height / 2, canvas.height / 2 - width / 2, width, height, 0, 0, width, height);
+                        ctx2.mozImageSmoothingEnabled = false;
+                        ctx2.webkitImageSmoothingEnabled = false;
+                        ctx2.msImageSmoothingEnabled = false;
+                        ctx2.imageSmoothingEnabled = false;
+                        ctx2.drawImage(canvas, canvas.width / 2 - width / 2, canvas.height / 2 - height / 2, width, height, 0, 0, width, height);
                         try {
                             $element.setAttribute('src', canvas2.toDataURL('image/png'));
-                            me.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
+                            me.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.85);
                         }
                         catch (e) {
                             console.warn(e);
@@ -154,8 +159,11 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
                         }
                         $element.style.width = width + 'px';
                         $element.style.height = height + 'px';
-                    }, me);
-                    OlMap.map.renderSync();
+                    }
+                    OlMap.map.once('postcompose', rendered, me);
+                    if (newRender) OlMap.map.renderSync(); else {
+                        rendered()
+                    }
                 }
             }
         })
@@ -219,19 +227,13 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
 
         $rootScope.$on('core.mainpanel_changed', function (event) {
             if (layoutService.mainpanel == 'permalink') {
-                OlMap.map.once('postrender', function () {
-                    me.generateThumbnail(document.getElementById('hs-permalink-thumbnail'));
-                });
+                me.generateThumbnail(document.getElementById('hs-permalink-thumbnail'));
             }
         });
 
-
-        $rootScope.$on('map.extent_changed', function (event) {
-            OlMap.map.once('postrender', function () {
-                me.generateThumbnail(document.getElementById('hs-permalink-thumbnail'));
-            });
-
-        });
+        OlMap.map.on('postcompose', utils.debounce(() => {
+            me.generateThumbnail(document.getElementById('hs-permalink-thumbnail'));
+        }, 300));
 
         $rootScope.$on('compositions.composition_loaded', function (event, data) {
             if (angular.isDefined(data.data)) {

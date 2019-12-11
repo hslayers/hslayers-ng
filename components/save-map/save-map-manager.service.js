@@ -1,8 +1,8 @@
 import { transform } from 'ol/proj';
 
 export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
-    'config', '$http', 'hs.statusManagerService', 'hs.laymanService', 'hs.layout.service',
-    function ($rootScope, OlMap, Core, saveMap, config, $http, statusManagerService, laymanService, layoutService) {
+    'config', '$http', 'hs.statusManagerService', 'hs.laymanService', 'hs.layout.service', 'hs.utils.service',
+    function ($rootScope, OlMap, Core, saveMap, config, $http, statusManagerService, laymanService, layoutService, utils) {
         var me = this;
         angular.extend(me, {
             btnSelectDeseletClicked: true,
@@ -291,10 +291,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             }
         });
 
-        $rootScope.$on('map.extent_changed', function (event) {
+        OlMap.map.on('postcompose', utils.debounce(() => {
             me.compoData.bbox = me.getCurrentExtent();
             saveMap.generateThumbnail(document.getElementById('hs-stc-thumbnail'), me.compoData);
-        });
+        }, 300));
 
         return me;
     }]

@@ -341,13 +341,12 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
          * @param {$element} $element Selected element
          * @param {$scope} $scope Angular scope from which function was called
          */
-        generateThumbnail: function ($element, localThis) {
+        generateThumbnail: function ($element, localThis, newRender) {
             if (layoutService.mainpanel == 'save-map' || layoutService.mainpanel == 'permalink' || layoutService.mainpanel == "statusCreator") {
                 if($element == null) return;
                 $element.setAttribute("crossOrigin", "Anonymous");
-                OlMap.map.once('postcompose', function (event) {
-                    var myCanvas = document.getElementById('my_canvas_id');
-                    var canvas = event.context.canvas;
+                function rendered (event) {
+                    var canvas = OlMap.getCanvas();
                     var canvas2 = document.createElement("canvas");
                     var width = 256,
                         height = 256;
@@ -367,8 +366,11 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                     }
                     $element.style.width = width + 'px';
                     $element.style.height = height + 'px';
-                }, localThis);
-                OlMap.map.renderSync();
+                }
+                OlMap.map.once('postcompose', rendered, localThis);
+                if (newRender) OlMap.map.renderSync(); else {
+                    rendered()
+                }
             }
         }
     };

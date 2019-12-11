@@ -399,6 +399,10 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         return lyr.getVisible();
     }
 
+    this.getCanvas = function(){
+        return this.mapElement.querySelector("canvas")
+    }
+
     /**
      * @ngdoc method
      * @name hs.map.service#proxifyLayerLoader
