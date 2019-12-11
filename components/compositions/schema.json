@@ -208,7 +208,7 @@
             "$id": "#/properties/layers/items/properties/opacity",
             "type": [
               "string",
-              "integer"
+              "number"
             ],
             "title": "Opacity",
             "default": "",
