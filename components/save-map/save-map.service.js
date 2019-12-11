@@ -2,7 +2,7 @@ import { Style, Icon, Circle } from 'ol/style';
 import Layer from 'ol/layer/Layer';
 import { Tile, Image as ImageLayer } from 'ol/layer';
 import { TileWMS } from 'ol/source';
-import { ImageWMS } from 'ol/source';
+import { ImageWMS, XYZ} from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import { GeoJSON } from 'ol/format';
 
@@ -255,11 +255,20 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
             // HTTPRequest
             if (utils.instOf(layer, Tile) || utils.instOf(layer, ImageLayer)) {
                 var src = layer.getSource();
+                if(layer.getMaxResolution() != null) json.maxResolution = layer.getMaxResolution();
+                if(layer.getMinResolution() != null) json.minResolution = layer.getMinResolution();
+                if(layer.get('minScale') != null) json.wmsMinScale = layer.get('minScale');
+                if(layer.get('maxScale') != null) json.wmsMaxScale = layer.get('maxScale');
+                json.displayInLayerSwitcher = layer.get('show_in_manager');
+                if (layer.get('dimensions')) {
+                    json.dimensions = layer.get('dimensions');
+                }
+                if (utils.instOf(src, XYZ)) {
+                    json.className = "XYZ";
+                }
                 if (utils.instOf(src, ImageWMS) || utils.instOf(src, TileWMS)) {
                     json.className = "HSLayers.Layer.WMS";
                     json.singleTile = utils.instOf(src, ImageWMS);
-                    json.wmsMinScale = layer.get('minScale');
-                    json.wmsMaxScale = layer.get('maxScale');
                     if (layer.get('legends')) {
                         json.legends = [];
                         var legends = layer.get('legends');
@@ -267,20 +276,15 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                             json.legends.push(encodeURIComponent(legends[i]))
                         }
                     }
-                    json.maxResolution = layer.getMaxResolution();
-                    json.minResolution = layer.getMinResolution();
-                    if (src.getUrl) json.url = encodeURIComponent(src.getUrl());
-                    if (src.getUrls) json.url = encodeURIComponent(src.getUrls()[0]);
                     if (src.getProjection()) json.projection = src.getProjection().getCode().toLowerCase();
                     json.params = src.getParams();
                     json.ratio = src.get('ratio') || src.ratio_;
                     json.subLayers = layer.get('subLayers');
-                    json.displayInLayerSwitcher = layer.get('show_in_manager');
-                    json.metadata.styles = src.get('styles');
-                    if (layer.get('dimensions')) {
-                        json.dimensions = layer.get('dimensions');
-                    }
+                    json.metadata.styles = src.get('styles');   
                 }
+                if (src.getUrl) json.url = encodeURIComponent(src.getUrl());
+                if (src.getUrls) json.url = encodeURIComponent(src.getUrls()[0]);    
+                if (src.attributions_) json.attributions = encodeURIComponent(src.attributions_);
             }
 
             // Vector

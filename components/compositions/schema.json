@@ -245,7 +245,11 @@
             "default": "",
             "enum": [
               "HSLayers.Layer.WMS",
-              "OpenLayers.Layer.Vector"
+              "OpenLayers.Layer.Vector",
+              "WMS",
+              "WFS",
+              "Vector",
+              "XYZ"
             ],
             "examples": [
               "HSLayers.Layer.WMS"
