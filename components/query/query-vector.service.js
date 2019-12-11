@@ -12,6 +12,7 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
             condition: click,
             multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false,
             filter: function (feature, layer) {
+                if(layer == null) return;
                 if (layer.get('queryable') === false) return false;
                 else return true;
             }
