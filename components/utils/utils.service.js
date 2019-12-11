@@ -1,3 +1,5 @@
+import {isFunction} from 'lodash';
+
 export default ['config', '$http', function (config, $http) {
     var me = this;
     /**
@@ -262,19 +264,20 @@ export default ['config', '$http', function (config, $http) {
 
     //Check if object is an instance of a class
     this.instOf = function (obj, type) {
-        var text = obj.constructor.toString()
-        var typetext = type.toString()
-        const textMatches = text.match(/function (.*)\(/);
-        if (textMatches == null) {
-            return false
-        }
-        const typeTextmatches = typetext.match(/function (.*)\(/);
-        if (typeTextmatches == null) {
-            return false
-        }
-        var tmp = textMatches[1] == typeTextmatches[1];
-        return tmp;
-
+        var instanceOf = function(obj, klass) {
+            if (isFunction(klass)) {
+              return obj instanceof klass;
+            }
+            obj = Object.getPrototypeOf(obj);
+            while (obj != null) {
+              if (obj.constructor.name === klass) {
+                return true;
+              }
+              obj = Object.getPrototypeOf(obj);
+            }
+            return false;
+          };
+        return instanceOf(obj, type);
     }
     this.removeDuplicates = function(myArr, prop) {
         return myArr.filter((obj, pos, arr) => {
