@@ -1,9 +1,9 @@
 <div>
     <a href="#" ng-click="unitClicked()">{{$ctrl.unit.description}}</a>
     <ul class="list-group" ng-show="$ctrl.expanded || $ctrl.unit.expanded">
-        <li ng-repeat="sensor in $ctrl.unit.sensors | filter:query" class="list-group-item">
+        <li ng-repeat="sensor in $ctrl.unit.sensors | filter:query | orderBy:'id'" class="list-group-item">
             <a ng-if="$ctrl.viewMode == 'sensors'" href="#" ng-click="sensorClicked(sensor)">
-                {{sensor.sensor_type}} <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}}</a>
+                <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}}</a>
             <a ng-if="$ctrl.viewMode == 'phenomena'" href="#" ng-click="sensorClicked(sensor)">
                 {{sensor.phenomenon_name}}</a>
             <span class="badge badge-light badge-pill float-right">{{sensor.lastObservationValue}} {{sensor.uom}}</span>
