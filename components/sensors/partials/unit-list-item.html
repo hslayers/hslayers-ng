@@ -1,7 +1,7 @@
 <div>
     <a href="#" ng-click="unitClicked()">{{$ctrl.unit.description}}</a>
     <ul class="list-group" ng-show="$ctrl.expanded || $ctrl.unit.expanded">
-        <li ng-repeat="sensor in $ctrl.unit.sensors | filter:query | orderBy:'id'" class="list-group-item">
+        <li ng-repeat="sensor in $ctrl.unit.sensors | filter:query | orderBy:'-sensor_id'" class="list-group-item">
             <a ng-if="$ctrl.viewMode == 'sensors'" href="#" ng-click="sensorClicked(sensor)">
                 <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}}</a>
             <a ng-if="$ctrl.viewMode == 'phenomena'" href="#" ng-click="sensorClicked(sensor)">
