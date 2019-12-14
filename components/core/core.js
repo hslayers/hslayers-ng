@@ -189,16 +189,22 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 */
                 initSizeListeners: function () {
                     var w = $window;
+                    /**
+                    * @ngdoc method
+                    * @name Core#updateVH 
+                    * @private
+                    * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
+                    */
+                    let updateVH = _.debounce(() => {
+                    let vh = w.innerHeight * 0.01;
+                      document.documentElement.style.setProperty('--vh', `${vh}px`);
+                    }, 150);
+
                     w.addEventListener('resize', function () {
-                        //$timeout(function(){
-                        //    me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
-                        //},100);//Hack, height of container was changed badly for no aparent reason
+                        updateVH();
                         angular.isUndefined(me.sizeOptions.selector) ? me.updateMapSize() : me.updateElementSize();
                     });
-                    if (me.deregisterOnSizeChanged) me.deregisterOnSizeChanged();
-                    me.deregisterOnSizeChanged = $rootScope.$on("Core_sizeChanged", function () {
-                        angular.isUndefined(me.sizeOptions.selector) ? me.updateMapSize() : me.updateElementSize();
-                    });
+                    
                     me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                     w.addEventListener("load", function () { //onload checker for cases when bootstrap css change box-sizing property
                         angular.isUndefined(me.sizeOptions.selector) ? me.updateMapSize() : me.updateElementSize();
