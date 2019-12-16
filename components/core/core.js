@@ -99,7 +99,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     return layoutService.closePanel(which)
                 },
                 fullScreenMap: function (element) {     
-                    console.warn('fullScreenMap will be removed from Core in future. Use hs.layout.service#closePanel method instead');
+                    console.warn('fullScreenMap will be removed from Core in future. Use hs.layout.service#fullScreenMap method instead');
                     return layoutService.fullScreenMap(element)
                 },
                 /**
