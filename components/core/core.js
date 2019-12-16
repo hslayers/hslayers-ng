@@ -98,6 +98,10 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     console.warn('closePanel will be removed from Core in future. Use hs.layout.service#closePanel method instead');
                     return layoutService.closePanel(which)
                 },
+                fullScreenMap: function (element) {     
+                    console.warn('fullScreenMap will be removed from Core in future. Use hs.layout.service#closePanel method instead');
+                    return layoutService.fullScreenMap(element)
+                },
                 /**
                 * @ngdoc method
                 * @name Core#exists 
@@ -196,6 +200,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
                     */
                     let updateVH = _.debounce(() => {
+                    if (me.sizeOptions.mode != "fullscreen") return
                     let vh = w.innerHeight * 0.01;
                       document.documentElement.style.setProperty('--vh', `${vh}px`);
                     }, 150);
@@ -253,23 +258,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     if (!$rootScope.$$phase) $rootScope.$digest();
                     $rootScope.$broadcast('Core.mapSizeUpdated', neededSize);
                 },
-                /**
-                * @ngdoc method
-                * @name Core#fullScreenMap 
-                * @public
-                * @params {Object} element HS layers element gained from directive link
-                * @description Helper function for single page HS map applications. Not reccomended, used only for compability reasons and might be removed.
-                */
-                fullScreenMap: function (element) {                  
-                    document.documentElement.style.overflow = 'hidden';
-                    document.documentElement.style.height = '100%';
-                    document.body.style.height = '100%';
-                    me.init(element, { parent: true });
-                    //me.sizeOptions.element = element;
-                    //me.sizeOptions.selector = element.parent();
-                    //me.initSizeListeners();
-                    //me.updateElementSize();
-                },
+
                 /**
                 * @ngdoc method
                 * @name Core#searchVisible 
