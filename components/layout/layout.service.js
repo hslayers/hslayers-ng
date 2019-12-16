@@ -169,6 +169,21 @@ export default ['config', '$rootScope',
             * @returns {Boolean} Panel opened/closed status
             * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
             */
+            /**
+            * @ngdoc method
+            * @name hs.layout.service#fullScreenMap 
+            * @public
+            * @params {Object} element HS layers element gained from directive link
+            * @description Helper function for single page HS map applications.
+            */
+            fullScreenMap: function (element) {                  
+                document.documentElement.style.overflow = 'hidden';
+                document.documentElement.style.height = '100%';
+                document.body.style.height = '100%';
+                me.sizeOptions.mode = 'fullscreen';
+                me.init(element, { parent: true });
+            },
+            
             panelVisible(which, scope) {
                 if (angular.isDefined(scope))
                     if (angular.isUndefined(scope.panelName)) scope.panelName = which;

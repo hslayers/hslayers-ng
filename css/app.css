@@ -660,6 +660,9 @@ a.sidebar-main {
     color: #4495eb;
     background-color: white;
 }
+.sublayerContainer .checkmark::before{
+    margin-right: 0.5em;
+}
 
 /*************/
 /** TOOLBAR **/

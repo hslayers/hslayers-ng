@@ -78,7 +78,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
 
 
         if (bus.getParamValue('hs_panel')) {
-            if(Core.exists('hs.sidebar') && layoutService.minisidebar)
+            if(Core.exists('hs.sidebar') && !layoutService.minisidebar)
             $scope.setMainPanel(bus.getParamValue('hs_panel'));
         }
 
