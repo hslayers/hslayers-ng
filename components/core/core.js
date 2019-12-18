@@ -100,7 +100,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 },
                 fullScreenMap: function (element) {     
                     console.warn('fullScreenMap will be removed from Core in future. Use hs.layout.service#fullScreenMap method instead');
-                    return layoutService.fullScreenMap(element)
+                    return layoutService.fullScreenMap(element,me)
                 },
                 /**
                 * @ngdoc method

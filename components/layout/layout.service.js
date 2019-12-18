@@ -174,14 +174,15 @@ export default ['config', '$rootScope',
             * @name hs.layout.service#fullScreenMap 
             * @public
             * @params {Object} element HS layers element gained from directive link
+            * @params {Object} hs.Core element, holds sizeOptions variable and init method
             * @description Helper function for single page HS map applications.
             */
-            fullScreenMap: function (element) {                  
+            fullScreenMap: function (element,core) {
                 document.documentElement.style.overflow = 'hidden';
                 document.documentElement.style.height = '100%';
                 document.body.style.height = '100%';
-                me.sizeOptions.mode = 'fullscreen';
-                me.init(element, { parent: true });
+                core.sizeOptions.mode = 'fullscreen';
+                core.init(element, { parent: true });
             },
             
             panelVisible(which, scope) {
