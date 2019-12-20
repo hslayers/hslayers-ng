@@ -1,12 +1,12 @@
 import 'components/utils/utils.module';
 import moment from 'moment';
 global.moment = moment;
-import '../../common/get-capabilities.module';
+import '../../../common/get-capabilities.module';
 
 export default {
     template: ['config', function (config) {
         return {
-            template: require('components/add-layers/partials/add-wmts-layer.directive.html')
+            template: require('./add-wmts-layer.directive.html')
         };
     }],
     controller: ['$scope', 'hs.map.service', 'hs.addLayersWmts.service_capabilities', 'Core', '$compile', '$rootScope',

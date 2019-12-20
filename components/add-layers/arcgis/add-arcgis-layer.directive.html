@@ -1,0 +1,70 @@
+<form class="form-horizontal" name="frmConnect" role="form">
+    <hs.add-layers-url type="Arcgis" url="url" connect="connect" field="frmConnect.url"></hs.add-layers-url>
+
+    <div ng-show="showDetails">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend" id="type_label">
+                    <span class="input-group-text control-label" translate>Image format</span>
+                </div>
+                <select class="form-control" ng-model="data.image_format">
+                    <option ng-repeat="i in data.image_formats">{{i}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend" id="type_label">
+                    <span class="input-group-text control-label" translate>Query format</span>
+                </div>
+                <select class="form-control" ng-model="data.query_format">
+                    <option ng-repeat="i in data.query_formats">{{i}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="data.srs.toUpperCase() != data.mapProjection">
+            <div class="input-group">
+                <div class="input-group-prepend" id="type_label">
+                    <span class="input-group-text control-label" translate>SRS</span>
+                </div>
+                <select class="form-control" ng-model="data.srs" ng-change="srsChanged()">
+                    <option ng-repeat="i in data.srss | limitTo: 50">{{i}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend" id="type_label">
+                    <span class="input-group-text control-label" translate>Folder name</span>
+                </div>
+                <input class="form-control" ng-model="data.path" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="capabilities_input">
+                <label class="capabilities_label control-label" translate> <input type="checkbox"
+                        ng-model="data.registerMetadata" /> Register metadata</label>
+            </div>
+        </div>
+        <hr />
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <th style="width:1em">&nbsp;</th>
+                <th translate>Name</th>
+            </thead>
+            <tbody ng-repeat="service in data.services">
+                <tr>
+                    <td><input type="checkbox" class="layer-checked" ng-model="service.checked" /></td>
+                    <td>{{service.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-primary pull-right" style="position: fixed;
+        margin-left: 570px; bottom:30px;" ng-click="addLayers(true)"><i
+            class="icon-plus"></i></button>
+    </div>
+</form>

@@ -1,0 +1,87 @@
+<form>
+    <div flex layout="row">
+        <md-input-container>
+            <label translate>Image format</label>
+            <md-select ng-model="data.image_format">
+                <md-option ng-value="i" ng-repeat="i in data.image_formats">{{ i }}</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+    <div flex layout="row">
+        <md-input-container>
+            <label translate>Query format</label>
+            <md-select ng-model="data.query_format">
+                <md-option ng-value="i" ng-repeat="i in data.query_formats">{{ i }}</md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container ng-show="data.srs.toUpperCase() != data.map_projection">
+            <label translate>SRS</label>
+            <md-select ng-model="data.srs" ng-change="srsChanged()">
+                <md-option ng-value="i" ng-repeat="i in data.srss | limitTo: 50">{{ i }}</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+    <p class="md-warn" ng-show="data.useResampling" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
+
+    <md-checkbox ng-model="data.useTiles" aria-label="Use tiles">
+        <translate>Use tiles</translate>
+    </md-checkbox>
+
+    <p class="md-warn" ng-show="!data.useTiles" translate>Consider using tiles. Some servers has restricted max size of picture.</p>
+
+    <md-input-container>
+        <label translate>Tile size</label>
+        <input ng-model="data.tileSize" >
+    </md-input-container>
+
+    <md-input-container>
+        <label translate>Folder name</label>
+        <input ng-model="data.path" >
+    </md-input-container>
+
+    <md-checkbox ng-model="data.register_metadata" aria-label="Register metadata">
+        <translate>Register metadata</translate>
+    </md-checkbox>
+    <hr/>
+
+    <md-list>
+        <md-list-item>
+            <div class="md-list-item-text" layout="column">
+                {{data.services.Title}}
+                <div layout="row">
+                    <md-button class="md-raised md-primary" ng-click="selectAllLayers()" translate>Select All Layers</md-button>
+                    <md-button class="md-raised md-primary" ng-click="addLayers(true)" aria-label="Add">
+                        <md-icon class="md-danger md-hue-2">add</md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </md-list-item>
+        <md-list-item ng-repeat="layer in data.services.Layer">
+            <div class="md-list-item-text" layout="column">
+                <md-checkbox ng-model="layer.checked" aria-label="{{layer.Title}}">
+                    {{layer.Title}}
+                </md-checkbox>
+                <md-list ng-if="hasNestedLayers(layer)">
+                    <md-list-item ng-repeat="sub_layer in layer.Layer">
+                        <div class="md-list-item-text" layout="column">
+                            <md-checkbox ng-model="sub_layer.checked" aria-label="{{sub_layer.Title}}" ng-if="!hasNestedLayers(sub_layer)">
+                                {{sub_layer.Title}}
+                            </md-checkbox>
+                            <md-list ng-if="hasNestedLayers(sub_layer)">
+                                <md-list-item ng-repeat="sub_layer2 in sub_layer.Layer">
+                                    <div class="md-list-item-text" layout="column">
+                                        <md-checkbox ng-model="sub_layer2.checked" aria-label="{{sub_layer2.Title}}">
+                                            {{sub_layer2.Title}}
+                                        </md-checkbox>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </md-list-item>
+    </md-list>
+</form>

@@ -1,7 +1,7 @@
 import VectorLayer from 'ol/layer/Vector';
 import SparqlJson from 'hs.source.SparqlJson'
 import social from 'angular-socialshare';
-import '../add-layers/add-layers-vector.module';
+import '../add-layers/vector/add-layers-vector.module';
 import {ImageWMS} from 'ol/source';
 import { TileWMS } from 'ol/source';
 import ImageLayer from 'ol/layer/Image';

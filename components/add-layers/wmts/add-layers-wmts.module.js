@@ -1,8 +1,8 @@
 import 'components/utils/utils.module';
-import { addAnchors } from '../../common/attribution-utils';
-import '../../common/get-capabilities.module';
-import resampleDialogDirective from './resample-dialog.directive';
-import capabilitiesErrorDirective from './capabilities-error.directive';
+import { addAnchors } from '../../../common/attribution-utils';
+import '../../../common/get-capabilities.module';
+import resampleDialogDirective from '../resample-dialog.directive';
+import capabilitiesErrorDirective from '../capabilities-error.directive';
 import addLayersWmtsService from './add-layers-wmts.service';
 import addLayersWmtsComponent from './add-layers-wmts.component';
 

@@ -4,9 +4,9 @@ import { Tile, Image as ImageLayer } from 'ol/layer';
 import { TileWMS } from 'ol/source';
 import { ImageWMS } from 'ol/source';
 import { Attribution } from 'ol/control.js';
-import { getPreferedFormat } from '../../common/format-utils';
-import '../../common/get-capabilities.module';
-import { addAnchors } from '../../common/attribution-utils';
+import { getPreferedFormat } from '../../../common/format-utils';
+import '../../../common/get-capabilities.module';
+import { addAnchors } from '../../../common/attribution-utils';
 import 'angular-cookies';
 
 export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',

@@ -9,9 +9,9 @@ import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import { Attribution } from 'ol/control.js';
 import addLayersWmsService from './add-layers-wms.service';
 import addLayersWmsComponent from './add-layers-wms.component';
-import resampleDialogDirective from './resample-dialog.directive';
-import capabilitiesErrorDirective from './capabilities-error.directive';
-import '../../common/get-capabilities.module';
+import resampleDialogDirective from '../resample-dialog.directive';
+import capabilitiesErrorDirective from '../capabilities-error.directive';
+import '../../../common/get-capabilities.module';
 
 /**
  * @namespace hs.addLayersWms

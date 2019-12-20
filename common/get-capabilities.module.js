@@ -1,5 +1,6 @@
 import wfsGetCapabilitiesService from './wfs/get-capabilities.service';
 import wmsGetCapabilitiesService from './wms/get-capabilities.service';
+import arcgisGetCapabilitiesService from './arcgis/get-capabilities.service';
 import wmtsGetCapabilities from './wmts/get-capabilities.service';
 import dimensionService from './dimension.service';
 
@@ -24,6 +25,15 @@ angular.module('hs.getCapabilities', [])
      * @description Service for GetCapabilities requests to WMS
      */
     .service("hs.wms.getCapabilitiesService", wmsGetCapabilitiesService)
+
+
+    /**
+     * @class hs.arcgis.getCapabilitiesService
+     * @ngdoc service
+     * @memberOf hs.getCapabilities
+     * @description Service for GetCapabilities requests to WMS
+     */
+    .service("hs.arcgis.getCapabilitiesService", arcgisGetCapabilitiesService)
 
 
     /**

@@ -1,19 +1,18 @@
 import 'components/utils/utils.module';
 import moment from 'moment';
 global.moment = moment;
-import '../../common/get-capabilities.module';
+import '../../../common/get-capabilities.module';
 
 export default {
     template: ['config', function (config) {
         return config.design == 'md' ?
-            require('components/add-layers/partials/add-wms-layer.md.directive.html') :
-            require('components/add-layers/partials/add-wms-layer.directive.html')
+            require('./add-arcgis-layer.md.directive.html') :
+            require('./add-arcgis-layer.directive.html')
     }],
-    controller: ['$scope', 'hs.map.service', 'Core', 'hs.wms.getCapabilitiesService', 'hs.addLayersWms.addLayerService', 'hs.historyListService','$timeout', function ($scope, OlMap, Core, wmsGetCapabilitiesService, LayService, historyListService, $timeout) {
+    controller: ['$scope', '$element', 'hs.map.service', 'Core', 'hs.arcgis.getCapabilitiesService', 'hs.addLayersArcgis.addLayerService', 'hs.historyListService','$timeout', function ($scope, $element, OlMap, Core, arcgisGetCapabilitiesService, LayService, historyListService, $timeout) {
         $scope.data = LayService.data;
-
         /**
-        * Clear Url and hide detailsWms
+        * Clear Url and hide detailsArcgis
         * @memberof hs.addLayers
         * @function clear
         */
@@ -23,9 +22,10 @@ export default {
         }
 
         $scope.connect = function (layerToSelect) {
-            historyListService.addSourceHistory('Wms', $scope.url);
-            wmsGetCapabilitiesService.requestGetCapabilities($scope.url)
+            historyListService.addSourceHistory('Arcgis', $scope.url);
+            arcgisGetCapabilitiesService.requestGetCapabilities($scope.url)
                 .then((capabilities) => {
+                    LayService.data.getMapUrl = $scope.url;
                     $timeout(_ => {
                         LayService.capabilitiesReceived(capabilities, layerToSelect);
                     }, 0)
@@ -33,13 +33,13 @@ export default {
             $scope.showDetails = true;
         }
 
-        $scope.$on('ows.wms_connecting', function (event, wms, layer) {
-            $scope.setUrlAndConnect(wms, layer);
+        $scope.$on('ows.arcgis_connecting', function (event, url, layer) {
+            $scope.setUrlAndConnect(url, layer);
         });
 
         /**
          * @function selectAllLayers
-         * @memberOf hs.addLayersWms.controller
+         * @memberOf hs.addLayersArcgis.controller
          * @description Select all layers from service.
          */
         $scope.selectAllLayers = function () {
@@ -65,7 +65,7 @@ export default {
 
         /**
         * Connect to service of specified Url
-        * @memberof hs.addLayersWms
+        * @memberof hs.addLayersArcgis
         * @function setUrlAndConnect
         * @param {String} url Url of requested service
         * @param {String} layer Optional layer to select, when 
