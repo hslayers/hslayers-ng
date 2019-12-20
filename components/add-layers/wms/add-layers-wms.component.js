@@ -6,8 +6,8 @@ import '../../../common/get-capabilities.module';
 export default {
     template: ['config', function (config) {
         return config.design == 'md' ?
-            require('components/add-layers/partials/add-wms-layer.md.directive.html') :
-            require('components/add-layers/partials/add-wms-layer.directive.html')
+            require('./add-wms-layer.md.directive.html') :
+            require('./add-wms-layer.directive.html')
     }],
     controller: ['$scope', 'hs.map.service', 'Core', 'hs.wms.getCapabilitiesService', 'hs.addLayersWms.addLayerService', 'hs.historyListService','$timeout', function ($scope, OlMap, Core, wmsGetCapabilitiesService, LayService, historyListService, $timeout) {
         $scope.data = LayService.data;

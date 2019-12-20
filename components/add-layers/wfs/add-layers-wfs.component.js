@@ -12,7 +12,7 @@ import { addAnchors } from '../../../common/attribution-utils';
 export default {
     template: ['config', function (config) {
         return {
-            template: require('components/add-layers/partials/add-wfs-layer.directive.html')
+            template: require('./add-wfs-layer.directive.html')
         };
     }],
     controller: ['$scope', 'hs.map.service', 'hs.wfs.getCapabilitiesService', 'Core', '$compile', '$rootScope', 'hs.layout.service',
