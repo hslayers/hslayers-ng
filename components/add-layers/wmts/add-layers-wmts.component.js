@@ -1,7 +1,7 @@
 import 'components/utils/utils.module';
 import moment from 'moment';
 global.moment = moment;
-import '../../common/get-capabilities.module';
+import '../../../common/get-capabilities.module';
 
 export default {
     template: ['config', function (config) {

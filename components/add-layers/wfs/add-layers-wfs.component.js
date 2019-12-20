@@ -1,13 +1,13 @@
 import 'components/utils/utils.module';
 import moment from 'moment';
 global.moment = moment;
-import '../../common/get-capabilities.module';
+import '../../../common/get-capabilities.module';
 import VectorLayer from 'ol/layer/Vector';
 import WfsSource from 'hs.source.Wfs';
 import WFSCapabilities from 'hs.format.WFSCapabilities';
 import { WFS } from 'ol/format';
-import { getPreferedFormat } from '../../common/format-utils';
-import { addAnchors } from '../../common/attribution-utils';
+import { getPreferedFormat } from '../../../common/format-utils';
+import { addAnchors } from '../../../common/attribution-utils';
 
 export default {
     template: ['config', function (config) {

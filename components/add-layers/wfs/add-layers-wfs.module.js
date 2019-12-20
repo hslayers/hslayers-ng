@@ -1,6 +1,6 @@
 import 'components/utils/utils.module';
-import '../../common/get-capabilities.module';
-import capabilitiesErrorDirective from './capabilities-error.directive';
+import '../../../common/get-capabilities.module';
+import capabilitiesErrorDirective from '../capabilities-error.directive';
 import addLayersWfsComponent from './add-layers-wfs.component';
 
 /**

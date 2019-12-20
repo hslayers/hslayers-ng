@@ -7,8 +7,8 @@ import { Tile, Image as ImageLayer } from 'ol/layer';
 import { TileWMS } from 'ol/source';
 import { ImageWMS } from 'ol/source';
 import { Attribution } from 'ol/control.js';
-import { getPreferedFormat } from '../../common/format-utils';
-import { addAnchors } from '../../common/attribution-utils';
+import { getPreferedFormat } from '../../../common/format-utils';
+import { addAnchors } from '../../../common/attribution-utils';
 
 export default ['hs.map.service', 'hs.wmts.getCapabilitiesService', function (OlMap, srv_caps) {
     /**
