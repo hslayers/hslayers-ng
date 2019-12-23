@@ -9,6 +9,7 @@ import queryVectorService from './query-vector.service';
 import queryController from './query.controller';
 import featureComponent from './feature.component';
 import 'language.module';
+import featurePopupComponent from './feature-popup.component';
 
 /**
  * @namespace hs.query
@@ -78,6 +79,8 @@ angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize', 'hs.language', 'h
     * @description TODO
     */
     .controller('hs.query.controller', queryController)
+
+    .component('hs.query.featurePopup', featurePopupComponent)
     
     .config(['$compileProvider',
         function($compileProvider) {
