@@ -5,7 +5,6 @@ import { Polygon, LineString, GeometryType, Point } from 'ol/geom';
 import Feature from 'ol/Feature';
 import { transform, transformExtent } from 'ol/proj';
 import { toStringHDMS, createStringXY } from 'ol/coordinate';
-import Overlay from 'ol/Overlay';
 import { toLonLat } from 'ol/proj.js';
 export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.layout.service', 'hs.utils.service', '$timeout',
     function ($rootScope, OlMap, Core, $sce, config, layoutService, utils, $timeout) {
@@ -35,18 +34,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         this.popupClassname = "";
         this.selector = null;
         this.currentQuery = null;
+        this.featuresUnderMouse = [];
         var dataCleared = true;
 
         function init() {
             map = OlMap.map;
             me.queryActive = false;
-            me.popup = new Overlay({
-                element: me.hoverPopupElement,
-                //autoPan: true,
-                autoPanAnimation: {
-                    duration: 250
-                }
-            });
             map.on('singleclick', function (evt) {
                 $rootScope.$broadcast('mapClicked', angular.extend(evt, {
                     coordinates: getCoordinate(evt.coordinate)
@@ -67,15 +60,13 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                 $timeout(_ => {
                     me.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
                     if (me.featuresUnderMouse != null) {
-                        me.featuresUnderMouse.filter(feature => {
-                            return feature.getLayer(map) && feature.getLayer().get('title').length > 0
+                        me.featuresUnderMouse = me.featuresUnderMouse.filter(feature => {
+                            return feature.getLayer(map) && feature.getLayer(map).get('title').length > 0
                         });
-                    }
+                        me.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
+                    } else me.featuresUnderMouse = [];
 
-                }, 0)
-                me.popup.setPosition(toLonLat(e.coordinate));
-                console.log(toLonLat(e.coordinate))
-                map.addOverlay(me.popup);
+                }, 0)                    
             }, 200);
             map.on('pointermove', changeHandler);
 
