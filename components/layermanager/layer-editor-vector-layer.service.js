@@ -2,6 +2,7 @@ import { Stroke, Fill, Circle, RegularShape, Text, Style } from 'ol/style';
 import VectorLayer from 'ol/layer/Vector';
 import { Cluster, Vector as VectorSource } from 'ol/source';
 import layerEditorSubLayerCheckboxesDirective from './layer-editor.sub-layer-checkboxes.directive';
+import { Point } from 'ol/geom';
 
 export default ['hs.map.service', function (hsMap) {
     let me = {};
@@ -96,6 +97,10 @@ export default ['hs.map.service', function (hsMap) {
         return new Cluster({
             distance: distance,
             source: layer.getSource(),
+            geometryFunction: function(feature) {
+                if(feature.getGeometry().getType() != 'Point' ) return null;
+                else return feature.getGeometry();
+              }
         });
     }
     return me;
