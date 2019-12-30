@@ -13,3 +13,5 @@ docs
 po/cs_CZ.mo
 dist
 stats.json
+dependencygraph.svg
+.tern-project
