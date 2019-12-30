@@ -66,12 +66,14 @@ export default ['hs.utils.service', function (utils) {
             } else {
                 if (currentLayer.getSource().getFeatures().length > 0) {
                     var featureStyle = currentLayer.getSource().getFeatures().map(feature => currentLayer.getStyle()(feature));
+                    if(featureStyle.length > 1000)
+                        featureStyle = featureStyle.slice(0, 100);
                     if (featureStyle[0].length)
                         featureStyle = [].concat.apply([], featureStyle);
                     styleArray = styleArray.concat(featureStyle);
                 }
             }
-            var filtered = styleArray.filter(style => !style.getText());
+            var filtered = styleArray.filter(style => angular.isUndefined(style.getText) || !style.getText());
             var serializedStyles = filtered.map(style => me.serializeStyle(style));
             serializedStyles = utils.removeDuplicates(serializedStyles, 'hashcode');
             return serializedStyles;
