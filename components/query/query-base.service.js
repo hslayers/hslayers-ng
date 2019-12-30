@@ -66,7 +66,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                         me.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
                     } else me.featuresUnderMouse = [];
 
-                }, 0)                    
+                }, 0)
             }, 200);
             map.on('pointermove', changeHandler);
 

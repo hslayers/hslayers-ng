@@ -4,15 +4,15 @@ import * as extent from 'ol/extent';
 import { toLonLat } from 'ol/proj.js';
 import { WKT } from 'ol/format';
 
-export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 'config',
-    function ($rootScope, Base, $sce, OlMap, Config) {
+export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 'config', 'hs.utils.service',
+    function ($rootScope, Base, $sce, OlMap, Config, utils) {
         var me = this;
 
         this.selector = new Select({
             condition: click,
             multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false,
             filter: function (feature, layer) {
-                if(layer == null) return;
+                if (layer == null) return;
                 if (layer.get('queryable') === false) return false;
                 else return true;
             }
@@ -61,10 +61,18 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                 var wktRepresentation = formatWKT.writeFeature(feature);
                 var data = new Blob([wktRepresentation], { type: 'text/plain' });
                 var url = window.URL.createObjectURL(data);
-                if(me.exportedFeatureHref)
+                if (me.exportedFeatureHref)
                     window.URL.revokeObjectURL(me.exportedFeatureHref);
                 me.exportedFeatureHref = url;
             } else return;
+        }
+        me.sortLayerFeatures = (featuresUnderMouse) => {
+            if(angular.isUndefined(featuresUnderMouse)) return;
+            var hoveredFeatures = featuresUnderMouse.get('features');
+            var uniqueLayers = hoveredFeatures.map(f => f.getLayer(OlMap.map))
+            uniqueLayers = utils.removeDuplicates(uniqueLayers, 'title');
+            var sortedFeatures = uniqueLayers.map(l => { return { layer: l.get('title'), features: hoveredFeatures.filter(f => f.getLayer(OlMap.map) == l) } });
+            return sortedFeatures;
         }
         function getFeatureLayerName(feature) {
             var layer = feature.getLayer(OlMap.map);

@@ -1,5 +1,20 @@
 <div ng-style="popupVisible()">
-    <div ng-repeat="feature in queryBaseService.featuresUnderMouse">
-        Feature
+    <div class="card" style="padding: 5px;">
+        <div ng-repeat="feature in queryBaseService.featuresUnderMouse">
+            <div ng-show="isClustered(feature)">
+                <div ng-repeat="layer in sortLayerFeatures(feature)">
+                    <div style="font-size: small; line-height: 0.8; margin-bottom: 5px;">
+                        <strong>{{layer.layer}}</strong><br>
+                        <div ng-repeat="subFeature in layer.features">
+                            {{serializeFeatureName(subFeature)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="!isClustered(feature)" style="font-size: small;line-height: 0.8;">
+                <strong>{{getLayerTitle(feature)}}</strong><br>
+                {{serializeFeatureName(feature)}}
+            </div>
+        </div>
     </div>
 </div>
