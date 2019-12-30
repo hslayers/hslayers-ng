@@ -29,13 +29,15 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         var this_ = this,
             layer_, layersToLookFor = [];
         var check = function (layer) {
+            var features = [];
             var source = layer.getSource();
             if (utils.instOf(source, Vector))
-                var features = source.getFeatures();
-            if (utils.instOf(source, Cluster))
+                features = source.getFeatures();
+            if (utils.instOf(source, Cluster)) {
                 source = source.getSource();
+                features = features.concat(source.getFeatures());
+            }
             if (utils.instOf(source, Vector)) {
-                features = features.concat(source.getFeatures())
                 if (features.length > 0) {
                     layersToLookFor.push({
                         layer: layer,
