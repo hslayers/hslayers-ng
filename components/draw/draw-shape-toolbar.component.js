@@ -26,7 +26,9 @@ export default {
                 isLayerDrawable: layerUtilsService.isLayerDrawable,
                 setType(what) {
                     drawService.type = what;
-                    drawService.source = $scope.selectedLayer.getSource();
+                    drawService.source = angular.isDefined($scope.selectedLayer.getSource().getSource) ?
+                        $scope.selectedLayer.getSource().getSource() : //Is it clustered vector layer?
+                        drawService.source = $scope.selectedLayer.getSource();
                     $scope.activateDrawing();
                 },
                 activateDrawing() {
