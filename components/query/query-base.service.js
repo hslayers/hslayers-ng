@@ -5,9 +5,9 @@ import { Polygon, LineString, GeometryType, Point } from 'ol/geom';
 import Feature from 'ol/Feature';
 import { transform, transformExtent } from 'ol/proj';
 import { toStringHDMS, createStringXY } from 'ol/coordinate';
-
-export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.layout.service',
-    function ($rootScope, OlMap, Core, $sce, config, layoutService) {
+import { toLonLat } from 'ol/proj.js';
+export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.layout.service', 'hs.utils.service', '$timeout',
+    function ($rootScope, OlMap, Core, $sce, config, layoutService, utils, $timeout) {
         var me = this;
 
         var map;
@@ -34,6 +34,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         this.popupClassname = "";
         this.selector = null;
         this.currentQuery = null;
+        this.featuresUnderMouse = [];
+        this.featureLayersUnderMouse = [];
         var dataCleared = true;
 
         function init() {
@@ -53,6 +55,30 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                 me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
                 $rootScope.$broadcast('mapQueryStarted', evt);
             });
+            var changeHandler = utils.debounce(function (e) {
+                if (e.dragging) return;
+                var map = e.map;
+                $timeout(_ => {
+                    me.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
+                    if (me.featuresUnderMouse != null) {
+                        me.featuresUnderMouse = me.featuresUnderMouse.filter(feature => {
+                            return feature.getLayer(map) && feature.getLayer(map).get('title').length > 0
+                        });
+                        me.featureLayersUnderMouse = me.featuresUnderMouse.map(f => f.getLayer(OlMap.map));
+                        me.featureLayersUnderMouse = utils.removeDuplicates(me.featureLayersUnderMouse, 'title');
+                        me.featureLayersUnderMouse = me.featureLayersUnderMouse.map(l => { 
+                            return { 
+                                layer: l.get('title'), 
+                                features: me.featuresUnderMouse.filter(f => f.getLayer(OlMap.map) == l) 
+                            } 
+                        });
+                        me.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
+                    } else me.featuresUnderMouse = [];
+
+                }, 0)
+            }, 200);
+            map.on('pointermove', changeHandler);
+
             $rootScope.$watch(() => layoutService.sidebarExpanded, () => {
                 if (layoutService.sidebarExpanded && me.currentPanelQueryable()) {
                     if (!me.queryActive) me.activateQueries();
@@ -63,7 +89,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         }
 
         OlMap.loaded().then(init);
-
         this.setData = function (data, type, overwrite) {
             if (angular.isDefined(type)) {
                 if (angular.isDefined(overwrite) && overwrite) {
@@ -78,7 +103,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
             }
             else if (console) console.log('Query.BaseService.setData type not passed');
         };
-
         this.clearData = function (type) {
             if (type) {
                 me.data[type].length = 0;
@@ -139,7 +163,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                     "value": createStringXY(7)(coordinate)
                 }]
             };
-          return coords
+            return coords
         }
 
         this.activateQueries = function () {

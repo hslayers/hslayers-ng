@@ -30,10 +30,12 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
             layer_, layersToLookFor = [];
         var check = function (layer) {
             var source = layer.getSource();
+            if (utils.instOf(source, Vector))
+                var features = source.getFeatures();
             if (utils.instOf(source, Cluster))
                 source = source.getSource();
             if (utils.instOf(source, Vector)) {
-                var features = source.getFeatures();
+                features = features.concat(source.getFeatures())
                 if (features.length > 0) {
                     layersToLookFor.push({
                         layer: layer,
@@ -41,7 +43,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
                     });
                 }
             }
-            
+
         };
         map.getLayers().forEach(function (layer) {
             if (utils.instOf(layer, Group)) {
@@ -170,7 +172,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
     var defaultMobileControls = controlDefaults({
         zoom: false
     });
-    this.controls =  angular.isDefined(config.mapControls) ? config.mapControls :
+    this.controls = angular.isDefined(config.mapControls) ? config.mapControls :
         !!window.cordova ? defaultMobileControls : defaultDesktopControls;
 
     /**
@@ -399,7 +401,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         return lyr.getVisible();
     }
 
-    this.getCanvas = function(){
+    this.getCanvas = function () {
         return this.mapElement.querySelector("canvas")
     }
 
@@ -422,7 +424,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
             var tile_url_function = src.getTileUrlFunction() || src.tileUrlFunction();
             src.setTileUrlFunction(function (b, c, d) {
                 var url = tile_url_function.call(src, b, c, d);
-                if (url.indexOf(config.proxyPrefix) == 0) 
+                if (url.indexOf(config.proxyPrefix) == 0)
                     return url
                 else
                     return utils.proxify(url);
