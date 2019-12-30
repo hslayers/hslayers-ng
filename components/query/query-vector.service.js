@@ -66,14 +66,6 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
                 me.exportedFeatureHref = url;
             } else return;
         }
-        me.sortLayerFeatures = (featuresUnderMouse) => {
-            if(angular.isUndefined(featuresUnderMouse)) return;
-            var hoveredFeatures = featuresUnderMouse.get('features');
-            var uniqueLayers = hoveredFeatures.map(f => f.getLayer(OlMap.map))
-            uniqueLayers = utils.removeDuplicates(uniqueLayers, 'title');
-            var sortedFeatures = uniqueLayers.map(l => { return { layer: l.get('title'), features: hoveredFeatures.filter(f => f.getLayer(OlMap.map) == l) } });
-            return sortedFeatures;
-        }
         function getFeatureLayerName(feature) {
             var layer = feature.getLayer(OlMap.map);
             if (angular.isUndefined(layer) || angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager') === false) return '';

@@ -15,9 +15,6 @@ export default {
             isClustered(feature) {
                 return feature.get('features') && feature.get('features').length > 0;
             },
-            getLayerTitle(feature) {
-                return feature.getLayer(hsMap.map).get('title');
-            },
             serializeFeatureName(feature) {
                 if (feature.get('name')) return feature.get('name');
                 if (feature.get('title')) return feature.get('title');

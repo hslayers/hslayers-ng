@@ -35,6 +35,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         this.selector = null;
         this.currentQuery = null;
         this.featuresUnderMouse = [];
+        this.featureLayersUnderMouse = [];
         var dataCleared = true;
 
         function init() {
@@ -62,6 +63,14 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                     if (me.featuresUnderMouse != null) {
                         me.featuresUnderMouse = me.featuresUnderMouse.filter(feature => {
                             return feature.getLayer(map) && feature.getLayer(map).get('title').length > 0
+                        });
+                        me.featureLayersUnderMouse = me.featuresUnderMouse.map(f => f.getLayer(OlMap.map));
+                        me.featureLayersUnderMouse = utils.removeDuplicates(me.featureLayersUnderMouse, 'title');
+                        me.featureLayersUnderMouse = me.featureLayersUnderMouse.map(l => { 
+                            return { 
+                                layer: l.get('title'), 
+                                features: me.featuresUnderMouse.filter(f => f.getLayer(OlMap.map) == l) 
+                            } 
                         });
                         me.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
                     } else me.featuresUnderMouse = [];
