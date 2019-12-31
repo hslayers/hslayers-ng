@@ -19,6 +19,7 @@ export default {
                 return $scope.$ctrl.feature.feature
             }
             angular.extend($scope, {
+                queryVectorService,
                 attributeName: '',
                 attributeValue: '',
                 newAttribVisible: false,
