@@ -66,15 +66,22 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                         });
                         me.featureLayersUnderMouse = me.featuresUnderMouse.map(f => f.getLayer(OlMap.map));
                         me.featureLayersUnderMouse = utils.removeDuplicates(me.featureLayersUnderMouse, 'title');
-                        me.featureLayersUnderMouse = me.featureLayersUnderMouse.map(l => { 
-                            return { 
-                                layer: l.get('title'), 
-                                features: me.featuresUnderMouse.filter(f => f.getLayer(OlMap.map) == l) 
-                            } 
+                        me.featureLayersUnderMouse = me.featureLayersUnderMouse.map(l => {
+                            return {
+                                layer: l.get('title'),
+                                features: me.featuresUnderMouse.filter(f => f.getLayer(OlMap.map) == l)
+                            }
                         });
-                        me.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
+                        me.featuresUnderMouse.forEach(feature => {
+                            serializeFeatureAtributes(feature)
+                            if (feature.get('features'))
+                                feature.get('features').forEach(subfeature => serializeFeatureAtributes(subfeature))
+                        });
+                        let pixel = e.pixel;
+                        pixel[0] += 2;
+                        pixel[1] += 4;
+                        me.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
                     } else me.featuresUnderMouse = [];
-
                 }, 0)
             }, 200);
             map.on('pointermove', changeHandler);
@@ -86,6 +93,13 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                     if (me.queryActive) me.deactivateQueries();
                 }
             })
+        }
+
+        function serializeFeatureAtributes(feature) {
+            let allowedKeys = feature.getLayer(OlMap.map).get('hoveredKeys');
+            feature.attributesForHover = feature.getKeys()
+                .filter(key => allowedKeys.indexOf(key) > -1)
+                .map(key => { return { key, value: feature.get(key) } })
         }
 
         OlMap.loaded().then(init);

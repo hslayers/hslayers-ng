@@ -1,17 +1,31 @@
 <div ng-style="popupVisible()">
     <div class="card" style="padding: 5px;">
-        <div ng-repeat="layer in queryBaseService.featureLayersUnderMouse">
-            <strong>{{layer.layer}}</strong><br>
+        <div ng-repeat="layer in queryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
+            <strong style="font-size: small;">{{layer.layer}}</strong><br>
             <div ng-repeat="feature in layer.features">
-                <div ng-show="isClustered(feature)">
-                    <div style="font-size: small; line-height: 0.8; margin-bottom: 5px;">
-                        <div ng-repeat="subFeature in feature.get('features')">
-                            {{serializeFeatureName(subFeature)}}
+                <div ng-show="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 5px;  border-bottom: 1px solid rgb(199, 199, 199)">
+                    <div ng-repeat="subFeature in feature.get('features')">
+                        {{serializeFeatureName(subFeature)}}
+                        <div ng-repeat="attribute in subFeature.attributesForHover">
+                            <div class="d-flex flex-row">
+                                <div class="p-0 flex-grow-1">
+                                    {{attribute.key}}
+                                </div>
+                                <div class="p-0">{{attribute.value}}%</div>
+                            </div>   
                         </div>
                     </div>
                 </div>
-                <div ng-show="!isClustered(feature)" style="font-size: small;line-height: 0.8;">
+                <div ng-show="!isClustered(feature)" style="font-size: small;line-height: 1; border-bottom: 1px solid rgb(199, 199, 199)">
                     {{serializeFeatureName(feature)}}
+                    <div ng-repeat="attribute in feature.attributesForHover">
+                        <div class="d-flex flex-row">
+                            <div class="p-1 flex-grow-1">
+                                {{attribute.key}}
+                            </div>
+                            <div class="p-1">{{attribute.value}}</div>
+                        </div>   
+                    </div>
                 </div>
             </div>
         </div>
