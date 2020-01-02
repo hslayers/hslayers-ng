@@ -96,10 +96,19 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         }
 
         function serializeFeatureAtributes(feature) {
-            let allowedKeys = feature.getLayer(OlMap.map).get('hoveredKeys');
+            const layer = feature.getLayer(OlMap.map);
+            const allowedKeys = layer.get('hoveredKeys');
+            if (angular.isUndefined(allowedKeys)) return [];
             feature.attributesForHover = feature.getKeys()
                 .filter(key => allowedKeys.indexOf(key) > -1)
-                .map(key => { return { key, value: feature.get(key) } })
+                .map(key => { return { key: tryTranslate(key, layer), value: feature.get(key) } })
+        }
+
+        function tryTranslate(key, layer) {
+            const translations = layer.get('hoveredKeysTranslations');
+            if (angular.isUndefined(translations)) return key;
+            if (angular.isUndefined(translations[key])) return key;
+            return translations[key]
         }
 
         OlMap.loaded().then(init);
