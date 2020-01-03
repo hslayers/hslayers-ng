@@ -112,10 +112,6 @@ export default {
                  * @param {Ol.layer} layer Selected layer
                  * @description Test if layers cluster or declutter is defined
                  */
-                isOptionsDefined(value) {
-                    if (angular.isUndefined(value)) return;
-                    else return true;
-                },
 
                 /**
                 * @function Declutter

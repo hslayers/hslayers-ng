@@ -56,14 +56,14 @@
             </div>
             <!-- Declutter checkbox  -->
             <div ng-hide="$ctrl.currentLayer.layer.get('cluster')"
-                ng-if="isVectorLayer() && isOptionsDefined($ctrl.currentLayer.layer.get('declutter'))"
+                ng-if="isVectorLayer()"
                 class="form-check">
                 <input type="checkbox" ng-model="declutter" ng-model-options="{ getterSetter:  true}" />
                 <label translate>Declutter</label>
             </div>
             <!-- Cluster features checkbox  -->
             <div ng-hide="$ctrl.currentLayer.layer.get('declutter')">
-                <div ng-if="isVectorLayer() && isOptionsDefined($ctrl.currentLayer.layer.get('cluster'))"
+                <div ng-if="isVectorLayer()"
                     class="form-check">
                     <input type="checkbox" ng-model="cluster" ng-model-options="{ getterSetter:  true}" />
                     <label translate>Cluster</label>
