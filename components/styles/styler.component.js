@@ -24,8 +24,16 @@ export default {
              * @memberOf hs.styler.controller
              * @description Get current style variables value and style current layer accordingly
              */
-            $scope.save = function () {
+            $scope.getLayerSource = function (layer){
+                var src = [];
+                if (angular.isDefined(layer.getSource().getSource))
+                    src = layer.getSource().getSource();
+                else src = layer.getSource();
+                return src
+            }
+            $scope.save = function () {            
                 if (service.layer == null) return;
+                var source = $scope.getLayerSource(service.layer);
                 var style_json = {};
                 if (angular.isDefined($scope.fillcolor) && $scope.fillcolor != null) {
                     style_json.fill = new Fill({
@@ -68,7 +76,7 @@ export default {
                                 crossOrigin: 'anonymous'
                             };
                             style_json.image = new Icon(icon_json);
-                            angular.forEach(service.layer.getSource().getFeatures(), function (f) {
+                            angular.forEach(source.getFeatures(), function (f) {
                                 f.setStyle(null);
                             });
                             service.layer.setStyle(new Style(style_json));
@@ -77,7 +85,7 @@ export default {
                 }
                 if (angular.isDefined(style_json.fill) || angular.isDefined(style_json.stroke) || angular.isDefined(style_json.image)) {
                     var style = new Style(style_json);
-                    angular.forEach(service.layer.getSource().getFeatures(), function (f) {
+                    angular.forEach(source.getFeatures(), function (f) {
                         f.setStyle(null);
                     })
                     service.layer.setStyle(style);
@@ -110,7 +118,7 @@ export default {
             function colorIcon() {
                 var iconPreview = document.getElementsByClassName('hs-styler-selected-icon-box')[0];
                 var svgPath = iconPreview.querySelector('path');
-                if(!svgPath) return;
+                if (!svgPath) return;
                 if (angular.isDefined($scope.iconfillcolor) && $scope.iconfillcolor != null) svgPath.style.fill = $scope.iconfillcolor['background-color'];
                 if (angular.isDefined($scope.iconlinecolor) && $scope.iconlinecolor != null) svgPath.style.stroke = $scope.iconlinecolor['background-color'];
                 if (angular.isDefined($scope.iconlinewidth) && $scope.iconlinewidth != null) svgPath.style.strokeWidth = $scope.iconlinewidth;
@@ -140,10 +148,9 @@ export default {
              */
             function updateHasVectorFeatures() {
                 if (service.layer == null) return;
-                var src = service.layer.getSource();
+                var src = $scope.getLayerSource(service.layer);
                 if (angular.isUndefined(service.layer) || service.layer == null) return;
-                if (angular.isUndefined(src.hasLine))
-                    calculateHasLinePointPoly(src);
+                calculateHasLinePointPoly(src);
                 $scope.hasLine = src.hasLine;
                 $scope.hasPoly = src.hasPoly;
                 $scope.hasPoint = src.hasPoint;

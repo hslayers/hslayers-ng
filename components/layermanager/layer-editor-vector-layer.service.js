@@ -76,10 +76,14 @@ export default ['hs.map.service', function (hsMap) {
                     }
                     return textStyle;
                 } else {
+                    let tmp;
                     if (typeof layer.hsOriginalStyle == 'function')
-                        return layer.hsOriginalStyle(feature, resolution)
-                    else
-                        return layer.hsOriginalStyle;
+                        tmp = layer.hsOriginalStyle(feature, resolution)
+                    else 
+                        tmp = layer.hsOriginalStyle;
+                    var originalFeature = feature.get('features');
+                    tmp.setGeometry(originalFeature[0].getGeometry())
+                    return tmp;
                 }
 
             })
@@ -97,10 +101,11 @@ export default ['hs.map.service', function (hsMap) {
         return new Cluster({
             distance: distance,
             source: layer.getSource(),
-            geometryFunction: function(feature) {
-                if(feature.getGeometry().getType() != 'Point' ) return null;
-                else return feature.getGeometry();
-              }
+            geometryFunction: function (feature) {
+                if (feature.getGeometry().getType() == 'Point') return feature.getGeometry();
+                else if (feature.getGeometry().getType() == 'Polygon') return feature.getGeometry().getInteriorPoint();
+                else return null;
+            }
         });
     }
     return me;

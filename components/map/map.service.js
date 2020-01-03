@@ -308,7 +308,10 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
     }
 
     this.getVectorType = function (layer) {
-        var src = layer.getSource();
+        var src = [];
+        if (angular.isDefined(layer.getSource().getSource))
+            src = layer.getSource().getSource();
+        else src = layer.getSource();
         src.hasLine = false;
         src.hasPoly = false;
         src.hasPoint = false;
