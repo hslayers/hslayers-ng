@@ -82,7 +82,10 @@ export default ['hs.map.service', function (hsMap) {
                     else 
                         tmp = layer.hsOriginalStyle;
                     var originalFeature = feature.get('features');
-                    tmp.setGeometry(originalFeature[0].getGeometry())
+                    if(tmp.length)
+                        tmp[0].setGeometry(originalFeature[0].getGeometry())
+                    else
+                        tmp.setGeometry(originalFeature[0].getGeometry())
                     return tmp;
                 }
 
@@ -102,9 +105,16 @@ export default ['hs.map.service', function (hsMap) {
             distance: distance,
             source: layer.getSource(),
             geometryFunction: function (feature) {
-                if (feature.getGeometry().getType() == 'Point') return feature.getGeometry();
-                else if (feature.getGeometry().getType() == 'Polygon') return feature.getGeometry().getInteriorPoint();
-                else return null;
+                switch(feature.getGeometry().getType()){
+                    case 'Point':
+                        return feature.getGeometry()
+                    case 'Polygon':
+                        return feature.getGeometry().getInteriorPoint()
+                    case 'LineString':
+                        return new Point(feature.getGeometry().getFirstCoordinate())
+                    default:        
+                        return null
+                }
             }
         });
     }
