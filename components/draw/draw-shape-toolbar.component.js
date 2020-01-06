@@ -4,10 +4,11 @@ import 'utils.module';
 export default {
     template: require('./partials/shape-toolbar.html'),
     controller: ['$scope', 'hs.map.service', 'hs.draw.service',
-        'hs.utils.layerUtilsService', 'hs.query.vectorService', '$timeout',
-        function ($scope, OlMap, drawService, layerUtilsService, queryVectorService, $timeout) {
+        'hs.utils.layerUtilsService', 'hs.query.vectorService', '$timeout', 'hs.layout.service',
+        function ($scope, OlMap, drawService, layerUtilsService, queryVectorService, $timeout, layoutService) {
             var map;
             angular.extend($scope, {
+                layoutService,
                 service: drawService,
                 selectedLayer: null,
                 drawableLayers() {

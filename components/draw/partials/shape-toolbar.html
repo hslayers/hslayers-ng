@@ -1,4 +1,4 @@
-<div style="position: absolute; right: 5px; bottom: 6em;">
+<div ng-style="{position: 'absolute', right: ( (layoutService.sidebarRight ? layoutService.panelSpaceWidth() : 0) + 5) + 'px', bottom: '6em'}">
     <div class="btn-group-sm btn-group">
         <div class="btn-group-sm btn-group" ng-if="drawToolabrExpanded">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
