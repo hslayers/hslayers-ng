@@ -592,7 +592,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         }
 
         var timer;
-
+        /**
+         * @function fillMetadata
+         * @memberOf hs.layermanager.service
+         * @param {Ol.layer} layer Selected layer
+         * @description Add getCapabilities response metadata to layer object
+         */
         me.fillMetadata = function (layer) {
             const url = layerUtils.getURL(layer.layer);
             let metadata = {
