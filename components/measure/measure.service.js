@@ -88,6 +88,8 @@ export default ['$rootScope', 'hs.map.service', 'hs.utils.service',
         this.activateMeasuring = function (type) {
             map.addLayer(me.measureVector);
             map.getViewport().addEventListener('mousemove', mouseMoveHandler);
+            map.getViewport().addEventListener('touchmove', mouseMoveHandler);
+
             addInteraction(type);
         }
 
@@ -99,6 +101,8 @@ export default ['$rootScope', 'hs.map.service', 'hs.utils.service',
          */
         this.deactivateMeasuring = function () {
             map.getViewport().removeEventListener('mousemove', mouseMoveHandler);
+            map.getViewport().removeEventListener('touchmove', mouseMoveHandler);
+
             map.removeInteraction(me.draw);
             map.removeLayer(me.measureVector);
         }
@@ -183,7 +187,8 @@ export default ['$rootScope', 'hs.map.service', 'hs.utils.service',
             var drawType = (type == 'area' ? 'Polygon' : 'LineString');
             me.draw = new Draw({
                 source: me.measureVector.getSource(),
-                type: /** @type {GeometryType} */ (drawType)
+                type: /** @type {GeometryType} */ (drawType),
+                dragVertexDelay: 150
             });
             map.addInteraction(me.draw);
 
