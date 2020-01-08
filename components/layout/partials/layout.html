@@ -1,6 +1,6 @@
 
 <div id="page-wrapper" class="bootstrap-iso">
-    <div id="content-wrapper" ng-class="{'open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'sb-bottom':layoutService.sidebarBottom()}">
+    <div class="hs-content-wrapper" ng-class="{'open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'sb-bottom':layoutService.sidebarBottom()}">
         <div class="page-content">
             <div hs.map.directive ng-controller="hs.map.controller"  id="map" style="z-index:990" ng-style="mapStyle()"></div>
             <hs.toolbar 
