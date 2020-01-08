@@ -178,7 +178,7 @@ body {
     float: left;
 }
 
-#page-wrapper, #content-wrapper, .page-content {
+#page-wrapper, .hs-content-wrapper, .page-content {
     height: 100%;
 }
 

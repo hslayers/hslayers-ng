@@ -412,7 +412,7 @@ button.but-title-sm {
     font-size: 20px
 }
 
-#content-wrapper {
+.hs-content-wrapper {
     position: relative;
 }
 .basemapGallery{
@@ -471,7 +471,7 @@ button.but-title-sm {
 }
 
 
-div#content-wrapper:not(.open) div.panelspace-wrapper {
+div.hs-content-wrapper:not(.open) div.panelspace-wrapper {
     background-color: transparent;
     width: 48px;
     overflow-x: hidden;
@@ -490,7 +490,7 @@ div#sidebar {
     top: 0;
 }
 
-#content-wrapper.open .panelspace:not(.labels) div#sidebar {
+.hs-content-wrapper.open .panelspace:not(.labels) div#sidebar {
     border-right: 1px solid #ddd;
 }
 
@@ -502,28 +502,28 @@ div#sidebar {
     display: none;
 }
 
-#content-wrapper.sb-left:not(.open) div#sidebar {
+.hs-content-wrapper.sb-left:not(.open) div#sidebar {
     background-color: white;
     right:auto;
     width: 48px;
 }
 
-#content-wrapper.sb-right:not(.open) div#sidebar {
+.hs-content-wrapper.sb-right:not(.open) div#sidebar {
     background-color: white;
     left: auto;
     width: 48px;
 }
 
-#content-wrapper:not(.open) .panelspace {
+.hs-content-wrapper:not(.open) .panelspace {
     width: 48px;
     border-right: 1px solid #ddd;
 }
 
-#content-wrapper.open .sidebar-list {
+.hs-content-wrapper.open .sidebar-list {
     width: 100%;
 }
 
-#content-wrapper.open div.panelspace:not(.labels) .sidebar-list {
+.hs-content-wrapper.open div.panelspace:not(.labels) .sidebar-list {
     width: 48px;
 }
 
@@ -578,19 +578,19 @@ a.sidebar-main {
     display: none;
 }
 
-#content-wrapper.sb-right:not(.open) .sidebar-list {
+.hs-content-wrapper.sb-right:not(.open) .sidebar-list {
     right: 0;
 }
 
-#content-wrapper.sb-left:not(.open) .sidebar-list {
+.hs-content-wrapper.sb-left:not(.open) .sidebar-list {
     left: 0;
 }
 
-#content-wrapper:not(.open) .sidebar-item-title {
+.hs-content-wrapper:not(.open) .sidebar-item-title {
     display:none
 }
 
-#content-wrapper:not(.open) #panelplace {
+.hs-content-wrapper:not(.open) #panelplace {
     display:none;
 }
 
@@ -860,7 +860,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
 /**********************************/
 
 @media only screen and (max-width: 767px) {
-    #content-wrapper .sidebar-item-title:not(#hs-minisidebar) {
+    .hs-content-wrapper .sidebar-item-title:not(#hs-minisidebar) {
         display:none;
     }
     input[type=checkbox]{
@@ -874,7 +874,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
         font-size: x-large !important;
     }
 
-    #content-wrapper > div > div.gui-overlay.ng-scope > hs.layermanager.gallery > div > div > div > button {
+    .hs-content-wrapper > div > div.gui-overlay.ng-scope > hs.layermanager.gallery > div > div > div > button {
         font-size: x-large;
     }
     .panelspace {
@@ -887,7 +887,7 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
     div .form-check-inline{
         margin-right: 0 !important;
     }
-    #content-wrapper {
+    .hs-content-wrapper {
         position: unset;
     }
     .sb-bottom #map {
@@ -920,10 +920,10 @@ div#composition-share-dialog .modal-body, div#composition-info-dialog .modal-bod
         flex-direction: row !important;
         justify-content: space-evenly;
     }
-    #content-wrapper div.panelspace #sidebar .sidebar-list{
+    .hs-content-wrapper div.panelspace #sidebar .sidebar-list{
         width: 100% ;
     }
-    #content-wrapper div.panelspace #hs-minisidebar .sidebar-list{
+    .hs-content-wrapper div.panelspace #hs-minisidebar .sidebar-list{
         width: 100% ;
     }
 
