@@ -236,11 +236,11 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 */
                 updateMapSize: function () {
                     var container = angular.isDefined(me.sizeOptions.innerElement) ? me.sizeOptions.innerElement : me.sizeOptions.element[0];
-                    var map = document.getElementById("map");
+                    var map = layoutService.contentWrapper.querySelector(".hs-ol-map");
                     if (map == null) return;
                     var sidebarElem = null;
-                    if (document.getElementsByClassName('panelspace').length > 0)
-                        sidebarElem = document.getElementsByClassName('panelspace')[0];
+                    if (layoutService.contentWrapper.getElementsByClassName('hs-panelspace').length > 0)
+                        sidebarElem = layoutService.contentWrapper.querySelector('.hs-panelspace');
                     var neededSize = { width: 0, height: container.clientHeight };
 
                     if (me.puremapApp) {
@@ -336,7 +336,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 },
                 set: function(value) {
                    _puremapApp = value;
-                   if(!value) layoutService.sidebarVisible(false);
+                   if(value) layoutService.sidebarVisible(false);
                 }
             });
 

@@ -4,7 +4,7 @@
     <div ng-show="showDetails">
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-prepend" id="type_label">
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>Image format</span>
                 </div>
                 <select class="form-control" ng-model="data.image_format">
@@ -15,7 +15,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-prepend" id="type_label">
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>Query format</span>
                 </div>
                 <select class="form-control" ng-model="data.query_format">
@@ -26,7 +26,7 @@
 
         <div class="form-group" ng-show="data.srs.toUpperCase() != data.mapProjection">
             <div class="input-group">
-                <div class="input-group-prepend" id="type_label">
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>SRS</span>
                 </div>
                 <select class="form-control" ng-model="data.srs" ng-change="srsChanged()">
@@ -37,7 +37,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-prepend" id="type_label">
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>Folder name</span>
                 </div>
                 <input class="form-control" ng-model="data.path" />

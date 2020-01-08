@@ -8,6 +8,7 @@ export default ['config', 'hs.map.service', function (config, service) {
                 el[0].style.width = 28 + 'px';
                 el[0].style.height = 200 + 'px';
             }
+            scope.init();
         }
     };
 }]

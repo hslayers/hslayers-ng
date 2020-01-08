@@ -95,7 +95,6 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
             return zoom; // resolution was greater than 156543.03390625 so return 0
         }
 
-        $scope.init();
         $scope.$emit('scope_loaded', "Map");
     }
 ]
