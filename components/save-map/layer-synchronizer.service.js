@@ -65,11 +65,18 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                 var geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
                 (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
                     ds => {
+                        layer.set('hs-layman-synchronizing', true);
                         laymanService.pushVectorSource(ds, geojson, {
                             title: layer.get('title'),
                             name: me.getLayerName(layer),
                             crs: me.crs
                         }).then(response => {
+                            setTimeout(function(){
+                                laymanService.pullVectorSource(ds, me.getLayerName(layer))
+                                .then(response => {
+                                    layer.set('hs-layman-synchronizing', false);
+                                })
+                            }, 2000);
                         });
                     })
             },
@@ -85,10 +92,12 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
             pull(layer, source) {
                 (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
                     ds => {
+                        layer.set('hs-layman-synchronizing', true);
                         laymanService.pullVectorSource(ds, me.getLayerName(layer))
                             .then(response => {
                                 var featureString;
                                 if (response) featureString = response.data;
+                                layer.set('hs-layman-synchronizing', false);
                                 if (featureString) {
                                     source.loading = true;
                                     var format = new WFS();
