@@ -60,6 +60,10 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                         new Blob([JSON.stringify(geojson)],
                             { type: 'application/geo+json' }), 'blob.geojson'
                     );
+                    formdata.append('sld',
+                        new Blob([],
+                            { type: 'application/octet-stream' }), ''
+                    );
                     formdata.append('name', description.name);
                     formdata.append('title', description.title);
                     formdata.append('crs', description.crs);
@@ -97,6 +101,10 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                 return new Promise((resolve, reject) => {
                     me.describeLayer(endpoint, layerName).then(descr => {
                         if (descr == null) {
+                            resolve();
+                            return;
+                        }
+                        if(descr.wfs.status == 'NOT_AVAILABLE' && descr.wms.status == 'NOT_AVAILABLE'){
                             resolve();
                             return;
                         }
