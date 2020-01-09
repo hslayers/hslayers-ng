@@ -4,8 +4,8 @@
         <form role="form" class="form">
             <div class="form-group">
                 <div class="input-group">
-                    <div class="input-group-prepend" id="type_label"><span class="input-group-text" translate>Choose type</span></div>
-                    <select class="form-control" id="ows_type" ng-model="type">
+                    <div class="input-group-prepend"><span class="input-group-text" translate>Choose type</span></div>
+                    <select class="form-control" ng-model="type">
                         <option ng-repeat="type in types" ng-value="type.id">{{type.text}}</option>
                     </select>
                 </div>

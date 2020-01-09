@@ -223,6 +223,7 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core',
 
                 // handle geolocation error.
                 me.geolocation.on('error', function (error) {
+                    //TODO fix that
                     var info = document.getElementById('info');
                     if (info) {
                         info.style.display = '';

@@ -22,7 +22,7 @@ function (Core, layoutService) {
             $(".menu-switch.btn-mobile .menu-icon").removeClass(layoutService.sidebarRight ? "icon-menu-right" : "icon-menu-left");
             $(".menu-switch.btn-mobile .menu-icon").addClass("icon-menu-hamburger");
         }
-        $(".panelspace, #toolbar, #map, #menu").toggleClass("panelspace-opened", me.panelspaceOpened);
+        $(".hs-panelspace, #toolbar, .hs-ol-map, #menu").toggleClass("panelspace-opened", me.panelspaceOpened);
     }
 
     var me = {

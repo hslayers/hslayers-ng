@@ -65,7 +65,7 @@ body {
     margin-right: 0;
 }
 
-.mobile #map {
+.mobile .hs-ol-map {
     width: 100% !important;
     /*height: calc(100% - 4.5em) !important;*/
 }
@@ -178,7 +178,7 @@ body {
     float: left;
 }
 
-#page-wrapper, .hs-content-wrapper, .page-content {
+.hs-page-wrapper, .hs-content-wrapper, .hs-page-content {
     height: 100%;
 }
 
@@ -200,12 +200,12 @@ body {
     margin: .25em 0;
 }
 
-.mobile.sb-left div#map, .mobile.sb-right div#map {
+.mobile.sb-left div.hs-ol-map, .mobile.sb-right div.hs-ol-map {
     margin-left: 0px;
 }
 
 /*@media (max-width: 800px) {
-    .sb-right.open #map {
+    .sb-right.open .hs-ol-map {
         margin-left: 0px;
     }
 }*/
@@ -251,32 +251,32 @@ body {
     pointer-events: all;
 }
 
-.mobile.sb-right .panelspace-opened:not(.panelspace) {
+.mobile.sb-right .hs-panelspace-opened:not(.hs-panelspace) {
     transform: translate(-80%, 0);
 }
 
-.mobile.sb-left .panelspace-opened:not(.panelspace) {
+.mobile.sb-left .hs-panelspace-opened:not(.hs-panelspace) {
     transform: translate(80%, 0);
 }
 
-/*.mobile #menu.panelspace-opened button:not(.menu-switch) {
+/*.mobile #menu.hs-panelspace-opened button:not(.menu-switch) {
     display: none;
 }
 
-.mobile #menu:not(.panelspace-opened) button.menu-switch {
+.mobile #menu:not(.hs-panelspace-opened) button.menu-switch {
     display: none;
 }*/
 
-.mobile .panelspace {
+.mobile .hs-panelspace {
     width: 80% !important;
 }
 
-.mobile .panelspace:not(.panelspace-opened) {
+.mobile .hs-panelspace:not(.hs-panelspace-opened) {
     transform: translate(-100%, 0);
     box-shadow: none;
 }
 
-.mobile .panelspace-wrapper, .mobile #sidebar {
+.mobile .hs-panelspace-wrapper, .mobile .hs-sidebar {
     /*width: 100% !important;*/
 }
 
@@ -284,17 +284,17 @@ body {
     display: none;
 }
 
-.mobile #panelplace, .mobile div#sidebar ~ div#panelplace {
+.mobile .hs-panelplace, .mobile div.hs-sidebar ~ div.hs-panelplace {
     margin-left: 0 !important;
     width: 100% !important;
     /*height: initial !important;*/
 }
 
-.mobile.panelspace:not(.labels) #sidebar {
+.mobile.hs-panelspace:not(.labels) .hs-sidebar {
     display: none;
 }
 
-.mobile #map, .mobile #menu, .mobile #toolbar, .mobile .panelspace {
+.mobile .hs-ol-map, .mobile #menu, .mobile #toolbar, .mobile .hs-panelspace {
     transition: transform 0.5s;
 }
 
@@ -345,7 +345,7 @@ body {
     color: #bbb;
 }
 
-.mobile #map.panelspace-opened {
+.mobile .hs-ol-map.hs-panelspace-opened {
     pointer-events: none;
 }
 

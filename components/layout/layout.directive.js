@@ -1,24 +1,25 @@
-export default ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$injector',
-    function (OlMap, Core, $timeout, config, $compile, $injector) {
+export default ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$injector', 'hs.layout.service',
+    function (OlMap, Core, $timeout, config, $compile, $injector, layoutService) {
         return {
             template: config.design == 'md' ? require('components/layout/partials/layoutmd.html') : require('components/layout/partials/layout.html'),
             link: function (scope, element) {
+                layoutService.contentWrapper = element[0].querySelector('.hs-content-wrapper');
                 try {
                     if (angular.module('hs.cesium')) {
-                        if (element[0].querySelector('.page-content')) {
+                        if (element[0].querySelector('.hs-page-content')) {
                             let cesiumDir = $compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope);
-                            element[0].querySelector('.page-content').appendChild(cesiumDir[0]);
+                            element[0].querySelector('.hs-page-content').appendChild(cesiumDir[0]);
                         }
                     }
                 } catch (err) { /* failed to require */ }
 
 
                 Core.init(element, {
-                    innerElement: '#map-container'
+                    innerElement: '.hs-map-container'
                 });
 
                 //Hack - flex map container was not initialized when map loaded 
-                var container = document.getElementById('map-container');
+                var container = layoutService.contentWrapper.querySelector('.hs-map-container');
                 if (container) {
                     if (container.clientHeight === 0) {
                         containerCheck();
