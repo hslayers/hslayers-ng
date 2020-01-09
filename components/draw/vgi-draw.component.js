@@ -476,7 +476,7 @@ export default {
                     $scope.current_feature = feature;
                     $timeout(() => {
                         utils.insertAfter(document.querySelector('.hs-dr-editpanel'), document.getElementById("hs-dr-feature-" + feature.uuid));
-                        var panelSpace = document.querySelector('#panelplace');
+                        var panelSpace = layoutService.contentWrapper.querySelector('.hs-panelplace');
                         panelSpace.scrollTop = panelSpace.scrollTop + document.querySelector("#hs-dr-feature-" + feature.uuid).offsetTop;
                         var olf = $scope.current_feature.ol_feature;
                         fillFeatureContainer($scope.current_feature, olf);

@@ -349,8 +349,8 @@ export default ['config', '$rootScope',
                 return document.getElementById('hs-layout').clientWidth <= 767
             },
             panelSpaceHeight() {
-                if (angular.isDefined(document.getElementsByClassName('panelspace-wrapper')[0])) {
-                    return document.getElementsByClassName('panelspace-wrapper')[0].clientHeight;
+                if (me.contentWrapper.querySelector('.hs-panelspace-wrapper')) {
+                    return me.contentWrapper.querySelector('.hs-panelspace-wrapper').clientHeight;
                     // return tmp
                 }
             },
@@ -372,9 +372,27 @@ export default ['config', '$rootScope',
             minisidebar: false,
             widthWithoutPanelSpace() {
                 return 'calc(100% - ' + me.panelSpaceWidth() + 'px)';
-            },
-
+            }
         })
+
+        Object.defineProperty(me, 'panelListElement', {
+            get: function() {
+                return me.contentWrapper.querySelector('.hs-panelplace');
+            }
+        })
+
+        Object.defineProperty(me, 'dialogAreaElement', {
+            get: function() {
+                return me.contentWrapper.querySelector('.hs-dialog-area');
+            }
+        })
+
+        Object.defineProperty(me, 'sidebarListElement', {
+            get: function() {
+                return me.contentWrapper.querySelector('.hs-sidebar-list');
+            }
+        })
+        
 
         let panelsEnabledDefaults = {
             legend: true,

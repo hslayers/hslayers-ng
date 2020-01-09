@@ -79,7 +79,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         }
         me.map = new Map({
             controls: me.controls,
-            target: 'map',
+            target: me.mapElement,
             interactions: [],
             view: cloneView(config.default_view || createPlaceholderView())
         });

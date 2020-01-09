@@ -1,4 +1,4 @@
-export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', function (OlMap, Geolocation, Core, config) {
+export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', 'hs.layout.service', function (hsMap, Geolocation, Core, config, layoutService) {
     return {
         template: Core.isMobile() ? require('components/geolocation/partials/geolocation_cordova.html') : require('components/geolocation/partials/geolocation.html'),
         link: function link(scope, element, attrs) {
@@ -6,7 +6,9 @@ export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', fu
                 if (Core.isMobile()) {
                     document.querySelector("#menu").appendChild(element[0]);
                 } else {
-                    document.querySelector(".ol-overlaycontainer-stopevent").appendChild(element[0]);
+                    hsMap.loaded().then(_ => {
+                        layoutService.contentWrapper.querySelector(".ol-overlaycontainer-stopevent").appendChild(element[0]);
+                    })
                 }
             }
         },
