@@ -1,8 +1,8 @@
-export default ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService', 'hs.layout.service',
-    function ($scope, Core, SearchService, permalink, layoutService) {
+export default ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService', 'hs.layout.service','config',
+    function ($scope, Core, SearchService, permalink, layoutService, config) {
         $scope.data = SearchService.data;
         $scope.layoutService = layoutService;
-
+        $scope.config = config;
         /**
          * Initialization of search state
          * @memberof hs.search.controller

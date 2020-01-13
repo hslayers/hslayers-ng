@@ -130,6 +130,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                 me.data.layers.push(new_layer);
             } else {
                 new_layer.active = layer.getVisible();
+                new_layer.thumbnail = getImage(layer),
                 me.data.baselayers.push(new_layer);
             };
 
@@ -140,7 +141,25 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             $rootScope.$broadcast('layermanager.updated', layer);
             $rootScope.$broadcast('compositions.composition_edited');
         };
-
+        /**
+         * @ngdoc method
+         * @name hs.layermanager.service#getImage
+         * @param {layer} layer Base layer added to map
+         * @description Function for adding baselayer thumbnail visible in basemap gallery.
+         */
+        function getImage(layer){
+            let thumbnail = layer.get('thumbnail'); 
+            if(thumbnail){
+                 if(thumbnail.length > 10){
+                    return thumbnail
+                }
+                 else {return require('img/' + thumbnail)}
+                
+            }
+            else {
+                return require('img/default.png')
+            }
+        }
         function checkLayerHealth(layer) {
             if (me.isWms(layer)) {
                 var src = layer.getSource();

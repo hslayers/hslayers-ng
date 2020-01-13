@@ -334,8 +334,8 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
 
 
-        $scope.defaultBaselayerThumbnail = require(`components/layout/osm.png`);
-        $scope.defaultTerrainlayerThumbnail = require(`components/layout/osm.png`);
+        $scope.defaultBaselayerThumbnail = require(`img/osm.png`);
+        $scope.defaultTerrainlayerThumbnail = require(`img/osm.png`);
 
         let baselayersPanelRef;
 

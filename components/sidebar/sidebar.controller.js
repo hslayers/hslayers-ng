@@ -1,5 +1,5 @@
-export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service', 'hs.language.service', 'hs.layout.service', 'gettext',
-    function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, service, languageService, layoutService, gettext) {
+export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service', 'hs.language.service', 'hs.layout.service', 'gettext','config',
+    function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, service, languageService, layoutService, gettext, config) {
         $scope = angular.extend($scope, {
             layoutService,
             buttons: [
@@ -10,30 +10,55 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
                 { panel: 'datasource_selector', module: 'hs.datasource_selector', order:4, title: gettext('Add layers'), description: gettext('Select data or services for your map composition'), icon: 'icon-database' },
                 { panel: 'feature_crossfilter', module: 'hs.feature_crossfilter.controller', order:5, title: gettext('Filter features'), description: gettext('Crossfilter'), icon: 'icon-analytics-piechare' },
                 { panel: 'sensors', module: 'hs.sensors', order:6, title: gettext('Sensors'), description: gettext(''), icon: 'icon-weightscale' },
-                { panel: 'measure', module: 'hs.measure.controller', order:2, title: gettext('Measurements'), description: gettext('Measure distance or area at map'), icon: 'icon-design' },
+                { panel: 'measure', module: 'hs.measure', order:2, title: gettext('Measurements'), description: gettext('Measure distance or area at map'), icon: 'icon-design', condition: true },
                 { panel: 'routing', module: 'hs.routing.controller', order:8, title: gettext('Routing'), description: gettext(''), icon: 'icon-road' },
                 { panel: 'tracking', module: 'hs.tracking.controller', order:9, title: gettext('Tracking'), description: gettext(''), icon: 'icon-screenshot' },
                 { panel: 'print', module: 'hs.print', order:10, title: gettext('Print'), description: gettext('Print map'), icon: 'icon-print' },
                 { panel: 'permalink', module: 'hs.permalink', order:11, title: gettext('Share map'), description: gettext('Share map'), icon: 'icon-share-alt' },
                 { panel: 'saveMap', module: 'hs.save-map', order:12, title: gettext('Save composition'), description: gettext('Save content of map to composition'), icon: 'icon-save-floppy' },
                 { panel: 'language', module: 'hs.language.controller', order:13, title: gettext('Change language'), description: gettext('Change language'), content: function () {return languageService.getCurrentLanguageCode().toUpperCase() } },
-                { panel: 'mobile_settings', module: 'hs.mobile_settings.controller', order:14, title: gettext('Application settings'), description: gettext('Specify application user settings'), icon: 'icon-settingsandroid' }
+                { panel: 'mobile_settings', module: 'hs.mobile_settings.controller', order:14, title: gettext('Application settings'), description: gettext('Specify application user settings'), icon: 'icon-settingsandroid' },
+                { panel: 'search', module: 'hs.search.controller', order:15, title: gettext('Search'), description: gettext('Search for location'), icon: 'icon-search' }
+
             ],
             visibleButtons: [],
-             /**
-             * Calculate visibility of button by taking into account if its 
-             * module is loaded and if the button is enabled in conf 
-             * panelsEnabled object.
+            /**
+             * Set visibility parameter of buttons object
              * @memberof hs.sidebar.controller
-             * @function buttonVisible
-             * @param {object} button Button definition object
+             * @function setPanelState
+             * @param {object} buttons Buttons object
              */
-            buttonVisible(button) {
-                if (Core.exists(button.module) && layoutService.panelEnabled(button.panel)){
-                    if(!$scope.visibleButtons.includes(button.panel)) !$scope.visibleButtons.push(button.panel)
-                    return true
+            setPanelState(buttons){
+                for (let button of buttons) {
+                    if (Core.exists(button.module) && layoutService.panelEnabled(button.panel) && $scope.checkConfigurableButtons(button))
+                    {
+                        if(!$scope.visibleButtons.includes(button.panel)){
+                            $scope.visibleButtons.push(button.panel)
+                            button.visible = true;
+                        }
+                    }
+                    else { button.visible = false}
                 }
             },
+
+            /**
+             * Checks whether the panels, which could be placed both in map or
+             * in sidebar, have state defined in config.panelsEnabled. If yes it
+             * should be placed in sidebar rather then in map.
+             * It´s necessary for buttons like 'measure' because simple 
+             * 'config.panelsEnabled = false' would prevent their functionality.
+             * @memberof hs.sidebar.controller
+             * @function checkConfigurableButtons
+             * @param {object} button buttons Buttons object
+             */
+            checkConfigurableButtons(button) {
+                if (typeof button.condition == "undefined") { return true }
+                else {
+                    console.log(config.panelsEnabled[button.panel])
+                    return config.panelsEnabled[button.panel] || false
+                }
+            },
+
             /**
             * @ngdoc method
             * @name hs.sidebar.controller#fitsSidebar 
@@ -81,7 +106,8 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
             if(Core.exists('hs.sidebar') && !layoutService.minisidebar)
             $scope.setMainPanel(bus.getParamValue('hs_panel'));
         }
-
+        $scope.setPanelState($scope.buttons)
+        console.log($scope.buttons)
         $scope.$emit('scope_loaded', "Sidebar");
     }
 
