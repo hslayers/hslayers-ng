@@ -145,6 +145,12 @@ ul.hs-lm-mapcontentlist {
 li.hs-lm-item.hovering {
     text-decoration: underline;
 }
+.hs-lm-list li .info_btn{
+    cursor: pointer;
+}
+.hs-lm-list li .info_btn .icon-squarei:hover::before{
+    color:#4495eb
+}
 
 #hs-layermanager-card li.hs-lm-item, li.hs-dr-item {
     word-wrap: break-word;
@@ -422,6 +428,8 @@ button.but-title-sm {
     align-items: center;
     top: 0.7em;
     position: absolute;
+    cursor: pointer;
+    box-sizing: border-box;
 }
 .basemapGallery .basemap-tile{
     background: rgba(0,60,136,0.5);
@@ -433,11 +441,13 @@ button.but-title-sm {
     border: none;
 
 }
-.basemapGallery .active{
+.basemapGallery .basemap-tile.active{
     background: rgba(0, 59, 136, 0.788);
 
 }   
-
+.basemapGallery img.active, .basemapGallery div.active{
+    border: 0.1rem solid rgb(0, 123, 255);
+}
 
 /******SIDEBAR****************/
 .hs-panelspace {
@@ -635,7 +645,7 @@ a.sidebar-main {
     color: #4495eb;
     background-color: white;
 }
-.sublayerContainer .checkmark::before{
+.sublayerContainer .checkmark::before, .sublayerContainer .uncheckmark::before{
     margin-right: 0.5em;
 }
 

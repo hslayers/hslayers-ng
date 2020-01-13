@@ -169,6 +169,45 @@ export default {
             }
 
             /**
+             * @function toggleMetaPanel
+             * @memberOf hs.layermanager.controller
+             * @description Toggles Additional information panel for current
+             * layer.                 * 
+             * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+             */
+            $scope.toggleMetaPanel = function (layer) {
+                if (layer.layer.get("metapanelActive")) {
+                    layer.layer.set("metapanelActive", false);
+                }
+                else {
+                    layer.layer.set("metapanelActive", true);
+                };
+            };
+            $scope.hasMetadata = function (layer) {
+                if (!LayMan.currentLayer) return;
+                else {
+                    return layer.layer.get('MetadataURL') ? true : false;
+                }
+            };
+            /**
+             * @function hasCopyright
+             * @memberOf hs.layermanager.controller
+             * @description Determines if layer has copyright information avaliable * 
+             * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+             */
+            $scope.hasCopyright = function(layer) {
+                if (!LayMan.currentLayer) return;
+                else {
+                    if (layer.layer.get('Attribution')) {
+                        let attr = layer.layer.get('Attribution');
+                        return (attr.OnlineResource) ? true : false;
+                    }
+                    else { return false }
+                }
+            };
+
+
+            /**
              * @function hasBoxLayers
              * @memberOf hs.layermanager.controller
              * @description Test if box layers are loaded

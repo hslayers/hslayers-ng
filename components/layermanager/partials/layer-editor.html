@@ -1,7 +1,27 @@
 <div class="card panel-default">
     <div class="card-body">
         <form>
-
+            <!-- Metadata/Copyright -->
+            <div class="form-group" ng-if="$ctrl.currentLayer.layer.get('metapanelActive')">
+                <!-- Metadata -->
+                <div ng-if="hasMetadata($ctrl.currentLayer)" class="pt-2" >
+                    <a class="card-href" ng-repeat="metadata in $ctrl.currentLayer.layer.get('MetadataURL')"
+                        href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
+                        <span ng-show="metadata.type">
+                            Metadata of layer in {{::metadata.type}}
+                        </span>
+                        <span ng-hide="metadata.type">
+                            Metadata of service
+                        </span>
+                    </a>
+                </div>
+                <!-- Copyright -->
+                <div ng-if="hasCopyright($ctrl.currentLayer)">
+                    <a class="card-href" href="{{$ctrl.currentLayer.layer.get('Attribution').OnlineResource}}" target="_blank"
+                        title="Copyright">
+                        Copyright</a>
+                </div>
+            </div>
             <!-- Sublayers-->
             <div ng-show="hasSubLayers()" class="form-group">
                 <div ng-repeat="subLayer in ::getSubLayers()">
@@ -75,45 +95,6 @@
                 </div>
             </div>
 
-            <!-- Metadata/Copyright -->
-            <div class="form-group chevron-icon-right " ng-click="toggleMetaPanel($ctrl.currentLayer)">
-                <div class="hs-lm-item-title">
-                    <i class="small"
-                        ng-class="$ctrl.currentLayer.layer.get('metapanelActive') ? 'icon-chevron-down' : 'icon-chevron-right'"></i>Additional
-                    Info
-                </div>
-                <!-- Metadata -->
-                <div class="pt-2" ng-if="$ctrl.currentLayer.layer.get('metapanelActive')">
-
-                    <div ng-if="hasMetadata($ctrl.currentLayer)">
-                        <a class="card-href" ng-repeat="metadata in $ctrl.currentLayer.layer.get('MetadataURL')"
-                            href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
-                            <span ng-show="metadata.type">
-                                Metadata of layer in {{::metadata.type}}
-                            </span>
-                            <span ng-hide="metadata.type">
-                                Metadata of service
-                            </span>
-                        </a>
-                    </div>
-                    <div ng-if="!hasMetadata($ctrl.currentLayer)">
-                        No matadata available for current layer!
-                    </div>
-                </div>
-                <!-- Copyright -->
-                <div class="pt-2" ng-if="$ctrl.currentLayer.layer.get('metapanelActive')">
-
-                    <div class="form-group" ng-if="hasCopyright($ctrl.currentLayer)">
-                        <a class="card-href" href="{{$ctrl.currentLayer.layer.get('Attribution').OnlineResource}}"
-                            target="_blank" title="Copyright">
-                            Copyright</a>
-                    </div>
-                    <div ng-if="!hasCopyright($ctrl.currentLayer)">
-                         No copyright info available
-                    </div>
-                </div>
-            </div>
-
             <!-- Legends -->
             <div ng-if="olLayer()">
                 <div ng-repeat="layer in legendDescriptors">
@@ -160,12 +141,13 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" ng-click="zoomToLayer()" ng-disabled="!layerIsZoomable()"><i
-                class="icon-search"></i></button>
-        <button class="btn btn-primary" ng-click="styleLayer()" ng-disabled="!layerIsStyleable()"><i
-                class="icon-brush"></i></button>
-        <button class="btn btn-primary" ng-click="toggleLayerRename()"><i class="icon-edit"></i></button>
-        <button class="btn btn-danger" ng-click="removeLayer()" ng-if="isLayerRemovable()"><i
-                class="icon-trash"></i></button>
+        <button class="btn btn-primary" ng-click="zoomToLayer()" ng-disabled="!layerIsZoomable()" data-toggle="tooltip"
+             title="Zoom to layer"><i class="icon-search" ></i></button>
+        <button class="btn btn-primary" ng-click="styleLayer()" ng-disabled="!layerIsStyleable()" data-toggle="tooltip"
+             title="Style layer"><i class="icon-brush"></i></button>
+        <button class="btn btn-primary" ng-click="toggleLayerRename()" data-toggle="tooltip" 
+            title="Rename layer"><i class="icon-edit"></i></button>
+        <button class="btn btn-danger" ng-click="removeLayer()" ng-if="isLayerRemovable()" data-toggle="tooltip"
+             title="Remove layer"><i class="icon-trash"></i></button>
     </div>
 </div>
