@@ -412,6 +412,7 @@ export default ['config', '$rootScope',
             routing: true,
             tracking: true,
             filter: false,
+            search: false
         };
 
         angular.forEach(panelsEnabledDefaults, (value, key) => {
@@ -422,7 +423,6 @@ export default ['config', '$rootScope',
         angular.forEach(config.panelsEnabled, (value, key) => {
             me.panelEnabled(key, value)
         })
-
         return me;
     }
 ]

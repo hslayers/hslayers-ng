@@ -4,6 +4,8 @@ export default ['config', 'hs.layout.service', 'hs.layermanager.service', functi
 
         controller: ['$scope', function ($scope) {
             $scope.LayMan = LayMan;
+            $scope.changeBaseLayerVisibility = LayMan.changeBaseLayerVisibility;
+            $scope.data = LayMan.data;
             $scope.galleryStyle = function () {
                 if (!layoutService.sidebarRight || document.getElementById('hs-layout').clientWidth <= 767) {
                     return { right: '15px' }
@@ -15,8 +17,8 @@ export default ['config', 'hs.layout.service', 'hs.layermanager.service', functi
             };
 
             $scope.fitsInContainer = () => {
-                return LayMan.data.baselayers.length * 120 < document.getElementById('hs-layout').clientWidth - layoutService.panelSpaceWidth() - 300;
+                return LayMan.data.baselayers.length * 100 < document.getElementById('hs-layout').clientWidth - layoutService.panelSpaceWidth() - 300;
             }
-        }]
+        }],
     };
 }]

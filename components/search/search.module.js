@@ -4,6 +4,7 @@ import searchInputDirective from './search-input.directive';
 import searchResultsDirective from './search-results.directive';
 import searchService from './search.service';
 import searchController from './search.controller';
+import searchDirective from './search.directive';
 
 /**
  * @namespace hs.search
@@ -20,6 +21,7 @@ angular.module('hs.search', ['hs.map', 'hs.styles', 'hs.layout'])
     .directive('hs.search.directiveSearchinput', searchInputDirective)
     
     .directive('hs.search.directiveSearchresults', searchResultsDirective)
+    .directive('hs.search.directive', searchDirective)
     
      /**
      * @memberof hs.search

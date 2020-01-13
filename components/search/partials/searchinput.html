@@ -1,14 +1,22 @@
- <div class="input-group search_address">
+<div class="input-group search_address">
     <div class="input-group-prepend">
-        <button ng-show="layoutService.smallWidth" ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary"><i class="glyphicon icon-search"></i></button>
+        <button ng-show="layoutService.smallWidth && !layoutService.panelEnabled('search')"
+            ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary"><i
+                class="glyphicon icon-search"></i></button>
     </div>
-    <input ng-model="query" ng-show="!layoutService.smallWidth || !layoutService.sidebarExpanded && !layoutService.smallWidth || searchInputVisible" class="form-control" id="search_address" placeholder="Search:" ng-change="queryChanged()"/>
+    <input ng-model="query" ng-show="!layoutService.smallWidth || !layoutService.sidebarExpanded 
+        && !layoutService.smallWidth || searchInputVisible" ng-if="!layoutService.panelEnabled('search')"
+        class="form-control" id="search_address" placeholder="Search:" ng-change="queryChanged()" />
     <div class="input-group-append">
-        <button class="btn btn-light btn-outline-secondary" ng-if="clearvisible" ng-click="clear()"><span aria-hidden="true" class="close">×</span><span class="sr-only"><translate>Clear</translate></span></button>
-        <button class="btn btn-light btn-outline-secondary" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions')" ng-click="Core.resetMap()">
+        <button class="btn btn-light btn-outline-secondary" ng-if="clearvisible" ng-click="clear()"><span
+                aria-hidden="true" class="close">×</span><span class="sr-only">
+                <translate>Clear</translate>
+            </span></button>
+        <!-- <button class="btn btn-light btn-outline-secondary" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions')" ng-click="Core.resetMap()">
             <i class="icon-repeat"></i>
-        </button>
-        <button class="btn btn-light btn-outline-secondary"  title="{{'Measure lines and polygon'|translate}}"  ng-if="Core.exists('hs.measure')" ng-click="measureButtonClicked()">
+        </button> -->
+        <button class="btn btn-light btn-outline-secondary" title="{{'Measure lines and polygon'|translate}}"
+            ng-if="Core.exists('hs.measure') && config.panelsEnabled.measure != true" ng-click="measureButtonClicked()">
             <i class="icon-design"></i>
         </button>
     </div>

@@ -25,6 +25,11 @@
                 <div class="p-0">
                     <span class="glyphicon icon-resize-vertical hs-lm-drop-hint"></span>
                 </div>
+                <div class="p-0 info_btn" >
+                    <span class="icon-squarei text-secondary" ng-show="LayMan.currentLayer == layer && (hasMetadata(layer) || hasCopyright(layer))"
+                    ng-click="toggleMetaPanel(layer)" title="{{'Additional informations'|translate}}" data-toggle="tooltip"
+                    data-container="body" data-placement="auto"></span>
+                </div>
                 <div class="p-0 " ng-hide="layerValid(layer.layer)">
                     <i class="icon-warning-sign hs-lm-warning-scale"
                         title="{{'This layer is not available in this scale'|translate}}" data-toggle="tooltip"
@@ -36,7 +41,7 @@
                         title="{{'This layer is not available'|translate}}" data-toggle="tooltip" data-container="body"
                         data-placement="auto" ng-click="$event.stopPropagation()"></i>
                 </div>
-                <div class="p-0" ng-if="layer.layer.get('synchronize')" ng-show="layer.layer.get('hs-layman-synchronizing')">
+                <div class="p-0" ng-show="layer.layer.get('hs-layman-synchronizing')">
                     <i class="icon-cloudaltsync"
                         title="{{'Sending to layman'|translate}}" data-toggle="tooltip" data-container="body"
                         data-placement="auto" ng-click="$event.stopPropagation()"></i>
