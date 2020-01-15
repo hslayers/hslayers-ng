@@ -226,7 +226,7 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map'])
                 return new Promise((resolve, reject) => {
                     laymanService.describeLayer($scope.endpoint, $scope.name)
                         .then(descriptor => {
-                            if (descriptor.wms == 'STARTED' || descriptor.wms == 'PENDING') {
+                            if (descriptor.wms.status == 'STARTED' || descriptor.wms.status == 'PENDING') {
                                 setTimeout(function () {
                                     describeNewLayer(endpoint, layerName).then(response => resolve(response))
                                 }, 2000);
