@@ -7,6 +7,7 @@ import './arcgis/add-layers-arcgis.module';
 import './wmts/add-layers-wmts.module';
 import './wfs/add-layers-wfs.module';
 import './vector/add-layers-vector.module';
+import './shp/add-layers-shp.module';
 import '../../common/history-list/history-list.module';
 import addLayersUrlDirective from './add-layers-url.directive';
 import nestedLayersTableDirective from './nested-layers-table.directive';
@@ -15,7 +16,7 @@ import nestedLayersTableDirective from './nested-layers-table.directive';
  * @namespace hs.addLayers
  * @memberOf hs
  */
-export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersArcgis', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector', 'ngCookies', 'hs.historyList', 'hs.getCapabilities'])
+export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersArcgis', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector', 'hs.addLayersShp', 'ngCookies', 'hs.historyList', 'hs.getCapabilities'])
     /**
     * @memberof hs.addLayers
     * @ngdoc directive
