@@ -64,19 +64,25 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
             * Load nonwms OWS data and create layer
             * @memberof hs.addLayers
             * @function add
-            * @param {String} type Type of data to load (supports Kml, Geojson, Wfs and Sparql) 
-            * @param {String} url Url of data/service localization
+            * @param {Object} endpoint Layman endpoint description (url, name, user) 
+            * @param {Array} files Array of shp files (shp, dbf, shx)
             * @param {String} name Name of new layer
             * @param {String} title Title of new layer
             * @param {String} abstract Abstract of new layer
             * @param {String} srs EPSG code of selected projection (eg. "EPSG:4326")
-            * @param {Object} options Other options  
+            * @param {Array} sld Array of sld files
             */
-            me.add = function (endpoint, files, name, title, abstract, srs) {
+            me.add = function (endpoint, files, name, title, abstract, srs, sld) {
                 return new Promise((resolve, reject) => {
                     var formdata = new FormData();
                     files.forEach(file => {
                         formdata.append('file',
+                            new Blob([file.content],
+                                { type: file.type }), file.name
+                        );
+                    })
+                    sld.forEach(file => {
+                        formdata.append('sld',
                             new Blob([file.content],
                                 { type: file.type }), file.name
                         );
@@ -210,6 +216,7 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
             $scope.title = "";
             $scope.extract_styles = false;
             $scope.files = null;
+            $scope.sld = null;
             $scope.errorDetails = {};
             $scope.loaderImage = require('img/ajax-loader.gif');
 
@@ -249,7 +256,7 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
             */
             $scope.add = function () {
                 $scope.loading = true;
-                service.add($scope.endpoint, $scope.files, $scope.name, $scope.title, $scope.abstract, $scope.srs).then(data => {
+                service.add($scope.endpoint, $scope.files, $scope.name, $scope.title, $scope.abstract, $scope.srs, $scope.sld).then(data => {
                     describeNewLayer($scope.endpoint, $scope.name)
                     .then(descriptor => {
                         addLayerService.addService(descriptor.wms.url, undefined, $scope.name);
