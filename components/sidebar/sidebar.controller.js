@@ -54,7 +54,6 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
             checkConfigurableButtons(button) {
                 if (typeof button.condition == "undefined") { return true }
                 else {
-                    console.log(config.panelsEnabled[button.panel])
                     return config.panelsEnabled[button.panel] || false
                 }
             },
@@ -107,7 +106,6 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
             $scope.setMainPanel(bus.getParamValue('hs_panel'));
         }
         $scope.setPanelState($scope.buttons)
-        console.log($scope.buttons)
         $scope.$emit('scope_loaded', "Sidebar");
     }
 
