@@ -10,7 +10,7 @@
 
             <div class="gui-overlay" ng-if="!Core.puremapApp">
 
-                <div class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar') && Core.exists('hs.search.controller') && layoutService.sidebarVisible()">
+                <div ng-style="{'width':'239px'}" class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar') && Core.exists('hs.search.controller') && layoutService.sidebarVisible()">
                     <div>
                         <div hs.search.directive_searchinput></div>
                         <div hs.search.directive_searchresults></div>
