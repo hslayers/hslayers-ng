@@ -109,99 +109,6 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
                         });
                 })
             };
-
-            function createVectorSource(format, url, extract_styles, srs) {
-                var src = new Vector({
-                    format: format,
-                    url: url,
-                    projection: getProj(srs),
-                    extractStyles: extract_styles,
-                    loader: function (extent, resolution, projection) {
-                        this.set('loaded', false);
-                        var me = this;
-                        $http({ url: url }). //context: this?
-                            then(function (response) {
-                                var data = response.data;
-                                if (data.type == 'GeometryCollection') {
-                                    var temp = {
-                                        type: "Feature",
-                                        geometry: data
-                                    };
-                                    data = temp;
-                                }
-                                me.addFeatures(format.readFeatures(data, {
-                                    dataProjection: srs,
-                                    featureProjection: OlMap.map.getView().getProjection().getCode()
-                                }));
-
-                                //TODO probably we should not do this. Have to check when styler is operational
-                                src.hasLine = false;
-                                src.hasPoly = false;
-                                src.hasPoint = false;
-                                angular.forEach(src.getFeatures(), function (f) {
-                                    if (f.getGeometry()) {
-                                        switch (f.getGeometry().getType()) {
-                                            case 'LineString' || 'MultiLineString':
-                                                src.hasLine = true;
-                                                break;
-                                            case 'Polygon' || 'MultiPolygon':
-                                                src.hasPoly = true;
-                                                break;
-                                            case 'Point' || 'MultiPoint':
-                                                src.hasPoint = true;
-                                                break;
-                                        }
-                                    }
-                                })
-
-                                if (src.hasLine || src.hasPoly || src.hasPoint) {
-                                    src.styleAble = true;
-                                }
-                                me.set('loaded', true);
-
-
-                            }, function (err) {
-                                me.error = true;
-                                me.errorMessage = err.status;
-                                me.set('loaded', true);
-                            });
-                    },
-                    strategy: loadingstrategy.all
-                });
-                return src;
-            }
-
-            function createVectorSourceFromFeatures(srs, options) {
-                var src = new Vector({
-                    projection: srs,
-                    features: options.features
-                });
-
-                src.hasLine = false;
-                src.hasPoly = false;
-                src.hasPoint = false;
-                angular.forEach(src.getFeatures(), function (f) {
-                    if (f.getGeometry()) {
-                        switch (f.getGeometry().getType()) {
-                            case 'LineString' || 'MultiLineString':
-                                src.hasLine = true;
-                                break;
-                            case 'Polygon' || 'MultiPolygon':
-                                src.hasPoly = true;
-                                break;
-                            case 'Point' || 'MultiPoint':
-                                src.hasPoint = true;
-                                break;
-                        }
-                    }
-                })
-
-                if (src.hasLine || src.hasPoly || src.hasPoint) {
-                    src.styleAble = true;
-                }
-
-                return src;
-            }
         }
     ])
 
@@ -230,7 +137,7 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
                     }
                 });
 
-            if($scope.endpoints.length > 0) 
+            if ($scope.endpoints.length > 0)
                 $scope.endpoint = $scope.endpoints[0];
 
             function describeNewLayer(endpoint, layerName) {
@@ -258,11 +165,11 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
                 $scope.loading = true;
                 service.add($scope.endpoint, $scope.files, $scope.name, $scope.title, $scope.abstract, $scope.srs, $scope.sld).then(data => {
                     describeNewLayer($scope.endpoint, $scope.name)
-                    .then(descriptor => {
-                        addLayerService.addService(descriptor.wms.url, undefined, $scope.name);
-                        $scope.loading = false;
-                        layoutService.setMainPanel('layermanager');
-                    })
+                        .then(descriptor => {
+                            addLayerService.addService(descriptor.wms.url, undefined, $scope.name);
+                            $scope.loading = false;
+                            layoutService.setMainPanel('layermanager');
+                        })
                     $scope.resultCode = 'success';
                 }).catch(err => {
                     $scope.loading = false;
