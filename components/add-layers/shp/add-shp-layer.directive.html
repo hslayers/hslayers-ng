@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <button class="btn btn-primary btn-block" ng-disabled="!title" ng-click="add()"><i class="icon-plus"></i> <translate>Add</translate></button>
+    <button class="btn btn-primary btn-block" ng-disabled="!title" ng-click="add()"><i class="icon-plus" ng-show="!loading"></i><img ng-src="{{loaderImage}}" ng-show="loading" /> <translate>Add</translate></button>
 
 
     <div class="alert alert-danger" ng-show="resultCode == 'error'">

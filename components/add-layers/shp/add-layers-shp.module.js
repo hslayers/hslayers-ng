@@ -13,7 +13,7 @@ import VectorLayer from 'ol/layer/Vector';
  * @namespace hs.addLayersShp
  * @memberOf hs
  */
-angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map'])
+angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs.addLayersWms'])
     /**
     * @memberof hs.ows
     * @ngdoc directive
@@ -204,13 +204,14 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map'])
     * @ngdoc controller
     * @name hs.addLayersShp.controller
     */
-    .controller('hs.addLayersShp.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.addLayersShp.service', 'Core', 'hs.layout.service', 'config', 'hs.laymanService',
-        function ($scope, OlMap, styles, service, Core, layoutService, config, laymanService) {
+    .controller('hs.addLayersShp.controller', ['$scope', 'hs.map.service', 'hs.styles.service', 'hs.addLayersShp.service', 'Core', 'hs.layout.service', 'config', 'hs.laymanService', 'hs.addLayersWms.addLayerService',
+        function ($scope, OlMap, styles, service, Core, layoutService, config, laymanService, addLayerService) {
             $scope.srs = 'EPSG:4326';
             $scope.title = "";
             $scope.extract_styles = false;
             $scope.files = null;
             $scope.errorDetails = {};
+            $scope.loaderImage = require('img/ajax-loader.gif');
 
             $scope.endpoints = (config.datasources || []).filter(ds => ds.type == 'layman').map(
                 ds => {
@@ -222,13 +223,17 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map'])
                     }
                 });
 
-            function describeNewLayer(endpoint, name) {
+            if($scope.endpoints.length > 0) 
+                $scope.endpoint = $scope.endpoints[0];
+
+            function describeNewLayer(endpoint, layerName) {
                 return new Promise((resolve, reject) => {
-                    laymanService.describeLayer($scope.endpoint, $scope.name)
+                    laymanService.describeLayer(endpoint, layerName)
                         .then(descriptor => {
-                            if (descriptor.wms.status == 'STARTED' || descriptor.wms.status == 'PENDING') {
+                            if (['STARTED', 'PENDING', 'SUCCESS'].indexOf(descriptor.wms.status) > -1) {
                                 setTimeout(function () {
-                                    describeNewLayer(endpoint, layerName).then(response => resolve(response))
+                                    describeNewLayer(endpoint, layerName)
+                                        .then(response => resolve(response))
                                 }, 2000);
                             } else {
                                 resolve(descriptor)
@@ -243,11 +248,17 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map'])
             * @function add
             */
             $scope.add = function () {
+                $scope.loading = true;
                 service.add($scope.endpoint, $scope.files, $scope.name, $scope.title, $scope.abstract, $scope.srs).then(data => {
                     describeNewLayer($scope.endpoint, $scope.name)
-                    layoutService.setMainPanel('layermanager');
+                    .then(descriptor => {
+                        addLayerService.addService(descriptor.wms.url, undefined, $scope.name);
+                        $scope.loading = false;
+                        layoutService.setMainPanel('layermanager');
+                    })
                     $scope.resultCode = 'success';
                 }).catch(err => {
+                    $scope.loading = false;
                     $scope.resultCode = 'error';
                     $scope.errorMessage = err.message;
                     $scope.errorDetails = err.detail;
