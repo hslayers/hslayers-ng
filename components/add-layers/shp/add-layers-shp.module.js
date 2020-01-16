@@ -1,13 +1,5 @@
-import { DragAndDrop } from 'ol/interaction';
-import { GPX, IGC, KML, TopoJSON, GeoJSON } from 'ol/format';
-import SparqlJson from 'hs.source.SparqlJson'
-import WfsSource from 'hs.source.Wfs'
 import 'components/styles/styles.module';
-import * as loadingstrategy from 'ol/loadingstrategy';
-import { transform, transformExtent, get as getProj } from 'ol/proj';
-import { Vector } from 'ol/source';
 import 'save-map.module';
-import VectorLayer from 'ol/layer/Vector';
 
 /**
  * @namespace hs.addLayersShp
