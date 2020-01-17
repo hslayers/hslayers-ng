@@ -590,7 +590,7 @@ export default {
             $scope.clearAll = function () {
                 if (confirm("Really clear all features?")) {
                     $scope.features = [];
-                    drawsource.clear();
+                    drawService.source.clear();
                 }
             }
 
@@ -980,9 +980,9 @@ export default {
                 $scope.layer_to_select = layer;
             }
 
-            var el = angular.element('<span hs.vgi-layer-manager-button></span>');
-            document.querySelector('.hs-lm-map-content-header').appendChild(el[0]);
-            $compile(el)($scope);
+            // var el = angular.element('<span hs.vgi-layer-manager-button></span>');
+            // document.querySelector('.hs-lm-map-content-header').appendChild(el[0]);
+            // $compile(el)($scope);
 
             /**
              * @function addDrawingLayer
@@ -1000,7 +1000,7 @@ export default {
                     visibility: true,
                     source: source
                 })
-                map.getLayers().push(layer);
+                map.addLayer(layer);
                 $scope.$emit('layer_added', {
                     layer: saveMap.layer2json(layer)
                 });

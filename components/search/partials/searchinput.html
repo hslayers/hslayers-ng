@@ -2,19 +2,24 @@
     <div class="input-group-prepend">
         <button ng-show="layoutService.smallWidth && !layoutService.panelEnabled('search')"
             ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary"><i
-                class="glyphicon icon-search"></i></button>
+                class="glyphicon icon-search" title="{{'Search'|translate}}"></i></button>
     </div>
+<<<<<<< HEAD
     <input ng-model="query" ng-if="!layoutService.panelEnabled('search')" ng-show="!layoutService.smallWidth || !layoutService.sidebarExpanded 
         && !layoutService.smallWidth || searchInputVisible" 
+=======
+    <input ng-model="query"
+        ng-show="!layoutService.panelEnabled('search') && (!layoutService.smallWidth || searchInputVisible)"
+>>>>>>> Layout changes:
         class="form-control" id="search_address" placeholder="Search:" ng-change="queryChanged()" />
     <div class="input-group-append">
-        <button class="btn btn-light btn-outline-secondary" ng-if="clearvisible && !layoutService.panelEnabled('search')" ng-click="clear()"><span
-                aria-hidden="true" class="close">×</span><span class="sr-only">
+        <button class="btn btn-light btn-outline-secondary"
+            ng-if="clearvisible && !layoutService.panelEnabled('search')" ng-click="clear()"><span aria-hidden="true"
+                class="close">×</span><span class="sr-only">
                 <translate>Clear</translate>
             </span></button>
-        <!-- <button class="btn btn-light btn-outline-secondary" title="{{'Reset map'|translate}}" ng-if="Core.exists('hs.compositions')" ng-click="Core.resetMap()">
-            <i class="icon-repeat"></i>
-        </button> -->
+        <hs.draw.shape-toolbar ng-if="!layoutService.panelEnabled('draw')"></hs.draw.shape-toolbar>
+
         <button class="btn btn-light btn-outline-secondary" title="{{'Measure lines and polygon'|translate}}"
             ng-if="Core.exists('hs.measure') && config.panelsEnabled.measure != true" ng-click="measureButtonClicked()">
             <i class="icon-design"></i>

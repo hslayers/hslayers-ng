@@ -1,11 +1,15 @@
-<div>
-    <div ng-repeat="col in colors  | limitTo : 15 : 0" ng-style="col" class="hs-styler-colorbox" ng-click="colorSelected(col)">
-        
-    </div><br/>
-    <div ng-repeat="col in colors  | limitTo : 14 : 16" ng-style="col" class="hs-styler-colorbox" ng-click="colorSelected(col)">
-        
+<div class="d-flex flex-row">
+    <div>
+        <div ng-repeat="col in colors  | limitTo : 15 : 0" ng-style="col" class="hs-styler-colorbox"
+            ng-click="colorSelected(col)">
+
+        </div><br />
+        <div ng-repeat="col in colors  | limitTo : 14 : 16" ng-style="col" class="hs-styler-colorbox"
+            ng-click="colorSelected(col)">
+
+        </div>
     </div>
-    <div class="hs-styler-colorbox" style="font-size: 17px;" ng-click="colorSelected(null)">
-        <span class="icon-remove" aria-hidden="true"></span>
+    <div class="hs-styler-remove p-3" style="font-size: 17px;" ng-click="colorSelected(blank)">
+        <span class="icon-remove" aria-hidden="false"></span>
     </div>
 </div>

@@ -1,3 +1,13 @@
 {
-    "editor.rulers": [80,120]
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "editor.formatOnSave": true,
+    "prettier.printWidth": 120,
+    "prettier.trailingComma": "all",
+    "prettier.useTabs": true,
+    "prettier.disableLanguages": [
+        "html"
+    ]
 }

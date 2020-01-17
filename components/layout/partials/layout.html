@@ -10,12 +10,12 @@
 
             <div class="gui-overlay" ng-if="!Core.puremapApp">
 
-                <div ng-style="{'width':'239px'}" class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar') && Core.exists('hs.search.controller') && layoutService.sidebarVisible()">
+                <!-- <div ng-style="{'width':'239px'}" class="search-container" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar') && Core.exists('hs.search.controller') && layoutService.sidebarVisible()">
                     <div>
                         <div hs.search.directive_searchinput></div>
                         <div hs.search.directive_searchresults></div>
                     </div>
-                </div>
+                </div> -->
 
                 <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
 
@@ -44,6 +44,7 @@
                             <hs.sensors.panel                       hs.draggable ng-if="Core.exists('hs.sensors')" ng-show="panelVisible('sensors', this)"></hs.sensors.panel>
                             <div hs.search.directive                hs.draggable ng-controller="hs.search.controller" ng-if="Core.exists('hs.search.controller') && panelVisible('search')" ng-show="panelVisible('search', this)"></div>
                             <div hs.sidebar.directive             class="hs-minisidebar"  hs.draggable ng-controller="hs.sidebar.controller" ng-if="Core.exists('hs.sidebar') && layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></div>
+                            <div hs.draw.directive                  hs.draggable ng-if="Core.exists('hs.draw') " ng-show="panelVisible('draw', this)"></div>
                             <div hs.customhtml.directive                                                            ng-if="Core.exists('hs.customhtml')"></div>
                         </div>
                     </div>
@@ -56,7 +57,7 @@
                 <div>
                     <hs.query.feature-popup></hs.query.feature-popup>
                 </div>
-                <hs.draw.shape-toolbar></hs.draw.shape-toolbar>
+                <!-- <hs.draw.shape-toolbar></hs.draw.shape-toolbar> -->
             </div>
             <div class="hs-dialog-area">
                 <!--<div hs.save-map.directive ng-controller="hs.save-map.controller" ng-if="Core.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></div>-->

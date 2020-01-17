@@ -18,7 +18,9 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
                 { panel: 'saveMap', module: 'hs.save-map', order:12, title: gettext('Save composition'), description: gettext('Save content of map to composition'), icon: 'icon-save-floppy' },
                 { panel: 'language', module: 'hs.language.controller', order:13, title: gettext('Change language'), description: gettext('Change language'), content: function () {return languageService.getCurrentLanguageCode().toUpperCase() } },
                 { panel: 'mobile_settings', module: 'hs.mobile_settings.controller', order:14, title: gettext('Application settings'), description: gettext('Specify application user settings'), icon: 'icon-settingsandroid' },
-                { panel: 'search', module: 'hs.search.controller', order:15, title: gettext('Search'), description: gettext('Search for location'), icon: 'icon-search' }
+                { panel: 'search', module: 'hs.search.controller', order:15, title: gettext('Search'), description: gettext('Search for location'), icon: 'icon-search' },
+                { panel: 'draw', module: 'hs.draw', order:16, title: gettext('Draw'), description: gettext('Draw new features'), icon: 'icon-pencil' },
+
 
             ],
             visibleButtons: [],
