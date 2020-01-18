@@ -21,7 +21,7 @@ export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.add
     * @memberof hs.addLayers
     * @ngdoc directive
     * @name compile
-    * @description Directive which compiles a template and includes it in the dom. 
+    * @description Directive which compiles a template and includes it in the dom.
     * Previously done with ng-bind-html which escaped variables and child directives
     */
     .directive('compile', compileDirective)
@@ -31,7 +31,7 @@ export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.add
     * @ngdoc directive
     * @name hs.addLayersUrl
     */
-   .directive('hs.addLayersUrl', addLayersUrlDirective)
+    .directive('hs.addLayersUrl', addLayersUrlDirective)
 
 
     /**
@@ -39,7 +39,7 @@ export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.add
     * @ngdoc directive
     * @name hs.addLayersUrl
     */
-   .directive('hs.nestedLayersTable', nestedLayersTableDirective )
+    .directive('hs.nestedLayersTable', nestedLayersTableDirective )
 
     /**
     * @memberof hs.addLayers

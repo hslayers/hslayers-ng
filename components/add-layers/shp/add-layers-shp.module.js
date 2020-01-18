@@ -26,12 +26,16 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
             link: function (scope, element, attributes) {
                 element.bind("change", function (changeEvent) {
                     scope.fileread = [];
-                    for (var i = 0; i < changeEvent.target.files.length; i++) {
+                    for (let i = 0; i < changeEvent.target.files.length; i++) {
                         let file = changeEvent.target.files[i];
-                        var reader = new FileReader();
+                        let reader = new FileReader();
                         reader.onload = function (loadEvent) {
                             scope.$apply(function () {
-                                scope.fileread.push({ name: file.name, type: file.type, content: loadEvent.target.result });
+                                scope.fileread.push({
+                                    name: file.name,
+                                    type: file.type,
+                                    content: loadEvent.target.result
+                                });
                             });
                         }
                         reader.readAsArrayBuffer(file);
@@ -50,13 +54,13 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
     */
     .service('hs.addLayersShp.service', ['config', 'Core', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.statusManagerService', 'hs.permalink.urlService', 'hs.layout.service',
         function (config, Core, $rootScope, OlMap, styles, utils, $http, statusManagerService, permalink, layoutService) {
-            var me = this;
+            let me = this;
 
             /**
             * Load nonwms OWS data and create layer
             * @memberof hs.addLayers
             * @function add
-            * @param {Object} endpoint Layman endpoint description (url, name, user) 
+            * @param {Object} endpoint Layman endpoint description (url, name, user)
             * @param {Array} files Array of shp files (shp, dbf, shx)
             * @param {String} name Name of new layer
             * @param {String} title Title of new layer
@@ -66,17 +70,23 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
             */
             me.add = function (endpoint, files, name, title, abstract, srs, sld) {
                 return new Promise((resolve, reject) => {
-                    var formdata = new FormData();
+                    const formdata = new FormData();
                     files.forEach(file => {
                         formdata.append('file',
-                            new Blob([file.content],
-                                { type: file.type }), file.name
+                            new Blob(
+                                [file.content],
+                                { type: file.type }
+                            ),
+                            file.name
                         );
                     })
                     sld.forEach(file => {
                         formdata.append('sld',
-                            new Blob([file.content],
-                                { type: file.type }), file.name
+                            new Blob(
+                                [file.content],
+                                { type: file.type }
+                            ),
+                            file.name
                         );
                     })
                     formdata.append('name', name);

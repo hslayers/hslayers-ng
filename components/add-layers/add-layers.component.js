@@ -51,9 +51,9 @@ export default {
                         $scope.showDetails = true;
                         break;
                     case "shp":
-                            template = '<hs.add-layers-shp/>';
-                            $scope.showDetails = true;
-                            break;
+                        template = '<hs.add-layers-shp/>';
+                        $scope.showDetails = true;
+                        break;
                     default:
                         break;
                 }
