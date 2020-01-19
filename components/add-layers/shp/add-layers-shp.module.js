@@ -50,7 +50,7 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
     * @memberof hs.addLayersShp
     * @ngdoc service
     * @name hs.addLayersShp.service
-    * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
+    * @description Service for adding shapefiles through layman.
     */
     .service('hs.addLayersShp.service', ['config', 'Core', '$rootScope', 'hs.map.service', 'hs.styles.service', 'hs.utils.service', '$http', 'hs.statusManagerService', 'hs.permalink.urlService', 'hs.layout.service',
         function (config, Core, $rootScope, OlMap, styles, utils, $http, statusManagerService, permalink, layoutService) {
@@ -160,7 +160,8 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
             }
 
             /**
-            * Handler for adding nonwms service, file in template.
+            * Handler for button click to send shape file to layman and wait for
+            * answer with wms service url to add to map
             * @memberof hs.addLayersShp.controller
             * @function add
             */
