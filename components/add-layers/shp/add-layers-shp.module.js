@@ -80,15 +80,16 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
                             file.name
                         );
                     })
-                    sld.forEach(file => {
-                        formdata.append('sld',
-                            new Blob(
-                                [file.content],
-                                { type: file.type }
-                            ),
-                            file.name
-                        );
-                    })
+                    if(sld)
+                        sld.forEach(file => {
+                            formdata.append('sld',
+                                new Blob(
+                                    [file.content],
+                                    { type: file.type }
+                                ),
+                                file.name
+                            );
+                        })
                     formdata.append('name', name);
                     formdata.append('title', title);
                     formdata.append('abstract', abstract);
