@@ -4,7 +4,7 @@
             ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary"><i
                 class="glyphicon icon-search"></i></button>
     </div>
-    <input ng-model="query" ng-show="!layoutService.smallWidth || !layoutService.sidebarExpanded 
+    <input ng-model="query" ng-if="!layoutService.panelEnabled('search')" ng-show="!layoutService.smallWidth || !layoutService.sidebarExpanded 
         && !layoutService.smallWidth || searchInputVisible" 
         class="form-control" id="search_address" placeholder="Search:" ng-change="queryChanged()" />
     <div class="input-group-append">
