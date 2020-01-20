@@ -4,7 +4,7 @@
             ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary"><i
                 class="glyphicon icon-search"></i></button>
     </div>
-    <input ng-model="query" ng-init="searchInputVisible=true" ng-show="searchInputVisible && !layoutService.panelEnabled('search')" 
+    <input ng-model="query" ng-init="searchInputVisible=true" ng-show="!layoutService.panelEnabled('search') && (!layoutService.smallWidth || searchInputVisible)" 
         class="form-control" id="search_address" placeholder="Search:" ng-change="queryChanged()" />
     <div class="input-group-append">
         <button class="btn btn-light btn-outline-secondary" ng-if="clearvisible && !layoutService.panelEnabled('search')" ng-click="clear()"><span
@@ -20,5 +20,4 @@
         </button>
     </div>
 </div>
-<!-- !layoutService.smallWidth || !layoutService.sidebarExpanded 
-        && !layoutService.smallWidth || searchInputVisible &&  -->
+<!-- !layoutService.smallWidth || !layoutService.sidebarExpanded && !layoutService.smallWidth || searchInputVisible &&  -->
