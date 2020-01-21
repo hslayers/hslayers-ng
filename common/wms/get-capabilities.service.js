@@ -84,6 +84,8 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', fun
         var parser = new WMSCapabilities();
         var caps = parser.read(capabilities_xml);
         var service = caps.Capability.Layer;
+        if(angular.isUndefined(service.length) && angular.isDefined(service.Layer))
+            service = [service];
         var srss = caps.Capability.Layer.CRS;
         var image_formats = caps.Capability.Request.GetMap.Format;
         var query_formats = (caps.Capability.Request.GetFeatureInfo ? caps.Capability.Request.GetFeatureInfo.Format : []);
@@ -91,11 +93,8 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', fun
         var query_format = getPreferedFormat(query_formats, ["application/vnd.esri.wms_featureinfo_xml", "application/vnd.ogc.gml", "application/vnd.ogc.wms_xml", "text/plain", "text/html"]);
 
         var tmp = [];
-        angular.forEach(service, function () {
-            if (console) console.log("Load service", this);
-            angular.forEach(this.Layer, function () {
-                layer = this;
-                if (console) console.log("Load service", this);
+        service.forEach(service => {
+            service.Layer.forEach(layer => {
                 var attributions = [];
                 if (layer.Attribution) {
                     attributions = [new Attribution({

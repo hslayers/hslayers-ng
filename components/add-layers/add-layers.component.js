@@ -15,7 +15,8 @@ export default {
                 $scope.types = [
                     { id: "wms", text: "Web map service (WMS)" },
                     { id: "arcgis", text: "ArcGIS Map Server" },
-                    { id: "vector", text: "Vector file (GeoJson, KML)" }
+                    { id: "vector", text: "Vector file (GeoJson, KML)" },
+                    { id: "shp", text: "Shapefile" }
                 ];
             }
             $scope.type = "";
@@ -47,6 +48,10 @@ export default {
                         break;
                     case "vector":
                         template = '<hs.add-layers-vector/>';
+                        $scope.showDetails = true;
+                        break;
+                    case "shp":
+                        template = '<hs.add-layers-shp/>';
                         $scope.showDetails = true;
                         break;
                     default:
