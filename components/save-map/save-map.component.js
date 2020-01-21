@@ -7,7 +7,7 @@ export default {
     }],
     controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService', 'hs.layerSynchronizerService',
         '$timeout', 'hs.layout.service',
-        function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout, layerSynchronizerService, layoutService) {
+        function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, layerSynchronizerService, $timeout, layoutService) {
             $scope.compoData = StatusManager.compoData;
             $scope.statusData = StatusManager.statusData;
             $scope.userData = StatusManager.userData;

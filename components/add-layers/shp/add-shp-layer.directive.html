@@ -1,0 +1,66 @@
+<form class="form-horizontal" role="form" ng-controller="hs.addLayersShp.controller">
+
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-prepend" id="type_label">
+                <span class="input-group-text control-label" translate>Save to</span>
+            </div>
+            <select class="form-control" ng-model="endpoint">
+                <option ng-repeat="endpoint in endpoints" ng-value="endpoint">{{endpoint.name}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="capabilities_label control-label" translate>Shape file (shp+dbf+shx)</label>
+        <input name="file" type="file" fileread="files" multiple>
+    </div>
+
+    <div class="form-group">
+        <label class="capabilities_label control-label" translate>Name</label>
+        <input class="form-control" ng-model="name"/>
+    </div>
+
+    <div class="form-group">
+        <label class="capabilities_label control-label" translate>Title</label>
+        <input class="form-control" ng-model="title"/>
+    </div>
+
+    <div class="form-group">
+        <label class="capabilities_label control-label" translate>Abstract</label>
+        <textarea class="form-control" id='hs-ows-abstract' placeholder="{{'Fill in descriptive text about map'|translate}}" ng-model="abstract">
+        </textarea>
+    </div>
+
+    <div class="form-group">
+        <label class="capabilities_label control-label" translate>SLD style file</label>
+        <input name="file" type="file" fileread="sld">
+    </div>
+
+    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="collapse" ng-click="advancedPanelVisible = !advancedPanelVisible" data-target="#hs-ows-advancedPanel" translate>
+        Advanced options
+    </button>
+
+    <div id="hs-ows-advancedPanel" class="collapse" ng-class="{'show': advancedPanelVisible}">
+        <div class="form-group">
+            <label class="capabilities_label control-label">SRS</label>
+            <input class="form-control" ng-model="srs"/>
+        </div>
+
+        <div class="form-group">
+            <label class="capabilities_label control-label" translate>Folder name</label>
+            <input class="form-control" ng-model="folder_name"/>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-block" ng-disabled="!title" ng-click="add()"><i class="icon-plus" ng-show="!loading"></i><img ng-src="{{loaderImage}}" ng-show="loading" /> <translate>Add</translate></button>
+
+
+    <div class="alert alert-danger" ng-show="resultCode == 'error'">
+        <div translate class="alert alert-danger">{{errorMessage}}</div>
+        <dl ng-repeat="(key, value) in errorDetails">
+            <dt>{{key}} </dt>
+            <dd hs.widgets.object-directive></dd>
+        </dl>
+    </div>
+</form>

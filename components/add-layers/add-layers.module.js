@@ -7,6 +7,7 @@ import './arcgis/add-layers-arcgis.module';
 import './wmts/add-layers-wmts.module';
 import './wfs/add-layers-wfs.module';
 import './vector/add-layers-vector.module';
+import './shp/add-layers-shp.module';
 import '../../common/history-list/history-list.module';
 import addLayersUrlDirective from './add-layers-url.directive';
 import nestedLayersTableDirective from './nested-layers-table.directive';
@@ -15,12 +16,12 @@ import nestedLayersTableDirective from './nested-layers-table.directive';
  * @namespace hs.addLayers
  * @memberOf hs
  */
-export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersArcgis', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector', 'ngCookies', 'hs.historyList', 'hs.getCapabilities'])
+export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersArcgis', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector', 'hs.addLayersShp', 'ngCookies', 'hs.historyList', 'hs.getCapabilities'])
     /**
     * @memberof hs.addLayers
     * @ngdoc directive
     * @name compile
-    * @description Directive which compiles a template and includes it in the dom. 
+    * @description Directive which compiles a template and includes it in the dom.
     * Previously done with ng-bind-html which escaped variables and child directives
     */
     .directive('compile', compileDirective)
@@ -30,7 +31,7 @@ export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.add
     * @ngdoc directive
     * @name hs.addLayersUrl
     */
-   .directive('hs.addLayersUrl', addLayersUrlDirective)
+    .directive('hs.addLayersUrl', addLayersUrlDirective)
 
 
     /**
@@ -38,7 +39,7 @@ export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.add
     * @ngdoc directive
     * @name hs.addLayersUrl
     */
-   .directive('hs.nestedLayersTable', nestedLayersTableDirective )
+    .directive('hs.nestedLayersTable', nestedLayersTableDirective )
 
     /**
     * @memberof hs.addLayers
