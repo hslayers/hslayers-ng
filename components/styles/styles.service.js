@@ -4,7 +4,7 @@ export default ['$http', 'config',
         function ($http, config) {
             this.pin_white_blue = new Style({
                 image: new Icon({
-                    src: require('img/pin_white_blue32.png'),
+                    src: '../../img/pin_white_blue32.png',
                     crossOrigin: 'anonymous',
                     anchor: [0.5, 1]
                 })
@@ -13,7 +13,7 @@ export default ['$http', 'config',
             this.pin_white_blue_highlight = function (feature, resolution) {
                 return [new Style({
                     image: new Icon({
-                        src: feature.get('highlighted') ? require('img/pin_white_red32.png') : require('img/pin_white_blue32.png'),
+                        src: feature.get('highlighted') ? '../../img/pin_white_red32.png' : '../../img/pin_white_blue32.png',
                         crossOrigin: 'anonymous',
                         anchor: [0.5, 1]
                     })

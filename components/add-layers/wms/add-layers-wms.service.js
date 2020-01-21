@@ -252,18 +252,24 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
         }
 
         /**
-         * Add service and its layers to project TODO
+         * Add service and its layers to project
          * @memberof hs.addLayersWms.service_layer_producer
          * @function addService
          * @param {String} url Service url
-         * @param {} box TODO
+         * @param {String} layerName Name of layer to add. If not specified then all layers are added
+         * @param {} group Group layer 
          */
-        me.addService = function (url, box) {
+        me.addService = function (url, group, layerName) {
             WmsCapsService.requestGetCapabilities(url).then(function (resp) {
-                var ol_layers = WmsCapsService.service2layers(resp);
-                angular.forEach(ol_layers, function () {
-                    if (typeof box != 'undefined') box.get('layers').push(me);
-                    OlMap.map.addLayer(me);
+                var ol_layers = WmsCapsService.service2layers(resp)
+                    .filter(layer =>
+                        angular.isUndefined(layerName) || layer.get('title') == layerName
+                    );
+                ol_layers.forEach(layer => {
+                    if (angular.isDefined(group)) 
+                        group.addLayer(layer);
+                    else
+                        OlMap.map.addLayer(layer);
                 });
             })
         }
