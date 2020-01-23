@@ -76,7 +76,7 @@ export default {
                             if (previousDialog)
                                 previousDialog.parentNode.removeChild(previousDialog);
                             var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');
-                            document.getElementById("hs-dialog-area").appendChild(el[0]);
+                            layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                             $compile(el)($scope);
                         }
                     })

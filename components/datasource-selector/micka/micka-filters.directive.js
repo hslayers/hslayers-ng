@@ -17,7 +17,7 @@ function (config, mickaFilterService, datasourceBrowserService, $compile) {
                     var el = angular.element('<div hs.adv-micka-dialog></div>');
                     el[0].setAttribute('micka-dataset-config', JSON.stringify(mickaDatasetConfig));
                     $compile(el)(scope);
-                    document.getElementById("hs-dialog-area").appendChild(el[0]);
+                    layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                 } else {
                     scope.modalVisible = true;
                 }

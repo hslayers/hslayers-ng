@@ -39,7 +39,7 @@ export default {
                     if (previousDialog)
                         previousDialog.parentNode.removeChild(previousDialog);
                     var el = angular.element('<div hs.wmts.capabilities_error_directive></div>');
-                    document.getElementById("hs-dialog-area").appendChild(el[0]);
+                    layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                     $compile(el)($scope);
                     //throw "wmts Capabilities parsing problem";
                 }
