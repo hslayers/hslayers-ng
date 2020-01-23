@@ -43,7 +43,7 @@ export default {
                 if (document.getElementById("status-creator-result-dialog") == null) {
                     var el = angular.element('<div hs.save-map.result_dialog_directive></span>');
                     $compile(el)($scope);
-                    document.getElementById("hs-dialog-area").appendChild(el[0]);
+                    layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                 } else {
                     $scope.resultModalVisible = true;
                 }
@@ -55,7 +55,7 @@ export default {
                     previousDialog.parentNode.removeChild(previousDialog);
                 var el = angular.element('<div hs.save-map.save_dialog_directive></span>');
                 $compile(el)($scope);
-                document.getElementById("hs-dialog-area").appendChild(el[0]);
+                layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
             }
             /**
              * Test if current composition can be saved (User permission, Free title of composition) and a) proceed with saving; b) display advanced save dialog; c) show result dialog, with fail message
