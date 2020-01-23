@@ -1,5 +1,5 @@
-export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService', '$compile',
-    function (config, mickaFilterService, datasourceBrowserService, $compile) {
+export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService', '$compile', 'hs.layout.service',
+    function (config, mickaFilterService, datasourceBrowserService, $compile, layoutService) {
     return {
         template: require('./advanced-micka-dialog.html'),
         link: function (scope, element, attrs) {
