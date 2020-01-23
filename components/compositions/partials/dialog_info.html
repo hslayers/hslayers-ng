@@ -1,4 +1,4 @@
-<div ng-class="{'in': infoModalVisible}" class="modal" id="composition-info-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div ng-class="{'in': infoModalVisible}" class="modal" class="composition-info-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,6 +15,10 @@
                 <div class="row">
                     <div class="col-md-3"><b translate>Thumbnail</b></div>
                     <div class="col-md-9"><img src="{{info.thumbnail}}"></div>
+                </div>
+                <div class="row" ng-if="info.url">
+                    <div class="col-md-3"><b translate>Url</b></div>
+                    <div class="col-md-9">{{info.url}}</div>
                 </div>
                 <div class="row" ng-if="info.extent">
                     <div class="col-md-3"><b translate>Extent</b></div>

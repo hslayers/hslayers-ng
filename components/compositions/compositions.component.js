@@ -1,3 +1,5 @@
+import compositionsService from './compositions.service';
+
 export default {
     template: ['config', (config) => {
         if (config.design == 'md')
@@ -41,6 +43,10 @@ export default {
                 "Planning": false,
                 "ComplexInformation": false
             };
+            $scope.addCompositionUrlVisible = false;
+            $scope.changeUrlButtonVisible = function(){
+                $scope.addCompositionUrlVisible = !$scope.addCompositionUrlVisible
+            }
             /**
             * @ngdoc property
             * @name hs.compositions.controller#sortBy
@@ -173,7 +179,7 @@ export default {
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
                 var el = angular.element('<div hs.compositions.delete_dialog_directive></div>');
-                document.getElementById("hs-dialog-area").appendChild(el[0]);
+                layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                 $compile(el)($scope);
             }
 
@@ -347,7 +353,7 @@ export default {
                     previousDialog.parentNode.removeChild(previousDialog);
                 var el = angular.element('<div hs.compositions.share_dialog_directive></div>');
                 $compile(el)($scope);
-                document.getElementById("hs-dialog-area").appendChild(el[0]);
+                layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
             }
 
             /**
@@ -368,11 +374,11 @@ export default {
             }
 
             function infoDialogBootstrap() {
-                var previousDialog = document.getElementById("composition-info-dialog");
+                var previousDialog = layoutService.contentWrapper.querySelector(".composition-info-dialog");
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
                 var el = angular.element('<div hs.compositions.info_dialog_directive></div>');
-                document.getElementById("hs-dialog-area").appendChild(el[0]);
+                layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                 $compile(el)($scope);
             }
 
@@ -409,6 +415,16 @@ export default {
             $scope.add = function () {
                 Composition.loadComposition($scope.compositionToLoad.url, false);
                 $scope.overwriteModalVisible = false;
+            }
+
+            $scope.addCompositionUrl = function(url){
+                if (compositionParser.composition_edited == true) {
+                    $rootScope.$broadcast('loadComposition.notSaved', url);
+                } else {
+                    compositionsService.loadComposition(url, true).then(_ => {
+                        $scope.addCompositionUrlVisible = false
+                    })
+                }
             }
 
             /**
@@ -460,7 +476,7 @@ export default {
                 $scope.composition_name_to_be_loaded = title;
                 if (document.getElementById(dialog_id) == null) {
                     var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
-                    document.getElementById("hs-dialog-area").appendChild(el[0]);;
+                    layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);;
                     $compile(el)($scope);
                 } else {
                     $scope.overwriteModalVisible = true;
