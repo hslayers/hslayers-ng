@@ -1,5 +1,5 @@
-export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService', '$compile',
-function (config, mickaFilterService, datasourceBrowserService, $compile) {
+export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService', '$compile', 'hs.layout.service',
+function (config, mickaFilterService, datasourceBrowserService, $compile, layoutService) {
     return {
         template: require('./micka-filters.html'),
         link: function (scope, element, attrs) {

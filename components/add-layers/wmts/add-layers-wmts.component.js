@@ -9,8 +9,8 @@ export default {
             template: require('./add-wmts-layer.directive.html')
         };
     }],
-    controller: ['$scope', 'hs.map.service', 'hs.addLayersWmts.service_capabilities', 'Core', '$compile', '$rootScope',
-        function ($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
+    controller: ['$scope', 'hs.map.service', 'hs.addLayersWmts.service_capabilities', 'Core', '$compile', 'hs.layout.service',
+        function ($scope, OlMap, srv_caps, Core, $compile, layoutService) {
             $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
             $scope.style = "";
             $scope.tileMatrixSet = "";

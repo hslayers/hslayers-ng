@@ -3,8 +3,8 @@ import laymanService from './layman/layman.service';
 export default {
     template: require('./partials/datasource_selector.html'),
     controller:
-        ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', 'hs.laymanBrowserService',
-            function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, laymanService) {
+        ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', 'hs.laymanBrowserService', 'hs.layout.service',
+            function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, laymanService, layoutService) {
                 $scope.Core = Core;
                 $scope.data = datasourceSelectorService.data;
                 $scope.DS = datasourceSelectorService;
