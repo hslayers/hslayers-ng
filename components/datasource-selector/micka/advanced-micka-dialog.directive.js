@@ -1,5 +1,5 @@
-export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService', '$compile',
-    function (config, mickaFilterService, datasourceBrowserService, $compile) {
+export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService', '$compile', 'hs.layout.service',
+    function (config, mickaFilterService, datasourceBrowserService, $compile, layoutService) {
     return {
         template: require('./advanced-micka-dialog.html'),
         link: function (scope, element, attrs) {
@@ -26,7 +26,7 @@ export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService
                 } else {
                     if (document.getElementById('ds-suggestions-micka') == null) {
                         var el = angular.element('<div hs.micka-suggestions-dialog></span>');
-                        document.getElementById("hs-dialog-area").appendChild(el[0]);;
+                        layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);;
                         $compile(el)(scope);
                     } else {
                         scope.suggestionsModalVisible = true;

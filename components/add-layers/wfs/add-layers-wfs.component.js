@@ -62,7 +62,7 @@ export default {
                         previousDialog.parentNode.removeChild(previousDialog);
                     var el = angular.element('<div hs.add-layers-wfs.capabilities-error-directive></span>');
                     $compile(el)($scope);
-                    document.getElementById("hs-dialog-area").appendChild(el[0]);
+                    layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                     //throw "WMS Capabilities parsing problem";
                 }
             });

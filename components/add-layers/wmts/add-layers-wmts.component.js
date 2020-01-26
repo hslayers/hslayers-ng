@@ -9,8 +9,8 @@ export default {
             template: require('./add-wmts-layer.directive.html')
         };
     }],
-    controller: ['$scope', 'hs.map.service', 'hs.addLayersWmts.service_capabilities', 'Core', '$compile', '$rootScope',
-        function ($scope, OlMap, srv_caps, Core, $compile, $rootScope) {
+    controller: ['$scope', 'hs.map.service', 'hs.addLayersWmts.service_capabilities', 'Core', '$compile', 'hs.layout.service',
+        function ($scope, OlMap, srv_caps, Core, $compile, layoutService) {
             $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
             $scope.style = "";
             $scope.tileMatrixSet = "";
@@ -39,7 +39,7 @@ export default {
                     if (previousDialog)
                         previousDialog.parentNode.removeChild(previousDialog);
                     var el = angular.element('<div hs.wmts.capabilities_error_directive></div>');
-                    document.getElementById("hs-dialog-area").appendChild(el[0]);
+                    layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                     $compile(el)($scope);
                     //throw "wmts Capabilities parsing problem";
                 }

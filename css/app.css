@@ -890,9 +890,9 @@ div#hs-info-composition-edited {
 	white-space: nowrap;
 }
 
-div#composition-share-dialog .modal-body,
-div#composition-info-dialog .modal-body {
-	font-size: 14px;
+
+div#composition-share-dialog .modal-body, div.composition-info-dialog .modal-body {
+    font-size: 14px;
 }
 .galleryButton {
 	opacity: 0.9 !important;
