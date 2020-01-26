@@ -160,15 +160,7 @@ export default ['config', '$rootScope',
             * @description Helper property for showing some button on smaller screens
             */
             smallWidth: false,
-            /**
-            * @ngdoc method
-            * @name hs.layout.service#panelVisible 
-            * @public
-            * @param {String} which Name of panel to test
-            * @param {$scope} scope Angular scope of panels controller (optional, needed for test of unpinned panels)
-            * @returns {Boolean} Panel opened/closed status
-            * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
-            */
+
             /**
             * @ngdoc method
             * @name hs.layout.service#fullScreenMap 
@@ -184,7 +176,15 @@ export default ['config', '$rootScope',
                 core.sizeOptions.mode = 'fullscreen';
                 core.init(element, { parent: true });
             },
-            
+            /**
+            * @ngdoc method
+            * @name hs.layout.service#panelVisible
+            * @public
+            * @param {String} which Name of panel to test
+            * @param {$scope} scope Angular scope of panels controller (optional, needed for test of unpinned panels)
+            * @returns {Boolean} Panel opened/closed status
+            * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
+            */
             panelVisible(which, scope) {
                 if (angular.isDefined(scope))
                     if (angular.isUndefined(scope.panelName)) scope.panelName = which;
