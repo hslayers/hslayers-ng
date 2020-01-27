@@ -13,7 +13,7 @@
                 class="close">×</span><span class="sr-only">
                 <translate>Clear</translate>
             </span></button>
-        <hs.draw.shape-toolbar ng-if="!layoutService.panelEnabled('draw')"></hs.draw.shape-toolbar>
+        <hs.draw.shape-toolbar ng-if="!layoutService.panelEnabled('draw')" style="height:2.4em"></hs.draw.shape-toolbar>
 
         <button class="btn btn-light btn-outline-secondary" title="{{'Measure lines and polygon'|translate}}"
             ng-if="Core.exists('hs.measure') && config.panelsEnabled.measure != true" ng-click="measureButtonClicked()">
