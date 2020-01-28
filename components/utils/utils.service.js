@@ -1,4 +1,4 @@
-import {isFunction} from 'lodash';
+import { isFunction } from 'lodash';
 
 export default ['config', '$http', function (config, $http) {
     var me = this;
@@ -185,30 +185,30 @@ export default ['config', '$http', function (config, $http) {
                 pairs.push(key + '=' + array[key]);
         return pairs.join('&');
     }
-     /**
-    * @ngdoc method
-    * @name hs.utils.service#debounce
-    * @public
-    * @param {Function} func Function to execute with throttling
-    * @param {Number} wait  The function will be called after it stops 
-    * being called for N milliseconds.
-    * @param {Boolean} immediate If `immediate` is passed, trigger the 
-    * function on the leading edge, instead of the trailing.
-    * @description Returns a function, that, as long as it continues to be 
-    * invoked, will not be triggered.
-    * (https://davidwalsh.name/javascript-debounce-function)
-    */
-    this.debounce = function(func, wait, immediate) {
-        var timeout;
-        return function() {
-            var context = this, args = arguments;
-            var later = function() {
-                timeout = null;
+    /**
+   * @ngdoc method
+   * @name hs.utils.service#debounce
+   * @public
+   * @param {Function} func Function to execute with throttling
+   * @param {Number} wait  The function will be called after it stops 
+   * being called for N milliseconds.
+   * @param {Boolean} immediate If `immediate` is passed, trigger the 
+   * function on the leading edge, instead of the trailing.
+   * @description Returns a function, that, as long as it continues to be 
+   * invoked, will not be triggered.
+   * (https://davidwalsh.name/javascript-debounce-function)
+   */
+    this.debounce = function (func, wait, immediate) {
+        var context = this;
+        return function () {
+            var args = arguments
+            var later = function () {
+                context.timeout = null;
                 if (!immediate) func.apply(context, args);
             };
-            var callNow = immediate && !timeout;
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
+            var callNow = immediate && !context.timeout;
+            clearTimeout(context.timeout);
+            context.timeout = setTimeout(later, wait);
             if (callNow) func.apply(context, args);
         };
     };
@@ -264,22 +264,22 @@ export default ['config', '$http', function (config, $http) {
 
     //Check if object is an instance of a class
     this.instOf = function (obj, type) {
-        var instanceOf = function(obj, klass) {
+        var instanceOf = function (obj, klass) {
             if (isFunction(klass)) {
-              return obj instanceof klass;
+                return obj instanceof klass;
             }
             obj = Object.getPrototypeOf(obj);
             while (obj != null) {
-              if (obj.constructor.name === klass) {
-                return true;
-              }
-              obj = Object.getPrototypeOf(obj);
+                if (obj.constructor.name === klass) {
+                    return true;
+                }
+                obj = Object.getPrototypeOf(obj);
             }
             return false;
-          };
+        };
         return instanceOf(obj, type);
     }
-    this.removeDuplicates = function(myArr, prop) {
+    this.removeDuplicates = function (myArr, prop) {
         return myArr.filter((obj, pos, arr) => {
             return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
         });
