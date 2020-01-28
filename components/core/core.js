@@ -39,7 +39,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 * @type {Array} 
                 * @description DEPRECATED?
                 */
-                scopes_registered: [],            
+                scopes_registered: [],
                 /**
                 * @ngdoc property
                 * @name Core#singleDatasources
@@ -64,7 +64,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 * @description DEPRECATED?
                 */
                 _exist_cache: {},
-              
+
                 /**
                 * @ngdoc property
                 * @name Core#sizeOptions
@@ -98,9 +98,9 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     console.warn('closePanel will be removed from Core in future. Use hs.layout.service#closePanel method instead');
                     return layoutService.closePanel(which)
                 },
-                fullScreenMap: function (element) {     
+                fullScreenMap: function (element) {
                     console.warn('fullScreenMap will be removed from Core in future. Use hs.layout.service#fullScreenMap method instead');
-                    return layoutService.fullScreenMap(element,me)
+                    return layoutService.fullScreenMap(element, me)
                 },
                 /**
                 * @ngdoc method
@@ -200,16 +200,16 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                     * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
                     */
                     let updateVH = _.debounce(() => {
-                    if (me.sizeOptions.mode != "fullscreen") return
-                    let vh = w.innerHeight * 0.01;
-                      document.documentElement.style.setProperty('--vh', `${vh}px`);
+                        if (me.sizeOptions.mode != "fullscreen") return
+                        let vh = w.innerHeight * 0.01;
+                        document.documentElement.style.setProperty('--vh', `${vh}px`);
                     }, 150);
 
                     w.addEventListener('resize', function () {
                         updateVH();
                         angular.isUndefined(me.sizeOptions.selector) ? me.updateMapSize() : me.updateElementSize();
                     });
-                    
+
                     me.sizeOptions.selector == undefined ? me.updateMapSize() : me.updateElementSize();
                     w.addEventListener("load", function () { //onload checker for cases when bootstrap css change box-sizing property
                         angular.isUndefined(me.sizeOptions.selector) ? me.updateMapSize() : me.updateElementSize();
@@ -331,20 +331,18 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
             * @description If app is running in puremapApp mode
             */
             Object.defineProperty(me, 'puremapApp', {
-                get: function() {
+                get: function () {
                     return _puremapApp;
                 },
-                set: function(value) {
-                   _puremapApp = value;
-                   if(value) layoutService.sidebarVisible(false);
+                set: function (value) {
+                    _puremapApp = value;
+                    if (value) layoutService.sidebarVisible(false);
                 }
             });
 
-            $templateCache.removeAll();
-
             if (me.exists('hs.sidebar.controller') /*&& me.puremapApp != true*/) {
-                if(window.innerWidth < 767){layoutService.sidebarExpanded = false;}
-                else{layoutService.sidebarExpanded = true;}
+                if (window.innerWidth < 767) { layoutService.sidebarExpanded = false; }
+                else { layoutService.sidebarExpanded = true; }
             }
 
             /* HACK: https://github.com/openlayers/ol3/issues/3990 
