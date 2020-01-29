@@ -15,7 +15,7 @@
     "abstract": {
       "$id": "#/properties/abstract",
       "type": "string",
-      "title": "The Abstract Schema",
+      "title": "Abstract",
       "default": "",
       "examples": [
         "Na mapě jsou zobrazené třídy ochrany půdy v Libereckém kraji"
@@ -35,7 +35,7 @@
     "title": {
       "$id": "#/properties/title",
       "type": "string",
-      "title": "The Title Schema",
+      "title": "Title",
       "default": "",
       "examples": [
         "Třídy ochrany půdy"
@@ -49,7 +49,7 @@
       "items": {
         "$id": "#/properties/extent/items",
         "type": "string",
-        "title": "The Items Schema",
+        "title": "Items",
         "default": "",
         "examples": [
           "14.62",
@@ -63,7 +63,7 @@
     "user": {
       "$id": "#/properties/user",
       "type": "object",
-      "title": "The User Schema",
+      "title": "User",
       "description": "Used in status manager but not in hslayers",
       "required": [
         "email",
@@ -73,7 +73,7 @@
         "email": {
           "$id": "#/properties/user/properties/email",
           "type": "string",
-          "title": "The Email Schema",
+          "title": "Email",
           "default": "",
           "examples": [
             "dmitrii@seznam.cz"
@@ -83,7 +83,7 @@
         "name": {
           "$id": "#/properties/user/properties/name",
           "type": "string",
-          "title": "The Name Schema",
+          "title": "Name",
           "default": "",
           "examples": [
             "Dmitrij Kožuch"
@@ -95,7 +95,7 @@
     "groups": {
       "$id": "#/properties/groups",
       "type": "object",
-      "title": "The Groups Schema",
+      "title": "Groups",
       "description": "Used in status manager but not in hslayers",
       "required": [
         "guest"
@@ -104,7 +104,7 @@
         "guest": {
           "$id": "#/properties/groups/properties/guest",
           "type": "string",
-          "title": "The Guest Schema",
+          "title": "Guest",
           "default": "",
           "examples": [
             "r"
@@ -117,7 +117,7 @@
       "$id": "#/properties/scale",
       "type": "number",
       "description": "Currently not supported in HsLayers",
-      "title": "The Scale Schema",
+      "title": "Scale",
       "default": 0,
       "examples": [
         1
@@ -126,7 +126,7 @@
     "projection": {
       "$id": "#/properties/projection",
       "type": "string",
-      "title": "The Projection Schema",
+      "title": "Projection",
       "default": "",
       "examples": [
         "epsg:3857",
@@ -142,7 +142,7 @@
       "items": {
         "$id": "#/properties/center/items",
         "type": "number",
-        "title": "The Items Schema",
+        "title": "Items",
         "default": 0,
         "examples": [
           1672068,
@@ -153,7 +153,7 @@
     "units": {
       "$id": "#/properties/units",
       "type": "string",
-      "title": "The Units Schema",
+      "title": "Units",
       "description": "Currently not supported in HsLayers",
       "default": "",
       "examples": [
@@ -168,11 +168,11 @@
     "layers": {
       "$id": "#/properties/layers",
       "type": "array",
-      "title": "The Layers Schema",
+      "title": "Layers",
       "items": {
         "$id": "#/properties/layers/items",
         "type": "object",
-        "title": "The Items Schema",
+        "title": "Items",
         "required": [
           "metadata",
           "visibility",
@@ -183,7 +183,7 @@
           "metadata": {
             "$id": "#/properties/layers/items/properties/metadata",
             "type": "object",
-            "title": "The Metadata Schema"
+            "title": "Metadata"
           },
           "visibility": {
             "$id": "#/properties/layers/items/properties/visibility",
@@ -288,11 +288,11 @@
           "legends": {
             "$id": "#/properties/layers/items/properties/legends",
             "type": "array",
-            "title": "The Legends Schema",
+            "title": "Legends",
             "items": {
               "$id": "#/properties/layers/items/properties/legends/items",
               "type": "string",
-              "title": "The Items Schema",
+              "title": "Items",
               "default": "",
               "examples": [
                 "https%3A%2F%2Fgeoportal.kraj-lbc.cz%2Fcgi-bin%2Fmapserv%3Fmap%3D%2Fdata%2Fgis%2FMapServer%2Fprojects%2Fwms%2Fatlas%2Fpuda.map%26version%3D1.3.0%26service%3DWMS%26request%3DGetLegendGraphic%26sld_version%3D1.1.0%26layer%3Dtridyochrany%26format%3Dimage%2Fpng%26STYLE%3Ddefault"
@@ -303,7 +303,7 @@
           "protocol": {
             "$id": "#/properties/layers/items/properties/protocol",
             "type": "object",
-            "title": "The Protocol Schema",
+            "title": "Protocol",
             "properties": {
               "format": {
                 "$id": "#/properties/layers/items/properties/protocol/properties/format",
@@ -358,7 +358,7 @@
               "number",
               "null"
             ],
-            "title": "The Maxresolution Schema",
+            "title": "Maxresolution",
             "default": "Number.Infinity",
             "examples": [
               8000
@@ -370,7 +370,7 @@
               "number",
               "null"
             ],
-            "title": "The Minresolution Schema",
+            "title": "Minresolution",
             "default": 0,
             "examples": [
               0
@@ -390,7 +390,7 @@
           "params": {
             "$id": "#/properties/layers/items/properties/params",
             "type": "object",
-            "title": "The Params Schema",
+            "title": "Params",
             "required": [
               "LAYERS"
             ],
@@ -428,7 +428,7 @@
               "VERSION": {
                 "$id": "#/properties/layers/items/properties/params/properties/VERSION",
                 "type": "string",
-                "title": "The Version Schema",
+                "title": "Version",
                 "default": "1.3.0",
                 "examples": [
                   "1.3.0"
@@ -522,7 +522,7 @@
     "current_base_layer": {
       "$id": "#/properties/current_base_layer",
       "type": [
-        "object",
+        "string",
         "null"
       ],
       "title": "Default base layer selected",
