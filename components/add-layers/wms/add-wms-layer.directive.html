@@ -4,7 +4,7 @@
     <div ng-show="showDetails">
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-prepend" >
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>Image format</span>
                 </div>
                 <select class="form-control" ng-model="data.image_format">
@@ -15,7 +15,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-prepend" >
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>Query format</span>
                 </div>
                 <select class="form-control" ng-model="data.query_format">
@@ -26,7 +26,7 @@
 
         <div class="form-group" ng-show="data.srs.toUpperCase() != data.mapProjection">
             <div class="input-group">
-                <div class="input-group-prepend" >
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>SRS</span>
                 </div>
                 <select class="form-control" ng-model="data.srs" ng-change="srsChanged()">
@@ -41,8 +41,8 @@
 
         <div class="form-group">
             <div class="capabilities_input">
-                <label class="capabilities_label control-label"> <input type="checkbox"
-                        ng-model="data.useTiles" /> Use tiles</label>
+                <label class="capabilities_label control-label"> <input type="checkbox" ng-model="data.useTiles" /> Use
+                    tiles</label>
             </div>
         </div>
 
@@ -52,7 +52,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-prepend" >
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>Tile size</span>
                 </div>
                 <input class="form-control" ng-model="data.tileSize" />
@@ -61,7 +61,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-prepend" >
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>Folder name</span>
                 </div>
                 <input class="form-control" ng-model="data.path" />
@@ -96,8 +96,7 @@
                 </tr>
             </tbody>
         </table>
-        <button class="btn btn-primary pull-right" style="position: fixed;
-        margin-left: 570px; bottom:30px;" ng-click="addLayers(true)"><i
-            class="icon-plus"></i></button>
+        <button class="btn btn-primary pull-right" style="position: sticky;
+        bottom: 1.5rem; float: right;" ng-click="addLayers(true)"><i class="icon-plus"></i></button>
     </div>
 </form>
