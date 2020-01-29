@@ -341,7 +341,10 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
             });
 
             if (me.exists('hs.sidebar.controller') /*&& me.puremapApp != true*/) {
-                if (window.innerWidth < 767) { layoutService.sidebarExpanded = false; }
+                if (window.innerWidth < 767) {
+                    layoutService.sidebarExpanded = false;
+                    layoutService.sidebarLabels = false;
+                }
                 else { layoutService.sidebarExpanded = true; }
             }
 
