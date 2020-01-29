@@ -523,7 +523,7 @@
     "current_base_layer": {
       "$id": "#/properties/current_base_layer",
       "type": [
-        "string",
+        "object",
         "null"
       ],
       "title": "Default base layer selected",
