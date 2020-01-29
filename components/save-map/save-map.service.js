@@ -1,8 +1,8 @@
 import { Style, Icon, Circle } from 'ol/style';
 import Layer from 'ol/layer/Layer';
 import { Tile, Image as ImageLayer } from 'ol/layer';
-import { TileWMS } from 'ol/source';
-import { ImageWMS, XYZ} from 'ol/source';
+import { TileWMS, ImageArcGISRest, TileArcGISRest } from 'ol/source';
+import { ImageWMS, XYZ } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import { GeoJSON } from 'ol/format';
 
@@ -23,7 +23,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                     groups[g.roleName] = (g.r ? 'r' : '') + (g.w ? 'w' : '');
                 }
             });
-            if(angular.isUndefined(groups.guest))
+            if (angular.isUndefined(groups.guest))
                 groups.guest = 'r';
             var json = {
                 abstract: compoData.abstract,
@@ -219,7 +219,7 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
             var json = {
                 metadata: {}
             };
-            
+
             /*
             Commented out because we cant reliably use instanceof. 
             utils.instOf is also not possible, because Layer is a base type
@@ -255,16 +255,20 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
             // HTTPRequest
             if (utils.instOf(layer, Tile) || utils.instOf(layer, ImageLayer)) {
                 var src = layer.getSource();
-                if(layer.getMaxResolution() != null) json.maxResolution = layer.getMaxResolution();
-                if(layer.getMinResolution() != null) json.minResolution = layer.getMinResolution();
-                if(layer.get('minScale') != null) json.wmsMinScale = layer.get('minScale');
-                if(layer.get('maxScale') != null) json.wmsMaxScale = layer.get('maxScale');
+                if (layer.getMaxResolution() != null) json.maxResolution = layer.getMaxResolution();
+                if (layer.getMinResolution() != null) json.minResolution = layer.getMinResolution();
+                if (layer.get('minScale') != null) json.wmsMinScale = layer.get('minScale');
+                if (layer.get('maxScale') != null) json.wmsMaxScale = layer.get('maxScale');
                 json.displayInLayerSwitcher = layer.get('show_in_manager');
                 if (layer.get('dimensions')) {
                     json.dimensions = layer.get('dimensions');
                 }
                 if (utils.instOf(src, XYZ)) {
                     json.className = "XYZ";
+                }
+                if (utils.instOf(src, ImageArcGISRest) || utils.instOf(src, TileArcGISRest)) {
+                    json.className = "ArcGISRest";
+                    json.singleTile = utils.instOf(src, ImageArcGISRest);
                 }
                 if (utils.instOf(src, ImageWMS) || utils.instOf(src, TileWMS)) {
                     json.className = "HSLayers.Layer.WMS";
@@ -280,10 +284,10 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
                     json.params = src.getParams();
                     json.ratio = src.get('ratio') || src.ratio_;
                     json.subLayers = layer.get('subLayers');
-                    json.metadata.styles = src.get('styles');   
+                    json.metadata.styles = src.get('styles');
                 }
                 if (src.getUrl) json.url = encodeURIComponent(src.getUrl());
-                if (src.getUrls) json.url = encodeURIComponent(src.getUrls()[0]);    
+                if (src.getUrls) json.url = encodeURIComponent(src.getUrls()[0]);
                 if (src.attributions_) json.attributions = encodeURIComponent(src.attributions_);
             }
 
@@ -343,9 +347,9 @@ export default ['hs.map.service', 'Core', 'hs.utils.service', '$window', '$cooki
          */
         generateThumbnail: function ($element, localThis, newRender) {
             if (layoutService.mainpanel == 'save-map' || layoutService.mainpanel == 'permalink' || layoutService.mainpanel == "statusCreator") {
-                if($element == null) return;
+                if ($element == null) return;
                 $element.setAttribute("crossOrigin", "Anonymous");
-                function rendered (event) {
+                function rendered(event) {
                     var canvas = OlMap.getCanvas();
                     var canvas2 = document.createElement("canvas");
                     var width = 256,

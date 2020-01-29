@@ -241,7 +241,7 @@
             "$id": "#/properties/layers/items/properties/className",
             "type": "string",
             "title": "Classname",
-            "description": "Big type of layer. Currently all raster layers are wms layers and Vector layers are subdivided by protocol property",
+            "description": "Type of layer. Vector layers are subdivided by protocol property",
             "default": "",
             "enum": [
               "HSLayers.Layer.WMS",
@@ -249,7 +249,8 @@
               "WMS",
               "WFS",
               "Vector",
-              "XYZ"
+              "XYZ",
+              "ArcGISRest"
             ],
             "examples": [
               "HSLayers.Layer.WMS"

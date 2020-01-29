@@ -221,10 +221,12 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', '$http', 'hs.u
                 switch (lyr_def.className) {
                     case "HSLayers.Layer.WMS":
                         return layerParserService.createWmsLayer(lyr_def);
-                        break;
+                    case "ArcGISRest":
+                        return layerParserService.createArcGISLayer(lyr_def);
+                    case "XYZ":
+                        return layerParserService.createXYZLayer(lyr_def);
                     case 'OpenLayers.Layer.Vector':
                         return layerParserService.createVectorLayer(lyr_def);
-                        break;
                 }
             }
         };

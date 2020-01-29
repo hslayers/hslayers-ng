@@ -2,15 +2,15 @@ import VectorLayer from 'ol/layer/Vector';
 import SparqlJson from 'hs.source.SparqlJson'
 import social from 'angular-socialshare';
 import '../add-layers/vector/add-layers-vector.module';
-import {ImageWMS} from 'ol/source';
-import { TileWMS } from 'ol/source';
+import { ImageWMS, XYZ } from 'ol/source';
+import { TileWMS, TileArcGISRest, ImageArcGISRest } from 'ol/source';
 import ImageLayer from 'ol/layer/Image';
 import { Tile, Group } from 'ol/layer';
-import {Style, Icon, Stroke, Fill, Circle} from 'ol/style';
+import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 import { GeoJSON } from 'ol/format';
-import {Vector} from 'ol/source';
-import {get as getProj, transform } from 'ol/proj';
-import {Attribution} from 'ol/control.js';
+import { Vector } from 'ol/source';
+import { get as getProj, transform } from 'ol/proj';
+import { Attribution } from 'ol/control.js';
 
 export default ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.service', 'hs.addLayersVector.service', function (OlMap, config, Core, $rootScope, utils, nonWmsService) {
     var me = {
@@ -19,7 +19,7 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.serv
         * @name hs.compositions.config_parsers.service#createWmsLayer 
         * @public
         * @param {Object} lyr_def Layer definition object
-        * @returns {Object} Ol WMS layer
+        * @returns {Object} Ol Image or Tile layer
         * @description Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
         */
         createWmsLayer: function (lyr_def) {
@@ -64,9 +64,119 @@ export default ['hs.map.service', 'config', 'Core', '$rootScope', 'hs.utils.serv
                 source,
                 subLayers: lyr_def.subLayers
             });
-            
+
             new_layer.setVisible(lyr_def.visibility);
             OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
+            return new_layer;
+
+        },
+        /**
+        * @ngdoc method
+        * @name hs.compositions.config_parsers.service#createArcGISLayer 
+        * @public
+        * @param {Object} lyr_def Layer definition object
+        * @returns {Object} Ol Image or Tile layer
+        * @description Parse definition object to create ArcGIS Ol.layer  (source = ol.source.ImageArcGISRest / ol.source.TileArcGISRest)
+        */
+        createArcGISLayer: function (lyr_def) {
+            var source_class = lyr_def.singleTile ? ImageArcGISRest : TileArcGISRest;
+            var layer_class = lyr_def.singleTile ? ImageLayer : Tile;
+            var params = lyr_def.params;
+            var legends = [];
+            delete params.REQUEST;
+            //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
+            if (angular.isDefined(lyr_def.legends)) {
+                for (var idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
+                    legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
+                }
+            }
+            var source = new source_class({
+                url: decodeURIComponent(lyr_def.url),
+                attributions: lyr_def.attribution ? [new Attribution({
+                    html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
+                })] : undefined,
+                params: params,
+                crossOrigin: 'anonymous',
+                projection: lyr_def.projection,
+                ratio: lyr_def.ratio
+            });
+            var new_layer = new layer_class({
+                title: lyr_def.title,
+                from_composition: true,
+                maxResolution: lyr_def.maxResolution || Number.Infinity,
+                minResolution: lyr_def.minResolution || 0,
+                minScale: lyr_def.minScale || Number.Infinity,
+                maxScale: lyr_def.maxScale || 0,
+                show_in_manager: lyr_def.displayInLayerSwitcher,
+                abstract: lyr_def.name || lyr_def.abstract,
+                base: lyr_def.base,
+                metadata: lyr_def.metadata,
+                dimensions: lyr_def.dimensions,
+                legends: legends,
+                saveState: true,
+                path: lyr_def.path,
+                opacity: lyr_def.opacity || 1,
+                source
+            });
+
+            new_layer.setVisible(lyr_def.visibility);
+            //TODO Proxify
+            //OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
+            return new_layer;
+
+        },
+        /**
+        * @ngdoc method
+        * @name hs.compositions.config_parsers.service#createArcGISLayer 
+        * @public
+        * @param {Object} lyr_def Layer definition object
+        * @returns {Object} Ol Image or Tile layer
+        * @description Parse definition object to create ArcGIS Ol.layer  (source = ol.source.ImageArcGISRest / ol.source.TileArcGISRest)
+        */
+        createXYZLayer: function (lyr_def) {
+            var source_class = XYZ;
+            var layer_class = Tile;
+            var params = lyr_def.params;
+            var legends = [];
+            delete params.REQUEST;
+            //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
+            if (angular.isDefined(lyr_def.legends)) {
+                for (var idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
+                    legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
+                }
+            }
+            var source = new source_class({
+                url: decodeURIComponent(lyr_def.url),
+                attributions: lyr_def.attribution ? [new Attribution({
+                    html: '<a href="' + lyr_def.attribution.OnlineResource + '">' + lyr_def.attribution.Title + '</a>'
+                })] : undefined,
+                crossOrigin: 'anonymous',
+                projection: lyr_def.projection,
+                wrapX: lyr_def.wrapX
+                //TODO Add the rest of parameters and describe in the composition schema
+            });
+            var new_layer = new layer_class({
+                title: lyr_def.title,
+                from_composition: true,
+                maxResolution: lyr_def.maxResolution || Number.Infinity,
+                minResolution: lyr_def.minResolution || 0,
+                minScale: lyr_def.minScale || Number.Infinity,
+                maxScale: lyr_def.maxScale || 0,
+                show_in_manager: lyr_def.displayInLayerSwitcher,
+                abstract: lyr_def.name || lyr_def.abstract,
+                base: lyr_def.base,
+                metadata: lyr_def.metadata,
+                dimensions: lyr_def.dimensions,
+                legends: legends,
+                saveState: true,
+                path: lyr_def.path,
+                opacity: lyr_def.opacity || 1,
+                source
+            });
+
+            new_layer.setVisible(lyr_def.visibility);
+            //TODO Proxify
+            //OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
             return new_layer;
 
         },
