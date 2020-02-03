@@ -1,8 +1,8 @@
 <hs.layout.panel-header panel-name="info" panel-title="'Info'||translate"></hs.layout.panel-header>
-<div class="card panel-default mainpanel" ng-show="!data.coordinates[0].name.length > 0">
+<div class="card panel-default hs-main-panel" ng-show="!data.coordinates[0].name.length > 0">
     <div class="card-body m-2">Click on map for query results!</div>
 </div>
-<div ng-show="data.coordinates[0].name.length > 0" class="card panel-default mainpanel">
+<div ng-show="data.coordinates[0].name.length > 0" class="card panel-default hs-main-panel">
     <div class="card-body">
         <div class="dropdown" ng-show="data.featureInfoHtmls.length > 0">
             <button class="btn btn-light w-100 dropdown-toggle rounded-0" ng-init="featureInfoExpanded = true"

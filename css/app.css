@@ -51,12 +51,12 @@
 	margin-left: 48px;
 }
 
-.mainpanel {
+.hs-main-panel {
 	border: none;
 	margin-bottom: 0;
 }
 
-div.mainpanel:not(.hs-stc-mainpanel) > div.card-body {
+div.hs-main-panel:not(.hs-stc-mainpanel) > div.card-body {
 	padding: 0px;
 }
 
