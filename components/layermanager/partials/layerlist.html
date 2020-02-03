@@ -3,7 +3,7 @@
         <li ng-repeat="layer in filtered_layers | orderBy:order() | filter:query track by layer.layer.ol_uid + ' ' + layer.position"
             id="{{layer.idString()}}" dnd-draggable="layer.title" dnd-effect-allowed="move"
             class="list-group-item hs-lm-item" 
-            ng-class="{hs-lm-detail-activated : 'currentLayer == layer', 'hs-lm-deactivated-layer': !layer.visible || layerValid(layer.layer) || layer.grayed}">
+            ng-class="{'hs-lm-detail-activated' : 'currentLayer == layer', 'hs-lm-deactivated-layer': !layer.visible || layerValid(layer.layer) || layer.grayed}">
             <div class="d-flex ">
                 <div style="width: 25px" class="p-0 hs-lm-item-status" ng-click="toggleCurrentLayer(layer)">
                     <span class="icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
