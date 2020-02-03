@@ -1,10 +1,10 @@
-
 <div class="hs-page-wrapper bootstrap-iso">
-    <div class="hs-content-wrapper" ng-class="{'open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'sb-bottom':layoutService.sidebarBottom()}">
+    <div class="hs-content-wrapper"
+        ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'hs-sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
         <div class="hs-page-content">
-            <div hs.map.directive ng-controller="hs.map.controller" class="hs-ol-map" style="z-index:990" ng-style="mapStyle()"></div>
-            <hs.toolbar 
-                ng-if="Core.exists('hs.toolbar') && !Core.puremapApp"
+            <div hs.map.directive ng-controller="hs.map.controller" class="hs-ol-map" style="z-index:990"
+                ng-style="mapStyle()"></div>
+            <hs.toolbar ng-if="Core.exists('hs.toolbar') && !Core.puremapApp"
                 ng-show="panelEnabled('toolbar') && layoutService.sidebarVisible()">
             </hs.toolbar>
 
@@ -49,7 +49,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="hs-info-container" ng-hide="layoutService.smallWidth || !panelVisible('compositionLoadingProgress')" ng-style="infoContainerStyle()" >
+                <div class="hs-info-container"
+                    ng-hide="layoutService.smallWidth || !panelVisible('compositionLoadingProgress')"
+                    ng-style="infoContainerStyle()">
                     <div class="hs-info-area">
                         <hs.info ng-if="Core.exists('hs.info')"></hs.info>
                     </div>
