@@ -3,7 +3,7 @@
         80,
         120
     ],
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "prettier.printWidth": 120,
     "prettier.trailingComma": "all",
     "prettier.useTabs": true,
