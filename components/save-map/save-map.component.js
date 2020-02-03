@@ -40,7 +40,7 @@ export default {
              * @memberof hs.save-map
              */
             $scope.showResultDialog = function () {
-                if (document.getElementById("status-creator-result-dialog") == null) {
+                if (layoutService.contentWrapper.querySelector(".hs-status-creator-result-dialog") == null) {
                     var el = angular.element('<div hs.save-map.result_dialog_directive></span>');
                     $compile(el)($scope);
                     layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
@@ -50,7 +50,7 @@ export default {
             }
 
             $scope.showSaveDialog = function () {
-                var previousDialog = document.getElementById("status-creator-save-dialog");
+                var previousDialog = layoutService.contentWrapper.querySelector(".hs-status-creator-save-dialog");
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
                 var el = angular.element('<div hs.save-map.save_dialog_directive></span>');

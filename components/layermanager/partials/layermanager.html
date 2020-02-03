@@ -1,4 +1,4 @@
-<div class="card panel-default hs-main-panel" id="hs-layermanager-card">
+<div class="card panel-default hs-main-panel hs-layermanager-card">
     <hs.layout.panel-header panel-name="layermanager" panel-title="'Layer manager'||translate">
         <extra-buttons>
             <button type="button" class="but-title-sm" ng-click="removeAllLayers()" title="Remove all layers">
@@ -34,7 +34,7 @@
                 </div>
             </li>
             <li class="list-group-item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'"
-                ng-click="changeBaseLayerVisibility($event, layer)" ng-class="{'deactivatedLayer': !layer.visible || !layer.active}">
+                ng-click="changeBaseLayerVisibility($event, layer)" ng-class="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}">
                 <div class="d-flex ">
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"

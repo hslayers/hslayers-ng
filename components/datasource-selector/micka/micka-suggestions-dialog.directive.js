@@ -6,7 +6,7 @@ function (config, mickaFilterService, datasourceBrowserService) {
             scope.suggestionsModalVisible = true;
             scope.loaderImage = require('img/ajax-loader.gif');
             mickaFilterService.suggestionFilter = datasourceBrowserService.data.query[mickaFilterService.suggestionConfig.input];
-            document.getElementById('ds-sug-filter').focus();
+            layoutService.contentWrapper.querySelector('.hs-ds-sug-filter').focus();
         }
     };
 }]

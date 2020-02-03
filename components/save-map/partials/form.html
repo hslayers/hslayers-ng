@@ -1,65 +1,64 @@
 <!-- Nav tabs -->
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
     <li role="presentation" class="nav-item">
-        <a href="#context" class="nav-link" ng-class="{'btn-primary': step == 'start'}" aria-controls="context"
+        <a href="#hs-context" class="nav-link" ng-class="{'btn-primary': step == 'start'}" aria-controls="hs-context"
             role="tab" data-toggle="tab" ng-click="setStep('start')" translate>Context</a>
     </li>
     <li role="presentation" class="nav-item">
-        <a href="#access" class="nav-link" ng-click="setStep('access')" ng-class="{'btn-primary': step == 'access'}"
-            aria-controls="access" role="tab" data-toggle="tab" translate>Access</a>
+        <a href="#hs-access" class="nav-link" ng-click="setStep('access')" ng-class="{'btn-primary': step == 'access'}"
+            aria-controls="hs-access" role="tab" data-toggle="tab" translate>Access</a>
     </li>
     <li role="presentation" class="nav-item">
-        <a href="#author" class="nav-link" ng-class="{'btn-primary': step == 'author'}" ng-click="setStep('author')"
-            aria-controls="author" role="tab" data-toggle="tab" translate>Author</a>
+        <a href="#hs-author" class="nav-link" ng-class="{'btn-primary': step == 'author'}" ng-click="setStep('author')"
+            aria-controls="hs-author" role="tab" data-toggle="tab" translate>Author</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='start'}" id="context">
+    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='start'}" id="hs-context">
         <form>
+            <label class="form-group">
+                <translate>Title</translate>
+                <input type="text" class="form-control" ng-model="compoData.title" />
+            </label>
+
+            <label class="form-group">
+                <translate>Abstract</translate>
+                <textarea class="form-control" ng-model="compoData.abstract"></textarea>
+            </label>
+
+            <label class="form-group">
+                <translate>Keywords</translate>
+                <input type="text" class="form-control" ng-model="compoData.keywords" />
+            </label>
+
             <div class="form-group">
-                <label for="stc-title" class="control-label" translate="">Title</label> <input type="text"
-                    class="form-control" id="stc-title" ng-model="compoData.title" />
-            </div>
-            <div class="form-group">
-                <label for="stc-abstract" class="control-label" translate="">Abstract</label>
-                <textarea class="form-control" id="stc-abstract" ng-model="compoData.abstract"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="stc-keywords" class="control-label" translate="">Keywords</label> <input type="text"
-                    class="form-control" id="stc-keywords" ng-model="compoData.keywords" />
-            </div>
-            <div class="form-group">
-                <label for="stc-extent1" class="control-label" translate="">Extent</label>
+                <label for="stc-extent1" class="form-group" translate="">Extent</label>
                 <div class="form-row stc-extent-row">
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" id="stc-extent1" ng-model="compoData.bbox[0]"
-                            title="East" />
+                        <input type="text" class="form-control" ng-model="compoData.bbox[0]" title="East" />
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" id="stc-extent2" ng-model="compoData.bbox[1]"
-                            title="South" />
+                        <input type="text" class="form-control" ng-model="compoData.bbox[1]" title="South" />
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" id="stc-extent3" ng-model="compoData.bbox[2]"
-                            title="West" />
+                        <input type="text" class="form-control" ng-model="compoData.bbox[2]" title="West" />
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" id="stc-extent4" ng-model="compoData.bbox[3]"
-                            title="North" />
+                        <input type="text" class="form-control" ng-model="compoData.bbox[3]" title="North" />
                     </div>
                 </div>
                 <button type="button" class="mt-1 btn btn-secondary btn-block" ng-click="getCurrentExtent()"
                     translate="">Use current map extent</button>
             </div>
             <div class="form-group">
-                <button type="button" class="mt-1 btn btn-secondary btn-sm right" ng-click="selectDeselectAllLayers()" translate>Toggle all</button>
-                <label for="stc-layerlist" class="control-label" translate="">Layers</label>
+                <button type="button" class="mt-1 btn btn-secondary btn-sm right" ng-click="selectDeselectAllLayers()"
+                    translate>Toggle all</button>
+                <label for="stc-layerlist" class="form-group" translate="">Layers</label>
                 <ul class="list-group" id="stc-layerlist">
                     <li ng-repeat="layer in compoData.layers | filter:query" id="layer-{{$index}}"
                         class="list-group-item">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input"
-                            ng-model="layer.checked" />
+                            <input type="checkbox" class="form-check-input" ng-model="layer.checked" />
                             <label class="form-check-label">{{layer.title}}</label>
                         </div>
                     </li>
@@ -67,8 +66,8 @@
             </div>
         </form>
     </div>
-    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='access'}" id="access">
-        <table class="table table-condensed" id="stc-access">
+    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='access'}" id="hs-access">
+        <table class="table table-condensed">
             <tr>
                 <th></th>
                 <th translate>Read</th>
@@ -81,51 +80,62 @@
             </tr>
         </table>
     </div>
-    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='author'}" id="author">
-        <div class="form-group">
-            <label for="stc-name" class="control-label" translate="">Person</label> <input type="text"
-                class="form-control" id="stc-name" ng-model="userData.name" />
-        </div>
-        <div class="form-group">
-            <label for="stc-organization" class="control-label" translate="">Organization</label> <input type="text"
-                class="form-control" id="stc-organization" ng-model="userData.organization" />
-        </div>
-        <div class="form-group">
-            <label for="stc-position" class="control-label" translate="">Position</label> <input type="text"
-                class="form-control" id="stc-position" ng-model="userData.position" />
-        </div>
-        <div class="form-group">
-            <label for="stc-address" class="control-label" translate="">Address</label> <input type="text"
-                class="form-control" id="stc-address" ng-model="userData.address" />
-        </div>
-        <div class="form-group">
-            <label for="stc-city" class="control-label" translate="">City</label> <input type="text"
-                class="form-control" id="stc-city" ng-model="userData.city" />
-        </div>
-        <div class="form-group">
-            <label for="stc-state" class="control-label" translate="">State</label> <input type="text"
-                class="form-control" id="stc-state" ng-model="userData.state" />
-        </div>
-        <div class="form-group">
-            <label for="stc-postalcode" class="control-label" translate="">Postal code</label> <input type="text"
-                class="form-control" id="stc-postalcode" ng-model="userData.postalcode" />
-        </div>
-        <div class="form-group">
-            <label for="stc-country" class="control-label" translate="">Country</label> <input type="text"
-                class="form-control" id="stc-country" ng-model="userData.country" />
-        </div>
-        <div class="form-group">
-            <label for="stc-phone" class="control-label" translate="">Phone</label> <input type="text"
-                class="form-control" id="stc-phone" ng-model="userData.phone" />
-        </div>
-        <div class="form-group">
-            <label for="stc-email" class="control-label" translate="">E-mail</label> <input type="text"
-                class="form-control" id="stc-email" ng-model="userData.email" />
-        </div>
-        <div class="form-group">
-            <label for="stc-url" class="control-label">WWW</label> <input type="text" class="form-control" id="stc-url"
-                ng-model="userData.url" />
-        </div>
+    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='author'}" id="hs-author">
+
+        <label class="form-group">
+            <translate>Person</translate>
+            <input type="text" class="form-control" ng-model="userData.name" />
+        </label>
+
+        <label class="form-group">
+            <translate>Organization</translate>
+            <input type="text" class="form-control" ng-model="userData.organization" />
+        </label>
+
+        <label class="form-group">
+            <translate>Position</translate>
+            <input type="text" class="form-control" ng-model="userData.position" />
+        </label>
+
+        <label class="form-group">
+            <translate>Address</translate>
+            <input type="text" class="form-control" ng-model="userData.address" />
+        </label>
+
+        <label class="form-group">
+            <translate>City</translate>
+            <input type="text" class="form-control" ng-model="userData.city" />
+        </label>
+
+        <label class="form-group">
+            <translate>State</translate>
+            <input type="text" class="form-control" ng-model="userData.state" />
+        </label>
+
+        <label class="form-group">
+            <translate>Postal code</translate>
+            <input type="text" class="form-control" ng-model="userData.postalcode" />
+        </label>
+
+        <label class="form-group">
+            <translate>Country</translate>
+            <input type="text" class="form-control" ng-model="userData.country" />
+        </label>
+
+        <label class="form-group">
+            <translate>Phone</translate>
+            <input type="text" class="form-control" ng-model="userData.phone" />
+        </label>
+
+        <label class="form-group">
+            <translate>E-mail</translate>
+            <input type="text" class="form-control" ng-model="userData.email" />
+        </label>
+
+        <label class="form-group">WWW
+            <input type="text" class="form-control" ng-model="userData.url" />
+        </label>
+
     </div>
 </div>
 </div>

@@ -5,7 +5,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-prepend" id="type_label">
+                <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>Save to</span>
                 </div>
                 <select class="form-control" ng-model="endpoint">
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div hs.save-map.directive_form ng-if="config.advanced_form"></div>
-        <div class="modal-footer" id="stc-footer" ng-if="config.advanced_form">
+        <div class="modal-footer"  ng-if="config.advanced_form">
             <button type="button" class="btn btn-primary" id="stc-save" ng-show="step=='end' && isAllowed() && compoData.id" translate=""
                 ng-click="save(false)">Overwrite</button>
             <button type="button" class="btn btn-primary" id="stc-saveas" ng-show="step=='end' && isAllowed()" translate="" ng-click="save(true)">Save

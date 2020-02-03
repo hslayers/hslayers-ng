@@ -4,7 +4,7 @@ import HsCsTime from 'hs_cesium_time';
 import {transformExtent } from 'ol/proj';
 import 'permalink.module';
 
-export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', 'Core', function (config, $rootScope, utils, hs_map, layer_manager_service, Core) {
+export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'hs.layermanager.service', 'hs.layout.service', function (config, $rootScope, utils, hs_map, layer_manager_service, layoutService) {
     var viewer;
     var BING_KEY = angular.isDefined(config.cesiumBingKey) ? config.cesiumBingKey : 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
 
@@ -35,8 +35,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'h
             key: Cesium.BingMapsApi.defaultKey,
             mapStyle: Cesium.BingMapsStyle.AERIAL
         });
-        var cesiumContainerId = 'cesiumContainer';
-        viewer = new Cesium.Viewer(cesiumContainerId, {
+        viewer = new Cesium.Viewer(layoutService.contentWrapper.querySelector('hs-cesium-container'), {
             timeline: angular.isDefined(config.cesiumTimeline) ? config.cesiumTimeline : false,
             animation: angular.isDefined(config.cesiumAnimation) ? config.cesiumAnimation : false,
             creditContainer: angular.isDefined(config.creditContainer) ? config.creditContainer : undefined,
@@ -201,7 +200,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.map.service', 'h
 
     this.resize = function (event, size) {
         if (angular.isUndefined(size)) return;
-        document.getElementById("cesiumContainer").style.height = size.height + "px";
+        layoutService.contentWrapper.querySelector('hs-cesium-container').style.height = size.height + "px";
         if (document.querySelector('.cesium-viewer-timelineContainer')) {
             document.querySelector('.cesium-viewer-timelineContainer').style.right = '0';
         }

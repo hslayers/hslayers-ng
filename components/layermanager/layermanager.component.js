@@ -141,7 +141,7 @@ export default {
              */
             $scope.removeAllLayers = function (confirmed, loadComp) {
                 if (typeof confirmed == 'undefined') {
-                    if (document.getElementById("hs-remove-all-dialog") == null) {
+                    if (layoutService.contentWrapper.querySelector(".hs-remove-all-dialog") == null) {
                         var el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
                         layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);
                         $compile(el)($scope);

@@ -72,7 +72,7 @@ export default {
                         if (config.design === "md") {
                             metadataDialog(e);
                         } else {
-                            var previousDialog = document.getElementById("datasource_selector-metadata-dialog");
+                            var previousDialog = layoutService.contentWrapper.querySelector(".hs-datasource_selector-metadata-dialog");
                             if (previousDialog)
                                 previousDialog.parentNode.removeChild(previousDialog);
                             var el = angular.element('<div hs.datasource_selector.metadata_dialog_directive></span>');

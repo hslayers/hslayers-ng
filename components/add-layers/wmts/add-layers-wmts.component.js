@@ -35,7 +35,7 @@ export default {
                 } catch (e) {
                     if (console) console.log(e);
                     $scope.error = e.toString();
-                    var previousDialog = document.getElementById("ows-wms-capabilities-error");
+                    var previousDialog = layoutService.contentWrapper.querySelector(".hs-ows-wms-capabilities-error");
                     if (previousDialog)
                         previousDialog.parentNode.removeChild(previousDialog);
                     var el = angular.element('<div hs.wmts.capabilities_error_directive></div>');

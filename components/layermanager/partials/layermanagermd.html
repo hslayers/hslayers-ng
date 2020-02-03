@@ -89,7 +89,7 @@
                 </div>
                 <div layout-fill ng-if="layer.layer.getSource().hasPoint">
                     <md-tabs md-no-pagination="true" md-no-ink="true" md-stretch-tabs="always" md-dynamic-height="true">
-                        <md-tab id="Circle" md-on-select="changePointType(layer,'Circle')">
+                        <md-tab md-on-select="changePointType(layer,'Circle')">
                             <md-tab-label>
                                 <md-icon>brightness_1</md-icon>
                                 <md-tooltip md-direction="down" translate>Circle</md-tooltip>
@@ -106,7 +106,7 @@
 
                             </md-tab-body>
                         </md-tab>
-                        <md-tab id="Polygon" md-on-select="changePointType(layer,'Polygon')">
+                        <md-tab md-on-select="changePointType(layer,'Polygon')">
                             <md-tab-label>
                                 <md-icon>stop</md-icon>
                                 <md-tooltip md-direction="down" translate>Polygon</md-tooltip>
@@ -127,7 +127,7 @@
                                 <md-slider min="0" max="40" ng-model="layer.style.radius" ng-change="saveStyle(layer);"></md-slider>
                             </md-tab-body>
                         </md-tab>
-                        <md-tab id="Star" md-on-select="changePointType(layer,'Star')">
+                        <md-tab md-on-select="changePointType(layer,'Star')">
                             <md-tab-label>
                                 <md-icon>star</md-icon>
                                 <md-tooltip md-direction="down" translate>Star</md-tooltip>

@@ -117,7 +117,7 @@ ul.hs-lm-mapcontentlist {
 	border-bottom: 1px solid #ddd;
 }
 
-#hs-comp-advancedPanel {
+.hs-save-comp-advanced-panel {
 	margin-top: 10px;
 }
 
@@ -162,7 +162,7 @@ li.hs-lm-item.hovering {
 	color: #4495eb;
 }
 
-#hs-layermanager-card li.hs-lm-item,
+.hs-layermanager-card li.hs-lm-item,
 li.hs-dr-item {
 	word-wrap: break-word;
 	border-left: 0;
@@ -173,7 +173,7 @@ li.hs-dr-item {
 	/*border-bottom: 0;*/
 }
 
-#hs-layermanager-card .hs-lm-item-status {
+.hs-layermanager-card .hs-lm-item-status {
 	text-align: center;
 	color: #666666;
 	vertical-align: top;
@@ -183,7 +183,7 @@ div.hs-lm-item-title {
 	cursor: pointer;
 }
 
-#hs-layermanager-card .hs-lm-item-visibility {
+.hs-layermanager-card .hs-lm-item-visibility {
 	margin-top: -0.42em;
 }
 
@@ -229,10 +229,6 @@ i.hs-lm-queryable {
 
 .hs-dataset-panel .card-body {
 	padding: 3px;
-}
-
-#hs-comp-filter {
-	text-align: center;
 }
 
 ul.hs-comp-list {
@@ -426,7 +422,7 @@ button.but-title-sm {
 	color: #fff;
 }
 
-.deactivatedLayer {
+.hs-lm-deactivated-layer {
 	color: #cccccc;
 }
 
@@ -709,12 +705,12 @@ a.sidebar-main {
 /** STATUS CREATOR **/
 /********************/
 
-#hs-stc-footer {
+.hs-stc-footer {
 	text-align: center;
 	margin-top: 10px;
 }
 
-#hs-stc-footer button {
+.hs-stc-footer button {
 	width: 100px;
 }
 
@@ -732,7 +728,11 @@ a.sidebar-main {
 	min-height: 100px;
 }
 
-#hs-ows-advancedPanel {
+.hs-ows-shp-advanced {
+	margin-top: 10px;
+}
+
+.hs-ows-vector-advanced {
 	margin-top: 10px;
 }
 
@@ -824,7 +824,7 @@ div.hs-info-area {
 	z-index: 3;
 }
 
-div#hs-info-composition-image {
+div.hs-info-composition-image {
 	background-size: 76px 76px;
 	font-size: 15px;
 	height: 2em;
@@ -836,12 +836,12 @@ div#hs-info-composition-image {
 	background-color: rgba(0, 60, 136, 0.3);
 }
 
-div#hs-info-composition {
+div.hs-info-composition {
 	display: flex;
 	max-width: 300px;
 }
 
-div#hs-info-composition-container {
+div.hs-info-composition-container {
 	font-size: 12px;
 	line-height: 12px;
 	padding: 4px;
@@ -872,13 +872,13 @@ div.hs-info-container {
 	margin-left: 2px;
 }
 
-div#hs-info-composition-image > span {
+div.hs-info-composition-image > span {
 	line-height: 30px;
 	width: 30px;
 }
 
-div#hs-info-layers,
-div#hs-info-composition-edited {
+.hs-info-layers,
+div.hs-info-composition-edited {
 	font-size: 12px;
 	padding: 0 12px 12px 12px;
 	text-overflow: ellipsis;
@@ -891,7 +891,7 @@ div#hs-info-composition-edited {
 }
 
 
-div#composition-share-dialog .modal-body, div.composition-info-dialog .modal-body {
+.hs-composition-share-dialog .modal-body, .composition-info-dialog .modal-body {
     font-size: 14px;
 }
 .galleryButton {
@@ -1118,10 +1118,10 @@ ul[dnd-list] li.selected {
 .input-group-btn .btn {
 	height: 34px;
 }
-#hs-layermanager-card .hs-lm-item .hs-lm-drop-hint {
+.hs-layermanager-card .hs-lm-item .hs-lm-drop-hint {
 	display: none;
 }
-#hs-layermanager-card .hs-lm-item:hover .hs-lm-drop-hint {
+.hs-layermanager-card .hs-lm-item:hover .hs-lm-drop-hint {
 	z-index: 10000;
 	color: #cccccc;
 	display: inline;
@@ -1314,15 +1314,15 @@ body {
 	z-index: 991;
 }
 
-#sidenav-swipe-overlay {
+.sidenav-swipe-overlay {
 	height: 100%;
 }
 
-#sidenav-swipe-overlay.opened {
+.sidenav-swipe-overlay.opened {
 	width: 0;
 }
 
-#sidenav-swipe-overlay.closed {
+.sidenav-swipe-overlay.closed {
 	width: 15px;
 }
 
@@ -1575,3 +1575,4 @@ li.hs-lm-header {
 .hs-lm-map-content-header {
 	height: 2.36em;
 }
+label.form-group { display: block; }

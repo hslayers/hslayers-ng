@@ -175,7 +175,7 @@ export default {
             }
 
             function deleteDialogBootstrap(ev) {
-                var previousDialog = document.getElementById("composition-delete-dialog");
+                var previousDialog = layoutService.contentWrapper.querySelector(".hs-composition-delete-dialog");
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
                 var el = angular.element('<div hs.compositions.delete_dialog_directive></div>');
@@ -348,7 +348,7 @@ export default {
             }
 
             function shareDialogBootstrap($event) {
-                var previousDialog = document.getElementById("composition-share-dialog")
+                var previousDialog = layoutService.contentWrapper.querySelector(".composition-share-dialog")
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
                 var el = angular.element('<div hs.compositions.share_dialog_directive></div>');
@@ -374,7 +374,7 @@ export default {
             }
 
             function infoDialogBootstrap() {
-                var previousDialog = layoutService.contentWrapper.querySelector(".composition-info-dialog");
+                var previousDialog = layoutService.contentWrapper.querySelector(".hs-composition-info-dialog");
                 if (previousDialog)
                     previousDialog.parentNode.removeChild(previousDialog);
                 var el = angular.element('<div hs.compositions.info_dialog_directive></div>');
@@ -457,7 +457,7 @@ export default {
             $scope.datasetSelect = Composition.datasetSelect;
 
             $scope.$on('compositions.composition_deleted', function (event, composition) {
-                var deleteDialog = document.getElementById("composition-delete-dialog");
+                var deleteDialog = layoutService.contentWrapper.querySelector(".hs-composition-delete-dialog");
                 if (deleteDialog)
                     deleteDialog.parentNode.remove(deleteDialog);
                 $scope.loadCompositions(composition.endpoint);
@@ -472,9 +472,9 @@ export default {
             });
 
             function loadUnsavedDialogBootstrap(url, title) {
-                var dialog_id = 'composition-overwrite-dialog';
+                var dialog_id = 'hs-composition-overwrite-dialog';
                 $scope.composition_name_to_be_loaded = title;
-                if (document.getElementById(dialog_id) == null) {
+                if (layoutService.contentWrapper.querySelector('.' + dialog_id) == null) {
                     var el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
                     layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);;
                     $compile(el)($scope);

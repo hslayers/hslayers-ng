@@ -1,11 +1,11 @@
 <div ng-style="{'visibility': sensorsService.unitDialogVisible?'visible':'hidden', 'left': (layoutService.panelSpaceWidth() + 10) + 'px', 'width': 'calc(' + layoutService.widthWithoutPanelSpace() +' + 25px)'}" id="sensor-unit-dialog"
-    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position: absolute;
+    tabindex="-1" role="dialog"  aria-hidden="true" style="position: absolute;
     bottom: 5px;
     ">
     <div class="modal-dialog modal-lg" style="margin-right: 43px; max-width: 100%; z-index: 4; margin-bottom: 3px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.2rem 0.3rem;">
-                <h4 class="modal-title" id="myModalLabel" translate="">
+                <h4 class="modal-title" translate="">
                     Sensor unit {{$ctrl.unit.description}}
                 </h4>
                 <button type="button" class="close" ng-click="sensorsService.unitDialogVisible = false"
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" id="stc-footer" style="padding: 0.2rem 0.3rem;">
+            <div class="modal-footer"  style="padding: 0.2rem 0.3rem;">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-4">

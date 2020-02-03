@@ -13,7 +13,7 @@ function (config, mickaFilterService, datasourceBrowserService, $compile, layout
             * Opens Micka Advanced Search dialog, might pass current search string.
             */
             scope.openMickaAdvancedSearch = function (mickaDatasetConfig) {
-                if (document.getElementById('ds-advanced-micka') == null) {
+                if (layoutService.contentWrapper.querySelector('.hs-ds-advanced-micka') == null) {
                     var el = angular.element('<div hs.adv-micka-dialog></div>');
                     el[0].setAttribute('micka-dataset-config', JSON.stringify(mickaDatasetConfig));
                     $compile(el)(scope);

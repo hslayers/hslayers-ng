@@ -9,18 +9,19 @@
                 <input required md-maxlength="30" ng-model="compoData.title">
             </md-input-container>
             <md-input-container>
-                <label translate>Abstract</label>
-                <textarea name="bio" ng-model="compoData.abstract" md-maxlength="600" placeholder="{{'Fill in descriptive text about map'|translate}}"></textarea>
+                <label><translate>Abstract</translate>
+                    <textarea name="bio" ng-model="compoData.abstract" md-maxlength="600" placeholder="{{'Fill in descriptive text about map'|translate}}"></textarea>
+                </label>
             </md-input-container>
             <div>
                 <md-switch ng-model="thumbnailVisible" aria-label="Thumbnail switch">
                     <translate>Show thumbnail</translate>
                 </md-switch>
                 <div class="hs-fade" ng-show="thumbnailVisible">
-                    <label for="hs-stc-thumbnail" translate>Thumbnail</label>
-                    <img id="hs-stc-thumbnail" class="img-thumbnail" alt="Composition thumbnail" width="256" height="256" ng-show="thumbnailVisible">
+                    <label for="hs-stc-thumbnail"><translate>Thumbnail</translate>
+                        <img class="hs-stc-thumbnail img-thumbnail" alt="Composition thumbnail" width="256" height="256" ng-show="thumbnailVisible">
+                    </label>
                 </div>
-
             </div>
             <div flex-gt-sm="50">
                 <md-checkbox ng-repeat="g in statusData.groups" ng-model="g.r" aria-label="Make public">

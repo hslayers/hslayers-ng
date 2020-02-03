@@ -24,13 +24,13 @@ export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService
                     mickaFilterService.suggestionFilter = datasourceBrowserService.data.query[input];
                     mickaFilterService.suggestionFilterChanged(scope.mickaDatasetConfig);
                 } else {
-                    if (document.getElementById('ds-suggestions-micka') == null) {
+                    if (layoutService.contentWrapper.querySelector('.hs-ds-suggestions-micka') == null) {
                         var el = angular.element('<div hs.micka-suggestions-dialog></span>');
                         layoutService.contentWrapper.querySelector(".hs-dialog-area").appendChild(el[0]);;
                         $compile(el)(scope);
                     } else {
                         scope.suggestionsModalVisible = true;
-                        var filterElement = document.getElementById('ds-sug-filter');
+                        var filterElement = layoutService.contentWrapper.querySelector('.hs-ds-sug-filter');
                         mickaFilterService.suggestionFilter = scope.data.query[input];
                         filterElement.focus();                       
                     }

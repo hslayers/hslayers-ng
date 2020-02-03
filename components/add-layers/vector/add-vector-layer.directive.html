@@ -13,11 +13,11 @@
         </textarea>
     </div>
 
-    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="collapse" ng-click="advancedPanelVisible = !advancedPanelVisible" data-target="#hs-ows-advancedPanel" translate>
+    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="collapse" ng-click="advancedPanelVisible = !advancedPanelVisible" data-target=".hs-ows-vector-advanced" translate>
         Advanced options
     </button>
 
-    <div id="hs-ows-advancedPanel" class="collapse" ng-class="{'show': advancedPanelVisible}">
+    <div class="collapse hs-ows-vector-advanced" ng-class="{'show': advancedPanelVisible}">
         <div class="form-group">
             <label class="capabilities_label control-label">SRS</label>
             <input class="form-control" ng-model="srs"/>

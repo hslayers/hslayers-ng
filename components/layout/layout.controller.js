@@ -284,7 +284,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
                         $scope.closeLeftSidenav();
                     });
 
-                    Hammer(document.getElementById("sidenav-swipe-overlay")).on("swiperight", () => {
+                    Hammer(layoutService.contentWrapper.querySelector(".sidenav-swipe-overlay")).on("swiperight", () => {
                         $scope.openLeftSidenav();
                     });
                 });

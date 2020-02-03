@@ -287,13 +287,13 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
         $rootScope.$on('core.mainpanel_changed', function (event) {
             if (layoutService.mainpanel == 'saveMap' || layoutService.mainpanel == 'statusCreator') {
                 me.refresh();
-                saveMap.generateThumbnail(document.getElementById('hs-stc-thumbnail'), me.compoData);
+                saveMap.generateThumbnail(layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'), me.compoData);
             }
         });
 
         OlMap.map.on('postcompose', utils.debounce(() => {
             me.compoData.bbox = me.getCurrentExtent();
-            saveMap.generateThumbnail(document.getElementById('hs-stc-thumbnail'), me.compoData);
+            saveMap.generateThumbnail(layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'), me.compoData);
         }, 300));
 
         return me;

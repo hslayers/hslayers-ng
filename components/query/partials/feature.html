@@ -40,10 +40,9 @@
                     class="icon-calcplus"></i></button>
             <button class="btn btn-primary btn-sm" ng-click="zoomToFeature()"><i class="icon-search"></i></button>
             <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                id="dropdownMenuBtn" aris-haspopup="true" ng-click="exportMenuVisible = !exportMenuVisible"><i
+                aris-haspopup="true" ng-click="exportMenuVisible = !exportMenuVisible"><i
                     class="icon-download"></i></button>
-            <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': exportMenuVisible}"
-                aria-labelledby="dropdownMenuBtn">
+            <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': exportMenuVisible}">
                 <a class="dropdown-item" download="{{format.name}}_file.txt"
                     ng-href="{{queryVectorService.exportedFeatureHref}}" ng-repeat="format in exportFormats"
                     ng-click="exportData(format.name,$ctrl.feature.feature);">{{format.name}}</a>

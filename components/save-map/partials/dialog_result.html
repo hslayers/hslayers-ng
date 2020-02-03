@@ -1,8 +1,8 @@
-<div ng-class="{'in': resultModalVisible}" class="modal" id="status-creator-result-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div ng-class="{'in': resultModalVisible}" class="modal status-creator-result-dialog" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel" translate="">
+                <h4 class="modal-title" translate="">
                    Saving to status manager
                 </h4>
                 <button type="button" ng-click="resultModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
@@ -19,7 +19,7 @@
                         </dl>
                     </div>
             </div>
-            <div class="modal-footer" id="stc-footer">
+            <div class="modal-footer" >
                 <button type="button" class="btn btn-primary" ng-click="resultModalVisible = false" data-dismiss="modal" translate>Close</button>
             </div>
         </div>
