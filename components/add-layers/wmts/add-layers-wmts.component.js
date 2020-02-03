@@ -61,10 +61,9 @@ export default {
                     $scope.currentLayer = null;
                 } else {
                     $scope.currentLayer = layer;
-                    var wmtsLayerPanel = document.getElementsByClassName('wmtslayerpanel');
+                    var wmtsLayerPanel = layoutService.contentWrapper.querySelector('.hs-wmts-layerpanel');
                     var layerNode = document.getElementById('wmtslayer-' + index);
-                    if (wmtsLayerPanel.length > 0) {
-                        wmtsLayerPanel = wmtsLayerPanel[0];
+                    if (wmtsLayerPanel) {
                         layerNode.parentNode.insertBefore(wmtsLayerPanel, layerNode.nextSibling);
                     }
                 }

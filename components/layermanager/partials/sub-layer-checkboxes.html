@@ -22,7 +22,7 @@
                             <label class="m-0">{{subLayer.Title || subLayer.Name}}</label>
                 </div>
                 <div ng-if="!subLayer.Layer">
-                    <label class="form-check-label m-0" ng-class="{'checkmark':checkedSubLayers[subLayer.Name],'uncheckmark':!checkedSubLayers[subLayer.Name]}"
+                    <label class="form-check-label m-0" ng-class="{'hs-checkmark':checkedSubLayers[subLayer.Name],'hs-uncheckmark':!checkedSubLayers[subLayer.Name]}"
                     ng-attr-for="hs-sublayers-{{subLayer.Name}}">{{subLayer.Title || subLayer.Name}}</label>
                 </div>
             </div>

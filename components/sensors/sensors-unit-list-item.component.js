@@ -36,7 +36,7 @@ export default {
                         unit="sensorsService.unit"W
                         ></${dir}>`;
                     const element = angular.element(html)[0];
-                    document.querySelector(".gui-overlay").appendChild(element);
+                    document.querySelector(".hs-gui-overlay").appendChild(element);
                     $compile(element)($scope);
                 } else {
                     sensorsService.unitDialogVisible = true;

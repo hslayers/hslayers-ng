@@ -210,13 +210,13 @@ body {
     }
 }*/
 
-.mobile .input-group, .mobile .search_address {
+.mobile .input-group, .mobile .hs-search-address {
     display: table;
     /*position: relative;*/
     width: 100%;
 }
 
-.mobile .search_address input {
+.mobile .hs-search-address input {
     height: 3em;
 }
 
@@ -224,7 +224,7 @@ body {
     height: 100%;
 }
 
-.mobile #toolbar .input-group.search_address {
+.mobile #toolbar .input-group.hs-search-address {
     pointer-events: all;
     height: 3em;
     bottom: 0;

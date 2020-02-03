@@ -28,8 +28,8 @@
                         <span class="align-middle" style="line-height: 2em;" translate>Baselayers</span>
                     </div>
                     <div class="p-0">
-                        <button type="button" class="btn btn-sm btn-baselayers" ng-click="changeBaseLayerVisibility()"
-                        ng-class="data.baselayersVisible  ? 'checkmark' : 'uncheckmark'"></button>
+                        <button type="button" class="btn btn-sm hs-btn-baselayers" ng-click="changeBaseLayerVisibility()"
+                        ng-class="data.baselayersVisible  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                 </div>
             </li>
@@ -38,7 +38,7 @@
                 <div class="d-flex ">
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                        ng-class="(data.baselayersVisible && layer.visible)  ? 'checkmark' : 'uncheckmark'"></button>
+                        ng-class="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                   
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
@@ -69,7 +69,7 @@
                     </div> -->
                     <div class="p-0">
                             <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                            ng-class="(data.baselayersVisible && layer.visible)  ? 'checkmark' : 'uncheckmark'"></button>
+                            ng-class="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
 
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
@@ -102,7 +102,7 @@
             </label>
         </div> -->
         </ul>
-        <hs.layer-editor current-layer="LayMan.currentLayer" ng-show="LayMan.currentLayer!=null" class="layerpanel">
+        <hs.layer-editor current-layer="LayMan.currentLayer" ng-show="LayMan.currentLayer!=null" class="hs-layerpanel">
         </hs.layer-editor>
     </div>
 </div>

@@ -103,7 +103,7 @@ export default {
                     LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
                     LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
                 }
-                var layerPanel = document.getElementsByClassName('layerpanel');
+                var layerPanel = layoutService.contentWrapper.querySelector('.hs-layerpanel');
                 var layerNode = document.getElementById(layer.idString());
                 utils.insertAfter(layerPanel, layerNode);
                 $scope.legendDescriptors = [];
@@ -250,7 +250,7 @@ export default {
 
             $scope.$on('layer.removed', function (event, layer) {
                 if (angular.isObject(LayMan.currentLayer) && (LayMan.currentLayer.layer == layer)) {
-                    var layerPanel = document.getElementsByClassName('layerpanel');
+                    var layerPanel = layoutService.contentWrapper.querySelector('.hs-layerpanel');
                     var layerNode = document.getElementsByClassName('hs-lm-mapcontentlist')[0];
                     utils.insertAfter(layerPanel, layerNode);
                     LayMan.currentLayer = null;

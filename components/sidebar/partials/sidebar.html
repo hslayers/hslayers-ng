@@ -1,21 +1,21 @@
 <div class="hs-sidebar-list list-group">
-    <a href="#" class="sidebar-item list-group-item" ng-if="layoutService.sidebarToggleable" ng-click="toggleSidebar()">
+    <a href="#" class="hs-sidebar-item list-group-item" ng-if="layoutService.sidebarToggleable" ng-click="toggleSidebar()">
         <i class="menu-icon"
             ng-class="layoutService.sidebarExpanded ? (!layoutService.sidebarRight ? 'icon-chevron-left' : 'icon-chevron-right') : 'icon-slidersoff'"></i>
     </a>
 
-    <a href="#" ng-repeat="button in buttons | orderBy:'order'" class="flex-fill sidebar-item list-group-item"
+    <a href="#" ng-repeat="button in buttons | orderBy:'order'" class="flex-fill hs-sidebar-item list-group-item"
         ng-if="button.visible" ng-click="setMainPanel(button.panel)"
-        ng-class="{active: layoutService.mainpanel == button.panel, 'panelHidden': fitsSidebar(button.panel)}">
+        ng-class="{active: layoutService.mainpanel == button.panel, 'hs-panel-hidden': fitsSidebar(button.panel)}">
 
         <i ng-if="::button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body"
             data-placement="auto" title="{{button.description}}"></i>
         <span ng-if="::button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
             title="{{'button.description'||translate}}">{{button.content()}}</span>
-        <span class="sidebar-item-title" translate>{{::button.title}}</span>
+        <span class="hs-sidebar-item-title" translate>{{::button.title}}</span>
     </a>
 
-    <a href="#" class="flex-fill sidebar-item  list-group-item"
+    <a href="#" class="flex-fill hs-sidebar-item  list-group-item"
         ng-if="Core.exists('hs.sidebar') && layoutService.minisidebar" ng-click="setMainPanel('sidebar')"
         ng-class="{active: layoutService.mainpanel == 'sidebar'}">
         <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto"

@@ -1,4 +1,4 @@
-export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', 'hs.map.service', 'hs.utils.service', '$timeout','hs.layerEditor.sublayerService', function ($compile, config, $rootScope, LayMan, hsMap, utils, $timeout,subLayerService) {
+export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', 'hs.map.service', 'hs.utils.service', '$timeout','hs.layerEditor.sublayerService', 'hs.layout.service', function ($compile, config, $rootScope, LayMan, hsMap, utils, $timeout,subLayerService, layoutService) {
     return {
         template: require('components/layermanager/partials/layerlist.html'),
         controller: ['$scope', function ($scope) {
@@ -155,7 +155,7 @@ export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', '
                         if (layers.item(i).get('title') == item) item_index = i;
                         if (index > layerTitles.length) to_index = i + 1; //If dragged after the last item
                     }
-                    var layerPanel = document.getElementsByClassName('layerpanel');
+                    var layerPanel = layoutService.contentWrapper.querySelector('.hs-layerpanel');
                     var layerNode = document.querySelector('.hs-lm-list')
                         .querySelectorAll('.hs-lm-item');
                     layerNode = layerNode[layerNode.length - 1];
