@@ -1,5 +1,6 @@
 import '../permalink/permalink.module';
 import { DoubleClickZoom, KeyboardPan, KeyboardZoom, MouseWheelZoom, PinchRotate, PinchZoom, DragPan, DragRotate, DragZoom } from 'ol/interaction';
+import { always as alwaysCondition, platformModifierKeyOnly as platformModifierKeyOnlyCondition } from 'ol/events/condition';
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -21,7 +22,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
     /**
      * This is a workaround.
      * Returns the associated layer.
-     * This is used in query-vector.service to get the layer of clicked 
+     * This is used in query-vector.service to get the layer of clicked
      * feature when features are listd in info panel.
      * @param {ol.Map} map.
      * @return {ol.layer.Vector} Layer.
@@ -167,7 +168,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @ngdoc property
      * @name hs.map.service#controls
      * @public
-     * @type {Object} 
+     * @type {Object}
      * @description Set of default map controls used in HSLayers, may be loaded from config file
      */
     var defaultDesktopControls = controlDefaults();
@@ -209,8 +210,16 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @ngdoc property
      * @name hs.map.service#interactions
      * @public
-     * @type {Object} 
-     * @description Set of default map interactions used in HSLayers ({@link http://openlayers.org/en/latest/apidoc/ol.interaction.DoubleClickZoom.html DoubleClickZoom},{@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardPan.html KeyboardPan}, {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardZoom.html KeyboardZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.MouseWheelZoom.html MouseWheelZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchRotate.html PinchRotate} , {@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchZoom.html PinchZoom}, {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragPan.html DragPan},{@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragZoom.html DragZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragRotate.html DragRotate} )
+     * @type {Object}
+     * @description Set of default map interactions used in HSLayers ({@link http://openlayers.org/en/latest/apidoc/ol.interaction.DoubleClickZoom.html DoubleClickZoom},
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardPan.html KeyboardPan},
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardZoom.html KeyboardZoom},
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.MouseWheelZoom.html MouseWheelZoom},
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchRotate.html PinchRotate},
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchZoom.html PinchZoom},
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragPan.html DragPan},
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragZoom.html DragZoom},
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragRotate.html DragRotate} )
      */
     this.interactions = {
         'DoubleClickZoom': new DoubleClickZoom({
@@ -223,6 +232,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
             duration: this.duration
         }),
         'MouseWheelZoom': new MouseWheelZoom({
+            condition: config.zoomWithModifierKey ? platformModifierKeyOnlyCondition : alwaysCondition,
             duration: this.duration
         }),
         'PinchRotate': new PinchRotate(),
@@ -296,7 +306,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @ngdoc method
      * @name hs.map.service#repopulateLayers
      * @public
-     * @param {object} visible_layers List of layers, which should be visible. 
+     * @param {object} visible_layers List of layers, which should be visible.
      * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
      */
     this.repopulateLayers = function (visible_layers) {
@@ -400,7 +410,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @ngdoc method
      * @name hs.map.service#resetView
      * @public
-     * @description Reset map view to view configured in app config 
+     * @description Reset map view to view configured in app config
      */
     this.resetView = function () {
         me.map.setView(cloneView(config.default_view || createPlaceholderView()));
@@ -494,7 +504,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
 
     /**
     * @ngdoc method
-    
+
     * @public
     * @param {number} x X coordinate of new center
     * @param {number} y Y coordinate of new center
