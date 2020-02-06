@@ -4,6 +4,7 @@ import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import { MousePosition, ScaleLine, defaults as controlDefaults } from 'ol/control';
+import Control from 'ol/control/Control';
 import { createStringXY } from 'ol/coordinate';
 import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
@@ -170,10 +171,37 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @description Set of default map controls used in HSLayers, may be loaded from config file
      */
     var defaultDesktopControls = controlDefaults();
+    
+    //creates custom default view control
+    const setDefaultView = function(e) {
+        me.map.getView().setCenter(config.default_view.getCenter());
+        me.map.getView().setZoom(config.default_view.getZoom())
+    };
+
+    const button = document.createElement('button');
+    button.addEventListener('click', setDefaultView, false);
+
+    const icon = document.createElement('i');
+    icon.className = 'glyphicon icon-globe';
+
+    const element = document.createElement('div');
+    element.className = 'hs-defaultView ol-unselectable ol-control';
+
+    button.appendChild(icon)
+    element.appendChild(button);
+
+    const defaultViewControl = new Control({
+        element: element
+    });
+    
+    defaultDesktopControls.removeAt(1)
     defaultDesktopControls.push(new ScaleLine());
-    var defaultMobileControls = controlDefaults({
+    defaultDesktopControls.push(defaultViewControl);
+
+    const defaultMobileControls = controlDefaults({
         zoom: false
     });
+    
     this.controls = angular.isDefined(config.mapControls) ? config.mapControls :
         !!window.cordova ? defaultMobileControls : defaultDesktopControls;
 

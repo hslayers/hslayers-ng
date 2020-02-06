@@ -269,6 +269,14 @@ hr {
 	right: 5px;
 	left: auto;
 }
+
+.hs-ol-map .hs-defaultView {
+	bottom: 6.5em;
+	top: auto;
+	right: 5px;
+	left: auto;
+}
+
 .ol-touch .ol-zoomslider {
 	display: none;
 }
