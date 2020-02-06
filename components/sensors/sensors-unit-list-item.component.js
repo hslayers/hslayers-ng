@@ -5,7 +5,7 @@ export default {
         expanded: '=',
         viewMode: '='
     },
-    controller: ['$scope', 'hs.map.service', 'hs.sensors.service', '$compile', '$timeout', function ($scope, OlMap, sensorsService, $compile, $timeout) {
+    controller: ['$scope', 'hs.map.service', 'hs.sensors.service', '$compile', '$timeout', 'hs.layout.service', function ($scope, OlMap, sensorsService, $compile, $timeout,layoutService) {
         var map;
         angular.extend($scope, {
             sensorsService,
@@ -30,22 +30,40 @@ export default {
             sensorClicked(sensor) {
                 sensorsService.unit = $scope.$ctrl.unit;
                 sensorsService.selectSensor(sensor);
-                if (document.querySelector('#sensor-unit-dialog') == null) {
-                    const dir = 'hs.sensors.unit-dialog';
-                    const html = `<${dir} 
-                        unit="sensorsService.unit"W
-                        ></${dir}>`;
-                    const element = angular.element(html)[0];
-                    document.querySelector(".hs-gui-overlay").appendChild(element);
-                    $compile(element)($scope);
-                } else {
-                    sensorsService.unitDialogVisible = true;
-                }
-                $timeout(_ => {
-                    sensorsService.createChart(sensorsService.unit)
-                }, 0)
+                generateDialog();
+            },
+
+            /**
+             * @memberof hs.sensors.unitListItem
+             * @function sensorToggleSelected
+             * @param {Object} sensor
+             * @description When sensor is toggled, create a dialog window for 
+             * displaying charts or reopen already existing one.
+             */
+            sensorToggleSelected(sensor) {
+                sensorsService.unit = $scope.$ctrl.unit;
+                sensor.checked = !sensor.checked;
+                sensorsService.toggleSensor(sensor);
+                generateDialog();
             }
         });
+
+        function generateDialog(){
+            if (!layoutService.contentWrapper.querySelector('.hs-sensor-unit-dialog')) {
+                const dir = 'hs.sensors.unit-dialog';
+                const html = `<${dir} 
+                    unit="sensorsService.unit"W
+                    ></${dir}>`;
+                const element = angular.element(html)[0];
+                layoutService.contentWrapper.querySelector(".hs-gui-overlay").appendChild(element);
+                $compile(element)($scope);
+            } else {
+                sensorsService.unitDialogVisible = true;
+            }
+            $timeout(_ => {
+                sensorsService.createChart(sensorsService.unit)
+            }, 0)
+        }
 
         function init() {
             map = OlMap.map;

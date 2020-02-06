@@ -70,19 +70,31 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
         sensorsSelected: [],
         sensorIdsSelected: [],
         layers: null,
+        sensorById: {},
         selectSensor(sensor) {
+            me.sensorsSelected.forEach(s => s.checked = false);
+            sensor.checked = true;
             me.sensorsSelected = [sensor];
             me.sensorIdsSelected = [sensor.sensor_id]
+        },
+        toggleSensor(sensor) {
+            if(sensor.checked) {
+                me.sensorsSelected.push(sensor);
+                me.sensorIdsSelected.push(sensor.sensor_id);
+            } else {
+                me.sensorsSelected.splice(me.sensorsSelected.indexOf(sensor), 1);
+                me.sensorIdsSelected.splice(me.sensorIdsSelected.indexOf(sensor.sensor_id), 1);
+            }   
         },
         selectUnit(unit) {
             me.unit = unit;
             unit.expanded = !unit.expanded;
             me.selectSensor(unit.sensors[0]);
-            if (document.querySelector('#sensor-unit-dialog') == null) {
+            if (!layoutService.contentWrapper.querySelector('.hs-sensor-unit-dialog')) {
                 const dir = 'hs.sensors.unit-dialog';
                 const html = `<${dir} unit="sensorsService.unit"></${dir}>`;
                 const element = angular.element(html)[0];
-                document.querySelector(".hs-gui-overlay").appendChild(element);
+                layoutService.contentWrapper.querySelector(".hs-gui-overlay").appendChild(element);
                 $compile(element)($rootScope.$new());
             } else {
                 me.unitDialogVisible = true;
@@ -164,6 +176,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                 });
                 me.units.forEach(unit => {
                     unit.sensors.forEach(sensor => {
+                        me.sensorById[sensor.sensor_id] = sensor;
                         if(sensorValues[sensor.sensor_id]){
                             sensor.lastObservationValue = sensorValues[sensor.sensor_id].value;
                             sensor.lastObservationTimestamp = sensorValues[sensor.sensor_id].timestamp;
@@ -227,7 +240,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                         .filter(s => me.sensorIdsSelected.indexOf(s.sensor_id) > -1)
                         .map(s => {
                             var time = moment(val.time_stamp);
-                            s.sensor_name = sensorDesc.sensor_name;
+                            s.sensor_name = me.sensorById[s.sensor_id].sensor_name;
                             s.time = time.format('DD.MM.YYYY HH:mm');
                             s.time_stamp = time.toDate();
                             return s
