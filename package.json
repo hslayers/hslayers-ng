@@ -65,7 +65,8 @@
     "update-webdriver": "webdriver-manager update",
     "release": "npm run-script build && release-it",
     "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
-    "lint": "eslint"
+    "lint": "eslint --fix-dry-run ./",
+    "lint-stats": "eslint --format node_modules/eslint-stats/byError.js ./"
   },
   "dependencies": {
     "angular": "^1.7.2",
