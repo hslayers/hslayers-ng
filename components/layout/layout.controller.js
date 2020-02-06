@@ -202,7 +202,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
                 $mdBottomSheetCollapsible.show({
                     template: require('components/layout/partials/bottom-sheet.html'),
                     scope: $scope,
-                    parent: "#hs-layout",
+                    parent: layoutService.layoutElement,
                     preserveScope: true,
                     disableBackdrop: true,
                     // disableParentScroll: false,
@@ -449,12 +449,12 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
             else if (layoutService.sidebarBottom()) {
                 OlMap.map.updateSize()
                 return {
-                    height: document.getElementById('hs-app').clientHeight - layoutService.panelSpaceHeight() + 'px',
+                    height: layoutService.layoutElement.clientHeight - layoutService.panelSpaceHeight() + 'px',
                     width: layoutService.panelSpaceWidth() + 'px',
                 }
             }
             else {
-                let height = fullscreen ? 100 + 'vh' : document.getElementById('hs-layout').clientHeight + 'px';
+                let height = fullscreen ? 100 + 'vh' : layoutService.layoutElement.clientHeight + 'px';
                 if (!layoutService.sidebarRight)
                     return {
                         marginLeft: layoutService.panelSpaceWidth() + 'px',

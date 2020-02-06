@@ -311,7 +311,7 @@ export default ['config', '$rootScope',
                     ows: 700,
                     composition_browser: 500
                 }
-                var layoutWidth = document.getElementById('hs-layout').clientWidth;
+                var layoutWidth = me.layoutElement.clientWidth;
                 Object.assign(panelWidths, config.panelWidths);
                 let tmp = 0;
                 if (layoutWidth <= 767) {
@@ -345,8 +345,8 @@ export default ['config', '$rootScope',
                 return me._sidebarVisible;
             },
             sidebarBottom() {
-                if (document.getElementById('hs-layout') == null) return false;
-                return document.getElementById('hs-layout').clientWidth <= 767
+                if (!me.layoutElement) return false;
+                return me.layoutElement.clientWidth <= 767
             },
             panelSpaceHeight() {
                 if (me.contentWrapper.querySelector('.hs-panelspace-wrapper')) {
