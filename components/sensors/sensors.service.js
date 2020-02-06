@@ -138,34 +138,39 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                         return feature
                     })
                 me.layer.getSource().addFeatures(features);
-
-                $http.get(utils.proxify(`${endpoint.url}/senslog1/SensorService`), {
-                    params: {
-                        Operation: 'GetLastObservations',
-                        group: endpoint.group,
-                        user: endpoint.user
-                    }
-                }).then(response => {
-                    var sensorValues = {};
-                    response.data.forEach(sv => {
-                        sensorValues[sv.sensorId] = {
-                            value: sv.observedValue, 
-                            timestamp: moment(sv.timeStamp).format('DD.MM.YYYY HH:mm')
-                        };
-                    });
-                    me.units.forEach(unit => {
-                        unit.sensors.forEach(sensor => {
-                            if(sensorValues[sensor.sensor_id]){
-                                sensor.lastObservationValue = sensorValues[sensor.sensor_id].value;
-                                sensor.lastObservationTimestamp = sensorValues[sensor.sensor_id].timestamp;
-                            }
-                        })
-                    })
-                })
+                me.fillLastObservations();
+                setInterval(me.fillLastObservations, 60000);
+                
             },
                 function (err) {
 
                 });
+        },
+
+        fillLastObservations(){
+            $http.get(utils.proxify(`${endpoint.url}/senslog1/SensorService`), {
+                params: {
+                    Operation: 'GetLastObservations',
+                    group: endpoint.group,
+                    user: endpoint.user
+                }
+            }).then(response => {
+                var sensorValues = {};
+                response.data.forEach(sv => {
+                    sensorValues[sv.sensorId] = {
+                        value: sv.observedValue, 
+                        timestamp: moment(sv.timeStamp).format('DD.MM.YYYY HH:mm')
+                    };
+                });
+                me.units.forEach(unit => {
+                    unit.sensors.forEach(sensor => {
+                        if(sensorValues[sensor.sensor_id]){
+                            sensor.lastObservationValue = sensorValues[sensor.sensor_id].value;
+                            sensor.lastObservationTimestamp = sensorValues[sensor.sensor_id].timestamp;
+                        }
+                    })
+                })
+            })
         },
 
         /**
