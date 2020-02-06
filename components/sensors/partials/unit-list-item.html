@@ -6,7 +6,7 @@
                 <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}}</a>
             <a ng-if="$ctrl.viewMode == 'phenomena'" href="#" ng-click="sensorClicked(sensor)">
                 {{sensor.phenomenon_name}}</a>
-            <span class="badge badge-light badge-pill float-right">{{sensor.lastObservationValue}} {{sensor.uom}}</span>
+            <span class="badge badge-light badge-pill float-right">{{sensor.lastObservationValue}} {{sensor.uom}} <br/><small>at {{sensor.lastObservationTimestamp}}</small></span>
         </li>
     </ul>
 </div>

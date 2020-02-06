@@ -148,11 +148,17 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                 }).then(response => {
                     var sensorValues = {};
                     response.data.forEach(sv => {
-                        sensorValues[sv.sensorId] = sv.observedValue;
+                        sensorValues[sv.sensorId] = {
+                            value: sv.observedValue, 
+                            timestamp: moment(sv.timeStamp).format('DD.MM.YYYY HH:mm')
+                        };
                     });
                     me.units.forEach(unit => {
                         unit.sensors.forEach(sensor => {
-                            sensor.lastObservationValue = sensorValues[sensor.sensor_id];
+                            if(sensorValues[sensor.sensor_id]){
+                                sensor.lastObservationValue = sensorValues[sensor.sensor_id].value;
+                                sensor.lastObservationTimestamp = sensorValues[sensor.sensor_id].timestamp;
+                            }
                         })
                     })
                 })
