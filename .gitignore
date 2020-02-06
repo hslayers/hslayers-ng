@@ -6,7 +6,7 @@ hooks/
 /nbproject/private/
 /nbproject/
 .orig
-package-lock.json
+#package-lock.json
 *.min.js
 bundle.js
 docs
