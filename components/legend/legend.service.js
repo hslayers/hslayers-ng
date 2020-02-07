@@ -1,7 +1,9 @@
 import { TileWMS, WMTS } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
+import { Image as ImageLayer } from 'ol/layer';
 import VectorLayer from 'ol/layer/Vector';
 import { Icon, Circle } from 'ol/style';
+import Static from 'ol/source/ImageStatic.js';
 
 export default ['hs.utils.service', function (utils) {
     var me = {};
@@ -15,7 +17,7 @@ export default ['hs.utils.service', function (utils) {
          * @returns {Boolean}
          */
         isLegendable: function (layer) {
-            if (['vector', 'wms'].indexOf(layer.type) > -1 && layer.lyr.getVisible()) return true;
+            if (['vector', 'wms', 'static'].indexOf(layer.type) > -1 && layer.lyr.getVisible()) return true;
             return false;
         },
         /** 
@@ -182,6 +184,13 @@ export default ['hs.utils.service', function (utils) {
                     title: layer.get("title"),
                     lyr: layer,
                     type: 'vector',
+                    visible: layer.getVisible()
+                };
+            } else if (utils.instOf(layer, ImageLayer) && utils.instOf(layer.getSource(), Static)) {
+                return {
+                    title: layer.get("title"),
+                    lyr: layer,
+                    type: 'static',
                     visible: layer.getVisible()
                 };
             } else return undefined;

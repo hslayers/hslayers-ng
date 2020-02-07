@@ -106,10 +106,6 @@ export default {
                 var layerPanel = layoutService.contentWrapper.querySelector('.hs-layerpanel');
                 var layerNode = document.getElementById(layer.idString());
                 utils.insertAfter(layerPanel, layerNode);
-                $scope.legendDescriptors = [];
-                var tmpDescriptor = (layer ? legendService.getLayerLegendDescriptor(layer.layer) : false);
-                if (tmpDescriptor) $scope.legendDescriptors.push(tmpDescriptor);
-                $scope.cur_layer_opacity = layer.layer.getOpacity();
                 return false;
             }
 

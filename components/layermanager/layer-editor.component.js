@@ -23,6 +23,7 @@ export default {
             angular.extend($scope, {
                 layer_renamer_visible: false,
                 legendService,
+                legendDescriptors: [],
                 layerIsWmsT() { return WMST.layerIsWmsT($scope.$ctrl.currentLayer) },
                 /**
                  * @function isLayerWMS
@@ -364,7 +365,7 @@ export default {
                     if (angular.isUndefined(layer.get('dimensions'))) return false;
                     return Object.keys(layer.get('dimensions')).length > 0
                 },
-
+               
                 dimensionChanged(dimension) {
                     $scope.$emit('layermanager.dimension_changed', {
                         layer: $scope.olLayer(),
@@ -578,5 +579,11 @@ export default {
                     }
                     wrapper.style.style = style;
                 }
+
+                $scope.$watch('$ctrl.currentLayer', function(){
+                    if (!$scope.$ctrl.currentLayer) return;
+                    $scope.legendDescriptors = [legendService.getLayerLegendDescriptor($scope.$ctrl.currentLayer.layer)]
+                })
+                
         }]
 }
