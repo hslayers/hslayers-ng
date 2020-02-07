@@ -15,6 +15,13 @@
     "clean-webpack-plugin": "^3.0.0",
     "cryptiles": ">=4.1.2",
     "css-loader": "^3.2.0",
+    "eslint": "^6.7.2",
+    "eslint-config-angular": "^0.5.0",
+    "eslint-config-openlayers": "^13.0.0",
+    "eslint-import-resolver-webpack": "^0.12.1",
+    "eslint-plugin-angular": "^4.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-stats": "^1.0.1",
     "extract-loader": "^4.0.3",
     "file-loader": "^5.0.2",
     "grunt": "^1.0.4",
@@ -57,7 +64,9 @@
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
     "release": "npm run-script build && release-it",
-    "isolate-bootstrap": "node scripts/bootstrap-isolate.js"
+    "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
+    "lint": "eslint --fix-dry-run ./",
+    "lint-stats": "eslint --format node_modules/eslint-stats/byError.js ./"
   },
   "dependencies": {
     "angular": "^1.7.2",

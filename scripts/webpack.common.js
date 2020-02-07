@@ -23,7 +23,7 @@ module.exports = {
     libraryTarget:'umd'
   },
   // Just for build speed improvement
-  resolve: { symlinks: true,  
+  resolve: { symlinks: true,
     modules: [
       path.join(__dirname, '..'),
       "../node_modules",

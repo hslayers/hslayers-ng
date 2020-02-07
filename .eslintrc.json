@@ -1,0 +1,30 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["openlayers", "angular"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly",
+    "define": "readonly",
+    "angular": "readonly",
+    "stmPath": "readonly",
+    "hslMin": "readonly",
+    "gitsha": "readonly",
+    "hsl_path": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "rules": {
+    "brace-style": "warn",
+    "no-console": "warn",
+    "object-curly-spacing": "warn",
+    "prefer-arrow-callback": "warn",
+    "space-before-function-paren": "off"
+  }
+  /*"settings": {
+    "import/resolver": "webpack"
+  }*/
+}
