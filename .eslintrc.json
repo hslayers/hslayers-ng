@@ -22,7 +22,14 @@
     "no-console": "warn",
     "object-curly-spacing": "warn",
     "prefer-arrow-callback": "warn",
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "angular/di": [
+      "error",
+      "array",
+      {
+        "matchNames": false
+      }
+    ]
   }
   /*"settings": {
     "import/resolver": "webpack"
