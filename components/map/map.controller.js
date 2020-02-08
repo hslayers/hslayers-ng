@@ -11,8 +11,8 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
          * @name hs.map.controller#setTargetDiv
          * @public
          * @description Sets div element of the map
-         * @param {string} div_id ID pf the container element
-         * @returns {ol.Map} 
+         * @param {string} div_id ID of the container element
+         * @returns {ol.Map}
          */
         $scope.setTargetDiv = function (div_id) {
             OlMap.map.setTarget(div_id);
@@ -24,7 +24,7 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
          * @public
          * @param {string} title Title of the layer (from layer creation)
          * @returns {Ol.layer} Ol.layer object
-         * @description Find layer object by title of layer 
+         * @description Find layer object by title of layer
          */
         $scope.findLayerByTitle = OlMap.findLayerByTitle;
 

@@ -17,7 +17,7 @@ import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 
 
-export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function (config, $rootScope, utils, $timeout) {
+export default ['config', '$rootScope', 'hs.utils.service', 'hs.layout.service', '$timeout', function (config, $rootScope, utils, layoutService, $timeout) {
 
     /**
      * This is a workaround.
@@ -117,6 +117,39 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
         //me.map.addControl(new ol.control.ZoomSlider());
         // me.map.addControl(new ol.control.ScaleLine());
 
+        // If the MouseWheelInteraction is set to behave only with CTRL pressed,
+        // then also notify the user when he tries to zoom,
+        // but the CTRL is not pressed
+        if (angular.isDefined(config.zoomWithModifierKeyOnly)) {
+            me.map.on('wheel', (e) => {
+                //ctrlKey works for Win and Linux, metaKey for Mac
+                if (!(e.originalEvent.ctrlKey || e.originalEvent.metaKey)
+                && !layoutService.contentWrapper.querySelector('.hs-zoom-info-dialog')) {
+                    //TODO: change the name of platform modifier key dynamically based on OS
+                    const platformModifierKey = 'CTRL or META';
+                    //Following styles would be better written as ng-styles...
+                    const html = `<div
+                        class="alert alert-info mt-1 hs-zoom-info-dialog"
+                        style="
+                            position: absolute;
+                            ${!layoutService.sidebarBottom() && layoutService.sidebarRight ? 'right' : null}: ${layoutService.panelSpaceWidth() + 10}px;
+                            ${!layoutService.sidebarBottom() && !layoutService.sidebarRight ? 'left' : null}: ${layoutService.panelSpaceWidth() + 10}px;
+                            ${layoutService.sidebarBottom() ? 'bottom:' : null}: ${layoutService.panelSpaceHeight() + 5}px};"
+                        role="alert">
+                        Use ${platformModifierKey} key + mouse-wheel to zoom the map.
+                        </div>`;
+                    const element = angular.element(html)[0];
+                    //TODO: '.hs-gui-overlay' is not available in Core.puremapApp mode => place it somewhere else
+                    layoutService.contentWrapper.querySelector('.hs-gui-overlay').appendChild(element);
+                    $timeout(() => {
+                        layoutService.contentWrapper.querySelector('.hs-zoom-info-dialog').remove();
+                    },
+                    3000
+                    );
+                }
+            });
+        }
+
         me.repopulateLayers();
 
         proj4.defs('EPSG:5514', 'PROJCS["S-JTSK / Krovak East North",GEOGCS["S-JTSK",DATUM["System_Jednotne_Trigonometricke_Site_Katastralni",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[589,76,480,0,0,0,0],AUTHORITY["EPSG","6156"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4156"]],PROJECTION["Krovak"],PARAMETER["latitude_of_center",49.5],PARAMETER["longitude_of_center",24.83333333333333],PARAMETER["azimuth",30.28813972222222],PARAMETER["pseudo_standard_parallel_1",78.5],PARAMETER["scale_factor",0.9999],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","5514"]]');
@@ -172,9 +205,9 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @description Set of default map controls used in HSLayers, may be loaded from config file
      */
     var defaultDesktopControls = controlDefaults();
-    
+
     //creates custom default view control
-    const setDefaultView = function(e) {
+    const setDefaultView = function (e) {
         me.map.getView().setCenter(config.default_view.getCenter());
         me.map.getView().setZoom(config.default_view.getZoom())
     };
@@ -194,7 +227,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
     const defaultViewControl = new Control({
         element: element
     });
-    
+
     defaultDesktopControls.removeAt(1)
     defaultDesktopControls.push(new ScaleLine());
     defaultDesktopControls.push(defaultViewControl);
@@ -202,7 +235,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
     const defaultMobileControls = controlDefaults({
         zoom: false
     });
-    
+
     this.controls = angular.isDefined(config.mapControls) ? config.mapControls :
         !!window.cordova ? defaultMobileControls : defaultDesktopControls;
 
@@ -211,7 +244,8 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @name hs.map.service#interactions
      * @public
      * @type {Object}
-     * @description Set of default map interactions used in HSLayers ({@link http://openlayers.org/en/latest/apidoc/ol.interaction.DoubleClickZoom.html DoubleClickZoom},
+     * @description Set of default map interactions used in HSLayers (
+     *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DoubleClickZoom.html DoubleClickZoom},
      *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardPan.html KeyboardPan},
      *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardZoom.html KeyboardZoom},
      *  {@link http://openlayers.org/en/latest/apidoc/ol.interaction.MouseWheelZoom.html MouseWheelZoom},
@@ -232,7 +266,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
             duration: this.duration
         }),
         'MouseWheelZoom': new MouseWheelZoom({
-            condition: config.zoomWithModifierKey ? platformModifierKeyOnlyCondition : alwaysCondition,
+            condition: angular.isDefined(config.zoomWithModifierKeyOnly) ? platformModifierKeyOnlyCondition : alwaysCondition,
             duration: this.duration
         }),
         'PinchRotate': new PinchRotate(),
@@ -248,7 +282,7 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
     }
 
     //Mouse position control, currently not used
-    var mousePositionControl = new MousePosition({
+    const mousePositionControl = new MousePosition({
         coordinateFormat: createStringXY(4),
         undefinedHTML: '&nbsp;'
     });
@@ -264,8 +298,6 @@ export default ['config', '$rootScope', 'hs.utils.service', '$timeout', function
      * @description Find layer object by title of layer
      */
     this.findLayerByTitle = function (title) {
-
-
         var layers = me.map.getLayers();
         var tmp = null;
         angular.forEach(layers, function (layer) {
