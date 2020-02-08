@@ -23,6 +23,13 @@
     "object-curly-spacing": "warn",
     "prefer-arrow-callback": "warn",
     "space-before-function-paren": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never"
+      }
+    ],
     "angular/di": [
       "error",
       "array",
