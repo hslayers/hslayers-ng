@@ -1,6 +1,5 @@
 import geolocationDirective from './geolocation.directive';
 import geolocationService from './geolocation.service';
-import geolocationController from './geolocation.controller';
 
 /**
  * @namespace hs.geolocation
@@ -22,10 +21,3 @@ angular.module('hs.geolocation', ['hs.map'])
     * @description Contains geolocation services, for mobile version through navigator.geolocation API, for classic version through OpenLayers ol.Geolocation class
     */
     .service('hs.geolocation.service', geolocationService)
-
-    /**
-    * @memberof hs.geolocation
-    * @name hs.geolocation.controller
-    * @ngdoc controller
-    */
-    .controller('hs.geolocation.controller', geolocationController);
