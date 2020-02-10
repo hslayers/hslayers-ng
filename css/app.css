@@ -308,48 +308,56 @@ hr {
 	font-size: 0.85rem;
 }
 
-.locate:not(.ol-collapsed) {
+.hs-locate:not(.ol-collapsed) {
 	background: rgba(255, 255, 255, 0.8);
 }
-.locate,
+.hs-locate,
 .ol-control button,
 .ol-has-tooltip [role="tooltip"],
 .ol-scale-line-inner {
 	font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
 }
-.locate {
+.hs-locate {
 	text-align: right;
 	bottom: 9.2em;
 	right: 5px;
 	max-width: calc(100% - 1.3em);
 	z-index: 991;
 }
-.locate ul {
+.hs-locate ul {
 	float: left;
 }
-.locate button {
+.hs-locate button {
 	float: right;
 }
-.locate .btn-primary {
+.hs-locate .btn-primary {
 	background-color: #0069d9 !important;
 }
-.locate.ol-collapsed ul,
-.locate:not(.ol-collapsed) button:hover [role="tooltip"] {
+.hs-locate.ol-collapsed ul,
+.hs-locate:not(.ol-collapsed) button:hover [role="tooltip"] {
 	display: none;
 }
-.locate:not(.ol-collapsed) {
+/* .hs-locate:not(.ol-collapsed) {
 	width: 175px;
-}
-.locate ul {
+} */
+.hs-locate ul {
 	list-style: none;
 }
 
 .ol-rotate {
-	bottom: 6.5em;
+	bottom: 11.5em;
 	left: auto;
-	right: 0.5em;
+	right: 5px;
 	top: auto;
 }
+.ol-rotate.hidden {
+	visibility: hidden;
+	opacity: 0%;	
+}
+.ol-rotate button:not(.active) {
+	background-color: rgba(133, 135, 136, 0.7);
+}
+
 
 div.hs-infopanel.ng-scope .first-col {
 	width: 100px;
