@@ -6,10 +6,12 @@ hooks/
 /nbproject/private/
 /nbproject/
 .orig
-package-lock.json
+#package-lock.json
 *.min.js
 bundle.js
 docs
-po/cs_CZ.mo
+po/*.mo
 dist
-stats.json
+dependencygraph.svg
+.tern-project
+.vscode/

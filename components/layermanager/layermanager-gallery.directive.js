@@ -21,7 +21,7 @@ export default [
 					};
 
 					$scope.galleryStyle = function() {
-						if (!layoutService.sidebarRight || document.getElementById("hs-layout").clientWidth <= 767) {
+						if (!layoutService.sidebarRight || layoutService.layoutElement.clientWidth <= 767) {
 							return { right: "15px" };
 						} else {
 							return { right: layoutService.panelSpaceWidth() + 20 + "px" };
@@ -31,7 +31,7 @@ export default [
 					$scope.fitsInContainer = () => {
 						return (
 							(LayMan.data.baselayers.length + 1) * 150 <
-							document.getElementById("hs-layout").clientWidth - layoutService.panelSpaceWidth() - 450
+							layoutService.layoutElement.clientWidth - layoutService.panelSpaceWidth() - 450
 						);
 					};
 					$scope.setGreyscale = function(layer) {

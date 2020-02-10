@@ -4,6 +4,7 @@ export default ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$in
             template: config.design == 'md' ? require('components/layout/partials/layoutmd.html') : require('components/layout/partials/layout.html'),
             link: function (scope, element) {
                 layoutService.contentWrapper = element[0].querySelector('.hs-content-wrapper');
+                layoutService.layoutElement = element[0];
                 try {
                     if (angular.module('hs.cesium')) {
                         if (element[0].querySelector('.hs-page-content')) {

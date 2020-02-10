@@ -68,8 +68,8 @@ export default [
 			},
 			toggleDrawToolbar(e) {
 				if (
-					document.getElementById("hs-layout").clientWidth > 767 &&
-					document.getElementById("hs-layout").clientWidth < 870 &&
+					layoutService.layoutElement.clientWidth > 767 &&
+					layoutService.layoutElement.clientWidth < 870 &&
 					!$scope.drawToolbarExpanded
 				) {
 					layoutService.sidebarExpanded = false;

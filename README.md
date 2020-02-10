@@ -1,15 +1,21 @@
-# HSlayers-ng mapping library
+# HSLayers-NG mapping library
 
-HSlayers-ng is a library which extends OpenLayers 6 functionality by providing a foundation to build map GUI and extra components such as layer manager, permalink generating, styling of vector features, including OpenGIS® Web Map Service Interface Standard (WMS) layers to the map in a user friendly way etc.  
+HSLayers-NG is a library which extends OpenLayers 6 functionality by providing a foundation to build map GUI and extra components such as layer manager, permalink generating, styling of vector features, including OpenGIS® Web Map Service Interface Standard (WMS) layers to the map in a user friendly way etc.  
 
 Check out the examples to get an idea:  
-http://ng.hslayers.org/examples/
-http://opentransportnet.eu/create-maps
-http://sdi4apps.eu/spoi/
+* http://ng.hslayers.org/examples/
+* http://opentransportnet.eu/create-maps
+* http://sdi4apps.eu/spoi/
+
+## Before You Start
+HSLayers-NG is built on top of two major things: [OpenLayers](openlayers.org) library and [AngularJS](angularjs.org) framework. So in order to work with HSLayers you should have some understanding of both.
+OpenLayers has a nice [tutorial workshop](https://openlayers.org/workshop/) to start with.
 
 ## Getting Started
 
-npm install hslayers-ng
+After successfully installing [Node](https://nodejs.org/en/) along with [npm](https://www.npmjs.com/), run the following in terminal:
+
+`npm install hslayers-ng`
 
 
 Include the bundle file
@@ -204,9 +210,9 @@ translations.js which contains the strings and also translating functionality is
 ```
 translations: hsl_path + 'examples/pilsen_traffic/translations' 
 ```
-## Updating Angular
+## Updating AngularJS
 
-You can update the dependencies by running:
+You can update all dependencies by running:
 
 ```
 npm update
