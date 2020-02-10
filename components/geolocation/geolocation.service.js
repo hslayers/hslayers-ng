@@ -3,241 +3,232 @@ import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
-import { transform } from 'ol/proj';
 import { Polygon, LineString, GeometryType, Point, Circle as CircleGeom } from 'ol/geom';
 import GyroNorm from '../../lib/gyronorm_updated';
 import FULLTILT from 'fulltilt';
 import { toRadians } from 'ol/math';
+import Rotate from 'ol/control/Rotate';
 
-export default ['hs.map.service', '$rootScope', '$log', 'Core',
-    function (OlMap, $rootScope, $log, Core) {
+export default ['hs.map.service', '$rootScope', '$log', 'Core', '$timeout', 'hs.layout.service', 'hs.utils.service',
+    function (OlMap, $rootScope, $log, Core, $timeout, layoutService, utils) {
         var me = {
-            following: false,
-            geolocation: null,
             /**
-            * Set visibility of position layer on the map
-            * @memberof hs.geolocation.service
-            * @function toggleFeatures
-            * @param {Boolean} visible Visibility of position layer (true/false)
+            * @ngdoc property
+            * @name hs.geolocation.service#localization
+            * @public
+            * @type {Boolean} false 
+            * @description Represents geolocalization state (on/off)
             */
-            toggleFeatures: function (visible) {
-                var src = me.position_layer.getSource();
-                if (visible) {
-                    OlMap.map.addLayer(me.position_layer);
-                    src.addFeature(accuracyFeature);
-                    src.addFeature(positionFeature);
-                    me.position_layer.setZIndex(99);
-                } else {
-                    src.removeFeature(accuracyFeature);
-                    src.removeFeature(positionFeature);
-                    OlMap.map.removeLayer(me.position_layer);
-                }
-            }
-        };
-
-
-        var accuracyFeature = new Feature({ known: false, geometry: new CircleGeom([0, 0], 1) });
-        var positionFeature = new Feature({ known: false, geometry: new Point([0, 0]) });
-
-        function init() {
+            localization: false,
             /**
-               * (Only for Mobile) set map rotation based on the device rotation
-               * @memberof hs.geolocation.service
-               * @function setRotation
-               */
-            me.setRotation = function () {
+            * @ngdoc property
+            * @name hs.layout.service#following
+            * @public
+            * @type {Boolean} false 
+            * @description Represents geolocalization tracking option (on/off). 
+            * Used to deremine state of tracking in directive's html
+            */
+            following: false,
+            gn: null,
+            stopCentering: utils.debounce(() => {
+                me.centering = false;
+            }),
+            accuracyFeature: new Feature({ known: false, geometry: new CircleGeom([0, 0], 1) }),
+            positionFeature: new Feature({ known: false, geometry: new Point([0, 0]) }),
+
+            /**
+            * @ngdoc method
+            * @name hs.geolocation.service#stopTracking
+            * @public 
+            * @description Reset all geolocalization parameters concerning position tracking
+            */
+            stopTracking: function () {
+                me.following = false;
+                OlMap.map.getControls().getArray()[4].element.classList.add('hidden');
+                OlMap.map.un('pointermove', me.stopCentering);
+                me.geolocation.setTracking(false);
+                me.gn.stop();
+                OlMap.map.getView().setRotation(0)
+            },
+            toggleTracking: function () {
+                if (me.clicked) {
+                    me.cancelClick = true;
+                    if (layoutService.sidebarBottom()) {
+                        layoutService.contentWrapper.querySelector('.hs-locationButton').dispatchEvent(new Event('dblclick'))
+                    }
+                    return;
+                }
+                me.clicked = true;
+                $timeout(function () {
+                    if (me.cancelClick) {
+                        me.cancelClick = false;
+                        me.clicked = false;
+                        return;
+                    }
+                    if (me.isCentered()) {
+                        if (!me.following) {
+                            //position
+                            me.geolocation.on('change:position', me.setNewPosition);
+                            me.geolocation.setTracking(true);
+                            me.following = true;
+                            //rotation
+                            me.setRotation()
+                            me.geolocation.on('change:heading', me.newRotation);
+                            me.centering = true;
+
+                            OlMap.map.on('pointermove', me.stopCentering)
+
+                            OlMap.map.getControls().getArray()[4].element.classList.remove('hidden');
+                            layoutService.contentWrapper.querySelector('button.ol-rotate').classList.add('active');
+                        }
+                        else {
+                            layoutService.contentWrapper.querySelector('button.ol-rotate').classList.remove('active');
+                            me.stopTracking();
+                        }
+                    }
+                    else {
+                        OlMap.map.getView().setCenter(me.geolocation.getPosition());
+                        me.centering = true;
+                    }
+
+                    //clean up
+                    me.cancelClick = false;
+                    me.clicked = false;
+                }, 500);
+            },
+
+            /**
+            * @ngdoc method
+            * @name hs.geolocation.service#stopLocalization
+            * @public 
+            * @description Reset all geolocalization parameters
+            */
+            stopLocalization: function () {
+                me.localization = false;
+                OlMap.map.removeLayer(me.position_layer);
+                me.stopTracking();
+            },
+            /**
+            * @ngdoc method
+            * @name hs.geolocation.service#startLocalization
+            * @public 
+            * @description Display current position by querying geolocation, once
+            */
+            startLocalization: function () {
+                if (!me.localization) {
+                    me.geolocation.setTracking(true);
+                    me.localization = true;
+                    me.geolocation.once('change:position', function () {
+                        me.setNewPosition();
+                        OlMap.map.getView().setCenter(me.geolocation.getPosition());
+                        OlMap.map.addLayer(me.position_layer);
+                        me.position_layer.setZIndex(99);
+
+                        //stop tracking positon
+                        me.geolocation.setTracking(false);
+                    });
+                }
+            },
+
+            /**
+            * @ngdoc method
+            * @name hs.geolocation.service#isCentered
+            * @public 
+            * @description Function which determines whether map is centered on current postion
+            */
+            isCentered: function () {
+                return JSON.stringify(OlMap.map.getView().getCenter()) === JSON.stringify(me.positionFeature.getGeometry().getCoordinates())
+
+            },
+            /**
+            * @ngdoc method
+            * @name hs.geolocation.service#setNewPosition
+            * @public 
+            * @description Callback function handling geolocation change:position event
+            */
+            setNewPosition: function () {
+                let position = me.geolocation.getPosition();
+                me.positionFeature.getGeometry().setCoordinates(position);
+                me.accuracyFeature.getGeometry().setCenterAndRadius(position, me.geolocation.getAccuracy());
+                if (me.centering) {
+                    OlMap.map.getView().setCenter(position);
+                }
+            },
+            /**
+            * @ngdoc method
+            * @name hs.geolocation.service#newRotation
+            * @public 
+            * @description Callback function handling geolocation change:heading event
+            */
+            newRotation: function (e) {
+                let heading = me.geolocation.getHeading() ? me.geolocation.getHeading() : null;
+                if (heading) OlMap.map.getView().setRotation(heading);
+            },
+
+            setRotation: function () {
                 var args = {
                     orientationBase: GyroNorm.WORLD,		// ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
                     decimalCount: 4,					// ( How many digits after the decimal point will there be in the return values )
                 };
-                var gn = new GyroNorm();
-                gn.FULLTILT = FULLTILT;
-                gn.init(args).then(function () {
-                    gn.start(function (event) {
+                me.gn = new GyroNorm();
+                me.gn.FULLTILT = FULLTILT;
+                me.gn.init().then(function () {
+                    me.gn.start(function (event) {
                         var z = toRadians(event.do.alpha);
                         OlMap.map.getView().setRotation(z);
                     });
                 }).catch(function (e) {
-                    console.log(e);
+                    console.log('error', e);
                 });
-            };
-
-            if (Core.isMobile()) {
-                /**
-                * (Only for Mobile) Center map on last location
-                * @memberof hs.geolocation.service
-                * @function setCenter
-                */
-                me.setCenter = function () {
-                    OlMap.map.getView().setCenter(me.last_location.latlng);
-                };
-
-                me.geolocation = navigator.geolocation;
-
-                /**
-                * (Only for Mobile) Toggle (Start/Stop) GPS tracking, set display of position layer accordingly 
-                * @memberof hs.geolocation.service
-                * @function toggleGps
-                */
-                me.toggleGps = function () {
-                    if (me.gpsStatus) {
-                        me.stopGpsWatch();
-                    } else {
-                        me.startGpsWatch();
-                    }
-                    me.toggleFeatures(me.gpsStatus);
-                    $rootScope.$broadcast('geolocation.switched');
-                };
-
-                /**
-                * (Only for Mobile) Start GPS tracking if possible, initialize Ol.geolocation handler
-                * @memberof hs.geolocation.service
-                * @function startGpsWatch
-                */
-                me.startGpsWatch = function () {
-                    if (navigator.geolocation) {
-                        me.gpsStatus = true;
-                        // me.gpsSwitch = 'Stop GPS';
-                        if (me.changed_handler != null)
-                            me.geolocation.clearWatch(me.changed_handler);
-                        me.changed_handler = me.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
-                        $rootScope.$broadcast('geolocation.started');
-                    }
-                };
-
-                /**
-                * (Only for Mobile) Stop GPS tracking and clears handlers
-                * @memberof hs.geolocation.service
-                * @function stopGpsWatch
-                */
-                me.stopGpsWatch = function () {
-                    me.gpsStatus = false;
-                    // me.gpsSwitch = 'Start GPS';
-                    me.geolocation.clearWatch(me.changed_handler);
-                    me.changed_handler = null;
-                    $rootScope.$broadcast('geolocation.stopped');
-                };
-
-                /**
-                * (PRIVATE) (Only for Mobile) Callback for handling successful location response, update location variables
-                * @memberof hs.geolocation.service
-                * @function gpsOkCallback
-                * @param {object} position Position object
-                */
-                var gpsOkCallback = function (position) {
-                    me.accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : '-';
-                    me.altitude = position.coords.altitude ? Math.round(position.coords.altitude) : '-';
-                    me.heading = position.coords.heading ? position.coords.heading : null;
-                    me.speed = position.coords.speed ? Math.round(position.coords.speed * 3.6) : '-';
-                    me.last_location = {
-                        "latlng": transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection()),
-                        altitude: position.coords.altitude,
-                        "geoposition": position
-                    }
-                    // me.last_location.latlng = ol.proj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', OlMap.map.getView().getProjection());
-
-                    positionFeature.set('known', true);
-                    accuracyFeature.set('known', true);
-                    positionFeature.getGeometry().setCoordinates(me.last_location.latlng);
-                    accuracyFeature.getGeometry().setCenterAndRadius(me.last_location.latlng, me.accuracy);
-
-                    if (me.following) {
-                        me.setCenter();
-                    }
-
-                    lat = position.coords.latitude;
-                    lon = position.coords.longitude;
-                    if (typeof trackingDb != 'undefined') {
-                        trackingDb.transaction(logPosition, errorCB, successCB);
-                        db_id++;
-                    }
-
-                    $rootScope.$broadcast('geolocation.updated', me.last_location);
-                };
-
-                /**
-                * (PRIVATE) (Only for Mobile) Callback for handling geolocation error
-                * @memberof hs.geolocation.service
-                * @function gpsFailCallback
-                * @param {object} e Position fail object
-                */
-                var gpsFailCallback = function (e) {
-                    var msg = 'Error ' + e.code + ': ' + e.message;
-                    if (console) console.log(msg);
-                    if (me.gpsStatus) {
-                        if (e.message == 'Timeout expired') {
-                            if (console) console.log('Removing the timeout setting');
-                            gpsOptions.timeout = 10000;
-                            if (me.changed_handler != null)
-                                me.geolocation.clearWatch(me.changed_handler);
-                        }
-                        setTimeout(function () {
-                            me.changed_handler = me.geolocation.watchPosition(gpsOkCallback, gpsFailCallback, gpsOptions);
-                            if (console) console.log('Try again..');
-                        }, 5000);
-                    }
-                };
-
-                var gpsOptions = {
-                    enableHighAccuracy: true,
-                    timeout: 5000, //10 secs
-                    maximumAge: 100000
-                };
-            } else {
-                me.geolocation = new Geolocation({
-                    projection: OlMap.map.getView().getProjection()
-                });
-
-                /**
-                * (Only for Desktop) Change handler of ol.Geolocation object (for desktop use)
-                * @memberof hs.geolocation.service
-                * @function changed_handler
-                */
-                me.changed_handler = function () {
-                    if (!me.geolocation.getTracking()) return;
-                    me.accuracy = me.geolocation.getAccuracy() ? me.geolocation.getAccuracy() + ' [m]' : '';
-                    me.altitude = me.geolocation.getAltitude() ? me.geolocation.getAltitude() + ' [m]' : '-';
-                    me.altitudeAccuracy = me.geolocation.getAltitudeAccuracy() ? '+/- ' + me.geolocation.getAltitudeAccuracy() + ' [m]' : '';
-                    me.heading = me.geolocation.getHeading() ? me.geolocation.getHeading() : null;
-                    me.speed = me.geolocation.getSpeed() ? Math.round(me.geolocation.getSpeed()) + ' [m/s]' : '-';
-                    me.last_location = {
-                        "latlng": me.geolocation.getPosition(),
-                        altitude: me.geolocation.getAltitude(),
-                        "geoposition": me.geolocation
-                    }
-                    positionFeature.set('known', !!me.geolocation.getPosition());
-                    accuracyFeature.set('known', !!me.geolocation.getAccuracy());
-                    if (me.geolocation.getPosition()) {
-                        var p = me.geolocation.getPosition();
-                        $log.info(p);
-                        positionFeature.getGeometry().setCoordinates(p);
-                        accuracyFeature.getGeometry().setCenterAndRadius(p, me.geolocation.getAccuracy());
-                        if (me.following)
-                            OlMap.map.getView().setCenter(p);
-                    }
-                    if (me.heading) OlMap.map.getView().setRotation(me.heading);
-                    $rootScope.$broadcast('geolocation.updated', me.last_location);
-                }
-
-                me.geolocation.on('change', me.changed_handler);
-
-                // handle geolocation error.
-                me.geolocation.on('error', function (error) {
-                    //TODO fix that
-                    var info = document.getElementById('info');
-                    if (info) {
-                        info.style.display = '';
-                        info.innerHTML = error.message;
-                    }
-                    else {
-                        console.error(error);
-                    }
-                });
-                //var track = new ol.dom.Input(document.getElementById('track'));
-                //track.bindTo('checked', geolocation, 'tracking');
             }
-        }
+        };
 
+        /**
+        * @ngdoc method
+        * @name hs.geolocation.service#init
+        * @public 
+        * @description Init function of service, establish instance of geolocation object and layer.
+        * Sets rotate map control.
+        */
+        function init() {
+            me.geolocation = new Geolocation({
+                projection: OlMap.map.getView().getProjection(),
+                trackingOptions: {
+                    enableHighAccuracy: true
+                },
+            });
+
+            me.accuracyFeature.setStyle(me.style);
+            me.positionFeature.setStyle(me.style);
+
+            me.position_layer = new VectorLayer({
+                title: "Position",
+                show_in_manager: true,
+                source: new Vector()
+            });
+            const src = me.position_layer.getSource();
+
+            src.addFeature(me.accuracyFeature);
+            src.addFeature(me.positionFeature);
+            let reset = function () {
+                if (me.gn.isRunning()) {
+                    me.gn.stop();
+                    OlMap.map.getView().setRotation(0);
+                    layoutService.contentWrapper.querySelector('button.ol-rotate').classList.remove('active')
+
+                }
+                else {
+                    me.setRotation();
+                    layoutService.contentWrapper.querySelector('button.ol-rotate').classList.add('active')
+                }
+            };
+            OlMap.map.addControl(new Rotate({
+                resetNorth: reset,
+                className: 'ol-rotate hidden',
+                autoHide: false
+            }))
+
+        };
         OlMap.loaded().then(init);
 
         me.style = new Style({
@@ -257,16 +248,6 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core',
                 color: [0x66, 0x66, 0x00, 0.8]
             })
         });
-
-        accuracyFeature.setStyle(me.style);
-        positionFeature.setStyle(me.style);
-
-        me.position_layer = new VectorLayer({
-            title: "Position",
-            show_in_manager: false,
-            source: new Vector()
-        });
-
         return me;
     }
 ]
