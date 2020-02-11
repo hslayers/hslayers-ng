@@ -53,10 +53,12 @@
                 <label translate>Dimensions</label>
                 <div class="form-group" ng-repeat="(key, dimension) in dimensions()">
                     <label class="control-label">{{dimension.label || key}}:</label>
-                    <select class="form-control" ng-model="dimension.value" ng-change="dimensionChanged(dimension)">
+
+                    <select class="form-control" ng-model="dimension.value" ng-if="typeof dimension.type == 'undefined'" ng-change="dimensionChanged(dimension)">
                         <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">
                             {{dimension_value}}</option>
                     </select>
+                    <input type="datetime-local" ng-if="dimension.type == 'datetime'" ng-model="dimension.value" ng-change="dimensionChanged(dimension)">
                 </div>
             </div>
 
