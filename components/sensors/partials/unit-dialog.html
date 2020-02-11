@@ -27,25 +27,10 @@
                         <div class="col-4">
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='hours'}"
-                                    ng-click="timeButtonClicked({amount: 1, unit: 'hours'})"
-                                    aria-label="1 hour">1H</button>
-                                <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='days'}"
-                                    ng-click="timeButtonClicked({amount: 1, unit: 'days'})"
-                                    aria-label="1 day">1D</button>
-                                <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='weeks'}"
-                                    ng-click="timeButtonClicked({amount: 1, unit: 'weeks'})"
-                                    aria-label="1 week">1W</button>
-                                <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='months' && sensorsService.currentInterval.amount == 1}"
-                                    ng-click="timeButtonClicked({amount: 1, unit: 'months'})"
-                                    aria-label="1 month">1M</button>
-                                <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': sensorsService.currentInterval.unit=='months' && sensorsService.currentInterval.amount == 6}"
-                                    ng-click="timeButtonClicked({amount: 6, unit: 'months'})"
-                                    aria-label="6 months">6M</button>
+                                    ng-class="{'btn-primary': sensorsService.currentInterval == interval}"
+                                    ng-click="timeButtonClicked(interval)"
+                                    ng-repeat="interval in intervals"
+                                    aria-label="1 hour">{{interval.name}}<img ng-src="{{loaderImage}}" ng-show="interval.loading"/></button>
                             </div>
                         </div>
                     </div>

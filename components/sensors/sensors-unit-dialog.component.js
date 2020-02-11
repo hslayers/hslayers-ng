@@ -9,6 +9,14 @@ export default {
         angular.extend($scope, {
             layoutService,
             sensorsService,
+            intervals: [
+                {name: '1H', amount: 1, unit: 'hours'},
+                {name: '1D', amount: 1, unit: 'days'},
+                {name: '1W', amount: 1, unit: 'weeks'},
+                {name: '1M', amount: 1, unit: 'months'},
+                {name: '6M', amount: 6, unit: 'months'}
+            ],
+            loaderImage: require('../../img/ajax-loader.gif'),
             /**
              * @memberof hs.sensors.unitDialog
              * @function sensorClicked

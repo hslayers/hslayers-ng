@@ -200,6 +200,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                 var url = utils.proxify(`${endpoint.url}/senslog-lite/rest/observation`);
                 var from_time = moment().subtract(interval.amount, interval.unit);
                 from_time = `${from_time.format('YYYY-MM-DD')} ${from_time.format('HH:mm:ssZ')}`;
+                interval.loading = true;
                 $http.get(url, {
                     params: {
                         user_id: endpoint.user_id,
@@ -208,6 +209,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                     }
                 }).then(
                     response => {
+                        interval.loading = false;
                         me.observations = response.data;
                         resolve()
                     },
