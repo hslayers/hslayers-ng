@@ -22,15 +22,27 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
                 }
             },
 
-            toggleUnimportant(){
+            /**
+             * Seat weather to show all sidebar buttons or just a 
+             * subset of important ones
+             * @memberof hs.sidebar.controller
+             * @function toggleUnimportant
+             */
+            toggleUnimportant() {
                 $scope.showUnimportant = !$scope.showUnimportant
             },
 
-            visibilityByImportancy(button){
-                return button.important || angular.isUndefined(button.important) || !sidebarService.unimportantExist 
+            /**
+             * Returns if a button should be visible by its 'important' 
+             * property and current view mode defined in showUnimportant variable 
+             * @memberof hs.sidebar.controller
+             * @function visibilityByImportancy
+             */
+            visibilityByImportancy(button) {
+                return button.important || angular.isUndefined(button.important) || !sidebarService.unimportantExist
                     || $scope.showUnimportant
             },
-            
+
             /**
              * Checks whether the panels, which could be placed both in map or
              * in sidebar, have state defined in config.panelsEnabled. If yes it

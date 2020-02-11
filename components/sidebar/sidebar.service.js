@@ -1,10 +1,22 @@
 export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.language.service', function (config, $rootScope, utils, gettext, languageService) {
     this.extraButtons = [];
-    
+
     var me = this;
 
     angular.extend(me, {
+        /**
+         * If buttons with importancy property exist.
+         * If not, don't display expansion +/- icon 
+         * @memberof hs.sidebar.service
+         * @member buttons
+         */
         unimportantExist: false,
+
+        /**
+         * List of sidebar buttons 
+         * @memberof hs.sidebar.service
+         * @member buttons
+         */
         buttons: [
             { panel: 'layermanager', module: 'hs.layermanager', order: 0, title: gettext('Layer Manager'), description: gettext('Manage and style your layers in composition'), icon: 'icon-layers' },
             { panel: 'legend', module: 'hs.legend', order: 1, title: gettext('Legend'), description: gettext('Legend'), icon: 'icon-dotlist' },
@@ -24,8 +36,21 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
             { panel: 'search', module: 'hs.search.controller', order: 15, title: gettext('Search'), description: gettext('Search for location'), icon: 'icon-search' },
             { panel: 'draw', module: 'hs.draw', order: 16, title: gettext('Draw'), description: gettext('Draw new features'), icon: 'icon-pencil' }
         ],
+        
+        /**
+         * List of visible buttons taking into acount viewport size 
+         * @memberof hs.sidebar.service
+         * @member visibleButtons
+         */
         visibleButtons: [],
-        setButtonImportancy(panelName, state){
+        
+        /**
+         * Function to set if a button is important and always visible
+         * or only when the sidebar buttons are expanded 
+         * @memberof hs.sidebar.service
+         * @function setButtonImportancy
+         */
+        setButtonImportancy(panelName, state) {
             me.buttons.filter(b => b.panel == panelName)[0].important = state;
             me.unimportantExist = me.buttons.filter(b => b.important == false).length > 0;
         }
