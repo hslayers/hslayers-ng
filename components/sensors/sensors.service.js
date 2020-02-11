@@ -69,7 +69,6 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
         units: [],
         sensorsSelected: [],
         sensorIdsSelected: [],
-        layers: null,
         sensorById: {},
         selectSensor(sensor) {
             me.sensorsSelected.forEach(s => s.checked = false);
@@ -112,7 +111,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
         createLayer() {
             me.layer = new VectorLayer({
                 title: 'Sensor units',
-                synchronize: true,
+                synchronize: false,
                 editor: {
                     editable: false
                 },
