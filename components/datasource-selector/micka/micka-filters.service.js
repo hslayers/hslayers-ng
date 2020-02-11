@@ -7,7 +7,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
         this.filterByExtent = true;
         me.otnKeywords = [];
 
-        if (config.datasources && config.datasources.filter(ds => ds.url.indexOf('opentnet.eu') > -1))
+        if (config.datasources && config.datasources.filter(ds => ds.url.indexOf('opentnet.eu') > -1).length>0)
             $http({
                 method: 'GET',
                 url: utils.proxify('http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66')
