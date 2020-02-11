@@ -39,8 +39,12 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
              * @function visibilityByImportancy
              */
             visibilityByImportancy(button) {
-                return button.important || angular.isUndefined(button.important) || !sidebarService.unimportantExist
+                if (layoutService.sidebarBottom())
+                { return true}
+                else {
+                    return button.important || angular.isUndefined(button.important) || !sidebarService.unimportantExist
                     || $scope.showUnimportant
+                }
             },
 
             /**
