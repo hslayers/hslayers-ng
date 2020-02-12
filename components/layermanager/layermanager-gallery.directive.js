@@ -2,7 +2,8 @@ export default [
 	"config",
 	"hs.layout.service",
 	"hs.layermanager.service",
-	function(config, layoutService, LayMan) {
+	'$window',
+	function(config, layoutService, LayMan, $window) {
 		return {
 			template: require("components/layermanager/partials/basemap-gallery.html"),
 
@@ -21,7 +22,7 @@ export default [
 					};
 
 					$scope.galleryStyle = function() {
-						if (!layoutService.sidebarRight || layoutService.layoutElement.clientWidth <= 767) {
+						if (!layoutService.sidebarRight || (layoutService.layoutElement.clientWidth <= 767 && $window.innerWidth <= 767)) {
 							return { right: "15px" };
 						} else {
 							return { right: layoutService.panelSpaceWidth() + 20 + "px" };
