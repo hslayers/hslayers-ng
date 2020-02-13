@@ -198,8 +198,8 @@ export default ['config', '$http', function (config, $http) {
    * invoked, will not be triggered.
    * (https://davidwalsh.name/javascript-debounce-function)
    */
-    this.debounce = function (func, wait, immediate) {
-        var context = this;
+    this.debounce = function (func, wait, immediate, context) {
+        if(angular.isUndefined(context)) context = this;
         return function () {
             var args = arguments
             var later = function () {

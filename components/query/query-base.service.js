@@ -83,7 +83,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                         me.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
                     } else me.featuresUnderMouse = [];
                 }, 0)
-            }, 200);
+            }, 200, false, me);
             map.on('pointermove', changeHandler);
 
             $rootScope.$watch(() => layoutService.sidebarExpanded, () => {

@@ -233,7 +233,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
 
         OlMap.map.on('postcompose', utils.debounce(() => {
             me.generateThumbnail(document.getElementById('hs-permalink-thumbnail'));
-        }, 300));
+        }, 300, false, me));
 
         $rootScope.$on('compositions.composition_loaded', function (event, data) {
             if (angular.isDefined(data.data)) {

@@ -107,11 +107,11 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                                     );
                                     source.loading = false;
                                 }
-                                var handleFeatureChange = function (e) {
+                                function handleFeatureChange (e) {
                                     me.push(layer);
-                                };
+                                }
                                 function observeFeature(f) {
-                                    f.getGeometry().on('change', utils.debounce(handleFeatureChange, debounceInterval));
+                                    f.getGeometry().on('change', utils.debounce(handleFeatureChange, debounceInterval, false, me));
                                     f.on('propertychange', handleFeatureChange);
                                 }
                                 source.forEachFeature(observeFeature)

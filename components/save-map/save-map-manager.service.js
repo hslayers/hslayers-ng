@@ -294,7 +294,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
         OlMap.map.on('postcompose', utils.debounce(() => {
             me.compoData.bbox = me.getCurrentExtent();
             saveMap.generateThumbnail(layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'), me.compoData);
-        }, 300));
+        }, 300, false, me));
 
         return me;
     }]

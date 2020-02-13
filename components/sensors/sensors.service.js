@@ -63,7 +63,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                 unit.unit_id == feature.get('unit_id')
             )[0]);
         }
-    }))
+    }, 150, false, me))
 
     return angular.extend(me, {
         units: [],

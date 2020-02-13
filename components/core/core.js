@@ -203,7 +203,7 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                         if (me.sizeOptions.mode != "fullscreen") return
                         let vh = w.innerHeight * 0.01;
                         document.documentElement.style.setProperty('--vh', `${vh}px`);
-                    }, 150);
+                    }, 150, false, me);
 
                     w.addEventListener('resize', function () {
                         updateVH();
