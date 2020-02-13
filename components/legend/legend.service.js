@@ -1,4 +1,4 @@
-import { TileWMS, WMTS } from 'ol/source';
+import { TileWMS, WMTS, XYZ } from 'ol/source';
 import { ImageWMS, ImageArcGISRest } from 'ol/source';
 import { Image as ImageLayer } from 'ol/layer';
 import VectorLayer from 'ol/layer/Vector';
@@ -187,6 +187,13 @@ export default ['hs.utils.service', function (utils) {
                     visible: layer.getVisible()
                 };
             } else if (utils.instOf(layer, ImageLayer) && utils.instOf(layer.getSource(), Static)) {
+                return {
+                    title: layer.get("title"),
+                    lyr: layer,
+                    type: 'static',
+                    visible: layer.getVisible()
+                };
+            } else if (utils.instOf(layer.getSource(), XYZ)) {
                 return {
                     title: layer.get("title"),
                     lyr: layer,

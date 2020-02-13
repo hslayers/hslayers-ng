@@ -11,6 +11,9 @@ export default ['config', '$sce', function (config, $sce) {
                     if (legendImage.indexOf('<svg') > -1) {
                         scope.legendType = 'svg';
                         scope.svgContent = $sce.trustAsHtml(legendImage);
+                    } else {
+                        scope.legendType = 'image';
+                        scope.legendImage = legendImage;
                     }
                 }
             }
