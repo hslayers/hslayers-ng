@@ -1,22 +1,27 @@
 <div>
     <a href="#" ng-click="unitClicked()">{{$ctrl.unit.description}}</a>
     <ul class="list-group" ng-show="$ctrl.expanded || $ctrl.unit.expanded">
-        <li ng-repeat="sensor in $ctrl.unit.sensors | filter:query | orderBy:'-sensor_id'" class="list-group-item p-1">
-            <div class="d-flex ">
-                <div class="p-0">
-                    <button type="button" class="btn btn-sm" ng-click="sensorToggleSelected(sensor)"
-                    ng-class="sensor.checked  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
-                </div>
-                <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title">
-                    <a ng-if="$ctrl.viewMode == 'sensors'" href="#" ng-click="sensorClicked(sensor)">
-                        <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}}</a>
-                    <a ng-if="$ctrl.viewMode == 'phenomena'" href="#" ng-click="sensorClicked(sensor)">
-                        {{sensor.phenomenon_name}}</a>
-                </div>
-                <div class="p-0">
-                    <span class="badge badge-light badge-pill">{{sensor.lastObservationValue}} {{sensor.uom}} <br/><small>at {{sensor.lastObservationTimestamp}}</small></span>   
-                </div>
-            </div>
-        </li>
+        <div ng-repeat="sensorType in $ctrl.unit.sensorTypes" class="list-group-item p-1">
+            <a href="#" ng-click="sensorType.expanded = !sensorType.expanded" style="line-height: 2em;">{{sensorType.name}}</a>
+            <ul class="list-group" ng-show="sensorType.expanded">
+                <li ng-repeat="sensor in sensorType.sensors | filter:query | orderBy:'-sensor_id'" class="list-group-item p-1">
+                    <div class="d-flex ">
+                        <div class="p-0">
+                            <button type="button" class="btn btn-sm" ng-click="sensorToggleSelected(sensor)"
+                            ng-class="sensor.checked  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                        </div>
+                        <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title">
+                            <a ng-if="$ctrl.viewMode == 'sensors'" href="#" ng-click="sensorClicked(sensor)">
+                                <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}}</a>
+                            <a ng-if="$ctrl.viewMode == 'phenomena'" href="#" ng-click="sensorClicked(sensor)">
+                                {{sensor.phenomenon_name}}</a>
+                        </div>
+                        <div class="p-0">
+                            <span class="badge badge-light badge-pill">{{sensor.lastObservationValue}} {{sensor.uom}} <br/><small>at {{sensor.lastObservationTimestamp}}</small></span>   
+                        </div>
+                    </div>
+                </li>    
+            </ul>
+        </div>        
     </ul>
 </div>

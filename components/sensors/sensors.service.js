@@ -150,6 +150,17 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                     })
                 me.layer.getSource().addFeatures(features);
                 me.fillLastObservations();
+                me.units.forEach(unit => {
+                    unit.sensorTypes = unit.sensors.map(s => {
+                        return {name: s.sensor_type}
+                    });
+                    unit.sensorTypes = utils.removeDuplicates(unit.sensorTypes, 'name');
+                    unit.sensorTypes.map(st => 
+                        st.sensors = unit.sensors.filter(
+                            s => s.sensor_type == st.name
+                        )
+                    )
+                });
                 setInterval(me.fillLastObservations, 60000);
                 
             },
