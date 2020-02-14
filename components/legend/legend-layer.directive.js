@@ -18,7 +18,7 @@ export default ['config', function (config) {
                 var changeHandler = utils.debounce(function (e) {
                     $scope.styles = service.getStyleVectorLayer(olLayer);
                     $scope.geometryTypes = service.getVectorFeatureGeometry(olLayer);
-                }, 200, false, me);
+                }, 200, false, this);
                 source.on('changefeature', changeHandler);
                 source.on('addfeature', changeHandler);
                 source.on('removefeature', changeHandler);
