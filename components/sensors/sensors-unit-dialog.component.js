@@ -7,14 +7,13 @@ export default {
         var map;
         sensorsService.unitDialogVisible = true;
         angular.extend($scope, {
-            layoutService,
             sensorsService,
             intervals: [
-                {name: '1H', amount: 1, unit: 'hours'},
-                {name: '1D', amount: 1, unit: 'days'},
-                {name: '1W', amount: 1, unit: 'weeks'},
-                {name: '1M', amount: 1, unit: 'months'},
-                {name: '6M', amount: 6, unit: 'months'}
+                { name: '1H', amount: 1, unit: 'hours' },
+                { name: '1D', amount: 1, unit: 'days' },
+                { name: '1W', amount: 1, unit: 'weeks' },
+                { name: '1M', amount: 1, unit: 'months' },
+                { name: '6M', amount: 6, unit: 'months' }
             ],
             loaderImage: require('../../img/ajax-loader.gif'),
             /**
@@ -43,7 +42,16 @@ export default {
                     sensorsService.unit,
                     interval
                 ).then(_ => sensorService.createChart(sensorsService.unit))
-            }           
+            },
+            dialogStyle() {
+                return {
+                    'visibility': sensorsService.unitDialogVisible ? 'visible' : 'hidden',
+                    'left': layoutService.sidebarBottom() ? '0px' : (layoutService.panelSpaceWidth() + 10) + 'px',
+                    'width': layoutService.sidebarBottom() ? '100%' : 'calc(' + layoutService.widthWithoutPanelSpace() + ' + 25px)',
+                    'bottom': layoutService.sidebarBottom() ? '35em' : '0',
+                    'height': layoutService.sidebarBottom() ? '5em' : 'auto',
+                }
+            },
         });
 
         function init() {
