@@ -46,9 +46,9 @@ export default {
             dialogStyle() {
                 return {
                     'visibility': sensorsService.unitDialogVisible ? 'visible' : 'hidden',
-                    'left': layoutService.sidebarBottom() ? '0px' : (layoutService.panelSpaceWidth() + 10) + 'px',
-                    'width': layoutService.sidebarBottom() ? '100%' : 'calc(' + layoutService.widthWithoutPanelSpace() + ' + 25px)',
-                    'bottom': layoutService.sidebarBottom() ? '35em' : '0',
+                    'left': layoutService.sidebarBottom() ? '3px' : (layoutService.panelSpaceWidth() + 10) + 'px',
+                    'width': layoutService.sidebarBottom() ? '100%' : 'calc(' + layoutService.widthWithoutPanelSpace() + ')',
+                    'bottom': layoutService.sidebarBottom() ? '46.5em' : '0',
                     'height': layoutService.sidebarBottom() ? '5em' : 'auto',
                 }
             },
