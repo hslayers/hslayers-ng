@@ -158,7 +158,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
             else
                 iframe.contentDocument.body.innerHTML = response;
             var tmp_width = iframe.contentDocument.innerWidth;
-            if (tmp_width > document.getElementById("map").clientWidth - 60) tmp_width = document.getElementById("map").clientWidth - 60;
+            if (tmp_width > layoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth - 60) tmp_width = layoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth - 60;
             iframe.style.width = tmp_width + 'px';
             var tmp_height = iframe.contentDocument.innerHeight;
             if (tmp_height > 700) tmp_height = 700;
