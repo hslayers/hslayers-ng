@@ -16,6 +16,18 @@ import featurePopupComponent from './feature-popup.component';
  * @memberOf hs
  */
 angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize', 'hs.language', 'hs.layout'])
+    .directive('htmlbind', function($compile) {
+        return {
+            restrict: 'A',
+            replace: true,
+            link: function (scope, element, attrs) {
+                scope.$watch(attrs.htmlbind, function(html) {
+                    $compile(element.html(html).contents())(scope);
+                });
+            }
+        };
+    })
+
     /**
     * @ngdoc directive
     * @name hs.query.directiveInfopanel
