@@ -23,7 +23,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
             { panel: 'info', module: 'hs.query', order: 7, title: gettext('Info panel'), description: gettext('Display map-query result information'), icon: 'icon-info-sign' },
             { panel: 'composition_browser', module: 'hs.compositions', order: 3, title: gettext('Map Compositions'), description: gettext('List available map compositions'), icon: 'icon-map' },
             { panel: 'datasource_selector', module: 'hs.datasource_selector', order: 4, title: gettext('Add layers'), description: gettext('Select data or services for your map composition'), icon: 'icon-database' },
-            { panel: 'feature_crossfilter', module: 'hs.feature_crossfilter.controller', order: 5, title: gettext('Filter features'), description: gettext('Crossfilter'), icon: 'icon-analytics-piechare' },
+            { panel: 'feature_crossfilter', module: 'hs.feature_crossfilter.controller', order: 5, title: gettext('Filter features'), description: gettext('Crossfilter'), icon: 'icon-analytics-piechart' },
             { panel: 'sensors', module: 'hs.sensors', order: 6, title: gettext('Sensors'), description: gettext(''), icon: 'icon-weightscale' },
             { panel: 'measure', module: 'hs.measure', order: 2, title: gettext('Measurements'), description: gettext('Measure distance or area at map'), icon: 'icon-design', condition: true },
             { panel: 'routing', module: 'hs.routing.controller', order: 8, title: gettext('Routing'), description: gettext(''), icon: 'icon-road' },
@@ -36,14 +36,14 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
             { panel: 'search', module: 'hs.search.controller', order: 15, title: gettext('Search'), description: gettext('Search for location'), icon: 'icon-search' },
             { panel: 'draw', module: 'hs.draw', order: 16, title: gettext('Draw'), description: gettext('Draw new features'), icon: 'icon-pencil' }
         ],
-        
+
         /**
          * List of visible buttons taking into acount viewport size 
          * @memberof hs.sidebar.service
          * @member visibleButtons
          */
         visibleButtons: [],
-        
+
         /**
          * Function to set if a button is important and always visible
          * or only when the sidebar buttons are expanded 

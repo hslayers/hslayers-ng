@@ -66,7 +66,8 @@
     "release": "npm run-script build && release-it",
     "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
     "lint": "eslint --fix-dry-run ./",
-    "lint-stats": "eslint --format node_modules/eslint-stats/byError.js ./"
+    "lint-stats": "eslint --format node_modules/eslint-stats/byError.js ./",
+    "generate-glyphs-subset": "sh scripts/subset-font.sh"
   },
   "dependencies": {
     "angular": "^1.7.9",
@@ -105,6 +106,7 @@
     "ol-popup-umd": "^1.3.1",
     "proj4": "^2.6.0",
     "requirejs": "^2.3.6",
-    "tinycolor2": "^1.4.1"
+    "tinycolor2": "^1.4.1",
+    "ttf2eot": "^2.0.0"
   }
 }
