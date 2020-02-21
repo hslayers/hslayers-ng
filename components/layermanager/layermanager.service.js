@@ -386,6 +386,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                                 me.data.baselayers[i].layer.setVisible(false);
                                 me.data.baselayers[i].visible = false;
                                 me.data.baselayers[i].active = false;
+                                if (me.data.baselayers[i] != layer){
+                                    me.data.baselayers[i].galleryMiniMenu = false;
+                                }
                             }
                         }
                         for (var i = 0; i < me.data.baselayers.length; i++) {
@@ -400,6 +403,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                         me.data.baselayersVisible = false;
                         for (var i = 0; i < me.data.baselayers.length; i++) {
                             me.data.baselayers[i].layer.setVisible(false);
+                            me.data.baselayers[i].galleryMiniMenu = false;
                         }
                     }
                 } else {
