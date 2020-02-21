@@ -467,6 +467,9 @@ button.but-title-sm {
 .basemapGallery .basemap-tile.active {
 	background: rgba(0, 59, 136, 0.788);
 }
+.basemapGallery .dropdown-item:not(.active){
+	background: rgba(0, 0, 0, 0.048);
+}
 .basemapGallery img.active,
 .basemapGallery div.active {
 	border: 0.1rem solid rgb(0, 123, 255);
