@@ -3,7 +3,8 @@ export default [
   'hs.layout.service',
   'hs.layermanager.service',
   '$window',
-  function(config, layoutService, LayMan, $window) {
+  '$timeout',
+  function(config, layoutService, LayMan, $window, $timeout) {
     return {
       template: require('./partials/basemap-gallery.html'),
 
@@ -20,7 +21,16 @@ export default [
               layer.galleryMiniMenu = true;
             }
           };
-
+          $scope.closeGallery = function(layer) {
+            console.log($scope)
+            if (arguments.length > 0) {
+              if (!layer.active) {
+                $scope.baseLayersExpanded = false;
+              }
+            } else {
+              $scope.baseLayersExpanded = false;
+            }
+          };
           $scope.galleryStyle = function() {
             if (!layoutService.sidebarRight || (layoutService.layoutElement.clientWidth <= 767 && $window.innerWidth <= 767)) {
               return {right: '15px'};
@@ -44,6 +54,9 @@ export default [
               layerContainer.classList.add('hs-grayscale');
               layer.grayscale = true;
             }
+            $timeout(()=> {
+              layer.galleryMiniMenu = false;
+            }, 100);
           };
         }
       ]
