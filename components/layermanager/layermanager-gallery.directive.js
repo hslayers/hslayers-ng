@@ -1,52 +1,52 @@
 export default [
-	"config",
-	"hs.layout.service",
-	"hs.layermanager.service",
-	'$window',
-	function(config, layoutService, LayMan, $window) {
-		return {
-			template: require("components/layermanager/partials/basemap-gallery.html"),
+  'config',
+  'hs.layout.service',
+  'hs.layermanager.service',
+  '$window',
+  function(config, layoutService, LayMan, $window) {
+    return {
+      template: require('./partials/basemap-gallery.html'),
 
-			controller: [
-				"$scope",
-				function($scope) {
-					$scope.LayMan = LayMan;
-					$scope.changeBaseLayerVisibility = LayMan.changeBaseLayerVisibility;
-					$scope.data = LayMan.data;
-					$scope.toggleMiniMenu = function(layer) {
-						if (layer.galleryMiniMenu) {
-							layer.galleryMiniMenu = !layer.galleryMiniMenu;
-						} else {
-							layer.galleryMiniMenu = true;
-						}
-					};
+      controller: [
+        '$scope',
+        function($scope) {
+          $scope.LayMan = LayMan;
+          $scope.changeBaseLayerVisibility = LayMan.changeBaseLayerVisibility;
+          $scope.data = LayMan.data;
+          $scope.toggleMiniMenu = function(layer) {
+            if (layer.galleryMiniMenu) {
+              layer.galleryMiniMenu = !layer.galleryMiniMenu;
+            } else {
+              layer.galleryMiniMenu = true;
+            }
+          };
 
-					$scope.galleryStyle = function() {
-						if (!layoutService.sidebarRight || (layoutService.layoutElement.clientWidth <= 767 && $window.innerWidth <= 767)) {
-							return { right: "15px" };
-						} else {
-							return { right: layoutService.panelSpaceWidth() + 20 + "px" };
-						}
-					};
+          $scope.galleryStyle = function() {
+            if (!layoutService.sidebarRight || (layoutService.layoutElement.clientWidth <= 767 && $window.innerWidth <= 767)) {
+              return {right: '15px'};
+            } else {
+              return {right: layoutService.panelSpaceWidth() + 20 + 'px'};
+            }
+          };
 
-					$scope.fitsInContainer = () => {
-						return (
-							(LayMan.data.baselayers.length + 1) * 150 <
+          $scope.fitsInContainer = () => {
+            return (
+              (LayMan.data.baselayers.length + 1) * 150 <
 							layoutService.layoutElement.clientWidth - layoutService.panelSpaceWidth() - 450
-						);
-					};
-					$scope.setGreyscale = function(layer) {
-						let layerContainer = document.querySelector(".ol-unselectable > div:first-child");
-						if (layerContainer.classList.contains("hs-grayscale")) {
-							layerContainer.classList.remove("hs-grayscale");
-							layer.grayscale = false;
-						} else {
-							layerContainer.classList.add("hs-grayscale");
-							layer.grayscale = true;
-						}
-					};
-				},
-			],
-		};
-	},
+            );
+          };
+          $scope.setGreyscale = function(layer) {
+            const layerContainer = document.querySelector('.ol-unselectable > div:first-child');
+            if (layerContainer.classList.contains('hs-grayscale')) {
+              layerContainer.classList.remove('hs-grayscale');
+              layer.grayscale = false;
+            } else {
+              layerContainer.classList.add('hs-grayscale');
+              layer.grayscale = true;
+            }
+          };
+        }
+      ]
+    };
+  }
 ];
