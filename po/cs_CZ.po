@@ -1,24 +1,86 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2018-10-04 11:53+0300\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
-"X-Pootle-Path: /cs/hslayers-ng/hslayers-ng.po\n"
-"X-Pootle-Revision: 158\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: hslayers-ng\n"
+"Language: cs\n"
 
+#: components/permalink/partials/directive.html:15
+msgid "*Shares map with all portal functionality"
+msgstr "Sdílet mapu se všemi funkcemi portálu"
+
+#: components/permalink/partials/directive.html:9
+msgid "*Shares only map as picture"
+msgstr "Sdílet pouze mapu jako obrázek"
+
+#: components/sensors/partials/unit-dialog.html:15
+msgid "<div class=\"container-fluid\">\n"
+"                    <div class=\"row\">\n"
+"                        <div class=\"col-12\">\n"
+"                            <div id=\"chartplace\" style=\"min-width: 400px; min-height:50px\"></div>\n"
+"                        </div>\n"
+"                    </div>\n"
+"                </div>"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:35
+msgid "<i class=\"icon-circleloaderfull\"></i>"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:31
+#: components/draw/partials/shape-toolbar.html:27
+#: components/draw/partials/vgi-draw.html:31
+msgid "<i class=\"icon-line\"></i>"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:23
+#: components/draw/partials/shape-toolbar.html:21
+#: components/draw/partials/vgi-draw.html:25
+msgid "<i class=\"icon-pin\"></i>"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:11
+#: components/draw/partials/shape-toolbar.html:18
+msgid "<i class=\"icon-plus\"></i>"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:27
+#: components/draw/partials/shape-toolbar.html:24
+#: components/draw/partials/vgi-draw.html:28
+msgid "<i class=\"icon-polygonlasso\"></i>"
+msgstr ""
+
+#: components/draw/partials/shape-toolbar.html:3
+msgid "<i ng-class=\"{'icon-pencil':!drawToolbarExpanded, 'icon-remove':drawToolbarExpanded}\" data-toggle=\"tooltip\" title=\"Draw\"></i>"
+msgstr ""
+
+#: components/add-layers/arcgis/add-arcgis-layer.directive.html:49
+#: components/add-layers/wms/add-wms-layer.directive.html:73
+msgid "<input type=\"checkbox\" ng-model=\"data.registerMetadata\"> Register metadata"
+msgstr ""
+
+#: components/permalink/partials/directive.html:58
+msgid "<input type=\"checkbox\" ng-model=\"new_share\"><span class=\"ng-scope\"> New share</span>"
+msgstr ""
+
+#: components/layermanager/partials/layermanagermd.html:31
+msgid "About layer"
+msgstr "O vrstvě"
+
+#: components/add-layers/shp/add-shp-layer.directive.html:30
+#: components/add-layers/vector/add-vector-layer.directive.html:11
+#: components/add-layers/wms/add-wms-layer.directive.html:83
 #: components/compositions/partials/dialog_info.html:12
-#: components/layermanager/partials/layermanager.html:80
-#: components/ows/partials/owsnonwms.html:10
-#: components/save-map/partials/form.html:21
-#: components/save-map/partials/simpleform.html:10
+#: components/compositions/partials/dialog_share.html:12
+#: components/compositions/partials/dialog_sharemd.html:14
+#: components/layermanager/partials/layer-editor.html:67
+#: components/permalink/partials/directive.html:50
+#: components/permalink/partials/directivemd.html:27
+#: components/save-map/partials/form.html:25
+#: components/save-map/partials/panelmd.html:12
+#: components/save-map/partials/simpleform.html:8
 msgid "Abstract"
 msgstr "Abstrakt"
 
@@ -26,431 +88,633 @@ msgstr "Abstrakt"
 msgid "Access"
 msgstr "Přístup"
 
-#: components/ows/partials/owsnonwms.html:44
-#: components/ows/partials/owsprioritized.html:7
+#: components/add-layers/shp/add-shp-layer.directive.html:56
+#: components/add-layers/vector/add-vector-layer.directive.html:37
 msgid "Add"
 msgstr "Přidat"
 
-#: components/ows/partials/ows.html:2
-#: components/sidebar/partials/sidebar.html:27
-#: components/sidebar/partials/sidebar.html:28
-msgid "Add external data"
-msgstr "Přidat externí data"
+#: components/draw/partials/draw.directive.html:12
+msgid "Add draw layer"
+msgstr "Přdat kreslíci vrstvu"
 
-#: components/sidebar/partials/sidebar.html:23
-msgid "Add layers"
-msgstr "Přidat vrstvy"
-
-#: components/datasource_selector/partials/datasource_selector.html:55
-#: components/datasource_selector/partials/dialog_metadata.html:19
+#: components/datasource-selector/partials/datasource_selector.html:59
+#: components/datasource-selector/partials/dialog_metadata.html:19
 msgid "Add to map"
 msgstr "Přidat do mapy"
 
-#: components/save-map/partials/form.html:71
+#: components/layermanager/partials/layerlist.html:30
+msgid "Additional informations"
+msgstr "Další informace"
+
+#: components/compositions/partials/compositions.html:20
+#: components/save-map/partials/form.html:101
 msgid "Address"
 msgstr "Adresa"
 
-#: components/ows/partials/owsnonwms.html:17
-#: components/save-map/partials/simpleform.html:28
+#: components/add-layers/shp/add-shp-layer.directive.html:40
+#: components/add-layers/vector/add-vector-layer.directive.html:16
+#: components/save-map/partials/panelmd.html:33
+#: components/save-map/partials/simpleform.html:29
 msgid "Advanced options"
-msgstr "Rozšířené možnosti"
+msgstr "Pokročilé možnosti"
 
-#: components/geolocation/partials/geolocation.html:5
-#: components/geolocation/partials/geolocation_cordova.html:5
+#: components/geolocation/partials/geolocation_cordova.html:6
 msgid "Altitude"
-msgstr "Šířka"
+msgstr "Nadmořská výška"
 
-#: components/save-map/partials/form.html:11
+#: components/layout/partials/sidenav.html:30
+#: components/sidebar/sidebar.service.js:35
+msgid "Application settings"
+msgstr "Nastavení aplikace"
+
+#: components/measure/partials/measure.html:11
+#: components/measure/partials/measuremd.html:8
+msgid "Area"
+msgstr "Plocha"
+
+#: components/save-map/partials/form.html:12
 msgid "Author"
 msgstr "Autor"
 
-#: components/layermanager/partials/layermanager.html:22
+#: components/layermanager/partials/layermanager.html:28
 msgid "Baselayers"
-msgstr "Základní vrstvy"
+msgstr "Podkladové vrstvy"
 
+#: components/compositions/partials/compositionsmd.html:14
+msgid "Bounding box"
+msgstr ""
+
+#: components/add-layers/partials/dialog_proxyconfirm.html:15
+#: components/compositions/partials/compositionLoadUnsavedDialog.html:36
+#: components/compositions/partials/dialog_deletemd.html:24
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
-#: components/ows/partials/dialog_proxyconfirm.html:15
-#: components/save-map/partials/simpleform.html:71
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:36
+#: components/save-map/partials/simpleform.html:79
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: components/ows/partials/ows.html:12
-msgid "Choose format"
-msgstr "Vyberte formát"
+#: components/draw/partials/vgi-draw.html:80
+msgid "Category"
+msgstr "Kategorie"
 
-#: components/save-map/partials/form.html:74
+#: components/add-layers/partials/add-layers.md.directive.html:6
+msgid "Choose format"
+msgstr "Zvolit formát"
+
+#: components/add-layers/partials/add-layers.directive.html:7
+msgid "Choose type"
+msgstr "Zvolit typ"
+
+#: components/draw/partials/draw.directive.html:36
+#: components/layermanager/partials/layermanagermd.html:95
+msgid "Circle"
+msgstr "Kruh"
+
+#: components/save-map/partials/form.html:106
 msgid "City"
 msgstr "Město"
 
-#: components/datasource_selector/partials/datasource_selector.html:14
-#: components/datasource_selector/partials/datasource_selector.html:40
-#: components/datasource_selector/partials/dialog_micka_advanced.html:101
-#: components/measure/partials/measure.html:17
-#: components/search/partials/searchinput.html:4
+#: components/datasource-selector/micka/advanced-micka-dialog.html:121
+#: components/datasource-selector/micka/micka-filters.html:11
+#: components/draw/partials/vgi-draw.html:42
+#: components/measure/partials/measure.html:14
+#: components/search/partials/search.directive.html:6
+#: components/search/partials/searchinput.html:14
+#: components/trip_planner/partials/trip_planner.html:9
 msgid "Clear"
-msgstr "Vymazat"
+msgstr "Vyčistit"
 
-#: components/compositions/partials/compositions.html:5
+#: components/query/partials/infopanel.html:3
+msgid "Click on map for query results!"
+msgstr "Kliknutím do mapy proveďte identifikaci"
+
+#: components/add-layers/partials/dialog_getcapabilities_error.html:15
+#: components/add-layers/partials/dialog_getcapabilities_error.html:8
+#: components/add-layers/partials/dialog_proxyconfirm.html:8
 #: components/compositions/partials/dialog_delete.html:15
-#: components/compositions/partials/dialog_delete.html:5
-#: components/compositions/partials/dialog_info.html:30
-#: components/compositions/partials/dialog_info.html:5
-#: components/compositions/partials/dialog_overwriteconfirm.html:5
-#: components/compositions/partials/dialog_share.html:14
-#: components/compositions/partials/dialog_share.html:5
-#: components/datasource_selector/partials/datasource_selector.html:5
-#: components/datasource_selector/partials/dialog_metadata.html:20
-#: components/datasource_selector/partials/dialog_metadata.html:5
-#: components/datasource_selector/partials/dialog_micka_advanced.html:102
-#: components/datasource_selector/partials/dialog_micka_advanced.html:5
-#: components/datasource_selector/partials/dialog_micka_suggestions.html:34
-#: components/datasource_selector/partials/dialog_micka_suggestions.html:5
-#: components/feature_crossfilter/partials/f_crossfilter.html:5
-#: components/layermanager/partials/dialog_removeall.html:5
-#: components/layermanager/partials/layermanager.html:5
-#: components/lodexplorer/partials/lodexplorer.html:5
-#: components/lodexplorer/partials/sparqllogdialog.html:16
-#: components/lodexplorer/partials/sparqllogdialog.html:6
-#: components/measure/partials/measure.html:5
-#: components/ows/partials/dialog_getcapabilities_error.html:15
-#: components/ows/partials/dialog_getcapabilities_error.html:5
-#: components/ows/partials/dialog_proxyconfirm.html:5
-#: components/ows/partials/ows.html:5
-#: components/permalink/partials/directive.html:5
-#: components/print/partials/printdialog.html:5
-#: components/query/partials/infopanel.html:5
+#: components/compositions/partials/dialog_delete.html:8
+#: components/compositions/partials/dialog_info.html:38
+#: components/compositions/partials/dialog_info.html:8
+#: components/compositions/partials/dialog_overwriteconfirm.html:8
+#: components/compositions/partials/dialog_share.html:30
+#: components/compositions/partials/dialog_share.html:8
+#: components/datasource-selector/micka/advanced-micka-dialog.html:10
+#: components/datasource-selector/micka/advanced-micka-dialog.html:123
+#: components/datasource-selector/micka/micka-suggestions-dialog.html:33
+#: components/datasource-selector/micka/micka-suggestions-dialog.html:8
+#: components/datasource-selector/partials/dialog_metadata.html:20
+#: components/datasource-selector/partials/dialog_metadata.html:8
+#: components/layermanager/partials/dialog_removeall.html:8
+#: components/query/partials/infopopup.html:4
 #: components/save-map/partials/dialog.html:17
-#: components/save-map/partials/dialog.html:5
-#: components/save-map/partials/dialog_result.html:15
-#: components/save-map/partials/dialog_result.html:5
-#: components/save-map/partials/dialog_save.html:5
-#: components/styles/partials/styler.html:5
+#: components/save-map/partials/dialog.html:8
+#: components/save-map/partials/dialog_result.html:23
+#: components/save-map/partials/dialog_result.html:8
+#: components/save-map/partials/dialog_save.html:8
+#: components/sensors/partials/unit-dialog.html:12
+#: components/styles/partials/styler.html:7
+#: components/tracking/partials/tracking.html:5
+#: components/trip_planner/partials/trip_planner.html:5
 msgid "Close"
 msgstr "Zavřít"
 
-#: components/styles/partials/styler.html:18
-#: components/styles/partials/styler.html:57
+#: components/layermanager/partials/layer-editor.html:91
+msgid "Cluster"
+msgstr "Cluster"
+
+#: components/styles/partials/styler.html:20
+#: components/styles/partials/styler.html:61
 msgid "Colour"
 msgstr "Barva"
 
-#: components/lodexplorer/partials/lodexplorer.html:39
-msgid "Colour gradient limits"
-msgstr "Limity gradientu barvy"
+#: components/save-map/partials/dialog_result.html:12
+msgid "Composition failed to save"
+msgstr "Kompozici se nepodařilo uložit"
 
-#: components/compositions/partials/compositions.html:2
-msgid "Compositions"
-msgstr "Kompozice"
+#: components/save-map/partials/dialog_result.html:11
+msgid "Composition saved successfully"
+msgstr "Kompozice byla úspěšně uložena"
 
-#: components/compositions/partials/dialog_delete.html:7
+#: components/compositions/partials/compositionsmd.html:39
+msgid "Composition {{compStart + 1}} - {{compNext}}"
+msgstr "Kompozice {{compStart + 1}} - {{compNext}}"
+
+#: components/compositions/partials/compositionsmd.html:40
+msgid "Composition {{compStart + 1}} - {{data.compositionsCount}}"
+msgstr "Kompozice {{compStart + 1}} - {{data.compositionsCount}}"
+
+#: components/compositions/partials/dialog_delete.html:6
 msgid "Confirm"
 msgstr "Potvrdit"
 
-#: components/save-map/partials/form.html:5
+#: components/add-layers/partials/add-layers.md.directive.html:23
+msgid "Connect"
+msgstr "Připojit"
+
+#: components/add-layers/wms/add-wms-layer.directive.html:49
+msgid "Consider using tiles. Some servers\n"
+"            have\n"
+"            restricted max size of picture."
+msgstr "Zvažte použití dlaždic. Některé servery\n"
+"            mají\n"
+"            maximální maximální velikost obrázku."
+
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:32
+#: components/add-layers/wms/add-wms-layer.md.directive.html:32
+msgid "Consider using tiles. Some servers has restricted max size of picture."
+msgstr "Zvažte použití dlaždic. Některé servery mají omezenou maximální velikost obrázku."
+
+#: components/layout/partials/toolbar.html:27
+msgid "Contact"
+msgstr "Kontakt"
+
+#: components/save-map/partials/form.html:4
 msgid "Context"
 msgstr "Kontext"
 
+#: components/compositions/partials/compositionLoadUnsavedDialog.html:27
 #: components/compositions/partials/dialog_overwriteconfirm.html:14
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:27
 msgid "Continue without saving"
 msgstr "Pokračovat bez uložení"
 
-#: components/save-map/partials/form.html:83
-msgid "Country"
-msgstr "Stát"
+#: components/query/query-base.service.js:174
+msgid "Coordinates"
+msgstr "Souřadnice"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:49
+#: components/permalink/partials/directivemd.html:7
+msgid "Copy to clipboard"
+msgstr "Kopírovat do schránky"
+
+#: components/save-map/partials/form.html:121
+msgid "Country"
+msgstr "Země"
+
+#: components/sidebar/sidebar.service.js:26
+msgid "Crossfilter"
+msgstr "Crossfilter"
+
+#: components/datasource-selector/micka/advanced-micka-dialog.html:61
 msgid "Data"
 msgstr "Data"
 
-#: components/lodexplorer/partials/lodexplorer.html:11
+#: components/draw/partials/vgi-draw.html:90
 msgid "Dataset"
-msgstr "Datová sada"
+msgstr "Dataset"
 
-#: components/sidebar/partials/sidebar.html:22
-msgid "Datasource Selector"
-msgstr "Výběr datových zdrojů"
-
-#: components/datasource_selector/partials/datasource_selector.html:2
-msgid "Datasources"
-msgstr "Datové zdroje"
-
-#: components/layermanager/partials/layermanager.html:69
+#: components/compositions/partials/compositionsmd.html:16
+#: components/layermanager/partials/layer-editor.html:34
 msgid "Date"
 msgstr "Datum"
 
+#: components/layermanager/partials/layer-editor.html:84
+msgid "Declutter"
+msgstr "Declutter"
+
+#: components/draw/partials/draw.directive.html:42
+msgid "Defined style\n"
+"                <div class=\"hs-styler-selected-color-box\" ng-style=\"drawStyle()\">\n"
+"                </div>"
+msgstr "Definovaný styl\n"
+"                <div class=\"hs-styler-selected-color-box\" ng-style=\"drawStyle()\"\"\n"
+"                </div>"
+
+#: components/measure/partials/measuremd.html:35
+msgid "Delete"
+msgstr "Odstranit"
+
+#: components/measure/partials/measuremd.html:18
+msgid "Delete all measurements"
+msgstr "Odstranit všechna měření"
+
+#: components/compositions/partials/dialog_deletemd.html:5
+msgid "Delete composition {{compositionToDelete.title}}"
+msgstr "Odstranit kompozici {{compositionToDelete.title}}"
+
+#: components/draw/partials/vgi-draw.html:73
+msgid "Description"
+msgstr "Popis"
+
+#: components/layermanager/partials/layer-editor.html:53
+msgid "Dimensions"
+msgstr "Dimenze"
+
+#: components/sidebar/sidebar.service.js:23
+msgid "Display map-query result information"
+msgstr "Zobrazit informace o výsledku dotazu na mapu"
+
+#: components/measure/partials/measure.html:8
+#: components/measure/partials/measuremd.html:7
+msgid "Distance"
+msgstr "Vzdálenost"
+
 #: components/save-map/partials/dialog_save.html:18
-msgid "Do you really want to overwrite <b>{{title}}</b>?"
-msgstr "Dopravdy chcete přepsat <b>{{title}}</b>?"
+msgid "Do you really want to overwrite <b>{{compoData.title}}</b>?"
+msgstr "Opravdu chcete přepsat <b>{{compoData.title}}</b>?"
 
 #: components/layermanager/partials/dialog_removeall.html:10
 msgid "Do you really want to remove all layers?"
-msgstr "Opravu chcete odebrat všechny vrstvy"
+msgstr "Opravdu chcete odstranit všechny vrstvy?"
 
 #: components/compositions/partials/dialog_delete.html:11
 msgid "Do you want to delete map"
-msgstr "Chcete smazat mapu"
+msgstr "Chcete odstranit mapu"
 
-#: components/datasource_selector/partials/datasource_selector.html:53
+#: components/compositions/partials/dialog_deletemd.html:13
+msgid "Do you want to delete map {{compositionToDelete.title}}"
+msgstr "Chcete odstranit mapu {{compositionToDelete.title}}"
+
+#: components/datasource-selector/partials/datasource_selector.html:51
+#: components/save-map/partials/panel.html:23
 msgid "Download"
-msgstr "Stáhnout"
+msgstr "Ke stažení"
 
-#: components/save-map/partials/form.html:89
+#: components/draw/partials/vgi-draw.html:2
+#: components/layout/partials/sidenav.html:25
+msgid "Draw new features"
+msgstr "Nakreslit nové prvky"
+
+#: components/save-map/partials/form.html:131
 msgid "E-mail"
-msgstr "E-mail"
+msgstr "E‑mail"
 
-#: components/permalink/partials/directive.html:11
+#: components/save-map/partials/panelmd.html:55
+msgid "East"
+msgstr "Východ"
+
+#: components/permalink/partials/directive.html:35
+#: components/permalink/partials/directivemd.html:14
 msgid "Embed code"
 msgstr "Kód pro vložení"
 
-#: components/sidebar/partials/sidebar.html:53
-#: components/sidebar/partials/sidebar.html:54
-msgid "Embed map"
-msgstr "Kód pro vložení mapy"
-
-#: components/info/partials/info.html:7
-msgid "New map"
-msgstr "Nová mapa"
-
-#: components/lodexplorer/partials/lodexplorer.html:2
-msgid "Eurostat explorer"
-msgstr "Prohlížeč eurostatu"
-
-#: components/datasource_selector/partials/dialog_micka_advanced.html:6
+#: components/datasource-selector/micka/advanced-micka-dialog.html:6
 msgid "Extended search parameters for Micka"
-msgstr "Rozšířené parametry pro hledání"
+msgstr "Rozšířené parametry vyhledávání pro Micku"
 
-#: components/compositions/partials/dialog_info.html:16
-#: components/save-map/partials/form.html:30
-#: components/save-map/partials/simpleform.html:38
+#: components/compositions/partials/dialog_info.html:24
+#: components/save-map/partials/form.html:35
+#: components/save-map/partials/panelmd.html:41
+#: components/save-map/partials/simpleform.html:37
 msgid "Extent"
 msgstr "Rozsah"
 
-#: components/datasource_selector/partials/datasource_selector.html:28
+#: components/datasource-selector/partials/datasource_selector.html:26
 msgid "External data"
 msgstr "Externí data"
 
-#: components/ows/partials/ows.html:21
+#: components/add-layers/partials/add-layers-url.directive.html:4
+#: components/add-layers/partials/add-layers.md.directive.html:13
 msgid "External data source (URL)"
-msgstr "Zdroj externích dat (URL)"
+msgstr "Externí zdroj dat (URL)"
 
-#: components/ows/partials/owsnonwms.html:37
+#: components/add-layers/vector/add-vector-layer.directive.html:32
 msgid "Extract styles"
 msgstr "Extrahovat styly"
 
-#: components/save-map/partials/dialog_result.html:12
-msgid "Failed to save to status manager"
-msgstr "Chyba při ukládání"
+#: components/query/partials/infopanel.html:11
+msgid "Feature info"
+msgstr "Informace o prvku"
 
-#: components/styles/partials/styler.html:14
+#: components/layermanager/partials/layermanagermd.html:118
+#: components/layermanager/partials/layermanagermd.html:138
+#: components/layermanager/partials/layermanagermd.html:98
+#: components/styles/partials/styler.html:16
 msgid "Fill"
 msgstr "Výplň"
 
-#: components/ows/partials/owsnonwms.html:12
-#: components/save-map/partials/simpleform.html:12
+#: components/add-layers/shp/add-shp-layer.directive.html:31
+#: components/add-layers/vector/add-vector-layer.directive.html:12
+#: components/permalink/partials/directive.html:52
+#: components/permalink/partials/directivemd.html:28
+#: components/save-map/partials/panelmd.html:13
+#: components/save-map/partials/simpleform.html:10
 msgid "Fill in descriptive text about map"
-msgstr "Vyplnit popis o mapě"
+msgstr "Vyplnte popisní text o mapě"
 
-#: components/save-map/partials/simpleform.html:6
+#: components/permalink/partials/directive.html:46
+#: components/permalink/partials/directivemd.html:22
+#: components/save-map/partials/simpleform.html:4
 msgid "Fill in name"
-msgstr "Vyplnit jméno"
+msgstr "Vyplnte název"
 
-#: components/compositions/partials/compositions.html:11
-#: components/datasource_selector/partials/dialog_micka_suggestions.html:13
+#: components/save-map/partials/panelmd.html:38
+msgid "Fill keywords"
+msgstr "Vyplnte klíčová slova"
+
+#: components/draw/partials/draw.directive.html:50
+msgid "Fill opacity: {{opacity}}"
+msgstr "Průhlednost výplne : {{opacity}}"
+
+#: components/compositions/partials/compositions.html:29
+#: components/compositions/partials/compositionsmd.html:7
+#: components/datasource-selector/micka/micka-suggestions-dialog.html:12
 msgid "Filter"
 msgstr "Filtr"
 
-#: components/lodexplorer/partials/lodexplorer.html:21
-msgid "Filter by"
-msgstr "Filtrovat"
-
-#: components/compositions/partials/compositions.html:17
-#: components/datasource_selector/partials/datasource_selector.html:44
+#: components/compositions/partials/compositionsmd.html:22
+#: components/datasource-selector/micka/micka-filters.html:22
+#: components/compositions/partials/compositions.html:38
 msgid "Filter by map extent"
-msgstr "Filtrovat pomocí rozsahu"
+msgstr "Filtr podle rozsahu mapy"
 
-#: components/lodexplorer/partials/lodexplorer.html:29
-msgid "Filter by value"
-msgstr "Filtrovat pomocí hodnoty"
+#: components/feature_crossfilter/partials/f_crossfilter.html:7
+msgid "Filter by"
+msgstr "Filtrovat podle"
 
-#: components/feature_crossfilter/partials/f_crossfilter.html:12
-msgid "Filter by {{group.name}}"
-msgstr "Filtrovat pomocí {{group.name}}"
+#: components/compositions/partials/compositionsmd.html:22
+msgid "Filter by map extent"
+msgstr "Filtrovat podle rozsahu mapy"
 
 #: components/feature_crossfilter/partials/f_crossfilter.html:2
-#: components/sidebar/partials/sidebar.html:33
+#: components/layermanager/partials/layermanagermd.html:47
+#: components/sidebar/sidebar.service.js:26
 msgid "Filter features"
-msgstr "Filtrovat prvky"
+msgstr "Funkce filtru"
 
-#: components/lodexplorer/partials/lodexplorer.html:32
-msgid ""
-"Filter the values which are in a speciffic interval by dragging on the chart "
-"below"
-msgstr ""
-"Fltrovat prvky, které jsou ve specifickém intervalu, pomocí přetažení v grafu"
-
-#: components/ows/partials/owsnonwms.html:30
-#: components/ows/partials/owswfs.html:22
-#: components/ows/partials/owswms.html:46
+#: components/add-layers/arcgis/add-arcgis-layer.directive.html:41
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:40
+#: components/add-layers/shp/add-shp-layer.directive.html:51
+#: components/add-layers/vector/add-vector-layer.directive.html:27
+#: components/add-layers/wfs/add-wfs-layer.directive.html:22
+#: components/add-layers/wms/add-wms-layer.directive.html:65
+#: components/add-layers/wms/add-wms-layer.md.directive.html:40
 msgid "Folder name"
-msgstr "Jméno adresáře"
+msgstr "Název složky"
 
-#: components/geolocation/partials/geolocation.html:6
-msgid "Follow"
-msgstr "Sledovat"
-
-#: components/ows/partials/owswfs.html:3
+#: components/add-layers/wfs/add-wfs-layer.directive.html:3
 msgid "Format"
 msgstr "Formát"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:13
+#: components/datasource-selector/micka/advanced-micka-dialog.html:15
 msgid "Fulltext"
-msgstr "Fulltext"
+msgstr "Fulltextové"
 
-#: components/styles/partials/styler.html:79
+#: components/layermanager/partials/basemap-gallery.html:30
+msgid "Grayscale"
+msgstr "Šedotón"
+
+#: components/layout/partials/toolbar.html:22
+msgid "Help"
+msgstr "Pomoc"
+
+#: components/layermanager/partials/layermanagermd.html:58
+msgid "Hide"
+msgstr "Skrýt"
+
+#: components/styles/partials/styler.html:85
 msgid "Icon"
 msgstr "Ikona"
 
-#: components/ows/partials/owswms.html:3
+#: components/add-layers/arcgis/add-arcgis-layer.directive.html:8
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:4
+#: components/add-layers/wms/add-wms-layer.directive.html:8
+#: components/add-layers/wms/add-wms-layer.md.directive.html:4
+#: components/add-layers/wmts/add-wmts-layer.directive.html:20
 msgid "Image format"
 msgstr "Formát obrázku"
 
-#: components/query/partials/infopanel.html:2
-msgid "Info"
-msgstr "Info"
+#: components/layermanager/partials/layermanagermd.html:11
+msgid "Image layer"
+msgstr "Vrstva obrazu"
 
-#: components/compositions/partials/compositions.html:27
-#: components/datasource_selector/partials/dialog_micka_advanced.html:28
-#: components/save-map/partials/form.html:26
-#: components/save-map/partials/simpleform.html:32
+#: components/layermanager/partials/layermanagermd.html:148
+msgid "Inner radius"
+msgstr "Vnitřní poloměr"
+
+#: components/datasource-selector/micka/advanced-micka-dialog.html:32
+#: components/save-map/partials/form.html:30
+#: components/save-map/partials/panelmd.html:37
+#: components/save-map/partials/simpleform.html:33
 msgid "Keywords"
 msgstr "Klíčová slova"
 
-#: components/compositions/partials/dialog_info.html:21
+#: components/compositions/partials/dialog_info.html:29
+#: components/draw/partials/vgi-draw.html:7
 msgid "Layer"
 msgstr "Vrstva"
 
-#: components/layermanager/partials/dialog_removeall.html:6
+#: components/sidebar/sidebar.service.js:21
+msgid "Layer Manager"
+msgstr "Správce vrstev"
+
+#: components/layermanager/partials/layermanagermd.html:73
+msgid "Layer Opacity"
+msgstr "Průhlednost vrstvy"
+
+#: components/layermanager/partials/layermanagermd.html:77
+msgid "Layer Style"
+msgstr "Styl vrstvy"
+
+#: components/layermanager/partials/dialog_removeall.html:5
 #: components/layermanager/partials/layermanager.html:2
 msgid "Layer manager"
 msgstr "Správce vrstev"
 
-#: components/save-map/partials/form.html:45
-#: components/save-map/partials/simpleform.html:56
+#: components/layermanager/partials/layermanagermd.html:68
+msgid "Layer name"
+msgstr "Název vrstvy"
+
+#: components/layermanager/partials/layermanagermd.html:43
+msgid "Layer options"
+msgstr "Možnosti vrstvy"
+
+#: components/save-map/partials/form.html:56
+#: components/save-map/partials/simpleform.html:62
 msgid "Layers"
 msgstr "Vrstvy"
 
-#: components/layermanager/partials/layermanager.html:100
+#: components/layermanager/partials/layer-editor.html:104
 #: components/legend/partials/legend.html:2
+#: components/sidebar/sidebar.service.js:22
 msgid "Legend"
 msgstr "Legenda"
 
-#: components/styles/partials/styler.html:27
+#: components/draw/partials/draw.directive.html:32
+#: components/styles/partials/styler.html:29
 msgid "Line"
 msgstr "Linie"
 
-#: components/styles/partials/styler.html:31
-#: components/styles/partials/styler.html:63
+#: components/styles/partials/styler.html:33
+#: components/styles/partials/styler.html:67
 msgid "Line Colour"
 msgstr "Barva linie"
 
-#: components/styles/partials/styler.html:37
-#: components/styles/partials/styler.html:74
+#: components/layermanager/partials/layermanagermd.html:19
+msgid "Line features"
+msgstr "Liniové prvky"
+
+#: components/styles/partials/styler.html:39
+#: components/styles/partials/styler.html:79
 msgid "Line width"
 msgstr "Šířka linie"
 
-#: components/sidebar/partials/sidebar.html:6
+#: components/permalink/partials/directive.html:20
+msgid "Link for"
+msgstr "Odkaz pro"
+
+#: components/sidebar/sidebar.service.js:24
 msgid "List available map compositions"
 msgstr "Seznam dostupných mapových kompozic"
 
 #: components/info/partials/info.html:28
 msgid "Loading:"
-msgstr "Nahrávání:"
+msgstr "Načítání:"
 
-#: components/save-map/partials/simpleform.html:21
+#: components/save-map/partials/panelmd.html:28
+#: components/save-map/partials/simpleform.html:22
 msgid "Make public"
-msgstr "Veřejná"
+msgstr "Zveřejnit"
 
-#: components/sidebar/partials/sidebar.html:12
-msgid "Manage and Style Layers"
-msgstr "Spravovat a stylovat vrstvy"
-
-#: components/sidebar/partials/sidebar.html:11
+#: components/sidebar/sidebar.service.js:21
 msgid "Manage and style your layers in composition"
-msgstr "Spravovat a stylovat vrstvy v kompozici"
+msgstr "Spravujte a stylujte své vrstvy v kompozici"
 
-#: components/sidebar/partials/sidebar.html:7
+#: components/sidebar/sidebar.service.js:24
 msgid "Map Compositions"
 msgstr "Mapové kompozice"
 
-#: components/layermanager/partials/layermanager.html:38
+#: components/layermanager/partials/layermanager.html:85
 msgid "Map Content"
-msgstr "Obsah mapy"
+msgstr "Mapový obsah"
 
-#: components/ows/partials/owswms.html:29
-msgid ""
-"Map and layer projection do not match! Resampling will be used. This may "
-"lead to unexpectable results."
-msgstr ""
-"Souřadnícový systém mapy a vrstvy nesouhlasí. Bude použito převzorkování. "
-"Vysledek může vypadat špatně."
+#: components/add-layers/wms/add-wms-layer.directive.html:38
+msgid "Map and layer projection do\n"
+"            not\n"
+"            match! Resampling will be used. This may lead to unexpectable results."
+msgstr "Projekce mapy a vrstvy\n"
+"           se\n"
+"            neshodují! Bude použito převzorkování. To může vést k neočekávaným výsledkům."
 
-#: components/ows/partials/dialog_proxyconfirm.html:10
-msgid ""
-"Map projection and layer projection not match. Add the layer to map and use "
-"server-side resampling program?"
-msgstr ""
-"Souřadnícový systém mapy a vrstvy nesouhlasí. Přidat vrstvu do mapy a použít "
-"převzorkování?"
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:26
+#: components/add-layers/wms/add-wms-layer.md.directive.html:26
+msgid "Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results."
+msgstr "Projekce mapy a vrstvy se neshoduje! Bude použito převzorkování. To může vést k neočekávaným výsledkům."
 
-#: components/measure/partials/measure.html:2
-msgid "Measure"
-msgstr "Měření"
+#: components/add-layers/partials/dialog_proxyconfirm.html:10
+msgid "Map projection and layer projection not match. Add the layer to map and use server-side resampling program?"
+msgstr "Projekce mapy a projekce vrstev se neshodují. Chcete přidat vrstvu k mapování a použít program převzorkování na straně serveru?"
 
-#: components/sidebar/partials/sidebar.html:37
+#: components/sidebar/sidebar.service.js:28
 msgid "Measure distance or area at map"
-msgstr "Měření vzdáleností a ploch na mapě"
+msgstr "Změřte vzdálenost nebo plochu na mapě"
 
-#: components/toolbar/partials/toolbar.html:21
+#: components/search/partials/searchinput.html:18
 msgid "Measure lines and polygon"
-msgstr "Měření linií a polygonů"
+msgstr "Měření čar a polygonu"
 
-#: components/sidebar/partials/sidebar.html:38
+#: components/measure/partials/measuremd.html:5
+msgid "Measure type"
+
+msgstr "Typ měření"
+#: components/sidebar/sidebar.service.js:28
 msgid "Measurements"
 msgstr "Měření"
 
+#: components/compositions/partials/compositionLoadUnsavedDialog.html:30
 #: components/compositions/partials/dialog_overwriteconfirm.html:15
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:30
 msgid "Merge compositions"
-msgstr "Spojit kompozice"
+msgstr "Sloučení kompozic"
 
-#: components/datasource_selector/partials/dialog_metadata.html:7
+#: components/datasource-selector/partials/dialog_metadata.html:6
 msgid "Metadata for"
 msgstr "Metadata pro"
 
-#: components/layermanager/partials/layermanager.html:95
-msgid "Metadata in"
-msgstr "Metadata v"
+#: components/datasource-selector/partials/datasourceBrowserMetadata.html:5
+msgid "Metadata for {{selectedLayer.title}}"
+msgstr "Metadata pro {{selectedLayer.title}}"
 
-#: components/datasource_selector/partials/datasource_selector.html:13
-#: components/datasource_selector/partials/datasource_selector.html:39
-#: components/layermanager/partials/layermanager.html:119
+#: components/datasource-selector/micka/micka-filters.html:7
+#: components/sidebar/partials/sidebar.html:20
 msgid "More"
 msgstr "Více"
 
-#: components/save-map/partials/simpleform.html:4
+#: components/layermanager/partials/layermanagermd.html:39
+msgid "Move layer downward, SHIFT-click to bottom"
+msgstr "Přesunutí vrstvy dolů, shift-klepnout dolů"
+
+#: components/layermanager/partials/layermanagermd.html:35
+msgid "Move layer upward, SHIFT-click to top"
+msgstr "Přesunutí vrstvy nahoru, shift-klepněte na začátek"
+
+#: components/add-layers/arcgis/add-arcgis-layer.directive.html:57
+#: components/add-layers/shp/add-shp-layer.directive.html:20
+#: components/add-layers/wms/add-wms-layer.directive.html:81
+#: components/draw/partials/vgi-draw.html:66
+#: components/permalink/partials/directive.html:45
+#: components/permalink/partials/directivemd.html:21
+#: components/save-map/partials/panelmd.html:8
+#: components/save-map/partials/simpleform.html:3
 msgid "Name"
 msgstr "Jméno"
 
-#: components/compositions/partials/compositions.html:56
+#: components/draw/partials/vgi-draw.html:36
+msgid "New"
+msgstr "Nový"
+
+#: components/draw/partials/vgi-draw.html:39
+msgid "New GPS"
+msgstr "Nové GPS"
+
+#: components/info/partials/info.html:7
+msgid "New map"
+msgstr "Nová mapa"
+
 #: components/save-map/partials/dialog.html:14
-#: components/save-map/partials/panel.html:13
+#: components/save-map/partials/panel.html:22
 msgid "Next"
 msgstr "Další"
+
+#: components/compositions/partials/compositionsmd.html:43
+msgid "Next composition page"
+msgstr "Další stránka kompozice"
 
 #: components/layermanager/partials/dialog_removeall.html:16
 msgid "No"
 msgstr "Ne"
 
-#: components/datasource_selector/partials/datasource_selector.html:47
-#: components/datasource_selector/partials/dialog_micka_suggestions.html:19
+#: components/datasource-selector/micka/micka-suggestions-dialog.html:18
+#: components/datasource-selector/partials/datasource_selector.html:40
 msgid "No results"
 msgstr "Žádné výsledky"
 
@@ -458,265 +722,559 @@ msgstr "Žádné výsledky"
 msgid "No, save as"
 msgstr "Ne, uložit jako"
 
+#: components/save-map/partials/panelmd.html:45
+msgid "North"
+msgstr "Severní"
+
 #: components/compositions/partials/dialog_delete.html:14
 #: components/save-map/partials/dialog_save.html:47
 msgid "OK"
-msgstr "OK"
+msgstr "Ok"
 
-#: components/compositions/partials/compositions.html:22
+#: components/compositions/partials/compositions.html:43
 msgid "Only mine"
 msgstr "Pouze moje"
 
-#: components/layermanager/partials/layermanager.html:63
+#: components/layermanager/partials/layer-editor.html:111
 msgid "Opacity"
 msgstr "Průhlednost"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:90
-msgid "Order by"
-msgstr "Seřadit podle"
+#: components/compositions/partials/compositionLoadUnsavedDialog.html:5
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:5
+msgid "Open composition {{compositionToLoad.title}}"
+msgstr "Otevřít kompozici {{compositionToLoad.title}}"
 
-#: components/save-map/partials/form.html:65
+#: components/datasource-selector/micka/advanced-micka-dialog.html:105
+msgid "Order by"
+msgstr "Objednat podle"
+
+#: components/save-map/partials/form.html:91
 msgid "Organization"
 msgstr "Organizace"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:37
+#: components/datasource-selector/micka/advanced-micka-dialog.html:44
 msgid "Organization name"
-msgstr "Jméno organizace"
+msgstr "Název organizace"
 
-#: components/save-map/partials/panel.html:11
+#: components/layermanager/partials/layermanagermd.html:146
+msgid "Outer radius"
+msgstr "Vnější poloměr"
+
+#: components/save-map/partials/panel.html:18
 msgid "Overwrite"
 msgstr "Přepsat"
 
-#: components/compositions/partials/dialog_overwriteconfirm.html:6
+#: components/compositions/partials/dialog_overwriteconfirm.html:5
 msgid "Overwrite existing map?"
 msgstr "Přepsat existující mapu?"
 
-#: components/save-map/partials/form.html:62
+#: components/permalink/partials/directive.html:13
+msgid "Permalink"
+msgstr "Permalink"
+
+#: components/save-map/partials/form.html:86
 msgid "Person"
 msgstr "Osoba"
 
-#: components/save-map/partials/form.html:86
+#: components/sensors/partials/panel.html:16
+msgid "Phenomena"
+msgstr "Jev"
+
+#: components/save-map/partials/form.html:126
 msgid "Phone"
 msgstr "Telefon"
 
-#: components/styles/partials/styler.html:45
+#: components/draw/partials/vgi-draw.html:101
+msgid "Photo"
+msgstr "Foto"
+
+#: components/styles/partials/styler.html:48
 msgid "Point"
 msgstr "Bod"
 
-#: components/save-map/partials/form.html:68
+#: components/layermanager/partials/layermanagermd.html:15
+msgid "Point features"
+msgstr "Bodové prvky"
+
+#: components/draw/partials/draw.directive.html:28
+#: components/layermanager/partials/layermanagermd.html:112
+msgid "Polygon"
+msgstr "Polygon"
+
+#: components/layermanager/partials/layermanagermd.html:23
+msgid "Polygon features"
+msgstr "Polygonové prvky"
+
+#: components/save-map/partials/form.html:96
 msgid "Position"
 msgstr "Pozice"
 
-#: components/save-map/partials/form.html:80
+#: components/save-map/partials/form.html:116
 msgid "Postal code"
 msgstr "PSČ"
 
-#: components/compositions/partials/compositions.html:55
-msgid "Previous"
-msgstr "Předchozí"
+#: components/geolocation/partials/geolocation_cordova.html:4
+msgid "Precision"
+msgstr "Přesnost"
 
-#: components/print/partials/printdialog.html:14
+#: components/compositions/partials/compositionsmd.html:37
+msgid "Previous composition list"
+msgstr "Předchozí seznam kompozic"
+
+#: components/language/partials/languagemd.html:15
+#: components/language/partials/languagemd.html:3
 #: components/print/partials/printdialog.html:2
-#: components/sidebar/partials/sidebar.html:48
+#: components/print/partials/printdialog.html:9
+#: components/print/partials/printdialogmd.html:15
+#: components/print/partials/printdialogmd.html:3
+#: components/sidebar/sidebar.service.js:31
+
 msgid "Print"
 msgstr "Tisk"
 
-#: components/sidebar/partials/sidebar.html:47
+#: components/sidebar/sidebar.service.js:31
 msgid "Print map"
 msgstr "Vytisknout mapu"
 
-#: components/ows/partials/owswms.html:12
+#: components/add-layers/arcgis/add-arcgis-layer.directive.html:19
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:13
+#: components/add-layers/wms/add-wms-layer.directive.html:19
+#: components/add-layers/wms/add-wms-layer.md.directive.html:13
 msgid "Query format"
 msgstr "Formát dotazu"
 
-#: components/styles/partials/styler.html:69
+#: components/layermanager/partials/layermanagermd.html:104
+#: components/layermanager/partials/layermanagermd.html:126
+#: components/styles/partials/styler.html:73
 msgid "Radius"
 msgstr "Radius"
 
-#: components/save-map/partials/form.html:54
+#: components/save-map/partials/form.html:73
 msgid "Read"
 msgstr "Číst"
 
-#: components/lodexplorer/partials/lodexplorer.html:19
-msgid ""
-"Reduce the number of dimensions by clicking on categories in each of the "
-"charts. Otherwise you might be visualizing multiple units and years at once."
-msgstr ""
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:45
+#: components/add-layers/wms/add-wms-layer.md.directive.html:45
+msgid "Register metadata"
+msgstr "Registrace metadat"
 
-#: components/legend/partials/legend.html:18
+#: components/legend/partials/legend.html:17
+#: components/legend/partials/legendmd.html:19
 msgid "Reload"
-msgstr "Znovu načíst"
+msgstr "Reload"
 
 #: components/layermanager/partials/dialog_removeall.html:15
 msgid "Reload composition"
-msgstr "Znovu načíst kompozici"
+msgstr "Reload složení"
+
+#: components/compositions/partials/dialog_deletemd.html:21
+msgid "Remove"
+msgstr "Odebrat"
 
 #: components/layermanager/partials/dialog_removeall.html:14
 msgid "Remove all added layers"
-msgstr "Odebrat všechny přidané vrstvy"
+msgstr "Odstranění všech přidaných vrstev"
 
-#: components/ows/partials/dialog_proxyconfirm.html:6
+#: components/layermanager/partials/layermanager.html:4
+msgid "Remove all layers"
+msgstr "Odstranit všechny vrstvy"
+
+#: components/layermanager/partials/layermanagermd.html:51
+#: components/layermanager/partials/layer-editor.html:153
+msgid "Remove layer"
+msgstr "Odstranit vrstvu"
+
+#: components/layermanager/partials/layer-editor.html:151
+msgid "Rename layer"
+msgstr "Přejmenovat vrstvu"
+
+#: components/save-map/partials/dialog_result.html:13
+msgid "Request was processed, but map was not saved due to authorization missing"
+msgstr "Požadavek byl zpracován, ale mapa nebyla uložena z důvodu chybějící autorizace"
+
+#: components/add-layers/partials/dialog_proxyconfirm.html:5
 msgid "Resample layer"
-msgstr "Převzorkovat vrstvu"
+msgstr "Převzorkování vrstvy"
 
-#: components/toolbar/partials/toolbar.html:18
+#: components/save-map/partials/panelmd.html:80
+msgid "Reset"
+msgstr "Obnovit"
+
+#: components/layermanager/partials/layermanager.html:7
 msgid "Reset map"
-msgstr "Resetovat mapu"
+msgstr "Obnoviť mapu"
+
+#: components/layermanager/partials/layermanagermd.html:124
+#: components/layermanager/partials/layermanagermd.html:144
+msgid "Rotation"
+msgstr "Rotace"
+
+#: components/layout/partials/sidenav.html:15
+#: components/routing/partials/routing.html:2
+#: components/sidebar/sidebar.service.js:29
+msgid "Routing"
+msgstr "Směrování"
+
+#: components/add-layers/shp/add-shp-layer.directive.html:36
+msgid "SLD style file"
+msgstr "Soubor stylu SLD"
+
+#: components/add-layers/arcgis/add-arcgis-layer.directive.html:30
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:19
+#: components/add-layers/wms/add-wms-layer.directive.html:30
+#: components/add-layers/wms/add-wms-layer.md.directive.html:19
+msgid "SRS"
+msgstr "Srs"
 
 #: components/save-map/partials/dialog.html:15
 #: components/save-map/partials/dialog_save.html:37
-#: components/save-map/partials/simpleform.html:72
+#: components/save-map/partials/panelmd.html:81
+#: components/save-map/partials/simpleform.html:81
 msgid "Save"
 msgstr "Uložit"
 
+#: components/save-map/partials/panel.html:20
+msgid "Save\n"
+"                as"
+msgstr "Uložit\n"
+"                Jako"
+
 #: components/save-map/partials/dialog.html:16
-#: components/save-map/partials/panel.html:12
 msgid "Save as"
 msgstr "Uložit jako"
 
+#: components/compositions/partials/compositionLoadUnsavedDialog.html:33
 #: components/compositions/partials/dialog_overwriteconfirm.html:16
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:33
 msgid "Save changes first"
-msgstr "Uložit nejdřív změny"
+msgstr "Nejprve uložit změny"
 
-#: components/sidebar/partials/sidebar.html:59
-#: components/save-map/partials/dialog_save.html:6
+#: components/save-map/partials/dialog_save.html:5
+#: components/sidebar/sidebar.service.js:33
 msgid "Save composition"
 msgstr "Uložit kompozici"
 
-#: components/save-map/partials/dialog.html:7
+#: components/sidebar/sidebar.service.js:33
+msgid "Save content of map to composition"
+msgstr "Uložit obsah mapy do kompozice"
+
+#: components/save-map/partials/dialog.html:6
 #: components/save-map/partials/panel.html:2
 msgid "Save current map"
-msgstr "Uložit nynější mapu"
+msgstr "Uložit aktuální mapu"
 
-#: components/save-map/partials/dialog_result.html:6
+#: components/save-map/partials/panelmd.html:3
+msgid "Save map"
+msgstr "Uložit mapu"
+
+#: components/measure/partials/measuremd.html:14
+msgid "Save measurement to layer"
+msgstr "Uložit měření do vrstvy"
+
+#: components/add-layers/shp/add-shp-layer.directive.html:6
+#: components/save-map/partials/panel.html:9
+msgid "Save to"
+msgstr "Uložit do"
+
+#: components/save-map/partials/dialog_result.html:5
 msgid "Saving to status manager"
-msgstr "Uložit"
+msgstr "Ukládání do status manageru"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:77
-#: components/layermanager/partials/layermanager.html:114
-#: components/layermanager/partials/layermanager.html:88
+#: components/datasource-selector/micka/advanced-micka-dialog.html:90
+#: components/layermanager/partials/layer-editor.html:125
+#: components/layermanager/partials/layer-editor.html:75
 msgid "Scale"
 msgstr "Měřítko"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:100
+#: components/datasource-selector/micka/advanced-micka-dialog.html:117
+#: components/search/partials/search.directive.html:2
+#: components/search/partials/searchinput.html:5
+#: components/sidebar/sidebar.service.js:36
 msgid "Search"
 msgstr "Hledat"
 
-#: components/ows/partials/owswfs.html:31
-#: components/ows/partials/owswms.html:55
+#: components/search/partials/search.directive.html:8
+msgid "Search:"
+msgstr "Hledat:"
+
+#: components/sidebar/sidebar.service.js:36
+msgid "Search for location"
+msgstr "Hledat lokaci"
+
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:54
+#: components/add-layers/wfs/add-wfs-layer.directive.html:31
+#: components/add-layers/wms/add-wms-layer.md.directive.html:54
 msgid "Select All Layers"
 msgstr "Vybrat všechny vrstvy"
 
-#: components/sidebar/partials/sidebar.html:21
+#: components/sidebar/sidebar.service.js:25
 msgid "Select data or services for your map composition"
-msgstr "Vybrat data nebo služby pro mapovou kompozici"
+msgstr "Vyberte data nebo služby pro mapovou kompozici"
 
 #: components/save-map/partials/dialog_save.html:30
 msgid "Select new name for map."
-msgstr "Vybrat nové jméno pro mapu."
+msgstr "Vyberte nový název pro mapu."
 
-#: components/lodexplorer/partials/lodexplorer.html:42
-msgid ""
-"Select the colour interval by dragging on the chart below. The regions on "
-"left side will be blue and red on the right side"
-msgstr ""
+#: components/layermanager/partials/layerlist.html:46
+msgid "Sending to layman"
+msgstr "Odesílam na Layman"
 
-#: components/compositions/partials/dialog_share.html:7
+#: components/sensors/partials/unit-dialog.html:8
+msgid "Sensor unit {{$ctrl.unit.description}}"
+msgstr "Jednotka senzoru {{$ctrl.unit.description}}"
+
+#: components/sensors/partials/panel.html:10
+#: components/sensors/partials/panel.html:2
+#: components/sidebar/sidebar.service.js:27
+msgid "Sensors"
+msgstr "Senzory"
+
+#: components/save-map/partials/dialog_result.html:14
+msgid "Server didn't respond or other error occured"
+msgstr "Server neodpověděl nebo došlo k jiné chybě."
+
+#: components/layout/partials/toolbar.html:17
+#: components/mobile_settings/partials/mobile_settings.html:2
+msgid "Settings"
+msgstr "Nastavení"
+
+#: components/add-layers/shp/add-shp-layer.directive.html:15
+msgid "Shape file (shp+dbf+shx)"
+msgstr "Shapefile (shp+dbf+shx)"
+
+#: components/compositions/partials/dialog_sharemd.html:5
+msgid "Share composition {{data.shareTitle}}"
+msgstr "Sdílet kompozici {{data.shareTitle}}"
+
+#: components/compositions/partials/dialog_share.html:6
 #: components/permalink/partials/directive.html:2
+#: components/sidebar/sidebar.service.js:32
 msgid "Share map"
 msgstr "Sdílet mapu"
 
-#: components/lodexplorer/partials/sparqllogdialog.html:7
-msgid "Sparql query log"
-msgstr ""
+#: components/permalink/partials/directive.html:43
+msgid "Share on social network"
+msgstr "Sdílet na sociální síti"
 
-#: components/geolocation/partials/geolocation.html:4
-#: components/geolocation/partials/geolocation_cordova.html:4
+#: components/permalink/partials/directivemd.html:19
+msgid "Share on social networks"
+msgstr "Sdílení na sociálních sítích"
+
+#: components/permalink/partials/directive.html:7
+msgid "Share pure map"
+msgstr "Sdílet pouze mapu"
+
+#: components/save-map/partials/panelmd.html:18
+msgid "Show thumbnail"
+msgstr "Zobrazit miniaturu"
+
+#: components/layermanager/partials/layermanagermd.html:116
+#: components/layermanager/partials/layermanagermd.html:136
+msgid "Sides number"
+msgstr "Číslo stran"
+
+#: components/add-layers/partials/add-layers.md.directive.html:29
+msgid "Some error happened or input missing"
+msgstr "Došlo k nějaké chybě nebo chybí vstup."
+
+#: components/compositions/partials/compositionsmd.html:12
+msgid "Sort by"
+msgstr "Seřadit podle"
+
+#: components/save-map/partials/panelmd.html:61
+msgid "South"
+msgstr "Jižní"
+
+#: components/sidebar/sidebar.service.js:35
+msgid "Specify application user settings"
+msgstr "Určete uživatelské nastavení aplikace"
+
+#: components/geolocation/partials/geolocation_cordova.html:5
 msgid "Speed"
 msgstr "Rychlost"
 
-#: components/save-map/partials/form.html:77
+#: components/layermanager/partials/layermanagermd.html:133
+msgid "Star"
+msgstr "Hvězda"
+
+#: components/save-map/partials/form.html:111
 msgid "State"
 msgstr "Stav"
 
-#: components/styles/partials/styler.html:2
+#: components/draw/partials/vgi-draw.html:52
+msgid "Stop"
+msgstr "Stop"
+
+#: components/layermanager/partials/layermanagermd.html:100
+#: components/layermanager/partials/layermanagermd.html:120
+#: components/layermanager/partials/layermanagermd.html:140
+msgid "Stroke"
+msgstr "Tahu"
+
+#: components/layermanager/partials/layermanagermd.html:102
+#: components/layermanager/partials/layermanagermd.html:122
+#: components/layermanager/partials/layermanagermd.html:142
+msgid "Stroke width"
+msgstr "Šířka tahu"
+
+#: components/draw/partials/draw.directive.html:54
+msgid "Stroke width: {{linewidth}}"
+msgstr "Šířka tahu: {{linewidth}}"
+
+#: components/add-layers/wmts/add-wmts-layer.directive.html:29
+msgid "Style"
+msgstr "Styl"
+
+#: components/styles/partials/styler.html:3
 msgid "Style layer"
-msgstr "Nastylovat vrstvu"
+msgstr "Stylovat vrstvu"
 
-#: components/save-map/partials/dialog_result.html:11
-msgid "Successfuly saved to status manager"
-msgstr "Úspěšně uloženo"
+#: components/add-layers/partials/nested-layers-table.directive.html:11
+msgid "Style:"
+msgstr "Styl:"
 
-#: components/datasource_selector/partials/dialog_micka_suggestions.html:6
+#: components/datasource-selector/micka/micka-suggestions-dialog.html:5
 msgid "Suggestions"
 msgstr "Návrhy"
 
-#: components/ows/partials/dialog_getcapabilities_error.html:11
+#: components/layermanager/partials/layermanager.html:57
+msgid "Terrains"
+msgstr "Terény"
+
+#: components/add-layers/partials/dialog_getcapabilities_error.html:11
 msgid "There was error while parsing Capabilities response from given URL"
-msgstr "Nastala chyba při čtení GetCapabilities"
+msgstr "Při analýzě odezvy schopností z dané adresy URL došlo k chybě."
 
-#: components/layermanager/partials/layerlist.html:18
+#: components/add-layers/partials/add-layers.md.directive.html:16
+msgid "This is required!"
+msgstr "Tohle je nutné!"
+
+#: components/layermanager/partials/layerlist.html:41
 msgid "This layer is not available"
-msgstr "Tato vrstva není dostupná"
+msgstr "Tato vrstva není k dispozici"
 
-#: components/layermanager/partials/layerlist.html:13
+#: components/layermanager/partials/layerlist.html:35
 msgid "This layer is not available in this scale"
-msgstr "Tato vrstva není v tomto měřítku dostupná"
+msgstr "Tato vrstva není v tomto měřítku k dispozici."
 
-#: components/layermanager/partials/layerlist.html:14
+#: components/layermanager/partials/layerlist.html:50
 msgid "This layer is queryable"
 msgstr "Tato vrstva je dotazovatelná"
 
-#: components/ows/partials/owswms.html:39
+#: components/compositions/partials/dialog_info.html:16
+#: components/permalink/partials/directive.html:71
+#: components/permalink/partials/directivemd.html:46
+#: components/save-map/partials/panelmd.html:21
+#: components/save-map/partials/simpleform.html:14
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:35
+#: components/add-layers/wms/add-wms-layer.directive.html:56
+#: components/add-layers/wms/add-wms-layer.md.directive.html:35
 msgid "Tile size"
 msgstr "Velikost dlaždice"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:92
-#: components/layermanager/partials/layermanager.html:110
-#: components/ows/partials/owsnonwms.html:3
-#: components/print/partials/printdialog.html:11
-#: components/save-map/partials/form.html:18
+#: components/add-layers/shp/add-shp-layer.directive.html:25
+#: components/add-layers/vector/add-vector-layer.directive.html:6
+#: components/add-layers/wms/add-wms-layer.directive.html:82
+#: components/compositions/partials/compositionsmd.html:15
+#: components/datasource-selector/micka/advanced-micka-dialog.html:108
+#: components/language/partials/languagemd.html:8
+#: components/layermanager/partials/layer-editor.html:121
+#: components/print/partials/printdialog.html:6
+#: components/print/partials/printdialogmd.html:8
+#: components/save-map/partials/form.html:20
 msgid "Title"
-msgstr "Nadpis"
+msgstr "Název"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:69
+#: components/save-map/partials/form.html:54
+msgid "Toggle all"
+msgstr "Přepnout všechny"
+
+#: components/datasource-selector/micka/advanced-micka-dialog.html:80
 msgid "Topic category"
-msgstr "Název kategorie"
+msgstr "Kategorie témat"
 
-#: components/datasource_selector/partials/dialog_micka_advanced.html:46
+#: components/layout/partials/sidenav.html:20
+#: components/tracking/partials/tracking.html:2
+#: components/sidebar/sidebar.service.js:30
+msgid "Tracking"
+msgstr "Sledování"
+
+#: components/trip_planner/partials/trip_planner.html:2
+msgid "Trip planner"
+msgstr "Plánovač výletů"
+
+#: components/datasource-selector/micka/advanced-micka-dialog.html:56
 msgid "Type"
 msgstr "Typ"
+
+#: components/compositions/partials/dialog_share.html:16
+msgid "URL"
+msgstr "Adresu url"
 
 #: components/info/partials/info.html:11
 msgid "Unsaved map"
 msgstr "Neuložená mapa"
 
+#: components/compositions/partials/dialog_info.html:20
+msgid "Url"
+msgstr "Adresu url"
+
 #: components/save-map/partials/dialog_save.html:44
 msgid "Use a different name to save the map."
-msgstr "Vyberte jíné jméno pro uložení mapy"
+msgstr "K uložení mapy použijte jiný název."
 
-#: components/save-map/partials/form.html:44
-#: components/save-map/partials/simpleform.html:53
+#: components/save-map/partials/simpleform.html:58
+msgid "Use current map\n"
+"                    extent"
+msgstr "Použití aktuální mapy\n"
+"                    Rozsahu"
+
+#: components/save-map/partials/form.html:50
 msgid "Use current map extent"
-msgstr "Použít nynější rozsah"
+msgstr "Použít aktuální rozsah mapy"
 
-#: components/ows/partials/dialog_proxyconfirm.html:14
+#: components/save-map/partials/panelmd.html:66
+msgid "Use map extent"
+msgstr "Použét rozsah mapy"
+
+#: components/add-layers/partials/dialog_proxyconfirm.html:14
 msgid "Use proxy"
-msgstr "Použít proxy"
+msgstr "Použít proxy servr"
 
-#: components/ows/partials/owswms.html:32
+#: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:29
+#: components/add-layers/wms/add-wms-layer.md.directive.html:29
 msgid "Use tiles"
-msgstr "Použít dlaždice"
+msgstr "Použití dlaždic"
 
 #: components/info/partials/info.html:8
 msgid "View, Compose and analyse spatial data"
-msgstr "Prohlížení, komponování a analyzování prostorových dat"
+msgstr "Zobrazení, skládání a analýza prostorových dat"
 
-#: components/ows/partials/dialog_getcapabilities_error.html:6
+#: components/add-layers/partials/dialog_getcapabilities_error.html:5
 msgid "WMS Capabilities parsing problem"
-msgstr "Problém se čtením WMS Capabilities"
+msgstr "WMS Schopnosti analýzy problém"
 
-#: components/save-map/partials/form.html:54
+#: components/trip_planner/partials/trip_planner.html:12
+msgid "Waypoints"
+msgstr "Trase"
+
+#: components/save-map/partials/panelmd.html:51
+msgid "West"
+msgstr "Západ"
+
+#: components/compositions/partials/compositionLoadUnsavedDialog.html:19
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:19
+msgid "What do you want to do before opening the selected map composition?"
+msgstr "Co chcete udělat před otevřením vybrané kompozice mapy?"
+
+#: components/layermanager/partials/layermanagermd.html:86
+msgid "Width"
+msgstr "Šířka"
+
+#: components/save-map/partials/form.html:74
 msgid "Write"
 msgstr "Zápis"
 
@@ -726,58 +1284,140 @@ msgstr "Ano, uložit"
 
 #: components/save-map/partials/dialog_save.html:11
 msgid "You are atempting to save map changes to"
-msgstr "Pokoušíte se uložit změny v mapě do"
+msgstr "Pokoušíte uložit změny mapy do"
 
-#: components/save-map/partials/simpleform.html:77
-msgid ""
-"You are not authorized to store composition. Please sign in or contact "
-"administrator for your credentials."
-msgstr ""
-"Nejste autorizovaný pro ukládání kompozic. Přihlašte se nebo kontaktujte "
-"administrátora pro přihlašovací údaje."
+#: components/save-map/partials/simpleform.html:87
+msgid "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
+msgstr "Nejste oprávněni skladovat složení. Přihlaste se nebo kontaktujte správce svých přihlašovacích údajů."
+
+#: components/compositions/partials/compositionLoadUnsavedDialog.html:16
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:16
+msgid "You are not loaded as user. You can't save composition now. Log in for saving."
+msgstr "Nejste načteni jako uživatel. Kompozice teď nemůžeš uložit. Přihlaste se pro uložení."
+
+#: components/compositions/partials/compositionLoadUnsavedDialog.html:13
+#: components/compositions/partials/dialog_overwriteconfirmmd.html:13
+msgid "You are opening map <b>{{compositionToLoad.title}}</b>. There are currently unsaved changes in compositions."
+msgstr "Otevíráte mapu <b>{{compositionToLoad.title}}</b>. V současné době existují neuložené změny ve skladbách."
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:10
-msgid ""
-"You are opening map <b>{{composition_name_to_be_loaded}}</b>.<br>There are "
-"currently unsaved changes.<br>What do you want to do before opening the "
-"selected map composition?"
-msgstr ""
-"Otevíráte mapu <b>{{composition_name_to_be_loaded}}</b>.<br>Máte neuložené "
-"změny.<br>Co chcete udělat před otevřením vybrané mapové kompozice?"
+msgid "You are opening map <b>{{composition_name_to_be_loaded}}</b>.<br>There are currently unsaved changes.<br>What do you want to do before opening the selected map composition?"
+msgstr "Otevíráte mapu <b>{{composition_name_to_be_loaded}}</b>. <br>Aktuálně jsou neuložené změny. <br>Co chcete udělat před otevřením vybrané kompozice mapy?"
 
 #: components/save-map/partials/dialog_save.html:43
-msgid "You don't have sufficient rights to do so."
-msgstr "Nemáte práva k provedení operace."
+msgid "You don't have sufficient rights to do so. Maybe the session has ended?"
+msgstr "Nemáte k tomu dostatečná práva. Možná, že sezení skončilo?"
 
-#: components/info/partials/info.html:12 components/info/partials/info.html:33
+#: components/info/partials/info.html:12
+#: components/info/partials/info.html:33
 msgid "You have unsaved changes!"
 msgstr "Máte neuložené změny!"
 
-#: components/datasource_selector/partials/dialog_metadata.html:18
-#: components/datasource_selector/partials/object.html:5
+#: components/datasource-selector/partials/datasourceBrowserMetadata.html:24
+#: components/datasource-selector/partials/dialog_metadata.html:18
 msgid "Zoom to"
-msgstr "Přiblížit na"
+msgstr "Přiblížení"
 
-#: components/compositions/partials/dialog_info.html:7
+#: components/layermanager/partials/layer-editor.html:147
+msgid "Zoom to layer"
+msgstr "Přiblížení na vrstvu"
+
+#: components/compositions/partials/dialog_info.html:6
 msgid "details"
-msgstr "detaily"
+msgstr "Podrobnosti"
 
-#: components/layermanager/partials/layermanager.html:115
-#: components/layermanager/partials/layermanager.html:89
+#: components/permalink/partials/directive.html:20
+msgid "embed/"
+msgstr "vložit/"
+
+#: components/layermanager/partials/layer-editor.html:129
+#: components/layermanager/partials/layer-editor.html:76
 msgid "from"
-msgstr "z"
+msgstr "Z"
 
-#: components/measure/partials/measure.html:2
+#: components/sensors/partials/unit-list-item.html:15
+msgid "measure"
+msgstr "Měření"
+
+#: components/measure/partials/measure.html:3
 msgid "multiple shapes"
-msgstr "více tvarů"
+msgstr "více tvaru"
 
-#: components/layermanager/partials/layermanager.html:116
-#: components/layermanager/partials/layermanager.html:90
+#: components/permalink/partials/directive.html:20
+msgid "social share"
+msgstr "sdílení"
+
+#: components/layermanager/partials/layer-editor.html:138
+#: components/layermanager/partials/layer-editor.html:77
 msgid "to"
 msgstr "do"
 
-#~ msgid "Search for a place"
-#~ msgstr "Hledat místo"
+#: components/layout/partials/bottom-sheet.html:4
+msgid "{{ bottomSheetTitle }}"
+msgstr "{{ bottomSheetTitle }}"
 
-#~ msgid "Search results"
-#~ msgstr "Výsledky hledání"
+#: components/layout/partials/sidenav.html:37
+msgid "{{but.title}}"
+msgstr "{{ale.title}}"
+
+#: components/add-layers/shp/add-shp-layer.directive.html:60
+msgid "{{errorMessage}}"
+msgstr "{{errorMessage}}"
+
+#: components/layout/partials/sidenav.html:8
+msgid "{{panel.title}}"
+msgstr "{{panel.title}}"
+
+#: components/add-layers/partials/add-layers.directive.html:2
+msgid "Add external data"
+msgstr "\n"
+"Přidejte externí data"
+
+#: components/sidebar/sidebar.service.js:25
+msgid "Add layers"
+msgstr "Přidat vrstvy"
+
+#: components/language/partials/language.html:2
+msgid "Change language"
+msgstr "Změnit jazyk"
+
+#: components/compositions/partials/compositions.html:2
+msgid "Compositions"
+msgstr "Kompozice"
+
+#: components/datasource-selector/partials/datasource_selector.html:2
+msgid "Datasources"
+msgstr "Zdroje dat"
+
+#: components/draw/partials/draw.directive.html:2
+msgid "Draw"
+msgstr "Kreslení"
+
+#: components/draw/draw.service.js:52
+msgid "Draw layer"
+msgstr "Kreslicí vrstva"
+
+#: components/query/partials/infopanel.html:1
+msgid "Info"
+msgstr "Info"
+
+#: components/sidebar/sidebar.service.js:23
+msgid "Info panel"
+msgstr "Info panel"
+
+#: components/measure/partials/measure.html:2
+msgid "Measure"
+msgstr "Měření"
+
+#: components/sidebar/partials/sidebar.html:13
+msgid "{{button.content()}}"
+msgstr "{{button.content()}}"
+
+#: components/compositions/partials/compositions.html:7
+msgid "Import composition from a file on device"
+msgstr "Importujt kompozic ze souboru na zařízení"
+
+#: components/compositions/partials/compositions.html:12
+msgid "Add combosition by address"
+msgstr "Přidejte kompozici podle adresy (URL)"
+

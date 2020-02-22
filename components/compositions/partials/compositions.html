@@ -1,15 +1,15 @@
 <div class="card panel-default mainpanel hs-comp-mainpanel">
-    <hs.layout.panel-header panel-name="composition_browser" panel-title="'Compositions'||translate">
+    <hs.layout.panel-header panel-name="composition_browser" panel-title="'Compositions'| translate">
         <extra-title>
             <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
         </extra-title>
         <extra-buttons>
-            <label class="btn btn-sm btn-secondary btn-file" title="Import composition from a file on device"
+            <label class="btn btn-sm btn-secondary btn-file" title="{{'Import composition from a file on device' | translate}}"
                 style="margin-bottom:0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
                 <span class="icon-upload"></span><input type="file" ng-on-change="handleFileSelect($event)"
                     accept=".json" style="display: none;">
             </label>
-            <button class="btn btn-sm btn-secondary" title="Add combosition by address"
+            <button class="btn btn-sm btn-secondary" title="{{'Add combosition by address' | translate}}"
                 style="margin-bottom:0; line-height: 1em; float: right; margin-right: 0.5em; cursor: pointer;" ng-click="changeUrlButtonVisible()">
                 <span class="icon-plus"></span>
             </button>
@@ -36,8 +36,7 @@
                     <div class="btn-group input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox" ng-model="filterByExtent" ng-change='filterChanged()'><span
-                                translate>Filter
-                                by map extent</span>
+                                translate>Filter by map extent</span>
                         </div>
                         <div class="input-group-text">
                             <input type="checkbox" ng-model="query.editable" ng-change='mineFilterChanged()'><span

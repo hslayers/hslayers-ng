@@ -1,5 +1,5 @@
 <div class="panel-default hs-main-panel">
-    <hs.layout.panel-header panel-name="draw" panel-title="'Draw'||translate"></hs.layout.panel-header>
+    <hs.layout.panel-header panel-name="draw" panel-title="'Draw'| translate"></hs.layout.panel-header>
 
     <div class="dropdown">
         <div class="btn-group w-100" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'" c>
@@ -8,8 +8,8 @@
                 aria-expanded="{{layersExpanded}}">
                 {{selectedLayerString()}}
             </button>
-            <button class="btn btn-primary rounded-0" ng-click="service.addDrawLayer()" translate data-toggle="tooltip"
-                title="Add draw layer">
+            <button class="btn btn-primary rounded-0" ng-click="service.addDrawLayer()" data-toggle="tooltip"
+                title="{{'Add draw layer' | translate}}">
                 <i class="icon-plus"></i>
             </button>
         </div>
@@ -21,19 +21,19 @@
     </div>
     <div class="btn-group rounded-0" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
         <button class="btn btn-light  btn-outline-primary" ng-class="{active: service.type=='Point' }"
-            ng-click="setType('Point')" translate data-toggle="tooltip" title="Point">
+            ng-click="setType('Point')" data-toggle="tooltip" title="{{'Point' | translate}}">
             <i class="icon-pin"></i>
         </button>
         <button class="btn btn-light  btn-outline-primary" ng-class="{active: service.type=='Polygon' }"
-            ng-click="setType('Polygon')" translate data-toggle="tooltip" title="Polygon">
+            ng-click="setType('Polygon')" data-toggle="tooltip" title="{{'Polygon' | translate }}">
             <i class="icon-polygonlasso"></i>
         </button>
         <button class="btn btn-light btn-outline-primary" ng-class="{active: service.type=='LineString' }"
-            ng-click="setType('LineString')" translate data-toggle="tooltip" title="Line">
+            ng-click="setType('LineString')" data-toggle="tooltip" title="{{'Line' | translate}}">
             <i class="icon-line"></i>
         </button>
         <button class="btn btn-light btn-outline-primary" ng-class="{active: service.type=='Circle' }"
-            ng-click="setType('Circle')" translate data-toggle="tooltip" title="Line">
+            ng-click="setType('Circle')" data-toggle="tooltip" title="{{'Circle' | translate }}">
             <i class="icon-circleloaderfull"></i>
         </button>
     </div>

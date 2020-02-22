@@ -6,8 +6,8 @@ import Feature from 'ol/Feature';
 import { transform, transformExtent } from 'ol/proj';
 import { toStringHDMS, createStringXY } from 'ol/coordinate';
 import { toLonLat } from 'ol/proj.js';
-export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.layout.service', 'hs.utils.service', '$timeout',
-    function ($rootScope, OlMap, Core, $sce, config, layoutService, utils, $timeout) {
+export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.layout.service', 'hs.utils.service', '$timeout','gettext',
+    function ($rootScope, OlMap, Core, $sce, config, layoutService, utils, $timeout, gettext) {
         var me = this;
 
         var map;
@@ -171,7 +171,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                 map.getView().getProjection(), 'EPSG:4326'
             );
             var coords = {
-                name: "Coordinates",
+                name: gettext('Coordinates'),
                 mapProjCoordinate: coordinate,
                 epsg4326Coordinate,
                 projections: [{
