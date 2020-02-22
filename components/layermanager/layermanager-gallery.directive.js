@@ -22,7 +22,6 @@ export default [
             }
           };
           $scope.closeGallery = function(layer) {
-            console.log($scope)
             if (arguments.length > 0) {
               if (!layer.active) {
                 $scope.baseLayersExpanded = false;
