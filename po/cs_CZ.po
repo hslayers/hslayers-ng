@@ -94,6 +94,7 @@ msgid "Add"
 msgstr "Přidat"
 
 #: components/draw/partials/draw.directive.html:12
+#: components/draw/partials/shape-toolbar.html:18
 msgid "Add draw layer"
 msgstr "Přdat kreslíci vrstvu"
 
@@ -570,6 +571,7 @@ msgid "Legend"
 msgstr "Legenda"
 
 #: components/draw/partials/draw.directive.html:32
+#: components/draw/partials/shape-toolbar.html:27
 #: components/styles/partials/styler.html:29
 msgid "Line"
 msgstr "Linie"
@@ -640,7 +642,7 @@ msgstr "Změřte vzdálenost nebo plochu na mapě"
 
 #: components/search/partials/searchinput.html:18
 msgid "Measure lines and polygon"
-msgstr "Měření čar a polygonu"
+msgstr "Měření délky a plochy"
 
 #: components/measure/partials/measuremd.html:5
 msgid "Measure type"
@@ -797,6 +799,7 @@ msgid "Point features"
 msgstr "Bodové prvky"
 
 #: components/draw/partials/draw.directive.html:28
+#: components/draw/partials/shape-toolbar.html:24
 #: components/layermanager/partials/layermanagermd.html:112
 msgid "Polygon"
 msgstr "Polygon"
@@ -994,6 +997,7 @@ msgid "Search"
 msgstr "Hledat"
 
 #: components/search/partials/search.directive.html:8
+#: components/search/partials/searchinput.html:9
 msgid "Search:"
 msgstr "Hledat:"
 
@@ -1390,6 +1394,8 @@ msgid "Datasources"
 msgstr "Zdroje dat"
 
 #: components/draw/partials/draw.directive.html:2
+#: components/draw/partials/shape-toolbar.html:5
+#: components/sidebar/sidebar.service.js:37
 msgid "Draw"
 msgstr "Kreslení"
 

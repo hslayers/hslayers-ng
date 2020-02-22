@@ -43,7 +43,7 @@ msgid "<i class=\"icon-polygonlasso\"></i>"
 msgstr ""
 
 #: components/draw/partials/shape-toolbar.html:3
-msgid "<i ng-class=\"{'icon-pencil':!drawToolbarExpanded, 'icon-remove':drawToolbarExpanded}\" data-toggle=\"tooltip\" title=\"Draw\"></i>"
+msgid "<i ng-class=\"{'icon-pencil':!drawToolbarExpanded, 'icon-remove':drawToolbarExpanded}\" data-toggle=\"tooltip\" title=\"{{'Draw' | translate}}\"></i>"
 msgstr ""
 
 #: components/add-layers/arcgis/add-arcgis-layer.directive.html:49
@@ -88,6 +88,7 @@ msgid "Add combosition by address"
 msgstr ""
 
 #: components/draw/partials/draw.directive.html:12
+#: components/draw/partials/shape-toolbar.html:19
 msgid "Add draw layer"
 msgstr ""
 
@@ -383,6 +384,7 @@ msgid "Download"
 msgstr ""
 
 #: components/draw/partials/draw.directive.html:2
+#: components/draw/partials/shape-toolbar.html:6
 #: components/sidebar/sidebar.service.js:37
 msgid "Draw"
 msgstr ""
@@ -597,6 +599,7 @@ msgid "Legend"
 msgstr ""
 
 #: components/draw/partials/draw.directive.html:32
+#: components/draw/partials/shape-toolbar.html:28
 #: components/styles/partials/styler.html:29
 msgid "Line"
 msgstr ""
@@ -819,6 +822,7 @@ msgid "Photo"
 msgstr ""
 
 #: components/draw/partials/draw.directive.html:24
+#: components/draw/partials/shape-toolbar.html:22
 #: components/styles/partials/styler.html:48
 msgid "Point"
 msgstr ""
@@ -828,6 +832,7 @@ msgid "Point features"
 msgstr ""
 
 #: components/draw/partials/draw.directive.html:28
+#: components/draw/partials/shape-toolbar.html:25
 #: components/layermanager/partials/layermanagermd.html:112
 msgid "Polygon"
 msgstr ""
@@ -1028,6 +1033,7 @@ msgid "Search for location"
 msgstr ""
 
 #: components/search/partials/search.directive.html:8
+#: components/search/partials/searchinput.html:9
 msgid "Search:"
 msgstr ""
 
