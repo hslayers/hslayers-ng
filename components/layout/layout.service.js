@@ -1,4 +1,4 @@
-export default ['config', '$rootScope','$window',
+export default ['config', '$rootScope', '$window',
   function (config, $rootScope, $window) {
     const me = this;
 
@@ -442,6 +442,16 @@ export default ['config', '$rootScope','$window',
     angular.forEach(config.panelsEnabled, (value, key) => {
       me.panelEnabled(key, value);
     });
+
+    if (config.theme) {
+      document.documentElement.style
+        .setProperty('--sidebar-bg-color', config.theme.background);
+      document.documentElement.style
+        .setProperty('--sidebar-item-color', config.theme.itemColor);
+      document.documentElement.style
+        .setProperty('--sidebar-active-color', config.theme.activeItemColor);
+    }
+
     return me;
   }
 ];
