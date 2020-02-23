@@ -40,7 +40,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
 
     function init() {
       map = OlMap.map;
-      me.queryActive = false;
+      if (layoutService.sidebarBottom()) {
+        me.activateQueries();
+      } else {
+        me.queryActive = false;
+      }
       map.on('singleclick', (evt) => {
         $rootScope.$broadcast('mapClicked', angular.extend(evt, {
           coordinates: getCoordinate(evt.coordinate)
@@ -97,17 +101,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
       }, 200, false, me);
       map.on('pointermove', changeHandler);
 
-      $rootScope.$watch(() => layoutService.sidebarExpanded, () => {
-        if (layoutService.sidebarExpanded && me.currentPanelQueryable()) {
-          if (!me.queryActive) {
-            me.activateQueries();
-          }
-        } else {
-          if (me.queryActive) {
-            me.deactivateQueries();
-          }
-        }
-      });
     }
 
     function serializeFeatureAtributes(feature) {
@@ -239,10 +232,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         $rootScope.$broadcast('queryStatusChanged', false);
       });
     };
+    me.nonQueryablePanels = ['measure', 'composition_browser', 'analysis', 'sensors'];
 
     this.currentPanelQueryable = function () {
-      const nonQueryablePanels = ['measure', 'compositions', 'analysis', 'sensors'];
-      return (nonQueryablePanels.indexOf(layoutService.mainpanel) == -1);
+      return (me.nonQueryablePanels.indexOf(layoutService.mainpanel) == -1);
     };
 
     function pointClickedStyle(feature) {

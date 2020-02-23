@@ -433,6 +433,10 @@ button.but-title-sm {
 .list-group-item.active a {
 	color: #fff;
 }
+.list-group-item.active {
+	background-color:var(--sidebar-active-color,#007bff) !important;
+	border-color: var(--sidebar-active-color,#007bff) !important;
+ }
 
 .hs-lm-deactivated-layer {
 	color: #cccccc;
@@ -510,6 +514,7 @@ button.but-title-sm {
 	top: 0;
 	width: 400px;
 	z-index: 2;
+	transition: all 200ms ease-out;
 }
 
 .hs-sb-right .hs-panelspace {
@@ -536,8 +541,12 @@ div.hs-sidebar {
 	bottom: 0;
 	position: absolute;
 	top: 0;
+	background: var(--sidebar-bg-color,unset) ;
 }
-
+div.hs-sidebar div.hs-sidebar-list a:not(.active){
+	background-color: transparent ;
+	color: var(--sidebar-item-color,#007bff) ;
+}
 .hs-content-wrapper.hs-open .hs-panelspace:not(.labels) div.hs-sidebar {
 	border-right: 1px solid #ddd;
 }
@@ -550,13 +559,13 @@ div.hs-sidebar {
 }
 
 .hs-content-wrapper.hs-sb-left:not(.hs-open) div.hs-sidebar {
-	background-color: white;
+	background-color: var(--sidebar-bg-color,white) ;
 	right: auto;
 	width: 48px;
 }
 
 .hs-content-wrapper.hs-sb-right:not(.hs-open) div.hs-sidebar {
-	background-color: white;
+	background-color: var(--sidebar-bg-color,white) ;
 	left: auto;
 	width: 48px;
 }
