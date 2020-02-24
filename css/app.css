@@ -970,6 +970,9 @@ div.hs-info-composition-edited {
 		overflow-y: visible;
 		font-size: x-large;
 	}
+	.hs-sb-left #toolbar, .hs-sb-left #toolbar{
+		margin-left: 0 !important	;
+	}
 
 	.hs-sidebar,
 	#panelspace {
