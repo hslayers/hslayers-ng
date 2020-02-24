@@ -445,11 +445,11 @@ export default ['config', '$rootScope', '$window',
 
     if (config.theme) {
       document.documentElement.style
-        .setProperty('--sidebar-bg-color', config.theme.background || null);
+        .setProperty('--sidebar-bg-color', config.theme.sidebar.background || null);
       document.documentElement.style
-        .setProperty('--sidebar-item-color', config.theme.itemColor || null);
+        .setProperty('--sidebar-item-color', config.theme.sidebar.itemColor || null);
       document.documentElement.style
-        .setProperty('--sidebar-active-color', config.theme.activeItemColor || null);
+        .setProperty('--sidebar-active-color', config.theme.sidebar.activeItemColor || null);
     }
 
     return me;

@@ -1427,3 +1427,6 @@ msgstr "Importujt kompozic ze souboru na zařízení"
 msgid "Add combosition by address"
 msgstr "Přidejte kompozici podle adresy (URL)"
 
+#: components/query/query-base.service.js:197
+msgid "Coordinates"
+msgstr "Súradnice"
