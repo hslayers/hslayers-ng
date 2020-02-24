@@ -514,7 +514,7 @@ button.but-title-sm {
 	top: 0;
 	width: 400px;
 	z-index: 2;
-	transition: all 200ms ease-out;
+	transition: width 100ms ease-out;
 }
 
 .hs-sb-right .hs-panelspace {
@@ -542,6 +542,7 @@ div.hs-sidebar {
 	position: absolute;
 	top: 0;
 	background: var(--sidebar-bg-color,unset) ;
+	transition: width 100ms ease-out;
 }
 div.hs-sidebar div.hs-sidebar-list a:not(.active){
 	background-color: transparent ;
@@ -613,6 +614,7 @@ a.sidebar-main {
 .hs-sidebar-list .list-group-item {
 	border-left: 0px;
 	border-right: 0px;
+	white-space: nowrap;
 }
 
 .hs-sidebar-list .list-group-item:first-child {
@@ -987,6 +989,10 @@ div.hs-info-composition-edited {
 		flex-direction: row !important;
 		justify-content: space-evenly;
 	}
+	.hs-sidebar-list .list-group-item{
+		white-space: normal;
+	}
+
 	.hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) .hs-sidebar-list {
 		width: 100%;
 	}
