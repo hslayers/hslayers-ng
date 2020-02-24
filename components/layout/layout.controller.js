@@ -418,9 +418,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
       };
 
     } catch (ex) {
-      if (console) {
-        console.log(ex);
-      }
+      
     }
 
     $scope.panelSpaceWidth = layoutService.panelSpaceWidth;
