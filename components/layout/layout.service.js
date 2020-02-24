@@ -443,15 +443,6 @@ export default ['config', '$rootScope', '$window',
       me.panelEnabled(key, value);
     });
 
-    if (config.theme) {
-      document.documentElement.style
-        .setProperty('--sidebar-bg-color', config.theme.sidebar.background || null);
-      document.documentElement.style
-        .setProperty('--sidebar-item-color', config.theme.sidebar.itemColor || null);
-      document.documentElement.style
-        .setProperty('--sidebar-active-color', config.theme.sidebar.activeItemColor || null);
-    }
-
     return me;
   }
 ];
