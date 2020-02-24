@@ -289,7 +289,7 @@ msgstr ""
 msgid "Continue without saving"
 msgstr ""
 
-#: components/query/query-base.service.js:174
+#: components/query/query-base.service.js:197
 msgid "Coordinates"
 msgstr ""
 
