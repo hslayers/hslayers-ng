@@ -2,38 +2,18 @@
 <div class="card panel-default hs-main-panel" ng-show="!data.coordinates[0].name.length > 0">
     <div class="card-body m-2" translate="">Click on map for query results!</div>
 </div>
-<div ng-show="data.coordinates[0].name.length > 0" class="card panel-default hs-main-panel">
-    <div class="card-body">
-        <div class="dropdown" ng-show="data.featureInfoHtmls.length > 0">
-            <button class="btn btn-light w-100 dropdown-toggle rounded-0" ng-init="featureInfoExpanded = true"
-                data-toggle="dropdown" ng-aria-expanded="featureInfoExpanded"
-                ng-click="featureInfoExpanded = !featureInfoExpanded">
-                <translate>Feature info</translate>
-            </button>
-
-            <div class="dropdown-menu position-relative w-100" ng-class="{'show': featureInfoExpanded}"
-                ng-repeat="html in data.featureInfoHtmls" ng-bind-html="html"></div>
-        </div>
-        <hs.query.feature ng-repeat="item in data.features | orderBy : 'name'" feature="item"></hs.query.feature>
-        <table class="table table-striped" style="table-layout:fixed" ng-show="data.attributes.length > 0">
-            <tr ng-repeat="attribute in data.attributes | orderBy : name">
-                <td class="first-col">{{attribute.name}}</td>
-                <td class="second-col" ng-bind-html="attribute.value"></td>
-            </tr>
-        </table>
-        <div class="container-fluid" ng-show="data.coordinates[0].name.length > 0">
-            <div class="row">
-                <div class="col-12 m-2"><strong>{{data.coordinates[0].name}}</strong></div>
+<hs.query.default-info-panel-body ng-if="!data.features[0].customInfoTemplate"></hs.query.default-info-panel-body>
+<hs.custom-info-panel-body ng-if="data.features[0].customInfoTemplate"></hs.custom-info-panel-body>
+<div class="container-fluid" ng-show="data.coordinates[0].name.length > 0">
+    <div class="row">
+        <div class="col-12 m-2"><strong>{{data.coordinates[0].name}}</strong></div>
+    </div>
+    <div class="row" ng-repeat="projection in data.coordinates[0].projections | orderBy : name">
+        <div class="input-group m-1">
+            <div class="input-group-prepend">
+                <span class="input-group-text">{{projection.name}}</span>
             </div>
-            <div class="row" ng-repeat="projection in data.coordinates[0].projections | orderBy : name">
-                <div class="input-group m-1">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">{{projection.name}}</span>
-                    </div>
-                    <input class="form-control" ng-value="projection.value"></input>
-                </div>
-            </div>
+            <input class="form-control" ng-value="projection.value"></input>
         </div>
     </div>
-    <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
 </div>
