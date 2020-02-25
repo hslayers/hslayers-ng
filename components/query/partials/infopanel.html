@@ -14,8 +14,8 @@
             <div class="dropdown-menu position-relative w-100" ng-class="{'show': featureInfoExpanded}"
                 ng-repeat="html in data.featureInfoHtmls" ng-bind-html="html"></div>
         </div>
-        <div ng-if="item.customInfoTemplate" ng-repeat="item in data.features" htmlbind="item.customInfoTemplate"></div>
-        <hs.query.feature ng-if="!item.customInfoTemplate" ng-repeat="item in data.features | orderBy : 'name'" feature="item"></hs.query.feature>
+        <div ng-if="data.features[0].customInfoTemplate" htmlbind="data.features[0].customInfoTemplate"></div>
+        <hs.query.feature ng-if="!data.features[0].customInfoTemplate" ng-repeat="item in data.features | orderBy : 'name'" feature="item"></hs.query.feature>
         
         <table class="table table-striped" style="table-layout:fixed" ng-show="data.attributes.length > 0">
             <tr ng-repeat="attribute in data.attributes | orderBy : name">
