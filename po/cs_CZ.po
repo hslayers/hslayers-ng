@@ -412,7 +412,7 @@ msgstr "Externí zdroj dat (URL)"
 msgid "Extract styles"
 msgstr "Extrahovat styly"
 
-#: components/query/partials/infopanel.html:11
+#: components/query/partials/default-info-panel-body.html:7
 msgid "Feature info"
 msgstr "Informace o prvku"
 

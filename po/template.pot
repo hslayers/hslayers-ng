@@ -432,7 +432,7 @@ msgstr ""
 msgid "Extract styles"
 msgstr ""
 
-#: components/query/partials/infopanel.html:11
+#: components/query/partials/default-info-panel-body.html:7
 msgid "Feature info"
 msgstr ""
 
