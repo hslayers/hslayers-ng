@@ -235,7 +235,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
     me.nonQueryablePanels = ['measure', 'composition_browser', 'analysis', 'sensors'];
 
     this.currentPanelQueryable = function () {
-      return (me.nonQueryablePanels.indexOf(layoutService.mainpanel) == -1);
+      return (me.nonQueryablePanels.indexOf(layoutService.mainpanel) == -1 && me.nonQueryablePanels.indexOf('*') == -1);
     };
 
     function pointClickedStyle(feature) {
