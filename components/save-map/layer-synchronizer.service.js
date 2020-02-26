@@ -53,35 +53,6 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
             },
 
             /**
-             * Send features to Layman endpoint as WFS string
-             * @memberof hs.layerSynchronizerService
-             * @function getLayerName
-             * @param {Ol.layer} layer Layer to get Layman friendly name for
-             * get features
-             */
-            push(layer) {
-                if (layer.getSource().loading) return;
-                var f = new GeoJSON();
-                var geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
-                (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
-                    ds => {
-                        layer.set('hs-layman-synchronizing', true);
-                        laymanService.pushVectorSource(ds, geojson, {
-                            title: layer.get('title'),
-                            name: me.getLayerName(layer),
-                            crs: me.crs
-                        }).then(response => {
-                            setTimeout(function(){
-                                laymanService.pullVectorSource(ds, me.getLayerName(layer))
-                                .then(response => {
-                                    layer.set('hs-layman-synchronizing', false);
-                                })
-                            }, 2000);
-                        });
-                    })
-            },
-
-            /**
              * Get features from Layman endpoint as WFS string, parse and add 
              * them to Openlayers VectorSource
              * @memberof hs.layerSynchronizerService
@@ -107,19 +78,31 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                                     );
                                     source.loading = false;
                                 }
-                                function handleFeatureChange (e) {
-                                    me.push(layer);
+                                function handleFeatureChange(e) {
+                                    sync([], [e.target || e], []);
+                                }
+                                function sync(inserted, updated, deleted) {
+                                    (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
+                                        ds => {
+                                            layer.set('hs-layman-synchronizing', true);
+                                            laymanService.createWfsTransaction(ds, inserted, updated, deleted, me.getLayerName(layer), layer).then(response => {
+                                                layer.set('hs-layman-synchronizing', false);
+                                            });
+                                        })
                                 }
                                 function observeFeature(f) {
-                                    f.getGeometry().on('change', utils.debounce(handleFeatureChange, debounceInterval, false, me));
+                                    f.getGeometry().on('change', utils.debounce(function (geom) {
+                                        handleFeatureChange(f)
+                                    }, debounceInterval, false, me));
                                     f.on('propertychange', handleFeatureChange);
                                 }
                                 source.forEachFeature(observeFeature)
                                 source.on('addfeature', (e) => {
-                                    handleFeatureChange(e);
-                                    observeFeature(e.feature)
+                                    sync([e.feature], [], []);
                                 });
-                                source.on('removefeature', handleFeatureChange);
+                                source.on('removefeature', (e) => {
+                                    sync([], [], [e.feature]);
+                                });
                             });
                     })
             },

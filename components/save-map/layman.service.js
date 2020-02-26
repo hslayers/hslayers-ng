@@ -1,5 +1,6 @@
-export default ['Core', 'hs.utils.service', '$http', 'config',
-    function (Core, utils, $http, config) {
+import { GeoJSON, WFS } from 'ol/format';
+export default ['Core', 'hs.utils.service', '$http', 'config', 'hs.map.service',
+    function (Core, utils, $http, config, hsMap) {
         var me = this;
         angular.extend(me, {
             /**
@@ -48,12 +49,11 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
             * @param {String} geojson Geojson object with features to send to server 
             * @param {String} description Object containing {name, title, crs} of 
             * layer to retrieve
-            * @param {Boolean} exists Set to true if you are sure that layer 
-            * exists (has been checked before and result stored somewhere)
+            * @param {Object} layerDesc Previously fetched layer descriptor
             * @returns {Promise<Boolean>} Promise result of POST/PATCH 
             * @description Send layer definition and features to Layman
             */
-            pushVectorSource(endpoint, geojson, description, exists) {
+            pushVectorSource(endpoint, geojson, description, layerDesc) {
                 return new Promise((resolve, reject) => {
                     var formdata = new FormData();
                     formdata.append('file',
@@ -67,17 +67,94 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                     formdata.append('name', description.name);
                     formdata.append('title', description.title);
                     formdata.append('crs', description.crs);
-                    me.checkIfLayerExists(endpoint, description.name, exists)
-                        .then(exists => {
+                    me.checkIfLayerExists(endpoint, description.name, layerDesc)
+                        .then(layerDesc => {
                             $http({
-                                url: `${endpoint.url}/rest/${endpoint.user}/layers${exists ? '/' + description.name : ''}?${Math.random()}`,
-                                method: exists ? 'PATCH' : 'POST',
+                                url: `${endpoint.url}/rest/${endpoint.user}/layers${layerDesc.exists ? '/' + description.name : ''}?${Math.random()}`,
+                                method: layerDesc.exists ? 'PATCH' : 'POST',
                                 data: formdata,
                                 transformRequest: angular.identity,
                                 headers: { 'Content-Type': undefined }
                             }).then(function (response) {
                                 resolve(response)
                             })
+                        })
+                        .catch(err => {
+                            reject(err.data)
+                        });
+                })
+            },
+
+            /**
+             * Send all features to Layman endpoint as WFS string
+             * @memberof hs.layerSynchronizerService
+             * @function getLayerName
+             * @param {Ol.layer} layer Layer to get Layman friendly name for
+             * get features
+             */
+            push(layer) {
+                if (layer.getSource().loading) return;
+                var f = new GeoJSON();
+                var geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
+                (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
+                    ds => {
+                        layer.set('hs-layman-synchronizing', true);
+                        me.pushVectorSource(ds, geojson, {
+                            title: layer.get('title'),
+                            name: me.getLayerName(layer),
+                            crs: me.crs
+                        }).then(response => {
+                            setTimeout(function(){
+                                me.pullVectorSource(ds, me.getLayerName(layer))
+                                .then(response => {
+                                    layer.set('hs-layman-synchronizing', false);
+                                })
+                            }, 2000);
+                        });
+                    })
+            },
+
+            /**
+           * @ngdoc method
+           * @function addFeature 
+           * @memberof hs.laymanService
+           * @public
+           * @param {Object} endpoint 
+           * @param {Array} featuresToAdd Array of features to add
+           * @param {Array} featuresToUpd Array of features to update
+           * @param {Array} featuresToDel Array of features to delete
+           * @returns {Promise<Boolean>} Promise result of POST
+           * @description Insert a feature 
+           */
+            createWfsTransaction(endpoint, featuresToAdd, featuresToUpd, featuresToDel, name, layer) {
+                return new Promise((resolve, reject) => {
+                    me.checkIfLayerExists(endpoint, name, layer.get('laymanLayerDescriptor'))
+                        .then((layerDesc) => {
+                            if(layerDesc.exists){
+                                layer.set('laymanLayerDescriptor', layerDesc);
+                                try {
+                                    const wfsFormat = new WFS();
+                                    const serializedFeature = wfsFormat.writeTransaction(featuresToAdd, featuresToUpd, featuresToDel, {
+                                        featureNS: 'http://' + endpoint.user,
+                                        featurePrefix: endpoint.user,
+                                        featureType: name,
+                                        srsName: hsMap.map.getView().getProjection().getCode()
+                                    });
+    
+                                    $http({
+                                        url: layerDesc.wfs.url,
+                                        method: 'POST',
+                                        data: serializedFeature.outerHTML.replaceAll('<geometry>', '<wkb_geometry>').replaceAll('</geometry>', '</wkb_geometry>'),
+                                        headers: { "Content-Type": 'application/xml' }
+                                    }).then(function (response) {
+                                        resolve(response)
+                                    })
+                                } catch (ex) {
+                                    console.error(ex)
+                                }
+                            } else {
+                                me.push(layer);
+                            }
                         })
                         .catch(err => {
                             reject(err.data)
@@ -104,12 +181,12 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
                             resolve();
                             return;
                         }
-                        if(descr.wfs.status == 'NOT_AVAILABLE' && descr.wms.status == 'NOT_AVAILABLE'){
+                        if (descr.wfs.status == 'NOT_AVAILABLE' && descr.wms.status == 'NOT_AVAILABLE') {
                             resolve();
                             return;
                         }
-                        if(descr.wfs.status == 'NOT_AVAILABLE'){
-                            setTimeout(function(){
+                        if (descr.wfs.status == 'NOT_AVAILABLE') {
+                            setTimeout(function () {
                                 me.pullVectorSource(endpoint, layerName).then(response => resolve(response))
                             }, 2000);
                             return;
@@ -169,31 +246,30 @@ export default ['Core', 'hs.utils.service', '$http', 'config',
             * @public
             * @param {Object} endpoint 
             * @param {String} layerName 
-            * @param {Boolean} exists Set to true if you are sure that layer 
-            * exists (has been checked before and result stored somewhere)
+            * @param {Object} layerDesc Previously loaded layer descriptor
             * @returns {Promise<Boolean>} Promise which returns boolean if layer 
             * exists in Layman
             * @description Try getting layer description from layman. If it 
             * succeeds, that means that layer is there and can be updated 
             * instead of postign a new one
             */
-            checkIfLayerExists(endpoint, layerName, exists) {
+            checkIfLayerExists(endpoint, layerName, layerDesc) {
                 return new Promise((resolve, reject) => {
-                    if (angular.isUndefined(exists)) {
+                    if (angular.isUndefined(layerDesc)) {
                         me.describeLayer(endpoint, layerName)
                             .then(description => {
                                 if (description != null &&
                                     angular.isDefined(description.code) &&
                                     description.code == 15)
-                                    resolve(false);
-                                else if (description != null && 
+                                    resolve({ exists: false });
+                                else if (description != null &&
                                     angular.isDefined(description.name))
-                                    resolve(true);
+                                    resolve(angular.extend(description, { exists: true }));
                                 else
-                                    resolve(false)
+                                    resolve({ exists: false })
                             })
                     } else {
-                        resolve(exists)
+                        resolve(layerDesc)
                     }
                 })
             }
