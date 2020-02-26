@@ -52,7 +52,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
              *  console.log(format.readFeatures(response, {}));
              */
       let updated = false;
-      const customInfoTemplate = layer.get('customGetInfo') || false;
+      const customInfoTemplate = layer.get('customInfoTemplate') || false;
 
       if (infoFormat.indexOf('xml') > 0 || infoFormat.indexOf('gml') > 0) {
         const oParser = new DOMParser();
