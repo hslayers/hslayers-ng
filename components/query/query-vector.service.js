@@ -130,8 +130,8 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
           attributes.push(obj);
         }
       });
-      if (feature.getLayer(OlMap.map).get('customGetInfo')) {
-        customInfoTemplate = feature.getLayer(OlMap.map).get('customGetInfo');
+      if (feature.getLayer(OlMap.map).get('customInfoTemplate')) {
+        customInfoTemplate = feature.getLayer(OlMap.map).get('customInfoTemplate');
       }
 
       const featureDescription = {
