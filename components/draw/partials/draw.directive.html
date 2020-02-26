@@ -19,7 +19,7 @@
                 ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
         </div>
     </div>
-    <div class="btn-group rounded-0" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
+    <div class="btn-group btn-block rounded-0" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
         <button class="btn btn-light  btn-outline-primary" ng-class="{active: service.type=='Point' }"
             ng-click="setType('Point')" data-toggle="tooltip" title="{{'Point' | translate}}">
             <i class="icon-pin"></i>
@@ -38,7 +38,12 @@
         </button>
     </div>
     <div ng-show="service.type != null " class="pt-2">
-        <div class="card">
+        <div 
+            class="form-check">
+            <input type="checkbox" ng-model="useIndividualStyle" />
+            <label translate>Individual style for feature</label>
+        </div>
+        <div class="card" ng-show="useIndividualStyle">
             <div class="card-header h5 p-1 pl-4" translate>
                 Defined style
                 <div class="hs-styler-selected-color-box" ng-style="drawStyle()">

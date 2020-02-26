@@ -18,6 +18,7 @@ export default [
 			hasLayerTitle: layerUtilsService.hasLayerTitle,
 			isLayerEditable: layerUtilsService.isLayerEditable,
 			isLayerDrawable: layerUtilsService.isLayerDrawable,
+			useIndividualStyle: true,
 			opacity: 0.2,
 			linewidth: 1,
 			fillcolor: { "background-color": "rgba(0, 153, 255, 1)" },
@@ -45,15 +46,17 @@ export default [
 				drawService.source = angular.isDefined(drawService.selectedLayer.getSource().getSource)
 					? drawService.selectedLayer.getSource().getSource() //Is it clustered vector layer?
 					: (drawService.source = drawService.selectedLayer.getSource());
-				$scope.activateDrawing();
+				/* Individual feature styling is only available when drawing
+				is controlled in special panel not in toolbar */
+				$scope.activateDrawing(layoutService.panelVisible('draw') && $scope.useIndividualStyle);
 			},
-			activateDrawing() {
+			activateDrawing(withStyle) {
 				drawService.activateDrawing(
 					$scope.onDrawStart, //Will add later
 					$scope.onDrawEnd,
 					$scope.onFeatureSelected, //Will add later
 					$scope.onFeatureDeselected, //Will add later
-					$scope.changeStyle,
+					withStyle ? $scope.changeStyle : undefined,
 					true, //Activate drawing immediately
 				);
 			},
