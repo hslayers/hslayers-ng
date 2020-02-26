@@ -98,7 +98,7 @@ export default [
 					me.draw = new Draw({
 						source: me.source,
 						type: /** @type {ol.geom.GeometryType} */ (me.type),
-						style: changeStyle(),
+						style: changeStyle ? changeStyle() : undefined,
 					});
 
 					me.draw.setActive(drawState);
@@ -121,7 +121,7 @@ export default [
 						function(e) {
 							me.draw.setActive(false);
 							queryBaseService.activateQueries();
-							e.feature.setStyle(changeStyle());
+							if (changeStyle) e.feature.setStyle(changeStyle());
 							if (onDrawEnd) onDrawEnd(e);
 						},
 						this,
