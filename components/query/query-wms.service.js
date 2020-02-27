@@ -17,6 +17,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
             return;
           }
           me.featureInfoReceived(response.data, infoFormat, url, coordinate, layer);
+          console.log(Base)
         })
         .catch ((err) => {
           if (reqHash != Base.currentQuery) {
@@ -83,7 +84,12 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
                 customInfoTemplate: customInfoTemplate
 
               };
-              Base.setData(group, 'features');
+              if (customInfoTemplate) {
+                Base.setData(group, 'customFeatures');
+                Base.dataCleared = false;
+              } else {
+                Base.setData(group, 'features');
+              }
             });
           });
           doc.querySelectorAll('featureMember').forEach(($this) => {
@@ -103,7 +109,12 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
               }
             }
             if (updated) {
-              Base.setData(group, 'features');
+              if (customInfoTemplate) {
+                Base.setData(group, 'customFeatures');
+                Base.dataCleared = false;
+              } else {
+                Base.setData(group, 'features');
+              }
             }
           });
           doc.querySelectorAll('msGMLOutput').forEach(($this) => {
@@ -133,7 +144,12 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
                     }
                   }
                   if (updated) {
-                    Base.setData(group, 'features');
+                    if (customInfoTemplate) {
+                      Base.setData(group, 'customFeatures');
+                      Base.dataCleared = false;
+                    } else {
+                      Base.setData(group, 'features');
+                    }
                   }
                 }
 
@@ -148,7 +164,12 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
               layer: layer.get('title') || layer.get('name'),
               customInfoTemplate: customInfoTemplate
             };
-            Base.setData(group, 'features');
+            if (customInfoTemplate) {
+              Base.setData(group, 'customFeatures');
+              Base.dataCleared = false;
+            } else {
+              Base.setData(group, 'features');
+            };
           } else {
             return;
           }
