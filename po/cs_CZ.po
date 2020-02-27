@@ -412,7 +412,7 @@ msgstr "Externí zdroj dat (URL)"
 msgid "Extract styles"
 msgstr "Extrahovat styly"
 
-#: components/query/partials/infopanel.html:11
+#: components/query/partials/default-info-panel-body.html:7
 msgid "Feature info"
 msgstr "Informace o prvku"
 
@@ -1427,6 +1427,6 @@ msgstr "Importujt kompozic ze souboru na zařízení"
 msgid "Add combosition by address"
 msgstr "Přidejte kompozici podle adresy (URL)"
 
-#: components/query/query-base.service.js:197
+#: components/query/query-base.service.js:199
 msgid "Coordinates"
 msgstr "Súradnice"
