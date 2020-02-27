@@ -144,7 +144,6 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         customInfoTemplate: $sce.trustAsHtml(customInfoTemplate)
       };
       tmp.push(featureDescription);
-      console.log(Base)
       return tmp;
     }
   }];
