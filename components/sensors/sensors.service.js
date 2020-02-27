@@ -1,5 +1,5 @@
 import moment from 'moment';
-// import { default as vegaEmbed } from 'vega-embed';
+import { default as vegaEmbed } from 'vega-embed';
 import { WKT } from 'ol/format';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector as VectorSource } from 'ol/source';
