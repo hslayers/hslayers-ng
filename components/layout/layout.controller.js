@@ -201,7 +201,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
       try {
         const $mdBottomSheetCollapsible = $injector.get('$mdBottomSheetCollapsible');
         $mdBottomSheetCollapsible.show({
-          template: require('components/layout/partials/bottom-sheet.html'),
+          template: require('./partials/bottom-sheet.html'),
           scope: $scope,
           parent: layoutService.layoutElement,
           preserveScope: true,
@@ -395,7 +395,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
           position: panelPosition,
           animation: panelAnimation,
           targetEvent: $event,
-          template: require('components/layout/partials/baselayers.html'),
+          template: require('./partials/baselayers.html'),
           panelClass: 'baselayers-panel md-whiteframe-8dp',
           scope: this,
           trapFocus: true,
@@ -418,7 +418,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
       };
 
     } catch (ex) {
-
+      
     }
 
     $scope.panelSpaceWidth = layoutService.panelSpaceWidth;
@@ -461,7 +461,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         };
       }
     };
-    
+
     $scope.mapStyle = function () {
       const fullscreen = typeof config.sizeMode == 'undefined' || config.sizeMode == 'fullscreen';
       if (config.design == 'md') {
@@ -474,9 +474,11 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
             width: layoutService.panelSpaceWidth() + 'px'
           };
         } else {
+          OlMap.map.updateSize();
           return $scope.setMapSizes(fullscreen);
         }
       } else {
+        OlMap.map.updateSize();
         return $scope.setMapSizes(fullscreen);
       }
     };

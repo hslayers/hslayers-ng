@@ -1,4 +1,4 @@
-export default ['config', '$rootScope','$window',
+export default ['config', '$rootScope', '$window',
   function (config, $rootScope, $window) {
     const me = this;
 
@@ -442,6 +442,7 @@ export default ['config', '$rootScope','$window',
     angular.forEach(config.panelsEnabled, (value, key) => {
       me.panelEnabled(key, value);
     });
+
     return me;
   }
 ];

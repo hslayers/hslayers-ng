@@ -58,6 +58,16 @@ export default ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$in
                     }
                     import('css/whhg-font/css/whhg.css')
                 }
+
+                if (config.theme) {
+                    if (config.theme.sidebar)
+                    layoutService.layoutElement.style
+                      .setProperty('--sidebar-bg-color', config.theme.sidebar.background || null);
+                    layoutService.layoutElement.style
+                      .setProperty('--sidebar-item-color', config.theme.sidebar.itemColor || null);
+                    layoutService.layoutElement.style
+                      .setProperty('--sidebar-active-color', config.theme.sidebar.activeItemColor || null);
+                  }
             }
         };
     }
