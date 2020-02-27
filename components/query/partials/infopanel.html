@@ -6,7 +6,7 @@
 <hs.custom-info-panel-body ng-if="data.features[0].customInfoTemplate"></hs.custom-info-panel-body>
 <div class="container-fluid" ng-show="data.coordinates[0].name.length > 0">
     <div class="row">
-        <div class="col-12 m-2"><strong>{{data.coordinates[0].name}}</strong></div>
+        <div class="col-12 m-2" ><strong>{{data.coordinates[0].name | translate}}</strong></div>
     </div>
     <div class="row" ng-repeat="projection in data.coordinates[0].projections | orderBy : name">
         <div class="input-group m-1">
