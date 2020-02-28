@@ -42,11 +42,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
 
     function init() {
       map = OlMap.map;
-      if (layoutService.sidebarBottom()) {
-        me.activateQueries();
-      } else {
-        me.queryActive = false;
-      }
+      me.activateQueries();
       map.on('singleclick', (evt) => {
         $rootScope.$broadcast('mapClicked', angular.extend(evt, {
           coordinates: getCoordinate(evt.coordinate)
