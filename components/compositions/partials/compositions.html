@@ -43,12 +43,12 @@
                                 translate>Only mine</span>
                         </div>
                     </div>
-                    <div class="input-group-append dropleft">
+                    <div class="input-group-append dropdown">
                         <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false" ng-click="sortMenuOpen=!sortMenuOpen">
                             Sort <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" ng-class="{'show': sortMenuOpen}">
+                        <ul class="dropdown-menu dropdown-menu-right" ng-class="{'show': sortMenuOpen}">
                             <li><a class="dropdown-item" ng-click="setSortAttribute('bbox')" href="#">Bounding box</a>
                             </li>
                             <li><a class="dropdown-item" ng-click="setSortAttribute('title')">Title</a></li>
