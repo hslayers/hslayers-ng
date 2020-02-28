@@ -16,7 +16,7 @@ export default {
                     return layer.getSource()
             }
             let olFeature = () => {
-                return $scope.$ctrl.feature.feature
+                return $scope.$ctrl.feature.feature;
             }
             angular.extend($scope, {
                 queryVectorService,
@@ -27,11 +27,14 @@ export default {
                     { name: 'WKT format' }
                 ],
                 isFeatureRemovable() {
-                    let source = olSource();
-                    if(angular.isUndefined(source)) return false;
-                    let layer = olFeature().getLayer(hsMap.map);
-                    return utils.instOf(source, VectorSource)
-                        && layerUtilsService.isLayerEditable(layer);
+                    if (angular.isDefined($scope.$ctrl.feature.feature)){
+                        let source = olSource();
+                        if(angular.isUndefined(source)) return false;
+                        let layer = olFeature().getLayer(hsMap.map);
+                        return utils.instOf(source, VectorSource)
+                            && layerUtilsService.isLayerEditable(layer);
+                    }
+                    else return false;
                 },
                 exportData: queryVectorService.exportData,
                 saveNewAttribute(attributeName, attributeValue) {

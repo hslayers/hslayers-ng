@@ -29,6 +29,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         this.data.attributes = [];
         this.data.features = [];
         this.data.featureInfoHtmls = [];
+        this.data.customFeatures = [];
         this.data.coordinates = [];
         this.queryActive = false;
         this.popupClassname = "";
@@ -36,7 +37,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         this.currentQuery = null;
         this.featuresUnderMouse = [];
         this.featureLayersUnderMouse = [];
-        var dataCleared = true;
+        this.dataCleared = true;
 
         function init() {
             map = OlMap.map;
@@ -47,8 +48,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                 }));
                 if (!me.queryActive) return;
                 me.popupClassname = "";
-                if (!dataCleared) me.clearData();
-                dataCleared = false;
+                if (!me.dataCleared) me.clearData();
+                me.dataCleared = false;
                 me.currentQuery = (Math.random() + 1).toString(36).substring(7);
                 me.setData(getCoordinate(evt.coordinate), 'coordinates', true);
                 if (!$rootScope.$$phase) $rootScope.$digest();
@@ -134,12 +135,15 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
                 me.data.features = [];
                 me.data.coordinates.length = 0;
                 me.data.featureInfoHtmls = [];
+                me.data.customFeatures = [];
             }
             var invisiblePopup = me.getInvisiblePopup();
-            invisiblePopup.contentDocument.body.innerHTML = '';
-            invisiblePopup.style.height = 0;
-            invisiblePopup.style.width = 0;
-            dataCleared = true;
+            if (invisiblePopup){
+                invisiblePopup.contentDocument.body.innerHTML = '';
+                invisiblePopup.style.height = 0;
+                invisiblePopup.style.width = 0;
+            }
+            me.dataCleared = true;
         };
 
         this.getInvisiblePopup = function () {
@@ -148,7 +152,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
 
         this.pushFeatureInfoHtml = (html) => {
             me.data.featureInfoHtmls.push($sce.trustAsHtml(html));
-            dataCleared = false;
+            me.dataCleared = false;
         }
 
         this.fillIframeAndResize = function (iframe, response, append) {

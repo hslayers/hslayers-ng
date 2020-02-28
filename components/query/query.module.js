@@ -10,6 +10,7 @@ import queryController from './query.controller';
 import featureComponent from './feature.component';
 import 'language.module';
 import featurePopupComponent from './feature-popup.component';
+import defaultInfoPanelBody from './default-info-panel-body.directive';
 
 /**
  * @namespace hs.query
@@ -31,7 +32,7 @@ angular.module('hs.query', ['hs.map', 'hs.core', 'ngSanitize', 'hs.language', 'h
     * @description Display Infopanel with query results
     */
     .directive('hs.query.directiveInfopanelMd', queryInfoPanelMdDirective)
-
+    .directive('hs.query.defaultInfoPanelBody', defaultInfoPanelBody)
     /**
     * @ngdoc component
     * @name hs.query.attributeRow
