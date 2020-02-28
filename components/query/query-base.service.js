@@ -273,4 +273,3 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
       me.selector = selector;
     });
   }];
-  
