@@ -5,6 +5,7 @@ import saveMapManagerService from './save-map-manager.service';
 import statusManagerService from './status-manager.service';
 import laymanService from './layman.service';
 import layerSynchronizerService from './layer-synchronizer.service';
+import '../../common/widgets/widgets.module';
 
 /**
  * @namespace hs.save-map
