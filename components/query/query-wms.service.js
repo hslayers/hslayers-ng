@@ -252,7 +252,7 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
     $rootScope.$on('mapQueryStarted', (e, evt) => {
       me.infoCounter = 0;
       OlMap.map.getLayers().forEach((layer) => {
-        if (layer.get('base') == true) return
+        if (layer.get('base') == true || layer.get('queriable')== false) return
         if (layer.get('queryFilter') != undefined) {
           const filter = layer.get('queryFilter');
           if (filter(OlMap.map, layer, evt.pixel)) {
