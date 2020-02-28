@@ -322,11 +322,11 @@ export default ['config', '$rootScope', '$window',
         };
         const layoutWidth = me.layoutElement.clientWidth;
         Object.assign(panelWidths, config.panelWidths);
-        let tmp = 0;
+        let tmp = panelWidths[me.mainpanel] || panelWidths.default;
 
-        if (!config.sidebarToggleable) {
-            me.sidebarToggleable = false;
-            return tmp;
+        if (!config.sidebarToggleable && layoutWidth >= 767) {
+          me.sidebarToggleable = false;
+          return tmp;
         }
 
         if (layoutWidth <= 767 && $window.innerWidth <= 767) {

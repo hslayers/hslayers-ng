@@ -454,7 +454,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
         OlMap.map.updateSize();
 
-        if (!layoutService.sidebarBottom()) {
+        if (!layoutService.sidebarBottom() || !fullscreen) {
             marginLeft += layoutService.sidebarRight ? 0 : layoutService.panelSpaceWidth();
             width -= layoutService.panelSpaceWidth();
         }
