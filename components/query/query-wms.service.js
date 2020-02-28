@@ -17,7 +17,6 @@ export default ['$rootScope', '$http', '$sce', 'hs.query.baseService', 'hs.map.s
             return;
           }
           me.featureInfoReceived(response.data, infoFormat, url, coordinate, layer);
-          console.log(Base)
         })
         .catch ((err) => {
           if (reqHash != Base.currentQuery) {
