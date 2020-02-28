@@ -1,14 +1,17 @@
-<!-- Roboto Draft -->
-<!-- <link href='https://fonts.googleapis.com/css?family=RobotoDraft:400,500,700,400italic' rel='stylesheet' type='text/css'> -->
-<!--Import Google Icon Font-->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div hs.swipe-area.directive></div>
-<div hs.md-toolbar.directive></div>
-<section flex layout="row">
-	<div hs.md-sidenav.directive class="md-sidenav"></div>
-	<div flex class="hs-map-container">
-		<div hs.map.directive ng-controller="hs.map.controller" ng-show="hs_map.visible" id="map" style="z-index:990" ng-style="mapStyle()"></div>
-		<div hs.md-overlay.directive class="map-floating-gui" id="gui"></div>
-	</div>
-	<!--<div hs.md-right-panel.directive class="md-sidenav"></div>-->
-</section>
+<div class="hs-page-wrapper">
+    <div class="hs-content-wrapper">
+        <div class="hs-page-content">
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <div hs.swipe-area.directive></div>
+            <div hs.md-toolbar.directive></div>
+            <section flex layout="row">
+                <div hs.md-sidenav.directive class="hs-panelspace-wrapper md-sidenav"></div>
+                <div flex class="hs-page-content">
+                    <div hs.map.directive ng-controller="hs.map.controller" class="hs-ol-map" id="map" style="z-index:990" ng-style="mapStyle()"></div>
+                    <div hs.md-overlay.directive class="map-floating-gui" id="gui"></div>
+                </div>
+                <!--<div hs.md-right-panel.directive class="md-sidenav"></div>-->
+            </section>
+        </div>
+    </div>
+</div>

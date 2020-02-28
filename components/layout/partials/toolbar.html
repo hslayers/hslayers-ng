@@ -1,8 +1,11 @@
-<md-toolbar class="md-hue-2">
+<md-toolbar class="md-hue-2 md-app-toolbar">
     <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Menu" ng-click="leftSidenavOpen ? closeLeftSidenav() : openLeftSidenav()">
+        <md-button class="md-icon-button" aria-label="Menu" ng-if="layoutService.sidebarToggleable" ng-click="leftSidenavOpen ? closeLeftSidenav() : openLeftSidenav()">
             <md-icon class="material-icons">menu</md-icon>
         </md-button>
+        <img ng-if="config.appLogo" ng-src="{{ config.appLogo }}" alt="Application logo" style="max-height: 48px; margin-right: 20px;">
+        <h2 ng-if="config.appName">{{ config.appName }}</h2>
+        <h2 ng-if="!config.appName">HSLayers application</h2>
 
         <div flex></div>
 
