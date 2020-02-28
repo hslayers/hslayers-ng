@@ -3,6 +3,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
     if (config.design == 'md') {
       require(['angular-material-bottom-sheet-collapsible/bottomSheetCollapsible']);
     }
+    $scope.config = config;
     $scope.importCss = angular.isDefined(config.importCss) ? config.importCss : true;
     $scope.useIsolatedBootstrap = angular.isDefined(config.useIsolatedBootstrap) ? config.useIsolatedBootstrap : false;
     $scope.Core = Core;
@@ -445,42 +446,31 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
       }
     };
 
-    $scope.setMapSizes = function(fullscreen) {
-      const height = fullscreen ? 100 + 'vh' : layoutService.layoutElement.clientHeight + 'px';
-      if (!layoutService.sidebarRight) {
-        return {
-          marginLeft: layoutService.panelSpaceWidth() + 'px',
-          width: layoutService.widthWithoutPanelSpace(),
-          height
-        };
-      } else {
-        return {
-          marginLeft: '-px',
-          width: layoutService.widthWithoutPanelSpace(),
-          height
-        };
-      }
-    };
+    $scope.mapStyle = () => {
+        const fullscreen = typeof config.sizeMode == 'undefined' || config.sizeMode == 'fullscreen';
+        let height = layoutService.layoutElement.clientHeight;
+        let width = layoutService.layoutElement.clientWidth;
+        let marginLeft = 0;
 
-    $scope.mapStyle = function () {
-      const fullscreen = typeof config.sizeMode == 'undefined' || config.sizeMode == 'fullscreen';
-      if (config.design == 'md') {
-        console.log('md');
-      } else if (layoutService.sidebarBottom()) {
         OlMap.map.updateSize();
-        if (fullscreen || $window.innerWidth <= 767) {
-          return {
-            height: layoutService.layoutElement.clientHeight - layoutService.panelSpaceHeight() + 'px',
-            width: layoutService.panelSpaceWidth() + 'px'
-          };
-        } else {
-          OlMap.map.updateSize();
-          return $scope.setMapSizes(fullscreen);
+
+        if (!layoutService.sidebarBottom()) {
+            marginLeft += layoutService.sidebarRight ? 0 : layoutService.panelSpaceWidth();
+            width -= layoutService.panelSpaceWidth();
         }
-      } else {
-        OlMap.map.updateSize();
-        return $scope.setMapSizes(fullscreen);
-      }
+
+        if (layoutService.sidebarBottom() && (fullscreen || $window.innerWidth <= 767)) {
+            height -= layoutService.panelSpaceHeight();
+            width = layoutService.panelSpaceWidth();
+        }
+
+        height -= layoutService.mdToolbarHeight();
+
+        return {
+            height: `${height}px`,
+            width: `${width}px`,
+            ...marginLeft > 0 && { marginLeft: `${marginLeft}px` }
+        }
     };
 
     $scope.onlyEnabled = function (item) {

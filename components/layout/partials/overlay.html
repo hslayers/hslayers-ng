@@ -1,4 +1,4 @@
-<md-fab-speed-dial ng-if="fab.secondary" md-open="fab.options.isOpen" md-direction="up" class="md-fling md-fab-bottom-right">
+<md-fab-speed-dial ng-if="fab.secondary && config.fab" md-open="fab.options.isOpen" md-direction="up" class="md-fling md-fab-bottom-right">
 	<md-fab-trigger>
 		<md-button class="md-fab" ng-class="fab.primary.classes" ng-click="fab.primary.clickAction()">
 			<md-tooltip ng-if="fab.primary.tooltip" md-direction="{{fab.primary.tooltip.direction}}">{{fab.primary.tooltip.text}}</md-tooltip>
@@ -15,7 +15,7 @@
 	</md-fab-actions>
 </md-fab-speed-dial>
 
-<md-button ng-if="!fab.secondary" class="md-fab" ng-class="[fab.primary.classes, fab.options.location]" ng-click="fab.primary.clickAction()">
+<md-button ng-if="!fab.secondary && config.fab" class="md-fab" ng-class="[fab.primary.classes, fab.options.location]" ng-click="fab.primary.clickAction()">
 	<md-tooltip md-direction="{{fab.primary.tooltip.direction}}">{{fab.primary.tooltip.text}}</md-tooltip>
 	<md-icon class="{{fab.primary.icon.classes}} {{fab.primary.icon.iconSet}}">{{fab.primary.icon.text}}</md-icon>
 </md-button>

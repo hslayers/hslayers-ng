@@ -324,6 +324,11 @@ export default ['config', '$rootScope', '$window',
         Object.assign(panelWidths, config.panelWidths);
         let tmp = 0;
 
+        if (!config.sidebarToggleable) {
+            me.sidebarToggleable = false;
+            return tmp;
+        }
+
         if (layoutWidth <= 767 && $window.innerWidth <= 767) {
           tmp = layoutWidth;
           me.sidebarToggleable = false;
@@ -361,16 +366,17 @@ export default ['config', '$rootScope', '$window',
         return me._sidebarVisible;
       },
       sidebarBottom() {
-        if (!me.layoutElement) {
-          return false;
-        }
-        return me.layoutElement.clientWidth <= 767;
+          return !!me.layoutElement && me.layoutElement.clientWidth <= 767;
       },
       panelSpaceHeight() {
         if (me.contentWrapper.querySelector('.hs-panelspace-wrapper')) {
           return me.contentWrapper.querySelector('.hs-panelspace-wrapper').clientHeight;
           // return tmp
         }
+      },
+      mdToolbarHeight() {
+          const ELEM = me.contentWrapper.querySelector('.md-app-toolbar');
+          return ELEM ? ELEM.clientHeight : 0;
       },
       /**
             * @ngdoc property
