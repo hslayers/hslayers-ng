@@ -165,6 +165,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         }
 
                         layer.filteredFeatures = filteredFeatures;
+                        if (!$rootScope.$$phase) $rootScope.$digest();
                         return filteredFeatures;
                     },
 
