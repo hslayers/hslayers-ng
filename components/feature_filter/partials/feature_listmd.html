@@ -7,7 +7,7 @@
         <md-card ng-repeat="feature in LayMan.currentLayer.filteredFeatures"
             ng-click="toggleFeatureDetails(feature, true)" ng-mouseenter="highlightFeature(feature)"
             ng-mouseleave="unhighlightFeature(feature)" ng-class="feature.values_.class">
-            <img ng-src="{{ 'thumb/' + feature.values_.img }}" class="md-card-image" alt="Best Practice thumbnail">
+            <img ng-src="{{ 'https://db.atlasbestpractices.com' + feature.values_.img }}" class="md-card-image" alt="Best Practice thumbnail">
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">{{ feature.values_.name }}</span>
@@ -15,7 +15,7 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                <p>{{ feature.values_.annotation }}</p>
+                <p ng-bind-html="feature.values_.annotation"></p>
             </md-card-content>
         </md-card>
     </md-content>
@@ -34,7 +34,7 @@
 
     <md-content ng-show="displayDetails && !displayMoreDetails">
         <div class="img-float">
-            <img ng-src="{{ 'thumb/' + featureDetails.img }}" alt="Best Practice thumbnail">
+            <img ng-src="{{ 'https://db.atlasbestpractices.com' + featureDetails.img }}" alt="Best Practice thumbnail">
         </div>
         <div class="content-body">
             <div class="main-content">
