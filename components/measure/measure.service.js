@@ -94,6 +94,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.utils.service',
       map.addLayer(me.measureVector);
       map.getViewport().addEventListener('mousemove', mouseMoveHandler);
       map.getViewport().addEventListener('touchmove', mouseMoveHandler);
+      map.getViewport().addEventListener('touchend', mouseMoveHandler);
 
       addInteraction(type);
     };
@@ -107,6 +108,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.utils.service',
     this.deactivateMeasuring = function () {
       map.getViewport().removeEventListener('mousemove', mouseMoveHandler);
       map.getViewport().removeEventListener('touchmove', mouseMoveHandler);
+      map.getViewport().removeEventListener('touchend', mouseMoveHandler);
 
       map.removeInteraction(me.draw);
       map.removeLayer(me.measureVector);
