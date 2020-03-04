@@ -6,7 +6,7 @@
             <button type="button" class="btn rounded-0 btn-light btn-outline-primary btn-secondary dropdown-toggle"
                 data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
                 aria-expanded="{{layersExpanded}}">
-                {{selectedLayerString()}}
+                {{selectedLayerString() | translate}}
             </button>
             <button class="btn btn-primary rounded-0" ng-click="service.addDrawLayer()" data-toggle="tooltip"
                 title="{{'Add draw layer' | translate}}">
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="btn-group btn-block rounded-0" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
-        <button class="btn btn-light  btn-outline-primary" ng-class="{active: service.type=='Point' }"
+        <button class="btn btn-light rounded-0 btn-outline-primary" ng-class="{active: service.type=='Point' }"
             ng-click="setType('Point')" data-toggle="tooltip" title="{{'Point' | translate}}">
             <i class="icon-pin"></i>
         </button>
@@ -32,7 +32,7 @@
             ng-click="setType('LineString')" data-toggle="tooltip" title="{{'Line' | translate}}">
             <i class="icon-line"></i>
         </button>
-        <button class="btn btn-light btn-outline-primary" ng-class="{active: service.type=='Circle' }"
+        <button class="btn btn-light rounded-0 btn-outline-primary" ng-class="{active: service.type=='Circle' }"
             ng-click="setType('Circle')" data-toggle="tooltip" title="{{'Circle' | translate }}">
             <i class="icon-circleloaderfull"></i>
         </button>
@@ -44,12 +44,12 @@
             <label translate>Individual style for feature</label>
         </div>
         <div class="card" ng-show="useIndividualStyle">
-            <div class="card-header h5 p-1 pl-4" translate>
-                Defined style
+            <div class="card-header h5 p-1 pl-4">
+                <span translate>Defined style</span>
                 <div class="hs-styler-selected-color-box" ng-style="drawStyle()">
                 </div>
             </div>
-            Color
+            <span translate>Color</span>
             <div class="m-auto" ng-click="updateStyle()" hs.styler.color_directive info="fillcolor"></div>
             <div ng-show="service.type != 'LineString'">
                 <label translate>Fill opacity: {{opacity}}</label>
