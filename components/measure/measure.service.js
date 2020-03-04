@@ -119,7 +119,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.utils.service',
          * @function mouseMoveHandler
          * @private
          * @param {Object} evt Callback param for mouse move event
-         * @description Callback for mouse move event, compute live measurement results
+         * @description Callback for mouse and touch move event, compute live measurement results
          */
     const mouseMoveHandler = function (evt) {
       if (me.sketch) {
