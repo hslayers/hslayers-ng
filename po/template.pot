@@ -51,10 +51,6 @@ msgstr ""
 msgid "<input type=\"checkbox\" ng-model=\"data.registerMetadata\"> Register metadata"
 msgstr ""
 
-#: components/permalink/partials/directive.html:58
-msgid "<input type=\"checkbox\" ng-model=\"new_share\"><span class=\"ng-scope\"> New share</span>"
-msgstr ""
-
 #: components/layermanager/partials/layermanagermd.html:31
 msgid "About layer"
 msgstr ""
@@ -230,6 +226,10 @@ msgstr ""
 msgid "Cluster"
 msgstr ""
 
+#: components/draw/partials/draw.directive.html:52
+msgid "Color"
+msgstr ""
+
 #: components/styles/partials/styler.html:20
 #: components/styles/partials/styler.html:61
 msgid "Colour"
@@ -275,7 +275,7 @@ msgstr ""
 msgid "Consider using tiles. Some servers has restricted max size of picture."
 msgstr ""
 
-#: components/layout/partials/toolbar.html:27
+#: components/layout/partials/toolbar.html:30
 msgid "Contact"
 msgstr ""
 
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Continue without saving"
 msgstr ""
 
-#: components/query/query-base.service.js:174
+#: components/query/query-base.service.js:196
 msgid "Coordinates"
 msgstr ""
 
@@ -326,11 +326,8 @@ msgstr ""
 msgid "Declutter"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:42
-msgid ""
-"Defined style\r\n"
-"                <div class=\"hs-styler-selected-color-box\" ng-style=\"drawStyle()\">\r\n"
-"                </div>"
+#: components/draw/partials/draw.directive.html:48
+msgid "Defined style"
 msgstr ""
 
 #: components/measure/partials/measuremd.html:35
@@ -432,7 +429,7 @@ msgstr ""
 msgid "Extract styles"
 msgstr ""
 
-#: components/query/partials/infopanel.html:11
+#: components/query/partials/default-info-panel-body.html:7
 msgid "Feature info"
 msgstr ""
 
@@ -462,7 +459,7 @@ msgstr ""
 msgid "Fill keywords"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:50
+#: components/draw/partials/draw.directive.html:55
 msgid "Fill opacity: {{opacity}}"
 msgstr ""
 
@@ -510,7 +507,7 @@ msgstr ""
 msgid "Grayscale"
 msgstr ""
 
-#: components/layout/partials/toolbar.html:22
+#: components/layout/partials/toolbar.html:25
 msgid "Help"
 msgstr ""
 
@@ -536,6 +533,10 @@ msgstr ""
 
 #: components/compositions/partials/compositions.html:7
 msgid "Import composition from a file on device"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:44
+msgid "Individual style for feature"
 msgstr ""
 
 #: components/query/partials/infopanel.html:1
@@ -731,6 +732,10 @@ msgstr ""
 
 #: components/info/partials/info.html:7
 msgid "New map"
+msgstr ""
+
+#: components/permalink/partials/directive.html:58
+msgid "New share"
 msgstr ""
 
 #: components/save-map/partials/dialog.html:14
@@ -1047,6 +1052,10 @@ msgstr ""
 msgid "Select data or services for your map composition"
 msgstr ""
 
+#: components/draw/draw.controller.js:73
+msgid "Select layer"
+msgstr ""
+
 #: components/save-map/partials/dialog_save.html:30
 msgid "Select new name for map."
 msgstr ""
@@ -1069,7 +1078,7 @@ msgstr ""
 msgid "Server didn't respond or other error occured"
 msgstr ""
 
-#: components/layout/partials/toolbar.html:17
+#: components/layout/partials/toolbar.html:20
 #: components/mobile_settings/partials/mobile_settings.html:2
 msgid "Settings"
 msgstr ""
@@ -1153,7 +1162,7 @@ msgstr ""
 msgid "Stroke width"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:54
+#: components/draw/partials/draw.directive.html:59
 msgid "Stroke width: {{linewidth}}"
 msgstr ""
 

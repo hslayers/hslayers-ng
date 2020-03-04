@@ -1,4 +1,5 @@
 import {Style, Icon, Stroke, Fill, Circle} from 'ol/style';
+import { getVectorContext } from 'ol/render';
 
 export default [
   '$scope',
@@ -8,7 +9,8 @@ export default [
   'hs.query.vectorService',
   '$timeout',
   'hs.layout.service',
-  function($scope, OlMap, drawService, layerUtilsService, queryVectorService, $timeout, layoutService) {
+  'gettext',
+  function($scope, OlMap, drawService, layerUtilsService, queryVectorService, $timeout, layoutService, gettext) {
     let map;
     angular.extend($scope, {
       layoutService,
@@ -68,7 +70,7 @@ export default [
         if (drawService.selectedLayer) {
           return drawService.selectedLayer.get('title') || drawService.selectedLayer.get('name');
         } else {
-          return 'Select layer';
+          return gettext('Select layer');
         }
       },
       toggleDrawToolbar(e) {

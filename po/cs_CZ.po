@@ -265,7 +265,7 @@ msgstr "Zvažte použití dlaždic. Některé servery\n"
 msgid "Consider using tiles. Some servers has restricted max size of picture."
 msgstr "Zvažte použití dlaždic. Některé servery mají omezenou maximální velikost obrázku."
 
-#: components/layout/partials/toolbar.html:27
+#: components/layout/partials/toolbar.html:30
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -279,7 +279,7 @@ msgstr "Kontext"
 msgid "Continue without saving"
 msgstr "Pokračovat bez uložení"
 
-#: components/query/query-base.service.js:174
+#: components/query/query-base.service.js:196
 msgid "Coordinates"
 msgstr "Souřadnice"
 
@@ -312,13 +312,9 @@ msgstr "Datum"
 msgid "Declutter"
 msgstr "Declutter"
 
-#: components/draw/partials/draw.directive.html:42
-msgid "Defined style\n"
-"                <div class=\"hs-styler-selected-color-box\" ng-style=\"drawStyle()\">\n"
-"                </div>"
-msgstr "Definovaný styl\n"
-"                <div class=\"hs-styler-selected-color-box\" ng-style=\"drawStyle()\"\"\n"
-"                </div>"
+#: components/draw/partials/draw.directive.html:48
+msgid "Defined style"
+msgstr "Definovaný styl"
 
 #: components/measure/partials/measuremd.html:35
 msgid "Delete"
@@ -412,7 +408,7 @@ msgstr "Externí zdroj dat (URL)"
 msgid "Extract styles"
 msgstr "Extrahovat styly"
 
-#: components/query/partials/infopanel.html:11
+#: components/query/partials/default-info-panel-body.html:7
 msgid "Feature info"
 msgstr "Informace o prvku"
 
@@ -442,7 +438,7 @@ msgstr "Vyplnte název"
 msgid "Fill keywords"
 msgstr "Vyplnte klíčová slova"
 
-#: components/draw/partials/draw.directive.html:50
+#: components/draw/partials/draw.directive.html:55
 msgid "Fill opacity: {{opacity}}"
 msgstr "Průhlednost výplne : {{opacity}}"
 
@@ -494,7 +490,7 @@ msgstr "Fulltextové"
 msgid "Grayscale"
 msgstr "Šedotón"
 
-#: components/layout/partials/toolbar.html:22
+#: components/layout/partials/toolbar.html:25
 msgid "Help"
 msgstr "Pomoc"
 
@@ -1037,7 +1033,7 @@ msgstr "Senzory"
 msgid "Server didn't respond or other error occured"
 msgstr "Server neodpověděl nebo došlo k jiné chybě."
 
-#: components/layout/partials/toolbar.html:17
+#: components/layout/partials/toolbar.html:20
 #: components/mobile_settings/partials/mobile_settings.html:2
 msgid "Settings"
 msgstr "Nastavení"
@@ -1121,7 +1117,7 @@ msgstr "Tahu"
 msgid "Stroke width"
 msgstr "Šířka tahu"
 
-#: components/draw/partials/draw.directive.html:54
+#: components/draw/partials/draw.directive.html:59
 msgid "Stroke width: {{linewidth}}"
 msgstr "Šířka tahu: {{linewidth}}"
 
@@ -1426,4 +1422,20 @@ msgstr "Importujt kompozic ze souboru na zařízení"
 #: components/compositions/partials/compositions.html:12
 msgid "Add combosition by address"
 msgstr "Přidejte kompozici podle adresy (URL)"
+
+#: components/permalink/partials/directive.html:58
+msgid "New share"
+msgstr "Nové sdílení"
+
+#: components/draw/partials/draw.directive.html:44
+msgid "Individual style for feature"
+msgstr "Individuální styl prvku"
+
+#: components/draw/partials/draw.directive.html:52
+msgid "Color"
+msgstr "Barva"
+
+#: components/draw/draw.controller.js:73
+msgid "Select layer"
+msgstr "Vybrat vrstvu"
 
