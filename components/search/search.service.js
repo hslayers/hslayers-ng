@@ -42,7 +42,7 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
             me.cleanResults();
             angular.forEach(providers, function (provider) {
                 if (provider == 'geonames') {
-                    url = "http://api.geonames.org/searchJSON?&username=raitis&name_startsWith=" + query;
+                    url = "http://api.geonames.org/searchJSON?&name_startsWith=" + query;
                     if (location.protocol == 'https:') url = utils.proxify(url);
                 } else if (provider == 'sdi4apps_openapi') {
                     url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
