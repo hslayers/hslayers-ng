@@ -434,8 +434,8 @@ button.but-title-sm {
 	color: #fff;
 }
 .list-group-item.active {
-	background-color:var(--sidebar-active-color,#007bff) !important;
-	border-color: var(--sidebar-active-color,#007bff) !important;
+	background-color:var(--sidebar-active-color,#007bff);
+	border-color: var(--sidebar-active-color,#007bff);
  }
 
 .hs-lm-deactivated-layer {
