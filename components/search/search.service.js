@@ -45,8 +45,10 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
                 if (provider == 'geonames') {
                     if(me.geonamesUser)
                         url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${me.geonamesUser}`;
-                    else
+                    else {
+                        //Username will have to be set in proxy
                         url = utils.proxify(`http://api.geonames.org/searchJSON?&name_startsWith=${query}`);
+                    }
                     if (location.protocol == 'https:') url = utils.proxify(url);
                 } else if (provider == 'sdi4apps_openapi') {
                     url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
