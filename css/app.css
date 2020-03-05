@@ -1605,3 +1605,5 @@ li.hs-lm-header {
 	height: 2.36em;
 }
 label.form-group { display: block; }
+.ol-overlaycontainer-stopevent {pointer-events: none;}
+.ol-overlaycontainer-stopevent *{pointer-events: auto;}
