@@ -16,8 +16,7 @@ export default ['config', '$http', function (config, $http) {
         var outUrl = url;
         var windowUrlPosition = url.indexOf(window.location.origin);
         if (
-            (url.substring(0, 4) == 'http'
-                && (windowUrlPosition == -1 || windowUrlPosition > 7)
+            ((windowUrlPosition == -1 || windowUrlPosition > 7)
             ) || getPortFromUrl(url) != window.location.port) {
             if (angular.isUndefined(config.useProxy) || config.useProxy === true) {
                 outUrl = config.proxyPrefix || "/cgi-bin/hsproxy.cgi?";

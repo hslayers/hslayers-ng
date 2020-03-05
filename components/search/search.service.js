@@ -8,6 +8,7 @@ import {transform} from 'ol/proj';
 export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', 'hs.styles.service', '$rootScope',
     function ($http, $q, utils, config, OlMap, Styles, $rootScope) {
         this.data = {};
+        this.geonamesUser = null;
 
         this.data.providers = {};
 
@@ -42,7 +43,10 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
             me.cleanResults();
             angular.forEach(providers, function (provider) {
                 if (provider == 'geonames') {
-                    url = "http://api.geonames.org/searchJSON?&name_startsWith=" + query;
+                    if(me.geonamesUser)
+                        url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${me.geonamesUser}`;
+                    else
+                        url = utils.proxify(`http://api.geonames.org/searchJSON?&name_startsWith=${query}`);
                     if (location.protocol == 'https:') url = utils.proxify(url);
                 } else if (provider == 'sdi4apps_openapi') {
                     url = "http://portal.sdi4apps.eu/openapi/search?q=" + query;
