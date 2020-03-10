@@ -474,7 +474,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
     };
 
     $scope.onlyEnabled = function (item) {
-      return item.enabled;
+      return typeof item.enabled == 'function' ? item.enabled() : item.enabled;
     };
 
     $scope.$emit('scope_loaded', 'Layout');

@@ -23,7 +23,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
         this.data.datasets = undefined;
         this.data.datasources = config.datasources || [];
         this.data.wms_connecting = false;
-        this.data.id_selected = Core.exists('hs.addLayers') ? 'OWS' : '';
+        this.data.id_selected = 'OWS';
 
         var extentLayer = new VectorLayer({
             title: "Datasources extents",
@@ -185,11 +185,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
             }
             describer.then(whatToAdd => {
                 if (['WMS', 'WFS'].indexOf(whatToAdd.type) > -1) {
-                    if (Core.singleDatasources) {
-                        me.datasetSelect('OWS')
-                    } else {
-                        layoutService.setMainPanel('ows');
-                    }
+                    me.datasetSelect('OWS');
                     $timeout(() => {
                         $rootScope.$broadcast(`ows.filling`,
                             whatToAdd.type.toLowerCase(),

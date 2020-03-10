@@ -81,7 +81,6 @@ if (window.hslayersNgConfig) module.value('config', window.hslayersNgConfig(wind
 module.controller('Main', ['$scope', 'Core', 'config', 'hs.map.service',
     function ($scope, Core, config, hsMap) {
         $scope.Core = Core;
-        Core.singleDatasources = true;
         let lastConfigBuster = config.buster;
         setInterval(function () {
             if (lastConfigBuster != config.buster) {

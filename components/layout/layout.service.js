@@ -31,22 +31,13 @@ export default ['config', '$rootScope', '$window',
         mdicon: 'format_list_bulleted'
       },
       {
-        enabled: config.singleDatasources,
+        enabled: () => { return me.panelEnabled('datasource_selector') },
         order: 3,
-        title: !config.singleDatasources ? 'Datasource Selector' : 'Add layers',
+        title: angular.isUndefined(config.datasources) || config.datasources.length > 0 ? 'Datasource Selector' : 'Add layers',
         description: 'Select data or services for your map composition',
         name: 'datasource_selector',
         directive: 'hs.datasource-selector',
         mdicon: 'dns'
-      },
-      {
-        enabled: !config.singleDatasources,
-        order: 4,
-        title: 'Add external data',
-        description: 'Add external data',
-        name: 'ows',
-        directive: 'hs.add-layers',
-        mdicon: 'library_add'
       },
       {
         enabled: true,

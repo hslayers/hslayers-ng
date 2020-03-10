@@ -1,7 +1,7 @@
 <div class="card panel-default hs-main-panel">
     <hs.layout.panel-header panel-name="datasource_selector" panel-title="'Datasources'| translate"></hs.layout.panel-header>
     <div class="card-body">
-        <!--        <div ng-if="!Core.singleDatasources" ng-include="'./datasource_search.html'">
+        <!--        <div ng-if="config.allowAddExternalDatasets" ng-include="'./datasource_search.html'">
             <div class="input-group col-lg-8 col-sm-12 col-xs-12" style="margin-bottom: 4px">
                 <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="queryCatalogs(datasources)">
                 <span class="input-group-btn">
@@ -12,7 +12,7 @@
         </div>-->
 
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
-            <li class="nav-item" ng-class="{'hs-tab-single-datasources': Core.singleDatasources && !data.wms_connecting}"
+            <li class="nav-item" ng-class="{'hs-tab-single-datasources': !data.wms_connecting}"
                 ng-repeat="ds in data.datasets">
                 <a class="nav-link" ng-class="{'btn-primary': data.id_selected == 'ds'+$index}" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
                     data-toggle="tab" ng-click="datasetSelect('ds'+$index)">
@@ -21,20 +21,19 @@
                     <span class="glyphicon icon-refresh icon-spin" ng-show="ds.loaded == false"></span>
                 </a>
             </li>
-            <li class="nav-item" ng-if="Core.exists('hs.addLayers') && Core.singleDatasources"
-                ng-class="{'hs-tab-single-datasources': Core.singleDatasources}">
+            <li class="nav-item hs-tab-single-datasources" ng-if="Core.exists('hs.addLayers') && config.allowAddExternalDatasets">
                 <a class="nav-link" href="#" aria-controls="OWS" ng-class="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}" role="tab" ng-click="datasetSelect('OWS')" data-toggle="tab" translate>
                     External data</a>
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="hs-dataset-panel tab-pane"
-                ng-class="{'active': 'ds'+$index == data.id_selected && Core.singleDatasources && !data.wms_connecting}"
+                ng-class="{'active': 'ds'+$index == data.id_selected && !data.wms_connecting}"
                 id="{{'ds'+$index}}" ng-repeat="ds in data.datasets">
                 <div class="card">
                     <div class="card-body">
-                        <div ng-if="Core.singleDatasources">
-                            <hs.micka-filters-directive ng-if="ds.type == 'micka'" micka-dataset-config="{url: ds.url}"></hs.micka-filters-directive>
+                        <div ng-if="ds.type == 'micka'">
+                            <hs.micka-filters-directive micka-dataset-config="{url: ds.url}"></hs.micka-filters-directive>
                         </div>
                         <ul class="list-group">
                             <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
@@ -84,7 +83,7 @@
             </div>
             <hs.add-layers role="tabpanel" class="tab-pane"
                 ng-class="{'active': data.wms_connecting || data.datasources.length==0 || data.id_selected == 'OWS'}"
-                ng-if="Core.exists('hs.addLayers') && Core.singleDatasources" id="OWS"></hs.add-layers>
+                ng-if="Core.exists('hs.addLayers') && config.allowAddExternalDatasets" id="OWS"></hs.add-layers>
         </div>
     </div>
 </div>

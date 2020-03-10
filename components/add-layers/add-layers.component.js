@@ -63,7 +63,7 @@ export default {
             function connectServiceFromUrlParam(type) {
                 if (permalink.getParamValue(`${type}_to_connect`)) {
                     var url = permalink.getParamValue(`${type}_to_connect`);
-                    layoutService.setMainPanel(Core.singleDatasources ? 'datasource_selector' : 'ows');
+                    layoutService.setMainPanel('datasource_selector');
                     $scope.type = type.toUpperCase();
                     $timeout(() => {
                         $rootScope.$broadcast(`ows.${type}_connecting`, url);

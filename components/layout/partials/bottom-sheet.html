@@ -14,7 +14,6 @@
   </md-toolbar>
 	<hs.layermanager      		ng-if="Core.exists('hs.layermanager')" ng-show="panelVisible('layermanager', this)"></hs.layermanager>>
 	<hs.legend              	ng-if="Core.exists('hs.legend')" ng-show="panelVisible('legend', this)"></hs.legend>
-	<hs.add-layers               ng-if="Core.exists('hs.addLayers') && !Core.singleDatasources" ng-show="panelVisible('ows', this)"></hs.add-layers>>
 	<hs.datasource_selector   	ng-if="Core.exists('hs.datasource_selector')" ng-show="panelVisible('datasource_selector', this)"></hs.datasource_selector>>
 	<hs.compositions          	ng-if="Core.exists('hs.compositions')" ng-show="panelVisible('composition_browser', this)"></hs.compositions>>
 	<div hs.feature_crossfilter.directive   ng-controller="hs.feature_crossfilter.controller"  ng-if="Core.exists('hs.feature_crossfilter.controller')" ng-show="panelVisible('feature_crossfilter', this)"></div>

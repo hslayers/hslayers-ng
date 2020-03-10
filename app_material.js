@@ -42,6 +42,5 @@ module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_prod
     function ($scope, Core, srv_producer, composition_parser, config, layoutService) {
         $scope.Core = Core;
         layoutService.sidebarRight = false;
-        Core.singleDatasources = true;
     }
 ]);

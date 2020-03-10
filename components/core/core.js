@@ -42,14 +42,6 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 scopes_registered: [],
                 /**
                 * @ngdoc property
-                * @name Core#singleDatasources
-                * @public
-                * @type {Boolean} false 
-                * @description If true, datasource can be added to app only through Datasource selector panel (in GUI)
-                */
-                singleDatasources: false,
-                /**
-                * @ngdoc property
                 * @name Core#embededEnabled
                 * @public
                 * @type {Boolean} true 
@@ -101,6 +93,13 @@ angular.module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout'])
                 fullScreenMap: function (element) {
                     console.warn('fullScreenMap will be removed from Core in future. Use hs.layout.service#fullScreenMap method instead');
                     return layoutService.fullScreenMap(element, me)
+                },
+                get singleDatasources() {
+                    return config.allowAddExternalDatasets;
+                },
+                set singleDatasources(newName) {
+                    console.warn('singleDatasources will be removed from Core in future. Use config.allowAddExternalDatasets instead or hide datasource_selector panel using config.panelsEnabled object');
+                    config.allowAddExternalDatasets = newName; 
                 },
                 /**
                 * @ngdoc method
